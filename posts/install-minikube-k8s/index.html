@@ -1,0 +1,749 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+  <title> 用Minikube体验单节点K8S - 刘征的博客|DevOps|Cloud Computing</title>
+  <meta name="description" content="刘征的博客|DevOps|Cloud Computing" />
+  <meta property="og:title" content="用Minikube体验单节点K8S" />
+  <meta name="twitter:title" content="用Minikube体验单节点K8S" />
+  <meta name="description" content="minikube上手指南">
+  <meta property="og:description" content="minikube上手指南">
+  <meta name="twitter:description" content="minikube上手指南">
+  <meta name="author" content="{Description { .Site.Author.name }}"/>
+  <link href='https://martinliu.cn/img/favicon.ico' rel='icon' type='image/x-icon'/>
+  <meta property="og:image" content="https://martinliu.cn/img/logo.jpg" />
+  <meta name="twitter:image" content="https://martinliu.cn/img/logo.jpg" />
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:site" content="@martinliu" />
+  <meta name="twitter:creator" content="@martinliu" />
+  <meta property="og:url" content="https://martinliu.cn/posts/install-minikube-k8s/" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Maritn&#39;s Blog" />
+
+  <meta name="generator" content="Hugo 0.29" />
+  <link rel="canonical" href="https://martinliu.cn/posts/install-minikube-k8s/" />
+  <link rel="alternate" href="https://martinliu.cn/index.xml" type="application/rss+xml" title="Maritn&#39;s Blog">
+  <script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/jquery-1.12.4.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.7.1/katex.min.css" integrity="sha384-wITovz90syo1dJWVh32uuETPVEtGigN07tkttEqPv+uR2SE/mbQcG7ATL28aI9H0" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+  
+  
+  <link rel="stylesheet" href="https://martinliu.cn/css/main.css" />
+  <link rel="stylesheet" href="https://martinliu.cn/css/search.css" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" />
+  
+
+<meta name="baidu-site-verification" content="W3AORuRNZo" />
+<script>
+    var _hmt = _hmt || [];
+    (function () {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?50c3a9ae6c51222b31df5510bbca479f";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+
+<link rel="stylesheet" href="https://martinliu.cn/css/prism.css" />
+
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.1/photoswipe.min.css" integrity="sha256-sCl5PUOGMLfFYctzDW3MtRib0ctyUvI9Qsmq2wXOeBY=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.1/default-skin/default-skin.min.css" integrity="sha256-BFeI1V+Vh1Rk37wswuOYn5lsTcaU96hGaI7OUVCLjPc=" crossorigin="anonymous" />
+
+
+
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+<div class="pswp__bg"></div>
+
+<div class="pswp__scroll-wrap">
+    
+    <div class="pswp__container">
+      <div class="pswp__item"></div>
+      <div class="pswp__item"></div>
+      <div class="pswp__item"></div>
+    </div>
+    
+    <div class="pswp__ui pswp__ui--hidden">
+    <div class="pswp__top-bar">
+      
+      <div class="pswp__counter"></div>
+      <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+      <button class="pswp__button pswp__button--share" title="Share"></button>
+      <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+      <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+      
+      
+      <div class="pswp__preloader">
+        <div class="pswp__preloader__icn">
+          <div class="pswp__preloader__cut">
+            <div class="pswp__preloader__donut"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+      <div class="pswp__share-tooltip"></div>
+    </div>
+    <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+    </button>
+    <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+    </button>
+    <div class="pswp__caption">
+      <div class="pswp__caption__center"></div>
+    </div>
+    </div>
+    </div>
+</div>
+
+</head>
+
+  <body>
+    <nav class="navbar navbar-default navbar-fixed-top navbar-custom">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#main-navbar">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="https://martinliu.cn/">Maritn&#39;s Blog</a>
+    </div>
+    <div class="collapse navbar-collapse" id="main-navbar">
+      <ul class="nav navbar-nav navbar-right">
+        
+          
+            <li>
+              <a title="Blog" href="/">Blog</a>
+              
+              
+            </li>
+          
+        
+          
+            <li>
+              <a title="Tags" href="/tags">Tags</a>
+              
+              
+            </li>
+          
+        
+          
+            <li>
+              <a title="About" href="/about/">About</a>
+              
+              
+            </li>
+          
+        
+          
+            <li>
+              <a title="Book" href="https://handbook.martinliu.cn">Book</a>
+              
+              
+            </li>
+          
+        
+
+        
+
+        
+        
+          <li>
+            <a href="#modalSearch" data-toggle="modal" data-target="#modalSearch" style="outline: none;">
+              <span class="hidden-sm hidden-md hidden-lg">Search</span> <span id="searchGlyph" class="glyphicon glyphicon-search"></span>
+            </a>
+          </li>
+          
+      </ul>
+    </div>
+
+    <div class="avatar-container">
+      <div class="avatar-img-border">
+        
+          <a title="Maritn&#39;s Blog" href="https://martinliu.cn/">
+            <img class="avatar-img" src="https://martinliu.cn/img/logo.jpg" alt="Maritn&#39;s Blog" />
+          </a>
+        
+      </div>
+    </div>
+
+  </div>
+</nav>
+
+
+
+
+
+  <div id="modalSearch" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Search martinliu.cn </h4>
+        </div>
+        <div class="modal-body">
+            
+<div class="aa-input-container" id="aa-input-container">
+    <input type="search" id="aa-search-input" class="aa-input-search" placeholder="Search for titles or URIs..." name="search" autocomplete="off" />
+    <svg class="aa-input-icon" viewBox="654 -372 1664 1664">
+        <path d="M1806,332c0-123.3-43.8-228.8-131.5-316.5C1586.8-72.2,1481.3-116,1358-116s-228.8,43.8-316.5,131.5  C953.8,103.2,910,208.7,910,332s43.8,228.8,131.5,316.5C1129.2,736.2,1234.7,780,1358,780s228.8-43.8,316.5-131.5  C1762.2,560.8,1806,455.3,1806,332z M2318,1164c0,34.7-12.7,64.7-38,90s-55.3,38-90,38c-36,0-66-12.7-90-38l-343-342  c-119.3,82.7-252.3,124-399,124c-95.3,0-186.5-18.5-273.5-55.5s-162-87-225-150s-113-138-150-225S654,427.3,654,332  s18.5-186.5,55.5-273.5s87-162,150-225s138-113,225-150S1262.7-372,1358-372s186.5,18.5,273.5,55.5s162,87,225,150s113,138,150,225  S2062,236.7,2062,332c0,146.7-41.3,279.7-124,399l343,343C2305.7,1098.7,2318,1128.7,2318,1164z" />
+    </svg>
+</div>
+
+
+
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/algoliasearch.min.js"></script>
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/autocomplete.min.js"></script>
+
+<script>
+var client = algoliasearch("3RK9W7WH5R", "06f3928eb3fad870c9197c68c238dbd3");
+var index = client.initIndex('martinliu_blog');
+
+autocomplete('#aa-search-input',
+{ hint: false}, {
+    source: autocomplete.sources.hits(index, {hitsPerPage: 5}),
+    
+    displayKey: 'name',
+    
+    templates: {
+        
+        suggestion: function(suggestion) {
+            
+            return '<span>' + '<a href="/' + suggestion.uri+ '">' +
+            suggestion._highlightResult.title.value + '</a></span>';
+        }
+    }
+});
+</script>
+
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+    
+  
+  
+  
+
+
+
+
+  
+    <div id="header-big-imgs" data-num-img=1 data-img-src-1="https://martinliu.cn/images/abstract-1.jpg" ></div>
+  
+
+  <header class="header-section has-img">
+    
+      <div class="intro-header big-img">
+        
+        
+        <div class="container">
+          <div class="row">
+              <div class="col-lg-12 col-md-12 col-md-offset-0">
+                
+                <div class="post-heading">
+                
+                  
+                     <h1>用Minikube体验单节点K8S</h1>
+                     
+                     
+                  
+                  
+                  
+                    
+                      <hr class="small">
+                      <span class="post-subheading">minikube上手指南</span>
+                    
+                  
+                  
+                    <span class="post-meta">
+  
+  Posted on 2017, September 21
+  
+  
+</span>
+
+
+                  
+                
+              </div>
+            </div>
+          </div>
+        </div>
+        <span class="img-desc" style="display: inline;"></span>
+      </div>
+    
+    <div class="intro-header no-img">
+      
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-12 col-md-12 col-md-offset-0">
+            <div class="posts-heading">
+                <h1 align="center">用Minikube体验单节点K8S</h1>
+                
+                  
+                    <h2 align="center" class="posts-subheading">minikube上手指南</h2>
+                  
+                
+                
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+
+    
+<div class="container" role="main" itemscope itemtype="http://schema.org/Article">
+    <div class="row">
+        <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+            
+            
+            
+<div>
+    <section id="datecount">
+        <h4 id="date"> Thu Sep 21, 2017</h4>
+    </section>
+    <h5 id="wc">2300 Words|Read in about 5 Min</h5>
+    <h5 id="tags">Tags: 
+        
+        <a href="https://martinliu.cn/tags/devops/">DevOps</a> &nbsp;
+        
+        <a href="https://martinliu.cn/tags/docker/">Docker</a> &nbsp;
+    </h5>
+</div>
+
+            
+            <article role="main" class="blog-post" itemprop="articleBody" id="content">
+                
+
+<p>Minikube为各种操作系统的开发者，提供了运行K8S最简洁的方式。它最小化了安装k8s的需求和工作量。而且在各种操作系统上可以实现相同的体验。本文用精简的语言，描述了从安装minikube到运行容器化应用的过程。主要命令和输出来自macOS。</p>
+
+<p><img src="/images/minikube-logo.png" alt="year-map" /></p>
+
+<p><h2 id="hypervisor">安装Hypervisor</h2>
+<p>需要在任何笔记本或者工作上安装一个Hypervisor，因此首先你需要坚持电脑的CPU是否开启了虚拟化的支持，检查BIOS的VT-X或者AMD-v的配置。</p>
+<ul>
+<li>OS X，安装  xhyve driver, <a href="https://www.virtualbox.org/wiki/Downloads">VirtualBox</a> 或 VMware Fusion</li>
+<li>Linux， 安装 VirtualBox 或 KVM</li>
+<li>Windows， 安装 VirtualBox or Hyper-V</li>
+</ul>
+<p>Minikube会生成一个虚拟机，用于运行一个安装和部署好的k8s单节点系统。</p></p>
+
+<p><h2 id="kubectl">安装kubectl</h2>
+<p>kubectl是k8s系统的管理工具，是一个命令行工具，它用于和master交互，完成群集和服务的管理等工作。</p>
+<p>kubectl的安装文档： <a href="https://kubernetes.io/docs/tasks/tools/install-kubectl/">https://kubernetes.io/docs/tasks/tools/install-kubectl/</a></p>
+<p>在macOS上最简单的安装方法是下面这条命令：</p>
+<pre><code>brew install kubectl
+</code></pre>
+<p>brew的好处是后续可以帮忙持续的升级。</p>
+<p>其它非brew安装方法，见以上安装文档的 <code>Install kubectl binary via curl</code> 部分。</p></p>
+
+<p><h2 id="minikube">安装 minikube</h2>
+<p>在macOS上使用的默认的Hypervisor是VirtualBox，如果想要用xhyve需要在启动的时候加上参数 <code>&ndash;vm-driver=xhyve</code></p>
+<p>安装最新版本的 minikube 需要参考这个网页 <a href="https://github.com/kubernetes/minikube/releases">https://github.com/kubernetes/minikube/releases</a></p>
+<p><code>minikube</code> 是一个命令行工具，它的命令行参数如下：</p>
+<pre><code>Minikube is a CLI tool that provisions and manages single-node Kubernetes clusters optimized for development workflows.</p>
+
+<p>Usage:
+  minikube [command]</p>
+
+<p>Available Commands:
+  addons           Modify minikube&rsquo;s kubernetes addons
+  completion       Outputs minikube shell completion for the given shell (bash)
+  config           Modify minikube config
+  dashboard        Opens/displays the kubernetes dashboard URL for your local cluster
+  delete           Deletes a local kubernetes cluster
+  docker-env       Sets up docker env variables; similar to &lsquo;$(docker-machine env)&rsquo;
+  get-k8s-versions Gets the list of available kubernetes versions available for minikube
+  ip               Retrieves the IP address of the running cluster
+  logs             Gets the logs of the running localkube instance, used for debugging minikube, not user code
+  mount            Mounts the specified directory into minikube
+  profile          Profile sets the current minikube profile
+  service          Gets the kubernetes URL(s) for the specified service in your local cluster
+  ssh              Log into or run a command on a machine with SSH; similar to &lsquo;docker-machine ssh&rsquo;
+  ssh-key          Retrieve the ssh identity key path of the specified cluster
+  start            Starts a local kubernetes cluster
+  status           Gets the status of a local kubernetes cluster
+  stop             Stops a running local kubernetes cluster
+  update-context   Verify the IP address of the running cluster in kubeconfig.
+  version          Print the version of minikube</p>
+
+<p>Flags:
+      &ndash;alsologtostderr                  log to standard error as well as files
+  -b, &ndash;bootstrapper string              The name of the cluster bootstrapper that will set up the kubernetes cluster. (default &ldquo;localkube&rdquo;)
+  -h, &ndash;help                             help for minikube
+      &ndash;log_backtrace_at traceLocation   when logging hits line file:N, emit a stack trace (default :0)
+      &ndash;log_dir string                   If non-empty, write log files in this directory
+      &ndash;loglevel int                     Log level (0 = DEBUG, 5 = FATAL) (default 1)
+      &ndash;logtostderr                      log to standard error instead of files
+  -p, &ndash;profile string                   The name of the minikube VM being used.
+    This can be modified to allow for multiple minikube instances to be run independently (default &ldquo;minikube&rdquo;)
+      &ndash;stderrthreshold severity         logs at or above this threshold go to stderr (default 2)
+  -v, &ndash;v Level                          log level for V logs
+      &ndash;vmodule moduleSpec               comma-separated list of pattern=N settings for file-filtered logging</p>
+
+<p>Use &ldquo;minikube [command] &ndash;help&rdquo; for more information about a command.
+</code></pre>
+<p>minikube 就是一个命令行工具，就是一个可执行文件。在macOS上也可以用brew安装，安装命令如下：</p>
+<pre><code>brew cask install minikube
+</code></pre>
+<p>minikube 的快速参考文档在这里： <a href="https://github.com/kubernetes/minikube/blob/v0.22.2/README.md">https://github.com/kubernetes/minikube/blob/v0.22.2/README.md</a></p></p>
+
+<p><h2 id="minikube">启动minikube</h2>
+<p>虚拟化的Hypervisor和kubctl就绪了以后，就可以启动minikube了，命令如下：</p>
+<pre><code>minikube start</p>
+
+<p>Starting local Kubernetes v1.7.5 cluster&hellip;
+Starting VM&hellip;
+Getting VM IP address&hellip;
+Moving files into cluster&hellip;
+Setting up certs&hellip;
+Connecting to cluster&hellip;
+Setting up kubeconfig&hellip;
+Starting cluster components&hellip;
+Kubectl is now configured to use the cluster.
+</code></pre>
+<p>启动以后随时都可以用下面这个命令检查minikube的状态。</p>
+<pre><code>minikube status
+</code></pre>
+<p>停止minikube服务，也就是关机那个start命令创建的虚拟机。</p>
+<pre><code>minikube stop
+</code></pre>
+<h2 id="minikube">访问和使用minikube</h2>
+<h3 id="minikubessh">minikube ssh</h3>
+<p>登录到minikube的虚拟机里的命令就是ssh，进去之后，查看一下docker镜像。</p>
+<pre><code>minikube ssh
+                        ##         .
+                  ## ## ##        ==
+               ## ## ## ## ##    ===
+           /&ldquo;&rdquo;&ldquo;&rdquo;&ldquo;&rdquo;&ldquo;&rdquo;&ldquo;&rdquo;&ldquo;&rdquo;&ldquo;&rdquo;&ldquo;&rdquo;&rdquo;_<strong>/ ===
+      ~~~ {~~ ~~~~ ~~~ ~~~~ ~~~ ~ /  ===- ~~~
+           _</strong>___ o           __/
+             \    \         <strong>/
+              _</strong>________/</p>
+
+<hr />
+
+<p>| |__   ___   ___ | |_|___ \ __| | ___   ___| | _____ _ __
+| &lsquo;_ \ / _ \ / _ | __| __) / _` |/ _ \ / <strong>| |/ / _ \ &lsquo;</strong>|
+| |<em>) | (</em>) | (<em>) | |</em> / <strong>/ (<em>| | (</em>) | (</strong>|   &lt;  <strong>/ |
+|_.</strong>/ _<strong>/ _</strong>/ __|___<strong>_<em>,</em>|_</strong>/ _<strong>|_|__</strong>|_|
+Boot2Docker version 1.11.1, build master : 901340f - Fri Jul  1 22:52:19 UTC 2016
+Docker version 1.11.1, build 5604cbe
+docker@minikube:~$ docker images
+REPOSITORY                                             TAG                 IMAGE ID            CREATED             SIZE
+nginx                                                  latest              da5939581ac8        9 days ago          108.3 MB
+gcr.io/google_containers/kubernetes-dashboard-amd64    v1.6.3              691a82db1ecd        8 weeks ago         139 MB
+&lt;none&gt;                                                 &lt;none&gt;              2f7f7bce8929        11 weeks ago        107.5 MB
+gcr.io/google_containers/k8s-dns-sidecar-amd64         1.14.4              38bac66034a6        12 weeks ago        41.82 MB
+gcr.io/google_containers/k8s-dns-kube-dns-amd64        1.14.4              a8e00546bcf3        12 weeks ago        49.39 MB
+gcr.io/google_containers/k8s-dns-dnsmasq-nanny-amd64   1.14.4              f7f45b9cb733        12 weeks ago        41.42 MB
+gcr.io/google-containers/kube-addon-manager            v6.4-beta.2         0a951668696f        3 months ago        79.24 MB
+gcr.io/google_containers/kubernetes-dashboard-amd64    v1.5.0              e5133bac8024        9 months ago        88.9 MB
+gcr.io/google-containers/kube-addon-manager            v6.1                59e1315aa5ff        9 months ago        59.37 MB
+gcr.io/google_containers/kubedns-amd64                 1.8                 597a45ef55ec        11 months ago       57.89 MB
+gcr.io/google_containers/kube-dnsmasq-amd64            1.4                 3ec65756a89b        11 months ago       5.13 MB
+gcr.io/google_containers/exechealthz-amd64             1.2                 93a43bfb39bf        12 months ago       8.375 MB
+gcr.io/google_containers/echoserver                    1.4                 a90209bb39e3        16 months ago       140.4 MB
+gcr.io/google_containers/pause-amd64                   3.0                 99e59f495ffa        16 months ago       746.9 kB
+docker@minikube:~$ docker ps
+</code></pre>
+<p>以上的命令输出中，镜像的名称是以 <code>gcr.io/google_containers/</code> 就都是属于k8s的系统容器，k8s的系统服务就都是这些docker容器提供的服务。</p>
+<p>用<code>docker ps</code>命令可以看到当前这个虚拟机正在运行的容器。</p></p>
+
+<p><h3 id="kubectlrun">kubectl run</h3>
+<p>kubectl run 命令是用来运行一个docker镜像的，还可以制定在k8s群集中运行几个某镜像的容器。可以创建一个部署或者作业，用它们来管理容器的创建。包括在一个部署或者作业中，运行某个docker镜像的，容器数量，环境变量参数，开放的端口，启动的参数等等。看下面的这个实例。</p>
+<pre><code>$ kubectl run hello-minikube &ndash;image=gcr.io/google_containers/echoserver:1.4 &ndash;port=8080
+deployment &ldquo;hello-minikube&rdquo; created
+$ kubectl expose deployment hello-minikube &ndash;type=NodePort
+service &ldquo;hello-minikube&rdquo; exposed</p>
+
+<h1 id="we-have-now-launched-an-echoserver-pod-but-we-have-to-wait-until-the-pod-is-up-before-curling-accessing-it">We have now launched an echoserver pod but we have to wait until the pod is up before curling/accessing it</h1>
+
+<h1 id="via-the-exposed-service">via the exposed service.</h1>
+
+<h1 id="to-check-whether-the-pod-is-up-and-running-we-can-use-the-following">To check whether the pod is up and running we can use the following:</h1>
+
+<p>$ kubectl get pod
+NAME                              READY     STATUS              RESTARTS   AGE
+hello-minikube-3383150820-vctvh   <sup>1</sup>&frasl;<sub>1</sub>       ContainerCreating   0          3s</p>
+
+<h1 id="we-can-see-that-the-pod-is-still-being-created-from-the-containercreating-status">We can see that the pod is still being created from the ContainerCreating status</h1>
+
+<p>$ kubectl get pod
+NAME                              READY     STATUS    RESTARTS   AGE
+hello-minikube-3383150820-vctvh   <sup>1</sup>&frasl;<sub>1</sub>       Running   0          13s</p>
+
+<h1 id="we-can-see-that-the-pod-is-now-running-and-we-will-now-be-able-to-curl-it">We can see that the pod is now Running and we will now be able to curl it:</h1>
+
+<p>$ curl $(minikube service hello-minikube &ndash;url)
+CLIENT VALUES:
+client_address=172.17.0.2
+command=GET
+real path=/
+query=nil
+request_version=1.1
+request_uri=<a href="http://192.168.99.100:8080/">http://192.168.99.100:8080/</a></p>
+
+<p>SERVER VALUES:
+server_version=nginx: 1.10.0 - lua: 10001</p>
+
+<p>HEADERS RECEIVED:
+accept=<em>/</em>
+host=192.168.99.100:31721
+user-agent=curl/7.54.0
+BODY:
+-no body in request-%
+</code></pre>
+<p>命令含义简介：</p>
+<ul>
+<li><code>kubectl expose</code> 在一个特定的端口上，把一个资源暴露为k8s的一个服务，这个资源可以是一个部署、副本集。可能的资源包括：pod (po), service (svc), replicationcontroller (rc), deployment (deploy), replicaset (rs)</li>
+<li><code>kubectl get</code> 显示/查看一个或者多个资源的信息。</li>
+<li><code>minikube service</code> 获取本地k8s群集里某个特定服务的服务地址URL</li>
+</ul></p>
+
+<p><h3 id="api">访问API服务器</h3>
+<p>访问k8s的重要组件API服务器，访问的方法是：用kubectl先得到一个 Bearer Token 的访问令牌，用这个令牌访问API服务器的服务网址，下面的例子使用curl当api访问的客户端。</p>
+<pre><code>$ TOKEN=$(kubectl describe secret $(kubectl get secrets | grep default | cut -f1 -d &lsquo; &lsquo;) | grep -E &lsquo;^token&rsquo; | cut -f2 -d&rsquo;:&rsquo; | tr -d &lsquo;\t&rsquo;)</p>
+
+<p>$ APISERVER=$(kubectl config view | grep https | cut -f 2- -d &ldquo;:&rdquo; | tr -d &ldquo; &ldquo;)</p>
+
+<p>$  curl $APISERVER &ndash;header &ldquo;Authorization: Bearer $TOKEN&rdquo; &ndash;insecure
+{
+  &ldquo;paths&rdquo;: [
+    &ldquo;/api&rdquo;,
+    &ldquo;/api/v1&rdquo;,
+    &ldquo;/apis&rdquo;,
+    &ldquo;/apis/&rdquo;,
+    &ldquo;/apis/admissionregistration.k8s.io&rdquo;,
+    &ldquo;/apis/admissionregistration.k8s.io/v1alpha1&rdquo;,
+    &ldquo;/apis/apiextensions.k8s.io&rdquo;,
+    &ldquo;/apis/apiextensions.k8s.io/v1beta1&rdquo;,
+    &ldquo;/apis/apiregistration.k8s.io&rdquo;,
+    &ldquo;/apis/apiregistration.k8s.io/v1beta1&rdquo;,
+    &ldquo;/apis/apps&rdquo;,
+    &ldquo;/apis/apps/v1beta1&rdquo;,
+    &ldquo;/apis/authentication.k8s.io&rdquo;,
+    &ldquo;/apis/authentication.k8s.io/v1&rdquo;,
+    &ldquo;/apis/authentication.k8s.io/v1beta1&rdquo;,
+    &ldquo;/apis/authorization.k8s.io&rdquo;,
+    &ldquo;/apis/authorization.k8s.io/v1&rdquo;,
+    &ldquo;/apis/authorization.k8s.io/v1beta1&rdquo;,
+    &ldquo;/apis/autoscaling&rdquo;,
+    &ldquo;/apis/autoscaling/v1&rdquo;,
+    &ldquo;/apis/autoscaling/v2alpha1&rdquo;,
+    &ldquo;/apis/batch&rdquo;,
+    &ldquo;/apis/batch/v1&rdquo;,
+    &ldquo;/apis/batch/v2alpha1&rdquo;,
+    &ldquo;/apis/certificates.k8s.io&rdquo;,
+    &ldquo;/apis/certificates.k8s.io/v1beta1&rdquo;,
+    &ldquo;/apis/extensions&rdquo;,
+    &ldquo;/apis/extensions/v1beta1&rdquo;,
+    &ldquo;/apis/networking.k8s.io&rdquo;,
+    &ldquo;/apis/networking.k8s.io/v1&rdquo;,
+    &ldquo;/apis/policy&rdquo;,
+    &ldquo;/apis/policy/v1beta1&rdquo;,
+    &ldquo;/apis/rbac.authorization.k8s.io&rdquo;,
+    &ldquo;/apis/rbac.authorization.k8s.io/v1alpha1&rdquo;,
+    &ldquo;/apis/rbac.authorization.k8s.io/v1beta1&rdquo;,
+    &ldquo;/apis/settings.k8s.io&rdquo;,
+    &ldquo;/apis/settings.k8s.io/v1alpha1&rdquo;,
+    &ldquo;/apis/storage.k8s.io&rdquo;,
+    &ldquo;/apis/storage.k8s.io/v1&rdquo;,
+    &ldquo;/apis/storage.k8s.io/v1beta1&rdquo;,
+    &ldquo;/healthz&rdquo;,
+    &ldquo;/healthz/autoregister-completion&rdquo;,
+    &ldquo;/healthz/ping&rdquo;,
+    &ldquo;/healthz/poststarthook/apiservice-registration-controller&rdquo;,
+    &ldquo;/healthz/poststarthook/apiservice-status-available-controller&rdquo;,
+    &ldquo;/healthz/poststarthook/bootstrap-controller&rdquo;,
+    &ldquo;/healthz/poststarthook/ca-registration&rdquo;,
+    &ldquo;/healthz/poststarthook/extensions/third-party-resources&rdquo;,
+    &ldquo;/healthz/poststarthook/generic-apiserver-start-informers&rdquo;,
+    &ldquo;/healthz/poststarthook/kube-apiserver-autoregistration&rdquo;,
+    &ldquo;/healthz/poststarthook/start-apiextensions-controllers&rdquo;,
+    &ldquo;/healthz/poststarthook/start-apiextensions-informers&rdquo;,
+    &ldquo;/healthz/poststarthook/start-kube-aggregator-informers&rdquo;,
+    &ldquo;/healthz/poststarthook/start-kube-apiserver-informers&rdquo;,
+    &ldquo;/logs&rdquo;,
+    &ldquo;/metrics&rdquo;,
+    &ldquo;/swagger-2.0.0.json&rdquo;,
+    &ldquo;/swagger-2.0.0.pb-v1&rdquo;,
+    &ldquo;/swagger-2.0.0.pb-v1.gz&rdquo;,
+    &ldquo;/swagger.json&rdquo;,
+    &ldquo;/swaggerapi&rdquo;,
+    &ldquo;/ui&rdquo;,
+    &ldquo;/ui/&rdquo;,
+    &ldquo;/version&rdquo;
+  ]
+}%</p>
+
+<p></code></pre>
+<h3 id="webuidashboard">访问Web UI (Dashboard)</h3>
+<p>Dashboad是k8s的一个图形界面，可以用它部署容器化的应用，排错和管理k8s群集。在minikube上启动这个界面的命令是 <code>minikube dashboard</code> ，你系统的默认浏览器会自动弹出如下界面。</p></p>
+
+<p><img src="/images/Overview---Kubernetes-Dashboard.jpg" alt="year-map" />
+<p>关于Dashbaord的文档在： <a href="https://kubernetes.io/docs/tasks/access-application-cluster/web-ui-dashboard/">https://kubernetes.io/docs/tasks/access-application-cluster/web-ui-dashboard/</a></p></p>
+
+<p><h2 id="minikube">用minikube运行应用</h2>
+<p>minikube正常运行起来以后，就可以参考文档 <a href="https://kubernetes.io/docs/tasks/run-application/run-stateless-application-deployment/">https://kubernetes.io/docs/tasks/run-application/run-stateless-application-deployment/</a> 在这个k8s系统上运行一些demo的应用，对应用做启停、扩缩容等体验。</p></p>
+
+            </article>
+
+            <ul class="pager blog-pager">
+                
+                <li class="previous">
+                    <a href="https://martinliu.cn/posts/running-on-xian-city-wall/" data-toggle="tooltip" data-placement="top" title="奔跑在西安的城墙上">&larr; Previous Post</a>
+                </li>
+                 
+                <li class="next">
+                    <a href="https://martinliu.cn/posts/welcome-to-ghost/" data-toggle="tooltip" data-placement="top" title="切换到Ghost&#43;七牛">Next Post &rarr;</a>
+                </li>
+                
+            </ul>
+            
+            <div>
+                 
+                <h2>See Also</h2>
+                <ul>
+                    
+                    <li><a href="/posts/state-devops-adoption-trends-2017/">2017DevOps采用和趋势现状-信息图</a></li>
+                    
+                    <li><a href="/2017/01/07/devops-glossary/">DevOps术语表</a></li>
+                    
+                    <li><a href="/2017/01/07/nutanix-resource-sites/">Nutanix资源站点清单</a></li>
+                    
+                    <li><a href="/2017/01/03/devops-booklist/">来自于《DevOps Handbook》的书单</a></li>
+                    
+                    <li><a href="/2016/11/07/exin-devops-master-e8aea4e8af81e88083e8af95/">EXIN DevOps Master 认证考试</a></li>
+                    
+                </ul>
+                
+            </div>
+            
+            
+            
+            
+<div>
+    <section id="datecount">
+        <h4 id="date"> Thu Sep 21, 2017</h4>
+    </section>
+    <h5 id="wc">2300 Words|Read in about 5 Min</h5>
+    <h5 id="tags">Tags: 
+        
+        <a href="https://martinliu.cn/tags/devops/">DevOps</a> &nbsp;
+        
+        <a href="https://martinliu.cn/tags/docker/">Docker</a> &nbsp;
+    </h5>
+</div>
+
+            
+            </div>
+            
+ 
+        </div>
+    </div>
+    </section>
+</div>
+
+    <footer>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <ul class="list-inline text-center footer-links">
+          
+              <li>
+                <a href="mailto:67120666@qq.com" title="Email me">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-envelope fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a href="https://plus.google.com/&#43;MartinLiu-cn" title="Google&#43;">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-google-plus fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a href="https://twitter.com/martinliu" title="Twitter">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a href="https://linkedin.com/in/liuzheng" title="LinkedIn">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-linkedin fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+          
+        </ul>
+        <p class="credits copyright text-muted">
+        &copy;2017-2018
+          
+            
+              <a href="martinliu.cn">Martin Liu</a>
+                      
+          
+          
+          
+            &nbsp;&bull;&nbsp;
+            <a href="https://martinliu.cn/">Maritn&#39;s Blog</a>
+          
+        </p>
+        
+        <p class="credits theme-by text-muted">
+          <a href="http://gohugo.io">Hugo v0.29</a> powered &nbsp;&bull;&nbsp; Theme by <a href="http://deanattali.com/beautiful-jekyll/">Beautiful Jekyll</a> adapted to <a href="https://github.com/halogenica/beautifulhugo">Beautiful Hugo</a>
+          
+        </p>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/bootstrap.min.js"></script>
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/photoswipe-ui-default.min.js"></script>
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/photoswipe.min.js"></script>
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/auto-render.min.js"></script>
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/main.js"></script>
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/prism.js"></script>
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/katex.min.js"></script>
+<script> renderMathInElement(document.body); </script>
+
+
+
+
+
+
+
+
+  </body>
+</html>
+

@@ -1,0 +1,762 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+  <title> Ovirt 服务器虚拟化测试 - 刘征的博客|DevOps|Cloud Computing</title>
+  <meta name="description" content="刘征的博客|DevOps|Cloud Computing" />
+  <meta property="og:title" content="Ovirt 服务器虚拟化测试" />
+  <meta name="twitter:title" content="Ovirt 服务器虚拟化测试" />
+  <meta name="description" content="ovirt 是服务虚拟化管理器程序，类似于VMWare的vCenter，管理模式和类型和vCenter完全相同。用于管理由开源hypervisor 组成的资源池群集，管理资源池里的共享网络和存储资源，管理虚拟机的生命周期和状态。本文记录了在Fedora 22笔记本上，安装的ovirt测试环境。使用KVM跑两个虚拟机，一个是ovirt服务器，另外一个虚拟机，配置为嵌套型kvm，用来跑虚拟机。">
+  <meta property="og:description" content="ovirt 是服务虚拟化管理器程序，类似于VMWare的vCenter，管理模式和类型和vCenter完全相同。用于管理由开源hypervisor 组成的资源池群集，管理资源池里的共享网络和存储资源，管理虚拟机的生命周期和状态。本文记录了在Fedora 22笔记本上，安装的ovirt测试环境。使用KVM跑两个虚拟机，一个是ovirt服务器，另外一个虚拟机，配置为嵌套型kvm，用来跑虚拟机。">
+  <meta name="twitter:description" content="ovirt 是服务虚拟化管理器程序，类似于VMWare的vCenter，管理模式和类型和vCenter完全相同。用于管理由开源hypervisor 组成的资源池群集，管理资源池里的共享网络和存储资源，管理虚拟机的生命周期和状态。本文记录了在Fedora 22笔记本上，安装的ovirt测试环境。使用KVM跑两个虚拟机，一个是ovirt服务器，另外一个虚拟机，配置为嵌套型kvm，用来跑虚拟机。">
+  <meta name="author" content="{Description { .Site.Author.name }}"/>
+  <link href='https://martinliu.cn/img/favicon.ico' rel='icon' type='image/x-icon'/>
+  <meta property="og:image" content="https://martinliu.cn/img/logo.jpg" />
+  <meta name="twitter:image" content="https://martinliu.cn/img/logo.jpg" />
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:site" content="@martinliu" />
+  <meta name="twitter:creator" content="@martinliu" />
+  <meta property="og:url" content="https://martinliu.cn/2015/07/12/ovirt-e69c8de58aa1e599a8e8999ae68b9fe58c96e6b58be8af95/" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Maritn&#39;s Blog" />
+
+  <meta name="generator" content="Hugo 0.29" />
+  <link rel="canonical" href="https://martinliu.cn/2015/07/12/ovirt-e69c8de58aa1e599a8e8999ae68b9fe58c96e6b58be8af95/" />
+  <link rel="alternate" href="https://martinliu.cn/index.xml" type="application/rss+xml" title="Maritn&#39;s Blog">
+  <script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/jquery-1.12.4.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.7.1/katex.min.css" integrity="sha384-wITovz90syo1dJWVh32uuETPVEtGigN07tkttEqPv+uR2SE/mbQcG7ATL28aI9H0" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+  
+  
+  <link rel="stylesheet" href="https://martinliu.cn/css/main.css" />
+  <link rel="stylesheet" href="https://martinliu.cn/css/search.css" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" />
+  
+
+<meta name="baidu-site-verification" content="W3AORuRNZo" />
+<script>
+    var _hmt = _hmt || [];
+    (function () {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?50c3a9ae6c51222b31df5510bbca479f";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+
+<link rel="stylesheet" href="https://martinliu.cn/css/prism.css" />
+
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.1/photoswipe.min.css" integrity="sha256-sCl5PUOGMLfFYctzDW3MtRib0ctyUvI9Qsmq2wXOeBY=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.1/default-skin/default-skin.min.css" integrity="sha256-BFeI1V+Vh1Rk37wswuOYn5lsTcaU96hGaI7OUVCLjPc=" crossorigin="anonymous" />
+
+
+
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+<div class="pswp__bg"></div>
+
+<div class="pswp__scroll-wrap">
+    
+    <div class="pswp__container">
+      <div class="pswp__item"></div>
+      <div class="pswp__item"></div>
+      <div class="pswp__item"></div>
+    </div>
+    
+    <div class="pswp__ui pswp__ui--hidden">
+    <div class="pswp__top-bar">
+      
+      <div class="pswp__counter"></div>
+      <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+      <button class="pswp__button pswp__button--share" title="Share"></button>
+      <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+      <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+      
+      
+      <div class="pswp__preloader">
+        <div class="pswp__preloader__icn">
+          <div class="pswp__preloader__cut">
+            <div class="pswp__preloader__donut"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+      <div class="pswp__share-tooltip"></div>
+    </div>
+    <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+    </button>
+    <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+    </button>
+    <div class="pswp__caption">
+      <div class="pswp__caption__center"></div>
+    </div>
+    </div>
+    </div>
+</div>
+
+</head>
+
+  <body>
+    <nav class="navbar navbar-default navbar-fixed-top navbar-custom">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#main-navbar">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="https://martinliu.cn/">Maritn&#39;s Blog</a>
+    </div>
+    <div class="collapse navbar-collapse" id="main-navbar">
+      <ul class="nav navbar-nav navbar-right">
+        
+          
+            <li>
+              <a title="Blog" href="/">Blog</a>
+              
+              
+            </li>
+          
+        
+          
+            <li>
+              <a title="Tags" href="/tags">Tags</a>
+              
+              
+            </li>
+          
+        
+          
+            <li>
+              <a title="About" href="/about/">About</a>
+              
+              
+            </li>
+          
+        
+          
+            <li>
+              <a title="Book" href="https://handbook.martinliu.cn">Book</a>
+              
+              
+            </li>
+          
+        
+
+        
+
+        
+        
+          <li>
+            <a href="#modalSearch" data-toggle="modal" data-target="#modalSearch" style="outline: none;">
+              <span class="hidden-sm hidden-md hidden-lg">Search</span> <span id="searchGlyph" class="glyphicon glyphicon-search"></span>
+            </a>
+          </li>
+          
+      </ul>
+    </div>
+
+    <div class="avatar-container">
+      <div class="avatar-img-border">
+        
+          <a title="Maritn&#39;s Blog" href="https://martinliu.cn/">
+            <img class="avatar-img" src="https://martinliu.cn/img/logo.jpg" alt="Maritn&#39;s Blog" />
+          </a>
+        
+      </div>
+    </div>
+
+  </div>
+</nav>
+
+
+
+
+
+  <div id="modalSearch" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Search martinliu.cn </h4>
+        </div>
+        <div class="modal-body">
+            
+<div class="aa-input-container" id="aa-input-container">
+    <input type="search" id="aa-search-input" class="aa-input-search" placeholder="Search for titles or URIs..." name="search" autocomplete="off" />
+    <svg class="aa-input-icon" viewBox="654 -372 1664 1664">
+        <path d="M1806,332c0-123.3-43.8-228.8-131.5-316.5C1586.8-72.2,1481.3-116,1358-116s-228.8,43.8-316.5,131.5  C953.8,103.2,910,208.7,910,332s43.8,228.8,131.5,316.5C1129.2,736.2,1234.7,780,1358,780s228.8-43.8,316.5-131.5  C1762.2,560.8,1806,455.3,1806,332z M2318,1164c0,34.7-12.7,64.7-38,90s-55.3,38-90,38c-36,0-66-12.7-90-38l-343-342  c-119.3,82.7-252.3,124-399,124c-95.3,0-186.5-18.5-273.5-55.5s-162-87-225-150s-113-138-150-225S654,427.3,654,332  s18.5-186.5,55.5-273.5s87-162,150-225s138-113,225-150S1262.7-372,1358-372s186.5,18.5,273.5,55.5s162,87,225,150s113,138,150,225  S2062,236.7,2062,332c0,146.7-41.3,279.7-124,399l343,343C2305.7,1098.7,2318,1128.7,2318,1164z" />
+    </svg>
+</div>
+
+
+
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/algoliasearch.min.js"></script>
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/autocomplete.min.js"></script>
+
+<script>
+var client = algoliasearch("3RK9W7WH5R", "06f3928eb3fad870c9197c68c238dbd3");
+var index = client.initIndex('martinliu_blog');
+
+autocomplete('#aa-search-input',
+{ hint: false}, {
+    source: autocomplete.sources.hits(index, {hitsPerPage: 5}),
+    
+    displayKey: 'name',
+    
+    templates: {
+        
+        suggestion: function(suggestion) {
+            
+            return '<span>' + '<a href="/' + suggestion.uri+ '">' +
+            suggestion._highlightResult.title.value + '</a></span>';
+        }
+    }
+});
+</script>
+
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+    
+  
+  
+  
+
+
+
+
+  
+
+  <header class="header-section ">
+    
+    <div class="intro-header no-img">
+      
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-12 col-md-12 col-md-offset-0">
+            <div class="posts-heading">
+                <h1 align="center">Ovirt 服务器虚拟化测试</h1>
+                
+                  
+                    <h2 align="center" class="posts-subheading">ovirt 是服务虚拟化管理器程序，类似于VMWare的vCenter，管理模式和类型和vCenter完全相同。用于管理由开源hypervisor 组成的资源池群集，管理资源池里的共享网络和存储资源，管理虚拟机的生命周期和状态。本文记录了在Fedora 22笔记本上，安装的ovirt测试环境。使用KVM跑两个虚拟机，一个是ovirt服务器，另外一个虚拟机，配置为嵌套型kvm，用来跑虚拟机。</h2>
+                  
+                
+                
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+
+    
+<div class="container" role="main" itemscope itemtype="http://schema.org/Article">
+    <div class="row">
+        <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+            
+            
+            
+<div>
+    <section id="datecount">
+        <h4 id="date"> Sun Jul 12, 2015</h4>
+    </section>
+    <h5 id="wc">2600 Words|Read in about 6 Min</h5>
+    <h5 id="tags">Tags: 
+        
+        <a href="https://martinliu.cn/tags/centos/">centos</a> &nbsp;
+        
+        <a href="https://martinliu.cn/tags/fedora/">fedora</a> &nbsp;
+        
+        <a href="https://martinliu.cn/tags/kvm/">KVM</a> &nbsp;
+        
+        <a href="https://martinliu.cn/tags/ovirt/">ovirt</a> &nbsp;
+    </h5>
+</div>
+
+            
+            <article role="main" class="blog-post" itemprop="articleBody" id="content">
+                
+
+<p>本文安装和测试的软件是Ovirt+KVM的服务器虚拟化，这两个项目是红帽RHEVM+KVM服务器虚拟化的上游社区产品。可以通过这个文档清晰的了解到红帽服务器虚拟化产品的大体功能，基本特点。本测试文档使用的是Centos7+社区yum 源；因此是最新的ovirt和kvm的功能。如果是正式的企业级需求测试，请使用光纤或者传统存储，从而达到和vmware等商业产品最好的类比测试。尽量避免使用嵌套kvm虚拟化的方式，除非您很熟悉Linux，使用两个笔记本是最简单的测试环境。</p>
+
+<p>下图是Ovirt服务器的详细架构图。其中的ovirt-engine是本文安装和部署的部分，是用一个centos7的虚拟机安装的。Host1也是用一个centos7的虚拟机安装的。半年之前我也配置过一次嵌套kvm，根本是一头雾水，而且还没有成功，不过这次的配置过程却这么简单容易，就正常工作了。希望简单一点的人，可以把Host1用物理机来安装，也会节省很多时间。</p>
+
+<p>[caption id=&ldquo;attachment_53901&rdquo; align=&ldquo;alignnone&rdquo; width=&ldquo;512&rdquo;]<img src="http://cdn1.martinliu.cn/wp-content/uploads/2015/07/ovirt-512px-Architecture.png" alt="ovirt 架构图" /> ovirt 架构图[/caption]</p>
+
+<h2 id="kvm嵌套虚拟化准备">KVM嵌套虚拟化准备</h2>
+
+<p>在测试KVM服务器虚拟化的过程中，如果您能有独立的物理机跑Hypervisor，那么您可以忽略本节。至今进入ovirt的安装。 下面的测试的物理机是 Lenovo T440s 笔记本，运行的 Fedora 22 操作系统，使用 KVM manager 做虚拟机的管理工具。本次测试用到两个虚拟机：</p>
+
+<ol>
+<li><p>ovirt: 运行服务器虚拟化的管理机ovirt，这个程序类似于vmware 的 vcenter。</p></li>
+
+<li><p>ovirt-host : 用来被ovirt管理的hypervisor；使用 kvm 嵌套 kvm 的方式，来跑虚拟机。</p></li>
+</ol>
+
+<p>确认本机的服务器虚拟机CPU Bios配置正常。</p>
+
+<p>[bash]</p>
+
+<p>egrep -c &lsquo;(vmx|svm)&rsquo; /proc/cpuinfo
+4</p>
+
+<p>[/bash]</p>
+
+<p>本机是i5的CPU，双核开启超线程，显示为4。还没有启用嵌套KVM的虚拟机，需要新建下面这个配置文件，操作系统不同，可能稍微不同，下面是以 Fedora 22 为例。</p>
+
+<p>vi /etc/modprobe.d/kvm-nested.conf
+编辑以上文件，增加下面这行参数即可
+options kvm_intel nested=1</p>
+
+<p>运行下面的命令，为操作系统内核加載此功能。</p>
+
+<p>[bash]</p>
+
+<p>modprobe -r kvm_intel # unload
+modprobe kvm_intel # reload again</p>
+
+<p>cat /sys/module/kvm_intel/parameters/nested
+Y</p>
+
+<p>[/bash]</p>
+
+<p>用上面最后的cat的命令确认嵌套功能启用正常，看到的是Y即可。</p>
+
+<p>查看本机虚拟化的Cpu相关参数。</p>
+
+<p>[bash]</p>
+
+<p>[root@martin-fedora vm]# virsh capabilities | egrep &ldquo;/model|/vendor&rdquo;
+<model>Westmere</model>
+<vendor>Intel</vendor>
+<model>none</model>
+<model>dac</model>
+[root@martin-fedora vm]#</p>
+
+<p>[/bash]</p>
+
+<p>到此，物理机的相关准备工作完成。下面使用 Martin&rsquo;s Perfect CentOS7 模板新建一个2C/4Gd的虚拟机 ovirt-host; 用这个虚拟机作为跑虚拟机的hypervisor把建立好的虚拟机先别开机，需要对它的配置做修改。编辑 ovirt-host虚拟机的配置，给这个嵌套的KVM hypervisor 增加和物理机相同的cpu属性。</p>
+
+<p>virsh edit ovirt-host</p>
+
+<p>本嵌套kvm的虚拟机 cpu 参数如下，如果测试的物理机使用非 i5 的 CPU， 实际的配置参数应该和下面不同。</p>
+
+<p><cpu mode='custom' match='exact'>
+<model fallback='allow'>Westmere</model>
+<vendor>Intel</vendor>
+<feature policy='require' name='vmx'/>
+</cpu></p>
+
+<p>保存配置，启动这个虚拟机，配置好主机名和网络ip地址。安装ovirt yum 源。做 yum update 之后，reboot待用。</p>
+
+<p>[bash]
+yum -y update
+yum install <a href="http://plain.resources.ovirt.org/pub/yum-repo/ovirt-release35.rpm">http://plain.resources.ovirt.org/pub/yum-repo/ovirt-release35.rpm</a></p>
+
+<p>[/bash]</p>
+
+<h2 id="安装ovirt-服务器虚拟化管理机">安装ovirt 服务器虚拟化管理机</h2>
+
+<p>使用 Martin&rsquo;s Perfect CentOS7 模板新建一个1C/4G 的虚拟机 ovirt；这个虚拟机上还需要配置 NFS 服务器，用来做 跑虚拟机的共享存储和用于存储iso光盘的存储。</p>
+
+<p>安装和配置NFS的过程如下：</p>
+
+<h1 id="安装-nfs-服务相关的包">安装 nfs 服务相关的包</h1>
+
+<p>yum install -y nfs-utils</p>
+
+<h1 id="创建存储目录">创建存储目录</h1>
+
+<p>mkdir -p /srv/ovirt/{iso,export,sata}
+chown -R vdsm:kvm /srv/ovirt/
+chmod -R 770 /srv/ovirt/</p>
+
+<p>编辑nfs配置文件 /ect/exports ， 加入下面三行。</p>
+
+<p>/srv/ovirt/iso 192.168.10.0/24(rw,anonuid=36,anongid=36,all_squash)
+/srv/ovirt/export 192.168.10.0/24(rw,anonuid=36,anongid=36,all_squash)
+/srv/ovirt/sata 192.168.10.0/24(rw,anonuid=36,anongid=36,all_squash)</p>
+
+<p>由于centos 7 的nfs默认是v4，这和ovirt不兼容，需要修改配置文件改为 v3， 编辑 /etc/nfsmount.conf 加入下面两个参数。</p>
+
+<p>Defaultvers=3
+Nfsvers=3</p>
+
+<p>#重启动 nfs 服务器 ，设置开机启动服务
+systemctl start rpcbind.service &amp;&amp; systemctl enable rpcbind.service
+systemctl start nfs-server.service &amp;&amp; systemctl enable nfs-server.service</p>
+
+<p>下面开始安装ovirt服务器。</p>
+
+<p>yum -y update
+yum install <a href="http://plain.resources.ovirt.org/pub/yum-repo/ovirt-release35.rpm">http://plain.resources.ovirt.org/pub/yum-repo/ovirt-release35.rpm</a>
+yum -y install ovirt-engine</p>
+
+<p>安装完后，用 engine-setup 命令配置和部署ovirt 服务器。</p>
+
+<p>[bash]</p>
+
+<p>[root@ovirt ~]# engine-setup
+[ INFO ] Stage: Initializing
+[ INFO ] Stage: Environment setup
+Configuration files: [&lsquo;/etc/ovirt-engine-setup.conf.d/10-packaging-jboss.conf&rsquo;, &lsquo;/etc/ovirt-engine-setup.conf.d/10-packaging.conf&rsquo;]
+Log file: /var/log/ovirt-engine/setup/ovirt-engine-setup-20150711225251-f9k7an.log
+Version: otopi-1.3.2 (otopi-1.3.2-1.el7.centos)
+[ INFO ] Stage: Environment packages setup
+[ INFO ] Yum Downloading: ovirt-3.5-patternfly1-noarch-epel/x86_64 (0%)
+[ INFO ] Stage: Programs detection
+[ INFO ] Stage: Environment setup
+[ INFO ] Stage: Environment customization</p>
+
+<p>&ndash;== PRODUCT OPTIONS ==&ndash;</p>
+
+<p>Configure Engine on this host (Yes, No) [Yes]: #回车，选择Yes
+Configure WebSocket Proxy on this host (Yes, No) [Yes]: #回车，选择Yes</p>
+
+<p>&ndash;== PACKAGES ==&ndash;</p>
+
+<p>[ INFO ] Checking for product updates&hellip;
+[ INFO ] No product updates found</p>
+
+<p>&ndash;== ALL IN ONE CONFIGURATION ==&ndash;</p>
+
+<p>&ndash;== NETWORK CONFIGURATION ==&ndash;</p>
+
+<p>Setup can automatically configure the firewall on this system.
+Note: automatic configuration of the firewall may overwrite current settings.
+Do you want Setup to configure the firewall? (Yes, No) [Yes]: No #选择no，由于本机的服务没有安装防火墙
+Host fully qualified DNS name of this server [unknown.prolexic.com]: ovirt.xenlab.com #回车继续</p>
+
+<p>&ndash;== DATABASE CONFIGURATION ==&ndash;</p>
+
+<p>Where is the Engine database located? (Local, Remote) [Local]: #回车，选择 Local 继续
+Setup can configure the local postgresql server automatically for the engine to run. This may conflict with existing applications.
+Would you like Setup to automatically configure postgresql and create Engine database, or prefer to perform that manually? (Automatic, Manual) [Automatic]: #回车，选择 继续</p>
+
+<p>&ndash;== OVIRT ENGINE CONFIGURATION ==&ndash;</p>
+
+<p>Engine admin password:
+Confirm engine admin password:
+[WARNING] Password is weak: it is based on a dictionary word
+Use weak password? (Yes, No) [No]: yes
+Application mode (Virt, Gluster, Both) [Both]: #回车，选择 Both 继续</p>
+
+<p>&ndash;== PKI CONFIGURATION ==&ndash;</p>
+
+<p>Organization name for certificate [xenlab.com]:</p>
+
+<p>&ndash;== APACHE CONFIGURATION ==&ndash;</p>
+
+<p>Setup can configure the default page of the web server to present the application home page. This may conflict with existing applications.
+Do you wish to set the application as the default page of the web server? (Yes, No) [Yes]:
+Setup can configure apache to use SSL using a certificate issued from the internal CA.
+Do you wish Setup to configure that, or prefer to perform that manually? (Automatic, Manual) [Automatic]:</p>
+
+<p>&ndash;== SYSTEM CONFIGURATION ==&ndash;</p>
+
+<p>Configure an NFS share on this server to be used as an ISO Domain? (Yes, No) [Yes]: no # 选择 no，本测试手工配置NFS，不需要安装程序配置。 继续</p>
+
+<p>&ndash;== MISC CONFIGURATION ==&ndash;</p>
+
+<p>&ndash;== END OF CONFIGURATION ==&ndash;</p>
+
+<p>[ INFO ] Stage: Setup validation
+[WARNING] Cannot validate host name settings, reason: resolved host does not match any of the local addresses
+[WARNING] Less than 16384MB of memory is available</p>
+
+<p>&ndash;== CONFIGURATION PREVIEW ==&ndash;</p>
+
+<p>Application mode : both
+Update Firewall : False
+Host FQDN : ovirt.xenlab.com
+Engine database name : engine
+Engine database secured connection : False
+Engine database host : localhost
+Engine database user name : engine
+Engine database host name validation : False
+Engine database port : 5432
+Engine installation : True
+PKI organization : xenlab.com
+Configure local Engine database : True
+Set application as default page : True
+Configure Apache SSL : True
+Configure WebSocket Proxy : True
+Engine Host FQDN : ovirt.xenlab.com</p>
+
+<p>Please confirm installation settings (OK, Cancel) [OK]: #回车，选择 OK 继续
+[ INFO ] Stage: Transaction setup
+[ INFO ] Stopping engine service
+[ INFO ] Stopping ovirt-fence-kdump-listener service
+[ INFO ] Stopping websocket-proxy service
+[ INFO ] Stage: Misc configuration
+[ INFO ] Stage: Package installation
+[ INFO ] Stage: Misc configuration
+[ INFO ] Initializing PostgreSQL
+[ INFO ] Creating PostgreSQL &lsquo;engine&rsquo; database
+[ INFO ] Configuring PostgreSQL
+[ INFO ] Creating/refreshing Engine database schema
+[ INFO ] Creating CA
+[ INFO ] Configuring WebSocket Proxy
+[ INFO ] Generating post install configuration file &lsquo;/etc/ovirt-engine-setup.conf.d/20-setup-ovirt-post.conf&rsquo;
+[ INFO ] Stage: Transaction commit
+[ INFO ] Stage: Closing up</p>
+
+<p>&ndash;== SUMMARY ==&ndash;</p>
+
+<p>[WARNING] Less than 16384MB of memory is available
+SSH fingerprint: DF:FF:42:14:80:35:E2:7D:68:3A:1F:83:65:6E:89:EA
+Internal CA 99:17:7A:42:D0:9D:D7:33:DE:C3:3E:07:EE:15:5D:01:28:63:4A:BF
+Web access is enabled at:
+<a href="http://ovirt.xenlab.com:80/ovirt-engine">http://ovirt.xenlab.com:80/ovirt-engine</a>
+<a href="https://ovirt.xenlab.com:443/ovirt-engine">https://ovirt.xenlab.com:443/ovirt-engine</a>
+Please use the user &ldquo;admin&rdquo; and password specified in order to login
+In order to configure firewalld, copy the files from
+/etc/ovirt-engine/firewalld to /etc/firewalld/services
+and execute the following commands:
+firewall-cmd -service ovirt-postgres
+firewall-cmd -service ovirt-https
+firewall-cmd -service ovirt-fence-kdump-listener
+firewall-cmd -service ovirt-websocket-proxy
+firewall-cmd -service ovirt-http
+The following network ports should be opened:
+tcp:443
+tcp:5432
+tcp:6100
+tcp:80
+udp:7410
+An example of the required configuration for iptables can be found at:
+/etc/ovirt-engine/iptables.example</p>
+
+<p>&ndash;== END OF SUMMARY ==&ndash;</p>
+
+<p>[ INFO ] Starting engine service
+[ INFO ] Restarting httpd
+[ INFO ] Stage: Clean up
+Log file is located at /var/log/ovirt-engine/setup/ovirt-engine-setup-20150711225251-f9k7an.log
+[ INFO ] Generating answer file &lsquo;/var/lib/ovirt-engine/setup/answers/20150711225734-setup.conf&rsquo;
+[ INFO ] Stage: Pre-termination
+[ INFO ] Stage: Termination
+[ INFO ] Execution of setup completed successfully</p>
+
+<p>[/bash]</p>
+
+<p>安装成功，用浏览器，访问ovirt 服务器IP地址使用 admin / 密码 登陆管理员控制台，第一次比较慢，验证安装是否完全成功。</p>
+
+<p>使用命令确认nfs
+[root@ovirt ~]# showmount -e
+Export list for ovirt.xenlab.com:
+/srv/ovirt/sata 192.168.10.0/24
+/srv/ovirt/export 192.168.10.0/24
+/srv/ovirt/iso 192.168.10.0/24</p>
+
+<p>在ovirt服务器中添加这三个存储，然后在命令和中确认iso存储已经可用。</p>
+
+<p>[bash]</p>
+
+<p>[root@ovirt ~]# engine-iso-uploader list
+Please provide the REST API password for the admin@internal oVirt Engine user (CTRL+D to abort):
+ISO Storage Domain Name | Datacenter | ISO Domain Status
+ovirt-iso | Default | active</p>
+
+<p>[/bash]</p>
+
+<p>把需要安装的光盘镜像文件，先复制到ovirt服务器上，然后传入iso存储。</p>
+
+<p>[bash]</p>
+
+<p>[martin@martin-fedora iso]$ scp CentOS-7-x86_64-Minimal-1503-01.iso root@192.168.10.25:/root/
+The authenticity of host &lsquo;192.168.10.25 (192.168.10.25)&rsquo; can&rsquo;t be established.
+ECDSA key fingerprint is SHA256:KMGYLWZu14ZKaUwizIORgQ598Bpc0PKzNWF0qop2VAQ.
+Are you sure you want to continue connecting (yes/no)? yes
+Warning: Permanently added &lsquo;192.168.10.25&rsquo; (ECDSA) to the list of known hosts.
+root@192.168.10.25&rsquo;s password:
+CentOS-7-x86_64-Minimal-1503-01.iso 100% 636MB 90.9MB/s 00:07
+[martin@martin-fedora iso]$</p>
+
+<p>[/bash]</p>
+
+<p>用这个命令上传光盘。
+engine-iso-uploader upload -i ovirt-iso /root/CentOS-7-x86_64-Minimal-1503-01.iso</p>
+
+<p>之后就可以在控制台中创建虚拟机了。在Web界面上安装虚拟机，是需要安装客户的程序的，在 Fedora 22 笔记本中安装它们。
+yum install spice-xpi virt-viewer</p>
+
+<p>点击新创建的虚拟机，启动之后，选择控制台，打开后，开始系统安装。</p>
+
+<h2 id="参考文档">参考文档</h2>
+
+<p>本文没有做截图，是由于以下参考文档都有相关截图和步骤说明；因此，在使用本文档的过程中，一定要同时打开这几篇文档。</p>
+
+<p><a href="http://www.ovirt.org/Quick_Start_Guide#Install_oVirt_Engine_.28Fedora.29%60">http://www.ovirt.org/Quick_Start_Guide#Install_oVirt<em>Engine</em>.28Fedora.29%60</a></p>
+
+<p><a href="http://jensd.be/?p=550">http://jensd.be/?p=550</a></p>
+
+<p><a href="https://xrsa.net/2015/02/04/installing-ovirt-3-5-on-centos-7-hosted-engine/">https://xrsa.net/2015/02/04/installing-ovirt-3-5-on-centos-7-hosted-engine/</a></p>
+
+<p><a href="http://www.server-world.info/en/note?os=Fedora_22&amp;p=kvm&amp;f=8">http://www.server-world.info/en/note?os=Fedora_22&amp;p=kvm&amp;f=8</a></p>
+
+            </article>
+
+            <ul class="pager blog-pager">
+                
+                <li class="previous">
+                    <a href="https://martinliu.cn/2015/07/09/boston-nyc-running-log/" data-toggle="tooltip" data-placement="top" title="Boston 和 NYC 的 运动日志">&larr; Previous Post</a>
+                </li>
+                 
+                <li class="next">
+                    <a href="https://martinliu.cn/2015/07/14/e7baa2e5b8bde5aa92e4bd93e697a5/" data-toggle="tooltip" data-placement="top" title="红帽媒体日">Next Post &rarr;</a>
+                </li>
+                
+            </ul>
+            
+            <div>
+                 
+                <h2>See Also</h2>
+                <ul>
+                    
+                    <li><a href="/2015/03/19/e5a682e4bd95e58f82e4b88e-project-atomic/">如何参与 Project Atomic</a></li>
+                    
+                    <li><a href="/2011/03/24/usb-linux/">既要开源，也要环保</a></li>
+                    
+                    <li><a href="/2015/06/13/e794a8-powertop-e7bb99e7ac94e8aeb0e69cace794b5e88491e79c81e794b5/">用 powertop 给笔记本电脑省电</a></li>
+                    
+                    <li><a href="/2015/06/07/e59ca8centos-7e4b88ae5ae89e8a385e983a8e7bdb2katello2-2/">在CentOS 7上安装部署Katello2.2</a></li>
+                    
+                    <li><a href="/2015/06/05/e5ae89e8a385e5ae8ce7be8e-centos7-e8999ae68b9fe69cbae6a8a1e69dbf/">安装完美 CentOS7 虚拟机模板</a></li>
+                    
+                </ul>
+                
+            </div>
+            
+            
+            
+            
+<div>
+    <section id="datecount">
+        <h4 id="date"> Sun Jul 12, 2015</h4>
+    </section>
+    <h5 id="wc">2600 Words|Read in about 6 Min</h5>
+    <h5 id="tags">Tags: 
+        
+        <a href="https://martinliu.cn/tags/centos/">centos</a> &nbsp;
+        
+        <a href="https://martinliu.cn/tags/fedora/">fedora</a> &nbsp;
+        
+        <a href="https://martinliu.cn/tags/kvm/">KVM</a> &nbsp;
+        
+        <a href="https://martinliu.cn/tags/ovirt/">ovirt</a> &nbsp;
+    </h5>
+</div>
+
+            
+            </div>
+            
+ 
+        </div>
+    </div>
+    </section>
+</div>
+
+    <footer>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <ul class="list-inline text-center footer-links">
+          
+              <li>
+                <a href="mailto:67120666@qq.com" title="Email me">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-envelope fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a href="https://plus.google.com/&#43;MartinLiu-cn" title="Google&#43;">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-google-plus fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a href="https://twitter.com/martinliu" title="Twitter">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a href="https://linkedin.com/in/liuzheng" title="LinkedIn">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-linkedin fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+          
+        </ul>
+        <p class="credits copyright text-muted">
+        &copy;2017-2018
+          
+            
+              <a href="martinliu.cn">Martin Liu</a>
+                      
+          
+          
+          
+            &nbsp;&bull;&nbsp;
+            <a href="https://martinliu.cn/">Maritn&#39;s Blog</a>
+          
+        </p>
+        
+        <p class="credits theme-by text-muted">
+          <a href="http://gohugo.io">Hugo v0.29</a> powered &nbsp;&bull;&nbsp; Theme by <a href="http://deanattali.com/beautiful-jekyll/">Beautiful Jekyll</a> adapted to <a href="https://github.com/halogenica/beautifulhugo">Beautiful Hugo</a>
+          
+        </p>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/bootstrap.min.js"></script>
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/photoswipe-ui-default.min.js"></script>
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/photoswipe.min.js"></script>
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/auto-render.min.js"></script>
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/main.js"></script>
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/prism.js"></script>
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/katex.min.js"></script>
+<script> renderMathInElement(document.body); </script>
+
+
+
+
+
+
+
+
+  </body>
+</html>
+

@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+  <title> 规划CMDB数据填充-002 - 刘征的博客|DevOps|Cloud Computing</title>
+  <meta name="description" content="刘征的博客|DevOps|Cloud Computing" />
+  <meta property="og:title" content="规划CMDB数据填充-002" />
+  <meta name="twitter:title" content="规划CMDB数据填充-002" />
+  <meta name="description" content="From 《Step by step to build a CMDB》步骤17-规划CMDB数据填充 本文描述填充过程的任务1到任务2： 任务1 再次回顾CMDB范围 现在进行现实检验。">
+  <meta property="og:description" content="From 《Step by step to build a CMDB》步骤17-规划CMDB数据填充 本文描述填充过程的任务1到任务2： 任务1 再次回顾CMDB范围 现在进行现实检验。">
+  <meta name="twitter:description" content="From 《Step by step to build a CMDB》步骤17-规划CMDB数据填充 本文描述填充过程的任务1到任务2： 任务1 再次回顾CMDB范围 现在进行现实检验。">
+  <meta name="author" content="{Description { .Site.Author.name }}"/>
+  <link href='https://martinliu.cn/img/favicon.ico' rel='icon' type='image/x-icon'/>
+  <meta property="og:image" content="https://martinliu.cn/img/logo.jpg" />
+  <meta name="twitter:image" content="https://martinliu.cn/img/logo.jpg" />
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:site" content="@martinliu" />
+  <meta name="twitter:creator" content="@martinliu" />
+  <meta property="og:url" content="https://martinliu.cn/2010/07/20/plan-cmdb-population-002/" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Maritn&#39;s Blog" />
+
+  <meta name="generator" content="Hugo 0.29" />
+  <link rel="canonical" href="https://martinliu.cn/2010/07/20/plan-cmdb-population-002/" />
+  <link rel="alternate" href="https://martinliu.cn/index.xml" type="application/rss+xml" title="Maritn&#39;s Blog">
+  <script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/jquery-1.12.4.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.7.1/katex.min.css" integrity="sha384-wITovz90syo1dJWVh32uuETPVEtGigN07tkttEqPv+uR2SE/mbQcG7ATL28aI9H0" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+  
+  
+  <link rel="stylesheet" href="https://martinliu.cn/css/main.css" />
+  <link rel="stylesheet" href="https://martinliu.cn/css/search.css" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" />
+  
+
+<meta name="baidu-site-verification" content="W3AORuRNZo" />
+<script>
+    var _hmt = _hmt || [];
+    (function () {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?50c3a9ae6c51222b31df5510bbca479f";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+
+<link rel="stylesheet" href="https://martinliu.cn/css/prism.css" />
+
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.1/photoswipe.min.css" integrity="sha256-sCl5PUOGMLfFYctzDW3MtRib0ctyUvI9Qsmq2wXOeBY=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.1/default-skin/default-skin.min.css" integrity="sha256-BFeI1V+Vh1Rk37wswuOYn5lsTcaU96hGaI7OUVCLjPc=" crossorigin="anonymous" />
+
+
+
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+<div class="pswp__bg"></div>
+
+<div class="pswp__scroll-wrap">
+    
+    <div class="pswp__container">
+      <div class="pswp__item"></div>
+      <div class="pswp__item"></div>
+      <div class="pswp__item"></div>
+    </div>
+    
+    <div class="pswp__ui pswp__ui--hidden">
+    <div class="pswp__top-bar">
+      
+      <div class="pswp__counter"></div>
+      <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+      <button class="pswp__button pswp__button--share" title="Share"></button>
+      <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+      <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+      
+      
+      <div class="pswp__preloader">
+        <div class="pswp__preloader__icn">
+          <div class="pswp__preloader__cut">
+            <div class="pswp__preloader__donut"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+      <div class="pswp__share-tooltip"></div>
+    </div>
+    <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+    </button>
+    <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+    </button>
+    <div class="pswp__caption">
+      <div class="pswp__caption__center"></div>
+    </div>
+    </div>
+    </div>
+</div>
+
+</head>
+
+  <body>
+    <nav class="navbar navbar-default navbar-fixed-top navbar-custom">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#main-navbar">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="https://martinliu.cn/">Maritn&#39;s Blog</a>
+    </div>
+    <div class="collapse navbar-collapse" id="main-navbar">
+      <ul class="nav navbar-nav navbar-right">
+        
+          
+            <li>
+              <a title="Blog" href="/">Blog</a>
+              
+              
+            </li>
+          
+        
+          
+            <li>
+              <a title="Tags" href="/tags">Tags</a>
+              
+              
+            </li>
+          
+        
+          
+            <li>
+              <a title="About" href="/about/">About</a>
+              
+              
+            </li>
+          
+        
+          
+            <li>
+              <a title="Book" href="https://handbook.martinliu.cn">Book</a>
+              
+              
+            </li>
+          
+        
+
+        
+
+        
+        
+          <li>
+            <a href="#modalSearch" data-toggle="modal" data-target="#modalSearch" style="outline: none;">
+              <span class="hidden-sm hidden-md hidden-lg">Search</span> <span id="searchGlyph" class="glyphicon glyphicon-search"></span>
+            </a>
+          </li>
+          
+      </ul>
+    </div>
+
+    <div class="avatar-container">
+      <div class="avatar-img-border">
+        
+          <a title="Maritn&#39;s Blog" href="https://martinliu.cn/">
+            <img class="avatar-img" src="https://martinliu.cn/img/logo.jpg" alt="Maritn&#39;s Blog" />
+          </a>
+        
+      </div>
+    </div>
+
+  </div>
+</nav>
+
+
+
+
+
+  <div id="modalSearch" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Search martinliu.cn </h4>
+        </div>
+        <div class="modal-body">
+            
+<div class="aa-input-container" id="aa-input-container">
+    <input type="search" id="aa-search-input" class="aa-input-search" placeholder="Search for titles or URIs..." name="search" autocomplete="off" />
+    <svg class="aa-input-icon" viewBox="654 -372 1664 1664">
+        <path d="M1806,332c0-123.3-43.8-228.8-131.5-316.5C1586.8-72.2,1481.3-116,1358-116s-228.8,43.8-316.5,131.5  C953.8,103.2,910,208.7,910,332s43.8,228.8,131.5,316.5C1129.2,736.2,1234.7,780,1358,780s228.8-43.8,316.5-131.5  C1762.2,560.8,1806,455.3,1806,332z M2318,1164c0,34.7-12.7,64.7-38,90s-55.3,38-90,38c-36,0-66-12.7-90-38l-343-342  c-119.3,82.7-252.3,124-399,124c-95.3,0-186.5-18.5-273.5-55.5s-162-87-225-150s-113-138-150-225S654,427.3,654,332  s18.5-186.5,55.5-273.5s87-162,150-225s138-113,225-150S1262.7-372,1358-372s186.5,18.5,273.5,55.5s162,87,225,150s113,138,150,225  S2062,236.7,2062,332c0,146.7-41.3,279.7-124,399l343,343C2305.7,1098.7,2318,1128.7,2318,1164z" />
+    </svg>
+</div>
+
+
+
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/algoliasearch.min.js"></script>
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/autocomplete.min.js"></script>
+
+<script>
+var client = algoliasearch("3RK9W7WH5R", "06f3928eb3fad870c9197c68c238dbd3");
+var index = client.initIndex('martinliu_blog');
+
+autocomplete('#aa-search-input',
+{ hint: false}, {
+    source: autocomplete.sources.hits(index, {hitsPerPage: 5}),
+    
+    displayKey: 'name',
+    
+    templates: {
+        
+        suggestion: function(suggestion) {
+            
+            return '<span>' + '<a href="/' + suggestion.uri+ '">' +
+            suggestion._highlightResult.title.value + '</a></span>';
+        }
+    }
+});
+</script>
+
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+    
+  
+  
+  
+
+
+
+
+  
+
+  <header class="header-section ">
+    
+    <div class="intro-header no-img">
+      
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-12 col-md-12 col-md-offset-0">
+            <div class="posts-heading">
+                <h1 align="center">规划CMDB数据填充-002</h1>
+                
+                
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+
+    
+<div class="container" role="main" itemscope itemtype="http://schema.org/Article">
+    <div class="row">
+        <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+            
+            
+            
+<div>
+    <section id="datecount">
+        <h4 id="date"> Tue Jul 20, 2010</h4>
+    </section>
+    <h5 id="wc">1600 Words|Read in about 4 Min</h5>
+    <h5 id="tags">Tags: 
+        
+        <a href="https://martinliu.cn/tags/atrium/">Atrium</a> &nbsp;
+        
+        <a href="https://martinliu.cn/tags/bmc/">BMC</a> &nbsp;
+        
+        <a href="https://martinliu.cn/tags/cmdb/">cmdb</a> &nbsp;
+        
+        <a href="https://martinliu.cn/tags/cms/">cms</a> &nbsp;
+        
+        <a href="https://martinliu.cn/tags/configuration-management/">configuration management</a> &nbsp;
+        
+        <a href="https://martinliu.cn/tags/itil/">ITIL</a> &nbsp;
+        
+        <a href="https://martinliu.cn/tags/itsm/">ITSM</a> &nbsp;
+        
+        <a href="https://martinliu.cn/tags/v3/">v3</a> &nbsp;
+    </h5>
+</div>
+
+            
+            <article role="main" class="blog-post" itemprop="articleBody" id="content">
+                <p>From 《Step by step to build a CMDB》步骤17-规划CMDB数据填充</p>
+
+<p>本文描述填充过程的任务1到任务2：</p>
+
+<p><img src="http://martinliu.cn/wp-content/gallery/cmdb/cmdb-data-sources-re.png" alt="cmdb-data-sources-re" /></p>
+
+<p><strong>任务1  再次回顾CMDB范围</strong>
+现在进行现实检验。你能否确实交付在第2阶段即“定义需求和创建IT服务模型蓝图”中定义的CI范围涉及的相关数据？你在CI数据一旦交付以后，能否有足够的资源来维护整个系统和所有数据？这些都是重要的问题，因为您所选择的CMDB解决方案，可能很容易地就超越了您需要的范围，超出了你可以能容易维护的程度。</p>
+
+<p>在规划CMDB数据填充时，您的思想应该是“少即是多“。先学会走再跑。让CMDB的首次推广得到充分验证后在考虑扩大范围。您需要帮助保持 CMDB的团队和CMDB数据用户的积极性。同时避免项目范围的蔓延，否则可能破坏的实施的效果，以及用户对新的解决方案的接受度。</p>
+
+<p>请谨记这样几个考虑因素，从而来帮助您始终专注于那些核心需求上，并能对关键的限制作出反应：</p>
+
+<ul>
+<li>成本 – 每个人都必须面对业务现实，包括预算和费用的现实。因此，在您的CMDB项目预算范围里，对主要需求排列优先级。如果出现新的想法，那么也只是在新的预算来下了以后才考虑。</li>
+<li>时间 &ndash; 您可能需要在给定的时间内实施CMDB，来使您企业在此方面的业务需求得到满足，如 Sarbanes-Oxley 法规，或支持一个非常关键的新流程。当您计划了CI数据填充的顺序后（后面介绍的这一步），不仅要对CI数据排优先级，而且还要明确时间的限制。</li>
+<li>实用性 – 如果没有足够的资源用来实施和维持CMDB，以满足CMDB要求，那么您可能需要缩小实施范围，以便您可以在您实际有限的资源里运作项目。你还可以考虑分两个阶段进行实施，把非关键的要求放到第二个阶段中。</li>
+<li>外部强加的优先事项 – 有些业务的运作，例如企业治理、数据保护和信息自由，可能会影响您既定的优先次序。您可以通过分阶段实施CMDB数据填充来减少外部因素的影响。如果你没有从一开始就计划足够的时间来达成最后期限，那么你可以尝试投入更多的资源来克服时间上的限制。然而，还要意识到，以后你要申请更多的资源，没有资源的保证，你可能无法充分管理好项目。</li>
+<li>所有权 – 有时IT资产的负责人并不属于IT组织。如果资产所有者决定不参与的CMDB，这会严重限制了CI数据内容的提供。您可以提供CMDB部分功能的有限的访问给他们，用来消除他们顾虑，并参与进来。</li>
+<li>地区 – 地理区域上的边界，可能会限制建立企业范围的CMDB。由于地理或行政上可能的边界，我们可能听过“最好再也不要从总部传来这样神经质数据库方案”。最好预防这种情况的办法是，尽可能早的让所有地区的相关人员参与到CMDB项目里来。</li>
+<li>组织架构 – 很多企业把IT划分成为清晰地、各自为政的独立部门，通过这种方式来对CMDB里的不同范围负责。例如：通信部门的人可能是一个单独的组织结构，他们可能拒绝参与到项目中来，因为他们觉得这超出了他们的控制范围。这时候就要让其他的IT组织参与其中，让每个人都知道谁是项目负责人。</li>
+</ul>
+
+<p>当你计划你的CMDB数据填充的时候，越能专注于关键受益人的需求，就越能够达成项目的业务目标，就越能让您的项目顺利。您需要就已经确定的 CMDB范围，与所有的利益方沟通它可能的影响和效果。收集他们的反馈，并对有必要方面做进一步讨论。</p>
+
+<p><strong>任务2 识别CI</strong>
+使用在第15步即“设计IT服务模型蓝图”中设计的IT服务模型蓝图为基础，来生成用于CMDB数据填充的CI以及相关属性和关系数据的清单。这个清单的细节应该到数据字段级别，以便，你能够识别并且映射一个或者多个数据源到特定的CI数据。
+例如，如果你把一个实际的服务器CI的属性和关系数据都列出清单，你就可以找出一些现有的能提供属性数据的数据源，可能包括库存管理的数据库和发现或者网络管理工具。但是另外一些数据字段可能没有现成的数据源。你将在第18步“选择自动化CMDB数据填充工具”中用到以上差距分析。或者您可能决定使用手工的方式来填充和更新这个字段，这里还需要仔细的考虑到数据的负责人，和在21步“建立CI生命周期管理流程”中需要支持的流程。
+至此，你需要专注于用来满足项目目标的要求。在步骤11到14，你定义了与其他流程的结合点，明确的CI需求。专注于那些能直接对流程收益人产生直接影响的CI数据。</p>
+
+            </article>
+
+            <ul class="pager blog-pager">
+                
+                <li class="previous">
+                    <a href="https://martinliu.cn/2010/07/18/rt3-request-tracker/" data-toggle="tooltip" data-placement="top" title="RT3 Request Tacker或让你摆脱束缚">&larr; Previous Post</a>
+                </li>
+                 
+                <li class="next">
+                    <a href="https://martinliu.cn/2010/07/20/cmdb003/" data-toggle="tooltip" data-placement="top" title="规划CMDB数据填充-003">Next Post &rarr;</a>
+                </li>
+                
+            </ul>
+            
+            <div>
+                 
+                <h2>See Also</h2>
+                <ul>
+                    
+                    <li><a href="/2010/03/30/phase-roll-out-cmdb-implement/">掀起CMDB的盖头来</a></li>
+                    
+                    <li><a href="/2010/04/26/cmdb-addm-tool-implement-good-practice/">CMDB配置采集工具部署之4大挑战</a></li>
+                    
+                    <li><a href="/2010/04/15/cmdb-project-need-talents/">21世纪最缺的是什么？</a></li>
+                    
+                    <li><a href="/2010/03/29/cmdb-requirement-analysis-practice/">CMDB需求分析之最佳实践</a></li>
+                    
+                    <li><a href="/2010/01/01/cmdb-value-points/">CMDB Value Points 价值点</a></li>
+                    
+                </ul>
+                
+            </div>
+            
+            
+            
+            
+<div>
+    <section id="datecount">
+        <h4 id="date"> Tue Jul 20, 2010</h4>
+    </section>
+    <h5 id="wc">1600 Words|Read in about 4 Min</h5>
+    <h5 id="tags">Tags: 
+        
+        <a href="https://martinliu.cn/tags/atrium/">Atrium</a> &nbsp;
+        
+        <a href="https://martinliu.cn/tags/bmc/">BMC</a> &nbsp;
+        
+        <a href="https://martinliu.cn/tags/cmdb/">cmdb</a> &nbsp;
+        
+        <a href="https://martinliu.cn/tags/cms/">cms</a> &nbsp;
+        
+        <a href="https://martinliu.cn/tags/configuration-management/">configuration management</a> &nbsp;
+        
+        <a href="https://martinliu.cn/tags/itil/">ITIL</a> &nbsp;
+        
+        <a href="https://martinliu.cn/tags/itsm/">ITSM</a> &nbsp;
+        
+        <a href="https://martinliu.cn/tags/v3/">v3</a> &nbsp;
+    </h5>
+</div>
+
+            
+            </div>
+            
+ 
+        </div>
+    </div>
+    </section>
+</div>
+
+    <footer>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <ul class="list-inline text-center footer-links">
+          
+              <li>
+                <a href="mailto:67120666@qq.com" title="Email me">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-envelope fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a href="https://plus.google.com/&#43;MartinLiu-cn" title="Google&#43;">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-google-plus fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a href="https://twitter.com/martinliu" title="Twitter">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a href="https://linkedin.com/in/liuzheng" title="LinkedIn">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-linkedin fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+          
+        </ul>
+        <p class="credits copyright text-muted">
+        &copy;2017-2018
+          
+            
+              <a href="martinliu.cn">Martin Liu</a>
+                      
+          
+          
+          
+            &nbsp;&bull;&nbsp;
+            <a href="https://martinliu.cn/">Maritn&#39;s Blog</a>
+          
+        </p>
+        
+        <p class="credits theme-by text-muted">
+          <a href="http://gohugo.io">Hugo v0.29</a> powered &nbsp;&bull;&nbsp; Theme by <a href="http://deanattali.com/beautiful-jekyll/">Beautiful Jekyll</a> adapted to <a href="https://github.com/halogenica/beautifulhugo">Beautiful Hugo</a>
+          
+        </p>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/bootstrap.min.js"></script>
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/photoswipe-ui-default.min.js"></script>
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/photoswipe.min.js"></script>
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/auto-render.min.js"></script>
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/main.js"></script>
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/prism.js"></script>
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/katex.min.js"></script>
+<script> renderMathInElement(document.body); </script>
+
+
+
+
+
+
+
+
+  </body>
+</html>
+

@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+  <title> OpenNMS常问问题All-in-One - 刘征的博客|DevOps|Cloud Computing</title>
+  <meta name="description" content="刘征的博客|DevOps|Cloud Computing" />
+  <meta property="og:title" content="OpenNMS常问问题All-in-One" />
+  <meta name="twitter:title" content="OpenNMS常问问题All-in-One" />
+  <meta name="description" content="问：OpenNMS是什么？ 答： OpenNMS是第一个开发在开源模式下的企业级网络管理平台应用。OpenNMS的目标是成为一个真真的分布式、可">
+  <meta property="og:description" content="问：OpenNMS是什么？ 答： OpenNMS是第一个开发在开源模式下的企业级网络管理平台应用。OpenNMS的目标是成为一个真真的分布式、可">
+  <meta name="twitter:description" content="问：OpenNMS是什么？ 答： OpenNMS是第一个开发在开源模式下的企业级网络管理平台应用。OpenNMS的目标是成为一个真真的分布式、可">
+  <meta name="author" content="{Description { .Site.Author.name }}"/>
+  <link href='https://martinliu.cn/img/favicon.ico' rel='icon' type='image/x-icon'/>
+  <meta property="og:image" content="https://martinliu.cn/img/logo.jpg" />
+  <meta name="twitter:image" content="https://martinliu.cn/img/logo.jpg" />
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:site" content="@martinliu" />
+  <meta name="twitter:creator" content="@martinliu" />
+  <meta property="og:url" content="https://martinliu.cn/2007/05/08/opennms-faqs/" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Maritn&#39;s Blog" />
+
+  <meta name="generator" content="Hugo 0.29" />
+  <link rel="canonical" href="https://martinliu.cn/2007/05/08/opennms-faqs/" />
+  <link rel="alternate" href="https://martinliu.cn/index.xml" type="application/rss+xml" title="Maritn&#39;s Blog">
+  <script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/jquery-1.12.4.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.7.1/katex.min.css" integrity="sha384-wITovz90syo1dJWVh32uuETPVEtGigN07tkttEqPv+uR2SE/mbQcG7ATL28aI9H0" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+  
+  
+  <link rel="stylesheet" href="https://martinliu.cn/css/main.css" />
+  <link rel="stylesheet" href="https://martinliu.cn/css/search.css" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" />
+  
+
+<meta name="baidu-site-verification" content="W3AORuRNZo" />
+<script>
+    var _hmt = _hmt || [];
+    (function () {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?50c3a9ae6c51222b31df5510bbca479f";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+
+<link rel="stylesheet" href="https://martinliu.cn/css/prism.css" />
+
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.1/photoswipe.min.css" integrity="sha256-sCl5PUOGMLfFYctzDW3MtRib0ctyUvI9Qsmq2wXOeBY=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.1/default-skin/default-skin.min.css" integrity="sha256-BFeI1V+Vh1Rk37wswuOYn5lsTcaU96hGaI7OUVCLjPc=" crossorigin="anonymous" />
+
+
+
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+<div class="pswp__bg"></div>
+
+<div class="pswp__scroll-wrap">
+    
+    <div class="pswp__container">
+      <div class="pswp__item"></div>
+      <div class="pswp__item"></div>
+      <div class="pswp__item"></div>
+    </div>
+    
+    <div class="pswp__ui pswp__ui--hidden">
+    <div class="pswp__top-bar">
+      
+      <div class="pswp__counter"></div>
+      <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+      <button class="pswp__button pswp__button--share" title="Share"></button>
+      <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+      <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+      
+      
+      <div class="pswp__preloader">
+        <div class="pswp__preloader__icn">
+          <div class="pswp__preloader__cut">
+            <div class="pswp__preloader__donut"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+      <div class="pswp__share-tooltip"></div>
+    </div>
+    <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+    </button>
+    <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+    </button>
+    <div class="pswp__caption">
+      <div class="pswp__caption__center"></div>
+    </div>
+    </div>
+    </div>
+</div>
+
+</head>
+
+  <body>
+    <nav class="navbar navbar-default navbar-fixed-top navbar-custom">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#main-navbar">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="https://martinliu.cn/">Maritn&#39;s Blog</a>
+    </div>
+    <div class="collapse navbar-collapse" id="main-navbar">
+      <ul class="nav navbar-nav navbar-right">
+        
+          
+            <li>
+              <a title="Blog" href="/">Blog</a>
+              
+              
+            </li>
+          
+        
+          
+            <li>
+              <a title="Tags" href="/tags">Tags</a>
+              
+              
+            </li>
+          
+        
+          
+            <li>
+              <a title="About" href="/about/">About</a>
+              
+              
+            </li>
+          
+        
+          
+            <li>
+              <a title="Book" href="https://handbook.martinliu.cn">Book</a>
+              
+              
+            </li>
+          
+        
+
+        
+
+        
+        
+          <li>
+            <a href="#modalSearch" data-toggle="modal" data-target="#modalSearch" style="outline: none;">
+              <span class="hidden-sm hidden-md hidden-lg">Search</span> <span id="searchGlyph" class="glyphicon glyphicon-search"></span>
+            </a>
+          </li>
+          
+      </ul>
+    </div>
+
+    <div class="avatar-container">
+      <div class="avatar-img-border">
+        
+          <a title="Maritn&#39;s Blog" href="https://martinliu.cn/">
+            <img class="avatar-img" src="https://martinliu.cn/img/logo.jpg" alt="Maritn&#39;s Blog" />
+          </a>
+        
+      </div>
+    </div>
+
+  </div>
+</nav>
+
+
+
+
+
+  <div id="modalSearch" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Search martinliu.cn </h4>
+        </div>
+        <div class="modal-body">
+            
+<div class="aa-input-container" id="aa-input-container">
+    <input type="search" id="aa-search-input" class="aa-input-search" placeholder="Search for titles or URIs..." name="search" autocomplete="off" />
+    <svg class="aa-input-icon" viewBox="654 -372 1664 1664">
+        <path d="M1806,332c0-123.3-43.8-228.8-131.5-316.5C1586.8-72.2,1481.3-116,1358-116s-228.8,43.8-316.5,131.5  C953.8,103.2,910,208.7,910,332s43.8,228.8,131.5,316.5C1129.2,736.2,1234.7,780,1358,780s228.8-43.8,316.5-131.5  C1762.2,560.8,1806,455.3,1806,332z M2318,1164c0,34.7-12.7,64.7-38,90s-55.3,38-90,38c-36,0-66-12.7-90-38l-343-342  c-119.3,82.7-252.3,124-399,124c-95.3,0-186.5-18.5-273.5-55.5s-162-87-225-150s-113-138-150-225S654,427.3,654,332  s18.5-186.5,55.5-273.5s87-162,150-225s138-113,225-150S1262.7-372,1358-372s186.5,18.5,273.5,55.5s162,87,225,150s113,138,150,225  S2062,236.7,2062,332c0,146.7-41.3,279.7-124,399l343,343C2305.7,1098.7,2318,1128.7,2318,1164z" />
+    </svg>
+</div>
+
+
+
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/algoliasearch.min.js"></script>
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/autocomplete.min.js"></script>
+
+<script>
+var client = algoliasearch("3RK9W7WH5R", "06f3928eb3fad870c9197c68c238dbd3");
+var index = client.initIndex('martinliu_blog');
+
+autocomplete('#aa-search-input',
+{ hint: false}, {
+    source: autocomplete.sources.hits(index, {hitsPerPage: 5}),
+    
+    displayKey: 'name',
+    
+    templates: {
+        
+        suggestion: function(suggestion) {
+            
+            return '<span>' + '<a href="/' + suggestion.uri+ '">' +
+            suggestion._highlightResult.title.value + '</a></span>';
+        }
+    }
+});
+</script>
+
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+    
+  
+  
+  
+
+
+
+
+  
+
+  <header class="header-section ">
+    
+    <div class="intro-header no-img">
+      
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-12 col-md-12 col-md-offset-0">
+            <div class="posts-heading">
+                <h1 align="center">OpenNMS常问问题All-in-One</h1>
+                
+                
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+
+    
+<div class="container" role="main" itemscope itemtype="http://schema.org/Article">
+    <div class="row">
+        <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+            
+            
+            
+<div>
+    <section id="datecount">
+        <h4 id="date"> Tue May 8, 2007</h4>
+    </section>
+    <h5 id="wc">1100 Words|Read in about 3 Min</h5>
+    <h5 id="tags">Tags: 
+        
+        <a href="https://martinliu.cn/tags/faq/">faq</a> &nbsp;
+        
+        <a href="https://martinliu.cn/tags/opennms/">OpenNMS</a> &nbsp;
+    </h5>
+</div>
+
+            
+            <article role="main" class="blog-post" itemprop="articleBody" id="content">
+                <p><strong>问：OpenNMS是什么？<br /></strong>答： OpenNMS是第一个开发在开源模式下的企业级网络管理平台应用。OpenNMS的目标是成为一个真真的分布式、可升级的网络管理平台，尽管它看似一个 FCAPS网络管理模型，使之可用于开放源码和商业领域。目前：OpenNMS专注与以下三个方面：服务轮询 － 检查应用服务的可用性，产生可用性报表。数据收集 － 收集、保存和报表网络信息数据，并设定和触发门限值。事件和提示管理 － 接受事件系统内部的和外部的事件，将源事件提供给强大的故障告警和故障升级系统。OpenNMS Group是开发和支持OpenNMS应用的一个商业性的实体。<br /><br /><strong>问：为什么要开源？</strong><br />答： 我们坚信真真的创新不会来自规模巨大的企业。我们还相信网络管理软件领域比Linux操作系统更适合开源模式。不像Linux，网络管理要去监视和控制来 自不同厂商的很多的技术。考虑到每年都有很多新的网络设备面世。商业软件公司并不希望追赶这种更新产品的工作负荷，相反它们只能依赖与它们的通用管理技术 （最小化的通用性）。相反，对于一个开源项目中的每一个人－－厂商、用户或者技术顾问－－都能对项目做出自己的共享，从而保障了这个项目成功的几率。<br /><br /><strong>问：OpenNMS是用什么语言写的？<br /></strong>答： OpenNMS主要是用Java语言写的。OpenNMS2.0的目标是：让它成为一个以一堆.jar文件形式来安装的产品。还有一些非Java的部分： icmpd-Java1.4 API不能理解ICMP。因为ICMP回答请求（ping）是一个最简单的来测试基于Ip的网络设备是否可以服务的方法，没有那个网络管理应用程序不用的 它的。将ICMP功能分离为一个独立的守护进程的目标是，如果系统中有ICMP的功能那么OpenNMS就用，如果没有OpenNMS就率略它。 OpenNMS不需要ICMP来监控网络设备。数据库－OpenNMS现在使用PostgreSQL作为它的地层数据库，PostgreSQL 是用C写 的。OpenNMS2.0会使用几个能通过Hibernate适配器访问到的数据库。rrdtool－OpenNMS当前的版本实时的选择使用 RRDtool或jRobin（Java会使用RRDtool）。最终这个选项的默认使用jRobin，也可以选择使用RRDtool。<br /><br /><strong>问：OpenNMS有图形的显示么？<br /></strong>答： 这可能是一个对于OpenNMS新人来说最常问的问题：OpenNMS的图形监控界面在那？简单的问答是我们没有一个这样的地图，如果你想听听我们的解释 请继续往下看。OpenNMS是被一些经验丰富的网络管理技术顾问开发出来的。HP的Openvew NNM是一个很流行的商业软件，它能生产一个可定制化的网络监控图形。OpenNMS Screenshot<br /><br /><br /><br /></p>
+
+<p><br /><table style="width: 194px" ><br /><tr ><br />
+<td style="height: 194px" align="center" ><a href="http://picasaweb.google.com/liuzh66/OpenNMS"><img src="http://lh4.google.com/image/liuzh66/Rl19YgD97vE/AAAAAAAAAE8/hFVbteNWiR0/s160-c/OpenNMS.jpg" alt="" /></a>
+</td><br /></tr><br /><tr ><br />
+<td style="text-align: center;font-family: arial,sans-serif;font-size: 11px" ><a href="http://picasaweb.google.com/liuzh66/OpenNMS">OpenNMS</a>
+</td><br /></tr><br /></table><br /><strong>原文地址</strong> <a href="http://www.opennms.org/index.php/FAQ-About">http://www.opennms.org/index.php/FAQ-About</a></p>
+
+            </article>
+
+            <ul class="pager blog-pager">
+                
+                <li class="previous">
+                    <a href="https://martinliu.cn/2007/04/30/glpi-it-asset-mgmt/" data-toggle="tooltip" data-placement="top" title="GLPI –IT资源生命周期管理">&larr; Previous Post</a>
+                </li>
+                 
+                <li class="next">
+                    <a href="https://martinliu.cn/2007/05/08/what-is-opennms/" data-toggle="tooltip" data-placement="top" title="OpenNMS网络和系统管理简介">Next Post &rarr;</a>
+                </li>
+                
+            </ul>
+            
+            <div>
+                 
+                <h2>See Also</h2>
+                <ul>
+                    
+                    <li><a href="/2007/04/26/opennms-install-sample/">OpenNMS 安装说明－精简版</a></li>
+                    
+                    <li><a href="/2007/03/31/itil-faqs/">[转] 十问ITIL</a></li>
+                    
+                    <li><a href="/2007/02/01/opennms-discuss-nagios/">翻译[opennms-discuss]邮件组里的一个讨论“Nagios转变”</a></li>
+                    
+                </ul>
+                
+            </div>
+            
+            
+            
+            
+<div>
+    <section id="datecount">
+        <h4 id="date"> Tue May 8, 2007</h4>
+    </section>
+    <h5 id="wc">1100 Words|Read in about 3 Min</h5>
+    <h5 id="tags">Tags: 
+        
+        <a href="https://martinliu.cn/tags/faq/">faq</a> &nbsp;
+        
+        <a href="https://martinliu.cn/tags/opennms/">OpenNMS</a> &nbsp;
+    </h5>
+</div>
+
+            
+            </div>
+            
+ 
+        </div>
+    </div>
+    </section>
+</div>
+
+    <footer>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <ul class="list-inline text-center footer-links">
+          
+              <li>
+                <a href="mailto:67120666@qq.com" title="Email me">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-envelope fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a href="https://plus.google.com/&#43;MartinLiu-cn" title="Google&#43;">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-google-plus fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a href="https://twitter.com/martinliu" title="Twitter">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a href="https://linkedin.com/in/liuzheng" title="LinkedIn">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-linkedin fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+          
+        </ul>
+        <p class="credits copyright text-muted">
+        &copy;2017-2018
+          
+            
+              <a href="martinliu.cn">Martin Liu</a>
+                      
+          
+          
+          
+            &nbsp;&bull;&nbsp;
+            <a href="https://martinliu.cn/">Maritn&#39;s Blog</a>
+          
+        </p>
+        
+        <p class="credits theme-by text-muted">
+          <a href="http://gohugo.io">Hugo v0.29</a> powered &nbsp;&bull;&nbsp; Theme by <a href="http://deanattali.com/beautiful-jekyll/">Beautiful Jekyll</a> adapted to <a href="https://github.com/halogenica/beautifulhugo">Beautiful Hugo</a>
+          
+        </p>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/bootstrap.min.js"></script>
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/photoswipe-ui-default.min.js"></script>
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/photoswipe.min.js"></script>
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/auto-render.min.js"></script>
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/main.js"></script>
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/prism.js"></script>
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/katex.min.js"></script>
+<script> renderMathInElement(document.body); </script>
+
+
+
+
+
+
+
+
+  </body>
+</html>
+

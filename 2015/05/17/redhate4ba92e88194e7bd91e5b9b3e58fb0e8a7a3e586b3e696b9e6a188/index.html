@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+  <title> RedHat互联网平台解决方案 - 刘征的博客|DevOps|Cloud Computing</title>
+  <meta name="description" content="刘征的博客|DevOps|Cloud Computing" />
+  <meta property="og:title" content="RedHat互联网平台解决方案" />
+  <meta name="twitter:title" content="RedHat互联网平台解决方案" />
+  <meta name="description" content="昨天很累，下午参加了两个重要的活动，一个是某行业客户会，另一个是CCB CIO来访公司。针对这个特殊意义的客户会，我准备了ppt，为了准备这个ppt我学习并总结了一些互联网公司数据中心应用和架构的特点。">
+  <meta property="og:description" content="昨天很累，下午参加了两个重要的活动，一个是某行业客户会，另一个是CCB CIO来访公司。针对这个特殊意义的客户会，我准备了ppt，为了准备这个ppt我学习并总结了一些互联网公司数据中心应用和架构的特点。">
+  <meta name="twitter:description" content="昨天很累，下午参加了两个重要的活动，一个是某行业客户会，另一个是CCB CIO来访公司。针对这个特殊意义的客户会，我准备了ppt，为了准备这个ppt我学习并总结了一些互联网公司数据中心应用和架构的特点。">
+  <meta name="author" content="{Description { .Site.Author.name }}"/>
+  <link href='https://martinliu.cn/img/favicon.ico' rel='icon' type='image/x-icon'/>
+  <meta property="og:image" content="https://martinliu.cn/img/logo.jpg" />
+  <meta name="twitter:image" content="https://martinliu.cn/img/logo.jpg" />
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:site" content="@martinliu" />
+  <meta name="twitter:creator" content="@martinliu" />
+  <meta property="og:url" content="https://martinliu.cn/2015/05/17/redhate4ba92e88194e7bd91e5b9b3e58fb0e8a7a3e586b3e696b9e6a188/" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Maritn&#39;s Blog" />
+
+  <meta name="generator" content="Hugo 0.29" />
+  <link rel="canonical" href="https://martinliu.cn/2015/05/17/redhate4ba92e88194e7bd91e5b9b3e58fb0e8a7a3e586b3e696b9e6a188/" />
+  <link rel="alternate" href="https://martinliu.cn/index.xml" type="application/rss+xml" title="Maritn&#39;s Blog">
+  <script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/jquery-1.12.4.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.7.1/katex.min.css" integrity="sha384-wITovz90syo1dJWVh32uuETPVEtGigN07tkttEqPv+uR2SE/mbQcG7ATL28aI9H0" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+  
+  
+  <link rel="stylesheet" href="https://martinliu.cn/css/main.css" />
+  <link rel="stylesheet" href="https://martinliu.cn/css/search.css" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" />
+  
+
+<meta name="baidu-site-verification" content="W3AORuRNZo" />
+<script>
+    var _hmt = _hmt || [];
+    (function () {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?50c3a9ae6c51222b31df5510bbca479f";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+
+<link rel="stylesheet" href="https://martinliu.cn/css/prism.css" />
+
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.1/photoswipe.min.css" integrity="sha256-sCl5PUOGMLfFYctzDW3MtRib0ctyUvI9Qsmq2wXOeBY=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.1/default-skin/default-skin.min.css" integrity="sha256-BFeI1V+Vh1Rk37wswuOYn5lsTcaU96hGaI7OUVCLjPc=" crossorigin="anonymous" />
+
+
+
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+<div class="pswp__bg"></div>
+
+<div class="pswp__scroll-wrap">
+    
+    <div class="pswp__container">
+      <div class="pswp__item"></div>
+      <div class="pswp__item"></div>
+      <div class="pswp__item"></div>
+    </div>
+    
+    <div class="pswp__ui pswp__ui--hidden">
+    <div class="pswp__top-bar">
+      
+      <div class="pswp__counter"></div>
+      <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+      <button class="pswp__button pswp__button--share" title="Share"></button>
+      <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+      <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+      
+      
+      <div class="pswp__preloader">
+        <div class="pswp__preloader__icn">
+          <div class="pswp__preloader__cut">
+            <div class="pswp__preloader__donut"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+      <div class="pswp__share-tooltip"></div>
+    </div>
+    <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+    </button>
+    <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+    </button>
+    <div class="pswp__caption">
+      <div class="pswp__caption__center"></div>
+    </div>
+    </div>
+    </div>
+</div>
+
+</head>
+
+  <body>
+    <nav class="navbar navbar-default navbar-fixed-top navbar-custom">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#main-navbar">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="https://martinliu.cn/">Maritn&#39;s Blog</a>
+    </div>
+    <div class="collapse navbar-collapse" id="main-navbar">
+      <ul class="nav navbar-nav navbar-right">
+        
+          
+            <li>
+              <a title="Blog" href="/">Blog</a>
+              
+              
+            </li>
+          
+        
+          
+            <li>
+              <a title="Tags" href="/tags">Tags</a>
+              
+              
+            </li>
+          
+        
+          
+            <li>
+              <a title="About" href="/about/">About</a>
+              
+              
+            </li>
+          
+        
+          
+            <li>
+              <a title="Book" href="https://handbook.martinliu.cn">Book</a>
+              
+              
+            </li>
+          
+        
+
+        
+
+        
+        
+          <li>
+            <a href="#modalSearch" data-toggle="modal" data-target="#modalSearch" style="outline: none;">
+              <span class="hidden-sm hidden-md hidden-lg">Search</span> <span id="searchGlyph" class="glyphicon glyphicon-search"></span>
+            </a>
+          </li>
+          
+      </ul>
+    </div>
+
+    <div class="avatar-container">
+      <div class="avatar-img-border">
+        
+          <a title="Maritn&#39;s Blog" href="https://martinliu.cn/">
+            <img class="avatar-img" src="https://martinliu.cn/img/logo.jpg" alt="Maritn&#39;s Blog" />
+          </a>
+        
+      </div>
+    </div>
+
+  </div>
+</nav>
+
+
+
+
+
+  <div id="modalSearch" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Search martinliu.cn </h4>
+        </div>
+        <div class="modal-body">
+            
+<div class="aa-input-container" id="aa-input-container">
+    <input type="search" id="aa-search-input" class="aa-input-search" placeholder="Search for titles or URIs..." name="search" autocomplete="off" />
+    <svg class="aa-input-icon" viewBox="654 -372 1664 1664">
+        <path d="M1806,332c0-123.3-43.8-228.8-131.5-316.5C1586.8-72.2,1481.3-116,1358-116s-228.8,43.8-316.5,131.5  C953.8,103.2,910,208.7,910,332s43.8,228.8,131.5,316.5C1129.2,736.2,1234.7,780,1358,780s228.8-43.8,316.5-131.5  C1762.2,560.8,1806,455.3,1806,332z M2318,1164c0,34.7-12.7,64.7-38,90s-55.3,38-90,38c-36,0-66-12.7-90-38l-343-342  c-119.3,82.7-252.3,124-399,124c-95.3,0-186.5-18.5-273.5-55.5s-162-87-225-150s-113-138-150-225S654,427.3,654,332  s18.5-186.5,55.5-273.5s87-162,150-225s138-113,225-150S1262.7-372,1358-372s186.5,18.5,273.5,55.5s162,87,225,150s113,138,150,225  S2062,236.7,2062,332c0,146.7-41.3,279.7-124,399l343,343C2305.7,1098.7,2318,1128.7,2318,1164z" />
+    </svg>
+</div>
+
+
+
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/algoliasearch.min.js"></script>
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/autocomplete.min.js"></script>
+
+<script>
+var client = algoliasearch("3RK9W7WH5R", "06f3928eb3fad870c9197c68c238dbd3");
+var index = client.initIndex('martinliu_blog');
+
+autocomplete('#aa-search-input',
+{ hint: false}, {
+    source: autocomplete.sources.hits(index, {hitsPerPage: 5}),
+    
+    displayKey: 'name',
+    
+    templates: {
+        
+        suggestion: function(suggestion) {
+            
+            return '<span>' + '<a href="/' + suggestion.uri+ '">' +
+            suggestion._highlightResult.title.value + '</a></span>';
+        }
+    }
+});
+</script>
+
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+    
+  
+  
+  
+
+
+
+
+  
+
+  <header class="header-section ">
+    
+    <div class="intro-header no-img">
+      
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-12 col-md-12 col-md-offset-0">
+            <div class="posts-heading">
+                <h1 align="center">RedHat互联网平台解决方案</h1>
+                
+                  
+                    <h2 align="center" class="posts-subheading">昨天很累，下午参加了两个重要的活动，一个是某行业客户会，另一个是CCB CIO来访公司。针对这个特殊意义的客户会，我准备了ppt，为了准备这个ppt我学习并总结了一些互联网公司数据中心应用和架构的特点。</h2>
+                  
+                
+                
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+
+    
+<div class="container" role="main" itemscope itemtype="http://schema.org/Article">
+    <div class="row">
+        <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+            
+            
+            
+<div>
+    <section id="datecount">
+        <h4 id="date"> Sun May 17, 2015</h4>
+    </section>
+    <h5 id="wc">1900 Words|Read in about 4 Min</h5>
+    <h5 id="tags">Tags: 
+        
+        <a href="https://martinliu.cn/tags/bat/">BAT</a> &nbsp;
+        
+        <a href="https://martinliu.cn/tags/%E5%BC%80%E6%BA%90/">开源</a> &nbsp;
+        
+        <a href="https://martinliu.cn/tags/%E6%9E%B6%E6%9E%84/">架构</a> &nbsp;
+    </h5>
+</div>
+
+            
+            <article role="main" class="blog-post" itemprop="articleBody" id="content">
+                
+
+<p>ppt点这里下载：[su_button target=&ldquo;blank&rdquo; style=&ldquo;stroked&rdquo; size=&ldquo;2&rdquo; icon=&ldquo;icon: cloud-download&rdquo;]下载[/su_button]</p>
+
+<p>参考文档：
+AS深圳2014演讲PPT最终稿  <a href="http://pan.baidu.com/s/1i3KQFRJ">http://pan.baidu.com/s/1i3KQFRJ</a>
+QCon北京2015（PPT） <a href="http://pan.baidu.com/s/1sj2t1yl">http://pan.baidu.com/s/1sj2t1yl</a>
+这两个目录里面干货还是不少，可以下载了慢慢看。</p>
+
+<p><a href="http://cdn1.martinliu.cn/wp-content/uploads/2015/05/redhat-sulution.jpg"><img src="http://cdn1.martinliu.cn/wp-content/uploads/2015/05/redhat-sulution.jpg" alt="redhat-sulution" /></a></p>
+
+<p>学习了一写文档后，逐渐对互联网公司的架构挑战需求和现状有了一些了解。下面先聊下这方面的一些理解。</p>
+
+<h1 id="中国规模交易量">中国规模交易量</h1>
+
+<p>什么叫中国规模交易量，以淘宝2014-11-11 双十一当天的数据举例：</p>
+
+<p>[su_list icon=&ldquo;icon: rocket&rdquo;]</p>
+
+<ul>
+<li><p>交易创建    80000笔/秒</p></li>
+
+<li><p>支付    38000笔/秒</p></li>
+
+<li><p>24小时完成交易额 571亿元人民币 // 93 亿美元</p></li>
+</ul>
+
+<p>[/su_list]</p>
+
+<p>乍一看这个数字可能没什么感觉，可以比较一下美国的情况。全美所有的传统商场在“黑色星期五”一天的销售也仅为91亿美元，即使加上网络销售的24亿美元也比天猫“双十一”多不了太多。也就是说，美国黑五当天全网的电商是中国淘宝/天猫一家的四分之一。</p>
+
+<p>因此中国人口基数大，网民数量大，假如您能激起大众的兴趣的话，你是不缺访问量的。对于意外的大规模的峰值访问量的处理，如果系统架构和应用没有提前经过特别的架构调整、优化；用膝盖都能想到系统挂掉、基础架构崩溃、交易数据出错是必然的事情。</p>
+
+<p>理解到这个潜在的风险、需求和调整，我们所有设计和从事IT基础架构技术服务的人，可以想想，不向前看，不向BAT学习，不站在他们的肩膀上设计和调整自己的应用的话。想保证系统平安，除非业务是失败的业务（没有流量），否则没有平安可言。</p>
+
+<h1 id="架构特点">架构特点</h1>
+
+<p>且不说马云家系统已经多么牛叉，我们看下京东的架构，我们也可以看到其架构设计在两个维度都非常清晰到位。业务架构维度上尽可能的松耦合，所有业务单元分解清晰，貌似莫名的遵循了分布式架构的要求；这样每个业务单元都可以对IT资源的消耗联动，弹性的供给必要的业务处理能力。IT架构维度上分解为三个层次：应用架构、数据架构、基础架构。基本上JD的这个PPT改变了我对这个企业的印象。从我的职业经验告诉我，这份PPT中规中矩，比较专业，堪称教科书式的架构设计。相对马云家的架构师的PPT图画的比较豪放，风格不同。JD这份PPT下载在这里。</p>
+
+<p>[su_button url=&ldquo;<a href="http://pan.baidu.com/s/1o6MI0t0&quot;">http://pan.baidu.com/s/1o6MI0t0&quot;</a> target=&ldquo;blank&rdquo; style=&ldquo;stroked&rdquo; size=&ldquo;2&rdquo; icon=&ldquo;icon: cloud-download&rdquo;]AS深圳2014 京东架构设计-吴博[/su_button]</p>
+
+<p>除了分层细致设计业务架构之外，我们还能看到，电商公司多使用多数据中心多活的模式并发处理海量交易量，每个数据中心都可以处理全业务，都能在灾备和并行处理上一石二鸟。这和我们高贵的传统企业不同，他们往往可以实现同城双中心运行，异地数据中心往往是灾备中心；有些灾备切换并不是全业务的切换，有些灾备中只用于灾备切换演练，并不真的运行业务；有些异地灾备中心也会和主数据中心中的一部分业务做周期性的切换运行。这些高贵的客户往往把核心的数据放在主机上，这在他们想扩展到3个或者更多个数据中心的时候，略显尴尬；新增的数据中心也要配置一套新主机系统么？新的主机上数据和应用怎样快速迁移过来？需要多长时间？数据同步的和其他两个数据中心一致么？这些问题的回答都不简单？主机硬件固然是贵？但是所有问题都解决周全的话，可能更贵。</p>
+
+<p>全新的纯X86的架构就在面前，BAT已经证明了它和开源技术组合在一起就是多快好省的架构。因此，IT架构的转型也成了必然选择。试想转型之后的机房，每个机架都是标准化的工作单元，它可能是几种类型：纯物理机计算节点、纯虚拟机计算节点（服务器虚拟化或者OpenStack等）、纯物理机存储节点（软件定义存储）；或运行容器的物理机或者虚拟机。另外机架上的网络设备和核心网络设备必然有他们自己的设计。这是我的一个猜测，有机会还需要和BAT的人多了解。</p>
+
+<h1 id="开源技术">开源技术</h1>
+
+<p>BAT用到的开源技术真的是不甚枚举，也没有必要逐一分析。基本上各个领域里从开发堆栈、到架构堆栈和运维管理堆栈；各个方面的前几位的项目都有实践和应用。</p>
+
+<h1 id="红帽">红帽</h1>
+
+<p>那么红帽的互联网平台解决方案是什么？红帽的定位是基础架构技术厂商，因此红帽的全套技术框架就是它的互联网解决方案。如下图所示。</p>
+
+<p><a href="http://cdn1.martinliu.cn/wp-content/uploads/2015/05/Red-Hat-open-hybrid-cloud-1000x563_0.png"><img src="http://cdn1.martinliu.cn/wp-content/uploads/2015/05/Red-Hat-open-hybrid-cloud-1000x563_0.png" alt="Red-Hat-open-hybrid-cloud-1000x563_0" /></a></p>
+
+<p>有些产品模块需要稍微说明一下，方便和开源项目对应起来。</p>
+
+<p>[su_list icon=&ldquo;icon: linux&rdquo;]</p>
+
+<ul>
+<li><p>Red Hat Storage server / ICE : Gluster, Ceph</p></li>
+
+<li><p>Red Hat Enterprise Linux : Fedora Linux</p></li>
+
+<li><p>RHEV-M : Ovirt - 服务器虚拟化</p></li>
+
+<li><p>RHELOSP ： OpenStack 企业版IaaS平台</p></li>
+
+<li><p>OpenShift ：OpenShift社区</p></li>
+
+<li><p>JBoss : JBoss 社区</p></li>
+
+<li><p>Satellite ： Puppet + Foreman 等等其它配置管理工具</p></li>
+
+<li><p>CloudForms ：CloudForms社区 - 混合云管理</p></li>
+</ul>
+
+<p>[/su_list]</p>
+
+<p>红帽的技术支持范围还包括很多操作系统内的功能组件，包括：HA-Proxy，LVS，MySQL等等。在技术面的广度上，并不限于以上框架图。不过那幅图是全堆栈的最简易的展示。</p>
+
+            </article>
+
+            <ul class="pager blog-pager">
+                
+                <li class="previous">
+                    <a href="https://martinliu.cn/2015/05/14/openstack-enterprise-ready/" data-toggle="tooltip" data-placement="top" title="OpenStack Enterprise Ready">&larr; Previous Post</a>
+                </li>
+                 
+                <li class="next">
+                    <a href="https://martinliu.cn/2015/05/24/fedora-22-e5b086e4ba8e5e69c8826e697a5e58f91e5b883/" data-toggle="tooltip" data-placement="top" title="Fedora 22 将于5月26日发布">Next Post &rarr;</a>
+                </li>
+                
+            </ul>
+            
+            <div>
+                 
+                <h2>See Also</h2>
+                <ul>
+                    
+                    <li><a href="/2014/02/08/e5bc80e6ba90e69c8de58aa1e599a8e79a84e697b6e4bba3e79c9fe588b0e4ba86efbc9f/">开源服务器的时代真到了？</a></li>
+                    
+                </ul>
+                
+            </div>
+            
+            
+            
+            
+<div>
+    <section id="datecount">
+        <h4 id="date"> Sun May 17, 2015</h4>
+    </section>
+    <h5 id="wc">1900 Words|Read in about 4 Min</h5>
+    <h5 id="tags">Tags: 
+        
+        <a href="https://martinliu.cn/tags/bat/">BAT</a> &nbsp;
+        
+        <a href="https://martinliu.cn/tags/%E5%BC%80%E6%BA%90/">开源</a> &nbsp;
+        
+        <a href="https://martinliu.cn/tags/%E6%9E%B6%E6%9E%84/">架构</a> &nbsp;
+    </h5>
+</div>
+
+            
+            </div>
+            
+ 
+        </div>
+    </div>
+    </section>
+</div>
+
+    <footer>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <ul class="list-inline text-center footer-links">
+          
+              <li>
+                <a href="mailto:67120666@qq.com" title="Email me">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-envelope fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a href="https://plus.google.com/&#43;MartinLiu-cn" title="Google&#43;">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-google-plus fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a href="https://twitter.com/martinliu" title="Twitter">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a href="https://linkedin.com/in/liuzheng" title="LinkedIn">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-linkedin fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+          
+        </ul>
+        <p class="credits copyright text-muted">
+        &copy;2017-2018
+          
+            
+              <a href="martinliu.cn">Martin Liu</a>
+                      
+          
+          
+          
+            &nbsp;&bull;&nbsp;
+            <a href="https://martinliu.cn/">Maritn&#39;s Blog</a>
+          
+        </p>
+        
+        <p class="credits theme-by text-muted">
+          <a href="http://gohugo.io">Hugo v0.29</a> powered &nbsp;&bull;&nbsp; Theme by <a href="http://deanattali.com/beautiful-jekyll/">Beautiful Jekyll</a> adapted to <a href="https://github.com/halogenica/beautifulhugo">Beautiful Hugo</a>
+          
+        </p>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/bootstrap.min.js"></script>
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/photoswipe-ui-default.min.js"></script>
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/photoswipe.min.js"></script>
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/auto-render.min.js"></script>
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/main.js"></script>
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/prism.js"></script>
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/katex.min.js"></script>
+<script> renderMathInElement(document.body); </script>
+
+
+
+
+
+
+
+
+  </body>
+</html>
+

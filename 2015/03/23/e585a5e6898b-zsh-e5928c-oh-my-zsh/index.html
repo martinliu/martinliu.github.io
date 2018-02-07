@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+  <title> 入手 zsh 和 oh-my-zsh - 刘征的博客|DevOps|Cloud Computing</title>
+  <meta name="description" content="刘征的博客|DevOps|Cloud Computing" />
+  <meta property="og:title" content="入手 zsh 和 oh-my-zsh" />
+  <meta name="twitter:title" content="入手 zsh 和 oh-my-zsh" />
+  <meta name="description" content="昨天晚上还不知道何谓zsh，自从看了一个如何增加Mac OS的工作效率的视频之后，开始折腾这个shell。后来还发现它可以安装和配置在Linux，而且效果基本是一样的。所谓要装13，就装的像一点把。入手zsh应该可以增加Demo的绚丽程度，不仅工作方便了，而且观众YY的空间更大了一点：）哈哈">
+  <meta property="og:description" content="昨天晚上还不知道何谓zsh，自从看了一个如何增加Mac OS的工作效率的视频之后，开始折腾这个shell。后来还发现它可以安装和配置在Linux，而且效果基本是一样的。所谓要装13，就装的像一点把。入手zsh应该可以增加Demo的绚丽程度，不仅工作方便了，而且观众YY的空间更大了一点：）哈哈">
+  <meta name="twitter:description" content="昨天晚上还不知道何谓zsh，自从看了一个如何增加Mac OS的工作效率的视频之后，开始折腾这个shell。后来还发现它可以安装和配置在Linux，而且效果基本是一样的。所谓要装13，就装的像一点把。入手zsh应该可以增加Demo的绚丽程度，不仅工作方便了，而且观众YY的空间更大了一点：）哈哈">
+  <meta name="author" content="{Description { .Site.Author.name }}"/>
+  <link href='https://martinliu.cn/img/favicon.ico' rel='icon' type='image/x-icon'/>
+  <meta property="og:image" content="https://martinliu.cn/img/logo.jpg" />
+  <meta name="twitter:image" content="https://martinliu.cn/img/logo.jpg" />
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:site" content="@martinliu" />
+  <meta name="twitter:creator" content="@martinliu" />
+  <meta property="og:url" content="https://martinliu.cn/2015/03/23/e585a5e6898b-zsh-e5928c-oh-my-zsh/" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Maritn&#39;s Blog" />
+
+  <meta name="generator" content="Hugo 0.29" />
+  <link rel="canonical" href="https://martinliu.cn/2015/03/23/e585a5e6898b-zsh-e5928c-oh-my-zsh/" />
+  <link rel="alternate" href="https://martinliu.cn/index.xml" type="application/rss+xml" title="Maritn&#39;s Blog">
+  <script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/jquery-1.12.4.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.7.1/katex.min.css" integrity="sha384-wITovz90syo1dJWVh32uuETPVEtGigN07tkttEqPv+uR2SE/mbQcG7ATL28aI9H0" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+  
+  
+  <link rel="stylesheet" href="https://martinliu.cn/css/main.css" />
+  <link rel="stylesheet" href="https://martinliu.cn/css/search.css" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" />
+  
+
+<meta name="baidu-site-verification" content="W3AORuRNZo" />
+<script>
+    var _hmt = _hmt || [];
+    (function () {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?50c3a9ae6c51222b31df5510bbca479f";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+
+<link rel="stylesheet" href="https://martinliu.cn/css/prism.css" />
+
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.1/photoswipe.min.css" integrity="sha256-sCl5PUOGMLfFYctzDW3MtRib0ctyUvI9Qsmq2wXOeBY=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.1/default-skin/default-skin.min.css" integrity="sha256-BFeI1V+Vh1Rk37wswuOYn5lsTcaU96hGaI7OUVCLjPc=" crossorigin="anonymous" />
+
+
+
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+<div class="pswp__bg"></div>
+
+<div class="pswp__scroll-wrap">
+    
+    <div class="pswp__container">
+      <div class="pswp__item"></div>
+      <div class="pswp__item"></div>
+      <div class="pswp__item"></div>
+    </div>
+    
+    <div class="pswp__ui pswp__ui--hidden">
+    <div class="pswp__top-bar">
+      
+      <div class="pswp__counter"></div>
+      <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+      <button class="pswp__button pswp__button--share" title="Share"></button>
+      <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+      <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+      
+      
+      <div class="pswp__preloader">
+        <div class="pswp__preloader__icn">
+          <div class="pswp__preloader__cut">
+            <div class="pswp__preloader__donut"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+      <div class="pswp__share-tooltip"></div>
+    </div>
+    <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+    </button>
+    <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+    </button>
+    <div class="pswp__caption">
+      <div class="pswp__caption__center"></div>
+    </div>
+    </div>
+    </div>
+</div>
+
+</head>
+
+  <body>
+    <nav class="navbar navbar-default navbar-fixed-top navbar-custom">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#main-navbar">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="https://martinliu.cn/">Maritn&#39;s Blog</a>
+    </div>
+    <div class="collapse navbar-collapse" id="main-navbar">
+      <ul class="nav navbar-nav navbar-right">
+        
+          
+            <li>
+              <a title="Blog" href="/">Blog</a>
+              
+              
+            </li>
+          
+        
+          
+            <li>
+              <a title="Tags" href="/tags">Tags</a>
+              
+              
+            </li>
+          
+        
+          
+            <li>
+              <a title="About" href="/about/">About</a>
+              
+              
+            </li>
+          
+        
+          
+            <li>
+              <a title="Book" href="https://handbook.martinliu.cn">Book</a>
+              
+              
+            </li>
+          
+        
+
+        
+
+        
+        
+          <li>
+            <a href="#modalSearch" data-toggle="modal" data-target="#modalSearch" style="outline: none;">
+              <span class="hidden-sm hidden-md hidden-lg">Search</span> <span id="searchGlyph" class="glyphicon glyphicon-search"></span>
+            </a>
+          </li>
+          
+      </ul>
+    </div>
+
+    <div class="avatar-container">
+      <div class="avatar-img-border">
+        
+          <a title="Maritn&#39;s Blog" href="https://martinliu.cn/">
+            <img class="avatar-img" src="https://martinliu.cn/img/logo.jpg" alt="Maritn&#39;s Blog" />
+          </a>
+        
+      </div>
+    </div>
+
+  </div>
+</nav>
+
+
+
+
+
+  <div id="modalSearch" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Search martinliu.cn </h4>
+        </div>
+        <div class="modal-body">
+            
+<div class="aa-input-container" id="aa-input-container">
+    <input type="search" id="aa-search-input" class="aa-input-search" placeholder="Search for titles or URIs..." name="search" autocomplete="off" />
+    <svg class="aa-input-icon" viewBox="654 -372 1664 1664">
+        <path d="M1806,332c0-123.3-43.8-228.8-131.5-316.5C1586.8-72.2,1481.3-116,1358-116s-228.8,43.8-316.5,131.5  C953.8,103.2,910,208.7,910,332s43.8,228.8,131.5,316.5C1129.2,736.2,1234.7,780,1358,780s228.8-43.8,316.5-131.5  C1762.2,560.8,1806,455.3,1806,332z M2318,1164c0,34.7-12.7,64.7-38,90s-55.3,38-90,38c-36,0-66-12.7-90-38l-343-342  c-119.3,82.7-252.3,124-399,124c-95.3,0-186.5-18.5-273.5-55.5s-162-87-225-150s-113-138-150-225S654,427.3,654,332  s18.5-186.5,55.5-273.5s87-162,150-225s138-113,225-150S1262.7-372,1358-372s186.5,18.5,273.5,55.5s162,87,225,150s113,138,150,225  S2062,236.7,2062,332c0,146.7-41.3,279.7-124,399l343,343C2305.7,1098.7,2318,1128.7,2318,1164z" />
+    </svg>
+</div>
+
+
+
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/algoliasearch.min.js"></script>
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/autocomplete.min.js"></script>
+
+<script>
+var client = algoliasearch("3RK9W7WH5R", "06f3928eb3fad870c9197c68c238dbd3");
+var index = client.initIndex('martinliu_blog');
+
+autocomplete('#aa-search-input',
+{ hint: false}, {
+    source: autocomplete.sources.hits(index, {hitsPerPage: 5}),
+    
+    displayKey: 'name',
+    
+    templates: {
+        
+        suggestion: function(suggestion) {
+            
+            return '<span>' + '<a href="/' + suggestion.uri+ '">' +
+            suggestion._highlightResult.title.value + '</a></span>';
+        }
+    }
+});
+</script>
+
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+    
+  
+  
+  
+
+
+
+
+  
+
+  <header class="header-section ">
+    
+    <div class="intro-header no-img">
+      
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-12 col-md-12 col-md-offset-0">
+            <div class="posts-heading">
+                <h1 align="center">入手 zsh 和 oh-my-zsh</h1>
+                
+                  
+                    <h2 align="center" class="posts-subheading">昨天晚上还不知道何谓zsh，自从看了一个如何增加Mac OS的工作效率的视频之后，开始折腾这个shell。后来还发现它可以安装和配置在Linux，而且效果基本是一样的。所谓要装13，就装的像一点把。入手zsh应该可以增加Demo的绚丽程度，不仅工作方便了，而且观众YY的空间更大了一点：）哈哈</h2>
+                  
+                
+                
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+
+    
+<div class="container" role="main" itemscope itemtype="http://schema.org/Article">
+    <div class="row">
+        <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+            
+            
+            
+<div>
+    <section id="datecount">
+        <h4 id="date"> Mon Mar 23, 2015</h4>
+    </section>
+    <h5 id="wc">600 Words|Read in about 2 Min</h5>
+    <h5 id="tags">Tags: 
+        
+        <a href="https://martinliu.cn/tags/bash/">bash</a> &nbsp;
+        
+        <a href="https://martinliu.cn/tags/shell/">shell</a> &nbsp;
+        
+        <a href="https://martinliu.cn/tags/zsh/">zsh</a> &nbsp;
+    </h5>
+</div>
+
+            
+            <article role="main" class="blog-post" itemprop="articleBody" id="content">
+                
+
+<p><img src="http://cdn1.martinliu.cn/wp-content/uploads/2015/03/zsh.gif" alt="zsh" /></p>
+
+<p>安装zsh在任何系统上几乎都是差不多。Zsh 是一款功能强大的交互式 shell，与 Bash 相比，Zsh 下面几点表现令人印象深刻：</p>
+
+<p>[wm_list bullet=&ldquo;icon-linux&rdquo; class=&ldquo;&rdquo;]</p>
+
+<ul>
+<li><p>自动补全</p></li>
+
+<li><p>拼写纠错</p></li>
+
+<li><p>定制性强</p></li>
+
+<li><p>美观的命令提示符（这点吸引力最大）</p></li>
+</ul>
+
+<p>[/wm_list]</p>
+
+<p>相信你安装之后，对上面几点会有更加真切的感受！</p>
+
+<p>下面是RHEL 7 上的安装过程。</p>
+
+<p>[bash]</p>
+
+<p>[root@w540]~# yum install git
+[root@w540]~# curl -L <a href="https://github.com/robbyrussell/oh-my-zsh/raw/master/tools/install.sh">https://github.com/robbyrussell/oh-my-zsh/raw/master/tools/install.sh</a> | sh
+[root@w540]~# cat .zshrc</p>
+
+<h1 id="path-to-your-oh-my-zsh-installation">Path to your oh-my-zsh installation.</h1>
+
+<p>export ZSH=/root/.oh-my-zsh</p>
+
+<h1 id="set-name-of-the-theme-to-load">Set name of the theme to load.</h1>
+
+<h1 id="look-in-oh-my-zsh-themes">Look in ~/.oh-my-zsh/themes/</h1>
+
+<h1 id="optionally-if-you-set-this-to-random-it-ll-load-a-random-theme-each">Optionally, if you set this to &ldquo;random&rdquo;, it&rsquo;ll load a random theme each</h1>
+
+<h1 id="time-that-oh-my-zsh-is-loaded">time that oh-my-zsh is loaded.</h1>
+
+<p>#ZSH_THEME=&ldquo;robbyrussell&rdquo;
+ZSH_THEME=&ldquo;bira&rdquo; # 后面的文字都省略，我就修改了这个文件的这一个参数，bira的提示符感觉比较新颖和实用
+[root@w540]~# zsh
+╭─root@w540 ~
+╰─$ ls
+anaconda-ks.cfg Desktop Documents Downloads initial-setup-ks.cfg ist Music Pictures Public Templates Videos
+╭─root@w540 ~
+╰─$
+[/bash]</p>
+
+<p>下面是装完之后的截图，以后我的测试机的默认shell应该都是这个样子了：）</p>
+
+<p><a href="http://cdn1.martinliu.cn/wp-content/uploads/2015/03/rhel7-zsh-ohmyzsh.jpg"><img src="http://cdn1.martinliu.cn/wp-content/uploads/2015/03/rhel7-zsh-ohmyzsh.jpg" alt="rhel7-zsh-ohmyzsh" /></a></p>
+
+<p>zsh的功能还是比较强大的，然后再加上ohmyzsh这套配置参数文件和工具插件，shell下地工作效率应该可以提高了。下面是一下参考网站：</p>
+
+<p>[wm_list bullet=&ldquo;icon-linux&rdquo; class=&ldquo;&rdquo;]</p>
+
+<ul>
+<li><p>oh-my-zsh入手中文参考：<a href="http://tuhaihe.com/2013/05/17/oh-my-zsh.html">http://tuhaihe.com/2013/05/17/oh-my-zsh.html</a></p></li>
+
+<li><p>oh-my-zsh 官网（作者认为这是他此生做的最有意义的一件事）：<a href="http://ohmyz.sh/">http://ohmyz.sh/</a></p></li>
+
+<li><p>zsh 官网：<a href="http://www.zsh.org/">http://www.zsh.org/</a></p></li>
+</ul>
+
+<p>[/wm_list]</p>
+
+<p>Mac OS X用户则建议实用iTerm2来替换原声的terminal。下载item2在这里：<a href="http://iterm2.com/">http://iterm2.com/</a></p>
+
+<p><a href="http://cdn1.martinliu.cn/wp-content/uploads/2015/03/iterm2-logo.jpg"><img src="http://cdn1.martinliu.cn/wp-content/uploads/2015/03/iterm2-logo.jpg" alt="iterm2-logo" /></a></p>
+
+            </article>
+
+            <ul class="pager blog-pager">
+                
+                <li class="previous">
+                    <a href="https://martinliu.cn/2015/03/20/impact-mapping/" data-toggle="tooltip" data-placement="top" title="Impact Mapping">&larr; Previous Post</a>
+                </li>
+                 
+                <li class="next">
+                    <a href="https://martinliu.cn/2015/03/27/e69c8de58aa1e599a8e8999ae68b9fe58c96-rhev/" data-toggle="tooltip" data-placement="top" title="服务器虚拟化 RHEV">Next Post &rarr;</a>
+                </li>
+                
+            </ul>
+            
+            <div>
+                 
+            </div>
+            
+            
+            
+            
+<div>
+    <section id="datecount">
+        <h4 id="date"> Mon Mar 23, 2015</h4>
+    </section>
+    <h5 id="wc">600 Words|Read in about 2 Min</h5>
+    <h5 id="tags">Tags: 
+        
+        <a href="https://martinliu.cn/tags/bash/">bash</a> &nbsp;
+        
+        <a href="https://martinliu.cn/tags/shell/">shell</a> &nbsp;
+        
+        <a href="https://martinliu.cn/tags/zsh/">zsh</a> &nbsp;
+    </h5>
+</div>
+
+            
+            </div>
+            
+ 
+        </div>
+    </div>
+    </section>
+</div>
+
+    <footer>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <ul class="list-inline text-center footer-links">
+          
+              <li>
+                <a href="mailto:67120666@qq.com" title="Email me">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-envelope fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a href="https://plus.google.com/&#43;MartinLiu-cn" title="Google&#43;">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-google-plus fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a href="https://twitter.com/martinliu" title="Twitter">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a href="https://linkedin.com/in/liuzheng" title="LinkedIn">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-linkedin fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+          
+        </ul>
+        <p class="credits copyright text-muted">
+        &copy;2017-2018
+          
+            
+              <a href="martinliu.cn">Martin Liu</a>
+                      
+          
+          
+          
+            &nbsp;&bull;&nbsp;
+            <a href="https://martinliu.cn/">Maritn&#39;s Blog</a>
+          
+        </p>
+        
+        <p class="credits theme-by text-muted">
+          <a href="http://gohugo.io">Hugo v0.29</a> powered &nbsp;&bull;&nbsp; Theme by <a href="http://deanattali.com/beautiful-jekyll/">Beautiful Jekyll</a> adapted to <a href="https://github.com/halogenica/beautifulhugo">Beautiful Hugo</a>
+          
+        </p>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/bootstrap.min.js"></script>
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/photoswipe-ui-default.min.js"></script>
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/photoswipe.min.js"></script>
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/auto-render.min.js"></script>
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/main.js"></script>
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/prism.js"></script>
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/katex.min.js"></script>
+<script> renderMathInElement(document.body); </script>
+
+
+
+
+
+
+
+
+  </body>
+</html>
+

@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+  <title> XenDesktop虚拟桌面精品书籍导读(part2) - 刘征的博客|DevOps|Cloud Computing</title>
+  <meta name="description" content="刘征的博客|DevOps|Cloud Computing" />
+  <meta property="og:title" content="XenDesktop虚拟桌面精品书籍导读(part2)" />
+  <meta name="twitter:title" content="XenDesktop虚拟桌面精品书籍导读(part2)" />
+  <meta name="description" content="[box color=&ldquo;orange&rdquo; icon=&ldquo;flag&rdquo;] 感谢 Eric Yao 的供稿，@老树皮Eric [/box] 桌面虚拟化项目的实施白皮书 《Citrix Virtual Desktop Handbook 5.x》，点击下载。 上周一我们介绍了《Citrix桌面">
+  <meta property="og:description" content="[box color=&ldquo;orange&rdquo; icon=&ldquo;flag&rdquo;] 感谢 Eric Yao 的供稿，@老树皮Eric [/box] 桌面虚拟化项目的实施白皮书 《Citrix Virtual Desktop Handbook 5.x》，点击下载。 上周一我们介绍了《Citrix桌面">
+  <meta name="twitter:description" content="[box color=&ldquo;orange&rdquo; icon=&ldquo;flag&rdquo;] 感谢 Eric Yao 的供稿，@老树皮Eric [/box] 桌面虚拟化项目的实施白皮书 《Citrix Virtual Desktop Handbook 5.x》，点击下载。 上周一我们介绍了《Citrix桌面">
+  <meta name="author" content="{Description { .Site.Author.name }}"/>
+  <link href='https://martinliu.cn/img/favicon.ico' rel='icon' type='image/x-icon'/>
+  <meta property="og:image" content="https://martinliu.cn/img/logo.jpg" />
+  <meta name="twitter:image" content="https://martinliu.cn/img/logo.jpg" />
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:site" content="@martinliu" />
+  <meta name="twitter:creator" content="@martinliu" />
+  <meta property="og:url" content="https://martinliu.cn/2013/04/15/xendesktope8999ae68b9fe6a18ce99da2e7b2bee59381e4b9a6e7b18de5afbce8afbbpart2/" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Maritn&#39;s Blog" />
+
+  <meta name="generator" content="Hugo 0.29" />
+  <link rel="canonical" href="https://martinliu.cn/2013/04/15/xendesktope8999ae68b9fe6a18ce99da2e7b2bee59381e4b9a6e7b18de5afbce8afbbpart2/" />
+  <link rel="alternate" href="https://martinliu.cn/index.xml" type="application/rss+xml" title="Maritn&#39;s Blog">
+  <script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/jquery-1.12.4.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.7.1/katex.min.css" integrity="sha384-wITovz90syo1dJWVh32uuETPVEtGigN07tkttEqPv+uR2SE/mbQcG7ATL28aI9H0" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+  
+  
+  <link rel="stylesheet" href="https://martinliu.cn/css/main.css" />
+  <link rel="stylesheet" href="https://martinliu.cn/css/search.css" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" />
+  
+
+<meta name="baidu-site-verification" content="W3AORuRNZo" />
+<script>
+    var _hmt = _hmt || [];
+    (function () {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?50c3a9ae6c51222b31df5510bbca479f";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+
+<link rel="stylesheet" href="https://martinliu.cn/css/prism.css" />
+
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.1/photoswipe.min.css" integrity="sha256-sCl5PUOGMLfFYctzDW3MtRib0ctyUvI9Qsmq2wXOeBY=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.1/default-skin/default-skin.min.css" integrity="sha256-BFeI1V+Vh1Rk37wswuOYn5lsTcaU96hGaI7OUVCLjPc=" crossorigin="anonymous" />
+
+
+
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+<div class="pswp__bg"></div>
+
+<div class="pswp__scroll-wrap">
+    
+    <div class="pswp__container">
+      <div class="pswp__item"></div>
+      <div class="pswp__item"></div>
+      <div class="pswp__item"></div>
+    </div>
+    
+    <div class="pswp__ui pswp__ui--hidden">
+    <div class="pswp__top-bar">
+      
+      <div class="pswp__counter"></div>
+      <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+      <button class="pswp__button pswp__button--share" title="Share"></button>
+      <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+      <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+      
+      
+      <div class="pswp__preloader">
+        <div class="pswp__preloader__icn">
+          <div class="pswp__preloader__cut">
+            <div class="pswp__preloader__donut"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+      <div class="pswp__share-tooltip"></div>
+    </div>
+    <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+    </button>
+    <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+    </button>
+    <div class="pswp__caption">
+      <div class="pswp__caption__center"></div>
+    </div>
+    </div>
+    </div>
+</div>
+
+</head>
+
+  <body>
+    <nav class="navbar navbar-default navbar-fixed-top navbar-custom">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#main-navbar">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="https://martinliu.cn/">Maritn&#39;s Blog</a>
+    </div>
+    <div class="collapse navbar-collapse" id="main-navbar">
+      <ul class="nav navbar-nav navbar-right">
+        
+          
+            <li>
+              <a title="Blog" href="/">Blog</a>
+              
+              
+            </li>
+          
+        
+          
+            <li>
+              <a title="Tags" href="/tags">Tags</a>
+              
+              
+            </li>
+          
+        
+          
+            <li>
+              <a title="About" href="/about/">About</a>
+              
+              
+            </li>
+          
+        
+          
+            <li>
+              <a title="Book" href="https://handbook.martinliu.cn">Book</a>
+              
+              
+            </li>
+          
+        
+
+        
+
+        
+        
+          <li>
+            <a href="#modalSearch" data-toggle="modal" data-target="#modalSearch" style="outline: none;">
+              <span class="hidden-sm hidden-md hidden-lg">Search</span> <span id="searchGlyph" class="glyphicon glyphicon-search"></span>
+            </a>
+          </li>
+          
+      </ul>
+    </div>
+
+    <div class="avatar-container">
+      <div class="avatar-img-border">
+        
+          <a title="Maritn&#39;s Blog" href="https://martinliu.cn/">
+            <img class="avatar-img" src="https://martinliu.cn/img/logo.jpg" alt="Maritn&#39;s Blog" />
+          </a>
+        
+      </div>
+    </div>
+
+  </div>
+</nav>
+
+
+
+
+
+  <div id="modalSearch" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Search martinliu.cn </h4>
+        </div>
+        <div class="modal-body">
+            
+<div class="aa-input-container" id="aa-input-container">
+    <input type="search" id="aa-search-input" class="aa-input-search" placeholder="Search for titles or URIs..." name="search" autocomplete="off" />
+    <svg class="aa-input-icon" viewBox="654 -372 1664 1664">
+        <path d="M1806,332c0-123.3-43.8-228.8-131.5-316.5C1586.8-72.2,1481.3-116,1358-116s-228.8,43.8-316.5,131.5  C953.8,103.2,910,208.7,910,332s43.8,228.8,131.5,316.5C1129.2,736.2,1234.7,780,1358,780s228.8-43.8,316.5-131.5  C1762.2,560.8,1806,455.3,1806,332z M2318,1164c0,34.7-12.7,64.7-38,90s-55.3,38-90,38c-36,0-66-12.7-90-38l-343-342  c-119.3,82.7-252.3,124-399,124c-95.3,0-186.5-18.5-273.5-55.5s-162-87-225-150s-113-138-150-225S654,427.3,654,332  s18.5-186.5,55.5-273.5s87-162,150-225s138-113,225-150S1262.7-372,1358-372s186.5,18.5,273.5,55.5s162,87,225,150s113,138,150,225  S2062,236.7,2062,332c0,146.7-41.3,279.7-124,399l343,343C2305.7,1098.7,2318,1128.7,2318,1164z" />
+    </svg>
+</div>
+
+
+
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/algoliasearch.min.js"></script>
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/autocomplete.min.js"></script>
+
+<script>
+var client = algoliasearch("3RK9W7WH5R", "06f3928eb3fad870c9197c68c238dbd3");
+var index = client.initIndex('martinliu_blog');
+
+autocomplete('#aa-search-input',
+{ hint: false}, {
+    source: autocomplete.sources.hits(index, {hitsPerPage: 5}),
+    
+    displayKey: 'name',
+    
+    templates: {
+        
+        suggestion: function(suggestion) {
+            
+            return '<span>' + '<a href="/' + suggestion.uri+ '">' +
+            suggestion._highlightResult.title.value + '</a></span>';
+        }
+    }
+});
+</script>
+
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+    
+  
+  
+  
+
+
+
+
+  
+
+  <header class="header-section ">
+    
+    <div class="intro-header no-img">
+      
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-12 col-md-12 col-md-offset-0">
+            <div class="posts-heading">
+                <h1 align="center">XenDesktop虚拟桌面精品书籍导读(part2)</h1>
+                
+                
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+
+    
+<div class="container" role="main" itemscope itemtype="http://schema.org/Article">
+    <div class="row">
+        <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+            
+            
+            
+<div>
+    <section id="datecount">
+        <h4 id="date"> Mon Apr 15, 2013</h4>
+    </section>
+    <h5 id="wc">2300 Words|Read in about 5 Min</h5>
+    <h5 id="tags">Tags: 
+        
+        <a href="https://martinliu.cn/tags/hdx/">hdx</a> &nbsp;
+        
+        <a href="https://martinliu.cn/tags/xendesktop/">XenDesktop</a> &nbsp;
+    </h5>
+</div>
+
+            
+            <article role="main" class="blog-post" itemprop="articleBody" id="content">
+                <p>[box color=&ldquo;orange&rdquo; icon=&ldquo;flag&rdquo;]
+感谢 Eric Yao 的供稿，<a href="http://weibo.com/ericyaozhen">@老树皮Eric</a>
+[/box]</p>
+
+<p>桌面虚拟化项目的实施白皮书 《Citrix Virtual Desktop Handbook 5.x》，<a href="http://support.citrix.com/article/CTX136546">点击下载</a>。</p>
+
+<p>上周一我们介绍了《Citrix桌面虚拟化实施部署白皮书》的第二部分《设计篇 Design》的第一单元：用户层。今天我们继续往前进，开讲第二单元：访问层的部分。</p>
+
+<p>三、 访问层 Access Layer</p>
+
+<p>访问层的设计主要是基于每个用户组和终端设备的移动性需求。</p>
+
+<p>1) 决断：认证点</p>
+
+<p>让用户在什么地点做认证是管理员的决定，一般而言，有四个认证点：</p>
+
+<p>a) Web Interface：给XA和XD提供安全访问；</p>
+
+<p>b) StoreFront：为Receiver交付认证能力和资源；</p>
+
+<p>c) Secure Gateway (Web Interface): Secure Gateway是一个Windows的应用程序，她和WI配合工作；</p>
+
+<p>d) Access Gateway: 硬件</p>
+
+<p>具体采用哪种方式认证由用户组的移动需求来决定，推荐方案如下：</p>
+
+<p>2) 决断：预认证策略</p>
+
+<p>如果我们使用的是Access Gateway，我们就可以选择是否采用预认证策略，这些策略可以是确定终端是否满足某种接入网络前的扫描条件。</p>
+
+<p>我们可以配置的策略包括测试防病毒软件、防火墙软件、操作系统，甚至是注册表键值。XA和XD可以利用这些策略的检查结果确认后续的动作，包括剪贴板是否开启，打印机映射，甚至是否开启特定的应用程序访问权限。例如，如果用户没有安装防病毒软件，可以配置策略隐藏敏感的应用程序。</p>
+
+<p>下面的图标从流程上示例策略配置是如何流转的：</p>
+
+<p>3) 决断：认证策略</p>
+
+<p>l Web Interface, Secure Gateway (Web Interface), or StoreFront: StoreFront是未来的方向，而Web Interface已经是行将就木，所以下面的策略主要是用在StoreFront上，当然也适用于Web Interface</p>
+
+<p>n 用户名/密码</p>
+
+<p>n Domain Pass-Through：允许从用户设备上透传Domain登录信息，用户登录到加入域的电脑后自动登录到Store；</p>
+
+<p>n Access Gateway Pass-Through：用户登录到Access Gateway后自动登录到Store</p>
+
+<p>l Access Gateway：NetScaler支持几种不同的认证手段。下面分别列出了几种主要的认证方法，每种方法都可以单独使用，但是在实践中，我们进场组合起来以提供多因素认证。</p>
+
+<p>n LDAP：轻型目录访问协议是我们最为熟悉的认证方法了，它是一种基于TCP协议的目录访问服务，例如MS的活动目录就是其中一种实现形式。</p>
+
+<p>n Radius（aka Token）：Radius全名是Remote Authentication Dial In User Service，这是一种基于UDP传输协议的安全认证协议。除了认证外，它还提供授权和计费功能。Access Gateway转发用户输入的用户名和密码给Radius服务器，Radius服务器可以立即检查用户名和密码，也可以转发给目录服务器。</p>
+
+<p>n 客户端证书：用户登录到Access Gateway虚拟服务器后，可以通过本地的客户端证书的属性来做认证。客户端证书通常在用户端的形式是智能卡，或者是Common Access Cards (CACs)的形式，再通过客户端本地的读卡器来读取信息。</p>
+
+<p>采用什么认证形式通常都是取决于安全的需求，以及使用什么认证点。下表给出了一个基于安全需求级别的示例：</p>
+
+<p>4) 决断：会话策略</p>
+
+<p>采用Access Gateway作为认证点的用户必须有对应的会话策略来定义用户体验。会话策略的制定是基于Receiver在设计阶段制定的。一般而言，首先我们会将设备分为非移动设备和移动设备两种：</p>
+
+<p>l 移动设备：表达式定义为：“REQ.HTTP.HEADER User-Agent CONTAINS CitrixReceiver”，该语句将移动设备设置为比非移动设备更高优先级以保证移动设备的匹配性。</p>
+
+<p>l 非移动设备：表达式定义为：“ns_true”，即所有流量。</p>
+
+<p>更多信息，可以参考Citrix公开电子文档：Receiver and Plug-ins</p>
+
+<p>BTW，另外一种会话策略是采用终端的扫描方法。</p>
+
+<p>5) 决断：会话Profile（Session Profile）</p>
+
+<p>每个会话策略（Session Policy）都必须定义一个对应的Session Profile（姑且翻译成会话配置文件）。这个会话配置文件定义了用户去访问资源时的访问细节。有两种定义到虚拟桌面环境的访问方式的会话配置文件的形式：</p>
+
+<p>l SSL VPN：传统的VPN方式，将网络全部打通。这种方式并不一定十分安全，因为这能导致客户端到内网服务器的攻击访问。</p>
+
+<p>另外一种办法是考虑是否在SSL VPN中开辟一条给客户端网络流量的单独通道。这样通过receiver的流量智慧限制在指定的端口，只能访问指定的服务器资源等。</p>
+
+<p>上述两种方式各有利弊，第一种方式虽然安全性差了，但是可以做客户端流量可以被企业的网络过滤设备，例如入侵检测设备做监视和控制。</p>
+
+<p>l HDX Proxy：在HDX 代理方式下，用户是通过Access Gateway连接到他们的虚拟桌面和虚拟应用。这种方式下完全没有将内部资源暴露到公网上，此时Access Gateway充当了一个微型VPN的作用，它仅处理HDX的流量。其他的流量，例如电子邮件，又或者是使用者上网的流量都不经过Access Gateway。</p>
+
+<p>6) 决断：访问带宽</p>
+
+<p>最后的访问层决断就是要决定虚拟桌面所需要的最大并发网络带宽。其中很重要的一个关键环节就是决定采用NetScaler Access Gateway的哪一个平台。</p>
+
+<p>每个用户所需要的带宽关键还是要看计算的需求。一个时不时才用一下电脑的ERP使用者和一个在电脑前屁股都不挪窝的OA用户肯定带宽要求是不同的，如果是CAD画图的用户那就更不用说了。</p>
+
+<p>理想情况下带宽的使用情况是通过带宽分析工具来给出来，不过我们还是可以给出一些经验值：</p>
+
+<p>总带宽的的计算公式可以这样来定义：</p>
+
+<p>总带宽 = 平均带宽 × 最大并发用户值</p>
+
+<p>更多细节，可以参考Citrix的知识库文章：</p>
+
+<p>XenDesktop Planning Guide: User Bandwidth Requirements ： <a href="https://mail.citrix.com/owa/redir.aspx?C=5BdyIzIzrEOfoVxvpzfMxnn5HIs1DdAIlS0opaj6UrOPgSysoUakkdkru0zo0okQlYOGYaDEspc.&amp;URL=http%3a%2f%2fsupport.citrix.com%2farticle%2fCTX126191">XenDesktop Planning Guide: User Bandwidth Requirements</a></p>
+
+            </article>
+
+            <ul class="pager blog-pager">
+                
+                <li class="previous">
+                    <a href="https://martinliu.cn/2013/04/15/xendesktope4b8ade5a682e4bd95e9878de5ae9ae59091usbe8aebee5a487/" data-toggle="tooltip" data-placement="top" title="XenDesktop中如何重定向USB设备">&larr; Previous Post</a>
+                </li>
+                 
+                <li class="next">
+                    <a href="https://martinliu.cn/2013/04/15/forrester-private-clouds-what-is-cloud-computing/" data-toggle="tooltip" data-placement="top" title="什么是真的云？">Next Post &rarr;</a>
+                </li>
+                
+            </ul>
+            
+            <div>
+                 
+                <h2>See Also</h2>
+                <ul>
+                    
+                    <li><a href="/2013/04/15/xendesktope4b8ade5a682e4bd95e9878de5ae9ae59091usbe8aebee5a487/">XenDesktop中如何重定向USB设备</a></li>
+                    
+                    <li><a href="/2013/04/09/xendesktope8999ae68b9fe6a18ce99da2e7b2bee59381e4b9a6e7b18de5afbce8afbb-p1/">XenDesktop虚拟桌面精品书籍导读(part1)</a></li>
+                    
+                    <li><a href="/2013/04/07/e6809de69db0e8a18ce4b89ae8a7a3e586b3e696b9e6a188e8a786e9a291e694bee9878fe68ea8e88d90/">思杰行业解决方案视频放量推荐</a></li>
+                    
+                    <li><a href="/2013/03/28/netscaler-insight-center-e8999ae68b9fe6a18ce99da2e5928ce5ba94e794a8e79b91e68ea7e588a9e599a8/">NetScaler Insight Center 虚拟桌面和应用监控利器</a></li>
+                    
+                </ul>
+                
+            </div>
+            
+            
+            
+            
+<div>
+    <section id="datecount">
+        <h4 id="date"> Mon Apr 15, 2013</h4>
+    </section>
+    <h5 id="wc">2300 Words|Read in about 5 Min</h5>
+    <h5 id="tags">Tags: 
+        
+        <a href="https://martinliu.cn/tags/hdx/">hdx</a> &nbsp;
+        
+        <a href="https://martinliu.cn/tags/xendesktop/">XenDesktop</a> &nbsp;
+    </h5>
+</div>
+
+            
+            </div>
+            
+ 
+        </div>
+    </div>
+    </section>
+</div>
+
+    <footer>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <ul class="list-inline text-center footer-links">
+          
+              <li>
+                <a href="mailto:67120666@qq.com" title="Email me">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-envelope fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a href="https://plus.google.com/&#43;MartinLiu-cn" title="Google&#43;">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-google-plus fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a href="https://twitter.com/martinliu" title="Twitter">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a href="https://linkedin.com/in/liuzheng" title="LinkedIn">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-linkedin fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+          
+        </ul>
+        <p class="credits copyright text-muted">
+        &copy;2017-2018
+          
+            
+              <a href="martinliu.cn">Martin Liu</a>
+                      
+          
+          
+          
+            &nbsp;&bull;&nbsp;
+            <a href="https://martinliu.cn/">Maritn&#39;s Blog</a>
+          
+        </p>
+        
+        <p class="credits theme-by text-muted">
+          <a href="http://gohugo.io">Hugo v0.29</a> powered &nbsp;&bull;&nbsp; Theme by <a href="http://deanattali.com/beautiful-jekyll/">Beautiful Jekyll</a> adapted to <a href="https://github.com/halogenica/beautifulhugo">Beautiful Hugo</a>
+          
+        </p>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/bootstrap.min.js"></script>
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/photoswipe-ui-default.min.js"></script>
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/photoswipe.min.js"></script>
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/auto-render.min.js"></script>
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/main.js"></script>
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/prism.js"></script>
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/katex.min.js"></script>
+<script> renderMathInElement(document.body); </script>
+
+
+
+
+
+
+
+
+  </body>
+</html>
+

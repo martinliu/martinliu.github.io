@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+  <title> [ZT] Old BSM is dead - 刘征的博客|DevOps|Cloud Computing</title>
+  <meta name="description" content="刘征的博客|DevOps|Cloud Computing" />
+  <meta property="og:title" content="[ZT] Old BSM is dead" />
+  <meta name="twitter:title" content="[ZT] Old BSM is dead" />
+  <meta name="description" content="随着云计算和虚拟化的来临，IT架构愈加复杂，老一套的IT管理方案只能监控静态的基础架构。老一套的CMDB和BSM给运维无法带来实质性的帮助，">
+  <meta property="og:description" content="随着云计算和虚拟化的来临，IT架构愈加复杂，老一套的IT管理方案只能监控静态的基础架构。老一套的CMDB和BSM给运维无法带来实质性的帮助，">
+  <meta name="twitter:description" content="随着云计算和虚拟化的来临，IT架构愈加复杂，老一套的IT管理方案只能监控静态的基础架构。老一套的CMDB和BSM给运维无法带来实质性的帮助，">
+  <meta name="author" content="{Description { .Site.Author.name }}"/>
+  <link href='https://martinliu.cn/img/favicon.ico' rel='icon' type='image/x-icon'/>
+  <meta property="og:image" content="https://martinliu.cn/img/logo.jpg" />
+  <meta name="twitter:image" content="https://martinliu.cn/img/logo.jpg" />
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:site" content="@martinliu" />
+  <meta name="twitter:creator" content="@martinliu" />
+  <meta property="og:url" content="https://martinliu.cn/2010/09/17/zt-bsm-dead/" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Maritn&#39;s Blog" />
+
+  <meta name="generator" content="Hugo 0.29" />
+  <link rel="canonical" href="https://martinliu.cn/2010/09/17/zt-bsm-dead/" />
+  <link rel="alternate" href="https://martinliu.cn/index.xml" type="application/rss+xml" title="Maritn&#39;s Blog">
+  <script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/jquery-1.12.4.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.7.1/katex.min.css" integrity="sha384-wITovz90syo1dJWVh32uuETPVEtGigN07tkttEqPv+uR2SE/mbQcG7ATL28aI9H0" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+  
+  
+  <link rel="stylesheet" href="https://martinliu.cn/css/main.css" />
+  <link rel="stylesheet" href="https://martinliu.cn/css/search.css" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" />
+  
+
+<meta name="baidu-site-verification" content="W3AORuRNZo" />
+<script>
+    var _hmt = _hmt || [];
+    (function () {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?50c3a9ae6c51222b31df5510bbca479f";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+
+<link rel="stylesheet" href="https://martinliu.cn/css/prism.css" />
+
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.1/photoswipe.min.css" integrity="sha256-sCl5PUOGMLfFYctzDW3MtRib0ctyUvI9Qsmq2wXOeBY=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.1/default-skin/default-skin.min.css" integrity="sha256-BFeI1V+Vh1Rk37wswuOYn5lsTcaU96hGaI7OUVCLjPc=" crossorigin="anonymous" />
+
+
+
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+<div class="pswp__bg"></div>
+
+<div class="pswp__scroll-wrap">
+    
+    <div class="pswp__container">
+      <div class="pswp__item"></div>
+      <div class="pswp__item"></div>
+      <div class="pswp__item"></div>
+    </div>
+    
+    <div class="pswp__ui pswp__ui--hidden">
+    <div class="pswp__top-bar">
+      
+      <div class="pswp__counter"></div>
+      <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+      <button class="pswp__button pswp__button--share" title="Share"></button>
+      <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+      <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+      
+      
+      <div class="pswp__preloader">
+        <div class="pswp__preloader__icn">
+          <div class="pswp__preloader__cut">
+            <div class="pswp__preloader__donut"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+      <div class="pswp__share-tooltip"></div>
+    </div>
+    <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+    </button>
+    <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+    </button>
+    <div class="pswp__caption">
+      <div class="pswp__caption__center"></div>
+    </div>
+    </div>
+    </div>
+</div>
+
+</head>
+
+  <body>
+    <nav class="navbar navbar-default navbar-fixed-top navbar-custom">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#main-navbar">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="https://martinliu.cn/">Maritn&#39;s Blog</a>
+    </div>
+    <div class="collapse navbar-collapse" id="main-navbar">
+      <ul class="nav navbar-nav navbar-right">
+        
+          
+            <li>
+              <a title="Blog" href="/">Blog</a>
+              
+              
+            </li>
+          
+        
+          
+            <li>
+              <a title="Tags" href="/tags">Tags</a>
+              
+              
+            </li>
+          
+        
+          
+            <li>
+              <a title="About" href="/about/">About</a>
+              
+              
+            </li>
+          
+        
+          
+            <li>
+              <a title="Book" href="https://handbook.martinliu.cn">Book</a>
+              
+              
+            </li>
+          
+        
+
+        
+
+        
+        
+          <li>
+            <a href="#modalSearch" data-toggle="modal" data-target="#modalSearch" style="outline: none;">
+              <span class="hidden-sm hidden-md hidden-lg">Search</span> <span id="searchGlyph" class="glyphicon glyphicon-search"></span>
+            </a>
+          </li>
+          
+      </ul>
+    </div>
+
+    <div class="avatar-container">
+      <div class="avatar-img-border">
+        
+          <a title="Maritn&#39;s Blog" href="https://martinliu.cn/">
+            <img class="avatar-img" src="https://martinliu.cn/img/logo.jpg" alt="Maritn&#39;s Blog" />
+          </a>
+        
+      </div>
+    </div>
+
+  </div>
+</nav>
+
+
+
+
+
+  <div id="modalSearch" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Search martinliu.cn </h4>
+        </div>
+        <div class="modal-body">
+            
+<div class="aa-input-container" id="aa-input-container">
+    <input type="search" id="aa-search-input" class="aa-input-search" placeholder="Search for titles or URIs..." name="search" autocomplete="off" />
+    <svg class="aa-input-icon" viewBox="654 -372 1664 1664">
+        <path d="M1806,332c0-123.3-43.8-228.8-131.5-316.5C1586.8-72.2,1481.3-116,1358-116s-228.8,43.8-316.5,131.5  C953.8,103.2,910,208.7,910,332s43.8,228.8,131.5,316.5C1129.2,736.2,1234.7,780,1358,780s228.8-43.8,316.5-131.5  C1762.2,560.8,1806,455.3,1806,332z M2318,1164c0,34.7-12.7,64.7-38,90s-55.3,38-90,38c-36,0-66-12.7-90-38l-343-342  c-119.3,82.7-252.3,124-399,124c-95.3,0-186.5-18.5-273.5-55.5s-162-87-225-150s-113-138-150-225S654,427.3,654,332  s18.5-186.5,55.5-273.5s87-162,150-225s138-113,225-150S1262.7-372,1358-372s186.5,18.5,273.5,55.5s162,87,225,150s113,138,150,225  S2062,236.7,2062,332c0,146.7-41.3,279.7-124,399l343,343C2305.7,1098.7,2318,1128.7,2318,1164z" />
+    </svg>
+</div>
+
+
+
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/algoliasearch.min.js"></script>
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/autocomplete.min.js"></script>
+
+<script>
+var client = algoliasearch("3RK9W7WH5R", "06f3928eb3fad870c9197c68c238dbd3");
+var index = client.initIndex('martinliu_blog');
+
+autocomplete('#aa-search-input',
+{ hint: false}, {
+    source: autocomplete.sources.hits(index, {hitsPerPage: 5}),
+    
+    displayKey: 'name',
+    
+    templates: {
+        
+        suggestion: function(suggestion) {
+            
+            return '<span>' + '<a href="/' + suggestion.uri+ '">' +
+            suggestion._highlightResult.title.value + '</a></span>';
+        }
+    }
+});
+</script>
+
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+    
+  
+  
+  
+
+
+
+
+  
+
+  <header class="header-section ">
+    
+    <div class="intro-header no-img">
+      
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-12 col-md-12 col-md-offset-0">
+            <div class="posts-heading">
+                <h1 align="center">[ZT] Old BSM is dead</h1>
+                
+                
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+
+    
+<div class="container" role="main" itemscope itemtype="http://schema.org/Article">
+    <div class="row">
+        <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+            
+            
+            
+<div>
+    <section id="datecount">
+        <h4 id="date"> Fri Sep 17, 2010</h4>
+    </section>
+    <h5 id="wc">2400 Words|Read in about 5 Min</h5>
+    <h5 id="tags">Tags: 
+        
+        <a href="https://martinliu.cn/tags/bmc/">BMC</a> &nbsp;
+        
+        <a href="https://martinliu.cn/tags/bsm/">BSM</a> &nbsp;
+        
+        <a href="https://martinliu.cn/tags/ca/">CA</a> &nbsp;
+        
+        <a href="https://martinliu.cn/tags/cloud/">cloud</a> &nbsp;
+        
+        <a href="https://martinliu.cn/tags/cmdb/">cmdb</a> &nbsp;
+        
+        <a href="https://martinliu.cn/tags/integrien/">Integrien</a> &nbsp;
+        
+        <a href="https://martinliu.cn/tags/itsm/">ITSM</a> &nbsp;
+        
+        <a href="https://martinliu.cn/tags/virtuali/">virtuali</a> &nbsp;
+        
+        <a href="https://martinliu.cn/tags/vmware/">VMWare</a> &nbsp;
+    </h5>
+</div>
+
+            
+            <article role="main" class="blog-post" itemprop="articleBody" id="content">
+                <p><img src="http://www.smarthomecn.com/upload/2008_11/081112102554402.jpg" alt="" />随着云计算和虚拟化的来临，IT架构愈加复杂，老一套的IT管理方案只能监控静态的基础架构。老一套的CMDB和BSM给运维无法带来实质性的帮助，需要能够具有自适应、自学习IT环境的能力，管理工具需要对IT环境的变化有感知，有学习功能，否则无法对业务故障的处理给予应有的支持。转帖自学一下这个文章，老外从IT架构的历史讲起，横跨跨服务保证和CMDB等领域，讲的还是很不错的。
+<a href="http://www.virtualizationpractice.com/blog/?p=7186">The Significance of the VMware Integrien Acquisition</a>
+While it may seem that with Integrien <a href="http://www.virtualizationpractice.com/blog/?page_id=2983">VMware</a> has acquired yet one more piece of the puzzle (a puzzle whose final  form no one knows), this acquisition is perhaps one of the most  significant if not the most significant that <a href="http://www.virtualizationpractice.com/blog/?page_id=2983">VMware</a> has done. To understand the significance of this acquisition, one has  to step back and examine a bit of history in the Systems Management  business.</p>
+
+<p>For as long as there have  been computers, operating systems and business critical applications,  there has been monitoring of these items to make sure they were working  (available) and performing well for their constituents. In the early  days of the computer industry (through about 1982) computer systems were  vertical monoliths where a customer would buy “an accounting system”  and that purchase would include hardware, systems software, and  applications software. All of this usually came from one vendor so there  was one throat to choke when it did not work.</p>
+
+<p>Starting with the  delivery of the PC, then Ethernet LAN’s and Novel Netware, and finally  Windows Servers and the Internet, the industry reorganized along  horizontal dimensions. A computer system was now a multi-layer cake and  you could buy each cake from one of many vendors whose products were  largely interchangeable with each other, and compatible with adjacent  layers. So you could buy an Intel based server from one of N vendors,  put either Linux or Windows on it, but a Java applications server from  one of N vendors on that and then buy applications from thousands of  different vendors.</p>
+
+<p>This horizontal layering of the industry was heavily promoted by <a href="http://www.virtualizationpractice.com/blog/?s=microsoft">Microsoft</a> and Intel (who “owned” two key layers of the cake), and also ushered in  the tremendous innovation and price competition that continues to drive  our industry today. Moore’s Law says that microprocessor performance  doubles roughly every 18 months or so, and with those increases in  price/performance come the more for less mentality that we have all  become accustomed to.</p>
+
+<p>With this freedom of choice at every layer  of the cake however came problems. The first problem was complexity.  There were now too many cooks in the kitchen which meant that there were  both too many and not one single throat for the CIO to choke when  something went wrong. The management software industry reacted to this  by inventing a marketecture, Business Service Management (BSM). The idea  behind BSM was to identify the key business services that applications  or combinations of applications delivered to users (the ability to enter  and order and ship the resulting product is a business service as is  the ability of a consumer to transfer funds from one banking account to  another), and to then map all of the software and hardware  infrastructure that this business service depended upon and to manage  that collection of linked resources as an entity.</p>
+
+<p>While Business Service Management sounded like a great idea, it in fact ended up as a miserable failure. The reasons were:</p>
+
+<ul>
+<li><p>There were many applications for which it was just too hard to measure  their performance (in response time terms). Web applications turned out  to be pretty easy, but fat client Win32 applications written to  proprietary client/server protocols turned out to be very hard. It  turned out that for most enterprises, more than half of the business  critical applications were in the hard pile (fat client/Win32) and less  than half were the easy web applications.</p></li>
+
+<li><p>Many BSM frameworks  relied upon scripts and synthetic transactions to measure response time  and end user experience. However this approach failed for many  enterprises due to the large number of applications that comprised a  business service and how rapidly these applications were changing. For  example if synthetic transactions were used to measure the performance  of a set of transactions, and a company had 500 business critical  applications (not a very high number – some companies have thousands),  and each application was updated once a year, then that would translate  into 10 updates a week for the monitoring scripts.</p></li>
+
+<li><p>The same is true for  most passive monitoring approaches that rely upon templates to identify  transactions in applications protocols. There are many products that can  measure the response time of transactions from the perspective of the  web server by attaching physical or virtual appliance to a span port on  the switch that services the web server. However all such products  require configuration to understand what set of granular http  request/responses combine to create a transaction of interest.  Maintaining these configurations across hundreds of applications and  thousands of transactions proved to be a major impediment to  instrumenting their service level in any kind of a broad and systematic  manner.</p></li>
+
+<li><p>It turned out to be a nightmare to identify the hardware  and software that supported each business service. This gave rise to  the need for Configuration Management Databases (CMDB’s) that were  supposed to get populated with the hardware and software assets and  their relationships to each other. The effort to put in place a CMDB and  to maintain it turned out to doom the CMDB projects and the associated  BSM projects at many companies.</p></li>
+
+<li><p>The BSM vendors were unable to  evolve their products at the same rate as the innovation of the vendors  who contributed products to the layers in the cake. New devices (laptops  that were not always connected), new protocols (ICA, VOIP), new  operating systems (Linux), new languages (Java, C#), and new user  interfaces (first the browser and then rich Internet applications) all  occurred at a pace that no one vendor could keep up with.</p></li>
+
+<li><p>When  the BSM vendors got overwhelmed by innovation, vendors of point  monitoring solutions stepped in to monitor the newest layer or item in a  layer.  This lead to a proliferation of monitoring tools which were not  integrated with each other.</p></li>
+
+<li><p>When a problem occurred even if one  had a BSM product and a CMDB it still horribly difficult to know  exactly what path the failed transaction took through the entire  hardware and software infrastructure. The BSM tools were rarely aware of  every element of the stack and the tactical monitors that had been  bought to fill in the cracks were not integrated with the BSM tools nor  each other.</p></li>
+</ul>
+
+<p>In summary we entered the age of virtualization  and the cloud with both BSM and their supporting CMDB’s having failed at  monitoring and managing a static infrastructure where applications and  services largely stayed on dedicated hardware. In other words, before  virtualization and the dynamic data center it was impossible for anyone  in IT to see a problem and get told in a deterministic manner exactly  where the problem was and how to fix it.</p>
+
+<p><strong>The Impact of Virtualization and the Cloud</strong></p>
+
+<p>Since  holistic end-to-end monitoring of business services was essentially  broken (or not attainable) before virtualization, it is reasonable to  assume that virtualization and the cloud will only make this problem  worse. This will occur for the following reasons:</p>
+
+<ol>
+<li><p>Virtualization  increases workload density and the dynamic operation of workloads. This  will require both continuous mapping of application to infrastructure  dependencies and more more frequent (near real time) collection of  performance data. Just the requirements for real time mapping and real  time data completely overwhelm existing monitoring systems. Hyperic has a  good blog on this point <a href="http://blog.hyperic.com/vfabric-hyperic-weaves-performance-management-into-cloud-applications/">here</a>.</p></li>
+
+<li><p>Inferring  application performance from resource utilization statistics becomes  impossible. This was possible on physical hardware, but on hardware that  is shared via virtualization it no longers works. Hence the need for  Infrastructure <a href="http://www.virtualizationpractice.com/blog/?cat=9">Performance Management</a> solutions that measure Infrastructure Response Time. We expect Infrastructure <a href="http://www.virtualizationpractice.com/blog/?cat=9">Performance Management</a> solutions from vendors like <a href="http://www.virtualizationpractice.com/blog/?page_id=1603">Akorri</a>, <a href="http://www.virtualizationpractice.com/blog/?page_id=6234">CA</a> Technologies (<a href="http://www.virtualizationpractice.com/blog/?page_id=6234">CA</a> Virtual Assurance), <a href="http://www.virtualizationpractice.com/blog/?page_id=6476">Virtual Instruments</a>, and <a href="http://www.virtualizationpractice.com/blog/?page_id=3551">Xangati</a> to form the foundation layer of whatever will replace BSM.</p></li>
+
+<li><p>Application  will now get moved from cluster to cluster and ultimately from data  center to data center (private cloud – hybrid cloud – public cloud). APM  solutions will need to track the applications no matter where they go,  and seamlessly work across different IP networks. Leading virtualization  aware APM solutions like those from <a href="http://www.virtualizationpractice.com/blog/?page_id=4724">AppDynamics</a>, <a href="http://www.virtualizationpractice.com/blog/?page_id=2416">BlueStripe</a>, and <a href="http://www.virtualizationpractice.com/blog/?page_id=1505">New Relic</a> meet these needs today and will likely form the APM layer of whatever replaces BSM.</p></li>
+</ol>
+
+<p>All  of the above together combine to create one new result for Systems  Management. That new result is that in the general case it will be  impossible to deterministically do root cause in a dynamic environment.  This was explored in detail in this <a href="http://www.virtualizationpractice.com/blog/?p=5915">post</a>.</p>
+
+<p><strong>The Significance of the Integrien Acquisition</strong></p>
+
+<p>The Integrien acquisition by <a href="http://www.virtualizationpractice.com/blog/?page_id=2983">VMware</a> is significant because it means that <a href="http://www.virtualizationpractice.com/blog/?page_id=2983">VMware</a> has recognized that only a dynamic, statistical, self-configuring,  and  self-learning approach can keep up with the rate of change in these new  dynamic IT environments. The self-learning approach simply means that  you feed the system the metrics that get collected about the system and  it figures out which ones are important, how the metrics are related to  each other, and lets you know when anomalies have occurred.</p>
+
+<p>This  acquisition is all the more significant because this is not garden  variety technology. There have only ever been three companies this this  space. ProactiveNet was acquired by BMC a few years ago. <a href="http://www.virtualizationpractice.com/blog/?page_id=7123">Netuitive</a> has been around since the late 1990′s and it took the company until the  mid 2000′s before the product had matured into something that really  just worked when you plugged it in. Integrien is a fairly recent entry  in this field and is now part of <a href="http://www.virtualizationpractice.com/blog/?page_id=2983">VMware</a> – which leaves <a href="http://www.virtualizationpractice.com/blog/?page_id=7123">Netuitive</a> as the only remaining independent player.</p>
+
+<p><strong>The New Dynamic BSM – Service Assurance</strong></p>
+
+<p>Since  the old BSM is dead due to a brittle and difficult to update technology  approach it is reasonable to ask what will replace it. The answer is  most likely a set of Infrastructure <a href="http://www.virtualizationpractice.com/blog/?cat=9">Performance Management</a> tools (<a href="http://www.virtualizationpractice.com/blog/?page_id=1603">Akorri</a>, <a href="http://www.virtualizationpractice.com/blog/?page_id=6234">CA</a> Virtual Assurance, <a href="http://www.virtualizationpractice.com/blog/?page_id=6476">Virtual Instruments</a>, <a href="http://www.virtualizationpractice.com/blog/?page_id=3551">Xangati</a>) integrated with a set of next generation APM tools (<a href="http://www.virtualizationpractice.com/blog/?page_id=4724">AppDynamics</a>, <a href="http://www.virtualizationpractice.com/blog/?page_id=2416">BlueStripe</a>, <a href="http://www.virtualizationpractice.com/blog/?page_id=1505">New Relic</a>)  vis these self learning technologies. When this occurs, we will have a  system that adapts on its own to changing conditions in the environment  leaving IT staff available to interpret results (and not raw monitoring  data). We will also have taken an important step towards dynamic service  assurance which was discussed in detail in this <a href="http://www.virtualizationpractice.com/blog/?p=5472">post</a>.</p>
+
+<p><strong>Understanding and Evaluating these Technologies</strong></p>
+
+<p>For  most IT professionals either they or someone on their staff can digg in  and understand how the technologies that they use work. However unless  you have an advanced degree in statistics and/or mathematics you are not  going to be able to dig an and decide for yourself based upon how these  products work which one you should choose. Rather what you should do is  apply the following criteria in making your selection:</p>
+
+<ol>
+<li><p>Decide  exactly what you want the product to do for you. These products are  extremely flexible. You can feed them every alarm that is generated by  all of your monitoring solutions and let them sort out the good ones  from the bad ones. Or you can feed them revenue per minute for one key  business application and let them figure what causes degradations in  revenue per minute.</p></li>
+
+<li><p>Make sure that the product has connectors to  what you already use to collect metrics from your systems. These  products are not in the data collection business (with some exceptions).  They rely upon other products to collect data from them. They must  therefore be interfaced with your existing monitoring solutions.</p></li>
+
+<li><p>How  hands off and plug and play will the product be in practice? This is  the key criteria to the long term value of such a solution to your  enterprise. Previous attempts at statistical approaches (neural nets)  failed because the product had to be “retrained” every time conditions  changed. Make sure that the product you select can automatically select  and weight the inputs that it bases decisions off of and these these  decisions are automatically updated over time. Self-learning needs to be  a continuous thing, not just a one time or periodic thing.</p></li>
+
+<li><p>Make  sure that the product can handle time based (time series) as well as  event based data. Performance metrics tend to be time based, but many  performance problems are caused by configuration changes which are  events. Make sure that the product can cross-correlate configuration  change events with performance degradations.</p></li>
+
+<li><p>Carefully assess  the scale of the solution. This means how many inputs can the solution  take per unit of time. Right now most of these solutions operate at 15  minute or 5 minute intervals. Monitoring a dynamic system may require  intervals of 10 or even 5 seconds (or perhaps even real time continuous  streams of monitoring data).</p></li>
+</ol>
+
+<p><strong>Summary</strong></p>
+
+<p>Self-learning <a href="http://www.virtualizationpractice.com/blog/?cat=9">performance management</a> solutions like Integrien and <a href="http://www.virtualizationpractice.com/blog/?page_id=7123">Netuitive</a> are going to be absolutely an essential part of the migration to  dynamic data centers and IT as a Service. Once these dynamic data  centers scale out to the thousands of applications in a typical  enterprise, and scale up to address the most performance critical  applications, the rate of change in the environment will be too high for  legacy tools and manual administration to be able to keep. up. These  automated self-learning approaches will be the only way in which IT  Operations will be able to stay on top of these new environments while  staying within staffing and budget constraints.</p>
+
+            </article>
+
+            <ul class="pager blog-pager">
+                
+                <li class="previous">
+                    <a href="https://martinliu.cn/2010/09/15/open-source-software-box-dot-net-lunch/" data-toggle="tooltip" data-placement="top" title="Open source software box dot net launch">&larr; Previous Post</a>
+                </li>
+                 
+                <li class="next">
+                    <a href="https://martinliu.cn/2010/09/22/install-remedy-ars-itsm-on-aix-oracle/" data-toggle="tooltip" data-placement="top" title="八月十五月儿圆，我和兄弟们装AR">Next Post &rarr;</a>
+                </li>
+                
+            </ul>
+            
+            <div>
+                 
+                <h2>See Also</h2>
+                <ul>
+                    
+                    <li><a href="/2010/01/01/cmdb-value-points/">CMDB Value Points 价值点</a></li>
+                    
+                    <li><a href="/2010/07/20/plan-cmdb-population-002/">规划CMDB数据填充-002</a></li>
+                    
+                    <li><a href="/2010/06/07/bmc-remedy-ondemand/">BMC提供ITSM洋快餐</a></li>
+                    
+                    <li><a href="/2010/05/31/federation-cmdb/">联邦的CMDB–神话/现实/需求/还是策略？</a></li>
+                    
+                    <li><a href="/2010/03/30/phase-roll-out-cmdb-implement/">掀起CMDB的盖头来</a></li>
+                    
+                </ul>
+                
+            </div>
+            
+            
+            
+            
+<div>
+    <section id="datecount">
+        <h4 id="date"> Fri Sep 17, 2010</h4>
+    </section>
+    <h5 id="wc">2400 Words|Read in about 5 Min</h5>
+    <h5 id="tags">Tags: 
+        
+        <a href="https://martinliu.cn/tags/bmc/">BMC</a> &nbsp;
+        
+        <a href="https://martinliu.cn/tags/bsm/">BSM</a> &nbsp;
+        
+        <a href="https://martinliu.cn/tags/ca/">CA</a> &nbsp;
+        
+        <a href="https://martinliu.cn/tags/cloud/">cloud</a> &nbsp;
+        
+        <a href="https://martinliu.cn/tags/cmdb/">cmdb</a> &nbsp;
+        
+        <a href="https://martinliu.cn/tags/integrien/">Integrien</a> &nbsp;
+        
+        <a href="https://martinliu.cn/tags/itsm/">ITSM</a> &nbsp;
+        
+        <a href="https://martinliu.cn/tags/virtuali/">virtuali</a> &nbsp;
+        
+        <a href="https://martinliu.cn/tags/vmware/">VMWare</a> &nbsp;
+    </h5>
+</div>
+
+            
+            </div>
+            
+ 
+        </div>
+    </div>
+    </section>
+</div>
+
+    <footer>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <ul class="list-inline text-center footer-links">
+          
+              <li>
+                <a href="mailto:67120666@qq.com" title="Email me">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-envelope fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a href="https://plus.google.com/&#43;MartinLiu-cn" title="Google&#43;">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-google-plus fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a href="https://twitter.com/martinliu" title="Twitter">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a href="https://linkedin.com/in/liuzheng" title="LinkedIn">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-linkedin fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+          
+        </ul>
+        <p class="credits copyright text-muted">
+        &copy;2017-2018
+          
+            
+              <a href="martinliu.cn">Martin Liu</a>
+                      
+          
+          
+          
+            &nbsp;&bull;&nbsp;
+            <a href="https://martinliu.cn/">Maritn&#39;s Blog</a>
+          
+        </p>
+        
+        <p class="credits theme-by text-muted">
+          <a href="http://gohugo.io">Hugo v0.29</a> powered &nbsp;&bull;&nbsp; Theme by <a href="http://deanattali.com/beautiful-jekyll/">Beautiful Jekyll</a> adapted to <a href="https://github.com/halogenica/beautifulhugo">Beautiful Hugo</a>
+          
+        </p>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/bootstrap.min.js"></script>
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/photoswipe-ui-default.min.js"></script>
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/photoswipe.min.js"></script>
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/auto-render.min.js"></script>
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/main.js"></script>
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/prism.js"></script>
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/katex.min.js"></script>
+<script> renderMathInElement(document.body); </script>
+
+
+
+
+
+
+
+
+  </body>
+</html>
+

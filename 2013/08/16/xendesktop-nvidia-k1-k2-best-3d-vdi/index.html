@@ -1,0 +1,726 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+  <title> XenDesktop &#43; nVIDIA K1/K2 = BEST 3D VDI - 刘征的博客|DevOps|Cloud Computing</title>
+  <meta name="description" content="刘征的博客|DevOps|Cloud Computing" />
+  <meta property="og:title" content="XenDesktop &#43; nVIDIA K1/K2 = BEST 3D VDI" />
+  <meta name="twitter:title" content="XenDesktop &#43; nVIDIA K1/K2 = BEST 3D VDI" />
+  <meta name="description" content="Citrix &#43; nVIDIA K1 k2 &#43; XenServer （GPU 直通） &#43; HDX 3D Pro = 业内最好的3D虚拟桌面平台方案；而且这个方案里还能具有，其它全部的使用场景，包括：vdi，共享桌面，虚拟应用，流桌面，远程物理桌面等等方式。可以说这是一举多得，面面俱到的解决方案。">
+  <meta property="og:description" content="Citrix &#43; nVIDIA K1 k2 &#43; XenServer （GPU 直通） &#43; HDX 3D Pro = 业内最好的3D虚拟桌面平台方案；而且这个方案里还能具有，其它全部的使用场景，包括：vdi，共享桌面，虚拟应用，流桌面，远程物理桌面等等方式。可以说这是一举多得，面面俱到的解决方案。">
+  <meta name="twitter:description" content="Citrix &#43; nVIDIA K1 k2 &#43; XenServer （GPU 直通） &#43; HDX 3D Pro = 业内最好的3D虚拟桌面平台方案；而且这个方案里还能具有，其它全部的使用场景，包括：vdi，共享桌面，虚拟应用，流桌面，远程物理桌面等等方式。可以说这是一举多得，面面俱到的解决方案。">
+  <meta name="author" content="{Description { .Site.Author.name }}"/>
+  <link href='https://martinliu.cn/img/favicon.ico' rel='icon' type='image/x-icon'/>
+  <meta property="og:image" content="https://martinliu.cn/img/logo.jpg" />
+  <meta name="twitter:image" content="https://martinliu.cn/img/logo.jpg" />
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:site" content="@martinliu" />
+  <meta name="twitter:creator" content="@martinliu" />
+  <meta property="og:url" content="https://martinliu.cn/2013/08/16/xendesktop-nvidia-k1-k2-best-3d-vdi/" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Maritn&#39;s Blog" />
+
+  <meta name="generator" content="Hugo 0.29" />
+  <link rel="canonical" href="https://martinliu.cn/2013/08/16/xendesktop-nvidia-k1-k2-best-3d-vdi/" />
+  <link rel="alternate" href="https://martinliu.cn/index.xml" type="application/rss+xml" title="Maritn&#39;s Blog">
+  <script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/jquery-1.12.4.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.7.1/katex.min.css" integrity="sha384-wITovz90syo1dJWVh32uuETPVEtGigN07tkttEqPv+uR2SE/mbQcG7ATL28aI9H0" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+  
+  
+  <link rel="stylesheet" href="https://martinliu.cn/css/main.css" />
+  <link rel="stylesheet" href="https://martinliu.cn/css/search.css" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" />
+  
+
+<meta name="baidu-site-verification" content="W3AORuRNZo" />
+<script>
+    var _hmt = _hmt || [];
+    (function () {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?50c3a9ae6c51222b31df5510bbca479f";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+
+<link rel="stylesheet" href="https://martinliu.cn/css/prism.css" />
+
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.1/photoswipe.min.css" integrity="sha256-sCl5PUOGMLfFYctzDW3MtRib0ctyUvI9Qsmq2wXOeBY=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.1/default-skin/default-skin.min.css" integrity="sha256-BFeI1V+Vh1Rk37wswuOYn5lsTcaU96hGaI7OUVCLjPc=" crossorigin="anonymous" />
+
+
+
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+<div class="pswp__bg"></div>
+
+<div class="pswp__scroll-wrap">
+    
+    <div class="pswp__container">
+      <div class="pswp__item"></div>
+      <div class="pswp__item"></div>
+      <div class="pswp__item"></div>
+    </div>
+    
+    <div class="pswp__ui pswp__ui--hidden">
+    <div class="pswp__top-bar">
+      
+      <div class="pswp__counter"></div>
+      <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+      <button class="pswp__button pswp__button--share" title="Share"></button>
+      <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+      <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+      
+      
+      <div class="pswp__preloader">
+        <div class="pswp__preloader__icn">
+          <div class="pswp__preloader__cut">
+            <div class="pswp__preloader__donut"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+      <div class="pswp__share-tooltip"></div>
+    </div>
+    <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+    </button>
+    <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+    </button>
+    <div class="pswp__caption">
+      <div class="pswp__caption__center"></div>
+    </div>
+    </div>
+    </div>
+</div>
+
+</head>
+
+  <body>
+    <nav class="navbar navbar-default navbar-fixed-top navbar-custom">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#main-navbar">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="https://martinliu.cn/">Maritn&#39;s Blog</a>
+    </div>
+    <div class="collapse navbar-collapse" id="main-navbar">
+      <ul class="nav navbar-nav navbar-right">
+        
+          
+            <li>
+              <a title="Blog" href="/">Blog</a>
+              
+              
+            </li>
+          
+        
+          
+            <li>
+              <a title="Tags" href="/tags">Tags</a>
+              
+              
+            </li>
+          
+        
+          
+            <li>
+              <a title="About" href="/about/">About</a>
+              
+              
+            </li>
+          
+        
+          
+            <li>
+              <a title="Book" href="https://handbook.martinliu.cn">Book</a>
+              
+              
+            </li>
+          
+        
+
+        
+
+        
+        
+          <li>
+            <a href="#modalSearch" data-toggle="modal" data-target="#modalSearch" style="outline: none;">
+              <span class="hidden-sm hidden-md hidden-lg">Search</span> <span id="searchGlyph" class="glyphicon glyphicon-search"></span>
+            </a>
+          </li>
+          
+      </ul>
+    </div>
+
+    <div class="avatar-container">
+      <div class="avatar-img-border">
+        
+          <a title="Maritn&#39;s Blog" href="https://martinliu.cn/">
+            <img class="avatar-img" src="https://martinliu.cn/img/logo.jpg" alt="Maritn&#39;s Blog" />
+          </a>
+        
+      </div>
+    </div>
+
+  </div>
+</nav>
+
+
+
+
+
+  <div id="modalSearch" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Search martinliu.cn </h4>
+        </div>
+        <div class="modal-body">
+            
+<div class="aa-input-container" id="aa-input-container">
+    <input type="search" id="aa-search-input" class="aa-input-search" placeholder="Search for titles or URIs..." name="search" autocomplete="off" />
+    <svg class="aa-input-icon" viewBox="654 -372 1664 1664">
+        <path d="M1806,332c0-123.3-43.8-228.8-131.5-316.5C1586.8-72.2,1481.3-116,1358-116s-228.8,43.8-316.5,131.5  C953.8,103.2,910,208.7,910,332s43.8,228.8,131.5,316.5C1129.2,736.2,1234.7,780,1358,780s228.8-43.8,316.5-131.5  C1762.2,560.8,1806,455.3,1806,332z M2318,1164c0,34.7-12.7,64.7-38,90s-55.3,38-90,38c-36,0-66-12.7-90-38l-343-342  c-119.3,82.7-252.3,124-399,124c-95.3,0-186.5-18.5-273.5-55.5s-162-87-225-150s-113-138-150-225S654,427.3,654,332  s18.5-186.5,55.5-273.5s87-162,150-225s138-113,225-150S1262.7-372,1358-372s186.5,18.5,273.5,55.5s162,87,225,150s113,138,150,225  S2062,236.7,2062,332c0,146.7-41.3,279.7-124,399l343,343C2305.7,1098.7,2318,1128.7,2318,1164z" />
+    </svg>
+</div>
+
+
+
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/algoliasearch.min.js"></script>
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/autocomplete.min.js"></script>
+
+<script>
+var client = algoliasearch("3RK9W7WH5R", "06f3928eb3fad870c9197c68c238dbd3");
+var index = client.initIndex('martinliu_blog');
+
+autocomplete('#aa-search-input',
+{ hint: false}, {
+    source: autocomplete.sources.hits(index, {hitsPerPage: 5}),
+    
+    displayKey: 'name',
+    
+    templates: {
+        
+        suggestion: function(suggestion) {
+            
+            return '<span>' + '<a href="/' + suggestion.uri+ '">' +
+            suggestion._highlightResult.title.value + '</a></span>';
+        }
+    }
+});
+</script>
+
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+    
+  
+  
+  
+
+
+
+
+  
+
+  <header class="header-section ">
+    
+    <div class="intro-header no-img">
+      
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-12 col-md-12 col-md-offset-0">
+            <div class="posts-heading">
+                <h1 align="center">XenDesktop &#43; nVIDIA K1/K2 = BEST 3D VDI</h1>
+                
+                  
+                    <h2 align="center" class="posts-subheading">Citrix &#43; nVIDIA K1 k2 &#43; XenServer （GPU 直通） &#43; HDX 3D Pro = 业内最好的3D虚拟桌面平台方案；而且这个方案里还能具有，其它全部的使用场景，包括：vdi，共享桌面，虚拟应用，流桌面，远程物理桌面等等方式。可以说这是一举多得，面面俱到的解决方案。</h2>
+                  
+                
+                
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+
+    
+<div class="container" role="main" itemscope itemtype="http://schema.org/Article">
+    <div class="row">
+        <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+            
+            
+            
+<div>
+    <section id="datecount">
+        <h4 id="date"> Fri Aug 16, 2013</h4>
+    </section>
+    <h5 id="wc">1500 Words|Read in about 3 Min</h5>
+    <h5 id="tags">Tags: 
+        
+        <a href="https://martinliu.cn/tags/2d/">2D</a> &nbsp;
+        
+        <a href="https://martinliu.cn/tags/3d/">3D</a> &nbsp;
+        
+        <a href="https://martinliu.cn/tags/nvidia/">NVIDIA</a> &nbsp;
+        
+        <a href="https://martinliu.cn/tags/vdi/">VDI</a> &nbsp;
+        
+        <a href="https://martinliu.cn/tags/%E8%99%9A%E6%8B%9F%E5%BA%94%E7%94%A8/">虚拟应用</a> &nbsp;
+    </h5>
+</div>
+
+            
+            <article role="main" class="blog-post" itemprop="articleBody" id="content">
+                <p>今天公司到货了K1，K2的GPU卡，这让我不得不学习一下这个产品。</p>
+
+<p><a href="http://cdn1.martinliu.cn/wp-content/uploads/2013/08/grid-overview-header.jpg"><img src="http://cdn1.martinliu.cn/wp-content/uploads/2013/08/grid-overview-header.jpg" alt="grid-overview-header" /></a></p>
+
+<p> </p>
+
+<p>到货实物如下：</p>
+
+<p>[gallery link=&ldquo;file&rdquo; ids=&ldquo;52542,52543,52544,52545,52546,52547&rdquo;]</p>
+
+<p>此卡的简单技术指标如下。
+<table cellpadding="0" width="560" cellspacing="0" border="0" >
+<tbody >
+<tr ></p>
+
+<p><td bgcolor="#e8e7e7" width="186" >
+</td></p>
+
+<p><td bgcolor="#e8e7e7" width="186" ></p>
+
+<h2 id="grid-k1">GRID K1</h2>
+
+<p></td></p>
+
+<p><td bgcolor="#e8e7e7" width="186" ></p>
+
+<h2 id="grid-k2">GRID K2</h2>
+
+<p></td>
+</tr>
+<tr ></p>
+
+<p><td bgcolor="#f1f1f1" width="186" >Number of GPUs
+</td></p>
+
+<p><td bgcolor="#f1f1f1" width="186" >4 x entry Kepler GPUs
+</td></p>
+
+<p><td bgcolor="#f1f1f1" width="186" >2 x high-end Kepler GPUs
+</td>
+</tr>
+<tr ></p>
+
+<p><td bgcolor="#f1f1f1" width="186" >Total NVIDIA CUDA cores
+</td></p>
+
+<p><td bgcolor="#f1f1f1" width="186" >768
+</td></p>
+
+<p><td bgcolor="#f1f1f1" width="186" >3072
+</td>
+</tr>
+<tr ></p>
+
+<p><td bgcolor="#f1f1f1" width="186" >Total memory size
+</td></p>
+
+<p><td bgcolor="#f1f1f1" width="186" >16 GB DDR3
+</td></p>
+
+<p><td bgcolor="#f1f1f1" width="186" >8 GB GDDR5
+</td>
+</tr>
+<tr ></p>
+
+<p><td bgcolor="#f1f1f1" width="186" >Max power
+</td></p>
+
+<p><td bgcolor="#f1f1f1" width="186" >130 W
+</td></p>
+
+<p><td bgcolor="#f1f1f1" width="186" >225 W
+</td>
+</tr>
+<tr ></p>
+
+<p><td bgcolor="#f1f1f1" width="186" >Board length
+</td></p>
+
+<p><td bgcolor="#f1f1f1" width="186" >10.5”
+</td></p>
+
+<p><td bgcolor="#f1f1f1" width="186" >10.5”
+</td>
+</tr>
+<tr ></p>
+
+<p><td bgcolor="#f1f1f1" width="186" >Board height
+</td></p>
+
+<p><td bgcolor="#f1f1f1" width="186" >4.4”
+</td></p>
+
+<p><td bgcolor="#f1f1f1" width="186" >4.4”
+</td>
+</tr>
+<tr ></p>
+
+<p><td bgcolor="#f1f1f1" width="186" >Board width
+</td></p>
+
+<p><td bgcolor="#f1f1f1" width="186" >Dual slot
+</td></p>
+
+<p><td bgcolor="#f1f1f1" width="186" >Dual slot
+</td>
+</tr>
+<tr ></p>
+
+<p><td bgcolor="#f1f1f1" width="186" >Display IO
+</td></p>
+
+<p><td bgcolor="#f1f1f1" width="186" >None
+</td></p>
+
+<p><td bgcolor="#f1f1f1" width="186" >None
+</td>
+</tr>
+<tr ></p>
+
+<p><td bgcolor="#f1f1f1" width="186" >Aux power
+</td></p>
+
+<p><td bgcolor="#f1f1f1" width="186" >6-pin connector
+</td></p>
+
+<p><td bgcolor="#f1f1f1" width="186" >8-pin connector
+</td>
+</tr>
+<tr ></p>
+
+<p><td bgcolor="#f1f1f1" width="186" >PCIe
+</td></p>
+
+<p><td bgcolor="#f1f1f1" width="186" >x16
+</td></p>
+
+<p><td bgcolor="#f1f1f1" width="186" >x16
+</td>
+</tr>
+<tr ></p>
+
+<p><td bgcolor="#f1f1f1" width="186" >PCIe generation
+</td></p>
+
+<p><td bgcolor="#f1f1f1" width="186" >Gen3 (Gen2 compatible)
+</td></p>
+
+<p><td bgcolor="#f1f1f1" width="186" >Gen3 (Gen2 compatible)
+</td>
+</tr>
+<tr ></p>
+
+<p><td bgcolor="#f1f1f1" width="186" >Cooling solution
+</td></p>
+
+<p><td bgcolor="#f1f1f1" width="186" >Passive
+</td></p>
+
+<p><td bgcolor="#f1f1f1" width="186" >Passive
+</td>
+</tr>
+</tbody>
+</table></p>
+
+<p><a href="http://cdn1.martinliu.cn/wp-content/uploads/2013/08/NVIDIA_vGPU_News.jpg"><img src="http://cdn1.martinliu.cn/wp-content/uploads/2013/08/NVIDIA_vGPU_News.jpg" alt="NVIDIA_vGPU_News" /></a></p>
+
+<p>详细 K1 K2 技术参数指标，<a href="http://www.nvidia.com/content/cloud-computing/pdf/nvidia-grid-datasheet-k1-k2.pdf"> 下载 ； </a> 这个表格清晰的说明了这两种卡的硬件技术参数。重要的是看它软件合作伙伴这一块。硬件在好，没有支持的软件也不行，我们必须还有看看它的软件合作伙伴：<a href="http://www.nvidia.com/object/grid-software-partners.html">http://www.nvidia.com/object/grid-software-partners.html</a></p>
+
+<p>首先，是认证的虚拟应用合作伙伴，这里只有Citrix XenApp；只有Citrix可以做3D设计软件的应用虚拟化；其它无人能及，基于Citrix的应用虚拟化可以真正的把一块GPU的共享程度达到最大，能够更加节约支撑的硬件资源。节省每一度电。还要看支持的API的版本号，这个说明了对3D软件的兼容性，如果这个版本号类型少，支持的低，那么这种方案是不可用的；由于3D软件根本就跑不动。
+<table cellpadding="0" width="560" cellspacing="0" border="0" >
+<tbody >
+<tr ></p>
+
+<p><td bgcolor="#f1f1f1" width="175" >
+</td></p>
+
+<p><td bgcolor="#f1f1f1" align="center" width="66" >NVIDIA Driver
+</td></p>
+
+<p><td bgcolor="#f1f1f1" align="center" width="102" >API
+</td></p>
+
+<p><td bgcolor="#f1f1f1" align="center" width="78" >GRID K1
+</td></p>
+
+<p><td bgcolor="#f1f1f1" align="center" width="72" >GRID K2
+</td>
+</tr>
+<tr ></p>
+
+<p><td bgcolor="#f1f1f1" width="175" ><strong>Citrix</strong>
+<a href="http://www.nvidia.com/object/xenapp.html">XenApp 6.5 with OpenGL 4.3</a>
+</td></p>
+
+<p><td bgcolor="#f1f1f1" align="center" width="66" ><img src="http://www.nvidia.com/docs/IO/123679/check-mark.png" alt="Yes" />
+</td></p>
+
+<p><td bgcolor="#f1f1f1" align="center" width="102" >NVIDIA CUDA
+DirectX 9,10,11
+OpenGL 4.3
+</td></p>
+
+<p><td bgcolor="#f1f1f1" align="center" width="78" ><img src="http://www.nvidia.com/docs/IO/123679/check-mark.png" alt="Yes" />
+</td></p>
+
+<p><td bgcolor="#f1f1f1" align="center" width="72" ><img src="http://www.nvidia.com/docs/IO/123679/check-mark.png" alt="Yes" />
+</td>
+</tr>
+</tbody>
+</table>
+其次，要看认证的虚拟桌合作伙伴厂商，这里稍微多点；这里关键看点是NVIDIA Driver这一列。你有可能会说NVIDIA的显卡驱动难道不能装到所有类型的VDI虚拟桌面中么？我我想这个表格就是答案。一个GPU经过服务器虚拟化层之后，只有Citrix的虚拟桌面能够拿到NVIDIA的原生驱动，也就是说只有Citrix的VDI能够通过NVidia的显卡驱动，穿透服务器虚拟化层直接调用到GPU的原生指令进行运算。而VMwere也有NVIDIA的驱动啊！注意，它的驱动是装在那里的，它的驱动是装在hypervistor上的；也就是说虚拟机必须通过这个模拟的驱动程序层使用GPU的运算能力，这个驱动层做的是GPU指令的翻译和仿真，它实在不能让虚拟桌面的虚拟操作系统中的3D软件透过API直接调用GPU的运算指令。这意味这GPU的性能的折损，这意味您花高昂价格采购的服务器虚拟化软件正在浪费您花更贵价格买来的GPU，k1、k2的卡市场价格都3万多的。这样的方案是否值得买，必须考虑一下。最后要看View5.2 with vSGA，两点在vSGA，这个东西对很对3D软件来说是不可用，不可以接受的。甚至于某些专业3D/2D软件在这显示模式下，连安装都成问题。
+<table cellpadding="0" width="560" cellspacing="0" border="0" >
+<tbody >
+<tr ></p>
+
+<p><td bgcolor="#f1f1f1" width="175" >
+</td></p>
+
+<p><td bgcolor="#f1f1f1" align="center" width="66" >NVIDIA Driver
+</td></p>
+
+<p><td bgcolor="#f1f1f1" align="center" width="102" >API
+</td></p>
+
+<p><td bgcolor="#f1f1f1" align="center" width="78" >GRID K1
+</td></p>
+
+<p><td bgcolor="#f1f1f1" align="center" width="72" >GRID K2
+</td>
+</tr>
+<tr ></p>
+
+<p><td bgcolor="#f1f1f1" width="175" ><strong>Citrix</strong>
+<a href="http://www.nvidia.com/object/xendesktop-vgpu.html">XenDesktop FP1 with NVIDIA GRID vGPU</a>
+</td></p>
+
+<p><td bgcolor="#f1f1f1" align="center" width="66" ><img src="http://www.nvidia.com/docs/IO/123679/check-mark.png" alt="Yes" />
+</td></p>
+
+<p><td bgcolor="#f1f1f1" align="center" width="102" >NVIDIA CUDA
+DirectX 9,10,11
+OpenGL 4.3
+</td></p>
+
+<p><td bgcolor="#f1f1f1" align="center" width="78" ><img src="http://www.nvidia.com/docs/IO/123679/check-mark.png" alt="Yes" />
+</td></p>
+
+<p><td bgcolor="#f1f1f1" align="center" width="72" ><img src="http://www.nvidia.com/docs/IO/123679/check-mark.png" alt="Yes" />
+</td>
+</tr>
+<tr ></p>
+
+<p><td bgcolor="#f1f1f1" width="175" ><strong>Microsoft</strong>
+<a href="http://www.nvidia.com/object/quadro-remotefx.html">RemoteFX</a>
+Windows Server 2012
+</td></p>
+
+<p><td bgcolor="#f1f1f1" align="center" width="66" >-
+</td></p>
+
+<p><td bgcolor="#f1f1f1" align="center" width="102" >DirectX 9,10,11
+OpenGL 1.1
+</td></p>
+
+<p><td bgcolor="#f1f1f1" align="center" width="78" ><img src="http://www.nvidia.com/docs/IO/123679/check-mark.png" alt="Yes" />
+</td></p>
+
+<p><td bgcolor="#f1f1f1" align="center" width="72" ><img src="http://www.nvidia.com/docs/IO/123679/check-mark.png" alt="Yes" />
+</td>
+</tr>
+<tr ></p>
+
+<p><td bgcolor="#f1f1f1" width="175" ><strong>VMware</strong>
+View 5.2 with vSGA
+</td></p>
+
+<p><td bgcolor="#f1f1f1" align="center" width="66" >-
+</td></p>
+
+<p><td bgcolor="#f1f1f1" align="center" width="102" >DirectX 9
+OpenGL 2.1
+</td></p>
+
+<p><td bgcolor="#f1f1f1" align="center" width="78" ><img src="http://www.nvidia.com/docs/IO/123679/check-mark.png" alt="Yes" />
+</td></p>
+
+<p><td bgcolor="#f1f1f1" align="center" width="72" ><img src="http://www.nvidia.com/docs/IO/123679/check-mark.png" alt="Yes" />
+</td>
+</tr>
+</tbody>
+</table>
+也可能某些厂商说：我有vGPU技术。这是用CPU模拟GPU的技术。您可以想想，如果这个技术真的存在的话那么我们只需要有一家公司就行了，就是Intel，而不需要另外一家Nvidia了。这个技术说白了也是仿真模拟，专业的3D/2D软件真正消耗越来越多的计算资源，在某些业务场景下模拟GPU是没法完成工作的，你总不能等待一个渲染和处理要等上几周去完成吧？而且设计师的时间是宝贵的，也不能让操作有顿挫和卡顿出现的。下面的视频，解释了在同一种虚拟桌面情况下，有GPU加速和，无GPU加速（CPU模拟）的操作对比。</p>
+
+<p>总之，Citrix + nVIDIA K1 k2 + XenServer （GPU 直通） + HDX 3D Pro = 业内最好的3D虚拟桌面平台方案；而且这个方案里还能具有，其它全部的使用场景，包括：vdi，共享桌面，虚拟应用，流桌面，远程物理桌面等等方式。可以说这是一举多得，面面俱到的解决方案。</p>
+            </article>
+
+            <ul class="pager blog-pager">
+                
+                <li class="previous">
+                    <a href="https://martinliu.cn/2013/08/15/xencliente69cace59cb0e8999ae68b9fe6a18ce99da2e585b8e59e8be5ba94e794a8e59cbae699af/" data-toggle="tooltip" data-placement="top" title="XenClient本地虚拟桌面典型应用场景">&larr; Previous Post</a>
+                </li>
+                 
+                <li class="next">
+                    <a href="https://martinliu.cn/2013/09/03/cloudstack-swift/" data-toggle="tooltip" data-placement="top" title="CloudStack&#43;Swift 我心中的黄金搭档">Next Post &rarr;</a>
+                </li>
+                
+            </ul>
+            
+            <div>
+                 
+            </div>
+            
+            
+            
+            
+<div>
+    <section id="datecount">
+        <h4 id="date"> Fri Aug 16, 2013</h4>
+    </section>
+    <h5 id="wc">1500 Words|Read in about 3 Min</h5>
+    <h5 id="tags">Tags: 
+        
+        <a href="https://martinliu.cn/tags/2d/">2D</a> &nbsp;
+        
+        <a href="https://martinliu.cn/tags/3d/">3D</a> &nbsp;
+        
+        <a href="https://martinliu.cn/tags/nvidia/">NVIDIA</a> &nbsp;
+        
+        <a href="https://martinliu.cn/tags/vdi/">VDI</a> &nbsp;
+        
+        <a href="https://martinliu.cn/tags/%E8%99%9A%E6%8B%9F%E5%BA%94%E7%94%A8/">虚拟应用</a> &nbsp;
+    </h5>
+</div>
+
+            
+            </div>
+            
+ 
+        </div>
+    </div>
+    </section>
+</div>
+
+    <footer>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <ul class="list-inline text-center footer-links">
+          
+              <li>
+                <a href="mailto:67120666@qq.com" title="Email me">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-envelope fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a href="https://plus.google.com/&#43;MartinLiu-cn" title="Google&#43;">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-google-plus fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a href="https://twitter.com/martinliu" title="Twitter">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a href="https://linkedin.com/in/liuzheng" title="LinkedIn">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-linkedin fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+          
+        </ul>
+        <p class="credits copyright text-muted">
+        &copy;2017-2018
+          
+            
+              <a href="martinliu.cn">Martin Liu</a>
+                      
+          
+          
+          
+            &nbsp;&bull;&nbsp;
+            <a href="https://martinliu.cn/">Maritn&#39;s Blog</a>
+          
+        </p>
+        
+        <p class="credits theme-by text-muted">
+          <a href="http://gohugo.io">Hugo v0.29</a> powered &nbsp;&bull;&nbsp; Theme by <a href="http://deanattali.com/beautiful-jekyll/">Beautiful Jekyll</a> adapted to <a href="https://github.com/halogenica/beautifulhugo">Beautiful Hugo</a>
+          
+        </p>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/bootstrap.min.js"></script>
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/photoswipe-ui-default.min.js"></script>
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/photoswipe.min.js"></script>
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/auto-render.min.js"></script>
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/main.js"></script>
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/prism.js"></script>
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/katex.min.js"></script>
+<script> renderMathInElement(document.body); </script>
+
+
+
+
+
+
+
+
+  </body>
+</html>
+

@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+  <title> 在64位Windows上安装ARS7.5 - 刘征的博客|DevOps|Cloud Computing</title>
+  <meta name="description" content="刘征的博客|DevOps|Cloud Computing" />
+  <meta property="og:title" content="在64位Windows上安装ARS7.5" />
+  <meta name="twitter:title" content="在64位Windows上安装ARS7.5" />
+  <meta name="description" content="在64位windows服务器上安装ARS7.5所需要了解的一些注意事项和技巧">
+  <meta property="og:description" content="在64位windows服务器上安装ARS7.5所需要了解的一些注意事项和技巧">
+  <meta name="twitter:description" content="在64位windows服务器上安装ARS7.5所需要了解的一些注意事项和技巧">
+  <meta name="author" content="{Description { .Site.Author.name }}"/>
+  <link href='https://martinliu.cn/img/favicon.ico' rel='icon' type='image/x-icon'/>
+  <meta property="og:image" content="https://martinliu.cn/img/logo.jpg" />
+  <meta name="twitter:image" content="https://martinliu.cn/img/logo.jpg" />
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:site" content="@martinliu" />
+  <meta name="twitter:creator" content="@martinliu" />
+  <meta property="og:url" content="https://martinliu.cn/2011/02/10/64-windows-ars-75-install-tips/" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Maritn&#39;s Blog" />
+
+  <meta name="generator" content="Hugo 0.29" />
+  <link rel="canonical" href="https://martinliu.cn/2011/02/10/64-windows-ars-75-install-tips/" />
+  <link rel="alternate" href="https://martinliu.cn/index.xml" type="application/rss+xml" title="Maritn&#39;s Blog">
+  <script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/jquery-1.12.4.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.7.1/katex.min.css" integrity="sha384-wITovz90syo1dJWVh32uuETPVEtGigN07tkttEqPv+uR2SE/mbQcG7ATL28aI9H0" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+  
+  
+  <link rel="stylesheet" href="https://martinliu.cn/css/main.css" />
+  <link rel="stylesheet" href="https://martinliu.cn/css/search.css" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" />
+  
+
+<meta name="baidu-site-verification" content="W3AORuRNZo" />
+<script>
+    var _hmt = _hmt || [];
+    (function () {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?50c3a9ae6c51222b31df5510bbca479f";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+
+<link rel="stylesheet" href="https://martinliu.cn/css/prism.css" />
+
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.1/photoswipe.min.css" integrity="sha256-sCl5PUOGMLfFYctzDW3MtRib0ctyUvI9Qsmq2wXOeBY=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.1/default-skin/default-skin.min.css" integrity="sha256-BFeI1V+Vh1Rk37wswuOYn5lsTcaU96hGaI7OUVCLjPc=" crossorigin="anonymous" />
+
+
+
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+<div class="pswp__bg"></div>
+
+<div class="pswp__scroll-wrap">
+    
+    <div class="pswp__container">
+      <div class="pswp__item"></div>
+      <div class="pswp__item"></div>
+      <div class="pswp__item"></div>
+    </div>
+    
+    <div class="pswp__ui pswp__ui--hidden">
+    <div class="pswp__top-bar">
+      
+      <div class="pswp__counter"></div>
+      <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+      <button class="pswp__button pswp__button--share" title="Share"></button>
+      <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+      <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+      
+      
+      <div class="pswp__preloader">
+        <div class="pswp__preloader__icn">
+          <div class="pswp__preloader__cut">
+            <div class="pswp__preloader__donut"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+      <div class="pswp__share-tooltip"></div>
+    </div>
+    <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+    </button>
+    <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+    </button>
+    <div class="pswp__caption">
+      <div class="pswp__caption__center"></div>
+    </div>
+    </div>
+    </div>
+</div>
+
+</head>
+
+  <body>
+    <nav class="navbar navbar-default navbar-fixed-top navbar-custom">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#main-navbar">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="https://martinliu.cn/">Maritn&#39;s Blog</a>
+    </div>
+    <div class="collapse navbar-collapse" id="main-navbar">
+      <ul class="nav navbar-nav navbar-right">
+        
+          
+            <li>
+              <a title="Blog" href="/">Blog</a>
+              
+              
+            </li>
+          
+        
+          
+            <li>
+              <a title="Tags" href="/tags">Tags</a>
+              
+              
+            </li>
+          
+        
+          
+            <li>
+              <a title="About" href="/about/">About</a>
+              
+              
+            </li>
+          
+        
+          
+            <li>
+              <a title="Book" href="https://handbook.martinliu.cn">Book</a>
+              
+              
+            </li>
+          
+        
+
+        
+
+        
+        
+          <li>
+            <a href="#modalSearch" data-toggle="modal" data-target="#modalSearch" style="outline: none;">
+              <span class="hidden-sm hidden-md hidden-lg">Search</span> <span id="searchGlyph" class="glyphicon glyphicon-search"></span>
+            </a>
+          </li>
+          
+      </ul>
+    </div>
+
+    <div class="avatar-container">
+      <div class="avatar-img-border">
+        
+          <a title="Maritn&#39;s Blog" href="https://martinliu.cn/">
+            <img class="avatar-img" src="https://martinliu.cn/img/logo.jpg" alt="Maritn&#39;s Blog" />
+          </a>
+        
+      </div>
+    </div>
+
+  </div>
+</nav>
+
+
+
+
+
+  <div id="modalSearch" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Search martinliu.cn </h4>
+        </div>
+        <div class="modal-body">
+            
+<div class="aa-input-container" id="aa-input-container">
+    <input type="search" id="aa-search-input" class="aa-input-search" placeholder="Search for titles or URIs..." name="search" autocomplete="off" />
+    <svg class="aa-input-icon" viewBox="654 -372 1664 1664">
+        <path d="M1806,332c0-123.3-43.8-228.8-131.5-316.5C1586.8-72.2,1481.3-116,1358-116s-228.8,43.8-316.5,131.5  C953.8,103.2,910,208.7,910,332s43.8,228.8,131.5,316.5C1129.2,736.2,1234.7,780,1358,780s228.8-43.8,316.5-131.5  C1762.2,560.8,1806,455.3,1806,332z M2318,1164c0,34.7-12.7,64.7-38,90s-55.3,38-90,38c-36,0-66-12.7-90-38l-343-342  c-119.3,82.7-252.3,124-399,124c-95.3,0-186.5-18.5-273.5-55.5s-162-87-225-150s-113-138-150-225S654,427.3,654,332  s18.5-186.5,55.5-273.5s87-162,150-225s138-113,225-150S1262.7-372,1358-372s186.5,18.5,273.5,55.5s162,87,225,150s113,138,150,225  S2062,236.7,2062,332c0,146.7-41.3,279.7-124,399l343,343C2305.7,1098.7,2318,1128.7,2318,1164z" />
+    </svg>
+</div>
+
+
+
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/algoliasearch.min.js"></script>
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/autocomplete.min.js"></script>
+
+<script>
+var client = algoliasearch("3RK9W7WH5R", "06f3928eb3fad870c9197c68c238dbd3");
+var index = client.initIndex('martinliu_blog');
+
+autocomplete('#aa-search-input',
+{ hint: false}, {
+    source: autocomplete.sources.hits(index, {hitsPerPage: 5}),
+    
+    displayKey: 'name',
+    
+    templates: {
+        
+        suggestion: function(suggestion) {
+            
+            return '<span>' + '<a href="/' + suggestion.uri+ '">' +
+            suggestion._highlightResult.title.value + '</a></span>';
+        }
+    }
+});
+</script>
+
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+    
+  
+  
+  
+
+
+
+
+  
+
+  <header class="header-section ">
+    
+    <div class="intro-header no-img">
+      
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-12 col-md-12 col-md-offset-0">
+            <div class="posts-heading">
+                <h1 align="center">在64位Windows上安装ARS7.5</h1>
+                
+                  
+                    <h2 align="center" class="posts-subheading">在64位windows服务器上安装ARS7.5所需要了解的一些注意事项和技巧</h2>
+                  
+                
+                
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+
+    
+<div class="container" role="main" itemscope itemtype="http://schema.org/Article">
+    <div class="row">
+        <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+            
+            
+            
+<div>
+    <section id="datecount">
+        <h4 id="date"> Thu Feb 10, 2011</h4>
+    </section>
+    <h5 id="wc">600 Words|Read in about 2 Min</h5>
+    <h5 id="tags">Tags: 
+        
+        <a href="https://martinliu.cn/tags/ars/">ARS</a> &nbsp;
+        
+        <a href="https://martinliu.cn/tags/bmc/">BMC</a> &nbsp;
+        
+        <a href="https://martinliu.cn/tags/remedy/">remedy</a> &nbsp;
+    </h5>
+</div>
+
+            
+            <article role="main" class="blog-post" itemprop="articleBody" id="content">
+                <p><img src="data:image/jpg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAkGBggGBQkIBwgKCQkKDRYODQwMDRoTFBAWHxwhIB8cHh4jJzIqIyUvJR4eKzssLzM1ODg4ISo9QTw2QTI3ODUBCQoKDQsNGQ4OGTUkHiQ1NTU1NTU1LzU1NTU1NTU1NS41NCw1NTQ0NTU1NTU1LDUpNDQ1NDUsNSwsMDQsNDU1Nf/AABEIADAAMAMBIgACEQEDEQH/xAAbAAACAwEBAQAAAAAAAAAAAAAGBwMEBQIIAf/EADUQAAEDAwMCAwUFCQAAAAAAAAECAwQFERIAITEGEyJBYQdRcYGhFBUjMkJSYpGiscHR4fD/xAAYAQADAQEAAAAAAAAAAAAAAAACAwQFAf/EACERAAICAgICAwEAAAAAAAAAAAECABEDIRJBBDEiMnET/9oADAMBAAIRAxEAPwB4k2FzofqUqoyX1NMK+zRySEOJBzUoevAB9RqR6rOuVtbLOK47ACXEHZRXfe3vABB+R11VKolKMUfl/Sm/5/U/u/RQOjAqTu93uDU6miQ6vuEynl7d5RCSo/E2G3Hy1aV09TGFpXTmhElHxNvRiEqSPOxVcAEXFjvzqjKkqdRZZUEFJCUKbuL38h/HbXPUtb+6KO8+xHvitsIB8itaWx4rb2ve39L6qxKCCT1JAd0O5pR+oJlEdSJTxl0/LxLdBVISCd1EiwIA8gm+i+PIalx0Px3EuNLF0qSdjpXTejSlky01upLnIR3SpTy+x3LXI7OVsL/pva22q/sy60WquCG9kzCllTbLAOQQ8FWunjFKrLUQByfPnSWC5LKCqlqck0xubESuJEVUmSpTxeJcBSAApZFiSRYgW92q7lWQ5buEKxIOyj+nn/X11BFeEOnN0+UC1IintuoPiAI38uefI86ru1doKxTyFWOQvz/nz/tq5sAbYMzASNGWJE9CyVqUFeQSk/8AfM839NY3UNZiSGWaWAJDk5SQ1dRDYxOdyRvYY3G25Fjtqd6tuEfhWSpJuFWO/lcj04toUkSEOV2jOhfgL7hJKhz2zz6+vGhCfzIXptRuL5OIWTYnWSWEsOOQDHCcG5RWoOFJ2C8cMciN7cX0DxK6ilzFqh4wpkF3JFjmnPc5DK973JsRYE7bW005akntKBBSWUG99rW0lE06TWOr5UKA33pMh/FtGQTkbe8kDR5cS4FDKPcrykkfkbntMp0uhVs1aOw8unSUDvuJUSGnSoglQtsCMAL+eg1uroWpZ8ON7JCj7+Pjf+bXoaVFZnRXI8ptLrLqcVoUNiNJfq/2R1anyHpPT2MmCVfhxgSXkBR4FxuBsLlV9K8fOK4tE58BvksHXarhgoqzsb2SvG/qT5W4v5cawZT2cZlpSGwEvNhKsAlQuoA29222Pu+OvlRYqNInriVBtceS2QVNrSLjYEfQjUNPYnVeWxBgR1SpKlhSW0DxLCPGQPkkm+i8g/UxOPTi4wa9Rn6dTnXk1CXgG7ttB5WKU22HPAG1tQ+xHo+RUqz9/wA9h37Kxmph5RI7joXYEftAAKHxGuq71ZCqrBpLQcTVCBGMRQGfe/L2+ecttNP2dUGV0z0HTqZPLf2hnuKX2ySBm4pYG4G4CgD631zzXUheJmgFv3P/2Q==" alt="ARS 7.5 安装" />刚才终于把ARS装上了。费了我两天的力气终于搞定了。错误其实很简单的，现象很多人都见过，ARS在安装完所有的文件后，在系统中建完ARS的服务以后，会继续启动服务，才能做最后的程序文件导入的相关操作。</p>
+
+<p>错误的现象是：在启动服务的时，安装程序一直停止在“Starting Remedy ARS services&hellip;.”的屏幕，去arerror日志里面可以看到无法连接到SQL数据库的错误。</p>
+
+<p>我的安装错误的原因其实很简单：</p>
+
+<ol>
+<li><p>如果是64为的Windows操作系统，默认的安装路径是C:\Program Files (x86)\目录</p></li>
+
+<li><p>Oracle客户端没有正确的安装</p></li>
+</ol>
+
+<p>解决的方法如下：</p>
+
+<ol>
+<li><p>修改ars默认的安装路径，尽量把它放在一个较短的而且没有特殊字符的路径里，如D:\bmc</p></li>
+
+<li><p>ARS 7.5 sp6支持的Oracle客户端是32位的，如果你在64位OS上安装的是64位的Oracle数据+客户端（sqlplus），那么默认的这个64为的客户端是不能用的，需要安装一个62位的客户端，而且需要时10g的，此版本也不支持11g的客户端；另外在安装32位的oracle客户端的时候最好也不要在路径中有特殊字符如符号和下划线之类的</p></li>
+</ol>
+
+<p>ARS7.5本身是32位的可支持程序，所以它所需要的JDK和Oracle都需要是32位的版本。如果你安装的是7.6.04，就不需要考虑32位的问题，由于它本身就是64位的程序了，所以JDK和Oracle都需要使用相应的64为的程序。</p>
+
+            </article>
+
+            <ul class="pager blog-pager">
+                
+                <li class="previous">
+                    <a href="https://martinliu.cn/2011/01/12/bmc-atrium-cmdb-ci/" data-toggle="tooltip" data-placement="top" title="BMC Atrium CMDB CI数据迁移">&larr; Previous Post</a>
+                </li>
+                 
+                <li class="next">
+                    <a href="https://martinliu.cn/2011/02/12/book-service-modelling/" data-toggle="tooltip" data-placement="top" title="图书推荐《服务建模：原理与应用》">Next Post &rarr;</a>
+                </li>
+                
+            </ul>
+            
+            <div>
+                 
+                <h2>See Also</h2>
+                <ul>
+                    
+                    <li><a href="/2010/08/09/remedy-lb-midtier-server-group-configure/">Remedy Server Group及负载均衡配置参考步骤</a></li>
+                    
+                    <li><a href="/2010/07/30/bmc-training-schedule01/">BMC课程通知: BMC Remedy AR 7.5 管理员培训</a></li>
+                    
+                    <li><a href="/2009/12/24/is-that-a-joke-of-remedy-developer/">老美真的很扯，一个职位的帖子被顶了22次</a></li>
+                    
+                    <li><a href="/2010/09/22/install-remedy-ars-itsm-on-aix-oracle/">八月十五月儿圆，我和兄弟们装AR</a></li>
+                    
+                    <li><a href="/2010/06/07/bmc-remedy-ondemand/">BMC提供ITSM洋快餐</a></li>
+                    
+                </ul>
+                
+            </div>
+            
+            
+            
+            
+<div>
+    <section id="datecount">
+        <h4 id="date"> Thu Feb 10, 2011</h4>
+    </section>
+    <h5 id="wc">600 Words|Read in about 2 Min</h5>
+    <h5 id="tags">Tags: 
+        
+        <a href="https://martinliu.cn/tags/ars/">ARS</a> &nbsp;
+        
+        <a href="https://martinliu.cn/tags/bmc/">BMC</a> &nbsp;
+        
+        <a href="https://martinliu.cn/tags/remedy/">remedy</a> &nbsp;
+    </h5>
+</div>
+
+            
+            </div>
+            
+ 
+        </div>
+    </div>
+    </section>
+</div>
+
+    <footer>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <ul class="list-inline text-center footer-links">
+          
+              <li>
+                <a href="mailto:67120666@qq.com" title="Email me">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-envelope fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a href="https://plus.google.com/&#43;MartinLiu-cn" title="Google&#43;">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-google-plus fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a href="https://twitter.com/martinliu" title="Twitter">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a href="https://linkedin.com/in/liuzheng" title="LinkedIn">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-linkedin fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+          
+        </ul>
+        <p class="credits copyright text-muted">
+        &copy;2017-2018
+          
+            
+              <a href="martinliu.cn">Martin Liu</a>
+                      
+          
+          
+          
+            &nbsp;&bull;&nbsp;
+            <a href="https://martinliu.cn/">Maritn&#39;s Blog</a>
+          
+        </p>
+        
+        <p class="credits theme-by text-muted">
+          <a href="http://gohugo.io">Hugo v0.29</a> powered &nbsp;&bull;&nbsp; Theme by <a href="http://deanattali.com/beautiful-jekyll/">Beautiful Jekyll</a> adapted to <a href="https://github.com/halogenica/beautifulhugo">Beautiful Hugo</a>
+          
+        </p>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/bootstrap.min.js"></script>
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/photoswipe-ui-default.min.js"></script>
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/photoswipe.min.js"></script>
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/auto-render.min.js"></script>
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/main.js"></script>
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/prism.js"></script>
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/katex.min.js"></script>
+<script> renderMathInElement(document.body); </script>
+
+
+
+
+
+
+
+
+  </body>
+</html>
+

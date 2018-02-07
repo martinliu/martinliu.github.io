@@ -1,0 +1,1178 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+  <title> Maritn&#39;s Blog - 刘征的博客|DevOps|Cloud Computing</title>
+  <meta name="description" content="刘征的博客|DevOps|Cloud Computing" />
+  <meta property="og:title" content="Maritn&#39;s Blog" />
+  <meta name="twitter:title" content="Maritn&#39;s Blog" />
+  <meta name="description" content="This is Martin Liu&rsquo;s Blog. 劉征(Martin)是《DevOps Handbook》(中文书名：DevOps实践指南)的译者，Exin首批国内DOP&amp;DOM认证讲师，从业十多年以来积累了丰富的云计算技术和项目经验，持有红帽RHCA认证和AWS高级架构师认证。谙熟企业数据中心的IT服务管理。目前致力于推广DevOps的理念和技术实践。">
+  <meta property="og:description" content="This is Martin Liu&rsquo;s Blog. 劉征(Martin)是《DevOps Handbook》(中文书名：DevOps实践指南)的译者，Exin首批国内DOP&amp;DOM认证讲师，从业十多年以来积累了丰富的云计算技术和项目经验，持有红帽RHCA认证和AWS高级架构师认证。谙熟企业数据中心的IT服务管理。目前致力于推广DevOps的理念和技术实践。">
+  <meta name="twitter:description" content="This is Martin Liu&rsquo;s Blog. 劉征(Martin)是《DevOps Handbook》(中文书名：DevOps实践指南)的译者，Exin首批国内DOP&amp;DOM认证讲师，从业十多年以来积累了丰富的云计算技术和项目经验，持有红帽RHCA认证和AWS高级架构师认证。谙熟企业数据中心的IT服务管理。目前致力于推广DevOps的理念和技术实践。">
+  <meta name="author" content="{Description { .Site.Author.name }}"/>
+  <link href='https://martinliu.cn/img/favicon.ico' rel='icon' type='image/x-icon'/>
+  <meta property="og:image" content="https://martinliu.cn/img/logo.jpg" />
+  <meta name="twitter:image" content="https://martinliu.cn/img/logo.jpg" />
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:site" content="@martinliu" />
+  <meta name="twitter:creator" content="@martinliu" />
+  <meta property="og:url" content="https://martinliu.cn/" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Maritn&#39;s Blog" />
+
+  <meta name="generator" content="Hugo 0.29" />
+  <link rel="canonical" href="https://martinliu.cn/" />
+  <link rel="alternate" href="https://martinliu.cn/index.xml" type="application/rss+xml" title="Maritn&#39;s Blog">
+  <script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/jquery-1.12.4.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.7.1/katex.min.css" integrity="sha384-wITovz90syo1dJWVh32uuETPVEtGigN07tkttEqPv+uR2SE/mbQcG7ATL28aI9H0" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+  
+  
+  <link rel="stylesheet" href="https://martinliu.cn/css/main.css" />
+  <link rel="stylesheet" href="https://martinliu.cn/css/search.css" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" />
+  
+
+<meta name="baidu-site-verification" content="W3AORuRNZo" />
+<script>
+    var _hmt = _hmt || [];
+    (function () {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?50c3a9ae6c51222b31df5510bbca479f";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+
+<link rel="stylesheet" href="https://martinliu.cn/css/prism.css" />
+
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.1/photoswipe.min.css" integrity="sha256-sCl5PUOGMLfFYctzDW3MtRib0ctyUvI9Qsmq2wXOeBY=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.1/default-skin/default-skin.min.css" integrity="sha256-BFeI1V+Vh1Rk37wswuOYn5lsTcaU96hGaI7OUVCLjPc=" crossorigin="anonymous" />
+
+
+
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+<div class="pswp__bg"></div>
+
+<div class="pswp__scroll-wrap">
+    
+    <div class="pswp__container">
+      <div class="pswp__item"></div>
+      <div class="pswp__item"></div>
+      <div class="pswp__item"></div>
+    </div>
+    
+    <div class="pswp__ui pswp__ui--hidden">
+    <div class="pswp__top-bar">
+      
+      <div class="pswp__counter"></div>
+      <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+      <button class="pswp__button pswp__button--share" title="Share"></button>
+      <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+      <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+      
+      
+      <div class="pswp__preloader">
+        <div class="pswp__preloader__icn">
+          <div class="pswp__preloader__cut">
+            <div class="pswp__preloader__donut"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+      <div class="pswp__share-tooltip"></div>
+    </div>
+    <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+    </button>
+    <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+    </button>
+    <div class="pswp__caption">
+      <div class="pswp__caption__center"></div>
+    </div>
+    </div>
+    </div>
+</div>
+
+</head>
+
+  <body>
+    <nav class="navbar navbar-default navbar-fixed-top navbar-custom">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#main-navbar">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="https://martinliu.cn/">Maritn&#39;s Blog</a>
+    </div>
+    <div class="collapse navbar-collapse" id="main-navbar">
+      <ul class="nav navbar-nav navbar-right">
+        
+          
+            <li>
+              <a title="Blog" href="/">Blog</a>
+              
+              
+            </li>
+          
+        
+          
+            <li>
+              <a title="Tags" href="/tags">Tags</a>
+              
+              
+            </li>
+          
+        
+          
+            <li>
+              <a title="About" href="/about/">About</a>
+              
+              
+            </li>
+          
+        
+          
+            <li>
+              <a title="Book" href="https://handbook.martinliu.cn">Book</a>
+              
+              
+            </li>
+          
+        
+
+        
+
+        
+        
+          <li>
+            <a href="#modalSearch" data-toggle="modal" data-target="#modalSearch" style="outline: none;">
+              <span class="hidden-sm hidden-md hidden-lg">Search</span> <span id="searchGlyph" class="glyphicon glyphicon-search"></span>
+            </a>
+          </li>
+          
+      </ul>
+    </div>
+
+    <div class="avatar-container">
+      <div class="avatar-img-border">
+        
+          <a title="Maritn&#39;s Blog" href="https://martinliu.cn/">
+            <img class="avatar-img" src="https://martinliu.cn/img/logo.jpg" alt="Maritn&#39;s Blog" />
+          </a>
+        
+      </div>
+    </div>
+
+  </div>
+</nav>
+
+
+
+
+
+  <div id="modalSearch" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Search martinliu.cn </h4>
+        </div>
+        <div class="modal-body">
+            
+<div class="aa-input-container" id="aa-input-container">
+    <input type="search" id="aa-search-input" class="aa-input-search" placeholder="Search for titles or URIs..." name="search" autocomplete="off" />
+    <svg class="aa-input-icon" viewBox="654 -372 1664 1664">
+        <path d="M1806,332c0-123.3-43.8-228.8-131.5-316.5C1586.8-72.2,1481.3-116,1358-116s-228.8,43.8-316.5,131.5  C953.8,103.2,910,208.7,910,332s43.8,228.8,131.5,316.5C1129.2,736.2,1234.7,780,1358,780s228.8-43.8,316.5-131.5  C1762.2,560.8,1806,455.3,1806,332z M2318,1164c0,34.7-12.7,64.7-38,90s-55.3,38-90,38c-36,0-66-12.7-90-38l-343-342  c-119.3,82.7-252.3,124-399,124c-95.3,0-186.5-18.5-273.5-55.5s-162-87-225-150s-113-138-150-225S654,427.3,654,332  s18.5-186.5,55.5-273.5s87-162,150-225s138-113,225-150S1262.7-372,1358-372s186.5,18.5,273.5,55.5s162,87,225,150s113,138,150,225  S2062,236.7,2062,332c0,146.7-41.3,279.7-124,399l343,343C2305.7,1098.7,2318,1128.7,2318,1164z" />
+    </svg>
+</div>
+
+
+
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/algoliasearch.min.js"></script>
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/autocomplete.min.js"></script>
+
+<script>
+var client = algoliasearch("3RK9W7WH5R", "06f3928eb3fad870c9197c68c238dbd3");
+var index = client.initIndex('martinliu_blog');
+
+autocomplete('#aa-search-input',
+{ hint: false}, {
+    source: autocomplete.sources.hits(index, {hitsPerPage: 5}),
+    
+    displayKey: 'name',
+    
+    templates: {
+        
+        suggestion: function(suggestion) {
+            
+            return '<span>' + '<a href="/' + suggestion.uri+ '">' +
+            suggestion._highlightResult.title.value + '</a></span>';
+        }
+    }
+});
+</script>
+
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+    
+  
+  
+  
+  
+
+
+
+
+  
+    <div id="header-big-imgs" data-num-img=3 data-img-src-1="https://martinliu.cn/images/header-img1.jpg" data-img-desc-1="Fly to cloud"data-img-src-2="https://martinliu.cn/images/header-img2.jpg" data-img-desc-2="Walk your way"data-img-src-3="https://martinliu.cn/images/sandra%20li-1.JPG" data-img-desc-3="国家剧院/SandraLi"></div>
+  
+
+  <header class="header-section has-img">
+    
+      <div class="intro-header big-img">
+        
+        
+        <div class="container">
+          <div class="row">
+              <div class="col-lg-12 col-md-12 col-md-offset-0">
+                
+                <div class="page-heading">
+                
+                  
+                     <h1 align="center">Do you have a pleasent DevOps journey?</h1>
+                  
+                  
+                  
+                    <hr class="small">
+                    <span class="page-subheading">I am a runner, blogger and open source funs</span>
+                  
+                  
+                
+              </div>
+            </div>
+          </div>
+        </div>
+        <span class="img-desc" style="display: inline;"></span>
+      </div>
+    
+    <div class="intro-header no-img">
+      
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-12 col-md-12 col-md-offset-0">
+            <div class="page-heading">
+                <h1 align="center">Maritn&#39;s Blog</h1>
+                
+                  
+                    <hr class="small">
+                    <span class="page-subheading">I am a runner, blogger and open source funs</span>
+                  
+                
+                
+                  <span class="post-meta">
+  
+  
+</span>
+
+
+                
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+
+    
+  <div role="main" class="container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        
+          <div class="well">
+            
+
+<h3 id="this-is-martin-liu-s-blog">This is Martin Liu&rsquo;s Blog.</h3>
+
+<p>劉征(Martin)是<a href="http://handbook.martinliu.cn">《DevOps Handbook》(中文书名：DevOps实践指南)</a>的译者，Exin首批国内<a href="https://www.exin.jp/CN/zh/exams/&amp;exam=exin-devops-master"><strong>DOP&amp;DOM认证讲师</strong></a>，从业十多年以来积累了丰富的云计算技术和项目经验，持有红帽RHCA认证和AWS高级架构师认证。谙熟企业数据中心的IT服务管理。目前致力于推广DevOps的理念和技术实践。</p>
+
+          </div>
+        
+
+        <div class="posts-list">
+          
+          
+            <article class="post-preview">
+              <a href="https://martinliu.cn/2015/02/08/2014e5b9b4awse69c8de58aa1e69bb4e696b0e680bbe7bb93/">
+                <h2 class="post-title">2014年AWS服务更新总结</h2>
+                
+                  <h3 class="post-subtitle">
+                  从去年新增的服务中可以看出，其中多半是管理和基础服务类型的更新。因此，我感觉这也预示着，公有云技术的领头羊的发展也上到一定的成熟度上了。相比而言，企业私有云的建设还是纠结在几个症结上：选择私有云平台软件难，选择部署实施的落地工具和服务难，市场上相关的人才难找，大多出人连试点的经验还没还有获得，云应用-无状态应用踪影难觅。这些事实下，我看到了私有云建设的广阔服务前景，特别是企业服务这块。感觉有技术的实力派大牛们，应该趁着国产化软件的浪潮，踏踏实施做两年企业级产品，踏踏试试走下企业服务的路。别惦记着风头的那些钱，别惦记着做个公有云服务出来走出国门走向世界。我朝企业不差钱的主，土豪的企业有的事。毕竟近水楼台先得月。
+                  </h3>
+                
+              </a>
+
+              <span class="post-meta">
+  
+  Posted on 2015, February 8
+  
+  
+</span>
+
+
+              <div class="post-entry">
+                
+                  有一段时间没有关注AWS了，下面是在 aws-faq.com 发的新贴。顺便梳理了一下过去一年的更新情况， http://www.aws-faq.com/featur
+                  <a href="https://martinliu.cn/2015/02/08/2014e5b9b4awse69c8de58aa1e69bb4e696b0e680bbe7bb93/" class="post-read-more">[Read More]</a>
+                
+              </div>
+
+              
+                <span class="post-meta">
+                
+                  #<a href="https://martinliu.cn/tags/%E5%85%AC%E6%9C%89%E4%BA%91/">公有云</a>&nbsp;
+                
+                </span>
+              
+            </article>
+          
+            <article class="post-preview">
+              <a href="https://martinliu.cn/2015/02/07/aws-faq-post-aws-e4b880e69c88e69c89e4bb80e4b988e58aa8e68081/">
+                <h2 class="post-title">AWS-FAQ post - AWS 一月有什么动态?</h2>
+                
+              </a>
+
+              <span class="post-meta">
+  
+  Posted on 2015, February 7
+  
+  
+</span>
+
+
+              <div class="post-entry">
+                
+                  <p>AWS-FAQ post - AWS 一月有什么动态?</p>
+
+<p><a href="http://www.aws-faq.com/blog/aws-blog/aws-%E4%B8%8A%E5%91%A8%E5%8F%91%E7%94%9F%E4%BA%86%E4%BB%80%E4%B9%88-2015-%E5%B9%B41%E6%9C%88.html">http://www.aws-faq.com/blog/aws-blog/aws-%E4%B8%8A%E5%91%A8%E5%8F%91%E7%94%9F%E4%BA%86%E4%BB%80%E4%B9%88-2015-%E5%B9%B41%E6%9C%88.html</a></p>
+
+<ul>
+<li><p>AWS 邮件服务的推出还是比较有趣，虽然很晚推出这个服务，但是还是推出了</p></li>
+
+<li><p>__ 总之1月的动静不大</p></li>
+</ul>
+
+                
+              </div>
+
+              
+                <span class="post-meta">
+                
+                  #<a href="https://martinliu.cn/tags/aws/">aws</a>&nbsp;
+                
+                </span>
+              
+            </article>
+          
+            <article class="post-preview">
+              <a href="https://martinliu.cn/2015/02/02/e68f90e4baa4e68f90e4baa4e4ba86e4b880e4b8aabz/">
+                <h2 class="post-title">提交提交了一个BZ</h2>
+                
+              </a>
+
+              <span class="post-meta">
+  
+  Posted on 2015, February 2
+  
+  
+</span>
+
+
+              <div class="post-entry">
+                
+                  <p>用163邮箱注册了<a href="http://bugzilla.redhat.com/">http://bugzilla.redhat.com/</a> ; 提交了一个satellite的bug。</p>
+
+                
+              </div>
+
+              
+            </article>
+          
+            <article class="post-preview">
+              <a href="https://martinliu.cn/2015/01/27/fedora-21-server-e6b58be8af95-cockpite7af87/">
+                <h2 class="post-title">Fedora 21 Server测试 - Cockpit篇</h2>
+                
+                  <h3 class="post-subtitle">
+                  从Cockpi的词义上看，它是飞机驾驶仓的意思。而且Fedora 21 server 默认就会安装这个组建。有了它领导再也不用担心你看不走飞机了。总体感觉这个功能非常简洁、实用，很期待早日能融入到RHEL7中来。
+                  </h3>
+                
+              </a>
+
+              <span class="post-meta">
+  
+  Posted on 2015, January 27
+  
+  
+</span>
+
+
+              <div class="post-entry">
+                
+                  先上几张Fedora 21 server 安装的截图。 [gallery link=&ldquo;file&rdquo; ids=&ldquo;53424,53425,53426,53427&rdquo;] 新的配色还是不错的，重点看第三张图，虽然不全，已经基本上看出F21 服务器版的软件包了。 安装之后发现
+                  <a href="https://martinliu.cn/2015/01/27/fedora-21-server-e6b58be8af95-cockpite7af87/" class="post-read-more">[Read More]</a>
+                
+              </div>
+
+              
+                <span class="post-meta">
+                
+                  #<a href="https://martinliu.cn/tags/cockpit/">cockpit</a>&nbsp;
+                
+                </span>
+              
+            </article>
+          
+            <article class="post-preview">
+              <a href="https://martinliu.cn/2015/01/26/fedora-22-e69c89e4bd95e580bce5be97e69c9fe5be85/">
+                <h2 class="post-title">Fedora 22 有何值得期待</h2>
+                
+              </a>
+
+              <span class="post-meta">
+  
+  Posted on 2015, January 26
+  
+  
+</span>
+
+
+              <div class="post-entry">
+                
+                  我使用这新安装的F21，连接着公司阿姆斯特丹的VPN，流畅的使用Firefox ， Chrome 上网，在没有墙的世界里顺利传行着。重返Linux世界，想起
+                  <a href="https://martinliu.cn/2015/01/26/fedora-22-e69c89e4bd95e580bce5be97e69c9fe5be85/" class="post-read-more">[Read More]</a>
+                
+              </div>
+
+              
+                <span class="post-meta">
+                
+                  #<a href="https://martinliu.cn/tags/fedora/">fedora</a>&nbsp;
+                
+                </span>
+              
+            </article>
+          
+            <article class="post-preview">
+              <a href="https://martinliu.cn/2015/01/25/e5868de6aca1e585a5e6898blinux-fedora-21/">
+                <h2 class="post-title">再次入手Linux - Fedora 21</h2>
+                
+              </a>
+
+              <span class="post-meta">
+  
+  Posted on 2015, January 25
+  
+  
+</span>
+
+
+              <div class="post-entry">
+                
+                  再次安装桌面版的Linux操作系统 ，并打算作为主要的工作平台。已经是 fedora 21，需要新贴纸了。 接下来作的：http://www.linuxidc
+                  <a href="https://martinliu.cn/2015/01/25/e5868de6aca1e585a5e6898blinux-fedora-21/" class="post-read-more">[Read More]</a>
+                
+              </div>
+
+              
+            </article>
+          
+            <article class="post-preview">
+              <a href="https://martinliu.cn/2015/01/21/e8999ae68b9fe69cbae6a0b9e58886e58cbae689a9e5aeb9/">
+                <h2 class="post-title">虚拟机根分区扩容</h2>
+                
+              </a>
+
+              <span class="post-meta">
+  
+  Posted on 2015, January 21
+  
+  
+</span>
+
+
+              <div class="post-entry">
+                
+                  我的Satellite虚拟机下载了所有常用的repo，100GB的磁盘空间都占满了，无奈必须扩容，否则没法用了。 扩容的前提条件正好满足：根分
+                  <a href="https://martinliu.cn/2015/01/21/e8999ae68b9fe69cbae6a0b9e58886e58cbae689a9e5aeb9/" class="post-read-more">[Read More]</a>
+                
+              </div>
+
+              
+                <span class="post-meta">
+                
+                  #<a href="https://martinliu.cn/tags/fdsik/">fdsik</a>&nbsp;
+                
+                  #<a href="https://martinliu.cn/tags/linux/">linux</a>&nbsp;
+                
+                  #<a href="https://martinliu.cn/tags/resize2fs/">resize2fs</a>&nbsp;
+                
+                </span>
+              
+            </article>
+          
+            <article class="post-preview">
+              <a href="https://martinliu.cn/2015/01/10/rhel-e680a7e883bd-e68f90e58d87e696b9e6b395e5928ce5b7a5e585b7/">
+                <h2 class="post-title">RHEL 性能 提升方法和工具</h2>
+                
+              </a>
+
+              <span class="post-meta">
+  
+  Posted on 2015, January 10
+  
+  
+</span>
+
+
+              <div class="post-entry">
+                
+                  RHEL 7 中已经引入了比较完备的性能优化、调整和监控的工具。对于我这个监控背景的人来说，不具体看下，实在忍不住。 首先，从这篇KB学起来把。http
+                  <a href="https://martinliu.cn/2015/01/10/rhel-e680a7e883bd-e68f90e58d87e696b9e6b395e5928ce5b7a5e585b7/" class="post-read-more">[Read More]</a>
+                
+              </div>
+
+              
+                <span class="post-meta">
+                
+                  #<a href="https://martinliu.cn/tags/pcp/">pcp</a>&nbsp;
+                
+                  #<a href="https://martinliu.cn/tags/tuna/">tuna</a>&nbsp;
+                
+                  #<a href="https://martinliu.cn/tags/tuned/">tuned</a>&nbsp;
+                
+                  #<a href="https://martinliu.cn/tags/%E6%80%A7%E8%83%BD/">性能</a>&nbsp;
+                
+                  #<a href="https://martinliu.cn/tags/%E8%B0%83%E4%BC%98/">调优</a>&nbsp;
+                
+                </span>
+              
+            </article>
+          
+            <article class="post-preview">
+              <a href="https://martinliu.cn/2015/01/06/kvm-virt-manager-e5ae9ee794a8e58f82e88083e6898be5868c/">
+                <h2 class="post-title">KVM Virt-Manager  实用参考手册</h2>
+                
+                  <h3 class="post-subtitle">
+                  Virt Manager 是一个不错的kvm虚拟机管理工具，能够方便地管理虚拟机。我的测试机目前已经完全转向RHEL7上跑KVM虚拟机，通过virt-manager去管理的方案。命令行常用操作指南（持续更新中）virt-manager主要操作还是在命令行比较高效，特别是下面的这些操作，在使用过程中，比较多用，用的多了感觉比GUI操作方式效率高多了。
+                  </h3>
+                
+              </a>
+
+              <span class="post-meta">
+  
+  Posted on 2015, January 6
+  
+  
+</span>
+
+
+              <div class="post-entry">
+                
+                  关于 virt manager Virt Manager 是一个不错的kvm虚拟机管理工具，能够方便地管理虚拟机。我的测试机目前已经完全转向RHEL7上跑KVM虚拟机，通过virt-ma
+                  <a href="https://martinliu.cn/2015/01/06/kvm-virt-manager-e5ae9ee794a8e58f82e88083e6898be5868c/" class="post-read-more">[Read More]</a>
+                
+              </div>
+
+              
+                <span class="post-meta">
+                
+                  #<a href="https://martinliu.cn/tags/kvm/">KVM</a>&nbsp;
+                
+                </span>
+              
+            </article>
+          
+            <article class="post-preview">
+              <a href="https://martinliu.cn/2014/12/24/wget-e4b88be8bdbde5a4a7e69687e4bbb6-e696ade782b9e7bbade4bca0/">
+                <h2 class="post-title">wget 下载大文件-断点续传</h2>
+                
+                  <h3 class="post-subtitle">
+                  wget 下载大文件-断点续传\r&lt;br /&gt;wget -c -b -t 0 -O CentOS-7.0-1406-x86_64-Everything.iso  http://mirrors.sohu.com/centos/7/isos/x86_64/CentOS-7.0-1406-x86_64-Everything.iso -o centos.log\r&lt;br /&gt;
+                  </h3>
+                
+              </a>
+
+              <span class="post-meta">
+  
+  Posted on 2014, December 24
+  
+  
+</span>
+
+
+              <div class="post-entry">
+                
+                  举例如下： wget -c -b -t 0 -O CentOS-7.0-1406-x86_64-Everything.iso http://mirrors.sohu.com/centos/7/isos/x86_64/CentOS-7.0-1406-x86_64-Everything.iso -o centos.log 下载一个7GB的DVD文件，能够断点续传，能够把状态写入centos.log文件中。具体参数说明如下： [su_table] -c 断点
+                  <a href="https://martinliu.cn/2014/12/24/wget-e4b88be8bdbde5a4a7e69687e4bbb6-e696ade782b9e7bbade4bca0/" class="post-read-more">[Read More]</a>
+                
+              </div>
+
+              
+                <span class="post-meta">
+                
+                  #<a href="https://martinliu.cn/tags/tips/">tips</a>&nbsp;
+                
+                  #<a href="https://martinliu.cn/tags/wget/">wget</a>&nbsp;
+                
+                </span>
+              
+            </article>
+          
+        </div>
+
+        
+          <ul class="pager main-pager">
+            
+              <li class="previous">
+                <a href="/page/9">&larr; Newer Posts</a>
+              </li>
+            
+            
+              <li class="next">
+                <a href="/page/11">Older Posts &rarr;</a>
+              </li>
+            
+          </ul>
+        
+      </div>
+      <div align="center" class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        
+
+<ul class="pagination">
+    
+    <li>
+        <a href="/" aria-label="First"><span aria-hidden="true">&laquo;&laquo;</span></a>
+    </li>
+    
+    <li
+    >
+    <a href="/page/9/" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a>
+    </li>
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    <li
+    ><a href="/">1</a></li>
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    <li
+    ><a href="/page/2/">2</a></li>
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    <li
+    ><a href="/page/3/">3</a></li>
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    <li class="disabled"><span aria-hidden="true">&hellip;</span></li>
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    <li
+    ><a href="/page/9/">9</a></li>
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    <li
+    class="active"><a href="/page/10/">10</a></li>
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    <li
+    ><a href="/page/11/">11</a></li>
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    <li class="disabled"><span aria-hidden="true">&hellip;</span></li>
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    <li
+    ><a href="/page/40/">40</a></li>
+    
+    
+    <li
+    >
+    <a href="/page/11/" aria-label="Next"><span aria-hidden="true">&raquo;</span></a>
+    </li>
+    
+    <li>
+        <a href="/page/40/" aria-label="Last"><span aria-hidden="true">&raquo;&raquo;</span></a>
+    </li>
+    
+</ul>
+
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+      </div>
+    </div>
+  </div>
+
+    <footer>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <ul class="list-inline text-center footer-links">
+          
+              <li>
+                <a href="mailto:67120666@qq.com" title="Email me">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-envelope fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a href="https://plus.google.com/&#43;MartinLiu-cn" title="Google&#43;">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-google-plus fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a href="https://twitter.com/martinliu" title="Twitter">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a href="https://linkedin.com/in/liuzheng" title="LinkedIn">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-linkedin fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+          
+        </ul>
+        <p class="credits copyright text-muted">
+        &copy;2017-2018
+          
+            
+              <a href="martinliu.cn">Martin Liu</a>
+                      
+          
+          
+          
+            &nbsp;&bull;&nbsp;
+            <a href="https://martinliu.cn/">Maritn&#39;s Blog</a>
+          
+        </p>
+        
+        <p class="credits theme-by text-muted">
+          <a href="http://gohugo.io">Hugo v0.29</a> powered &nbsp;&bull;&nbsp; Theme by <a href="http://deanattali.com/beautiful-jekyll/">Beautiful Jekyll</a> adapted to <a href="https://github.com/halogenica/beautifulhugo">Beautiful Hugo</a>
+          
+        </p>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/bootstrap.min.js"></script>
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/photoswipe-ui-default.min.js"></script>
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/photoswipe.min.js"></script>
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/auto-render.min.js"></script>
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/main.js"></script>
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/prism.js"></script>
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/katex.min.js"></script>
+<script> renderMathInElement(document.body); </script>
+
+
+
+
+
+
+
+
+  </body>
+</html>
+

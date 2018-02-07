@@ -1,0 +1,734 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+  <title> OpenNMS网络和系统管理简介 - 刘征的博客|DevOps|Cloud Computing</title>
+  <meta name="description" content="刘征的博客|DevOps|Cloud Computing" />
+  <meta property="og:title" content="OpenNMS网络和系统管理简介" />
+  <meta name="twitter:title" content="OpenNMS网络和系统管理简介" />
+  <meta name="description" content="1.1 概述 Opennms能够帮助IT管理部门持续的监控分布式的异构系统和网络设备的运行状态，它可以支持SNMP网络管理协议确保管理的扩展性，并且">
+  <meta property="og:description" content="1.1 概述 Opennms能够帮助IT管理部门持续的监控分布式的异构系统和网络设备的运行状态，它可以支持SNMP网络管理协议确保管理的扩展性，并且">
+  <meta name="twitter:description" content="1.1 概述 Opennms能够帮助IT管理部门持续的监控分布式的异构系统和网络设备的运行状态，它可以支持SNMP网络管理协议确保管理的扩展性，并且">
+  <meta name="author" content="{Description { .Site.Author.name }}"/>
+  <link href='https://martinliu.cn/img/favicon.ico' rel='icon' type='image/x-icon'/>
+  <meta property="og:image" content="https://martinliu.cn/img/logo.jpg" />
+  <meta name="twitter:image" content="https://martinliu.cn/img/logo.jpg" />
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:site" content="@martinliu" />
+  <meta name="twitter:creator" content="@martinliu" />
+  <meta property="og:url" content="https://martinliu.cn/2007/05/08/what-is-opennms/" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Maritn&#39;s Blog" />
+
+  <meta name="generator" content="Hugo 0.29" />
+  <link rel="canonical" href="https://martinliu.cn/2007/05/08/what-is-opennms/" />
+  <link rel="alternate" href="https://martinliu.cn/index.xml" type="application/rss+xml" title="Maritn&#39;s Blog">
+  <script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/jquery-1.12.4.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.7.1/katex.min.css" integrity="sha384-wITovz90syo1dJWVh32uuETPVEtGigN07tkttEqPv+uR2SE/mbQcG7ATL28aI9H0" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+  
+  
+  <link rel="stylesheet" href="https://martinliu.cn/css/main.css" />
+  <link rel="stylesheet" href="https://martinliu.cn/css/search.css" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" />
+  
+
+<meta name="baidu-site-verification" content="W3AORuRNZo" />
+<script>
+    var _hmt = _hmt || [];
+    (function () {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?50c3a9ae6c51222b31df5510bbca479f";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+
+<link rel="stylesheet" href="https://martinliu.cn/css/prism.css" />
+
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.1/photoswipe.min.css" integrity="sha256-sCl5PUOGMLfFYctzDW3MtRib0ctyUvI9Qsmq2wXOeBY=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.1/default-skin/default-skin.min.css" integrity="sha256-BFeI1V+Vh1Rk37wswuOYn5lsTcaU96hGaI7OUVCLjPc=" crossorigin="anonymous" />
+
+
+
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+<div class="pswp__bg"></div>
+
+<div class="pswp__scroll-wrap">
+    
+    <div class="pswp__container">
+      <div class="pswp__item"></div>
+      <div class="pswp__item"></div>
+      <div class="pswp__item"></div>
+    </div>
+    
+    <div class="pswp__ui pswp__ui--hidden">
+    <div class="pswp__top-bar">
+      
+      <div class="pswp__counter"></div>
+      <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+      <button class="pswp__button pswp__button--share" title="Share"></button>
+      <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+      <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+      
+      
+      <div class="pswp__preloader">
+        <div class="pswp__preloader__icn">
+          <div class="pswp__preloader__cut">
+            <div class="pswp__preloader__donut"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+      <div class="pswp__share-tooltip"></div>
+    </div>
+    <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+    </button>
+    <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+    </button>
+    <div class="pswp__caption">
+      <div class="pswp__caption__center"></div>
+    </div>
+    </div>
+    </div>
+</div>
+
+</head>
+
+  <body>
+    <nav class="navbar navbar-default navbar-fixed-top navbar-custom">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#main-navbar">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="https://martinliu.cn/">Maritn&#39;s Blog</a>
+    </div>
+    <div class="collapse navbar-collapse" id="main-navbar">
+      <ul class="nav navbar-nav navbar-right">
+        
+          
+            <li>
+              <a title="Blog" href="/">Blog</a>
+              
+              
+            </li>
+          
+        
+          
+            <li>
+              <a title="Tags" href="/tags">Tags</a>
+              
+              
+            </li>
+          
+        
+          
+            <li>
+              <a title="About" href="/about/">About</a>
+              
+              
+            </li>
+          
+        
+          
+            <li>
+              <a title="Book" href="https://handbook.martinliu.cn">Book</a>
+              
+              
+            </li>
+          
+        
+
+        
+
+        
+        
+          <li>
+            <a href="#modalSearch" data-toggle="modal" data-target="#modalSearch" style="outline: none;">
+              <span class="hidden-sm hidden-md hidden-lg">Search</span> <span id="searchGlyph" class="glyphicon glyphicon-search"></span>
+            </a>
+          </li>
+          
+      </ul>
+    </div>
+
+    <div class="avatar-container">
+      <div class="avatar-img-border">
+        
+          <a title="Maritn&#39;s Blog" href="https://martinliu.cn/">
+            <img class="avatar-img" src="https://martinliu.cn/img/logo.jpg" alt="Maritn&#39;s Blog" />
+          </a>
+        
+      </div>
+    </div>
+
+  </div>
+</nav>
+
+
+
+
+
+  <div id="modalSearch" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Search martinliu.cn </h4>
+        </div>
+        <div class="modal-body">
+            
+<div class="aa-input-container" id="aa-input-container">
+    <input type="search" id="aa-search-input" class="aa-input-search" placeholder="Search for titles or URIs..." name="search" autocomplete="off" />
+    <svg class="aa-input-icon" viewBox="654 -372 1664 1664">
+        <path d="M1806,332c0-123.3-43.8-228.8-131.5-316.5C1586.8-72.2,1481.3-116,1358-116s-228.8,43.8-316.5,131.5  C953.8,103.2,910,208.7,910,332s43.8,228.8,131.5,316.5C1129.2,736.2,1234.7,780,1358,780s228.8-43.8,316.5-131.5  C1762.2,560.8,1806,455.3,1806,332z M2318,1164c0,34.7-12.7,64.7-38,90s-55.3,38-90,38c-36,0-66-12.7-90-38l-343-342  c-119.3,82.7-252.3,124-399,124c-95.3,0-186.5-18.5-273.5-55.5s-162-87-225-150s-113-138-150-225S654,427.3,654,332  s18.5-186.5,55.5-273.5s87-162,150-225s138-113,225-150S1262.7-372,1358-372s186.5,18.5,273.5,55.5s162,87,225,150s113,138,150,225  S2062,236.7,2062,332c0,146.7-41.3,279.7-124,399l343,343C2305.7,1098.7,2318,1128.7,2318,1164z" />
+    </svg>
+</div>
+
+
+
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/algoliasearch.min.js"></script>
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/autocomplete.min.js"></script>
+
+<script>
+var client = algoliasearch("3RK9W7WH5R", "06f3928eb3fad870c9197c68c238dbd3");
+var index = client.initIndex('martinliu_blog');
+
+autocomplete('#aa-search-input',
+{ hint: false}, {
+    source: autocomplete.sources.hits(index, {hitsPerPage: 5}),
+    
+    displayKey: 'name',
+    
+    templates: {
+        
+        suggestion: function(suggestion) {
+            
+            return '<span>' + '<a href="/' + suggestion.uri+ '">' +
+            suggestion._highlightResult.title.value + '</a></span>';
+        }
+    }
+});
+</script>
+
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+    
+  
+  
+  
+
+
+
+
+  
+
+  <header class="header-section ">
+    
+    <div class="intro-header no-img">
+      
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-12 col-md-12 col-md-offset-0">
+            <div class="posts-heading">
+                <h1 align="center">OpenNMS网络和系统管理简介</h1>
+                
+                
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+
+    
+<div class="container" role="main" itemscope itemtype="http://schema.org/Article">
+    <div class="row">
+        <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+            
+            
+            
+<div>
+    <section id="datecount">
+        <h4 id="date"> Tue May 8, 2007</h4>
+    </section>
+    <h5 id="wc">3300 Words|Read in about 7 Min</h5>
+    <h5 id="tags">Tags: 
+        
+        <a href="https://martinliu.cn/tags/opennms/">OpenNMS</a> &nbsp;
+    </h5>
+</div>
+
+            
+            <article role="main" class="blog-post" itemprop="articleBody" id="content">
+                
+
+<h2 id="1-1-概述">1.1  概述</h2>
+
+<p><br /></p>
+
+<p>Opennms能够帮助IT管理部门持续的监控分布式的异构系统和网络设备的运行状态，它可以支持SNMP网络管理协议确保管理的扩展性，并且提供非常灵活的定制功能从而有利于管理范围的伸缩。它内置的故障事件管理以提供故障事件的记录和分析的能力，快速隔离非根源事件并迅速发现故障原因。Opennms良好的设计可以快速部署实施，简单友好的图形界面能够使得用户迅速掌握，从而降低操作的复杂度，提高IT管理效率。</p>
+
+<p><br /><br /></p>
+
+<h2 id="1-2-体系架构">1.2  体系架构</h2>
+
+<p><br /></p>
+
+<p>作为一个通用的网络系统故障监控平台，其体系架构应如下图所示：</p>
+
+<p><br /></p>
+
+<p> <img src="http://blog.chinaunix.net/u/2632/photo/060204205615.jpg" alt="" /></p>
+
+<p><br /></p>
+
+<p><br /></p>
+
+<p>**附图1. **     <strong>Opennms</strong><strong>体系架构</strong></p>
+
+<p><br /></p>
+
+<p>我们从下至上对Opnnms体系架构作一一的介绍：</p>
+
+<p><br /></p>
+
+<p>u      被管理对象层，SNMP代理程序是数据采集和动作执行层。对应网络设备来讲，该层对应与网络设备本身的网络管理功能，不需要在设备上单独部署功能模块；对计算机来讲，该层是运行在目标计算机上的SNMP服务，负责采集该系统运行状况、性能等数据，并向管理层汇报。</p>
+
+<p><br /></p>
+
+<p>u      Opennms监控引擎是实现网络和系统可用性、故障管理的业务逻辑和策略的处理层。他利用特定的轮询策略：从代理程序层收集数据、更新和维护被管理对象状态、执行相关的报警事件通知。</p>
+
+<p><br /></p>
+
+<p>u      管理对象数据库是网络和系统管理的数据存储层。其中以面向对象的方式保存着网络和系统资源的模型，记录着他们的配置、描述和状态等信息。这些模型和信息是通过Opennms网络扫描模块自动建立起来的，并由管理者层自动维护。</p>
+
+<p><br /></p>
+
+<p>u      图形用户界面是网络和系统管理的数据表示层。他以各种直观、生动的用户界面向用户展示网络和系统中各种对象的关系、配置、状态和故障情况，是优秀的用户接口。</p>
+
+<p><br /></p>
+
+<p><br /></p>
+
+<p>针对某企业简称user short name的环境，其IT故障监控子系统的管理框架为：</p>
+
+<p><br /></p>
+
+<p>u      被管理对象层——启动核心路由器和交换机的SNMP网管协议，作为网络设备故障的数据提供源；在所有需要管理的服务器上运行SNMP服务，作为监控操作系统故障的数据提供源。</p>
+
+<p><br /></p>
+
+<p>u      Opennms网络监控服务器——新增一台服务器，部署Opennms的监控引擎模块，由该模块对被管理对象层的数据源进行自动的数据采集和翻译采集的结果。并实时发送报警信息。</p>
+
+<p><br /></p>
+
+<p>u      对象存储库——在和Opennms监控引擎安装的机器上安装PostgreSQL，作为Opennms监控模块的对象存储库。</p>
+
+<p><br /></p>
+
+<p>u      图形用户界面——某企业简称user short name管理员可使用任何的WWW浏览器连接Opennms网络监控服务器的用户界面，使用合适的用户名，在某种适当的权限下查看和浏览网络监控信息、状态信息、可用性报表和性能报表。</p>
+
+<p><br /><br /></p>
+
+<h2 id="1-3-功能介绍">1.3  功能介绍</h2>
+
+<p><br /></p>
+
+<h3 id="1-3-1-网络节点自动发现">1.3.1  网络节点自动发现</h3>
+
+<p><br /></p>
+
+<p>对象存储库中的信息并不是靠管理员手工输入和维护的，而是由Opennms网络监控引擎－自动扫描模块自动从用户的计算机系统中搜索发现出来的。</p>
+
+<p><br /></p>
+
+<p><br /></p>
+
+<p>**附图2. **     <strong>网络节点自动发现</strong></p>
+
+<p><br /><br /></p>
+
+<h3 id="1-3-2-图形用户管理界面">1.3.2  图形用户管理界面</h3>
+
+<p><br /></p>
+
+<p>在某企业简称user short name这 样的网络和系统中，需要一些友好的监控视图。目的是使得管理员能够通过直观的界面，迅速发现故障，从而在最短的时间内解决故障。该用户界面视图可使得管理 员通过管理工具看到现实世界对象的真实反映，而不是抽象的符号。使用户能够监控整个系统的概貌，系统的大体分布和总体运行状况等。并且决策适当的故障排除 方案，各种界面视图可通过Intranet进行浏览查看。</p>
+
+<p><br /></p>
+
+<p><br /></p>
+
+<p>**附图3. **     <strong>网络管理员管理主页</strong></p>
+
+<p><br /></p>
+
+<p>该用户界面的最左边是：Nodes with Outages，表格中列出了最近发生故障状况的12个节点，这些节点可能是网络故障，或者是某些网络服务出错等。</p>
+
+<p><br /></p>
+
+<p>用户界面的中间是：各种网络服务的服务水平报告。它列出了最近24小时之内各种网络服务的服务质量水平；其中的网络服务可能包括：网络接口的UP时间、Web服务、DNS和DHCP服务和数据库服务等。</p>
+
+<p><br /></p>
+
+<p>最右侧的是一些比较常用的功能选项：报警提示信息、节点的性能报表、节点网络服务相应时间报表和自定义的性能报表。</p>
+
+<p><br /><br /></p>
+
+<h3 id="1-3-3-故障监控">1.3.3  故障监控</h3>
+
+<p><br /></p>
+
+<p>被管理对象的数据采集和状态维护是由Opennms的监控引擎模块实现的。每个所管理的所有对象存储在数据库中。可以管理的对象包括：</p>
+
+<p><br /></p>
+
+<p>u      支持SNMP网管的网络设备</p>
+
+<p><br /></p>
+
+<p>u      部署了SNMP服务的服务器上的操作系统</p>
+
+<p><br /></p>
+
+<p>Opennms采取统一的通讯方式从这些管理对象上采集可用性和故障信息，信息的采集有两种方式：</p>
+
+<p><br /></p>
+
+<p>u      Opennms主动地通过SNMP协议定期查询被管理对象状态</p>
+
+<p><br /></p>
+
+<p>u      Opennms被动接收被管理对象发来的SNMP Trap</p>
+
+<p><br /></p>
+
+<p><br /></p>
+
+<p>Opennms得到被管理对象的轮询或Trap信息后，根据收到的信息类型、对象原来的状态和网络系统管理的策略和逻辑判断对象的状态是否发生变化。如果发生了变化，则可以按照管理策略采取若干更新操作。</p>
+
+<p><br /><br /></p>
+
+<h3 id="1-3-4-故障事件管理">1.3.4  故障事件管理</h3>
+
+<p><br /></p>
+
+<p>当 被管理对象的运行状态发生变化时，就会产生事件。如果该事件是由正常变为故障，则会产生故障报警。事件管理是通过收集、确认事件，对事件进行分类和过滤， 关联不同来源的事件完成对事件的处理和响应。通过事件管理，系统管理人员可以方便、迅速、及时掌握系统运行的故障和警报，及时进行处理，保障系统的正常、 稳定运行。</p>
+
+<p><br /></p>
+
+<p>IT系统管理人员所关注的问题，如系统资源出现短缺、数据库连接失败、网络通信中断、主机文件系统溢出等等都会以事件的形式表现出来。</p>
+
+<p><br /></p>
+
+<p><br /></p>
+
+<p>**附图4. **     <strong>事件管理控制台</strong></p>
+
+<p><br /></p>
+
+<p><br /><br /></p>
+
+<h3 id="1-3-5-操作系统监控">1.3.5  操作系统监控</h3>
+
+<p><br /></p>
+
+<p>Opennms对各种计算机操作系统的可用性、运行状况和故障的集中监控是通过本身的SNMP服务程序完成的。这些SNMP代理程序是SNMP服务的组成部分。在本次建议的方案中，在所有的被监控服务器上其监控的主要内容包括：</p>
+
+<p><br /></p>
+
+<p>u      CPU利用率，显示系统、用户、空闲时间的百分比；</p>
+
+<p><br /></p>
+
+<p>u      虚拟内存(Virtual memory)利用率；</p>
+
+<p><br /></p>
+
+<p>u      文件系统使用情况，显示磁盘空间使用情况；</p>
+
+<p><br /></p>
+
+<p>u      监视文件系统的使用率，当使用率超过特定阈值时向系统管理员报警；</p>
+
+<p><br /></p>
+
+<p>u      监控网络端口的输入、输出、错包，以及端口是否被停用或者删除；</p>
+
+<p><br /></p>
+
+<p>u      UNIX系统还可以监控</p>
+
+<p><br /></p>
+
+<p>²       Load Average：服务器平均处理量</p>
+
+<p><br /></p>
+
+<p>²       共享内存</p>
+
+<p><br /><br /></p>
+
+<h3 id="1-3-6-网络节点配置信息管理">1.3.6  网络节点配置信息管理</h3>
+
+<p><br /></p>
+
+<p>被监控对象节点在数据中的配置信息是IT设备的资产信息，每个网络节点都是一个特定的IT资产设备。每个节点在数据库中有很多属性字段供选择填写，主要有三类属性信息：</p>
+
+<p><br /></p>
+
+<ol>
+<li>配置种类信息：配置分类、告警分类、轮询属性和阈值分类。</li>
+</ol>
+
+<p><br /></p>
+
+<ol>
+<li>标识信息：资产描述、厂商、型号、资产编号、操作系统等</li>
+</ol>
+
+<p><br /></p>
+
+<ol>
+<li>位置信息：负责人、部门、楼层、房间、机架编号等</li>
+</ol>
+
+<p><br /></p>
+
+<p><br /></p>
+
+<p>**附图5. **     <strong>节点资产信息</strong></p>
+
+<p><br /></p>
+
+<p><br /><br /></p>
+
+<h3 id="1-3-7-全面的节点监控">1.3.7  全面的节点监控</h3>
+
+<p><br /></p>
+
+<p>每个被监控的节点都能被细致的记录和监控。当查看某节点的信息时，有这样几类信息：状态信息、各种网络服务总的可用性、SNMP属性、各个接口熟悉、最近发生的5个事件和最近的故障事件。</p>
+
+<p><br /></p>
+
+<p><br /></p>
+
+<p>**附图6. **     <strong>节点监控视图</strong></p>
+
+<p><br /></p>
+
+<p>在查看某个节点是，界面上的信息分为三类：网络服务可用性报表、当前状态和监控事件信息。在菜单栏还能有很多功能选项：查看故障事件、资产信息、响应时间报表、SNMP性能报表、重新扫描、节点管理和更新SNMP信息。</p>
+
+<p><br /></p>
+
+<p><br /><br /></p>
+
+<h2 id="1-4-特点和优势">1.4  特点和优势</h2>
+
+<p><br /></p>
+
+<p>Opennms在网络和系统管理方面，有非常广泛的用户，特别是中小企业用户，Opennms具有很多极好的特点：</p>
+
+<p><br /></p>
+
+<p>u      方便易用的用户管理界面——Opennms可以提供故障事件视图、节点视图、相应时间视图、性能视图等各种管理视图。</p>
+
+<p><br /></p>
+
+<p>u      基于Open Source协议开发——用户可以按照自己的需求，通过修改软件本身或者软件的源代码来定制。</p>
+
+<p><br /></p>
+
+<p>u      跨平台管理——Opennms支持任何能运行标准SNMP协议服务的操作系统系统，并且可以从一个单一的用户界面分别管理其局域网（LAN）。</p>
+
+<p><br /></p>
+
+<p>u      切实可行的事件管理系统——Opennms通过方便易用的交互式控制台，为IT管理员显示关键事件，提供自动的事件响应，可以以电子邮件方式发出事件通知。</p>
+
+<p><br /></p>
+
+<p>u      方便的集成——Opennms可以与第三方产品集成。例如Opennms可以方便的与Dell、HP、IBM等厂商的服务器自带的SNMP故障管理软件集成。</p>
+
+<p><br /></p>
+
+<p>u      2005 Linux World推荐管理产品 ——Opennms获得2005年Linux世界大会的“最佳网络系统管理软件”的荣誉。已经被认定开源软件世界中的最佳网络系统管理软件。</p>
+
+<p><br /></p>
+
+<p><br /></p>
+
+<p>版权所有，如果转载请著名出处。</p>
+
+<p><br /></p>
+
+<p>曾被<a href="http://www.vshj.com/">www.vshj.com</a>转载：<a href="http://www.vshj.com/Article/2006/200607/Article_97842.htm">http://www.vshj.com/Article/2006/200607/Article_97842.htm</a></p>
+
+<p><br /></p>
+
+<p><br /><br /></p>
+
+<p><a href="http://picasaweb.google.com/liuzh66/OpenNMS">文章中所提到的图片请参阅我的相册。  </a><br /><br /></p>
+
+<p><br /><br /></p>
+
+<p><br /><br /></p>
+
+            </article>
+
+            <ul class="pager blog-pager">
+                
+                <li class="previous">
+                    <a href="https://martinliu.cn/2007/05/08/opennms-faqs/" data-toggle="tooltip" data-placement="top" title="OpenNMS常问问题All-in-One">&larr; Previous Post</a>
+                </li>
+                 
+                <li class="next">
+                    <a href="https://martinliu.cn/2007/05/13/install-opennms-132-on-opensuse-102-system-the-simplest-version/" data-toggle="tooltip" data-placement="top" title="Install OpenNMS 1.3.2 on OpenSuse 10.2 system (The simplest version  )">Next Post &rarr;</a>
+                </li>
+                
+            </ul>
+            
+            <div>
+                 
+                <h2>See Also</h2>
+                <ul>
+                    
+                    <li><a href="/2007/05/08/opennms-faqs/">OpenNMS常问问题All-in-One</a></li>
+                    
+                    <li><a href="/2007/04/26/opennms-install-sample/">OpenNMS 安装说明－精简版</a></li>
+                    
+                    <li><a href="/2007/02/01/opennms-discuss-nagios/">翻译[opennms-discuss]邮件组里的一个讨论“Nagios转变”</a></li>
+                    
+                </ul>
+                
+            </div>
+            
+            
+            
+            
+<div>
+    <section id="datecount">
+        <h4 id="date"> Tue May 8, 2007</h4>
+    </section>
+    <h5 id="wc">3300 Words|Read in about 7 Min</h5>
+    <h5 id="tags">Tags: 
+        
+        <a href="https://martinliu.cn/tags/opennms/">OpenNMS</a> &nbsp;
+    </h5>
+</div>
+
+            
+            </div>
+            
+ 
+        </div>
+    </div>
+    </section>
+</div>
+
+    <footer>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <ul class="list-inline text-center footer-links">
+          
+              <li>
+                <a href="mailto:67120666@qq.com" title="Email me">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-envelope fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a href="https://plus.google.com/&#43;MartinLiu-cn" title="Google&#43;">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-google-plus fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a href="https://twitter.com/martinliu" title="Twitter">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a href="https://linkedin.com/in/liuzheng" title="LinkedIn">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-linkedin fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+          
+        </ul>
+        <p class="credits copyright text-muted">
+        &copy;2017-2018
+          
+            
+              <a href="martinliu.cn">Martin Liu</a>
+                      
+          
+          
+          
+            &nbsp;&bull;&nbsp;
+            <a href="https://martinliu.cn/">Maritn&#39;s Blog</a>
+          
+        </p>
+        
+        <p class="credits theme-by text-muted">
+          <a href="http://gohugo.io">Hugo v0.29</a> powered &nbsp;&bull;&nbsp; Theme by <a href="http://deanattali.com/beautiful-jekyll/">Beautiful Jekyll</a> adapted to <a href="https://github.com/halogenica/beautifulhugo">Beautiful Hugo</a>
+          
+        </p>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/bootstrap.min.js"></script>
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/photoswipe-ui-default.min.js"></script>
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/photoswipe.min.js"></script>
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/auto-render.min.js"></script>
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/main.js"></script>
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/prism.js"></script>
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/katex.min.js"></script>
+<script> renderMathInElement(document.body); </script>
+
+
+
+
+
+
+
+
+  </body>
+</html>
+

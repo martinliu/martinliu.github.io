@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+  <title> 如何用通过OpenNMS监控Windows 服务器 - 刘征的博客|DevOps|Cloud Computing</title>
+  <meta name="description" content="刘征的博客|DevOps|Cloud Computing" />
+  <meta property="og:title" content="如何用通过OpenNMS监控Windows 服务器" />
+  <meta name="twitter:title" content="如何用通过OpenNMS监控Windows 服务器" />
+  <meta name="description" content="OpenNMS可以监控可用性和性能参数。下面看看OpenNMS监控Windows服务器的三种情况。 第一种情况： Windows机器上没有安装S">
+  <meta property="og:description" content="OpenNMS可以监控可用性和性能参数。下面看看OpenNMS监控Windows服务器的三种情况。 第一种情况： Windows机器上没有安装S">
+  <meta name="twitter:description" content="OpenNMS可以监控可用性和性能参数。下面看看OpenNMS监控Windows服务器的三种情况。 第一种情况： Windows机器上没有安装S">
+  <meta name="author" content="{Description { .Site.Author.name }}"/>
+  <link href='https://martinliu.cn/img/favicon.ico' rel='icon' type='image/x-icon'/>
+  <meta property="og:image" content="https://martinliu.cn/img/logo.jpg" />
+  <meta name="twitter:image" content="https://martinliu.cn/img/logo.jpg" />
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:site" content="@martinliu" />
+  <meta name="twitter:creator" content="@martinliu" />
+  <meta property="og:url" content="https://martinliu.cn/2007/12/14/opennms-monitoring-ms-windows/" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Maritn&#39;s Blog" />
+
+  <meta name="generator" content="Hugo 0.29" />
+  <link rel="canonical" href="https://martinliu.cn/2007/12/14/opennms-monitoring-ms-windows/" />
+  <link rel="alternate" href="https://martinliu.cn/index.xml" type="application/rss+xml" title="Maritn&#39;s Blog">
+  <script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/jquery-1.12.4.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.7.1/katex.min.css" integrity="sha384-wITovz90syo1dJWVh32uuETPVEtGigN07tkttEqPv+uR2SE/mbQcG7ATL28aI9H0" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+  
+  
+  <link rel="stylesheet" href="https://martinliu.cn/css/main.css" />
+  <link rel="stylesheet" href="https://martinliu.cn/css/search.css" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" />
+  
+
+<meta name="baidu-site-verification" content="W3AORuRNZo" />
+<script>
+    var _hmt = _hmt || [];
+    (function () {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?50c3a9ae6c51222b31df5510bbca479f";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+
+<link rel="stylesheet" href="https://martinliu.cn/css/prism.css" />
+
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.1/photoswipe.min.css" integrity="sha256-sCl5PUOGMLfFYctzDW3MtRib0ctyUvI9Qsmq2wXOeBY=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.1/default-skin/default-skin.min.css" integrity="sha256-BFeI1V+Vh1Rk37wswuOYn5lsTcaU96hGaI7OUVCLjPc=" crossorigin="anonymous" />
+
+
+
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+<div class="pswp__bg"></div>
+
+<div class="pswp__scroll-wrap">
+    
+    <div class="pswp__container">
+      <div class="pswp__item"></div>
+      <div class="pswp__item"></div>
+      <div class="pswp__item"></div>
+    </div>
+    
+    <div class="pswp__ui pswp__ui--hidden">
+    <div class="pswp__top-bar">
+      
+      <div class="pswp__counter"></div>
+      <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+      <button class="pswp__button pswp__button--share" title="Share"></button>
+      <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+      <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+      
+      
+      <div class="pswp__preloader">
+        <div class="pswp__preloader__icn">
+          <div class="pswp__preloader__cut">
+            <div class="pswp__preloader__donut"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+      <div class="pswp__share-tooltip"></div>
+    </div>
+    <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+    </button>
+    <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+    </button>
+    <div class="pswp__caption">
+      <div class="pswp__caption__center"></div>
+    </div>
+    </div>
+    </div>
+</div>
+
+</head>
+
+  <body>
+    <nav class="navbar navbar-default navbar-fixed-top navbar-custom">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#main-navbar">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="https://martinliu.cn/">Maritn&#39;s Blog</a>
+    </div>
+    <div class="collapse navbar-collapse" id="main-navbar">
+      <ul class="nav navbar-nav navbar-right">
+        
+          
+            <li>
+              <a title="Blog" href="/">Blog</a>
+              
+              
+            </li>
+          
+        
+          
+            <li>
+              <a title="Tags" href="/tags">Tags</a>
+              
+              
+            </li>
+          
+        
+          
+            <li>
+              <a title="About" href="/about/">About</a>
+              
+              
+            </li>
+          
+        
+          
+            <li>
+              <a title="Book" href="https://handbook.martinliu.cn">Book</a>
+              
+              
+            </li>
+          
+        
+
+        
+
+        
+        
+          <li>
+            <a href="#modalSearch" data-toggle="modal" data-target="#modalSearch" style="outline: none;">
+              <span class="hidden-sm hidden-md hidden-lg">Search</span> <span id="searchGlyph" class="glyphicon glyphicon-search"></span>
+            </a>
+          </li>
+          
+      </ul>
+    </div>
+
+    <div class="avatar-container">
+      <div class="avatar-img-border">
+        
+          <a title="Maritn&#39;s Blog" href="https://martinliu.cn/">
+            <img class="avatar-img" src="https://martinliu.cn/img/logo.jpg" alt="Maritn&#39;s Blog" />
+          </a>
+        
+      </div>
+    </div>
+
+  </div>
+</nav>
+
+
+
+
+
+  <div id="modalSearch" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Search martinliu.cn </h4>
+        </div>
+        <div class="modal-body">
+            
+<div class="aa-input-container" id="aa-input-container">
+    <input type="search" id="aa-search-input" class="aa-input-search" placeholder="Search for titles or URIs..." name="search" autocomplete="off" />
+    <svg class="aa-input-icon" viewBox="654 -372 1664 1664">
+        <path d="M1806,332c0-123.3-43.8-228.8-131.5-316.5C1586.8-72.2,1481.3-116,1358-116s-228.8,43.8-316.5,131.5  C953.8,103.2,910,208.7,910,332s43.8,228.8,131.5,316.5C1129.2,736.2,1234.7,780,1358,780s228.8-43.8,316.5-131.5  C1762.2,560.8,1806,455.3,1806,332z M2318,1164c0,34.7-12.7,64.7-38,90s-55.3,38-90,38c-36,0-66-12.7-90-38l-343-342  c-119.3,82.7-252.3,124-399,124c-95.3,0-186.5-18.5-273.5-55.5s-162-87-225-150s-113-138-150-225S654,427.3,654,332  s18.5-186.5,55.5-273.5s87-162,150-225s138-113,225-150S1262.7-372,1358-372s186.5,18.5,273.5,55.5s162,87,225,150s113,138,150,225  S2062,236.7,2062,332c0,146.7-41.3,279.7-124,399l343,343C2305.7,1098.7,2318,1128.7,2318,1164z" />
+    </svg>
+</div>
+
+
+
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/algoliasearch.min.js"></script>
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/autocomplete.min.js"></script>
+
+<script>
+var client = algoliasearch("3RK9W7WH5R", "06f3928eb3fad870c9197c68c238dbd3");
+var index = client.initIndex('martinliu_blog');
+
+autocomplete('#aa-search-input',
+{ hint: false}, {
+    source: autocomplete.sources.hits(index, {hitsPerPage: 5}),
+    
+    displayKey: 'name',
+    
+    templates: {
+        
+        suggestion: function(suggestion) {
+            
+            return '<span>' + '<a href="/' + suggestion.uri+ '">' +
+            suggestion._highlightResult.title.value + '</a></span>';
+        }
+    }
+});
+</script>
+
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+    
+  
+  
+  
+
+
+
+
+  
+
+  <header class="header-section ">
+    
+    <div class="intro-header no-img">
+      
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-12 col-md-12 col-md-offset-0">
+            <div class="posts-heading">
+                <h1 align="center">如何用通过OpenNMS监控Windows 服务器</h1>
+                
+                
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+
+    
+<div class="container" role="main" itemscope itemtype="http://schema.org/Article">
+    <div class="row">
+        <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+            
+            
+            
+<div>
+    <section id="datecount">
+        <h4 id="date"> Fri Dec 14, 2007</h4>
+    </section>
+    <h5 id="wc">1200 Words|Read in about 3 Min</h5>
+    <h5 id="tags">Tags: 
+        
+        <a href="https://martinliu.cn/tags/ms-windows/">MS Windows</a> &nbsp;
+        
+        <a href="https://martinliu.cn/tags/opennms/">OpenNMS</a> &nbsp;
+    </h5>
+</div>
+
+            
+            <article role="main" class="blog-post" itemprop="articleBody" id="content">
+                <p>OpenNMS可以监控可用性和性能参数。下面看看OpenNMS监控Windows服务器的三种情况。<br /><br />第一种情况：<br />Windows机器上没有安装SNMP服务，在自动发现了这个节点后，它会被加入节点列表，之后它被定期的轮询。如果这个节点断网了，OpenNMS会报警；同时这个节点的可用性被计算。自动发现还会发现这个机器上的服务。ICMP是肯定会有的，还可能有http等其他的服务；这些服务也会被定时的轮询，如果某个服务停了，这个节点的整个的可用性受到影响。这种情况下该节点的所有服务的响应时间会被OpenNMS收集并保持历史数据。<br /><br />第二种情况：<br />安装了SNMP服务。先说一下windows服务的安全性，默认情况下public是默认的只读密码；为了更加安全可以配置其他的只读密码，并指定某些特定的IP才能访问这个节点。这个策略在Windows的觉策略中很容易实现，或者说建议使用域控制器来管理这个策略，比较方便。假定OpenNMS能访问该节点的snmp服务的情况下。这些数据会增加：SNMP Attributes；在选择了资源图后，可以看到snmp的节点数据和接口数据。进入后可以看到，其实收集 的是一个tcp／ip接口上基本的信息：流量，连接数，丢包，错包等。个人认为流量是个最有用的数据，特别是对于一些简单的web/ftp服务器也就够用了。<br /><br />第三种情况：<br />我们需要监控到操作系统的性能数据cpu/disk/RAM等。就需要安装一个snmp代理，这个代理可以提供这些信息，opennms才能通过snmp协议收集这些数据。需要到下面网址下载一个免费的snmp代理，当然这个产品也有收费版本：<a href="http://www.wtcs.org/informant/download.htm">http://www.wtcs.org/informant/download.htm</a> 这个代理很小需要在windows机器上安装一下。默认情况下OpenNMS的对windows采集模板中包含了对cpu/disk/ram等数据的采集，等到下一次OpenNMS在采集这个机器的时候相关数据就会被显示在节点snmp数据下面。<br /><br />这里是通过这个免费的snmp代理能采集到的数据：<br />/Program Files/SNMP Informant/standard/mibs/informant-std-tree.txt<br />&ndash;standard(1.3.6.1.4.1.9600.1.1)<br />|<br />+&ndash;logicalDiskTable(1)<br />|  |<br />|  +&ndash;logicalDiskEntry(1) [lDiskInstance]<br />|     |<br />|     +&ndash; r-n InstanceName lDiskInstance(1)<br />|     +&ndash; r-n Gauge32      lDiskPercentDiskReadTime(2)<br />|     +&ndash; r-n Gauge32      lDiskPercentDiskTime(3)<br />|     +&ndash; r-n Gauge32      lDiskPercentDiskWriteTime(4)<br />|     +&ndash; r-n Gauge32      lDiskPercentFreeSpace(5)<br />|     +&ndash; r-n Gauge32      lDiskPercentIdleTime(6)<br />|     +&ndash; r-n Gauge32      lDiskAvgDiskQueueLength(7)<br />|     +&ndash; r-n Gauge32      lDiskAvgDiskReadQueueLength(8)<br />|     +&ndash; r-n Gauge32      lDiskAvgDiskWriteQueueLength(9)<br />|     +&ndash; r-n Gauge32      lDiskAvgDiskSecPerRead(10)<br />|     +&ndash; r-n Gauge32      lDiskAvgDiskSecPerTransfer(11)<br />|     +&ndash; r-n Gauge32      lDiskAvgDiskSecPerWrite(12)<br />|     +&ndash; r-n Gauge32      lDiskCurrentDiskQueueLength(13)<br />|     +&ndash; r-n Gauge32      lDiskDiskBytesPerSec(14)<br />|     +&ndash; r-n Gauge32      lDiskDiskReadBytesPerSec(15)<br />|     +&ndash; r-n Gauge32      lDiskDiskReadsPerSec(16)<br />|     +&ndash; r-n Gauge32      lDiskDiskTransfersPerSec(17)<br />|     +&ndash; r-n Gauge32      lDiskDiskWriteBytesPerSec(18)<br />|     +&ndash; r-n Gauge32      lDiskDiskWritesPerSec(19)<br />|     +&ndash; r-n Gauge32      lDiskFreeMegabytes(20)<br />|     +&ndash; r-n Gauge32      lDiskSplitIOPerSec(21)<br />|<br />+&ndash;memory(2)<br />|  |<br />|  +&ndash; r-n Gauge32   memoryAvailableBytes(1)<br />|  +&ndash; r-n Gauge32   memoryAvailableKBytes(2)<br />|  +&ndash; r-n Gauge32   memoryAvailableMBytes(3)<br />|  +&ndash; r-n Gauge32   memoryCommittedBytes(4)<br />|  +&ndash; r-n Gauge32   memoryCacheBytes(5)<br />|  +&ndash; r-n Gauge32   memoryCacheBytesPeak(6)<br />|  +&ndash; r-n Gauge32   memoryPageFaultsPerSec(7)<br />|  +&ndash; r-n Gauge32   memoryPagesInputPerSec(8)<br />|  +&ndash; r-n Gauge32   memoryPagesOutputPerSec(9)<br />|  +&ndash; r-n Gauge32   memoryPagesPerSec(10)<br />|  +&ndash; r-n Gauge32   memoryPoolNonpagedBytes(11)<br />|  +&ndash; r-n Gauge32   memoryPoolPagedBytes(12)<br />|  +&ndash; r-n Gauge32   memoryPoolPagedResidentBytes(13)<br />|  +&ndash; r-n Gauge32   memorySystemCacheResidentBytes(14)<br />|  +&ndash; r-n Gauge32   memorySystemCodeResidentBytes(15)<br />|  +&ndash; r-n Gauge32   memorySystemCodeTotalBytes(16)<br />|  +&ndash; r-n Gauge32   memorySystemDriverResidentBytes(17)<br />|  +&ndash; r-n Gauge32   memorySystemDriverTotalBytes(18)<br />|<br />+&ndash;networkInterfaceTable(3)<br />|  |<br />|  +&ndash;networkInterfaceEntry(1) [netInstance]<br />|     |<br />|     +&ndash; r-n InstanceName netInstance(1)<br />|     +&ndash; r-n Gauge32      netBytesReceivedPerSec(2)<br />|     +&ndash; r-n Gauge32      netBytesSentPerSec(3)<br />|     +&ndash; r-n Gauge32      netBytesTotalPerSec(4)<br />|     +&ndash; r-n Gauge32      netCurrentBandwidth(5)<br />|     +&ndash; r-n Gauge32      netOutputQueueLength(6)<br />|     +&ndash; r-n Gauge32      netPacketsOutboundDiscarded(7)<br />|     +&ndash; r-n Gauge32      netPacketsOutboundErrors(8)<br />|     +&ndash; r-n Gauge32      netPacketsReceivedDiscarded(9)<br />|     +&ndash; r-n Gauge32      netPacketsReceivedErrors(10)<br />|     +&ndash; r-n Gauge32      netPacketsReceivedUnknown(11)<br />|     +&ndash; r-n Gauge32      netPacketsReceivedPerSec(12)<br />|     +&ndash; r-n Gauge32      netPacketsSentPerSec(13)<br />|     +&ndash; r-n Gauge32      netPacketsPerSec(14)<br />|<br />+&ndash;objects(4)<br />|  |<br />|  +&ndash; r-n Gauge32   objectsProcesses(1)<br />|  +&ndash; r-n Gauge32   objectsThreads(2)<br />|<br />+&ndash;processorTable(5)<br />|  |<br />|  +&ndash;processorEntry(1) [cpuInstance]<br />|     |<br />|     +&ndash; r-n InstanceName cpuInstance(1)<br />|     +&ndash; r-n Gauge32      cpuPercentDPCTime(2)<br />|     +&ndash; r-n Gauge32      cpuPercentInterruptTime(3)<br />|     +&ndash; r-n Gauge32      cpuPercentPrivilegedTime(4)<br />|     +&ndash; r-n Gauge32      cpuPercentProcessorTime(5)<br />|     +&ndash; r-n Gauge32      cpuPercentUserTime(6)<br />|     +&ndash; r-n Gauge32      cpuAPCBypassesPerSec(7)<br />|     +&ndash; r-n Gauge32      cpuDPCBypassesPerSec(8)<br />|     +&ndash; r-n Gauge32      cpuDPCRate(9)<br />|     +&ndash; r-n Gauge32      cpuDPCsQueuedPerSec(10)<br />|     +&ndash; r-n Gauge32      cpuInterruptsPerSec(11)<br />|<br />+&ndash;system(6)<br />|<br />+&ndash; r-n Gauge32   systemSystemUpTime(1)<br /><br />最后记得在看看这个许可证文件：<br />Program Files/SNMP Informant/standard/license.txt<br />LICENSE.TXT<br />&mdash;&mdash;&mdash;&ndash;<br />FREE OF CHARGE SOFTWARE PROGRAM LICENSE AGREEMENT for<br />SNMP INFORMANT STANDARD EDITION (The Software)<br /><br />&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;<br />Copyright&copy; 2005, Informant Systems, Inc. (www.informant-systems.com), and<br />Copyright&copy; 2003-2005, Williams Technology Consulting Services (www.wtcs.org)<br />&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;<br />Product names used in this document are trademarks of their respective owners.<br />* IMPORTANT-PLEASE READ CAREFULLY BEFORE INSTALLING THE SOFTWARE.<br />&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;<br />后面略&hellip;.<br /><br />在安装了snmp代理之后，我们可以看到OpenNMS可以帮助我们完成windows服务器的可用性和性能管理。</p>
+
+            </article>
+
+            <ul class="pager blog-pager">
+                
+                <li class="previous">
+                    <a href="https://martinliu.cn/2007/12/13/opennms-yum-install/" data-toggle="tooltip" data-placement="top" title="OpenNMS的Yum的安装方式，安装简单了很多">&larr; Previous Post</a>
+                </li>
+                 
+                <li class="next">
+                    <a href="https://martinliu.cn/2007/12/14/gsm-modem-alert-sms/" data-toggle="tooltip" data-placement="top" title="发送告警短信的方法，德国工艺服了">Next Post &rarr;</a>
+                </li>
+                
+            </ul>
+            
+            <div>
+                 
+                <h2>See Also</h2>
+                <ul>
+                    
+                    <li><a href="/2007/12/13/opennms-yum-install/">OpenNMS的Yum的安装方式，安装简单了很多</a></li>
+                    
+                    <li><a href="/2007/06/01/top-10-nsm-tools/">[转]10大优秀开源网络管理工具</a></li>
+                    
+                    <li><a href="/2007/05/13/install-opennms-132-on-opensuse-102-system-the-simplest-version/">Install OpenNMS 1.3.2 on OpenSuse 10.2 system (The simplest version  )</a></li>
+                    
+                    <li><a href="/2007/05/08/what-is-opennms/">OpenNMS网络和系统管理简介</a></li>
+                    
+                    <li><a href="/2007/05/08/opennms-faqs/">OpenNMS常问问题All-in-One</a></li>
+                    
+                </ul>
+                
+            </div>
+            
+            
+            
+            
+<div>
+    <section id="datecount">
+        <h4 id="date"> Fri Dec 14, 2007</h4>
+    </section>
+    <h5 id="wc">1200 Words|Read in about 3 Min</h5>
+    <h5 id="tags">Tags: 
+        
+        <a href="https://martinliu.cn/tags/ms-windows/">MS Windows</a> &nbsp;
+        
+        <a href="https://martinliu.cn/tags/opennms/">OpenNMS</a> &nbsp;
+    </h5>
+</div>
+
+            
+            </div>
+            
+ 
+        </div>
+    </div>
+    </section>
+</div>
+
+    <footer>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <ul class="list-inline text-center footer-links">
+          
+              <li>
+                <a href="mailto:67120666@qq.com" title="Email me">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-envelope fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a href="https://plus.google.com/&#43;MartinLiu-cn" title="Google&#43;">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-google-plus fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a href="https://twitter.com/martinliu" title="Twitter">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a href="https://linkedin.com/in/liuzheng" title="LinkedIn">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-linkedin fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+          
+        </ul>
+        <p class="credits copyright text-muted">
+        &copy;2017-2018
+          
+            
+              <a href="martinliu.cn">Martin Liu</a>
+                      
+          
+          
+          
+            &nbsp;&bull;&nbsp;
+            <a href="https://martinliu.cn/">Maritn&#39;s Blog</a>
+          
+        </p>
+        
+        <p class="credits theme-by text-muted">
+          <a href="http://gohugo.io">Hugo v0.29</a> powered &nbsp;&bull;&nbsp; Theme by <a href="http://deanattali.com/beautiful-jekyll/">Beautiful Jekyll</a> adapted to <a href="https://github.com/halogenica/beautifulhugo">Beautiful Hugo</a>
+          
+        </p>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/bootstrap.min.js"></script>
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/photoswipe-ui-default.min.js"></script>
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/photoswipe.min.js"></script>
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/auto-render.min.js"></script>
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/main.js"></script>
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/prism.js"></script>
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/katex.min.js"></script>
+<script> renderMathInElement(document.body); </script>
+
+
+
+
+
+
+
+
+  </body>
+</html>
+

@@ -1,0 +1,1191 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+  <title> Maritn&#39;s Blog - 刘征的博客|DevOps|Cloud Computing</title>
+  <meta name="description" content="刘征的博客|DevOps|Cloud Computing" />
+  <meta property="og:title" content="Maritn&#39;s Blog" />
+  <meta name="twitter:title" content="Maritn&#39;s Blog" />
+  <meta name="description" content="This is Martin Liu&rsquo;s Blog. 劉征(Martin)是《DevOps Handbook》(中文书名：DevOps实践指南)的译者，Exin首批国内DOP&amp;DOM认证讲师，从业十多年以来积累了丰富的云计算技术和项目经验，持有红帽RHCA认证和AWS高级架构师认证。谙熟企业数据中心的IT服务管理。目前致力于推广DevOps的理念和技术实践。">
+  <meta property="og:description" content="This is Martin Liu&rsquo;s Blog. 劉征(Martin)是《DevOps Handbook》(中文书名：DevOps实践指南)的译者，Exin首批国内DOP&amp;DOM认证讲师，从业十多年以来积累了丰富的云计算技术和项目经验，持有红帽RHCA认证和AWS高级架构师认证。谙熟企业数据中心的IT服务管理。目前致力于推广DevOps的理念和技术实践。">
+  <meta name="twitter:description" content="This is Martin Liu&rsquo;s Blog. 劉征(Martin)是《DevOps Handbook》(中文书名：DevOps实践指南)的译者，Exin首批国内DOP&amp;DOM认证讲师，从业十多年以来积累了丰富的云计算技术和项目经验，持有红帽RHCA认证和AWS高级架构师认证。谙熟企业数据中心的IT服务管理。目前致力于推广DevOps的理念和技术实践。">
+  <meta name="author" content="{Description { .Site.Author.name }}"/>
+  <link href='https://martinliu.cn/img/favicon.ico' rel='icon' type='image/x-icon'/>
+  <meta property="og:image" content="https://martinliu.cn/img/logo.jpg" />
+  <meta name="twitter:image" content="https://martinliu.cn/img/logo.jpg" />
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:site" content="@martinliu" />
+  <meta name="twitter:creator" content="@martinliu" />
+  <meta property="og:url" content="https://martinliu.cn/" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Maritn&#39;s Blog" />
+
+  <meta name="generator" content="Hugo 0.29" />
+  <link rel="canonical" href="https://martinliu.cn/" />
+  <link rel="alternate" href="https://martinliu.cn/index.xml" type="application/rss+xml" title="Maritn&#39;s Blog">
+  <script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/jquery-1.12.4.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.7.1/katex.min.css" integrity="sha384-wITovz90syo1dJWVh32uuETPVEtGigN07tkttEqPv+uR2SE/mbQcG7ATL28aI9H0" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+  
+  
+  <link rel="stylesheet" href="https://martinliu.cn/css/main.css" />
+  <link rel="stylesheet" href="https://martinliu.cn/css/search.css" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" />
+  
+
+<meta name="baidu-site-verification" content="W3AORuRNZo" />
+<script>
+    var _hmt = _hmt || [];
+    (function () {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?50c3a9ae6c51222b31df5510bbca479f";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+
+<link rel="stylesheet" href="https://martinliu.cn/css/prism.css" />
+
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.1/photoswipe.min.css" integrity="sha256-sCl5PUOGMLfFYctzDW3MtRib0ctyUvI9Qsmq2wXOeBY=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.1/default-skin/default-skin.min.css" integrity="sha256-BFeI1V+Vh1Rk37wswuOYn5lsTcaU96hGaI7OUVCLjPc=" crossorigin="anonymous" />
+
+
+
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+<div class="pswp__bg"></div>
+
+<div class="pswp__scroll-wrap">
+    
+    <div class="pswp__container">
+      <div class="pswp__item"></div>
+      <div class="pswp__item"></div>
+      <div class="pswp__item"></div>
+    </div>
+    
+    <div class="pswp__ui pswp__ui--hidden">
+    <div class="pswp__top-bar">
+      
+      <div class="pswp__counter"></div>
+      <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+      <button class="pswp__button pswp__button--share" title="Share"></button>
+      <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+      <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+      
+      
+      <div class="pswp__preloader">
+        <div class="pswp__preloader__icn">
+          <div class="pswp__preloader__cut">
+            <div class="pswp__preloader__donut"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+      <div class="pswp__share-tooltip"></div>
+    </div>
+    <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+    </button>
+    <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+    </button>
+    <div class="pswp__caption">
+      <div class="pswp__caption__center"></div>
+    </div>
+    </div>
+    </div>
+</div>
+
+</head>
+
+  <body>
+    <nav class="navbar navbar-default navbar-fixed-top navbar-custom">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#main-navbar">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="https://martinliu.cn/">Maritn&#39;s Blog</a>
+    </div>
+    <div class="collapse navbar-collapse" id="main-navbar">
+      <ul class="nav navbar-nav navbar-right">
+        
+          
+            <li>
+              <a title="Blog" href="/">Blog</a>
+              
+              
+            </li>
+          
+        
+          
+            <li>
+              <a title="Tags" href="/tags">Tags</a>
+              
+              
+            </li>
+          
+        
+          
+            <li>
+              <a title="About" href="/about/">About</a>
+              
+              
+            </li>
+          
+        
+          
+            <li>
+              <a title="Book" href="https://handbook.martinliu.cn">Book</a>
+              
+              
+            </li>
+          
+        
+
+        
+
+        
+        
+          <li>
+            <a href="#modalSearch" data-toggle="modal" data-target="#modalSearch" style="outline: none;">
+              <span class="hidden-sm hidden-md hidden-lg">Search</span> <span id="searchGlyph" class="glyphicon glyphicon-search"></span>
+            </a>
+          </li>
+          
+      </ul>
+    </div>
+
+    <div class="avatar-container">
+      <div class="avatar-img-border">
+        
+          <a title="Maritn&#39;s Blog" href="https://martinliu.cn/">
+            <img class="avatar-img" src="https://martinliu.cn/img/logo.jpg" alt="Maritn&#39;s Blog" />
+          </a>
+        
+      </div>
+    </div>
+
+  </div>
+</nav>
+
+
+
+
+
+  <div id="modalSearch" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Search martinliu.cn </h4>
+        </div>
+        <div class="modal-body">
+            
+<div class="aa-input-container" id="aa-input-container">
+    <input type="search" id="aa-search-input" class="aa-input-search" placeholder="Search for titles or URIs..." name="search" autocomplete="off" />
+    <svg class="aa-input-icon" viewBox="654 -372 1664 1664">
+        <path d="M1806,332c0-123.3-43.8-228.8-131.5-316.5C1586.8-72.2,1481.3-116,1358-116s-228.8,43.8-316.5,131.5  C953.8,103.2,910,208.7,910,332s43.8,228.8,131.5,316.5C1129.2,736.2,1234.7,780,1358,780s228.8-43.8,316.5-131.5  C1762.2,560.8,1806,455.3,1806,332z M2318,1164c0,34.7-12.7,64.7-38,90s-55.3,38-90,38c-36,0-66-12.7-90-38l-343-342  c-119.3,82.7-252.3,124-399,124c-95.3,0-186.5-18.5-273.5-55.5s-162-87-225-150s-113-138-150-225S654,427.3,654,332  s18.5-186.5,55.5-273.5s87-162,150-225s138-113,225-150S1262.7-372,1358-372s186.5,18.5,273.5,55.5s162,87,225,150s113,138,150,225  S2062,236.7,2062,332c0,146.7-41.3,279.7-124,399l343,343C2305.7,1098.7,2318,1128.7,2318,1164z" />
+    </svg>
+</div>
+
+
+
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/algoliasearch.min.js"></script>
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/autocomplete.min.js"></script>
+
+<script>
+var client = algoliasearch("3RK9W7WH5R", "06f3928eb3fad870c9197c68c238dbd3");
+var index = client.initIndex('martinliu_blog');
+
+autocomplete('#aa-search-input',
+{ hint: false}, {
+    source: autocomplete.sources.hits(index, {hitsPerPage: 5}),
+    
+    displayKey: 'name',
+    
+    templates: {
+        
+        suggestion: function(suggestion) {
+            
+            return '<span>' + '<a href="/' + suggestion.uri+ '">' +
+            suggestion._highlightResult.title.value + '</a></span>';
+        }
+    }
+});
+</script>
+
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+    
+  
+  
+  
+  
+
+
+
+
+  
+    <div id="header-big-imgs" data-num-img=3 data-img-src-1="https://martinliu.cn/images/header-img1.jpg" data-img-desc-1="Fly to cloud"data-img-src-2="https://martinliu.cn/images/header-img2.jpg" data-img-desc-2="Walk your way"data-img-src-3="https://martinliu.cn/images/sandra%20li-1.JPG" data-img-desc-3="国家剧院/SandraLi"></div>
+  
+
+  <header class="header-section has-img">
+    
+      <div class="intro-header big-img">
+        
+        
+        <div class="container">
+          <div class="row">
+              <div class="col-lg-12 col-md-12 col-md-offset-0">
+                
+                <div class="page-heading">
+                
+                  
+                     <h1 align="center">Do you have a pleasent DevOps journey?</h1>
+                  
+                  
+                  
+                    <hr class="small">
+                    <span class="page-subheading">I am a runner, blogger and open source funs</span>
+                  
+                  
+                
+              </div>
+            </div>
+          </div>
+        </div>
+        <span class="img-desc" style="display: inline;"></span>
+      </div>
+    
+    <div class="intro-header no-img">
+      
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-12 col-md-12 col-md-offset-0">
+            <div class="page-heading">
+                <h1 align="center">Maritn&#39;s Blog</h1>
+                
+                  
+                    <hr class="small">
+                    <span class="page-subheading">I am a runner, blogger and open source funs</span>
+                  
+                
+                
+                  <span class="post-meta">
+  
+  
+</span>
+
+
+                
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+
+    
+  <div role="main" class="container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        
+          <div class="well">
+            
+
+<h3 id="this-is-martin-liu-s-blog">This is Martin Liu&rsquo;s Blog.</h3>
+
+<p>劉征(Martin)是<a href="http://handbook.martinliu.cn">《DevOps Handbook》(中文书名：DevOps实践指南)</a>的译者，Exin首批国内<a href="https://www.exin.jp/CN/zh/exams/&amp;exam=exin-devops-master"><strong>DOP&amp;DOM认证讲师</strong></a>，从业十多年以来积累了丰富的云计算技术和项目经验，持有红帽RHCA认证和AWS高级架构师认证。谙熟企业数据中心的IT服务管理。目前致力于推广DevOps的理念和技术实践。</p>
+
+          </div>
+        
+
+        <div class="posts-list">
+          
+          
+            <article class="post-preview">
+              <a href="https://martinliu.cn/posts/something-you-must-know-about-devops/">
+                <h2 class="post-title">关于DevOps 的那些事</h2>
+                
+                  <h3 class="post-subtitle">
+                  我对DevOps的一个比较宏观的总结
+                  </h3>
+                
+              </a>
+
+              <span class="post-meta">
+  
+  Posted on 2017, September 23
+  
+  
+</span>
+
+
+              <div class="post-entry">
+                
+                  DevOps是孕育于敏捷社区，又反哺给整个IT技术行业的，是一次彻底而全面的技术和文化运动。本文从它的出处谈起，一直描述到当前国内的现状。最
+                  <a href="https://martinliu.cn/posts/something-you-must-know-about-devops/" class="post-read-more">[Read More]</a>
+                
+              </div>
+
+              
+                <span class="post-meta">
+                
+                  #<a href="https://martinliu.cn/tags/devops/">DevOps</a>&nbsp;
+                
+                  #<a href="https://martinliu.cn/tags/docker/">Docker</a>&nbsp;
+                
+                </span>
+              
+            </article>
+          
+            <article class="post-preview">
+              <a href="https://martinliu.cn/posts/welcome-to-ghost/">
+                <h2 class="post-title">切换到Ghost&#43;七牛</h2>
+                
+                  <h3 class="post-subtitle">
+                  折腾
+                  </h3>
+                
+              </a>
+
+              <span class="post-meta">
+  
+  Posted on 2017, September 21
+  
+  
+</span>
+
+
+              <div class="post-entry">
+                
+                  在经历了一个很长的周期之后，我的blog又回到了最原始的状态。很早以前学习网页开发的时候，用写字板编写html代码，后来是Asp，工作以后是
+                  <a href="https://martinliu.cn/posts/welcome-to-ghost/" class="post-read-more">[Read More]</a>
+                
+              </div>
+
+              
+                <span class="post-meta">
+                
+                  #<a href="https://martinliu.cn/tags/blog/">blog</a>&nbsp;
+                
+                </span>
+              
+            </article>
+          
+            <article class="post-preview">
+              <a href="https://martinliu.cn/posts/install-minikube-k8s/">
+                <h2 class="post-title">用Minikube体验单节点K8S</h2>
+                
+                  <h3 class="post-subtitle">
+                  minikube上手指南
+                  </h3>
+                
+              </a>
+
+              <span class="post-meta">
+  
+  Posted on 2017, September 21
+  
+  
+</span>
+
+
+              <div class="post-entry">
+                
+                  Minikube为各种操作系统的开发者，提供了运行K8S最简洁的方式。它最小化了安装k8s的需求和工作量。而且在各种操作系统上可以实现相同的
+                  <a href="https://martinliu.cn/posts/install-minikube-k8s/" class="post-read-more">[Read More]</a>
+                
+              </div>
+
+              
+                <span class="post-meta">
+                
+                  #<a href="https://martinliu.cn/tags/devops/">DevOps</a>&nbsp;
+                
+                  #<a href="https://martinliu.cn/tags/docker/">Docker</a>&nbsp;
+                
+                </span>
+              
+            </article>
+          
+            <article class="post-preview">
+              <a href="https://martinliu.cn/posts/running-on-xian-city-wall/">
+                <h2 class="post-title">奔跑在西安的城墙上</h2>
+                
+                  <h3 class="post-subtitle">
+                  在西安拔草西安城墙
+                  </h3>
+                
+              </a>
+
+              <span class="post-meta">
+  
+  Posted on 2017, September 12
+  
+  
+</span>
+
+
+              <div class="post-entry">
+                
+                  来西安出差很多次了，每次都想绕城墙跑一圈，后来也不止一次看到其他朋友，要么绕城跑，要么在城墙上跑过；因此这根草也就越长越高，这次跑步的动力主
+                  <a href="https://martinliu.cn/posts/running-on-xian-city-wall/" class="post-read-more">[Read More]</a>
+                
+              </div>
+
+              
+                <span class="post-meta">
+                
+                  #<a href="https://martinliu.cn/tags/running/">Running</a>&nbsp;
+                
+                </span>
+              
+            </article>
+          
+            <article class="post-preview">
+              <a href="https://martinliu.cn/posts/ntu-running/">
+                <h2 class="post-title">台大校园游览跑</h2>
+                
+                  <h3 class="post-subtitle">
+                  首次台湾跑步
+                  </h3>
+                
+              </a>
+
+              <span class="post-meta">
+  
+  Posted on 2017, September 9
+  
+  
+</span>
+
+
+              <div class="post-entry">
+                
+                  趁着参加DevOpsDays Taipei的机会晨跑台大校园。在台北的这几天总体感觉是非常好的，和很多大陆来的好朋友一起，愉快地玩耍了几天。只
+                  <a href="https://martinliu.cn/posts/ntu-running/" class="post-read-more">[Read More]</a>
+                
+              </div>
+
+              
+                <span class="post-meta">
+                
+                  #<a href="https://martinliu.cn/tags/%E8%B7%91%E6%AD%A5/">跑步</a>&nbsp;
+                
+                </span>
+              
+            </article>
+          
+            <article class="post-preview">
+              <a href="https://martinliu.cn/posts/aws-vs-azure-vs-gcp/">
+                <h2 class="post-title">Game of Cloud 对比三大主流公有云厂商</h2>
+                
+                  <h3 class="post-subtitle">
+                  云之战
+                  </h3>
+                
+              </a>
+
+              <span class="post-meta">
+  
+  Posted on 2017, September 7
+  
+  
+</span>
+
+
+              <div class="post-entry">
+                
+                  在全球范围内，公有云发展的正如火如荼，对IT行业技术的发展产生了很大的影响，从私有云到公有云，到混合云，再到云原生应用和DevOps。这一连
+                  <a href="https://martinliu.cn/posts/aws-vs-azure-vs-gcp/" class="post-read-more">[Read More]</a>
+                
+              </div>
+
+              
+                <span class="post-meta">
+                
+                  #<a href="https://martinliu.cn/tags/cloud/">cloud</a>&nbsp;
+                
+                </span>
+              
+            </article>
+          
+            <article class="post-preview">
+              <a href="https://martinliu.cn/posts/taipei/">
+                <h2 class="post-title">不一样的台北，不一样的感受</h2>
+                
+                  <h3 class="post-subtitle">
+                  台湾爽玩一周游
+                  </h3>
+                
+              </a>
+
+              <span class="post-meta">
+  
+  Posted on 2017, September 7
+  
+  
+</span>
+
+
+              <div class="post-entry">
+                
+                  这是一次偶然的旅行，在最近的两年里，我很荣幸的认识了很多新朋友；偶然间受到了台湾朋友的邀请；这也是一次必然的旅行，由于我锁定了DevOps这
+                  <a href="https://martinliu.cn/posts/taipei/" class="post-read-more">[Read More]</a>
+                
+              </div>
+
+              
+                <span class="post-meta">
+                
+                  #<a href="https://martinliu.cn/tags/%E6%97%85%E8%A1%8C/">旅行</a>&nbsp;
+                
+                </span>
+              
+            </article>
+          
+            <article class="post-preview">
+              <a href="https://martinliu.cn/posts/cloud-native-python/">
+                <h2 class="post-title">Cloud Native Python</h2>
+                
+                  <h3 class="post-subtitle">
+                  使用Python和React构建云原生应用
+                  </h3>
+                
+              </a>
+
+              <span class="post-meta">
+  
+  Posted on 2017, August 15
+  
+  
+</span>
+
+
+              <div class="post-entry">
+                
+                  继 Cloud Native Go 之后又一本关于 Cloud Native 的力作已经登上了我的写作日程，这次是基于 Python 构建微服务和云原生 Web 应用程序，书名叫作 Cloud Native Python。 下面是它的英文原
+                  <a href="https://martinliu.cn/posts/cloud-native-python/" class="post-read-more">[Read More]</a>
+                
+              </div>
+
+              
+                <span class="post-meta">
+                
+                  #<a href="https://martinliu.cn/tags/cloud-native/">cloud-native</a>&nbsp;
+                
+                  #<a href="https://martinliu.cn/tags/book/">book</a>&nbsp;
+                
+                  #<a href="https://martinliu.cn/tags/python/">python</a>&nbsp;
+                
+                  #<a href="https://martinliu.cn/tags/microservices/">microservices</a>&nbsp;
+                
+                </span>
+              
+            </article>
+          
+            <article class="post-preview">
+              <a href="https://martinliu.cn/posts/las-vegas-p2/">
+                <h2 class="post-title">Las Vegas流水账-大峡谷篇</h2>
+                
+                  <h3 class="post-subtitle">
+                  大峡谷
+                  </h3>
+                
+              </a>
+
+              <span class="post-meta">
+  
+  Posted on 2017, August 13
+  
+  
+</span>
+
+
+              <div class="post-entry">
+                
+                  Las Vegas到大峡谷（Grand Canyon National Park）的距离并不遥远，但是离最佳风景观看点南峡（South RIM）还有大半天的路程。很值得去，绝对不
+                  <a href="https://martinliu.cn/posts/las-vegas-p2/" class="post-read-more">[Read More]</a>
+                
+              </div>
+
+              
+                <span class="post-meta">
+                
+                  #<a href="https://martinliu.cn/tags/%E6%97%85%E8%A1%8C/">旅行</a>&nbsp;
+                
+                </span>
+              
+            </article>
+          
+            <article class="post-preview">
+              <a href="https://martinliu.cn/posts/las-vegas-p1/">
+                <h2 class="post-title">Las Vegas流水账-进城篇</h2>
+                
+                  <h3 class="post-subtitle">
+                  拉斯维加斯
+                  </h3>
+                
+              </a>
+
+              <span class="post-meta">
+  
+  Posted on 2017, August 8
+  
+  
+</span>
+
+
+              <div class="post-entry">
+                
+                  Las Vegas-拉斯维加斯，国人简称拉丝，美国人简称Vegas/威嘎斯。来过很多次美国，可是这个城市还是第一次造访，写个流水账记录一下。 航班 这
+                  <a href="https://martinliu.cn/posts/las-vegas-p1/" class="post-read-more">[Read More]</a>
+                
+              </div>
+
+              
+                <span class="post-meta">
+                
+                  #<a href="https://martinliu.cn/tags/%E6%97%85%E8%A1%8C/">旅行</a>&nbsp;
+                
+                </span>
+              
+            </article>
+          
+        </div>
+
+        
+          <ul class="pager main-pager">
+            
+              <li class="previous">
+                <a href="/page/1">&larr; Newer Posts</a>
+              </li>
+            
+            
+              <li class="next">
+                <a href="/page/3">Older Posts &rarr;</a>
+              </li>
+            
+          </ul>
+        
+      </div>
+      <div align="center" class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        
+
+<ul class="pagination">
+    
+    <li>
+        <a href="/" aria-label="First"><span aria-hidden="true">&laquo;&laquo;</span></a>
+    </li>
+    
+    <li
+    >
+    <a href="/" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a>
+    </li>
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    <li
+    ><a href="/">1</a></li>
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    <li
+    class="active"><a href="/page/2/">2</a></li>
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    <li
+    ><a href="/page/3/">3</a></li>
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    <li class="disabled"><span aria-hidden="true">&hellip;</span></li>
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    <li
+    ><a href="/page/40/">40</a></li>
+    
+    
+    <li
+    >
+    <a href="/page/3/" aria-label="Next"><span aria-hidden="true">&raquo;</span></a>
+    </li>
+    
+    <li>
+        <a href="/page/40/" aria-label="Last"><span aria-hidden="true">&raquo;&raquo;</span></a>
+    </li>
+    
+</ul>
+
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+      </div>
+    </div>
+  </div>
+
+    <footer>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <ul class="list-inline text-center footer-links">
+          
+              <li>
+                <a href="mailto:67120666@qq.com" title="Email me">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-envelope fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a href="https://plus.google.com/&#43;MartinLiu-cn" title="Google&#43;">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-google-plus fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a href="https://twitter.com/martinliu" title="Twitter">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a href="https://linkedin.com/in/liuzheng" title="LinkedIn">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-linkedin fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+          
+        </ul>
+        <p class="credits copyright text-muted">
+        &copy;2017-2018
+          
+            
+              <a href="martinliu.cn">Martin Liu</a>
+                      
+          
+          
+          
+            &nbsp;&bull;&nbsp;
+            <a href="https://martinliu.cn/">Maritn&#39;s Blog</a>
+          
+        </p>
+        
+        <p class="credits theme-by text-muted">
+          <a href="http://gohugo.io">Hugo v0.29</a> powered &nbsp;&bull;&nbsp; Theme by <a href="http://deanattali.com/beautiful-jekyll/">Beautiful Jekyll</a> adapted to <a href="https://github.com/halogenica/beautifulhugo">Beautiful Hugo</a>
+          
+        </p>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/bootstrap.min.js"></script>
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/photoswipe-ui-default.min.js"></script>
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/photoswipe.min.js"></script>
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/auto-render.min.js"></script>
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/main.js"></script>
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/prism.js"></script>
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/katex.min.js"></script>
+<script> renderMathInElement(document.body); </script>
+
+
+
+
+
+
+
+
+  </body>
+</html>
+

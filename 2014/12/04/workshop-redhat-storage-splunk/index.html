@@ -1,0 +1,831 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+  <title> workshop redhat storage and splunk - 刘征的博客|DevOps|Cloud Computing</title>
+  <meta name="description" content="刘征的博客|DevOps|Cloud Computing" />
+  <meta property="og:title" content="workshop redhat storage and splunk" />
+  <meta name="twitter:title" content="workshop redhat storage and splunk" />
+  <meta name="description" content="Instance Details Replace userX with your user id. For example, user1 &ndash;&gt; user 30 Instance 
+DNS 
+IP   Internal   RHS 01 
+rhs-01.userX.apac.red 
+10.100.0.101   RHS 02 
+rhs-02.userX.apac.red 
+10.100.0.102   RHS 03 
+rhs-03.userX.apac.red 
+10.100.0.103   RHS 04 
+rhs-04.userX.apac.red 
+10.100.0.104   Splunk Master 
+splunkmaster.userX.apac.red 
+10.100.0.201   Splunk Search 
+splunksearch.userX.apac.red">
+  <meta property="og:description" content="Instance Details Replace userX with your user id. For example, user1 &ndash;&gt; user 30 Instance 
+DNS 
+IP   Internal   RHS 01 
+rhs-01.userX.apac.red 
+10.100.0.101   RHS 02 
+rhs-02.userX.apac.red 
+10.100.0.102   RHS 03 
+rhs-03.userX.apac.red 
+10.100.0.103   RHS 04 
+rhs-04.userX.apac.red 
+10.100.0.104   Splunk Master 
+splunkmaster.userX.apac.red 
+10.100.0.201   Splunk Search 
+splunksearch.userX.apac.red">
+  <meta name="twitter:description" content="Instance Details Replace userX with your user id. For example, user1 &ndash;&gt; user 30 Instance 
+DNS 
+IP   Internal   RHS 01 
+rhs-01.userX.apac.red 
+10.100.0.101   RHS 02 
+rhs-02.userX.apac.red …">
+  <meta name="author" content="{Description { .Site.Author.name }}"/>
+  <link href='https://martinliu.cn/img/favicon.ico' rel='icon' type='image/x-icon'/>
+  <meta property="og:image" content="https://martinliu.cn/img/logo.jpg" />
+  <meta name="twitter:image" content="https://martinliu.cn/img/logo.jpg" />
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:site" content="@martinliu" />
+  <meta name="twitter:creator" content="@martinliu" />
+  <meta property="og:url" content="https://martinliu.cn/2014/12/04/workshop-redhat-storage-splunk/" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Maritn&#39;s Blog" />
+
+  <meta name="generator" content="Hugo 0.29" />
+  <link rel="canonical" href="https://martinliu.cn/2014/12/04/workshop-redhat-storage-splunk/" />
+  <link rel="alternate" href="https://martinliu.cn/index.xml" type="application/rss+xml" title="Maritn&#39;s Blog">
+  <script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/jquery-1.12.4.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.7.1/katex.min.css" integrity="sha384-wITovz90syo1dJWVh32uuETPVEtGigN07tkttEqPv+uR2SE/mbQcG7ATL28aI9H0" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+  
+  
+  <link rel="stylesheet" href="https://martinliu.cn/css/main.css" />
+  <link rel="stylesheet" href="https://martinliu.cn/css/search.css" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" />
+  
+
+<meta name="baidu-site-verification" content="W3AORuRNZo" />
+<script>
+    var _hmt = _hmt || [];
+    (function () {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?50c3a9ae6c51222b31df5510bbca479f";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+
+<link rel="stylesheet" href="https://martinliu.cn/css/prism.css" />
+
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.1/photoswipe.min.css" integrity="sha256-sCl5PUOGMLfFYctzDW3MtRib0ctyUvI9Qsmq2wXOeBY=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.1/default-skin/default-skin.min.css" integrity="sha256-BFeI1V+Vh1Rk37wswuOYn5lsTcaU96hGaI7OUVCLjPc=" crossorigin="anonymous" />
+
+
+
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+<div class="pswp__bg"></div>
+
+<div class="pswp__scroll-wrap">
+    
+    <div class="pswp__container">
+      <div class="pswp__item"></div>
+      <div class="pswp__item"></div>
+      <div class="pswp__item"></div>
+    </div>
+    
+    <div class="pswp__ui pswp__ui--hidden">
+    <div class="pswp__top-bar">
+      
+      <div class="pswp__counter"></div>
+      <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+      <button class="pswp__button pswp__button--share" title="Share"></button>
+      <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+      <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+      
+      
+      <div class="pswp__preloader">
+        <div class="pswp__preloader__icn">
+          <div class="pswp__preloader__cut">
+            <div class="pswp__preloader__donut"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+      <div class="pswp__share-tooltip"></div>
+    </div>
+    <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+    </button>
+    <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+    </button>
+    <div class="pswp__caption">
+      <div class="pswp__caption__center"></div>
+    </div>
+    </div>
+    </div>
+</div>
+
+</head>
+
+  <body>
+    <nav class="navbar navbar-default navbar-fixed-top navbar-custom">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#main-navbar">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="https://martinliu.cn/">Maritn&#39;s Blog</a>
+    </div>
+    <div class="collapse navbar-collapse" id="main-navbar">
+      <ul class="nav navbar-nav navbar-right">
+        
+          
+            <li>
+              <a title="Blog" href="/">Blog</a>
+              
+              
+            </li>
+          
+        
+          
+            <li>
+              <a title="Tags" href="/tags">Tags</a>
+              
+              
+            </li>
+          
+        
+          
+            <li>
+              <a title="About" href="/about/">About</a>
+              
+              
+            </li>
+          
+        
+          
+            <li>
+              <a title="Book" href="https://handbook.martinliu.cn">Book</a>
+              
+              
+            </li>
+          
+        
+
+        
+
+        
+        
+          <li>
+            <a href="#modalSearch" data-toggle="modal" data-target="#modalSearch" style="outline: none;">
+              <span class="hidden-sm hidden-md hidden-lg">Search</span> <span id="searchGlyph" class="glyphicon glyphicon-search"></span>
+            </a>
+          </li>
+          
+      </ul>
+    </div>
+
+    <div class="avatar-container">
+      <div class="avatar-img-border">
+        
+          <a title="Maritn&#39;s Blog" href="https://martinliu.cn/">
+            <img class="avatar-img" src="https://martinliu.cn/img/logo.jpg" alt="Maritn&#39;s Blog" />
+          </a>
+        
+      </div>
+    </div>
+
+  </div>
+</nav>
+
+
+
+
+
+  <div id="modalSearch" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Search martinliu.cn </h4>
+        </div>
+        <div class="modal-body">
+            
+<div class="aa-input-container" id="aa-input-container">
+    <input type="search" id="aa-search-input" class="aa-input-search" placeholder="Search for titles or URIs..." name="search" autocomplete="off" />
+    <svg class="aa-input-icon" viewBox="654 -372 1664 1664">
+        <path d="M1806,332c0-123.3-43.8-228.8-131.5-316.5C1586.8-72.2,1481.3-116,1358-116s-228.8,43.8-316.5,131.5  C953.8,103.2,910,208.7,910,332s43.8,228.8,131.5,316.5C1129.2,736.2,1234.7,780,1358,780s228.8-43.8,316.5-131.5  C1762.2,560.8,1806,455.3,1806,332z M2318,1164c0,34.7-12.7,64.7-38,90s-55.3,38-90,38c-36,0-66-12.7-90-38l-343-342  c-119.3,82.7-252.3,124-399,124c-95.3,0-186.5-18.5-273.5-55.5s-162-87-225-150s-113-138-150-225S654,427.3,654,332  s18.5-186.5,55.5-273.5s87-162,150-225s138-113,225-150S1262.7-372,1358-372s186.5,18.5,273.5,55.5s162,87,225,150s113,138,150,225  S2062,236.7,2062,332c0,146.7-41.3,279.7-124,399l343,343C2305.7,1098.7,2318,1128.7,2318,1164z" />
+    </svg>
+</div>
+
+
+
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/algoliasearch.min.js"></script>
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/autocomplete.min.js"></script>
+
+<script>
+var client = algoliasearch("3RK9W7WH5R", "06f3928eb3fad870c9197c68c238dbd3");
+var index = client.initIndex('martinliu_blog');
+
+autocomplete('#aa-search-input',
+{ hint: false}, {
+    source: autocomplete.sources.hits(index, {hitsPerPage: 5}),
+    
+    displayKey: 'name',
+    
+    templates: {
+        
+        suggestion: function(suggestion) {
+            
+            return '<span>' + '<a href="/' + suggestion.uri+ '">' +
+            suggestion._highlightResult.title.value + '</a></span>';
+        }
+    }
+});
+</script>
+
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+    
+  
+  
+  
+
+
+
+
+  
+
+  <header class="header-section ">
+    
+    <div class="intro-header no-img">
+      
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-12 col-md-12 col-md-offset-0">
+            <div class="posts-heading">
+                <h1 align="center">workshop redhat storage and splunk</h1>
+                
+                
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+
+    
+<div class="container" role="main" itemscope itemtype="http://schema.org/Article">
+    <div class="row">
+        <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+            
+            
+            
+<div>
+    <section id="datecount">
+        <h4 id="date"> Thu Dec 4, 2014</h4>
+    </section>
+    <h5 id="wc">800 Words|Read in about 4 Min</h5>
+    <h5 id="tags">Tags: 
+        
+        <a href="https://martinliu.cn/tags/rhs/">rhs</a> &nbsp;
+        
+        <a href="https://martinliu.cn/tags/splunk/">splunk</a> &nbsp;
+    </h5>
+</div>
+
+            
+            <article role="main" class="blog-post" itemprop="articleBody" id="content">
+                
+
+<h2 id="instance-details">Instance Details</h2>
+
+<p>Replace userX with your user id. For example, user1 &ndash;&gt; user 30
+<table border="1" >
+<tbody >
+<tr ></p>
+
+<p><td >Instance
+</td></p>
+
+<p><td >DNS
+</td></p>
+
+<p><td >IP
+</td>
+</tr>
+<tr ></p>
+
+<p><td ><strong>Internal</strong>
+</td>
+</tr>
+<tr ></p>
+
+<p><td >RHS 01
+</td></p>
+
+<p><td >rhs-01.userX.apac.red
+</td></p>
+
+<p><td >10.100.0.101
+</td>
+</tr>
+<tr ></p>
+
+<p><td >RHS 02
+</td></p>
+
+<p><td >rhs-02.userX.apac.red
+</td></p>
+
+<p><td >10.100.0.102
+</td>
+</tr>
+<tr ></p>
+
+<p><td >RHS 03
+</td></p>
+
+<p><td >rhs-03.userX.apac.red
+</td></p>
+
+<p><td >10.100.0.103
+</td>
+</tr>
+<tr ></p>
+
+<p><td >RHS 04
+</td></p>
+
+<p><td >rhs-04.userX.apac.red
+</td></p>
+
+<p><td >10.100.0.104
+</td>
+</tr>
+<tr ></p>
+
+<p><td >Splunk Master
+</td></p>
+
+<p><td >splunkmaster.userX.apac.red
+</td></p>
+
+<p><td >10.100.0.201
+</td>
+</tr>
+<tr ></p>
+
+<p><td >Splunk Search
+</td></p>
+
+<p><td >splunksearch.userX.apac.red
+</td></p>
+
+<p><td >10.100.0.202
+</td>
+</tr>
+<tr ></p>
+
+<p><td >Splunk Peer 01
+</td></p>
+
+<p><td >splunkpeer-01.userX.apac.red
+</td></p>
+
+<p><td >10.100.0.211
+</td>
+</tr>
+<tr ></p>
+
+<p><td >Splunk Peer 01
+</td></p>
+
+<p><td >splunkpeer-02.userX.apac.red
+</td></p>
+
+<p><td >10.100.0.212
+</td>
+</tr>
+<tr ></p>
+
+<p><td >Splunk Peer 01
+</td></p>
+
+<p><td >splunkpeer-03.userX.apac.red
+</td></p>
+
+<p><td >10.100.0.213
+</td>
+</tr>
+<tr ></p>
+
+<p><td ><strong>Public</strong>
+</td>
+</tr>
+<tr ></p>
+
+<p><td >Gateway
+</td></p>
+
+<p><td >gw-userX.apac.red
+</td></p>
+
+<p><td >gw-userX.apac.red
+</td>
+</tr>
+<tr ></p>
+
+<p><td >Splunk Master
+</td></p>
+
+<p><td >splunk.userX.apac.red
+</td></p>
+
+<p><td >splunk.userX.apac.red
+</td>
+</tr>
+<tr ></p>
+
+<p><td >Splunk Search
+</td></p>
+
+<p><td >search.userX.apac.red
+</td></p>
+
+<p><td >search.userX.apac.red
+</td>
+</tr>
+</tbody>
+</table></p>
+
+<h3 id="on-your-laptop">On your laptop</h3>
+
+<p>cd ~/.ssh
+wget <a href="https://s3-ap-southeast-1.amazonaws.com/splunk-lab/rhte-splunk-lab">https://s3-ap-southeast-1.amazonaws.com/splunk-lab/rhte-splunk-lab</a>
+wget <a href="https://s3-ap-southeast-1.amazonaws.com/splunk-lab/rhte-splunk-lab.pub">https://s3-ap-southeast-1.amazonaws.com/splunk-lab/rhte-splunk-lab.pub</a>
+chmod 600 rhte-splunk-lab
+chmod 644 rhte-splunk-lab.pub</p>
+
+<p>ssh -i ~/.ssh/rhte-splunk-lab -l ec2-user gw-userX.apac.red</p>
+
+<h3 id="on-all-rhs-nodes">On all RHS Nodes</h3>
+
+<p>sudo su -
+subscription-manager attach &ndash;pool 8a85f9864675056e014684868378649c
+subscription-manager repos &ndash;disable=*
+subscription-manager repos &ndash;enable rhel-6-server-rpms &ndash;enable rhs-3-for-rhel-6-server-rpms &ndash;enable rhel-scalefs-for-rhel-6-server-rpms</p>
+
+<p>yum -y update</p>
+
+<p>cat /etc/redhat-* # should say Red Hat Enterprise Linux 6.6 (Santiago) and Red Hat Storage 3.0 Update 2</p>
+
+<p>/sbin/service glusterd restart</p>
+
+<h3 id="on-rhs-01">On RHS-01</h3>
+
+<p>gluster peer probe rhs-02.userX.apac.red
+gluster peer probe rhs-03.userX.apac.red
+gluster peer probe rhs-04.userX.apac.red</p>
+
+<p>gluster pool list</p>
+
+<p>gluster volume create splunk replica 2 rhs-01.userX.apac.red:/srv/brick1/splunk rhs-02.userX.apac.red:/srv/brick1/splunk rhs-03.userX.apac.red:/srv/brick1/splunk rhs-04.userX.apac.red:/srv/brick1/splunk</p>
+
+<p>gluster volume set splunk storage.owner-uid 1001
+gluster volume set splunk storage.owner-gid 1001
+gluster volume set splunk user.nfs disable</p>
+
+<p>gluster volume start splunk</p>
+
+<p>gluster volume info
+gluster volume status</p>
+
+<h3 id="on-splunk-master-and-splunk-search-nodes">On Splunk Master and Splunk Search Nodes</h3>
+
+<p>subscription-manager attach &ndash;pool 8a85f9864675056e014684868378649c
+subscription-manager repos &ndash;disable=*
+subscription-manager repos &ndash;enable rhel-7-server-rpms</p>
+
+<p>yum -y update</p>
+
+<p>wget <a href="https://s3-ap-southeast-1.amazonaws.com/splunk-lab/splunk-6.2.0-237341-linux-2.6-x86_64.rpm">https://s3-ap-southeast-1.amazonaws.com/splunk-lab/splunk-6.2.0-237341-linux-2.6-x86_64.rpm</a> &ndash;no-check-certificate</p>
+
+<h3 id="on-all-splunk-nodes">On all Splunk Nodes</h3>
+
+<p>subscription-manager attach &ndash;pool 8a85f9864675056e014684868378649c
+subscription-manager repos &ndash;disable=*
+subscription-manager repos &ndash;enable rhel-7-server-rpms &ndash;enable rhel-7-server-openstack-5.0-rpms &ndash;enable rhel-7-server-rh-common-rpms</p>
+
+<p>yum -y update</p>
+
+<p>yum -y install wget lvm2</p>
+
+<p>wget <a href="https://s3-ap-southeast-1.amazonaws.com/splunk-lab/splunk-6.2.0-237341-linux-2.6-x86_64.rpm">https://s3-ap-southeast-1.amazonaws.com/splunk-lab/splunk-6.2.0-237341-linux-2.6-x86_64.rpm</a> &ndash;no-check-certificate</p>
+
+<p>/bin/systemctl start lvm2-lvmetad.service
+/bin/systemctl start lvm2-monitor.service</p>
+
+<p>pvcreate &ndash;dataalignment 1024k /dev/xvdb1
+vgcreate splunkdb /dev/xvdb1
+/sbin/lvcreate -a y -l 100%VG -n splunkdb splunkdb
+mkfs.xfs -i size=512 /dev/mapper/splunkdb-splunkdb</p>
+
+<h3 id="on-all-splunk-nodes-1">On all Splunk Nodes</h3>
+
+<p>echo -e <code>blkid /dev/mapper/splunkdb-splunkdb | cut -d &quot; &quot; -f 2</code>&ldquo;\t/opt/\txfs\tdefaults,inode64,noatime\t0\t0&rdquo; &gt;&gt; /etc/fstab
+mount /opt</p>
+
+<p>yum -y localinstall splunk-6.2.0-237341-linux-2.6-x86_64.rpm</p>
+
+<p>echo -e &ldquo;splunk\t\tsoft\tnofile\t10240&rdquo; &gt;&gt; /etc/security/limits.conf
+echo -e &ldquo;splunk\t\thard\tnofile\t20480&rdquo; &gt;&gt; /etc/security/limits.conf</p>
+
+<h3 id="on-splunk-master-and-splunk-search">On Splunk Master and Splunk Search</h3>
+
+<p>cd /lib/systemd/system
+wget <a href="https://s3-ap-southeast-1.amazonaws.com/splunk-lab/splunkd.service">https://s3-ap-southeast-1.amazonaws.com/splunk-lab/splunkd.service</a> &ndash;no-check-certificate</p>
+
+<p>sed -i.bak &lsquo;/^After|^Requires/d&rsquo; splunkd.service
+sed -i.bak &lsquo;/Description/a After=network.target local-fs.target&rsquo; splunkd.service
+systemctl daemon-reload
+systemctl enable splunkd.service
+systemctl start splunkd.service</p>
+
+<p>runuser -l splunk -c &lsquo;splunk status&rsquo;
+q
+y
+systemctl restart splunkd.service
+runuser -l splunk -c &lsquo;splunk status&rsquo;</p>
+
+<h3 id="on-splunk-peer-nodes">On Splunk Peer Nodes</h3>
+
+<p>yum install -y glusterfs-fuse python-httplib2 attr</p>
+
+<p>mkdir /mnt/glusterfs
+echo -e &ldquo;rhs-01.userX.apac.red:/splunk\t\t/mnt/glusterfs\t\tglusterfs\t\tdefaults,_netdev,backup-volfile-servers=rhs02.userX.apac.red:rhs-03.userX.apac.red:rhs-04.userX.apac.red\t0\t0&rdquo; &gt;&gt; /etc/fstab
+mount /mnt/glusterfs</p>
+
+<p>runuser -l splunk -c &lsquo;mkdir -p /opt/splunk/var/lib/splunk/glusterfs&rsquo;
+runuser -l splunk -c &lsquo;mkdir -p /mnt/glusterfs/$(hostname -s)&rsquo;</p>
+
+<p>cd /lib/systemd/system
+wget <a href="https://s3-ap-southeast-1.amazonaws.com/splunk-lab/splunkd-pre.service">https://s3-ap-southeast-1.amazonaws.com/splunk-lab/splunkd-pre.service</a>
+systemctl enable splunkd-pre.service
+systemctl start splunkd-pre.service</p>
+
+<p>echo OPTIMISTIC_ABOUT_FILE_LOCKING = 1 &gt;&gt; /opt/splunk/etc/splunk-launch.conf</p>
+
+<p>wget <a href="https://s3-ap-southeast-1.amazonaws.com/splunk-lab/splunkd.service">https://s3-ap-southeast-1.amazonaws.com/splunk-lab/splunkd.service</a>
+systemctl daemon-reload
+systemctl enable splunkd.service
+systemctl start splunkd.service
+runuser -l splunk -c &lsquo;splunk status&rsquo;
+q
+y
+systemctl start splunkd.service
+runuser -l splunk -c &lsquo;splunk status&rsquo;</p>
+
+<p>cd /opt/splunk/bin
+wget <a href="https://s3-ap-southeast-1.amazonaws.com/splunk-lab/rhsBucketMover.py">https://s3-ap-southeast-1.amazonaws.com/splunk-lab/rhsBucketMover.py</a>
+wget <a href="https://s3-ap-southeast-1.amazonaws.com/splunk-lab/rhsBucketMover.sh">https://s3-ap-southeast-1.amazonaws.com/splunk-lab/rhsBucketMover.sh</a>
+wget <a href="https://s3-ap-southeast-1.amazonaws.com/splunk-lab/rhsLinkChecker.py">https://s3-ap-southeast-1.amazonaws.com/splunk-lab/rhsLinkChecker.py</a></p>
+
+<p>chown splunk:splunk/rhs*</p>
+
+<h3 id="on-gw-userx-apac-red">on gw-userX.apac.red</h3>
+
+<p>iptables -t nat -A PREROUTING -p tcp &ndash;dport 8001 -j DNAT &ndash;to-destination 10.100.0.211:8000
+iptables -t nat -A PREROUTING -p tcp &ndash;dport 8002 -j DNAT &ndash;to-destination 10.100.0.212:8000
+iptables -t nat -A PREROUTING -p tcp &ndash;dport 8003 -j DNAT &ndash;to-destination 10.100.0.213:8000</p>
+
+<h3 id="web-gui-on-splunk-master-http-splunk-userx-apac-red-8000">Web GUI on Splunk Master (<a href="http://splunk.userX.apac.red:8000/">http://splunk.userX.apac.red:8000/</a>)</h3>
+
+<p>Settings &ndash;&gt; Indexer Clustering
+Replication Factor 3
+Search Factor 2
+Enable Clustering - accept until restart and hit ok</p>
+
+<h3 id="on-each">on each</h3>
+
+<p>Web GUI on Splunk Peer 01 (<a href="http://gw-userX.apac.red:8001/">http://gw-userX.apac.red:8001/</a>)
+Web GUI on Splunk Peer 02 (<a href="http://gw-userX.apac.red:8002/">http://gw-userX.apac.red:8002/</a>)
+Web GUI on Splunk Peer 03 (<a href="http://gw-userX.apac.red:8003/">http://gw-userX.apac.red:8003/</a>)</p>
+
+<p>Settings &ndash;&gt; Indexer Clustering
+Enable Clustering
+Type - Peer
+host = <a href="https://splunkmaster.userX.apac.red">https://splunkmaster.userX.apac.red</a>
+port 8089
+replication port 8090</p>
+
+<h3 id="web-gui-on-splunk-search-http-search-userx-apac-red-8000">Web GUI on Splunk Search (<a href="http://search.userX.apac.red:8000/">http://search.userX.apac.red:8000/</a>)</h3>
+
+<p>Settings &ndash;&gt; Indexer Clustering
+Enable Clustering
+Type - Search
+host = <a href="https://splunkmaster.userX.apac.red">https://splunkmaster.userX.apac.red</a>
+port 8089
+replication port 8090</p>
+
+<h3 id="on-splunk-master-node">on Splunk Master Node</h3>
+
+<p>cd /opt/splunk/etc/master-apps/_cluster/local directory
+wget <a href="https://s3-ap-southeast-1.amazonaws.com/splunk-lab/indexes.conf">https://s3-ap-southeast-1.amazonaws.com/splunk-lab/indexes.conf</a>
+runuser -l splunk -c &lsquo;splunk apply cluster-bundle &ndash;answer-yes&rsquo;
+admin
+password
+runuser -l splunk -c &lsquo;splunk show cluster-bundle-status&rsquo;</p>
+
+<h3 id="on-each-node">On each Node</h3>
+
+<p>runuser -l splunk -c &lsquo;splunk search &ldquo;| rest /services/data/indexes | table title, homePath, coldPath&rdquo;&rsquo;|grep demo
+&lt; look for $SPLUNKDB/glusterfs/demo/colddb</p>
+
+<h3 id="on-splunk-master-node-1">on Splunk Master Node</h3>
+
+<p>su - ec2-user</p>
+
+<p>cd ~/.ssh
+wget <a href="https://s3-ap-southeast-1.amazonaws.com/splunk-lab/rhte-splunk-lab">https://s3-ap-southeast-1.amazonaws.com/splunk-lab/rhte-splunk-lab</a>
+wget <a href="https://s3-ap-southeast-1.amazonaws.com/splunk-lab/rhte-splunk-lab.pub">https://s3-ap-southeast-1.amazonaws.com/splunk-lab/rhte-splunk-lab.pub</a>
+chmod 600 rhte-splunk-lab
+chmod 644 rhte-splunk-lab.pub</p>
+
+<p>cd /tmp
+wget <a href="https://s3-ap-southeast-1.amazonaws.com/splunk-lab/eventgen.tar.gz">https://s3-ap-southeast-1.amazonaws.com/splunk-lab/eventgen.tar.gz</a>
+scp -i ~/.ssh/rhte-splunk-lab eventgen.tar.gz splunkpeer-01.userX.apac.red:eventgen.tar.gz
+scp -i ~/.ssh/rhte-splunk-lab eventgen.tar.gz splunkpeer-02.userX.apac.red:eventgen.tar.gz
+scp -i ~/.ssh/rhte-splunk-lab eventgen.tar.gz splunkpeer-03.userX.apac.red:eventgen.tar.gz</p>
+
+<h3 id="on-each-peer-node">On each Peer Node</h3>
+
+<p>cd /opt/splunk
+mv ~ec2-user/eventgen.tar.gz /opt/splunk
+chown splunk:splunk eventgen.tar.gz
+runuser -l splunk -c &lsquo;splunk install app /opt/splunk/eventgen.tar.gz&rsquo;
+runuser -l splunk -c &lsquo;splunk restart&rsquo;</p>
+
+<p>cd /opt/splunk/etc/apps/eventgen/samples
+cp sample.tutorial1 demo_data
+sed -i.bak s/main/demo/g demo_data
+cd /opt/splunk/etc/apps/eventgen/local
+cp ../README/eventgen.conf.tutorial1 eventgen.conf
+sed -i.bak &rsquo;s/main/demo/g;s/sample.tutorial1/demo_data/g&rsquo; eventgen.conf</p>
+
+<p>runuser -l splunk -c &lsquo;splunk restart&rsquo;</p>
+
+<p>Log into WebUI on Splunk Master
+search &ldquo;index = demo&rdquo;
+timeframe = realtime &gt; 5 minutes</p>
+
+<p>check /opt/splunk/var/lib/splunk/demo/db</p>
+
+            </article>
+
+            <ul class="pager blog-pager">
+                
+                <li class="previous">
+                    <a href="https://martinliu.cn/2014/12/02/kk-e5a4b1e68ea7-e8a782e5908ee6849f-e4b98be5898de4b889e7aba0/" data-toggle="tooltip" data-placement="top" title="KK 失控 观后感 之前三章">&larr; Previous Post</a>
+                </li>
+                 
+                <li class="next">
+                    <a href="https://martinliu.cn/2014/12/04/workshop-creating-docker-management-environment/" data-toggle="tooltip" data-placement="top" title="Workshop: Creating a Docker management environment">Next Post &rarr;</a>
+                </li>
+                
+            </ul>
+            
+            <div>
+                 
+            </div>
+            
+            
+            
+            
+<div>
+    <section id="datecount">
+        <h4 id="date"> Thu Dec 4, 2014</h4>
+    </section>
+    <h5 id="wc">800 Words|Read in about 4 Min</h5>
+    <h5 id="tags">Tags: 
+        
+        <a href="https://martinliu.cn/tags/rhs/">rhs</a> &nbsp;
+        
+        <a href="https://martinliu.cn/tags/splunk/">splunk</a> &nbsp;
+    </h5>
+</div>
+
+            
+            </div>
+            
+ 
+        </div>
+    </div>
+    </section>
+</div>
+
+    <footer>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <ul class="list-inline text-center footer-links">
+          
+              <li>
+                <a href="mailto:67120666@qq.com" title="Email me">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-envelope fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a href="https://plus.google.com/&#43;MartinLiu-cn" title="Google&#43;">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-google-plus fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a href="https://twitter.com/martinliu" title="Twitter">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a href="https://linkedin.com/in/liuzheng" title="LinkedIn">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-linkedin fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+          
+        </ul>
+        <p class="credits copyright text-muted">
+        &copy;2017-2018
+          
+            
+              <a href="martinliu.cn">Martin Liu</a>
+                      
+          
+          
+          
+            &nbsp;&bull;&nbsp;
+            <a href="https://martinliu.cn/">Maritn&#39;s Blog</a>
+          
+        </p>
+        
+        <p class="credits theme-by text-muted">
+          <a href="http://gohugo.io">Hugo v0.29</a> powered &nbsp;&bull;&nbsp; Theme by <a href="http://deanattali.com/beautiful-jekyll/">Beautiful Jekyll</a> adapted to <a href="https://github.com/halogenica/beautifulhugo">Beautiful Hugo</a>
+          
+        </p>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/bootstrap.min.js"></script>
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/photoswipe-ui-default.min.js"></script>
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/photoswipe.min.js"></script>
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/auto-render.min.js"></script>
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/main.js"></script>
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/prism.js"></script>
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/katex.min.js"></script>
+<script> renderMathInElement(document.body); </script>
+
+
+
+
+
+
+
+
+  </body>
+</html>
+

@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+  <title> 虚拟桌面 之我见 - 刘征的博客|DevOps|Cloud Computing</title>
+  <meta name="description" content="刘征的博客|DevOps|Cloud Computing" />
+  <meta property="og:title" content="虚拟桌面 之我见" />
+  <meta name="twitter:title" content="虚拟桌面 之我见" />
+  <meta name="description" content="在还没有遗忘 虚拟桌面 的很多技术细节前，还是想整理一下在Citrix的一些思路。虚拟桌面是可以引起人们对云计算产生无限遐想的东西，在很多情况下可以说它就是云计算。以下从项目价值和关键技术点等几个方面回顾一下。">
+  <meta property="og:description" content="在还没有遗忘 虚拟桌面 的很多技术细节前，还是想整理一下在Citrix的一些思路。虚拟桌面是可以引起人们对云计算产生无限遐想的东西，在很多情况下可以说它就是云计算。以下从项目价值和关键技术点等几个方面回顾一下。">
+  <meta name="twitter:description" content="在还没有遗忘 虚拟桌面 的很多技术细节前，还是想整理一下在Citrix的一些思路。虚拟桌面是可以引起人们对云计算产生无限遐想的东西，在很多情况下可以说它就是云计算。以下从项目价值和关键技术点等几个方面回顾一下。">
+  <meta name="author" content="{Description { .Site.Author.name }}"/>
+  <link href='https://martinliu.cn/img/favicon.ico' rel='icon' type='image/x-icon'/>
+  <meta property="og:image" content="https://martinliu.cn/img/logo.jpg" />
+  <meta name="twitter:image" content="https://martinliu.cn/img/logo.jpg" />
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:site" content="@martinliu" />
+  <meta name="twitter:creator" content="@martinliu" />
+  <meta property="og:url" content="https://martinliu.cn/2014/11/23/e8999ae68b9fe6a18ce99da2-e4b98be68891e8a781/" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Maritn&#39;s Blog" />
+
+  <meta name="generator" content="Hugo 0.29" />
+  <link rel="canonical" href="https://martinliu.cn/2014/11/23/e8999ae68b9fe6a18ce99da2-e4b98be68891e8a781/" />
+  <link rel="alternate" href="https://martinliu.cn/index.xml" type="application/rss+xml" title="Maritn&#39;s Blog">
+  <script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/jquery-1.12.4.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.7.1/katex.min.css" integrity="sha384-wITovz90syo1dJWVh32uuETPVEtGigN07tkttEqPv+uR2SE/mbQcG7ATL28aI9H0" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+  
+  
+  <link rel="stylesheet" href="https://martinliu.cn/css/main.css" />
+  <link rel="stylesheet" href="https://martinliu.cn/css/search.css" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" />
+  
+
+<meta name="baidu-site-verification" content="W3AORuRNZo" />
+<script>
+    var _hmt = _hmt || [];
+    (function () {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?50c3a9ae6c51222b31df5510bbca479f";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+
+<link rel="stylesheet" href="https://martinliu.cn/css/prism.css" />
+
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.1/photoswipe.min.css" integrity="sha256-sCl5PUOGMLfFYctzDW3MtRib0ctyUvI9Qsmq2wXOeBY=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.1/default-skin/default-skin.min.css" integrity="sha256-BFeI1V+Vh1Rk37wswuOYn5lsTcaU96hGaI7OUVCLjPc=" crossorigin="anonymous" />
+
+
+
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+<div class="pswp__bg"></div>
+
+<div class="pswp__scroll-wrap">
+    
+    <div class="pswp__container">
+      <div class="pswp__item"></div>
+      <div class="pswp__item"></div>
+      <div class="pswp__item"></div>
+    </div>
+    
+    <div class="pswp__ui pswp__ui--hidden">
+    <div class="pswp__top-bar">
+      
+      <div class="pswp__counter"></div>
+      <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+      <button class="pswp__button pswp__button--share" title="Share"></button>
+      <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+      <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+      
+      
+      <div class="pswp__preloader">
+        <div class="pswp__preloader__icn">
+          <div class="pswp__preloader__cut">
+            <div class="pswp__preloader__donut"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+      <div class="pswp__share-tooltip"></div>
+    </div>
+    <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+    </button>
+    <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+    </button>
+    <div class="pswp__caption">
+      <div class="pswp__caption__center"></div>
+    </div>
+    </div>
+    </div>
+</div>
+
+</head>
+
+  <body>
+    <nav class="navbar navbar-default navbar-fixed-top navbar-custom">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#main-navbar">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="https://martinliu.cn/">Maritn&#39;s Blog</a>
+    </div>
+    <div class="collapse navbar-collapse" id="main-navbar">
+      <ul class="nav navbar-nav navbar-right">
+        
+          
+            <li>
+              <a title="Blog" href="/">Blog</a>
+              
+              
+            </li>
+          
+        
+          
+            <li>
+              <a title="Tags" href="/tags">Tags</a>
+              
+              
+            </li>
+          
+        
+          
+            <li>
+              <a title="About" href="/about/">About</a>
+              
+              
+            </li>
+          
+        
+          
+            <li>
+              <a title="Book" href="https://handbook.martinliu.cn">Book</a>
+              
+              
+            </li>
+          
+        
+
+        
+
+        
+        
+          <li>
+            <a href="#modalSearch" data-toggle="modal" data-target="#modalSearch" style="outline: none;">
+              <span class="hidden-sm hidden-md hidden-lg">Search</span> <span id="searchGlyph" class="glyphicon glyphicon-search"></span>
+            </a>
+          </li>
+          
+      </ul>
+    </div>
+
+    <div class="avatar-container">
+      <div class="avatar-img-border">
+        
+          <a title="Maritn&#39;s Blog" href="https://martinliu.cn/">
+            <img class="avatar-img" src="https://martinliu.cn/img/logo.jpg" alt="Maritn&#39;s Blog" />
+          </a>
+        
+      </div>
+    </div>
+
+  </div>
+</nav>
+
+
+
+
+
+  <div id="modalSearch" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Search martinliu.cn </h4>
+        </div>
+        <div class="modal-body">
+            
+<div class="aa-input-container" id="aa-input-container">
+    <input type="search" id="aa-search-input" class="aa-input-search" placeholder="Search for titles or URIs..." name="search" autocomplete="off" />
+    <svg class="aa-input-icon" viewBox="654 -372 1664 1664">
+        <path d="M1806,332c0-123.3-43.8-228.8-131.5-316.5C1586.8-72.2,1481.3-116,1358-116s-228.8,43.8-316.5,131.5  C953.8,103.2,910,208.7,910,332s43.8,228.8,131.5,316.5C1129.2,736.2,1234.7,780,1358,780s228.8-43.8,316.5-131.5  C1762.2,560.8,1806,455.3,1806,332z M2318,1164c0,34.7-12.7,64.7-38,90s-55.3,38-90,38c-36,0-66-12.7-90-38l-343-342  c-119.3,82.7-252.3,124-399,124c-95.3,0-186.5-18.5-273.5-55.5s-162-87-225-150s-113-138-150-225S654,427.3,654,332  s18.5-186.5,55.5-273.5s87-162,150-225s138-113,225-150S1262.7-372,1358-372s186.5,18.5,273.5,55.5s162,87,225,150s113,138,150,225  S2062,236.7,2062,332c0,146.7-41.3,279.7-124,399l343,343C2305.7,1098.7,2318,1128.7,2318,1164z" />
+    </svg>
+</div>
+
+
+
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/algoliasearch.min.js"></script>
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/autocomplete.min.js"></script>
+
+<script>
+var client = algoliasearch("3RK9W7WH5R", "06f3928eb3fad870c9197c68c238dbd3");
+var index = client.initIndex('martinliu_blog');
+
+autocomplete('#aa-search-input',
+{ hint: false}, {
+    source: autocomplete.sources.hits(index, {hitsPerPage: 5}),
+    
+    displayKey: 'name',
+    
+    templates: {
+        
+        suggestion: function(suggestion) {
+            
+            return '<span>' + '<a href="/' + suggestion.uri+ '">' +
+            suggestion._highlightResult.title.value + '</a></span>';
+        }
+    }
+});
+</script>
+
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+    
+  
+  
+  
+
+
+
+
+  
+
+  <header class="header-section ">
+    
+    <div class="intro-header no-img">
+      
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-12 col-md-12 col-md-offset-0">
+            <div class="posts-heading">
+                <h1 align="center">虚拟桌面 之我见</h1>
+                
+                  
+                    <h2 align="center" class="posts-subheading">在还没有遗忘 虚拟桌面 的很多技术细节前，还是想整理一下在Citrix的一些思路。虚拟桌面是可以引起人们对云计算产生无限遐想的东西，在很多情况下可以说它就是云计算。以下从项目价值和关键技术点等几个方面回顾一下。</h2>
+                  
+                
+                
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+
+    
+<div class="container" role="main" itemscope itemtype="http://schema.org/Article">
+    <div class="row">
+        <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+            
+            
+            
+<div>
+    <section id="datecount">
+        <h4 id="date"> Sun Nov 23, 2014</h4>
+    </section>
+    <h5 id="wc">2900 Words|Read in about 6 Min</h5>
+    <h5 id="tags">Tags: 
+        
+        <a href="https://martinliu.cn/tags/citrix/">Citrix</a> &nbsp;
+        
+        <a href="https://martinliu.cn/tags/ica/">ICA</a> &nbsp;
+        
+        <a href="https://martinliu.cn/tags/pcoip/">PCoIP</a> &nbsp;
+        
+        <a href="https://martinliu.cn/tags/rdp/">RDP</a> &nbsp;
+        
+        <a href="https://martinliu.cn/tags/vmware/">VMWare</a> &nbsp;
+    </h5>
+</div>
+
+            
+            <article role="main" class="blog-post" itemprop="articleBody" id="content">
+                
+
+<h1 id="虚拟桌面-的业务价值">虚拟桌面 的业务价值</h1>
+
+<p>虚拟应用产生在虚拟桌面之前，虚拟应用是一种和VPN类似的原创访问方法。它其实最初实现的是图形GUI的远程访问，注意不是文字终端。它和VPN具有本质的区别，在于虚拟桌面是“终端不留数据/秘”的；这个它性拜它的传输协议所赐，虚拟桌面传输的主要是图像信息和键鼠指令。它的另外一个特性是“维护渐变”，在终端上维护近似于零（除了安装和配置虚拟桌面连接客户端程序外）；在服务器端应用升级和维护简单，主要是通过升级和更新一堆的Windows操作系统来实现。因此，主要的业务价值有两点：1）数据安全；2）维护简单。基于这些价值取向，它可以很好地胜任一下业务场景：
+[su_list icon=&ldquo;icon: flag&rdquo;]</p>
+
+<ul>
+<li><p>多网隔离、集中上网、运维/外包/审计人员访问管理</p></li>
+
+<li><p>前端操作环境和后端业务数据的分离</p></li>
+
+<li><p>呼叫中心、处理中心和窗口柜员</p></li>
+
+<li><p>移动办公、BYOD</p></li>
+
+<li><p>安全研发、协作研发</p></li>
+
+<li><p>3D虚拟桌面</p></li>
+
+<li><p>等等等等</p></li>
+</ul>
+
+<p>[/su_list]</p>
+
+<p>业务价值很精练，业务场景太多这里就不赘述。</p>
+
+<h1 id="关键技术点">关键技术点</h1>
+
+<p>下面是虚拟桌面/应用的基本原理架构图。
+<a href="http://cdn1.martinliu.cn/wp-content/uploads/2014/11/xen.png"><img src="http://cdn1.martinliu.cn/wp-content/uploads/2014/11/xen-520x229.png" alt="xen" /></a>
+通过上图可以对虚拟桌面的技术架构一目了然。虚拟桌面基础架构就是在数据中心里面部署的一堆Windows虚拟机，核心就在于让远程用户可以操作使用这些虚拟机里面的应用或者这些虚拟机桌面。鉴于此，核心技术主要有两个方面：Windows操作系统虚拟机的集中发布更新和管理；远程访问协议和所有终端管控策略。</p>
+
+<h2 id="windows虚拟机的发布和更新">Windows虚拟机的发布和更新</h2>
+
+<p>Windows的虚拟机有两种：Server和Desktop；虚拟应用技术主要是利用Windows Server操作系统天然的多用户性质，实现一份安装程序的多用户同时使用。虚拟桌面是复制n个预装应用的Desktop桌面操作系统来实现n个用户的使用。</p>
+
+<h3 id="1-虚拟机克隆">1）虚拟机克隆</h3>
+
+<p>使用服务器虚拟化技术可以方便地从OS模板中克隆出n个虚拟机，它的挑战在于：</p>
+
+<ul>
+<li><p>创建和更新的速度要快，特别是在虚拟机数量大的情况下</p></li>
+
+<li><p>可否永久保持用户的个人数据，更新操作不会清空旧的个人数据</p></li>
+
+<li><p>存储空间要节省</p></li>
+</ul>
+
+<h3 id="2-stream-os-流化操作系统">2）Stream OS 流化操作系统</h3>
+
+<p>这种方案是一种古老而容易被人遗忘的技术。就是很久很久以前的无盘工作站的思路。虚拟机或者物理机以网络启动的方法获得一个运行的Windows操作系统。所有的操作系统启动镜像都在服务器端统一管理，一种镜像可以对应启动n可操作系统，这些操作系统目前多以虚拟机的形式存在。它的特点</p>
+
+<ul>
+<li><p>虚拟机对磁盘的消耗非常小，磁盘是写缓存和用户数据。它的大小可以是0或者几个GB。</p></li>
+
+<li><p>创建的速度快</p></li>
+
+<li><p>大批量虚拟机启动过程对网络有一定的压力，一般需要使用隔离的万兆网</p></li>
+
+<li><p>同样有个人数据保持的问题</p></li>
+
+<li><p>更新速度非常快，所有的操作系统在母盘更新后，需要重启来更新</p></li>
+</ul>
+
+<p>不管用什么方式集中管理虚拟机，总之桌面虚拟化是要同时玩转这几个球水晶球。</p>
+
+<ul>
+<li><p>存储成本和性能</p></li>
+
+<li><p>操作系统更新和个人数据保持</p></li>
+
+<li><p>虚拟应用和虚拟桌面的混搭</p></li>
+
+<li><p>虚拟机发布更新方式的混搭</p></li>
+</ul>
+
+<h2 id="远程访问协议">远程访问协议</h2>
+
+<p>远程访问协议哪家强，可以公允的说还是Citrix ICA强。本文不是评测访问协议，只是点到为止。远程GUI界面发的虚拟访问方式一共有以下几种：</p>
+
+<p>[su_list icon=&ldquo;icon: flask&rdquo;]</p>
+
+<ul>
+<li><p>Citrix ICA/ HDX ICA : Citriix的发家的技术，具有网络适应性强可用于广域网，后台管控策略精细，用户体验高等特点。</p></li>
+
+<li><p>PCoIP ：最早适用于非虚拟桌面领域的，后来和VMWare和Teradici共同研发之后用在了VDI的访问上。</p></li>
+
+<li><p>RDP ：Windows Server操作系统自带的远程桌面访问协议，不管你用还是不用它就在那里，它的技术日趋成熟，体验越来越好，不容忽视，从MS许可证的角度讲，任何一个虚拟桌面就需要购买微软的虚拟桌面windows许可证。</p></li>
+
+<li><p>SPICE ：它是一个开源的协议，可以和KVM配合实现Windows和Linux的远程桌面范围，自身的成熟度和完整度都一般。由于代码的开放性，有使之在某些公司手里成为可造之材。</p></li>
+
+<li><p>其它 ：国内主要的方式是类似于破解RDP的形式，基于RDP做一些改进和优化。</p></li>
+</ul>
+
+<p>[/su_list]</p>
+
+<p>总之一句话“优秀的访问协议”是好的虚拟桌面的天然基因，但它并不是虚拟桌面的全部。几个核心的考察指标包括：</p>
+
+<ul>
+<li><p>是否支持集中管理：在一个集中的管理服务器上实现对虚拟机、用户、访问终端等等的集中统一管理。</p></li>
+
+<li><p>管理的颗粒度：你不清楚的话，就到厂商的管理控制台上数数就行</p></li>
+
+<li><p>带宽消耗：带宽消耗和视觉效果100%是成反比的，节省带宽就以为这降低显示效果，但是还要要求不降低操作灵敏度的情况下，是否支持WAN。这些看似矛盾的因素就是要在一个共同体里同时寻找。</p></li>
+
+<li><p>客户端设备兼容：是否任何有计算能力有显示输出的设备都可以操作。主要是设备的类型和操作系统。</p></li>
+</ul>
+
+<h2 id="服务器虚拟化技术">服务器虚拟化技术</h2>
+
+<p>没有服务器虚拟化似乎不成虚拟桌面项目。它是运行虚拟机的载体。选择的范围主要几家：vSphere，XenServer、Hyper-V和KVM。可以说他们和虚拟桌面是强相关的有一定的兼容性制约。如果不差钱，那么直接买最贵的。如果非常清晰自己的业务需求，则可以推导出自己合适的技术。</p>
+
+<h2 id="网络技术">网络技术</h2>
+
+<p>一个完美的虚拟桌面基础架构需要实现数据中心100%的包裹，需要实现外网设备统一的访问入口。说的更形象一点：虚拟桌面平台的虚拟机操作环境可以成为数据中心企业数据的传输终点，所有用户和数据的交互都在这里发生，数据是否能继续它的旅程传输出去，是受到策略的控制。外部客户访问这个入口，入口想一扇门，打开它用户就能够访问到自己的所有的应用和桌面，这扇门对外只开放一个端口，它起到了远程访问协议的代理服务器的功能，它把虚拟桌面基础架构中成百上千的IP地址的访问都终结掉，给防火墙策略的制定减轻了压力，实为容易忽视的关键技术点。</p>
+
+<h1 id="项目的成败">项目的成败</h1>
+
+<p>毫不夸张的讲，能给你把大规模虚拟桌面项目做成功的人才对你有真爱。大规模虚拟桌面项目太复杂，实施难度大，成本高，这是业内的共识。对于大的组织，业务需求的梳理和确认需要有厂商引导，在这个过程中最尖锐的问题会在与：1）应用的兼容性；2）外设的兼容性。目前的Windows应用并非天然能够在虚拟机里面运行的，特别是在有负载外设需要通过远程协议链接的时候，更是如此。让企业修改应用是一个非常头痛的事情；选择修改应用，使之更适用于虚拟化环境，从长远看是明智的选择，并非企业的让步。而逼着厂商来适应一个糟糕的，或者本不该出现在虚拟桌面环境中的应用，即使是花了很大的代价实现了，也是投入和产出及不划算的。</p>
+
+<p>成本结构的烦恼，宏观的看成本中排名前几位是：存储、服务器、软件许可。也就是说桌面虚拟化厂商玩命的在硬件厂商打工。如何节省存储和服务器成本，方法可以是：减少虚拟机的资源消耗量。注意有些情况下是在不极大降低虚拟的数量上来做的，这就不得不去细看一下虚拟机的制备方法上，各家的优势了。方法也可以是：调整VDI和虚拟应用使用的比例。</p>
+
+<p>实施的过程不仅是搭建和测试，更要命的时用户的接受程度。在有些地方是需要强推，在某些情况下是要把技术问题留给厂商解决。一切都在于实施成本的平衡，没有一帆风顺的实施。实施的过程也是不断积累运维经验的过程，企业需要做好学习和提高的准备，这个球也不好接住。</p>
+
+<h1 id="总结">总结</h1>
+
+<p>桌面虚拟化和应用虚拟化是两个不同的技术。在一个项目和客户里，可能是两种不同的技术路线，在很多情况下也是混合使用的。它们构成了“企业应用交付基础架构”，这个基础架构在数据中心里地地位和网络设备、服务器、存储、数据库等等是相同的。只是它处在一个比较特殊的位置。很多人可能还不能理解到这一层。</p>
+
+<p>从ITSM的角度看，它提供了一种IT服务。用户通过它可以安全高效地使用各种企业业务应用和数据。企业可以用应用交付基础架构，轻松地把业务系统部署到任何的工作场所；并得到更好地数据安全性的保证，更快速地交付各种业务（甚至所有内网应用）给最终用户（不管他们身在何处）。</p>
+
+            </article>
+
+            <ul class="pager blog-pager">
+                
+                <li class="previous">
+                    <a href="https://martinliu.cn/2014/11/22/e581b6e98187e4b880e4b8aae4b88de99499e4b8bbe9a298/" data-toggle="tooltip" data-placement="top" title="偶遇一个不错主题">&larr; Previous Post</a>
+                </li>
+                 
+                <li class="next">
+                    <a href="https://martinliu.cn/2014/11/25/openstack-one/" data-toggle="tooltip" data-placement="top" title="openstack all in one">Next Post &rarr;</a>
+                </li>
+                
+            </ul>
+            
+            <div>
+                 
+                <h2>See Also</h2>
+                <ul>
+                    
+                    <li><a href="/2013/04/15/forrester-private-clouds-what-is-cloud-computing/">什么是真的云？</a></li>
+                    
+                    <li><a href="/2014/02/10/e4ba8ecitrix-25e591a8e5b9b4e79a84e69585e4ba8b-imagination-innovation-growth/">于Citrix 25周年的故事 Imagination Innovation Growth</a></li>
+                    
+                    <li><a href="/2013/12/31/reviewers-guide-remote-3d-graphics-apps/">Reviewer’s Guide for Remote 3D  Graphics Apps </a></li>
+                    
+                    <li><a href="/2013/08/15/xencliente69cace59cb0e8999ae68b9fe6a18ce99da2e585b8e59e8be5ba94e794a8e59cbae699af/">XenClient本地虚拟桌面典型应用场景</a></li>
+                    
+                    <li><a href="/2013/08/14/xendesktop-7-hdx-3d-pro/">XenDesktop 7 HDX 3D Pro</a></li>
+                    
+                </ul>
+                
+            </div>
+            
+            
+            
+            
+<div>
+    <section id="datecount">
+        <h4 id="date"> Sun Nov 23, 2014</h4>
+    </section>
+    <h5 id="wc">2900 Words|Read in about 6 Min</h5>
+    <h5 id="tags">Tags: 
+        
+        <a href="https://martinliu.cn/tags/citrix/">Citrix</a> &nbsp;
+        
+        <a href="https://martinliu.cn/tags/ica/">ICA</a> &nbsp;
+        
+        <a href="https://martinliu.cn/tags/pcoip/">PCoIP</a> &nbsp;
+        
+        <a href="https://martinliu.cn/tags/rdp/">RDP</a> &nbsp;
+        
+        <a href="https://martinliu.cn/tags/vmware/">VMWare</a> &nbsp;
+    </h5>
+</div>
+
+            
+            </div>
+            
+ 
+        </div>
+    </div>
+    </section>
+</div>
+
+    <footer>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <ul class="list-inline text-center footer-links">
+          
+              <li>
+                <a href="mailto:67120666@qq.com" title="Email me">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-envelope fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a href="https://plus.google.com/&#43;MartinLiu-cn" title="Google&#43;">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-google-plus fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a href="https://twitter.com/martinliu" title="Twitter">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a href="https://linkedin.com/in/liuzheng" title="LinkedIn">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-linkedin fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+          
+        </ul>
+        <p class="credits copyright text-muted">
+        &copy;2017-2018
+          
+            
+              <a href="martinliu.cn">Martin Liu</a>
+                      
+          
+          
+          
+            &nbsp;&bull;&nbsp;
+            <a href="https://martinliu.cn/">Maritn&#39;s Blog</a>
+          
+        </p>
+        
+        <p class="credits theme-by text-muted">
+          <a href="http://gohugo.io">Hugo v0.29</a> powered &nbsp;&bull;&nbsp; Theme by <a href="http://deanattali.com/beautiful-jekyll/">Beautiful Jekyll</a> adapted to <a href="https://github.com/halogenica/beautifulhugo">Beautiful Hugo</a>
+          
+        </p>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/bootstrap.min.js"></script>
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/photoswipe-ui-default.min.js"></script>
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/photoswipe.min.js"></script>
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/auto-render.min.js"></script>
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/main.js"></script>
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/prism.js"></script>
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/katex.min.js"></script>
+<script> renderMathInElement(document.body); </script>
+
+
+
+
+
+
+
+
+  </body>
+</html>
+

@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+  <title> 什么是真的云？ - 刘征的博客|DevOps|Cloud Computing</title>
+  <meta name="description" content="刘征的博客|DevOps|Cloud Computing" />
+  <meta property="og:title" content="什么是真的云？" />
+  <meta name="twitter:title" content="什么是真的云？" />
+  <meta name="description" content="[su_box ] 最近有一篇比较热的文章，中文标题《Forrester：70%的“私有云”根本不是云》；你如果稍微搜索一下，你发现它几乎被转载烂了，但是我">
+  <meta property="og:description" content="[su_box ] 最近有一篇比较热的文章，中文标题《Forrester：70%的“私有云”根本不是云》；你如果稍微搜索一下，你发现它几乎被转载烂了，但是我">
+  <meta name="twitter:description" content="[su_box ] 最近有一篇比较热的文章，中文标题《Forrester：70%的“私有云”根本不是云》；你如果稍微搜索一下，你发现它几乎被转载烂了，但是我">
+  <meta name="author" content="{Description { .Site.Author.name }}"/>
+  <link href='https://martinliu.cn/img/favicon.ico' rel='icon' type='image/x-icon'/>
+  <meta property="og:image" content="https://martinliu.cn/img/logo.jpg" />
+  <meta name="twitter:image" content="https://martinliu.cn/img/logo.jpg" />
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:site" content="@martinliu" />
+  <meta name="twitter:creator" content="@martinliu" />
+  <meta property="og:url" content="https://martinliu.cn/2013/04/15/forrester-private-clouds-what-is-cloud-computing/" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Maritn&#39;s Blog" />
+
+  <meta name="generator" content="Hugo 0.29" />
+  <link rel="canonical" href="https://martinliu.cn/2013/04/15/forrester-private-clouds-what-is-cloud-computing/" />
+  <link rel="alternate" href="https://martinliu.cn/index.xml" type="application/rss+xml" title="Maritn&#39;s Blog">
+  <script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/jquery-1.12.4.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.7.1/katex.min.css" integrity="sha384-wITovz90syo1dJWVh32uuETPVEtGigN07tkttEqPv+uR2SE/mbQcG7ATL28aI9H0" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+  
+  
+  <link rel="stylesheet" href="https://martinliu.cn/css/main.css" />
+  <link rel="stylesheet" href="https://martinliu.cn/css/search.css" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" />
+  
+
+<meta name="baidu-site-verification" content="W3AORuRNZo" />
+<script>
+    var _hmt = _hmt || [];
+    (function () {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?50c3a9ae6c51222b31df5510bbca479f";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+
+<link rel="stylesheet" href="https://martinliu.cn/css/prism.css" />
+
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.1/photoswipe.min.css" integrity="sha256-sCl5PUOGMLfFYctzDW3MtRib0ctyUvI9Qsmq2wXOeBY=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.1/default-skin/default-skin.min.css" integrity="sha256-BFeI1V+Vh1Rk37wswuOYn5lsTcaU96hGaI7OUVCLjPc=" crossorigin="anonymous" />
+
+
+
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+<div class="pswp__bg"></div>
+
+<div class="pswp__scroll-wrap">
+    
+    <div class="pswp__container">
+      <div class="pswp__item"></div>
+      <div class="pswp__item"></div>
+      <div class="pswp__item"></div>
+    </div>
+    
+    <div class="pswp__ui pswp__ui--hidden">
+    <div class="pswp__top-bar">
+      
+      <div class="pswp__counter"></div>
+      <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+      <button class="pswp__button pswp__button--share" title="Share"></button>
+      <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+      <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+      
+      
+      <div class="pswp__preloader">
+        <div class="pswp__preloader__icn">
+          <div class="pswp__preloader__cut">
+            <div class="pswp__preloader__donut"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+      <div class="pswp__share-tooltip"></div>
+    </div>
+    <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+    </button>
+    <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+    </button>
+    <div class="pswp__caption">
+      <div class="pswp__caption__center"></div>
+    </div>
+    </div>
+    </div>
+</div>
+
+</head>
+
+  <body>
+    <nav class="navbar navbar-default navbar-fixed-top navbar-custom">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#main-navbar">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="https://martinliu.cn/">Maritn&#39;s Blog</a>
+    </div>
+    <div class="collapse navbar-collapse" id="main-navbar">
+      <ul class="nav navbar-nav navbar-right">
+        
+          
+            <li>
+              <a title="Blog" href="/">Blog</a>
+              
+              
+            </li>
+          
+        
+          
+            <li>
+              <a title="Tags" href="/tags">Tags</a>
+              
+              
+            </li>
+          
+        
+          
+            <li>
+              <a title="About" href="/about/">About</a>
+              
+              
+            </li>
+          
+        
+          
+            <li>
+              <a title="Book" href="https://handbook.martinliu.cn">Book</a>
+              
+              
+            </li>
+          
+        
+
+        
+
+        
+        
+          <li>
+            <a href="#modalSearch" data-toggle="modal" data-target="#modalSearch" style="outline: none;">
+              <span class="hidden-sm hidden-md hidden-lg">Search</span> <span id="searchGlyph" class="glyphicon glyphicon-search"></span>
+            </a>
+          </li>
+          
+      </ul>
+    </div>
+
+    <div class="avatar-container">
+      <div class="avatar-img-border">
+        
+          <a title="Maritn&#39;s Blog" href="https://martinliu.cn/">
+            <img class="avatar-img" src="https://martinliu.cn/img/logo.jpg" alt="Maritn&#39;s Blog" />
+          </a>
+        
+      </div>
+    </div>
+
+  </div>
+</nav>
+
+
+
+
+
+  <div id="modalSearch" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Search martinliu.cn </h4>
+        </div>
+        <div class="modal-body">
+            
+<div class="aa-input-container" id="aa-input-container">
+    <input type="search" id="aa-search-input" class="aa-input-search" placeholder="Search for titles or URIs..." name="search" autocomplete="off" />
+    <svg class="aa-input-icon" viewBox="654 -372 1664 1664">
+        <path d="M1806,332c0-123.3-43.8-228.8-131.5-316.5C1586.8-72.2,1481.3-116,1358-116s-228.8,43.8-316.5,131.5  C953.8,103.2,910,208.7,910,332s43.8,228.8,131.5,316.5C1129.2,736.2,1234.7,780,1358,780s228.8-43.8,316.5-131.5  C1762.2,560.8,1806,455.3,1806,332z M2318,1164c0,34.7-12.7,64.7-38,90s-55.3,38-90,38c-36,0-66-12.7-90-38l-343-342  c-119.3,82.7-252.3,124-399,124c-95.3,0-186.5-18.5-273.5-55.5s-162-87-225-150s-113-138-150-225S654,427.3,654,332  s18.5-186.5,55.5-273.5s87-162,150-225s138-113,225-150S1262.7-372,1358-372s186.5,18.5,273.5,55.5s162,87,225,150s113,138,150,225  S2062,236.7,2062,332c0,146.7-41.3,279.7-124,399l343,343C2305.7,1098.7,2318,1128.7,2318,1164z" />
+    </svg>
+</div>
+
+
+
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/algoliasearch.min.js"></script>
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/autocomplete.min.js"></script>
+
+<script>
+var client = algoliasearch("3RK9W7WH5R", "06f3928eb3fad870c9197c68c238dbd3");
+var index = client.initIndex('martinliu_blog');
+
+autocomplete('#aa-search-input',
+{ hint: false}, {
+    source: autocomplete.sources.hits(index, {hitsPerPage: 5}),
+    
+    displayKey: 'name',
+    
+    templates: {
+        
+        suggestion: function(suggestion) {
+            
+            return '<span>' + '<a href="/' + suggestion.uri+ '">' +
+            suggestion._highlightResult.title.value + '</a></span>';
+        }
+    }
+});
+</script>
+
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+    
+  
+  
+  
+
+
+
+
+  
+
+  <header class="header-section ">
+    
+    <div class="intro-header no-img">
+      
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-12 col-md-12 col-md-offset-0">
+            <div class="posts-heading">
+                <h1 align="center">什么是真的云？</h1>
+                
+                
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+
+    
+<div class="container" role="main" itemscope itemtype="http://schema.org/Article">
+    <div class="row">
+        <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+            
+            
+            
+<div>
+    <section id="datecount">
+        <h4 id="date"> Mon Apr 15, 2013</h4>
+    </section>
+    <h5 id="wc">4200 Words|Read in about 9 Min</h5>
+    <h5 id="tags">Tags: 
+        
+        <a href="https://martinliu.cn/tags/ca/">CA</a> &nbsp;
+        
+        <a href="https://martinliu.cn/tags/citrix/">Citrix</a> &nbsp;
+        
+        <a href="https://martinliu.cn/tags/cloud/">cloud</a> &nbsp;
+        
+        <a href="https://martinliu.cn/tags/iaas/">iaas</a> &nbsp;
+        
+        <a href="https://martinliu.cn/tags/paas/">paas</a> &nbsp;
+        
+        <a href="https://martinliu.cn/tags/saas/">SaaS</a> &nbsp;
+        
+        <a href="https://martinliu.cn/tags/vmware/">VMWare</a> &nbsp;
+    </h5>
+</div>
+
+            
+            <article role="main" class="blog-post" itemprop="articleBody" id="content">
+                <p>[su_box  ]
+最近有一篇比较热的文章，中文标题《Forrester：70%的“私有云”根本不是云》；你如果稍微搜索一下，你发现它几乎被转载烂了，但是我看了几篇，真心的担心读者们是否都能正确的理解。写本文，全当是给您的一个阅读帮助。
+[/su_box]</p>
+
+<p><a href="http://www.cnw.com.cn/news-international/htm2013/20130227_264664.shtml">中文版网页点这里</a>
+<a href="http://www.networkworld.com/news/2013/022613-forrester-private-clouds-267108.html">英文版网页点这里</a></p>
+
+<p><strong>中文翻译的质量有限，有些概念和逻辑错误，我做了一点点的修订，从而避免误解。</strong></p>
+
+<p><strong>【基于CNW.com.cn译稿】</strong>如果企业数据中心拥有高度虚拟化的环境，有一个Web门户供商业用户申请和访问虚机，再有一种方法可以跟踪有多少资源被使用了……拥有这一切并不能叫做有了一个<a href="http://search.cnw.com.cn/searchview.aspx?searchtype=Content&amp;searchstr=%CB%BD%D3%D0%D4%C6">私有云</a>。</p>
+
+<p>假如有足够大的容量可以为员工提供他们所需要的任意数量的计算资源，并能够动态地上下扩展或收缩容量，但仍然需要IT人员制备好系统的话，那么这仍然不能叫私有云。</p>
+
+<p>虚拟化和私有云之间的界限是比较模糊的，根据Forrester的最新报告，在企业的IT高管们所自诩的私有云中，高达70%的IT环境其实并非私有云。“这是个严重的问题。实际上是在做云洗白而已。”Forrester的云专家James Staten如此说。</p>
+
+<p>为什么说这个问题非常重要? Staten认为，如果将一个高度虚拟化的环境称为云环境，但它又不具备私有云的一项或多项关键特征，那么IT部门就给了用户一个不切实际的期望。假如用户们发现这个环境不能自配置，或者没有弹性<a href="http://search.cnw.com.cn/searchview.aspx?searchtype=Content&amp;searchstr=%D7%CA%D4%B4%B3%D8">资源池</a>而感到不满时，他们就有可能因此而气馁。那么当下一次用户需要实时运行一个虚机时，他们会选择在哪里运行呢? 是IT部门给他们的伪私有云? 还是亚马逊的AWS? 如此一来，IT部门就无法控制事态了。</p>
+
+<p>大多数云专家已经对云计算(公有云或私有云)的定义有了普遍的共识，这就是NIST提出的五个关键特征。这些特征包括：</p>
+
+<p>● 用户可按需索取、<a href="http://search.cnw.com.cn/searchview.aspx?searchtype=Content&amp;searchstr=%D7%D4%B7%FE%CE%F1">自服务</a></p>
+
+<p>● 泛在的网络接入</p>
+
+<p>● 共享资源池</p>
+
+<p>● <a href="http://search.cnw.com.cn/searchview.aspx?searchtype=Content&amp;searchstr=%B5%AF%D0%D4%C0%A9%D5%B9">弹性扩展</a>资源的能力</p>
+
+<p>● 拥有可计量的服务</p>
+
+<p>如果没有这五大特征，那从技术上说就不能叫云。和某些人的想法相悖的是，虚拟化并不是私有云。它只是为云提供动力的一个基本要素，但只依靠它是创建不出一个云的。VMware的营销经理Mike Adams说，私有云必须在虚拟化环境之上综合更多复杂的管理功能，方能满足NIST的定义要求。</p>
+
+<p>CA的战略解决方案副总裁兼云专家Andi Mann给这场讨论踩了一脚刹车。“如果你不符合所有这五大特征，那么你就陷入了语义学纠结中。”他认为真正的问题并不是说符合这五个复选标记的东西就叫做云，而是在于IT能否为用户提供适当的服务。“有时候，80%的云都已足够好了，”他说。“用户真正在意的是业务服务。谁会在意你的环境叫什么。你要关心的就是客户，就是业务用户是不是得到了他们需要的资源。”</p>
+
+<p>也许企业并不需要弹性扩展，因为原本就是静态工作负载。即便不需要弹性的资源扩展能力，它仍然还可以需要云的其他特征——自服务、计费、泛在网络接入和共享资源池。但它在技术上可能并不符合NIST的定义。“所以，如果你要想技术上也说得过去，也可以将其称为：高效率的虚拟环境，”Mann说。</p>
+
+<p>那么，所有这些云洗白来自哪里? Staten认为，IT管理人员基本上对云都抱有恐惧心理。企业内的虚拟化专家通常都处于支配地位; 在需要资源时，他们可以去制备相应的资源容量。而云被视为一种赋予用户自服务和动态扩展资源权力的模式，对IT是一种威胁。如果用户可以自己开通了，那还要他们这些虚拟化专家干什么呢?</p>
+
+<p>Staten认为，这样想上述问题是错误的。即便有了云，IT管理人员还是有大量的工作可做，比如需要设置和确保云服务有一个可供用户选择的服务目录，需要完成安全访问协议配置，提供资源可用性和虚拟化组件等。管理人员必须接受这样一个理念：如果他们不这么做，那么用户不论如何还是需要访问和使用他们所需要的资源，这样还是会陷入可怕的“影子IT”的局面。(Martin修订)</p>
+
+<p>我想先对以上的几个关键点和名词做一些解释，从而能让我们更好的理解原文作者的意图。</p>
+
+<ol>
+<li><p>&ldquo;cloud-washing&rdquo;  &ndash;  “云洗白”   这个比喻是说：本来根本什么云都不是！但是还是要狡辩和伪装为私有云。真像是：纯虚拟化环境不等于云</p></li>
+
+<li><p> &rdquo;shadow IT.&rdquo;   &ndash;  “影子IT”  这个比喻是说：IT部门是业务部门挥之不去的阴霾，他们跟没发赶上业务部门需求变化请求的脚本，业务部门的人从来不管你是用的是神马云，你们这帮人根本没有按时的交付过任何东西，甚至于每当想起需要IT部门来配合做什么东西，就感到没有指望，啥都需要漫长的等待。</p></li>
+</ol>
+
+<p>IT部门真的是技术不行么？IT部门真的是干活的人不够么？这个比喻后背后真是的故事：特别是大规模的企业，业务部门所需要的任何IT资源和变更都必须通过IT自动、半自动或者手工配置实现；小的到开通一个邮箱，重置一次密码；大到新的业务系统的升级和上线；往往IT或者业务用户发频繁和密集地发起种种请求时，没有任何一家传统企业的IT部门（亚马逊、谷歌这种公司除外，因为它们已经是云计算公司了）能够很有自信地、充分让业务部门满意地完成被要求完成的所有工作。它们为什么完成不了呢？这个就走入了IT管理的经典理论，这就是我之前十年工作经验中天天和用户沟通的东西：“保持IT系统的稳定，还是接受变化”；为了既能响应业务部门不断的变化请求和IT用户的日常需求，IT部门想到了很好的流程来加以解决，这个流程是什么？它叫“变更管理流程”。举个例子，大型的商业银行一般一周或者两周有一次系统变更日；所有的对IT系统的配置和改变，必须提前计划安排好工作顺序，只能在变更日当晚的固定时间窗口中完成，例如晚上11点到凌晨5点；如果在这个时间段某个工作没有完成怎么办？对不起！没有完成的变更叫做失败变更，你还必须在变更窗前前就把系统回退到未变更前的状态！你现在发现了么？对生产系统是多么严肃的事情！如果你在变更前，没有万无一失的备份计划，你但失误，你就歇菜了；或者你觉得是顺利完成变更了，但是营业厅一开门，IT的投诉热线就被打爆了，这也不行；变更一但导致生产系统的宕机，轻则IT部门的领导引咎辞职，重则数据中心的大领导乌纱帽不保。</p>
+
+<p>以上讲述的故事可以说是我的亲身经历，就是中国的国情；那么这个文章的出处毕竟是国外的，这几个发话的大佬们都是何方神圣？</p>
+
+<p>Forrester的云专家 James Staten ：<a href="http://www.forrester.com/james-staten">BIO</a> 从Bio上看，他好像是Forrester的头牌云分析师之一，有20年的IT从业经验。</p>
+
+<p>VMware的营销经理Mike Adams ：网上查不到它的Bio，在VMWare网站搜索，也只能看到他是<a href="http://blogs.vmware.com/vsphere/">http://blogs.vmware.com/vsphere/</a> 的负责人。网上并没有关于此人的详细介绍，但是我们从vsphere的blog上在读一下这个产品的定位“BEGIN THE JOURNEY TO A PRIVATE CLOUD WITH DATACENTER VIRTUALIZATION”；这个说法和此大师在文章中说的一样：vsphere是数据中心虚拟化的一个技术组建，数据中心虚拟化技术是私有云建设的起点。但是它是起点，不是私有云。纯种的服务器虚拟化项目也不是那天就能进化成私有云了。</p>
+
+<p>CA的战略解决方案副总裁兼云专家Andi Mann ：<a href="http://www.linkedin.com/in/andimann">BIO</a> 从Bio上可以看出，这大叔才是练家子，人家84年从IT管理员出身干起；感觉它说的话比较在点子上，并没有去忽悠云；而是从云的本质，也就是IT的本质去看，去分析的。也就是“IT是提供服务和支持的，为的是让用户能够操作和使用业务系统去完成业务工作。” 如果这句话抽象，我可以举个例子：领导需要阅读邮件，他关心的是IT能否让我安全的在设备上查邮箱，浏览和回复邮件；当然你能让他在任何设备、任何网络上、任何时间都能完成以上动作，那就再好不过了。银行的储蓄业务柜员需要的是完成一个存、取钱、开销户等相关操作，他关心的是IT系统能够正常快速的相应，让客户快速的离开柜台；她根本不关心，网线后面连接的系统是啥做的。</p>
+
+<p>言归正传：把焦点放到“云”的概念上一点意义都没有！倒不如把心思放在云的价值上；把心思放在私/公有云的建设方案上！我试图从云计算的基础特征上来解读一下云计算对云企业的价值：</p>
+
+<ol>
+<li><p>用户可按需索取、自服务：让用户能够更方便的访问（请求、开通和使用）IT资源和服务，用户无需等待，资源召之即来</p></li>
+
+<li><p>泛在的网络接入：个人觉得这个应该翻译为高速度高带宽的网络接入，这个是外界访问到计算资源的必要条件之一；如果你资源再多，但是出口太窄也没有意义；如果翻译成这样也凑合如果能理解为，在个中网络条件下都能够正常安全的加入到云所提供的IT服务上也可以。</p></li>
+
+<li><p>共享资源池： 这个可以提高IT资源的利用率，利用率高了，投资就减少了，浪费了低了</p></li>
+
+<li><p>弹性扩展资源的能力：这个可以应付突发的大批量用户访问请求，并且能够自动资源回收，最重要的是这些扩展和收缩的发生都是云系统自动完成的，不需要管理员手工操作</p></li>
+
+<li><p>拥有可计量的服务 ： 这个对于IT部门需要向用户收钱的实在是重要；或者对服务提供商更重要，如果国内的用户实在没有这个需求也可以不强求。</p></li>
+</ol>
+
+<p>那么，我们清楚了云的标准和价值后，我们需要判断的是什么？我认为是，我们为什么要建云？你在建云的时候，必须要有一个原因；有了这个原因了才有云的价值取向，才能谈到云的需求，才能谈到云的方案。当然，云就是以云的方案和设计理念去建设的，不存在伪云计算最终能进化或者发展成云计算这一说，就像是，猴子长的年纪在大也无法开口讲话一样。厂商也要不要故意误导，用户也不要片面理解。</p>
+
+<p>在引申一下：云计算和虚拟化究竟有啥关系？我斗胆从云的经典分类上来说Iaas\PaaS\SaaS；从技术上讲，只有IaaS和服务器虚拟化有必然联系，其它两种PaaS和SaaS可以和虚拟化一点必然关系都没有，但是如果他们需要的话，可能可以利用到虚拟化技术的某些优势，但是用非虚拟化技术的架构实现这两种云计算一点问题都没有。网上盛传的“虚拟化是云计算的基石”根本就是一种误解；不过虚拟化的确能帮你做很多事，能帮助你交付很多种的IT服务。如果你一定要把他们挂上钩，那么你需要回答的是，你是否要建设IaaS云？你的IaaS云管理平台是什么，要关注在IaaS云计算管理平台的功能和能力上来，看你的IaaS是否需要管理多种类型的Hypersior？是否需要管理到分布在各地的成千上万个服务器？等等。。。从这些需求中才会细化出IaaS云管理平台对服务器虚拟化平台的需求。云计算建设是自顶向下的过程，从清晰的概念和建设思路出发，切勿本末倒置，切勿舍本逐末。</p>
+
+            </article>
+
+            <ul class="pager blog-pager">
+                
+                <li class="previous">
+                    <a href="https://martinliu.cn/2013/04/15/xendesktope8999ae68b9fe6a18ce99da2e7b2bee59381e4b9a6e7b18de5afbce8afbbpart2/" data-toggle="tooltip" data-placement="top" title="XenDesktop虚拟桌面精品书籍导读(part2)">&larr; Previous Post</a>
+                </li>
+                 
+                <li class="next">
+                    <a href="https://martinliu.cn/2013/04/16/xendesktope8999ae68b9fe6a18ce99da2e7b2bee59381e4b9a6e7b18de5afbce8afbbpart3/" data-toggle="tooltip" data-placement="top" title="XenDesktop虚拟桌面精品书籍导读(part3)">Next Post &rarr;</a>
+                </li>
+                
+            </ul>
+            
+            <div>
+                 
+                <h2>See Also</h2>
+                <ul>
+                    
+                    <li><a href="/2010/09/17/zt-bsm-dead/">[ZT] Old BSM is dead</a></li>
+                    
+                    <li><a href="/2012/12/18/2013e5b9b4e79a84e4ba91e8aea1e7ae97e682a8e58786e5a487e5a5bde4ba86e4b988/">2013年的云计算，您准备好了么？</a></li>
+                    
+                    <li><a href="/2010/06/07/bmc-remedy-ondemand/">BMC提供ITSM洋快餐</a></li>
+                    
+                    <li><a href="/2009/07/16/bmc-and-cloud-computing/">BMC and Cloud computing</a></li>
+                    
+                    <li><a href="/2008/10/16/open-source-and-cloud-computinge5bc80e6ba90e4b88ee4ba91e8aea1e7ae97/">Open Source and Cloud Computing(开源与云计算)</a></li>
+                    
+                </ul>
+                
+            </div>
+            
+            
+            
+            
+<div>
+    <section id="datecount">
+        <h4 id="date"> Mon Apr 15, 2013</h4>
+    </section>
+    <h5 id="wc">4200 Words|Read in about 9 Min</h5>
+    <h5 id="tags">Tags: 
+        
+        <a href="https://martinliu.cn/tags/ca/">CA</a> &nbsp;
+        
+        <a href="https://martinliu.cn/tags/citrix/">Citrix</a> &nbsp;
+        
+        <a href="https://martinliu.cn/tags/cloud/">cloud</a> &nbsp;
+        
+        <a href="https://martinliu.cn/tags/iaas/">iaas</a> &nbsp;
+        
+        <a href="https://martinliu.cn/tags/paas/">paas</a> &nbsp;
+        
+        <a href="https://martinliu.cn/tags/saas/">SaaS</a> &nbsp;
+        
+        <a href="https://martinliu.cn/tags/vmware/">VMWare</a> &nbsp;
+    </h5>
+</div>
+
+            
+            </div>
+            
+ 
+        </div>
+    </div>
+    </section>
+</div>
+
+    <footer>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <ul class="list-inline text-center footer-links">
+          
+              <li>
+                <a href="mailto:67120666@qq.com" title="Email me">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-envelope fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a href="https://plus.google.com/&#43;MartinLiu-cn" title="Google&#43;">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-google-plus fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a href="https://twitter.com/martinliu" title="Twitter">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a href="https://linkedin.com/in/liuzheng" title="LinkedIn">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-linkedin fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+          
+        </ul>
+        <p class="credits copyright text-muted">
+        &copy;2017-2018
+          
+            
+              <a href="martinliu.cn">Martin Liu</a>
+                      
+          
+          
+          
+            &nbsp;&bull;&nbsp;
+            <a href="https://martinliu.cn/">Maritn&#39;s Blog</a>
+          
+        </p>
+        
+        <p class="credits theme-by text-muted">
+          <a href="http://gohugo.io">Hugo v0.29</a> powered &nbsp;&bull;&nbsp; Theme by <a href="http://deanattali.com/beautiful-jekyll/">Beautiful Jekyll</a> adapted to <a href="https://github.com/halogenica/beautifulhugo">Beautiful Hugo</a>
+          
+        </p>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/bootstrap.min.js"></script>
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/photoswipe-ui-default.min.js"></script>
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/photoswipe.min.js"></script>
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/auto-render.min.js"></script>
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/main.js"></script>
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/prism.js"></script>
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/katex.min.js"></script>
+<script> renderMathInElement(document.body); </script>
+
+
+
+
+
+
+
+
+  </body>
+</html>
+

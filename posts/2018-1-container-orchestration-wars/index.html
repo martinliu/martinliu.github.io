@@ -1,0 +1,1061 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+  <title> Container Orchestration Wars - 刘征的博客|DevOps|Cloud Computing</title>
+  <meta name="description" content="刘征的博客|DevOps|Cloud Computing" />
+  <meta property="og:title" content="Container Orchestration Wars" />
+  <meta name="twitter:title" content="Container Orchestration Wars" />
+  <meta name="description" content="虽然容器编排器之战已经被K8s终结，可是这篇文章对架构分层的整理和分析还是值得架构师们借鉴的">
+  <meta property="og:description" content="虽然容器编排器之战已经被K8s终结，可是这篇文章对架构分层的整理和分析还是值得架构师们借鉴的">
+  <meta name="twitter:description" content="虽然容器编排器之战已经被K8s终结，可是这篇文章对架构分层的整理和分析还是值得架构师们借鉴的">
+  <meta name="author" content="{Description { .Site.Author.name }}"/>
+  <link href='https://martinliu.cn/img/favicon.ico' rel='icon' type='image/x-icon'/>
+  <meta property="og:image" content="https://martinliu.cn/img/logo.jpg" />
+  <meta name="twitter:image" content="https://martinliu.cn/img/logo.jpg" />
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:site" content="@martinliu" />
+  <meta name="twitter:creator" content="@martinliu" />
+  <meta property="og:url" content="https://martinliu.cn/posts/2018-1-container-orchestration-wars/" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Maritn&#39;s Blog" />
+
+  <meta name="generator" content="Hugo 0.29" />
+  <link rel="canonical" href="https://martinliu.cn/posts/2018-1-container-orchestration-wars/" />
+  <link rel="alternate" href="https://martinliu.cn/index.xml" type="application/rss+xml" title="Maritn&#39;s Blog">
+  <script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/jquery-1.12.4.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.7.1/katex.min.css" integrity="sha384-wITovz90syo1dJWVh32uuETPVEtGigN07tkttEqPv+uR2SE/mbQcG7ATL28aI9H0" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+  
+  
+  <link rel="stylesheet" href="https://martinliu.cn/css/main.css" />
+  <link rel="stylesheet" href="https://martinliu.cn/css/search.css" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" />
+  
+
+<meta name="baidu-site-verification" content="W3AORuRNZo" />
+<script>
+    var _hmt = _hmt || [];
+    (function () {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?50c3a9ae6c51222b31df5510bbca479f";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+
+<link rel="stylesheet" href="https://martinliu.cn/css/prism.css" />
+
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.1/photoswipe.min.css" integrity="sha256-sCl5PUOGMLfFYctzDW3MtRib0ctyUvI9Qsmq2wXOeBY=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.1/default-skin/default-skin.min.css" integrity="sha256-BFeI1V+Vh1Rk37wswuOYn5lsTcaU96hGaI7OUVCLjPc=" crossorigin="anonymous" />
+
+
+
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+<div class="pswp__bg"></div>
+
+<div class="pswp__scroll-wrap">
+    
+    <div class="pswp__container">
+      <div class="pswp__item"></div>
+      <div class="pswp__item"></div>
+      <div class="pswp__item"></div>
+    </div>
+    
+    <div class="pswp__ui pswp__ui--hidden">
+    <div class="pswp__top-bar">
+      
+      <div class="pswp__counter"></div>
+      <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+      <button class="pswp__button pswp__button--share" title="Share"></button>
+      <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+      <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+      
+      
+      <div class="pswp__preloader">
+        <div class="pswp__preloader__icn">
+          <div class="pswp__preloader__cut">
+            <div class="pswp__preloader__donut"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+      <div class="pswp__share-tooltip"></div>
+    </div>
+    <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+    </button>
+    <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+    </button>
+    <div class="pswp__caption">
+      <div class="pswp__caption__center"></div>
+    </div>
+    </div>
+    </div>
+</div>
+
+</head>
+
+  <body>
+    <nav class="navbar navbar-default navbar-fixed-top navbar-custom">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#main-navbar">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="https://martinliu.cn/">Maritn&#39;s Blog</a>
+    </div>
+    <div class="collapse navbar-collapse" id="main-navbar">
+      <ul class="nav navbar-nav navbar-right">
+        
+          
+            <li>
+              <a title="Blog" href="/">Blog</a>
+              
+              
+            </li>
+          
+        
+          
+            <li>
+              <a title="Tags" href="/tags">Tags</a>
+              
+              
+            </li>
+          
+        
+          
+            <li>
+              <a title="About" href="/about/">About</a>
+              
+              
+            </li>
+          
+        
+          
+            <li>
+              <a title="Book" href="https://handbook.martinliu.cn">Book</a>
+              
+              
+            </li>
+          
+        
+
+        
+
+        
+        
+          <li>
+            <a href="#modalSearch" data-toggle="modal" data-target="#modalSearch" style="outline: none;">
+              <span class="hidden-sm hidden-md hidden-lg">Search</span> <span id="searchGlyph" class="glyphicon glyphicon-search"></span>
+            </a>
+          </li>
+          
+      </ul>
+    </div>
+
+    <div class="avatar-container">
+      <div class="avatar-img-border">
+        
+          <a title="Maritn&#39;s Blog" href="https://martinliu.cn/">
+            <img class="avatar-img" src="https://martinliu.cn/img/logo.jpg" alt="Maritn&#39;s Blog" />
+          </a>
+        
+      </div>
+    </div>
+
+  </div>
+</nav>
+
+
+
+
+
+  <div id="modalSearch" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Search martinliu.cn </h4>
+        </div>
+        <div class="modal-body">
+            
+<div class="aa-input-container" id="aa-input-container">
+    <input type="search" id="aa-search-input" class="aa-input-search" placeholder="Search for titles or URIs..." name="search" autocomplete="off" />
+    <svg class="aa-input-icon" viewBox="654 -372 1664 1664">
+        <path d="M1806,332c0-123.3-43.8-228.8-131.5-316.5C1586.8-72.2,1481.3-116,1358-116s-228.8,43.8-316.5,131.5  C953.8,103.2,910,208.7,910,332s43.8,228.8,131.5,316.5C1129.2,736.2,1234.7,780,1358,780s228.8-43.8,316.5-131.5  C1762.2,560.8,1806,455.3,1806,332z M2318,1164c0,34.7-12.7,64.7-38,90s-55.3,38-90,38c-36,0-66-12.7-90-38l-343-342  c-119.3,82.7-252.3,124-399,124c-95.3,0-186.5-18.5-273.5-55.5s-162-87-225-150s-113-138-150-225S654,427.3,654,332  s18.5-186.5,55.5-273.5s87-162,150-225s138-113,225-150S1262.7-372,1358-372s186.5,18.5,273.5,55.5s162,87,225,150s113,138,150,225  S2062,236.7,2062,332c0,146.7-41.3,279.7-124,399l343,343C2305.7,1098.7,2318,1128.7,2318,1164z" />
+    </svg>
+</div>
+
+
+
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/algoliasearch.min.js"></script>
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/autocomplete.min.js"></script>
+
+<script>
+var client = algoliasearch("3RK9W7WH5R", "06f3928eb3fad870c9197c68c238dbd3");
+var index = client.initIndex('martinliu_blog');
+
+autocomplete('#aa-search-input',
+{ hint: false}, {
+    source: autocomplete.sources.hits(index, {hitsPerPage: 5}),
+    
+    displayKey: 'name',
+    
+    templates: {
+        
+        suggestion: function(suggestion) {
+            
+            return '<span>' + '<a href="/' + suggestion.uri+ '">' +
+            suggestion._highlightResult.title.value + '</a></span>';
+        }
+    }
+});
+</script>
+
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+    
+  
+  
+  
+
+
+
+
+  
+    <div id="header-big-imgs" data-num-img=1 data-img-src-1="https://martinliu.cn/images/sandrali-4.jpeg" data-img-desc-1="泰国曼谷 by SandraLi"></div>
+  
+
+  <header class="header-section has-img">
+    
+      <div class="intro-header big-img">
+        
+        
+        <div class="container">
+          <div class="row">
+              <div class="col-lg-12 col-md-12 col-md-offset-0">
+                
+                <div class="post-heading">
+                
+                  
+                     <h1>Container Orchestration Wars</h1>
+                     
+                     
+                  
+                  
+                  
+                    
+                      <hr class="small">
+                      <span class="post-subheading">虽然容器编排器之战已经被K8s终结，可是这篇文章对架构分层的整理和分析还是值得架构师们借鉴的</span>
+                    
+                  
+                  
+                    <span class="post-meta">
+  
+  Posted on 2018, January 12
+  
+  
+</span>
+
+
+                  
+                
+              </div>
+            </div>
+          </div>
+        </div>
+        <span class="img-desc" style="display: inline;"></span>
+      </div>
+    
+    <div class="intro-header no-img">
+      
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-12 col-md-12 col-md-offset-0">
+            <div class="posts-heading">
+                <h1 align="center">Container Orchestration Wars</h1>
+                
+                  
+                    <h2 align="center" class="posts-subheading">虽然容器编排器之战已经被K8s终结，可是这篇文章对架构分层的整理和分析还是值得架构师们借鉴的</h2>
+                  
+                
+                
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+
+    
+<div class="container" role="main" itemscope itemtype="http://schema.org/Article">
+    <div class="row">
+        <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+            
+            
+            
+<div>
+    <section id="datecount">
+        <h4 id="date"> Fri Jan 12, 2018</h4>
+    </section>
+    <h5 id="wc">1600 Words|Read in about 4 Min</h5>
+    <h5 id="tags">Tags: 
+        
+        <a href="https://martinliu.cn/tags/container/">container</a> &nbsp;
+    </h5>
+</div>
+
+            
+            <article role="main" class="blog-post" itemprop="articleBody" id="content">
+                
+
+<h1 id="容器编排器之战">容器编排器之战</h1>
+
+<p>K8s在2017年底为这场速战速决的站点话上了句号，结果是所有竞争对手都选择了增加对K8s的支持。在各自的编排器框架里内置了K8s。本文是根据Mesosphere公司的大拿Karl KARL ISENBERG在各种大会上分享过多次的一份演讲稿改版的。</p>
+
+<h2 id="karl-isenberg-是谁">KARL ISENBERG 是谁？</h2>
+
+<p>所在公司?</p>
+
+<ul>
+<li>Mesosphere（当前）</li>
+<li>Pivotal</li>
+</ul>
+
+<p>做过的产品?</p>
+
+<ul>
+<li>DC/OS</li>
+<li>Kubernetes</li>
+<li>CloudFoundry</li>
+<li>BOSH</li>
+</ul>
+
+<p>联络信息：</p>
+
+<ul>
+<li>github.com/karlkfi</li>
+<li>twitter.com/karlkfi</li>
+<li>linkedin.com/in/karlkfi</li>
+<li>karl.isenberg.us</li>
+</ul>
+
+<h2 id="基础架构的进化">基础架构的进化</h2>
+
+<p>传统的应用架构在逐渐向下面两种架构演变。</p>
+
+<h3 id="可扩展的单体应用架构">可扩展的单体应用架构</h3>
+
+<p><img src="/images/Screen%20Shot%202018-01-12%20at%2011.42.23%20PM.png" alt="Screen Shot 2018-01-12 at 11.42.23 P" /></p>
+
+<p>关键词：</p>
+
+<ul>
+<li>Online 基于互联网</li>
+<li>Latency Routed 用户访问基于延迟路由</li>
+<li>Multi-Region 多区部署</li>
+<li>Load Balanced 负载均衡接入</li>
+<li>Multi-Zone 多个Zone</li>
+<li>Replicated  应用实例多副本</li>
+<li>Auto-Scaled 容量自动化收缩</li>
+<li>Data Replication  区内数据多副本</li>
+<li>Data Synchronization   跨区数据同步</li>
+</ul>
+
+<h3 id="可扩展的微服务架构">可扩展的微服务架构</h3>
+
+<p><img src="/images/Screen%20Shot%202018-01-12%20at%2011.50.47%20PM.png" alt="Screen Shot 2018-01-12 at 11.50.47 P" /></p>
+
+<p>上图出处：Wheel of Doom ，来自<a href="https://sudo.hailoapp.com/services/2015/03/09/journey-into-a-microservice-world-part-3/"> A Journey into Microservices by Hailo</a></p>
+
+<h3 id="应用-裸金属服务器">应用+裸金属服务器</h3>
+
+<p>APPLICATION
+PROVISIONING
+ON
+BARE METAL</p>
+
+<p><img src="/images/Screen%20Shot%202018-01-12%20at%2011.54.26%20PM.png" alt="Screen Shot 2018-01-12 at 11.54.26 P" /></p>
+
+<h3 id="应用-iaas">应用+IaaS</h3>
+
+<p>APPLICATION
+PROVISIONING
+ON
+VIRTUAL INFRASTRUCTURE
+PLATFORM
+(IaaS)</p>
+
+<blockquote>
+<p>“Ultimately, utility cloud providers have
+exposed how difficult it is to properly operate
+data centers — and reminded all of us that the
+ability to expertly operate infrastructure is
+what really fuels the consumption of open
+source infrastructure.”
+&ndash;Brian Stein (Rackspace VP - 2017)</p>
+</blockquote>
+
+<p><img src="/images/Screen%20Shot%202018-01-12%20at%2011.58.36%20PM.png" alt="Screen Shot 2018-01-12 at 11.58.36 P" /></p>
+
+<h3 id="应用-paas-apaas-iaas">应用+PaaS/aPaaS+IaaS</h3>
+
+<p>APPLICATION
+PLATFORM
+(PaaS / aPaaS)
+ON
+INFRASTRUCTURE
+PLATFORM
+(IaaS)</p>
+
+<blockquote>
+<p>“The goal of Cloud Foundry is to put more of the
+controls back in the hands of developers so they can
+self-provision, so there aren’t a lot of roadblocks in their way. But it gives a lot of guardrails.”
+&ndash; Chip Childers (Cloud Foundry Foundation CTO - 2017)
+<img src="/images/Screen%20Shot%202018-01-13%20at%2012.03.37%20AM.png" alt="Screen Shot 2018-01-13 at 12.03.37 A" /></p>
+</blockquote>
+
+<h3 id="容器编排器-iaas">容器编排器+IaaS</h3>
+
+<p>CONTAINER
+ORCHESTRATION
+ON
+INFRASTRUCTURE
+PLATFORM
+(IaaS)</p>
+
+<blockquote>
+<p>“&hellip;traditional “PaaS” roles have now been
+taken over by containers… The piece that is
+left for PaaS is the part that was always the
+most important part of PaaS in the first place,
+and that’s the opinionated developer
+experience.”
+&ndash;Brendan Burns (Kubernetes Cofounder - 2017)</p>
+</blockquote>
+
+<p><img src="/images/Screen%20Shot%202018-01-13%20at%2012.08.37%20AM.png" alt="Screen Shot 2018-01-13 at 12.08.37 A" /></p>
+
+<h3 id="caas-iaas">CaaS+IaaS</h3>
+
+<p>CONTAINER
+PLATFORM
+(CaaS)
+ON
+INFRASTRUCTURE
+PLATFORM
+(IaaS)
+<img src="/images/Screen%20Shot%202018-01-13%20at%2012.10.28%20AM.png" alt="Screen Shot 2018-01-13 at 12.10.28 A" /></p>
+
+<h3 id="caas-裸金属服务器">CaaS+裸金属服务器</h3>
+
+<p>CONTAINER
+PLATFORM
+(CaaS)
+ON
+BARE METAL</p>
+
+<p><img src="/images/Screen%20Shot%202018-01-13%20at%2012.11.42%20AM.png" alt="Screen Shot 2018-01-13 at 12.11.42 A" /></p>
+
+<h3 id="faas-iaas">FaaS+IaaS</h3>
+
+<p>FUNCTION
+PLATFORM
+(FaaS)
+ON
+INFRASTRUCTURE
+PLATFORM
+(IaaS)</p>
+
+<blockquote>
+<p>“If your PaaS can efficiently start instances in 20ms that run for half a second, then call it serverless.”
+&ndash;Adrian Cockcroft-(AWS VP - 2016)</p>
+</blockquote>
+
+<p><img src="/images/Screen%20Shot%202018-01-13%20at%2012.13.46%20AM.png" alt="Screen Shot 2018-01-13 at 12.13.46 A" /></p>
+
+<h3 id="faas-caas">FaaS+CaaS</h3>
+
+<p>FUNCTION
+PLATFORM
+(FaaS)
+ON
+CONTAINER
+PLATFORM
+(CaaS)
+<img src="/images/Screen%20Shot%202018-01-13%20at%206.43.06%20AM.png" alt="Screen Shot 2018-01-13 at 6.43.06 A" /></p>
+
+<h3 id="faas-caas-iaas">FaaS+CaaS+IaaS</h3>
+
+<p>FUNCTION PLATFORM
+(FaaS)
+ON
+CONTAINER PLATFORM
+(CaaS)
+ON
+INFRASTRUCTURE PLATFORM
+(IaaS)</p>
+
+<p><img src="/images/Screen%20Shot%202018-01-13%20at%206.44.49%20AM.png" alt="Screen Shot 2018-01-13 at 6.44.49 A" /></p>
+
+<h2 id="平台频谱-platform-spectrum">平台频谱 - PLATFORM SPECTRUM</h2>
+
+<p>从左到右，资源的抽象程度不断提高；最左侧的弹性最高，最右侧的速率最高。
+<img src="/images/Screen%20Shot%202018-01-13%20at%206.47.36%20AM.png" alt="Screen Shot 2018-01-13 at 6.47.36 A" /></p>
+
+<p>下图是不同类型里的厂商和软件。
+<img src="/images/Screen%20Shot%202018-01-13%20at%206.48.19%20AM.png" alt="Screen Shot 2018-01-13 at 6.48.19 A" /></p>
+
+<h2 id="容器平台层次">容器平台层次</h2>
+
+<p>容器编排器的层次如下：
+<img src="/images/Screen%20Shot%202018-01-13%20at%206.49.36%20AM.png" alt="Screen Shot 2018-01-13 at 6.49.36 A" /></p>
+
+<ul>
+<li>User workloads 用户工作负载</li>
+<li>Distributed container management 分布式容器管理</li>
+<li>Local container management 本地容器管理</li>
+<li>Container agnostic infrastructure 容器无关性基础架构</li>
+</ul>
+
+<p>容器平台的层次如下：
+<img src="/images/Screen%20Shot%202018-01-13%20at%206.51.23%20AM.png" alt="Screen Shot 2018-01-13 at 6.51.23 A" /></p>
+
+<p>CONTAINER PLATFORM</p>
+
+<ul>
+<li>User workloads 用户工作负载</li>
+<li>System management &amp; service enablement  系统管理和服务管理</li>
+<li>Distributed container management 分布式容器管理</li>
+<li>Local container management 本地容器管理</li>
+<li>Container aware infrastructure 容器感知的基础架构</li>
+<li>Container agnostic infrastructure 容器无关的基础架构</li>
+</ul>
+
+<p>分布式操作系统的层次如下：
+<img src="/images/Screen%20Shot%202018-01-13%20at%206.52.52%20AM.png" alt="Screen Shot 2018-01-13 at 6.52.52 A" /></p>
+
+<h2 id="容器平台功能点">容器平台功能点</h2>
+
+<p>CONTAINER
+PLATFORM
+CAPABILITIES</p>
+
+<h3 id="运行态的能力">运行态的能力</h3>
+
+<p>1 容器</p>
+
+<ul>
+<li>Resource Isolation</li>
+<li>Resource Constraints</li>
+<li>Process Tree</li>
+<li>Environment Isolation</li>
+<li>Shell / Exec</li>
+</ul>
+
+<p>2 镜像</p>
+
+<ul>
+<li>Build</li>
+<li>Layers</li>
+<li>Download</li>
+<li>Cache</li>
+<li>Publish</li>
+<li>Prune</li>
+</ul>
+
+<p>3 网络</p>
+
+<ul>
+<li>Container</li>
+<li>Bridge</li>
+<li>Host</li>
+<li>Virtual</li>
+<li>Overlay</li>
+<li>Remote</li>
+<li>User-defined</li>
+<li>Port Mapping</li>
+</ul>
+
+<p>4 数据卷
+- Ephemeral
+- Host
+- Backup / Restore
+- Copy In / Out
+- Shared</p>
+
+<h3 id="编排器的能力">编排器的能力</h3>
+
+<p>调度</p>
+
+<ul>
+<li>Placement</li>
+<li>Replication/Scaling</li>
+<li>Readiness Checking</li>
+<li>Resurrection</li>
+<li>Rescheduling</li>
+<li>Rolling Updates</li>
+<li>Collocation</li>
+<li>Daemons</li>
+<li>Cron Jobs</li>
+</ul>
+
+<p>资源管理</p>
+
+<ul>
+<li>Memory</li>
+<li>CPU</li>
+<li>GPU</li>
+<li>Ephemeral Volumes</li>
+<li>Remote Persistent Volumes</li>
+<li>Local Persistent Volumes</li>
+<li>Ports</li>
+<li>IPs (per container)</li>
+</ul>
+
+<p>服务管理</p>
+
+<ul>
+<li>Labels</li>
+<li>Groups/Namespaces</li>
+<li>Dependencies</li>
+<li>Load Balancing (L7)</li>
+<li>VIPs (L3/L4 LB)</li>
+<li>DNS</li>
+<li>DNS Proxy</li>
+<li>Secrets</li>
+<li>Config Mgmt</li>
+</ul>
+
+<h3 id="运维方面的能力">运维方面的能力</h3>
+
+<p>管理</p>
+
+<ul>
+<li>GUI</li>
+<li>CLI</li>
+<li>Metrics API</li>
+<li>Logs API</li>
+<li>Events API</li>
+<li>Rolling Upgrades</li>
+<li>Backups &amp; Restores</li>
+</ul>
+
+<p>MULTI-INFRASTRUCTURE</p>
+
+<ul>
+<li>Multi-cloud</li>
+<li>Multi-zone</li>
+<li>Multi-region</li>
+<li>Hybrid-cloud</li>
+<li>Federation</li>
+</ul>
+
+<p>系统服务</p>
+
+<ul>
+<li>Auto-Scaling</li>
+<li>Package Management</li>
+<li>Service Catalog</li>
+<li>Service Brokers</li>
+<li>Admin Proxy</li>
+<li>API Gateway</li>
+</ul>
+
+<h3 id="平台的能力">平台的能力</h3>
+
+<p>容器网络</p>
+
+<ul>
+<li>Overlay</li>
+<li>Routing</li>
+<li>Network Address Translation (NAT)</li>
+<li>Firewalls</li>
+<li>Access Control Lists</li>
+<li>Quality of Service</li>
+</ul>
+
+<p>容器存储</p>
+
+<ul>
+<li>Local Volumes</li>
+<li>Remote Volumes</li>
+<li>Block Storage</li>
+<li>File System Storage</li>
+<li>Object Storage</li>
+</ul>
+
+<p>平台数据库</p>
+
+<ul>
+<li>Lock Service</li>
+<li>Key-Value Database</li>
+<li>Relational Database</li>
+<li>Time Series Database</li>
+</ul>
+
+<p>安全</p>
+
+<ul>
+<li>User Accounts</li>
+<li>Service Accounts</li>
+<li>System/User Space</li>
+<li>E2E Encryption</li>
+<li>Non-root User Workloads</li>
+<li>Audit Logging</li>
+<li>Public Key Infrastructure</li>
+<li>Certifications</li>
+</ul>
+
+<p>多租户</p>
+
+<ul>
+<li>User Groups</li>
+<li>Permissions</li>
+<li>RBAC</li>
+<li>ABAC</li>
+<li>Resource Sharing
+
+<ul>
+<li>FIFO</li>
+<li>Fair</li>
+<li>Quotas</li>
+</ul></li>
+<li>Branding</li>
+<li>Quality of Service</li>
+</ul>
+
+<p>非功能需求</p>
+
+<p>稳定性</p>
+
+<ul>
+<li>Performance</li>
+<li>Responsiveness</li>
+<li>Efficiency</li>
+</ul>
+
+<p>可用性</p>
+
+<ul>
+<li>Fault Tolerance</li>
+<li>Robustness,</li>
+<li>Reliability,</li>
+<li>Resilience,</li>
+<li>Disaster Recovery</li>
+</ul>
+
+<p>灵活性</p>
+
+<ul>
+<li>Format Support,</li>
+<li>Interoperability,</li>
+<li>Extensibility,</li>
+<li>Container Runtimes</li>
+</ul>
+
+<p>可用度</p>
+
+<ul>
+<li>Familiarity,</li>
+<li>Maintainability,</li>
+<li>Compatibility,</li>
+<li>Debuggability</li>
+</ul>
+
+<p>可移植性</p>
+
+<ul>
+<li>Host OS,</li>
+<li>Cloud,</li>
+<li>Bare-Metal,</li>
+<li>Hybrid</li>
+</ul>
+
+<p>安全性</p>
+
+<ul>
+<li>Encryption Quality,</li>
+<li>Vulnerability Process,</li>
+<li>Fast Patching,</li>
+<li>Backporting</li>
+</ul>
+
+<h2 id="容器平台对比">容器平台对比</h2>
+
+<p>市场里的主要技术厂商如下。
+<img src="/images/Screen%20Shot%202018-01-13%20at%206.57.44%20AM.png" alt="Screen Shot 2018-01-13 at 6.57.44 A" /></p>
+
+<p>其它值得考虑的厂商如下。</p>
+
+<p><img src="/images/Screen%20Shot%202018-01-13%20at%206.58.36%20AM.png" alt="Screen Shot 2018-01-13 at 6.58.36 A" /></p>
+
+<p>下面的能力对比的时间点是 06/2017，这个时候K8s是否能胜出还是个悬念。</p>
+
+<h3 id="调度">调度</h3>
+
+<p>图示说明：</p>
+
+<ul>
+<li>绿勾：包含此能力</li>
+<li>横杠：New/External/Partial/Experimental</li>
+</ul>
+
+<p><img src="/images/Screen%20Shot%202018-01-13%20at%206.59.42%20AM.png" alt="Screen Shot 2018-01-13 at 6.59.42 A" /></p>
+
+<h3 id="资源管理">资源管理</h3>
+
+<p><img src="/images/Screen%20Shot%202018-01-13%20at%207.00.38%20AM.png" alt="Screen Shot 2018-01-13 at 7.00.38 A" /></p>
+
+<h3 id="服务管理">服务管理</h3>
+
+<p><img src="/images/Screen%20Shot%202018-01-13%20at%207.01.16%20AM.png" alt="Screen Shot 2018-01-13 at 7.01.16 A" /></p>
+
+<h2 id="如何选择">如何选择</h2>
+
+<h3 id="第一阵营-重量级">第一阵营：重量级</h3>
+
+<p>KUBERNETES</p>
+
+<ul>
+<li>Huge community</li>
+<li>Solid API</li>
+<li>Some assembly required</li>
+<li>Multitude of vendors/installers</li>
+</ul>
+
+<p>OPENSHIFT</p>
+
+<ul>
+<li>Application platform based on Kubernetes</li>
+<li>Always trailing Kubernetes releases</li>
+<li>No assembly required</li>
+<li>Open core, enterprise platform</li>
+</ul>
+
+<p>DC/OS</p>
+
+<ul>
+<li>Runs native applications (non-Docker)</li>
+<li>Specialized in data services</li>
+<li>Ambitious scope (on-prem AWS)</li>
+<li>No assembly required</li>
+<li>Open core, enterprise platform</li>
+</ul>
+
+<p>DOCKER</p>
+
+<ul>
+<li>Huge community</li>
+<li>Fast moving API</li>
+<li>Integrated orchestration and runtime</li>
+<li>Recent pivot from runtime to orchestration</li>
+<li>Open core, enterprise platform</li>
+</ul>
+
+<h3 id="第二阵营-轻量级">第二阵营：轻量级</h3>
+
+<p>EC2 CONTAINER SERVICE (ECS)</p>
+
+<ul>
+<li>Hosted-only solution</li>
+<li>Tight integration with AWS services</li>
+<li>Closed platform</li>
+</ul>
+
+<p>RANCHER CATTLE</p>
+
+<ul>
+<li>Gateway to Kubernetes, Mesos, and Docker</li>
+<li>Open platform, enterprise support</li>
+</ul>
+
+<p>NOMAD</p>
+
+<ul>
+<li>Provisioner with orchestration features</li>
+<li>Runs native applications (non-Docker)</li>
+<li>Tight integration with Vault and Consul</li>
+<li>Some assembly required</li>
+<li>Open platform, enterprise support</li>
+</ul>
+
+<p>KONTENA</p>
+
+<ul>
+<li>Simple to set up</li>
+<li>No assembly required</li>
+<li>Open core, enterprise platform</li>
+</ul>
+
+<h3 id="karl个人的考察点">Karl个人的考察点？</h3>
+
+<ul>
+<li>Which is more important to you: <strong>velocity or flexibility</strong>?</li>
+<li>Do you want an <strong>opinionated</strong> application platform?</li>
+<li>Do you need to support <strong>Big Data</strong> initiatives and pipelines?</li>
+<li>Do you want a <strong>hosted</strong> solution?</li>
+<li>Are you willing to <strong>build out your own integrations</strong>?</li>
+<li>Do you need <strong>on-prem &amp; hybrid</strong> capabilities?</li>
+<li>Do you want to avoid infrastructure <strong>lock-in</strong>?</li>
+<li>Are you already invested in a specific infrastructure?</li>
+<li>Are you already invested in a specific operating system?</li>
+<li>Do you need **federation and multi-region **support?</li>
+<li>Do you want <strong>multi-tenancy</strong> or is multi-instance good enough?</li>
+<li>How important are seamless automated <strong>rolling upgrades</strong>?</li>
+<li><strong>How many nines</strong> do your customers need?</li>
+<li>How important is reverse compatibility &amp; API <strong>stability</strong>?</li>
+<li>Do you need to support <strong>non-Docker workloads</strong>?</li>
+</ul>
+
+            </article>
+
+            <ul class="pager blog-pager">
+                
+                <li class="previous">
+                    <a href="https://martinliu.cn/posts/using-openebs-as-kubernetes-persistent-volume/" data-toggle="tooltip" data-placement="top" title="使用OpenEBS作Kubernetes持久化存储">&larr; Previous Post</a>
+                </li>
+                 
+            </ul>
+            
+            <div>
+                 
+                <h2>See Also</h2>
+                <ul>
+                    
+                    <li><a href="/2015/07/14/e7baa2e5b8bde5aa92e4bd93e697a5/">红帽媒体日</a></li>
+                    
+                </ul>
+                
+            </div>
+            
+            
+            
+            
+<div>
+    <section id="datecount">
+        <h4 id="date"> Fri Jan 12, 2018</h4>
+    </section>
+    <h5 id="wc">1600 Words|Read in about 4 Min</h5>
+    <h5 id="tags">Tags: 
+        
+        <a href="https://martinliu.cn/tags/container/">container</a> &nbsp;
+    </h5>
+</div>
+
+            
+            </div>
+            
+ 
+        </div>
+    </div>
+    </section>
+</div>
+
+    <footer>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <ul class="list-inline text-center footer-links">
+          
+              <li>
+                <a href="mailto:67120666@qq.com" title="Email me">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-envelope fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a href="https://plus.google.com/&#43;MartinLiu-cn" title="Google&#43;">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-google-plus fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a href="https://twitter.com/martinliu" title="Twitter">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a href="https://linkedin.com/in/liuzheng" title="LinkedIn">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-linkedin fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+          
+        </ul>
+        <p class="credits copyright text-muted">
+        &copy;2017-2018
+          
+            
+              <a href="martinliu.cn">Martin Liu</a>
+                      
+          
+          
+          
+            &nbsp;&bull;&nbsp;
+            <a href="https://martinliu.cn/">Maritn&#39;s Blog</a>
+          
+        </p>
+        
+        <p class="credits theme-by text-muted">
+          <a href="http://gohugo.io">Hugo v0.29</a> powered &nbsp;&bull;&nbsp; Theme by <a href="http://deanattali.com/beautiful-jekyll/">Beautiful Jekyll</a> adapted to <a href="https://github.com/halogenica/beautifulhugo">Beautiful Hugo</a>
+          
+        </p>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/bootstrap.min.js"></script>
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/photoswipe-ui-default.min.js"></script>
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/photoswipe.min.js"></script>
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/auto-render.min.js"></script>
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/main.js"></script>
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/prism.js"></script>
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/katex.min.js"></script>
+<script> renderMathInElement(document.body); </script>
+
+
+
+
+
+
+
+
+  </body>
+</html>
+

@@ -1,0 +1,1234 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+  <title> Maritn&#39;s Blog - 刘征的博客|DevOps|Cloud Computing</title>
+  <meta name="description" content="刘征的博客|DevOps|Cloud Computing" />
+  <meta property="og:title" content="Maritn&#39;s Blog" />
+  <meta name="twitter:title" content="Maritn&#39;s Blog" />
+  <meta name="description" content="This is Martin Liu&rsquo;s Blog. 劉征(Martin)是《DevOps Handbook》(中文书名：DevOps实践指南)的译者，Exin首批国内DOP&amp;DOM认证讲师，从业十多年以来积累了丰富的云计算技术和项目经验，持有红帽RHCA认证和AWS高级架构师认证。谙熟企业数据中心的IT服务管理。目前致力于推广DevOps的理念和技术实践。">
+  <meta property="og:description" content="This is Martin Liu&rsquo;s Blog. 劉征(Martin)是《DevOps Handbook》(中文书名：DevOps实践指南)的译者，Exin首批国内DOP&amp;DOM认证讲师，从业十多年以来积累了丰富的云计算技术和项目经验，持有红帽RHCA认证和AWS高级架构师认证。谙熟企业数据中心的IT服务管理。目前致力于推广DevOps的理念和技术实践。">
+  <meta name="twitter:description" content="This is Martin Liu&rsquo;s Blog. 劉征(Martin)是《DevOps Handbook》(中文书名：DevOps实践指南)的译者，Exin首批国内DOP&amp;DOM认证讲师，从业十多年以来积累了丰富的云计算技术和项目经验，持有红帽RHCA认证和AWS高级架构师认证。谙熟企业数据中心的IT服务管理。目前致力于推广DevOps的理念和技术实践。">
+  <meta name="author" content="{Description { .Site.Author.name }}"/>
+  <link href='https://martinliu.cn/img/favicon.ico' rel='icon' type='image/x-icon'/>
+  <meta property="og:image" content="https://martinliu.cn/img/logo.jpg" />
+  <meta name="twitter:image" content="https://martinliu.cn/img/logo.jpg" />
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:site" content="@martinliu" />
+  <meta name="twitter:creator" content="@martinliu" />
+  <meta property="og:url" content="https://martinliu.cn/" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Maritn&#39;s Blog" />
+
+  <meta name="generator" content="Hugo 0.29" />
+  <link rel="canonical" href="https://martinliu.cn/" />
+  <link rel="alternate" href="https://martinliu.cn/index.xml" type="application/rss+xml" title="Maritn&#39;s Blog">
+  <script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/jquery-1.12.4.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.7.1/katex.min.css" integrity="sha384-wITovz90syo1dJWVh32uuETPVEtGigN07tkttEqPv+uR2SE/mbQcG7ATL28aI9H0" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+  
+  
+  <link rel="stylesheet" href="https://martinliu.cn/css/main.css" />
+  <link rel="stylesheet" href="https://martinliu.cn/css/search.css" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" />
+  
+
+<meta name="baidu-site-verification" content="W3AORuRNZo" />
+<script>
+    var _hmt = _hmt || [];
+    (function () {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?50c3a9ae6c51222b31df5510bbca479f";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+
+<link rel="stylesheet" href="https://martinliu.cn/css/prism.css" />
+
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.1/photoswipe.min.css" integrity="sha256-sCl5PUOGMLfFYctzDW3MtRib0ctyUvI9Qsmq2wXOeBY=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.1/default-skin/default-skin.min.css" integrity="sha256-BFeI1V+Vh1Rk37wswuOYn5lsTcaU96hGaI7OUVCLjPc=" crossorigin="anonymous" />
+
+
+
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+<div class="pswp__bg"></div>
+
+<div class="pswp__scroll-wrap">
+    
+    <div class="pswp__container">
+      <div class="pswp__item"></div>
+      <div class="pswp__item"></div>
+      <div class="pswp__item"></div>
+    </div>
+    
+    <div class="pswp__ui pswp__ui--hidden">
+    <div class="pswp__top-bar">
+      
+      <div class="pswp__counter"></div>
+      <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+      <button class="pswp__button pswp__button--share" title="Share"></button>
+      <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+      <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+      
+      
+      <div class="pswp__preloader">
+        <div class="pswp__preloader__icn">
+          <div class="pswp__preloader__cut">
+            <div class="pswp__preloader__donut"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+      <div class="pswp__share-tooltip"></div>
+    </div>
+    <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+    </button>
+    <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+    </button>
+    <div class="pswp__caption">
+      <div class="pswp__caption__center"></div>
+    </div>
+    </div>
+    </div>
+</div>
+
+</head>
+
+  <body>
+    <nav class="navbar navbar-default navbar-fixed-top navbar-custom">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#main-navbar">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="https://martinliu.cn/">Maritn&#39;s Blog</a>
+    </div>
+    <div class="collapse navbar-collapse" id="main-navbar">
+      <ul class="nav navbar-nav navbar-right">
+        
+          
+            <li>
+              <a title="Blog" href="/">Blog</a>
+              
+              
+            </li>
+          
+        
+          
+            <li>
+              <a title="Tags" href="/tags">Tags</a>
+              
+              
+            </li>
+          
+        
+          
+            <li>
+              <a title="About" href="/about/">About</a>
+              
+              
+            </li>
+          
+        
+          
+            <li>
+              <a title="Book" href="https://handbook.martinliu.cn">Book</a>
+              
+              
+            </li>
+          
+        
+
+        
+
+        
+        
+          <li>
+            <a href="#modalSearch" data-toggle="modal" data-target="#modalSearch" style="outline: none;">
+              <span class="hidden-sm hidden-md hidden-lg">Search</span> <span id="searchGlyph" class="glyphicon glyphicon-search"></span>
+            </a>
+          </li>
+          
+      </ul>
+    </div>
+
+    <div class="avatar-container">
+      <div class="avatar-img-border">
+        
+          <a title="Maritn&#39;s Blog" href="https://martinliu.cn/">
+            <img class="avatar-img" src="https://martinliu.cn/img/logo.jpg" alt="Maritn&#39;s Blog" />
+          </a>
+        
+      </div>
+    </div>
+
+  </div>
+</nav>
+
+
+
+
+
+  <div id="modalSearch" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Search martinliu.cn </h4>
+        </div>
+        <div class="modal-body">
+            
+<div class="aa-input-container" id="aa-input-container">
+    <input type="search" id="aa-search-input" class="aa-input-search" placeholder="Search for titles or URIs..." name="search" autocomplete="off" />
+    <svg class="aa-input-icon" viewBox="654 -372 1664 1664">
+        <path d="M1806,332c0-123.3-43.8-228.8-131.5-316.5C1586.8-72.2,1481.3-116,1358-116s-228.8,43.8-316.5,131.5  C953.8,103.2,910,208.7,910,332s43.8,228.8,131.5,316.5C1129.2,736.2,1234.7,780,1358,780s228.8-43.8,316.5-131.5  C1762.2,560.8,1806,455.3,1806,332z M2318,1164c0,34.7-12.7,64.7-38,90s-55.3,38-90,38c-36,0-66-12.7-90-38l-343-342  c-119.3,82.7-252.3,124-399,124c-95.3,0-186.5-18.5-273.5-55.5s-162-87-225-150s-113-138-150-225S654,427.3,654,332  s18.5-186.5,55.5-273.5s87-162,150-225s138-113,225-150S1262.7-372,1358-372s186.5,18.5,273.5,55.5s162,87,225,150s113,138,150,225  S2062,236.7,2062,332c0,146.7-41.3,279.7-124,399l343,343C2305.7,1098.7,2318,1128.7,2318,1164z" />
+    </svg>
+</div>
+
+
+
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/algoliasearch.min.js"></script>
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/autocomplete.min.js"></script>
+
+<script>
+var client = algoliasearch("3RK9W7WH5R", "06f3928eb3fad870c9197c68c238dbd3");
+var index = client.initIndex('martinliu_blog');
+
+autocomplete('#aa-search-input',
+{ hint: false}, {
+    source: autocomplete.sources.hits(index, {hitsPerPage: 5}),
+    
+    displayKey: 'name',
+    
+    templates: {
+        
+        suggestion: function(suggestion) {
+            
+            return '<span>' + '<a href="/' + suggestion.uri+ '">' +
+            suggestion._highlightResult.title.value + '</a></span>';
+        }
+    }
+});
+</script>
+
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+    
+  
+  
+  
+  
+
+
+
+
+  
+    <div id="header-big-imgs" data-num-img=3 data-img-src-1="https://martinliu.cn/images/header-img1.jpg" data-img-desc-1="Fly to cloud"data-img-src-2="https://martinliu.cn/images/header-img2.jpg" data-img-desc-2="Walk your way"data-img-src-3="https://martinliu.cn/images/sandra%20li-1.JPG" data-img-desc-3="国家剧院/SandraLi"></div>
+  
+
+  <header class="header-section has-img">
+    
+      <div class="intro-header big-img">
+        
+        
+        <div class="container">
+          <div class="row">
+              <div class="col-lg-12 col-md-12 col-md-offset-0">
+                
+                <div class="page-heading">
+                
+                  
+                     <h1 align="center">Do you have a pleasent DevOps journey?</h1>
+                  
+                  
+                  
+                    <hr class="small">
+                    <span class="page-subheading">I am a runner, blogger and open source funs</span>
+                  
+                  
+                
+              </div>
+            </div>
+          </div>
+        </div>
+        <span class="img-desc" style="display: inline;"></span>
+      </div>
+    
+    <div class="intro-header no-img">
+      
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-12 col-md-12 col-md-offset-0">
+            <div class="page-heading">
+                <h1 align="center">Maritn&#39;s Blog</h1>
+                
+                  
+                    <hr class="small">
+                    <span class="page-subheading">I am a runner, blogger and open source funs</span>
+                  
+                
+                
+                  <span class="post-meta">
+  
+  
+</span>
+
+
+                
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+
+    
+  <div role="main" class="container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        
+          <div class="well">
+            
+
+<h3 id="this-is-martin-liu-s-blog">This is Martin Liu&rsquo;s Blog.</h3>
+
+<p>劉征(Martin)是<a href="http://handbook.martinliu.cn">《DevOps Handbook》(中文书名：DevOps实践指南)</a>的译者，Exin首批国内<a href="https://www.exin.jp/CN/zh/exams/&amp;exam=exin-devops-master"><strong>DOP&amp;DOM认证讲师</strong></a>，从业十多年以来积累了丰富的云计算技术和项目经验，持有红帽RHCA认证和AWS高级架构师认证。谙熟企业数据中心的IT服务管理。目前致力于推广DevOps的理念和技术实践。</p>
+
+          </div>
+        
+
+        <div class="posts-list">
+          
+          
+            <article class="post-preview">
+              <a href="https://martinliu.cn/2015/07/14/e7baa2e5b8bde5aa92e4bd93e697a5/">
+                <h2 class="post-title">红帽媒体日</h2>
+                
+                  <h3 class="post-subtitle">
+                  今天参加了红帽媒体日。听了几遍Pual在最近一次的Red Hat Analyst Day 对媒体的演讲录音，斗胆拿他的slide，照葫芦画瓢，讲讲 Red Hat&#39;s Vision。这个演讲和Summit上Pual的keynote是不同的演讲。其中的内容，逻辑和观点不相同。其中还是透露这对私有软件厂商的火药味，很有霸气和内涵。
+                  </h3>
+                
+              </a>
+
+              <span class="post-meta">
+  
+  Posted on 2015, July 14
+  
+  
+</span>
+
+
+              <div class="post-entry">
+                
+                  本次演讲用了大约25分钟，超时了大约5分钟多，但是其中有些观点还是没有叙述的很倒位。只能算是我的一种理解和解读，希望对道场的媒体朋友们对认识
+                  <a href="https://martinliu.cn/2015/07/14/e7baa2e5b8bde5aa92e4bd93e697a5/" class="post-read-more">[Read More]</a>
+                
+              </div>
+
+              
+                <span class="post-meta">
+                
+                  #<a href="https://martinliu.cn/tags/atomic/">atomic</a>&nbsp;
+                
+                  #<a href="https://martinliu.cn/tags/cloud/">cloud</a>&nbsp;
+                
+                  #<a href="https://martinliu.cn/tags/container/">container</a>&nbsp;
+                
+                  #<a href="https://martinliu.cn/tags/devops/">DevOps</a>&nbsp;
+                
+                  #<a href="https://martinliu.cn/tags/docker/">docker</a>&nbsp;
+                
+                  #<a href="https://martinliu.cn/tags/jboss/">JBoss</a>&nbsp;
+                
+                  #<a href="https://martinliu.cn/tags/microservice/">MicroService</a>&nbsp;
+                
+                  #<a href="https://martinliu.cn/tags/openshift/">openshift</a>&nbsp;
+                
+                  #<a href="https://martinliu.cn/tags/rhel/">RHEL</a>&nbsp;
+                
+                  #<a href="https://martinliu.cn/tags/storage/">storage</a>&nbsp;
+                
+                </span>
+              
+            </article>
+          
+            <article class="post-preview">
+              <a href="https://martinliu.cn/2015/07/12/ovirt-e69c8de58aa1e599a8e8999ae68b9fe58c96e6b58be8af95/">
+                <h2 class="post-title">Ovirt 服务器虚拟化测试</h2>
+                
+                  <h3 class="post-subtitle">
+                  ovirt 是服务虚拟化管理器程序，类似于VMWare的vCenter，管理模式和类型和vCenter完全相同。用于管理由开源hypervisor 组成的资源池群集，管理资源池里的共享网络和存储资源，管理虚拟机的生命周期和状态。本文记录了在Fedora 22笔记本上，安装的ovirt测试环境。使用KVM跑两个虚拟机，一个是ovirt服务器，另外一个虚拟机，配置为嵌套型kvm，用来跑虚拟机。
+                  </h3>
+                
+              </a>
+
+              <span class="post-meta">
+  
+  Posted on 2015, July 12
+  
+  
+</span>
+
+
+              <div class="post-entry">
+                
+                  本文安装和测试的软件是Ovirt+KVM的服务器虚拟化，这两个项目是红帽RHEVM+KVM服务器虚拟化的上游社区产品。可以通过这个文档清晰的
+                  <a href="https://martinliu.cn/2015/07/12/ovirt-e69c8de58aa1e599a8e8999ae68b9fe58c96e6b58be8af95/" class="post-read-more">[Read More]</a>
+                
+              </div>
+
+              
+                <span class="post-meta">
+                
+                  #<a href="https://martinliu.cn/tags/centos/">centos</a>&nbsp;
+                
+                  #<a href="https://martinliu.cn/tags/fedora/">fedora</a>&nbsp;
+                
+                  #<a href="https://martinliu.cn/tags/kvm/">KVM</a>&nbsp;
+                
+                  #<a href="https://martinliu.cn/tags/ovirt/">ovirt</a>&nbsp;
+                
+                </span>
+              
+            </article>
+          
+            <article class="post-preview">
+              <a href="https://martinliu.cn/2015/07/09/boston-nyc-running-log/">
+                <h2 class="post-title">Boston 和 NYC 的 运动日志</h2>
+                
+                  <h3 class="post-subtitle">
+                  很高兴能有机会跑在波士顿的一些地方，还骑行了两次。基本上也了解了这个城市，熟悉了运动的地形，领略了城市的风光，感受了这个城市的运动文化和气息。纽约的行程安排的它紧凑了，导致就跑了一次中央公园，给以后留下很多探索的空白。
+                  </h3>
+                
+              </a>
+
+              <span class="post-meta">
+  
+  Posted on 2015, July 9
+  
+  
+</span>
+
+
+              <div class="post-entry">
+                
+                  波士顿的跑步 第一跑 - 12公里 推辞了饭局的夜跑，跑步过程中被阵雨浇透，找错了回来的桥，路程没有记录完整。 第二跑 - 8公里 本想跑的比前一次更远，结
+                  <a href="https://martinliu.cn/2015/07/09/boston-nyc-running-log/" class="post-read-more">[Read More]</a>
+                
+              </div>
+
+              
+                <span class="post-meta">
+                
+                  #<a href="https://martinliu.cn/tags/boston/">Boston</a>&nbsp;
+                
+                  #<a href="https://martinliu.cn/tags/%E6%B3%A2%E5%A3%AB%E9%A1%BF/">波士顿</a>&nbsp;
+                
+                  #<a href="https://martinliu.cn/tags/%E7%BA%BD%E7%BA%A6/">纽约</a>&nbsp;
+                
+                </span>
+              
+            </article>
+          
+            <article class="post-preview">
+              <a href="https://martinliu.cn/2015/07/09/e9a696e6aca1e7be8ee59bbde4b89ce6b5b7e5b2b8e4b98be69785/">
+                <h2 class="post-title">首次美国东海岸之旅</h2>
+                
+                  <h3 class="post-subtitle">
+                  从北京出发，经停芝加哥，在芝加哥入境，然后等待一个半小时，在乘坐UA航班飞波士顿。在波士顿开回5天后，乘坐大巴到纽约。从纽约回来的时候是从新泽西的机场搭乘UA航班，直飞北京。总的来说在定的票，三个航段含税的价格是5500多，以至于来回程24小时几万公里都白飞了，屁股座的快痛成八瓣了，没有积累到一公里的飞程；不过给公司省大钱了。
+                  </h3>
+                
+              </a>
+
+              <span class="post-meta">
+  
+  Posted on 2015, July 9
+  
+  
+</span>
+
+
+              <div class="post-entry">
+                
+                  行程 在波士顿的住宿是非常完美的体验。先住了两天剑桥的LeMeridien（SPG）；由于6月是我的生日，因此酒店给我加了早餐，使用IBM的企
+                  <a href="https://martinliu.cn/2015/07/09/e9a696e6aca1e7be8ee59bbde4b89ce6b5b7e5b2b8e4b98be69785/" class="post-read-more">[Read More]</a>
+                
+              </div>
+
+              
+                <span class="post-meta">
+                
+                  #<a href="https://martinliu.cn/tags/%E4%B8%9C%E5%B2%B8/">东岸</a>&nbsp;
+                
+                  #<a href="https://martinliu.cn/tags/%E6%B3%A2%E5%A3%AB%E9%A1%BF/">波士顿</a>&nbsp;
+                
+                  #<a href="https://martinliu.cn/tags/%E7%BA%BD%E7%BA%A6/">纽约</a>&nbsp;
+                
+                </span>
+              
+            </article>
+          
+            <article class="post-preview">
+              <a href="https://martinliu.cn/2015/07/09/icinga2-e4bc81e4b89ae7baa7e58a9fe883bde8af84e6b58b1/">
+                <h2 class="post-title">icinga2 企业级功能评测1</h2>
+                
+                  <h3 class="post-subtitle">
+                  本评测从 icinga2 软件的功能使用和体验入手，详细验证了用户认证，权限管理，管理服务器的群集高可用和分布式部署架构。这些功能在企业用户中是普遍的需求。还涉及到了监控架构中，各个节点的通信加密的方式。
+                  </h3>
+                
+              </a>
+
+              <span class="post-meta">
+  
+  Posted on 2015, July 9
+  
+  
+</span>
+
+
+              <div class="post-entry">
+                
+                  Icingaweb 2 用户权限管理 icingaweb 2 是诸多GUI中最新的一种，也有替代其它之前所有GUI的趋势，目前看还比较新，只有最基本的功能。登陆Web界面的用户，用户
+                  <a href="https://martinliu.cn/2015/07/09/icinga2-e4bc81e4b89ae7baa7e58a9fe883bde8af84e6b58b1/" class="post-read-more">[Read More]</a>
+                
+              </div>
+
+              
+                <span class="post-meta">
+                
+                  #<a href="https://martinliu.cn/tags/icinga2/">icinga2</a>&nbsp;
+                
+                </span>
+              
+            </article>
+          
+            <article class="post-preview">
+              <a href="https://martinliu.cn/2015/07/01/red-hat-summite4b98bpaule79a84e5bc80e6ba90e980bbe8be91e6809de7bbb4/">
+                <h2 class="post-title">Red Hat Summit之Paul的开源逻辑思维</h2>
+                
+                  <h3 class="post-subtitle">
+                  Red Hat Summit 2015 Keynote 核心观点回顾 : Paul的演讲无疑是我的最爱，没有之一。这是第三次有机会面对面听他的主题演讲。其中对开源技术的各种精深观点为我层层地揭示了红帽开源商业模型的诸多秘密。开源界的会议有很多种类，基于不同组织机构和出发点，而对于企业用户，特别是希望去全适应开源技术平台，并同时获取商业支持者来说，Red Hat Submit无疑是不可错过的一个。
+                  </h3>
+                
+              </a>
+
+              <span class="post-meta">
+  
+  Posted on 2015, July 1
+  
+  
+</span>
+
+
+              <div class="post-entry">
+                
+                  应用为王，操作系统是心跳。从整个行业的角度，而不只是操作系统和某种工具的角度看，行业已经发生了重大的变化。下面是一些例证。 VMWare几年前
+                  <a href="https://martinliu.cn/2015/07/01/red-hat-summite4b98bpaule79a84e5bc80e6ba90e980bbe8be91e6809de7bbb4/" class="post-read-more">[Read More]</a>
+                
+              </div>
+
+              
+                <span class="post-meta">
+                
+                  #<a href="https://martinliu.cn/tags/redhat/">redhat</a>&nbsp;
+                
+                  #<a href="https://martinliu.cn/tags/summit/">summit</a>&nbsp;
+                
+                </span>
+              
+            </article>
+          
+            <article class="post-preview">
+              <a href="https://martinliu.cn/2015/06/21/boston-running-1-charles-river/">
+                <h2 class="post-title">Boston Running #1 Charles River</h2>
+                
+              </a>
+
+              <span class="post-meta">
+  
+  Posted on 2015, June 21
+  
+  
+</span>
+
+
+              <div class="post-entry">
+                
+                  时差如期而至，现在时本地时间清晨3：40，我还是一点睡意也没用，百无聊赖中计划一下明天的跑步路线。根据Boston的Garmin的热力地图，
+                  <a href="https://martinliu.cn/2015/06/21/boston-running-1-charles-river/" class="post-read-more">[Read More]</a>
+                
+              </div>
+
+              
+                <span class="post-meta">
+                
+                  #<a href="https://martinliu.cn/tags/boston/">Boston</a>&nbsp;
+                
+                </span>
+              
+            </article>
+          
+            <article class="post-preview">
+              <a href="https://martinliu.cn/2015/06/18/icinga2-e79b91e68ea7e5b7a5e585b7e8af84e6b58b/">
+                <h2 class="post-title">icinga2 监控工具评测</h2>
+                
+                  <h3 class="post-subtitle">
+                  icinga2是一个优秀的监控软件，它是2009年从nagios中分支出来的一个项目，经过重写的监控内核，目前已经从1版本发展到2，并且今天发布了2.3.5。它是在运环境中很好的监控选择，主要优势不光是自身的，更多的是社区的，nagios社区n多年来积累下来的大量监控插件。
+                  </h3>
+                
+              </a>
+
+              <span class="post-meta">
+  
+  Posted on 2015, June 18
+  
+  
+</span>
+
+
+              <div class="post-entry">
+                
+                  本来想写一个安装手册，可是安装完成之后发现其实非常简单，最后就把题目改为评测了。本文也不是全面的评测文章，关于它的能力和功能，待后续了解的深
+                  <a href="https://martinliu.cn/2015/06/18/icinga2-e79b91e68ea7e5b7a5e585b7e8af84e6b58b/" class="post-read-more">[Read More]</a>
+                
+              </div>
+
+              
+                <span class="post-meta">
+                
+                  #<a href="https://martinliu.cn/tags/icinga2/">icinga2</a>&nbsp;
+                
+                  #<a href="https://martinliu.cn/tags/monitor/">monitor</a>&nbsp;
+                
+                  #<a href="https://martinliu.cn/tags/nagios/">Nagios</a>&nbsp;
+                
+                </span>
+              
+            </article>
+          
+            <article class="post-preview">
+              <a href="https://martinliu.cn/2015/06/16/e59ca8-rhel-7-e4b88ae5ae89e8a385-foreman-1-8/">
+                <h2 class="post-title">在 RHEL 7 上安装 Foreman 1.8</h2>
+                
+                  <h3 class="post-subtitle">
+                  Foreman 是一个发展的越来越好的开源项目，具备很多成功开源项目的相同特质：简单强大的核心装机和自动化配置功能、开放的插件架构下已经开发出足够丰富的周边功能，资源池集成插件涵盖各种服务器虚拟化和云主机，配置自动化控制方面集成了puppet和salt等。本文简述了如何在RHEL7上安装最新版本的Foremen 1.8.2
+                  </h3>
+                
+              </a>
+
+              <span class="post-meta">
+  
+  Posted on 2015, June 16
+  
+  
+</span>
+
+
+              <div class="post-entry">
+                
+                  首先安装RHEL7使用光盘安装最小化系统，安装完成之后，关闭防火墙和SELinux（为了测试方便），配置主机名为FQDN格式，如 fm1.8.
+                  <a href="https://martinliu.cn/2015/06/16/e59ca8-rhel-7-e4b88ae5ae89e8a385-foreman-1-8/" class="post-read-more">[Read More]</a>
+                
+              </div>
+
+              
+                <span class="post-meta">
+                
+                  #<a href="https://martinliu.cn/tags/foreman/">Foreman</a>&nbsp;
+                
+                  #<a href="https://martinliu.cn/tags/puppet/">puppet</a>&nbsp;
+                
+                  #<a href="https://martinliu.cn/tags/rhel/">RHEL</a>&nbsp;
+                
+                  #<a href="https://martinliu.cn/tags/yum/">Yum</a>&nbsp;
+                
+                </span>
+              
+            </article>
+          
+            <article class="post-preview">
+              <a href="https://martinliu.cn/2015/06/13/e794a8-powertop-e7bb99e7ac94e8aeb0e69cace794b5e88491e79c81e794b5/">
+                <h2 class="post-title">用 powertop 给笔记本电脑省电</h2>
+                
+                  <h3 class="post-subtitle">
+                  不了解什么进程、设备或者服务费电，就没法做到合理的给笔记本省电，开源世界里最不缺的就是活雷锋，想要什么工具只需要搜一下便可以发现到一堆。本文介绍一个查看笔记本电脑耗电情况的工具powertop。
+                  </h3>
+                
+              </a>
+
+              <span class="post-meta">
+  
+  Posted on 2015, June 13
+  
+  
+</span>
+
+
+              <div class="post-entry">
+                
+                  如何安装： [bash] sudo dnf install powertop sudo powertop sudo systemctl start powertop.service sudo systemctl enable powertop.service [/bash] [gallery link=&ldquo;file&rdquo; ids=&ldquo;53761,53762,53763,53764,53765&rdquo;] 使用Tab和shift + tab 键在以上屏幕直接切换。 我发现我主要使用 Tunables 这个tab来找出可以安全关
+                  <a href="https://martinliu.cn/2015/06/13/e794a8-powertop-e7bb99e7ac94e8aeb0e69cace794b5e88491e79c81e794b5/" class="post-read-more">[Read More]</a>
+                
+              </div>
+
+              
+                <span class="post-meta">
+                
+                  #<a href="https://martinliu.cn/tags/fedora/">fedora</a>&nbsp;
+                
+                  #<a href="https://martinliu.cn/tags/powertop/">powertop</a>&nbsp;
+                
+                </span>
+              
+            </article>
+          
+        </div>
+
+        
+          <ul class="pager main-pager">
+            
+              <li class="previous">
+                <a href="/page/5">&larr; Newer Posts</a>
+              </li>
+            
+            
+              <li class="next">
+                <a href="/page/7">Older Posts &rarr;</a>
+              </li>
+            
+          </ul>
+        
+      </div>
+      <div align="center" class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        
+
+<ul class="pagination">
+    
+    <li>
+        <a href="/" aria-label="First"><span aria-hidden="true">&laquo;&laquo;</span></a>
+    </li>
+    
+    <li
+    >
+    <a href="/page/5/" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a>
+    </li>
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    <li
+    ><a href="/">1</a></li>
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    <li
+    ><a href="/page/2/">2</a></li>
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    <li
+    ><a href="/page/3/">3</a></li>
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    <li class="disabled"><span aria-hidden="true">&hellip;</span></li>
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    <li
+    ><a href="/page/5/">5</a></li>
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    <li
+    class="active"><a href="/page/6/">6</a></li>
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    <li
+    ><a href="/page/7/">7</a></li>
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    <li class="disabled"><span aria-hidden="true">&hellip;</span></li>
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    <li
+    ><a href="/page/40/">40</a></li>
+    
+    
+    <li
+    >
+    <a href="/page/7/" aria-label="Next"><span aria-hidden="true">&raquo;</span></a>
+    </li>
+    
+    <li>
+        <a href="/page/40/" aria-label="Last"><span aria-hidden="true">&raquo;&raquo;</span></a>
+    </li>
+    
+</ul>
+
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+      </div>
+    </div>
+  </div>
+
+    <footer>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <ul class="list-inline text-center footer-links">
+          
+              <li>
+                <a href="mailto:67120666@qq.com" title="Email me">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-envelope fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a href="https://plus.google.com/&#43;MartinLiu-cn" title="Google&#43;">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-google-plus fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a href="https://twitter.com/martinliu" title="Twitter">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a href="https://linkedin.com/in/liuzheng" title="LinkedIn">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-linkedin fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+          
+        </ul>
+        <p class="credits copyright text-muted">
+        &copy;2017-2018
+          
+            
+              <a href="martinliu.cn">Martin Liu</a>
+                      
+          
+          
+          
+            &nbsp;&bull;&nbsp;
+            <a href="https://martinliu.cn/">Maritn&#39;s Blog</a>
+          
+        </p>
+        
+        <p class="credits theme-by text-muted">
+          <a href="http://gohugo.io">Hugo v0.29</a> powered &nbsp;&bull;&nbsp; Theme by <a href="http://deanattali.com/beautiful-jekyll/">Beautiful Jekyll</a> adapted to <a href="https://github.com/halogenica/beautifulhugo">Beautiful Hugo</a>
+          
+        </p>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/bootstrap.min.js"></script>
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/photoswipe-ui-default.min.js"></script>
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/photoswipe.min.js"></script>
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/auto-render.min.js"></script>
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/main.js"></script>
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/prism.js"></script>
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/katex.min.js"></script>
+<script> renderMathInElement(document.body); </script>
+
+
+
+
+
+
+
+
+  </body>
+</html>
+

@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+  <title> EXIN DevOps Master 认证考试 - 刘征的博客|DevOps|Cloud Computing</title>
+  <meta name="description" content="刘征的博客|DevOps|Cloud Computing" />
+  <meta property="og:title" content="EXIN DevOps Master 认证考试" />
+  <meta name="twitter:title" content="EXIN DevOps Master 认证考试" />
+  <meta name="description" content="很久没有更新我的blog了，感觉浑身都不好了，写一篇稍微总结一下我最近关于DevOps的相关状态和进展。">
+  <meta property="og:description" content="很久没有更新我的blog了，感觉浑身都不好了，写一篇稍微总结一下我最近关于DevOps的相关状态和进展。">
+  <meta name="twitter:description" content="很久没有更新我的blog了，感觉浑身都不好了，写一篇稍微总结一下我最近关于DevOps的相关状态和进展。">
+  <meta name="author" content="{Description { .Site.Author.name }}"/>
+  <link href='https://martinliu.cn/img/favicon.ico' rel='icon' type='image/x-icon'/>
+  <meta property="og:image" content="https://martinliu.cn/img/logo.jpg" />
+  <meta name="twitter:image" content="https://martinliu.cn/img/logo.jpg" />
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:site" content="@martinliu" />
+  <meta name="twitter:creator" content="@martinliu" />
+  <meta property="og:url" content="https://martinliu.cn/2016/11/07/exin-devops-master-e8aea4e8af81e88083e8af95/" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Maritn&#39;s Blog" />
+
+  <meta name="generator" content="Hugo 0.29" />
+  <link rel="canonical" href="https://martinliu.cn/2016/11/07/exin-devops-master-e8aea4e8af81e88083e8af95/" />
+  <link rel="alternate" href="https://martinliu.cn/index.xml" type="application/rss+xml" title="Maritn&#39;s Blog">
+  <script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/jquery-1.12.4.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.7.1/katex.min.css" integrity="sha384-wITovz90syo1dJWVh32uuETPVEtGigN07tkttEqPv+uR2SE/mbQcG7ATL28aI9H0" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+  
+  
+  <link rel="stylesheet" href="https://martinliu.cn/css/main.css" />
+  <link rel="stylesheet" href="https://martinliu.cn/css/search.css" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" />
+  
+
+<meta name="baidu-site-verification" content="W3AORuRNZo" />
+<script>
+    var _hmt = _hmt || [];
+    (function () {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?50c3a9ae6c51222b31df5510bbca479f";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+
+<link rel="stylesheet" href="https://martinliu.cn/css/prism.css" />
+
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.1/photoswipe.min.css" integrity="sha256-sCl5PUOGMLfFYctzDW3MtRib0ctyUvI9Qsmq2wXOeBY=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.1/default-skin/default-skin.min.css" integrity="sha256-BFeI1V+Vh1Rk37wswuOYn5lsTcaU96hGaI7OUVCLjPc=" crossorigin="anonymous" />
+
+
+
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+<div class="pswp__bg"></div>
+
+<div class="pswp__scroll-wrap">
+    
+    <div class="pswp__container">
+      <div class="pswp__item"></div>
+      <div class="pswp__item"></div>
+      <div class="pswp__item"></div>
+    </div>
+    
+    <div class="pswp__ui pswp__ui--hidden">
+    <div class="pswp__top-bar">
+      
+      <div class="pswp__counter"></div>
+      <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+      <button class="pswp__button pswp__button--share" title="Share"></button>
+      <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+      <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+      
+      
+      <div class="pswp__preloader">
+        <div class="pswp__preloader__icn">
+          <div class="pswp__preloader__cut">
+            <div class="pswp__preloader__donut"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+      <div class="pswp__share-tooltip"></div>
+    </div>
+    <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+    </button>
+    <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+    </button>
+    <div class="pswp__caption">
+      <div class="pswp__caption__center"></div>
+    </div>
+    </div>
+    </div>
+</div>
+
+</head>
+
+  <body>
+    <nav class="navbar navbar-default navbar-fixed-top navbar-custom">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#main-navbar">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="https://martinliu.cn/">Maritn&#39;s Blog</a>
+    </div>
+    <div class="collapse navbar-collapse" id="main-navbar">
+      <ul class="nav navbar-nav navbar-right">
+        
+          
+            <li>
+              <a title="Blog" href="/">Blog</a>
+              
+              
+            </li>
+          
+        
+          
+            <li>
+              <a title="Tags" href="/tags">Tags</a>
+              
+              
+            </li>
+          
+        
+          
+            <li>
+              <a title="About" href="/about/">About</a>
+              
+              
+            </li>
+          
+        
+          
+            <li>
+              <a title="Book" href="https://handbook.martinliu.cn">Book</a>
+              
+              
+            </li>
+          
+        
+
+        
+
+        
+        
+          <li>
+            <a href="#modalSearch" data-toggle="modal" data-target="#modalSearch" style="outline: none;">
+              <span class="hidden-sm hidden-md hidden-lg">Search</span> <span id="searchGlyph" class="glyphicon glyphicon-search"></span>
+            </a>
+          </li>
+          
+      </ul>
+    </div>
+
+    <div class="avatar-container">
+      <div class="avatar-img-border">
+        
+          <a title="Maritn&#39;s Blog" href="https://martinliu.cn/">
+            <img class="avatar-img" src="https://martinliu.cn/img/logo.jpg" alt="Maritn&#39;s Blog" />
+          </a>
+        
+      </div>
+    </div>
+
+  </div>
+</nav>
+
+
+
+
+
+  <div id="modalSearch" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Search martinliu.cn </h4>
+        </div>
+        <div class="modal-body">
+            
+<div class="aa-input-container" id="aa-input-container">
+    <input type="search" id="aa-search-input" class="aa-input-search" placeholder="Search for titles or URIs..." name="search" autocomplete="off" />
+    <svg class="aa-input-icon" viewBox="654 -372 1664 1664">
+        <path d="M1806,332c0-123.3-43.8-228.8-131.5-316.5C1586.8-72.2,1481.3-116,1358-116s-228.8,43.8-316.5,131.5  C953.8,103.2,910,208.7,910,332s43.8,228.8,131.5,316.5C1129.2,736.2,1234.7,780,1358,780s228.8-43.8,316.5-131.5  C1762.2,560.8,1806,455.3,1806,332z M2318,1164c0,34.7-12.7,64.7-38,90s-55.3,38-90,38c-36,0-66-12.7-90-38l-343-342  c-119.3,82.7-252.3,124-399,124c-95.3,0-186.5-18.5-273.5-55.5s-162-87-225-150s-113-138-150-225S654,427.3,654,332  s18.5-186.5,55.5-273.5s87-162,150-225s138-113,225-150S1262.7-372,1358-372s186.5,18.5,273.5,55.5s162,87,225,150s113,138,150,225  S2062,236.7,2062,332c0,146.7-41.3,279.7-124,399l343,343C2305.7,1098.7,2318,1128.7,2318,1164z" />
+    </svg>
+</div>
+
+
+
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/algoliasearch.min.js"></script>
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/autocomplete.min.js"></script>
+
+<script>
+var client = algoliasearch("3RK9W7WH5R", "06f3928eb3fad870c9197c68c238dbd3");
+var index = client.initIndex('martinliu_blog');
+
+autocomplete('#aa-search-input',
+{ hint: false}, {
+    source: autocomplete.sources.hits(index, {hitsPerPage: 5}),
+    
+    displayKey: 'name',
+    
+    templates: {
+        
+        suggestion: function(suggestion) {
+            
+            return '<span>' + '<a href="/' + suggestion.uri+ '">' +
+            suggestion._highlightResult.title.value + '</a></span>';
+        }
+    }
+});
+</script>
+
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+    
+  
+  
+  
+
+
+
+
+  
+
+  <header class="header-section ">
+    
+    <div class="intro-header no-img">
+      
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-12 col-md-12 col-md-offset-0">
+            <div class="posts-heading">
+                <h1 align="center">EXIN DevOps Master 认证考试</h1>
+                
+                  
+                    <h2 align="center" class="posts-subheading">很久没有更新我的blog了，感觉浑身都不好了，写一篇稍微总结一下我最近关于DevOps的相关状态和进展。</h2>
+                  
+                
+                
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+
+    
+<div class="container" role="main" itemscope itemtype="http://schema.org/Article">
+    <div class="row">
+        <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+            
+            
+            
+<div>
+    <section id="datecount">
+        <h4 id="date"> Mon Nov 7, 2016</h4>
+    </section>
+    <h5 id="wc">2000 Words|Read in about 4 Min</h5>
+    <h5 id="tags">Tags: 
+        
+        <a href="https://martinliu.cn/tags/cloud/">cloud</a> &nbsp;
+        
+        <a href="https://martinliu.cn/tags/devops/">DevOps</a> &nbsp;
+    </h5>
+</div>
+
+            
+            <article role="main" class="blog-post" itemprop="articleBody" id="content">
+                <p>DevOps这个词在去年参加红帽全球用户大会的时候就深深吸引了我，实际上哪个会上Docker容器的概念要比DevOps还火爆。Docker／openshift相关的session都尝尝是爆满的。从那里开始我逐渐感觉到了开源容器技术的强大和吸引力。</p>
+
+<p>从红帽开始OpenShift的考试就是我在完成RHCA红帽认证架构师之后的一个心结，至今也没有完成。不过这根草我早晚是要拔掉的。主要是由于OpenShift是Docker ＋ kubernetes 的组合；是如今企业级PaaS容器平台的主要技术路线。总之离开红帽是如此的仓促，说实话这也是我职业生涯中的一个不小的遗憾。当时确实觉得 kubernetes 的命令行操作不是很方便，而且在OpenShift并没有降低这个门槛，也即是说在OpenShift里面还是要有一定的工作量和技能的要求在编写kubernetes的yml文件上。在这一点上，及时我熟练掌握了Rancher之后，同样发现编写compose file也是难以逃避的。在推广一步，大部分Docker PaaS平台也都是这样，很多产品也是在界面上提供一个文本输入框，让人输入容器服务定义文件的内容。</p>
+
+<p>在最近的半年中，我的所有技术研究都集中在Docker和其服务编排技术上。与很多用户做过技术交流，PoC测试，有些单子也落地。总结后，有些结果让我感叹。国内的所有企业不区分规模和行业，其实他们对国内原生的创业公司是欢迎的，由于这些公司提供的是国产软件和技术服务。在Docker这个火热的领域中，已经有20多家国内创业公司，我想所有的公司也都已经接受到了这一点的福利了。外国软件通常给人的感觉是：不是国产软件（不要小看国内公司对国产软件的诉求），纯英文操作界面和文档，可能的水土不服，高昂的软件价格和服务费，如果技术太新的化很可能厂商也不具备足够的技术实力和服务力量。</p>
+
+<p>经过了一些Docker容器项目之后，可以断言的是容器市场的火爆和它的技术优势是直接相关的。容器化之后的应用可以通过服务编排工具快速地部署／更新、弹性地伸缩和使用资源，优化其传统应用运维的若干缺陷。容器的轻量和just enough的隔离技术让资源池的管理更加简单，利用率大幅度提升，这对研发部门的环境管理是不小的提升，使CI的过程更加高效和经济。Docker对微服务的支持也深深地诱惑了所有开发者，做系统微服务实施开发者能想到的实施技术大多数会是容器。</p>
+
+<p>以上容器的优势和特性使得国内的这些项目落地和实施的可能性进一步提高，甚至很多项目的速度远远超预期；按照我多年的经验看，一个软件技术型的项目，用户纠结半年到一年以上是很正常的。可能也跟国内企业包容本土化软件公司，追捧新潮技术直接相关；我观察到的一些项目，在2～4个月内落单的屡见不鲜。有些试点的DevOps咨询项目也落地很快。</p>
+
+<p>这些项目都殊途同归地指向了DevOps这个关键词，这让我不得不从去年开始就关注和学习这个最佳实践。当然，我对DevOps的前途非常看好，因此当我听说业内出现了相关认证考试之后，我毫不犹豫地报名参加了。经过2个多月的缜密的准备，我终于幸运地一次通过了这个考试。考试获得了两个证书。</p>
+
+<p><img src="http://cdn1.martinliu.cn/wp-content/uploads/2016/11/EXIN-DevOps-Master-Cert-Martin-Liu.jpg" alt="exin-devops-master-cert-martin-liu" /> DevOps Master</p>
+
+<p><img src="http://cdn1.martinliu.cn/wp-content/uploads/2016/11/certificate-devops-freelance-trainer-Liu-Zheng.jpg" alt="DevOps Master 认证自由讲师" /> DevOps Master 认证自由讲师</p>
+
+<p>我参加的是讲师认证培训TTT，很高兴能成为Exin在国内的首批5个认证人员之一。在准备这个考试的过程中我学习了一些书籍，现在还在深度学习的书有两本。</p>
+
+<p><img src="http://cdn1.martinliu.cn/wp-content/uploads/2016/11/14678659256890.jpg" alt="14678659256890" /></p>
+
+<p>我完成了这本黑皮书的读书笔记，很遗憾的是，我发现它的最新版，把封面改成了白底的了，我不能在叫它黑皮书／黑宝书了。这本书我起码看了两遍；目前正在调试它的书中的代码，代码中的营养还是很高的，计划尽快把所有代码调试通过；从而完成我许下多次的线上分享本书的诺言。</p>
+
+<p><img src="http://cdn1.martinliu.cn/wp-content/uploads/2016/11/14749866044733.jpg" alt="14749866044733" /></p>
+
+<p>这本书被我称为CD红皮书／红宝书。本书早在10年就出版了，也就是说比Docker早好多年。他给我最大的印象就是，作者每一页上似乎都在介绍这做事情的原则和规矩是什么？我一点也不夸张，他对CD的介绍，就是通过讲解一系列在项目上的经验总结。对作者这种级别的经验，和写书的房子只能用一个词总结“服”。这本书太干，我至今还没有消化完。他让我看到了解决发布和变更风险的终极解决方案，没有一次性解决问题的部署／配置／发布工具，有的是历练和打磨了千万次的持续部署流水线；隐约地觉得没用入手的企业都会慢慢跟上的。</p>
+
+<p>以上是我对DevOps的阶段性总结，跨度有半年之久。这半年中我逐渐看清了我的主要兴趣点，抛除所有其他主题，目前剩下的就是：云计算和DevOps。一方面觉得年纪不饶人，不能可能在和年轻人拼精力、体力和创意；我的背景和经验都让我感觉，在这两个话题上，我还是有很多年的经验和技术积累和总结的。云计算是（公有云＋私有云）未来企业IT基础架构的走向；DevOps是目前看比较正确的运作实践。一个便技术，一个便管理，正好完整覆盖了我的经验；在其对应的开源技术这个分支里，我想它们都还有这很多的为探索和研究的项目。</p>
+
+            </article>
+
+            <ul class="pager blog-pager">
+                
+                <li class="previous">
+                    <a href="https://martinliu.cn/2016/07/01/devops-in-a-box/" data-toggle="tooltip" data-placement="top" title="DevOps 的起点-入手微型数据中心">&larr; Previous Post</a>
+                </li>
+                 
+                <li class="next">
+                    <a href="https://martinliu.cn/2016/12/31/west-coast-sfo/" data-toggle="tooltip" data-placement="top" title="美国西岸旧金山之行">Next Post &rarr;</a>
+                </li>
+                
+            </ul>
+            
+            <div>
+                 
+                <h2>See Also</h2>
+                <ul>
+                    
+                    <li><a href="/2015/07/14/e7baa2e5b8bde5aa92e4bd93e697a5/">红帽媒体日</a></li>
+                    
+                    <li><a href="/2013/04/15/forrester-private-clouds-what-is-cloud-computing/">什么是真的云？</a></li>
+                    
+                    <li><a href="/2012/12/18/2013e5b9b4e79a84e4ba91e8aea1e7ae97e682a8e58786e5a487e5a5bde4ba86e4b988/">2013年的云计算，您准备好了么？</a></li>
+                    
+                    <li><a href="/2010/09/17/zt-bsm-dead/">[ZT] Old BSM is dead</a></li>
+                    
+                    <li><a href="/2010/06/07/bmc-remedy-ondemand/">BMC提供ITSM洋快餐</a></li>
+                    
+                </ul>
+                
+            </div>
+            
+            
+            
+            
+<div>
+    <section id="datecount">
+        <h4 id="date"> Mon Nov 7, 2016</h4>
+    </section>
+    <h5 id="wc">2000 Words|Read in about 4 Min</h5>
+    <h5 id="tags">Tags: 
+        
+        <a href="https://martinliu.cn/tags/cloud/">cloud</a> &nbsp;
+        
+        <a href="https://martinliu.cn/tags/devops/">DevOps</a> &nbsp;
+    </h5>
+</div>
+
+            
+            </div>
+            
+ 
+        </div>
+    </div>
+    </section>
+</div>
+
+    <footer>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <ul class="list-inline text-center footer-links">
+          
+              <li>
+                <a href="mailto:67120666@qq.com" title="Email me">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-envelope fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a href="https://plus.google.com/&#43;MartinLiu-cn" title="Google&#43;">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-google-plus fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a href="https://twitter.com/martinliu" title="Twitter">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a href="https://linkedin.com/in/liuzheng" title="LinkedIn">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-linkedin fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+          
+        </ul>
+        <p class="credits copyright text-muted">
+        &copy;2017-2018
+          
+            
+              <a href="martinliu.cn">Martin Liu</a>
+                      
+          
+          
+          
+            &nbsp;&bull;&nbsp;
+            <a href="https://martinliu.cn/">Maritn&#39;s Blog</a>
+          
+        </p>
+        
+        <p class="credits theme-by text-muted">
+          <a href="http://gohugo.io">Hugo v0.29</a> powered &nbsp;&bull;&nbsp; Theme by <a href="http://deanattali.com/beautiful-jekyll/">Beautiful Jekyll</a> adapted to <a href="https://github.com/halogenica/beautifulhugo">Beautiful Hugo</a>
+          
+        </p>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/bootstrap.min.js"></script>
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/photoswipe-ui-default.min.js"></script>
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/photoswipe.min.js"></script>
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/auto-render.min.js"></script>
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/main.js"></script>
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/prism.js"></script>
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/katex.min.js"></script>
+<script> renderMathInElement(document.body); </script>
+
+
+
+
+
+
+
+
+  </body>
+</html>
+

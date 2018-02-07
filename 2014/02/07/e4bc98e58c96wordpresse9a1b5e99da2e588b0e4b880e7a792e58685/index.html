@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+  <title> 优化 WordPress 页面到一秒内 - 刘征的博客|DevOps|Cloud Computing</title>
+  <meta name="description" content="刘征的博客|DevOps|Cloud Computing" />
+  <meta property="og:title" content="优化 WordPress 页面到一秒内" />
+  <meta name="twitter:title" content="优化 WordPress 页面到一秒内" />
+  <meta name="description" content="本帖系技术贴，目的在于总结一下这次对本站点优化的经历。总之结果很重要，把基本上所有页面都优化到大约0.8秒左右的载入速度。如果你也是在独立LAMP服务器上运行WordPress的话，我想本文可能对你会有所帮助。 ">
+  <meta property="og:description" content="本帖系技术贴，目的在于总结一下这次对本站点优化的经历。总之结果很重要，把基本上所有页面都优化到大约0.8秒左右的载入速度。如果你也是在独立LAMP服务器上运行WordPress的话，我想本文可能对你会有所帮助。 ">
+  <meta name="twitter:description" content="本帖系技术贴，目的在于总结一下这次对本站点优化的经历。总之结果很重要，把基本上所有页面都优化到大约0.8秒左右的载入速度。如果你也是在独立LAMP服务器上运行WordPress的话，我想本文可能对你会有所帮助。 ">
+  <meta name="author" content="{Description { .Site.Author.name }}"/>
+  <link href='https://martinliu.cn/img/favicon.ico' rel='icon' type='image/x-icon'/>
+  <meta property="og:image" content="https://martinliu.cn/img/logo.jpg" />
+  <meta name="twitter:image" content="https://martinliu.cn/img/logo.jpg" />
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:site" content="@martinliu" />
+  <meta name="twitter:creator" content="@martinliu" />
+  <meta property="og:url" content="https://martinliu.cn/2014/02/07/e4bc98e58c96wordpresse9a1b5e99da2e588b0e4b880e7a792e58685/" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Maritn&#39;s Blog" />
+
+  <meta name="generator" content="Hugo 0.29" />
+  <link rel="canonical" href="https://martinliu.cn/2014/02/07/e4bc98e58c96wordpresse9a1b5e99da2e588b0e4b880e7a792e58685/" />
+  <link rel="alternate" href="https://martinliu.cn/index.xml" type="application/rss+xml" title="Maritn&#39;s Blog">
+  <script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/jquery-1.12.4.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.7.1/katex.min.css" integrity="sha384-wITovz90syo1dJWVh32uuETPVEtGigN07tkttEqPv+uR2SE/mbQcG7ATL28aI9H0" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+  
+  
+  <link rel="stylesheet" href="https://martinliu.cn/css/main.css" />
+  <link rel="stylesheet" href="https://martinliu.cn/css/search.css" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" />
+  
+
+<meta name="baidu-site-verification" content="W3AORuRNZo" />
+<script>
+    var _hmt = _hmt || [];
+    (function () {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?50c3a9ae6c51222b31df5510bbca479f";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+
+<link rel="stylesheet" href="https://martinliu.cn/css/prism.css" />
+
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.1/photoswipe.min.css" integrity="sha256-sCl5PUOGMLfFYctzDW3MtRib0ctyUvI9Qsmq2wXOeBY=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.1/default-skin/default-skin.min.css" integrity="sha256-BFeI1V+Vh1Rk37wswuOYn5lsTcaU96hGaI7OUVCLjPc=" crossorigin="anonymous" />
+
+
+
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+<div class="pswp__bg"></div>
+
+<div class="pswp__scroll-wrap">
+    
+    <div class="pswp__container">
+      <div class="pswp__item"></div>
+      <div class="pswp__item"></div>
+      <div class="pswp__item"></div>
+    </div>
+    
+    <div class="pswp__ui pswp__ui--hidden">
+    <div class="pswp__top-bar">
+      
+      <div class="pswp__counter"></div>
+      <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+      <button class="pswp__button pswp__button--share" title="Share"></button>
+      <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+      <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+      
+      
+      <div class="pswp__preloader">
+        <div class="pswp__preloader__icn">
+          <div class="pswp__preloader__cut">
+            <div class="pswp__preloader__donut"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+      <div class="pswp__share-tooltip"></div>
+    </div>
+    <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+    </button>
+    <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+    </button>
+    <div class="pswp__caption">
+      <div class="pswp__caption__center"></div>
+    </div>
+    </div>
+    </div>
+</div>
+
+</head>
+
+  <body>
+    <nav class="navbar navbar-default navbar-fixed-top navbar-custom">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#main-navbar">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="https://martinliu.cn/">Maritn&#39;s Blog</a>
+    </div>
+    <div class="collapse navbar-collapse" id="main-navbar">
+      <ul class="nav navbar-nav navbar-right">
+        
+          
+            <li>
+              <a title="Blog" href="/">Blog</a>
+              
+              
+            </li>
+          
+        
+          
+            <li>
+              <a title="Tags" href="/tags">Tags</a>
+              
+              
+            </li>
+          
+        
+          
+            <li>
+              <a title="About" href="/about/">About</a>
+              
+              
+            </li>
+          
+        
+          
+            <li>
+              <a title="Book" href="https://handbook.martinliu.cn">Book</a>
+              
+              
+            </li>
+          
+        
+
+        
+
+        
+        
+          <li>
+            <a href="#modalSearch" data-toggle="modal" data-target="#modalSearch" style="outline: none;">
+              <span class="hidden-sm hidden-md hidden-lg">Search</span> <span id="searchGlyph" class="glyphicon glyphicon-search"></span>
+            </a>
+          </li>
+          
+      </ul>
+    </div>
+
+    <div class="avatar-container">
+      <div class="avatar-img-border">
+        
+          <a title="Maritn&#39;s Blog" href="https://martinliu.cn/">
+            <img class="avatar-img" src="https://martinliu.cn/img/logo.jpg" alt="Maritn&#39;s Blog" />
+          </a>
+        
+      </div>
+    </div>
+
+  </div>
+</nav>
+
+
+
+
+
+  <div id="modalSearch" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Search martinliu.cn </h4>
+        </div>
+        <div class="modal-body">
+            
+<div class="aa-input-container" id="aa-input-container">
+    <input type="search" id="aa-search-input" class="aa-input-search" placeholder="Search for titles or URIs..." name="search" autocomplete="off" />
+    <svg class="aa-input-icon" viewBox="654 -372 1664 1664">
+        <path d="M1806,332c0-123.3-43.8-228.8-131.5-316.5C1586.8-72.2,1481.3-116,1358-116s-228.8,43.8-316.5,131.5  C953.8,103.2,910,208.7,910,332s43.8,228.8,131.5,316.5C1129.2,736.2,1234.7,780,1358,780s228.8-43.8,316.5-131.5  C1762.2,560.8,1806,455.3,1806,332z M2318,1164c0,34.7-12.7,64.7-38,90s-55.3,38-90,38c-36,0-66-12.7-90-38l-343-342  c-119.3,82.7-252.3,124-399,124c-95.3,0-186.5-18.5-273.5-55.5s-162-87-225-150s-113-138-150-225S654,427.3,654,332  s18.5-186.5,55.5-273.5s87-162,150-225s138-113,225-150S1262.7-372,1358-372s186.5,18.5,273.5,55.5s162,87,225,150s113,138,150,225  S2062,236.7,2062,332c0,146.7-41.3,279.7-124,399l343,343C2305.7,1098.7,2318,1128.7,2318,1164z" />
+    </svg>
+</div>
+
+
+
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/algoliasearch.min.js"></script>
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/autocomplete.min.js"></script>
+
+<script>
+var client = algoliasearch("3RK9W7WH5R", "06f3928eb3fad870c9197c68c238dbd3");
+var index = client.initIndex('martinliu_blog');
+
+autocomplete('#aa-search-input',
+{ hint: false}, {
+    source: autocomplete.sources.hits(index, {hitsPerPage: 5}),
+    
+    displayKey: 'name',
+    
+    templates: {
+        
+        suggestion: function(suggestion) {
+            
+            return '<span>' + '<a href="/' + suggestion.uri+ '">' +
+            suggestion._highlightResult.title.value + '</a></span>';
+        }
+    }
+});
+</script>
+
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+    
+  
+  
+  
+
+
+
+
+  
+
+  <header class="header-section ">
+    
+    <div class="intro-header no-img">
+      
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-12 col-md-12 col-md-offset-0">
+            <div class="posts-heading">
+                <h1 align="center">优化 WordPress 页面到一秒内</h1>
+                
+                
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+
+    
+<div class="container" role="main" itemscope itemtype="http://schema.org/Article">
+    <div class="row">
+        <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+            
+            
+            
+<div>
+    <section id="datecount">
+        <h4 id="date"> Fri Feb 7, 2014</h4>
+    </section>
+    <h5 id="wc">1700 Words|Read in about 4 Min</h5>
+    <h5 id="tags">Tags: 
+        
+        <a href="https://martinliu.cn/tags/cache/">cache</a> &nbsp;
+        
+        <a href="https://martinliu.cn/tags/cdn/">cdn</a> &nbsp;
+        
+        <a href="https://martinliu.cn/tags/memcached/">memcached</a> &nbsp;
+        
+        <a href="https://martinliu.cn/tags/wordpress/">wordpress</a> &nbsp;
+    </h5>
+</div>
+
+            
+            <article role="main" class="blog-post" itemprop="articleBody" id="content">
+                <p>本帖系技术贴，目的在于总结一下这次对本站点优化的经历。总之结果很重要，把基本上所有页面都优化到大约0.8秒左右的载入速度。如果你也是在独立LAMP服务器上运行WordPress的话，我想本文可能对你会有所帮助。 </p>
+
+<h2 id="wordpress-服务器配置">Wordpress 服务器配置</h2>
+
+<p>服务器是在阿里云上的主机，主机的配置比较低：1vCPU，1GB内存；后台数据库是RDS服务。</p>
+
+<p><a href="http://cdn1.martinliu.cn/wp-content/uploads/2014/02/pic-003.jpg"><img src="http://cdn1.martinliu.cn/wp-content/uploads/2014/02/pic-003.jpg" alt="pic-003" /></a></p>
+
+<p>服务器的操作系统是Debian，安装的php的情况见 <a href="http://martinliu.cn/info.php">phpinfo.php</a> 的输出。</p>
+
+<p>WordPresss所安装的插件如下：akismet syntax-highlighter download-monitor update-twitter-php google-sitemap-generator use-google-libraries wordpress-popular-posts wordpress-seo jiathis wp-easyarchives kimili-flash-embed wpjam-qiniu memcached wp-pagenavi nextgen-gallery wp-postviews optimize-db wp-recentcomments
+regenerate-thumbnails wp-super-cache revslider wp_video-master shortcodes-ultimate yet-another-related-posts-plugin simple-google-analytics</p>
+
+<h2 id="wordpress-插件-wp-super-cache">Wordpress 插件：<strong>WP Super Cache</strong></h2>
+
+<p>Super Cache 使用的是： mod_rewrite 缓存模式。 并开启了：使用对象缓存系统来存储缓存文件。 (实验室功能)  这个功能和memcached插件是相关的。在CDN的配置这里，开启了CDN的支持，并把off-site URL指向了 <a href="http://martinliu.qiniudn.com">http://martinliu.qiniudn.com</a> 七牛的空间。</p>
+
+<p><a href="http://cdn1.martinliu.cn/wp-content/uploads/2014/02/pic-002.jpg"><img src="http://cdn1.martinliu.cn/wp-content/uploads/2014/02/pic-002.jpg" alt="pic-002" /></a></p>
+
+<p>现在很多页面查看源码的时候，都可以看到是0.8秒以内的速度，这个速度起码是本站点有史以来的最快速度。不光服务器速度快了，更重要的是所有静态文件也都是用的大陆的本土CDN站点了。</p>
+
+<h2 id="wordpress-插件-memcached-和-memcached服务">Wordpress 插件：**memcached 和 MemCached服务</h2>
+
+<p>**</p>
+
+<p>这个插件我第一次用，真可谓是神器，它需要和操作系统的memcached服务配合起来使用；这个插件的安装比较反常规：不能在控制台里面启用，根本就启用不了，需要安装插件后，在未激活的状态下，把它的文件手工放到wp-content目录里面即可。操作系统的memcached的服务安装和配置也比较简单，总之运行基本全都靠默认的配置参数即可。另外php的memcached模块也要安装并启用。它们配合起来能够把页面的request次数降低到冰点。我的主页用这个组合之前需要30次左右的request，用了之后就3次了，它主要是靠内存做缓存，从而加速了网站。</p>
+
+<p><a href="http://cdn1.martinliu.cn/wp-content/uploads/2014/02/pic-3.jpg"><img src="http://cdn1.martinliu.cn/wp-content/uploads/2014/02/pic-3.jpg" alt="pic-3" /></a></p>
+
+<p>上图是本站首页的测试结果，亮点在它只有3个请求，Web服务器只是做了三个响应就完事了，这个页面的内容就全都可以发给浏览器了。减少了20多次请求的处理，这些请求的结果都被memcached给缓存到内存里面了，目前只能够给memcached开80MB的缓存空间，也就这点内存常驻的网站缓存解决了大问题。加速页面的响应速度。不得不说memcached服务还是挺NB的。</p>
+
+<p><a href="http://cdn1.martinliu.cn/wp-content/uploads/2014/02/pic-001.jpg"><img src="http://cdn1.martinliu.cn/wp-content/uploads/2014/02/pic-001.jpg" alt="pic-001" /></a></p>
+
+<p>上图是一个常规的文章页面，请数量从以前的30左右降到10以内，我什么也不说了。当然上面这连个图里面也能看出本网站的一点问题，这里也不说了。</p>
+
+<h2 id="wordpress-插件-wpjam-七牛镜像存储">Wordpress 插件：<strong>WPJAM 七牛镜像存储</strong></h2>
+
+<p>本次折腾主要冲着这个来的。CDN我是第一次玩，不过用一次之后，感觉也挺简单的。先要找一个免费的CDN服务商开一个空间，之后一般送1GB空间一个月1GB流量，对我的网站来说足够了。配置完之后就拿到了一个二级域名，然后还有几个重要的Key编码。安装了水煮鱼做的这个插件之后，配置完，什么也不用管，网站的哪些静态文件就在首次访问的时候，被自动传到CDN上面了，下次网页再被打开的时候就全都走CDN上下载了，从而把Apache的基本所有静态文件的请求都offload走了，从而降低了服务器的负荷，提升了它对动态内容的反应速度。我的服务器只有1GB内存，用了CDN之后，我也不是很担心内存不够用的问题了。</p>
+
+<h2 id="未尽事宜">未尽事宜</h2>
+
+<p>由于时间仓促，有几个活也没有时间做。1）我的域名martinliu.cn的DNS查询的速度有时候挺慢的，快也要500ms，有时候甚至超过一两秒，不知道是DNSPod不给力还是我的服务器自身有问题。2）CDN的正规用法需要在服务器端写一个脚本，把wordpress里面需要CDN加速的文件都上传到自己CDN的空间里面，并且可以编写脚本定期增量传输。由于最近太忙，以后有时间在研究这个问题吧。3)wordpress-popular-posts此插件在每个页面上都占用一定的时间，不知道是否能把它消除到。4）Gravatar头像的加速，否则这些图标在评论多的帖子上从国外站点下载，实在是太慢了。</p>
+            </article>
+
+            <ul class="pager blog-pager">
+                
+                <li class="previous">
+                    <a href="https://martinliu.cn/2014/01/08/e5a4a9e7b181e4b98be99fb3-e697a0e8a880e58fa4e8af97-e89d89/" data-toggle="tooltip" data-placement="top" title="天籁之音 五言古诗 蝉">&larr; Previous Post</a>
+                </li>
+                 
+                <li class="next">
+                    <a href="https://martinliu.cn/2014/02/08/e5bc80e6ba90e69c8de58aa1e599a8e79a84e697b6e4bba3e79c9fe588b0e4ba86efbc9f/" data-toggle="tooltip" data-placement="top" title="开源服务器的时代真到了？">Next Post &rarr;</a>
+                </li>
+                
+            </ul>
+            
+            <div>
+                 
+                <h2>See Also</h2>
+                <ul>
+                    
+                    <li><a href="/2010/06/20/upgraded-wordpress-30/">Upgraded to Wordpress 3.0</a></li>
+                    
+                    <li><a href="/2010/03/27/martinliucnblog/">重整旗鼓</a></li>
+                    
+                    <li><a href="/2009/12/31/at-end-of-2009/">At end of 2009</a></li>
+                    
+                    <li><a href="/2009/12/30/e59e83e59cbee7bd91e7ab99e79a84e6ae89e891ace59381-e4b8aae4babae58d9ae5aea2/">垃圾网站的殉葬品-个人博客</a></li>
+                    
+                    <li><a href="/2009/10/05/bo-ke-zai-ci-ban-jia-hui-guo/">博客再次搬家回国</a></li>
+                    
+                </ul>
+                
+            </div>
+            
+            
+            
+            
+<div>
+    <section id="datecount">
+        <h4 id="date"> Fri Feb 7, 2014</h4>
+    </section>
+    <h5 id="wc">1700 Words|Read in about 4 Min</h5>
+    <h5 id="tags">Tags: 
+        
+        <a href="https://martinliu.cn/tags/cache/">cache</a> &nbsp;
+        
+        <a href="https://martinliu.cn/tags/cdn/">cdn</a> &nbsp;
+        
+        <a href="https://martinliu.cn/tags/memcached/">memcached</a> &nbsp;
+        
+        <a href="https://martinliu.cn/tags/wordpress/">wordpress</a> &nbsp;
+    </h5>
+</div>
+
+            
+            </div>
+            
+ 
+        </div>
+    </div>
+    </section>
+</div>
+
+    <footer>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <ul class="list-inline text-center footer-links">
+          
+              <li>
+                <a href="mailto:67120666@qq.com" title="Email me">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-envelope fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a href="https://plus.google.com/&#43;MartinLiu-cn" title="Google&#43;">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-google-plus fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a href="https://twitter.com/martinliu" title="Twitter">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a href="https://linkedin.com/in/liuzheng" title="LinkedIn">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-linkedin fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+          
+        </ul>
+        <p class="credits copyright text-muted">
+        &copy;2017-2018
+          
+            
+              <a href="martinliu.cn">Martin Liu</a>
+                      
+          
+          
+          
+            &nbsp;&bull;&nbsp;
+            <a href="https://martinliu.cn/">Maritn&#39;s Blog</a>
+          
+        </p>
+        
+        <p class="credits theme-by text-muted">
+          <a href="http://gohugo.io">Hugo v0.29</a> powered &nbsp;&bull;&nbsp; Theme by <a href="http://deanattali.com/beautiful-jekyll/">Beautiful Jekyll</a> adapted to <a href="https://github.com/halogenica/beautifulhugo">Beautiful Hugo</a>
+          
+        </p>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/bootstrap.min.js"></script>
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/photoswipe-ui-default.min.js"></script>
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/photoswipe.min.js"></script>
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/auto-render.min.js"></script>
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/main.js"></script>
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/prism.js"></script>
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/katex.min.js"></script>
+<script> renderMathInElement(document.body); </script>
+
+
+
+
+
+
+
+
+  </body>
+</html>
+

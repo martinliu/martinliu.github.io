@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+  <title> DockerCon 2016 D1 Keynote - 刘征的博客|DevOps|Cloud Computing</title>
+  <meta name="description" content="刘征的博客|DevOps|Cloud Computing" />
+  <meta property="og:title" content="DockerCon 2016 D1 Keynote" />
+  <meta name="twitter:title" content="DockerCon 2016 D1 Keynote" />
+  <meta name="description" content="看点：开场乌龟引起了喵星人大战，首次有吉祥物开启的科技盛会。 和往常一样 CEO 和 CTO 挑大梁将首日 keynote。 所罗门提出了 Docker 技术发展的三个核心方向">
+  <meta property="og:description" content="看点：开场乌龟引起了喵星人大战，首次有吉祥物开启的科技盛会。 和往常一样 CEO 和 CTO 挑大梁将首日 keynote。 所罗门提出了 Docker 技术发展的三个核心方向">
+  <meta name="twitter:description" content="看点：开场乌龟引起了喵星人大战，首次有吉祥物开启的科技盛会。 和往常一样 CEO 和 CTO 挑大梁将首日 keynote。 所罗门提出了 Docker 技术发展的三个核心方向">
+  <meta name="author" content="{Description { .Site.Author.name }}"/>
+  <link href='https://martinliu.cn/img/favicon.ico' rel='icon' type='image/x-icon'/>
+  <meta property="og:image" content="https://martinliu.cn/img/logo.jpg" />
+  <meta name="twitter:image" content="https://martinliu.cn/img/logo.jpg" />
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:site" content="@martinliu" />
+  <meta name="twitter:creator" content="@martinliu" />
+  <meta property="og:url" content="https://martinliu.cn/2016/06/20/dockercon-2016-d1-keynote/" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Maritn&#39;s Blog" />
+
+  <meta name="generator" content="Hugo 0.29" />
+  <link rel="canonical" href="https://martinliu.cn/2016/06/20/dockercon-2016-d1-keynote/" />
+  <link rel="alternate" href="https://martinliu.cn/index.xml" type="application/rss+xml" title="Maritn&#39;s Blog">
+  <script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/jquery-1.12.4.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.7.1/katex.min.css" integrity="sha384-wITovz90syo1dJWVh32uuETPVEtGigN07tkttEqPv+uR2SE/mbQcG7ATL28aI9H0" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+  
+  
+  <link rel="stylesheet" href="https://martinliu.cn/css/main.css" />
+  <link rel="stylesheet" href="https://martinliu.cn/css/search.css" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" />
+  
+
+<meta name="baidu-site-verification" content="W3AORuRNZo" />
+<script>
+    var _hmt = _hmt || [];
+    (function () {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?50c3a9ae6c51222b31df5510bbca479f";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+
+<link rel="stylesheet" href="https://martinliu.cn/css/prism.css" />
+
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.1/photoswipe.min.css" integrity="sha256-sCl5PUOGMLfFYctzDW3MtRib0ctyUvI9Qsmq2wXOeBY=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.1/default-skin/default-skin.min.css" integrity="sha256-BFeI1V+Vh1Rk37wswuOYn5lsTcaU96hGaI7OUVCLjPc=" crossorigin="anonymous" />
+
+
+
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+<div class="pswp__bg"></div>
+
+<div class="pswp__scroll-wrap">
+    
+    <div class="pswp__container">
+      <div class="pswp__item"></div>
+      <div class="pswp__item"></div>
+      <div class="pswp__item"></div>
+    </div>
+    
+    <div class="pswp__ui pswp__ui--hidden">
+    <div class="pswp__top-bar">
+      
+      <div class="pswp__counter"></div>
+      <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+      <button class="pswp__button pswp__button--share" title="Share"></button>
+      <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+      <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+      
+      
+      <div class="pswp__preloader">
+        <div class="pswp__preloader__icn">
+          <div class="pswp__preloader__cut">
+            <div class="pswp__preloader__donut"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+      <div class="pswp__share-tooltip"></div>
+    </div>
+    <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+    </button>
+    <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+    </button>
+    <div class="pswp__caption">
+      <div class="pswp__caption__center"></div>
+    </div>
+    </div>
+    </div>
+</div>
+
+</head>
+
+  <body>
+    <nav class="navbar navbar-default navbar-fixed-top navbar-custom">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#main-navbar">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="https://martinliu.cn/">Maritn&#39;s Blog</a>
+    </div>
+    <div class="collapse navbar-collapse" id="main-navbar">
+      <ul class="nav navbar-nav navbar-right">
+        
+          
+            <li>
+              <a title="Blog" href="/">Blog</a>
+              
+              
+            </li>
+          
+        
+          
+            <li>
+              <a title="Tags" href="/tags">Tags</a>
+              
+              
+            </li>
+          
+        
+          
+            <li>
+              <a title="About" href="/about/">About</a>
+              
+              
+            </li>
+          
+        
+          
+            <li>
+              <a title="Book" href="https://handbook.martinliu.cn">Book</a>
+              
+              
+            </li>
+          
+        
+
+        
+
+        
+        
+          <li>
+            <a href="#modalSearch" data-toggle="modal" data-target="#modalSearch" style="outline: none;">
+              <span class="hidden-sm hidden-md hidden-lg">Search</span> <span id="searchGlyph" class="glyphicon glyphicon-search"></span>
+            </a>
+          </li>
+          
+      </ul>
+    </div>
+
+    <div class="avatar-container">
+      <div class="avatar-img-border">
+        
+          <a title="Maritn&#39;s Blog" href="https://martinliu.cn/">
+            <img class="avatar-img" src="https://martinliu.cn/img/logo.jpg" alt="Maritn&#39;s Blog" />
+          </a>
+        
+      </div>
+    </div>
+
+  </div>
+</nav>
+
+
+
+
+
+  <div id="modalSearch" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Search martinliu.cn </h4>
+        </div>
+        <div class="modal-body">
+            
+<div class="aa-input-container" id="aa-input-container">
+    <input type="search" id="aa-search-input" class="aa-input-search" placeholder="Search for titles or URIs..." name="search" autocomplete="off" />
+    <svg class="aa-input-icon" viewBox="654 -372 1664 1664">
+        <path d="M1806,332c0-123.3-43.8-228.8-131.5-316.5C1586.8-72.2,1481.3-116,1358-116s-228.8,43.8-316.5,131.5  C953.8,103.2,910,208.7,910,332s43.8,228.8,131.5,316.5C1129.2,736.2,1234.7,780,1358,780s228.8-43.8,316.5-131.5  C1762.2,560.8,1806,455.3,1806,332z M2318,1164c0,34.7-12.7,64.7-38,90s-55.3,38-90,38c-36,0-66-12.7-90-38l-343-342  c-119.3,82.7-252.3,124-399,124c-95.3,0-186.5-18.5-273.5-55.5s-162-87-225-150s-113-138-150-225S654,427.3,654,332  s18.5-186.5,55.5-273.5s87-162,150-225s138-113,225-150S1262.7-372,1358-372s186.5,18.5,273.5,55.5s162,87,225,150s113,138,150,225  S2062,236.7,2062,332c0,146.7-41.3,279.7-124,399l343,343C2305.7,1098.7,2318,1128.7,2318,1164z" />
+    </svg>
+</div>
+
+
+
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/algoliasearch.min.js"></script>
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/autocomplete.min.js"></script>
+
+<script>
+var client = algoliasearch("3RK9W7WH5R", "06f3928eb3fad870c9197c68c238dbd3");
+var index = client.initIndex('martinliu_blog');
+
+autocomplete('#aa-search-input',
+{ hint: false}, {
+    source: autocomplete.sources.hits(index, {hitsPerPage: 5}),
+    
+    displayKey: 'name',
+    
+    templates: {
+        
+        suggestion: function(suggestion) {
+            
+            return '<span>' + '<a href="/' + suggestion.uri+ '">' +
+            suggestion._highlightResult.title.value + '</a></span>';
+        }
+    }
+});
+</script>
+
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+    
+  
+  
+  
+
+
+
+
+  
+
+  <header class="header-section ">
+    
+    <div class="intro-header no-img">
+      
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-12 col-md-12 col-md-offset-0">
+            <div class="posts-heading">
+                <h1 align="center">DockerCon 2016 D1 Keynote</h1>
+                
+                
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+
+    
+<div class="container" role="main" itemscope itemtype="http://schema.org/Article">
+    <div class="row">
+        <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+            
+            
+            
+<div>
+    <section id="datecount">
+        <h4 id="date"> Mon Jun 20, 2016</h4>
+    </section>
+    <h5 id="wc">3600 Words|Read in about 8 Min</h5>
+    <h5 id="tags">Tags: 
+        
+        <a href="https://martinliu.cn/tags/docker/">docker</a> &nbsp;
+    </h5>
+</div>
+
+            
+            <article role="main" class="blog-post" itemprop="articleBody" id="content">
+                
+
+<p>看点：开场乌龟引起了喵星人大战，首次有吉祥物开启的科技盛会。 和往常一样 CEO 和 CTO 挑大梁将首日 keynote。 所罗门提出了 Docker 技术发展的三个核心方向和着眼点，并在每个方向上做了新技术发布。 1. 开发者体验提升， 正式发布 Docker for Mac/Windws 2. 编排能力的提升，正式发布 Docker 1.12 ，其中有四项能力提升；这是要废掉所有其他编排器的节奏啊~ 3. 运维体验提升，正式发布 beta.docker.com ；这是和公有云深度结合的产品，分为 AWS 和 Azure 两个模块。 一共有三个实景演示，都没有出现问题，演示很成功。</p>
+
+<h2 id="现场录音">现场录音</h2>
+
+<p>点上面的播放键，播放整场录音。请注意中间的数秒钟乃至数十秒的中断是正常，请快进收听。</p>
+
+<h2 id="开场">开场</h2>
+
+<p>屏幕上出现了乌龟开始做 demo，运行了一个容器。 猫咪大战，混乱了，猫星人入侵了。猫叫~~乱作一团··· 发生了什么？ dockercon16 吹起了号角。 乌龟再次出现在电脑上，运行了另外一个容器惊喜，这次是美妙的音乐。 调皮的乌龟折腾完了之后，主题曲想起来。4000多人的场子，大家很期待。</p>
+
+<h2 id="ceo-ben-golub-演讲">CEO Ben Golub 演讲</h2>
+
+<p><img src="http://cdn1.martinliu.cn/wp-content/uploads/2016/06/2.jpg" alt="2" /></p>
+
+<p>Ben Golub CEO 出场。 Today we are all docker blue. 欢迎所有人。 我们和前两年的不同，我们发布了1.0 等等。 谈了很多 Docker 取得的成就。 感谢和表扬了社区。 感谢2900+贡献者。 社区的状态动态，每周超过300 PR，三分之二来自 Docker 公司之外。 docker meetup 的状况， 250+城市举行，125K 人参加聚会。 内容构建方面，docker hub 上有 460K 个应用，到目前为止有4.1B 此镜像下载。 感谢 docker 的生态社区。 讲述了这两年的使用场景的变化。Docker 逐渐成为了企业级的应用。 所有穿着红色衣服的起立，他们是 Dockr 公司的员工，感谢他们，请鼓掌。 感谢今年的赞助商。 向 Demo Gods 致敬，给神献上祭品，保证后续的演示顺利。 we pray to the old codes and the new.</p>
+
+<h2 id="cto-所罗门演讲">CTO 所罗门演讲</h2>
+
+<p>所罗门出场。 我去，4000多人在场，我老爸也在家看我视频直播。 很荣欣大家来参加，感谢大家来参会。 谁参加过 DockerCon14？ 我们要开始做很多的 demo 在会议过程中。 最精彩的部分是，我们来自全球各个行业的不同层面，多样性简直是不可思议。原因是：Programming is changing the world. 我们在一起的原因是：Docker 是编程创新的助力工具。 We’re building Docker incrementally, in the open. 最好的工具目前看不是那些软件工具巨人的公司提供的，而是来自社区和群众的创新，是你们指引着我们构建了愈来愈多的工具。 社区告诉我们几个方面需要努力。</p>
+
+<h3 id="1-开发者体验">1 开发者体验</h3>
+
+<p>构建最好的工具，这个工具需要有这些特质：</p>
+
+<ol>
+<li><p>get out of the way;</p></li>
+
+<li><p>adopt to you；</p></li>
+
+<li><p>make the powerful simple</p></li>
+</ol>
+
+<p>我们努力地践行着这些理念。 Docker for Mac/Windows 将是最无缝的开发者体验。 Making things easy is really hard. 我们在寻找最佳的系统工程师，我们收购了 Unikernel 公司。 在移动游戏行业里面找到最佳的设计者。</p>
+
+<h3 id="第一个演示-docker-for-mac">第一个演示 – Docker for Mac</h3>
+
+<p>演示者登台。 我是个开发者，今天第一天上班。 安装了 Docker for Mac 打开这个应用，启动它。 克隆</p>
+
+<pre><code>git clone viting-app 
+</code></pre>
+
+<p>运行</p>
+
+<pre><code>docker-compose up
+</code></pre>
+
+<p>打开投票应用的两个web界面。 我不知道这个应用是什么，但是一个命令就启动了所有5个服务。 我发现了程序的 bug。 是否我第一天上班就能修复它？ 分析了一下程序架构图。 查看 docker-compose.yml 文件。 找到了一个 debug 显示的的那一行。 在代码中加入了 live debug 的断点。 开始 review 代码，发现了奇怪的地方。 找到了 git 上的代码，增加了评论，提出源码结果计算方法有问题。 现在删除了有问题的哪一行代码。 删除了断点。 用 live debug 的方式修复代码。 回到程序界面，发现 bug 没了。 做 git commit 提交修正后的代码。 查看了该应用在 staging 环境的情况，发现也有相同的结果计算的问题。 进入该环境的 Docker Cloud界面，看到了这个运行环境。 查看 result 服务的构建策略是自动构建。 Docker Cloud 自动接收了新的代码，Staging 环境的构建完成并通过了测试脚本，程序正常了。 查看云里的 Staging 环境的 bug 也被除掉了。demo 结束。</p>
+
+<h3 id="splice-的-cto-matt-案例分享">Splice 的 CTO Matt 案例分享</h3>
+
+<p>Splice 的 CTO Matt；我们做的是个音乐服务的技术，我们构建的服务像是给音乐人用的 github。 每天都有人上传上很多 TB 的音乐数据。 我们在 Mac 上开发，在 Linux 上部署。 我们使用多种数据存储。 Docker 让我们保持多种环境的一致，降低了 debug 的时间。 所有的程序运行在容器中。 我们一天更新线上的业务20多次。 Developer 的第一天工作就能为业务提供价值。 我们使用 Docker for Mac。</p>
+
+<h3 id="2-orchestration-编排能力">2 Orchestration 编排能力</h3>
+
+<p>我们听到很多 happy user 的故事。 感谢所有7万多 Docker for Mac beta 的反馈参与者。 我宣布 Docker for Mac/Widnwos beta 完全开放下载。 很多人告诉我们需要在 Orchestration 上更加努力。 它在 ship 方面提供支持，能发布你整个的应用，让你不再关心单个的容器。 Orchestration是个技术活，只有专家才能干。很少人能做这个工作。 可是用户怎么能即不出现手头人才短缺，又不被某些厂商在这方面给技术锁定呢？ 更好的方法是什么？ Docker 1.12 将内置编排功能。 最佳的编排技术将是 Docker 自己。</p>
+
+<p><img src="http://cdn1.martinliu.cn/wp-content/uploads/2016/06/3.jpg" alt="3" /></p>
+
+<p>我们先提前介绍一些它的新功能。</p>
+
+<ul>
+<li><p>Swarm mode</p></li>
+
+<li><p>Cryptographic node identity</p></li>
+
+<li><p>Docker Service API</p></li>
+
+<li><p>Build-in Routing Mesh</p></li>
+</ul>
+
+<p>非常简单的演示，你就明白了。 欢迎第三个 编排的演示 Docker 1.12 技术。</p>
+
+<h3 id="第二个演示-docker-swarm-功能演示">第二个演示 – docker swarm 功能演示</h3>
+
+<p>两个人上场。 用一个新的机器，上面只安装了 docker。 有三个节点。 第一个节点上初始化群集 docker swarm init 第二个节点上加入群集 docker swarm join 在第三个节点上加入群集 docker swarm join 三节点的群集建立完成。</p>
+
+<p>为毛它没有让输入任何安全的信息和选项，这就对了，我们有内置的 PKI 安全通讯机制。 所有节点都有自己的身份标识。密钥定期自动变化。所有通讯都可以追述到发起者的身份。</p>
+
+<p>你们都懂 docker run 子命令。 docker service 命令是新来的子命令。 service 的定义是将要维持服务的状态。</p>
+
+<pre><code>docker service create --name voting-app -p 5000 
+docker service ls
+
+
+</code></pre>
+
+<p>所有的服务只启动了一个容器，分布在三个节点上。</p>
+
+<p>看到投票应用页面显示了。</p>
+
+<p>浏览器访问了第一个节点的 ip:5000 ，然后第二个节点的 ip:5000 端口，发现实际上访问到了第一个节点上的的容器。这就是新的容器路由的功能。所有的节点访问这个服务的端口，都可以路由到该服务的容器里。</p>
+
+<pre><code>docker service scale 6
+</code></pre>
+
+<p>现在扩容服务的容器。 每次刷新页面，页面上容器的ID都在变，这是群集内置的 round robin 负载均衡策略，把访问分发到所有容器。这就是内置的负载均衡功能。</p>
+
+<p>我们升级这个 app 吧。</p>
+
+<pre><code>docker service update 
+
+
+</code></pre>
+
+<p>演示容器镜像文件的更新 选择另外一个 tag 的镜像来升级 现在我们可以对电影投票了</p>
+
+<p>滚动升级可以支持 加上一次升级2个容器的升级选项，因此它现在是做两个一次的服务容器升级，直到所有容器都升级结束。</p>
+
+<p>我们说的自愈功能是说，能让应用可以在机器宕机的时候，业务也不中断。 请把有两个容器的 node3 关机。 调度器现在自动在 node2上长出刚才运行在 node3上的那两个容器。保持6个容器的服务配置。</p>
+
+<p>演示成功，并没有出问题。</p>
+
+<h3 id="zenly-的创始人案例分享">Zenly 的创始人案例分享</h3>
+
+<p>所罗门高兴的再次上台。 这说明我们的祭品生效了，演示没有出毛问题。 docker 1.12 在几周后就发布，Docker for Mac beta 版本上现在就有这些功能。你们这些已经安装的现在就可以尝试这些功能。 我们自由的扩容业务应用，而服务速度不受到影响。 在大规模的关键业务中的部署才是目标。我们请 Zenly 的兄弟们上台。</p>
+
+<p>Zenly 的人喝了两杯祭品的冰咖啡上台了。 我们有1M 用户，是最近的三个月内获得的。 500M events/day 一共才 6 engineers 我们运行业务在云上。 我们现在把部分业务迁移回自己的物理机。 我们在10台物理机上运行部分业务。 部分运行在 GCE 上。 我们感觉按需扩容很爽。</p>
+
+<h3 id="3-运维体验">3 运维体验</h3>
+
+<p>我们谈到开发者体验，业务编排。 群众还告诉我们“Ops experience” 运维体验是需要关注第三个侧面。 Docker 应该深度和云基础架构集成。</p>
+
+<h4 id="beta-docker-com-发布">beta.docker.com 发布</h4>
+
+<p>我宣布beta.docker.com 发布。包括 docker for aws 和 docker for Azure 是最原生的 AWS 和 Azure 体验。是和云基础架构最深的集成。 现在可以用 AWS CloudFormation 来部署 Swarm 群集。 可以自动配置所有的负载均衡端口等配置。</p>
+
+<h4 id="www-docker-com-dab-发布">www.docker.com/dab 发布</h4>
+
+<p>www.docker.com/dab 是新的可移植多容器应用打包格式。 这是新的 ops 体验。是让 developer 和 Ops 更容易工作在一起的方案。</p>
+
+<h3 id="第三个演示-云运维体验">第三个演示 – 云运维体验</h3>
+
+<p>Developer：我想赶紧回家。我还需要赶紧交货。</p>
+
+<pre><code>docker compose bundle 
+
+</code></pre>
+
+<p>产生了一个.dab 文件，齐活了。 把应用的 .dab 文件给 Ops 即可。 Ops：你的应用是 docker的么？ 额的个神啊！ 我喜欢在 AWS 上用Docker。 看我新建Stack的 AWS 向导，这里可以配置了一个新的 docker swarm 群集。 看我这有一个已经部署了100节点的群集。 所有网络、存储、负载均衡都不用手动配置。 复制 这个网址。 在 Mac 电脑的 shell 粘贴 ，后点击回车。 我们进入了命令行 docker for aws 的特殊的 shell 我能看的所有群集和主机的状态 把你的 .dab 文件给我，就欧了~ 用 USB copy 给你。 把文件 copy 给了 Ops scp .dab 文件到 swarm 群集中。 在进入 shell ls 能看的这个文件</p>
+
+<pre><code>docker deploy  voting-app  xxx.dab 
+
+
+</code></pre>
+
+<p>看这些所有服务都运行了</p>
+
+<pre><code>docker service ls
+docker service update -p 80:80  voting-app
+docker service update -p 8080:8080  result-app
+docker service scale 
+
+
+</code></pre>
+
+<p>扩容这些服务的容器数量 打开浏览器确认应用部署结果，找到 ELB 的配置，配置已经自动生成了。 浏览器中访问 ELB 的80端口上看的投票页面 在 ELB 的 8080 端口看的结果页面 这下应用部署完毕。 原来你的 Ops 工作怎么这么简单啊！！ I got go home ~~~</p>
+
+<h2 id="结束">结束</h2>
+
+<p>所罗门感谢大家，所请访问 docker.com/getdocker 有需要的尽管说。 请在这几天内，尽量多的告诉我们，你们的需求和使用场景。 请告诉我们 what we build next ! thank you very much ！！</p>
+
+<h2 id="注意">注意</h2>
+
+<p>我是 Maritn Liu 为您播报本次大会的各种信息，对以上内容有任何问题和疑问请加我微信咨询，我的微信号是 martinliu_cn ，这篇文章也会在我的微信公众号（aws-faq）和 ”刀客微播报“上发布。以上会议记录中所有命令的操作并不是准确的演示者输入，尽量参考这些命令来想想其可能的参数和语法，如果你安装了最新版本的 Docker for Mac 可以自己试一下。</p>
+
+            </article>
+
+            <ul class="pager blog-pager">
+                
+                <li class="previous">
+                    <a href="https://martinliu.cn/2016/01/12/e4b88be4b880e4bba3e5ba94e794a8e4b8bae4b8ade5bf83e79a84e5b9b3e58fb0-openshift/" data-toggle="tooltip" data-placement="top" title="下一代应用为中心的平台 OpenShift">&larr; Previous Post</a>
+                </li>
+                 
+                <li class="next">
+                    <a href="https://martinliu.cn/2016/06/22/closing-general-session-moby-docks-cool-hacks/" data-toggle="tooltip" data-placement="top" title="DockerCon 2016 D2 超萌码头酷黑客 大会圆满闭幕">Next Post &rarr;</a>
+                </li>
+                
+            </ul>
+            
+            <div>
+                 
+                <h2>See Also</h2>
+                <ul>
+                    
+                    <li><a href="/2015/07/18/atomic-host-e58e9fe5ad90e4b8bbe69cbae69c80e7ae80e6b58be8af95/">Atomic Host 原子主机最简测试</a></li>
+                    
+                    <li><a href="/2015/07/14/e7baa2e5b8bde5aa92e4bd93e697a5/">红帽媒体日</a></li>
+                    
+                    <li><a href="/2015/03/19/e5a682e4bd95e58f82e4b88e-project-atomic/">如何参与 Project Atomic</a></li>
+                    
+                    <li><a href="/2014/12/04/workshop-creating-docker-management-environment/">Workshop: Creating a Docker management environment</a></li>
+                    
+                </ul>
+                
+            </div>
+            
+            
+            
+            
+<div>
+    <section id="datecount">
+        <h4 id="date"> Mon Jun 20, 2016</h4>
+    </section>
+    <h5 id="wc">3600 Words|Read in about 8 Min</h5>
+    <h5 id="tags">Tags: 
+        
+        <a href="https://martinliu.cn/tags/docker/">docker</a> &nbsp;
+    </h5>
+</div>
+
+            
+            </div>
+            
+ 
+        </div>
+    </div>
+    </section>
+</div>
+
+    <footer>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <ul class="list-inline text-center footer-links">
+          
+              <li>
+                <a href="mailto:67120666@qq.com" title="Email me">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-envelope fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a href="https://plus.google.com/&#43;MartinLiu-cn" title="Google&#43;">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-google-plus fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a href="https://twitter.com/martinliu" title="Twitter">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a href="https://linkedin.com/in/liuzheng" title="LinkedIn">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-linkedin fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+          
+        </ul>
+        <p class="credits copyright text-muted">
+        &copy;2017-2018
+          
+            
+              <a href="martinliu.cn">Martin Liu</a>
+                      
+          
+          
+          
+            &nbsp;&bull;&nbsp;
+            <a href="https://martinliu.cn/">Maritn&#39;s Blog</a>
+          
+        </p>
+        
+        <p class="credits theme-by text-muted">
+          <a href="http://gohugo.io">Hugo v0.29</a> powered &nbsp;&bull;&nbsp; Theme by <a href="http://deanattali.com/beautiful-jekyll/">Beautiful Jekyll</a> adapted to <a href="https://github.com/halogenica/beautifulhugo">Beautiful Hugo</a>
+          
+        </p>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/bootstrap.min.js"></script>
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/photoswipe-ui-default.min.js"></script>
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/photoswipe.min.js"></script>
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/auto-render.min.js"></script>
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/main.js"></script>
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/prism.js"></script>
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/katex.min.js"></script>
+<script> renderMathInElement(document.body); </script>
+
+
+
+
+
+
+
+
+  </body>
+</html>
+

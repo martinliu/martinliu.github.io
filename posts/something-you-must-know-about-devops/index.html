@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+  <title> 关于DevOps 的那些事 - 刘征的博客|DevOps|Cloud Computing</title>
+  <meta name="description" content="刘征的博客|DevOps|Cloud Computing" />
+  <meta property="og:title" content="关于DevOps 的那些事" />
+  <meta name="twitter:title" content="关于DevOps 的那些事" />
+  <meta name="description" content="我对DevOps的一个比较宏观的总结">
+  <meta property="og:description" content="我对DevOps的一个比较宏观的总结">
+  <meta name="twitter:description" content="我对DevOps的一个比较宏观的总结">
+  <meta name="author" content="{Description { .Site.Author.name }}"/>
+  <link href='https://martinliu.cn/img/favicon.ico' rel='icon' type='image/x-icon'/>
+  <meta property="og:image" content="https://martinliu.cn/img/logo.jpg" />
+  <meta name="twitter:image" content="https://martinliu.cn/img/logo.jpg" />
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:site" content="@martinliu" />
+  <meta name="twitter:creator" content="@martinliu" />
+  <meta property="og:url" content="https://martinliu.cn/posts/something-you-must-know-about-devops/" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Maritn&#39;s Blog" />
+
+  <meta name="generator" content="Hugo 0.29" />
+  <link rel="canonical" href="https://martinliu.cn/posts/something-you-must-know-about-devops/" />
+  <link rel="alternate" href="https://martinliu.cn/index.xml" type="application/rss+xml" title="Maritn&#39;s Blog">
+  <script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/jquery-1.12.4.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.7.1/katex.min.css" integrity="sha384-wITovz90syo1dJWVh32uuETPVEtGigN07tkttEqPv+uR2SE/mbQcG7ATL28aI9H0" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+  
+  
+  <link rel="stylesheet" href="https://martinliu.cn/css/main.css" />
+  <link rel="stylesheet" href="https://martinliu.cn/css/search.css" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" />
+  
+
+<meta name="baidu-site-verification" content="W3AORuRNZo" />
+<script>
+    var _hmt = _hmt || [];
+    (function () {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?50c3a9ae6c51222b31df5510bbca479f";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+
+<link rel="stylesheet" href="https://martinliu.cn/css/prism.css" />
+
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.1/photoswipe.min.css" integrity="sha256-sCl5PUOGMLfFYctzDW3MtRib0ctyUvI9Qsmq2wXOeBY=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.1/default-skin/default-skin.min.css" integrity="sha256-BFeI1V+Vh1Rk37wswuOYn5lsTcaU96hGaI7OUVCLjPc=" crossorigin="anonymous" />
+
+
+
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+<div class="pswp__bg"></div>
+
+<div class="pswp__scroll-wrap">
+    
+    <div class="pswp__container">
+      <div class="pswp__item"></div>
+      <div class="pswp__item"></div>
+      <div class="pswp__item"></div>
+    </div>
+    
+    <div class="pswp__ui pswp__ui--hidden">
+    <div class="pswp__top-bar">
+      
+      <div class="pswp__counter"></div>
+      <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+      <button class="pswp__button pswp__button--share" title="Share"></button>
+      <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+      <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+      
+      
+      <div class="pswp__preloader">
+        <div class="pswp__preloader__icn">
+          <div class="pswp__preloader__cut">
+            <div class="pswp__preloader__donut"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+      <div class="pswp__share-tooltip"></div>
+    </div>
+    <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+    </button>
+    <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+    </button>
+    <div class="pswp__caption">
+      <div class="pswp__caption__center"></div>
+    </div>
+    </div>
+    </div>
+</div>
+
+</head>
+
+  <body>
+    <nav class="navbar navbar-default navbar-fixed-top navbar-custom">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#main-navbar">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="https://martinliu.cn/">Maritn&#39;s Blog</a>
+    </div>
+    <div class="collapse navbar-collapse" id="main-navbar">
+      <ul class="nav navbar-nav navbar-right">
+        
+          
+            <li>
+              <a title="Blog" href="/">Blog</a>
+              
+              
+            </li>
+          
+        
+          
+            <li>
+              <a title="Tags" href="/tags">Tags</a>
+              
+              
+            </li>
+          
+        
+          
+            <li>
+              <a title="About" href="/about/">About</a>
+              
+              
+            </li>
+          
+        
+          
+            <li>
+              <a title="Book" href="https://handbook.martinliu.cn">Book</a>
+              
+              
+            </li>
+          
+        
+
+        
+
+        
+        
+          <li>
+            <a href="#modalSearch" data-toggle="modal" data-target="#modalSearch" style="outline: none;">
+              <span class="hidden-sm hidden-md hidden-lg">Search</span> <span id="searchGlyph" class="glyphicon glyphicon-search"></span>
+            </a>
+          </li>
+          
+      </ul>
+    </div>
+
+    <div class="avatar-container">
+      <div class="avatar-img-border">
+        
+          <a title="Maritn&#39;s Blog" href="https://martinliu.cn/">
+            <img class="avatar-img" src="https://martinliu.cn/img/logo.jpg" alt="Maritn&#39;s Blog" />
+          </a>
+        
+      </div>
+    </div>
+
+  </div>
+</nav>
+
+
+
+
+
+  <div id="modalSearch" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Search martinliu.cn </h4>
+        </div>
+        <div class="modal-body">
+            
+<div class="aa-input-container" id="aa-input-container">
+    <input type="search" id="aa-search-input" class="aa-input-search" placeholder="Search for titles or URIs..." name="search" autocomplete="off" />
+    <svg class="aa-input-icon" viewBox="654 -372 1664 1664">
+        <path d="M1806,332c0-123.3-43.8-228.8-131.5-316.5C1586.8-72.2,1481.3-116,1358-116s-228.8,43.8-316.5,131.5  C953.8,103.2,910,208.7,910,332s43.8,228.8,131.5,316.5C1129.2,736.2,1234.7,780,1358,780s228.8-43.8,316.5-131.5  C1762.2,560.8,1806,455.3,1806,332z M2318,1164c0,34.7-12.7,64.7-38,90s-55.3,38-90,38c-36,0-66-12.7-90-38l-343-342  c-119.3,82.7-252.3,124-399,124c-95.3,0-186.5-18.5-273.5-55.5s-162-87-225-150s-113-138-150-225S654,427.3,654,332  s18.5-186.5,55.5-273.5s87-162,150-225s138-113,225-150S1262.7-372,1358-372s186.5,18.5,273.5,55.5s162,87,225,150s113,138,150,225  S2062,236.7,2062,332c0,146.7-41.3,279.7-124,399l343,343C2305.7,1098.7,2318,1128.7,2318,1164z" />
+    </svg>
+</div>
+
+
+
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/algoliasearch.min.js"></script>
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/autocomplete.min.js"></script>
+
+<script>
+var client = algoliasearch("3RK9W7WH5R", "06f3928eb3fad870c9197c68c238dbd3");
+var index = client.initIndex('martinliu_blog');
+
+autocomplete('#aa-search-input',
+{ hint: false}, {
+    source: autocomplete.sources.hits(index, {hitsPerPage: 5}),
+    
+    displayKey: 'name',
+    
+    templates: {
+        
+        suggestion: function(suggestion) {
+            
+            return '<span>' + '<a href="/' + suggestion.uri+ '">' +
+            suggestion._highlightResult.title.value + '</a></span>';
+        }
+    }
+});
+</script>
+
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+    
+  
+  
+  
+
+
+
+
+  
+    <div id="header-big-imgs" data-num-img=1 data-img-src-1="https://martinliu.cn/images/tf_5.jpg" ></div>
+  
+
+  <header class="header-section has-img">
+    
+      <div class="intro-header big-img">
+        
+        
+        <div class="container">
+          <div class="row">
+              <div class="col-lg-12 col-md-12 col-md-offset-0">
+                
+                <div class="post-heading">
+                
+                  
+                     <h1>关于DevOps 的那些事</h1>
+                     
+                     
+                  
+                  
+                  
+                    
+                      <hr class="small">
+                      <span class="post-subheading">我对DevOps的一个比较宏观的总结</span>
+                    
+                  
+                  
+                    <span class="post-meta">
+  
+  Posted on 2017, September 23
+  
+  
+</span>
+
+
+                  
+                
+              </div>
+            </div>
+          </div>
+        </div>
+        <span class="img-desc" style="display: inline;"></span>
+      </div>
+    
+    <div class="intro-header no-img">
+      
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-12 col-md-12 col-md-offset-0">
+            <div class="posts-heading">
+                <h1 align="center">关于DevOps 的那些事</h1>
+                
+                  
+                    <h2 align="center" class="posts-subheading">我对DevOps的一个比较宏观的总结</h2>
+                  
+                
+                
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+
+    
+<div class="container" role="main" itemscope itemtype="http://schema.org/Article">
+    <div class="row">
+        <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+            
+            
+            
+<div>
+    <section id="datecount">
+        <h4 id="date"> Sat Sep 23, 2017</h4>
+    </section>
+    <h5 id="wc">5100 Words|Read in about 11 Min</h5>
+    <h5 id="tags">Tags: 
+        
+        <a href="https://martinliu.cn/tags/devops/">DevOps</a> &nbsp;
+        
+        <a href="https://martinliu.cn/tags/docker/">Docker</a> &nbsp;
+    </h5>
+</div>
+
+            
+            <article role="main" class="blog-post" itemprop="articleBody" id="content">
+                
+
+<p>DevOps是孕育于敏捷社区，又反哺给整个IT技术行业的，是一次彻底而全面的技术和文化运动。本文从它的出处谈起，一直描述到当前国内的现状。最后总结了相关的核心技术和主要实践。</p>
+
+<h2 id="devops简史">DevOps简史</h2>
+
+<p>在2008年多伦多举办的敏捷大会（Velocity Conf 2008 ）上，Patrick DeBois 和AndrewClay Shafer 先生首次提议讨论“敏捷基础架构”这个话题。在第二年的敏捷大会上有一个具有里程碑的意义技术分享，来自Flickr公司《每天部署10次》的分享，它激发了随后Patrick DeBios在同年十月，在比利时的根特市举办的首届DevOpsDays活动，这个活动是两天的日程，为了大家方便在twitter上的传播，人们把DevOpsDays这个词简写为 “#DevOps” 。 此后，“DevOps”一词问世了，这个词所包含的理念和实践一时在越来越广大的人群中产生了共鸣，随后成为全球IT界在各种大会和论坛里热议和讨论的焦点话题，很多大型IT论坛也都开设出了DevOps专题讨论。这就是DevOps这个词的由来。DevOpsDays活动随后在Patrick DeBios等相关核心发起人的推动下，在全球范围内蓬勃发展了起来。2010年在美国山景城(Mountain View) 举办的DevOpsDays 活动中，Damon Edwards先生使用“CAMS”这个缩写，高度概括和诠释了DevOps，即文化（Culture）、自动化（Automation）、度量（Measurement or Metrics）和分享（Sharing）。随后Jez Humble先生将“L”精益 (Lean) 原则也加入其中，最终变成了CALMS。</p>
+
+<ul>
+<li>Culture（文化）- 是指拥抱变革，促进协作和沟通</li>
+<li>Automation（自动化）- 是指将人为干预的环节从价值链中消除</li>
+<li>Lean（精益）- 是指通过使用精益原则促使高频率循环周期</li>
+<li>Metrics（指标）- 是指衡量每一个环节，并通过数据来改进循环周期</li>
+<li>Sharing（分享）- 是指与他人开放分享成功与失败的经验，并在错误中不断学习改进</li>
+</ul>
+
+<p>“CALMS”完全吻合Patrick DeBois先生所一向倡导的“DevOps is a human problem” (DevOps 是关于人的问题) 的理念 。</p>
+
+<h2 id="devopsdays活动的现状">DevOpsDays活动的现状</h2>
+
+<p>从DevOps概念的产生，到如今它在全球范围内的蔓延和认同，已经经历了9个年头的时间。它的火爆推广也伴随着IT行业的迅速变迁和发展，现在已经到了移动互联网时代的后半场，国内的信息化建设已经完成了很多年；如今各行各业的企业也都亟待完成全方位的数字化转型。IT信息技术的先进程度标志着一个企业的核心能力，任何一个成功的企业，敏捷高效的软件开发创新实力和IT管理综合能力不只是门面而已，而是实实在在的市场竞争能力。DevOps倡导打敏捷、持续交付和ITIL三种实践的组合拳，同时应用精益生产理念为基础的管理思想，这正在逐渐地被广泛的接受和认可。</p>
+
+<p><img src="/images/devopsdays-map.png" alt="devopsdays-map" /></p>
+
+<p>在过去的几年中，国内的各种IT大会也蓬勃发展，其中DevOps相关的专题和分会场也颇受人们的关注。各种云计算、运维等IT技术的社交媒体也都非常重视DevOps这个话题的分享。一个专属于DevOps社群的、国际性的、有影响力的DevOps大会正呼之欲出。在这样的时代背景下DevOpsDays大会北京站在2017年的3月18日来到中国，在同年的8月18日上海，还要举办DevOpsDays Shanghai站的大会。</p>
+
+<p>下面列举一些DevOpsDays大会的相关数据，<a href="http://xn--DevOpsDays-cp3p571r5pfpshp63a.org">数据来源于DevOpsDays.org</a> 网站。从2009年到2016年，已经在全球的61个城市/国家成功地举办了117场。</p>
+
+<p><img src="/images/year.png" alt="year-map" /></p>
+
+<p>下图是在过去九年中DevOpsDays大会在各个城市/国家的分布和举办次数。</p>
+
+<p><img src="/images/devops-citys.png" alt="year-map" /></p>
+
+<p>今年也就是2017年预计举办30场，其中已经有18场确定了举办城市和日期；还有12个城市的召开日期待定；这不包括年内还可能会提出申办的城市。以上数据的统计时间在2017年三月。</p>
+<h2 id="devops">DevOps在国内的现状</h2>
+<p>随着国内BAT等互联网巨头的崛起，互联网公司的开发运维经验也越来越多的在国内的各种技术大会上传播。从最近这两年（2016年和2017年）的技术活动日程中可以看出，国内互联网从业人员也不约而同的用DevOps来定位和分享自己的优势和经验。他们是传播和分享运维侧DevOps实践的先头部队。</p>
+<p>出了技术论坛的分享之外，很多线上线下的大会、论坛和讨论组也都越来越热议DevOps这一专题。国内其它相关流派的人群，例如敏捷和精益等，也对DevOps的蓬勃发展表示比较惊讶，DevOps与老牌的敏捷和精益等阵营也产生过一些争论。但这一切的发生也都增加了人们对于DevOps的更深入的兴趣。</p>
+<p>在培训认证这方面，Exin DevOps Master是一个国际认证的培训；其它公司和组织也正在举办关于DevOps工具链的培训，这些培训则注重于技术实操，关注在构建端到端的流水线的搭建方面。从DevOps的职位招聘方面，可以看到DevOps工程师相关的职位越来越多了，在职位需求中DevOps这个技能成了加分项，DevOps相关工具的技能也或将成为简历的亮点。在IT行业内不管是开发还是运维团队的人，都开始了学习和接受的过程。</p>
+<p>据我观察DevOps方面的厂商在最近3年呈现爆炸式的发展。我把他们分为三类：</p>
+<ol>
+<li>搭顺风车型：主要是指所有CaaS容器云平台厂商 。Docker是它是在DevOps的时代背景下产生的，是DevOps技术工具集里不可缺少的一员。国内这些厂商目前的数量在20左右，数目趋于稳定。由于今年（2017）Docker公司商业化版本和开源版本正式的划分开来，这些公司的发展可能或多或少受到一些影响。</li>
+<li>直奔主题型：这类厂商专注于开发端到端的、用户体验良好的DevOps流水线平台，这些公司的创始人团队多是来自于BAT公司，因此具有很好的DevOps实战经验，他们开发的产品在持续交付和流水线功能上恰好填补了当前企业在这个方面的工具和技术实践的缺位。目前这类公司的数量还不多，数量呈上升趋势。</li>
+<li>BATH型：BAT大家都知道，这里的H指的是华为，这些企业在DevOps平台方面都表现出积极的技术输出的态势。BAT是基于过去的互联网运维的经验做DevOps的产品化。华为是成了独立的研发部门，招募业内这方面的精英前来助阵，打造出一方面可以自用，同时也可以商品化的DevOps产品。</li>
+</ol>
+<p>目前国内大部分企业慢慢地开始关注了DevOps，大型传统企业也开始逐渐地从各个角度做试点和尝试。试点的角度和方向各不相同，有的从底层基础架构的容器化开始，有的从交付部署流水线的自动化开始；总的来说还处于初级的尝试阶段，还没有大规模成体系的推广。</p>
+<p>综上所述，目前国内DevOps发展的阶段还属于起步阶段。就像是ITIL/ITSM在2003年左右的状态。由于DevOps是去中心化的，所以没有唯一、权威的上游厂商的存在，各种理论实践的争执和PK都将终止与解决问题和提高效率的话题上，因此它具有百花齐放百家争鸣的发展条件。个人认为DevOps的实施和落地也不会完全依赖于传统的大型咨询厂商的咨询工作，由于它应该是在企业的内部，在内驱的作用下，自生长出来的；它必须是服务于企业的业务价值流的优化，加速业务价值产出的；而与之相关的工作和责任的担当，外部力量是很难以等量替换和承担的。</p>
+<h2 id="">核心技术和工具</h2>
+<p>在谈这个话题前先看一下DevOps相关工具集的全貌，如下图所示：<br>
+![year-map](/images/devops-tools.png)
+
+
+<br>
+最上面的箭头流程图表示了一个业务服务的全生命周期：开发协作、软件构建、质量测试、交付部署和投产运维。前三个阶段偏传统开发组织的工作内容，后两个阶段基本可以和运维组织的工作对应上。在每个阶段下可以看成是一个大分类，这些分类中还包含若干个小分类。这些工具可以粗放的划分为商业软件和开源软件两类；也可以分为SaaS服务类和企业内部部署型。大部分开源工具都有活跃的用户社区和群众基础，这给企业入手这些工具带来了很大的便利。在需要商业支持的场景里还可以选择使用这些开源软件的企业版。</p>
+<p>Docker容器技术在最近三年中异军突起，持续交付的技术门槛因此被降到最低，软件生产供应链的格局和效率被彻底提升；基于Docker的微服务架构实践的热度和成熟度也与日俱增。因此，国内的传统企业纷纷试水DevOps和容器技术，在最近两年的各种技术大会中，我们可以看到国内各个行业出现了在不同维度上的DevOps先行者。他们分享的主题大多集中在自动化运维、容器化和PaaS平台的等项目经验。</p>
+<p>从国内众多DevOps实践中，我们能看到下面三个技术尤其重要和火热：</p>
+<ol>
+<li>容器：容器从根本上解决了软件对环境的依懒性，解决了各个环境之间的差异问题；它可以加速部署的速度，提高部署的效率；降低部署的成本。容器技术是在Linux的基础之上发展起来的，因此它本身的实施成本很低，就是在任何物理机和虚拟机的Linux操作系统上安装Docker服务（仅几十兆）就可以完成所有功能。在任何环境中实施Docker需要考虑好以下几个因素：主机的计算资源特性和容器允许的资源需求相匹配（计算密集型、内存密集型、IO密集型等）；容器网络类型和服务路由的选型；容器镜像仓库的选择等。</li>
+<li>持续部署：这是所有企业普遍的短板，需要设计统一的自动化部署流水线作为软件系统部署和更新的基础设施。持续部署流水线底层是有Jenkins之类的工具来完成的，它能实现快速的、可重复使用的、适用于不同部署环境的发布流水线。所有服务都可以通过它实现各种风格的发布；这些发布风格中比较重要的两种：蓝绿部署和灰度发布。</li>
+<li>微服务：为了解决传统软件所特有的单体应用的缺陷，用微服务的思路，全面地重构巨石应用，全面的在新系统中应用这种架构。微服务架构是容器技术出现之后，有迅猛发展的一项软件架构技术。它的松耦合和面向服务基础架构的特性都是现代软件和数据中心必备的特质。<br>
+以上三种技术相辅相成，有着比较深刻的关联。首先微服务和持续部署各自解决了特别多的传统IT的问题，这些问题都是长期以来制约企业业务发展的难题。容器技术由于它的快速、轻量、微服务化的天然特性，很好的从不同侧面支持了持续交付和微服务架构。容器可以为持续交付提供弹性和高速的系统资源，环境管理和利用率提高了很多；容器的不可变性的特点也更好地支持了微服务架构。</li>
+</ol>
+<p>我把DevOps的按照不同的技术特征做了从到1.0 到2.0的时代划分，并尽量通过以下维度比较与传统方式的差异。</p>
+
+<p><img src="/images/devops-v20.png" alt="year-map" /></p>
+
+<p><h2 id="">总结</h2>
+<p>我比较认可和接受的企业实践DevOps参考框架如下，其中包含了所需的最佳实践，如下图所示。</p></p>
+
+<p><img src="/images/devops-house.png" alt="year-map" /></p>
+
+<p>（上图来源于：Exin DevOps白皮书）</p>
+<p>下面简要描述一下这四大支柱型最佳实践</p>
+<ol>
+<li>敏捷管理：在产品的计划、需求、设计和开发阶段主要采用敏捷开发方法论。在这些阶段中DevOps强调，设置合理的任务大小，从而确保能够开展快速迭代和开发；强调持续集成的实施，通过CI提高软件的质量和可用性；强调用更短的发布周期，增强反馈的数量和频度。</li>
+<li>持续交付：在开发和部署运营阶段采用持续交付的方法自动化软件系统的发布、变更和升级等工作。DevOps强调使用持续交付工具作为基础架构尽可能的自动化手工部署工作。在研发阶段就开始设计部署自动化的脚本，对其使用流水线工具来操作执行，并辅助自动化测试工具。通过严密的自动化测试方案，确保实现可以重复使用的自动化部署流水线。通过它的反复运作，提高部署的效率，降低部署的风险，提高部署的质量。</li>
+<li>ITSM服务管理：DevOps强调从传统的ITSM管理理念上升到关注业务持续性的轻量ITSM管理方法。运维人员在项目的早期要和开发、测试和部署人员充分地沟通和落实运维需求。确保在业务系统开发的初期，系统的业务持续性和可运维性等非功能性需求，都得到充分的落实和满足。</li>
+<li>精益管理：业务开发运维的整个生命周期中，以上三类工作实践的所有工作活动中，都必须坚持贯彻精益的原则。DevOps特别强调的点包括：准时制业务流程、精益且无浪费的工作方法、单件流的运作流程、持续改进等。它的这些管理思路需要严格的落实到所有工作环节中。</li>
+</ol>
+<p>由此可见DevOps在企业，特别是大规模传统企业的落地和推广还是比较复杂的。虽然相关的最佳实践都是已经存在了很多年的；但是，通过DevOps的价值观重构企业从研发到交付到运维的价值流谈何容易。基于我的IT从业经验，我似乎感觉到DevOps不能单独依靠自顶向下的推广，当然高层领导的支持依然是重要的和必备的支持条件之一。 可能还需要中层的带动和底层的创新；借鉴生产制造业已经久经考验的精益制造实践也是势在必行。总之DevOps运动会在近几年给IT行业带来较大影响。</p></p>
+
+            </article>
+
+            <ul class="pager blog-pager">
+                
+                <li class="previous">
+                    <a href="https://martinliu.cn/posts/welcome-to-ghost/" data-toggle="tooltip" data-placement="top" title="切换到Ghost&#43;七牛">&larr; Previous Post</a>
+                </li>
+                 
+                <li class="next">
+                    <a href="https://martinliu.cn/posts/tips-for-docker-on-mac/" data-toggle="tooltip" data-placement="top" title="Tips for Docker on Mac">Next Post &rarr;</a>
+                </li>
+                
+            </ul>
+            
+            <div>
+                 
+                <h2>See Also</h2>
+                <ul>
+                    
+                    <li><a href="/posts/install-minikube-k8s/">用Minikube体验单节点K8S</a></li>
+                    
+                    <li><a href="/posts/state-devops-adoption-trends-2017/">2017DevOps采用和趋势现状-信息图</a></li>
+                    
+                    <li><a href="/2017/01/07/nutanix-resource-sites/">Nutanix资源站点清单</a></li>
+                    
+                    <li><a href="/2017/01/07/devops-glossary/">DevOps术语表</a></li>
+                    
+                    <li><a href="/2017/01/03/devops-booklist/">来自于《DevOps Handbook》的书单</a></li>
+                    
+                </ul>
+                
+            </div>
+            
+            
+            
+            
+<div>
+    <section id="datecount">
+        <h4 id="date"> Sat Sep 23, 2017</h4>
+    </section>
+    <h5 id="wc">5100 Words|Read in about 11 Min</h5>
+    <h5 id="tags">Tags: 
+        
+        <a href="https://martinliu.cn/tags/devops/">DevOps</a> &nbsp;
+        
+        <a href="https://martinliu.cn/tags/docker/">Docker</a> &nbsp;
+    </h5>
+</div>
+
+            
+            </div>
+            
+ 
+        </div>
+    </div>
+    </section>
+</div>
+
+    <footer>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <ul class="list-inline text-center footer-links">
+          
+              <li>
+                <a href="mailto:67120666@qq.com" title="Email me">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-envelope fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a href="https://plus.google.com/&#43;MartinLiu-cn" title="Google&#43;">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-google-plus fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a href="https://twitter.com/martinliu" title="Twitter">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a href="https://linkedin.com/in/liuzheng" title="LinkedIn">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-linkedin fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+          
+        </ul>
+        <p class="credits copyright text-muted">
+        &copy;2017-2018
+          
+            
+              <a href="martinliu.cn">Martin Liu</a>
+                      
+          
+          
+          
+            &nbsp;&bull;&nbsp;
+            <a href="https://martinliu.cn/">Maritn&#39;s Blog</a>
+          
+        </p>
+        
+        <p class="credits theme-by text-muted">
+          <a href="http://gohugo.io">Hugo v0.29</a> powered &nbsp;&bull;&nbsp; Theme by <a href="http://deanattali.com/beautiful-jekyll/">Beautiful Jekyll</a> adapted to <a href="https://github.com/halogenica/beautifulhugo">Beautiful Hugo</a>
+          
+        </p>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/bootstrap.min.js"></script>
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/photoswipe-ui-default.min.js"></script>
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/photoswipe.min.js"></script>
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/auto-render.min.js"></script>
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/main.js"></script>
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/prism.js"></script>
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/katex.min.js"></script>
+<script> renderMathInElement(document.body); </script>
+
+
+
+
+
+
+
+
+  </body>
+</html>
+

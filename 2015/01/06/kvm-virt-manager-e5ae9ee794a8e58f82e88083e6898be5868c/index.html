@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+  <title> KVM Virt-Manager  实用参考手册 - 刘征的博客|DevOps|Cloud Computing</title>
+  <meta name="description" content="刘征的博客|DevOps|Cloud Computing" />
+  <meta property="og:title" content="KVM Virt-Manager  实用参考手册" />
+  <meta name="twitter:title" content="KVM Virt-Manager  实用参考手册" />
+  <meta name="description" content="Virt Manager 是一个不错的kvm虚拟机管理工具，能够方便地管理虚拟机。我的测试机目前已经完全转向RHEL7上跑KVM虚拟机，通过virt-manager去管理的方案。命令行常用操作指南（持续更新中）virt-manager主要操作还是在命令行比较高效，特别是下面的这些操作，在使用过程中，比较多用，用的多了感觉比GUI操作方式效率高多了。">
+  <meta property="og:description" content="Virt Manager 是一个不错的kvm虚拟机管理工具，能够方便地管理虚拟机。我的测试机目前已经完全转向RHEL7上跑KVM虚拟机，通过virt-manager去管理的方案。命令行常用操作指南（持续更新中）virt-manager主要操作还是在命令行比较高效，特别是下面的这些操作，在使用过程中，比较多用，用的多了感觉比GUI操作方式效率高多了。">
+  <meta name="twitter:description" content="Virt Manager 是一个不错的kvm虚拟机管理工具，能够方便地管理虚拟机。我的测试机目前已经完全转向RHEL7上跑KVM虚拟机，通过virt-manager去管理的方案。命令行常用操作指南（持续更新中）virt-manager主要操作还是在命令行比较高效，特别是下面的这些操作，在使用过程中，比较多用，用的多了感觉比GUI操作方式效率高多了。">
+  <meta name="author" content="{Description { .Site.Author.name }}"/>
+  <link href='https://martinliu.cn/img/favicon.ico' rel='icon' type='image/x-icon'/>
+  <meta property="og:image" content="https://martinliu.cn/img/logo.jpg" />
+  <meta name="twitter:image" content="https://martinliu.cn/img/logo.jpg" />
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:site" content="@martinliu" />
+  <meta name="twitter:creator" content="@martinliu" />
+  <meta property="og:url" content="https://martinliu.cn/2015/01/06/kvm-virt-manager-e5ae9ee794a8e58f82e88083e6898be5868c/" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Maritn&#39;s Blog" />
+
+  <meta name="generator" content="Hugo 0.29" />
+  <link rel="canonical" href="https://martinliu.cn/2015/01/06/kvm-virt-manager-e5ae9ee794a8e58f82e88083e6898be5868c/" />
+  <link rel="alternate" href="https://martinliu.cn/index.xml" type="application/rss+xml" title="Maritn&#39;s Blog">
+  <script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/jquery-1.12.4.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.7.1/katex.min.css" integrity="sha384-wITovz90syo1dJWVh32uuETPVEtGigN07tkttEqPv+uR2SE/mbQcG7ATL28aI9H0" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+  
+  
+  <link rel="stylesheet" href="https://martinliu.cn/css/main.css" />
+  <link rel="stylesheet" href="https://martinliu.cn/css/search.css" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" />
+  
+
+<meta name="baidu-site-verification" content="W3AORuRNZo" />
+<script>
+    var _hmt = _hmt || [];
+    (function () {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?50c3a9ae6c51222b31df5510bbca479f";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+
+<link rel="stylesheet" href="https://martinliu.cn/css/prism.css" />
+
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.1/photoswipe.min.css" integrity="sha256-sCl5PUOGMLfFYctzDW3MtRib0ctyUvI9Qsmq2wXOeBY=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.1/default-skin/default-skin.min.css" integrity="sha256-BFeI1V+Vh1Rk37wswuOYn5lsTcaU96hGaI7OUVCLjPc=" crossorigin="anonymous" />
+
+
+
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+<div class="pswp__bg"></div>
+
+<div class="pswp__scroll-wrap">
+    
+    <div class="pswp__container">
+      <div class="pswp__item"></div>
+      <div class="pswp__item"></div>
+      <div class="pswp__item"></div>
+    </div>
+    
+    <div class="pswp__ui pswp__ui--hidden">
+    <div class="pswp__top-bar">
+      
+      <div class="pswp__counter"></div>
+      <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+      <button class="pswp__button pswp__button--share" title="Share"></button>
+      <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+      <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+      
+      
+      <div class="pswp__preloader">
+        <div class="pswp__preloader__icn">
+          <div class="pswp__preloader__cut">
+            <div class="pswp__preloader__donut"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+      <div class="pswp__share-tooltip"></div>
+    </div>
+    <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+    </button>
+    <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+    </button>
+    <div class="pswp__caption">
+      <div class="pswp__caption__center"></div>
+    </div>
+    </div>
+    </div>
+</div>
+
+</head>
+
+  <body>
+    <nav class="navbar navbar-default navbar-fixed-top navbar-custom">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#main-navbar">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="https://martinliu.cn/">Maritn&#39;s Blog</a>
+    </div>
+    <div class="collapse navbar-collapse" id="main-navbar">
+      <ul class="nav navbar-nav navbar-right">
+        
+          
+            <li>
+              <a title="Blog" href="/">Blog</a>
+              
+              
+            </li>
+          
+        
+          
+            <li>
+              <a title="Tags" href="/tags">Tags</a>
+              
+              
+            </li>
+          
+        
+          
+            <li>
+              <a title="About" href="/about/">About</a>
+              
+              
+            </li>
+          
+        
+          
+            <li>
+              <a title="Book" href="https://handbook.martinliu.cn">Book</a>
+              
+              
+            </li>
+          
+        
+
+        
+
+        
+        
+          <li>
+            <a href="#modalSearch" data-toggle="modal" data-target="#modalSearch" style="outline: none;">
+              <span class="hidden-sm hidden-md hidden-lg">Search</span> <span id="searchGlyph" class="glyphicon glyphicon-search"></span>
+            </a>
+          </li>
+          
+      </ul>
+    </div>
+
+    <div class="avatar-container">
+      <div class="avatar-img-border">
+        
+          <a title="Maritn&#39;s Blog" href="https://martinliu.cn/">
+            <img class="avatar-img" src="https://martinliu.cn/img/logo.jpg" alt="Maritn&#39;s Blog" />
+          </a>
+        
+      </div>
+    </div>
+
+  </div>
+</nav>
+
+
+
+
+
+  <div id="modalSearch" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Search martinliu.cn </h4>
+        </div>
+        <div class="modal-body">
+            
+<div class="aa-input-container" id="aa-input-container">
+    <input type="search" id="aa-search-input" class="aa-input-search" placeholder="Search for titles or URIs..." name="search" autocomplete="off" />
+    <svg class="aa-input-icon" viewBox="654 -372 1664 1664">
+        <path d="M1806,332c0-123.3-43.8-228.8-131.5-316.5C1586.8-72.2,1481.3-116,1358-116s-228.8,43.8-316.5,131.5  C953.8,103.2,910,208.7,910,332s43.8,228.8,131.5,316.5C1129.2,736.2,1234.7,780,1358,780s228.8-43.8,316.5-131.5  C1762.2,560.8,1806,455.3,1806,332z M2318,1164c0,34.7-12.7,64.7-38,90s-55.3,38-90,38c-36,0-66-12.7-90-38l-343-342  c-119.3,82.7-252.3,124-399,124c-95.3,0-186.5-18.5-273.5-55.5s-162-87-225-150s-113-138-150-225S654,427.3,654,332  s18.5-186.5,55.5-273.5s87-162,150-225s138-113,225-150S1262.7-372,1358-372s186.5,18.5,273.5,55.5s162,87,225,150s113,138,150,225  S2062,236.7,2062,332c0,146.7-41.3,279.7-124,399l343,343C2305.7,1098.7,2318,1128.7,2318,1164z" />
+    </svg>
+</div>
+
+
+
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/algoliasearch.min.js"></script>
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/autocomplete.min.js"></script>
+
+<script>
+var client = algoliasearch("3RK9W7WH5R", "06f3928eb3fad870c9197c68c238dbd3");
+var index = client.initIndex('martinliu_blog');
+
+autocomplete('#aa-search-input',
+{ hint: false}, {
+    source: autocomplete.sources.hits(index, {hitsPerPage: 5}),
+    
+    displayKey: 'name',
+    
+    templates: {
+        
+        suggestion: function(suggestion) {
+            
+            return '<span>' + '<a href="/' + suggestion.uri+ '">' +
+            suggestion._highlightResult.title.value + '</a></span>';
+        }
+    }
+});
+</script>
+
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+    
+  
+  
+  
+
+
+
+
+  
+
+  <header class="header-section ">
+    
+    <div class="intro-header no-img">
+      
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-12 col-md-12 col-md-offset-0">
+            <div class="posts-heading">
+                <h1 align="center">KVM Virt-Manager  实用参考手册</h1>
+                
+                  
+                    <h2 align="center" class="posts-subheading">Virt Manager 是一个不错的kvm虚拟机管理工具，能够方便地管理虚拟机。我的测试机目前已经完全转向RHEL7上跑KVM虚拟机，通过virt-manager去管理的方案。命令行常用操作指南（持续更新中）virt-manager主要操作还是在命令行比较高效，特别是下面的这些操作，在使用过程中，比较多用，用的多了感觉比GUI操作方式效率高多了。</h2>
+                  
+                
+                
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+
+    
+<div class="container" role="main" itemscope itemtype="http://schema.org/Article">
+    <div class="row">
+        <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+            
+            
+            
+<div>
+    <section id="datecount">
+        <h4 id="date"> Tue Jan 6, 2015</h4>
+    </section>
+    <h5 id="wc">1200 Words|Read in about 3 Min</h5>
+    <h5 id="tags">Tags: 
+        
+        <a href="https://martinliu.cn/tags/kvm/">KVM</a> &nbsp;
+    </h5>
+</div>
+
+            
+            <article role="main" class="blog-post" itemprop="articleBody" id="content">
+                
+
+<h1 id="关于-virt-manager">关于 virt manager</h1>
+
+<p>Virt Manager 是一个不错的kvm虚拟机管理工具，能够方便地管理虚拟机。我的测试机目前已经完全转向RHEL7上跑KVM虚拟机，通过virt-manager去管理的方案。</p>
+
+<p><a href="http://cdn1.martinliu.cn/wp-content/uploads/2015/01/topbar_logo.png"><img src="http://cdn1.martinliu.cn/wp-content/uploads/2015/01/topbar_logo.png" alt="topbar_logo" /></a></p>
+
+<p>安装virt-manager：yum install -y virt-* ； 装完之后重新启动机器即可使用。</p>
+
+<h1 id="建议初始配置">建议初始配置</h1>
+
+<p>安装完后有几个环境的配置推荐可以做一下。</p>
+
+<p><img src="http://martinliu.cn/wp-content/gallery/virt-manager-kvm-1/Screenshot-from-2015-01-06-193413.png" alt="点击New Volume" /></p>
+
+<p>Storage Pool ： 一个默认的 + 两个自建的</p>
+
+<ul>
+<li><p>Default ：这是virt-manager安装时默认创建的，它和操作系统在同一个卷上，我的测试机使用SSD卷，因此我所有虚拟机都会使用这个卷，这样速度比较快</p></li>
+
+<li><p>hd ：这是测试机上普通磁盘的一个目录，目的是把那些不需要快速IO的虚拟机跑着这里，节省SSD的磁盘空间</p></li>
+
+<li><p>iso ：这是普通磁盘上的iso文件目录，单独挂在这是为了，使用方便</p></li>
+</ul>
+
+<p><img src="http://martinliu.cn/wp-content/gallery/virt-manager-kvm-1/Screenshot-from-2015-01-06-210927.png" alt="自建的内外1" /></p>
+
+<p>虚拟网络 （一个默认+两个新建）</p>
+
+<ul>
+<li><p>default ： 这个是安装了virt-manager + kvm 之后就有的，是用NAT的方式，带dhcp，默认虚拟机可以连接物理机所在的外围</p></li>
+
+<li><p>virbr1/virbr2 ：是我根据自己的需要建立的，只能和host物理机通讯，无dhcp</p></li>
+</ul>
+
+<p>我最近做OpenStack的实践，OpenStack需要最好隔离的几个网络跑不同的数据，因此virbr1/2正好符合OpenStack的测试需求。另外我在物理机的操作系统上搭建了yum源服务器，因此任何一个虚拟机都可以通过http访问我放在物理机上的repo目录，我只需要更新这些repos目录里面的rpm包的内容，我的lab环境中的所有虚拟机（不管是在何网络）都可以使用到最新的系统更新包和软件包了。这样大大提高了虚拟机里面软件测试的效率，所有虚拟机像是在本地安装rpm软件包一样，再也不需要联网下载，我只需要每周去公司联网同步一下这些目录即可。</p>
+
+<p>有了以上配置之后，就可以高效工作了，效率感觉比vmware workstation要高，速度快稳定。下面是虚拟机创建的流程，里面有些我的推荐做法。</p>
+
+<p><img src="http://martinliu.cn/nextgen-attach_to_post/preview/id--53382" alt="" /></p>
+
+<p>本想看下，virt-install 的使用方式，感觉那个参数太多，容易敲错，还是界面比较容易上手，而且出错的机会不高。</p>
+
+<h1 id="命令行常用操作指南-持续更新中">命令行常用操作指南（持续更新中）</h1>
+
+<p>virt-manager主要操作还是在命令行比较高效，特别是下面的这些操作，在使用过程中，比较多用，用的多了感觉比GUI操作方式效率高多了。</p>
+
+<p>virt-manager的命令行功能调用有两种方式：</p>
+
+<ul>
+<li><p>直接 virsh 回车 ，之后就进入了 virsh # 的一个专门的shell，help 就能看的里面支持的所有命令</p></li>
+
+<li><p>在普通shell下 直接 virsh &lt;操作命令&gt; &lt;参数&gt;，</p></li>
+</ul>
+
+<p>这两个方式的调用没有差异，感觉全凭个人的操作习惯。</p>
+
+<p>下面是一些常用的虚拟机管理功能命令参数和实例。</p>
+
+<p>开启一个虚拟机</p>
+
+<p>virsh # start server8-a</p>
+
+<p>查看所有虚拟机(on and off)</p>
+
+<p>virsh list &ndash;all</p>
+
+<p>关闭一个虚拟机</p>
+
+<p>virsh # shutdown server8-a</p>
+
+<p>对一个虚拟机作一个快照</p>
+
+<p>snapshot-create-as server8-a flat-os &ldquo;before customization&rdquo;</p>
+
+<p>查看虚拟的所有快照</p>
+
+<p>snapshot-list server8-a</p>
+
+<p>返回到之前的一个snapshot</p>
+
+<p>virsh # snapshot-revert  &ndash;domain server8-a flat-os</p>
+
+<p>克隆一个虚拟机到新文件（用于模板的复制创建新vm，或者vm的备份）<br />
+[root@w540 Desktop]# virt-clone -o rhel70-tmp -n rhel70-tmp-clone -f /data/vm/cloned-new-vm.img<br />
+Cloning rhel7-tmp.img                                                                             | 195 GB  00:00:03     <br />
+Clone &lsquo;rhel70-tmp-clone&rsquo; created successfully.</p>
+
+            </article>
+
+            <ul class="pager blog-pager">
+                
+                <li class="previous">
+                    <a href="https://martinliu.cn/2014/12/24/wget-e4b88be8bdbde5a4a7e69687e4bbb6-e696ade782b9e7bbade4bca0/" data-toggle="tooltip" data-placement="top" title="wget 下载大文件-断点续传">&larr; Previous Post</a>
+                </li>
+                 
+                <li class="next">
+                    <a href="https://martinliu.cn/2015/01/10/rhel-e680a7e883bd-e68f90e58d87e696b9e6b395e5928ce5b7a5e585b7/" data-toggle="tooltip" data-placement="top" title="RHEL 性能 提升方法和工具">Next Post &rarr;</a>
+                </li>
+                
+            </ul>
+            
+            <div>
+                 
+            </div>
+            
+            
+            
+            
+<div>
+    <section id="datecount">
+        <h4 id="date"> Tue Jan 6, 2015</h4>
+    </section>
+    <h5 id="wc">1200 Words|Read in about 3 Min</h5>
+    <h5 id="tags">Tags: 
+        
+        <a href="https://martinliu.cn/tags/kvm/">KVM</a> &nbsp;
+    </h5>
+</div>
+
+            
+            </div>
+            
+ 
+        </div>
+    </div>
+    </section>
+</div>
+
+    <footer>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <ul class="list-inline text-center footer-links">
+          
+              <li>
+                <a href="mailto:67120666@qq.com" title="Email me">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-envelope fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a href="https://plus.google.com/&#43;MartinLiu-cn" title="Google&#43;">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-google-plus fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a href="https://twitter.com/martinliu" title="Twitter">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a href="https://linkedin.com/in/liuzheng" title="LinkedIn">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-linkedin fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+          
+        </ul>
+        <p class="credits copyright text-muted">
+        &copy;2017-2018
+          
+            
+              <a href="martinliu.cn">Martin Liu</a>
+                      
+          
+          
+          
+            &nbsp;&bull;&nbsp;
+            <a href="https://martinliu.cn/">Maritn&#39;s Blog</a>
+          
+        </p>
+        
+        <p class="credits theme-by text-muted">
+          <a href="http://gohugo.io">Hugo v0.29</a> powered &nbsp;&bull;&nbsp; Theme by <a href="http://deanattali.com/beautiful-jekyll/">Beautiful Jekyll</a> adapted to <a href="https://github.com/halogenica/beautifulhugo">Beautiful Hugo</a>
+          
+        </p>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/bootstrap.min.js"></script>
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/photoswipe-ui-default.min.js"></script>
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/photoswipe.min.js"></script>
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/auto-render.min.js"></script>
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/main.js"></script>
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/prism.js"></script>
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/katex.min.js"></script>
+<script> renderMathInElement(document.body); </script>
+
+
+
+
+
+
+
+
+  </body>
+</html>
+
