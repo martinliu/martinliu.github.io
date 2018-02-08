@@ -295,7 +295,7 @@ autocomplete('#aa-search-input',
 
             
             <article role="main" class="blog-post" itemprop="articleBody" id="content">
-                <p>[caption id=&ldquo;attachment_52258&rdquo; align=&ldquo;aligncenter&rdquo; width=&ldquo;640&rdquo;]<img src="http://cdn1.martinliu.cn/wp-content/uploads/2013/02/mac-mini-2012-vs-old-mac-mini.jpg" alt="mac-mini-2012-with-XenServer" /> mac-mini-2012-with-XenServer[/caption]</p>
+                <p>[caption id=&ldquo;attachment_52258&rdquo; align=&ldquo;aligncenter&rdquo; width=&ldquo;640&rdquo;]<img src="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2013/02/mac-mini-2012-vs-old-mac-mini.jpg" alt="mac-mini-2012-with-XenServer" /> mac-mini-2012-with-XenServer[/caption]</p>
 
 <p>今天尝试在Mac Mini上安装XenServer，下面把经验共享一下。我遇到的问题有两个：</p>
 
@@ -309,23 +309,23 @@ autocomplete('#aa-search-input',
 
 <p>经过一番折腾，发现这些点主意一下，应该就没有问题。</p>
 
-<p>[caption id=&ldquo;attachment_52255&rdquo; align=&ldquo;aligncenter&rdquo; width=&ldquo;300&rdquo;]<a href="http://cdn1.martinliu.cn/wp-content/uploads/2013/02/boot.jpg"><img src="http://cdn1.martinliu.cn/wp-content/uploads/2013/02/boot-300x224.jpg" alt="启动Macmini" /></a> 启动Macmini[/caption]</p>
+<p>[caption id=&ldquo;attachment_52255&rdquo; align=&ldquo;aligncenter&rdquo; width=&ldquo;300&rdquo;]<a href="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2013/02/boot.jpg"><img src="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2013/02/boot-300x224.jpg" alt="启动Macmini" /></a> 启动Macmini[/caption]</p>
 
 <p>在启动Mac Mini的时候，在“咚”的一声之前，就按住ALT键，否则没法出现上面的屏幕，我用的是USB盘启动，所以要选择右侧的图标。</p>
 
-<p>[caption id=&ldquo;attachment_52256&rdquo; align=&ldquo;aligncenter&rdquo; width=&ldquo;300&rdquo;]<a href="http://cdn1.martinliu.cn/wp-content/uploads/2013/02/boot2.jpg"><img src="http://cdn1.martinliu.cn/wp-content/uploads/2013/02/boot2-300x224.jpg" alt="进入menu.c32菜单" /></a> 进入menu.c32菜单[/caption]</p>
+<p>[caption id=&ldquo;attachment_52256&rdquo; align=&ldquo;aligncenter&rdquo; width=&ldquo;300&rdquo;]<a href="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2013/02/boot2.jpg"><img src="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2013/02/boot2-300x224.jpg" alt="进入menu.c32菜单" /></a> 进入menu.c32菜单[/caption]</p>
 
 <p>我遵循前人的经验，乖乖到此来禁止gpt；首先在这里要迅速输入menu.c32，输入完了就过了，就必须重新关机，重启mac mini。</p>
 
-<p>[caption id=&ldquo;attachment_52257&rdquo; align=&ldquo;aligncenter&rdquo; width=&ldquo;300&rdquo;]<a href="http://cdn1.martinliu.cn/wp-content/uploads/2013/02/boot3.jpg"><img src="http://cdn1.martinliu.cn/wp-content/uploads/2013/02/boot3-300x224.jpg" alt="输入disable-gpt参数" /></a> 输入disable-gpt参数[/caption]</p>
+<p>[caption id=&ldquo;attachment_52257&rdquo; align=&ldquo;aligncenter&rdquo; width=&ldquo;300&rdquo;]<a href="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2013/02/boot3.jpg"><img src="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2013/02/boot3-300x224.jpg" alt="输入disable-gpt参数" /></a> 输入disable-gpt参数[/caption]</p>
 
 <p>进入这个屏幕了，要快速按TAB键，否则启动参数无法编辑，输入disable-gpt参数的机会就失去了。编辑启动参数的时候，把参数加载第二个&mdash;（三个短横线）前即可，上图我为了拍照在参数之前加了很多空格，其实这个参数和前后要至少一个空格就够了。</p>
 
 <p>在进入安装的屏幕后，如果是XenServer6.0.201的源安装盘，还必须下载tg3的网卡驱动，并且用工具打入iso文件，这样安装的时候，就可以选择到加载网卡启动，否则6.0.201的安装盘即不自带此网卡驱动，也无法正常识别附加的驱动。网卡驱动下载地址为：<a href="http://support.citrix.com/article/CTX135328">http://support.citrix.com/article/CTX135328</a> 要把加压后的iso文件，再次加压到对应的目录里才行，直接把解压后的几个文件放入目录，安装程序是无法识别到网卡驱动的。如果能正常识别的话，会出现选择框，让你选择 Broadcom tg3。如果是XenServer6.1的安装盘，就不需要折腾驱动了，原盘自带了Broadcom tg3网卡驱动。下面有两张截图，供必须要使用XenServer 6.0.201的人参考。</p>
 
-<p>[caption id=&ldquo;attachment_52250&rdquo; align=&ldquo;aligncenter&rdquo; width=&ldquo;300&rdquo;]<a href="http://cdn1.martinliu.cn/wp-content/uploads/2013/02/xenserver6.1.jpg"><img src="http://cdn1.martinliu.cn/wp-content/uploads/2013/02/xenserver6.1-300x215.jpg" alt="XenServer 6.0.201 with driver" /></a> XenServer 6.0.201 with driver[/caption]</p>
+<p>[caption id=&ldquo;attachment_52250&rdquo; align=&ldquo;aligncenter&rdquo; width=&ldquo;300&rdquo;]<a href="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2013/02/xenserver6.1.jpg"><img src="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2013/02/xenserver6.1-300x215.jpg" alt="XenServer 6.0.201 with driver" /></a> XenServer 6.0.201 with driver[/caption]</p>
 
-<p>[caption id=&ldquo;attachment_52251&rdquo; align=&ldquo;aligncenter&rdquo; width=&ldquo;300&rdquo;]<a href="http://cdn1.martinliu.cn/wp-content/uploads/2013/02/xs-repository-list.jpg"><img src="http://cdn1.martinliu.cn/wp-content/uploads/2013/02/xs-repository-list-300x253.jpg" alt="xs-repository-list 实例" /></a> xs-repository-list 实例[/caption]</p>
+<p>[caption id=&ldquo;attachment_52251&rdquo; align=&ldquo;aligncenter&rdquo; width=&ldquo;300&rdquo;]<a href="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2013/02/xs-repository-list.jpg"><img src="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2013/02/xs-repository-list-300x253.jpg" alt="xs-repository-list 实例" /></a> xs-repository-list 实例[/caption]</p>
 
 <p>即使你不是安装XenServer6.0.201，也推荐使用UltraISO来把iso文件写入一个USB盘来安装，因为Mac Mini没有光驱，而且这样不用刻盘，更加环保一点。</p>
 

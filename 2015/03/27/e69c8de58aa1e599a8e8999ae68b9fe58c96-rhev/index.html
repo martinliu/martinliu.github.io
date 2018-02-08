@@ -416,16 +416,16 @@ o- loopback &hellip;&hellip;&hellip;&hellip;&hellip;&hellip;&hellip;&hellip;&hel
 
 <p>回答完engine-setup的所有问题就可以登录风格统一的黑底色的RHEM界面了。实际上有三个登录界面：用户的，管理员，和报表的。</p>
 
-<p><a href="http://cdn1.martinliu.cn/wp-content/uploads/2015/03/rhevm-web-admin.jpg"><img src="http://cdn1.martinliu.cn/wp-content/uploads/2015/03/rhevm-web-admin-520x293.jpg" alt="rhevm-web-admin" /></a></p>
+<p><a href="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2015/03/rhevm-web-admin.jpg"><img src="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2015/03/rhevm-web-admin-520x293.jpg" alt="rhevm-web-admin" /></a></p>
 
 <p>下面需要安装跑虚拟机的Hypervisor了，RHEV的Hypervisor有两种，一种是精简话的裁剪rhel版本叫做RHEVH（偏向vshpere的做法），还有一种就是rhel的标准版，然后安装Hypervisor相关的包（偏向OpenStack的做法）。下面我会安装第二种做法。目的是：我有两台相同配置的计算节点，我希望把动态的变更他们的功能；一会做RHEV虚拟机的演示，一会做OpenStack nova的演示。</p>
 
 <p>用了一个组合视图安装了这两个服务器虚拟化节点。组合视图里如下所示：
-<a href="http://cdn1.martinliu.cn/wp-content/uploads/2015/03/rhev-view-compose.jpg"><img src="http://cdn1.martinliu.cn/wp-content/uploads/2015/03/rhev-view-compose-520x286.jpg" alt="rhev-view-compose" /></a>
+<a href="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2015/03/rhev-view-compose.jpg"><img src="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2015/03/rhev-view-compose-520x286.jpg" alt="rhev-view-compose" /></a>
 如上图所示：1）视图1是基础的RHEL操作系统repo；2）视图2是RHEV相关的repos视图，其中包括了安装RHEVM和host的所有需要的repo。考激活秘钥控制每个repo的默认是否开启，它们对安装后的os可见，但是默认并不是开启的，因此，我设置rhevm和jboss为默认关闭的，由于安装rhev host的情况比较多，需要安装rhevm的话，可以手动enable这需要的repos即可。</p>
 
 <p>安装和配置完存储之后的RHEVM控制台：
-<a href="http://cdn1.martinliu.cn/wp-content/uploads/2015/03/rhevm-hosts.jpg"><img src="http://cdn1.martinliu.cn/wp-content/uploads/2015/03/rhevm-hosts-520x286.jpg" alt="rhevm-hosts" /></a></p>
+<a href="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2015/03/rhevm-hosts.jpg"><img src="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2015/03/rhevm-hosts-520x286.jpg" alt="rhevm-hosts" /></a></p>
 
 <p>目前由于没有安装OpenStack环境，所以没有Glance服务，因此iso镜像只能暂时放在了dis06的一个服务器虚拟化Hypervisor节点上，目前是临时的方案，回头一定把iso放到Glance服务上host。</p>
 
@@ -440,15 +440,15 @@ ERROR: mount.nfs: Connection timed out</p>
 
 <p>由于这个命令上传不成功，也不想排错了；到目前这个状态其实就可以在Satellite里面使用RHEV的资源提供者的方式来安装虚拟机了，如下图所示：</p>
 
-<p><a href="http://cdn1.martinliu.cn/wp-content/uploads/2015/03/sat6-built-vm-via-rhev-1.jpg"><img src="http://cdn1.martinliu.cn/wp-content/uploads/2015/03/sat6-built-vm-via-rhev-1-520x286.jpg" alt="sat6-built-vm-via-rhev-1" /></a></p>
+<p><a href="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2015/03/sat6-built-vm-via-rhev-1.jpg"><img src="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2015/03/sat6-built-vm-via-rhev-1-520x286.jpg" alt="sat6-built-vm-via-rhev-1" /></a></p>
 
 <p>手动创建RHEV虚拟机1：通过New Host设置相关参数。选择Deploy on 为 rhevm03（rhevm），这个配置让sat6去联系RHEVM，rhevm的配置信息必须提前输入到sat6中。然后还要在sat6中设置虚拟机的三种规格，就是Computer profile中的选项，这个选项确定了cpu，ram，磁盘和网络等信息。剩下的就是最重要的Lifecycle Evn和Puppet Env了，这两个选项确定把系统安装为标准的rhel6的核心最小化安装。当然可以一次性完成某种应用的全套安装和配置。</p>
 
-<p><a href="http://cdn1.martinliu.cn/wp-content/uploads/2015/03/sat6-built-vm-via-rhev-2.jpg"><img src="http://cdn1.martinliu.cn/wp-content/uploads/2015/03/sat6-built-vm-via-rhev-2-520x286.jpg" alt="sat6-built-vm-via-rhev-2" /></a></p>
+<p><a href="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2015/03/sat6-built-vm-via-rhev-2.jpg"><img src="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2015/03/sat6-built-vm-via-rhev-2-520x286.jpg" alt="sat6-built-vm-via-rhev-2" /></a></p>
 
 <p>手动创建RHEV虚拟机2：通过Virtual Machine参数可以看到1，2，3都来自标准的规格配置，如果需要手动修改的话，可以在这里修改，这里可以看到默认的存储是w540-iscsi-lun0这个之前在RHEVM里面配置好的iscsi存储。</p>
 
-<p><a href="http://cdn1.martinliu.cn/wp-content/uploads/2015/03/sat6-built-vm-via-rhev-3.jpg"><img src="http://cdn1.martinliu.cn/wp-content/uploads/2015/03/sat6-built-vm-via-rhev-3-520x286.jpg" alt="sat6-built-vm-via-rhev-3" /></a></p>
+<p><a href="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2015/03/sat6-built-vm-via-rhev-3.jpg"><img src="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2015/03/sat6-built-vm-via-rhev-3-520x286.jpg" alt="sat6-built-vm-via-rhev-3" /></a></p>
 
 <p>手动创建RHEV虚拟机3：点击提交之后，sat6就开始了实时创建rhev虚拟机的过程，sat6使用REST API告诉RHEVM这些信息，然后RHEVM再确定使用哪个Hypervisor来建立并运行虚拟机。</p>
 
@@ -456,17 +456,17 @@ ERROR: mount.nfs: Connection timed out</p>
 
 <p>在sat6里面，管理员重复以上操作，当然需要手动操作n次。这样是不是很麻烦，确实很麻烦！！如何解决？这就需要一种能够实现Orchestration功能的工具来做，也就是自动化编排工具。这种工具最好是统一的能够跨异构资源池的，能够满足如下需求：今天企业可能是纯的vshpere的虚拟化环境，接下来企业有可能引入其他服务器虚拟化资源池技术，如：RHEV，Hyper-V；在以后还可能引入OpenStack资源池。那么这种自动化编排工具和底层的类似satellite6的（标准化部署工具）必须形成一个统一的平台来操作所有异构的资源池。也就是说：在Orchestration工具中统一管理异构资源池，并配合标准化部署工具，实现workload的标准化自动化部署。红帽的Orchestration工具是CloudForms。它能够对接业内所有流行的资源池，如下图所示：</p>
 
-<p><a href="http://cdn1.martinliu.cn/wp-content/uploads/2015/03/cfme-cloud-provides.jpg"><img src="http://cdn1.martinliu.cn/wp-content/uploads/2015/03/cfme-cloud-provides-520x292.jpg" alt="cfme-cloud-provides" /></a> <a href="http://cdn1.martinliu.cn/wp-content/uploads/2015/03/cfme-infra-provides.jpg"><img src="http://cdn1.martinliu.cn/wp-content/uploads/2015/03/cfme-infra-provides-520x293.jpg" alt="cfme-infra-provides" /></a></p>
+<p><a href="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2015/03/cfme-cloud-provides.jpg"><img src="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2015/03/cfme-cloud-provides-520x292.jpg" alt="cfme-cloud-provides" /></a> <a href="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2015/03/cfme-infra-provides.jpg"><img src="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2015/03/cfme-infra-provides-520x293.jpg" alt="cfme-infra-provides" /></a></p>
 
 <p>上图是Satellite的上层Orchestration的能力，底层必须还有标准化的部署工具支持，也就是Satellite6，它对以上基础架构类型的支持情况，如下图所示：</p>
 
-<p><a href="http://cdn1.martinliu.cn/wp-content/uploads/2015/03/satellite6-provider.jpg"><img src="http://cdn1.martinliu.cn/wp-content/uploads/2015/03/satellite6-provider-520x286.jpg" alt="satellite6-provider" /></a></p>
+<p><a href="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2015/03/satellite6-provider.jpg"><img src="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2015/03/satellite6-provider-520x286.jpg" alt="satellite6-provider" /></a></p>
 
 <p>使用CloudForms做上层Orchestration的调度，必须依赖于底层的workload的标准化，标准化到什么程度，从虚拟机供给的角度可以参考Amazon AWS 的EC2的实际案例。如下图所示：</p>
 
-<p><a href="http://cdn1.martinliu.cn/wp-content/uploads/2015/03/ec2-types.jpg"><img src="http://cdn1.martinliu.cn/wp-content/uploads/2015/03/ec2-types-520x258.jpg" alt="ec2-types" /></a></p>
+<p><a href="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2015/03/ec2-types.jpg"><img src="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2015/03/ec2-types-520x258.jpg" alt="ec2-types" /></a></p>
 
-<p>AWS服务的我曾研究过一点，上图的全图下载点这里 &ndash;&gt; <a href="http://cdn1.martinliu.cn/wp-content/uploads/2015/03/aws-服务-脑图.pdf">aws-服务-脑图</a></p>
+<p>AWS服务的我曾研究过一点，上图的全图下载点这里 &ndash;&gt; <a href="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2015/03/aws-服务-脑图.pdf">aws-服务-脑图</a></p>
 
 <p>以上所有是Martin&rsquo;s Lab的搭建的一部分，下周可能去一个银行客户演示。需要做的优化还很多，请关注后续更新。</p>
 
