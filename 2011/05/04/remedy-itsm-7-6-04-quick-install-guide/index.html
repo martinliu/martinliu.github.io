@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="zh">
+  <head>
+  <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+  <title> Remedy ITSM 7.6.04 套件快速安装 - Martin Liu&#39;s Blog</title>
+  
+  <meta property="og:title" content="Remedy ITSM 7.6.04 套件快速安装" />
+  <meta name="twitter:title" content="Remedy ITSM 7.6.04 套件快速安装" />
+  <meta name="description" content="自从Remedy ITSM 7.6.03版本发布以后，Remedy ITSM套件有了一种全新的安装方式“预配置堆栈式安装”，这种安装方法简化了以前从AR">
+  <meta property="og:description" content="自从Remedy ITSM 7.6.03版本发布以后，Remedy ITSM套件有了一种全新的安装方式“预配置堆栈式安装”，这种安装方法简化了以前从AR">
+  <meta name="twitter:description" content="自从Remedy ITSM 7.6.03版本发布以后，Remedy ITSM套件有了一种全新的安装方式“预配置堆栈式安装”，这种安装方法简化了以前从AR">
+  <meta name="author" content="刘征 Martin Liu"/>
+  <link href='https://martinliu.cn/favicon.ico' rel='icon' type='image/x-icon'/>
+
+<meta name="msvalidate.01" content="12F570013342D1F8B60A455D09221C1D" />
+<meta name="yandex-verification" content="7e9acc85531b0f35" />
+<meta name="google-site-verification" content="4oSwNTpy1vzip3_lt6XhkhMfImCD_DZlvL3K1k-M8qk" />
+<meta name="baidu-site-verification" content="Z7d1tYkxzQ" />
+
+<script>(function (w, d, s, l, i) {
+    w[l] = w[l] || []; w[l].push({
+      'gtm.start':
+        new Date().getTime(), event: 'gtm.js'
+    }); var f = d.getElementsByTagName(s)[0],
+      j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : ''; j.async = true; j.src =
+        'https://www.googletagmanager.com/gtm.js?id=' + i + dl; f.parentNode.insertBefore(j, f);
+  })(window, document, 'script', 'dataLayer', 'GTM-TL37V8G');</script>
+
+
+  <meta property="og:image" content="https://res.cloudinary.com/martinliu/image/upload/q_auto:eco/avatar.jpg" />
+  <meta name="twitter:image" content="https://res.cloudinary.com/martinliu/image/upload/q_auto:eco/avatar.jpg" />
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:site" content="@martinliu" />
+  <meta name="twitter:creator" content="@martinliu" />
+  <meta property="og:url" content="https://martinliu.cn/2011/05/04/remedy-itsm-7-6-04-quick-install-guide/" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Martin&#39;s Blog" />
+  <meta name="keywords" content="" />
+
+  <meta name="generator" content="Hugo 0.55.0-DEV" />
+  <link rel="canonical" href="https://martinliu.cn/2011/05/04/remedy-itsm-7-6-04-quick-install-guide/" />
+  <link rel="alternate" href="https://martinliu.cn/index.xml" type="application/rss+xml" title="Martin&#39;s Blog">
+  <script src="https://res.cloudinary.com/martinliu/raw/upload/static/jquery-1.12.4.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.7.1/katex.min.css" integrity="sha384-wITovz90syo1dJWVh32uuETPVEtGigN07tkttEqPv+uR2SE/mbQcG7ATL28aI9H0" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+  
+  
+  <link rel="stylesheet" href="https://martinliu.cn/css/main.css" />
+  <link rel="stylesheet" href="https://martinliu.cn/css/search.css" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" />
+  
+
+
+
+<link rel="stylesheet" href="https://martinliu.cn/css/prism.css" />
+
+
+<script>
+    var _hmt = _hmt || [];
+    (function () {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?50c3a9ae6c51222b31df5510bbca479f";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.1/photoswipe.min.css" integrity="sha256-sCl5PUOGMLfFYctzDW3MtRib0ctyUvI9Qsmq2wXOeBY=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.1/default-skin/default-skin.min.css" integrity="sha256-BFeI1V+Vh1Rk37wswuOYn5lsTcaU96hGaI7OUVCLjPc=" crossorigin="anonymous" />
+
+
+
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+<div class="pswp__bg"></div>
+
+<div class="pswp__scroll-wrap">
+    
+    <div class="pswp__container">
+      <div class="pswp__item"></div>
+      <div class="pswp__item"></div>
+      <div class="pswp__item"></div>
+    </div>
+    
+    <div class="pswp__ui pswp__ui--hidden">
+    <div class="pswp__top-bar">
+      
+      <div class="pswp__counter"></div>
+      <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+      <button class="pswp__button pswp__button--share" title="Share"></button>
+      <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+      <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+      
+      
+      <div class="pswp__preloader">
+        <div class="pswp__preloader__icn">
+          <div class="pswp__preloader__cut">
+            <div class="pswp__preloader__donut"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+      <div class="pswp__share-tooltip"></div>
+    </div>
+    <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+    </button>
+    <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+    </button>
+    <div class="pswp__caption">
+      <div class="pswp__caption__center"></div>
+    </div>
+    </div>
+    </div>
+</div>
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-749876-6', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+
+</head>
+
+  <body>
+    <nav class="navbar navbar-default navbar-fixed-top navbar-custom">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#main-navbar">
+        <span class="sr-only">切换导航</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="https://martinliu.cn/">Martin&#39;s Blog</a>
+    </div>
+    <div class="collapse navbar-collapse" id="main-navbar">
+      <ul class="nav navbar-nav navbar-right">
+        
+          
+            <li>
+              <a title="首页" href="/">首页</a>
+              
+              
+            </li>
+          
+        
+          
+            <li>
+              <a title="标签" href="/tags">标签</a>
+              
+              
+            </li>
+          
+        
+          
+            <li>
+              <a title="关于" href="/about">关于</a>
+              
+              
+            </li>
+          
+        
+          
+            <li>
+              <a title="书籍" href="https://handbook.martinliu.cn">书籍</a>
+              
+              
+            </li>
+          
+        
+
+        
+
+        
+        
+          <li>
+            <a href="#modalSearch" data-toggle="modal" data-target="#modalSearch" style="outline: none;">
+              <span class="hidden-sm hidden-md hidden-lg">搜索</span> <span id="searchGlyph" class="glyphicon glyphicon-search"></span>
+            </a>
+          </li>
+          
+      </ul>
+    </div>
+
+    <div class="avatar-container">
+      <div class="avatar-img-border">
+        
+          <a title="Martin&#39;s Blog" href="https://martinliu.cn/">
+            <img class="avatar-img" src="https://res.cloudinary.com/martinliu/image/upload/q_auto:eco/avatar.jpg" alt="Martin&#39;s Blog" />
+          </a>
+        
+      </div>
+    </div>
+
+  </div>
+</nav>
+
+
+
+
+
+  <div id="modalSearch" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">全站搜索 by swiftype </h4>
+        </div>
+        <div class="modal-body">
+            <style>
+  .st-default-search-input {
+    width: calc(100% - 45px);
+  }
+</style>
+<div>
+  <form>
+    <input type="text" class="st-default-search-input" />
+  </form>
+</div>
+
+
+<script type="text/javascript">
+  (function(w,d,t,u,n,s,e){w['SwiftypeObject']=n;w[n]=w[n]||function(){
+  (w[n].q=w[n].q||[]).push(arguments);};s=d.createElement(t);
+  e=d.getElementsByTagName(t)[0];s.async=1;s.src=u;e.parentNode.insertBefore(s,e);
+  })(window,document,'script','//s.swiftypecdn.com/install/v2/st.js','_st');
+  
+  _st('install','rvHKnQr8PJKjRDhyUWot','2.0.0');
+</script>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+    
+  
+  
+  
+
+
+
+
+  
+
+  <header class="header-section ">
+    
+    <div class="intro-header no-img">
+      
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-12 col-md-12 col-md-offset-0">
+            <div class="posts-heading">
+                <h1 align="center">Remedy ITSM 7.6.04 套件快速安装</h1>
+                
+                
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+  </header>
+
+
+    
+<div class="container" role="main">
+    <div class="row">
+        <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+            
+            <div>
+                <h5 id="wc">字数：900 |大约阅读时间 2 分钟</h5>
+                <h5 id="tags">标签: 
+                    <a href="https://martinliu.cn//tags/ars">ARS</a> &nbsp;
+                    <a href="https://martinliu.cn//tags/itsm">ITSM</a> &nbsp;
+                    <a href="https://martinliu.cn//tags/remedy">remedy</a> &nbsp;
+                    <a href="https://martinliu.cn//tags/%E5%AE%89%E8%A3%85">安装</a> &nbsp;
+                </h5>
+
+            </div>
+            <article role="main" class="blog-post">
+                
+
+<p><img src="http://media.cms.bmc.com/images/box_services_trio_compass.png" alt="" />自从Remedy ITSM 7.6.03版本发布以后，Remedy ITSM套件有了一种全新的安装方式“预配置堆栈式安装”，这种安装方法简化了以前从ARS开始一个部件罗一个部件的安装方法，它将ITSM套件中的所有组件一次性的安装上去。下面讲具体该如何操作。</p>
+
+<h2 id="什么情况下使用这个安装方式">什么情况下使用这个安装方式？</h2>
+
+<p>A）POC的情况下
+B）客户的生产环境满足下面的需求：
+• Microsoft Windows Server 2008 (64-bit) (Standard, Enterprise, or Datacenter) with Microsoft SQL Server 2008 (64-bit) (Standard or Enterprise)
+• Oracle Solaris 10 with Oracle 11g (64-bit) (Standard, Enterprise, or RAC)
+• Red Hat Enterprise Linux 5 (Update 5) (64-bit) with Oracle 11g (64-bit) (Standard, Enterprise, or RAC)
+• Microsoft Windows Server 2008 (64-bit) (Standard, Enterprise, or Datacenter) with Oracle 11g (64-bit) (Standard or Enterprise)
+Note: The BMC Remedy ITSM Suite Precon gured Stack installer supports only Unicode database servers</p>
+
+<h2 id="这种方式安装了什么组件">这种方式安装了什么组件？</h2>
+
+<p>BMC Remedy AR System server version 7.6.04
+ AREA LDAP Directory Service Authentication
+ ARDBC LDAP Directory Service Data Access
+ Web Services Plugin
+ Simple Network Management Protocol (SNMP) Configuration
+ Full Text Search (FTS) Configuration
+ Approval Server
+ Assignment Engine
+ Email Engine
+ Flashboards
+ Mid-Tier
+ BMC Remedy AR System clients
+ BMC Remedy User
+ BMC Remedy Alert
+ BMC Remedy Developer Studio
+ BMC Remedy Data Import
+ BMC Remedy Migrator
+ Crystal Reports
+ ODBC
+ BMC Atrium Core
+ BMC Atrium CMDB version 7.6.04
+ Product Catalog version 7.6.04
+ Atrium Impact Simulator version 7.6.04
+ BMC Remedy ITSM Suite
+ BMC Remedy Asset Management version 7.6.04
+ BMC Remedy Change Management version 7.6.04
+ BMC Remedy Incident Management version 7.6.04
+ BMC Remedy Problem Management version 7.6.04
+ BMC Remedy Service Desk 7.6.04
+ BMC Service Level Management version 7.6.04
+ BMC Remedy Knowledge Management version 7.6.0
+如果你真的不需要安装以上所有组件，请不要使用此安装方法。</p>
+
+<h2 id="需要什么硬件">需要什么硬件？</h2>
+
+<p>System requirements for Microsoft Windows and UNIX®:
+• Minimum 12 GB free disk space for the installation directory
+• Minimum 8 GB free space for local database and remote database
+• (For Red Hat Enterprise Linux® only) Minimum of 2.5 GB free space in the /tmp directory or /tmp file system.
+• (For Oracle® Solaris only) Minimum of 2.5 GB free space in the /var/tmp directory or the file system.
+• 3 GHz dual processor
+• Minimum 3 GB RAM during installation; 8 GB RAM during runtime; 8 GB main memory for optimal performance
+• (When 6 GB UNIX systems are used) Make sure that a minimum of 6 GB Swap Space is configured within the system.
+如果您的硬件真的低于以上需要，请不要使用此安装方法，否则安装完之后系统可能不能正常运行。</p>
+
+<h2 id="需要什么人参与">需要什么人参与？</h2>
+
+<p>需要操作系统管理员和数据库管理员参与
+以Linux+Oracle为例，可能需要如下环境变量
+[bash]
+export ORACLE_BASE=/u01/app/oracle
+export ORACLE_SID=remedy
+export ORACLE_HOME=/u01/app/oracle/product/11.2.0/dbhome_1
+export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$ORACLE_HOME/lib
+export NLS_LANG=en_US.UTF8
+export LANG=en_US.utf8
+export PATH=$PATH:$ORACLE_HOME/bin
+[/bash]</p>
+
+<h2 id="需要什么安装文件">需要什么安装文件？</h2>
+
+<p>以Linux+Oracle的安装为例，需要如下文件：</p>
+
+<p>linux.x64_11gR2_database_1of2.zip
+linux.x64_11gR2_database_2of2.zip
+jdk-6u25-ea-bin-b03-linux-amd64-27_feb_2011.bin
+BMCRemedyITSMSuitePreconfiguredStack7.6.04.Linux.tar.gz</p>
+
+<h2 id="需要安装多长时间">需要安装多长时间？</h2>
+
+<p>大约1.5个小时左右，是的没有夸张，这个时间是在一个DELL E6400（64位，8GB内存）的笔记本上测得的，如果你有更好的硬件，相信可以更快，这应该是史上最快的Remedy ITSM套件安装速度，如果你也成功通过此方式安装，请留下评论留下下你的安装时间和系统配置情况。</p>
+
+<h2 id="参考以下操作步骤">参考以下操作步骤</h2>
+
+<p>安装之前需要根据网卡的MAC地址先申请一个Lic，接着基本上都是点Next，即可完成安装
+[imagebrowser id=8]</p>
+
+                    <a href="http://zhihu.com/people/devopscoach" target="_blank">
+                    <img src="https://res.cloudinary.com/martinliu/image/upload/q_auto:eco/martin-at-zhihu.png" alt="DevOps教练在知乎" />
+                    </a>
+            </article>
+            
+
+            <ul class="pager blog-pager">
+                
+                <li class="previous">
+                    <a href="https://martinliu.cn/2011/04/10/let-ubuntu-fly/" data-toggle="tooltip" data-placement="top" title="让Ubuntu飞一会儿">&larr; 前一篇</a>
+                </li>
+                 
+                <li class="next">
+                    <a href="https://martinliu.cn/2011/05/07/let-remedy-ars-fly-2/" data-toggle="tooltip" data-placement="top" title="让Remedy飞一会">后一篇 &rarr;</a>
+                </li>
+                
+            </ul>
+            <div>
+                 
+                <h2>See Also</h2>
+                <ul>
+                    
+                    <li>
+                        <a href="/2011/02/14/backup-restore-remedy-ars-oracle-db/">在Oracle上备份和恢复 Remedy ARS数据库</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/2010/09/22/install-remedy-ars-itsm-on-aix-oracle/">八月十五月儿圆，我和兄弟们装AR</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/2011/04/02/ars-start-issue-on-oracle/">ARS启动故障修复案例</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/2011/03/01/remedy-ars-open-source-tool/">Remedy ARS 开源工具知多少</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/2011/02/10/64-windows-ars-75-install-tips/">在64位Windows上安装ARS7.5</a>
+                    </li>
+                    
+                </ul>
+                
+            </div>
+            
+
+            
+            
+
+        </div>
+    </div>
+    </section>
+</div>
+
+    <footer>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <ul class="list-inline text-center footer-links">
+          
+              <li>
+                <a href="mailto:liuzh66@gmail.com" title="Email me">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-envelope fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a href="https://plus.google.com/&#43;MartinLiu-cn" title="Google&#43;">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-google-plus fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a href="https://github.com/martinliu" title="GitHub">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a href="https://twitter.com/martinliu" title="Twitter">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a href="https://linkedin.com/in/liuzheng" title="LinkedIn">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-linkedin fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+          
+        </ul>
+        <p class="credits copyright text-muted">
+        &copy;2017-2018
+
+              刘征 Martin Liu
+
+          
+          
+            &nbsp;&bull;&nbsp;
+            <a href="https://martinliu.cn/">Martin&#39;s Blog</a>
+          
+        </p>
+        
+        <p class="credits theme-by text-muted">
+          由 <a href="http://gohugo.io">Hugo v0.55.0-DEV</a> 强力驱动 &nbsp;&bull;&nbsp; 主题 <a href="https://github.com/halogenica/beautifulhugo">Beautiful Hugo</a> 移植自 <a href="http://deanattali.com/beautiful-jekyll/">Beautiful Jekyll</a>
+          
+        </p>
+
+        <p class="credits theme-by text-muted">
+          全站搜索来自于 <a href="https://swiftype.com/"> swiftype.com </a>
+        </p>
+
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+<script src="https://res.cloudinary.com/martinliu/raw/upload/static/bootstrap.min.js"></script>
+<script src="https://res.cloudinary.com/martinliu/raw/upload/static/photoswipe-ui-default.min.js"></script>
+<script src="https://res.cloudinary.com/martinliu/raw/upload/static/photoswipe.min.js"></script>
+<script src="https://res.cloudinary.com/martinliu/raw/upload/static/auto-render.min.js"></script>
+<script src="https://res.cloudinary.com/martinliu/raw/upload/static/main.js"></script>
+<script src="https://res.cloudinary.com/martinliu/raw/upload/static/prism.js"></script>
+<script src="https://res.cloudinary.com/martinliu/raw/upload/static/katex.min.js"></script>
+<script> renderMathInElement(document.body); </script>
+
+
+
+
+
+
+
+
+  </body>
+</html>
+

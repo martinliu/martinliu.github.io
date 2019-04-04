@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="zh">
+  <head>
+  <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+  <title> 网管系统的测试工具 - Martin Liu&#39;s Blog</title>
+  
+  <meta property="og:title" content="网管系统的测试工具" />
+  <meta name="twitter:title" content="网管系统的测试工具" />
+  <meta name="description" content="很多网络系统管理软件都有Trap管理的功能，在系统的安装和配置过程中；验证系统是否能正常处理Trap是很麻烦的事情。原因有很多，发送trap">
+  <meta property="og:description" content="很多网络系统管理软件都有Trap管理的功能，在系统的安装和配置过程中；验证系统是否能正常处理Trap是很麻烦的事情。原因有很多，发送trap">
+  <meta name="twitter:description" content="很多网络系统管理软件都有Trap管理的功能，在系统的安装和配置过程中；验证系统是否能正常处理Trap是很麻烦的事情。原因有很多，发送trap">
+  <meta name="author" content="刘征 Martin Liu"/>
+  <link href='https://martinliu.cn/favicon.ico' rel='icon' type='image/x-icon'/>
+
+<meta name="msvalidate.01" content="12F570013342D1F8B60A455D09221C1D" />
+<meta name="yandex-verification" content="7e9acc85531b0f35" />
+<meta name="google-site-verification" content="4oSwNTpy1vzip3_lt6XhkhMfImCD_DZlvL3K1k-M8qk" />
+<meta name="baidu-site-verification" content="Z7d1tYkxzQ" />
+
+<script>(function (w, d, s, l, i) {
+    w[l] = w[l] || []; w[l].push({
+      'gtm.start':
+        new Date().getTime(), event: 'gtm.js'
+    }); var f = d.getElementsByTagName(s)[0],
+      j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : ''; j.async = true; j.src =
+        'https://www.googletagmanager.com/gtm.js?id=' + i + dl; f.parentNode.insertBefore(j, f);
+  })(window, document, 'script', 'dataLayer', 'GTM-TL37V8G');</script>
+
+
+  <meta property="og:image" content="https://res.cloudinary.com/martinliu/image/upload/q_auto:eco/avatar.jpg" />
+  <meta name="twitter:image" content="https://res.cloudinary.com/martinliu/image/upload/q_auto:eco/avatar.jpg" />
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:site" content="@martinliu" />
+  <meta name="twitter:creator" content="@martinliu" />
+  <meta property="og:url" content="https://martinliu.cn/2008/01/21/trap-tools/" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Martin&#39;s Blog" />
+  <meta name="keywords" content="" />
+
+  <meta name="generator" content="Hugo 0.55.0-DEV" />
+  <link rel="canonical" href="https://martinliu.cn/2008/01/21/trap-tools/" />
+  <link rel="alternate" href="https://martinliu.cn/index.xml" type="application/rss+xml" title="Martin&#39;s Blog">
+  <script src="https://res.cloudinary.com/martinliu/raw/upload/static/jquery-1.12.4.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.7.1/katex.min.css" integrity="sha384-wITovz90syo1dJWVh32uuETPVEtGigN07tkttEqPv+uR2SE/mbQcG7ATL28aI9H0" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+  
+  
+  <link rel="stylesheet" href="https://martinliu.cn/css/main.css" />
+  <link rel="stylesheet" href="https://martinliu.cn/css/search.css" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" />
+  
+
+
+
+<link rel="stylesheet" href="https://martinliu.cn/css/prism.css" />
+
+
+<script>
+    var _hmt = _hmt || [];
+    (function () {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?50c3a9ae6c51222b31df5510bbca479f";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.1/photoswipe.min.css" integrity="sha256-sCl5PUOGMLfFYctzDW3MtRib0ctyUvI9Qsmq2wXOeBY=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.1/default-skin/default-skin.min.css" integrity="sha256-BFeI1V+Vh1Rk37wswuOYn5lsTcaU96hGaI7OUVCLjPc=" crossorigin="anonymous" />
+
+
+
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+<div class="pswp__bg"></div>
+
+<div class="pswp__scroll-wrap">
+    
+    <div class="pswp__container">
+      <div class="pswp__item"></div>
+      <div class="pswp__item"></div>
+      <div class="pswp__item"></div>
+    </div>
+    
+    <div class="pswp__ui pswp__ui--hidden">
+    <div class="pswp__top-bar">
+      
+      <div class="pswp__counter"></div>
+      <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+      <button class="pswp__button pswp__button--share" title="Share"></button>
+      <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+      <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+      
+      
+      <div class="pswp__preloader">
+        <div class="pswp__preloader__icn">
+          <div class="pswp__preloader__cut">
+            <div class="pswp__preloader__donut"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+      <div class="pswp__share-tooltip"></div>
+    </div>
+    <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+    </button>
+    <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+    </button>
+    <div class="pswp__caption">
+      <div class="pswp__caption__center"></div>
+    </div>
+    </div>
+    </div>
+</div>
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-749876-6', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+
+</head>
+
+  <body>
+    <nav class="navbar navbar-default navbar-fixed-top navbar-custom">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#main-navbar">
+        <span class="sr-only">切换导航</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="https://martinliu.cn/">Martin&#39;s Blog</a>
+    </div>
+    <div class="collapse navbar-collapse" id="main-navbar">
+      <ul class="nav navbar-nav navbar-right">
+        
+          
+            <li>
+              <a title="首页" href="/">首页</a>
+              
+              
+            </li>
+          
+        
+          
+            <li>
+              <a title="标签" href="/tags">标签</a>
+              
+              
+            </li>
+          
+        
+          
+            <li>
+              <a title="关于" href="/about">关于</a>
+              
+              
+            </li>
+          
+        
+          
+            <li>
+              <a title="书籍" href="https://handbook.martinliu.cn">书籍</a>
+              
+              
+            </li>
+          
+        
+
+        
+
+        
+        
+          <li>
+            <a href="#modalSearch" data-toggle="modal" data-target="#modalSearch" style="outline: none;">
+              <span class="hidden-sm hidden-md hidden-lg">搜索</span> <span id="searchGlyph" class="glyphicon glyphicon-search"></span>
+            </a>
+          </li>
+          
+      </ul>
+    </div>
+
+    <div class="avatar-container">
+      <div class="avatar-img-border">
+        
+          <a title="Martin&#39;s Blog" href="https://martinliu.cn/">
+            <img class="avatar-img" src="https://res.cloudinary.com/martinliu/image/upload/q_auto:eco/avatar.jpg" alt="Martin&#39;s Blog" />
+          </a>
+        
+      </div>
+    </div>
+
+  </div>
+</nav>
+
+
+
+
+
+  <div id="modalSearch" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">全站搜索 by swiftype </h4>
+        </div>
+        <div class="modal-body">
+            <style>
+  .st-default-search-input {
+    width: calc(100% - 45px);
+  }
+</style>
+<div>
+  <form>
+    <input type="text" class="st-default-search-input" />
+  </form>
+</div>
+
+
+<script type="text/javascript">
+  (function(w,d,t,u,n,s,e){w['SwiftypeObject']=n;w[n]=w[n]||function(){
+  (w[n].q=w[n].q||[]).push(arguments);};s=d.createElement(t);
+  e=d.getElementsByTagName(t)[0];s.async=1;s.src=u;e.parentNode.insertBefore(s,e);
+  })(window,document,'script','//s.swiftypecdn.com/install/v2/st.js','_st');
+  
+  _st('install','rvHKnQr8PJKjRDhyUWot','2.0.0');
+</script>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+    
+  
+  
+  
+
+
+
+
+  
+
+  <header class="header-section ">
+    
+    <div class="intro-header no-img">
+      
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-12 col-md-12 col-md-offset-0">
+            <div class="posts-heading">
+                <h1 align="center">网管系统的测试工具</h1>
+                
+                
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+  </header>
+
+
+    
+<div class="container" role="main">
+    <div class="row">
+        <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+            
+            <div>
+                <h5 id="wc">字数：900 |大约阅读时间 2 分钟</h5>
+                <h5 id="tags">标签: 
+                    <a href="https://martinliu.cn//tags/nsm">NSM</a> &nbsp;
+                    <a href="https://martinliu.cn//tags/tools">Tools</a> &nbsp;
+                    <a href="https://martinliu.cn//tags/trap">Trap</a> &nbsp;
+                </h5>
+
+            </div>
+            <article role="main" class="blog-post">
+                <p>很多网络系统管理软件都有Trap管理的功能，在系统的安装和配置过程中；验证系统是否能正常处理Trap是很麻烦的事情。原因有很多，发送trap的设备没有，设备上的snmp没有启用，或者设备都正常，到网管系统的网络可能有防火墙吧snmp给堵住了。<br /><br />为了方便的测试和配置网络管理监控系统，需要手工生产和验证trap的发送和接收。最近偶然在网上发现了这样几个免费（非OSS软件）软件工具，可以做这件事。<br /><br />下载的网站是：<a href="http://www.ncomtech.com/">http://www.ncomtech.com/</a> 下面吧我所下载和测试的软件做一个小结，希望对您有所帮助：<br /></p>
+
+<p><br /><br />
+  * <strong>Trap Receiver</strong> <a href="http://www.trapreceiver.com/">http://www.trapreceiver.com/</a> 是一个Windows程序非常小，安装了之后会在windows安装一个服务。程序的启动目录是C:\Program Files\Trap Receiver\TrapRcvr.exe 程序界面非常简单，如下图所示：
+<br /><br /><a href="http://lh5.google.com/liuzh66/R5TXj4CljQI/AAAAAAAAAdI/FPsG9LiZrXo/image%5B12%5D.png"><img src="http://lh5.google.com/liuzh66/R5TXj4CljQI/AAAAAAAAAdI/FPsG9LiZrXo/image%5B12%5D.png" alt="image" /></a><br /><br />点击configure按钮后可以做一些配置：Action －－当收到某些特定的trap是出发邮件、声音等动作；logging－－把收到的trap信息按照某种格式记录在文件中；Mibs－－导入目标设备的trap文件，让这个接收器能认识到另外的trap格式。还有其他配置信息也非常简单。<br /></p>
+
+<p><br /><br />
+  * **TrapGen **<a href="http://www.ncomtech.com/trapgen.html">http://www.ncomtech.com/trapgen.html</a> 顾名思义－这就是一个手工生产和发送trap的工具，是一个命令行工具。example:  trapgen -d 192.168.2.3；上图中的第一条和第三条就是用这个命令发出的trap。欲知详细帮助信息，使用&rdquo;trapgen -h&rdquo;
+<br /><br />
+  * <strong>I/F Spy</strong> <a href="http://www.ncomtech.com/ifspy.html">http://www.ncomtech.com/ifspy.html</a> 是一个网络接口枚举工具，它通过snmp协议去访问目标设备的IFMIB信息，显示所有IFMIB相关信息。
+<br /><br />
+  * <strong>UDP Listen</strong> <a href="http://www.ncomtech.com/udplisten.html">http://www.ncomtech.com/udplisten.html</a> <strong>UDP</strong>协议的监听程序，是命令行工具，有linux和Solaris版，能用作一个debug工具。
+<br /><br />
+  * <strong>Thingy</strong> <a href="http://www.ncomtech.com/thingy.html">http://www.ncomtech.com/thingy.html</a>是一个Windows下的GUI工具，能帮你监控三个SNMP指标，采集并做大于等于和小于的逻辑判断然后显示不同的信号灯。
+<br /><br />这几个小工具都很小，都能在windows下安装和使用对网络系统监控软件的安装、配置和排错应该有一定的帮助。如果您有什好的小工具也请回复一下本文。</p>
+
+                    <a href="http://zhihu.com/people/devopscoach" target="_blank">
+                    <img src="https://res.cloudinary.com/martinliu/image/upload/q_auto:eco/martin-at-zhihu.png" alt="DevOps教练在知乎" />
+                    </a>
+            </article>
+            
+
+            <ul class="pager blog-pager">
+                
+                <li class="previous">
+                    <a href="https://martinliu.cn/2008/01/12/hyperic-hq-engerprise-testing/" data-toggle="tooltip" data-placement="top" title="Hyperic HQ Engerprise 3.1.4 测试报告">&larr; 前一篇</a>
+                </li>
+                 
+                <li class="next">
+                    <a href="https://martinliu.cn/2008/01/30/build-zenoss-212-on-redhat-enterprise-linux-5/" data-toggle="tooltip" data-placement="top" title="Build Zenoss 2.1.2 on Redhat Enterprise Linux 5">后一篇 &rarr;</a>
+                </li>
+                
+            </ul>
+            <div>
+                 
+                <h2>See Also</h2>
+                <ul>
+                    
+                    <li>
+                        <a href="/2008/01/04/top-100-security-tools/">Top 100网络安全工具</a>
+                    </li>
+                    
+                </ul>
+                
+            </div>
+            
+
+            
+            
+
+        </div>
+    </div>
+    </section>
+</div>
+
+    <footer>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <ul class="list-inline text-center footer-links">
+          
+              <li>
+                <a href="mailto:liuzh66@gmail.com" title="Email me">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-envelope fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a href="https://plus.google.com/&#43;MartinLiu-cn" title="Google&#43;">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-google-plus fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a href="https://github.com/martinliu" title="GitHub">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a href="https://twitter.com/martinliu" title="Twitter">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a href="https://linkedin.com/in/liuzheng" title="LinkedIn">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-linkedin fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+          
+        </ul>
+        <p class="credits copyright text-muted">
+        &copy;2017-2018
+
+              刘征 Martin Liu
+
+          
+          
+            &nbsp;&bull;&nbsp;
+            <a href="https://martinliu.cn/">Martin&#39;s Blog</a>
+          
+        </p>
+        
+        <p class="credits theme-by text-muted">
+          由 <a href="http://gohugo.io">Hugo v0.55.0-DEV</a> 强力驱动 &nbsp;&bull;&nbsp; 主题 <a href="https://github.com/halogenica/beautifulhugo">Beautiful Hugo</a> 移植自 <a href="http://deanattali.com/beautiful-jekyll/">Beautiful Jekyll</a>
+          
+        </p>
+
+        <p class="credits theme-by text-muted">
+          全站搜索来自于 <a href="https://swiftype.com/"> swiftype.com </a>
+        </p>
+
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+<script src="https://res.cloudinary.com/martinliu/raw/upload/static/bootstrap.min.js"></script>
+<script src="https://res.cloudinary.com/martinliu/raw/upload/static/photoswipe-ui-default.min.js"></script>
+<script src="https://res.cloudinary.com/martinliu/raw/upload/static/photoswipe.min.js"></script>
+<script src="https://res.cloudinary.com/martinliu/raw/upload/static/auto-render.min.js"></script>
+<script src="https://res.cloudinary.com/martinliu/raw/upload/static/main.js"></script>
+<script src="https://res.cloudinary.com/martinliu/raw/upload/static/prism.js"></script>
+<script src="https://res.cloudinary.com/martinliu/raw/upload/static/katex.min.js"></script>
+<script> renderMathInElement(document.body); </script>
+
+
+
+
+
+
+
+
+  </body>
+</html>
+

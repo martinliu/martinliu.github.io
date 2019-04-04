@@ -1,0 +1,1244 @@
+<!DOCTYPE html>
+<html lang="zh">
+  <head>
+  <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+  <title> Martin&#39;s Blog - Martin Liu&#39;s Blog</title>
+  
+  <meta property="og:title" content="Martin&#39;s Blog" />
+  <meta name="twitter:title" content="Martin&#39;s Blog" />
+  <meta name="description" content="刘征是《DevOps Handbook》（中文书名：DevOps实践指南）的译者，中国DevOps社区组织者，致力于推广DevOps的理念、技术和实践。">
+  <meta property="og:description" content="刘征是《DevOps Handbook》（中文书名：DevOps实践指南）的译者，中国DevOps社区组织者，致力于推广DevOps的理念、技术和实践。">
+  <meta name="twitter:description" content="刘征是《DevOps Handbook》（中文书名：DevOps实践指南）的译者，中国DevOps社区组织者，致力于推广DevOps的理念、技术和实践。">
+  <meta name="author" content="刘征 Martin Liu"/>
+  <link href='https://martinliu.cn/favicon.ico' rel='icon' type='image/x-icon'/>
+
+<meta name="msvalidate.01" content="12F570013342D1F8B60A455D09221C1D" />
+<meta name="yandex-verification" content="7e9acc85531b0f35" />
+<meta name="google-site-verification" content="4oSwNTpy1vzip3_lt6XhkhMfImCD_DZlvL3K1k-M8qk" />
+<meta name="baidu-site-verification" content="Z7d1tYkxzQ" />
+
+<script>(function (w, d, s, l, i) {
+    w[l] = w[l] || []; w[l].push({
+      'gtm.start':
+        new Date().getTime(), event: 'gtm.js'
+    }); var f = d.getElementsByTagName(s)[0],
+      j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : ''; j.async = true; j.src =
+        'https://www.googletagmanager.com/gtm.js?id=' + i + dl; f.parentNode.insertBefore(j, f);
+  })(window, document, 'script', 'dataLayer', 'GTM-TL37V8G');</script>
+
+
+  <meta property="og:image" content="https://res.cloudinary.com/martinliu/image/upload/q_auto:eco/avatar.jpg" />
+  <meta name="twitter:image" content="https://res.cloudinary.com/martinliu/image/upload/q_auto:eco/avatar.jpg" />
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:site" content="@martinliu" />
+  <meta name="twitter:creator" content="@martinliu" />
+  <meta property="og:url" content="https://martinliu.cn/" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Martin&#39;s Blog" />
+  <meta name="keywords" content="" />
+
+  <meta name="generator" content="Hugo 0.55.0-DEV" />
+  <link rel="canonical" href="https://martinliu.cn/" />
+  <link rel="alternate" href="https://martinliu.cn/index.xml" type="application/rss+xml" title="Martin&#39;s Blog">
+  <script src="https://res.cloudinary.com/martinliu/raw/upload/static/jquery-1.12.4.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.7.1/katex.min.css" integrity="sha384-wITovz90syo1dJWVh32uuETPVEtGigN07tkttEqPv+uR2SE/mbQcG7ATL28aI9H0" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+  
+  
+  <link rel="stylesheet" href="https://martinliu.cn/css/main.css" />
+  <link rel="stylesheet" href="https://martinliu.cn/css/search.css" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" />
+  
+
+
+
+<link rel="stylesheet" href="https://martinliu.cn/css/prism.css" />
+
+
+<script>
+    var _hmt = _hmt || [];
+    (function () {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?50c3a9ae6c51222b31df5510bbca479f";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.1/photoswipe.min.css" integrity="sha256-sCl5PUOGMLfFYctzDW3MtRib0ctyUvI9Qsmq2wXOeBY=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.1/default-skin/default-skin.min.css" integrity="sha256-BFeI1V+Vh1Rk37wswuOYn5lsTcaU96hGaI7OUVCLjPc=" crossorigin="anonymous" />
+
+
+
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+<div class="pswp__bg"></div>
+
+<div class="pswp__scroll-wrap">
+    
+    <div class="pswp__container">
+      <div class="pswp__item"></div>
+      <div class="pswp__item"></div>
+      <div class="pswp__item"></div>
+    </div>
+    
+    <div class="pswp__ui pswp__ui--hidden">
+    <div class="pswp__top-bar">
+      
+      <div class="pswp__counter"></div>
+      <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+      <button class="pswp__button pswp__button--share" title="Share"></button>
+      <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+      <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+      
+      
+      <div class="pswp__preloader">
+        <div class="pswp__preloader__icn">
+          <div class="pswp__preloader__cut">
+            <div class="pswp__preloader__donut"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+      <div class="pswp__share-tooltip"></div>
+    </div>
+    <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+    </button>
+    <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+    </button>
+    <div class="pswp__caption">
+      <div class="pswp__caption__center"></div>
+    </div>
+    </div>
+    </div>
+</div>
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-749876-6', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+
+</head>
+
+  <body>
+    <nav class="navbar navbar-default navbar-fixed-top navbar-custom">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#main-navbar">
+        <span class="sr-only">切换导航</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="https://martinliu.cn/">Martin&#39;s Blog</a>
+    </div>
+    <div class="collapse navbar-collapse" id="main-navbar">
+      <ul class="nav navbar-nav navbar-right">
+        
+          
+            <li>
+              <a title="首页" href="/">首页</a>
+              
+              
+            </li>
+          
+        
+          
+            <li>
+              <a title="标签" href="/tags">标签</a>
+              
+              
+            </li>
+          
+        
+          
+            <li>
+              <a title="关于" href="/about">关于</a>
+              
+              
+            </li>
+          
+        
+          
+            <li>
+              <a title="书籍" href="https://handbook.martinliu.cn">书籍</a>
+              
+              
+            </li>
+          
+        
+
+        
+
+        
+        
+          <li>
+            <a href="#modalSearch" data-toggle="modal" data-target="#modalSearch" style="outline: none;">
+              <span class="hidden-sm hidden-md hidden-lg">搜索</span> <span id="searchGlyph" class="glyphicon glyphicon-search"></span>
+            </a>
+          </li>
+          
+      </ul>
+    </div>
+
+    <div class="avatar-container">
+      <div class="avatar-img-border">
+        
+          <a title="Martin&#39;s Blog" href="https://martinliu.cn/">
+            <img class="avatar-img" src="https://res.cloudinary.com/martinliu/image/upload/q_auto:eco/avatar.jpg" alt="Martin&#39;s Blog" />
+          </a>
+        
+      </div>
+    </div>
+
+  </div>
+</nav>
+
+
+
+
+
+  <div id="modalSearch" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">全站搜索 by swiftype </h4>
+        </div>
+        <div class="modal-body">
+            <style>
+  .st-default-search-input {
+    width: calc(100% - 45px);
+  }
+</style>
+<div>
+  <form>
+    <input type="text" class="st-default-search-input" />
+  </form>
+</div>
+
+
+<script type="text/javascript">
+  (function(w,d,t,u,n,s,e){w['SwiftypeObject']=n;w[n]=w[n]||function(){
+  (w[n].q=w[n].q||[]).push(arguments);};s=d.createElement(t);
+  e=d.getElementsByTagName(t)[0];s.async=1;s.src=u;e.parentNode.insertBefore(s,e);
+  })(window,document,'script','//s.swiftypecdn.com/install/v2/st.js','_st');
+  
+  _st('install','rvHKnQr8PJKjRDhyUWot','2.0.0');
+</script>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+    
+  
+  
+  
+  
+
+
+
+
+  
+    <div id="header-big-imgs" data-num-img=1 data-img-src-1="https://res.cloudinary.com/martinliu/image/upload/q_auto:eco/fw2.jpg" data-img-desc-1="DevOps is for everyone"></div>
+  
+
+  <header class="header-section has-img">
+    
+      <div class="intro-header big-img">
+        
+        
+        <div class="container">
+          <div class="row">
+              <div class="col-lg-12 col-md-12 col-md-offset-0">
+                
+                <div class="page-heading">
+                
+                  
+                    <span class="page-subheading">DevOps适用于任何希望持续进化的IT组织</span>
+                  
+                  
+                  
+                    <hr class="small">
+                    <span class="page-subheading">精益IT实践非常重要</span>
+                  
+                  
+                
+              </div>
+            </div>
+          </div>
+        </div>
+        <span class="img-desc" style="display: inline;"></span>
+      </div>
+    
+  </header>
+
+
+    
+  <div role="main" class="container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        
+          <div class="well">
+            <p>刘征是<a href="http://www.ituring.com.cn/book/1891">《DevOps Handbook》（中文书名：DevOps实践指南）</a>的译者，中国DevOps社区组织者，致力于推广DevOps的理念、技术和实践。</p>
+
+          </div>
+        
+
+        <div class="posts-list">
+          
+          
+            <article class="post-preview">
+              <a  target="_blank" href="https://martinliu.cn/2010/07/16/ocs-inventory-ng/">
+                <h2 class="post-title">OCS inventory NG 两三事</h2>
+                
+              </a>
+
+              <span class="post-meta">
+  
+  发表于 2010, July 16
+  
+  
+</span>
+
+
+              <div class="post-entry">
+                
+                  头等大事是有关于OCSNG很快就要出UTF8多语言支持版的Windows采集代理程序。新闻如下： ** 新版windows采集代理被彻底重写，它将
+                  <a target="_blank" href="https://martinliu.cn/2010/07/16/ocs-inventory-ng/" class="post-read-more">[阅读全文]</a>
+                
+              </div>
+
+              
+                <span class="post-meta">
+                
+                  #<a href="https://martinliu.cn/tags/glpi/">GLPI</a>&nbsp;
+                
+                  #<a href="https://martinliu.cn/tags/linux/">linux</a>&nbsp;
+                
+                  #<a href="https://martinliu.cn/tags/ocsng/">OCSNG</a>&nbsp;
+                
+                </span>
+              
+            </article>
+          
+            <article class="post-preview">
+              <a  target="_blank" href="https://martinliu.cn/2010/06/20/upgraded-wordpress-30/">
+                <h2 class="post-title">Upgraded to Wordpress 3.0</h2>
+                
+              </a>
+
+              <span class="post-meta">
+  
+  发表于 2010, June 20
+  
+  
+</span>
+
+
+              <div class="post-entry">
+                
+                  期待多时的3.0版本终于出现了，刚刚升级上来，还没有体验到她的新功能，先换上了最新的皮肤，看上去字体和布局都非常舒服。简单就是美，希望Wor
+                  <a target="_blank" href="https://martinliu.cn/2010/06/20/upgraded-wordpress-30/" class="post-read-more">[阅读全文]</a>
+                
+              </div>
+
+              
+                <span class="post-meta">
+                
+                  #<a href="https://martinliu.cn/tags/wordpress/">wordpress</a>&nbsp;
+                
+                </span>
+              
+            </article>
+          
+            <article class="post-preview">
+              <a  target="_blank" href="https://martinliu.cn/2010/06/07/bmc-remedy-ondemand/">
+                <h2 class="post-title">BMC提供ITSM洋快餐</h2>
+                
+              </a>
+
+              <span class="post-meta">
+  
+  发表于 2010, June 7
+  
+  
+</span>
+
+
+              <div class="post-entry">
+                
+                  还有很多企业依然在寻找IT服务管理的方法论 还有很多企业依然在让内部开发团队打造ITSM流程平台 也还有很多企业在购买的成熟的ITSM管理平台套
+                  <a target="_blank" href="https://martinliu.cn/2010/06/07/bmc-remedy-ondemand/" class="post-read-more">[阅读全文]</a>
+                
+              </div>
+
+              
+                <span class="post-meta">
+                
+                  #<a href="https://martinliu.cn/tags/bmc/">BMC</a>&nbsp;
+                
+                  #<a href="https://martinliu.cn/tags/cloud/">cloud</a>&nbsp;
+                
+                  #<a href="https://martinliu.cn/tags/cloud-computing/">Cloud Computing</a>&nbsp;
+                
+                  #<a href="https://martinliu.cn/tags/itil/">ITIL</a>&nbsp;
+                
+                  #<a href="https://martinliu.cn/tags/itsm/">ITSM</a>&nbsp;
+                
+                  #<a href="https://martinliu.cn/tags/remedy/">remedy</a>&nbsp;
+                
+                </span>
+              
+            </article>
+          
+            <article class="post-preview">
+              <a  target="_blank" href="https://martinliu.cn/2010/06/04/plan-cmdb-population-001/">
+                <h2 class="post-title">规划CMDB数据填充-001</h2>
+                
+              </a>
+
+              <span class="post-meta">
+  
+  发表于 2010, June 4
+  
+  
+</span>
+
+
+              <div class="post-entry">
+                
+                  <p>From 《Step by step to build a CMDB》步骤17-规划CMDB数据填充</p>
+
+<p>目标</p>
+
+<p>在这一CMDB关键的步骤中，会为CMDB的初始化CI数据填充，做精细的计划。需要考虑到所有CI数据，把不同CI类型对应到不同的数据集中，安排正确的顺序将这些数据集CMDB。其中定义对应的规则来调和重复数据是很重要的，不仅在CMDB初始化数据填充阶段重要，在以后的日常维护过程中也是非常重要的。做出了本阶段的详细规划后，这样在第18步即“选择自动化CMDB填充工具”时，就能考虑需要什么样的配置发现和自动化工具了。</p>
+
+<p><img src="http://pursuitmag.com/wp-content/uploads/2010/01/private-investigator-database.jpg" alt="" /></p>
+
+<p>实际上，把数据填充到CMDB中是非常基础的工作，必须事前做好充分的数据范围和类型的分析。对于一个典型的CMDB数据填过程来说，将需要做如下工作：</p>
+
+<ul>
+<li><p>建立里项目程碑和高阶项目计划，以及配套的支撑数据库和操作流程。</p></li>
+
+<li><p>安排项目启动会议，单周或者双周的项目进度沟通会。</p></li>
+
+<li><p>识别子项目（每个数据集分为一个子项目），建立每个子项目的目标和需求清单。识别和制定项目工作活动内容，确定项目的工作流程，并且按照项目计划排程所有活动。包括：
+&mdash;并行开展项目（用户界面定制，DSL数据填充）；
+&mdash;串行开展项目（发现工具，数据调和，等等）</p></li>
+
+<li><p>为每个子项目分配项目负责人，让他们来负责汇报项目的进展、问题升级和下一步的工作。</p></li>
+
+<li><p>为所有项目参与人员建立一个开放的沟通平台，包括所有内部、外部人员（邮件组方式，数据库、通报）</p></li>
+
+<li><p>为可能出现的紧急事件预留至少10%的时间和预算的缓冲。</p></li>
+</ul>
+                  <a target="_blank" href="https://martinliu.cn/2010/06/04/plan-cmdb-population-001/" class="post-read-more">[阅读全文]</a>
+                
+              </div>
+
+              
+                <span class="post-meta">
+                
+                  #<a href="https://martinliu.cn/tags/bmc/">BMC</a>&nbsp;
+                
+                  #<a href="https://martinliu.cn/tags/ci/">ci</a>&nbsp;
+                
+                  #<a href="https://martinliu.cn/tags/class/">class</a>&nbsp;
+                
+                  #<a href="https://martinliu.cn/tags/cmdb/">cmdb</a>&nbsp;
+                
+                  #<a href="https://martinliu.cn/tags/dataset/">dataset</a>&nbsp;
+                
+                  #<a href="https://martinliu.cn/tags/step-by-step-to-build-a-cmdb/">step by step to build a cmdb</a>&nbsp;
+                
+                </span>
+              
+            </article>
+          
+            <article class="post-preview">
+              <a  target="_blank" href="https://martinliu.cn/2010/06/01/itsm-implement-best-practice/">
+                <h2 class="post-title">ITSM实施精要-只讲2分钟</h2>
+                
+              </a>
+
+              <span class="post-meta">
+  
+  发表于 2010, June 1
+  
+  
+</span>
+
+
+              <div class="post-entry">
+                
+                  <p>下面是我在过去ITSM项目实施中的一些经验和体会：</p>
+
+<p><a href="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2010/06/ITSM_implement.swf">ITSM_implement best practice</a></p>
+
+<p><a href="http://www.box.net/shared/rld8smakt1">下载</a></p>
+
+<p>Credit：本ppt的原版为《the 60 second guide to Enterprise Innovation》</p>
+
+                
+              </div>
+
+              
+                <span class="post-meta">
+                
+                  #<a href="https://martinliu.cn/tags/itil/">ITIL</a>&nbsp;
+                
+                  #<a href="https://martinliu.cn/tags/itsm/">ITSM</a>&nbsp;
+                
+                </span>
+              
+            </article>
+          
+            <article class="post-preview">
+              <a  target="_blank" href="https://martinliu.cn/2010/05/31/federation-cmdb/">
+                <h2 class="post-title">联邦的CMDB–神话/现实/需求/还是策略？</h2>
+                
+              </a>
+
+              <span class="post-meta">
+  
+  发表于 2010, May 31
+  
+  
+</span>
+
+
+              <div class="post-entry">
+                
+                  <p>来自：Jonathan Markworth（CompuCom Systems有限公司管理顾问，探讨联邦数据库的优点）</p>
+
+<p>使用一个具有单一的、全知的、万能的和自维护功能的工具，来管理IT基础架的方方面面信息，是否是最好的方案呢？使用一个能做所有工作的全集成平台，来替换您积累下来的所有管理工具是否是最佳方式？现实情况是，大多数组织都已经实施了几十种应用程序、工具、实用程序、数据存储、硬件平台和管理框架，它们一起运行着一个或更多的IT服务管理功能。它们中的每一个应用都有自己的数据库，对当前环境中的一些关键管理功能提供信息支持。在CMDB应用场景中，这些工具相关的数据库中，其实也包含了大量关键的CI属性，这些属性可以用于识别CI之间的关系。重要的问题是，如何利用现有的投资和资源来建立一个底层共享的数据库，比如一个CMDB。</p>
+
+<p><img src="http://www.jevotrust.com/Site/graphics/cmdb_config_management.jpg" alt="" /></p>
+                  <a target="_blank" href="https://martinliu.cn/2010/05/31/federation-cmdb/" class="post-read-more">[阅读全文]</a>
+                
+              </div>
+
+              
+                <span class="post-meta">
+                
+                  #<a href="https://martinliu.cn/tags/atrium/">Atrium</a>&nbsp;
+                
+                  #<a href="https://martinliu.cn/tags/bmc/">BMC</a>&nbsp;
+                
+                  #<a href="https://martinliu.cn/tags/bsm/">BSM</a>&nbsp;
+                
+                  #<a href="https://martinliu.cn/tags/cmdb/">cmdb</a>&nbsp;
+                
+                  #<a href="https://martinliu.cn/tags/federation/">federation</a>&nbsp;
+                
+                  #<a href="https://martinliu.cn/tags/remedy/">remedy</a>&nbsp;
+                
+                </span>
+              
+            </article>
+          
+            <article class="post-preview">
+              <a  target="_blank" href="https://martinliu.cn/2010/04/26/cmdb-addm-tool-implement-good-practice/">
+                <h2 class="post-title">CMDB配置采集工具部署之4大挑战</h2>
+                
+              </a>
+
+              <span class="post-meta">
+  
+  发表于 2010, April 26
+  
+  
+</span>
+
+
+              <div class="post-entry">
+                
+                  <p>[singlepic id=84 w=320 h=240 mode=watermark float=left] <em><strong>挑战1：沟通成本大</strong></em>
+项目的参与沟通方可能很多，最多的情况下，可能包括：网络部门、系统部门、安全部门和各个业务部门。沟通的内容主要是配置采集的实施技术方式。其中采集的安全性，风险分析是最重要的部分；在部门多的情况下，面对多种选择的时候，逐一给项目各方说清所有方案，特别是讲清楚利弊是非常耗时的。在充分沟通了所有技术可能性之后，才能做出倾向性选择。逐一这是第一轮沟通，搞清楚了倾向性而已。</p>
+
+<p><strong><em>挑战2：决策成本大</em></strong>
+特别是银行等金融企业，安全性要求特别高。安全风险方面的建议往往是最重要的，他们的建议对配置采集工具的实施具有决定性意义。在各方都充分理解了配置采集工具的架构和安全性之后，就是拍板定夺了。这种逐级的审批和决策是需要较长的周期。</p>
+
+<p><strong><em>挑战3：前导时间成本太大</em></strong>
+在前导时间里，可能还没有部署正式的ADDM采集服务器。在这个阶段里，要配置网络，让以后的采集服务器能够处于能够扫描到所有目标服务器设备。还可能需要在每台服务器上配置相关的准备工作，主要是坚持主机的操作系统的账户、采集协议和安全配置等是否满足配置采集工具的要求。这写工作是一个群众性运动，需要让所有的系统管理员配合。此项工作的设计人员设备多，最好能尽早的开始。</p>
+                  <a target="_blank" href="https://martinliu.cn/2010/04/26/cmdb-addm-tool-implement-good-practice/" class="post-read-more">[阅读全文]</a>
+                
+              </div>
+
+              
+                <span class="post-meta">
+                
+                  #<a href="https://martinliu.cn/tags/asset/">asset</a>&nbsp;
+                
+                  #<a href="https://martinliu.cn/tags/cmdb/">cmdb</a>&nbsp;
+                
+                  #<a href="https://martinliu.cn/tags/cms/">cms</a>&nbsp;
+                
+                  #<a href="https://martinliu.cn/tags/inventory/">inventory</a>&nbsp;
+                
+                  #<a href="https://martinliu.cn/tags/itil/">ITIL</a>&nbsp;
+                
+                  #<a href="https://martinliu.cn/tags/itsm/">ITSM</a>&nbsp;
+                
+                </span>
+              
+            </article>
+          
+            <article class="post-preview">
+              <a  target="_blank" href="https://martinliu.cn/2010/04/18/naya_cat_weekend/">
+                <h2 class="post-title">Naya-猫-周末</h2>
+                
+              </a>
+
+              <span class="post-meta">
+  
+  发表于 2010, April 18
+  
+  
+</span>
+
+
+              <div class="post-entry">
+                
+                  厦门持续的阴雨，这样的天气已经持续很久了，看来清明和谷雨前后没有什么好天气了，说实话不太适应南方这种鬼天气，比较怀念上周6北京的大晴天。今天
+                  <a target="_blank" href="https://martinliu.cn/2010/04/18/naya_cat_weekend/" class="post-read-more">[阅读全文]</a>
+                
+              </div>
+
+              
+                <span class="post-meta">
+                
+                  #<a href="https://martinliu.cn/tags/naya/">Naya</a>&nbsp;
+                
+                  #<a href="https://martinliu.cn/tags/%E9%BC%93%E6%B5%AA%E5%B1%BF/">鼓浪屿</a>&nbsp;
+                
+                </span>
+              
+            </article>
+          
+            <article class="post-preview">
+              <a  target="_blank" href="https://martinliu.cn/2010/04/15/cmdb-project-need-talents/">
+                <h2 class="post-title">21世纪最缺的是什么？</h2>
+                
+              </a>
+
+              <span class="post-meta">
+  
+  发表于 2010, April 15
+  
+  
+</span>
+
+
+              <div class="post-entry">
+                
+                  21世纪最缺的是人才，在ITIL项目中更是重要。特别是CMDB项目，项目团队人员构成是呈金字塔型。 最顶端的人是Project Executive Board“项
+                  <a target="_blank" href="https://martinliu.cn/2010/04/15/cmdb-project-need-talents/" class="post-read-more">[阅读全文]</a>
+                
+              </div>
+
+              
+                <span class="post-meta">
+                
+                  #<a href="https://martinliu.cn/tags/cmdb/">cmdb</a>&nbsp;
+                
+                  #<a href="https://martinliu.cn/tags/cms/">cms</a>&nbsp;
+                
+                  #<a href="https://martinliu.cn/tags/itil/">ITIL</a>&nbsp;
+                
+                  #<a href="https://martinliu.cn/tags/itsm/">ITSM</a>&nbsp;
+                
+                  #<a href="https://martinliu.cn/tags/project-managemen/">project managemen</a>&nbsp;
+                
+                </span>
+              
+            </article>
+          
+            <article class="post-preview">
+              <a  target="_blank" href="https://martinliu.cn/2010/04/04/alice-wonderland/">
+                <h2 class="post-title">Alice in Wonderland</h2>
+                
+              </a>
+
+              <span class="post-meta">
+  
+  发表于 2010, April 4
+  
+  
+</span>
+
+
+              <div class="post-entry">
+                
+                  今天在厦门看了一次电影，是3D版的，总的来说影片非常好看，可谓是老少皆宜的佳品制作。可惜3D眼镜还是太沉了，脖子看完了很痛。红色皇后的真残酷
+                  <a target="_blank" href="https://martinliu.cn/2010/04/04/alice-wonderland/" class="post-read-more">[阅读全文]</a>
+                
+              </div>
+
+              
+                <span class="post-meta">
+                
+                  #<a href="https://martinliu.cn/tags/movie/">Movie</a>&nbsp;
+                
+                  #<a href="https://martinliu.cn/tags/xiamen/">Xiamen</a>&nbsp;
+                
+                </span>
+              
+            </article>
+          
+        </div>
+
+        
+          <ul class="pager main-pager">
+            
+              <li class="previous">
+                <a href="/page/24">&larr; 上一页</a>
+              </li>
+            
+            
+              <li class="next">
+                <a href="/page/26">下一页 &rarr;</a>
+              </li>
+            
+          </ul>
+        
+      </div>
+      <div align="center" class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        
+
+<ul class="pagination">
+    
+    <li class="page-item">
+        <a href="/" class="page-link" aria-label="First"><span aria-hidden="true">&laquo;&laquo;</span></a>
+    </li>
+    
+    <li class="page-item">
+    <a href="/page/24/" class="page-link" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a>
+    </li>
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    <li class="page-item"><a class="page-link" href="/">1</a></li>
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    <li class="page-item"><a class="page-link" href="/page/2/">2</a></li>
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    <li class="page-item"><a class="page-link" href="/page/3/">3</a></li>
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    <li class="page-item disabled"><span aria-hidden="true">&nbsp;&hellip;&nbsp;</span></li>
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    <li class="page-item"><a class="page-link" href="/page/24/">24</a></li>
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    <li class="page-item active"><a class="page-link" href="/page/25/">25</a></li>
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    <li class="page-item"><a class="page-link" href="/page/26/">26</a></li>
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    <li class="page-item disabled"><span aria-hidden="true">&nbsp;&hellip;&nbsp;</span></li>
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    <li class="page-item"><a class="page-link" href="/page/41/">41</a></li>
+    
+    
+    <li class="page-item">
+    <a href="/page/26/" class="page-link" aria-label="Next"><span aria-hidden="true">&raquo;</span></a>
+    </li>
+    
+    <li class="page-item">
+        <a href="/page/41/" class="page-link" aria-label="Last"><span aria-hidden="true">&raquo;&raquo;</span></a>
+    </li>
+    
+</ul>
+
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+      </div>
+    </div>
+  </div>
+
+    <footer>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <ul class="list-inline text-center footer-links">
+          
+              <li>
+                <a href="mailto:liuzh66@gmail.com" title="Email me">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-envelope fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a href="https://plus.google.com/&#43;MartinLiu-cn" title="Google&#43;">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-google-plus fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a href="https://github.com/martinliu" title="GitHub">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a href="https://twitter.com/martinliu" title="Twitter">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a href="https://linkedin.com/in/liuzheng" title="LinkedIn">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-linkedin fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+          
+        </ul>
+        <p class="credits copyright text-muted">
+        &copy;2017-2018
+
+              刘征 Martin Liu
+
+          
+          
+            &nbsp;&bull;&nbsp;
+            <a href="https://martinliu.cn/">Martin&#39;s Blog</a>
+          
+        </p>
+        
+        <p class="credits theme-by text-muted">
+          由 <a href="http://gohugo.io">Hugo v0.55.0-DEV</a> 强力驱动 &nbsp;&bull;&nbsp; 主题 <a href="https://github.com/halogenica/beautifulhugo">Beautiful Hugo</a> 移植自 <a href="http://deanattali.com/beautiful-jekyll/">Beautiful Jekyll</a>
+          
+        </p>
+
+        <p class="credits theme-by text-muted">
+          全站搜索来自于 <a href="https://swiftype.com/"> swiftype.com </a>
+        </p>
+
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+<script src="https://res.cloudinary.com/martinliu/raw/upload/static/bootstrap.min.js"></script>
+<script src="https://res.cloudinary.com/martinliu/raw/upload/static/photoswipe-ui-default.min.js"></script>
+<script src="https://res.cloudinary.com/martinliu/raw/upload/static/photoswipe.min.js"></script>
+<script src="https://res.cloudinary.com/martinliu/raw/upload/static/auto-render.min.js"></script>
+<script src="https://res.cloudinary.com/martinliu/raw/upload/static/main.js"></script>
+<script src="https://res.cloudinary.com/martinliu/raw/upload/static/prism.js"></script>
+<script src="https://res.cloudinary.com/martinliu/raw/upload/static/katex.min.js"></script>
+<script> renderMathInElement(document.body); </script>
+
+
+
+
+
+
+
+
+  </body>
+</html>
+

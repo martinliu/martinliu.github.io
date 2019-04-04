@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="zh">
+  <head>
+  <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+  <title> Host a Hugo Server on Labtop - Martin Liu&#39;s Blog</title>
+  
+  <meta property="og:title" content="Host a Hugo Server on Labtop" />
+  <meta name="twitter:title" content="Host a Hugo Server on Labtop" />
+  <meta name="description" content="把笔记本上的Hugo站点分享给局域网里的其它人">
+  <meta property="og:description" content="把笔记本上的Hugo站点分享给局域网里的其它人">
+  <meta name="twitter:description" content="把笔记本上的Hugo站点分享给局域网里的其它人">
+  <meta name="author" content="刘征 Martin Liu"/>
+  <link href='https://martinliu.cn/favicon.ico' rel='icon' type='image/x-icon'/>
+
+<meta name="msvalidate.01" content="12F570013342D1F8B60A455D09221C1D" />
+<meta name="yandex-verification" content="7e9acc85531b0f35" />
+<meta name="google-site-verification" content="4oSwNTpy1vzip3_lt6XhkhMfImCD_DZlvL3K1k-M8qk" />
+<meta name="baidu-site-verification" content="Z7d1tYkxzQ" />
+
+<script>(function (w, d, s, l, i) {
+    w[l] = w[l] || []; w[l].push({
+      'gtm.start':
+        new Date().getTime(), event: 'gtm.js'
+    }); var f = d.getElementsByTagName(s)[0],
+      j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : ''; j.async = true; j.src =
+        'https://www.googletagmanager.com/gtm.js?id=' + i + dl; f.parentNode.insertBefore(j, f);
+  })(window, document, 'script', 'dataLayer', 'GTM-TL37V8G');</script>
+
+
+  <meta property="og:image" content="https://res.cloudinary.com/martinliu/image/upload/q_auto:eco/avatar.jpg" />
+  <meta name="twitter:image" content="https://res.cloudinary.com/martinliu/image/upload/q_auto:eco/avatar.jpg" />
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:site" content="@martinliu" />
+  <meta name="twitter:creator" content="@martinliu" />
+  <meta property="og:url" content="https://martinliu.cn/posts/2018-1-host-hugo-server-on-labtop/" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Martin&#39;s Blog" />
+  <meta name="keywords" content="" />
+
+  <meta name="generator" content="Hugo 0.55.0-DEV" />
+  <link rel="canonical" href="https://martinliu.cn/posts/2018-1-host-hugo-server-on-labtop/" />
+  <link rel="alternate" href="https://martinliu.cn/index.xml" type="application/rss+xml" title="Martin&#39;s Blog">
+  <script src="https://res.cloudinary.com/martinliu/raw/upload/static/jquery-1.12.4.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.7.1/katex.min.css" integrity="sha384-wITovz90syo1dJWVh32uuETPVEtGigN07tkttEqPv+uR2SE/mbQcG7ATL28aI9H0" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+  
+  
+  <link rel="stylesheet" href="https://martinliu.cn/css/main.css" />
+  <link rel="stylesheet" href="https://martinliu.cn/css/search.css" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" />
+  
+
+
+
+<link rel="stylesheet" href="https://martinliu.cn/css/prism.css" />
+
+
+<script>
+    var _hmt = _hmt || [];
+    (function () {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?50c3a9ae6c51222b31df5510bbca479f";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.1/photoswipe.min.css" integrity="sha256-sCl5PUOGMLfFYctzDW3MtRib0ctyUvI9Qsmq2wXOeBY=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.1/default-skin/default-skin.min.css" integrity="sha256-BFeI1V+Vh1Rk37wswuOYn5lsTcaU96hGaI7OUVCLjPc=" crossorigin="anonymous" />
+
+
+
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+<div class="pswp__bg"></div>
+
+<div class="pswp__scroll-wrap">
+    
+    <div class="pswp__container">
+      <div class="pswp__item"></div>
+      <div class="pswp__item"></div>
+      <div class="pswp__item"></div>
+    </div>
+    
+    <div class="pswp__ui pswp__ui--hidden">
+    <div class="pswp__top-bar">
+      
+      <div class="pswp__counter"></div>
+      <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+      <button class="pswp__button pswp__button--share" title="Share"></button>
+      <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+      <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+      
+      
+      <div class="pswp__preloader">
+        <div class="pswp__preloader__icn">
+          <div class="pswp__preloader__cut">
+            <div class="pswp__preloader__donut"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+      <div class="pswp__share-tooltip"></div>
+    </div>
+    <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+    </button>
+    <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+    </button>
+    <div class="pswp__caption">
+      <div class="pswp__caption__center"></div>
+    </div>
+    </div>
+    </div>
+</div>
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-749876-6', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+
+</head>
+
+  <body>
+    <nav class="navbar navbar-default navbar-fixed-top navbar-custom">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#main-navbar">
+        <span class="sr-only">切换导航</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="https://martinliu.cn/">Martin&#39;s Blog</a>
+    </div>
+    <div class="collapse navbar-collapse" id="main-navbar">
+      <ul class="nav navbar-nav navbar-right">
+        
+          
+            <li>
+              <a title="首页" href="/">首页</a>
+              
+              
+            </li>
+          
+        
+          
+            <li>
+              <a title="标签" href="/tags">标签</a>
+              
+              
+            </li>
+          
+        
+          
+            <li>
+              <a title="关于" href="/about">关于</a>
+              
+              
+            </li>
+          
+        
+          
+            <li>
+              <a title="书籍" href="https://handbook.martinliu.cn">书籍</a>
+              
+              
+            </li>
+          
+        
+
+        
+
+        
+        
+          <li>
+            <a href="#modalSearch" data-toggle="modal" data-target="#modalSearch" style="outline: none;">
+              <span class="hidden-sm hidden-md hidden-lg">搜索</span> <span id="searchGlyph" class="glyphicon glyphicon-search"></span>
+            </a>
+          </li>
+          
+      </ul>
+    </div>
+
+    <div class="avatar-container">
+      <div class="avatar-img-border">
+        
+          <a title="Martin&#39;s Blog" href="https://martinliu.cn/">
+            <img class="avatar-img" src="https://res.cloudinary.com/martinliu/image/upload/q_auto:eco/avatar.jpg" alt="Martin&#39;s Blog" />
+          </a>
+        
+      </div>
+    </div>
+
+  </div>
+</nav>
+
+
+
+
+
+  <div id="modalSearch" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">全站搜索 by swiftype </h4>
+        </div>
+        <div class="modal-body">
+            <style>
+  .st-default-search-input {
+    width: calc(100% - 45px);
+  }
+</style>
+<div>
+  <form>
+    <input type="text" class="st-default-search-input" />
+  </form>
+</div>
+
+
+<script type="text/javascript">
+  (function(w,d,t,u,n,s,e){w['SwiftypeObject']=n;w[n]=w[n]||function(){
+  (w[n].q=w[n].q||[]).push(arguments);};s=d.createElement(t);
+  e=d.getElementsByTagName(t)[0];s.async=1;s.src=u;e.parentNode.insertBefore(s,e);
+  })(window,document,'script','//s.swiftypecdn.com/install/v2/st.js','_st');
+  
+  _st('install','rvHKnQr8PJKjRDhyUWot','2.0.0');
+</script>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+    
+  
+  
+  
+
+
+
+
+  
+    <div id="header-big-imgs" data-num-img=1 data-img-src-1="http://martinliu.qiniudn.com/images/abstract-3.jpg" ></div>
+  
+
+  <header class="header-section has-img">
+    
+      <div class="intro-header big-img">
+        
+        
+        <div class="container">
+          <div class="row">
+              <div class="col-lg-12 col-md-12 col-md-offset-0">
+                
+                <div class="post-heading">
+                
+                  
+                     <h1>Host a Hugo Server on Labtop</h1>
+                     
+                     
+                  
+                  
+                  
+                    
+                      <hr class="small">
+                      <span class="post-subheading">把笔记本上的Hugo站点分享给局域网里的其它人</span>
+                    
+                  
+                  
+                    <span class="post-meta">
+  
+  发表于 2018, January 4
+  
+  
+</span>
+
+
+                  
+                
+              </div>
+            </div>
+          </div>
+        </div>
+        <span class="img-desc" style="display: inline;"></span>
+      </div>
+    
+  </header>
+
+
+    
+<div class="container" role="main">
+    <div class="row">
+        <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+            
+            <div>
+                <h5 id="wc">字数：700 |大约阅读时间 2 分钟</h5>
+                <h5 id="tags">标签: 
+                    <a href="https://martinliu.cn//tags/hugo">hugo</a> &nbsp;
+                </h5>
+
+            </div>
+            <article role="main" class="blog-post">
+                
+
+<h1 id="将笔记本上的hugo站点分享给局域网里的其他人">将笔记本上的Hugo站点分享给局域网里的其他人</h1>
+
+<p>我的笔记本上有好几个Hugo做的静态的站点，有自己的个人Blog，有公司产品的培训文档；其中的有些站点内容，有可能是不方便发布到Internet上，有可能是你的观众并没有条件访问Internet，但是使大家同在一个局域网里是一个很现实很方便的做法。那么怎样以最小的代价实现这个需求呢？</p>
+
+<h2 id="选择hugo服务器启动参数">选择Hugo服务器启动参数</h2>
+
+<p>为了满足以上需求，在启动Hugo服务器的时候需要增加两个参数，如下所示：</p>
+
+<pre><code>martin@bogon:source/martinliu-hugo ‹master*›$ hugo server --bind 192.168.1.107 --baseURL http://192.168.1.107/
+Started building sites ...
+
+Built site for language en:
+0 draft content
+0 future content
+0 expired content
+387 regular pages created
+1100 other pages created
+0 non-page files copied
+668 paginator pages created
+509 tags created
+37 categories created
+total in 922 ms
+Watching for changes in /Users/martin/source/martinliu-hugo/{content,static,themes}
+Serving pages from memory
+Web Server is available at http://192.168.1.107:1313/ (bind address 192.168.1.107)
+Press Ctrl+C to stop
+</code></pre>
+
+<p>对以上参数的解释：</p>
+
+<ul>
+<li>&ndash;bind 192.168.1.107 ：这个192的IP地址是笔记本目前局域网（Wifi）的地址，其他人需要和你同在这个局域网里，或者能够访问到这个网段的地址</li>
+<li>&ndash;baseURL <a href="http://192.168.1.107/">http://192.168.1.107/</a> ： 这会覆盖Hugo站点里根目录下配置文件里的baseURL参数，有可能配置文件中这个参数是类似于 <a href="http://martinliu.cn/">http://martinliu.cn/</a> ，如果不加这个参数的话网站上的相关图片会显示不出来。</li>
+</ul>
+
+<h2 id="配置笔记本电脑的防火墙">配置笔记本电脑的防火墙</h2>
+
+<p>以macOS为例，当你启动了这个Hugo服务器的时候，你访问 Security &amp; Privacy 配置的时候，选择 Firewall 标签的时候，会自动弹出一个对话框，询问是否允许 incoming 的网络连接到 hugo 的应用服务。点击允许即可，这样防火墙配置里就多了一条配置，如下图所示：</p>
+
+<p><img src="http://martinliu.qiniudn.com/images/hugo-firewall-rule.jpeg" alt="firewall" /></p>
+
+<h2 id="总结">总结</h2>
+
+<p>Hugo可以很方便的将本地站点分享给局域网里的其它人，只需要在启动的时候加上适当的参数，配置好本机的防火墙策略即可。</p>
+
+                    <a href="http://zhihu.com/people/devopscoach" target="_blank">
+                    <img src="https://res.cloudinary.com/martinliu/image/upload/q_auto:eco/martin-at-zhihu.png" alt="DevOps教练在知乎" />
+                    </a>
+            </article>
+            
+
+            <ul class="pager blog-pager">
+                
+                <li class="previous">
+                    <a href="https://martinliu.cn/posts/2018-1-kubecon17/" data-toggle="tooltip" data-placement="top" title="Kubecon 2017演讲稿和视频下载">&larr; 前一篇</a>
+                </li>
+                 
+                <li class="next">
+                    <a href="https://martinliu.cn/posts/2018-1-container-orchestration-wars/" data-toggle="tooltip" data-placement="top" title="Container Orchestration Wars">后一篇 &rarr;</a>
+                </li>
+                
+            </ul>
+            <div>
+                 
+            </div>
+            
+
+            
+            
+
+        </div>
+    </div>
+    </section>
+</div>
+
+    <footer>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <ul class="list-inline text-center footer-links">
+          
+              <li>
+                <a href="mailto:liuzh66@gmail.com" title="Email me">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-envelope fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a href="https://plus.google.com/&#43;MartinLiu-cn" title="Google&#43;">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-google-plus fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a href="https://github.com/martinliu" title="GitHub">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a href="https://twitter.com/martinliu" title="Twitter">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a href="https://linkedin.com/in/liuzheng" title="LinkedIn">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-linkedin fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+          
+        </ul>
+        <p class="credits copyright text-muted">
+        &copy;2017-2018
+
+              刘征 Martin Liu
+
+          
+          
+            &nbsp;&bull;&nbsp;
+            <a href="https://martinliu.cn/">Martin&#39;s Blog</a>
+          
+        </p>
+        
+        <p class="credits theme-by text-muted">
+          由 <a href="http://gohugo.io">Hugo v0.55.0-DEV</a> 强力驱动 &nbsp;&bull;&nbsp; 主题 <a href="https://github.com/halogenica/beautifulhugo">Beautiful Hugo</a> 移植自 <a href="http://deanattali.com/beautiful-jekyll/">Beautiful Jekyll</a>
+          
+        </p>
+
+        <p class="credits theme-by text-muted">
+          全站搜索来自于 <a href="https://swiftype.com/"> swiftype.com </a>
+        </p>
+
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+<script src="https://res.cloudinary.com/martinliu/raw/upload/static/bootstrap.min.js"></script>
+<script src="https://res.cloudinary.com/martinliu/raw/upload/static/photoswipe-ui-default.min.js"></script>
+<script src="https://res.cloudinary.com/martinliu/raw/upload/static/photoswipe.min.js"></script>
+<script src="https://res.cloudinary.com/martinliu/raw/upload/static/auto-render.min.js"></script>
+<script src="https://res.cloudinary.com/martinliu/raw/upload/static/main.js"></script>
+<script src="https://res.cloudinary.com/martinliu/raw/upload/static/prism.js"></script>
+<script src="https://res.cloudinary.com/martinliu/raw/upload/static/katex.min.js"></script>
+<script> renderMathInElement(document.body); </script>
+
+
+
+
+
+
+
+
+  </body>
+</html>
+

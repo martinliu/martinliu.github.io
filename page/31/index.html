@@ -1,0 +1,1217 @@
+<!DOCTYPE html>
+<html lang="zh">
+  <head>
+  <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+  <title> Martin&#39;s Blog - Martin Liu&#39;s Blog</title>
+  
+  <meta property="og:title" content="Martin&#39;s Blog" />
+  <meta name="twitter:title" content="Martin&#39;s Blog" />
+  <meta name="description" content="刘征是《DevOps Handbook》（中文书名：DevOps实践指南）的译者，中国DevOps社区组织者，致力于推广DevOps的理念、技术和实践。">
+  <meta property="og:description" content="刘征是《DevOps Handbook》（中文书名：DevOps实践指南）的译者，中国DevOps社区组织者，致力于推广DevOps的理念、技术和实践。">
+  <meta name="twitter:description" content="刘征是《DevOps Handbook》（中文书名：DevOps实践指南）的译者，中国DevOps社区组织者，致力于推广DevOps的理念、技术和实践。">
+  <meta name="author" content="刘征 Martin Liu"/>
+  <link href='https://martinliu.cn/favicon.ico' rel='icon' type='image/x-icon'/>
+
+<meta name="msvalidate.01" content="12F570013342D1F8B60A455D09221C1D" />
+<meta name="yandex-verification" content="7e9acc85531b0f35" />
+<meta name="google-site-verification" content="4oSwNTpy1vzip3_lt6XhkhMfImCD_DZlvL3K1k-M8qk" />
+<meta name="baidu-site-verification" content="Z7d1tYkxzQ" />
+
+<script>(function (w, d, s, l, i) {
+    w[l] = w[l] || []; w[l].push({
+      'gtm.start':
+        new Date().getTime(), event: 'gtm.js'
+    }); var f = d.getElementsByTagName(s)[0],
+      j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : ''; j.async = true; j.src =
+        'https://www.googletagmanager.com/gtm.js?id=' + i + dl; f.parentNode.insertBefore(j, f);
+  })(window, document, 'script', 'dataLayer', 'GTM-TL37V8G');</script>
+
+
+  <meta property="og:image" content="https://res.cloudinary.com/martinliu/image/upload/q_auto:eco/avatar.jpg" />
+  <meta name="twitter:image" content="https://res.cloudinary.com/martinliu/image/upload/q_auto:eco/avatar.jpg" />
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:site" content="@martinliu" />
+  <meta name="twitter:creator" content="@martinliu" />
+  <meta property="og:url" content="https://martinliu.cn/" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Martin&#39;s Blog" />
+  <meta name="keywords" content="" />
+
+  <meta name="generator" content="Hugo 0.55.0-DEV" />
+  <link rel="canonical" href="https://martinliu.cn/" />
+  <link rel="alternate" href="https://martinliu.cn/index.xml" type="application/rss+xml" title="Martin&#39;s Blog">
+  <script src="https://res.cloudinary.com/martinliu/raw/upload/static/jquery-1.12.4.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.7.1/katex.min.css" integrity="sha384-wITovz90syo1dJWVh32uuETPVEtGigN07tkttEqPv+uR2SE/mbQcG7ATL28aI9H0" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+  
+  
+  <link rel="stylesheet" href="https://martinliu.cn/css/main.css" />
+  <link rel="stylesheet" href="https://martinliu.cn/css/search.css" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" />
+  
+
+
+
+<link rel="stylesheet" href="https://martinliu.cn/css/prism.css" />
+
+
+<script>
+    var _hmt = _hmt || [];
+    (function () {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?50c3a9ae6c51222b31df5510bbca479f";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.1/photoswipe.min.css" integrity="sha256-sCl5PUOGMLfFYctzDW3MtRib0ctyUvI9Qsmq2wXOeBY=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.1/default-skin/default-skin.min.css" integrity="sha256-BFeI1V+Vh1Rk37wswuOYn5lsTcaU96hGaI7OUVCLjPc=" crossorigin="anonymous" />
+
+
+
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+<div class="pswp__bg"></div>
+
+<div class="pswp__scroll-wrap">
+    
+    <div class="pswp__container">
+      <div class="pswp__item"></div>
+      <div class="pswp__item"></div>
+      <div class="pswp__item"></div>
+    </div>
+    
+    <div class="pswp__ui pswp__ui--hidden">
+    <div class="pswp__top-bar">
+      
+      <div class="pswp__counter"></div>
+      <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+      <button class="pswp__button pswp__button--share" title="Share"></button>
+      <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+      <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+      
+      
+      <div class="pswp__preloader">
+        <div class="pswp__preloader__icn">
+          <div class="pswp__preloader__cut">
+            <div class="pswp__preloader__donut"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+      <div class="pswp__share-tooltip"></div>
+    </div>
+    <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+    </button>
+    <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+    </button>
+    <div class="pswp__caption">
+      <div class="pswp__caption__center"></div>
+    </div>
+    </div>
+    </div>
+</div>
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-749876-6', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+
+</head>
+
+  <body>
+    <nav class="navbar navbar-default navbar-fixed-top navbar-custom">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#main-navbar">
+        <span class="sr-only">切换导航</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="https://martinliu.cn/">Martin&#39;s Blog</a>
+    </div>
+    <div class="collapse navbar-collapse" id="main-navbar">
+      <ul class="nav navbar-nav navbar-right">
+        
+          
+            <li>
+              <a title="首页" href="/">首页</a>
+              
+              
+            </li>
+          
+        
+          
+            <li>
+              <a title="标签" href="/tags">标签</a>
+              
+              
+            </li>
+          
+        
+          
+            <li>
+              <a title="关于" href="/about">关于</a>
+              
+              
+            </li>
+          
+        
+          
+            <li>
+              <a title="书籍" href="https://handbook.martinliu.cn">书籍</a>
+              
+              
+            </li>
+          
+        
+
+        
+
+        
+        
+          <li>
+            <a href="#modalSearch" data-toggle="modal" data-target="#modalSearch" style="outline: none;">
+              <span class="hidden-sm hidden-md hidden-lg">搜索</span> <span id="searchGlyph" class="glyphicon glyphicon-search"></span>
+            </a>
+          </li>
+          
+      </ul>
+    </div>
+
+    <div class="avatar-container">
+      <div class="avatar-img-border">
+        
+          <a title="Martin&#39;s Blog" href="https://martinliu.cn/">
+            <img class="avatar-img" src="https://res.cloudinary.com/martinliu/image/upload/q_auto:eco/avatar.jpg" alt="Martin&#39;s Blog" />
+          </a>
+        
+      </div>
+    </div>
+
+  </div>
+</nav>
+
+
+
+
+
+  <div id="modalSearch" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">全站搜索 by swiftype </h4>
+        </div>
+        <div class="modal-body">
+            <style>
+  .st-default-search-input {
+    width: calc(100% - 45px);
+  }
+</style>
+<div>
+  <form>
+    <input type="text" class="st-default-search-input" />
+  </form>
+</div>
+
+
+<script type="text/javascript">
+  (function(w,d,t,u,n,s,e){w['SwiftypeObject']=n;w[n]=w[n]||function(){
+  (w[n].q=w[n].q||[]).push(arguments);};s=d.createElement(t);
+  e=d.getElementsByTagName(t)[0];s.async=1;s.src=u;e.parentNode.insertBefore(s,e);
+  })(window,document,'script','//s.swiftypecdn.com/install/v2/st.js','_st');
+  
+  _st('install','rvHKnQr8PJKjRDhyUWot','2.0.0');
+</script>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+    
+  
+  
+  
+  
+
+
+
+
+  
+    <div id="header-big-imgs" data-num-img=1 data-img-src-1="https://res.cloudinary.com/martinliu/image/upload/q_auto:eco/fw2.jpg" data-img-desc-1="DevOps is for everyone"></div>
+  
+
+  <header class="header-section has-img">
+    
+      <div class="intro-header big-img">
+        
+        
+        <div class="container">
+          <div class="row">
+              <div class="col-lg-12 col-md-12 col-md-offset-0">
+                
+                <div class="page-heading">
+                
+                  
+                    <span class="page-subheading">DevOps适用于任何希望持续进化的IT组织</span>
+                  
+                  
+                  
+                    <hr class="small">
+                    <span class="page-subheading">精益IT实践非常重要</span>
+                  
+                  
+                
+              </div>
+            </div>
+          </div>
+        </div>
+        <span class="img-desc" style="display: inline;"></span>
+      </div>
+    
+  </header>
+
+
+    
+  <div role="main" class="container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        
+          <div class="well">
+            <p>刘征是<a href="http://www.ituring.com.cn/book/1891">《DevOps Handbook》（中文书名：DevOps实践指南）</a>的译者，中国DevOps社区组织者，致力于推广DevOps的理念、技术和实践。</p>
+
+          </div>
+        
+
+        <div class="posts-list">
+          
+          
+            <article class="post-preview">
+              <a  target="_blank" href="https://martinliu.cn/2009/02/04/e7b6b2e692ad-born-to-misrepresent-e7acace4ba8ce99b86efbc9ae795b6-opennms-e98187e4b88a-sflc-efbc8ce582ace7949fe4ba86-moglen-ravicher-llc/">
+                <h2 class="post-title">[網播] Born to MISrepresent 第二集：當 OpenNMS 遇上 SFLC ，催生了 Moglen Ravicher LLC</h2>
+                
+              </a>
+
+              <span class="post-meta">
+  
+  发表于 2009, February 4
+  
+  
+</span>
+
+
+              <div class="post-entry">
+                
+                  （原文於 2008-04-08 發表於 http://blog.roodo.com/ystuan/archives/5830995.html） 這個音檔的授權是姓名標
+                  <a target="_blank" href="https://martinliu.cn/2009/02/04/e7b6b2e692ad-born-to-misrepresent-e7acace4ba8ce99b86efbc9ae795b6-opennms-e98187e4b88a-sflc-efbc8ce582ace7949fe4ba86-moglen-ravicher-llc/" class="post-read-more">[阅读全文]</a>
+                
+              </div>
+
+              
+                <span class="post-meta">
+                
+                  #<a href="https://martinliu.cn/tags/linux/">linux</a>&nbsp;
+                
+                  #<a href="https://martinliu.cn/tags/moglen-ravicher-llc/">Moglen Ravicher LLC</a>&nbsp;
+                
+                  #<a href="https://martinliu.cn/tags/opennms/">OpenNMS</a>&nbsp;
+                
+                  #<a href="https://martinliu.cn/tags/sflc/">SFLC</a>&nbsp;
+                
+                </span>
+              
+            </article>
+          
+            <article class="post-preview">
+              <a  target="_blank" href="https://martinliu.cn/2009/02/02/it-just-looks-like-a-mac-desktop/">
+                <h2 class="post-title">It just looks like a Mac desktop</h2>
+                
+              </a>
+
+              <span class="post-meta">
+  
+  发表于 2009, February 2
+  
+  
+</span>
+
+
+              <div class="post-entry">
+                
+                  <p><img src="http://www.apple.com.cn/getamac/whichmac/images/portables_macbookair20090106.jpg" alt="" />We all knows Mac OS X looks very nice, and works nice also. But, Mac can not be only system for you to use. Most of us are using Intel PC desktops and laptops. You can&rsquo;t have your cake and eat it too. Chinese saying says &ldquo;鱼和熊掌不可得兼&rdquo; . So, you might need a new Mac skin for your desktop, no matter MS Windows or Linux OS. I&rsquo;d like share two tips, you can make a Mac desktop in  minutes.<br /><br />**For Windows: <strong>FlyakiteOSX is a all-in-one package. It much more easier then making a Mac-buntu. Does it slow down you windows system? Of course, yes. it&rsquo;s just a little bit and acceptable for me.<br /><br /><img src="http://osx.portraitofakite.com/header.png" alt="" /><br /><br /></strong>For Gnome Linux:**<br /><br />There is a open source prject on the SourceForge.net: <a href="http://sourceforge.net/projects/mac4lin">http://sourceforge.net/projects/mac4lin</a> You need download the package and un-tar it. A pdf document will walk you through every settings. I made my Mac-buntu just in 20 minutes. I do not like &lsquo;global meun&rsquo; and widget, so I ingored them. </p>
+                  <a target="_blank" href="https://martinliu.cn/2009/02/02/it-just-looks-like-a-mac-desktop/" class="post-read-more">[阅读全文]</a>
+                
+              </div>
+
+              
+                <span class="post-meta">
+                
+                  #<a href="https://martinliu.cn/tags/apple/">Apple</a>&nbsp;
+                
+                  #<a href="https://martinliu.cn/tags/desktop/">Desktop</a>&nbsp;
+                
+                  #<a href="https://martinliu.cn/tags/linux/">linux</a>&nbsp;
+                
+                  #<a href="https://martinliu.cn/tags/mac-osx/">Mac OSX</a>&nbsp;
+                
+                  #<a href="https://martinliu.cn/tags/ubuntu/">Ubuntu</a>&nbsp;
+                
+                </span>
+              
+            </article>
+          
+            <article class="post-preview">
+              <a  target="_blank" href="https://martinliu.cn/2009/01/27/my-firecrackers-for-beginning-of-the-year-of-ox-2009/">
+                <h2 class="post-title">My firecrackers for beginning of the year of ox 2009</h2>
+                
+              </a>
+
+              <span class="post-meta">
+  
+  发表于 2009, January 27
+  
+  
+</span>
+
+
+              <div class="post-entry">
+                
+                  <p><br /></p>
+
+<blockquote>爆竹声声辞旧岁<br />火树银花迎金牛</blockquote>
+
+<p><br />In childhood, I was playing firecrackers everyday in the Spring Festival. The new year&rsquo;s eve is the only chance for me to lit it again,  I felt I like a 10 years child.</p>
+
+                
+              </div>
+
+              
+                <span class="post-meta">
+                
+                  #<a href="https://martinliu.cn/tags/spring-festival/">Spring Festival</a>&nbsp;
+                
+                </span>
+              
+            </article>
+          
+            <article class="post-preview">
+              <a  target="_blank" href="https://martinliu.cn/2009/01/25/welcome-to-the-year-of-the-ox/">
+                <h2 class="post-title">Welcome to The Year of the Ox</h2>
+                
+              </a>
+
+              <span class="post-meta">
+  
+  发表于 2009, January 25
+  
+  
+</span>
+
+
+              <div class="post-entry">
+                
+                  <p><img src="http://pic.nipic.com/2008-03-28/2008328104057723_2.jpg" alt="" /><br /><br />It&rsquo;s Chinese New Year&rsquo;s Eve right now. The Chinese <a href="http://dict.hjenglish.com/w/lunar">lunar</a> new year came, it&rsquo;s &ldquo;<strong>The Year of the Ox</strong>&rdquo;. I think you may like the above cute little ox and fortune; I hope you all the best. There are some pics I took tonight.</p>
+                  <a target="_blank" href="https://martinliu.cn/2009/01/25/welcome-to-the-year-of-the-ox/" class="post-read-more">[阅读全文]</a>
+                
+              </div>
+
+              
+                <span class="post-meta">
+                
+                  #<a href="https://martinliu.cn/tags/chinese-new-year/">Chinese new year</a>&nbsp;
+                
+                </span>
+              
+            </article>
+          
+            <article class="post-preview">
+              <a  target="_blank" href="https://martinliu.cn/2009/01/24/gos-looks-green/">
+                <h2 class="post-title">gOS looks green</h2>
+                
+              </a>
+
+              <span class="post-meta">
+  
+  发表于 2009, January 24
+  
+  
+</span>
+
+
+              <div class="post-entry">
+                
+                  Today I installed gOS on my laptop; openSuSE did great work for me 3 years. I&rsquo;d like to play some new things. So, check my new desktop out.
+http://picasaweb.google.com/liuzh66/GOS
+If you go its wetsite http://thinkgos.com/, you will see it talks lots of cloud. It&rsquo;s interesting, but it is not the reson i chose it. Ubuntu 8.04 is inside gOS. So, it time to learn a new linux system. I neve use a Derbin based system, I&rsquo;m not sure it could run for me how long.
+                  <a target="_blank" href="https://martinliu.cn/2009/01/24/gos-looks-green/" class="post-read-more">[阅读全文]</a>
+                
+              </div>
+
+              
+                <span class="post-meta">
+                
+                  #<a href="https://martinliu.cn/tags/google/">Google</a>&nbsp;
+                
+                  #<a href="https://martinliu.cn/tags/gos/">gOS</a>&nbsp;
+                
+                  #<a href="https://martinliu.cn/tags/ubuntu/">Ubuntu</a>&nbsp;
+                
+                </span>
+              
+            </article>
+          
+            <article class="post-preview">
+              <a  target="_blank" href="https://martinliu.cn/2009/01/19/e4bb8ee4ba91e8aea1e7ae97e88194e683b3e588b0e7acace4b880e4bba3e794b5e88491e7b3bbe7bb9f/">
+                <h2 class="post-title">从云计算联想到第一代电脑系统</h2>
+                
+              </a>
+
+              <span class="post-meta">
+  
+  发表于 2009, January 19
+  
+  
+</span>
+
+
+              <div class="post-entry">
+                
+                  记得以前看过一本描写Bill Gets的书，他上中学的时候，在河滨中心通过一个远程终端，连接到某大学的计算机系统，输入程序代码，并且得到代码在
+                  <a target="_blank" href="https://martinliu.cn/2009/01/19/e4bb8ee4ba91e8aea1e7ae97e88194e683b3e588b0e7acace4b880e4bba3e794b5e88491e7b3bbe7bb9f/" class="post-read-more">[阅读全文]</a>
+                
+              </div>
+
+              
+                <span class="post-meta">
+                
+                  #<a href="https://martinliu.cn/tags/amazon/">amazon</a>&nbsp;
+                
+                  #<a href="https://martinliu.cn/tags/assa/">assa</a>&nbsp;
+                
+                  #<a href="https://martinliu.cn/tags/google/">Google</a>&nbsp;
+                
+                  #<a href="https://martinliu.cn/tags/safeforce/">safeforce</a>&nbsp;
+                
+                </span>
+              
+            </article>
+          
+            <article class="post-preview">
+              <a  target="_blank" href="https://martinliu.cn/2009/01/11/161-1-opennms-quick-install-guide/">
+                <h2 class="post-title">opennms 1.6.1-1 quick start guide</h2>
+                
+              </a>
+
+              <span class="post-meta">
+  
+  发表于 2009, January 11
+  
+  
+</span>
+
+
+              <div class="post-entry">
+                
+                  本安装手册为纯命令版，如果有什么疑问清参考官方安装手册，或给本贴留言。 [install yum on your Linux box] 选择任意Linux系统，安装上yum工具，在命令行测试 yum -v
+                  <a target="_blank" href="https://martinliu.cn/2009/01/11/161-1-opennms-quick-install-guide/" class="post-read-more">[阅读全文]</a>
+                
+              </div>
+
+              
+                <span class="post-meta">
+                
+                  #<a href="https://martinliu.cn/tags/opennms/">OpenNMS</a>&nbsp;
+                
+                  #<a href="https://martinliu.cn/tags/yum/">Yum</a>&nbsp;
+                
+                </span>
+              
+            </article>
+          
+            <article class="post-preview">
+              <a  target="_blank" href="https://martinliu.cn/2009/01/07/top-25-oss-projects-on-06-jan-2009/">
+                <h2 class="post-title">Top 25 OSS Projects on Jan 2009</h2>
+                
+              </a>
+
+              <span class="post-meta">
+  
+  发表于 2009, January 7
+  
+  
+</span>
+
+
+              <div class="post-entry">
+                
+                  This list is from SourceForge.net. You may have the question: How do we adapt open source? My answer might be you just should use them as much as you can. The world is facing economic crisis, you have to saving your budget. How do you deal with that? It&rsquo;s time to think about OSS now. 1. Shine J2EE Framework 开发框架 http://j2sos.org/ http://sourceforge.net/projects/shine-app Shine is a Java-J2EE Application
+                  <a target="_blank" href="https://martinliu.cn/2009/01/07/top-25-oss-projects-on-06-jan-2009/" class="post-read-more">[阅读全文]</a>
+                
+              </div>
+
+              
+                <span class="post-meta">
+                
+                  #<a href="https://martinliu.cn/tags/7-zip/">7-Zip</a>&nbsp;
+                
+                  #<a href="https://martinliu.cn/tags/adempiere/">ADempiere</a>&nbsp;
+                
+                  #<a href="https://martinliu.cn/tags/dvdstyler/">DVDStyler</a>&nbsp;
+                
+                  #<a href="https://martinliu.cn/tags/ffdshow/">ffdshow</a>&nbsp;
+                
+                  #<a href="https://martinliu.cn/tags/filezilla/">FileZilla</a>&nbsp;
+                
+                  #<a href="https://martinliu.cn/tags/freemind/">FreeMind</a>&nbsp;
+                
+                  #<a href="https://martinliu.cn/tags/freenas/">FreeNAS</a>&nbsp;
+                
+                  #<a href="https://martinliu.cn/tags/hyperic-hq/">Hyperic HQ</a>&nbsp;
+                
+                  #<a href="https://martinliu.cn/tags/notepad&#43;&#43;/">Notepad&#43;&#43;</a>&nbsp;
+                
+                  #<a href="https://martinliu.cn/tags/oss/">oss</a>&nbsp;
+                
+                  #<a href="https://martinliu.cn/tags/phpmyadmin/">phpMyAdmin</a>&nbsp;
+                
+                  #<a href="https://martinliu.cn/tags/shine/">Shine</a>&nbsp;
+                
+                  #<a href="https://martinliu.cn/tags/zenoss-core/">Zenoss Core</a>&nbsp;
+                
+                </span>
+              
+            </article>
+          
+            <article class="post-preview">
+              <a  target="_blank" href="https://martinliu.cn/2008/12/27/training-tips/">
+                <h2 class="post-title">Training tips</h2>
+                
+              </a>
+
+              <span class="post-meta">
+  
+  发表于 2008, December 27
+  
+  
+</span>
+
+
+              <div class="post-entry">
+                
+                  <p><img src="http://www.competencetoexcellence.co.uk/cartoon2.gif" alt="" />上周一周都在广州，为中国最大的直销企业Amway做“Remedy Administration Part 2&rdquo;的培训，这个培训是我今年第5次做；本周用户还给公司发来了感谢信，可见此次培训也是本年效果很好的一次。其实本月对我来说是一个培训月，第一周在新加坡接受一产品培训“BMC Configuration Automation For Network”；第二周在北京给‘中国人寿’做ITIL v3 Foundation的企业内训；第三周在广州，就是这个Remedy的培训。<br /><br />ITIL v3培训和Remedy培训是两个不同类型的培训，一个是最好实践IT管理方法论的培训；另外一个是Remedy系统管理和开发的课程。一个注重理论的讲解，另外一个是注重实际操作的介绍。不过从讲师的角度来说，培训的准备和整个过程的控制都是殊途同归的。<br /><br /><strong>准备篇<br /></strong>对整课程内容的整体把握是至关重要的，必须对每一个module的内容谙熟于胸，这样才能控制整个培训课程的节奏，才能对时间做到从容地分配。特别是4～5天的培训，把所有的课程从头到尾贯彻为一个整体，不失课程的整体性，让学员有整体感，不觉得你教的内容没有逻辑、琐碎是非常重要的。所以需要在准备课程的时候就想好，每个module之间的衔接方式，要准备好review的问题，从这些问题中总结上一个module，平滑的过度到下一个module，增加课程内容直接的衔接，可以提高学员对内容的整体理解和掌握。<br /><br /></p>
+                  <a target="_blank" href="https://martinliu.cn/2008/12/27/training-tips/" class="post-read-more">[阅读全文]</a>
+                
+              </div>
+
+              
+                <span class="post-meta">
+                
+                  #<a href="https://martinliu.cn/tags/bmc/">BMC</a>&nbsp;
+                
+                  #<a href="https://martinliu.cn/tags/itil/">ITIL</a>&nbsp;
+                
+                  #<a href="https://martinliu.cn/tags/itsm/">ITSM</a>&nbsp;
+                
+                  #<a href="https://martinliu.cn/tags/remedy/">remedy</a>&nbsp;
+                
+                  #<a href="https://martinliu.cn/tags/training/">training</a>&nbsp;
+                
+                  #<a href="https://martinliu.cn/tags/v3/">v3</a>&nbsp;
+                
+                </span>
+              
+            </article>
+          
+            <article class="post-preview">
+              <a  target="_blank" href="https://martinliu.cn/2008/12/14/itil-v3-traininig-for-china-life/">
+                <h2 class="post-title">ITIL V3 Traininig For China Life</h2>
+                
+              </a>
+
+              <span class="post-meta">
+  
+  发表于 2008, December 14
+  
+  
+</span>
+
+
+              <div class="post-entry">
+                
+                  <p><img src="http://www.blueloop.net/images/itil-v3.gif" alt="" /><br /><br />上周给“中国人寿”做了ITIL V3 Foundation Training， 这是一个定制的企业内训，包括3天的理论学习，一天的‘BSM机场模拟沙盘演练’，最后一天进行ITIL V3 Foundation 认证考试。总的来说培训的效果还是非常不错的，学员基本上都能够理解和掌握ITIL v3的基本理论；在随堂的模拟考试后，能够针对一些题和我做非常深入的讨论。BSM机场模拟沙盘演练对于这群基本上比较年轻的学员来说成了一个非常热烈的培训环节，培训教室温度和气氛都比较热，一轮游戏跑下来以后，有些人就已经是满脸通红了；可见沟通也是一件力气活 :) 从学员们填写的反馈表的结果显示，他们对我的平均满意度是 4.35；呵呵这证明经过多日来的备课准备和以前的项目积累还是比较有效的，相信下次能够比这做的更好。</p>
+                  <a target="_blank" href="https://martinliu.cn/2008/12/14/itil-v3-traininig-for-china-life/" class="post-read-more">[阅读全文]</a>
+                
+              </div>
+
+              
+                <span class="post-meta">
+                
+                  #<a href="https://martinliu.cn/tags/china-life/">China Life</a>&nbsp;
+                
+                  #<a href="https://martinliu.cn/tags/itil/">ITIL</a>&nbsp;
+                
+                  #<a href="https://martinliu.cn/tags/training/">training</a>&nbsp;
+                
+                  #<a href="https://martinliu.cn/tags/v3/">v3</a>&nbsp;
+                
+                </span>
+              
+            </article>
+          
+        </div>
+
+        
+          <ul class="pager main-pager">
+            
+              <li class="previous">
+                <a href="/page/30">&larr; 上一页</a>
+              </li>
+            
+            
+              <li class="next">
+                <a href="/page/32">下一页 &rarr;</a>
+              </li>
+            
+          </ul>
+        
+      </div>
+      <div align="center" class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        
+
+<ul class="pagination">
+    
+    <li class="page-item">
+        <a href="/" class="page-link" aria-label="First"><span aria-hidden="true">&laquo;&laquo;</span></a>
+    </li>
+    
+    <li class="page-item">
+    <a href="/page/30/" class="page-link" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a>
+    </li>
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    <li class="page-item"><a class="page-link" href="/">1</a></li>
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    <li class="page-item"><a class="page-link" href="/page/2/">2</a></li>
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    <li class="page-item"><a class="page-link" href="/page/3/">3</a></li>
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    <li class="page-item disabled"><span aria-hidden="true">&nbsp;&hellip;&nbsp;</span></li>
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    <li class="page-item"><a class="page-link" href="/page/30/">30</a></li>
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    <li class="page-item active"><a class="page-link" href="/page/31/">31</a></li>
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    <li class="page-item"><a class="page-link" href="/page/32/">32</a></li>
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    <li class="page-item disabled"><span aria-hidden="true">&nbsp;&hellip;&nbsp;</span></li>
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    <li class="page-item"><a class="page-link" href="/page/41/">41</a></li>
+    
+    
+    <li class="page-item">
+    <a href="/page/32/" class="page-link" aria-label="Next"><span aria-hidden="true">&raquo;</span></a>
+    </li>
+    
+    <li class="page-item">
+        <a href="/page/41/" class="page-link" aria-label="Last"><span aria-hidden="true">&raquo;&raquo;</span></a>
+    </li>
+    
+</ul>
+
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+      </div>
+    </div>
+  </div>
+
+    <footer>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <ul class="list-inline text-center footer-links">
+          
+              <li>
+                <a href="mailto:liuzh66@gmail.com" title="Email me">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-envelope fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a href="https://plus.google.com/&#43;MartinLiu-cn" title="Google&#43;">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-google-plus fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a href="https://github.com/martinliu" title="GitHub">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a href="https://twitter.com/martinliu" title="Twitter">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a href="https://linkedin.com/in/liuzheng" title="LinkedIn">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-linkedin fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+          
+        </ul>
+        <p class="credits copyright text-muted">
+        &copy;2017-2018
+
+              刘征 Martin Liu
+
+          
+          
+            &nbsp;&bull;&nbsp;
+            <a href="https://martinliu.cn/">Martin&#39;s Blog</a>
+          
+        </p>
+        
+        <p class="credits theme-by text-muted">
+          由 <a href="http://gohugo.io">Hugo v0.55.0-DEV</a> 强力驱动 &nbsp;&bull;&nbsp; 主题 <a href="https://github.com/halogenica/beautifulhugo">Beautiful Hugo</a> 移植自 <a href="http://deanattali.com/beautiful-jekyll/">Beautiful Jekyll</a>
+          
+        </p>
+
+        <p class="credits theme-by text-muted">
+          全站搜索来自于 <a href="https://swiftype.com/"> swiftype.com </a>
+        </p>
+
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+<script src="https://res.cloudinary.com/martinliu/raw/upload/static/bootstrap.min.js"></script>
+<script src="https://res.cloudinary.com/martinliu/raw/upload/static/photoswipe-ui-default.min.js"></script>
+<script src="https://res.cloudinary.com/martinliu/raw/upload/static/photoswipe.min.js"></script>
+<script src="https://res.cloudinary.com/martinliu/raw/upload/static/auto-render.min.js"></script>
+<script src="https://res.cloudinary.com/martinliu/raw/upload/static/main.js"></script>
+<script src="https://res.cloudinary.com/martinliu/raw/upload/static/prism.js"></script>
+<script src="https://res.cloudinary.com/martinliu/raw/upload/static/katex.min.js"></script>
+<script> renderMathInElement(document.body); </script>
+
+
+
+
+
+
+
+
+  </body>
+</html>
+

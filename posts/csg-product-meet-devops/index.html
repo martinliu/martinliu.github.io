@@ -1,0 +1,887 @@
+<!DOCTYPE html>
+<html lang="zh">
+  <head>
+  <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+  <title> 产品管理遇上Devops - Martin Liu&#39;s Blog</title>
+  
+  <meta property="og:title" content="产品管理遇上Devops" />
+  <meta name="twitter:title" content="产品管理遇上Devops" />
+  <meta name="description" content="产品管理还是项目管理？在DevOps世代里，向左走还是向右走？">
+  <meta property="og:description" content="产品管理还是项目管理？在DevOps世代里，向左走还是向右走？">
+  <meta name="twitter:description" content="产品管理还是项目管理？在DevOps世代里，向左走还是向右走？">
+  <meta name="author" content="刘征 Martin Liu"/>
+  <link href='https://martinliu.cn/favicon.ico' rel='icon' type='image/x-icon'/>
+
+<meta name="msvalidate.01" content="12F570013342D1F8B60A455D09221C1D" />
+<meta name="yandex-verification" content="7e9acc85531b0f35" />
+<meta name="google-site-verification" content="4oSwNTpy1vzip3_lt6XhkhMfImCD_DZlvL3K1k-M8qk" />
+<meta name="baidu-site-verification" content="Z7d1tYkxzQ" />
+
+<script>(function (w, d, s, l, i) {
+    w[l] = w[l] || []; w[l].push({
+      'gtm.start':
+        new Date().getTime(), event: 'gtm.js'
+    }); var f = d.getElementsByTagName(s)[0],
+      j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : ''; j.async = true; j.src =
+        'https://www.googletagmanager.com/gtm.js?id=' + i + dl; f.parentNode.insertBefore(j, f);
+  })(window, document, 'script', 'dataLayer', 'GTM-TL37V8G');</script>
+
+
+  <meta property="og:image" content="https://res.cloudinary.com/martinliu/image/upload/q_auto:eco/avatar.jpg" />
+  <meta name="twitter:image" content="https://res.cloudinary.com/martinliu/image/upload/q_auto:eco/avatar.jpg" />
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:site" content="@martinliu" />
+  <meta name="twitter:creator" content="@martinliu" />
+  <meta property="og:url" content="https://martinliu.cn/posts/csg-product-meet-devops/" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Martin&#39;s Blog" />
+  <meta name="keywords" content="DevOps , csg , DOES , does2018 , pm" />
+
+  <meta name="generator" content="Hugo 0.55.0-DEV" />
+  <link rel="canonical" href="https://martinliu.cn/posts/csg-product-meet-devops/" />
+  <link rel="alternate" href="https://martinliu.cn/index.xml" type="application/rss+xml" title="Martin&#39;s Blog">
+  <script src="https://res.cloudinary.com/martinliu/raw/upload/static/jquery-1.12.4.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.7.1/katex.min.css" integrity="sha384-wITovz90syo1dJWVh32uuETPVEtGigN07tkttEqPv+uR2SE/mbQcG7ATL28aI9H0" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+  
+  
+  <link rel="stylesheet" href="https://martinliu.cn/css/main.css" />
+  <link rel="stylesheet" href="https://martinliu.cn/css/search.css" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" />
+  
+
+
+
+<link rel="stylesheet" href="https://martinliu.cn/css/prism.css" />
+
+
+<script>
+    var _hmt = _hmt || [];
+    (function () {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?50c3a9ae6c51222b31df5510bbca479f";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.1/photoswipe.min.css" integrity="sha256-sCl5PUOGMLfFYctzDW3MtRib0ctyUvI9Qsmq2wXOeBY=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.1/default-skin/default-skin.min.css" integrity="sha256-BFeI1V+Vh1Rk37wswuOYn5lsTcaU96hGaI7OUVCLjPc=" crossorigin="anonymous" />
+
+
+
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+<div class="pswp__bg"></div>
+
+<div class="pswp__scroll-wrap">
+    
+    <div class="pswp__container">
+      <div class="pswp__item"></div>
+      <div class="pswp__item"></div>
+      <div class="pswp__item"></div>
+    </div>
+    
+    <div class="pswp__ui pswp__ui--hidden">
+    <div class="pswp__top-bar">
+      
+      <div class="pswp__counter"></div>
+      <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+      <button class="pswp__button pswp__button--share" title="Share"></button>
+      <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+      <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+      
+      
+      <div class="pswp__preloader">
+        <div class="pswp__preloader__icn">
+          <div class="pswp__preloader__cut">
+            <div class="pswp__preloader__donut"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+      <div class="pswp__share-tooltip"></div>
+    </div>
+    <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+    </button>
+    <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+    </button>
+    <div class="pswp__caption">
+      <div class="pswp__caption__center"></div>
+    </div>
+    </div>
+    </div>
+</div>
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-749876-6', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+
+</head>
+
+  <body>
+    <nav class="navbar navbar-default navbar-fixed-top navbar-custom">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#main-navbar">
+        <span class="sr-only">切换导航</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="https://martinliu.cn/">Martin&#39;s Blog</a>
+    </div>
+    <div class="collapse navbar-collapse" id="main-navbar">
+      <ul class="nav navbar-nav navbar-right">
+        
+          
+            <li>
+              <a title="首页" href="/">首页</a>
+              
+              
+            </li>
+          
+        
+          
+            <li>
+              <a title="标签" href="/tags">标签</a>
+              
+              
+            </li>
+          
+        
+          
+            <li>
+              <a title="关于" href="/about">关于</a>
+              
+              
+            </li>
+          
+        
+          
+            <li>
+              <a title="书籍" href="https://handbook.martinliu.cn">书籍</a>
+              
+              
+            </li>
+          
+        
+
+        
+
+        
+        
+          <li>
+            <a href="#modalSearch" data-toggle="modal" data-target="#modalSearch" style="outline: none;">
+              <span class="hidden-sm hidden-md hidden-lg">搜索</span> <span id="searchGlyph" class="glyphicon glyphicon-search"></span>
+            </a>
+          </li>
+          
+      </ul>
+    </div>
+
+    <div class="avatar-container">
+      <div class="avatar-img-border">
+        
+          <a title="Martin&#39;s Blog" href="https://martinliu.cn/">
+            <img class="avatar-img" src="https://res.cloudinary.com/martinliu/image/upload/q_auto:eco/avatar.jpg" alt="Martin&#39;s Blog" />
+          </a>
+        
+      </div>
+    </div>
+
+  </div>
+</nav>
+
+
+
+
+
+  <div id="modalSearch" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">全站搜索 by swiftype </h4>
+        </div>
+        <div class="modal-body">
+            <style>
+  .st-default-search-input {
+    width: calc(100% - 45px);
+  }
+</style>
+<div>
+  <form>
+    <input type="text" class="st-default-search-input" />
+  </form>
+</div>
+
+
+<script type="text/javascript">
+  (function(w,d,t,u,n,s,e){w['SwiftypeObject']=n;w[n]=w[n]||function(){
+  (w[n].q=w[n].q||[]).push(arguments);};s=d.createElement(t);
+  e=d.getElementsByTagName(t)[0];s.async=1;s.src=u;e.parentNode.insertBefore(s,e);
+  })(window,document,'script','//s.swiftypecdn.com/install/v2/st.js','_st');
+  
+  _st('install','rvHKnQr8PJKjRDhyUWot','2.0.0');
+</script>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+    
+  
+  
+  
+
+
+
+
+  
+    <div id="header-big-imgs" data-num-img=1 data-img-src-1="https://res.cloudinary.com/martinliu/image/upload/v1551950710/bjxysnye.png" data-img-desc-1="PM vs VM"></div>
+  
+
+  <header class="header-section has-img">
+    
+      <div class="intro-header big-img">
+        
+        
+        <div class="container">
+          <div class="row">
+              <div class="col-lg-12 col-md-12 col-md-offset-0">
+                
+                <div class="post-heading">
+                
+                  
+                     <h1>产品管理遇上Devops</h1>
+                     
+                     
+                  
+                  
+                  
+                    
+                      <hr class="small">
+                      <span class="post-subheading">CSG公司在2018年DevOps企业峰会上的分享</span>
+                    
+                  
+                  
+                    <span class="post-meta">
+  
+  发表于 2019, March 7
+  
+  
+</span>
+
+
+                  
+                
+              </div>
+            </div>
+          </div>
+        </div>
+        <span class="img-desc" style="display: inline;"></span>
+      </div>
+    
+  </header>
+
+
+    
+<div class="container" role="main">
+    <div class="row">
+        <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+            
+            <div>
+                <h5 id="wc">字数：6300 |大约阅读时间 13 分钟</h5>
+                <h5 id="tags">标签: 
+                    <a href="https://martinliu.cn//tags/devops">DevOps</a> &nbsp;
+                    <a href="https://martinliu.cn//tags/csg">csg</a> &nbsp;
+                    <a href="https://martinliu.cn//tags/does">DOES</a> &nbsp;
+                </h5>
+
+            </div>
+            <article role="main" class="blog-post">
+                
+
+<p>DevOps企业峰会是历史悠久的DevOps主题企业级峰会，近年来在北美的拉斯维加斯和欧洲的伦敦每年各举办一次。
+<img src="https://res.cloudinary.com/martinliu/image/upload/2019-03-07_15-50-17.jpg" alt="2019-03-07_09-17-49" /></p>
+
+<p>这个大会的官网：<a href="https://events.itrevolution.com/">https://events.itrevolution.com/</a> 2019年的会议时间已经发布，感兴趣的可以参加。</p>
+
+<p>CSG公司连续多年参加DevOps企业峰会，本分享主题是CSG在2018年美国拉斯维加斯的峰会上的主旨演讲之一。本文是对这个演讲的视频回放的整理，该视频已经上传到了腾讯视频。</p>
+
+<p><img src="https://res.cloudinary.com/martinliu/image/upload/2019-03-07_15-50-44.jpg" alt="2019-03-07_09-17-49" /></p>
+
+<p style="text-align: center"><iframe class="video_iframe" style="z-index:1;" src="http://v.qq.com/iframe/player.html?vid=r0789vy0iq8&amp;width=660&amp;height=400&amp;auto=0" allowfullscreen="" frameborder="0" height="400" width="660"></iframe></p>
+
+<h2 id="csg-international公司简介">CSG International公司简介</h2>
+
+<p><img src="https://res.cloudinary.com/martinliu/image/upload/2019-03-07_09-17-49.jpg" alt="2019-03-07_09-17-49" /></p>
+
+<p>CSG是一个基于SaaS的客户支持和计费公司。CSG是美国最大的账单打印和呼叫中心公司。帮助他们的合作伙伴公司完成水电费、宽带费、通信费等相关业务的收款工作，并为最终客户提供热线电话支持。</p>
+
+<p>CSG的技术堆栈范围广泛，从Mainframe主机到Linux开放系统到AWS云服务，CSG认为如果正确的运用DevOps技术的话，技术堆栈并不是阻力和限制。</p>
+
+<p>CSG的DevOps旅程经历了如下几个阶段。</p>
+
+<h2 id="2012年-敏捷转型">2012年 敏捷转型</h2>
+
+<p><img src="https://res.cloudinary.com/martinliu/image/upload/2019-03-07_09-31-46.jpg" alt="2019-03-07_09-31-46" /></p>
+
+<p>敏捷转型历经四年，进行了组织结构调整，在这个过程中关注点和亮点如下：</p>
+
+<ul>
+<li>应用精益思想消除了各种等待队列</li>
+<li>应用康威定律重组重组了团队</li>
+<li>重组团队之后形成跨职能团队，将设计团队，开发和测试团队融为一体</li>
+<li>实施持续集成技术，落地持续部署流水线作为业务开发的基础设施</li>
+<li>实施了测试自动化</li>
+<li>实施了共享的遥测数据，这就是今天所热议的可观察性</li>
+<li>将作业批量尺寸缩减为以前的一半</li>
+<li>成立了多个独立于研发团队的共享的运维团队【注意：运维还没有和研发团队融为一体，共享运维团队管理所有IT环境并和所有产品团队协作】</li>
+</ul>
+
+<p>敏捷转型的效果：</p>
+
+<ol>
+<li>发布影响业务的事件数量下降（在固定的时间周期里统计由于发布导致的影响客户服务的事件数量）</li>
+<li>变更失败率下降</li>
+</ol>
+
+<h2 id="2012-2015-敏捷转型和devops早期">2012-2015 敏捷转型和DevOps早期</h2>
+
+<p>在敏捷转型的持续集成的基础上，CSG实施了持续部署实践，持续部署被视为应用DevOps实践的标志性动作，将所有部署转为为可重复执行的自动化部署。</p>
+
+<p><img src="https://res.cloudinary.com/martinliu/image/upload/2019-03-07_09-46-07.jpg" alt="2019-03-07_09-46-07" /></p>
+
+<p>上图是运维工程师们在工作时段里进行日间部署的场景，但是平均每天进行15.1个部署，71个面向最终用户的特性发布。在部署期间，运维工程师们在信心满满的打着电动。由于每一个生产环境的部署都已经做过了大量的自动化测试，且在其它环境中至少部署过7遍了。</p>
+
+<h2 id="2016-反作用力和挣扎期">2016 反作用力和挣扎期</h2>
+
+<p><img src="https://res.cloudinary.com/martinliu/image/upload/2019-03-07_09-57-30.jpg" alt="2019-03-07_09-57-30" /></p>
+
+<p>上图的情形应该很常见，CSG也经历了这个阶段。</p>
+
+<p>开发团队追逐：</p>
+
+<ul>
+<li>交付速度</li>
+<li>更好、更快的环境</li>
+<li>更好的服务请求工具</li>
+<li>憎恨变更请求队列（流程）</li>
+</ul>
+
+<p>运维团队追逐：</p>
+
+<ul>
+<li>稳定性！</li>
+<li>高质量代码</li>
+<li>更敏捷的工具</li>
+<li>憎恨变更请求队列（流程）</li>
+</ul>
+
+<p>开发和团队都厌恶的：</p>
+
+<ul>
+<li>变更管理流程</li>
+<li>发布管理流程</li>
+<li>生产环境的运维部门</li>
+<li>PMO项目经理</li>
+</ul>
+
+<p>客户想要的是：“更快得到高质量的特性！”</p>
+
+<h2 id="2016-devops团队融合阶段">2016 DevOps团队融合阶段</h2>
+
+<p>大家一起反思这个问题：“我们为何不站在同一条战线上，一起追逐相同的目标？”</p>
+
+<p><img src="https://res.cloudinary.com/martinliu/image/upload/2019-03-07_10-05-41.jpg" alt="2019-03-07_10-05-41" /></p>
+
+<p>设置共同（共享）目标：更快、更稳定和更安全！融为同一个团队，为了更好的服务客户而努力奋斗。</p>
+
+<h2 id="2016-2018-后devops时代">2016~2018 后DevOps时代</h2>
+
+<p>为了化解在的研发和运维之间的依然持续存的矛盾现象，在大家反思之后；进行了再次的团队组织结构调整，消除了所有共享的运维团队，将运维团队的工程师融入了各个研发团队。</p>
+
+<p><img src="https://res.cloudinary.com/martinliu/image/upload/2019-03-07_10-34-22.jpg" alt="2019-03-07_10-34-22" /></p>
+
+<p>CSG的DevOps转型阶段的重点：</p>
+
+<ul>
+<li>运用了不同于双模IT的模型，”统模IT“，在DevOps实践面前，各种类型的IT架构都一视同仁</li>
+<li>转型后的开发团队对产品的构建、测试、运行和服务质量统一负责</li>
+<li>下放变更管理委员会（CAB）职责到各个开发团队，成立本地化的CAB（详见ITIL的术语表）</li>
+<li>建立了群策群力的服务支持响应机制（参考精益思想的安灯拉绳），MTTR的时间因此大幅度缩短</li>
+<li>实施了反向布兰特操作，消除大量普遍存在的布兰特（这是一个比喻，详见《凤凰项目》的人物布兰特）</li>
+<li>建立整合的Backlog，将开发、测试和运维的工作统筹管理</li>
+<li>实施基础设施自动化</li>
+<li>将运维问题（目标不一致、反作用力、部门墙）视为工程实践问题：更好的工程实践，更少的苦活累活！</li>
+</ul>
+
+<p>【注意】如上图所示，新增了一个度量指标：Inc/Mo 每月的事件数量（ITIL的术语），这是生产环境中每月发生的事件单的数量，数量的降低说明了生产环境的稳定性的提高。</p>
+
+<p>CSG在这个阶段中所引入的DevOps实践参考指南书籍是《DevOps Handbook》，中文版如下图所示：</p>
+
+<p><img src="https://res.cloudinary.com/martinliu/image/upload/v1524360305/devops-handboo-3d-500x500.jpg" alt="DevOps Handbook" /></p>
+
+<p><a href="https://book.douban.com/subject/30186150/">https://book.douban.com/subject/30186150/</a></p>
+
+<p>在始于2016年的DevOps旅程中，CSG从优化负面指标阶段，步入了追逐正向业务价值目标。</p>
+
+<p><img src="https://res.cloudinary.com/martinliu/image/upload/2019-03-07_11-01-46.jpg" alt="2019-03-07_11-01-46" /></p>
+
+<p>CSG通过敏捷开发、精益思想和DevOps实践的组合拳实现了稳定性和业务的同步增长。</p>
+
+<ul>
+<li>从2012年到2018年业务订阅用户数增长了27%。</li>
+<li>生产系统的交易吞吐量（TPS每秒的交易数），增长了433%</li>
+</ul>
+
+<h2 id="产品管理遇上devops的主旋律">产品管理遇上DevOps的主旋律</h2>
+
+<p>产品管理和DevOps之间的关系该如何协调和处理，在这个阶段里得到了定义。</p>
+
+<p><img src="https://res.cloudinary.com/martinliu/image/upload/2019-03-07_11-13-18.jpg" alt="2019-03-07_11-13-18" /></p>
+
+<p>整个集体应该遵从的三大主旋律：</p>
+
+<ol>
+<li>将策略连接落实到人，从而改善产品管理和DevOp的关系，基于相同的业务诉求：更好的价值产出</li>
+<li>IT不是独立于业务之外的：要管理的是产品价值流，而非项目。</li>
+<li>运维问题是一个同时关乎于工程和产品的问题</li>
+</ol>
+
+<p>见上图，寻找划出的重点和关键词。</p>
+
+<p>新出现的度量指标：</p>
+
+<ul>
+<li>Impact minutes ：业务恢复时间 MTRR</li>
+<li>Release on demand ： 特性按需发布比率</li>
+<li>eNPS ：员工对企业的点赞比率</li>
+</ul>
+
+<p>以上数据的度量周期是从2017年至今的，影响这些指标的内因包括：</p>
+
+<ul>
+<li>精益领导力组合</li>
+<li>产品经理遇上DevOps</li>
+</ul>
+
+<h2 id="产品管理为何要遇上devops">产品管理为何要遇上DevOps？</h2>
+
+<p>在CSG工作了19年之久，经历和目睹敏捷和DevOps转型全过程的项目经理，Brian Clark（VP Product management）的简单版答案：“业务成果”。</p>
+
+<p><img src="https://res.cloudinary.com/martinliu/image/upload/2019-03-07_11-32-23.jpg" alt="2019-03-07_11-32-23" /></p>
+
+<p>CSG的处于一个非常稳定的成熟市场，而且是市场的领导者；上游的电信运营商公司和宽带网络公司的业务都已经很难成长了。</p>
+
+<p>CSG所在行业的复合年均增长率约等于2%，CSG公司的复合年均增长率是3.92%。他们面临着如何保留高级技术人才的挑战。而在实施了DevOps实践之后，业务成果好转，新增了两个BBS企业客户。雇员的eNPS增长了400%，人员保有率大于95%，目标市场的业务占用率提高了。</p>
+
+<p>从2015开始产品经理和DevOps团队开始讨论“团队的精益领导力组合”，定义了组织级别的愿景：“将工作可视化，把我们的人员和策略链接在一起，驱动参与度、价值和兴奋度。”</p>
+
+<p><img src="https://res.cloudinary.com/martinliu/image/upload/2019-03-07_11-59-38.jpg" alt="2019-03-07_11-59-38" /></p>
+
+<p>所谓的精益领导力组合如下图所示：</p>
+
+<p><img src="https://res.cloudinary.com/martinliu/image/upload/2019-03-07_12-02-46.jpg" alt="2019-03-07_12-02-46" /></p>
+
+<p>主要有三部分组成：</p>
+
+<ol>
+<li>组合管理</li>
+<li>发布管理</li>
+<li>转型赋能</li>
+</ol>
+
+<p>回顾一下CSG过去的三年，主要经历了6里程碑。
+<img src="https://res.cloudinary.com/martinliu/image/upload/2019-03-07_14-18-48.jpg" alt="2019-03-07_14-18-48" /></p>
+
+<h3 id="1-服务请求管理">1 服务请求管理</h3>
+
+<p>从梳理服务目录开始，将100多种IT服务梳理在一个服务目录中，需要这些服务的人通过服务请求并获得服务。以前这些服务工作交付所付出的大量运维性劳动是无法可视化和计量的。通过服务目录的不断完善，以前不可见的运维工作都可以察觉到，并可以计量和统计。</p>
+
+<p><img src="https://res.cloudinary.com/martinliu/image/upload/2019-03-07_12-11-29.jpg" alt="2019-03-07_12-11-29" /></p>
+
+<p>到2018年为止，统计数据表明：</p>
+
+<ul>
+<li>服务目录管理的服务条目数量是 620 个</li>
+<li>从服务目录创建并完成的服务请求单数量是 53000+ 个</li>
+<li>使用同一个服务目录增加了工作的可视化程度，并且还具有潜在的成长空间</li>
+<li>服务目录请求站点的访问量达到了 75000+ 次</li>
+</ul>
+
+<p>服务目录的实施结果是可以被统计的，将这些数据呈现给了领导层团队；领导层随后决定增加了这些方面的投资，从而优化和消除了大量可重复的工作。这个阶段的成果也是非常突出的。举两个简单的例子如下：</p>
+
+<ol>
+<li>自动化了一个非常耗时的服务，该项服务每年需要消耗5000+人工时，这几乎是3个专职工程师一年的工作量。</li>
+<li>优化了一个通常需要耗时10天才能完成的服务，后来该项服务现可以在请求的当天就得以满足。</li>
+</ol>
+
+<p>随着以上成果的逐渐扩大化，服务请求方和交付方都更加愿意和领导团队接触，并参与到等多的提议和计划中。这些成果足以值得让团队兴奋起来，下图是史诗一号团队在举行团建活动，以此来庆祝第一步的成功。【注：想获取兴奋度就喝起来！】</p>
+
+<p><img src="https://res.cloudinary.com/martinliu/image/upload/2019-03-07_12-16-40.jpg" alt="2019-03-07_12-16-40" /></p>
+
+<h3 id="2-建立技术和产品组合规划室-tam-room">2 建立技术和产品组合规划室 - TAM Room</h3>
+
+<p><img src="https://res.cloudinary.com/martinliu/image/upload/2019-03-07_12-57-06.jpg" alt="2019-03-07_12-57-06" /></p>
+
+<p>为了让项目执行过程和项目中的工作内容都更加可视化，建立了“技术和产品组合规划室”。在这个房间的墙上设立大型工作看板，将不同类型的工作用不同的颜色表示。这面墙展示了所有团队当前的工作内容，是产品和项目级别管理的全貌，任何事情如果不在这面墙上，团队不会对它耗费一秒钟。</p>
+
+<p><img src="https://res.cloudinary.com/martinliu/image/upload/2019-03-07_12-57-20.jpg" alt="2019-03-07_12-57-20" /></p>
+
+<ul>
+<li>蓝色： 安全相关</li>
+<li>红色：客户相关</li>
+<li>黄色：云计算相关</li>
+<li>绿色：技术相关</li>
+<li>橙色：项目管理</li>
+</ul>
+
+<p>这些是史诗级别的工作，是经过客户优先级排序的工作。 接下来构建了十六个团队的团队级别看板，团队会把这些实施工作拿走到他们自己的看板上。</p>
+
+<p><img src="https://res.cloudinary.com/martinliu/image/upload/2019-03-07_13-01-47.jpg" alt="2019-03-07_13-01-47" /></p>
+
+<p>当团队工作在这个看板上之后，团队可以很好的处理计划外工作。如果有什么经理人员向团队提出其它工作的时候，团队可以回答“Yes”；然后请他看看当前的工作状态，说出可能的选项是什么？【注：讨论的结果很可能是，用Yes婉拒了计划外工作，或者请工作提出者交换他的进行中的工作。】</p>
+
+<p><img src="https://res.cloudinary.com/martinliu/image/upload/2019-03-07_13-08-31.jpg" alt="2019-03-07_13-08-31" /></p>
+
+<p>TAP Room还是每个一个项目周期结束时，大家一起做回顾的场所，房间里提供了汉堡和热狗等午餐，团队成员用午餐会的形式交流各自的收获和想法。</p>
+
+<h3 id="3-向全员推广-并提升参与度-各种坛子">3 向全员推广，并提升参与度 - 各种坛子</h3>
+
+<p>如何将以上的成功经验传播到整个组织里，如何让更多的人参与其中，并提升全员的参与度。CSG创建了各种坛子的想法。</p>
+
+<p><img src="https://res.cloudinary.com/martinliu/image/upload/2019-03-07_13-15-03.jpg" alt="2019-03-07_13-15-03" /></p>
+
+<p>每个坛子都有各自的负责人和执行周期。如Shark Tank是两周进行一次，如果任何人对产品和技术有谏言建议都会发到这里，负责人会统一收集和用不同的优先级排序。</p>
+
+<ul>
+<li>Shark Tank 组织战略级别的，由VP们管理</li>
+<li>Think Tank 产品组合级别的，由产品经理/负责人管理</li>
+<li>DO Tank Scrum团队级别，由团队的负责人管理</li>
+</ul>
+
+<p>上面一行的三个坛子是把组织级别的业务战略直接贯彻和对齐到底（Engineer）方式，当然任何人也可以在各个层面上提出反馈建议，并实现了每个人的参与度的从下而上的反馈回路。</p>
+
+<p>下面一行的三个坛子和他们的组织架构相关，也分别有各种独立的定义和用法，所有坛子都是两周执行一次回顾和处理。</p>
+
+<h3 id="4-倡导价值驱动和交付">4 倡导价值驱动和交付</h3>
+
+<p>在这个阶段中，CSG不想仅仅止步于成功经验的传播和反馈，希望让更多人知道能从哪里，获得他们需要的信息和帮助，从而复制那些在组织级别已经取得成功的套路。</p>
+
+<p>CSG制作了视频短片，用阶段性回顾的方式，总结了他们所谓的参与度、有趣、有价值和有意义等概念，希望人多人能加入到史诗团队中。让人们觉得是和公司息息相关的。</p>
+
+<p><img src="https://res.cloudinary.com/martinliu/image/upload/2019-03-07_13-33-37.jpg" alt="2019-03-07_13-33-37" /></p>
+
+<p>这个短片用产品周报发布的全公司，根据数据统计显示，有大约500人在发布的当天从头看到尾。使所有人都参与到价值交付中，并感受到激动。</p>
+
+<h3 id="5-产能洞察管理-capacity-insights">5 产能洞察管理 - Capacity Insights</h3>
+
+<p>CSG也和其它所有公司一样，每个团队都很忙，项目经理和交付的工程师团队也存在在感受不一致的情况。如下高压力对话也很常见。</p>
+
+<ul>
+<li>你们能做更多工作么？</li>
+<li>不能！</li>
+<li>怎么会啊！</li>
+<li>我们很忙！</li>
+<li>给我一个忙的证据！</li>
+</ul>
+
+<p><img src="https://res.cloudinary.com/martinliu/image/upload/2019-03-07_13-52-11.jpg" alt="2019-03-07_13-52-11" /></p>
+
+<p>产能管理工具（Capacity Insights）的出现缓解了这个问题，首先，CSG把计划内的工作输入到这个工具里，并进行工作量的跟踪和记录。同时还把计划外的工作也纳入这个系统，进行统一的跟踪和记录。这里的数据在项目、产品和团队级别上被透明的分享和沟通，从此团队的高压力对话现象得到了大幅度的缓解，大家更有意愿进行合作了。</p>
+
+<p><img src="https://res.cloudinary.com/martinliu/image/upload/2019-03-07_13-53-16.jpg" alt="2019-03-07_13-53-16" /></p>
+
+<p>这些数据可以按照各种价值流的维度将耗费的工作时间（计划和实用）统计出来，并按照产品、团队和技术技能等各种维度进行钻去和统计。这样就可以把宝贵的产能合理的使用，实现了好钢用在刀刃上。</p>
+
+<h3 id="6-生活和工作平衡">6 生活和工作平衡</h3>
+
+<p>CSG不希望工程师团队周末加班，当然一周工作时间超长的情况也很常见，CSG希望他们能过上正常人的生活。领导层关注到这个问题后，开始实施一些措施。建立了产品迭代回顾的画廊，如下图所示。</p>
+
+<p><img src="https://res.cloudinary.com/martinliu/image/upload/2019-03-07_14-05-09.jpg" alt="2019-03-07_14-05-09" /></p>
+
+<p>在这个画廊上关注着一些数据的状态。</p>
+
+<ul>
+<li>31个团队的总工作时间是15000小时</li>
+<li>削减了25%的值守加班时间</li>
+<li>削减了100%的测试数据配置工作，用自动化的方法削减了相当于3个全职工程师的工作量</li>
+<li>用自动化的方式消除了某个业务流程确认环节90%的时间</li>
+</ul>
+
+<p><img src="https://res.cloudinary.com/martinliu/image/upload/2019-03-07_14-14-16.jpg" alt="2019-03-07_14-14-16" /></p>
+
+<p>CSG的成功秘诀是人，这都仰仗于赋能的员工：开放、分享、参与和兴奋。</p>
+
+<h2 id="产品和项目的pk">产品和项目的PK</h2>
+
+<p>对于这个话题的总结如下。</p>
+
+<p><img src="https://res.cloudinary.com/martinliu/image/upload/2019-03-07_14-21-06.jpg" alt="2019-03-07_14-21-06" /></p>
+
+<ul>
+<li>部门墙（Queue）有碍于学习进步</li>
+<li>基于项目的团队管理有碍于学习进步</li>
+<li>基于产品的团队才可以精进成长</li>
+</ul>
+
+<p>CSG公司在2017年以前的工作模式，产品和项目并存。</p>
+
+<p><img src="https://res.cloudinary.com/martinliu/image/upload/2019-03-07_14-25-21.jpg" alt="2019-03-07_14-25-21" /></p>
+
+<p>开发团队 - 产品工作</p>
+
+<ul>
+<li>基于业务需求的史诗 （最左侧的）</li>
+<li>基于发布节奏的工作</li>
+<li>管理产品代办工作&amp;排序</li>
+<li>交付工作完成的解决方案</li>
+</ul>
+
+<p>运维团队 - 项目工作</p>
+
+<ul>
+<li>处理临时、非计划的发布工作</li>
+<li>被各种会议驱动和中断</li>
+<li>接受研发发布过来的解决方案（临时和计划的）</li>
+<li>同时处理各种基础设施的IT项目（最右侧的）</li>
+</ul>
+
+<p>当两者的工作节奏交织在一起的时候，就会产生各种冲突。</p>
+
+<p><img src="https://res.cloudinary.com/martinliu/image/upload/2019-03-07_14-32-34.jpg" alt="2019-03-07_14-32-34" /></p>
+
+<p>出现了各种明显的问题：</p>
+
+<ul>
+<li>双向的依赖关系</li>
+<li>多个任务工作时间计划相互撞车</li>
+<li>缺乏统一的依赖管理和产能规划，这进一步产生了大量进行中工作（WIP）</li>
+<li>项目制的工作模式导致研发在迫于发布周期的情况下，交付了质量很低的解决方案</li>
+</ul>
+
+<p>CSG随后进行了基于价值流的产品条线的聚焦，将开发和运维团队的代办工作事项都整合到了统一的单独入口，从而进行统一的管理。</p>
+
+<p><img src="https://res.cloudinary.com/martinliu/image/upload/2019-03-07_14-40-40.jpg" alt="2019-03-07_14-40-40" /></p>
+
+<ul>
+<li>单一的工作入口管理可以更好的在统一的时间轴上进行优先级排序管理，并且能够实现所有工作的可视化和排序。</li>
+<li>设置不同的发布节奏，从2周到12周不等，还有特性的按需发布</li>
+<li>根据完成度、业务需求和耦合程度，不同工作任务选取不同的发布节奏</li>
+<li>进行工程上的重构：自动化、架构和运维即服务模式</li>
+</ul>
+
+<p><img src="https://res.cloudinary.com/martinliu/image/upload/2019-03-07_14-46-45.jpg" alt="2019-03-07_14-46-45" /></p>
+
+<p>完全参考和接受了ThoughtWorks技术雷达提出的：应用产品管理的方式到内部平台。</p>
+
+<p><img src="https://res.cloudinary.com/martinliu/image/upload/2019-03-07_14-47-58.jpg" alt="2019-03-07_14-47-58" /></p>
+
+<p>运维团队的人也将IT工作转为产品交付的方式，指定专人专家管理内部的平台。安全运维被视为工程和产品问题，通过重构的工程方法优化平台。</p>
+
+<p><img src="https://res.cloudinary.com/martinliu/image/upload/2019-03-07_14-53-24.jpg" alt="2019-03-07_14-53-24" /></p>
+
+<p>基于产品/服务价值流交付的管理方式是多个迭代，往复循环的迭代，而不会是简单的停止于测试完毕的验收发布。</p>
+
+<p>配置管理、服务请求变更管理、遥测、监控管理、安全、事件问题管理和相应都是产品管理的一部分，这些运行态的工作是产品生命周期中不可或缺的。也不应该被其它孤立的外部团操作。</p>
+
+<p>因此服务持续性管理也变成为一种内置的持续的动作，而不是这个流程之外的独立事件。</p>
+
+<p>CSG提倡：运维是工程和产品的问题，在本图中也得到体现，运维工作是产品的运行时管理工作，也是包括在持续的产品开发迭代中，最好有一个统一的持久的团队负责。</p>
+
+<p>CSG举例说明了”运维是工程和产品的问题“；CSG的业务系统需要处理信用卡信息，因此需要满足PCI的合规需求。在这个业务需求的驱动下，运维团队花费了无数的安全审计时间（20000+小时）去满足合规的标准。在产品驱动的思维下，运维团队和安全专家合作开发了，实现PCI合规的配置管理工具。这些安全管理工具是基于Chef开发的，也在Chef的开发者大会上分享过，而且现在是一个开源的产品，任何人都可以下载使用。</p>
+
+<p><img src="https://res.cloudinary.com/martinliu/image/upload/2019-03-07_15-06-49.jpg" alt="2019-03-07_15-06-49" /></p>
+
+<p>通过以下的对比发现CSG在这个思维转型了以后所得到的收益。</p>
+
+<p><img src="https://res.cloudinary.com/martinliu/image/upload/2019-03-07_15-09-19.jpg" alt="2019-03-07_15-09-19" /></p>
+
+<p>CSG在跨价值流的工作可视化管理方面也取得了一定的收益。</p>
+
+<p><img src="https://res.cloudinary.com/martinliu/image/upload/2019-03-07_15-14-10.jpg" alt="2019-03-07_15-14-10" /></p>
+
+<p>以前各种不同工作分类的工作内容，上图每种颜色的方框就是一个分类，每个分类的工作都有各自不同的跟踪管理系统（工单系统）。在这种情况下如果跨价值流分析相关的工作内容，则非常困难，要依赖大量的手工统计和集成工作。统一的工作可视化无法实现。因此CSG使用Jira来统一管理和跟踪以上各种工作，从而得到准确和实时的视图。</p>
+
+<h2 id="2019年的目标">2019年的目标</h2>
+
+<p>CSG的2019年DevOps的发展目标和举措也很值得参考。</p>
+
+<p><img src="https://res.cloudinary.com/martinliu/image/upload/2019-03-07_15-22-01.jpg" alt="2019-03-07_15-22-01" /></p>
+
+<ul>
+<li>Impact Minutes 服务受影响的时间 ： 4700分钟，实现年同步增长50%；计划实施系统的强壮性工程，落实人的可恢复性</li>
+<li>Release on Demond 按需发布 ： 希望最终是消除发布这个环节，或者是高于70%的按需发布比例；计划实施的举措是重构架构、自动化、解耦。</li>
+<li>eNPS 员工推荐率 ： 提升这个比例；计划实施的举措有精益领导力组合，链接到每个人，工作生活平衡。</li>
+</ul>
+
+                    <a href="http://zhihu.com/people/devopscoach" target="_blank">
+                    <img src="https://res.cloudinary.com/martinliu/image/upload/q_auto:eco/martin-at-zhihu.png" alt="DevOps教练在知乎" />
+                    </a>
+            </article>
+            
+
+            <ul class="pager blog-pager">
+                
+                <li class="previous">
+                    <a href="https://martinliu.cn/posts/maturity-is-dead/" data-toggle="tooltip" data-placement="top" title="成熟度模型已死">&larr; 前一篇</a>
+                </li>
+                 
+                <li class="next">
+                    <a href="https://martinliu.cn/posts/predictions-for-devops-in-2019/" data-toggle="tooltip" data-placement="top" title="2019年关于DevOps的几个预测">后一篇 &rarr;</a>
+                </li>
+                
+            </ul>
+            <div>
+                 
+                <h2>See Also</h2>
+                <ul>
+                    
+                    <li>
+                        <a href="/posts/2018-devops-survey/">参与2018年DevOps状态调查报告</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/posts/kops-on-aws/">Kops on Aws</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/posts/cloud-native-container-design/">容器化应用的设计原则</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/posts/7-skills-devops-engineer/">7种DevOps工程师必备技能</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/posts/6-devops-trends-aware/">2018年必须认识到的6个DevOps趋势</a>
+                    </li>
+                    
+                </ul>
+                
+            </div>
+            
+
+            
+            
+
+        </div>
+    </div>
+    </section>
+</div>
+
+    <footer>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <ul class="list-inline text-center footer-links">
+          
+              <li>
+                <a href="mailto:liuzh66@gmail.com" title="Email me">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-envelope fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a href="https://plus.google.com/&#43;MartinLiu-cn" title="Google&#43;">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-google-plus fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a href="https://github.com/martinliu" title="GitHub">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a href="https://twitter.com/martinliu" title="Twitter">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a href="https://linkedin.com/in/liuzheng" title="LinkedIn">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-linkedin fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+          
+        </ul>
+        <p class="credits copyright text-muted">
+        &copy;2017-2018
+
+              刘征 Martin Liu
+
+          
+          
+            &nbsp;&bull;&nbsp;
+            <a href="https://martinliu.cn/">Martin&#39;s Blog</a>
+          
+        </p>
+        
+        <p class="credits theme-by text-muted">
+          由 <a href="http://gohugo.io">Hugo v0.55.0-DEV</a> 强力驱动 &nbsp;&bull;&nbsp; 主题 <a href="https://github.com/halogenica/beautifulhugo">Beautiful Hugo</a> 移植自 <a href="http://deanattali.com/beautiful-jekyll/">Beautiful Jekyll</a>
+          
+        </p>
+
+        <p class="credits theme-by text-muted">
+          全站搜索来自于 <a href="https://swiftype.com/"> swiftype.com </a>
+        </p>
+
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+<script src="https://res.cloudinary.com/martinliu/raw/upload/static/bootstrap.min.js"></script>
+<script src="https://res.cloudinary.com/martinliu/raw/upload/static/photoswipe-ui-default.min.js"></script>
+<script src="https://res.cloudinary.com/martinliu/raw/upload/static/photoswipe.min.js"></script>
+<script src="https://res.cloudinary.com/martinliu/raw/upload/static/auto-render.min.js"></script>
+<script src="https://res.cloudinary.com/martinliu/raw/upload/static/main.js"></script>
+<script src="https://res.cloudinary.com/martinliu/raw/upload/static/prism.js"></script>
+<script src="https://res.cloudinary.com/martinliu/raw/upload/static/katex.min.js"></script>
+<script> renderMathInElement(document.body); </script>
+
+
+
+
+
+
+
+
+  </body>
+</html>
+

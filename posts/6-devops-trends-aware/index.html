@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="zh">
+  <head>
+  <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+  <title> 2018年必须认识到的6个DevOps趋势 - Martin Liu&#39;s Blog</title>
+  
+  <meta property="og:title" content="2018年必须认识到的6个DevOps趋势" />
+  <meta name="twitter:title" content="2018年必须认识到的6个DevOps趋势" />
+  <meta name="description" content="2018年你必须认识到这6个DevOps趋势">
+  <meta property="og:description" content="2018年你必须认识到这6个DevOps趋势">
+  <meta name="twitter:description" content="2018年你必须认识到这6个DevOps趋势">
+  <meta name="author" content="刘征 Martin Liu"/>
+  <link href='https://martinliu.cn/favicon.ico' rel='icon' type='image/x-icon'/>
+
+<meta name="msvalidate.01" content="12F570013342D1F8B60A455D09221C1D" />
+<meta name="yandex-verification" content="7e9acc85531b0f35" />
+<meta name="google-site-verification" content="4oSwNTpy1vzip3_lt6XhkhMfImCD_DZlvL3K1k-M8qk" />
+<meta name="baidu-site-verification" content="Z7d1tYkxzQ" />
+
+<script>(function (w, d, s, l, i) {
+    w[l] = w[l] || []; w[l].push({
+      'gtm.start':
+        new Date().getTime(), event: 'gtm.js'
+    }); var f = d.getElementsByTagName(s)[0],
+      j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : ''; j.async = true; j.src =
+        'https://www.googletagmanager.com/gtm.js?id=' + i + dl; f.parentNode.insertBefore(j, f);
+  })(window, document, 'script', 'dataLayer', 'GTM-TL37V8G');</script>
+
+
+  <meta property="og:image" content="https://res.cloudinary.com/martinliu/image/upload/q_auto:eco/avatar.jpg" />
+  <meta name="twitter:image" content="https://res.cloudinary.com/martinliu/image/upload/q_auto:eco/avatar.jpg" />
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:site" content="@martinliu" />
+  <meta name="twitter:creator" content="@martinliu" />
+  <meta property="og:url" content="https://martinliu.cn/posts/6-devops-trends-aware/" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Martin&#39;s Blog" />
+  <meta name="keywords" content="DevOps" />
+
+  <meta name="generator" content="Hugo 0.55.0-DEV" />
+  <link rel="canonical" href="https://martinliu.cn/posts/6-devops-trends-aware/" />
+  <link rel="alternate" href="https://martinliu.cn/index.xml" type="application/rss+xml" title="Martin&#39;s Blog">
+  <script src="https://res.cloudinary.com/martinliu/raw/upload/static/jquery-1.12.4.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.7.1/katex.min.css" integrity="sha384-wITovz90syo1dJWVh32uuETPVEtGigN07tkttEqPv+uR2SE/mbQcG7ATL28aI9H0" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+  
+  
+  <link rel="stylesheet" href="https://martinliu.cn/css/main.css" />
+  <link rel="stylesheet" href="https://martinliu.cn/css/search.css" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" />
+  
+
+
+
+<link rel="stylesheet" href="https://martinliu.cn/css/prism.css" />
+
+
+<script>
+    var _hmt = _hmt || [];
+    (function () {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?50c3a9ae6c51222b31df5510bbca479f";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.1/photoswipe.min.css" integrity="sha256-sCl5PUOGMLfFYctzDW3MtRib0ctyUvI9Qsmq2wXOeBY=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.1/default-skin/default-skin.min.css" integrity="sha256-BFeI1V+Vh1Rk37wswuOYn5lsTcaU96hGaI7OUVCLjPc=" crossorigin="anonymous" />
+
+
+
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+<div class="pswp__bg"></div>
+
+<div class="pswp__scroll-wrap">
+    
+    <div class="pswp__container">
+      <div class="pswp__item"></div>
+      <div class="pswp__item"></div>
+      <div class="pswp__item"></div>
+    </div>
+    
+    <div class="pswp__ui pswp__ui--hidden">
+    <div class="pswp__top-bar">
+      
+      <div class="pswp__counter"></div>
+      <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+      <button class="pswp__button pswp__button--share" title="Share"></button>
+      <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+      <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+      
+      
+      <div class="pswp__preloader">
+        <div class="pswp__preloader__icn">
+          <div class="pswp__preloader__cut">
+            <div class="pswp__preloader__donut"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+      <div class="pswp__share-tooltip"></div>
+    </div>
+    <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+    </button>
+    <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+    </button>
+    <div class="pswp__caption">
+      <div class="pswp__caption__center"></div>
+    </div>
+    </div>
+    </div>
+</div>
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-749876-6', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+
+</head>
+
+  <body>
+    <nav class="navbar navbar-default navbar-fixed-top navbar-custom">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#main-navbar">
+        <span class="sr-only">切换导航</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="https://martinliu.cn/">Martin&#39;s Blog</a>
+    </div>
+    <div class="collapse navbar-collapse" id="main-navbar">
+      <ul class="nav navbar-nav navbar-right">
+        
+          
+            <li>
+              <a title="首页" href="/">首页</a>
+              
+              
+            </li>
+          
+        
+          
+            <li>
+              <a title="标签" href="/tags">标签</a>
+              
+              
+            </li>
+          
+        
+          
+            <li>
+              <a title="关于" href="/about">关于</a>
+              
+              
+            </li>
+          
+        
+          
+            <li>
+              <a title="书籍" href="https://handbook.martinliu.cn">书籍</a>
+              
+              
+            </li>
+          
+        
+
+        
+
+        
+        
+          <li>
+            <a href="#modalSearch" data-toggle="modal" data-target="#modalSearch" style="outline: none;">
+              <span class="hidden-sm hidden-md hidden-lg">搜索</span> <span id="searchGlyph" class="glyphicon glyphicon-search"></span>
+            </a>
+          </li>
+          
+      </ul>
+    </div>
+
+    <div class="avatar-container">
+      <div class="avatar-img-border">
+        
+          <a title="Martin&#39;s Blog" href="https://martinliu.cn/">
+            <img class="avatar-img" src="https://res.cloudinary.com/martinliu/image/upload/q_auto:eco/avatar.jpg" alt="Martin&#39;s Blog" />
+          </a>
+        
+      </div>
+    </div>
+
+  </div>
+</nav>
+
+
+
+
+
+  <div id="modalSearch" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">全站搜索 by swiftype </h4>
+        </div>
+        <div class="modal-body">
+            <style>
+  .st-default-search-input {
+    width: calc(100% - 45px);
+  }
+</style>
+<div>
+  <form>
+    <input type="text" class="st-default-search-input" />
+  </form>
+</div>
+
+
+<script type="text/javascript">
+  (function(w,d,t,u,n,s,e){w['SwiftypeObject']=n;w[n]=w[n]||function(){
+  (w[n].q=w[n].q||[]).push(arguments);};s=d.createElement(t);
+  e=d.getElementsByTagName(t)[0];s.async=1;s.src=u;e.parentNode.insertBefore(s,e);
+  })(window,document,'script','//s.swiftypecdn.com/install/v2/st.js','_st');
+  
+  _st('install','rvHKnQr8PJKjRDhyUWot','2.0.0');
+</script>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+    
+  
+  
+  
+
+
+
+
+  
+    <div id="header-big-imgs" data-num-img=1 data-img-src-1="https://res.cloudinary.com/martinliu/image/upload/Decaying_Startrails_nimiaRM_165652_1080_HD_ZH-CN1933491271.jpg" data-img-desc-1="DevOps"></div>
+  
+
+  <header class="header-section has-img">
+    
+      <div class="intro-header big-img">
+        
+        
+        <div class="container">
+          <div class="row">
+              <div class="col-lg-12 col-md-12 col-md-offset-0">
+                
+                <div class="post-heading">
+                
+                  
+                     <h1>2018年必须认识到的6个DevOps趋势</h1>
+                     
+                     
+                  
+                  
+                  
+                    
+                      <hr class="small">
+                      <span class="post-subheading">保持敏锐的察觉力并紧跟趋势</span>
+                    
+                  
+                  
+                    <span class="post-meta">
+  
+  发表于 2018, March 23
+  
+  
+</span>
+
+
+                  
+                
+              </div>
+            </div>
+          </div>
+        </div>
+        <span class="img-desc" style="display: inline;"></span>
+      </div>
+    
+  </header>
+
+
+    
+<div class="container" role="main">
+    <div class="row">
+        <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+            
+            <div>
+                <h5 id="wc">字数：1600 |大约阅读时间 4 分钟</h5>
+                <h5 id="tags">标签: 
+                    <a href="https://martinliu.cn//tags/devops">DevOps</a> &nbsp;
+                </h5>
+
+            </div>
+            <article role="main" class="blog-post">
+                
+
+<p>DevOps已经出现了很长时间，我们中的很多人都认为它只是一个时髦词。现在我们知道这并不是一个神话。DevOps已经成为一个IT主流的焦点，并且在过去的几年里一直在重塑着软件世界。专家表示，DevOps将成为主流，2018年DevOps的人气将达到顶峰。</p>
+
+<p>下面是术语“DevOps”在Google趋势里的现状，以及对2018年预计增长的假设。
+<img src="https://res.cloudinary.com/martinliu/image/upload/15217987958903.png" alt="" /></p>
+
+<p>谈到统计数据，从2015年到2016年，DevOps的应用企业数增加了约8%，预计2018年这一数字将大幅增长，如上所示。</p>
+
+<p><img src="https://res.cloudinary.com/martinliu/image/upload/15217988516530.png" alt="" /></p>
+
+<p>你可以阅读<a href="https://www.rightscale.com/blog/cloud-industry-insights/new-devops-trends-2016-state-cloud-survey">RightScale</a>的整个报告。甚至<a href="https://go-forrester.clclp.me/blogs/2018-the-year-of-enterprise-devops">Forrester的报告</a>也明确提到2018年将是DevOps的一年。</p>
+
+<p>最近发表的关于DevOps的事实和统计数据的文章得到了DevOps爱好者的热烈响应，它只是表明许多技术布道者者对了解更多DevOps并在他们的组织中实施DevOps很感兴趣。</p>
+
+<p>今天，我们将看到以下事实将塑造DevOps的未来。</p>
+
+<h2 id="1-将重心从ci流水线移到devops装配线">1 将重心从CI流水线移到DevOps装配线</h2>
+
+<p>通过CI流水线可以显示应用程序从源代码管理到生产的完整可视化。你可以在一个统一的视图上看到一切。它不仅仅只关于CI，它更多是作为CD (连续交付)的基础；组织正在投入时间和精力来进一步了解自动化其完整的软件开发流程。2018年，第一大DevOps转变将是从单纯的CI流水线转变为<a href="http://blog.shippable.com/the-difference-between-ci-pipelines-and-devops-assembly-lines-0">DevOps的装配线</a>链接是Shippable关于装配线的描述。</p>
+
+<h2 id="2-自动化将成为主要关注点">2 自动化将成为主要关注点</h2>
+
+<p>在DevOps中，我们经常谈论自动化。如果可能，对服务器的零接触自动化将是未来的趋势。这并不意味着你必须自动化一切，但如果你必须这样做，那么你应该能够做到。了解DevOps循环的6个C，并确保在这些阶段之间应用自动化是关键，这将是2018年的主要目标。</p>
+
+<p><img src="https://res.cloudinary.com/martinliu/image/upload/15217988430927.png" alt="" /></p>
+
+<h2 id="3-测试人员需要学会编写代码">3 测试人员需要学会编写代码</h2>
+
+<p>在DevOps中，需要测试人员知道如何编写自动化脚本来测试各种情况。如果您是一名测试人员，如果在是否学习编码的问题上进退两难，那么我建议您学习编码。了解不同的DevOps工具和自动化脚本，在当今的软件开发中起着至关重要的作用，这将在2018年占据主导地位。</p>
+
+<p>如果测试人员不学习自己编写自动化测试脚本，他们将会灭亡。手动测试将在2018年过时，它将占用大量时间。自动化测试不仅可以提高效率，还可以确保功能更快地交付给市场。</p>
+
+<h2 id="4-微服务体系结构应用的增加">4 微服务体系结构应用的增加</h2>
+
+<p>DevOps和微服务最近正是天作之合。微服务是独立的实体，因此不会在出现问题时由于任何依赖关系而中断其他系统。微服务体系结构可帮助公司轻松进行部署和添加新功能。预计公司将转向微服务体系结构，以提高其运行时间和效率。不要因为别人采用了微服务体系结构就跟着他们走，点这个文章：<a href="http://blog.shippable.com/why-you-should-adopt-microservices">了解自己并理解为什么应该采用微服务体系结构</a>。</p>
+
+<h2 id="5-预计将有更多的公司选择企业版devops工具">5 预计将有更多的公司选择企业版DevOps工具</h2>
+
+<p>目前有许多公司仍然处于建造还是购买的两难境地。但是，我们建议您做您最擅长的事情，并根据您的要求购买工具。这不仅有助于您专注于自己的目标，而且通过完全依赖第三方平台来提高工作效率。许多公司现在都在寻求企业版本，以获得自己的DevOps基础架构，并确保安全性尽可能掌握在最佳人员手中。</p>
+
+<h2 id="6-kubernetes将会大行其道">6 KUBERNETES将会大行其道</h2>
+
+<p><a href="https://www.upwork.com/hiring/for-clients/kubernetes-vs-openshift-vs-tectonic/">Kubernetes</a>因其优异的功能性和易用性，从而成为增长最快的容器技术。kubernetes围绕它建立了一个伟大的开源社区。在全球范围内，许多首席信息官和技术人员都采用了Kubernetes，采用比例预计将在2018年进一步提升。</p>
+
+<p>最近，<a href="https://events.linuxfoundation.org/events/kubecon-cloudnativecon-north-america-2018/">在KubeCon + CloudberNativeCon北美</a>( 2017年12月6日至8日)之前，云计算基金会进行了一项调查，并分享了容器编排环境正在发生的变化和向Kubernetes的转变。</p>
+
+<p><img src="https://res.cloudinary.com/martinliu/image/upload/15218007889881.png" alt="" /></p>
+
+<p>来源:容器业务流程环境正在更改。</p>
+
+<p>以上是将在2018年复现的DevOps的6个趋势。</p>
+
+                    <a href="http://zhihu.com/people/devopscoach" target="_blank">
+                    <img src="https://res.cloudinary.com/martinliu/image/upload/q_auto:eco/martin-at-zhihu.png" alt="DevOps教练在知乎" />
+                    </a>
+            </article>
+            
+
+            <ul class="pager blog-pager">
+                
+                <li class="previous">
+                    <a href="https://martinliu.cn/posts/2018-best-devops-event/" data-toggle="tooltip" data-placement="top" title="2018值得关注的15个DevOps大会">&larr; 前一篇</a>
+                </li>
+                 
+                <li class="next">
+                    <a href="https://martinliu.cn/posts/7-skills-devops-engineer/" data-toggle="tooltip" data-placement="top" title="7种DevOps工程师必备技能">后一篇 &rarr;</a>
+                </li>
+                
+            </ul>
+            <div>
+                 
+                <h2>See Also</h2>
+                <ul>
+                    
+                    <li>
+                        <a href="/posts/2018-best-devops-event/">2018值得关注的15个DevOps大会</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/posts/devops-infrastructure-ci-app-deployment/">基础架构的持续集成和应用部署</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/posts/devops-on-nutanix/">DevOps on Nutanix[Beta]</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/posts/devops-handbook/">Devops Handbook《DevOps实践指南》简介</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/posts/devops-first-way-flow/">DevOps工作三步法：第一步流动原则</a>
+                    </li>
+                    
+                </ul>
+                
+            </div>
+            
+
+            
+            
+
+        </div>
+    </div>
+    </section>
+</div>
+
+    <footer>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <ul class="list-inline text-center footer-links">
+          
+              <li>
+                <a href="mailto:liuzh66@gmail.com" title="Email me">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-envelope fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a href="https://plus.google.com/&#43;MartinLiu-cn" title="Google&#43;">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-google-plus fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a href="https://github.com/martinliu" title="GitHub">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a href="https://twitter.com/martinliu" title="Twitter">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a href="https://linkedin.com/in/liuzheng" title="LinkedIn">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-linkedin fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+          
+        </ul>
+        <p class="credits copyright text-muted">
+        &copy;2017-2018
+
+              刘征 Martin Liu
+
+          
+          
+            &nbsp;&bull;&nbsp;
+            <a href="https://martinliu.cn/">Martin&#39;s Blog</a>
+          
+        </p>
+        
+        <p class="credits theme-by text-muted">
+          由 <a href="http://gohugo.io">Hugo v0.55.0-DEV</a> 强力驱动 &nbsp;&bull;&nbsp; 主题 <a href="https://github.com/halogenica/beautifulhugo">Beautiful Hugo</a> 移植自 <a href="http://deanattali.com/beautiful-jekyll/">Beautiful Jekyll</a>
+          
+        </p>
+
+        <p class="credits theme-by text-muted">
+          全站搜索来自于 <a href="https://swiftype.com/"> swiftype.com </a>
+        </p>
+
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+<script src="https://res.cloudinary.com/martinliu/raw/upload/static/bootstrap.min.js"></script>
+<script src="https://res.cloudinary.com/martinliu/raw/upload/static/photoswipe-ui-default.min.js"></script>
+<script src="https://res.cloudinary.com/martinliu/raw/upload/static/photoswipe.min.js"></script>
+<script src="https://res.cloudinary.com/martinliu/raw/upload/static/auto-render.min.js"></script>
+<script src="https://res.cloudinary.com/martinliu/raw/upload/static/main.js"></script>
+<script src="https://res.cloudinary.com/martinliu/raw/upload/static/prism.js"></script>
+<script src="https://res.cloudinary.com/martinliu/raw/upload/static/katex.min.js"></script>
+<script> renderMathInElement(document.body); </script>
+
+
+
+
+
+
+
+
+  </body>
+</html>
+
