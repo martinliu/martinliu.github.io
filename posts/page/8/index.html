@@ -37,7 +37,7 @@
   <meta property="og:site_name" content="Martin&#39;s Blog" />
   <meta name="keywords" content="" />
 
-  <meta name="generator" content="Hugo 0.55.0-DEV" />
+  <meta name="generator" content="Hugo 0.53" />
   <link rel="canonical" href="https://martinliu.cn/posts/" />
   <link rel="alternate" href="https://martinliu.cn/index.xml" type="application/rss+xml" title="Martin&#39;s Blog">
   <script src="https://res.cloudinary.com/martinliu/raw/upload/static/jquery-1.12.4.min.js"></script>
@@ -267,6 +267,43 @@ if (!doNotTrack) {
       <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
         
         <div class="posts-list">
+          
+            <article class="post-preview">
+              <a target="_blank" href="https://martinliu.cn/2015/06/16/e59ca8-rhel-7-e4b88ae5ae89e8a385-foreman-1-8/">
+                <h2  class="post-title">在 RHEL 7 上安装 Foreman 1.8</h2>
+
+                
+                  <h3 class="post-subtitle">
+                    Foreman 是一个发展的越来越好的开源项目，具备很多成功开源项目的相同特质：简单强大的核心装机和自动化配置功能、开放的插件架构下已经开发出足够丰富的周边功能，资源池集成插件涵盖各种服务器虚拟化和云主机，配置自动化控制方面集成了puppet和salt等。本文简述了如何在RHEL7上安装最新版本的Foremen 1.8.2
+                  </h3>
+                
+              </a>
+
+              <p class="post-meta">
+                发表于 2015, June 16
+              </p>
+              <div class="post-entry">
+                
+                  首先安装RHEL7使用光盘安装最小化系统，安装完成之后，关闭防火墙和SELinux（为了测试方便），配置主机名为FQDN格式，如 fm1.8.
+                  <a target="_blank" href="https://martinliu.cn/2015/06/16/e59ca8-rhel-7-e4b88ae5ae89e8a385-foreman-1-8/" class="post-read-more">[阅读全文]</a>
+                
+              </div>
+
+              
+                <span class="post-meta">
+                  
+                    #<a href="https://martinliu.cn/tags/foreman/">Foreman</a>&nbsp;
+                  
+                    #<a href="https://martinliu.cn/tags/puppet/">puppet</a>&nbsp;
+                  
+                    #<a href="https://martinliu.cn/tags/rhel/">RHEL</a>&nbsp;
+                  
+                    #<a href="https://martinliu.cn/tags/yum/">Yum</a>&nbsp;
+                  
+                </span>
+              
+
+            </article>
           
             <article class="post-preview">
               <a target="_blank" href="https://martinliu.cn/2015/06/13/e794a8-powertop-e7bb99e7ac94e8aeb0e69cace794b5e88491e79c81e794b5/">
@@ -567,49 +604,6 @@ if (!doNotTrack) {
                 <span class="post-meta">
                   
                     #<a href="https://martinliu.cn/tags/openstack/">openstack</a>&nbsp;
-                  
-                </span>
-              
-
-            </article>
-          
-            <article class="post-preview">
-              <a target="_blank" href="https://martinliu.cn/2015/03/30/import-cloudforms-into-rhevm/">
-                <h2  class="post-title">Import CloudForms  into rhevm</h2>
-
-                
-                  <h3 class="post-subtitle">
-                    下载CloudForms最新版本的rhev的虚拟机，导入到rhevm的nfs export存储中。从模板生成虚拟机。运行和配置CloudForms虚拟机，这样它就可以管理这个rhevm的环境了。
-                  </h3>
-                
-              </a>
-
-              <p class="post-meta">
-                发表于 2015, March 30
-              </p>
-              <div class="post-entry">
-                
-                  
-
-<p>[bash]
-[root@rhevm03 export]# cat /etc/exports
-/var/lib/exports/iso *(rw)
-/export/rhev_import_export_disk *(rw,sync,no_subtree_check,all_squash,anonuid=36,anongid=36)
-/export/template *(rw,sync,no_subtree_check,all_squash,anonuid=36,anongid=36)</p>
-
-<h1 id="root-rhevm03-export-engine-image-uploader-n-cfme5351-e-export-nfs-rhevm-v-m-upload-tmp-cfme-rhevm-5-3-51-x86-64-rhevm-ova">[root@rhevm03 export]# engine-image-uploader -N cfme5351 -e export-nfs-rhevm -v -m upload /tmp/cfme-rhevm-5.3-51.x86_64.rhevm.ova</h1>
-
-<p>[/bash]</p>
-
-<p>然后从Web Console上导入这个模板，创建一个目标规格的虚拟机。</p>
-
-                
-              </div>
-
-              
-                <span class="post-meta">
-                  
-                    #<a href="https://martinliu.cn/tags/cfme/">cfme</a>&nbsp;
                   
                 </span>
               
@@ -1119,7 +1113,7 @@ if (!doNotTrack) {
         </p>
         
         <p class="credits theme-by text-muted">
-          由 <a href="http://gohugo.io">Hugo v0.55.0-DEV</a> 强力驱动 &nbsp;&bull;&nbsp; 主题 <a href="https://github.com/halogenica/beautifulhugo">Beautiful Hugo</a> 移植自 <a href="http://deanattali.com/beautiful-jekyll/">Beautiful Jekyll</a>
+          由 <a href="http://gohugo.io">Hugo v0.53</a> 强力驱动 &nbsp;&bull;&nbsp; 主题 <a href="https://github.com/halogenica/beautifulhugo">Beautiful Hugo</a> 移植自 <a href="http://deanattali.com/beautiful-jekyll/">Beautiful Jekyll</a>
           
         </p>
 
