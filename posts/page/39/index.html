@@ -269,6 +269,50 @@ if (!doNotTrack) {
         <div class="posts-list">
           
             <article class="post-preview">
+              <a target="_blank" href="https://martinliu.cn/2007/06/14/how-to-install-cacti-on-opensuse-102/">
+                <h2  class="post-title">How to install Cacti on OpenSuse 10.2</h2>
+
+                
+              </a>
+
+              <p class="post-meta">
+                发表于 2007, June 14
+              </p>
+              <div class="post-entry">
+                
+                  1.
+Download Extract the distribution tarball
+Suse:/opt # wget http://www.cacti.net/downloads/cacti-0.8.6j.tar.gz
+Suse:/opt # tar zxvf cacti-0.8.6j.tar.gz
+2.
+Create the MySQL database:
+Suse:/opt # mysqladmin &ndash;user=root create cacti
+3.
+Import the default cacti database:
+Suse:/opt/cacti-0.8.6j # mysql cacti &lt; user=&ldquo;root&rdquo;&gt; GRANT ALL ON cacti.* TO cactiuser@localhost IDENTIFIED BY &lsquo;cacti&rsquo;;
+Query OK, 0 rows affected (0.03 sec)
+mysql&gt; flush privileges;
+Query OK, 0 rows affected (0.00 sec)
+mysql&gt; quite
+5.
+Edit include/config.php and specify the MySQL user, password and database for your Cacti configuration.
+                  <a target="_blank" href="https://martinliu.cn/2007/06/14/how-to-install-cacti-on-opensuse-102/" class="post-read-more">[阅读全文]</a>
+                
+              </div>
+
+              
+                <span class="post-meta">
+                  
+                    #<a href="https://martinliu.cn/tags/cacti/">cacti</a>&nbsp;
+                  
+                    #<a href="https://martinliu.cn/tags/opensuse/">opensuse</a>&nbsp;
+                  
+                </span>
+              
+
+            </article>
+          
+            <article class="post-preview">
               <a target="_blank" href="https://martinliu.cn/2007/06/12/e5bbbae7ab8be4b880e4b8aae5bc80e6ba90e4bc81e4b89a/">
                 <h2  class="post-title">建立一个开源企业</h2>
 
@@ -546,33 +590,6 @@ vi /var/lib/pgsql/data/pg_hba.
                     #<a href="https://martinliu.cn/tags/opennms/">OpenNMS</a>&nbsp;
                   
                     #<a href="https://martinliu.cn/tags/opensuse/">opensuse</a>&nbsp;
-                  
-                </span>
-              
-
-            </article>
-          
-            <article class="post-preview">
-              <a target="_blank" href="https://martinliu.cn/2007/05/08/what-is-opennms/">
-                <h2  class="post-title">OpenNMS网络和系统管理简介</h2>
-
-                
-              </a>
-
-              <p class="post-meta">
-                发表于 2007, May 8
-              </p>
-              <div class="post-entry">
-                
-                  1.1 概述 Opennms能够帮助IT管理部门持续的监控分布式的异构系统和网络设备的运行状态，它可以支持SNMP网络管理协议确保管理的扩展性，并且
-                  <a target="_blank" href="https://martinliu.cn/2007/05/08/what-is-opennms/" class="post-read-more">[阅读全文]</a>
-                
-              </div>
-
-              
-                <span class="post-meta">
-                  
-                    #<a href="https://martinliu.cn/tags/opennms/">OpenNMS</a>&nbsp;
                   
                 </span>
               
