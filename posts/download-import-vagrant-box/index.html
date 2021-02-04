@@ -1,0 +1,188 @@
+<!doctype html><html lang=zh><head><meta charset=utf-8><meta http-equiv=x-ua-compatible content="IE=edge"><meta name=viewport content="width=device-width,initial-scale=1,maximum-scale=1"><title>如何在墙内正常导入 Vagrant 虚拟机模板 - Martin Liu's Blog</title><meta property="og:title" content="如何在墙内正常导入 Vagrant 虚拟机模板"><meta name=twitter:title content="如何在墙内正常导入 Vagrant 虚拟机模板"><meta name=description content="在墙内如何正常下载所需要的 Vagrant 的虚拟机模板文件"><meta property="og:description" content="在墙内如何正常下载所需要的 Vagrant 的虚拟机模板文件"><meta name=twitter:description content="在墙内如何正常下载所需要的 Vagrant 的虚拟机模板文件"><meta name=author content="刘征 Martin Liu"><link href=https://martinliu.cn/favicon.ico rel=icon type=image/x-icon><meta name=msvalidate.01 content="12F570013342D1F8B60A455D09221C1D"><meta name=yandex-verification content="7e9acc85531b0f35"><meta name=google-site-verification content="4oSwNTpy1vzip3_lt6XhkhMfImCD_DZlvL3K1k-M8qk"><meta name=baidu-site-verification content="Z7d1tYkxzQ"><script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-TL37V8G');</script><meta property="og:image" content="https://res.cloudinary.com/martinliu/image/upload/q_auto:eco/avatar.jpg"><meta name=twitter:image content="https://res.cloudinary.com/martinliu/image/upload/q_auto:eco/avatar.jpg"><meta name=twitter:card content="summary"><meta name=twitter:site content="@martinliu"><meta name=twitter:creator content="@martinliu"><meta property="og:url" content="https://martinliu.cn/posts/download-import-vagrant-box/"><meta property="og:type" content="website"><meta property="og:site_name" content="Martin's Blog"><meta name=keywords content="DevOps"><meta name=generator content="Hugo 0.80.0"><link rel=canonical href=https://martinliu.cn/posts/download-import-vagrant-box/><link rel=alternate href=https://martinliu.cn/index.xml type=application/rss+xml title="Martin's Blog"><script src=https://res.cloudinary.com/martinliu/raw/upload/static/jquery-1.12.4.min.js></script><link rel=stylesheet href=https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.7.1/katex.min.css integrity=sha384-wITovz90syo1dJWVh32uuETPVEtGigN07tkttEqPv+uR2SE/mbQcG7ATL28aI9H0 crossorigin=anonymous><link rel=stylesheet href=https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css><link rel=stylesheet href=https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css integrity=sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u crossorigin=anonymous><link rel=stylesheet href=https://martinliu.cn/css/main.css><link rel=stylesheet href=https://martinliu.cn/css/search.css><link rel=stylesheet href="https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic"><link rel=stylesheet href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800"><link rel=stylesheet href=https://martinliu.cn/css/prism.css><script data-ad-client=ca-pub-4545355461463255 async src=https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js></script><link rel=stylesheet href=https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.1/photoswipe.min.css integrity="sha256-sCl5PUOGMLfFYctzDW3MtRib0ctyUvI9Qsmq2wXOeBY=" crossorigin=anonymous><link rel=stylesheet href=https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.1/default-skin/default-skin.min.css integrity="sha256-BFeI1V+Vh1Rk37wswuOYn5lsTcaU96hGaI7OUVCLjPc=" crossorigin=anonymous><div class=pswp tabindex=-1 role=dialog aria-hidden=true><div class=pswp__bg></div><div class=pswp__scroll-wrap><div class=pswp__container><div class=pswp__item></div><div class=pswp__item></div><div class=pswp__item></div></div><div class="pswp__ui pswp__ui--hidden"><div class=pswp__top-bar><div class=pswp__counter></div><button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+<button class="pswp__button pswp__button--share" title=Share></button>
+<button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+<button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button><div class=pswp__preloader><div class=pswp__preloader__icn><div class=pswp__preloader__cut><div class=pswp__preloader__donut></div></div></div></div></div><div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap"><div class=pswp__share-tooltip></div></div><button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)"></button>
+<button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)"></button><div class=pswp__caption><div class=pswp__caption__center></div></div></div></div></div><script type=application/javascript>var doNotTrack=false;if(!doNotTrack){window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;ga('create','UA-749876-6','auto');ga('send','pageview');}</script><script async src=https://www.google-analytics.com/analytics.js></script></head><body><nav class="navbar navbar-default navbar-fixed-top navbar-custom"><div class=container-fluid><div class=navbar-header><button type=button class=navbar-toggle data-toggle=collapse data-target=#main-navbar>
+<span class=sr-only>切换导航</span>
+<span class=icon-bar></span><span class=icon-bar></span><span class=icon-bar></span></button>
+<a class=navbar-brand href=https://martinliu.cn/>Martin's Blog</a></div><div class="collapse navbar-collapse" id=main-navbar><ul class="nav navbar-nav navbar-right"><li><a title=首页 href=https://martinliu.cn/>首页</a></li><li><a title=标签 href=https://martinliu.cn/tags>标签</a></li><li><a title=关于 href=https://martinliu.cn/about>关于</a></li><li><a title=书籍 href=https://martinliu.cn/book>书籍</a></li></ul></div><div class=avatar-container><div class=avatar-img-border><a title="Martin's Blog" href=https://martinliu.cn/><img class=avatar-img src=https://res.cloudinary.com/martinliu/image/upload/q_auto:eco/avatar.jpg alt="Martin's Blog"></a></div></div></div></nav><div id=header-big-imgs data-num-img=1 data-img-src-1=https://martinliu.cn/images/vagrant-download-box.jpg data-img-desc-1="vagrant download"></div><header class="header-section has-img"><div class="intro-header big-img"><div class=container><div class=row><div class="col-lg-12 col-md-12 col-md-offset-0"><div class=post-heading><h1>如何在墙内正常导入 Vagrant 虚拟机模板</h1><hr class=small><span class=post-subheading>这是 Vagrant 新用户需要解决的第一个问题</span>
+<span class=post-meta></span></div></div></div></div><span class=img-desc style=display:inline></span></div></header><div class=container role=main><div class=row><div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1"><div><h5 id=wc>字数：2100 |大约阅读时间 5 分钟</h5><h5 id=tags>标签:
+<a href=https://martinliu.cn//tags/devops>DevOps</a> &nbsp;</h5></div><article role=main class=blog-post><p>当你满心欢喜的安装完了 vagrant 之后，在你第一次 <code>vagrant up</code> 命令的时候，是下载超时么？你的内心是什么感受？想放弃了么？</p><p>其实你只需要找到国内的 box 文件镜像服务器，或者下载地址，然后手工下载对应的 Box 文件（操作系统镜像文件），并导入即可，本文将帮你铲除这只官方镜像文件下载失败的拦路虎。</p><p><img src=https://martinliu.cn/images/vagrant-home-page.png alt></p><p>Vagrant 的优势：</p><ul><li>虚拟机对于系统级开发和测试工作具有不可替代的作用</li><li>手工安装的虚拟机非常</li></ul><h2 id=准备工作>准备工作</h2><p>我的测试环境如下，如果你的测试环境和我的不同，但是本操作方法和过程也同样的适用于相似的环境。</p><p>环境描述：</p><ul><li>macOS catalina version 10.15.3</li><li>vagrant 2.2.4</li><li>Virtuabox 6.0.15r135660</li></ul><p>如果你也百度了’ vagrant box 国内镜像‘的话，结果会使你很失望，清华大学等站点只是缓存了个别的镜像文件，并没有其它版本特别全面的网站，更没有完整的镜像。如果你知道其它国内的镜像站点请告诉我，我会增加到本文。</p><p>Ubuntu 的可以浏览这两个目标下载网址。</p><p><a href=https://mirrors.tuna.tsinghua.edu.cn/ubuntu-cloud-images/vagrant/>https://mirrors.tuna.tsinghua.edu.cn/ubuntu-cloud-images/vagrant/</a></p><p>然后用vagrant 下面的命令就可以将 box 下载并且添加到本地。</p><ul><li>ubuntu 18.04 LTS:</li></ul><p>vagrant box add <a href=https://mirrors.tuna.tsinghua.edu.cn/ubuntu-cloud-images/bionic/current/bionic-server-cloudimg-amd64-vagrant.box>https://mirrors.tuna.tsinghua.edu.cn/ubuntu-cloud-images/bionic/current/bionic-server-cloudimg-amd64-vagrant.box</a> &ndash;name ubuntu18</p><ul><li>ubunt 16.04 LTS：</li></ul><p>vagrant box add <a href=https://mirrors.tuna.tsinghua.edu.cn/ubuntu-cloud-images/xenial/current/xenial-server-cloudimg-amd64-vagrant.box>https://mirrors.tuna.tsinghua.edu.cn/ubuntu-cloud-images/xenial/current/xenial-server-cloudimg-amd64-vagrant.box</a> &ndash;name ubuntu16</p><ul><li>ubuntu14：</li></ul><p>vagrant box add <a href=https://mirrors.tuna.tsinghua.edu.cn/ubuntu-cloud-images/vagrant/trusty/current/trusty-server-cloudimg-amd64-vagrant-disk1.box>https://mirrors.tuna.tsinghua.edu.cn/ubuntu-cloud-images/vagrant/trusty/current/trusty-server-cloudimg-amd64-vagrant-disk1.box</a> &ndash;name ubuntu14</p><p>对于 CentOS 而言，它的官网整理的比较好，提供了各种格式的下载，可能需要科学上网才能访问到 Centos 的下载网址。</p><p><a href=http://cloud.centos.org/centos/7/vagrant/>http://cloud.centos.org/centos/7/vagrant/</a>
+<a href=http://cloud.centos.org/centos/8/vagrant/>http://cloud.centos.org/centos/8/vagrant/</a></p><p>实战建议：你并不需要下载过多的 box 操作系统镜像文件，够用即可。建议将最近有可能使用到的 Box 文件用断点续传的多线程下载工具下载到本机磁盘备用。我下载了一些，关注的微信号‘ MyDevOps ’ 回复 box1 即可获得百度网盘下载地址，这个共享目录中有本文中所提到的所有 Box 文件。</p><h2 id=导入-box-文件>导入 Box 文件</h2><p>用 <code>vagrant box add</code> 命令将本地下载好的 box 文件导入到 vagrant 的主目录中，macOS 下是在<code>~/.vagrant/</code> 目录里。</p><p>使用<code>vagrant box list</code>名先查看本地已有的 box 清单，下面的执行结果如下。</p><pre><code>➜  ~ vagrant box list
+Puppetlabs Ubuntu 12.04.2 x86_64, VBox 4.2.10, No Puppet or Chef (virtualbox, 0)
+bento/centos-7.1                                                 (virtualbox, 2.2.2)
+bento/centos-7.2                                                 (virtualbox, 2.3.1)
+bento/centos-8                                                   (virtualbox, 202002.04.0)
+bento/ubuntu-16.04                                               (virtualbox, 0)
+coreos-alpha                                                     (virtualbox, 1451.2.0)
+geerlingguy/centos6                                              (virtualbox, 0)
+geerlingguy/centos7                                              (virtualbox, 0)
+geerlingguy/ubuntu1604                                           (virtualbox, 0)
+ubuntu/trusty64                                                  (virtualbox, 20161207.0.0)
+ubuntu/trusty64                                                  (virtualbox, 20170307.0.0)
+ubuntu/wily64                                                    (virtualbox, 20160715.0.0)
+ubuntu/xenial64                                                  (virtualbox, 20161214.0.1)
+ubuntu/xenial64                                                  (virtualbox, 20170307.0.1)
+➜  ~
+</code></pre><p>使用<code>vagrant box add</code>导入，并确认。 参考下面的执行过程</p><pre><code>➜  ~ vagrant box  add ~/Downloads/box/bionic-server-cloudimg-amd64-vagrant.box --name ubuntu/bionic
+==&gt; box: Box file was not detected as metadata. Adding it directly...
+==&gt; box: Adding box 'ubuntu/bionic' (v0) for provider:
+    box: Unpacking necessary files from: file:///Users/martin/Downloads/box/bionic-server-cloudimg-amd64-vagrant.box
+==&gt; box: Successfully added box 'ubuntu/bionic' (v0) for 'virtualbox'!
+➜  ~ vagrant box list
+Puppetlabs Ubuntu 12.04.2 x86_64, VBox 4.2.10, No Puppet or Chef (virtualbox, 0)
+bento/centos-7.1                                                 (virtualbox, 2.2.2)
+bento/centos-7.2                                                 (virtualbox, 2.3.1)
+bento/centos-8                                                   (virtualbox, 202002.04.0)
+bento/ubuntu-16.04                                               (virtualbox, 0)
+coreos-alpha                                                     (virtualbox, 1451.2.0)
+geerlingguy/centos6                                              (virtualbox, 0)
+geerlingguy/centos7                                              (virtualbox, 0)
+geerlingguy/ubuntu1604                                           (virtualbox, 0)
+ubuntu/bionic                                                    (virtualbox, 0)
+ubuntu/trusty64                                                  (virtualbox, 20161207.0.0)
+ubuntu/trusty64                                                  (virtualbox, 20170307.0.0)
+ubuntu/wily64                                                    (virtualbox, 20160715.0.0)
+ubuntu/xenial64                                                  (virtualbox, 20161214.0.1)
+ubuntu/xenial64                                                  (virtualbox, 20170307.0.1)
+➜  ~
+</code></pre><h2 id=校验所导入的-box>校验所导入的 Box</h2><p>创建一个测试目录，并执行<code>vagrant init ubuntu/bionic</code> ，然后使用 vagrant up 测试。</p><pre><code>➜  test pwd
+/Users/martin/code/test
+➜  test vagrant init ubuntu/bionic
+A `Vagrantfile` has been placed in this directory. You are now
+ready to `vagrant up` your first virtual environment! Please read
+the comments in the Vagrantfile as well as documentation on
+`vagrantup.com` for more information on using Vagrant.
+</code></pre><p>test 目录下面现在生成了一个默认的 Vagrantfile 文件，查看这个默认的 Vagrantfile 配置文件。这是一个很好的学习资料。</p><pre><code>➜  test cat Vagrantfile
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+# All Vagrant configuration is done below. The &quot;2&quot; in Vagrant.configure
+# configures the configuration version (we support older styles for
+# backwards compatibility). Please don't change it unless you know what
+# you're doing.
+Vagrant.configure(&quot;2&quot;) do |config|
+  # The most common configuration options are documented and commented below.
+  # For a complete reference, please see the online documentation at
+  # https://docs.vagrantup.com.
+
+  # Every Vagrant development environment requires a box. You can search for
+  # boxes at https://vagrantcloud.com/search.
+  config.vm.box = &quot;ubuntu/bionic&quot;
+
+  # Disable automatic box update checking. If you disable this, then
+  # boxes will only be checked for updates when the user runs
+  # `vagrant box outdated`. This is not recommended.
+  # config.vm.box_check_update = false
+
+  # Create a forwarded port mapping which allows access to a specific port
+  # within the machine from a port on the host machine. In the example below,
+  # accessing &quot;localhost:8080&quot; will access port 80 on the guest machine.
+  # NOTE: This will enable public access to the opened port
+  # config.vm.network &quot;forwarded_port&quot;, guest: 80, host: 8080
+
+  # Create a forwarded port mapping which allows access to a specific port
+  # within the machine from a port on the host machine and only allow access
+  # via 127.0.0.1 to disable public access
+  # config.vm.network &quot;forwarded_port&quot;, guest: 80, host: 8080, host_ip: &quot;127.0.0.1&quot;
+
+  # Create a private network, which allows host-only access to the machine
+  # using a specific IP.
+  # config.vm.network &quot;private_network&quot;, ip: &quot;192.168.33.10&quot;
+
+  # Create a public network, which generally matched to bridged network.
+  # Bridged networks make the machine appear as another physical device on
+  # your network.
+  # config.vm.network &quot;public_network&quot;
+
+  # Share an additional folder to the guest VM. The first argument is
+  # the path on the host to the actual folder. The second argument is
+  # the path on the guest to mount the folder. And the optional third
+  # argument is a set of non-required options.
+  # config.vm.synced_folder &quot;../data&quot;, &quot;/vagrant_data&quot;
+
+  # Provider-specific configuration so you can fine-tune various
+  # backing providers for Vagrant. These expose provider-specific options.
+  # Example for VirtualBox:
+  #
+  # config.vm.provider &quot;virtualbox&quot; do |vb|
+  #   # Display the VirtualBox GUI when booting the machine
+  #   vb.gui = true
+  #
+  #   # Customize the amount of memory on the VM:
+  #   vb.memory = &quot;1024&quot;
+  # end
+  #
+  # View the documentation for the provider you are using for more
+  # information on available options.
+
+  # Enable provisioning with a shell script. Additional provisioners such as
+  # Puppet, Chef, Ansible, Salt, and Docker are also available. Please see the
+  # documentation for more information about their specific syntax and use.
+  # config.vm.provision &quot;shell&quot;, inline: &lt;&lt;-SHELL
+  #   apt-get update
+  #   apt-get install -y apache2
+  # SHELL
+end
+</code></pre><p>现在可以踏实的运行 vagrant up 了，Ubuntu 的 Box 文件导入通常没有什么问题。默认配置的 Ubuntu 版本 bionic 的 vm 现在就正常启动了。</p><pre><code>➜  test vagrant up
+Bringing machine 'default' up with 'virtualbox' provider...
+==&gt; default: Importing base box 'ubuntu/bionic'...
+==&gt; default: Matching MAC address for NAT networking...
+==&gt; default: Setting the name of the VM: test_default_1585496539631_90780
+==&gt; default: Clearing any previously set network interfaces...
+==&gt; default: Preparing network interfaces based on configuration...
+    default: Adapter 1: nat
+==&gt; default: Forwarding ports...
+    default: 22 (guest) =&gt; 2222 (host) (adapter 1)
+==&gt; default: Running 'pre-boot' VM customizations...
+==&gt; default: Booting VM...
+==&gt; default: Waiting for machine to boot. This may take a few minutes...
+    default: SSH address: 127.0.0.1:2222
+    default: SSH username: vagrant
+    default: SSH auth method: private key
+    default: Warning: Connection reset. Retrying...
+    default:
+    default: Vagrant insecure key detected. Vagrant will automatically replace
+    default: this with a newly generated keypair for better security.
+    default:
+    default: Inserting generated public key within guest...
+    default: Removing insecure key from the guest if it's present...
+    default: Key inserted! Disconnecting and reconnecting using new SSH key...
+==&gt; default: Machine booted and ready!
+==&gt; default: Checking for guest additions in VM...
+    default: The guest additions on this VM do not match the installed version of
+    default: VirtualBox! In most cases this is fine, but in rare cases it can
+    default: prevent things such as shared folders from working properly. If you see
+    default: shared folder errors, please make sure the guest additions within the
+    default: virtual machine match the version of VirtualBox you have installed on
+    default: your host and reload your VM.
+    default:
+    default: Guest Additions Version: 5.2.34
+    default: VirtualBox Version: 6.0
+==&gt; default: Mounting shared folders...
+    default: /vagrant =&gt; /Users/martin/code/test
+    
+</code></pre><p>现在 ssh 登录到这个崭新的 vm 。</p><pre><code>➜  test vagrant ssh
+Welcome to Ubuntu 18.04.4 LTS (GNU/Linux 4.15.0-91-generic x86_64)
+
+ * Documentation:  https://help.ubuntu.com
+ * Management:     https://landscape.canonical.com
+ * Support:        https://ubuntu.com/advantage
+
+  System information as of Sun Mar 29 15:42:53 UTC 2020
+
+  System load:  1.25              Processes:             99
+  Usage of /:   10.1% of 9.63GB   Users logged in:       0
+  Memory usage: 12%               IP address for enp0s3: 10.0.2.15
+  Swap usage:   0%
+
+
+0 packages can be updated.
+0 updates are security updates.
+
+
+vagrant@ubuntu-bionic:~$ top
+</code></pre><h2 id=导入-centos-7-可能遇到的问题>导入 CentOS 7 可能遇到的问题</h2><p>CentOS 7 和 8 的相关版本在我的测试环境中都出现了导入正常 vagrant up 异常的问题，通常网络搜索错误代码后，就可以解决了，如果有任何问题，欢迎到我的微信公众后台留言。</p><h2 id=总结>总结</h2><p>Vagrant 的功能性和必要性是非常高的，特别是对于天朝的码农而言，就更加重要了。它是 DevOps 工具链上的知名工具，而它的使用率和广泛性却不高。后续还会出这方面的系列内容，讲解更多关于 Vagrant 的优化和功能。</p><p>2io</p><a href=https://mp.weixin.qq.com/s/elRqbNlidJzmKCejBwtsAg target=_blank><img src=https://martinliu.cn/images/sref-zs.jpg alt="SRE Foundation 招生简章"></a></article><ul class="pager blog-pager"><li class=previous><a href=https://martinliu.cn/posts/install-es-kibana-filebeat/ data-toggle=tooltip data-placement=top title="最简化 Elasticsearch & Kibana & Filebeat 安装说明">&larr; 前一篇</a></li><li class=next><a href=https://martinliu.cn/posts/using-elastic-stack-for-monitoring-covid-19/ data-toggle=tooltip data-placement=top title="使用 Elastic Stack 监控 Covid-19 疫情发展">后一篇 &rarr;</a></li></ul><div><h2>See Also</h2><ul><li><a href=https://martinliu.cn/posts/sre-sla-slo-sli/>SLA、SLO 和 SLI 还是傻傻分不清么？</a></li><li><a href=https://martinliu.cn/book/>出版书籍</a></li><li><a href=https://martinliu.cn/posts/2019-state-devops-report-insight-2/>怎样使用两个DevOps研究模型？</a></li><li><a href=https://martinliu.cn/posts/2019-state-devops-report-insight-1/>如何做横向行业的DevOps表现基准测试？</a></li><li><a href=https://martinliu.cn/posts/2019-state-devops-survey-report/>2019年加速度DevOps状态调查报告-导读</a></li></ul></div></div></div></section></div><footer><div class=container><div class=row><div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1"><ul class="list-inline text-center footer-links"><li><a href=mailto:liuzh66@gmail.com title="Email me"><span class="fa-stack fa-lg"><i class="fa fa-circle fa-stack-2x"></i><i class="fa fa-envelope fa-stack-1x fa-inverse"></i></span></a></li><li><a href=https://github.com/martinliu title=GitHub><span class="fa-stack fa-lg"><i class="fa fa-circle fa-stack-2x"></i><i class="fa fa-github fa-stack-1x fa-inverse"></i></span></a></li><li><a href=https://gitlab.com/martinliu title=GitLab><span class="fa-stack fa-lg"><i class="fa fa-circle fa-stack-2x"></i><i class="fa fa-gitlab fa-stack-1x fa-inverse"></i></span></a></li><li><a href=https://twitter.com/martinliu title=Twitter><span class="fa-stack fa-lg"><i class="fa fa-circle fa-stack-2x"></i><i class="fa fa-twitter fa-stack-1x fa-inverse"></i></span></a></li><li><a href=https://linkedin.com/in/liuzheng title=LinkedIn><span class="fa-stack fa-lg"><i class="fa fa-circle fa-stack-2x"></i><i class="fa fa-linkedin fa-stack-1x fa-inverse"></i></span></a></li></ul><p class="credits copyright text-muted">&copy;2017-2018
+刘征 Martin Liu
+&nbsp;&bull;&nbsp;
+<a href=https://martinliu.cn/>Martin's Blog</a></p><p class="credits theme-by text-muted">由 <a href=http://gohugo.io>Hugo v0.80.0</a> 强力驱动 &nbsp;&bull;&nbsp; 主题 <a href=https://github.com/halogenica/beautifulhugo>Beautiful Hugo</a> 移植自 <a href=http://deanattali.com/beautiful-jekyll/>Beautiful Jekyll</a></p></div></div></div></footer><script src=https://res.cloudinary.com/martinliu/raw/upload/static/bootstrap.min.js></script><script src=https://res.cloudinary.com/martinliu/raw/upload/static/photoswipe-ui-default.min.js></script><script src=https://res.cloudinary.com/martinliu/raw/upload/static/photoswipe.min.js></script><script src=https://res.cloudinary.com/martinliu/raw/upload/static/auto-render.min.js></script><script src=https://res.cloudinary.com/martinliu/raw/upload/static/main.js></script><script src=https://res.cloudinary.com/martinliu/raw/upload/static/prism.js></script><script src=https://res.cloudinary.com/martinliu/raw/upload/static/katex.min.js></script><script>renderMathInElement(document.body);</script></body></html>
