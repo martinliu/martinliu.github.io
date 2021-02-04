@@ -3,6 +3,15 @@ If you want to include any custom html just before </head>, put it in /layouts/h
 Do not put anything in this file - it's only here so that hugo won't throw an error if /layouts/head_custom.html doesn't exist.
 -->
 
+    <!-- Elastic APM RUM - sync -->
+    <script src="https://unpkg.com/@elastic/apm-rum@5.6.3/dist/bundles/elastic-apm-rum.umd.min.js" crossorigin></script>
+    <script>
+      elasticApm.init({
+        serviceName: 'ChaoRongHe-cn',
+        serverUrl: 'http://218.240.154.21:8200',
+      })
+    </script>
+
 <!-- prism highlight -->
 <link rel="stylesheet" href="{{ "css/prism.css" | absURL }}" />
 
