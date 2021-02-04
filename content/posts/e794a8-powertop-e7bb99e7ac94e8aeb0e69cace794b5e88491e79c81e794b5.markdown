@@ -1,0 +1,37 @@
+---
+author: liuadmin
+categories:
+- Linux
+comments: true
+date: 2015-06-13T14:27:17Z
+subtitle: 不了解什么进程、设备或者服务费电，就没法做到合理的给笔记本省电，开源世界里最不缺的就是活雷锋，想要什么工具只需要搜一下便可以发现到一堆。本文介绍一个查看笔记本电脑耗电情况的工具powertop。
+slug: '%e7%94%a8-powertop-%e7%bb%99%e7%ac%94%e8%ae%b0%e6%9c%ac%e7%94%b5%e8%84%91%e7%9c%81%e7%94%b5'
+tags:
+- fedora
+- powertop
+title: 用 powertop 给笔记本电脑省电
+url: /2015/06/13/e794a8-powertop-e7bb99e7ac94e8aeb0e69cace794b5e88491e79c81e794b5/
+wordpress_id: 53758
+---
+
+如何安装：
+
+[bash]
+
+sudo dnf install powertop
+
+sudo powertop
+
+sudo systemctl start powertop.service
+
+sudo systemctl enable powertop.service
+
+[/bash]
+
+[gallery link="file" ids="53761,53762,53763,53764,53765"]
+
+使用Tab和shift + tab 键在以上屏幕直接切换。
+
+我发现我主要使用 Tunables 这个tab来找出可以安全关闭的设备服务。以上测试是在我目前的 Fedora 22 on Lenovo T440s上作的。
+
+本文参考：[http://fedoramagazine.org/saving-laptop-power-with-powertop/](http://fedoramagazine.org/saving-laptop-power-with-powertop/)

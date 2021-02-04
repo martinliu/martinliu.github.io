@@ -1,0 +1,114 @@
+<!doctype html><html lang=zh><head><meta charset=utf-8><meta http-equiv=x-ua-compatible content="IE=edge"><meta name=viewport content="width=device-width,initial-scale=1,maximum-scale=1"><title>workshop redhat storage and splunk - Martin Liu's Blog</title><meta property="og:title" content="workshop redhat storage and splunk"><meta name=twitter:title content="workshop redhat storage and splunk"><meta name=description content="Instance Details Replace userX with your user id. For example, user1 &ndash;> user 30
+On your laptop cd ~/.ssh wget https://s3-ap-southeast-1.amazonaws.com/splunk-lab/rhte-splunk-lab wget https://s3-ap-southeast-1.amazonaws.com/splunk-lab/rhte-splunk-lab.pub chmod 600 rhte-splunk-lab chmod 644 rhte-splunk-lab.pub
+ssh -i ~/.ssh/rhte-splunk-lab -l ec2-user gw-userX.apac.red
+On all RHS Nodes sudo su - subscription-manager attach &ndash;pool 8a85f9864675056e014684868378649c subscription-manager repos &ndash;disable=* subscription-manager repos &ndash;enable rhel-6-server-rpms &ndash;enable rhs-3-for-rhel-6-server-rpms &ndash;enable rhel-scalefs-for-rhel-6-server-rpms
+yum -y update
+cat /etc/redhat-* # should say Red Hat Enterprise Linux 6.6 (Santiago) and Red Hat Storage 3."><meta property="og:description" content="Instance Details Replace userX with your user id. For example, user1 &ndash;> user 30
+On your laptop cd ~/.ssh wget https://s3-ap-southeast-1.amazonaws.com/splunk-lab/rhte-splunk-lab wget https://s3-ap-southeast-1.amazonaws.com/splunk-lab/rhte-splunk-lab.pub chmod 600 rhte-splunk-lab chmod 644 rhte-splunk-lab.pub
+ssh -i ~/.ssh/rhte-splunk-lab -l ec2-user gw-userX.apac.red
+On all RHS Nodes sudo su - subscription-manager attach &ndash;pool 8a85f9864675056e014684868378649c subscription-manager repos &ndash;disable=* subscription-manager repos &ndash;enable rhel-6-server-rpms &ndash;enable rhs-3-for-rhel-6-server-rpms &ndash;enable rhel-scalefs-for-rhel-6-server-rpms
+yum -y update
+cat /etc/redhat-* # should say Red Hat Enterprise Linux 6.6 (Santiago) and Red Hat Storage 3."><meta name=twitter:description content="Instance Details Replace userX with your user id. For example, user1 &ndash;> user 30
+On your laptop cd ~/.ssh wget https://s3-ap-southeast-1.amazonaws.com/splunk-lab/rhte-splunk-lab wget …"><meta name=author content="刘征 Martin Liu"><link href=https://martinliu.cn/favicon.ico rel=icon type=image/x-icon><meta name=msvalidate.01 content="12F570013342D1F8B60A455D09221C1D"><meta name=yandex-verification content="7e9acc85531b0f35"><meta name=google-site-verification content="4oSwNTpy1vzip3_lt6XhkhMfImCD_DZlvL3K1k-M8qk"><meta name=baidu-site-verification content="Z7d1tYkxzQ"><script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-TL37V8G');</script><meta property="og:image" content="https://res.cloudinary.com/martinliu/image/upload/q_auto:eco/avatar.jpg"><meta name=twitter:image content="https://res.cloudinary.com/martinliu/image/upload/q_auto:eco/avatar.jpg"><meta name=twitter:card content="summary"><meta name=twitter:site content="@martinliu"><meta name=twitter:creator content="@martinliu"><meta property="og:url" content="https://martinliu.cn/2014/12/04/workshop-redhat-storage-splunk/"><meta property="og:type" content="website"><meta property="og:site_name" content="Martin's Blog"><meta name=keywords content><meta name=generator content="Hugo 0.80.0"><link rel=canonical href=https://martinliu.cn/2014/12/04/workshop-redhat-storage-splunk/><link rel=alternate href=https://martinliu.cn/index.xml type=application/rss+xml title="Martin's Blog"><script src=https://res.cloudinary.com/martinliu/raw/upload/static/jquery-1.12.4.min.js></script><link rel=stylesheet href=https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.7.1/katex.min.css integrity=sha384-wITovz90syo1dJWVh32uuETPVEtGigN07tkttEqPv+uR2SE/mbQcG7ATL28aI9H0 crossorigin=anonymous><link rel=stylesheet href=https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css><link rel=stylesheet href=https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css integrity=sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u crossorigin=anonymous><link rel=stylesheet href=https://martinliu.cn/css/main.css><link rel=stylesheet href=https://martinliu.cn/css/search.css><link rel=stylesheet href="https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic"><link rel=stylesheet href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800"><link rel=stylesheet href=https://martinliu.cn/css/prism.css><script data-ad-client=ca-pub-4545355461463255 async src=https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js></script><link rel=stylesheet href=https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.1/photoswipe.min.css integrity="sha256-sCl5PUOGMLfFYctzDW3MtRib0ctyUvI9Qsmq2wXOeBY=" crossorigin=anonymous><link rel=stylesheet href=https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.1/default-skin/default-skin.min.css integrity="sha256-BFeI1V+Vh1Rk37wswuOYn5lsTcaU96hGaI7OUVCLjPc=" crossorigin=anonymous><div class=pswp tabindex=-1 role=dialog aria-hidden=true><div class=pswp__bg></div><div class=pswp__scroll-wrap><div class=pswp__container><div class=pswp__item></div><div class=pswp__item></div><div class=pswp__item></div></div><div class="pswp__ui pswp__ui--hidden"><div class=pswp__top-bar><div class=pswp__counter></div><button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+<button class="pswp__button pswp__button--share" title=Share></button>
+<button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+<button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button><div class=pswp__preloader><div class=pswp__preloader__icn><div class=pswp__preloader__cut><div class=pswp__preloader__donut></div></div></div></div></div><div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap"><div class=pswp__share-tooltip></div></div><button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)"></button>
+<button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)"></button><div class=pswp__caption><div class=pswp__caption__center></div></div></div></div></div><script type=application/javascript>var doNotTrack=false;if(!doNotTrack){window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;ga('create','UA-749876-6','auto');ga('send','pageview');}</script><script async src=https://www.google-analytics.com/analytics.js></script></head><body><nav class="navbar navbar-default navbar-fixed-top navbar-custom"><div class=container-fluid><div class=navbar-header><button type=button class=navbar-toggle data-toggle=collapse data-target=#main-navbar>
+<span class=sr-only>切换导航</span>
+<span class=icon-bar></span><span class=icon-bar></span><span class=icon-bar></span></button>
+<a class=navbar-brand href=https://martinliu.cn/>Martin's Blog</a></div><div class="collapse navbar-collapse" id=main-navbar><ul class="nav navbar-nav navbar-right"><li><a title=首页 href=https://martinliu.cn/>首页</a></li><li><a title=标签 href=https://martinliu.cn/tags>标签</a></li><li><a title=关于 href=https://martinliu.cn/about>关于</a></li><li><a title=书籍 href=https://martinliu.cn/book>书籍</a></li></ul></div><div class=avatar-container><div class=avatar-img-border><a title="Martin's Blog" href=https://martinliu.cn/><img class=avatar-img src=https://res.cloudinary.com/martinliu/image/upload/q_auto:eco/avatar.jpg alt="Martin's Blog"></a></div></div></div></nav><header class=header-section><div class="intro-header no-img"><div class=container><div class=row><div class="col-lg-12 col-md-12 col-md-offset-0"><div class=posts-heading><h1 align=center>workshop redhat storage and splunk</h1></div></div></div></div></div></header><div class=container role=main><div class=row><div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1"><div><h5 id=wc>字数：700 |大约阅读时间 4 分钟</h5><h5 id=tags>标签:
+<a href=https://martinliu.cn//tags/rhs>rhs</a> &nbsp;
+<a href=https://martinliu.cn//tags/splunk>splunk</a> &nbsp;</h5></div><article role=main class=blog-post><h2 id=instance-details>Instance Details</h2><p>Replace userX with your user id. For example, user1 &ndash;> user 30</p><h3 id=on-your-laptop>On your laptop</h3><p>cd ~/.ssh
+wget <a href=https://s3-ap-southeast-1.amazonaws.com/splunk-lab/rhte-splunk-lab>https://s3-ap-southeast-1.amazonaws.com/splunk-lab/rhte-splunk-lab</a>
+wget <a href=https://s3-ap-southeast-1.amazonaws.com/splunk-lab/rhte-splunk-lab.pub>https://s3-ap-southeast-1.amazonaws.com/splunk-lab/rhte-splunk-lab.pub</a>
+chmod 600 rhte-splunk-lab
+chmod 644 rhte-splunk-lab.pub</p><p>ssh -i ~/.ssh/rhte-splunk-lab -l ec2-user gw-userX.apac.red</p><h3 id=on-all-rhs-nodes>On all RHS Nodes</h3><p>sudo su -
+subscription-manager attach &ndash;pool 8a85f9864675056e014684868378649c
+subscription-manager repos &ndash;disable=*
+subscription-manager repos &ndash;enable rhel-6-server-rpms &ndash;enable rhs-3-for-rhel-6-server-rpms &ndash;enable rhel-scalefs-for-rhel-6-server-rpms</p><p>yum -y update</p><p>cat /etc/redhat-* # should say Red Hat Enterprise Linux 6.6 (Santiago) and Red Hat Storage 3.0 Update 2</p><p>/sbin/service glusterd restart</p><h3 id=on-rhs-01>On RHS-01</h3><p>gluster peer probe rhs-02.userX.apac.red
+gluster peer probe rhs-03.userX.apac.red
+gluster peer probe rhs-04.userX.apac.red</p><p>gluster pool list</p><p>gluster volume create splunk replica 2 rhs-01.userX.apac.red:/srv/brick1/splunk rhs-02.userX.apac.red:/srv/brick1/splunk rhs-03.userX.apac.red:/srv/brick1/splunk rhs-04.userX.apac.red:/srv/brick1/splunk</p><p>gluster volume set splunk storage.owner-uid 1001
+gluster volume set splunk storage.owner-gid 1001
+gluster volume set splunk user.nfs disable</p><p>gluster volume start splunk</p><p>gluster volume info
+gluster volume status</p><h3 id=on-splunk-master-and-splunk-search-nodes>On Splunk Master and Splunk Search Nodes</h3><p>subscription-manager attach &ndash;pool 8a85f9864675056e014684868378649c
+subscription-manager repos &ndash;disable=*
+subscription-manager repos &ndash;enable rhel-7-server-rpms</p><p>yum -y update</p><p>wget <a href=https://s3-ap-southeast-1.amazonaws.com/splunk-lab/splunk-6.2.0-237341-linux-2.6-x86_64.rpm>https://s3-ap-southeast-1.amazonaws.com/splunk-lab/splunk-6.2.0-237341-linux-2.6-x86_64.rpm</a> &ndash;no-check-certificate</p><h3 id=on-all-splunk-nodes>On all Splunk Nodes</h3><p>subscription-manager attach &ndash;pool 8a85f9864675056e014684868378649c
+subscription-manager repos &ndash;disable=*
+subscription-manager repos &ndash;enable rhel-7-server-rpms &ndash;enable rhel-7-server-openstack-5.0-rpms &ndash;enable rhel-7-server-rh-common-rpms</p><p>yum -y update</p><p>yum -y install wget lvm2</p><p>wget <a href=https://s3-ap-southeast-1.amazonaws.com/splunk-lab/splunk-6.2.0-237341-linux-2.6-x86_64.rpm>https://s3-ap-southeast-1.amazonaws.com/splunk-lab/splunk-6.2.0-237341-linux-2.6-x86_64.rpm</a> &ndash;no-check-certificate</p><p>/bin/systemctl start lvm2-lvmetad.service
+/bin/systemctl start lvm2-monitor.service</p><p>pvcreate &ndash;dataalignment 1024k /dev/xvdb1
+vgcreate splunkdb /dev/xvdb1
+/sbin/lvcreate -a y -l 100%VG -n splunkdb splunkdb
+mkfs.xfs -i size=512 /dev/mapper/splunkdb-splunkdb</p><h3 id=on-all-splunk-nodes-1>On all Splunk Nodes</h3><p>echo -e <code>blkid /dev/mapper/splunkdb-splunkdb | cut -d " " -f 2</code>"\t/opt/\txfs\tdefaults,inode64,noatime\t0\t0" &#187; /etc/fstab
+mount /opt</p><p>yum -y localinstall splunk-6.2.0-237341-linux-2.6-x86_64.rpm</p><p>echo -e &ldquo;splunk\t\tsoft\tnofile\t10240&rdquo; &#187; /etc/security/limits.conf
+echo -e &ldquo;splunk\t\thard\tnofile\t20480&rdquo; &#187; /etc/security/limits.conf</p><h3 id=on-splunk-master-and-splunk-search>On Splunk Master and Splunk Search</h3><p>cd /lib/systemd/system
+wget <a href=https://s3-ap-southeast-1.amazonaws.com/splunk-lab/splunkd.service>https://s3-ap-southeast-1.amazonaws.com/splunk-lab/splunkd.service</a> &ndash;no-check-certificate</p><p>sed -i.bak &lsquo;/^After|^Requires/d&rsquo; splunkd.service
+sed -i.bak &lsquo;/Description/a After=network.target local-fs.target&rsquo; splunkd.service
+systemctl daemon-reload
+systemctl enable splunkd.service
+systemctl start splunkd.service</p><p>runuser -l splunk -c &lsquo;splunk status&rsquo;
+q
+y
+systemctl restart splunkd.service
+runuser -l splunk -c &lsquo;splunk status&rsquo;</p><h3 id=on-splunk-peer-nodes>On Splunk Peer Nodes</h3><p>yum install -y glusterfs-fuse python-httplib2 attr</p><p>mkdir /mnt/glusterfs
+echo -e &ldquo;rhs-01.userX.apac.red:/splunk\t\t/mnt/glusterfs\t\tglusterfs\t\tdefaults,_netdev,backup-volfile-servers=rhs02.userX.apac.red:rhs-03.userX.apac.red:rhs-04.userX.apac.red\t0\t0&rdquo; &#187; /etc/fstab
+mount /mnt/glusterfs</p><p>runuser -l splunk -c &lsquo;mkdir -p /opt/splunk/var/lib/splunk/glusterfs&rsquo;
+runuser -l splunk -c &lsquo;mkdir -p /mnt/glusterfs/$(hostname -s)&rsquo;</p><p>cd /lib/systemd/system
+wget <a href=https://s3-ap-southeast-1.amazonaws.com/splunk-lab/splunkd-pre.service>https://s3-ap-southeast-1.amazonaws.com/splunk-lab/splunkd-pre.service</a>
+systemctl enable splunkd-pre.service
+systemctl start splunkd-pre.service</p><p>echo OPTIMISTIC_ABOUT_FILE_LOCKING = 1 &#187; /opt/splunk/etc/splunk-launch.conf</p><p>wget <a href=https://s3-ap-southeast-1.amazonaws.com/splunk-lab/splunkd.service>https://s3-ap-southeast-1.amazonaws.com/splunk-lab/splunkd.service</a>
+systemctl daemon-reload
+systemctl enable splunkd.service
+systemctl start splunkd.service
+runuser -l splunk -c &lsquo;splunk status&rsquo;
+q
+y
+systemctl start splunkd.service
+runuser -l splunk -c &lsquo;splunk status&rsquo;</p><p>cd /opt/splunk/bin
+wget <a href=https://s3-ap-southeast-1.amazonaws.com/splunk-lab/rhsBucketMover.py>https://s3-ap-southeast-1.amazonaws.com/splunk-lab/rhsBucketMover.py</a>
+wget <a href=https://s3-ap-southeast-1.amazonaws.com/splunk-lab/rhsBucketMover.sh>https://s3-ap-southeast-1.amazonaws.com/splunk-lab/rhsBucketMover.sh</a>
+wget <a href=https://s3-ap-southeast-1.amazonaws.com/splunk-lab/rhsLinkChecker.py>https://s3-ap-southeast-1.amazonaws.com/splunk-lab/rhsLinkChecker.py</a></p><p>chown splunk:splunk/rhs*</p><h3 id=on-gw-userxapacred>on gw-userX.apac.red</h3><p>iptables -t nat -A PREROUTING -p tcp &ndash;dport 8001 -j DNAT &ndash;to-destination 10.100.0.211:8000
+iptables -t nat -A PREROUTING -p tcp &ndash;dport 8002 -j DNAT &ndash;to-destination 10.100.0.212:8000
+iptables -t nat -A PREROUTING -p tcp &ndash;dport 8003 -j DNAT &ndash;to-destination 10.100.0.213:8000</p><h3 id=web-gui-on-splunk-master-httpsplunkuserxapacred8000>Web GUI on Splunk Master (<a href=http://splunk.userX.apac.red>http://splunk.userX.apac.red</a>:8000/)</h3><p>Settings &ndash;> Indexer Clustering
+Replication Factor 3
+Search Factor 2
+Enable Clustering - accept until restart and hit ok</p><h3 id=on-each>on each</h3><p>Web GUI on Splunk Peer 01 (<a href=http://gw-userX.apac.red>http://gw-userX.apac.red</a>:8001/)
+Web GUI on Splunk Peer 02 (<a href=http://gw-userX.apac.red>http://gw-userX.apac.red</a>:8002/)
+Web GUI on Splunk Peer 03 (<a href=http://gw-userX.apac.red>http://gw-userX.apac.red</a>:8003/)</p><p>Settings &ndash;> Indexer Clustering
+Enable Clustering
+Type - Peer
+host = <a href=https://splunkmaster.userX.apac.red>https://splunkmaster.userX.apac.red</a>
+port 8089
+replication port 8090</p><h3 id=web-gui-on-splunk-search-httpsearchuserxapacred8000>Web GUI on Splunk Search (<a href=http://search.userX.apac.red>http://search.userX.apac.red</a>:8000/)</h3><p>Settings &ndash;> Indexer Clustering
+Enable Clustering
+Type - Search
+host = <a href=https://splunkmaster.userX.apac.red>https://splunkmaster.userX.apac.red</a>
+port 8089
+replication port 8090</p><h3 id=on-splunk-master-node>on Splunk Master Node</h3><p>cd /opt/splunk/etc/master-apps/_cluster/local directory
+wget <a href=https://s3-ap-southeast-1.amazonaws.com/splunk-lab/indexes.conf>https://s3-ap-southeast-1.amazonaws.com/splunk-lab/indexes.conf</a>
+runuser -l splunk -c &lsquo;splunk apply cluster-bundle &ndash;answer-yes&rsquo;
+admin
+password
+runuser -l splunk -c &lsquo;splunk show cluster-bundle-status&rsquo;</p><h3 id=on-each-node>On each Node</h3><p>runuser -l splunk -c &lsquo;splunk search &ldquo;| rest /services/data/indexes | table title, homePath, coldPath&rdquo;'|grep demo
+&lt; look for $SPLUNKDB/glusterfs/demo/colddb</p><h3 id=on-splunk-master-node-1>on Splunk Master Node</h3><p>su - ec2-user</p><p>cd ~/.ssh
+wget <a href=https://s3-ap-southeast-1.amazonaws.com/splunk-lab/rhte-splunk-lab>https://s3-ap-southeast-1.amazonaws.com/splunk-lab/rhte-splunk-lab</a>
+wget <a href=https://s3-ap-southeast-1.amazonaws.com/splunk-lab/rhte-splunk-lab.pub>https://s3-ap-southeast-1.amazonaws.com/splunk-lab/rhte-splunk-lab.pub</a>
+chmod 600 rhte-splunk-lab
+chmod 644 rhte-splunk-lab.pub</p><p>cd /tmp
+wget <a href=https://s3-ap-southeast-1.amazonaws.com/splunk-lab/eventgen.tar.gz>https://s3-ap-southeast-1.amazonaws.com/splunk-lab/eventgen.tar.gz</a>
+scp -i ~/.ssh/rhte-splunk-lab eventgen.tar.gz splunkpeer-01.userX.apac.red:eventgen.tar.gz
+scp -i ~/.ssh/rhte-splunk-lab eventgen.tar.gz splunkpeer-02.userX.apac.red:eventgen.tar.gz
+scp -i ~/.ssh/rhte-splunk-lab eventgen.tar.gz splunkpeer-03.userX.apac.red:eventgen.tar.gz</p><h3 id=on-each-peer-node>On each Peer Node</h3><p>cd /opt/splunk
+mv ~ec2-user/eventgen.tar.gz /opt/splunk
+chown splunk:splunk eventgen.tar.gz
+runuser -l splunk -c &lsquo;splunk install app /opt/splunk/eventgen.tar.gz&rsquo;
+runuser -l splunk -c &lsquo;splunk restart&rsquo;</p><p>cd /opt/splunk/etc/apps/eventgen/samples
+cp sample.tutorial1 demo_data
+sed -i.bak s/main/demo/g demo_data
+cd /opt/splunk/etc/apps/eventgen/local
+cp ../README/eventgen.conf.tutorial1 eventgen.conf
+sed -i.bak &rsquo;s/main/demo/g;s/sample.tutorial1/demo_data/g&rsquo; eventgen.conf</p><p>runuser -l splunk -c &lsquo;splunk restart&rsquo;</p><p>Log into WebUI on Splunk Master
+search &ldquo;index = demo&rdquo;
+timeframe = realtime > 5 minutes</p><p>check /opt/splunk/var/lib/splunk/demo/db</p><a href=https://mp.weixin.qq.com/s/elRqbNlidJzmKCejBwtsAg target=_blank><img src=https://martinliu.cn/images/sref-zs.jpg alt="SRE Foundation 招生简章"></a></article><ul class="pager blog-pager"><li class=previous><a href=https://martinliu.cn/2014/12/02/kk-e5a4b1e68ea7-e8a782e5908ee6849f-e4b98be5898de4b889e7aba0/ data-toggle=tooltip data-placement=top title="KK 失控 观后感 之前三章">&larr; 前一篇</a></li><li class=next><a href=https://martinliu.cn/2014/12/04/workshop-creating-docker-management-environment/ data-toggle=tooltip data-placement=top title="Workshop: Creating a Docker management environment">后一篇 &rarr;</a></li></ul><div></div></div></div></section></div><footer><div class=container><div class=row><div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1"><ul class="list-inline text-center footer-links"><li><a href=mailto:liuzh66@gmail.com title="Email me"><span class="fa-stack fa-lg"><i class="fa fa-circle fa-stack-2x"></i><i class="fa fa-envelope fa-stack-1x fa-inverse"></i></span></a></li><li><a href=https://github.com/martinliu title=GitHub><span class="fa-stack fa-lg"><i class="fa fa-circle fa-stack-2x"></i><i class="fa fa-github fa-stack-1x fa-inverse"></i></span></a></li><li><a href=https://gitlab.com/martinliu title=GitLab><span class="fa-stack fa-lg"><i class="fa fa-circle fa-stack-2x"></i><i class="fa fa-gitlab fa-stack-1x fa-inverse"></i></span></a></li><li><a href=https://twitter.com/martinliu title=Twitter><span class="fa-stack fa-lg"><i class="fa fa-circle fa-stack-2x"></i><i class="fa fa-twitter fa-stack-1x fa-inverse"></i></span></a></li><li><a href=https://linkedin.com/in/liuzheng title=LinkedIn><span class="fa-stack fa-lg"><i class="fa fa-circle fa-stack-2x"></i><i class="fa fa-linkedin fa-stack-1x fa-inverse"></i></span></a></li></ul><p class="credits copyright text-muted">&copy;2017-2018
+刘征 Martin Liu
+&nbsp;&bull;&nbsp;
+<a href=https://martinliu.cn/>Martin's Blog</a></p><p class="credits theme-by text-muted">由 <a href=http://gohugo.io>Hugo v0.80.0</a> 强力驱动 &nbsp;&bull;&nbsp; 主题 <a href=https://github.com/halogenica/beautifulhugo>Beautiful Hugo</a> 移植自 <a href=http://deanattali.com/beautiful-jekyll/>Beautiful Jekyll</a></p></div></div></div></footer><script src=https://res.cloudinary.com/martinliu/raw/upload/static/bootstrap.min.js></script><script src=https://res.cloudinary.com/martinliu/raw/upload/static/photoswipe-ui-default.min.js></script><script src=https://res.cloudinary.com/martinliu/raw/upload/static/photoswipe.min.js></script><script src=https://res.cloudinary.com/martinliu/raw/upload/static/auto-render.min.js></script><script src=https://res.cloudinary.com/martinliu/raw/upload/static/main.js></script><script src=https://res.cloudinary.com/martinliu/raw/upload/static/prism.js></script><script src=https://res.cloudinary.com/martinliu/raw/upload/static/katex.min.js></script><script>renderMathInElement(document.body);</script></body></html>

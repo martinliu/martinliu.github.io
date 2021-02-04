@@ -1,0 +1,27 @@
+---
+author: liuadmin
+categories:
+- RHEL
+comments: true
+date: 2015-01-21T15:46:31Z
+slug: '%e8%99%9a%e6%8b%9f%e6%9c%ba%e6%a0%b9%e5%88%86%e5%8c%ba%e6%89%a9%e5%ae%b9'
+tags:
+- fdsik
+- linux
+- resize2fs
+title: 虚拟机根分区扩容
+url: /2015/01/21/e8999ae68b9fe69cbae6a0b9e58886e58cbae689a9e5aeb9/
+wordpress_id: 53410
+---
+
+我的Satellite虚拟机下载了所有常用的repo，100GB的磁盘空间都占满了，无奈必须扩容，否则没法用了。
+
+扩容的前提条件正好满足：根分区在最后一个分区。
+
+由于是kvm的虚拟机，所以首先需要扩大硬盘文件的大小： qemu-img resize my.img +100G 。
+
+下面去操作系统里扩容。先要用fdisk删除根分区。记录初始的其实点。然后用n命令新建分区，输入原始其实点位置，回车默认接受结束点的最后一个位置。w存盘。
+
+reboot系统，起来之后用命令扩容分区： resize2fs /dev/vda2 ； 在线扩容需要等一段时间，100GB的空间初始化在我的普通磁盘上做了5分钟左右。在此reboot机器，起来之后在看 df -kh 发现已经增加了100GB了，接下来再也不用担心类似情况了。
+
+
