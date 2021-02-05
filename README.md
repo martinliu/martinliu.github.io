@@ -6,6 +6,7 @@
 - add friends page
 - add my course page
 - develop for theme dev.
+- no submodules
 
 ## Acknowledgements
 
