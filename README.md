@@ -5,6 +5,7 @@
 - use a tags page
 - add friends page
 - add my course page
+- develop for theme dev.
 
 ## Acknowledgements
 
