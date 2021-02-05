@@ -1,12 +1,50 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>container on Hugo Future Imperfect Slim em português</title>
+    <title>container on 刘征的博客</title>
     <link>https://example.com/tags/container/</link>
-    <description>Recent content in container on Hugo Future Imperfect Slim em português</description>
+    <description>Recent content in container on 刘征的博客</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-CN</language>
-    <lastBuildDate>Tue, 14 Jul 2015 14:20:24 +0000</lastBuildDate><atom:link href="https://example.com/tags/container/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sat, 24 Mar 2018 20:51:01 +0800</lastBuildDate><atom:link href="https://example.com/tags/container/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>容器化应用的设计原则</title>
+      <link>https://example.com/blog/cloud-native-container-design/</link>
+      <pubDate>Sat, 24 Mar 2018 20:51:01 +0800</pubDate>
+      
+      <guid>https://example.com/blog/cloud-native-container-design/</guid>
+      <description>本文来自于Red Hat咨询顾问Bilgin Ibryam所编写的一篇白皮书，名为《PRINCIPLES OF CONTAINER-BASED APPLICATION DESIGN》。这篇文章在作者的Blog上发表后，作者的twitter被Kubernetes官方twitter转发。白皮书在Red Hat官网的下载地址：https://www.redhat.com/en/resources/cloud-native-container-design-whitepaper 文本是对这篇文章的学习和整理。
+先回顾经典的软件设计原则：
+ 保持简单，愚蠢（KISS） 不要重复自己（DRY） 你不会需要它 （YAGNI） 关注点分离（SoC） Single responsibility, Open/closed, Liskov substitution, Interface segregation, Dependency inversion （SOLID）  然后是Red Hat的云原生容器设计原则：
+ 唯一关注性原则（SCP） 高度可观测性原则（HOP） 生命周期一致性原则（LCP） 镜像不可变性原则（IIP） 进程可处置性原则（PDP） 自包含性原则（S-CP） 运行时约束性原则（RCP）  很多组织都理解云原生的重要性和必要性，但是并不知道从哪里开始。那么请确保：云原生平台和容器化应用能无缝的运行在一起，并且具备抵御故障的能力，甚至在底层的基础架构出现宕机的时候，也能通过过弹性扩展的方式表现出可靠性。本文描述了容器化应用时需要遵循的基本准则，实施这些原则有助于使之与云原生平台Kubernetes更加适配。
+唯一关注性原则 SINGLE CONCERN PRINCIPLE（SCP） 在许多方面，唯一关注性原则与来自SOLID的SRP是类似的，它建议一个类应该只有一个责任。SRP背后的动机是每个责任是变更的一个轴心，一个类应该有，且也只有一个需要改变的理由。SCP原则中的“关注”一词强调关注是一种更高层次的抽象的责任，而且它更好地将范围描述为一个容器而不是一个类。虽然SRP的主要动机是变化原因的唯一性，而SCP的主要动机是容器镜像重用和可替换性。如果你创建一个解决单个问题的容器，并且以功能完整的方式来实现，不同应用程序中的容器镜像重用的可能性就会更高。
+因此，SCP原则规定每个集容器都应该解决一个问题，并做得很好。 实现这一点，通常比在面向对象的世界中实现SRP更容易，容器通常管理的一个单一的进程，大多数情况下一个进程解决一个问题。
+如果你的容器化微服务需要解决多个问题，它可以使用这样的模式，将多个容器用sidecar和init-containers的模式合并成一个部署单元（pod），这样每个容器仍然是处理单个问题。同样，您可以替换处理同样问题的容器。 例如，将Web服务器容器或队列实现容器，更新为更具可扩展性的容器。
+高度可观测性原则 HIGH OBSERVABILITY PRINCIPLE（HOP） 容器提供了一种统一的方式来打包和运行应用程序，将它们视为一个黑盒子对象。 但任何旨在成为云原生公民的容器都必须提供API支持，要为运行时环境编写接口（API），以观察容器的健康状况和行为。 这是自动化容器更新和生命周期回收的基本先决条件和统一的方式，从而提高系统的弹性和用户体验。
+实际上，您的容器化应用程序必须至少为其提供不同类型的健康检查的API&amp;ndash;活动和就绪等状态。更好的应用程序的行为则必须提供其他手段来观察容器化应用程序的状态。应用程序应该将重要事件记录到标准错误（STDERR）和标准输出（STDOUT）中，从而通过统一的日志聚合工具（诸如Fluentd和Logstash之类的工具）进行分析，并与跟踪和指标收集库相结合，例如OpenTracing，Prometheus等。
+将您的应用程序视为黑盒子，但实施所有必要的API以帮助平台对其进行观测，并以最佳方式管理您的应用程序。
+生命周期一致性原则 LIFE-CYCLE CONFORMANCE PRINCIPLE（LCP） HOP规定了你的容器提供供平台观测的API。 LCP则规定：您的应用程序有办法读取来自平台的事件。 此外，除了获得事件以外，容器还应该对这些事件相应地作出反应。这就是此原则名字由来。这几乎就像在应用程序通过一个“写入API”与平台进行交互。
+来自管理平台的各种事件都是为了帮助您管理您的容器的生命周期的。决定处理哪些事件取决于您的应用程序 以及是否对这些事件做出反应。
+但有些事件比其他事件更重要。例如，任何需要一个干净的关闭进程，这就需要捕获信号：终止（SIGTERM）消息，并尽可能迅速关闭。 这是为了避免通过强制关闭信号：kill（SIGKILL），之后跟随一个SIGTERM。
+还有其他事件，例如PostStart和PreStop，可能对您的应用程序生命周期管理也非常重要。 例如，某些应用程序需要在服务之前进行预热请求和一些需要在关闭干净之前释放资源。</description>
+    </item>
+    
+    <item>
+      <title>Container Orchestration Wars</title>
+      <link>https://example.com/blog/2018-1-container-orchestration-wars/</link>
+      <pubDate>Fri, 12 Jan 2018 23:33:32 +0800</pubDate>
+      
+      <guid>https://example.com/blog/2018-1-container-orchestration-wars/</guid>
+      <description>容器编排器之战 K8s在2017年底为这场速战速决的站点话上了句号，结果是所有竞争对手都选择了增加对K8s的支持。在各自的编排器框架里内置了K8s。本文是根据Mesosphere公司的大拿Karl KARL ISENBERG在各种大会上分享过多次的一份演讲稿改版的。
+KARL ISENBERG 是谁？ 所在公司?
+ Mesosphere（当前） Pivotal  做过的产品?
+ DC/OS opensource CloudFoundry BOSH  联络信息：
+ github.com/karlkfi twitter.com/karlkfi linkedin.com/in/karlkfi karl.isenberg.us  基础架构的进化 传统的应用架构在逐渐向下面两种架构演变。
+可扩展的单体应用架构 关键词：
+ Online 基于互联网 Latency Routed 用户访问基于延迟路由 Multi-Region 多区部署 Load Balanced 负载均衡接入 Multi-Zone 多个Zone Replicated 应用实例多副本 Auto-Scaled 容量自动化收缩 Data Replication 区内数据多副本 Data Synchronization 跨区数据同步  可扩展的微服务架构 上图出处：Wheel of Doom ，来自A Journey into Microservices by Hailo
+应用+裸金属服务器 APPLICATION PROVISIONING ON BARE METAL</description>
+    </item>
+    
     <item>
       <title>红帽媒体日</title>
       <link>https://example.com/2015/07/14/e7baa2e5b8bde5aa92e4bd93e697a5/</link>

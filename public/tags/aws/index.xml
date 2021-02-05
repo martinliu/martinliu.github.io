@@ -1,12 +1,29 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>aws on Hugo Future Imperfect Slim em português</title>
+    <title>aws on 刘征的博客</title>
     <link>https://example.com/tags/aws/</link>
-    <description>Recent content in aws on Hugo Future Imperfect Slim em português</description>
+    <description>Recent content in aws on 刘征的博客</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-CN</language>
-    <lastBuildDate>Wed, 11 Feb 2015 14:41:22 +0000</lastBuildDate><atom:link href="https://example.com/tags/aws/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Mon, 02 Apr 2018 00:22:44 +0800</lastBuildDate><atom:link href="https://example.com/tags/aws/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Kops on Aws</title>
+      <link>https://example.com/blog/kops-on-aws/</link>
+      <pubDate>Mon, 02 Apr 2018 00:22:44 +0800</pubDate>
+      
+      <guid>https://example.com/blog/kops-on-aws/</guid>
+      <description>kops这种方式是我找到的最佳的，最适合于培训课堂需要的安装方式，当然对有类似需求的人有帮助。
+Route53 DNS配置 kops需要使用DNS服务，用主机名提供k8s的相关服务访问。配置的注意点：
+ 域名还是有必要有一个的，没有的话注册一个也不贵，以后用着也方便 建议在aws的Route53里做一个二级域名，例如：k8s.devopscoach.org 这个二级域名最好是能被正常公网解析的，为了便于直接访问集群里的服务 用 dig NS k8s.devopscoach.org 可以能正常解析（Mac上是这个命令）  由于全球的域名同步会需要一些时间，因此可以先做这一步，用到的时候，可能就已经同步好了。
+kops会将所有主机的域名解析都自动化的添加A记录到这里。
+安装工具准备 需要安装的工具包括 kubectl, kops 和 AWS CLI 工具。kops需要调用 AWS CLI来创建所需要的资源。我觉得简单的方法是：在目标的Region里创建一台Amazon AMI的虚拟机，这样AWS CLI就不用装了，而且在云里的话，执行kops的时候，由于有一大堆资源创建更新的api调用，感觉速度比在本机快很多，而且还用担心断网。
+可以启动一台t2.micro规格的Amazon AMI即可，另外需要给这个实例配置如下IAM用户权限，在启动的时候选择合适的IAM Role。
+ AmazonEC2FullAccess AmazonRoute53FullAccess AmazonS3FullAccess IAMFullAccess AmazonVPCFullAccess  这台虚拟机启动之后，安装kubectl和kops。
+curl -LO https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl sudo chmod +x kubectl sudo mv kubectl /usr/local/bin/kubectl wget https://github.com/kubernetes/kops/releases/download/1.8.0/kops-linux-amd64 sudo chmod +x kops-linux-amd64 sudo mv kops-linux-amd64 /usr/local/bin/kops 准备ssh登陆秘钥，用户ssh登录各个ec2实例
+[ec2-user@ip-172-31-27-182 ~]$ ssh-keygen Generating public/private rsa key pair.</description>
+    </item>
+    
     <item>
       <title>AWS 服务索引地图</title>
       <link>https://example.com/2015/02/11/aws-e69c8de58aa1e7b4a2e5bc95e59cb0e59bbe/</link>

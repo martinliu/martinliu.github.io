@@ -7,7 +7,7 @@ date: 2014-06-16T09:27:33Z
 slug: '%e6%8e%a8%e8%8d%90-%e4%b8%80%e4%b8%aa%e4%ba%ba%e7%9a%84%e4%b9%a6%e6%88%bf-podcast'
 tags:
 - 读书
-title: '推荐Podcast " 一个人的书房 ” '
+title: '推荐Podcast - 一个人的书房 '
 url: /2014/06/16/e68ea8e88d90-e4b880e4b8aae4babae79a84e4b9a6e688bf-podcast/
 wordpress_id: 52879
 ---

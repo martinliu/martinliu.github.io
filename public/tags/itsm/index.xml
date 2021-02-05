@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>ITSM on Hugo Future Imperfect Slim em português</title>
+    <title>itsm on 刘征的博客</title>
     <link>https://example.com/tags/itsm/</link>
-    <description>Recent content in ITSM on Hugo Future Imperfect Slim em português</description>
+    <description>Recent content in itsm on 刘征的博客</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-CN</language>
     <lastBuildDate>Sat, 07 May 2011 10:31:36 +0000</lastBuildDate><atom:link href="https://example.com/tags/itsm/index.xml" rel="self" type="application/rss+xml" />
@@ -41,6 +41,17 @@ Fine tuning the mid tier Mid tier parameter or service： Recommended value Enab
     </item>
     
     <item>
+      <title>Remedy ARS 开源工具知多少</title>
+      <link>https://example.com/2011/03/01/remedy-ars-open-source-tool/</link>
+      <pubDate>Tue, 01 Mar 2011 15:46:51 +0000</pubDate>
+      
+      <guid>https://example.com/2011/03/01/remedy-ars-open-source-tool/</guid>
+      <description>Remedy ARS是全球最大市场份额的产品，是为业内广泛接受的成熟产品套件；虽然他始终是私有的软件产品，但是围绕其周围，还是不断有新的开源工具出现。下面就介绍几种这样的软件。
+ARInside is a free open-source utility to create a static html documentation of your AR-Server. If you need something to quickly browse through your workflow, ARInside might be worth a try. ARInside 3.0.2 has some new features, lots of bugfixes and other improvements. Just to name a few:
+ documentation improvements 64-bit platform support experimental support for Solaris and AIX basic ARS 7.6.x support huge performance plus on big installations  这是一个ARS服务器扫描的工具，可以形成一个静态的文档，能够作为一个状态的参考极限，这样方便你对当前的服务器上的所有对象和工作流有个全面的了解。最大的好处是能够统计和技术，而且不用登陆Dev Studio了。一图胜千言，下面大家看后就明白它能做什么。</description>
+    </item>
+    
+    <item>
       <title>在Oracle上备份和恢复 Remedy ARS数据库</title>
       <link>https://example.com/2011/02/14/backup-restore-remedy-ars-oracle-db/</link>
       <pubDate>Mon, 14 Feb 2011 15:05:27 +0000</pubDate>
@@ -63,6 +74,51 @@ Fine tuning the mid tier Mid tier parameter or service： Recommended value Enab
       <description>Learn how to use service modelling to streamline and optimize processes!
 Information about customer needs, the technical composition of services, and service performance are fundamental to effective service management. Service modelling is a structured approach to utilizing this information to improve the way services are delivered. Consistent application of service modelling provides the automation of processes and timely access to information.
 [caption id=&amp;ldquo;attachment_50942&amp;rdquo; align=&amp;ldquo;alignleft&amp;rdquo; width=&amp;ldquo;201&amp;rdquo; caption=&amp;ldquo;Service Modelling: Principles and Applications &amp;ldquo;][/caption]</description>
+    </item>
+    
+    <item>
+      <title>在64位Windows上安装ARS7.5</title>
+      <link>https://example.com/2011/02/10/64-windows-ars-75-install-tips/</link>
+      <pubDate>Thu, 10 Feb 2011 17:12:30 +0000</pubDate>
+      
+      <guid>https://example.com/2011/02/10/64-windows-ars-75-install-tips/</guid>
+      <description>刚才终于把ARS装上了。费了我两天的力气终于搞定了。错误其实很简单的，现象很多人都见过，ARS在安装完所有的文件后，在系统中建完ARS的服务以后，会继续启动服务，才能做最后的程序文件导入的相关操作。
+错误的现象是：在启动服务的时，安装程序一直停止在“Starting Remedy ARS services&amp;hellip;.”的屏幕，去arerror日志里面可以看到无法连接到SQL数据库的错误。
+我的安装错误的原因其实很简单：
+  如果是64为的Windows操作系统，默认的安装路径是C:\Program Files (x86)\目录
+  Oracle客户端没有正确的安装
+  解决的方法如下：
+  修改ars默认的安装路径，尽量把它放在一个较短的而且没有特殊字符的路径里，如D:\bmc\
+  ARS 7.5 sp6支持的Oracle客户端是32位的，如果你在64位OS上安装的是64位的Oracle数据+客户端（sqlplus），那么默认的这个64为的客户端是不能用的，需要安装一个62位的客户端，而且需要时10g的，此版本也不支持11g的客户端；另外在安装32位的oracle客户端的时候最好也不要在路径中有特殊字符如符号和下划线之类的
+  ARS7.5本身是32位的可支持程序，所以它所需要的JDK和Oracle都需要是32位的版本。如果你安装的是7.6.04，就不需要考虑32位的问题，由于它本身就是64位的程序了，所以JDK和Oracle都需要使用相应的64为的程序。</description>
+    </item>
+    
+    <item>
+      <title>BMC Atrium CMDB CI数据迁移</title>
+      <link>https://example.com/2011/01/12/bmc-atrium-cmdb-ci/</link>
+      <pubDate>Wed, 12 Jan 2011 05:08:23 +0000</pubDate>
+      
+      <guid>https://example.com/2011/01/12/bmc-atrium-cmdb-ci/</guid>
+      <description>在不同的CMDB服务器之间做数据迁移之前一定要注意两点：1）保持两边的CDM相同；2）先导入CI数据在导入CI相关的关系数据。另外就是每个类导入完毕之后要做数据完整性和正确性的抽检。以下使用的工具是cmdbdriver，该命令初始化和一般性的参数介绍请参考相关文档。
+CI数据导出示例
+Command: xexpdt XEXPORT DATA Export instance data from all classes? (F): Classes to export data from: Class and its subclasses, From namespace (1,2) (1): Namespace (): BMC.CORE Class name (): BMC_ComputerSystem Dataset ID (): BMC.ASSET Filename for exported data: C:\DEMO\cs-ci Exporting Class BMC_ComputerSystem i=0: namespaceName = BMC.CORE, className = BMC_ComputerSystemExported without errorsExporting Class BMC_MainframeExporti ng Class BMC_PrinterExporting Class BMC_StorageSubsystem CMDBExportData results ReturnCode: OK Status List : 0 items</description>
+    </item>
+    
+    <item>
+      <title>BMC Atrium CMDB 类定义迁移</title>
+      <link>https://example.com/2011/01/12/bmc-atrium-cmdb-sync-cdm-class/</link>
+      <pubDate>Wed, 12 Jan 2011 04:22:44 +0000</pubDate>
+      
+      <guid>https://example.com/2011/01/12/bmc-atrium-cmdb-sync-cdm-class/</guid>
+      <description>当对CDM做了定制，并且要在不同的服务器直接做类的迁移的时候，需要把定制过的类都导出，然后在目标机上导入。可以使用的CMDB自带的命令行cmdbdriver工具。
+cmdbdriver.exe能支持的参数
+Options: -u -a -p -l -s -x&amp;lt;INPUTFILE_FULLPATH&amp;gt; -t&amp;lt;PORT_NUMBER&amp;gt; -q&amp;lt;QUIET_MODE_NUMBER&amp;gt;
+登录CMDBdriver 实例： cmdbdriver -u Demo -p bmc@XXX -s atriumcmdb -t 9988
+登录之后在运行另外用于初始化的两个命令 init 和log
+Command: init INITIALIZATION
+CMDBInitialization results ReturnCode: OK Status List : 0 items
+Command: log Control record: Authentication string () : User name () : Demo Password () : ********** Locale[.charSet] () : TimeZone () : Server () : atriumcmdb
+导出类定义的方法实例 Command: xexpdf XEXPORT DEFINITION Export all classes?</description>
     </item>
     
     <item>
@@ -103,6 +159,24 @@ Remedy安装之备份：如果是在AIX+Oracle的数据库上安装。Remedy还�
     </item>
     
     <item>
+      <title>Remedy Server Group及负载均衡配置参考步骤</title>
+      <link>https://example.com/2010/08/09/remedy-lb-midtier-server-group-configure/</link>
+      <pubDate>Mon, 09 Aug 2010 01:08:31 +0000</pubDate>
+      
+      <guid>https://example.com/2010/08/09/remedy-lb-midtier-server-group-configure/</guid>
+      <description>上图为大型用户环境下Remedy ITSM的部署架构，作为本安装步骤参考模型。所不同的是，如下配置步骤只应用了一个最上面的负载均衡器，每个Web对应连接一个ARS服务器，简化掉了中间放在ARS前的负载均衡器。
+第一步 安装前的准备工作。 确定Remedy ARS的服务别名，例如“AtriumCMDB”。在所有的Web服务器（Mid-tier所安装的服务器）的host文件中加入一条Ip地址解析，例如：
+192.168.10.11 AtriumCMDB 此ARS服务别名指向的是该Web服务器所对应的ARS服务器，例如：Web1中AtriumCMDB对应的ip为ARS1，Web2对应ARS2，Web3对应ARS3，以此类推。
+第二步安装第一台ARS服务器 默认所有的ARS都安装了数据库客户端程序，如果是Oracle数据库，ARS上的客户端程序的大小版本号必须和远程数据库的大小版本号完全一致。Windows平台的Oracle客户端只支持32位的程序。在所有ARS服务器的host文件中加入一条Ip地址解析，例如：
+192.168.10.11 AtriumCMDB 此IP地址为每台ARS自己的对外提供ARS服务的IP。ARS上安装完JDK之后，开始安装ARS，安装过程中服务器别名输入AtriumCMDB，其他的选项都按需要配置，所有有关服务器端组件、服务端口、密码、安装路径的信息都要做详细记录，用来安装Server Group中其他成员使用。安装完第一台服务器的ARS之后，申请Remedy License，打License，包括其他所有CMDB、ITSM相关应用模块的License，打完License后导出成文件备用。ARS安装成功之后，顺序安装其他应用，顺序时CMDB 》ITSM 其他。安装完毕后，通过Remedy User来确认所有应用功能是否正常。
+**第三步 **配置第一台ARS服务器为Server Group中的管理服务器 配置方法参照，ARS Configuration Guide中的Server Group的相关章节。配置完毕之后打开Server Group的Log，从启动ARS服务之后，查看该Log看Server Group工作是否正常。
+第四步 安装Server Group中的成员ARS服务器 准备工作参考第一台ARS服务器。运行ARS安装程序，选择Server Group，选择输入AtriumCMDB别名，选择共享的数据库，其他参数与第一台保持一致。安装完毕之后。使用ARS自带的Sample应用新增一个city，在ARS1上查询ARS2上新增的记录。同样参考的Server Group的相关章节，对ARS2进行配置。在ARS2上查看Server Group的日志，确认该ARS已经加入了以第一台ARS为管理服务器的群集中。为第二台ARS服务器打License。在确认第二台ARS服务器成功加入之后，安装CMDB应用。安装完毕之后，在第二台ARS服务器上，使用Remedy User客户端，打开CMDB的相关表单进行新增和查询操作；然后在ARS1上检查操作结果，保证两边一致。安装ITSM：直接把第一台ARS服务器的ar.cfg文件覆盖到第二台ARS的ar.cfg上，一定要修改第一台ARS服务器主机名的哪一行，把它修改为第二台ARS的主机名。复制第一台ARS的ITSM安装目录到第二台ARS的相同路径中，重启ARS服务。查看arerror.log文件看看ARS启动的是否正常。在第二台ARS上使用Remedy User确认ITSM应用是否工作正常，如果一切工作正常，则第二台ARS服务器安装完毕。按照相同的方式安装其他的ARS服务器。
+第五步 配置每台ARS的ranking 按照ARS Configuration Guide中的Server Group的相关章节配置每台ARS服务器处理不同后台工作流的ranking。
+第六步 安装配置所有Web服务器的Remedy Mid-tier 安装Remedy Mid-tier软件，都指向相同的ARS服务别名AtriumCMDB，当然该别名被解析为它所对应的ARS服务器的IP地址。使用浏览器测试每台Web服务器，保证Remedy Mid-tier都能正常工作。
+第七步 配置F5负载均衡 配置F5的分发策略，按不同ARS服务器的用途，来分别不同的用户请求。考虑管理和接口功能的ARS负担少量的用户交互。开发一个jsp的程序部署在Mid-tier的shared目录中，用它来判断Web所对应的ARS的可用性，以此作为唯一判断条件来分发用户请求给可用的web服务器。</description>
+    </item>
+    
+    <item>
       <title>OTRS 3.0.0 beta1 发布</title>
       <link>https://example.com/2010/08/03/otrs-300-beta1/</link>
       <pubDate>Tue, 03 Aug 2010 05:04:46 +0000</pubDate>
@@ -121,6 +195,17 @@ RN原文：http://lists.otrs.org/pipermail/announce/2010/000133.html
 （7）新客户界面 - 客户网络前端可集成到您的组织机构内部网，并充分考虑重新设计的桌面帮助系统集成。
 （8）存档功能 - OTRS的3.0现在提供一个新的归档功能。有了你分开存档受益于搜索，并增加结果显示花了时间却缩短。
 Google的翻译效果不佳，请直接看官方发布说明。另外此版本为beta版本，OTRS并不建议用于生产环境。</description>
+    </item>
+    
+    <item>
+      <title>BMC课程通知: BMC Remedy AR 7.5 管理员培训</title>
+      <link>https://example.com/2010/07/30/bmc-training-schedule01/</link>
+      <pubDate>Fri, 30 Jul 2010 06:28:19 +0000</pubDate>
+      
+      <guid>https://example.com/2010/07/30/bmc-training-schedule01/</guid>
+      <description>课程适用于Remedy AR管理员和开发人员，讲授AR系统的功能、架构、日常运维和创建应用。 学员可以选择课后参加上机考试，获得BMC Certified Administrator: BMC Remedy AR System 7.5认证。不参加考试的学员将会获得结课证书 点 击查看详情
+课程目标
+认识AR System 7.5 的用途和优势 认识AR System 7.5的架构 使用Remedy User和Web浏览器创建和查询请求 使用Remedy User和Web浏览器创建AR系统报告 使用BMC Remedy Alert 和Web接收通知 描述BMC Remedy Administrator工具的基本维护任务 了解AR系统的访问控制概念 了解不同的AR System角色 理解 AR System 的系统架构 了解AR System 的开发工具 权限管理和 AR System许可管理 使用Administration Console执行统一的管理任务. 使用Developer Studio 创建AR System 对象 创建AR System 表单, 控件和 菜单来满足业务需求 创建AR System active links 创建AR System filters 创建基于时间的 escalations 定制一个web的应用 使用log日志来评估性能和识别性能问题 了解AR System 最佳实践</description>
     </item>
     
     <item>
@@ -196,6 +281,41 @@ View Full Screen</description>
     </item>
     
     <item>
+      <title>规划CMDB数据填充-001</title>
+      <link>https://example.com/2010/06/04/plan-cmdb-population-001/</link>
+      <pubDate>Fri, 04 Jun 2010 06:13:20 +0000</pubDate>
+      
+      <guid>https://example.com/2010/06/04/plan-cmdb-population-001/</guid>
+      <description>&lt;p&gt;From 《Step by step to build a CMDB》步骤17-规划CMDB数据填充&lt;/p&gt;
+&lt;p&gt;目标&lt;/p&gt;
+&lt;p&gt;在这一CMDB关键的步骤中，会为CMDB的初始化CI数据填充，做精细的计划。需要考虑到所有CI数据，把不同CI类型对应到不同的数据集中，安排正确的顺序将这些数据集CMDB。其中定义对应的规则来调和重复数据是很重要的，不仅在CMDB初始化数据填充阶段重要，在以后的日常维护过程中也是非常重要的。做出了本阶段的详细规划后，这样在第18步即“选择自动化CMDB填充工具”时，就能考虑需要什么样的配置发现和自动化工具了。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;http://pursuitmag.com/wp-content/uploads/2010/01/private-investigator-database.jpg&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
+&lt;p&gt;实际上，把数据填充到CMDB中是非常基础的工作，必须事前做好充分的数据范围和类型的分析。对于一个典型的CMDB数据填过程来说，将需要做如下工作：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;建立里项目程碑和高阶项目计划，以及配套的支撑数据库和操作流程。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;安排项目启动会议，单周或者双周的项目进度沟通会。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;识别子项目（每个数据集分为一个子项目），建立每个子项目的目标和需求清单。识别和制定项目工作活动内容，确定项目的工作流程，并且按照项目计划排程所有活动。包括：
+&amp;mdash;并行开展项目（用户界面定制，DSL数据填充）；
+&amp;mdash;串行开展项目（发现工具，数据调和，等等）&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;为每个子项目分配项目负责人，让他们来负责汇报项目的进展、问题升级和下一步的工作。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;为所有项目参与人员建立一个开放的沟通平台，包括所有内部、外部人员（邮件组方式，数据库、通报）&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;为可能出现的紧急事件预留至少10%的时间和预算的缓冲。&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;</description>
+    </item>
+    
+    <item>
       <title>ITSM实施精要-只讲2分钟</title>
       <link>https://example.com/2010/06/01/itsm-implement-best-practice/</link>
       <pubDate>Tue, 01 Jun 2010 16:37:51 +0000</pubDate>
@@ -205,6 +325,17 @@ View Full Screen</description>
 ITSM_implement best practice
 下载
 Credit：本ppt的原版为《the 60 second guide to Enterprise Innovation》</description>
+    </item>
+    
+    <item>
+      <title>联邦的CMDB–神话/现实/需求/还是策略？</title>
+      <link>https://example.com/2010/05/31/federation-cmdb/</link>
+      <pubDate>Mon, 31 May 2010 03:53:06 +0000</pubDate>
+      
+      <guid>https://example.com/2010/05/31/federation-cmdb/</guid>
+      <description>&lt;p&gt;来自：Jonathan Markworth（CompuCom Systems有限公司管理顾问，探讨联邦数据库的优点）&lt;/p&gt;
+&lt;p&gt;使用一个具有单一的、全知的、万能的和自维护功能的工具，来管理IT基础架的方方面面信息，是否是最好的方案呢？使用一个能做所有工作的全集成平台，来替换您积累下来的所有管理工具是否是最佳方式？现实情况是，大多数组织都已经实施了几十种应用程序、工具、实用程序、数据存储、硬件平台和管理框架，它们一起运行着一个或更多的IT服务管理功能。它们中的每一个应用都有自己的数据库，对当前环境中的一些关键管理功能提供信息支持。在CMDB应用场景中，这些工具相关的数据库中，其实也包含了大量关键的CI属性，这些属性可以用于识别CI之间的关系。重要的问题是，如何利用现有的投资和资源来建立一个底层共享的数据库，比如一个CMDB。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;http://www.jevotrust.com/Site/graphics/cmdb_config_management.jpg&#34; alt=&#34;&#34;&gt;&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -324,6 +455,46 @@ Credit：本ppt的原版为《the 60 second guide to Enterprise Innovation》</d
     </item>
     
     <item>
+      <title>老美真的很扯，一个职位的帖子被顶了22次</title>
+      <link>https://example.com/2009/12/24/is-that-a-joke-of-remedy-developer/</link>
+      <pubDate>Thu, 24 Dec 2009 13:35:26 +0000</pubDate>
+      
+      <guid>https://example.com/2009/12/24/is-that-a-joke-of-remedy-developer/</guid>
+      <description>Remedy的开发人员或许熟悉这个邮件列表，ARSlist.org；如果没注册的话，一定需要注册一下啊，不为别的，学学英语，看看其他人都聊什么，有什么问题总是不错的。下面这个段子就是最近我看过的最扯的讨论。关键词：Remedy, 职位， OH州，辛辛那提，Developer，伊拉克，ARS 6.3, ARS 7.5, ITSM 7.5, 巴格达， AK 47，武器，活动链，过滤器，阿富汗，薪水，简历，顾问&amp;hellip;&amp;hellip;. engoy！！！！
+&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;
+Job: Permanent - Lead Remedy Developer - Cincinnati, OH
+Dear List,
+&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;1&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;-
+Merry Christmas!
+Title: Lead Remedy Developer
+Location: Cincinnati, OH
+Duration: Permanent (Relocation is offered)
+Start Date: 2-4 Weeks
+Must haves:
+- 5+ Years experience with Remedy
+- Experience with 7.x
+- Stable Resume (No Consultant Resume’s) (Client does not like job hoppers and will reject)</description>
+    </item>
+    
+    <item>
+      <title>Remedy ITSM 7.6 installation Tips</title>
+      <link>https://example.com/2009/11/28/remedy-itsm-76-installation-tips/</link>
+      <pubDate>Sat, 28 Nov 2009 09:29:04 +0000</pubDate>
+      
+      <guid>https://example.com/2009/11/28/remedy-itsm-76-installation-tips/</guid>
+      <description>自从7.6发布和以后一直没有时间安装，通过最近的几次安装，积累了一些经验，供大家参考。在安装开始之前请一定查看ARS_7500_Comp_Matrixv1001.pdf文档，保证操作系统、数据库、中间件和JDK的版本都符合要求。如果是安装生产系统的话，建议把数据库和应用服务器分开，硬件配置也一定参考Remedy ITSM安装手册中的建议硬件配置要求。
+最近在Linux的虚拟机上做了一次安装，相关细节如下:
+  Suse Linux Enterprise server 10 sp2 64 bit
+  Oracle 10G 64bit (10201_database_linux_x86_64.cpio.gz)
+  JDK 1.6(jdk-6u6-linux-i586.bin)
+  在Suse Linux上安装Oracle还是比较容易的，可以参考这个安装手册进行，下载。数据库安最好按照成utf8字符集，如下图所示：
+
+Remedy ITSM套件的安装分为三个步骤：1）ARS 7.5 SP3 的安装；2）Atrium CMDB7.6安装；3）ITSM 7.6安装；其中第一步是最重要的，第二步骤如果安装产品目录数据的话时间花费比正常多一点。Remedy ARS 7.5是最新的补丁包，它修复了sp2的很多bug；是Remedy ITSM 7.6安装的必须版本。在安装ARS的时候需要准确的导出相关的环境变量，如果环境变量没有或者不够的话，安装程序则无法正确地连接数据库，下面的例子可以参考一下。
+
+每一步安装完成之后都需要详细查看相关的日志，确保每一步都安装完全正确。在安装完ARS之后一定要为服务器添加所有相关License。</description>
+    </item>
+    
+    <item>
       <title>CMDB选型解密</title>
       <link>https://example.com/2009/11/19/how-to-select-a-cmdb/</link>
       <pubDate>Thu, 19 Nov 2009 16:32:22 +0000</pubDate>
@@ -376,6 +547,19 @@ DELL是一个家喻户晓的公司，它是如何做IT管理的呢？请查看�
     </item>
     
     <item>
+      <title>手把手教您构建CMDB/CMS</title>
+      <link>https://example.com/2009/10/17/step-by-step-guide-to-building-a-cmdb/</link>
+      <pubDate>Sat, 17 Oct 2009 09:37:08 +0000</pubDate>
+      
+      <guid>https://example.com/2009/10/17/step-by-step-guide-to-building-a-cmdb/</guid>
+      <description>If you have no idea about how to build a CMDB, you should check out this document. It come from http://www.bmc.com/products/product-listing/53556216-141391-2117.html
+Download it: Step by Step Guide to Building a CMDB (Updated for ITIL V3) (pdf)
+该《手把手CMDB/CMS构建指导手册》包括了配置管理数据库/系统建设的所有相关流程、技术和指导性建议。如果你有CMDB的建设意向，该手册非常值得仔细阅读。
+欢迎留下一个反馈，投票或者留言都行。
+[poll id=&amp;ldquo;8&amp;rdquo;]</description>
+    </item>
+    
+    <item>
       <title>MartinMarks for 29th August</title>
       <link>https://example.com/2009/08/29/martinmarks-for-29th-august/</link>
       <pubDate>Sat, 29 Aug 2009 16:27:38 +0000</pubDate>
@@ -417,6 +601,17 @@ by Randy A. Steinberg
 **Step-by-Step Guide to Building a CMDB **
 by BMC Software; Inc (Author)
 后来发现了这个ITSM metrics modeling tools ，觉得这个真的不错。可行性很高。</description>
+    </item>
+    
+    <item>
+      <title>BMC and Cloud computing</title>
+      <link>https://example.com/2009/07/16/bmc-and-cloud-computing/</link>
+      <pubDate>Thu, 16 Jul 2009 13:34:31 +0000</pubDate>
+      
+      <guid>https://example.com/2009/07/16/bmc-and-cloud-computing/</guid>
+      <description>July 15, 2009 – BMC Software has announced that it is leveraging Amazon Web Services to provide a single, unified management solution meant to give customers control over existing internal IT assets and external cloud infrastructures, according to a company release.
+http://www.information-management.com/news/amazon_bmc_software_cloud_computing-10015748-1.html
+BTW: it seems the IT management is as important as infrastructure.</description>
     </item>
     
     <item>
@@ -492,6 +687,47 @@ CMDB一旦建立了之后，所有用户一定要对CMDB使用起来，要为CMD
       
       <guid>https://example.com/2008/04/21/open-source-ticket-request-system-otrs-226/</guid>
       <description>I made a OTRS 2.2.6 virtual machine for anyone who wants to test both OTRS and OTRS::ITSM. It was built on OpenSUSE 10.2, including OTRS 2.2.6 and OTRS::ITSM 1.0.94. OTRS::ITSM implements ITIL (R) focused IT service management. OTRS::ITSM 1.0.94 is still on Beta, you might have some bugs when using this virtual machine. Please download from my box.net, if you have an comment please just let me know. I&amp;rsquo;d like to invite you to improve this virtual machine if you have any good ideal.</description>
+    </item>
+    
+    <item>
+      <title>Hyperic HQ 3.2 new features</title>
+      <link>https://example.com/2008/02/02/hyperic-hq-32-new-features/</link>
+      <pubDate>Sat, 02 Feb 2008 06:02:00 +0000</pubDate>
+      
+      <guid>https://example.com/2008/02/02/hyperic-hq-32-new-features/</guid>
+      <description>If you&amp;rsquo;d like to check out release note, please click here. http://support.hyperic.com/confluence/display/DOC/HQ+3.2+Release+Notes
+I had a quick install on RHEL 5. For some features what I saw, I took some screenshots as bellowing. I hope this helps you to understand what&amp;rsquo;s new in 3.2 and save a little bit time for you if you do not wants to install it. I will describe in Chinese.
+New Nav menu 新导航菜单 
+导航菜单的名称变成了：Dashboard &amp;ndash; Resources &amp;ndash; Analyze &amp;ndash; Administration 菜单的风格稍微有一点变化。Analyze下面可以进入Alert Center去查看报警信息。我觉得3.</description>
+    </item>
+    
+    <item>
+      <title>Build Zenoss 2.1.2 on Redhat Enterprise Linux 5</title>
+      <link>https://example.com/2008/01/30/build-zenoss-212-on-redhat-enterprise-linux-5/</link>
+      <pubDate>Wed, 30 Jan 2008 13:22:00 +0000</pubDate>
+      
+      <guid>https://example.com/2008/01/30/build-zenoss-212-on-redhat-enterprise-linux-5/</guid>
+      <description>Well, it is the first time to running a RHEL 5 for me, at same time got zenoss built successfully on it. zenoss-2.1.2 was build from source, the whole process went a while since RHEL is in one of my VMware session; CPU %sy was pretty high during building source code.
+Build zenoss-2.1.2 
+The INSTALL.txt file is good enough, my installation how-to can be really sample:
+
+ Read INSTALL.</description>
+    </item>
+    
+    <item>
+      <title>网管系统的测试工具</title>
+      <link>https://example.com/2008/01/21/trap-tools/</link>
+      <pubDate>Mon, 21 Jan 2008 17:34:00 +0000</pubDate>
+      
+      <guid>https://example.com/2008/01/21/trap-tools/</guid>
+      <description>很多网络系统管理软件都有Trap管理的功能，在系统的安装和配置过程中；验证系统是否能正常处理Trap是很麻烦的事情。原因有很多，发送trap的设备没有，设备上的snmp没有启用，或者设备都正常，到网管系统的网络可能有防火墙吧snmp给堵住了。
+为了方便的测试和配置网络管理监控系统，需要手工生产和验证trap的发送和接收。最近偶然在网上发现了这样几个免费（非OSS软件）软件工具，可以做这件事。
+下载的网站是：http://www.ncomtech.com/ 下面吧我所下载和测试的软件做一个小结，希望对您有所帮助：
+
+ Trap Receiver http://www.trapreceiver.com/ 是一个Windows程序非常小，安装了之后会在windows安装一个服务。程序的启动目录是C:\Program Files\Trap Receiver\TrapRcvr.exe 程序界面非常简单，如下图所示： 
+点击configure按钮后可以做一些配置：Action －－当收到某些特定的trap是出发邮件、声音等动作；logging－－把收到的trap信息按照某种格式记录在文件中；Mibs－－导入目标设备的trap文件，让这个接收器能认识到另外的trap格式。还有其他配置信息也非常简单。
+  
+ **TrapGen **http://www.ncomtech.com/trapgen.html 顾名思义－这就是一个手工生产和发送trap的工具，是一个命令行工具。example: trapgen -d 192.168.2.3；上图中的第一条和第三条就是用这个命令发出的trap。欲知详细帮助信息，使用&amp;quot;trapgen -h&amp;quot;  I/F Spy http://www.ncomtech.com/ifspy.html 是一个网络接口枚举工具，它通过snmp协议去访问目标设备的IFMIB信息，显示所有IFMIB相关信息。  UDP Listen http://www.ncomtech.com/udplisten.html UDP协议的监听程序，是命令行工具，有linux和Solaris版，能用作一个debug工具。  Thingy http://www.ncomtech.com/thingy.html是一个Windows下的GUI工具，能帮你监控三个SNMP指标，采集并做大于等于和小于的逻辑判断然后显示不同的信号灯。 这几个小工具都很小，都能在windows下安装和使用对网络系统监控软件的安装、配置和排错应该有一定的帮助。如果您有什好的小工具也请回复一下本文。  </description>
     </item>
     
     <item>

@@ -1,12 +1,215 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Cloud Computing on Hugo Future Imperfect Slim em português</title>
+    <title>Cloud Computing on 刘征的博客</title>
     <link>https://example.com/tags/cloud-computing/</link>
-    <description>Recent content in Cloud Computing on Hugo Future Imperfect Slim em português</description>
+    <description>Recent content in Cloud Computing on 刘征的博客</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-CN</language>
-    <lastBuildDate>Tue, 18 Dec 2012 16:12:30 +0000</lastBuildDate><atom:link href="https://example.com/tags/cloud-computing/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Thu, 14 May 2015 16:36:27 +0000</lastBuildDate><atom:link href="https://example.com/tags/cloud-computing/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>OpenStack Enterprise Ready</title>
+      <link>https://example.com/2015/05/14/openstack-enterprise-ready/</link>
+      <pubDate>Thu, 14 May 2015 16:36:27 +0000</pubDate>
+      
+      <guid>https://example.com/2015/05/14/openstack-enterprise-ready/</guid>
+      <description>不是好不好，而是用不用？ 要说OpenStack的优点，技术人员能说出一堆词汇，如开源、弹性、稳定、可扩展、迅速搭建私有云、对硬件要求不高、解耦、能快速扩展新业务等等。但实际应用的案例为何这么少。
+    国内传统企业用的少，互联网公司用了不少了，创业公司捣鼓OpenStack部署公有云服务的业务也不少了，总体看OpenStack水平高的人不在数量巨大的传统企业里，当前人员也不存在这个流向，更重要的是传统企业没有合适的在OpenStack上跑的workload。因此少。
+    一个数据是，这两年计划部署OpenStack的企业为84%，可见大多数企业仍观望。这问题出在哪里？
+   原因同上。
+   技术仍旧是问题。OpenStack的问题是半年快速迭代，发布新产品，速度太快，老版本跟不上。理论上，新版本向下兼容。但在一些版本较大改动，加入新的功能时，如果企业已经深度应用了旧版本，可能面临技术无法升级，或者需要重度开发的问题。
+     开发改动大么？那些地方大改动了？深度开发的部分是什么组件？是遵循了向下一个版本兼容的原则了么？代码提交会社区了么？OpenStack社区版升级了，企业就一定要升级旧的版本么？什么情况下升级版本？什么情况下打补丁知道么？OpenStack是云操作系统，我们看到的常见的开发场景是：界面友好度的调整、虚拟机功能的增强、辅助管理功能的增加等等。如果基于某个版本把这些附加功能开发出来了，其实业务需求清晰和随后调整不大的话，其实是可以用一定时间的。升级有两个原因：修复bug，增加新版本的功能。我见过创业公司把之前开发的东西一次一次废掉重来的情况，主要原因还是他们首先不能提交代码会社区，其次开发的东西不是外挂式和主框架松耦合的。企业面对开发是谨慎的，往往不会在投入大量功能评估后，在清晰的需求下二次开发。二次开发做的多得还是想做OpenStack生意的创业公司，而传统企业的这些金主客户，我感觉他们还真没有这个需求和闲工夫。因此开发重，不能平滑进入下一代新版本不是用的少和不用的原因。
+     另外与企业规模有关。多大企业需要使用OpenStack，需要部署在哪些生产环境，是否是全面替代，还是迁移，包括从VMware迁移到OpenStack，或者是新应用局部部署OpenStack？这些不考虑清楚，没办法应用。
+     这是一个很普遍的误区，太多人这么想了。从VMWare迁移到OpenStack真的这么重要么？真的存在这个场景了？服务器虚拟化和OpenStack是两种同类型的基础架构技术。服务器虚拟化跑传统的有状态应用；OpenStack跑需要弹性扩展的无状态应用。有状态应用不适合跑在OpenStack上。也不太可能不做任何改变就能适应OpenStack环境。企业的无状态应用少，但这是一个发展过程和阶段。原因在于无状态应用和合适在OpenStack上跑得workload太少了。企业目前的应用workload是因，OpenStack部署少是果。不存在OpenStack替代服务器虚拟化的事情，他俩会并存很长时间，不是非黑即白的替代逻辑。
+     当前看，对企业应用需求的评估太少，大多是IT产业（厂商）一头热，鼓吹OpenStack太好，反而令人生疑。
+      说的好就怀疑了？这里说的应用需求评估有两方面。或者两个理解方向。这里可能是说OpenStack功能性方面，客观的讲，当一个技术在风口上的时候，说好话的多，这是客观规律，多年前服务器虚拟化也这样，现在热度低了，它再发新版本大家连个搭理的功夫都没有了，也没有啥评测文章出来，这都是自然规律。OpenStack也有失去热捧的那天，我最近看了一些基于它创业的技术型公司也都在反思和总结经验中。
+      怎么用，谁来带头？ 当前案例也有，如电信运营商阿尔卡特朗讯（名字太长，以后会不会再加上西门子诺基亚）、诺基亚、西班牙电信；汽车领域宝马汽车、银行企业西班牙BBVA、传媒领域时代华纳有线等。这些企业具有标杆意义，不具有示范效应。企业规模不一样，生产环境不同，这是最大的不同。这些案例最明显的是以信息为核心资源的企业，IT系统建设较为完善和复杂，有意愿、有钱尝试新的IT技术。
+      规模、环境、以信息为核心资源、IT成熟、有意愿、有钱；这些都不能说成是中外企业IT的差异，也完全和是否用OpenStack无关的因素。我朝存在大量的传统大型企业，都已经排名全球100强了，很多是我们的客户。它们的市值比以上公司大得多。举个例子：CCB的市值是2015年4月30日 - 成交量 4.88亿股 市值 18,151.</description>
+    </item>
+    
+    <item>
+      <title>rdo</title>
+      <link>https://example.com/2014/12/02/rdo/</link>
+      <pubDate>Tue, 02 Dec 2014 03:08:56 +0000</pubDate>
+      
+      <guid>https://example.com/2014/12/02/rdo/</guid>
+      <description>https://openstack.redhat.com/Main_Page</description>
+    </item>
+    
+    <item>
+      <title>XenServer 添加硬盘做本地存储</title>
+      <link>https://example.com/2013/11/25/xenservere6b7bbe58aa0e7a1ace79b98e5819ae69cace59cb0e5ad98e582a8/</link>
+      <pubDate>Mon, 25 Nov 2013 10:39:00 +0000</pubDate>
+      
+      <guid>https://example.com/2013/11/25/xenservere6b7bbe58aa0e7a1ace79b98e5819ae69cace59cb0e5ad98e582a8/</guid>
+      <description>当您的 XenServer 测试机需要增加硬盘的时候，你需要通过简单的几条指令把新硬盘添加为本地存储。
+下面的实例情况是：
+  测试机有两块硬盘
+  OCZ SSD硬盘一块
+  SATA 不通硬盘一块
+  还有一个U盘插在系统上
+    SATA的硬盘是我需要加载的新硬盘
+  这个新的硬盘希望被处理成XenServer本地的SR
+  添加过程中主要需要使用这样几条指令：
+  查看当前系统上的检查出来并且挂载中的分区： cat /proc/partitions
+  详细查看这些存储和设备对应的情况： ls -l /dev/disk/by-id/
+  创建新的本地SR: xe sr-create content-type=user device-config:device=/dev/disk/by-id/scsi-SATA_ST9320325ASG_5VD7G964 host-uuid=3850317b-d23a-4ed0-87f9-2b27854319e5 name-label=&amp;ldquo;SATA320&amp;rdquo; shared=false type=lvm
+  [bash] [root@XS62 ~]# cat /proc/partitions major minor #blocks name
+7 0 52378 loop0 8 0 250059096 sda 8 1 4193297 sda1 8 2 4193297 sda2 8 3 241669447 sda3 8 16 312571224 sdb 8 17 204800 sdb1 8 18 312235312 sdb2 8 32 4137984 sdc 8 36 4137856 sdc4 252 0 241655808 dm-0</description>
+    </item>
+    
+    <item>
+      <title>CloudStack&#43;Swift 我心中的黄金搭档</title>
+      <link>https://example.com/2013/09/03/cloudstack-swift/</link>
+      <pubDate>Tue, 03 Sep 2013 08:25:46 +0000</pubDate>
+      
+      <guid>https://example.com/2013/09/03/cloudstack-swift/</guid>
+      <description>&lt;p&gt;迪斯尼是一个有魔力的组织，在它的电影里冤家可以变伙伴。甚至CloudStack和OpenStack两大私有云死对头来到迪斯尼这个神奇的地方也可以“在一起”。当迪斯尼决定建设自己的云计算基础设施时，与很多企业一样面临一个艰难的抉择，从众多云计算技术方案和产品中选择一条道路。如今的云计算市场规模已 达数百亿美元，水已经很深，领头的是亚马逊这样的公共云巨头，以及亚马逊的对手们：Rackspace、Google、CloudStack、 Eucalyptus、OpenNebula等多种私有云和公共云技术与服务，每家都有绝活和独到之处。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>The Xen Movie, Part 1: The first ten years of open source Xen.</title>
+      <link>https://example.com/2013/08/01/the-xen-movie-part-1-the-first-ten-years-of-open-source-xen/</link>
+      <pubDate>Thu, 01 Aug 2013 09:29:20 +0000</pubDate>
+      
+      <guid>https://example.com/2013/08/01/the-xen-movie-part-1-the-first-ten-years-of-open-source-xen/</guid>
+      <description>http://brightcove.vo.llnwd.net/e1/uds/pd/13639319001/13639319001_2484626552001_Citrix-Open-Source--Public-Version-.mp4</description>
+    </item>
+    
+    <item>
+      <title>Citrix XenServer is Now Fully Open Source</title>
+      <link>https://example.com/2013/08/01/citrix-xenserver-is-now-fully-open-source/</link>
+      <pubDate>Thu, 01 Aug 2013 09:26:51 +0000</pubDate>
+      
+      <guid>https://example.com/2013/08/01/citrix-xenserver-is-now-fully-open-source/</guid>
+      <description>http://brightcove.vo.llnwd.net/e1/uds/pd/13639319001/13639319001_2488040716001_XenServer-OSS-Richard-Sharp-Final.mp4
+With the release of Citrix XenServer 6.2, Citrix is pleased to announce that XenServer is now fully open source. In this video, Richard Sharp, Vice President of XenServer Product Development, explains why Citrix open sourced XenServer, what it means to our customers and how it will help the entire XenServer platform.</description>
+    </item>
+    
+    <item>
+      <title>A new open source strategy for Citrix XenServer</title>
+      <link>https://example.com/2013/08/01/a-new-open-source-strategy-for-citrix-xenserver/</link>
+      <pubDate>Thu, 01 Aug 2013 09:21:01 +0000</pubDate>
+      
+      <guid>https://example.com/2013/08/01/a-new-open-source-strategy-for-citrix-xenserver/</guid>
+      <description>http://brightcove.vo.llnwd.net/e1/uds/pd/13639319001/13639319001_2503709704001_Sameer-Dholakia-v3.mp4
+Sameer Dholakia, Vice President and General Manager of the Citrix Cloud Division, talks about the full open source strategy for XenServer. Learn why Citrix made XenServer open source and how this will benefit our customers and ecosystem partners.</description>
+    </item>
+    
+    <item>
+      <title>Microserver Lenovo ThinkCenter M92/M92p Tiny</title>
+      <link>https://example.com/2013/05/24/microserver-lenovo-thinkcenter-m92m92p-tiny/</link>
+      <pubDate>Fri, 24 May 2013 01:32:28 +0000</pubDate>
+      
+      <guid>https://example.com/2013/05/24/microserver-lenovo-thinkcenter-m92m92p-tiny/</guid>
+      <description>刚刚入手了一台 Lenovo ThinkCenter M92/M92p Tiny测试机，虽然配置不高但是出于geek习惯，还是要动动螺丝刀的。下面是拆机过程，供参考。 [gallery columns=&amp;ldquo;2&amp;rdquo; link=&amp;ldquo;file&amp;rdquo; ids=&amp;ldquo;52429,52430,52431,52432,52433,52434,52435&amp;rdquo;]
+这款机器目前在国内好像还没有正式买，起码联想中国官网上连技术指标也查不到。美国网站上是有这个机器的介绍。
+[caption id=&amp;quot;&amp;quot; align=&amp;ldquo;alignnone&amp;rdquo; width=&amp;ldquo;960&amp;rdquo;] ThinkCenter M92P[/caption]
+At a Glance   Up to 3rd generation Intel® Core™ i7
+  Up to Windows 8 Pro
+  Up to 1TB HDD, Up to 128GB SSD
+  Up to 32GB memory (4x8GB)
+  M92/M92p Tower Tech Specs
+  M92/M92p Tiny Tech Specs
+  我所测试的是M92 Tiny型。改机默认安装的Win8操作系统。如果把它改装为跑Hypervisor的服务器的话，它应该属于 Microserver的范畴。
+微服务器定义：A micro server (may also be written as microserver or MicroServer) is a small server appliance that works like a server.</description>
+    </item>
+    
+    <item>
+      <title>Top10全球排名前十的云计算公司</title>
+      <link>https://example.com/2013/05/07/top10e585a8e79083e68e92e5908de5898de58d81e79a84e4ba91e8aea1e7ae97e585ace58fb8/</link>
+      <pubDate>Tue, 07 May 2013 02:31:30 +0000</pubDate>
+      
+      <guid>https://example.com/2013/05/07/top10e585a8e79083e68e92e5908de5898de58d81e79a84e4ba91e8aea1e7ae97e585ace58fb8/</guid>
+      <description>来自 http://www.intelligenthq.com/uncategorized/top-10-cloud-computing-companies/
+Citrix榜上有名排名第三，这就是我看好CloudStack一年多的回报，国内CloudStack目前看还没有什么生机，希望能早点发展起来。
+We all know change is constant, especially in technology. Look at Toshiba, a world leader and innovator in high technology. This week, the company made an interesting move and announced the opening of Toshiba’s first datacenter in Europe, located in France.
+Toshiba Cloud &amp;amp; Solutions Division is directed at professional markets, public and private-sector companies, and entities within the Toshiba Group. The creation of this datacenter is in line with the Group’s goal of accompanying its clients right from the design of IT products and solutions through to hosting related services tailored to specific needs.</description>
+    </item>
+    
+    <item>
+      <title>让Xen Project回家</title>
+      <link>https://example.com/2013/04/23/xen-is-now-a-linux-foundation-collaborative-project/</link>
+      <pubDate>Tue, 23 Apr 2013 08:20:59 +0000</pubDate>
+      
+      <guid>https://example.com/2013/04/23/xen-is-now-a-linux-foundation-collaborative-project/</guid>
+      <description>首先我们来回顾一下历史： 
+上周Citrix把经营和支持多年的开源项目Xen Project加入到了inux Foundation，可以说是Xen Project 的一个新家。可能您还不太了解“Linux Foundation”；访问 FAQ 可获得它的一些基本知识。到目前为止Linux Foundation总共支持了8个开源软件项目。
+[![OpenDaylight](http://www.linuxfoundation.org/sites/main/files/logo_od_small_0.jpg)](http://www.opendaylight.org/)  [![](http://www.linuxfoundation.org/sites/main/files/wlogo_caf.jpg)](https://www.codeaurora.org/)  [![](https://www.linuxfoundation.org/sites/main/files/wlogo_omam.jpg)](http://www.openmama.org)  [![](https://www.linuxfoundation.org/sites/main/files/wlogo_tize_0.jpg)](http://www.tizen.org)   [![](https://www.linuxfoundation.org/sites/main/files/wlogo_meeg.jpg)](http://www.meego.com)  [![](https://www.linuxfoundation.org/sites/main/files/wlogo_yoct.jpg)](http://yoctoproject.org/)  [![](http://www.linuxfoundation.org/sites/main/files/xen_project_unicolor_0.jpg)](http://xenproject.org)  [![](https://www.linuxfoundation.org/sites/main/files/wlogo_fbaz.jpg)](http://fossbazaar.org/)     那么Linux foundation能给这些开源软件提供怎么呢？ With ten years of experience managing open source projects and support services, The Linux Foundation can provide the back-office, technical infrastructure and legal framework to get your collaborative project off the ground quickly and efficiently. 想加入Linux fondation的项目还必须满足如下两个标准：</description>
+    </item>
+    
+    <item>
+      <title>解决XenServer tools not installed</title>
+      <link>https://example.com/2013/04/07/xenserver-tools-not-installed/</link>
+      <pubDate>Sun, 07 Apr 2013 10:27:38 +0000</pubDate>
+      
+      <guid>https://example.com/2013/04/07/xenserver-tools-not-installed/</guid>
+      <description>[box color=&amp;ldquo;orange&amp;rdquo; icon=&amp;ldquo;flag&amp;rdquo;] 鸣谢：Michael Zhang的经验分享，有需要的请收藏备用。 [/box]
+刚刚搞定了POC环境中一个很诡异的问题。把过程写出来以供大家参考。建议可以把这个设置放到POC的实施手册中。 刚开始做POC时，我们安装了XP的模板，并且安装了同版本的XenTools，此时XenCenter面板上显示虚机的IP地址没有问题。但是跑了一段时间后发现，所有的虚机的IP地址都显示不出来了，并且XenCenter面板上显示XenServer tools not installed，虚机的内存信息，Disk IO等信息，都没有显示： 
+
+后来重装了模板，重新发布了虚机，一切就OK了，此时我认为是原先的模板有问题，所以导致了这个issue。 但是后来跑了几天，某台虚机又出现了类似的症状，此时我意识到应该不是模板的问题了。然后我就检查了这台虚机的Service，发现：
+
+这个Service就是XenTool的Service，因为没有启动，所以导致了上述的问题。 但是当我用手工试图重启该Service的时候，系统报改Service启动时停止，没有给出任何原因。Windows Event Log里也没看到任何报错。 后来上网查了下，原来是Windows Event Log的Application类的log满了以后，会导致该Service启动异常。 看了下XP的Windows Event Log的Application类日志的属性，默认只有64K：
+
+我把上面的日志文件大小阀值改成了1024K，清空Application类的log，重启上面的Service, 成功，问题解决。
+ 
+
+上述类似的问题我记得也有兄弟曾经遇到过，发邮件出来问过，当时怀疑是XenServer跟VDA的时间不同步造成，现在感觉也许跟这个原因有关。
+[box color=&amp;ldquo;gray&amp;rdquo; icon=&amp;ldquo;order-check&amp;rdquo;] 欢迎投稿，请发邮件到： liuzh66@gmail.com [/box]</description>
+    </item>
+    
+    <item>
+      <title>思杰行业解决方案视频放量推荐</title>
+      <link>https://example.com/2013/04/07/e6809de69db0e8a18ce4b89ae8a7a3e586b3e696b9e6a188e8a786e9a291e694bee9878fe68ea8e88d90/</link>
+      <pubDate>Sun, 07 Apr 2013 06:06:23 +0000</pubDate>
+      
+      <guid>https://example.com/2013/04/07/e6809de69db0e8a18ce4b89ae8a7a3e586b3e696b9e6a188e8a786e9a291e694bee9878fe68ea8e88d90/</guid>
+      <description>[button type=&amp;ldquo;big&amp;rdquo; icon=&amp;ldquo;sign-in&amp;rdquo; url=&amp;ldquo;http://i.youku.com/u/UMzU2OTI4MzY0/videos&amp;rdquo;]点击本按钮，直达优酷视频专辑[/button] [line]
+  汽车行业解决方案
+  思杰制造行业解决方案
+  金融行业解决方案
+  呼叫中心场景Citrix桌面云解决方案
+  教育行业解决方案
+  思杰政府行业解决方案
+  医疗行业解决方案
+  营业厅场景解决方案
+  Citrix集中运维监控解决方案
+  OA解决方案
+  思杰虚拟化助力翠微中学教育信息化建设
+  思杰虚拟化为遍布全美的学校师生提供便
+  [line] [box color=&amp;ldquo;red&amp;rdquo;] 合作伙伴们必看视频，你们不得不懂这些内容，否则跟不上形势：) [/box]
+  PoC标准流程
+  2013-03-29 14.02 Citrix MDM solution
+  搞定虚拟环境下的USB设备
+  自由灵活办公【Work Shifting】
+  企业统一应用门户 【Unified Storefron</description>
+    </item>
+    
+    <item>
+      <title>TIPS install XenServer on Mac Mini 6.1 </title>
+      <link>https://example.com/2013/02/21/tips-install-xenserver-on-mac-mini-6-1/</link>
+      <pubDate>Thu, 21 Feb 2013 09:24:38 +0000</pubDate>
+      
+      <guid>https://example.com/2013/02/21/tips-install-xenserver-on-mac-mini-6-1/</guid>
+      <description>[caption id=&amp;ldquo;attachment_52258&amp;rdquo; align=&amp;ldquo;aligncenter&amp;rdquo; width=&amp;ldquo;640&amp;rdquo;]mac-mini-2012-with-XenServer[/caption]
+今天尝试在Mac Mini上安装XenServer，下面把经验共享一下。我遇到的问题有两个：
+  网卡无法识别：使用默认安装盘安装，提示没有检测到网卡，安装无法继续
+  网卡驱动植入失败：在按了F9加载驱动的时候，没有发现驱动程序，无法继续安装
+  安装完毕之后，重启，屏幕上显示一个带问号的文件夹，一闪一闪无法正常启动XenServer
+  经过一番折腾，发现这些点主意一下，应该就没有问题。
+[caption id=&amp;ldquo;attachment_52255&amp;rdquo; align=&amp;ldquo;aligncenter&amp;rdquo; width=&amp;ldquo;300&amp;rdquo;] 启动Macmini[/caption]
+在启动Mac Mini的时候，在“咚”的一声之前，就按住ALT键，否则没法出现上面的屏幕，我用的是USB盘启动，所以要选择右侧的图标。
+[caption id=&amp;ldquo;attachment_52256&amp;rdquo; align=&amp;ldquo;aligncenter&amp;rdquo; width=&amp;ldquo;300&amp;rdquo;] 进入menu.c32菜单[/caption]
+我遵循前人的经验，乖乖到此来禁止gpt；首先在这里要迅速输入menu.c32，输入完了就过了，就必须重新关机，重启mac mini。
+[caption id=&amp;ldquo;attachment_52257&amp;rdquo; align=&amp;ldquo;aligncenter&amp;rdquo; width=&amp;ldquo;300&amp;rdquo;] 输入disable-gpt参数[/caption]
+进入这个屏幕了，要快速按TAB键，否则启动参数无法编辑，输入disable-gpt参数的机会就失去了。编辑启动参数的时候，把参数加载第二个&amp;mdash;（三个短横线）前即可，上图我为了拍照在参数之前加了很多空格，其实这个参数和前后要至少一个空格就够了。
+在进入安装的屏幕后，如果是XenServer6.0.201的源安装盘，还必须下载tg3的网卡驱动，并且用工具打入iso文件，这样安装的时候，就可以选择到加载网卡启动，否则6.0.201的安装盘即不自带此网卡驱动，也无法正常识别附加的驱动。网卡驱动下载地址为：http://support.citrix.com/article/CTX135328 要把加压后的iso文件，再次加压到对应的目录里才行，直接把解压后的几个文件放入目录，安装程序是无法识别到网卡驱动的。如果能正常识别的话，会出现选择框，让你选择 Broadcom tg3。如果是XenServer6.1的安装盘，就不需要折腾驱动了，原盘自带了Broadcom tg3网卡驱动。下面有两张截图，供必须要使用XenServer 6.0.201的人参考。
+[caption id=&amp;ldquo;attachment_52250&amp;rdquo; align=&amp;ldquo;aligncenter&amp;rdquo; width=&amp;ldquo;300&amp;rdquo;] XenServer 6.0.201 with driver[/caption]
+[caption id=&amp;ldquo;attachment_52251&amp;rdquo; align=&amp;ldquo;aligncenter&amp;rdquo; width=&amp;ldquo;300&amp;rdquo;] xs-repository-list 实例[/caption]
+即使你不是安装XenServer6.0.201，也推荐使用UltraISO来把iso文件写入一个USB盘来安装，因为Mac Mini没有光驱，而且这样不用刻盘，更加环保一点。
+最后一个Tips：这个可能是解决问题3的技巧，在安装的最后一个屏幕上，安装程序提示移除Mac Mini上的其他所有截至，然后点击回车完成安装。在这个屏幕上要识时务的把安装U盘从机器上拔除，然后点击回车来重启Mac Mini。经过我的验证，拔出U盘后好像没有在遇到过闪烁文件夹的重启不了的问题。建议都使用自带Broadcom tg3网卡驱动的6.1来安装，否则6.0.201安装完成之后，一旦打了补丁，还需要下载for这个补丁的新版本的网卡驱动，在重新手工打上该驱动，否则网卡会起不起来。</description>
+    </item>
+    
     <item>
       <title>2013年的云计算，您准备好了么？</title>
       <link>https://example.com/2012/12/18/2013e5b9b4e79a84e4ba91e8aea1e7ae97e682a8e58786e5a487e5a5bde4ba86e4b988/</link>

@@ -1,12 +1,29 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>opensource on Hugo Future Imperfect Slim em português</title>
+    <title>opensource on 刘征的博客</title>
     <link>https://example.com/categories/opensource/</link>
-    <description>Recent content in opensource on Hugo Future Imperfect Slim em português</description>
+    <description>Recent content in opensource on 刘征的博客</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-CN</language>
-    <lastBuildDate>Mon, 07 Nov 2016 15:19:08 +0000</lastBuildDate><atom:link href="https://example.com/categories/opensource/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Mon, 02 Apr 2018 00:22:44 +0800</lastBuildDate><atom:link href="https://example.com/categories/opensource/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Kops on Aws</title>
+      <link>https://example.com/blog/kops-on-aws/</link>
+      <pubDate>Mon, 02 Apr 2018 00:22:44 +0800</pubDate>
+      
+      <guid>https://example.com/blog/kops-on-aws/</guid>
+      <description>kops这种方式是我找到的最佳的，最适合于培训课堂需要的安装方式，当然对有类似需求的人有帮助。
+Route53 DNS配置 kops需要使用DNS服务，用主机名提供k8s的相关服务访问。配置的注意点：
+ 域名还是有必要有一个的，没有的话注册一个也不贵，以后用着也方便 建议在aws的Route53里做一个二级域名，例如：k8s.devopscoach.org 这个二级域名最好是能被正常公网解析的，为了便于直接访问集群里的服务 用 dig NS k8s.devopscoach.org 可以能正常解析（Mac上是这个命令）  由于全球的域名同步会需要一些时间，因此可以先做这一步，用到的时候，可能就已经同步好了。
+kops会将所有主机的域名解析都自动化的添加A记录到这里。
+安装工具准备 需要安装的工具包括 kubectl, kops 和 AWS CLI 工具。kops需要调用 AWS CLI来创建所需要的资源。我觉得简单的方法是：在目标的Region里创建一台Amazon AMI的虚拟机，这样AWS CLI就不用装了，而且在云里的话，执行kops的时候，由于有一大堆资源创建更新的api调用，感觉速度比在本机快很多，而且还用担心断网。
+可以启动一台t2.micro规格的Amazon AMI即可，另外需要给这个实例配置如下IAM用户权限，在启动的时候选择合适的IAM Role。
+ AmazonEC2FullAccess AmazonRoute53FullAccess AmazonS3FullAccess IAMFullAccess AmazonVPCFullAccess  这台虚拟机启动之后，安装kubectl和kops。
+curl -LO https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl sudo chmod +x kubectl sudo mv kubectl /usr/local/bin/kubectl wget https://github.com/kubernetes/kops/releases/download/1.8.0/kops-linux-amd64 sudo chmod +x kops-linux-amd64 sudo mv kops-linux-amd64 /usr/local/bin/kops 准备ssh登陆秘钥，用户ssh登录各个ec2实例
+[ec2-user@ip-172-31-27-182 ~]$ ssh-keygen Generating public/private rsa key pair.</description>
+    </item>
+    
     <item>
       <title>EXIN DevOps Master 认证考试</title>
       <link>https://example.com/2016/11/07/exin-devops-master-e8aea4e8af81e88083e8af95/</link>
@@ -28,6 +45,35 @@ DevOps Master 认证自由讲师
     </item>
     
     <item>
+      <title>DevOps 的起点-入手微型数据中心</title>
+      <link>https://example.com/2016/07/01/devops-in-a-box/</link>
+      <pubDate>Fri, 01 Jul 2016 03:11:10 +0000</pubDate>
+      
+      <guid>https://example.com/2016/07/01/devops-in-a-box/</guid>
+      <description>测试环境说明 我的笔记本电脑的环境描述如下。
+OS MacBook Pro 2011 版， 2.3 GHz Intel Core i5， 8GB DDR3， 256 GB SSD。 OS X EI Capitan version 10.11.5
+Docker Docker for Mac Version 1.12.0-rc2-beta17 (build: 9779)
+$ docker version Client: Version: 1.12.0-rc2 API version: 1.24 Go version: go1.6.2 Git commit: 906eacd Built: Fri Jun 17 20:35:33 2016 OS/Arch: darwin/amd64 Experimental: true Server: Version: 1.12.0-rc2 API version: 1.24 Go version: go1.6.2 Git commit: a7119de Built: Wed Jun 29 10:03:33 2016 OS/Arch: linux/amd64 Experimental: true $ docker-machine version docker-machine version 0.</description>
+    </item>
+    
+    <item>
+      <title>用 Docker 构建 Serverless 应用</title>
+      <link>https://example.com/2016/06/22/building-serverless-apps-docker/</link>
+      <pubDate>Wed, 22 Jun 2016 16:22:51 +0000</pubDate>
+      
+      <guid>https://example.com/2016/06/22/building-serverless-apps-docker/</guid>
+      <description>Martin解读Serverless Serverless 不意味着没有服务器，而是从应用可以在一个抽象层上忽略它的存在，而只关注在功能实现上和自身的请求处理上；每一个功能实现在不是单纯的业务逻辑处理的代码，相反每个功能调用具有了 server 的特质，进化成为了一个具有自省、自知和自治的工作负载单元；他们更像是能够衍生出其它新功能单元的生物体。这样整个 Serverless 应用架构之内，每个生命可以衍生下去，子子孙孙无穷匮也。
+本文编译了：https://blog.docker.com/2016/06/building-serverless-apps-with-docker/ 一下是正文内容。
+处在这技术日新月异的时代里，新的技术浪潮经常对当前的技术产生着威胁和颠覆。在编写应用的时候我们目前经常谈论到“Serverless”技术。它的核心思想是把应用作为一系列的功能/function来部署，这些功能在需要的时候被按需部署。服务器管理应该是不需要去操心的事情，所有功能被按需调用，被运行在群集之上。
+但是 Serverless 里不意味着没有 Docker，事实上 ”Docker 就是 Serverless”。你可以用 Docker 来容器化这些功能，然后按需地运行在 Swarm 群集上。Serverless 是一种构建分布式计算的应用的方法，而 Docker 是完美的构建和运行他们的平台。
+从Server 到 Serverless 那么我们如何来编写 Serverless 的应用？让我们先看下这个例子：“一个有5个子服务组成的投票应用”：
+它的结构如下：
+ 两个 web 前端 一个后台的处理投票的 worker 服务 一个处理投票的消息队列  一个数据库  那个后台处理投票的进程是非常容易成为转换为 Serverless 架构的目标。在投票应用内，我们可以运行一点类似于下面的代码，来执行后台任务：
+ import dockerrun client = dockerrun.from_env() client.run(&amp;quot;bfirsh/serverless-record-vote-task&amp;quot;, [voter_id, vote], detach=True) Worker 和消息队列能用按需在 Swarm 上运行的容器来替换，并自动地按需扩容。
+我们甚至可以消除掉 web 前端。我们可以这么做：用 Docker 容器来相应每一个HTTP 请求，每个 HTTP 请求都用一个自生长的跑着轻量 HTTP 服务器的容器来处理。之前使用的是长时间持续运行的 HTTP 服务器，现在变成了具有 HTTP 相应和处理能力的按需跑起来的容器，而且他们能自动地扩容来支持所有访问请求。</description>
+    </item>
+    
+    <item>
       <title>DockerCon 2016 D2 超萌码头酷黑客 大会圆满闭幕</title>
       <link>https://example.com/2016/06/22/closing-general-session-moby-docks-cool-hacks/</link>
       <pubDate>Wed, 22 Jun 2016 02:35:39 +0000</pubDate>
@@ -41,6 +87,19 @@ DevOps Master 认证自由讲师
 Jeff 开始做这个 Demo。说：如果你的”网络没有故障，天下太平。“其实这很无聊的说，有木有？有木有？我现在开始用工具来注入 网络延迟的网络故障吧！ 。用一个基于策略的工具。配置一个网络故障模拟的策略，故障什么时间发生，发生多久。这里设计一个每10秒钟注入一次网络延迟故障提高到600ms 的故障。然后配置故障影响的范围，这里使用 Docker 的 lable 来做故障发生节点的选择的条件。符合标签的系统将受到这次故障影响。我们的这个故障模拟编排系统，帮您提前体验故障的发生。现在你看故障发生了，从这些容器里面 ping google 的网络延迟比之前大多了， 目前延迟到了600ms。希望你们能开始体验和使用这个而工具。
 黑客演示2：Serverless 架构的应用不是梦 Ben 是大家在 Docker 大会喜闻乐见的一个黑客，他经常给做 demo 和 session。他绝对符合超萌的标准。
 Ben 开讲，Serverless 是如何做的？ben 认为 Serverless 是一种全新的应用编程的思路，而 docer 可以很好的支持这种思路，并实现和执行这种思路。docer 群集可以让Serverless引用按需执行，并让该应用的底层变得资源冗余并路由可达。ben 开始演示 他的几张 slides， 说 Sererless == docker这个概念。本开始讲解：如何用Serverless架构来实现投票应用的改造。如何把这个5个服务模块的纯粹容器微服务系统转换为 serverless 架构的应用。开始修改源代码，把发入队列的票，变成一个处理投票的容，把 http 服务器变成一个 CGIHander（）服务；但是 nodejs 不支持 CGIhander，肿么办？我用 perl 重写了这部分，为毛用 perl，被忘了它乃是古董级的黑客神器的好不好，呵呵！改造完之后的系统架构如下。架构是把处理 postgresql 意外的模块都重写了。数据库保留在最下层。这种Serverless重构实践遵从的原则如下。</description>
+    </item>
+    
+    <item>
+      <title>Atomic Host 原子主机最简测试</title>
+      <link>https://example.com/2015/07/18/atomic-host-e58e9fe5ad90e4b8bbe69cbae69c80e7ae80e6b58be8af95/</link>
+      <pubDate>Sat, 18 Jul 2015 13:29:45 +0000</pubDate>
+      
+      <guid>https://example.com/2015/07/18/atomic-host-e58e9fe5ad90e4b8bbe69cbae69c80e7ae80e6b58be8af95/</guid>
+      <description>环境准备 本文使用笔记本电脑+KVM虚拟化进行以下的测试过程，当然也可以用其它的操作系统加虚拟化软件的组合，测试机需要满足以下的条件： 测试虚拟机的建议配置1C/2GB/10GB 虚拟机使用的网络需要能连接到互联网 虚拟机需要能加载光盘iso文件 可以执行起停虚拟机操作，能通过控制它登陆来做初始化配置
+本文测试机是Lenovo T440s笔记本电脑，安装的操作系统是Fedora 22，使用KVM虚拟化，用Virt-Manager做GUI图形管理工具。建立了一个NAT的静态虚拟网络，虚拟机可以使用该网络来从互联网下载需要的文件包。
+下载Fedora Atomic Host虚拟机文件；下载页面： http://www.projectatomic.io/download/ 点击绿色的下载按钮。下载qcow2格式的Atomic Host虚拟机文件。复制下载的文件到虚拟机运行的存储目录中，文件名可以是master.qcow2，新测试虚拟机会基于它创建。
+在通过这个虚拟机模版文件生成测试机前，需要准备一个init.iso的文件，用来初始化测试机的主机名和初始用户密码。
+[bash] [root@martin-fedora vm]# cat meta-data instance-id: master local-hostname: master.xenlab.com [root@martin-fedora vm]# cat user-data #cloud-config password: smartvm ssh_pwauth: True chpasswd: { expire: False } [root@martin-fedora vm]# genisoimage -output init.iso -volid cidata -joliet -rock user-data meta-data I: -input-charset not specified, using utf-8 (detected in locale settings) Total translation table size: 0 Total rockridge attributes bytes: 331 Total directory bytes: 0 Path table size(bytes): 10 Max brk space used 0 183 extents written (0 MB) [/bash]</description>
     </item>
     
     <item>
@@ -105,6 +164,61 @@ KVM是计算的虚拟化抽象层，VMWare最先进入这一企业市场，它�
     </item>
     
     <item>
+      <title>在CentOS 7上安装部署Katello2.2</title>
+      <link>https://example.com/2015/06/07/e59ca8centos-7e4b88ae5ae89e8a385e983a8e7bdb2katello2-2/</link>
+      <pubDate>Sun, 07 Jun 2015 16:35:05 +0000</pubDate>
+      
+      <guid>https://example.com/2015/06/07/e59ca8centos-7e4b88ae5ae89e8a385e983a8e7bdb2katello2-2/</guid>
+      <description>Katello的系统架构如下图：
+Katell系统是一个复合型开源项目，是Pulp, Candlepin 和 Foreman的组合。Foreman默认使用Puppet作配置管理。
+它的安装文档见官方手册：http://www.katello.org/docs/2.2/installation/index.html
+为了简化安装，请下在本站提供的CentOS7完美安装模板。使用它来创建一个虚拟机，6GB内存，2VCPU；网络上为了方便，请在virt-manger中新建如下所示的网络。
+虚拟机启动之后，确保host能正常联网。启动刚才创建的虚拟机，配置好IP，ping 外网网站，确保它能正常联网即可。其它安装命令如下：
+[bash]
+yum -y localinstall http://fedorapeople.org/groups/katello/releases/yum/2.2/katello/RHEL/7Server/x86_64/katello-repos-latest.rpm yum -y localinstall http://yum.theforeman.org/releases/1.8/el7/x86_64/foreman-release.rpm yum -y localinstall http://yum.puppetlabs.com/puppetlabs-release-el-7.noarch.rpm yum -y localinstall http://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm yum -y install foreman-release-scl
+yum -y install katello
+katello-installer -v
+&amp;ndash;foreman-admin-username admin
+&amp;ndash;foreman-admin-password smartvm
+&amp;ndash;capsule-dns true
+&amp;ndash;capsule-dns-interface eth0
+&amp;ndash;capsule-dns-zone xenlab.com
+&amp;ndash;capsule-dns-forwarders 192.168.10.1
+&amp;ndash;capsule-dns-reverse 10.168.192.in-addr.arpa
+&amp;ndash;capsule-dhcp true
+&amp;ndash;capsule-dhcp-interface eth0
+&amp;ndash;capsule-dhcp-range &amp;ldquo;192.168.10.100 192.168.10.240&amp;rdquo;
+&amp;ndash;capsule-dhcp-gateway 192.168.10.1
+&amp;ndash;capsule-dhcp-nameservers 192.168.10.10
+&amp;ndash;capsule-tftp true
+&amp;ndash;capsule-tftp-servername $(hostname)
+&amp;ndash;capsule-puppet true
+&amp;ndash;capsule-puppetca true
+[/bash]</description>
+    </item>
+    
+    <item>
+      <title>安装完美 CentOS7 虚拟机模板</title>
+      <link>https://example.com/2015/06/05/e5ae89e8a385e5ae8ce7be8e-centos7-e8999ae68b9fe69cbae6a8a1e69dbf/</link>
+      <pubDate>Fri, 05 Jun 2015 15:44:52 +0000</pubDate>
+      
+      <guid>https://example.com/2015/06/05/e5ae89e8a385e5ae8ce7be8e-centos7-e8999ae68b9fe69cbae6a8a1e69dbf/</guid>
+      <description>初始化安装 下载最新版CentOS7 DVD 选择mini安装。
+网络配置 安装过程中设置了静态网络地址，如下：
+[bash]
+[root@centos7-tmp ~]# cat /etc/sysconfig/network-scripts/ifcfg-eth0 TYPE=Ethernet BOOTPROTO=none DEFROUTE=yes IPV4_FAILURE_FATAL=no IPV6INIT=no NAME=eth0 DEVICE=eth0 ONBOOT=yes DNS1=192.168.10.1 DOMAIN=xenlab.com IPADDR=192.168.10.8 PREFIX=24 GATEWAY=192.168.10.1 UUID=5fb06bd0-0bb0-7ffb-45f1-d6edd65f3e03
+[/bash]
+软件包 Change log:
+   yum install wget telnet perl perl-devel net-tools kernel-devel
+  yum install vim-enhanced.x86_64
+  yum -y install git
+  yum install acpid
+  yum install tree
+  yum install ntp
+  yum install unzip</description>
+    </item>
+    
+    <item>
       <title>Fedora 22 将于5月26日发布</title>
       <link>https://example.com/2015/05/24/fedora-22-e5b086e4ba8e5e69c8826e697a5e58f91e5b883/</link>
       <pubDate>Sun, 24 May 2015 08:37:06 +0000</pubDate>
@@ -142,6 +256,17 @@ KVM是计算的虚拟化抽象层，VMWare最先进入这一企业市场，它�
 有些产品模块需要稍微说明一下，方便和开源项目对应起来。
 [su_list icon=&amp;ldquo;icon: linux&amp;rdquo;]
   Red Hat Storage server / ICE : Gluster, Ceph</description>
+    </item>
+    
+    <item>
+      <title>Practical Linux Infrastructure</title>
+      <link>https://example.com/2015/03/29/practical-linux-infrastructure/</link>
+      <pubDate>Sun, 29 Mar 2015 14:10:37 +0000</pubDate>
+      
+      <guid>https://example.com/2015/03/29/practical-linux-infrastructure/</guid>
+      <description>Practical Linux Infrastructure by Syed Ali Link: http://amzn.com/148420512X
+[gallery size=&amp;ldquo;medium&amp;rdquo; ids=&amp;ldquo;53654,53655&amp;rdquo;]
+The CI/CD pipeline automates as many tests as possible to gain confidence in the code. In addition, it performs a complete build of the software system and ensures the code that has been checked in does not cause anything to break. Any failure has to be investigated by a developer. There are numerous software products that can help implement a CI/CD pipeline, including the following: Jenkins (http://jenkins-ci.</description>
     </item>
     
     <item>
@@ -257,6 +382,19 @@ OS : RHEL 7.1
     </item>
     
     <item>
+      <title>虚拟机根分区扩容</title>
+      <link>https://example.com/2015/01/21/e8999ae68b9fe69cbae6a0b9e58886e58cbae689a9e5aeb9/</link>
+      <pubDate>Wed, 21 Jan 2015 15:46:31 +0000</pubDate>
+      
+      <guid>https://example.com/2015/01/21/e8999ae68b9fe69cbae6a0b9e58886e58cbae689a9e5aeb9/</guid>
+      <description>我的Satellite虚拟机下载了所有常用的repo，100GB的磁盘空间都占满了，无奈必须扩容，否则没法用了。
+扩容的前提条件正好满足：根分区在最后一个分区。
+由于是kvm的虚拟机，所以首先需要扩大硬盘文件的大小： qemu-img resize my.img +100G 。
+下面去操作系统里扩容。先要用fdisk删除根分区。记录初始的其实点。然后用n命令新建分区，输入原始其实点位置，回车默认接受结束点的最后一个位置。w存盘。
+reboot系统，起来之后用命令扩容分区： resize2fs /dev/vda2 ； 在线扩容需要等一段时间，100GB的空间初始化在我的普通磁盘上做了5分钟左右。在此reboot机器，起来之后在看 df -kh 发现已经增加了100GB了，接下来再也不用担心类似情况了。</description>
+    </item>
+    
+    <item>
       <title>KVM Virt-Manager  实用参考手册</title>
       <link>https://example.com/2015/01/06/kvm-virt-manager-e5ae9ee794a8e58f82e88083e6898be5868c/</link>
       <pubDate>Tue, 06 Jan 2015 15:55:02 +0000</pubDate>
@@ -338,6 +476,93 @@ Instance  DNS  IP   **Internal**   RHS 01  rhs-01.userX.apac.red  10.100.0.101  
       
       <guid>https://example.com/2014/02/08/e5bc80e6ba90e69c8de58aa1e599a8e79a84e697b6e4bba3e79c9fe588b0e4ba86efbc9f/</guid>
       <description>&lt;p&gt;今天广为关注的的新闻末过Facebook的单人管理上万服务器。上网看了一下此新闻的出处：&lt;a href=&#34;http://www.datacenterknowledge.com/archives/2013/11/20/facebook-ops-staffer-manages-20000-servers/&#34;&gt;http://www.datacenterknowledge.com/archives/2013/11/20/facebook-ops-staffer-manages-20000-servers/ &lt;/a&gt; 本文的描述如下：Delfina Eberly, Director of Data Center Operations, Facebook, presented the Tuesday morning keynote about optimizing data center operations. In terms of hardware, Facebook, because it runs such an enormous volume of servers, focuses on serviceability, including starting from the ground up by influencing server design to ensure easiest and least time consuming methods to repair equipment in the data hall.&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>让Ubuntu飞一会儿</title>
+      <link>https://example.com/2011/04/10/let-ubuntu-fly/</link>
+      <pubDate>Sun, 10 Apr 2011 11:11:27 +0000</pubDate>
+      
+      <guid>https://example.com/2011/04/10/let-ubuntu-fly/</guid>
+      <description>很久以前我一直使用的rpm based Linux，原因很简单，我只要手握一张最新的DVD，就可以走遍天下都不怕，特别是对SuSE Linux的yast很依赖，因为它可以帮我解决rpm包之间的依赖性。这样工作起来就很简单，基本上是搜索到软件包之后，点击安装既可以搞定所有的软件安装工作。
+来到Ubuntu世界的我并不很满意，最近一次的apt-get update，以失败告终，险些把家里的PC的一块硬盘给搞丢了，因为升级失败导致分区表失效了，Win操作系统不认了。直接崩溃，好在那Live Cd模式进入还能勉强看得那个盘里的东西，恢复到移动硬盘，重新格式化该分区，才把文件恢复了。着实让我虚惊一场。
+我比较喜欢一些小的LAMP堆栈式安装的Linux，如TurnkeyLinux。安装可以在10分钟内搞定系统安装。今年家里的宽度升级到2MB了，因此带宽上逐渐能满足Ubuntu这种从网上升级的需求。下面就是找国内的升级的源了，进过几个月的使用，最近觉得在北京的联通固定宽带的用户，使用163的镜像站点速度还是不错的。再次感谢国内的这样的无私奉献的公司，使得在国内的开源用户可以更快更方便。废话说了一堆：）哈哈下面也就是这几条命了的事情。
+第一步，当然要选择近水楼台的163了，来参考http://mirrors.163.com/.help/ubuntu.html 的帮助文档，根据你操作系统的版本，更新/etc/apt/sources.list 文件即可，之后你的Ubuntu就是从国内的较快的站点上下载包了
+第二步，安装多线程apt下载加速工具apt-fast
+[bash] root@lamp ~# apt-get install python-software-properties root@lamp ~# add-apt-repository ppa:tldm217/tahutek.net root@lamp ~# apt-get update root@lamp ~# apt-get install apt-fast root@lamp ~# apt-fast -v apt 0.7.25.3ubuntu9.3 for i386 compiled on Sep 9 2010 22:22:02 Supported modules: *Ver: Standard .deb *Pkg: Debian dpkg interface (Priority 30) S.L: &amp;lsquo;deb&amp;rsquo; Standard Debian binary tree S.L: &amp;lsquo;deb-src&amp;rsquo; Standard Debian source tree Idx: Debian Source Index Idx: Debian Package Index Idx: Debian Translation Index Idx: Debian dpkg status file [/bash]</description>
+    </item>
+    
+    <item>
+      <title>OpenNMS 1.6.1 to 1.6.10</title>
+      <link>https://example.com/2010/03/28/opennms-161-1610/</link>
+      <pubDate>Sun, 28 Mar 2010 05:37:04 +0000</pubDate>
+      
+      <guid>https://example.com/2010/03/28/opennms-161-1610/</guid>
+      <description>[singlepic id=35 w=320 h=240 float=left]在最近的一年里，我基本上忙于CMDB的工作，没有什么业余时间来看看OpenNMS的情况。其实OpenNMS是最初引入我深入了解开源软件世界的东东。时隔1年之久，我上一篇关于opennms的文章是它是1.6.1版本，刚才查了一下，它最新的稳定版本是1.6.10.
+看似它这一年里发展的比较慢，这让我感到些许地失望，大概地看一下一堆相关的release notes。功能性的变化如下：
+  新增和增强了一些monitor的和功能，主要有http，dns，ldap，ssh，jmx等，从最初的snmp采集，都这些采集功能；采集能力的增强是它这样的无代理监控程序永远的话题
+  UI的功能的增强了一些
+  SNMP采集仍然是他的主要能力，在这方面也有了一些改进
+  新增了一些网络设备品牌的支持
+  阀值配置也有改进
+  总的来说，作为一款能够采集各种snmp mib信息，能够出好看的性能报表，能够作为统一的告警事件平台，能够有简单易用的UI，OpenNMS做的显然是非常不错的。至今还行它还没有提出什么云计算相关的话题，可见他们还是一般比较稳健发展，不爱赶时髦的人。希望他们能做的更好。
+对于我的这个blog来说，之前写的OpenNMS和网管相关的东西比较多，以后可能会越来越少，就此和OpenNMS做一个总结。以后本blog可能会和目前做的cmdb和itsm相关这些内容为主了。</description>
+    </item>
+    
+    <item>
+      <title>MartinMark for July 7th</title>
+      <link>https://example.com/2009/07/07/martinmark-for-july-7th/</link>
+      <pubDate>Tue, 07 Jul 2009 01:51:35 +0000</pubDate>
+      
+      <guid>https://example.com/2009/07/07/martinmark-for-july-7th/</guid>
+      <description>The Apache Tomcat 5.5 Servlet/JSP Container - Load Balancer HOW-TO  [原创] Apache + Tomcat + Load Balancing - ChinaUnix.net  Clustering and Load Balancing in Tomcat 5, Part 1 - O&amp;rsquo;Reilly Media  How to test web load balance  Fronting Tomcat with Apache or IIS - Best practices  The Apache Tomcat Connector - Webserver HowTo IIS HowTo I will try to implement this load balancer (Tomcat and Apache/IIS)</description>
+    </item>
+    
+    <item>
+      <title>[網播] Born to MISrepresent 第二集：當 OpenNMS 遇上 SFLC ，催生了 Moglen Ravicher LLC</title>
+      <link>https://example.com/2009/02/04/e7b6b2e692ad-born-to-misrepresent-e7acace4ba8ce99b86efbc9ae795b6-opennms-e98187e4b88a-sflc-efbc8ce582ace7949fe4ba86-moglen-ravicher-llc/</link>
+      <pubDate>Wed, 04 Feb 2009 04:52:02 +0000</pubDate>
+      
+      <guid>https://example.com/2009/02/04/e7b6b2e692ad-born-to-misrepresent-e7acace4ba8ce99b86efbc9ae795b6-opennms-e98187e4b88a-sflc-efbc8ce582ace7949fe4ba86-moglen-ravicher-llc/</guid>
+      <description>（原文於 2008-04-08 發表於 http://blog.roodo.com/ystuan/archives/5830995.html）
+這個音檔的授權是姓名標示-非商業性-相同方式分享 2.5 台灣，跟我的網誌一樣。
+下載ogg格式：Born_to_MISrepresent_EP2.ogg 下載mp3格式：Born_to_MISrepresent_EP2.mp3 前往存放在 Archive.org 上的頁面：Born to MISrepresent EP2，有更多資訊以及格式。
+內容摘要：
+OpenNMS 1.3.11 版發佈，並宣佈與 Hyperic 就雙方的產品進行合作。這項合作的推手是一個雙方的共同客戶。Hyperic 的 agent 預料將可和擁有強大平台但是拙於 agent (agent-less)的 OpenNMS 形成良好互補。（自 1.3.10 版就開始跟 Hyperic Agent進行整合，最近 OpenNMS 版本號已跳升至 1.5.90 ） Tarus 的 blog 有更多細節：The Year of Integration
+Hyperic 跟 OpenNMS 的初步整合，可線上收看 Integrating Hyperic HQ and OpenNMS（瀏覽器需支援 flash 格式播放）
+當 OpenNMS 遇上 SFLC ：前一陣子 Tarus 跑去 Ask Slashdot ，嚷嚷說 Cittio Watchtower 使用 OpenNMS 的程式碼當然可以，但是使用的方式違反了（程式碼採用的）GPL授權。
+想也知道，跑去 Slashdot 一定會引來關注，他也尋求軟體自由法律中心（Software Freedom Law Center，SFLC）的協助。但是，SFLC服務對象僅限於非營利機構，結果呢，SFLC決定以成立一間新的律師事務所(Moglen Ravicher LLC)的方式，來服務支持自由軟體的營利機構， OpenNMS Group 因此成了 Moglen Ravicher LLC 的第一個客戶。</description>
+    </item>
+    
+    <item>
+      <title>opennms 1.6.1-1 quick start guide</title>
+      <link>https://example.com/2009/01/11/161-1-opennms-quick-install-guide/</link>
+      <pubDate>Sun, 11 Jan 2009 02:33:12 +0000</pubDate>
+      
+      <guid>https://example.com/2009/01/11/161-1-opennms-quick-install-guide/</guid>
+      <description>本安装手册为纯命令版，如果有什么疑问清参考官方安装手册，或给本贴留言。
+[install yum on your Linux box]
+选择任意Linux系统，安装上yum工具，在命令行测试 yum -v
+[testing internet connection with those two URL]
+测试是否能上网，用浏览器分别打开这两个网址
+
+ http://www.martinliu.cn/2007/12/13/opennms-yum-install/  http://yum.opennms.org/repofiles/ 先别关闭这两个网页。
+[Install opennms 开始安装:
+ yum install yum-fastestmirror  rpm -Uvh http://yum.opennms.org/repofiles/opennms-repo-snapshot-rhel4.noarch.rpm  yum list opennms  yum install opennms [ post-install and config] 开始配置：
+ export OPENNMS_HOME=/opt/opennms  vi /var/lib/pgsql/data/pg_hba.conf
+1. 注释掉其中所有可用的行，加入下面三行
+local all all trust
+host all all 127.0.0.1/32 trust
+host all all ::1/128 trust  /sbin/service postgresql restart  /usr/java/jdk1.</description>
+    </item>
+    
+    <item>
+      <title>[发布说明] OpenNMS 1.6.0 (Stable) Released</title>
+      <link>https://example.com/2008/11/14/e58f91e5b883e8afb4e6988e-opennms-160-stable-released/</link>
+      <pubDate>Fri, 14 Nov 2008 14:57:36 +0000</pubDate>
+      
+      <guid>https://example.com/2008/11/14/e58f91e5b883e8afb4e6988e-opennms-160-stable-released/</guid>
+      <description>&lt;p&gt;&lt;img src=&#34;http://www.opennms.org/images/b/b5/Banner.jpg&#34; alt=&#34;&#34;&gt;&lt;br /&gt;&lt;br /&gt;&lt;a href=&#34;http://sourceforge.net/forum/forum.php?forum_id=882433&#34;&gt;OpenNMS 1.6.0 (Stable) Released&lt;/a&gt;&lt;br /&gt;&lt;br /&gt;似乎每年的10月以后我就会进入一个超级繁忙的状态，很长时间没有更新blog了，今天姑且转载一个OpenNMS的发布说明吧。&lt;br /&gt;&lt;br /&gt;OpenNMS, the world&amp;rsquo;s first enterprise-grade network management platform developed as 100% free and open software, has released version 1.6.0. This is a stable, production release that incorporates nearly three years of development.&lt;br /&gt;&lt;br /&gt;以上算是OpenNMS的广告语大家看看就是，需要注意的是一个企业级的产品实施费用是从很低的门槛一直到企业级的花费的。和其他的企业级解决方案的实施没有区别，差异在于，一个不同的许可证类型，此为开源许可证是也。&lt;br /&gt;&lt;br /&gt;&lt;/p&gt;</description>
     </item>
     
   </channel>
