@@ -1,16 +1,820 @@
-<!doctype html><html lang=zh><head><meta charset=utf-8><meta http-equiv=x-ua-compatible content="IE=edge"><meta name=viewport content="width=device-width,initial-scale=1,maximum-scale=1"><title>XenDesktop + nVIDIA K1/K2 = BEST 3D VDI - Martin Liu's Blog</title><meta property="og:title" content="XenDesktop + nVIDIA K1/K2 = BEST 3D VDI"><meta name=twitter:title content="XenDesktop + nVIDIA K1/K2 = BEST 3D VDI"><meta name=description content="Citrix + nVIDIA K1 k2 + XenServer （GPU 直通） + HDX 3D Pro = 业内最好的3D虚拟桌面平台方案；而且这个方案里还能具有，其它全部的使用场景，包括：vdi，共享桌面，虚拟应用，流桌面，远程物理桌面等等方式。可以说这是一举多得，面面俱到的解决方案。"><meta property="og:description" content="Citrix + nVIDIA K1 k2 + XenServer （GPU 直通） + HDX 3D Pro = 业内最好的3D虚拟桌面平台方案；而且这个方案里还能具有，其它全部的使用场景，包括：vdi，共享桌面，虚拟应用，流桌面，远程物理桌面等等方式。可以说这是一举多得，面面俱到的解决方案。"><meta name=twitter:description content="Citrix + nVIDIA K1 k2 + XenServer （GPU 直通） + HDX 3D Pro = 业内最好的3D虚拟桌面平台方案；而且这个方案里还能具有，其它全部的使用场景，包括：vdi，共享桌面，虚拟应用，流桌面，远程物理桌面等等方式。可以说这是一举多得，面面俱到的解决方案。"><meta name=author content="刘征 Martin Liu"><link href=https://martinliu.cn/favicon.ico rel=icon type=image/x-icon><meta name=msvalidate.01 content="12F570013342D1F8B60A455D09221C1D"><meta name=yandex-verification content="7e9acc85531b0f35"><meta name=google-site-verification content="4oSwNTpy1vzip3_lt6XhkhMfImCD_DZlvL3K1k-M8qk"><meta name=baidu-site-verification content="Z7d1tYkxzQ"><script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-TL37V8G');</script><meta property="og:image" content="https://res.cloudinary.com/martinliu/image/upload/q_auto:eco/avatar.jpg"><meta name=twitter:image content="https://res.cloudinary.com/martinliu/image/upload/q_auto:eco/avatar.jpg"><meta name=twitter:card content="summary"><meta name=twitter:site content="@martinliu"><meta name=twitter:creator content="@martinliu"><meta property="og:url" content="https://martinliu.cn/2013/08/16/xendesktop-nvidia-k1-k2-best-3d-vdi/"><meta property="og:type" content="website"><meta property="og:site_name" content="Martin's Blog"><meta name=keywords content><meta name=generator content="Hugo 0.80.0"><link rel=canonical href=https://martinliu.cn/2013/08/16/xendesktop-nvidia-k1-k2-best-3d-vdi/><link rel=alternate href=https://martinliu.cn/index.xml type=application/rss+xml title="Martin's Blog"><script src=https://res.cloudinary.com/martinliu/raw/upload/static/jquery-1.12.4.min.js></script><link rel=stylesheet href=https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.7.1/katex.min.css integrity=sha384-wITovz90syo1dJWVh32uuETPVEtGigN07tkttEqPv+uR2SE/mbQcG7ATL28aI9H0 crossorigin=anonymous><link rel=stylesheet href=https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css><link rel=stylesheet href=https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css integrity=sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u crossorigin=anonymous><link rel=stylesheet href=https://martinliu.cn/css/main.css><link rel=stylesheet href=https://martinliu.cn/css/search.css><link rel=stylesheet href="https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic"><link rel=stylesheet href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800"><link rel=stylesheet href=https://martinliu.cn/css/prism.css><script data-ad-client=ca-pub-4545355461463255 async src=https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js></script><link rel=stylesheet href=https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.1/photoswipe.min.css integrity="sha256-sCl5PUOGMLfFYctzDW3MtRib0ctyUvI9Qsmq2wXOeBY=" crossorigin=anonymous><link rel=stylesheet href=https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.1/default-skin/default-skin.min.css integrity="sha256-BFeI1V+Vh1Rk37wswuOYn5lsTcaU96hGaI7OUVCLjPc=" crossorigin=anonymous><div class=pswp tabindex=-1 role=dialog aria-hidden=true><div class=pswp__bg></div><div class=pswp__scroll-wrap><div class=pswp__container><div class=pswp__item></div><div class=pswp__item></div><div class=pswp__item></div></div><div class="pswp__ui pswp__ui--hidden"><div class=pswp__top-bar><div class=pswp__counter></div><button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
-<button class="pswp__button pswp__button--share" title=Share></button>
-<button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
-<button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button><div class=pswp__preloader><div class=pswp__preloader__icn><div class=pswp__preloader__cut><div class=pswp__preloader__donut></div></div></div></div></div><div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap"><div class=pswp__share-tooltip></div></div><button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)"></button>
-<button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)"></button><div class=pswp__caption><div class=pswp__caption__center></div></div></div></div></div><script type=application/javascript>var doNotTrack=false;if(!doNotTrack){window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;ga('create','UA-749876-6','auto');ga('send','pageview');}</script><script async src=https://www.google-analytics.com/analytics.js></script></head><body><nav class="navbar navbar-default navbar-fixed-top navbar-custom"><div class=container-fluid><div class=navbar-header><button type=button class=navbar-toggle data-toggle=collapse data-target=#main-navbar>
-<span class=sr-only>切换导航</span>
-<span class=icon-bar></span><span class=icon-bar></span><span class=icon-bar></span></button>
-<a class=navbar-brand href=https://martinliu.cn/>Martin's Blog</a></div><div class="collapse navbar-collapse" id=main-navbar><ul class="nav navbar-nav navbar-right"><li><a title=首页 href=https://martinliu.cn/>首页</a></li><li><a title=标签 href=https://martinliu.cn/tags>标签</a></li><li><a title=关于 href=https://martinliu.cn/about>关于</a></li><li><a title=书籍 href=https://martinliu.cn/book>书籍</a></li></ul></div><div class=avatar-container><div class=avatar-img-border><a title="Martin's Blog" href=https://martinliu.cn/><img class=avatar-img src=https://res.cloudinary.com/martinliu/image/upload/q_auto:eco/avatar.jpg alt="Martin's Blog"></a></div></div></div></nav><header class=header-section><div class="intro-header no-img"><div class=container><div class=row><div class="col-lg-12 col-md-12 col-md-offset-0"><div class=posts-heading><h1 align=center>XenDesktop + nVIDIA K1/K2 = BEST 3D VDI</h1><h2 align=center class=posts-subheading>Citrix + nVIDIA K1 k2 + XenServer （GPU 直通） + HDX 3D Pro = 业内最好的3D虚拟桌面平台方案；而且这个方案里还能具有，其它全部的使用场景，包括：vdi，共享桌面，虚拟应用，流桌面，远程物理桌面等等方式。可以说这是一举多得，面面俱到的解决方案。</h2></div></div></div></div></div></header><div class=container role=main><div class=row><div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1"><div><h5 id=wc>字数：600 |大约阅读时间 2 分钟</h5><h5 id=tags>标签:
-<a href=https://martinliu.cn//tags/2d>2D</a> &nbsp;
-<a href=https://martinliu.cn//tags/3d>3D</a> &nbsp;
-<a href=https://martinliu.cn//tags/nvidia>NVIDIA</a> &nbsp;
-<a href=https://martinliu.cn//tags/vdi>VDI</a> &nbsp;
-<a href=https://martinliu.cn//tags/%E8%99%9A%E6%8B%9F%E5%BA%94%E7%94%A8>虚拟应用</a> &nbsp;</h5></div><article role=main class=blog-post><p>今天公司到货了K1，K2的GPU卡，这让我不得不学习一下这个产品。</p><p><a href=http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2013/08/grid-overview-header.jpg><img src=http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2013/08/grid-overview-header.jpg alt=grid-overview-header></a></p><p> </p><p>到货实物如下：</p><p>[gallery link=&ldquo;file&rdquo; ids=&ldquo;52542,52543,52544,52545,52546,52547&rdquo;]</p><p>此卡的简单技术指标如下。</p><h2 id=grid-k1>GRID K1</h2><h2 id=grid-k2>GRID K2</h2><p><a href=http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2013/08/NVIDIA_vGPU_News.jpg><img src=http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2013/08/NVIDIA_vGPU_News.jpg alt=NVIDIA_vGPU_News></a></p><p>详细 K1 K2 技术参数指标，<a href=http://www.nvidia.com/content/cloud-computing/pdf/nvidia-grid-datasheet-k1-k2.pdf> 下载 ；</a> 这个表格清晰的说明了这两种卡的硬件技术参数。重要的是看它软件合作伙伴这一块。硬件在好，没有支持的软件也不行，我们必须还有看看它的软件合作伙伴：<a href=http://www.nvidia.com/object/grid-software-partners.html>http://www.nvidia.com/object/grid-software-partners.html</a></p><p>首先，是认证的虚拟应用合作伙伴，这里只有Citrix XenApp；只有Citrix可以做3D设计软件的应用虚拟化；其它无人能及，基于Citrix的应用虚拟化可以真正的把一块GPU的共享程度达到最大，能够更加节约支撑的硬件资源。节省每一度电。还要看支持的API的版本号，这个说明了对3D软件的兼容性，如果这个版本号类型少，支持的低，那么这种方案是不可用的；由于3D软件根本就跑不动。</p><p>总之，Citrix + nVIDIA K1 k2 + XenServer （GPU 直通） + HDX 3D Pro = 业内最好的3D虚拟桌面平台方案；而且这个方案里还能具有，其它全部的使用场景，包括：vdi，共享桌面，虚拟应用，流桌面，远程物理桌面等等方式。可以说这是一举多得，面面俱到的解决方案。</p><a href=https://mp.weixin.qq.com/s/elRqbNlidJzmKCejBwtsAg target=_blank><img src=https://martinliu.cn/images/sref-zs.jpg alt="SRE Foundation 招生简章"></a></article><ul class="pager blog-pager"><li class=previous><a href=https://martinliu.cn/2013/08/15/xencliente69cace59cb0e8999ae68b9fe6a18ce99da2e585b8e59e8be5ba94e794a8e59cbae699af/ data-toggle=tooltip data-placement=top title=XenClient本地虚拟桌面典型应用场景>&larr; 前一篇</a></li><li class=next><a href=https://martinliu.cn/2013/09/03/cloudstack-swift/ data-toggle=tooltip data-placement=top title="CloudStack+Swift 我心中的黄金搭档">后一篇 &rarr;</a></li></ul><div></div></div></div></section></div><footer><div class=container><div class=row><div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1"><ul class="list-inline text-center footer-links"><li><a href=mailto:liuzh66@gmail.com title="Email me"><span class="fa-stack fa-lg"><i class="fa fa-circle fa-stack-2x"></i><i class="fa fa-envelope fa-stack-1x fa-inverse"></i></span></a></li><li><a href=https://github.com/martinliu title=GitHub><span class="fa-stack fa-lg"><i class="fa fa-circle fa-stack-2x"></i><i class="fa fa-github fa-stack-1x fa-inverse"></i></span></a></li><li><a href=https://gitlab.com/martinliu title=GitLab><span class="fa-stack fa-lg"><i class="fa fa-circle fa-stack-2x"></i><i class="fa fa-gitlab fa-stack-1x fa-inverse"></i></span></a></li><li><a href=https://twitter.com/martinliu title=Twitter><span class="fa-stack fa-lg"><i class="fa fa-circle fa-stack-2x"></i><i class="fa fa-twitter fa-stack-1x fa-inverse"></i></span></a></li><li><a href=https://linkedin.com/in/liuzheng title=LinkedIn><span class="fa-stack fa-lg"><i class="fa fa-circle fa-stack-2x"></i><i class="fa fa-linkedin fa-stack-1x fa-inverse"></i></span></a></li></ul><p class="credits copyright text-muted">&copy;2017-2018
-刘征 Martin Liu
-&nbsp;&bull;&nbsp;
-<a href=https://martinliu.cn/>Martin's Blog</a></p><p class="credits theme-by text-muted">由 <a href=http://gohugo.io>Hugo v0.80.0</a> 强力驱动 &nbsp;&bull;&nbsp; 主题 <a href=https://github.com/halogenica/beautifulhugo>Beautiful Hugo</a> 移植自 <a href=http://deanattali.com/beautiful-jekyll/>Beautiful Jekyll</a></p></div></div></div></footer><script src=https://res.cloudinary.com/martinliu/raw/upload/static/bootstrap.min.js></script><script src=https://res.cloudinary.com/martinliu/raw/upload/static/photoswipe-ui-default.min.js></script><script src=https://res.cloudinary.com/martinliu/raw/upload/static/photoswipe.min.js></script><script src=https://res.cloudinary.com/martinliu/raw/upload/static/auto-render.min.js></script><script src=https://res.cloudinary.com/martinliu/raw/upload/static/main.js></script><script src=https://res.cloudinary.com/martinliu/raw/upload/static/prism.js></script><script src=https://res.cloudinary.com/martinliu/raw/upload/static/katex.min.js></script><script>renderMathInElement(document.body);</script></body></html>
+<!doctype html>
+<html lang="zh-cn">
+  <head>
+  <meta charset="utf-8">
+<title>XenDesktop &#43; nVIDIA K1/K2 = BEST 3D VDI - Hugo Future Imperfect Slim em português</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+<meta name="generator" content="Hugo 0.80.0" /><meta property="og:site_name" content="Hugo Future Imperfect Slim em português">
+  <meta property="og:title" content="XenDesktop &#43; nVIDIA K1/K2 = BEST 3D VDI">
+  <meta property="og:description" content="A theme by HTML5 UP, ported by Julio Pescador. Slimmed and enhanced by Patrick Collins. Multilingual by StatnMap. Powered by Hugo.">
+  <meta property="description" content="A theme by HTML5 UP, ported by Julio Pescador. Slimmed and enhanced by Patrick Collins. Multilingual by StatnMap. Powered by Hugo.">
+  <meta property="og:url" content="https://example.com/2013/08/16/xendesktop-nvidia-k1-k2-best-3d-vdi/">
+  <meta property="og:type" content="article">
+  
+    <meta property="og:image" content="https://example.com/img/main/logo.jpg">
+  
+  <link rel="stylesheet" href="/css/bundle.min.d9e04ae08c9b3049b766dbd4aeab7d862c5ea1d13679b621490e0f5df5507497.css" integrity="sha256-2eBK4IybMEm3ZtvUrqt9hixeodE2ebYhSQ4PXfVQdJc="><link rel="stylesheet" href="/css/add-on.css">
+</head>
+
+  <body>
+    
+
+<header id="site-header">
+  <nav id="site-nav">
+    <h1 class="nav-title">
+      <a href="/" class="nav">
+        
+          博客
+        
+      </a>
+    </h1>
+    <menu id="site-nav-menu" class="flyout-menu menu">
+      
+        
+          
+          <a href="/" class="nav link"><i class='fas fa-home'></i> 首页</a>
+        
+      
+        
+          
+          <a href="/about/" class="nav link"><i class='far fa-id-card'></i> 关于</a>
+        
+      
+        
+          
+          <a href="/blog/" class="nav link"><i class='far fa-newspaper'></i> 博客</a>
+        
+      
+        
+          
+          <a href="/categories/" class="nav link"><i class='fas fa-sitemap'></i> 分类</a>
+        
+      
+        
+          
+          <a href="/contact/" class="nav link"><i class='far fa-envelope'></i> 联系</a>
+        
+      
+      <a href="#share-menu" class="nav link share-toggle"><i class="fas fa-share-alt">&nbsp;</i>Share</a>
+      <a href="#search-input" class="nav link search-toggle"><i class="fas fa-search">&nbsp;</i>Search</a>
+    </menu>
+    <a href="#search-input" class="nav search-toggle"><i class="fas fa-search fa-2x">&nbsp;</i></a>
+    <a href="#share-menu" class="nav share-toggle"><i class="fas fa-share-alt fa-2x">&nbsp;</i></a>
+    <a href="#lang-menu" class="nav lang-toggle" lang="zh-cn">zh-cn</a>
+    <a href="#site-nav" class="nav nav-toggle"><i class="fas fa-bars fa-2x"></i></a>
+  </nav>
+  <menu id="search" class="menu"><input id="search-input" class="search-input menu"></input><div id="search-results" class="search-results menu"></div></menu>
+  <menu id="lang-menu" class="flyout-menu menu">
+  <a href="#" lang="zh-cn" class="nav link active">中文 (zh-cn)</a>
+  
+    
+      
+        <a href="/en" lang="en" class="nav no-lang link">English (en)</a>
+      
+    
+      
+    
+  
+</menu>
+
+  
+    <menu id="share-menu" class="flyout-menu menu">
+      <h1>Share Post</h1>
+      
+
+
+
+
+  
+    
+    <a href="//twitter.com/share?text=XenDesktop%20%2b%20nVIDIA%20K1%2fK2%20%3d%20BEST%203D%20VDI&amp;url=https%3a%2f%2fexample.com%2f2013%2f08%2f16%2fxendesktop-nvidia-k1-k2-best-3d-vdi%2f" target="_blank" rel="noopener" class="nav share-btn twitter">
+        <p>Twitter</p>
+      </a>
+  
+
+  
+      <a href="//www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fexample.com%2f2013%2f08%2f16%2fxendesktop-nvidia-k1-k2-best-3d-vdi%2f" target="_blank" rel="noopener" class="nav share-btn facebook">
+        <p>Facebook</p>
+        </a>
+  
+
+  
+    <a href="//www.reddit.com/submit?url=https%3a%2f%2fexample.com%2f2013%2f08%2f16%2fxendesktop-nvidia-k1-k2-best-3d-vdi%2f&amp;title=XenDesktop%20%2b%20nVIDIA%20K1%2fK2%20%3d%20BEST%203D%20VDI" target="_blank" rel="noopener" class="nav share-btn reddit">
+          <p>Reddit</p>
+        </a>
+  
+
+  
+        <a href="//www.linkedin.com/shareArticle?url=https%3a%2f%2fexample.com%2f2013%2f08%2f16%2fxendesktop-nvidia-k1-k2-best-3d-vdi%2f&amp;title=XenDesktop%20%2b%20nVIDIA%20K1%2fK2%20%3d%20BEST%203D%20VDI" target="_blank" rel="noopener" class="nav share-btn linkedin">
+            <p>LinkedIn</p>
+          </a>
+  
+
+  
+        <a href="//www.pinterest.com/pin/create/button/?url=https%3a%2f%2fexample.com%2f2013%2f08%2f16%2fxendesktop-nvidia-k1-k2-best-3d-vdi%2f&amp;description=XenDesktop%20%2b%20nVIDIA%20K1%2fK2%20%3d%20BEST%203D%20VDI" target="_blank" rel="noopener" class="nav share-btn pinterest">
+          <p>Pinterest</p>
+        </a>
+  
+
+  
+        <a href="mailto:?subject=%e6%9f%a5%e7%9c%8b%e6%ad%a4%e5%b8%96%e5%ad%90%e7%9a%84%e4%bd%9c%e8%80%85 liuadmin&amp;body=https%3a%2f%2fexample.com%2f2013%2f08%2f16%2fxendesktop-nvidia-k1-k2-best-3d-vdi%2f" target="_blank" class="nav share-btn email" data-proofer-ignore>
+          <p>Email</p>
+        </a>
+  
+
+
+    </menu>
+  
+</header>
+
+    <div id="wrapper">
+      <section id="site-intro" >
+  <a href="/"><img src="https://example.com/img/main/logo.jpg" class="circle" width="100" alt="Hugo Future Imperfect Slim" /></a>
+  <header>
+    <h1>Hugo Future Imperfect Slim</h1>
+  </header>
+  <main>
+    <p>Another fine, responsive site template by <a href='http://html5up.net'>HTML5 UP</a>.</p>
+  </main>
+  
+    <footer>
+      <ul class="socnet-icons">
+        
+
+        <li><a href="//github.com/pacollins/hugo-future-imperfect-slim" target="_blank" rel="noopener" title="GitHub" class="fab fa-github"></a></li>
+
+
+
+
+
+
+<li><a href="//flickr.com/photos/example" target="_blank" rel="noopener" title="Flickr" class="fab fa-flickr"></a></li>
+
+
+
+
+<li><a href="//www.linkedin.com/in/example" target="_blank" rel="noopener" title="LinkedIn" class="fab fa-linkedin"></a></li>
+<li><a href="//linkedin.com/company/examplebusiness" target="_blank" rel="noopener" title="LinkedIn Company" class="fab fa-linkedin"></a></li>
+
+
+
+<li><a href="//facebook.com/example" target="_blank" rel="noopener" title="Facebook" class="fab fa-facebook"></a></li>
+<li><a href="//reddit.com/user/example" target="_blank" rel="noopener" title="Reddit" class="fab fa-reddit"></a></li>
+
+
+
+
+
+
+
+<li><a href="//instagram.com/example" target="_blank" rel="noopener" title="Instagram" class="fab fa-instagram"></a></li>
+
+<li><a href="//twitter.com/example" target="_blank" rel="noopener" title="Twitter" class="fab fa-twitter"></a></li>
+
+
+
+<li><a href="//www.pinterest.com/example" target="_blank" rel="noopener" title="Pinterest" class="fab fa-pinterest-p"></a></li>
+<li><a href="//telegram.me/example" target="_blank" rel="noopener" title="telegram" class="fab fa-telegram"></a></li>
+
+
+
+<li><a href="//researchgate.net/profile/example" target="_blank" rel="noopener" title="Research Gate"><i class="ai ai-researchgate"></i></a></li>
+<li><a href="//keybase.io/example" target="_blank" rel="noopener" title="keybase" class="fab fa-keybase"></a></li>
+<li><a href="//example.com/@example" target="_blank" rel="noopener" title="mastodon" class="fab fa-mastodon"></a></li>
+<li><a href="mailto:example" target="_blank" title="Email" class="far fa-envelope"></a></li>
+
+      </ul>
+    </footer>
+  
+</section>
+
+      <main id="site-main">
+        
+  <article class="post">
+    <header>
+  <div class="title">
+    
+      <h2><a href="/2013/08/16/xendesktop-nvidia-k1-k2-best-3d-vdi/">XenDesktop &#43; nVIDIA K1/K2 = BEST 3D VDI</a></h2>
+    
+    
+  </div>
+  <div class="meta">
+    <time datetime="2013-08-16 11:52:58 &#43;0000 UTC">August 16, 2013</time>
+    <p>liuadmin</p>
+    <p>1 分钟</p>
+  </div>
+</header>
+
+    <div id="socnet-share">
+      
+
+
+
+
+  
+    
+    <a href="//twitter.com/share?text=XenDesktop%20%2b%20nVIDIA%20K1%2fK2%20%3d%20BEST%203D%20VDI&amp;url=https%3a%2f%2fexample.com%2f2013%2f08%2f16%2fxendesktop-nvidia-k1-k2-best-3d-vdi%2f" target="_blank" rel="noopener" class="nav share-btn twitter">
+        <p>Twitter</p>
+      </a>
+  
+
+  
+      <a href="//www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fexample.com%2f2013%2f08%2f16%2fxendesktop-nvidia-k1-k2-best-3d-vdi%2f" target="_blank" rel="noopener" class="nav share-btn facebook">
+        <p>Facebook</p>
+        </a>
+  
+
+  
+    <a href="//www.reddit.com/submit?url=https%3a%2f%2fexample.com%2f2013%2f08%2f16%2fxendesktop-nvidia-k1-k2-best-3d-vdi%2f&amp;title=XenDesktop%20%2b%20nVIDIA%20K1%2fK2%20%3d%20BEST%203D%20VDI" target="_blank" rel="noopener" class="nav share-btn reddit">
+          <p>Reddit</p>
+        </a>
+  
+
+  
+        <a href="//www.linkedin.com/shareArticle?url=https%3a%2f%2fexample.com%2f2013%2f08%2f16%2fxendesktop-nvidia-k1-k2-best-3d-vdi%2f&amp;title=XenDesktop%20%2b%20nVIDIA%20K1%2fK2%20%3d%20BEST%203D%20VDI" target="_blank" rel="noopener" class="nav share-btn linkedin">
+            <p>LinkedIn</p>
+          </a>
+  
+
+  
+        <a href="//www.pinterest.com/pin/create/button/?url=https%3a%2f%2fexample.com%2f2013%2f08%2f16%2fxendesktop-nvidia-k1-k2-best-3d-vdi%2f&amp;description=XenDesktop%20%2b%20nVIDIA%20K1%2fK2%20%3d%20BEST%203D%20VDI" target="_blank" rel="noopener" class="nav share-btn pinterest">
+          <p>Pinterest</p>
+        </a>
+  
+
+  
+        <a href="mailto:?subject=%e6%9f%a5%e7%9c%8b%e6%ad%a4%e5%b8%96%e5%ad%90%e7%9a%84%e4%bd%9c%e8%80%85 liuadmin&amp;body=https%3a%2f%2fexample.com%2f2013%2f08%2f16%2fxendesktop-nvidia-k1-k2-best-3d-vdi%2f" target="_blank" class="nav share-btn email" data-proofer-ignore>
+          <p>Email</p>
+        </a>
+  
+
+
+    </div>
+    <div class="content">
+      
+      <p>今天公司到货了K1，K2的GPU卡，这让我不得不学习一下这个产品。</p>
+<p><a href="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2013/08/grid-overview-header.jpg"><img src="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2013/08/grid-overview-header.jpg" alt="grid-overview-header"></a></p>
+<p> </p>
+<p>到货实物如下：</p>
+<p>[gallery link=&ldquo;file&rdquo; ids=&ldquo;52542,52543,52544,52545,52546,52547&rdquo;]</p>
+<p>此卡的简单技术指标如下。</p>
+<table cellpadding="0" width="560" cellspacing="0" border="0" >
+<tbody >
+<tr >
+<td bgcolor="#e8e7e7" width="186" >
+</td>
+<td bgcolor="#e8e7e7" width="186" >
+<h2 id="grid-k1">GRID K1</h2>
+</td>
+<td bgcolor="#e8e7e7" width="186" >
+<h2 id="grid-k2">GRID K2</h2>
+</td>
+</tr>
+<tr >
+<td bgcolor="#f1f1f1" width="186" >Number of GPUs
+</td>
+<td bgcolor="#f1f1f1" width="186" >4 x entry Kepler GPUs
+</td>
+<td bgcolor="#f1f1f1" width="186" >2 x high-end Kepler GPUs
+</td>
+</tr>
+<tr >
+<td bgcolor="#f1f1f1" width="186" >Total NVIDIA CUDA cores
+</td>
+<td bgcolor="#f1f1f1" width="186" >768
+</td>
+<td bgcolor="#f1f1f1" width="186" >3072
+</td>
+</tr>
+<tr >
+<td bgcolor="#f1f1f1" width="186" >Total memory size
+</td>
+<td bgcolor="#f1f1f1" width="186" >16 GB DDR3
+</td>
+<td bgcolor="#f1f1f1" width="186" >8 GB GDDR5
+</td>
+</tr>
+<tr >
+<td bgcolor="#f1f1f1" width="186" >Max power
+</td>
+<td bgcolor="#f1f1f1" width="186" >130 W
+</td>
+<td bgcolor="#f1f1f1" width="186" >225 W
+</td>
+</tr>
+<tr >
+<td bgcolor="#f1f1f1" width="186" >Board length
+</td>
+<td bgcolor="#f1f1f1" width="186" >10.5”
+</td>
+<td bgcolor="#f1f1f1" width="186" >10.5”
+</td>
+</tr>
+<tr >
+<td bgcolor="#f1f1f1" width="186" >Board height
+</td>
+<td bgcolor="#f1f1f1" width="186" >4.4”
+</td>
+<td bgcolor="#f1f1f1" width="186" >4.4”
+</td>
+</tr>
+<tr >
+<td bgcolor="#f1f1f1" width="186" >Board width
+</td>
+<td bgcolor="#f1f1f1" width="186" >Dual slot
+</td>
+<td bgcolor="#f1f1f1" width="186" >Dual slot
+</td>
+</tr>
+<tr >
+<td bgcolor="#f1f1f1" width="186" >Display IO
+</td>
+<td bgcolor="#f1f1f1" width="186" >None
+</td>
+<td bgcolor="#f1f1f1" width="186" >None
+</td>
+</tr>
+<tr >
+<td bgcolor="#f1f1f1" width="186" >Aux power
+</td>
+<td bgcolor="#f1f1f1" width="186" >6-pin connector
+</td>
+<td bgcolor="#f1f1f1" width="186" >8-pin connector
+</td>
+</tr>
+<tr >
+<td bgcolor="#f1f1f1" width="186" >PCIe
+</td>
+<td bgcolor="#f1f1f1" width="186" >x16
+</td>
+<td bgcolor="#f1f1f1" width="186" >x16
+</td>
+</tr>
+<tr >
+<td bgcolor="#f1f1f1" width="186" >PCIe generation
+</td>
+<td bgcolor="#f1f1f1" width="186" >Gen3 (Gen2 compatible)
+</td>
+<td bgcolor="#f1f1f1" width="186" >Gen3 (Gen2 compatible)
+</td>
+</tr>
+<tr >
+<td bgcolor="#f1f1f1" width="186" >Cooling solution
+</td>
+<td bgcolor="#f1f1f1" width="186" >Passive
+</td>
+<td bgcolor="#f1f1f1" width="186" >Passive
+</td>
+</tr>
+</tbody>
+</table>
+<p><a href="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2013/08/NVIDIA_vGPU_News.jpg"><img src="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2013/08/NVIDIA_vGPU_News.jpg" alt="NVIDIA_vGPU_News"></a></p>
+<p>详细 K1 K2 技术参数指标，<a href="http://www.nvidia.com/content/cloud-computing/pdf/nvidia-grid-datasheet-k1-k2.pdf"> 下载 ； </a> 这个表格清晰的说明了这两种卡的硬件技术参数。重要的是看它软件合作伙伴这一块。硬件在好，没有支持的软件也不行，我们必须还有看看它的软件合作伙伴：<a href="http://www.nvidia.com/object/grid-software-partners.html">http://www.nvidia.com/object/grid-software-partners.html</a></p>
+<p>首先，是认证的虚拟应用合作伙伴，这里只有Citrix XenApp；只有Citrix可以做3D设计软件的应用虚拟化；其它无人能及，基于Citrix的应用虚拟化可以真正的把一块GPU的共享程度达到最大，能够更加节约支撑的硬件资源。节省每一度电。还要看支持的API的版本号，这个说明了对3D软件的兼容性，如果这个版本号类型少，支持的低，那么这种方案是不可用的；由于3D软件根本就跑不动。</p>
+<table cellpadding="0" width="560" cellspacing="0" border="0" >
+<tbody >
+<tr >
+<td bgcolor="#f1f1f1" width="175" >
+</td>
+<td bgcolor="#f1f1f1" align="center" width="66" >NVIDIA Driver
+</td>
+<td bgcolor="#f1f1f1" align="center" width="102" >API
+</td>
+<td bgcolor="#f1f1f1" align="center" width="78" >GRID K1
+</td>
+<td bgcolor="#f1f1f1" align="center" width="72" >GRID K2
+</td>
+</tr>
+<tr >
+<td bgcolor="#f1f1f1" width="175" >**Citrix**
+[XenApp 6.5 with OpenGL 4.3](http://www.nvidia.com/object/xenapp.html)
+</td>
+<td bgcolor="#f1f1f1" align="center" width="66" >![Yes](http://www.nvidia.com/docs/IO/123679/check-mark.png)
+</td>
+<td bgcolor="#f1f1f1" align="center" width="102" >NVIDIA CUDA
+DirectX 9,10,11
+OpenGL 4.3
+</td>
+<td bgcolor="#f1f1f1" align="center" width="78" >![Yes](http://www.nvidia.com/docs/IO/123679/check-mark.png)
+</td>
+<td bgcolor="#f1f1f1" align="center" width="72" >![Yes](http://www.nvidia.com/docs/IO/123679/check-mark.png)
+</td>
+</tr>
+</tbody>
+</table>
+其次，要看认证的虚拟桌合作伙伴厂商，这里稍微多点；这里关键看点是NVIDIA Driver这一列。你有可能会说NVIDIA的显卡驱动难道不能装到所有类型的VDI虚拟桌面中么？我我想这个表格就是答案。一个GPU经过服务器虚拟化层之后，只有Citrix的虚拟桌面能够拿到NVIDIA的原生驱动，也就是说只有Citrix的VDI能够通过NVidia的显卡驱动，穿透服务器虚拟化层直接调用到GPU的原生指令进行运算。而VMwere也有NVIDIA的驱动啊！注意，它的驱动是装在那里的，它的驱动是装在hypervistor上的；也就是说虚拟机必须通过这个模拟的驱动程序层使用GPU的运算能力，这个驱动层做的是GPU指令的翻译和仿真，它实在不能让虚拟桌面的虚拟操作系统中的3D软件透过API直接调用GPU的运算指令。这意味这GPU的性能的折损，这意味您花高昂价格采购的服务器虚拟化软件正在浪费您花更贵价格买来的GPU，k1、k2的卡市场价格都3万多的。这样的方案是否值得买，必须考虑一下。最后要看View5.2 with vSGA，两点在vSGA，这个东西对很对3D软件来说是不可用，不可以接受的。甚至于某些专业3D/2D软件在这显示模式下，连安装都成问题。
+<table cellpadding="0" width="560" cellspacing="0" border="0" >
+<tbody >
+<tr >
+<td bgcolor="#f1f1f1" width="175" >
+</td>
+<td bgcolor="#f1f1f1" align="center" width="66" >NVIDIA Driver
+</td>
+<td bgcolor="#f1f1f1" align="center" width="102" >API
+</td>
+<td bgcolor="#f1f1f1" align="center" width="78" >GRID K1
+</td>
+<td bgcolor="#f1f1f1" align="center" width="72" >GRID K2
+</td>
+</tr>
+<tr >
+<td bgcolor="#f1f1f1" width="175" >**Citrix**
+[XenDesktop FP1 with NVIDIA GRID vGPU](http://www.nvidia.com/object/xendesktop-vgpu.html)
+</td>
+<td bgcolor="#f1f1f1" align="center" width="66" >![Yes](http://www.nvidia.com/docs/IO/123679/check-mark.png)
+</td>
+<td bgcolor="#f1f1f1" align="center" width="102" >NVIDIA CUDA
+DirectX 9,10,11
+OpenGL 4.3
+</td>
+<td bgcolor="#f1f1f1" align="center" width="78" >![Yes](http://www.nvidia.com/docs/IO/123679/check-mark.png)
+</td>
+<td bgcolor="#f1f1f1" align="center" width="72" >![Yes](http://www.nvidia.com/docs/IO/123679/check-mark.png)
+</td>
+</tr>
+<tr >
+<td bgcolor="#f1f1f1" width="175" >**Microsoft**
+[RemoteFX](http://www.nvidia.com/object/quadro-remotefx.html)
+Windows Server 2012
+</td>
+<td bgcolor="#f1f1f1" align="center" width="66" >-
+</td>
+<td bgcolor="#f1f1f1" align="center" width="102" >DirectX 9,10,11
+OpenGL 1.1
+</td>
+<td bgcolor="#f1f1f1" align="center" width="78" >![Yes](http://www.nvidia.com/docs/IO/123679/check-mark.png)
+</td>
+<td bgcolor="#f1f1f1" align="center" width="72" >![Yes](http://www.nvidia.com/docs/IO/123679/check-mark.png)
+</td>
+</tr>
+<tr >
+<td bgcolor="#f1f1f1" width="175" >**VMware**
+View 5.2 with vSGA
+</td>
+<td bgcolor="#f1f1f1" align="center" width="66" >-
+</td>
+<td bgcolor="#f1f1f1" align="center" width="102" >DirectX 9
+OpenGL 2.1
+</td>
+<td bgcolor="#f1f1f1" align="center" width="78" >![Yes](http://www.nvidia.com/docs/IO/123679/check-mark.png)
+</td>
+<td bgcolor="#f1f1f1" align="center" width="72" >![Yes](http://www.nvidia.com/docs/IO/123679/check-mark.png)
+</td>
+</tr>
+</tbody>
+</table>
+也可能某些厂商说：我有vGPU技术。这是用CPU模拟GPU的技术。您可以想想，如果这个技术真的存在的话那么我们只需要有一家公司就行了，就是Intel，而不需要另外一家Nvidia了。这个技术说白了也是仿真模拟，专业的3D/2D软件真正消耗越来越多的计算资源，在某些业务场景下模拟GPU是没法完成工作的，你总不能等待一个渲染和处理要等上几周去完成吧？而且设计师的时间是宝贵的，也不能让操作有顿挫和卡顿出现的。下面的视频，解释了在同一种虚拟桌面情况下，有GPU加速和，无GPU加速（CPU模拟）的操作对比。
+<p>总之，Citrix + nVIDIA K1 k2 + XenServer （GPU 直通） + HDX 3D Pro = 业内最好的3D虚拟桌面平台方案；而且这个方案里还能具有，其它全部的使用场景，包括：vdi，共享桌面，虚拟应用，流桌面，远程物理桌面等等方式。可以说这是一举多得，面面俱到的解决方案。</p>
+    </div>
+    <footer>
+      <div class="stats">
+  
+    <ul class="categories">
+      
+        
+          <li><a class="article-terms-link" href="/categories/xendesktop/">XenDesktop</a></li>
+        
+      
+    </ul>
+  
+  
+    <ul class="tags">
+      
+        
+          <li><a class="article-terms-link" href="/tags/2d/">2D</a></li>
+        
+          <li><a class="article-terms-link" href="/tags/3d/">3D</a></li>
+        
+          <li><a class="article-terms-link" href="/tags/nvidia/">NVIDIA</a></li>
+        
+          <li><a class="article-terms-link" href="/tags/vdi/">VDI</a></li>
+        
+          <li><a class="article-terms-link" href="/tags/%e8%99%9a%e6%8b%9f%e5%ba%94%e7%94%a8/">虚拟应用</a></li>
+        
+      
+    </ul>
+  
+</div>
+
+    </footer>
+  </article>
+  
+    
+  <article class="post">
+    
+    <div>
+      <h2 id="say-something">说些什么</h2>
+        <form id="comment-form" class="new-comment" method="POST">
+          
+          <h3 class='reply-notice hidden'>
+            <span class='reply-name'></span>
+          </h3>
+
+          
+          <input type="hidden" name="options[entryId]" value="575456ecd83992ed43796d1ac7409347">
+          <input type='hidden' name='fields[replyThread]' value=''>
+          <input type='hidden' name='fields[replyID]' value=''>
+          <input type='hidden' name='fields[replyName]' value=''>
+
+          
+          <input required name='fields[name]' type='text' placeholder='你的名字'>
+          <input name='fields[website]' type='text' placeholder='您的网页'>
+          <input required name='fields[email]' type='email' placeholder='你的邮件'>
+          <textarea required name='fields[body]' placeholder='你的信息' rows='10'></textarea>
+
+          
+          
+
+          
+          <div class='submit-notice'>
+            <strong class='submit-notice-text submit-success hidden'>感谢您的评论！被批准后它会立即在此站点展示。</strong>
+            <strong class='submit-notice-text submit-failed hidden'>很抱歉，您的提交存在错误。请确保所有必填字段都已填写正确，然后再试一次。</strong>
+          </div>
+
+          
+          <input type='submit' value='发送' class='button'>
+          <input type='submit' value='已发送' class='hidden button' disabled>
+          <input type='reset' value='重设' class='button'>
+        </form>
+    </div>
+
+    
+    <div>
+      <h2>评论</h2><p>还沒有留言。</p>
+      
+    </div>
+  </article>
+
+
+  
+  <div class="pagination">
+    
+      <a href="/2013/09/03/cloudstack-swift/" class="button left"><span>CloudStack&#43;Swift 我心中的黄金搭档</span></a>
+    
+    
+      <a href="/2013/08/15/xencliente69cace59cb0e8999ae68b9fe6a18ce99da2e585b8e59e8be5ba94e794a8e59cbae699af/" class="button right"><span>XenClient本地虚拟桌面典型应用场景</span></a>
+    
+  </div>
+
+      </main>
+      <section id="site-sidebar">
+  
+    <section id="recent-posts">
+      <header>
+        <h1>最新文章</h1>
+      </header>
+      
+      <article class="mini-post">
+          
+        <header>
+          <h2><a href="/blog/%E4%BD%BF%E7%94%A8-elastic-stack-%E7%9B%91%E6%8E%A7-covid-19-%E7%96%AB%E6%83%85%E5%8F%91%E5%B1%95/">使用 Elastic Stack 监控 Covid-19 疫情发展</a></h2>
+          <time class="published" datetime="2020-04-08 17:04:08 &#43;0800 CST">April 8, 2020</time>
+        </header>
+      </article>
+      
+      <article class="mini-post">
+          
+        <header>
+          <h2><a href="/blog/nutanix-dvp/">为Docker Swarm群集配置Nutanix持久存储</a></h2>
+          <time class="published" datetime="2017-11-02 00:00:00 &#43;0000 UTC">November 2, 2017</time>
+        </header>
+      </article>
+      
+      <article class="mini-post">
+          
+        <header>
+          <h2><a href="/blog/tips-for-docker-on-mac/">Tips for Docker on Mac</a></h2>
+          <time class="published" datetime="2017-09-26 00:00:00 &#43;0000 UTC">September 26, 2017</time>
+        </header>
+      </article>
+      
+      <article class="mini-post">
+          
+        <header>
+          <h2><a href="/blog/something-you-must-know-about-devops/">关于DevOps 的那些事</a></h2>
+          <time class="published" datetime="2017-09-23 00:00:00 &#43;0000 UTC">September 23, 2017</time>
+        </header>
+      </article>
+      
+      <article class="mini-post">
+          
+        <header>
+          <h2><a href="/blog/welcome-to-ghost/">切换到Ghost&#43;七牛</a></h2>
+          <time class="published" datetime="2017-09-21 00:00:00 &#43;0000 UTC">September 21, 2017</time>
+        </header>
+      </article>
+      
+      
+        <footer>
+          <a href="/posts/" class="button">查看更多</a>
+        </footer>
+      
+    </section>
+  
+
+  
+    
+
+      <section id="categories">
+        <header>
+          <h1><a href="/categories">分类</a></h1>
+        </header>
+        <ul>
+          
+          
+          <li>
+              <a href="/categories/blog/">blog<span class="count">52</span></a>
+          
+          <li>
+              <a href="/categories/nsm/">nsm<span class="count">41</span></a>
+          
+          <li>
+              <a href="/categories/itsm/">itsm<span class="count">21</span></a>
+          
+          <li>
+              <a href="/categories/opensource/">opensource<span class="count">21</span></a>
+          
+          <li>
+              <a href="/categories/running/">running<span class="count">21</span></a>
+          
+          <li>
+              <a href="/categories/cms/cmdb/">cms/cmdb<span class="count">20</span></a>
+          
+          <li>
+              <a href="/categories/infrastructure/">infrastructure<span class="count">18</span></a>
+          
+          <li>
+              <a href="/categories/cloud-computing/">cloud-computing<span class="count">17</span></a>
+          
+          <li>
+              <a href="/categories/wordpress1/">wordpress1<span class="count">15</span></a>
+          
+          <li>
+              <a href="/categories/xendesktop/">xendesktop<span class="count">15</span></a>
+          
+          <li>
+              <a href="/categories/travel/">travel<span class="count">14</span></a>
+          
+          <li>
+              <a href="/categories/itil/itsm/">itil/itsm<span class="count">13</span></a>
+          
+          <li>
+              <a href="/categories/life/">life<span class="count">13</span></a>
+          
+          <li>
+              <a href="/categories/movie/">movie<span class="count">12</span></a>
+          
+          <li>
+              <a href="/categories/asset-mgmt/">asset-mgmt<span class="count">10</span></a>
+          
+          <li>
+              <a href="/categories/bmc/">bmc<span class="count">7</span></a>
+          
+          <li>
+              <a href="/categories/citrix/">citrix<span class="count">7</span></a>
+          
+          <li>
+              <a href="/categories/rhel/">rhel<span class="count">6</span></a>
+          
+          <li>
+              <a href="/categories/xenserver/">xenserver<span class="count">6</span></a>
+          
+          <li>
+              <a href="/categories/apple/">apple<span class="count">4</span></a>
+          
+          <li>
+              <a href="/categories/desktop/">desktop<span class="count">4</span></a>
+          
+          <li>
+              <a href="/categories/opennms/">opennms<span class="count">4</span></a>
+          
+          <li>
+              <a href="/categories/tools/">tools<span class="count">4</span></a>
+          
+          <li>
+              <a href="/categories/container/">container<span class="count">3</span></a>
+          
+          <li>
+              <a href="/categories/linux/">linux<span class="count">3</span></a>
+          
+          <li>
+              <a href="/categories/openstack/">openstack<span class="count">3</span></a>
+          
+          <li>
+              <a href="/categories/project-management/">project-management<span class="count">3</span></a>
+          
+          <li>
+              <a href="/categories/xenapp/">xenapp<span class="count">3</span></a>
+          
+          <li>
+              <a href="/categories/docker/">docker<span class="count">2</span></a>
+          
+          <li>
+              <a href="/categories/hardware/">hardware<span class="count">2</span></a>
+          
+          <li>
+              <a href="/categories/lamp/">lamp<span class="count">2</span></a>
+          
+          <li>
+              <a href="/categories/cloudforms/">cloudforms<span class="count">1</span></a>
+          
+          <li>
+              <a href="/categories/cloudstack/">cloudstack<span class="count">1</span></a>
+          
+          <li>
+              <a href="/categories/devops/">devops<span class="count">1</span></a>
+          
+          <li>
+              <a href="/categories/ovirt/">ovirt<span class="count">1</span></a>
+          
+          <li>
+              <a href="/categories/rhev/">rhev<span class="count">1</span></a>
+          
+          <li>
+              <a href="/categories/storage/">storage<span class="count">1</span></a>
+          
+          </li>
+        </ul>
+      </section>
+    
+  
+
+  
+    <section id="mini-bio">
+      <header>
+        <h1>关于</h1>
+      </header>
+      <p>This theme was developed for Hugo static site generator.</p>
+      <footer>
+        <a href="/about" class="button">详细了解</a>
+      </footer>
+    </section>
+  
+</section>
+
+      <footer id="site-footer">
+  
+      <ul class="socnet-icons">
+        
+
+        <li><a href="//github.com/pacollins/hugo-future-imperfect-slim" target="_blank" rel="noopener" title="GitHub" class="fab fa-github"></a></li>
+
+
+
+
+
+
+<li><a href="//flickr.com/photos/example" target="_blank" rel="noopener" title="Flickr" class="fab fa-flickr"></a></li>
+
+
+
+
+<li><a href="//www.linkedin.com/in/example" target="_blank" rel="noopener" title="LinkedIn" class="fab fa-linkedin"></a></li>
+<li><a href="//linkedin.com/company/examplebusiness" target="_blank" rel="noopener" title="LinkedIn Company" class="fab fa-linkedin"></a></li>
+
+
+
+<li><a href="//facebook.com/example" target="_blank" rel="noopener" title="Facebook" class="fab fa-facebook"></a></li>
+<li><a href="//reddit.com/user/example" target="_blank" rel="noopener" title="Reddit" class="fab fa-reddit"></a></li>
+
+
+
+
+
+
+
+<li><a href="//instagram.com/example" target="_blank" rel="noopener" title="Instagram" class="fab fa-instagram"></a></li>
+
+<li><a href="//twitter.com/example" target="_blank" rel="noopener" title="Twitter" class="fab fa-twitter"></a></li>
+
+
+
+<li><a href="//www.pinterest.com/example" target="_blank" rel="noopener" title="Pinterest" class="fab fa-pinterest-p"></a></li>
+<li><a href="//telegram.me/example" target="_blank" rel="noopener" title="telegram" class="fab fa-telegram"></a></li>
+
+
+
+<li><a href="//researchgate.net/profile/example" target="_blank" rel="noopener" title="Research Gate"><i class="ai ai-researchgate"></i></a></li>
+<li><a href="//keybase.io/example" target="_blank" rel="noopener" title="keybase" class="fab fa-keybase"></a></li>
+<li><a href="//example.com/@example" target="_blank" rel="noopener" title="mastodon" class="fab fa-mastodon"></a></li>
+<li><a href="mailto:example" target="_blank" title="Email" class="far fa-envelope"></a></li>
+
+      </ul>
+  
+  <p class="copyright">
+    © 2020 Hugo Future Imperfect Slim em português
+      <br>
+    主题: <a href='https://themes.gohugo.io/hugo-future-imperfect-slim/' target='_blank' rel='noopener'>Hugo Future Imperfect Slim</a><br>移植自 <a href='https://html5up.net/future-imperfect' target='_blank' rel='noopener'>HTML5 UP</a> | 由 <a href='https://gohugo.io/' target='_blank' rel='noopener' title='0.80.0'>Hugo</a> 驱动
+  </p>
+</footer>
+<a id="back-to-top" href="#" class="fas fa-arrow-up fa-2x"></a>
+
+      <script src="/js/highlight.js"></script>
+    
+    <script>hljs.initHighlightingOnLoad();</script><script src="/js/bundle.min.bbba6b424a8ac5b6858cd5fc80eabc9c5277945cc2dc349204646b84891b4b58.js" integrity="sha256-u7prQkqKxbaFjNX8gOq8nFJ3lFzC3DSSBGRrhIkbS1g="></script>
+    <script src="/js/add-on.js"></script>
+    </div>
+  </body>
+</html>

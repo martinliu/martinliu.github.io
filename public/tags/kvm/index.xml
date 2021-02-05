@@ -1,1 +1,81 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>KVM on Martin's Blog</title><link>https://martinliu.cn/tags/kvm/</link><description>Recent content in KVM on Martin's Blog</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><managingEditor>liuzh66@gmail.com (刘征 Martin Liu)</managingEditor><webMaster>liuzh66@gmail.com (刘征 Martin Liu)</webMaster><lastBuildDate>Sun, 12 Jul 2015 11:16:44 +0000</lastBuildDate><atom:link href="https://martinliu.cn/tags/kvm/index.xml" rel="self" type="application/rss+xml"/><item><title>Ovirt 服务器虚拟化测试</title><link>https://martinliu.cn/2015/07/12/ovirt-e69c8de58aa1e599a8e8999ae68b9fe58c96e6b58be8af95/</link><pubDate>Sun, 12 Jul 2015 11:16:44 +0000</pubDate><author>liuzh66@gmail.com (刘征 Martin Liu)</author><guid>https://martinliu.cn/2015/07/12/ovirt-e69c8de58aa1e599a8e8999ae68b9fe58c96e6b58be8af95/</guid><description>本文安装和测试的软件是Ovirt+KVM的服务器虚拟化，这两个项目是红帽RHEVM+KVM服务器虚拟化的上游社区产品。可以通过这个文档清晰的</description></item><item><title>Martin's lab 主服务器搭建</title><link>https://martinliu.cn/2015/03/08/e4b8bbe69c8de58aa1e599a8e690ade5bbba/</link><pubDate>Sun, 08 Mar 2015 15:42:01 +0000</pubDate><author>liuzh66@gmail.com (刘征 Martin Liu)</author><guid>https://martinliu.cn/2015/03/08/e4b8bbe69c8de58aa1e599a8e690ade5bbba/</guid><description>上图是红帽产品和技术架构的全貌。来源是：http://www.redhat.com/en/technologies/cloud-comput</description></item><item><title>KVM Virt-Manager 实用参考手册</title><link>https://martinliu.cn/2015/01/06/kvm-virt-manager-e5ae9ee794a8e58f82e88083e6898be5868c/</link><pubDate>Tue, 06 Jan 2015 15:55:02 +0000</pubDate><author>liuzh66@gmail.com (刘征 Martin Liu)</author><guid>https://martinliu.cn/2015/01/06/kvm-virt-manager-e5ae9ee794a8e58f82e88083e6898be5868c/</guid><description>关于 virt manager Virt Manager 是一个不错的kvm虚拟机管理工具，能够方便地管理虚拟机。我的测试机目前已经完全转向RHEL7上跑KVM虚拟机，通过virt-ma</description></item></channel></rss>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>KVM on Hugo Future Imperfect Slim em português</title>
+    <link>https://example.com/tags/kvm/</link>
+    <description>Recent content in KVM on Hugo Future Imperfect Slim em português</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-CN</language>
+    <lastBuildDate>Sun, 12 Jul 2015 11:16:44 +0000</lastBuildDate><atom:link href="https://example.com/tags/kvm/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Ovirt 服务器虚拟化测试</title>
+      <link>https://example.com/2015/07/12/ovirt-e69c8de58aa1e599a8e8999ae68b9fe58c96e6b58be8af95/</link>
+      <pubDate>Sun, 12 Jul 2015 11:16:44 +0000</pubDate>
+      
+      <guid>https://example.com/2015/07/12/ovirt-e69c8de58aa1e599a8e8999ae68b9fe58c96e6b58be8af95/</guid>
+      <description>本文安装和测试的软件是Ovirt+KVM的服务器虚拟化，这两个项目是红帽RHEVM+KVM服务器虚拟化的上游社区产品。可以通过这个文档清晰的了解到红帽服务器虚拟化产品的大体功能，基本特点。本测试文档使用的是Centos7+社区yum 源；因此是最新的ovirt和kvm的功能。如果是正式的企业级需求测试，请使用光纤或者传统存储，从而达到和vmware等商业产品最好的类比测试。尽量避免使用嵌套kvm虚拟化的方式，除非您很熟悉Linux，使用两个笔记本是最简单的测试环境。
+下图是Ovirt服务器的详细架构图。其中的ovirt-engine是本文安装和部署的部分，是用一个centos7的虚拟机安装的。Host1也是用一个centos7的虚拟机安装的。半年之前我也配置过一次嵌套kvm，根本是一头雾水，而且还没有成功，不过这次的配置过程却这么简单容易，就正常工作了。希望简单一点的人，可以把Host1用物理机来安装，也会节省很多时间。
+[caption id=&amp;ldquo;attachment_53901&amp;rdquo; align=&amp;ldquo;alignnone&amp;rdquo; width=&amp;ldquo;512&amp;rdquo;]ovirt 架构图[/caption]
+KVM嵌套虚拟化准备 在测试KVM服务器虚拟化的过程中，如果您能有独立的物理机跑Hypervisor，那么您可以忽略本节。至今进入ovirt的安装。 下面的测试的物理机是 Lenovo T440s 笔记本，运行的 Fedora 22 操作系统，使用 KVM manager 做虚拟机的管理工具。本次测试用到两个虚拟机：
+  ovirt: 运行服务器虚拟化的管理机ovirt，这个程序类似于vmware 的 vcenter。
+  ovirt-host : 用来被ovirt管理的hypervisor；使用 kvm 嵌套 kvm 的方式，来跑虚拟机。
+  确认本机的服务器虚拟机CPU Bios配置正常。
+[bash]
+egrep -c &amp;lsquo;(vmx|svm)&amp;rsquo; /proc/cpuinfo 4
+[/bash]
+本机是i5的CPU，双核开启超线程，显示为4。还没有启用嵌套KVM的虚拟机，需要新建下面这个配置文件，操作系统不同，可能稍微不同，下面是以 Fedora 22 为例。
+vi /etc/modprobe.d/kvm-nested.conf 编辑以上文件，增加下面这行参数即可 options kvm_intel nested=1
+运行下面的命令，为操作系统内核加載此功能。
+[bash]
+modprobe -r kvm_intel # unload modprobe kvm_intel # reload again
+cat /sys/module/kvm_intel/parameters/nested Y</description>
+    </item>
+    
+    <item>
+      <title>Martin&#39;s lab 主服务器搭建</title>
+      <link>https://example.com/2015/03/08/e4b8bbe69c8de58aa1e599a8e690ade5bbba/</link>
+      <pubDate>Sun, 08 Mar 2015 15:42:01 +0000</pubDate>
+      
+      <guid>https://example.com/2015/03/08/e4b8bbe69c8de58aa1e599a8e690ade5bbba/</guid>
+      <description>上图是红帽产品和技术架构的全貌。来源是：http://www.redhat.com/en/technologies/cloud-computing 这张图我用在了我的首次给公司内部的全体销售培训上。由于我是IT管理背景的，因此我很习惯从云管理层往下看云引擎的各个层面。但是管理层产品，其实是后来整合纳入的。红帽起家的旗舰产品还是在底层的RHEL。总之，我想在一个Lab里面实现以上所有的部分，所谓实现是让其每个部分都能在运行在假象的一个有意义的业务场景里。还好，红帽的产品全都是基于x86平台的，因此我用几个笔记本，再加上我家里的这台HP MicroServer G8服务器应该能够全部部署出来。
+做这样的一个lab还是要一定的规划和设计的，这些初步的规划和设计都在我的本子里手写的，就不在这里敲字了，随后我会抽空上几张图。
+主服务器基本配置 硬件：Lenovo W540 CPU Intel i7, RAM 32 GB, SSD 512GB, HD 1TB
+OS : RHEL 7.1
+订阅是红帽公司的业务模式，也是红帽认为最自豪的部分，红帽相信可以成为开源技术和用户之间的催化剂，它不断参与最优秀的开源技术创新，并为其用户提供最强有利的技术服务和支持。红帽技术员工可以申请一个红帽雇员订阅。我的订阅可以在网上查到如下图所示：
+
+红帽的服务必须是基于订阅的每一个节点（物理、虚拟）都需要有有效的订阅，否则红帽的支持服务不能生效。对于一个已经成功注册到红帽官网，并且状态正常的服务器，应该显示如下的注册状态：
+[bash] [root@w540 ~]# subscription-manager list
++&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;-+ 安装的产品状态 +&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;-+ 产品名称： Red Hat Enterprise Linux Server 产品 ID： 69 版本： 7.0 构架： x86_64 状态： 已订阅 状态详情： 开始： 2014年09月09日 结束： 2015年12月08日 [/bash]
+红帽员工订阅意味着所有红帽产品。
+基本服务配置 KVM KVM的上手还真比我想象的速度要慢一些，起码比我用XenServer的经历更加纠结一些。总之现在可以彻底的忘记其它任何的选项，KVM可以满足我的所有需求了。由于主服务器有512SSD + 32GB RAM + 8 vCPU，所以我打算把产品里的所有管理控制节点VM都部署在这个机器上。预计有10个左右的虚拟机。 安装配置方面这里就不赘述了。只把困扰我许久的几个网络配置贴出来，供参考。
+网桥0的功能是为所有虚拟机提供外网链接，使他们和主机一样直通主机所物理链接的局域网。 [bash] [root@w540 ~]# cat /etc/sysconfig/network-scripts/ifcfg-br0 DEVICE=br0 ONBOOT=yes TYPE=Bridge BOOTPROTO=none STP=on DELAY=0 DNS1=192.</description>
+    </item>
+    
+    <item>
+      <title>KVM Virt-Manager  实用参考手册</title>
+      <link>https://example.com/2015/01/06/kvm-virt-manager-e5ae9ee794a8e58f82e88083e6898be5868c/</link>
+      <pubDate>Tue, 06 Jan 2015 15:55:02 +0000</pubDate>
+      
+      <guid>https://example.com/2015/01/06/kvm-virt-manager-e5ae9ee794a8e58f82e88083e6898be5868c/</guid>
+      <description>关于 virt manager Virt Manager 是一个不错的kvm虚拟机管理工具，能够方便地管理虚拟机。我的测试机目前已经完全转向RHEL7上跑KVM虚拟机，通过virt-manager去管理的方案。
+
+安装virt-manager：yum install -y virt-* ； 装完之后重新启动机器即可使用。
+建议初始配置 安装完后有几个环境的配置推荐可以做一下。
+Storage Pool ： 一个默认的 + 两个自建的
+  Default ：这是virt-manager安装时默认创建的，它和操作系统在同一个卷上，我的测试机使用SSD卷，因此我所有虚拟机都会使用这个卷，这样速度比较快
+  hd ：这是测试机上普通磁盘的一个目录，目的是把那些不需要快速IO的虚拟机跑着这里，节省SSD的磁盘空间
+  iso ：这是普通磁盘上的iso文件目录，单独挂在这是为了，使用方便
+  虚拟网络 （一个默认+两个新建）
+  default ： 这个是安装了virt-manager + kvm 之后就有的，是用NAT的方式，带dhcp，默认虚拟机可以连接物理机所在的外围
+  virbr1/virbr2 ：是我根据自己的需要建立的，只能和host物理机通讯，无dhcp
+  我最近做OpenStack的实践，OpenStack需要最好隔离的几个网络跑不同的数据，因此virbr1/2正好符合OpenStack的测试需求。另外我在物理机的操作系统上搭建了yum源服务器，因此任何一个虚拟机都可以通过http访问我放在物理机上的repo目录，我只需要更新这些repos目录里面的rpm包的内容，我的lab环境中的所有虚拟机（不管是在何网络）都可以使用到最新的系统更新包和软件包了。这样大大提高了虚拟机里面软件测试的效率，所有虚拟机像是在本地安装rpm软件包一样，再也不需要联网下载，我只需要每周去公司联网同步一下这些目录即可。
+有了以上配置之后，就可以高效工作了，效率感觉比vmware workstation要高，速度快稳定。下面是虚拟机创建的流程，里面有些我的推荐做法。
+本想看下，virt-install 的使用方式，感觉那个参数太多，容易敲错，还是界面比较容易上手，而且出错的机会不高。
+命令行常用操作指南（持续更新中） virt-manager主要操作还是在命令行比较高效，特别是下面的这些操作，在使用过程中，比较多用，用的多了感觉比GUI操作方式效率高多了。
+virt-manager的命令行功能调用有两种方式：
+  直接 virsh 回车 ，之后就进入了 virsh # 的一个专门的shell，help 就能看的里面支持的所有命令
+  在普通shell下 直接 virsh &amp;lt;操作命令&amp;gt; &amp;lt;参数&amp;gt;，</description>
+    </item>
+    
+  </channel>
+</rss>

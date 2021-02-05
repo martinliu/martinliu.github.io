@@ -1,1 +1,24 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>resize2fs on Martin's Blog</title><link>https://martinliu.cn/tags/resize2fs/</link><description>Recent content in resize2fs on Martin's Blog</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><managingEditor>liuzh66@gmail.com (刘征 Martin Liu)</managingEditor><webMaster>liuzh66@gmail.com (刘征 Martin Liu)</webMaster><lastBuildDate>Wed, 21 Jan 2015 15:46:31 +0000</lastBuildDate><atom:link href="https://martinliu.cn/tags/resize2fs/index.xml" rel="self" type="application/rss+xml"/><item><title>虚拟机根分区扩容</title><link>https://martinliu.cn/2015/01/21/e8999ae68b9fe69cbae6a0b9e58886e58cbae689a9e5aeb9/</link><pubDate>Wed, 21 Jan 2015 15:46:31 +0000</pubDate><author>liuzh66@gmail.com (刘征 Martin Liu)</author><guid>https://martinliu.cn/2015/01/21/e8999ae68b9fe69cbae6a0b9e58886e58cbae689a9e5aeb9/</guid><description>我的Satellite虚拟机下载了所有常用的repo，100GB的磁盘空间都占满了，无奈必须扩容，否则没法用了。 扩容的前提条件正好满足：根分</description></item></channel></rss>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>resize2fs on Hugo Future Imperfect Slim em português</title>
+    <link>https://example.com/tags/resize2fs/</link>
+    <description>Recent content in resize2fs on Hugo Future Imperfect Slim em português</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-CN</language>
+    <lastBuildDate>Wed, 21 Jan 2015 15:46:31 +0000</lastBuildDate><atom:link href="https://example.com/tags/resize2fs/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>虚拟机根分区扩容</title>
+      <link>https://example.com/2015/01/21/e8999ae68b9fe69cbae6a0b9e58886e58cbae689a9e5aeb9/</link>
+      <pubDate>Wed, 21 Jan 2015 15:46:31 +0000</pubDate>
+      
+      <guid>https://example.com/2015/01/21/e8999ae68b9fe69cbae6a0b9e58886e58cbae689a9e5aeb9/</guid>
+      <description>我的Satellite虚拟机下载了所有常用的repo，100GB的磁盘空间都占满了，无奈必须扩容，否则没法用了。
+扩容的前提条件正好满足：根分区在最后一个分区。
+由于是kvm的虚拟机，所以首先需要扩大硬盘文件的大小： qemu-img resize my.img +100G 。
+下面去操作系统里扩容。先要用fdisk删除根分区。记录初始的其实点。然后用n命令新建分区，输入原始其实点位置，回车默认接受结束点的最后一个位置。w存盘。
+reboot系统，起来之后用命令扩容分区： resize2fs /dev/vda2 ； 在线扩容需要等一段时间，100GB的空间初始化在我的普通磁盘上做了5分钟左右。在此reboot机器，起来之后在看 df -kh 发现已经增加了100GB了，接下来再也不用担心类似情况了。</description>
+    </item>
+    
+  </channel>
+</rss>

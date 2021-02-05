@@ -1,0 +1,631 @@
+<!doctype html>
+<html lang="zh-cn">
+  <head>
+  <meta charset="utf-8">
+<title>Tips for Docker on Mac - Hugo Future Imperfect Slim em português</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+<meta name="generator" content="Hugo 0.80.0" /><meta property="og:site_name" content="Hugo Future Imperfect Slim em português">
+  <meta property="og:title" content="Tips for Docker on Mac">
+  <meta property="og:description" content="A theme by HTML5 UP, ported by Julio Pescador. Slimmed and enhanced by Patrick Collins. Multilingual by StatnMap. Powered by Hugo.">
+  <meta property="description" content="A theme by HTML5 UP, ported by Julio Pescador. Slimmed and enhanced by Patrick Collins. Multilingual by StatnMap. Powered by Hugo.">
+  <meta property="og:url" content="https://example.com/blog/tips-for-docker-on-mac/">
+  <meta property="og:type" content="article">
+  
+    <meta property="og:image" content="https://example.com/img/main/logo.jpg">
+  
+  <link rel="stylesheet" href="/css/bundle.min.d9e04ae08c9b3049b766dbd4aeab7d862c5ea1d13679b621490e0f5df5507497.css" integrity="sha256-2eBK4IybMEm3ZtvUrqt9hixeodE2ebYhSQ4PXfVQdJc="><link rel="stylesheet" href="/css/add-on.css">
+</head>
+
+  <body>
+    
+
+<header id="site-header">
+  <nav id="site-nav">
+    <h1 class="nav-title">
+      <a href="/" class="nav">
+        
+          博客
+        
+      </a>
+    </h1>
+    <menu id="site-nav-menu" class="flyout-menu menu">
+      
+        
+          
+          <a href="/" class="nav link"><i class='fas fa-home'></i> 首页</a>
+        
+      
+        
+          
+          <a href="/about/" class="nav link"><i class='far fa-id-card'></i> 关于</a>
+        
+      
+        
+          
+          <a href="/blog/" class="nav link"><i class='far fa-newspaper'></i> 博客</a>
+        
+      
+        
+          
+          <a href="/categories/" class="nav link"><i class='fas fa-sitemap'></i> 分类</a>
+        
+      
+        
+          
+          <a href="/contact/" class="nav link"><i class='far fa-envelope'></i> 联系</a>
+        
+      
+      <a href="#share-menu" class="nav link share-toggle"><i class="fas fa-share-alt">&nbsp;</i>Share</a>
+      <a href="#search-input" class="nav link search-toggle"><i class="fas fa-search">&nbsp;</i>Search</a>
+    </menu>
+    <a href="#search-input" class="nav search-toggle"><i class="fas fa-search fa-2x">&nbsp;</i></a>
+    <a href="#share-menu" class="nav share-toggle"><i class="fas fa-share-alt fa-2x">&nbsp;</i></a>
+    <a href="#lang-menu" class="nav lang-toggle" lang="zh-cn">zh-cn</a>
+    <a href="#site-nav" class="nav nav-toggle"><i class="fas fa-bars fa-2x"></i></a>
+  </nav>
+  <menu id="search" class="menu"><input id="search-input" class="search-input menu"></input><div id="search-results" class="search-results menu"></div></menu>
+  <menu id="lang-menu" class="flyout-menu menu">
+  <a href="#" lang="zh-cn" class="nav link active">中文 (zh-cn)</a>
+  
+    
+      
+        <a href="/en" lang="en" class="nav no-lang link">English (en)</a>
+      
+    
+      
+    
+  
+</menu>
+
+  
+    <menu id="share-menu" class="flyout-menu menu">
+      <h1>Share Post</h1>
+      
+
+
+
+
+  
+    
+    <a href="//twitter.com/share?text=Tips%20for%20Docker%20on%20Mac&amp;url=https%3a%2f%2fexample.com%2fblog%2ftips-for-docker-on-mac%2f" target="_blank" rel="noopener" class="nav share-btn twitter">
+        <p>Twitter</p>
+      </a>
+  
+
+  
+      <a href="//www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fexample.com%2fblog%2ftips-for-docker-on-mac%2f" target="_blank" rel="noopener" class="nav share-btn facebook">
+        <p>Facebook</p>
+        </a>
+  
+
+  
+    <a href="//www.reddit.com/submit?url=https%3a%2f%2fexample.com%2fblog%2ftips-for-docker-on-mac%2f&amp;title=Tips%20for%20Docker%20on%20Mac" target="_blank" rel="noopener" class="nav share-btn reddit">
+          <p>Reddit</p>
+        </a>
+  
+
+  
+        <a href="//www.linkedin.com/shareArticle?url=https%3a%2f%2fexample.com%2fblog%2ftips-for-docker-on-mac%2f&amp;title=Tips%20for%20Docker%20on%20Mac" target="_blank" rel="noopener" class="nav share-btn linkedin">
+            <p>LinkedIn</p>
+          </a>
+  
+
+  
+        <a href="//www.pinterest.com/pin/create/button/?url=https%3a%2f%2fexample.com%2fblog%2ftips-for-docker-on-mac%2f&amp;description=Tips%20for%20Docker%20on%20Mac" target="_blank" rel="noopener" class="nav share-btn pinterest">
+          <p>Pinterest</p>
+        </a>
+  
+
+  
+        <a href="mailto:?subject=%e6%9f%a5%e7%9c%8b%e6%ad%a4%e5%b8%96%e5%ad%90%e7%9a%84%e4%bd%9c%e8%80%85 %7b%20%20%20%20%20%20%20%20map%5b%5d%7d&amp;body=https%3a%2f%2fexample.com%2fblog%2ftips-for-docker-on-mac%2f" target="_blank" class="nav share-btn email" data-proofer-ignore>
+          <p>Email</p>
+        </a>
+  
+
+
+    </menu>
+  
+</header>
+
+    <div id="wrapper">
+      <section id="site-intro" >
+  <a href="/"><img src="https://example.com/img/main/logo.jpg" class="circle" width="100" alt="Hugo Future Imperfect Slim" /></a>
+  <header>
+    <h1>Hugo Future Imperfect Slim</h1>
+  </header>
+  <main>
+    <p>Another fine, responsive site template by <a href='http://html5up.net'>HTML5 UP</a>.</p>
+  </main>
+  
+    <footer>
+      <ul class="socnet-icons">
+        
+
+        <li><a href="//github.com/pacollins/hugo-future-imperfect-slim" target="_blank" rel="noopener" title="GitHub" class="fab fa-github"></a></li>
+
+
+
+
+
+
+<li><a href="//flickr.com/photos/example" target="_blank" rel="noopener" title="Flickr" class="fab fa-flickr"></a></li>
+
+
+
+
+<li><a href="//www.linkedin.com/in/example" target="_blank" rel="noopener" title="LinkedIn" class="fab fa-linkedin"></a></li>
+<li><a href="//linkedin.com/company/examplebusiness" target="_blank" rel="noopener" title="LinkedIn Company" class="fab fa-linkedin"></a></li>
+
+
+
+<li><a href="//facebook.com/example" target="_blank" rel="noopener" title="Facebook" class="fab fa-facebook"></a></li>
+<li><a href="//reddit.com/user/example" target="_blank" rel="noopener" title="Reddit" class="fab fa-reddit"></a></li>
+
+
+
+
+
+
+
+<li><a href="//instagram.com/example" target="_blank" rel="noopener" title="Instagram" class="fab fa-instagram"></a></li>
+
+<li><a href="//twitter.com/example" target="_blank" rel="noopener" title="Twitter" class="fab fa-twitter"></a></li>
+
+
+
+<li><a href="//www.pinterest.com/example" target="_blank" rel="noopener" title="Pinterest" class="fab fa-pinterest-p"></a></li>
+<li><a href="//telegram.me/example" target="_blank" rel="noopener" title="telegram" class="fab fa-telegram"></a></li>
+
+
+
+<li><a href="//researchgate.net/profile/example" target="_blank" rel="noopener" title="Research Gate"><i class="ai ai-researchgate"></i></a></li>
+<li><a href="//keybase.io/example" target="_blank" rel="noopener" title="keybase" class="fab fa-keybase"></a></li>
+<li><a href="//example.com/@example" target="_blank" rel="noopener" title="mastodon" class="fab fa-mastodon"></a></li>
+<li><a href="mailto:example" target="_blank" title="Email" class="far fa-envelope"></a></li>
+
+      </ul>
+    </footer>
+  
+</section>
+
+      <main id="site-main">
+        
+  <article class="post">
+    <header>
+  <div class="title">
+    
+      <h2><a href="/blog/tips-for-docker-on-mac/">Tips for Docker on Mac</a></h2>
+    
+    
+  </div>
+  <div class="meta">
+    <time datetime="2017-09-26 00:00:00 &#43;0000 UTC">September 26, 2017</time>
+    
+    <p>1 分钟</p>
+  </div>
+</header>
+
+    <div id="socnet-share">
+      
+
+
+
+
+  
+    
+    <a href="//twitter.com/share?text=Tips%20for%20Docker%20on%20Mac&amp;url=https%3a%2f%2fexample.com%2fblog%2ftips-for-docker-on-mac%2f" target="_blank" rel="noopener" class="nav share-btn twitter">
+        <p>Twitter</p>
+      </a>
+  
+
+  
+      <a href="//www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fexample.com%2fblog%2ftips-for-docker-on-mac%2f" target="_blank" rel="noopener" class="nav share-btn facebook">
+        <p>Facebook</p>
+        </a>
+  
+
+  
+    <a href="//www.reddit.com/submit?url=https%3a%2f%2fexample.com%2fblog%2ftips-for-docker-on-mac%2f&amp;title=Tips%20for%20Docker%20on%20Mac" target="_blank" rel="noopener" class="nav share-btn reddit">
+          <p>Reddit</p>
+        </a>
+  
+
+  
+        <a href="//www.linkedin.com/shareArticle?url=https%3a%2f%2fexample.com%2fblog%2ftips-for-docker-on-mac%2f&amp;title=Tips%20for%20Docker%20on%20Mac" target="_blank" rel="noopener" class="nav share-btn linkedin">
+            <p>LinkedIn</p>
+          </a>
+  
+
+  
+        <a href="//www.pinterest.com/pin/create/button/?url=https%3a%2f%2fexample.com%2fblog%2ftips-for-docker-on-mac%2f&amp;description=Tips%20for%20Docker%20on%20Mac" target="_blank" rel="noopener" class="nav share-btn pinterest">
+          <p>Pinterest</p>
+        </a>
+  
+
+  
+        <a href="mailto:?subject=%e6%9f%a5%e7%9c%8b%e6%ad%a4%e5%b8%96%e5%ad%90%e7%9a%84%e4%bd%9c%e8%80%85 %7b%20%20%20%20%20%20%20%20map%5b%5d%7d&amp;body=https%3a%2f%2fexample.com%2fblog%2ftips-for-docker-on-mac%2f" target="_blank" class="nav share-btn email" data-proofer-ignore>
+          <p>Email</p>
+        </a>
+  
+
+
+    </div>
+    <div class="content">
+      
+      <h1 id="tips-for-docker-on-mac">Tips for Docker on Mac</h1>
+<p>在macOS上使用Docker很长时间了，本文总结一些我不想忘记的tips，方便自己反复使用的同时，也顺便总结分享一下，留下本文作为长期更新的备忘录。</p>
+<h2 id="搭建私有镜像库">搭建私有镜像库</h2>
+<p>运行一个本地镜像库</p>
+<pre><code>$ docker run -d  -p 5000:5000 --restart=always --name registry registry:2
+</code></pre><p>这条命令会从docker hub 下载 registry:2 镜像，在本机运行一个镜像库服务。</p>
+<p>下载一个测试用的镜像。</p>
+<pre><code>$ docker pull ubuntu:16.04
+</code></pre><p>给这个镜像打上私有镜像库的标签</p>
+<pre><code>$ docker tag ubuntu:16.04 localhost:5000/ubuntu:16.04
+</code></pre><p>push这个测试镜像到本地的镜像库</p>
+<pre><code>$ docker push localhost:5000/ubuntu:16.04
+</code></pre><p>这时候你会发现我的本地这样岂不是有了两份相同的镜像了，有这个必要么？是不是多余了？下面几个场景中会用到：</p>
+<p>当你用docker-machine在本机启动1个vm的时候，你运行任何docker run或者docker-compose up的时候你可能需要一个之前在本地就有的image，这是一种分享本机image给docker-machine vm的一种方式。</p>
+<p>当你用docker-machine在本机启动多个个vm的时候，你可能会把它们作出docker Swarm群集，当你在这个群集上启动一个服务的时候，docker compose文件中的镜像地址可以引用这个本地地址，引用地址类似这样 image: 192.168.99.1:5000/influxdb</p>
+<p>当你用 minikube start启动了一个minikube的vm的时候，你可能也需要本机的docker镜像，尤其是在你做demo的时候，这是最快的下载途径。
+需要注意的是，以上三种情况都需要指定一下&ndash;engine-insecure-registry 192.168.99.1:5000 这个参数。</p>
+<h2 id="自动化创建docker-swarm群集">自动化创建Docker Swarm群集</h2>
+<p>在我的文件目录中存放着这个脚本</p>
+<pre><code>cat create-swarm.sh
+docker-machine create manager  --engine-insecure-registry 192.168.99.1:5000
+docker-machine create agent1  --engine-insecure-registry 192.168.99.1:5000
+docker-machine create agent2  --engine-insecure-registry 192.168.99.1:5000
+docker-machine create agent3  --engine-insecure-registry 192.168.99.1:5000
+eval `docker-machine env manager`
+docker swarm init --advertise-addr `docker-machine ip manager`
+docker-machine ssh agent1 docker swarm join --token `docker swarm join-token -q worker` `docker-machine ip manager`:2377
+docker-machine ssh agent2 docker swarm join --token `docker swarm join-token -q worker` `docker-machine ip manager`:2377
+docker-machine ssh agent3 docker swarm join --token `docker swarm join-token -q worker` `docker-machine ip manager`:2377
+docker node ls
+</code></pre><p>解释一下上面的代码：创建四个docker-machine vm，初始化swarm群集，把三个worker节点加入群集。这样四节点的群集就up and running了。</p>
+<p>清除以上群集虚拟机的命令如下：</p>
+<pre><code>docker-machine rm -y manager agent1 agent2 agent3
+</code></pre>
+    </div>
+    <footer>
+      <div class="stats">
+  
+    <ul class="categories">
+      <li>None</li>
+    </ul>
+  
+  
+    <ul class="tags">
+      
+        
+          <li><a class="article-terms-link" href="/tags/devops/">DevOps</a></li>
+        
+          <li><a class="article-terms-link" href="/tags/docker/">Docker</a></li>
+        
+      
+    </ul>
+  
+</div>
+
+    </footer>
+  </article>
+  
+    
+  <article class="post">
+    
+    <div>
+      <h2 id="say-something">说些什么</h2>
+        <form id="comment-form" class="new-comment" method="POST">
+          
+          <h3 class='reply-notice hidden'>
+            <span class='reply-name'></span>
+          </h3>
+
+          
+          <input type="hidden" name="options[entryId]" value="57f0b5aaaef4e870f61afb829b0e0929">
+          <input type='hidden' name='fields[replyThread]' value=''>
+          <input type='hidden' name='fields[replyID]' value=''>
+          <input type='hidden' name='fields[replyName]' value=''>
+
+          
+          <input required name='fields[name]' type='text' placeholder='你的名字'>
+          <input name='fields[website]' type='text' placeholder='您的网页'>
+          <input required name='fields[email]' type='email' placeholder='你的邮件'>
+          <textarea required name='fields[body]' placeholder='你的信息' rows='10'></textarea>
+
+          
+          
+
+          
+          <div class='submit-notice'>
+            <strong class='submit-notice-text submit-success hidden'>感谢您的评论！被批准后它会立即在此站点展示。</strong>
+            <strong class='submit-notice-text submit-failed hidden'>很抱歉，您的提交存在错误。请确保所有必填字段都已填写正确，然后再试一次。</strong>
+          </div>
+
+          
+          <input type='submit' value='发送' class='button'>
+          <input type='submit' value='已发送' class='hidden button' disabled>
+          <input type='reset' value='重设' class='button'>
+        </form>
+    </div>
+
+    
+    <div>
+      <h2>评论</h2><p>还沒有留言。</p>
+      
+    </div>
+  </article>
+
+
+  
+  <div class="pagination">
+    
+      <a href="/blog/nutanix-dvp/" class="button left"><span>为Docker Swarm群集配置Nutanix持久存储</span></a>
+    
+    
+      <a href="/blog/something-you-must-know-about-devops/" class="button right"><span>关于DevOps 的那些事</span></a>
+    
+  </div>
+
+      </main>
+      <section id="site-sidebar">
+  
+    <section id="recent-posts">
+      <header>
+        <h1>最新文章</h1>
+      </header>
+      
+      <article class="mini-post">
+          
+        <header>
+          <h2><a href="/blog/%E4%BD%BF%E7%94%A8-elastic-stack-%E7%9B%91%E6%8E%A7-covid-19-%E7%96%AB%E6%83%85%E5%8F%91%E5%B1%95/">使用 Elastic Stack 监控 Covid-19 疫情发展</a></h2>
+          <time class="published" datetime="2020-04-08 17:04:08 &#43;0800 CST">April 8, 2020</time>
+        </header>
+      </article>
+      
+      <article class="mini-post">
+          
+        <header>
+          <h2><a href="/blog/nutanix-dvp/">为Docker Swarm群集配置Nutanix持久存储</a></h2>
+          <time class="published" datetime="2017-11-02 00:00:00 &#43;0000 UTC">November 2, 2017</time>
+        </header>
+      </article>
+      
+      <article class="mini-post">
+          
+        <header>
+          <h2><a href="/blog/tips-for-docker-on-mac/">Tips for Docker on Mac</a></h2>
+          <time class="published" datetime="2017-09-26 00:00:00 &#43;0000 UTC">September 26, 2017</time>
+        </header>
+      </article>
+      
+      <article class="mini-post">
+          
+        <header>
+          <h2><a href="/blog/something-you-must-know-about-devops/">关于DevOps 的那些事</a></h2>
+          <time class="published" datetime="2017-09-23 00:00:00 &#43;0000 UTC">September 23, 2017</time>
+        </header>
+      </article>
+      
+      <article class="mini-post">
+          
+        <header>
+          <h2><a href="/blog/welcome-to-ghost/">切换到Ghost&#43;七牛</a></h2>
+          <time class="published" datetime="2017-09-21 00:00:00 &#43;0000 UTC">September 21, 2017</time>
+        </header>
+      </article>
+      
+      
+        <footer>
+          <a href="/posts/" class="button">查看更多</a>
+        </footer>
+      
+    </section>
+  
+
+  
+    
+
+      <section id="categories">
+        <header>
+          <h1><a href="/categories">分类</a></h1>
+        </header>
+        <ul>
+          
+          
+          <li>
+              <a href="/categories/blog/">blog<span class="count">52</span></a>
+          
+          <li>
+              <a href="/categories/nsm/">nsm<span class="count">41</span></a>
+          
+          <li>
+              <a href="/categories/itsm/">itsm<span class="count">21</span></a>
+          
+          <li>
+              <a href="/categories/opensource/">opensource<span class="count">21</span></a>
+          
+          <li>
+              <a href="/categories/running/">running<span class="count">21</span></a>
+          
+          <li>
+              <a href="/categories/cms/cmdb/">cms/cmdb<span class="count">20</span></a>
+          
+          <li>
+              <a href="/categories/infrastructure/">infrastructure<span class="count">18</span></a>
+          
+          <li>
+              <a href="/categories/cloud-computing/">cloud-computing<span class="count">17</span></a>
+          
+          <li>
+              <a href="/categories/wordpress1/">wordpress1<span class="count">15</span></a>
+          
+          <li>
+              <a href="/categories/xendesktop/">xendesktop<span class="count">15</span></a>
+          
+          <li>
+              <a href="/categories/travel/">travel<span class="count">14</span></a>
+          
+          <li>
+              <a href="/categories/itil/itsm/">itil/itsm<span class="count">13</span></a>
+          
+          <li>
+              <a href="/categories/life/">life<span class="count">13</span></a>
+          
+          <li>
+              <a href="/categories/movie/">movie<span class="count">12</span></a>
+          
+          <li>
+              <a href="/categories/asset-mgmt/">asset-mgmt<span class="count">10</span></a>
+          
+          <li>
+              <a href="/categories/bmc/">bmc<span class="count">7</span></a>
+          
+          <li>
+              <a href="/categories/citrix/">citrix<span class="count">7</span></a>
+          
+          <li>
+              <a href="/categories/rhel/">rhel<span class="count">6</span></a>
+          
+          <li>
+              <a href="/categories/xenserver/">xenserver<span class="count">6</span></a>
+          
+          <li>
+              <a href="/categories/apple/">apple<span class="count">4</span></a>
+          
+          <li>
+              <a href="/categories/desktop/">desktop<span class="count">4</span></a>
+          
+          <li>
+              <a href="/categories/opennms/">opennms<span class="count">4</span></a>
+          
+          <li>
+              <a href="/categories/tools/">tools<span class="count">4</span></a>
+          
+          <li>
+              <a href="/categories/container/">container<span class="count">3</span></a>
+          
+          <li>
+              <a href="/categories/linux/">linux<span class="count">3</span></a>
+          
+          <li>
+              <a href="/categories/openstack/">openstack<span class="count">3</span></a>
+          
+          <li>
+              <a href="/categories/project-management/">project-management<span class="count">3</span></a>
+          
+          <li>
+              <a href="/categories/xenapp/">xenapp<span class="count">3</span></a>
+          
+          <li>
+              <a href="/categories/docker/">docker<span class="count">2</span></a>
+          
+          <li>
+              <a href="/categories/hardware/">hardware<span class="count">2</span></a>
+          
+          <li>
+              <a href="/categories/lamp/">lamp<span class="count">2</span></a>
+          
+          <li>
+              <a href="/categories/cloudforms/">cloudforms<span class="count">1</span></a>
+          
+          <li>
+              <a href="/categories/cloudstack/">cloudstack<span class="count">1</span></a>
+          
+          <li>
+              <a href="/categories/devops/">devops<span class="count">1</span></a>
+          
+          <li>
+              <a href="/categories/ovirt/">ovirt<span class="count">1</span></a>
+          
+          <li>
+              <a href="/categories/rhev/">rhev<span class="count">1</span></a>
+          
+          <li>
+              <a href="/categories/storage/">storage<span class="count">1</span></a>
+          
+          </li>
+        </ul>
+      </section>
+    
+  
+
+  
+    <section id="mini-bio">
+      <header>
+        <h1>关于</h1>
+      </header>
+      <p>This theme was developed for Hugo static site generator.</p>
+      <footer>
+        <a href="/about" class="button">详细了解</a>
+      </footer>
+    </section>
+  
+</section>
+
+      <footer id="site-footer">
+  
+      <ul class="socnet-icons">
+        
+
+        <li><a href="//github.com/pacollins/hugo-future-imperfect-slim" target="_blank" rel="noopener" title="GitHub" class="fab fa-github"></a></li>
+
+
+
+
+
+
+<li><a href="//flickr.com/photos/example" target="_blank" rel="noopener" title="Flickr" class="fab fa-flickr"></a></li>
+
+
+
+
+<li><a href="//www.linkedin.com/in/example" target="_blank" rel="noopener" title="LinkedIn" class="fab fa-linkedin"></a></li>
+<li><a href="//linkedin.com/company/examplebusiness" target="_blank" rel="noopener" title="LinkedIn Company" class="fab fa-linkedin"></a></li>
+
+
+
+<li><a href="//facebook.com/example" target="_blank" rel="noopener" title="Facebook" class="fab fa-facebook"></a></li>
+<li><a href="//reddit.com/user/example" target="_blank" rel="noopener" title="Reddit" class="fab fa-reddit"></a></li>
+
+
+
+
+
+
+
+<li><a href="//instagram.com/example" target="_blank" rel="noopener" title="Instagram" class="fab fa-instagram"></a></li>
+
+<li><a href="//twitter.com/example" target="_blank" rel="noopener" title="Twitter" class="fab fa-twitter"></a></li>
+
+
+
+<li><a href="//www.pinterest.com/example" target="_blank" rel="noopener" title="Pinterest" class="fab fa-pinterest-p"></a></li>
+<li><a href="//telegram.me/example" target="_blank" rel="noopener" title="telegram" class="fab fa-telegram"></a></li>
+
+
+
+<li><a href="//researchgate.net/profile/example" target="_blank" rel="noopener" title="Research Gate"><i class="ai ai-researchgate"></i></a></li>
+<li><a href="//keybase.io/example" target="_blank" rel="noopener" title="keybase" class="fab fa-keybase"></a></li>
+<li><a href="//example.com/@example" target="_blank" rel="noopener" title="mastodon" class="fab fa-mastodon"></a></li>
+<li><a href="mailto:example" target="_blank" title="Email" class="far fa-envelope"></a></li>
+
+      </ul>
+  
+  <p class="copyright">
+    © 2020 Hugo Future Imperfect Slim em português
+      <br>
+    主题: <a href='https://themes.gohugo.io/hugo-future-imperfect-slim/' target='_blank' rel='noopener'>Hugo Future Imperfect Slim</a><br>移植自 <a href='https://html5up.net/future-imperfect' target='_blank' rel='noopener'>HTML5 UP</a> | 由 <a href='https://gohugo.io/' target='_blank' rel='noopener' title='0.80.0'>Hugo</a> 驱动
+  </p>
+</footer>
+<a id="back-to-top" href="#" class="fas fa-arrow-up fa-2x"></a>
+
+      <script src="/js/highlight.js"></script>
+    
+    <script>hljs.initHighlightingOnLoad();</script><script src="/js/bundle.min.bbba6b424a8ac5b6858cd5fc80eabc9c5277945cc2dc349204646b84891b4b58.js" integrity="sha256-u7prQkqKxbaFjNX8gOq8nFJ3lFzC3DSSBGRrhIkbS1g="></script>
+    <script src="/js/add-on.js"></script>
+    </div>
+  </body>
+</html>

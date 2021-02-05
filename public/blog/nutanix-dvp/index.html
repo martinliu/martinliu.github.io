@@ -1,0 +1,903 @@
+<!doctype html>
+<html lang="zh-cn">
+  <head>
+  <meta charset="utf-8">
+<title>为Docker Swarm群集配置Nutanix持久存储 - Hugo Future Imperfect Slim em português</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+<meta name="generator" content="Hugo 0.80.0" /><meta property="og:site_name" content="Hugo Future Imperfect Slim em português">
+  <meta property="og:title" content="为Docker Swarm群集配置Nutanix持久存储">
+  <meta property="og:description" content="A theme by HTML5 UP, ported by Julio Pescador. Slimmed and enhanced by Patrick Collins. Multilingual by StatnMap. Powered by Hugo.">
+  <meta property="description" content="A theme by HTML5 UP, ported by Julio Pescador. Slimmed and enhanced by Patrick Collins. Multilingual by StatnMap. Powered by Hugo.">
+  <meta property="og:url" content="https://example.com/blog/nutanix-dvp/">
+  <meta property="og:type" content="article">
+  
+    <meta property="og:image" content="https://example.com/img/main/logo.jpg">
+  
+  <link rel="stylesheet" href="/css/bundle.min.d9e04ae08c9b3049b766dbd4aeab7d862c5ea1d13679b621490e0f5df5507497.css" integrity="sha256-2eBK4IybMEm3ZtvUrqt9hixeodE2ebYhSQ4PXfVQdJc="><link rel="stylesheet" href="/css/add-on.css">
+</head>
+
+  <body>
+    
+
+<header id="site-header">
+  <nav id="site-nav">
+    <h1 class="nav-title">
+      <a href="/" class="nav">
+        
+          博客
+        
+      </a>
+    </h1>
+    <menu id="site-nav-menu" class="flyout-menu menu">
+      
+        
+          
+          <a href="/" class="nav link"><i class='fas fa-home'></i> 首页</a>
+        
+      
+        
+          
+          <a href="/about/" class="nav link"><i class='far fa-id-card'></i> 关于</a>
+        
+      
+        
+          
+          <a href="/blog/" class="nav link"><i class='far fa-newspaper'></i> 博客</a>
+        
+      
+        
+          
+          <a href="/categories/" class="nav link"><i class='fas fa-sitemap'></i> 分类</a>
+        
+      
+        
+          
+          <a href="/contact/" class="nav link"><i class='far fa-envelope'></i> 联系</a>
+        
+      
+      <a href="#share-menu" class="nav link share-toggle"><i class="fas fa-share-alt">&nbsp;</i>Share</a>
+      <a href="#search-input" class="nav link search-toggle"><i class="fas fa-search">&nbsp;</i>Search</a>
+    </menu>
+    <a href="#search-input" class="nav search-toggle"><i class="fas fa-search fa-2x">&nbsp;</i></a>
+    <a href="#share-menu" class="nav share-toggle"><i class="fas fa-share-alt fa-2x">&nbsp;</i></a>
+    <a href="#lang-menu" class="nav lang-toggle" lang="zh-cn">zh-cn</a>
+    <a href="#site-nav" class="nav nav-toggle"><i class="fas fa-bars fa-2x"></i></a>
+  </nav>
+  <menu id="search" class="menu"><input id="search-input" class="search-input menu"></input><div id="search-results" class="search-results menu"></div></menu>
+  <menu id="lang-menu" class="flyout-menu menu">
+  <a href="#" lang="zh-cn" class="nav link active">中文 (zh-cn)</a>
+  
+    
+      
+        <a href="/en" lang="en" class="nav no-lang link">English (en)</a>
+      
+    
+      
+    
+  
+</menu>
+
+  
+    <menu id="share-menu" class="flyout-menu menu">
+      <h1>Share Post</h1>
+      
+
+
+
+
+  
+    
+    <a href="//twitter.com/share?text=%e4%b8%baDocker%20Swarm%e7%be%a4%e9%9b%86%e9%85%8d%e7%bd%aeNutanix%e6%8c%81%e4%b9%85%e5%ad%98%e5%82%a8&amp;url=https%3a%2f%2fexample.com%2fblog%2fnutanix-dvp%2f" target="_blank" rel="noopener" class="nav share-btn twitter">
+        <p>Twitter</p>
+      </a>
+  
+
+  
+      <a href="//www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fexample.com%2fblog%2fnutanix-dvp%2f" target="_blank" rel="noopener" class="nav share-btn facebook">
+        <p>Facebook</p>
+        </a>
+  
+
+  
+    <a href="//www.reddit.com/submit?url=https%3a%2f%2fexample.com%2fblog%2fnutanix-dvp%2f&amp;title=%e4%b8%baDocker%20Swarm%e7%be%a4%e9%9b%86%e9%85%8d%e7%bd%aeNutanix%e6%8c%81%e4%b9%85%e5%ad%98%e5%82%a8" target="_blank" rel="noopener" class="nav share-btn reddit">
+          <p>Reddit</p>
+        </a>
+  
+
+  
+        <a href="//www.linkedin.com/shareArticle?url=https%3a%2f%2fexample.com%2fblog%2fnutanix-dvp%2f&amp;title=%e4%b8%baDocker%20Swarm%e7%be%a4%e9%9b%86%e9%85%8d%e7%bd%aeNutanix%e6%8c%81%e4%b9%85%e5%ad%98%e5%82%a8" target="_blank" rel="noopener" class="nav share-btn linkedin">
+            <p>LinkedIn</p>
+          </a>
+  
+
+  
+        <a href="//www.pinterest.com/pin/create/button/?url=https%3a%2f%2fexample.com%2fblog%2fnutanix-dvp%2f&amp;description=%e4%b8%baDocker%20Swarm%e7%be%a4%e9%9b%86%e9%85%8d%e7%bd%aeNutanix%e6%8c%81%e4%b9%85%e5%ad%98%e5%82%a8" target="_blank" rel="noopener" class="nav share-btn pinterest">
+          <p>Pinterest</p>
+        </a>
+  
+
+  
+        <a href="mailto:?subject=%e6%9f%a5%e7%9c%8b%e6%ad%a4%e5%b8%96%e5%ad%90%e7%9a%84%e4%bd%9c%e8%80%85 %7b%20%20%20%20%20%20%20%20map%5b%5d%7d&amp;body=https%3a%2f%2fexample.com%2fblog%2fnutanix-dvp%2f" target="_blank" class="nav share-btn email" data-proofer-ignore>
+          <p>Email</p>
+        </a>
+  
+
+
+    </menu>
+  
+</header>
+
+    <div id="wrapper">
+      <section id="site-intro" >
+  <a href="/"><img src="https://example.com/img/main/logo.jpg" class="circle" width="100" alt="Hugo Future Imperfect Slim" /></a>
+  <header>
+    <h1>Hugo Future Imperfect Slim</h1>
+  </header>
+  <main>
+    <p>Another fine, responsive site template by <a href='http://html5up.net'>HTML5 UP</a>.</p>
+  </main>
+  
+    <footer>
+      <ul class="socnet-icons">
+        
+
+        <li><a href="//github.com/pacollins/hugo-future-imperfect-slim" target="_blank" rel="noopener" title="GitHub" class="fab fa-github"></a></li>
+
+
+
+
+
+
+<li><a href="//flickr.com/photos/example" target="_blank" rel="noopener" title="Flickr" class="fab fa-flickr"></a></li>
+
+
+
+
+<li><a href="//www.linkedin.com/in/example" target="_blank" rel="noopener" title="LinkedIn" class="fab fa-linkedin"></a></li>
+<li><a href="//linkedin.com/company/examplebusiness" target="_blank" rel="noopener" title="LinkedIn Company" class="fab fa-linkedin"></a></li>
+
+
+
+<li><a href="//facebook.com/example" target="_blank" rel="noopener" title="Facebook" class="fab fa-facebook"></a></li>
+<li><a href="//reddit.com/user/example" target="_blank" rel="noopener" title="Reddit" class="fab fa-reddit"></a></li>
+
+
+
+
+
+
+
+<li><a href="//instagram.com/example" target="_blank" rel="noopener" title="Instagram" class="fab fa-instagram"></a></li>
+
+<li><a href="//twitter.com/example" target="_blank" rel="noopener" title="Twitter" class="fab fa-twitter"></a></li>
+
+
+
+<li><a href="//www.pinterest.com/example" target="_blank" rel="noopener" title="Pinterest" class="fab fa-pinterest-p"></a></li>
+<li><a href="//telegram.me/example" target="_blank" rel="noopener" title="telegram" class="fab fa-telegram"></a></li>
+
+
+
+<li><a href="//researchgate.net/profile/example" target="_blank" rel="noopener" title="Research Gate"><i class="ai ai-researchgate"></i></a></li>
+<li><a href="//keybase.io/example" target="_blank" rel="noopener" title="keybase" class="fab fa-keybase"></a></li>
+<li><a href="//example.com/@example" target="_blank" rel="noopener" title="mastodon" class="fab fa-mastodon"></a></li>
+<li><a href="mailto:example" target="_blank" title="Email" class="far fa-envelope"></a></li>
+
+      </ul>
+    </footer>
+  
+</section>
+
+      <main id="site-main">
+        
+  <article class="post">
+    <header>
+  <div class="title">
+    
+      <h2><a href="/blog/nutanix-dvp/">为Docker Swarm群集配置Nutanix持久存储</a></h2>
+    
+    
+  </div>
+  <div class="meta">
+    <time datetime="2017-11-02 00:00:00 &#43;0000 UTC">November 2, 2017</time>
+    
+    <p>5 分钟</p>
+  </div>
+</header>
+
+    <div id="socnet-share">
+      
+
+
+
+
+  
+    
+    <a href="//twitter.com/share?text=%e4%b8%baDocker%20Swarm%e7%be%a4%e9%9b%86%e9%85%8d%e7%bd%aeNutanix%e6%8c%81%e4%b9%85%e5%ad%98%e5%82%a8&amp;url=https%3a%2f%2fexample.com%2fblog%2fnutanix-dvp%2f" target="_blank" rel="noopener" class="nav share-btn twitter">
+        <p>Twitter</p>
+      </a>
+  
+
+  
+      <a href="//www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fexample.com%2fblog%2fnutanix-dvp%2f" target="_blank" rel="noopener" class="nav share-btn facebook">
+        <p>Facebook</p>
+        </a>
+  
+
+  
+    <a href="//www.reddit.com/submit?url=https%3a%2f%2fexample.com%2fblog%2fnutanix-dvp%2f&amp;title=%e4%b8%baDocker%20Swarm%e7%be%a4%e9%9b%86%e9%85%8d%e7%bd%aeNutanix%e6%8c%81%e4%b9%85%e5%ad%98%e5%82%a8" target="_blank" rel="noopener" class="nav share-btn reddit">
+          <p>Reddit</p>
+        </a>
+  
+
+  
+        <a href="//www.linkedin.com/shareArticle?url=https%3a%2f%2fexample.com%2fblog%2fnutanix-dvp%2f&amp;title=%e4%b8%baDocker%20Swarm%e7%be%a4%e9%9b%86%e9%85%8d%e7%bd%aeNutanix%e6%8c%81%e4%b9%85%e5%ad%98%e5%82%a8" target="_blank" rel="noopener" class="nav share-btn linkedin">
+            <p>LinkedIn</p>
+          </a>
+  
+
+  
+        <a href="//www.pinterest.com/pin/create/button/?url=https%3a%2f%2fexample.com%2fblog%2fnutanix-dvp%2f&amp;description=%e4%b8%baDocker%20Swarm%e7%be%a4%e9%9b%86%e9%85%8d%e7%bd%aeNutanix%e6%8c%81%e4%b9%85%e5%ad%98%e5%82%a8" target="_blank" rel="noopener" class="nav share-btn pinterest">
+          <p>Pinterest</p>
+        </a>
+  
+
+  
+        <a href="mailto:?subject=%e6%9f%a5%e7%9c%8b%e6%ad%a4%e5%b8%96%e5%ad%90%e7%9a%84%e4%bd%9c%e8%80%85 %7b%20%20%20%20%20%20%20%20map%5b%5d%7d&amp;body=https%3a%2f%2fexample.com%2fblog%2fnutanix-dvp%2f" target="_blank" class="nav share-btn email" data-proofer-ignore>
+          <p>Email</p>
+        </a>
+  
+
+
+    </div>
+    <div class="content">
+      
+      <p>本文介绍如何用Docker卷插件的方式，给Docker Swarm的群集挂载Nutanix存储。<a href="https://store.docker.com/plugins/nutanix-dvp-docker-volume-plug-in">Nutanix Container Volume Plug-in </a>简称DVP，可以给容器提供数据持久化的功能。</p>
+<p>本文使用ownCloud网盘应用做功能测试。测试的过程如下，安装部署Docker Datacenter，配置好群集，在UCP的界面里调用DVP插件建持久的数据卷，建立ownCloud服务，部署和测试该服务。</p>
+<h2 id="nutanix-dvp-docker-volume-plug-in安装和配置">Nutanix DVP (Docker Volume Plug-in)安装和配置</h2>
+<p>这一部分描述DVP的安装部署过程，需要连接互联网；安装调试完毕之后，作虚拟机的镜像模板使用。这样Docker Swarm的其它节点也都不需要重复这个步骤了。</p>
+<p>本文使用的是Docker社区文档稳定版 17.03.1-ce ；本文使用的OS是CentOS 7.3。所Docker安装的版本如下：</p>
+<pre><code>[root@centos7-temp]# docker version
+Client:
+ Version:      17.03.1-ce
+ API version:  1.27
+ Go version:   go1.7.5
+ Git commit:   c6d412e
+ Built:        Mon Mar 27 17:05:44 2017
+ OS/Arch:      linux/amd64
+
+Server:
+ Version:      17.03.1-ce
+ API version:  1.27 (minimum version 1.12)
+ Go version:   go1.7.5
+ Git commit:   c6d412e
+ Built:        Mon Mar 27 17:05:44 2017
+ OS/Arch:      linux/amd64
+ Experimental: false
+ 
+[root@centos7-temp]# rpm -qa|grep docker
+docker-ce-17.03.1.ce-1.el7.centos.x86_64
+docker-ce-selinux-17.03.1.ce-1.el7.centos.noarch
+
+</code></pre><p>本文使用的Docker 安装yum源如下：</p>
+<pre><code>[root@centos7-temp]# cat /etc/yum.repos.d/docker-ce.repo
+[docker-ce-stable]
+name=Docker CE Stable - $basearch
+baseurl=https://download.docker.com/linux/centos/7/$basearch/stable
+enabled=1
+gpgcheck=1
+gpgkey=https://download.docker.com/linux/centos/gpg
+
+[docker-ce-stable-debuginfo]
+name=Docker CE Stable - Debuginfo $basearch
+baseurl=https://download.docker.com/linux/centos/7/debug-$basearch/stable
+enabled=0
+gpgcheck=1
+gpgkey=https://download.docker.com/linux/centos/gpg
+
+[docker-ce-stable-source]
+name=Docker CE Stable - Sources
+baseurl=https://download.docker.com/linux/centos/7/source/stable
+enabled=0
+gpgcheck=1
+gpgkey=https://download.docker.com/linux/centos/gpg
+
+[docker-ce-edge]
+name=Docker CE Edge - $basearch
+baseurl=https://download.docker.com/linux/centos/7/$basearch/edge
+enabled=0
+gpgcheck=1
+gpgkey=https://download.docker.com/linux/centos/gpg
+
+[docker-ce-edge-debuginfo]
+name=Docker CE Edge - Debuginfo $basearch
+baseurl=https://download.docker.com/linux/centos/7/debug-$basearch/edge
+enabled=0
+gpgcheck=1
+gpgkey=https://download.docker.com/linux/centos/gpg
+
+[docker-ce-edge-source]
+name=Docker CE Edge - Sources
+baseurl=https://download.docker.com/linux/centos/7/source/edge
+enabled=0
+gpgcheck=1
+gpgkey=https://download.docker.com/linux/centos/gpg
+
+[docker-ce-test]
+name=Docker CE Test - $basearch
+baseurl=https://download.docker.com/linux/centos/7/$basearch/test
+enabled=0
+gpgcheck=1
+gpgkey=https://download.docker.com/linux/centos/gpg
+
+[docker-ce-test-debuginfo]
+name=Docker CE Test - Debuginfo $basearch
+baseurl=https://download.docker.com/linux/centos/7/debug-$basearch/test
+enabled=0
+gpgcheck=1
+gpgkey=https://download.docker.com/linux/centos/gpg
+
+[docker-ce-test-source]
+name=Docker CE Test - Sources
+baseurl=https://download.docker.com/linux/centos/7/source/test
+enabled=0
+gpgcheck=1
+gpgkey=https://download.docker.com/linux/centos/gpg
+</code></pre><p>本机所使用的所有安装源如下：</p>
+<pre><code>[root@centos7-temp]# yum repolist
+Loaded plugins: fastestmirror
+Loading mirror speeds from cached hostfile
+ * base: mirrors.aliyun.com
+ * epel: mirrors.aliyun.com
+ * extras: mirrors.aliyun.com
+ * updates: mirrors.aliyun.com
+repo id                                   repo name                                                         status
+base/7/x86_64                             CentOS-7 - Base - mirrors.aliyun.com                               9,363
+docker-ce-stable/x86_64                   Docker CE Stable - x86_64                                              4
+epel/x86_64                               Extra Packages for Enterprise Linux 7 - x86_64                    11,808
+extras/7/x86_64                           CentOS-7 - Extras - mirrors.aliyun.com                               381
+updates/7/x86_64                          CentOS-7 - Updates - mirrors.aliyun.com                            1,859
+repolist: 23,415
+</code></pre><p>安装docker引擎，并启动服务，并校验服务状态。安装过程参考如下：</p>
+<pre><code>[root@centos7-temp]# yum install -y docker-ce
+[root@centos7-temp]# systemctl enable docker
+[root@centos7-temp]# systemctl start docker
+[root@centos7-temp]# systemctl status docker
+● docker.service - Docker Application Container Engine
+   Loaded: loaded (/usr/lib/systemd/system/docker.service; enabled; vendor preset: disabled)
+   Active: active (running) since Tue 2017-06-20 20:30:49 CST; 19min ago
+     Docs: https://docs.docker.com
+ Main PID: 875 (dockerd)
+   CGroup: /system.slice/docker.service
+           ├─ 875 /usr/bin/dockerd
+           ├─ 942 docker-containerd -l unix:///var/run/docker/libcontainerd/docker-containerd.sock --metrics-in...
+           ├─2008 docker-containerd-shim 0ca2346b6126de702fb4dda5f807c0a69a402eb643f15c142730277d0eb7bbcb /var/...
+           └─0ca2346b6126de702fb4dda5f807c0a69a402eb643f15c142730277d0eb7bbcb
+             └─2038 /usr/bin/python /code/main.py --prism-ip 10.68.69.22 --dataservices-ip 10.68.69.23 --prism-...
+</code></pre><p>到目前为止，Docker安装配置完成。</p>
+<p>下面开始安装DVP，安装和配置过程参考页面。</p>
+<p><a href="https://store.docker.com/plugins/nutanix-dvp-docker-volume-plug-in">https://store.docker.com/plugins/nutanix-dvp-docker-volume-plug-in</a></p>
+<p>下面是给操作系统安装iscsi initiator服务的参考步骤：</p>
+<pre><code>yum install -y iscsi-initiator-utils 
+systemd-tmpfiles --create
+systemctl start iscsid
+systemctl enable iscsid
+systemctl status iscsid
+● iscsid.service - Open-iSCSI
+   Loaded: loaded (/usr/lib/systemd/system/iscsid.service; enabled; vendor preset: disabled)
+   Active: active (running) since Tue 2017-06-20 20:30:46 CST; 24min ago
+     Docs: man:iscsid(8)
+           man:iscsiadm(8)
+ Main PID: 888 (iscsid)
+   CGroup: /system.slice/iscsid.service
+           ├─882 /usr/sbin/iscsid
+           └─888 /usr/sbin/iscsid
+
+Jun 20 20:30:46 centos7-temp.zenlab.local systemd[1]: Starting Open-iSCSI...
+Jun 20 20:30:46 centos7-temp.zenlab.local iscsid[878]: iSCSI logger with pid=882 started!
+Jun 20 20:30:46 centos7-temp.zenlab.local systemd[1]: Failed to read PID from file /var/run/iscsid.pid: Inva...ent
+Jun 20 20:30:46 centos7-temp.zenlab.local systemd[1]: Started Open-iSCSI.
+Jun 20 20:30:47 centos7-temp.zenlab.local iscsid[882]: iSCSI daemon with pid=888 started!
+Hint: Some lines were ellipsized, use -l to show in full.
+</code></pre><blockquote>
+<p>解释一下DVP的工作原理是，它是让Docker主机通过iSCSI协议连接Nutanix的存储服务。DVP插件的配置里包含了连接存储服务和存储容器（这个容器是Nutanix的存储术语，非Docker说的容器）的相关信息。这样Docker主机上用该卷插件建立的数据卷都会指向Nutanix后台的存储容器中；数据通过iSCSI协议连接Nutanix存储服务的时候，就可以利用到Nutanix群集提供的负载均衡能力；当数据块写入Nutanix存储池的过程中和之后，就可以利用到到Nutanix存储容器所具备的其它重要特性：数据块2~3副本的高可靠性、冷热数据分成、压缩、去重、纠删码等；而且存储空间对于容器或者Docker Swarm里的服务都是透明和无限容量的。</p>
+</blockquote>
+<p>现在做一些安装DVP的准备工作，询问Nutanix系统管理员下面信息：</p>
+<ul>
+<li>获得Prism 的IP</li>
+<li>获得Nutanix群集数据服务的IP，这个IP是群集上的虚拟服务IP</li>
+<li>获得群集的用户名和密码</li>
+<li>新建一个测试存储容器，获得容器名</li>
+</ul>
+<p>参考下面的DVP安装命令：</p>
+<pre><code>docker plugin install ntnx/nutanix_volume_plugin PRISM_IP=&quot;10.68.69.22&quot; DATASERVICES_IP=&quot;10.68.69.23&quot; PRISM_PASSWORD=&quot;nutanix/4u&quot; PRISM_USERNAME=&quot;admin&quot; DEFAULT_CONTAINER=&quot;ddc-sc1&quot; --alias nutanix
+</code></pre><p>以上的命令执行结果如下：</p>
+<pre><code>[root@centos7-temp]# docker plugin install ntnx/nutanix_volume_plugin PRISM_IP=&quot;10.68.69.22&quot; DATASERVICES_IP=&quot;10.68.69.23&quot; PRISM_PASSWORD=&quot;nutanix/4u&quot; PRISM_USERNAME=&quot;admin&quot; DEFAULT_CONTAINER=&quot;ddc-sc1&quot; --alias nutanix
+Plugin &quot;ntnx/nutanix_volume_plugin&quot; is requesting the following privileges:
+ - network: [host]
+ - mount: [/dev]
+ - mount: [/lib/modules]
+ - mount: [/etc/iscsi]
+ - mount: [/var/lock/iscsi]
+ - mount: [/proc]
+ - allow-all-devices: [true]
+ - capabilities: [CAP_SYS_ADMIN CAP_SYS_PTRACE CAP_IPC_LOCK CAP_IPC_OWNER CAP_NET_ADMIN CAP_MKNOD CAP_SYS_MODULE]
+Do you grant the above permissions? [y/N] y （输入y，按回车）
+latest: Pulling from ntnx/nutanix_volume_plugin
+be892c8cb64d: Download complete
+Digest: sha256:5a3730ffae077eb6ddc0c125620283d56852528b686cbe42f2f58696eab82c0d
+Status: Downloaded newer image for ntnx/nutanix_volume_plugin:latest
+Installed plugin ntnx/nutanix_volume_plugin
+</code></pre><p>确认VDP安装结果，这个插件应该是最新版、启动的状态，如下：</p>
+<pre><code>[root@centos7-temp]# docker plugin ls
+ID                  NAME                DESCRIPTION                        ENABLED
+f0e38fbc11b3        nutanix:latest      Nutanix volume plugin for docker   true
+</code></pre><p>执行下面的测试，确认DVP工作正常。</p>
+<pre><code>[root@centos7-temp]# docker volume create testvol -d nutanix:latest
+testvol
+[root@centos7-temp]# docker volume ls
+DRIVER              VOLUME NAME
+nutanix:latest      testvol
+[root@centos7-temp]#
+</code></pre><p>回到Nutanix的Prisum界面（主要的群集管理图形化界面）中查看Storage &ndash;&gt; table  &ndash;&gt; Volume Group，应该能看到这个命令所创建的名为testvol的数据卷。如下图所示：</p>
+<p><img src="/images/Screen%20Shot%202017-06-20%20at%209.07.13%20PM.png" alt=""></p>
+<p>在命令行删除这个测试的卷。</p>
+<pre><code>[root@centos7-temp]# docker volume rm testvol
+testvol
+[root@centos7-temp]# docker volume ls
+DRIVER              VOLUME NAME
+[root@centos7-temp]#
+</code></pre><p>在回到Prisum界面中查看刚才看到的那个卷应该就消失了。到此为止所有节点的DVP部署配置工作就完毕了，并且确认docker服务和DVP功能都很正常。用 sys-unconfig 命令关机，把这个虚拟机在Prisum里面做一个快照备用，也可以在Nutanix的acli命令行里面把它做成一个基础镜像。</p>
+<p>我们已经理解和熟悉了DVP的基本操作，配置和部署，下面开始安装Docker Datacenter；Docker Datacenter的架构图如下所示：
+<img src="/images/14979754711332.jpg" alt=""></p>
+<p>本文安装的架构是：</p>
+<ol>
+<li>一个 UCP manager 节点</li>
+<li>一个 DTR 节点</li>
+<li>两个 worker node 节点</li>
+</ol>
+<p>在Nutanix的Prisum中用刚才制作的那个快照或者镜像模板，克隆/新建4个虚拟机。虚拟机的参考配置如下：</p>
+<ul>
+<li>2 vCPU</li>
+<li>4GB RAM</li>
+<li>50GB Disk</li>
+</ul>
+<h2 id="安装ucpdocker-universal-control-plane节点">安装UCP（Docker Universal Control Plane）节点</h2>
+<p>在Nutanix的Prisum中从刚才新建的四个虚拟机中选择一个，Power on开机；ssh登录到操作系统内之后，设定主机名和IP地址。</p>
+<p>安装配置参考文档：https://docs.docker.com/datacenter/ucp/2.1/guides/admin/install/install-offline/#download-the-offline-package</p>
+<p>注意事项，提前下载好安装包，这个tar包里面包含了UCP需要的所有镜像，可以一次性导入到UCP的节点上。</p>
+<pre><code>wget https://packages.docker.com/caas/ucp_images_2.1.4.tar.gz -O docker-datacenter.tar.gz
+
+docker load &lt; docker-datacenter.tar.gz
+</code></pre><p>载入完毕后，可以看到如下镜像。</p>
+<pre><code>[root@ucp-master ~]# docker images
+REPOSITORY              TAG                 IMAGE ID            CREATED             SIZE
+docker/ucp-metrics      2.1.4               e3e24ef156bd        3 weeks ago         92.2 MB
+docker/ucp-swarm        2.1.4               d8b51d6801e5        3 weeks ago         21 MB
+docker/ucp-hrm          2.1.4               38a19323327d        3 weeks ago         14.8 MB
+docker/ucp-etcd         2.1.4               9aa382502e19        3 weeks ago         38.5 MB
+docker/ucp-controller   2.1.4               5a852aa3039e        3 weeks ago         28 MB
+docker/ucp-dsinfo       2.1.4               66ee9368796a        3 weeks ago         159 MB
+docker/ucp              2.1.4               7a28dbfc44e4        3 weeks ago         19.1 MB
+docker/ucp              latest              7a28dbfc44e4        3 weeks ago         19.1 MB
+docker/ucp-cfssl        2.1.4               acdc1f147711        3 weeks ago         15.1 MB
+docker/ucp-compose      2.1.4               25775e989077        3 weeks ago         32.9 MB
+docker/ucp-auth-store   2.1.4               f27ad13dee6c        3 weeks ago         58.7 MB
+docker/ucp-agent        2.1.4               d716a096c331        3 weeks ago         22.5 MB
+docker/ucp-auth         2.1.4               1f4739cd3c08        3 weeks ago         25.1 MB
+[root@ucp-master ~]#
+</code></pre><p>安装UCP的命令参考如下：</p>
+<pre><code>docker run --rm -it --name ucp \
+  -v /var/run/docker.sock:/var/run/docker.sock \
+  docker/ucp:2.1.4 install \
+  --host-address 10.68.69.12 \
+  --interactive
+</code></pre><p>以上命令中10.68.69.12是UCP主机的ip地址，建议UCP使用固定IP。以上命令完毕后用浏览器访问这个IP。</p>
+<p>参考以下文档，完成UCP的安装步骤，其中需要到Docker网站获得30天的试用版许可证文件。</p>
+<p><a href="https://docs.docker.com/datacenter/ucp/2.1/guides/admin/install/">https://docs.docker.com/datacenter/ucp/2.1/guides/admin/install/</a></p>
+<p>能够正常登陆访问UCP之后，在首页下方点击 【Add Node】按钮，获得加其它节点到群集里的命令，参考命令如下：</p>
+<pre><code>docker swarm join \
+  --token SWMTKN-1-1310ah7gzj9e7bk6a5yobo2qyiwf93ybrd29flkved1zqydd6i-7pir0884sag5pjofwzjq5o1um \
+  10.68.69.12:2377
+</code></pre><p>把以上命令记录在写字板中备用。</p>
+<h2 id="加3个节点到群集里">加3个节点到群集里</h2>
+<p>把剩下的三个虚拟机开机，进入操作系统后设定主机名和IP。其中的一个安装DTR（Docker镜像仓库）的节点建议使用固定IP。</p>
+<p>在每个操作系统里面用docker命令确认DVP是否正常。</p>
+<ul>
+<li>docker plugin ls</li>
+<li>docker volume ls</li>
+<li>systemctl status iscsid</li>
+</ul>
+<p>下面就可以把上一步所记录命令在命令行里面执行以下，完毕之后回到UCP的界面中查看是否它们已经添加成功。如下图所示：
+<img src="/images//Screen%20Shot%202017-06-20%20at%209.49.32%20PM.png" alt="Screen Shot 2017-06-20 at 9.49.32 P"></p>
+<h2 id="安装dtr-docker镜像仓库">安装DTR-Docker镜像仓库</h2>
+<p>在UCP首页的下方，找到并点击 【Install DTR】的按钮，取得安装命令（记得从清单中选择固定IP地址的DTR主机）；在登录DTR主机的控制台里面输入这个命令，命令如下：</p>
+<pre><code>docker run -it --rm \
+  docker/dtr:2.2.5 install \
+  --ucp-node 10.68.69.12 \
+  --ucp-insecure-tls
+</code></pre><p>DTR节点没有离线安装的整合包，它需要联网下载很多相关镜像，如果网络速度不是很快的话，下载和安装的过程需要至少半个小时，过程中还需要输入UCP的管理员，用户名和密码。</p>
+<p>参考文档如：
+<a href="https://docs.docker.com/datacenter/dtr/2.2/guides/admin/install/#step-3-install-dtr">https://docs.docker.com/datacenter/dtr/2.2/guides/admin/install/#step-3-install-dtr</a></p>
+<p>DTR正常工作了以后，登录建立一个名为owncloud的镜像库，点击【New Rrepository】输入owncloud。
+在一个节点上下载owncloud镜像，添加新的tag，上传到这个镜像到镜像库里备用。参考命令如下：</p>
+<pre><code>docker login dtr.zenlab.local
+docker pull owncloud
+docker tag owncloud:latest dtr.zenlab.local/admin/owncloud:latest
+docker push dtr.zenlab.local/admin/owncloud:latest
+</code></pre><p><img src="/images/Screen%20Shot%202017-06-20%20at%2010.10.13%20PM.png" alt="Screen Shot 2017-06-20 at 10.10.13 P"></p>
+<p>注意：如果你的环境中没有DNS，就把dtr.zenlab.local换成DTR的IP地址。</p>
+<p>以上这个步骤主要是方便以后，反复使用和测试这个镜像的可能性，如果所有的节点都有高速的互联网链接，可以忽略以上步骤。</p>
+<h2 id="docker-swarm群集中使用dvp">Docker Swarm群集中使用DVP</h2>
+<p>这里使用UCP的图形化界面，在一个所有节点都配置和部署了VDP的群集上，给群集挂载外部Nutanix的数据卷。</p>
+<p>登录UCP主页，点击Resource，点击Volumes，点击 【Create Volume】，输入相关参数，如下图所示。图中的sizeMb=500000这个参数是制定VolumeGroup的大小，不设定这个参数的话，默认是10GB。
+<img src="/images/Screen%20Shot%202017-06-21%20at%2012.22.24%20AM.png" alt="Screen Shot 2017-06-21 at 12.22.24 A"></p>
+<p>在到Nutanix的Prism里面查看这个Volume Group是否存在。应该如下图所示：</p>
+<p><img src="/images/Screen%20Shot%202017-06-21%20at%2012.23.32%20AM.png" alt="Screen Shot 2017-06-21 at 12.23.32 A"></p>
+<h2 id="部署owncloud网盘服务">部署OwnCloud网盘服务</h2>
+<p>登录UCP主页，点击 Service ， 点击 【Create a Service】按钮；开始建立这个服务。输入服务名，镜像名；点击 【Next】按钮。</p>
+<p><img src="/images/Screen%20Shot%202017-06-20%20at%2010.49.10%20PM.png" alt="Screen Shot 2017-06-20 at 10.49.10 P"></p>
+<p>点击 【Next】按钮。进入 Resource页面，这里需要配置端口和数据卷。
+<img src="/images/Screen%20Shot%202017-06-20%20at%2010.49.35%20PM.png" alt="Screen Shot 2017-06-20 at 10.49.35 P"></p>
+<p><img src="/images/Screen%20Shot%202017-06-20%20at%2010.49.58%20PM.png" alt="Screen Shot 2017-06-20 at 10.49.58 P"></p>
+<p>最后点击【Deploy Now】按钮。 部署完毕之后，显示这个服务的状态为正常。
+<img src="/images/Screen%20Shot%202017-06-21%20at%2012.25.51%20AM.png" alt="Screen Shot 2017-06-21 at 12.25.51 A"></p>
+<p><img src="/images/Screen%20Shot%202017-06-20%20at%2010.52.28%20PM.png" alt="Screen Shot 2017-06-20 at 10.52.28 P"></p>
+<p>点击这个服务，到这个页面的最下方，找到右下角的发布端口的链接，点击后，就可以看到ownCloud的初始化配置页面了。
+<img src="/images/Screen%20Shot%202017-06-20%20at%2010.53.24%20PM.png" alt="Screen Shot 2017-06-20 at 10.53.24 P"></p>
+<p>输入管理员的用户名和密码，进入之后，上传一些图片，测试一下功能是否正常。</p>
+<p><img src="/images/Screen%20Shot%202017-06-20%20at%2010.54.06%20PM.png" alt="Screen Shot 2017-06-20 at 10.54.06 P"></p>
+<p>尝试一些Docker Datacenter的高级功能，如服务的高可用性；同时Nutanix的DVP在底层保障了数据的持久性和完全性。测试步骤如下：</p>
+<ol>
+<li>找到运行owncloud的容器，删除这个容器</li>
+<li>在服务页面查看owncloud服务的状态变化</li>
+<li>等ownCloud的状态恢复正常之后</li>
+<li>再次登录ownCloud页面</li>
+<li>查看和确认刚才上传的文件是否还在</li>
+</ol>
+<h2 id="总结">总结</h2>
+<p>Nutanix是一种融合和了计算、存储和虚拟化（内置KVM）的超融合平台。Nutanix DVP (Docker Volume Plug-in)可以让平台里的容器用上持久化存储服务。DVP不仅可以给单独虚拟机里的容器提供持久卷服务，还能给类似于Docker Swarm的其它容器编排平台提供持久化数据服务功能。我后续的文章还会分享路测试Kubernetes等其它平台。</p>
+
+    </div>
+    <footer>
+      <div class="stats">
+  
+    <ul class="categories">
+      <li>None</li>
+    </ul>
+  
+  
+    <ul class="tags">
+      
+        
+          <li><a class="article-terms-link" href="/tags/nutanix/">Nutanix</a></li>
+        
+          <li><a class="article-terms-link" href="/tags/docker/">docker</a></li>
+        
+      
+    </ul>
+  
+</div>
+
+    </footer>
+  </article>
+  
+    
+  <article class="post">
+    
+    <div>
+      <h2 id="say-something">说些什么</h2>
+        <form id="comment-form" class="new-comment" method="POST">
+          
+          <h3 class='reply-notice hidden'>
+            <span class='reply-name'></span>
+          </h3>
+
+          
+          <input type="hidden" name="options[entryId]" value="67294c6296afbfc25a49d1f964147673">
+          <input type='hidden' name='fields[replyThread]' value=''>
+          <input type='hidden' name='fields[replyID]' value=''>
+          <input type='hidden' name='fields[replyName]' value=''>
+
+          
+          <input required name='fields[name]' type='text' placeholder='你的名字'>
+          <input name='fields[website]' type='text' placeholder='您的网页'>
+          <input required name='fields[email]' type='email' placeholder='你的邮件'>
+          <textarea required name='fields[body]' placeholder='你的信息' rows='10'></textarea>
+
+          
+          
+
+          
+          <div class='submit-notice'>
+            <strong class='submit-notice-text submit-success hidden'>感谢您的评论！被批准后它会立即在此站点展示。</strong>
+            <strong class='submit-notice-text submit-failed hidden'>很抱歉，您的提交存在错误。请确保所有必填字段都已填写正确，然后再试一次。</strong>
+          </div>
+
+          
+          <input type='submit' value='发送' class='button'>
+          <input type='submit' value='已发送' class='hidden button' disabled>
+          <input type='reset' value='重设' class='button'>
+        </form>
+    </div>
+
+    
+    <div>
+      <h2>评论</h2><p>还沒有留言。</p>
+      
+    </div>
+  </article>
+
+
+  
+  <div class="pagination">
+    
+      <a href="/blog/%E4%BD%BF%E7%94%A8-elastic-stack-%E7%9B%91%E6%8E%A7-covid-19-%E7%96%AB%E6%83%85%E5%8F%91%E5%B1%95/" class="button left"><span>使用 Elastic Stack 监控 Covid-19 疫情发展</span></a>
+    
+    
+      <a href="/blog/tips-for-docker-on-mac/" class="button right"><span>Tips for Docker on Mac</span></a>
+    
+  </div>
+
+      </main>
+      <section id="site-sidebar">
+  
+    <section id="recent-posts">
+      <header>
+        <h1>最新文章</h1>
+      </header>
+      
+      <article class="mini-post">
+          
+        <header>
+          <h2><a href="/blog/%E4%BD%BF%E7%94%A8-elastic-stack-%E7%9B%91%E6%8E%A7-covid-19-%E7%96%AB%E6%83%85%E5%8F%91%E5%B1%95/">使用 Elastic Stack 监控 Covid-19 疫情发展</a></h2>
+          <time class="published" datetime="2020-04-08 17:04:08 &#43;0800 CST">April 8, 2020</time>
+        </header>
+      </article>
+      
+      <article class="mini-post">
+          
+        <header>
+          <h2><a href="/blog/nutanix-dvp/">为Docker Swarm群集配置Nutanix持久存储</a></h2>
+          <time class="published" datetime="2017-11-02 00:00:00 &#43;0000 UTC">November 2, 2017</time>
+        </header>
+      </article>
+      
+      <article class="mini-post">
+          
+        <header>
+          <h2><a href="/blog/tips-for-docker-on-mac/">Tips for Docker on Mac</a></h2>
+          <time class="published" datetime="2017-09-26 00:00:00 &#43;0000 UTC">September 26, 2017</time>
+        </header>
+      </article>
+      
+      <article class="mini-post">
+          
+        <header>
+          <h2><a href="/blog/something-you-must-know-about-devops/">关于DevOps 的那些事</a></h2>
+          <time class="published" datetime="2017-09-23 00:00:00 &#43;0000 UTC">September 23, 2017</time>
+        </header>
+      </article>
+      
+      <article class="mini-post">
+          
+        <header>
+          <h2><a href="/blog/welcome-to-ghost/">切换到Ghost&#43;七牛</a></h2>
+          <time class="published" datetime="2017-09-21 00:00:00 &#43;0000 UTC">September 21, 2017</time>
+        </header>
+      </article>
+      
+      
+        <footer>
+          <a href="/posts/" class="button">查看更多</a>
+        </footer>
+      
+    </section>
+  
+
+  
+    
+
+      <section id="categories">
+        <header>
+          <h1><a href="/categories">分类</a></h1>
+        </header>
+        <ul>
+          
+          
+          <li>
+              <a href="/categories/blog/">blog<span class="count">52</span></a>
+          
+          <li>
+              <a href="/categories/nsm/">nsm<span class="count">41</span></a>
+          
+          <li>
+              <a href="/categories/itsm/">itsm<span class="count">21</span></a>
+          
+          <li>
+              <a href="/categories/opensource/">opensource<span class="count">21</span></a>
+          
+          <li>
+              <a href="/categories/running/">running<span class="count">21</span></a>
+          
+          <li>
+              <a href="/categories/cms/cmdb/">cms/cmdb<span class="count">20</span></a>
+          
+          <li>
+              <a href="/categories/infrastructure/">infrastructure<span class="count">18</span></a>
+          
+          <li>
+              <a href="/categories/cloud-computing/">cloud-computing<span class="count">17</span></a>
+          
+          <li>
+              <a href="/categories/wordpress1/">wordpress1<span class="count">15</span></a>
+          
+          <li>
+              <a href="/categories/xendesktop/">xendesktop<span class="count">15</span></a>
+          
+          <li>
+              <a href="/categories/travel/">travel<span class="count">14</span></a>
+          
+          <li>
+              <a href="/categories/itil/itsm/">itil/itsm<span class="count">13</span></a>
+          
+          <li>
+              <a href="/categories/life/">life<span class="count">13</span></a>
+          
+          <li>
+              <a href="/categories/movie/">movie<span class="count">12</span></a>
+          
+          <li>
+              <a href="/categories/asset-mgmt/">asset-mgmt<span class="count">10</span></a>
+          
+          <li>
+              <a href="/categories/bmc/">bmc<span class="count">7</span></a>
+          
+          <li>
+              <a href="/categories/citrix/">citrix<span class="count">7</span></a>
+          
+          <li>
+              <a href="/categories/rhel/">rhel<span class="count">6</span></a>
+          
+          <li>
+              <a href="/categories/xenserver/">xenserver<span class="count">6</span></a>
+          
+          <li>
+              <a href="/categories/apple/">apple<span class="count">4</span></a>
+          
+          <li>
+              <a href="/categories/desktop/">desktop<span class="count">4</span></a>
+          
+          <li>
+              <a href="/categories/opennms/">opennms<span class="count">4</span></a>
+          
+          <li>
+              <a href="/categories/tools/">tools<span class="count">4</span></a>
+          
+          <li>
+              <a href="/categories/container/">container<span class="count">3</span></a>
+          
+          <li>
+              <a href="/categories/linux/">linux<span class="count">3</span></a>
+          
+          <li>
+              <a href="/categories/openstack/">openstack<span class="count">3</span></a>
+          
+          <li>
+              <a href="/categories/project-management/">project-management<span class="count">3</span></a>
+          
+          <li>
+              <a href="/categories/xenapp/">xenapp<span class="count">3</span></a>
+          
+          <li>
+              <a href="/categories/docker/">docker<span class="count">2</span></a>
+          
+          <li>
+              <a href="/categories/hardware/">hardware<span class="count">2</span></a>
+          
+          <li>
+              <a href="/categories/lamp/">lamp<span class="count">2</span></a>
+          
+          <li>
+              <a href="/categories/cloudforms/">cloudforms<span class="count">1</span></a>
+          
+          <li>
+              <a href="/categories/cloudstack/">cloudstack<span class="count">1</span></a>
+          
+          <li>
+              <a href="/categories/devops/">devops<span class="count">1</span></a>
+          
+          <li>
+              <a href="/categories/ovirt/">ovirt<span class="count">1</span></a>
+          
+          <li>
+              <a href="/categories/rhev/">rhev<span class="count">1</span></a>
+          
+          <li>
+              <a href="/categories/storage/">storage<span class="count">1</span></a>
+          
+          </li>
+        </ul>
+      </section>
+    
+  
+
+  
+    <section id="mini-bio">
+      <header>
+        <h1>关于</h1>
+      </header>
+      <p>This theme was developed for Hugo static site generator.</p>
+      <footer>
+        <a href="/about" class="button">详细了解</a>
+      </footer>
+    </section>
+  
+</section>
+
+      <footer id="site-footer">
+  
+      <ul class="socnet-icons">
+        
+
+        <li><a href="//github.com/pacollins/hugo-future-imperfect-slim" target="_blank" rel="noopener" title="GitHub" class="fab fa-github"></a></li>
+
+
+
+
+
+
+<li><a href="//flickr.com/photos/example" target="_blank" rel="noopener" title="Flickr" class="fab fa-flickr"></a></li>
+
+
+
+
+<li><a href="//www.linkedin.com/in/example" target="_blank" rel="noopener" title="LinkedIn" class="fab fa-linkedin"></a></li>
+<li><a href="//linkedin.com/company/examplebusiness" target="_blank" rel="noopener" title="LinkedIn Company" class="fab fa-linkedin"></a></li>
+
+
+
+<li><a href="//facebook.com/example" target="_blank" rel="noopener" title="Facebook" class="fab fa-facebook"></a></li>
+<li><a href="//reddit.com/user/example" target="_blank" rel="noopener" title="Reddit" class="fab fa-reddit"></a></li>
+
+
+
+
+
+
+
+<li><a href="//instagram.com/example" target="_blank" rel="noopener" title="Instagram" class="fab fa-instagram"></a></li>
+
+<li><a href="//twitter.com/example" target="_blank" rel="noopener" title="Twitter" class="fab fa-twitter"></a></li>
+
+
+
+<li><a href="//www.pinterest.com/example" target="_blank" rel="noopener" title="Pinterest" class="fab fa-pinterest-p"></a></li>
+<li><a href="//telegram.me/example" target="_blank" rel="noopener" title="telegram" class="fab fa-telegram"></a></li>
+
+
+
+<li><a href="//researchgate.net/profile/example" target="_blank" rel="noopener" title="Research Gate"><i class="ai ai-researchgate"></i></a></li>
+<li><a href="//keybase.io/example" target="_blank" rel="noopener" title="keybase" class="fab fa-keybase"></a></li>
+<li><a href="//example.com/@example" target="_blank" rel="noopener" title="mastodon" class="fab fa-mastodon"></a></li>
+<li><a href="mailto:example" target="_blank" title="Email" class="far fa-envelope"></a></li>
+
+      </ul>
+  
+  <p class="copyright">
+    © 2020 Hugo Future Imperfect Slim em português
+      <br>
+    主题: <a href='https://themes.gohugo.io/hugo-future-imperfect-slim/' target='_blank' rel='noopener'>Hugo Future Imperfect Slim</a><br>移植自 <a href='https://html5up.net/future-imperfect' target='_blank' rel='noopener'>HTML5 UP</a> | 由 <a href='https://gohugo.io/' target='_blank' rel='noopener' title='0.80.0'>Hugo</a> 驱动
+  </p>
+</footer>
+<a id="back-to-top" href="#" class="fas fa-arrow-up fa-2x"></a>
+
+      <script src="/js/highlight.js"></script>
+    
+    <script>hljs.initHighlightingOnLoad();</script><script src="/js/bundle.min.bbba6b424a8ac5b6858cd5fc80eabc9c5277945cc2dc349204646b84891b4b58.js" integrity="sha256-u7prQkqKxbaFjNX8gOq8nFJ3lFzC3DSSBGRrhIkbS1g="></script>
+    <script src="/js/add-on.js"></script>
+    </div>
+  </body>
+</html>

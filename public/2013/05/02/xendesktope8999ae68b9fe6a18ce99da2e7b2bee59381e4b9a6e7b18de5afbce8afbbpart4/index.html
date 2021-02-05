@@ -1,18 +1,691 @@
-<!doctype html><html lang=zh><head><meta charset=utf-8><meta http-equiv=x-ua-compatible content="IE=edge"><meta name=viewport content="width=device-width,initial-scale=1,maximum-scale=1"><title>XenDesktop虚拟桌面精品书籍导读(part4) - Martin Liu's Blog</title><meta property="og:title" content="XenDesktop虚拟桌面精品书籍导读(part4)"><meta name=twitter:title content="XenDesktop虚拟桌面精品书籍导读(part4)"><meta name=description content="[su_box color=&ldquo;orange&rdquo; icon=&ldquo;flag&rdquo;] 感谢 Eric Yao 的供稿，@老树皮Eric [/su_box] 桌面虚拟化项目的实施白皮书 《Citrix Virtual Desktop Handbook 5.x》，点击下载。 四、 控制层 Control Layer 控制层是设计架构的第"><meta property="og:description" content="[su_box color=&ldquo;orange&rdquo; icon=&ldquo;flag&rdquo;] 感谢 Eric Yao 的供稿，@老树皮Eric [/su_box] 桌面虚拟化项目的实施白皮书 《Citrix Virtual Desktop Handbook 5.x》，点击下载。 四、 控制层 Control Layer 控制层是设计架构的第"><meta name=twitter:description content="[su_box color=&ldquo;orange&rdquo; icon=&ldquo;flag&rdquo;] 感谢 Eric Yao 的供稿，@老树皮Eric [/su_box] 桌面虚拟化项目的实施白皮书 《Citrix Virtual Desktop Handbook 5.x》，点击下载。 四、 控制层 Control Layer 控制层是设计架构的第"><meta name=author content="刘征 Martin Liu"><link href=https://martinliu.cn/favicon.ico rel=icon type=image/x-icon><meta name=msvalidate.01 content="12F570013342D1F8B60A455D09221C1D"><meta name=yandex-verification content="7e9acc85531b0f35"><meta name=google-site-verification content="4oSwNTpy1vzip3_lt6XhkhMfImCD_DZlvL3K1k-M8qk"><meta name=baidu-site-verification content="Z7d1tYkxzQ"><script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-TL37V8G');</script><meta property="og:image" content="https://res.cloudinary.com/martinliu/image/upload/q_auto:eco/avatar.jpg"><meta name=twitter:image content="https://res.cloudinary.com/martinliu/image/upload/q_auto:eco/avatar.jpg"><meta name=twitter:card content="summary"><meta name=twitter:site content="@martinliu"><meta name=twitter:creator content="@martinliu"><meta property="og:url" content="https://martinliu.cn/2013/05/02/xendesktope8999ae68b9fe6a18ce99da2e7b2bee59381e4b9a6e7b18de5afbce8afbbpart4/"><meta property="og:type" content="website"><meta property="og:site_name" content="Martin's Blog"><meta name=keywords content><meta name=generator content="Hugo 0.80.0"><link rel=canonical href=https://martinliu.cn/2013/05/02/xendesktope8999ae68b9fe6a18ce99da2e7b2bee59381e4b9a6e7b18de5afbce8afbbpart4/><link rel=alternate href=https://martinliu.cn/index.xml type=application/rss+xml title="Martin's Blog"><script src=https://res.cloudinary.com/martinliu/raw/upload/static/jquery-1.12.4.min.js></script><link rel=stylesheet href=https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.7.1/katex.min.css integrity=sha384-wITovz90syo1dJWVh32uuETPVEtGigN07tkttEqPv+uR2SE/mbQcG7ATL28aI9H0 crossorigin=anonymous><link rel=stylesheet href=https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css><link rel=stylesheet href=https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css integrity=sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u crossorigin=anonymous><link rel=stylesheet href=https://martinliu.cn/css/main.css><link rel=stylesheet href=https://martinliu.cn/css/search.css><link rel=stylesheet href="https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic"><link rel=stylesheet href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800"><link rel=stylesheet href=https://martinliu.cn/css/prism.css><script data-ad-client=ca-pub-4545355461463255 async src=https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js></script><link rel=stylesheet href=https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.1/photoswipe.min.css integrity="sha256-sCl5PUOGMLfFYctzDW3MtRib0ctyUvI9Qsmq2wXOeBY=" crossorigin=anonymous><link rel=stylesheet href=https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.1/default-skin/default-skin.min.css integrity="sha256-BFeI1V+Vh1Rk37wswuOYn5lsTcaU96hGaI7OUVCLjPc=" crossorigin=anonymous><div class=pswp tabindex=-1 role=dialog aria-hidden=true><div class=pswp__bg></div><div class=pswp__scroll-wrap><div class=pswp__container><div class=pswp__item></div><div class=pswp__item></div><div class=pswp__item></div></div><div class="pswp__ui pswp__ui--hidden"><div class=pswp__top-bar><div class=pswp__counter></div><button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
-<button class="pswp__button pswp__button--share" title=Share></button>
-<button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
-<button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button><div class=pswp__preloader><div class=pswp__preloader__icn><div class=pswp__preloader__cut><div class=pswp__preloader__donut></div></div></div></div></div><div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap"><div class=pswp__share-tooltip></div></div><button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)"></button>
-<button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)"></button><div class=pswp__caption><div class=pswp__caption__center></div></div></div></div></div><script type=application/javascript>var doNotTrack=false;if(!doNotTrack){window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;ga('create','UA-749876-6','auto');ga('send','pageview');}</script><script async src=https://www.google-analytics.com/analytics.js></script></head><body><nav class="navbar navbar-default navbar-fixed-top navbar-custom"><div class=container-fluid><div class=navbar-header><button type=button class=navbar-toggle data-toggle=collapse data-target=#main-navbar>
-<span class=sr-only>切换导航</span>
-<span class=icon-bar></span><span class=icon-bar></span><span class=icon-bar></span></button>
-<a class=navbar-brand href=https://martinliu.cn/>Martin's Blog</a></div><div class="collapse navbar-collapse" id=main-navbar><ul class="nav navbar-nav navbar-right"><li><a title=首页 href=https://martinliu.cn/>首页</a></li><li><a title=标签 href=https://martinliu.cn/tags>标签</a></li><li><a title=关于 href=https://martinliu.cn/about>关于</a></li><li><a title=书籍 href=https://martinliu.cn/book>书籍</a></li></ul></div><div class=avatar-container><div class=avatar-img-border><a title="Martin's Blog" href=https://martinliu.cn/><img class=avatar-img src=https://res.cloudinary.com/martinliu/image/upload/q_auto:eco/avatar.jpg alt="Martin's Blog"></a></div></div></div></nav><header class=header-section><div class="intro-header no-img"><div class=container><div class=row><div class="col-lg-12 col-md-12 col-md-offset-0"><div class=posts-heading><h1 align=center>XenDesktop虚拟桌面精品书籍导读(part4)</h1></div></div></div></div></div></header><div class=container role=main><div class=row><div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1"><div><h5 id=wc>字数：4300 |大约阅读时间 9 分钟</h5><h5 id=tags>标签:
-<a href=https://martinliu.cn//tags/ag>Ag</a> &nbsp;
-<a href=https://martinliu.cn//tags/citrix>Citrix</a> &nbsp;
-<a href=https://martinliu.cn//tags/netscaler>Netscaler</a> &nbsp;
-<a href=https://martinliu.cn//tags/storefront>StoreFront</a> &nbsp;
-<a href=https://martinliu.cn//tags/xendesktop>XenDesktop</a> &nbsp;</h5></div><article role=main class=blog-post><p>[su_box color=&ldquo;orange&rdquo; icon=&ldquo;flag&rdquo;]
-感谢 Eric Yao 的供稿，<a href=http://weibo.com/ericyaozhen>@老树皮Eric</a>
-[/su_box]</p><p>桌面虚拟化项目的实施白皮书 《Citrix Virtual Desktop Handbook 5.x》，<a href=http://support.citrix.com/article/CTX136546>点击下载</a>。</p><h2 id=四-控制层-control-layer>四、      控制层 Control Layer</h2><p>控制层是设计架构的第四层。在上面有关用户的三个层面我们所做的决定都会汇总起来到控制层。</p><ol><li>访问控制器</li></ol><p>访问控制器子层的职责是给每个用户提供予以支持访问控制层的基础架构组件。这么说可能比较绕口，那就换个说法吧，访问控制器一般包括例如Web Interface、StoreFront，以及NetScaler Access Gateway；</p><p>1)        远程访问架构</p><p>如果有用户需要远程或者是离线的移动访问能力，那么就要设计远程访问基础架构了。</p><ol><li>**A.        **<strong>决断：拓扑</strong></li></ol><p>网络拓扑的设计对远程访问架构能够支撑功能性、性能以及安全性至关重要。远程访问架构应当和安全团队一起合作以确保符合企业的安全规范。以下三种主要的拓扑结构我们在设计师可以考虑，每种的安全性逐渐递增：</p><p>l  <strong>1-Arm (Normal Security</strong>**，单臂模式)****：**在这种架构下，Access Gateway使用一个物理的或者是逻辑的Bonded的网络接口，再加上VLAN和IP子网的设计，来传递用户和后台虚拟桌面的流量。</p><p>l  <strong>2-Arm (High Security <strong><strong>双臂模式)</strong></strong>：<strong>在双臂模式下，Access Gateway利用两张或者更多的物理或者逻辑Bonded的网络接口卡，再加上VLAN和IP子网的设计，来传递用户和后台虚拟桌面的流量。前段用户的流量被导向这些网络接口卡的第一张网卡上，前后端的流量是被分离设计的，就是说说后端虚拟桌面架构服务器的流量是被定向到第二张网卡上的。通过这样的设计我们就可以DMZ区来分离前后端的流量，同时还可以定制防火墙策略和流量监控策略。</strong></strong></p><p>l  **Double-Hop DMZ (Very High Security): **这种模式既利用了双臂拓扑下的特性，又使用了两个单独的Access Gateway设备。有一些企业使用了三个物理的/逻辑的防火墙结构来保护他们的内部网络。这三个防火墙将DMZ区划分为两个区域来提供额外的内部网络安全。</p><p>在第一个DMZ区的Access Gateway设备处理用户的连接，完成SSL VPN的安全功能。这个Access Gateway设备加密客户端连接，判断用户的认证方式，控制能够访问的内部网络服务器；</p><p>第二个DMZ区域的Access Gateway设备充当与一个代理设备角色。这个Access Gateway设备启用ICA协议将客户端连接穿越第二个DMZ区到后端的服务器场。在第一个DMZ区的Access Gateway设备和内部网络的Secure　Ticket　Authority（STA）也是通过第二个DMZ区的Access Gateway设备来进行代理的。</p><ol><li>**B.        **<strong>决断：平台</strong></li></ol><p>在Access Gateway部分，我们曾经讨论过只要是涉及到远程访问，我们都会考虑NetScaler Access　Gateway设备。问了确定合适的NetScaler平台来满足项目需求，必须确定一些关键资源。由于所有的远程访问流量都是通过SSL（安全套接层）来加密，再通过HTTPs的HTTP（超文本协议）协议来传输。所以有两种资源metric需要确认：</p><p>l  **SSL****吞吐量：**SSL吞吐量是定义为每秒钟能处理的GB SSL流量；</p><p>l  **SSL<strong><strong>每秒交易量（TPS</strong></strong>）：**TPS metric定义在每秒每个应用程序交付控制器（ADC）能处理的SSL交易数量</p><p>关于这两个参数的更详细解释，可以参考：<a href=http://assets.citrix.com/NetScaler_0911/ASSETS/Citrix_2048_SSL_Best_Practices.pdf>Best Practices for implementing 2048-bit SSL</a></p><p>平均的SSL带宽开销在和虚拟桌面的开销比较起来时经常忽略。但是SSL带宽的计算将会有助于确定总带宽是否足够。固定带宽加上数据包头开销常常随着加密算法的不同而变化，总带宽开销也常常随着数据包尺寸大小的变化而不同。理想状态下，开销数字应当通过POC或者是Pilot来实际测试得来，但是在没有这些数据的情况下，在工作负荷带宽基础上加上2%是一个合理的数字。因此，在确定NetScaler平台的时候，SSL的吞吐量常常是最大并发带宽乘以1.02，即：</p><p>SSL吞吐量 = 最大并发带宽 × 1.02</p><p>例如：假设128M是最大的并发带宽，那么最合适的NetScaler模型应当计算为：</p><p>约130Mbps = 128M × 1.02</p><p>NetScaler有三种平台，每种都提供了大量的不同的扩展性：</p><p>l  <strong>VPX</strong>**：**VPX平台的NetScaler和硬件的NetScaler提供完全一致的功能，不过他只适合于小型的测试环境使用。****</p><p>l  <strong>MDX</strong>**：**NetScaler MDX是NetScaler设备的硬件版本。他能支持大型网络可扩展环境；****</p><p>l  <strong>SDX</strong>**：**NetScaler SDX设备是在物理NetScaler设备和虚拟NetScaler设备之间的一个桥梁。一个SDX设备能够划分为多个虚拟的NetScaler设备。****</p><p>2)        StoreFront</p><p>Citrix StoreFront是Web Interface的下一代产品，它验证用户连接到后台的XenDesktop站点、XenApp场，以及AppController（SaaS应用），然后枚举或者是聚合可用的桌面和应用程序到商店以便让用户通过不同操作系统平台上的Receiver来访问，包括安卓、iOS、Linux、Windows、Win8/RT以及Web站点。</p><ol><li><strong>C.         <strong><strong>决断：Web Interface</strong></strong>还是StoreFront</strong></li></ol><p>Web Interface和StoreFront是两种不同的解决方案，在一些功能方面有重叠。所以我们要认真评估我们的需求。一般来说，新的方案应该使用StoreFront，因为Web Interface已经不再有新功能添加了。可以参考下面的链接了解Citrix 桌面产品的生命周期：<a href=http://www.citrix.com/support/product-lifecycle/milestones/xendesktop.html>Lifecycle Milestones for Citrix XenDesktop</a></p><p>下面的表格也示例了在何种情况下该使用什么产品：</p><p>下面的表格对两种产品在未来功能的开发目标上进行了一个对比，Web Interface已经不再会有革命性的功能添加了：</p><p>下面的表格是功能对比：</p><p>有一些Web Interface有的功能也会被完全整合到未来的StoreFront新版本中去：</p><ol><li>**A.        ****决断：Web **<strong>服务的高可用</strong></li></ol><p>如果StoreFront服务器不可用，或者是其他对应的Web服务不可用了，那么用户就不能连接到新的会话，例如打开新的虚拟桌面，无法打开应用程序等操作，因此，至少需要规划两台StoreFront来预防单点故障问题。我们可以考虑的方案包括：</p><p>l  <strong>DNS Round Robin</strong>**：**在多个服务器之间提供基本的负载均衡功能，无法做到是否可用性的检查；在服务器宕机时，部分用户会受到影响。****</p><p>l  <strong>Windows NLB</strong>**：**是Windows的一个服务。可以做一些基本的检查来判断服务器是否可用，但是无法判断单个服务的状态。</p><p>l  <strong>Citrix NetScaler</strong>**：**智能硬件设备，能检查StoreFront服务的状态，根据用户请求主动激活负载均衡状态。</p><ol><li>**B.        **<strong>决断：应用程序订阅数据库的高可用</strong></li></ol><p>StoreFront的配置数据都存储在每一台StoreFront服务器的本地，然后被复制到服务器组中的其他的系统中。对比之下，用户应用程序订阅信息存储在应用程序订阅数据库中，该数据库可以是本地的StoreFront服务器，也可以是推荐的一个专门的Microsoft SQL Server。</p><p>如果应用程序订阅数据库不可用，以下功能将不可用：</p><p>l  用户不能在管理他们的应用程序订阅；</p><p>l  无法登陆至Web 方式的Reciever，但是已经建立起来的会话可以继续正常工作；</p><p>为了防止应用程序订阅数据库成为单点故障点，Citrix推荐SQL的高可用方案：</p><p>l  **自动容错的SQL**<strong>镜像：<strong>数据库镜像提供了一种比数据库Clustering更简单的快速容错方法。数据库镜像技术在每一个镜像点上需要一个标准的SQL标准版服务器License，在加上一个witness服务器的SQL Express License即可。更多细节可以参考文档：<a href=http://support.citrix.com/proddocs/topic/dws-storefront-12/dws-configure-conf-file.html>Configuring StoreFront using the Configuration Files.</a></strong></strong></p><p>l  <strong>SQl Clustering: <strong>微软的技术，不过老实说，相比较Mirroring技术配置太复杂，此外，自动容错的过程也更慢。在License上，每个Cluster节点都需要一个企业版的SQL license。</strong></strong></p><p>l  **Hypervisor****高可用：**数据库部署在一台虚拟机上，通过Hypervisor的高可用来实现。这个技术比镜像或者是clustering都要便宜，因为只需要一个SQl Express License和一台SQL Server（需要一个具备HA功能的Hypervisor License）。不过，这个技术容错过程较慢，也仅仅是当SQl Server的操作系统宕机时才能启动容错机制。如果数据库服务出现错误是无法被Hypervisor层检测到的。</p><p><em>注意：未来的StoreFront__版本将不会再使用应用程序订阅数据库（Application Subscription Database</em>_），相反，预订信息会自动的在StoreFront__服务器组中的StoreFront__服务器中自动复制。_</p><ol><li>**C.         **<strong>决断：容量规划</strong></li></ol><p>基于扩展性的测试，单个StoreFront服务器可以支持的用户数是无限制的，受限制的是在这个服务器上每小时之内用户同时操作的动作。这是因为仅仅当用户执行一个动作的时候，例如在Receiver中订阅一个应用程序是，StoreFront才被使用。当用户连接到所发布的资源时，StoreFront实际上是idle状态的。因此，下面的表格所展示的内容介绍的是没鸟的请求时，或者是每小时的请求数。我们建立了一个前提条件是每用户在每小时之内启动了五个应用程序，订阅了2个应用程序，取消订阅了一个应用程序，总共每小时是8个操作量。</p><p>注意：上述数字是在仿真环境下测试得来：基于SSL的XenApp6.5，发布了100+个应用程序，每个用户在5秒钟之内完成操作的。</p><p>StoreFront对CPU的数量更敏感，也就是说对CPU的消耗更大，而不是对内存消耗更大。推荐的企业StoreFront服务器是4个vCPU和4GB RAM。</p><ol><li>**D.        ****但服务器扩展性 – **<strong>应用程序订阅数据库</strong></li></ol><p>应用程序订阅数据库包含了每个用户订阅的一系列资源列表情况。基于测试环境下，推荐的一个储存应用程序订阅数据库独立SQL服务器的配置是4vCPU和4GB RAM。</p><p>数据库的增长速度大约是每个订阅10KB空间消耗：</p><p>数据库大小 = （用户数 × 每用户的订阅数） × 10KB</p><p>1个订阅 = 1个用户订阅一个应用程序，例如，1000个用户订阅10个应用程序就是100MB。</p><ol><li>桌面控制器</li></ol><p>这部分内容主要是介绍XenClient部分，请大家自行参见<a href=http://support.citrix.com/article/CTX136546>原始文档</a>。</p><p>下期预告：下一期我们介绍最后的部分：Provisioning Services</p><a href=https://mp.weixin.qq.com/s/elRqbNlidJzmKCejBwtsAg target=_blank><img src=https://martinliu.cn/images/sref-zs.jpg alt="SRE Foundation 招生简章"></a></article><ul class="pager blog-pager"><li class=previous><a href=https://martinliu.cn/2013/05/02/ask-the-architect-e68ea8e88d90citrixe8999ae68b9fe58c96e5a4a7e5b888e4b880e5908d/ data-toggle=tooltip data-placement=top title="Ask the Architect 推荐Citrix虚拟化大师一名">&larr; 前一篇</a></li><li class=next><a href=https://martinliu.cn/2013/05/07/top10e585a8e79083e68e92e5908de5898de58d81e79a84e4ba91e8aea1e7ae97e585ace58fb8/ data-toggle=tooltip data-placement=top title=Top10全球排名前十的云计算公司>后一篇 &rarr;</a></li></ul><div><h2>See Also</h2><ul><li><a href=https://martinliu.cn/2013/05/02/ask-the-architect-e68ea8e88d90citrixe8999ae68b9fe58c96e5a4a7e5b888e4b880e5908d/>Ask the Architect 推荐Citrix虚拟化大师一名</a></li><li><a href=https://martinliu.cn/2013/04/16/xendesktope8999ae68b9fe6a18ce99da2e7b2bee59381e4b9a6e7b18de5afbce8afbbpart3/>XenDesktop虚拟桌面精品书籍导读(part3)</a></li><li><a href=https://martinliu.cn/2013/03/28/netscaler-insight-center-e8999ae68b9fe6a18ce99da2e5928ce5ba94e794a8e79b91e68ea7e588a9e599a8/>NetScaler Insight Center 虚拟桌面和应用监控利器</a></li><li><a href=https://martinliu.cn/2013/04/23/xen-is-now-a-linux-foundation-collaborative-project/>让Xen Project回家</a></li><li><a href=https://martinliu.cn/2013/04/15/forrester-private-clouds-what-is-cloud-computing/>什么是真的云？</a></li></ul></div></div></div></section></div><footer><div class=container><div class=row><div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1"><ul class="list-inline text-center footer-links"><li><a href=mailto:liuzh66@gmail.com title="Email me"><span class="fa-stack fa-lg"><i class="fa fa-circle fa-stack-2x"></i><i class="fa fa-envelope fa-stack-1x fa-inverse"></i></span></a></li><li><a href=https://github.com/martinliu title=GitHub><span class="fa-stack fa-lg"><i class="fa fa-circle fa-stack-2x"></i><i class="fa fa-github fa-stack-1x fa-inverse"></i></span></a></li><li><a href=https://gitlab.com/martinliu title=GitLab><span class="fa-stack fa-lg"><i class="fa fa-circle fa-stack-2x"></i><i class="fa fa-gitlab fa-stack-1x fa-inverse"></i></span></a></li><li><a href=https://twitter.com/martinliu title=Twitter><span class="fa-stack fa-lg"><i class="fa fa-circle fa-stack-2x"></i><i class="fa fa-twitter fa-stack-1x fa-inverse"></i></span></a></li><li><a href=https://linkedin.com/in/liuzheng title=LinkedIn><span class="fa-stack fa-lg"><i class="fa fa-circle fa-stack-2x"></i><i class="fa fa-linkedin fa-stack-1x fa-inverse"></i></span></a></li></ul><p class="credits copyright text-muted">&copy;2017-2018
-刘征 Martin Liu
-&nbsp;&bull;&nbsp;
-<a href=https://martinliu.cn/>Martin's Blog</a></p><p class="credits theme-by text-muted">由 <a href=http://gohugo.io>Hugo v0.80.0</a> 强力驱动 &nbsp;&bull;&nbsp; 主题 <a href=https://github.com/halogenica/beautifulhugo>Beautiful Hugo</a> 移植自 <a href=http://deanattali.com/beautiful-jekyll/>Beautiful Jekyll</a></p></div></div></div></footer><script src=https://res.cloudinary.com/martinliu/raw/upload/static/bootstrap.min.js></script><script src=https://res.cloudinary.com/martinliu/raw/upload/static/photoswipe-ui-default.min.js></script><script src=https://res.cloudinary.com/martinliu/raw/upload/static/photoswipe.min.js></script><script src=https://res.cloudinary.com/martinliu/raw/upload/static/auto-render.min.js></script><script src=https://res.cloudinary.com/martinliu/raw/upload/static/main.js></script><script src=https://res.cloudinary.com/martinliu/raw/upload/static/prism.js></script><script src=https://res.cloudinary.com/martinliu/raw/upload/static/katex.min.js></script><script>renderMathInElement(document.body);</script></body></html>
+<!doctype html>
+<html lang="zh-cn">
+  <head>
+  <meta charset="utf-8">
+<title>XenDesktop虚拟桌面精品书籍导读(part4) - Hugo Future Imperfect Slim em português</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+<meta name="generator" content="Hugo 0.80.0" /><meta property="og:site_name" content="Hugo Future Imperfect Slim em português">
+  <meta property="og:title" content="XenDesktop虚拟桌面精品书籍导读(part4)">
+  <meta property="og:description" content="A theme by HTML5 UP, ported by Julio Pescador. Slimmed and enhanced by Patrick Collins. Multilingual by StatnMap. Powered by Hugo.">
+  <meta property="description" content="A theme by HTML5 UP, ported by Julio Pescador. Slimmed and enhanced by Patrick Collins. Multilingual by StatnMap. Powered by Hugo.">
+  <meta property="og:url" content="https://example.com/2013/05/02/xendesktope8999ae68b9fe6a18ce99da2e7b2bee59381e4b9a6e7b18de5afbce8afbbpart4/">
+  <meta property="og:type" content="article">
+  
+    <meta property="og:image" content="https://example.com/img/main/logo.jpg">
+  
+  <link rel="stylesheet" href="/css/bundle.min.d9e04ae08c9b3049b766dbd4aeab7d862c5ea1d13679b621490e0f5df5507497.css" integrity="sha256-2eBK4IybMEm3ZtvUrqt9hixeodE2ebYhSQ4PXfVQdJc="><link rel="stylesheet" href="/css/add-on.css">
+</head>
+
+  <body>
+    
+
+<header id="site-header">
+  <nav id="site-nav">
+    <h1 class="nav-title">
+      <a href="/" class="nav">
+        
+          博客
+        
+      </a>
+    </h1>
+    <menu id="site-nav-menu" class="flyout-menu menu">
+      
+        
+          
+          <a href="/" class="nav link"><i class='fas fa-home'></i> 首页</a>
+        
+      
+        
+          
+          <a href="/about/" class="nav link"><i class='far fa-id-card'></i> 关于</a>
+        
+      
+        
+          
+          <a href="/blog/" class="nav link"><i class='far fa-newspaper'></i> 博客</a>
+        
+      
+        
+          
+          <a href="/categories/" class="nav link"><i class='fas fa-sitemap'></i> 分类</a>
+        
+      
+        
+          
+          <a href="/contact/" class="nav link"><i class='far fa-envelope'></i> 联系</a>
+        
+      
+      <a href="#share-menu" class="nav link share-toggle"><i class="fas fa-share-alt">&nbsp;</i>Share</a>
+      <a href="#search-input" class="nav link search-toggle"><i class="fas fa-search">&nbsp;</i>Search</a>
+    </menu>
+    <a href="#search-input" class="nav search-toggle"><i class="fas fa-search fa-2x">&nbsp;</i></a>
+    <a href="#share-menu" class="nav share-toggle"><i class="fas fa-share-alt fa-2x">&nbsp;</i></a>
+    <a href="#lang-menu" class="nav lang-toggle" lang="zh-cn">zh-cn</a>
+    <a href="#site-nav" class="nav nav-toggle"><i class="fas fa-bars fa-2x"></i></a>
+  </nav>
+  <menu id="search" class="menu"><input id="search-input" class="search-input menu"></input><div id="search-results" class="search-results menu"></div></menu>
+  <menu id="lang-menu" class="flyout-menu menu">
+  <a href="#" lang="zh-cn" class="nav link active">中文 (zh-cn)</a>
+  
+    
+      
+        <a href="/en" lang="en" class="nav no-lang link">English (en)</a>
+      
+    
+      
+    
+  
+</menu>
+
+  
+    <menu id="share-menu" class="flyout-menu menu">
+      <h1>Share Post</h1>
+      
+
+
+
+
+  
+    
+    <a href="//twitter.com/share?text=XenDesktop%e8%99%9a%e6%8b%9f%e6%a1%8c%e9%9d%a2%e7%b2%be%e5%93%81%e4%b9%a6%e7%b1%8d%e5%af%bc%e8%af%bb%28part4%29&amp;url=https%3a%2f%2fexample.com%2f2013%2f05%2f02%2fxendesktope8999ae68b9fe6a18ce99da2e7b2bee59381e4b9a6e7b18de5afbce8afbbpart4%2f" target="_blank" rel="noopener" class="nav share-btn twitter">
+        <p>Twitter</p>
+      </a>
+  
+
+  
+      <a href="//www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fexample.com%2f2013%2f05%2f02%2fxendesktope8999ae68b9fe6a18ce99da2e7b2bee59381e4b9a6e7b18de5afbce8afbbpart4%2f" target="_blank" rel="noopener" class="nav share-btn facebook">
+        <p>Facebook</p>
+        </a>
+  
+
+  
+    <a href="//www.reddit.com/submit?url=https%3a%2f%2fexample.com%2f2013%2f05%2f02%2fxendesktope8999ae68b9fe6a18ce99da2e7b2bee59381e4b9a6e7b18de5afbce8afbbpart4%2f&amp;title=XenDesktop%e8%99%9a%e6%8b%9f%e6%a1%8c%e9%9d%a2%e7%b2%be%e5%93%81%e4%b9%a6%e7%b1%8d%e5%af%bc%e8%af%bb%28part4%29" target="_blank" rel="noopener" class="nav share-btn reddit">
+          <p>Reddit</p>
+        </a>
+  
+
+  
+        <a href="//www.linkedin.com/shareArticle?url=https%3a%2f%2fexample.com%2f2013%2f05%2f02%2fxendesktope8999ae68b9fe6a18ce99da2e7b2bee59381e4b9a6e7b18de5afbce8afbbpart4%2f&amp;title=XenDesktop%e8%99%9a%e6%8b%9f%e6%a1%8c%e9%9d%a2%e7%b2%be%e5%93%81%e4%b9%a6%e7%b1%8d%e5%af%bc%e8%af%bb%28part4%29" target="_blank" rel="noopener" class="nav share-btn linkedin">
+            <p>LinkedIn</p>
+          </a>
+  
+
+  
+        <a href="//www.pinterest.com/pin/create/button/?url=https%3a%2f%2fexample.com%2f2013%2f05%2f02%2fxendesktope8999ae68b9fe6a18ce99da2e7b2bee59381e4b9a6e7b18de5afbce8afbbpart4%2f&amp;description=XenDesktop%e8%99%9a%e6%8b%9f%e6%a1%8c%e9%9d%a2%e7%b2%be%e5%93%81%e4%b9%a6%e7%b1%8d%e5%af%bc%e8%af%bb%28part4%29" target="_blank" rel="noopener" class="nav share-btn pinterest">
+          <p>Pinterest</p>
+        </a>
+  
+
+  
+        <a href="mailto:?subject=%e6%9f%a5%e7%9c%8b%e6%ad%a4%e5%b8%96%e5%ad%90%e7%9a%84%e4%bd%9c%e8%80%85 liuadmin&amp;body=https%3a%2f%2fexample.com%2f2013%2f05%2f02%2fxendesktope8999ae68b9fe6a18ce99da2e7b2bee59381e4b9a6e7b18de5afbce8afbbpart4%2f" target="_blank" class="nav share-btn email" data-proofer-ignore>
+          <p>Email</p>
+        </a>
+  
+
+
+    </menu>
+  
+</header>
+
+    <div id="wrapper">
+      <section id="site-intro" >
+  <a href="/"><img src="https://example.com/img/main/logo.jpg" class="circle" width="100" alt="Hugo Future Imperfect Slim" /></a>
+  <header>
+    <h1>Hugo Future Imperfect Slim</h1>
+  </header>
+  <main>
+    <p>Another fine, responsive site template by <a href='http://html5up.net'>HTML5 UP</a>.</p>
+  </main>
+  
+    <footer>
+      <ul class="socnet-icons">
+        
+
+        <li><a href="//github.com/pacollins/hugo-future-imperfect-slim" target="_blank" rel="noopener" title="GitHub" class="fab fa-github"></a></li>
+
+
+
+
+
+
+<li><a href="//flickr.com/photos/example" target="_blank" rel="noopener" title="Flickr" class="fab fa-flickr"></a></li>
+
+
+
+
+<li><a href="//www.linkedin.com/in/example" target="_blank" rel="noopener" title="LinkedIn" class="fab fa-linkedin"></a></li>
+<li><a href="//linkedin.com/company/examplebusiness" target="_blank" rel="noopener" title="LinkedIn Company" class="fab fa-linkedin"></a></li>
+
+
+
+<li><a href="//facebook.com/example" target="_blank" rel="noopener" title="Facebook" class="fab fa-facebook"></a></li>
+<li><a href="//reddit.com/user/example" target="_blank" rel="noopener" title="Reddit" class="fab fa-reddit"></a></li>
+
+
+
+
+
+
+
+<li><a href="//instagram.com/example" target="_blank" rel="noopener" title="Instagram" class="fab fa-instagram"></a></li>
+
+<li><a href="//twitter.com/example" target="_blank" rel="noopener" title="Twitter" class="fab fa-twitter"></a></li>
+
+
+
+<li><a href="//www.pinterest.com/example" target="_blank" rel="noopener" title="Pinterest" class="fab fa-pinterest-p"></a></li>
+<li><a href="//telegram.me/example" target="_blank" rel="noopener" title="telegram" class="fab fa-telegram"></a></li>
+
+
+
+<li><a href="//researchgate.net/profile/example" target="_blank" rel="noopener" title="Research Gate"><i class="ai ai-researchgate"></i></a></li>
+<li><a href="//keybase.io/example" target="_blank" rel="noopener" title="keybase" class="fab fa-keybase"></a></li>
+<li><a href="//example.com/@example" target="_blank" rel="noopener" title="mastodon" class="fab fa-mastodon"></a></li>
+<li><a href="mailto:example" target="_blank" title="Email" class="far fa-envelope"></a></li>
+
+      </ul>
+    </footer>
+  
+</section>
+
+      <main id="site-main">
+        
+  <article class="post">
+    <header>
+  <div class="title">
+    
+      <h2><a href="/2013/05/02/xendesktope8999ae68b9fe6a18ce99da2e7b2bee59381e4b9a6e7b18de5afbce8afbbpart4/">XenDesktop虚拟桌面精品书籍导读(part4)</a></h2>
+    
+    
+  </div>
+  <div class="meta">
+    <time datetime="2013-05-02 04:22:36 &#43;0000 UTC">May 2, 2013</time>
+    <p>liuadmin</p>
+    <p>1 分钟</p>
+  </div>
+</header>
+
+    <div id="socnet-share">
+      
+
+
+
+
+  
+    
+    <a href="//twitter.com/share?text=XenDesktop%e8%99%9a%e6%8b%9f%e6%a1%8c%e9%9d%a2%e7%b2%be%e5%93%81%e4%b9%a6%e7%b1%8d%e5%af%bc%e8%af%bb%28part4%29&amp;url=https%3a%2f%2fexample.com%2f2013%2f05%2f02%2fxendesktope8999ae68b9fe6a18ce99da2e7b2bee59381e4b9a6e7b18de5afbce8afbbpart4%2f" target="_blank" rel="noopener" class="nav share-btn twitter">
+        <p>Twitter</p>
+      </a>
+  
+
+  
+      <a href="//www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fexample.com%2f2013%2f05%2f02%2fxendesktope8999ae68b9fe6a18ce99da2e7b2bee59381e4b9a6e7b18de5afbce8afbbpart4%2f" target="_blank" rel="noopener" class="nav share-btn facebook">
+        <p>Facebook</p>
+        </a>
+  
+
+  
+    <a href="//www.reddit.com/submit?url=https%3a%2f%2fexample.com%2f2013%2f05%2f02%2fxendesktope8999ae68b9fe6a18ce99da2e7b2bee59381e4b9a6e7b18de5afbce8afbbpart4%2f&amp;title=XenDesktop%e8%99%9a%e6%8b%9f%e6%a1%8c%e9%9d%a2%e7%b2%be%e5%93%81%e4%b9%a6%e7%b1%8d%e5%af%bc%e8%af%bb%28part4%29" target="_blank" rel="noopener" class="nav share-btn reddit">
+          <p>Reddit</p>
+        </a>
+  
+
+  
+        <a href="//www.linkedin.com/shareArticle?url=https%3a%2f%2fexample.com%2f2013%2f05%2f02%2fxendesktope8999ae68b9fe6a18ce99da2e7b2bee59381e4b9a6e7b18de5afbce8afbbpart4%2f&amp;title=XenDesktop%e8%99%9a%e6%8b%9f%e6%a1%8c%e9%9d%a2%e7%b2%be%e5%93%81%e4%b9%a6%e7%b1%8d%e5%af%bc%e8%af%bb%28part4%29" target="_blank" rel="noopener" class="nav share-btn linkedin">
+            <p>LinkedIn</p>
+          </a>
+  
+
+  
+        <a href="//www.pinterest.com/pin/create/button/?url=https%3a%2f%2fexample.com%2f2013%2f05%2f02%2fxendesktope8999ae68b9fe6a18ce99da2e7b2bee59381e4b9a6e7b18de5afbce8afbbpart4%2f&amp;description=XenDesktop%e8%99%9a%e6%8b%9f%e6%a1%8c%e9%9d%a2%e7%b2%be%e5%93%81%e4%b9%a6%e7%b1%8d%e5%af%bc%e8%af%bb%28part4%29" target="_blank" rel="noopener" class="nav share-btn pinterest">
+          <p>Pinterest</p>
+        </a>
+  
+
+  
+        <a href="mailto:?subject=%e6%9f%a5%e7%9c%8b%e6%ad%a4%e5%b8%96%e5%ad%90%e7%9a%84%e4%bd%9c%e8%80%85 liuadmin&amp;body=https%3a%2f%2fexample.com%2f2013%2f05%2f02%2fxendesktope8999ae68b9fe6a18ce99da2e7b2bee59381e4b9a6e7b18de5afbce8afbbpart4%2f" target="_blank" class="nav share-btn email" data-proofer-ignore>
+          <p>Email</p>
+        </a>
+  
+
+
+    </div>
+    <div class="content">
+      
+      <p>[su_box color=&ldquo;orange&rdquo; icon=&ldquo;flag&rdquo;]
+感谢 Eric Yao 的供稿，<a href="http://weibo.com/ericyaozhen">@老树皮Eric</a>
+[/su_box]</p>
+<p>桌面虚拟化项目的实施白皮书 《Citrix Virtual Desktop Handbook 5.x》，<a href="http://support.citrix.com/article/CTX136546">点击下载</a>。</p>
+<h2 id="四-控制层-control-layer">四、      控制层 Control Layer</h2>
+<p>控制层是设计架构的第四层。在上面有关用户的三个层面我们所做的决定都会汇总起来到控制层。</p>
+<ol>
+<li>访问控制器</li>
+</ol>
+<p>访问控制器子层的职责是给每个用户提供予以支持访问控制层的基础架构组件。这么说可能比较绕口，那就换个说法吧，访问控制器一般包括例如Web Interface、StoreFront，以及NetScaler Access Gateway；</p>
+<p>1)        远程访问架构</p>
+<p>如果有用户需要远程或者是离线的移动访问能力，那么就要设计远程访问基础架构了。</p>
+<ol>
+<li>**A.        **<strong>决断：拓扑</strong></li>
+</ol>
+<p>网络拓扑的设计对远程访问架构能够支撑功能性、性能以及安全性至关重要。远程访问架构应当和安全团队一起合作以确保符合企业的安全规范。以下三种主要的拓扑结构我们在设计师可以考虑，每种的安全性逐渐递增：</p>
+<p>l  <strong>1-Arm (Normal Security</strong>**，单臂模式)****：**在这种架构下，Access Gateway使用一个物理的或者是逻辑的Bonded的网络接口，再加上VLAN和IP子网的设计，来传递用户和后台虚拟桌面的流量。</p>
+<p>l  <strong>2-Arm (High Security <strong><strong>双臂模式)</strong></strong>：<strong>在双臂模式下，Access Gateway利用两张或者更多的物理或者逻辑Bonded的网络接口卡，再加上VLAN和IP子网的设计，来传递用户和后台虚拟桌面的流量。前段用户的流量被导向这些网络接口卡的第一张网卡上，前后端的流量是被分离设计的，就是说说后端虚拟桌面架构服务器的流量是被定向到第二张网卡上的。通过这样的设计我们就可以DMZ区来分离前后端的流量，同时还可以定制防火墙策略和流量监控策略。</strong></strong></p>
+<p>l  **Double-Hop DMZ (Very High Security): **这种模式既利用了双臂拓扑下的特性，又使用了两个单独的Access Gateway设备。有一些企业使用了三个物理的/逻辑的防火墙结构来保护他们的内部网络。这三个防火墙将DMZ区划分为两个区域来提供额外的内部网络安全。</p>
+<p>在第一个DMZ区的Access Gateway设备处理用户的连接，完成SSL VPN的安全功能。这个Access Gateway设备加密客户端连接，判断用户的认证方式，控制能够访问的内部网络服务器；</p>
+<p>第二个DMZ区域的Access Gateway设备充当与一个代理设备角色。这个Access Gateway设备启用ICA协议将客户端连接穿越第二个DMZ区到后端的服务器场。在第一个DMZ区的Access Gateway设备和内部网络的Secure　Ticket　Authority（STA）也是通过第二个DMZ区的Access Gateway设备来进行代理的。</p>
+<ol>
+<li>**B.        **<strong>决断：平台</strong></li>
+</ol>
+<p>在Access Gateway部分，我们曾经讨论过只要是涉及到远程访问，我们都会考虑NetScaler Access　Gateway设备。问了确定合适的NetScaler平台来满足项目需求，必须确定一些关键资源。由于所有的远程访问流量都是通过SSL（安全套接层）来加密，再通过HTTPs的HTTP（超文本协议）协议来传输。所以有两种资源metric需要确认：</p>
+<p>l  **SSL****吞吐量：**SSL吞吐量是定义为每秒钟能处理的GB SSL流量；</p>
+<p>l  **SSL<strong><strong>每秒交易量（TPS</strong></strong>）：**TPS metric定义在每秒每个应用程序交付控制器（ADC）能处理的SSL交易数量</p>
+<p>关于这两个参数的更详细解释，可以参考：<a href="http://assets.citrix.com/NetScaler_0911/ASSETS/Citrix_2048_SSL_Best_Practices.pdf">Best Practices for implementing 2048-bit SSL</a></p>
+<p>平均的SSL带宽开销在和虚拟桌面的开销比较起来时经常忽略。但是SSL带宽的计算将会有助于确定总带宽是否足够。固定带宽加上数据包头开销常常随着加密算法的不同而变化，总带宽开销也常常随着数据包尺寸大小的变化而不同。理想状态下，开销数字应当通过POC或者是Pilot来实际测试得来，但是在没有这些数据的情况下，在工作负荷带宽基础上加上2%是一个合理的数字。因此，在确定NetScaler平台的时候，SSL的吞吐量常常是最大并发带宽乘以1.02，即：</p>
+<p>SSL吞吐量 = 最大并发带宽 × 1.02</p>
+<p>例如：假设128M是最大的并发带宽，那么最合适的NetScaler模型应当计算为：</p>
+<p>约130Mbps = 128M × 1.02</p>
+<p>NetScaler有三种平台，每种都提供了大量的不同的扩展性：</p>
+<p>l  <strong>VPX</strong>**：**VPX平台的NetScaler和硬件的NetScaler提供完全一致的功能，不过他只适合于小型的测试环境使用。****</p>
+<p>l  <strong>MDX</strong>**：**NetScaler MDX是NetScaler设备的硬件版本。他能支持大型网络可扩展环境；****</p>
+<p>l  <strong>SDX</strong>**：**NetScaler SDX设备是在物理NetScaler设备和虚拟NetScaler设备之间的一个桥梁。一个SDX设备能够划分为多个虚拟的NetScaler设备。****</p>
+<p>2)        StoreFront</p>
+<p>Citrix StoreFront是Web Interface的下一代产品，它验证用户连接到后台的XenDesktop站点、XenApp场，以及AppController（SaaS应用），然后枚举或者是聚合可用的桌面和应用程序到商店以便让用户通过不同操作系统平台上的Receiver来访问，包括安卓、iOS、Linux、Windows、Win8/RT以及Web站点。</p>
+<ol>
+<li><strong>C.         <strong><strong>决断：Web Interface</strong></strong>还是StoreFront</strong></li>
+</ol>
+<p>Web Interface和StoreFront是两种不同的解决方案，在一些功能方面有重叠。所以我们要认真评估我们的需求。一般来说，新的方案应该使用StoreFront，因为Web Interface已经不再有新功能添加了。可以参考下面的链接了解Citrix 桌面产品的生命周期：<a href="http://www.citrix.com/support/product-lifecycle/milestones/xendesktop.html">Lifecycle Milestones for Citrix XenDesktop</a></p>
+<p>下面的表格也示例了在何种情况下该使用什么产品：</p>
+<p>下面的表格对两种产品在未来功能的开发目标上进行了一个对比，Web Interface已经不再会有革命性的功能添加了：</p>
+<p>下面的表格是功能对比：</p>
+<p>有一些Web Interface有的功能也会被完全整合到未来的StoreFront新版本中去：</p>
+<ol>
+<li>**A.        ****决断：Web **<strong>服务的高可用</strong></li>
+</ol>
+<p>如果StoreFront服务器不可用，或者是其他对应的Web服务不可用了，那么用户就不能连接到新的会话，例如打开新的虚拟桌面，无法打开应用程序等操作，因此，至少需要规划两台StoreFront来预防单点故障问题。我们可以考虑的方案包括：</p>
+<p>l  <strong>DNS Round Robin</strong>**：**在多个服务器之间提供基本的负载均衡功能，无法做到是否可用性的检查；在服务器宕机时，部分用户会受到影响。****</p>
+<p>l  <strong>Windows NLB</strong>**：**是Windows的一个服务。可以做一些基本的检查来判断服务器是否可用，但是无法判断单个服务的状态。</p>
+<p>l  <strong>Citrix NetScaler</strong>**：**智能硬件设备，能检查StoreFront服务的状态，根据用户请求主动激活负载均衡状态。</p>
+<ol>
+<li>**B.        **<strong>决断：应用程序订阅数据库的高可用</strong></li>
+</ol>
+<p>StoreFront的配置数据都存储在每一台StoreFront服务器的本地，然后被复制到服务器组中的其他的系统中。对比之下，用户应用程序订阅信息存储在应用程序订阅数据库中，该数据库可以是本地的StoreFront服务器，也可以是推荐的一个专门的Microsoft SQL Server。</p>
+<p>如果应用程序订阅数据库不可用，以下功能将不可用：</p>
+<p>l  用户不能在管理他们的应用程序订阅；</p>
+<p>l  无法登陆至Web 方式的Reciever，但是已经建立起来的会话可以继续正常工作；</p>
+<p>为了防止应用程序订阅数据库成为单点故障点，Citrix推荐SQL的高可用方案：</p>
+<p>l  **自动容错的SQL**<strong>镜像：<strong>数据库镜像提供了一种比数据库Clustering更简单的快速容错方法。数据库镜像技术在每一个镜像点上需要一个标准的SQL标准版服务器License，在加上一个witness服务器的SQL Express License即可。更多细节可以参考文档：<a href="http://support.citrix.com/proddocs/topic/dws-storefront-12/dws-configure-conf-file.html">Configuring StoreFront using the Configuration Files.</a></strong></strong></p>
+<p>l  <strong>SQl Clustering: <strong>微软的技术，不过老实说，相比较Mirroring技术配置太复杂，此外，自动容错的过程也更慢。在License上，每个Cluster节点都需要一个企业版的SQL license。</strong></strong></p>
+<p>l  **Hypervisor****高可用：**数据库部署在一台虚拟机上，通过Hypervisor的高可用来实现。这个技术比镜像或者是clustering都要便宜，因为只需要一个SQl Express License和一台SQL Server（需要一个具备HA功能的Hypervisor License）。不过，这个技术容错过程较慢，也仅仅是当SQl Server的操作系统宕机时才能启动容错机制。如果数据库服务出现错误是无法被Hypervisor层检测到的。</p>
+<p><em>注意：未来的StoreFront__版本将不会再使用应用程序订阅数据库（Application Subscription Database</em>_），相反，预订信息会自动的在StoreFront__服务器组中的StoreFront__服务器中自动复制。_</p>
+<ol>
+<li>**C.         **<strong>决断：容量规划</strong></li>
+</ol>
+<p>基于扩展性的测试，单个StoreFront服务器可以支持的用户数是无限制的，受限制的是在这个服务器上每小时之内用户同时操作的动作。这是因为仅仅当用户执行一个动作的时候，例如在Receiver中订阅一个应用程序是，StoreFront才被使用。当用户连接到所发布的资源时，StoreFront实际上是idle状态的。因此，下面的表格所展示的内容介绍的是没鸟的请求时，或者是每小时的请求数。我们建立了一个前提条件是每用户在每小时之内启动了五个应用程序，订阅了2个应用程序，取消订阅了一个应用程序，总共每小时是8个操作量。</p>
+<p>注意：上述数字是在仿真环境下测试得来：基于SSL的XenApp6.5，发布了100+个应用程序，每个用户在5秒钟之内完成操作的。</p>
+<p>StoreFront对CPU的数量更敏感，也就是说对CPU的消耗更大，而不是对内存消耗更大。推荐的企业StoreFront服务器是4个vCPU和4GB RAM。</p>
+<ol>
+<li>**D.        ****但服务器扩展性 – **<strong>应用程序订阅数据库</strong></li>
+</ol>
+<p>应用程序订阅数据库包含了每个用户订阅的一系列资源列表情况。基于测试环境下，推荐的一个储存应用程序订阅数据库独立SQL服务器的配置是4vCPU和4GB RAM。</p>
+<p>数据库的增长速度大约是每个订阅10KB空间消耗：</p>
+<p>数据库大小 = （用户数 × 每用户的订阅数） × 10KB</p>
+<p>1个订阅 = 1个用户订阅一个应用程序，例如，1000个用户订阅10个应用程序就是100MB。</p>
+<ol>
+<li>桌面控制器</li>
+</ol>
+<p>这部分内容主要是介绍XenClient部分，请大家自行参见<a href="http://support.citrix.com/article/CTX136546">原始文档</a>。</p>
+<p>下期预告：下一期我们介绍最后的部分：Provisioning Services</p>
+
+    </div>
+    <footer>
+      <div class="stats">
+  
+    <ul class="categories">
+      
+        
+          <li><a class="article-terms-link" href="/categories/xendesktop/">XenDesktop</a></li>
+        
+      
+    </ul>
+  
+  
+    <ul class="tags">
+      
+        
+          <li><a class="article-terms-link" href="/tags/ag/">Ag</a></li>
+        
+          <li><a class="article-terms-link" href="/tags/citrix/">Citrix</a></li>
+        
+          <li><a class="article-terms-link" href="/tags/netscaler/">Netscaler</a></li>
+        
+          <li><a class="article-terms-link" href="/tags/storefront/">StoreFront</a></li>
+        
+          <li><a class="article-terms-link" href="/tags/xendesktop/">XenDesktop</a></li>
+        
+      
+    </ul>
+  
+</div>
+
+    </footer>
+  </article>
+  
+    
+  <article class="post">
+    
+    <div>
+      <h2 id="say-something">说些什么</h2>
+        <form id="comment-form" class="new-comment" method="POST">
+          
+          <h3 class='reply-notice hidden'>
+            <span class='reply-name'></span>
+          </h3>
+
+          
+          <input type="hidden" name="options[entryId]" value="4a3ea72a15090bf76b285819f06a9de3">
+          <input type='hidden' name='fields[replyThread]' value=''>
+          <input type='hidden' name='fields[replyID]' value=''>
+          <input type='hidden' name='fields[replyName]' value=''>
+
+          
+          <input required name='fields[name]' type='text' placeholder='你的名字'>
+          <input name='fields[website]' type='text' placeholder='您的网页'>
+          <input required name='fields[email]' type='email' placeholder='你的邮件'>
+          <textarea required name='fields[body]' placeholder='你的信息' rows='10'></textarea>
+
+          
+          
+
+          
+          <div class='submit-notice'>
+            <strong class='submit-notice-text submit-success hidden'>感谢您的评论！被批准后它会立即在此站点展示。</strong>
+            <strong class='submit-notice-text submit-failed hidden'>很抱歉，您的提交存在错误。请确保所有必填字段都已填写正确，然后再试一次。</strong>
+          </div>
+
+          
+          <input type='submit' value='发送' class='button'>
+          <input type='submit' value='已发送' class='hidden button' disabled>
+          <input type='reset' value='重设' class='button'>
+        </form>
+    </div>
+
+    
+    <div>
+      <h2>评论</h2><p>还沒有留言。</p>
+      
+    </div>
+  </article>
+
+
+  
+  <div class="pagination">
+    
+      <a href="/2013/05/07/top10e585a8e79083e68e92e5908de5898de58d81e79a84e4ba91e8aea1e7ae97e585ace58fb8/" class="button left"><span>Top10全球排名前十的云计算公司</span></a>
+    
+    
+      <a href="/2013/05/02/ask-the-architect-e68ea8e88d90citrixe8999ae68b9fe58c96e5a4a7e5b888e4b880e5908d/" class="button right"><span>Ask the Architect 推荐Citrix虚拟化大师一名</span></a>
+    
+  </div>
+
+      </main>
+      <section id="site-sidebar">
+  
+    <section id="recent-posts">
+      <header>
+        <h1>最新文章</h1>
+      </header>
+      
+      <article class="mini-post">
+          
+        <header>
+          <h2><a href="/blog/%E4%BD%BF%E7%94%A8-elastic-stack-%E7%9B%91%E6%8E%A7-covid-19-%E7%96%AB%E6%83%85%E5%8F%91%E5%B1%95/">使用 Elastic Stack 监控 Covid-19 疫情发展</a></h2>
+          <time class="published" datetime="2020-04-08 17:04:08 &#43;0800 CST">April 8, 2020</time>
+        </header>
+      </article>
+      
+      <article class="mini-post">
+          
+        <header>
+          <h2><a href="/blog/nutanix-dvp/">为Docker Swarm群集配置Nutanix持久存储</a></h2>
+          <time class="published" datetime="2017-11-02 00:00:00 &#43;0000 UTC">November 2, 2017</time>
+        </header>
+      </article>
+      
+      <article class="mini-post">
+          
+        <header>
+          <h2><a href="/blog/tips-for-docker-on-mac/">Tips for Docker on Mac</a></h2>
+          <time class="published" datetime="2017-09-26 00:00:00 &#43;0000 UTC">September 26, 2017</time>
+        </header>
+      </article>
+      
+      <article class="mini-post">
+          
+        <header>
+          <h2><a href="/blog/something-you-must-know-about-devops/">关于DevOps 的那些事</a></h2>
+          <time class="published" datetime="2017-09-23 00:00:00 &#43;0000 UTC">September 23, 2017</time>
+        </header>
+      </article>
+      
+      <article class="mini-post">
+          
+        <header>
+          <h2><a href="/blog/welcome-to-ghost/">切换到Ghost&#43;七牛</a></h2>
+          <time class="published" datetime="2017-09-21 00:00:00 &#43;0000 UTC">September 21, 2017</time>
+        </header>
+      </article>
+      
+      
+        <footer>
+          <a href="/posts/" class="button">查看更多</a>
+        </footer>
+      
+    </section>
+  
+
+  
+    
+
+      <section id="categories">
+        <header>
+          <h1><a href="/categories">分类</a></h1>
+        </header>
+        <ul>
+          
+          
+          <li>
+              <a href="/categories/blog/">blog<span class="count">52</span></a>
+          
+          <li>
+              <a href="/categories/nsm/">nsm<span class="count">41</span></a>
+          
+          <li>
+              <a href="/categories/itsm/">itsm<span class="count">21</span></a>
+          
+          <li>
+              <a href="/categories/opensource/">opensource<span class="count">21</span></a>
+          
+          <li>
+              <a href="/categories/running/">running<span class="count">21</span></a>
+          
+          <li>
+              <a href="/categories/cms/cmdb/">cms/cmdb<span class="count">20</span></a>
+          
+          <li>
+              <a href="/categories/infrastructure/">infrastructure<span class="count">18</span></a>
+          
+          <li>
+              <a href="/categories/cloud-computing/">cloud-computing<span class="count">17</span></a>
+          
+          <li>
+              <a href="/categories/wordpress1/">wordpress1<span class="count">15</span></a>
+          
+          <li>
+              <a href="/categories/xendesktop/">xendesktop<span class="count">15</span></a>
+          
+          <li>
+              <a href="/categories/travel/">travel<span class="count">14</span></a>
+          
+          <li>
+              <a href="/categories/itil/itsm/">itil/itsm<span class="count">13</span></a>
+          
+          <li>
+              <a href="/categories/life/">life<span class="count">13</span></a>
+          
+          <li>
+              <a href="/categories/movie/">movie<span class="count">12</span></a>
+          
+          <li>
+              <a href="/categories/asset-mgmt/">asset-mgmt<span class="count">10</span></a>
+          
+          <li>
+              <a href="/categories/bmc/">bmc<span class="count">7</span></a>
+          
+          <li>
+              <a href="/categories/citrix/">citrix<span class="count">7</span></a>
+          
+          <li>
+              <a href="/categories/rhel/">rhel<span class="count">6</span></a>
+          
+          <li>
+              <a href="/categories/xenserver/">xenserver<span class="count">6</span></a>
+          
+          <li>
+              <a href="/categories/apple/">apple<span class="count">4</span></a>
+          
+          <li>
+              <a href="/categories/desktop/">desktop<span class="count">4</span></a>
+          
+          <li>
+              <a href="/categories/opennms/">opennms<span class="count">4</span></a>
+          
+          <li>
+              <a href="/categories/tools/">tools<span class="count">4</span></a>
+          
+          <li>
+              <a href="/categories/container/">container<span class="count">3</span></a>
+          
+          <li>
+              <a href="/categories/linux/">linux<span class="count">3</span></a>
+          
+          <li>
+              <a href="/categories/openstack/">openstack<span class="count">3</span></a>
+          
+          <li>
+              <a href="/categories/project-management/">project-management<span class="count">3</span></a>
+          
+          <li>
+              <a href="/categories/xenapp/">xenapp<span class="count">3</span></a>
+          
+          <li>
+              <a href="/categories/docker/">docker<span class="count">2</span></a>
+          
+          <li>
+              <a href="/categories/hardware/">hardware<span class="count">2</span></a>
+          
+          <li>
+              <a href="/categories/lamp/">lamp<span class="count">2</span></a>
+          
+          <li>
+              <a href="/categories/cloudforms/">cloudforms<span class="count">1</span></a>
+          
+          <li>
+              <a href="/categories/cloudstack/">cloudstack<span class="count">1</span></a>
+          
+          <li>
+              <a href="/categories/devops/">devops<span class="count">1</span></a>
+          
+          <li>
+              <a href="/categories/ovirt/">ovirt<span class="count">1</span></a>
+          
+          <li>
+              <a href="/categories/rhev/">rhev<span class="count">1</span></a>
+          
+          <li>
+              <a href="/categories/storage/">storage<span class="count">1</span></a>
+          
+          </li>
+        </ul>
+      </section>
+    
+  
+
+  
+    <section id="mini-bio">
+      <header>
+        <h1>关于</h1>
+      </header>
+      <p>This theme was developed for Hugo static site generator.</p>
+      <footer>
+        <a href="/about" class="button">详细了解</a>
+      </footer>
+    </section>
+  
+</section>
+
+      <footer id="site-footer">
+  
+      <ul class="socnet-icons">
+        
+
+        <li><a href="//github.com/pacollins/hugo-future-imperfect-slim" target="_blank" rel="noopener" title="GitHub" class="fab fa-github"></a></li>
+
+
+
+
+
+
+<li><a href="//flickr.com/photos/example" target="_blank" rel="noopener" title="Flickr" class="fab fa-flickr"></a></li>
+
+
+
+
+<li><a href="//www.linkedin.com/in/example" target="_blank" rel="noopener" title="LinkedIn" class="fab fa-linkedin"></a></li>
+<li><a href="//linkedin.com/company/examplebusiness" target="_blank" rel="noopener" title="LinkedIn Company" class="fab fa-linkedin"></a></li>
+
+
+
+<li><a href="//facebook.com/example" target="_blank" rel="noopener" title="Facebook" class="fab fa-facebook"></a></li>
+<li><a href="//reddit.com/user/example" target="_blank" rel="noopener" title="Reddit" class="fab fa-reddit"></a></li>
+
+
+
+
+
+
+
+<li><a href="//instagram.com/example" target="_blank" rel="noopener" title="Instagram" class="fab fa-instagram"></a></li>
+
+<li><a href="//twitter.com/example" target="_blank" rel="noopener" title="Twitter" class="fab fa-twitter"></a></li>
+
+
+
+<li><a href="//www.pinterest.com/example" target="_blank" rel="noopener" title="Pinterest" class="fab fa-pinterest-p"></a></li>
+<li><a href="//telegram.me/example" target="_blank" rel="noopener" title="telegram" class="fab fa-telegram"></a></li>
+
+
+
+<li><a href="//researchgate.net/profile/example" target="_blank" rel="noopener" title="Research Gate"><i class="ai ai-researchgate"></i></a></li>
+<li><a href="//keybase.io/example" target="_blank" rel="noopener" title="keybase" class="fab fa-keybase"></a></li>
+<li><a href="//example.com/@example" target="_blank" rel="noopener" title="mastodon" class="fab fa-mastodon"></a></li>
+<li><a href="mailto:example" target="_blank" title="Email" class="far fa-envelope"></a></li>
+
+      </ul>
+  
+  <p class="copyright">
+    © 2020 Hugo Future Imperfect Slim em português
+      <br>
+    主题: <a href='https://themes.gohugo.io/hugo-future-imperfect-slim/' target='_blank' rel='noopener'>Hugo Future Imperfect Slim</a><br>移植自 <a href='https://html5up.net/future-imperfect' target='_blank' rel='noopener'>HTML5 UP</a> | 由 <a href='https://gohugo.io/' target='_blank' rel='noopener' title='0.80.0'>Hugo</a> 驱动
+  </p>
+</footer>
+<a id="back-to-top" href="#" class="fas fa-arrow-up fa-2x"></a>
+
+      <script src="/js/highlight.js"></script>
+    
+    <script>hljs.initHighlightingOnLoad();</script><script src="/js/bundle.min.bbba6b424a8ac5b6858cd5fc80eabc9c5277945cc2dc349204646b84891b4b58.js" integrity="sha256-u7prQkqKxbaFjNX8gOq8nFJ3lFzC3DSSBGRrhIkbS1g="></script>
+    <script src="/js/add-on.js"></script>
+    </div>
+  </body>
+</html>

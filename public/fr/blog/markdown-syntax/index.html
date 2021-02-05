@@ -1,0 +1,628 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+  <meta charset="utf-8">
+<title>Guide de syntaxe de Markdown - Hugo Future Imperfect Slim en français</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+<meta name="generator" content="Hugo 0.80.0" /><meta property="og:site_name" content="Hugo Future Imperfect Slim en français">
+  <meta property="og:title" content="Guide de syntaxe de Markdown">
+  <meta property="og:description" content="Exemple d&#39;article présentant la syntaxe et le formatage de base de Markdown pour les éléments HTML.">
+  <meta property="description" content="Exemple d&#39;article présentant la syntaxe et le formatage de base de Markdown pour les éléments HTML.">
+  <meta property="og:url" content="https://example.com/fr/blog/markdown-syntax/">
+  <meta property="og:type" content="article">
+  
+    
+      <meta property="og:image" content="https://example.com/img/2019/03/pic01.jpg">
+      <meta property="og:image:alt" content="Mountain Range Through Clouds">
+    
+      <meta property="og:image" content="https://example.com/img/2019/03/pic02.jpg">
+      <meta property="og:image:alt" content="Desert Scene">
+    
+      <meta property="og:image" content="https://example.com/img/2019/03/pic03.jpg">
+      <meta property="og:image:alt" content="Valley">
+    
+  
+  <link rel="stylesheet" href="/css/bundle.min.d9e04ae08c9b3049b766dbd4aeab7d862c5ea1d13679b621490e0f5df5507497.css" integrity="sha256-2eBK4IybMEm3ZtvUrqt9hixeodE2ebYhSQ4PXfVQdJc="><link rel="stylesheet" href="/css/add-on.css">
+</head>
+
+  <body>
+    
+
+<header id="site-header">
+  <nav id="site-nav">
+    <h1 class="nav-title">
+      <a href="/fr/" class="nav">
+        
+          Blog
+        
+      </a>
+    </h1>
+    <menu id="site-nav-menu" class="flyout-menu menu">
+      
+        
+          
+          <a href="/fr/" class="nav link"><i class='fas fa-home'></i> Accueil</a>
+        
+      
+        
+          
+          <a href="/fr/about/" class="nav link"><i class='far fa-id-card'></i> About</a>
+        
+      
+        
+          
+          <a href="/fr/blog/" class="nav link"><i class='far fa-newspaper'></i> Blog</a>
+        
+      
+        
+          
+          <a href="/fr/categories/" class="nav link"><i class='fas fa-sitemap'></i> Catégories</a>
+        
+      
+        
+          
+          <a href="/fr/contact/" class="nav link"><i class='far fa-envelope'></i> Contact</a>
+        
+      
+      <a href="#share-menu" class="nav link share-toggle"><i class="fas fa-share-alt">&nbsp;</i>Share</a>
+      <a href="#search-input" class="nav link search-toggle"><i class="fas fa-search">&nbsp;</i>Search</a>
+    </menu>
+    <a href="#search-input" class="nav search-toggle"><i class="fas fa-search fa-2x">&nbsp;</i></a>
+    <a href="#share-menu" class="nav share-toggle"><i class="fas fa-share-alt fa-2x">&nbsp;</i></a>
+    <a href="#lang-menu" class="nav lang-toggle" lang="fr">fr</a>
+    <a href="#site-nav" class="nav nav-toggle"><i class="fas fa-bars fa-2x"></i></a>
+  </nav>
+  <menu id="search" class="menu"><input id="search-input" class="search-input menu"></input><div id="search-results" class="search-results menu"></div></menu>
+  <menu id="lang-menu" class="flyout-menu menu">
+  <a href="#" lang="fr" class="nav link active">Français (fr)</a>
+  
+      <a href="https://example.com/blog/markdown-syntax/" lang="en" class="nav link">English (en)</a>
+    
+  
+</menu>
+
+  
+    <menu id="share-menu" class="flyout-menu menu">
+      <h1>Share Post</h1>
+      
+
+
+
+
+  
+    
+    <a href="//twitter.com/share?text=Guide%20de%20syntaxe%20de%20Markdown&amp;url=https%3a%2f%2fexample.com%2ffr%2fblog%2fmarkdown-syntax%2f" target="_blank" rel="noopener" class="nav share-btn twitter">
+        <p>Twitter</p>
+      </a>
+  
+
+  
+      <a href="//www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fexample.com%2ffr%2fblog%2fmarkdown-syntax%2f" target="_blank" rel="noopener" class="nav share-btn facebook">
+        <p>Facebook</p>
+        </a>
+  
+
+  
+    <a href="//www.reddit.com/submit?url=https%3a%2f%2fexample.com%2ffr%2fblog%2fmarkdown-syntax%2f&amp;title=Guide%20de%20syntaxe%20de%20Markdown" target="_blank" rel="noopener" class="nav share-btn reddit">
+          <p>Reddit</p>
+        </a>
+  
+
+  
+        <a href="//www.linkedin.com/shareArticle?url=https%3a%2f%2fexample.com%2ffr%2fblog%2fmarkdown-syntax%2f&amp;title=Guide%20de%20syntaxe%20de%20Markdown" target="_blank" rel="noopener" class="nav share-btn linkedin">
+            <p>LinkedIn</p>
+          </a>
+  
+
+  
+        <a href="//www.pinterest.com/pin/create/button/?url=https%3a%2f%2fexample.com%2ffr%2fblog%2fmarkdown-syntax%2f&amp;description=Guide%20de%20syntaxe%20de%20Markdown" target="_blank" rel="noopener" class="nav share-btn pinterest">
+          <p>Pinterest</p>
+        </a>
+  
+
+  
+        <a href="mailto:?subject=D%c3%a9couvrez%20ce%20post%20par Hugo%20Auteurs&amp;body=https%3a%2f%2fexample.com%2ffr%2fblog%2fmarkdown-syntax%2f" target="_blank" class="nav share-btn email" data-proofer-ignore>
+          <p>Email</p>
+        </a>
+  
+
+
+    </menu>
+  
+</header>
+
+    <div id="wrapper">
+      <section id="site-intro" >
+  <a href="/fr/"><img src="https://example.com/img/main/logo.jpg" class="circle" width="100" alt="Hugo Future Imperfect Slim" /></a>
+  <header>
+    <h1>Hugo Future Imperfect Slim</h1>
+  </header>
+  <main>
+    <p>Another fine, responsive site template by <a href='http://html5up.net'>HTML5 UP</a>.</p>
+  </main>
+  
+    <footer>
+      <ul class="socnet-icons">
+        
+
+        <li><a href="//github.com/pacollins/hugo-future-imperfect-slim" target="_blank" rel="noopener" title="GitHub" class="fab fa-github"></a></li>
+
+
+
+
+
+
+<li><a href="//flickr.com/photos/example" target="_blank" rel="noopener" title="Flickr" class="fab fa-flickr"></a></li>
+
+
+
+
+<li><a href="//www.linkedin.com/in/example" target="_blank" rel="noopener" title="LinkedIn" class="fab fa-linkedin"></a></li>
+<li><a href="//linkedin.com/company/examplebusiness" target="_blank" rel="noopener" title="LinkedIn Company" class="fab fa-linkedin"></a></li>
+
+
+
+<li><a href="//facebook.com/example" target="_blank" rel="noopener" title="Facebook" class="fab fa-facebook"></a></li>
+<li><a href="//reddit.com/user/example" target="_blank" rel="noopener" title="Reddit" class="fab fa-reddit"></a></li>
+
+
+
+
+
+
+
+<li><a href="//instagram.com/example" target="_blank" rel="noopener" title="Instagram" class="fab fa-instagram"></a></li>
+
+<li><a href="//twitter.com/example" target="_blank" rel="noopener" title="Twitter" class="fab fa-twitter"></a></li>
+
+
+
+<li><a href="//www.pinterest.com/example" target="_blank" rel="noopener" title="Pinterest" class="fab fa-pinterest-p"></a></li>
+<li><a href="//telegram.me/example" target="_blank" rel="noopener" title="telegram" class="fab fa-telegram"></a></li>
+
+
+
+<li><a href="//researchgate.net/profile/example" target="_blank" rel="noopener" title="Research Gate"><i class="ai ai-researchgate"></i></a></li>
+<li><a href="//keybase.io/example" target="_blank" rel="noopener" title="keybase" class="fab fa-keybase"></a></li>
+<li><a href="//example.com/@example" target="_blank" rel="noopener" title="mastodon" class="fab fa-mastodon"></a></li>
+<li><a href="mailto:example" target="_blank" title="Email" class="far fa-envelope"></a></li>
+
+      </ul>
+    </footer>
+  
+</section>
+
+      <main id="site-main">
+        
+  <article class="post">
+    <header>
+  <div class="title">
+    
+      <h2><a href="/fr/blog/markdown-syntax/">Guide de syntaxe de Markdown</a></h2>
+    
+    
+      <p>Exemple d&#39;article présentant la syntaxe et le formatage de base de Markdown pour les éléments HTML.</p>
+    
+  </div>
+  <div class="meta">
+    <time datetime="2019-03-11 00:00:00 &#43;0000 UTC">11-03-2019</time>
+    <p>Hugo Auteurs</p>
+    <p>Lecture de 3 Minutes</p>
+  </div>
+</header>
+
+    <div id="socnet-share">
+      
+
+
+
+
+  
+    
+    <a href="//twitter.com/share?text=Guide%20de%20syntaxe%20de%20Markdown&amp;url=https%3a%2f%2fexample.com%2ffr%2fblog%2fmarkdown-syntax%2f" target="_blank" rel="noopener" class="nav share-btn twitter">
+        <p>Twitter</p>
+      </a>
+  
+
+  
+      <a href="//www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fexample.com%2ffr%2fblog%2fmarkdown-syntax%2f" target="_blank" rel="noopener" class="nav share-btn facebook">
+        <p>Facebook</p>
+        </a>
+  
+
+  
+    <a href="//www.reddit.com/submit?url=https%3a%2f%2fexample.com%2ffr%2fblog%2fmarkdown-syntax%2f&amp;title=Guide%20de%20syntaxe%20de%20Markdown" target="_blank" rel="noopener" class="nav share-btn reddit">
+          <p>Reddit</p>
+        </a>
+  
+
+  
+        <a href="//www.linkedin.com/shareArticle?url=https%3a%2f%2fexample.com%2ffr%2fblog%2fmarkdown-syntax%2f&amp;title=Guide%20de%20syntaxe%20de%20Markdown" target="_blank" rel="noopener" class="nav share-btn linkedin">
+            <p>LinkedIn</p>
+          </a>
+  
+
+  
+        <a href="//www.pinterest.com/pin/create/button/?url=https%3a%2f%2fexample.com%2ffr%2fblog%2fmarkdown-syntax%2f&amp;description=Guide%20de%20syntaxe%20de%20Markdown" target="_blank" rel="noopener" class="nav share-btn pinterest">
+          <p>Pinterest</p>
+        </a>
+  
+
+  
+        <a href="mailto:?subject=D%c3%a9couvrez%20ce%20post%20par Hugo%20Auteurs&amp;body=https%3a%2f%2fexample.com%2ffr%2fblog%2fmarkdown-syntax%2f" target="_blank" class="nav share-btn email" data-proofer-ignore>
+          <p>Email</p>
+        </a>
+  
+
+
+    </div>
+    <div class="content">
+      <a href="/fr/blog/markdown-syntax/" class="image" style="--bg-image: url('https://example.com/img/2019/03/pic01.jpg');">
+    <img class="stretchH" src="https://example.com/img/2019/03/pic01.jpg" alt="Mountain Range Through Clouds">
+  </a>
+      <p>Cet article propose un exemple de syntaxe de base de Markdown pouvant être utilisée dans les fichiers de contenu Hugo. Il indique également si les éléments HTML de base sont décorés avec CSS dans un thème Hugo.</p>
+<h2 id="rubriques">Rubriques</h2>
+<p>Les éléments HTML <code>&lt;h1&gt;</code> —<code>&lt;h6&gt;</code>suivants représentent six niveaux d&rsquo;en-tête de section. <code>&lt;h1&gt;</code> est le niveau de section le plus élevé tandis que <code>&lt;h6&gt;</code> est le plus bas.</p>
+<h1 id="h1">H1</h1>
+<h2 id="h2">H2</h2>
+<h3 id="h3">H3</h3>
+<h4 id="h4">H4</h4>
+<h5 id="h5">H5</h5>
+<h6 id="h6">H6</h6>
+<h2 id="paragraphe">Paragraphe</h2>
+<p>Xerum, mais qui est un peu explicite sur le labo. Ace venitatiusda cum, voluptionse latur sitiae dolessi aut paristo nue en vol qui voluptate dolestendit péritin re plis aut quas inctum laceat est volestemque commosa comme date de fin, agent de base Quianimin porecus evelectur, cum que nis noll voloribus ratem aut omnimi, sitatur? Quiatem. Nam, omnis sum am facea corem alique molestrunt et eos evelece arcillit ut aut eos eos nus, sin conecerem erum fuga. Vérifiez les résultats, notez les réponses, les rapports, les rapports, les chiffres, les chiffres, les chiffres, les chiffres, les chiffres, le temps, le temps, le temps, la durée, le temps, le temps, et le temps, puis le temps.</p>
+<p>Itatur? Quiatae cullecum se souvient de manière automatique dans les archives non-formées. Sapicia est sinveli squiatum, noyau et que aut hariosam ex eat.</p>
+<h2 id="blockquotes">Blockquotes</h2>
+<p>L&rsquo;élément blockquote représente le contenu cité d&rsquo;une autre source, éventuellement avec une citation qui doit figurer dans un élément <code>footer</code> ou<code> cite</code>, et éventuellement avec des modifications en ligne telles que des annotations et des abréviations.</p>
+<h4 id="blockquote-sans-attribution">Blockquote sans attribution</h4>
+<blockquote>
+<p>Tiam, menthe et andaepu dandae nostion secatur sequo quae.
+<strong>Remarque</strong> que vous pouvez utiliser la syntaxe * Markdown * dans un bloc de citation.</p>
+</blockquote>
+<h4 id="blockquote-avec-attribution">Blockquote avec attribution</h4>
+<blockquote>
+<p>Ne communiquez pas en partageant la mémoire, partagez la mémoire en communiquant. </p></p>
+<ul>
+<li><cite> Rob Pike <sup id="fnref:1"><a href="#fn:1" class="footnote-ref" role="doc-noteref">1</a></sup> </cite></li>
+</ul>
+</blockquote>
+<h2 id="les-tables">Les tables</h2>
+<p>Les tables ne font pas partie de la spécification Markdown principale, mais Hugo les prend en charge immédiatement.</p>
+<table>
+<thead>
+<tr>
+<th>   Nom</th>
+<th>Âge</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>    Bob</td>
+<td>27</td>
+</tr>
+<tr>
+<td>  Alice</td>
+<td>23</td>
+</tr>
+</tbody>
+</table>
+<h4 id="inline-markdown-au-sein-des-tables">Inline Markdown au sein des tables</h4>
+<table>
+<thead>
+<tr>
+<th>En ligne &amp; nbsp; &amp; nbsp; &amp; nbsp;</th>
+<th>Markdown &amp; nbsp; &amp; nbsp; &amp; nbsp;</th>
+<th>Dans &amp; nbsp; &amp; nbsp; &amp; nbsp;</th>
+<th>Tableau</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>* italique *</td>
+<td>** gras **</td>
+<td>~~ barré ~~ &amp; nbsp; &amp; nbsp; &amp; nbsp;</td>
+<td><code>code</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="blocs-de-code">Blocs de code</h2>
+<h4 id="bloc-de-code-avec-backticks">Bloc de code avec backticks</h4>
+<pre><code>&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+  &lt;meta charset=&quot;UTF-8&quot;&gt;
+  &lt;title&gt;Exemple de document HTML5 &lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;p&gt;Test&lt;/p&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</code></pre><h4 id="bloc-de-code-indenté-de-quatre-espaces">Bloc de code indenté de quatre espaces</h4>
+<p>    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+      <meta charset="UTF-8">
+      <title>Exemple de document HTML5</title>
+    </head>
+    <body>
+      <p>Test</p>
+    </body>
+    </html></p>
+<h4 id="bloc-de-code-avec-le-shortcode-interne-de-la-surbrillance-de-hugo">Bloc de code avec le shortcode interne de la surbrillance de Hugo</h4>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html"><span style="color:#75715e">&lt;!DOCTYPE html&gt;</span>
+&lt;<span style="color:#f92672">html</span> <span style="color:#a6e22e">lang</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;en&#34;</span>&gt;
+&lt;<span style="color:#f92672">head</span>&gt;
+  &lt;<span style="color:#f92672">meta</span> <span style="color:#a6e22e">charset</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;UTF-8&#34;</span>&gt;
+  &lt;<span style="color:#f92672">title</span>&gt; Exemple de document HTML5 &lt;/<span style="color:#f92672">title</span>&gt;
+&lt;/<span style="color:#f92672">head</span>&gt;
+&lt;<span style="color:#f92672">body</span>&gt;
+  &lt;<span style="color:#f92672">p</span>&gt;Test&lt;/<span style="color:#f92672">p</span>&gt;
+&lt;/<span style="color:#f92672">body</span>&gt;
+&lt;/<span style="color:#f92672">html</span>&gt;</code></pre></div>
+<h2 id="types-de-liste">Types de liste</h2>
+<h4 id="liste-ordonnée">Liste ordonnée</h4>
+<ol>
+<li>Premier article</li>
+<li>Deuxième élément</li>
+<li>Troisième article</li>
+</ol>
+<h4 id="liste-non-ordonnée">Liste non ordonnée</h4>
+<ul>
+<li>Élément de liste</li>
+<li>Un autre article</li>
+<li>Et un autre article</li>
+</ul>
+<h4 id="liste-imbriquée">Liste imbriquée</h4>
+<ul>
+<li>Article</li>
+</ul>
+<ol>
+<li>Premier sous-article</li>
+<li>Deuxième sous-article</li>
+</ol>
+<h2 id="autres-éléments---abbr-sous-sup-kbd-mark">Autres éléments - abbr, sous, sup, kbd, mark</h2>
+<p><abbr title="Format d'échange graphique">GIF</abbr> est un format d&rsquo;image bitmap.</p>
+<p>H<sub>2</sub>O</p>
+<p>X<sup>n</sup>+Y<sup>n</sup>=Z<sup>n</sup></p>
+<p>Appuyez sur <kbd><kbd>CTRL</kbd>+<kbd>ALT</kbd>+<kbd>Supprimer</kbd></kbd> pour mettre fin à la session.</p>
+<p>La plupart des <mark>salamandres</mark> sont nocturnes et chassent les insectes, les vers et autres petites créatures.</p>
+<section class="footnotes" role="doc-endnotes">
+<hr>
+<ol>
+<li id="fn:1" role="doc-endnote">
+<p>La citation ci-dessus est extraite de [conversation] de Rob Pike (<a href="https://www.youtube.com/watch?v=PAAkCSZUG1c">https://www.youtube.com/watch?v=PAAkCSZUG1c</a>) lors de la fête de Gopherfest, le 18 novembre 2015. <a href="#fnref:1" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
+</ol>
+</section>
+    </div>
+    <footer>
+      <div class="stats">
+  
+    <ul class="categories">
+      
+        
+          <li><a class="article-terms-link" href="/fr/categories/themes/">themes</a></li>
+        
+          <li><a class="article-terms-link" href="/fr/categories/syntax/">syntax</a></li>
+        
+      
+    </ul>
+  
+  
+    <ul class="tags">
+      
+        
+          <li><a class="article-terms-link" href="/fr/tags/markdown/">markdown</a></li>
+        
+          <li><a class="article-terms-link" href="/fr/tags/css/">css</a></li>
+        
+          <li><a class="article-terms-link" href="/fr/tags/html/">html</a></li>
+        
+          <li><a class="article-terms-link" href="/fr/tags/themes/">themes</a></li>
+        
+      
+    </ul>
+  
+</div>
+
+    </footer>
+  </article>
+  
+    
+  <article class="post">
+    
+    <div>
+      <h2 id="say-something">Dire Quelques Choses</h2>
+        <form id="comment-form" class="new-comment" method="POST">
+          
+          <h3 class='reply-notice hidden'>
+            <span class='reply-name'></span>
+          </h3>
+
+          
+          <input type="hidden" name="options[entryId]" value="13dac64560e4bfdee57abdac6ed43a3d">
+          <input type='hidden' name='fields[replyThread]' value=''>
+          <input type='hidden' name='fields[replyID]' value=''>
+          <input type='hidden' name='fields[replyName]' value=''>
+
+          
+          <input required name='fields[name]' type='text' placeholder='Votre Nom'>
+          <input name='fields[website]' type='text' placeholder='Votre Site Web'>
+          <input required name='fields[email]' type='email' placeholder='Votre Adresse Mail'>
+          <textarea required name='fields[body]' placeholder='Votre Message' rows='10'></textarea>
+
+          
+          
+
+          
+          <div class='submit-notice'>
+            <strong class='submit-notice-text submit-success hidden'>Merci de votre commentaire, il s&#39;affichera sur le site une fois approuvé.</strong>
+            <strong class='submit-notice-text submit-failed hidden'>Désolé, une erreur s&#39;est produite. Veuillez remplir tous les champs obligatoires et réessayer.</strong>
+          </div>
+
+          
+          <input type='submit' value='Envoyer' class='button'>
+          <input type='submit' value='Envoyé' class='hidden button' disabled>
+          <input type='reset' value='Effacer' class='button'>
+        </form>
+    </div>
+
+    
+    <div>
+      <h2>Commentaires</h2><p>Rien pour le moment.</p>
+      
+    </div>
+  </article>
+
+
+  
+  <div class="pagination">
+    
+    
+      <a href="/fr/blog/rich-content/" class="button right"><span>Contenu riche</span></a>
+    
+  </div>
+
+      </main>
+      <section id="site-sidebar">
+  
+    <section id="recent-posts">
+      <header>
+        <h1>Posts Récents</h1>
+      </header>
+      
+      <article class="mini-post">
+          <a href="/fr/blog/markdown-syntax/" class="image" style="--bg-image: url('https://example.com/img/2019/03/pic01.jpg');">
+    <img class="stretchH" src="https://example.com/img/2019/03/pic01.jpg" alt="Mountain Range Through Clouds">
+  </a>
+        <header>
+          <h2><a href="/fr/blog/markdown-syntax/">Guide de syntaxe de Markdown</a></h2>
+          <time class="published" datetime="2019-03-11 00:00:00 &#43;0000 UTC">11-03-2019</time>
+        </header>
+      </article>
+      
+      <article class="mini-post">
+          <a href="/fr/blog/rich-content/" class="image" style="--bg-image: url('https://example.com/img/main/logo.jpg');">
+    <img class="stretchV" src="https://example.com/img/main/logo.jpg" alt="Fox">
+  </a>
+        <header>
+          <h2><a href="/fr/blog/rich-content/">Contenu riche</a></h2>
+          <time class="published" datetime="2019-03-10 00:00:00 &#43;0000 UTC">10-03-2019</time>
+        </header>
+      </article>
+      
+      <article class="mini-post">
+          <a href="/fr/blog/emoji-support/" class="image" style="--bg-image: url('https://example.com/img/2019/03/pic02.jpg');">
+    <img class="" src="https://example.com/img/2019/03/pic02.jpg" alt="Desert Scene">
+  </a>
+        <header>
+          <h2><a href="/fr/blog/emoji-support/">Emoji Support</a></h2>
+          <time class="published" datetime="2019-03-05 00:00:00 &#43;0000 UTC">05-03-2019</time>
+        </header>
+      </article>
+      
+      
+    </section>
+  
+
+  
+    
+
+      <section id="categories">
+        <header>
+          <h1><a href="/fr/categories">Catégories</a></h1>
+        </header>
+        <ul>
+          
+          
+          <li>
+              <a href="/fr/categories/syntax/">syntax<span class="count">1</span></a>
+          
+          <li>
+              <a href="/fr/categories/themes/">themes<span class="count">1</span></a>
+          
+          </li>
+        </ul>
+      </section>
+    
+  
+
+  
+    <section id="mini-bio">
+      <header>
+        <h1>A Propos</h1>
+      </header>
+      <p>This theme was developed for Hugo static site generator.</p>
+      <footer>
+        <a href="/fr/about" class="button">Apprendre Encore Plus</a>
+      </footer>
+    </section>
+  
+</section>
+
+      <footer id="site-footer">
+  
+      <ul class="socnet-icons">
+        
+
+        <li><a href="//github.com/pacollins/hugo-future-imperfect-slim" target="_blank" rel="noopener" title="GitHub" class="fab fa-github"></a></li>
+
+
+
+
+
+
+<li><a href="//flickr.com/photos/example" target="_blank" rel="noopener" title="Flickr" class="fab fa-flickr"></a></li>
+
+
+
+
+<li><a href="//www.linkedin.com/in/example" target="_blank" rel="noopener" title="LinkedIn" class="fab fa-linkedin"></a></li>
+<li><a href="//linkedin.com/company/examplebusiness" target="_blank" rel="noopener" title="LinkedIn Company" class="fab fa-linkedin"></a></li>
+
+
+
+<li><a href="//facebook.com/example" target="_blank" rel="noopener" title="Facebook" class="fab fa-facebook"></a></li>
+<li><a href="//reddit.com/user/example" target="_blank" rel="noopener" title="Reddit" class="fab fa-reddit"></a></li>
+
+
+
+
+
+
+
+<li><a href="//instagram.com/example" target="_blank" rel="noopener" title="Instagram" class="fab fa-instagram"></a></li>
+
+<li><a href="//twitter.com/example" target="_blank" rel="noopener" title="Twitter" class="fab fa-twitter"></a></li>
+
+
+
+<li><a href="//www.pinterest.com/example" target="_blank" rel="noopener" title="Pinterest" class="fab fa-pinterest-p"></a></li>
+<li><a href="//telegram.me/example" target="_blank" rel="noopener" title="telegram" class="fab fa-telegram"></a></li>
+
+
+
+<li><a href="//researchgate.net/profile/example" target="_blank" rel="noopener" title="Research Gate"><i class="ai ai-researchgate"></i></a></li>
+<li><a href="//keybase.io/example" target="_blank" rel="noopener" title="keybase" class="fab fa-keybase"></a></li>
+<li><a href="//example.com/@example" target="_blank" rel="noopener" title="mastodon" class="fab fa-mastodon"></a></li>
+<li><a href="mailto:example" target="_blank" title="Email" class="far fa-envelope"></a></li>
+
+      </ul>
+  
+  <p class="copyright">
+    © 2019 Hugo Future Imperfect Slim en français
+      <br>
+    Thème : <a href='https://github.com/pacollins/hugo-future-imperfect-slim' target='_blank' rel='noopener'>Hugo Future Imperfect Slim</a><br>Un <a href='https://html5up.net/future-imperfect' target='_blank' rel='noopener'>portage de HTML5 UP</a> | Propulsé par <a href='https://gohugo.io/' title='0.80.0' target='_blank' rel='noopener'>Hugo</a>
+  </p>
+</footer>
+<a id="back-to-top" href="#" class="fas fa-arrow-up fa-2x"></a>
+
+      <script src="/js/highlight.js"></script>
+    
+    <script>hljs.initHighlightingOnLoad();</script><script src="/js/bundle.min.bbba6b424a8ac5b6858cd5fc80eabc9c5277945cc2dc349204646b84891b4b58.js" integrity="sha256-u7prQkqKxbaFjNX8gOq8nFJ3lFzC3DSSBGRrhIkbS1g="></script>
+    <script src="/js/add-on.js"></script>
+    </div>
+  </body>
+</html>

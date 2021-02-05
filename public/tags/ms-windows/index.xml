@@ -1,1 +1,44 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>MS Windows on Martin's Blog</title><link>https://martinliu.cn/tags/ms-windows/</link><description>Recent content in MS Windows on Martin's Blog</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><managingEditor>liuzh66@gmail.com (刘征 Martin Liu)</managingEditor><webMaster>liuzh66@gmail.com (刘征 Martin Liu)</webMaster><lastBuildDate>Fri, 14 Dec 2007 11:34:00 +0000</lastBuildDate><atom:link href="https://martinliu.cn/tags/ms-windows/index.xml" rel="self" type="application/rss+xml"/><item><title>如何用通过OpenNMS监控Windows 服务器</title><link>https://martinliu.cn/2007/12/14/opennms-monitoring-ms-windows/</link><pubDate>Fri, 14 Dec 2007 11:34:00 +0000</pubDate><author>liuzh66@gmail.com (刘征 Martin Liu)</author><guid>https://martinliu.cn/2007/12/14/opennms-monitoring-ms-windows/</guid><description>OpenNMS可以监控可用性和性能参数。下面看看OpenNMS监控Windows服务器的三种情况。第一种情况：Windows机器上没有安装S</description></item></channel></rss>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>MS Windows on Hugo Future Imperfect Slim em português</title>
+    <link>https://example.com/tags/ms-windows/</link>
+    <description>Recent content in MS Windows on Hugo Future Imperfect Slim em português</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-CN</language>
+    <lastBuildDate>Fri, 14 Dec 2007 11:34:00 +0000</lastBuildDate><atom:link href="https://example.com/tags/ms-windows/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>如何用通过OpenNMS监控Windows 服务器</title>
+      <link>https://example.com/2007/12/14/opennms-monitoring-ms-windows/</link>
+      <pubDate>Fri, 14 Dec 2007 11:34:00 +0000</pubDate>
+      
+      <guid>https://example.com/2007/12/14/opennms-monitoring-ms-windows/</guid>
+      <description>OpenNMS可以监控可用性和性能参数。下面看看OpenNMS监控Windows服务器的三种情况。
+第一种情况：
+Windows机器上没有安装SNMP服务，在自动发现了这个节点后，它会被加入节点列表，之后它被定期的轮询。如果这个节点断网了，OpenNMS会报警；同时这个节点的可用性被计算。自动发现还会发现这个机器上的服务。ICMP是肯定会有的，还可能有http等其他的服务；这些服务也会被定时的轮询，如果某个服务停了，这个节点的整个的可用性受到影响。这种情况下该节点的所有服务的响应时间会被OpenNMS收集并保持历史数据。
+第二种情况：
+安装了SNMP服务。先说一下windows服务的安全性，默认情况下public是默认的只读密码；为了更加安全可以配置其他的只读密码，并指定某些特定的IP才能访问这个节点。这个策略在Windows的觉策略中很容易实现，或者说建议使用域控制器来管理这个策略，比较方便。假定OpenNMS能访问该节点的snmp服务的情况下。这些数据会增加：SNMP Attributes；在选择了资源图后，可以看到snmp的节点数据和接口数据。进入后可以看到，其实收集 的是一个tcp／ip接口上基本的信息：流量，连接数，丢包，错包等。个人认为流量是个最有用的数据，特别是对于一些简单的web/ftp服务器也就够用了。
+第三种情况：
+我们需要监控到操作系统的性能数据cpu/disk/RAM等。就需要安装一个snmp代理，这个代理可以提供这些信息，opennms才能通过snmp协议收集这些数据。需要到下面网址下载一个免费的snmp代理，当然这个产品也有收费版本：http://www.wtcs.org/informant/download.htm 这个代理很小需要在windows机器上安装一下。默认情况下OpenNMS的对windows采集模板中包含了对cpu/disk/ram等数据的采集，等到下一次OpenNMS在采集这个机器的时候相关数据就会被显示在节点snmp数据下面。
+这里是通过这个免费的snmp代理能采集到的数据：
+/Program Files/SNMP Informant/standard/mibs/informant-std-tree.txt
+&amp;ndash;standard(1.3.6.1.4.1.9600.1.1)
+|
++&amp;ndash;logicalDiskTable(1)
+| |
+| +&amp;ndash;logicalDiskEntry(1) [lDiskInstance]
+| |
+| +&amp;ndash; r-n InstanceName lDiskInstance(1)
+| +&amp;ndash; r-n Gauge32 lDiskPercentDiskReadTime(2)
+| +&amp;ndash; r-n Gauge32 lDiskPercentDiskTime(3)
+| +&amp;ndash; r-n Gauge32 lDiskPercentDiskWriteTime(4)
+| +&amp;ndash; r-n Gauge32 lDiskPercentFreeSpace(5)
+| +&amp;ndash; r-n Gauge32 lDiskPercentIdleTime(6)
+| +&amp;ndash; r-n Gauge32 lDiskAvgDiskQueueLength(7)
+| +&amp;ndash; r-n Gauge32 lDiskAvgDiskReadQueueLength(8)
+| +&amp;ndash; r-n Gauge32 lDiskAvgDiskWriteQueueLength(9)
+| +&amp;ndash; r-n Gauge32 lDiskAvgDiskSecPerRead(10)</description>
+    </item>
+    
+  </channel>
+</rss>

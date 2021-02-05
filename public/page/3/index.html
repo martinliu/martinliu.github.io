@@ -1,35 +1,593 @@
-<!doctype html><html lang=zh><head><meta charset=utf-8><meta http-equiv=x-ua-compatible content="IE=edge"><meta name=viewport content="width=device-width,initial-scale=1,maximum-scale=1"><title>Martin's Blog - Martin Liu's Blog</title><meta property="og:title" content="Martin's Blog"><meta name=twitter:title content="Martin's Blog"><meta name=description content="刘征是《DevOps Handbook》和《The Site Reliability Workbook》译者，中国 DevOps 社区组织者，致力于推广 DevOps 实践、理念和文化。"><meta property="og:description" content="刘征是《DevOps Handbook》和《The Site Reliability Workbook》译者，中国 DevOps 社区组织者，致力于推广 DevOps 实践、理念和文化。"><meta name=twitter:description content="刘征是《DevOps Handbook》和《The Site Reliability Workbook》译者，中国 DevOps 社区组织者，致力于推广 DevOps 实践、理念和文化。"><meta name=author content="刘征 Martin Liu"><link href=https://martinliu.cn/favicon.ico rel=icon type=image/x-icon><meta name=msvalidate.01 content="12F570013342D1F8B60A455D09221C1D"><meta name=yandex-verification content="7e9acc85531b0f35"><meta name=google-site-verification content="4oSwNTpy1vzip3_lt6XhkhMfImCD_DZlvL3K1k-M8qk"><meta name=baidu-site-verification content="Z7d1tYkxzQ"><script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-TL37V8G');</script><meta property="og:image" content="https://res.cloudinary.com/martinliu/image/upload/q_auto:eco/avatar.jpg"><meta name=twitter:image content="https://res.cloudinary.com/martinliu/image/upload/q_auto:eco/avatar.jpg"><meta name=twitter:card content="summary"><meta name=twitter:site content="@martinliu"><meta name=twitter:creator content="@martinliu"><meta property="og:url" content="https://martinliu.cn/"><meta property="og:type" content="website"><meta property="og:site_name" content="Martin's Blog"><meta name=keywords content><meta name=generator content="Hugo 0.80.0"><link rel=canonical href=https://martinliu.cn/><link rel=alternate href=https://martinliu.cn/index.xml type=application/rss+xml title="Martin's Blog"><script src=https://res.cloudinary.com/martinliu/raw/upload/static/jquery-1.12.4.min.js></script><link rel=stylesheet href=https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.7.1/katex.min.css integrity=sha384-wITovz90syo1dJWVh32uuETPVEtGigN07tkttEqPv+uR2SE/mbQcG7ATL28aI9H0 crossorigin=anonymous><link rel=stylesheet href=https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css><link rel=stylesheet href=https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css integrity=sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u crossorigin=anonymous><link rel=stylesheet href=https://martinliu.cn/css/main.css><link rel=stylesheet href=https://martinliu.cn/css/search.css><link rel=stylesheet href="https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic"><link rel=stylesheet href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800"><link rel=stylesheet href=https://martinliu.cn/css/prism.css><script data-ad-client=ca-pub-4545355461463255 async src=https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js></script><link rel=stylesheet href=https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.1/photoswipe.min.css integrity="sha256-sCl5PUOGMLfFYctzDW3MtRib0ctyUvI9Qsmq2wXOeBY=" crossorigin=anonymous><link rel=stylesheet href=https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.1/default-skin/default-skin.min.css integrity="sha256-BFeI1V+Vh1Rk37wswuOYn5lsTcaU96hGaI7OUVCLjPc=" crossorigin=anonymous><div class=pswp tabindex=-1 role=dialog aria-hidden=true><div class=pswp__bg></div><div class=pswp__scroll-wrap><div class=pswp__container><div class=pswp__item></div><div class=pswp__item></div><div class=pswp__item></div></div><div class="pswp__ui pswp__ui--hidden"><div class=pswp__top-bar><div class=pswp__counter></div><button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
-<button class="pswp__button pswp__button--share" title=Share></button>
-<button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
-<button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button><div class=pswp__preloader><div class=pswp__preloader__icn><div class=pswp__preloader__cut><div class=pswp__preloader__donut></div></div></div></div></div><div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap"><div class=pswp__share-tooltip></div></div><button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)"></button>
-<button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)"></button><div class=pswp__caption><div class=pswp__caption__center></div></div></div></div></div><script type=application/javascript>var doNotTrack=false;if(!doNotTrack){window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;ga('create','UA-749876-6','auto');ga('send','pageview');}</script><script async src=https://www.google-analytics.com/analytics.js></script></head><body><nav class="navbar navbar-default navbar-fixed-top navbar-custom"><div class=container-fluid><div class=navbar-header><button type=button class=navbar-toggle data-toggle=collapse data-target=#main-navbar>
-<span class=sr-only>切换导航</span>
-<span class=icon-bar></span><span class=icon-bar></span><span class=icon-bar></span></button>
-<a class=navbar-brand href=https://martinliu.cn/>Martin's Blog</a></div><div class="collapse navbar-collapse" id=main-navbar><ul class="nav navbar-nav navbar-right"><li><a title=首页 href=https://martinliu.cn/>首页</a></li><li><a title=标签 href=https://martinliu.cn/tags>标签</a></li><li><a title=关于 href=https://martinliu.cn/about>关于</a></li><li><a title=书籍 href=https://martinliu.cn/book>书籍</a></li></ul></div><div class=avatar-container><div class=avatar-img-border><a title="Martin's Blog" href=https://martinliu.cn/><img class=avatar-img src=https://res.cloudinary.com/martinliu/image/upload/q_auto:eco/avatar.jpg alt="Martin's Blog"></a></div></div></div></nav><div id=header-big-imgs data-num-img=1 data-img-src-1=https://res.cloudinary.com/martinliu/image/upload/q_auto:eco/fw2.jpg data-img-desc-1="DevOps is for everyone"></div><header class="header-section has-img"><div class="intro-header big-img"><div class=container><div class=row><div class="col-lg-12 col-md-12 col-md-offset-0"><div class=page-heading><span class=page-subheading>DevOps适用于任何希望持续进化的IT组织</span><hr class=small><span class=page-subheading>精益IT实践非常重要</span></div></div></div></div><span class=img-desc style=display:inline></span></div></header><div role=main class=container><div class=row><div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1"><div class=well><p>刘征是<a href=http://www.ituring.com.cn/book/1891>《DevOps Handbook》</a>和<a href=https://www.amazon.com/Site-Reliability-Workbook-Practical-Implement/>《The Site Reliability Workbook》</a>译者，中国 DevOps 社区组织者，致力于推广 DevOps 实践、理念和文化。</p></div><div class=posts-list><article class=post-preview><a target=_blank href=https://martinliu.cn/posts/2019-state-devops-report-insight-1/><h2 class=post-title>如何做横向行业的DevOps表现基准测试？</h2><h3 class=post-subtitle>死磕2019年加速度全球DevOps状态调查报告系列，深度解读第一篇。</h3></a><span class=post-meta></span><div class=post-entry>长期关注我的blog和微信公众号（DevOps教练）的朋友可以发现，我今年从这个调查问卷开始，陆续发布了一些列文章。如果给这些文章一个文集标
-<a target=_blank href=https://martinliu.cn/posts/2019-state-devops-report-insight-1/ class=post-read-more>[阅读全文]</a></div><span class=post-meta>#<a href=https://martinliu.cn/tags/devops/>DevOps</a>&nbsp;
-#<a href=https://martinliu.cn/tags/dora/>DORA</a>&nbsp;
-#<a href=https://martinliu.cn/tags/google/>Google</a>&nbsp;</span></article><article class=post-preview><a target=_blank href=https://martinliu.cn/posts/2019-state-devops-survey-report/><h2 class=post-title>2019年加速度DevOps状态调查报告-导读</h2><h3 class=post-subtitle>新鲜出炉的状态调查报告会揭示什么？关键字：精英表现，生产力和规模</h3></a><span class=post-meta></span><div class=post-entry>凭借六年多的来自全球31,000多名专业人士的数据的研究，2019年加速发展状态报告是同类研究中规模最大、持续时间最长的研究。2019年加速
-<a target=_blank href=https://martinliu.cn/posts/2019-state-devops-survey-report/ class=post-read-more>[阅读全文]</a></div><span class=post-meta>#<a href=https://martinliu.cn/tags/devops/>DevOps</a>&nbsp;
-#<a href=https://martinliu.cn/tags/dora/>DORA</a>&nbsp;
-#<a href=https://martinliu.cn/tags/google/>Google</a>&nbsp;</span></article><article class=post-preview><a target=_blank href=https://martinliu.cn/posts/2019-state-devops-survey-chinese-version/><h2 class=post-title>中文版：2019年DevOps状态调查问卷</h2><h3 class=post-subtitle>本文是英文版调查问卷的集体翻译成果</h3></a><span class=post-meta></span><div class=post-entry>本文是中文版《2019年加速度DevOps状态调查》问卷。如果你还没有填写该问卷的话，可以在线上填写英文版，点击这个链接 https://bit.ly/2UzLMH2 ，进入问卷调查网站
-<a target=_blank href=https://martinliu.cn/posts/2019-state-devops-survey-chinese-version/ class=post-read-more>[阅读全文]</a></div><span class=post-meta>#<a href=https://martinliu.cn/tags/devops/>DevOps</a>&nbsp;
-#<a href=https://martinliu.cn/tags/dora/>DORA</a>&nbsp;
-#<a href=https://martinliu.cn/tags/google/>Google</a>&nbsp;</span></article><article class=post-preview><a target=_blank href=https://martinliu.cn/posts/2019-state-devops-survey-open/><h2 class=post-title>2019年DevOps状态调查问卷开放中</h2><h3 class=post-subtitle>在IT行业中持续了6年的DevOps专项调查</h3></a><span class=post-meta></span><div class=post-entry>2019年加速度DevOps状态调查首发，首发的位置在Google Cloud网站上的Blog栏目，发布于产品新闻分类下。 文章使用的主标签 DevOps 、
-<a target=_blank href=https://martinliu.cn/posts/2019-state-devops-survey-open/ class=post-read-more>[阅读全文]</a></div><span class=post-meta>#<a href=https://martinliu.cn/tags/devops/>DevOps</a>&nbsp;
-#<a href=https://martinliu.cn/tags/dora/>DORA</a>&nbsp;
-#<a href=https://martinliu.cn/tags/google/>Google</a>&nbsp;</span></article><article class=post-preview><a target=_blank href=https://martinliu.cn/posts/predictions-for-devops-in-2019/><h2 class=post-title>2019年关于DevOps的几个预测</h2><h3 class=post-subtitle>来自3个网站的22项预测</h3></a><span class=post-meta></span><div class=post-entry>本文汇聚了来自3个网站的预测文章，他们分别是XebiaLabs、G20Group和Veritis。在总共22项预测中，个别预测是相同的。De
-<a target=_blank href=https://martinliu.cn/posts/predictions-for-devops-in-2019/ class=post-read-more>[阅读全文]</a></div><span class=post-meta>#<a href=https://martinliu.cn/tags/devops/>DevOps</a>&nbsp;
-#<a href=https://martinliu.cn/tags/%E9%A2%84%E6%B5%8B/>预测</a>&nbsp;</span></article><article class=post-preview><a target=_blank href=https://martinliu.cn/posts/csg-product-meet-devops/><h2 class=post-title>产品管理遇上Devops</h2><h3 class=post-subtitle>CSG公司在2018年DevOps企业峰会上的分享</h3></a><span class=post-meta></span><div class=post-entry>DevOps企业峰会是历史悠久的DevOps主题企业级峰会，近年来在北美的拉斯维加斯和欧洲的伦敦每年各举办一次。 这个大会的官网：https:
-<a target=_blank href=https://martinliu.cn/posts/csg-product-meet-devops/ class=post-read-more>[阅读全文]</a></div><span class=post-meta>#<a href=https://martinliu.cn/tags/devops/>DevOps</a>&nbsp;
-#<a href=https://martinliu.cn/tags/csg/>csg</a>&nbsp;
-#<a href=https://martinliu.cn/tags/does/>DOES</a>&nbsp;</span></article><article class=post-preview><a target=_blank href=https://martinliu.cn/posts/maturity-is-dead/><h2 class=post-title>成熟度模型已死</h2><h3 class=post-subtitle>在不确定、迅速变化的DevOps时代里，一刀切的模型和标准都将死去！</h3></a><span class=post-meta></span><div class=post-entry>上一篇文章重要观点回顾： 应用DevOps的企业不应该使用成熟度模型度量 应用DevOps的不同企业/部门不会参考某个所谓标准 应用DevOps的
-<a target=_blank href=https://martinliu.cn/posts/maturity-is-dead/ class=post-read-more>[阅读全文]</a></div><span class=post-meta>#<a href=https://martinliu.cn/tags/devops/>DevOps</a>&nbsp;</span></article><article class=post-preview><a target=_blank href=https://martinliu.cn/posts/2018-devops-survey/><h2 class=post-title>参与2018年DevOps状态调查报告</h2></a><span class=post-meta></span><div class=post-entry>听说这里有一个15分钟就能完成的DevOps调查问卷，有25位参与者或将得到总值为3200美元的亚马逊购物券。一年也就是这一次机会。问卷调查
-<a target=_blank href=https://martinliu.cn/posts/2018-devops-survey/ class=post-read-more>[阅读全文]</a></div><span class=post-meta>#<a href=https://martinliu.cn/tags/devops/>DevOps</a>&nbsp;</span></article><article class=post-preview><a target=_blank href=https://martinliu.cn/posts/perfect-storm-devops-days/><h2 class=post-title>从完美风暴说开去，直到DevOpsDays社区</h2><h3 class=post-subtitle>中国DevOpsDays社区的从围观，到参与、到分享之旅</h3></a><span class=post-meta></span><div class=post-entry>各种大会、各种喧嚣，你都看够了么？免费的，收费的，都与你有何相干？哪里是你自己的社区，哪里可以找到同类和导师？本文是我对社区的一点个人的思考
-<a target=_blank href=https://martinliu.cn/posts/perfect-storm-devops-days/ class=post-read-more>[阅读全文]</a></div><span class=post-meta>#<a href=https://martinliu.cn/tags/devopsdays/>DevOpsDays</a>&nbsp;</span></article><article class=post-preview><a target=_blank href=https://martinliu.cn/posts/kops-on-aws/><h2 class=post-title>Kops on Aws</h2><h3 class=post-subtitle>这也许是最简单直接的Kubernetes安装大法</h3></a><span class=post-meta></span><div class=post-entry>kops这种方式是我找到的最佳的，最适合于培训课堂需要的安装方式，当然对有类似需求的人有帮助。 Route53 DNS配置 kops需要使用DNS服务，用主机
-<a target=_blank href=https://martinliu.cn/posts/kops-on-aws/ class=post-read-more>[阅读全文]</a></div><span class=post-meta>#<a href=https://martinliu.cn/tags/devops/>DevOps</a>&nbsp;
-#<a href=https://martinliu.cn/tags/kuberneters/>Kuberneters</a>&nbsp;
-#<a href=https://martinliu.cn/tags/kops/>kops</a>&nbsp;
-#<a href=https://martinliu.cn/tags/aws/>aws</a>&nbsp;</span></article></div><ul class="pager main-pager"><li class=previous><a href=https://martinliu.cn/page/2>&larr; 上一页</a></li><li class=next><a href=https://martinliu.cn/page/4>下一页 &rarr;</a></li></ul></div><div align=center class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1"><ul class=pagination><li class=page-item><a href=https://martinliu.cn/ class=page-link aria-label=First><span aria-hidden=true>&#171;&#171;</span></a></li><li class=page-item><a href=https://martinliu.cn/page/2/ class=page-link aria-label=Previous><span aria-hidden=true>&#171;</span></a></li><li class=page-item><a class=page-link href=https://martinliu.cn/>1</a></li><li class=page-item><a class=page-link href=https://martinliu.cn/page/2/>2</a></li><li class="page-item active"><a class=page-link href=https://martinliu.cn/page/3/>3</a></li><li class=page-item><a class=page-link href=https://martinliu.cn/page/4/>4</a></li><li class="page-item disabled"><span aria-hidden=true>&nbsp;&mldr;&nbsp;</span></li><li class=page-item><a class=page-link href=https://martinliu.cn/page/43/>43</a></li><li class=page-item><a href=https://martinliu.cn/page/4/ class=page-link aria-label=Next><span aria-hidden=true>&#187;</span></a></li><li class=page-item><a href=https://martinliu.cn/page/43/ class=page-link aria-label=Last><span aria-hidden=true>&#187;&#187;</span></a></li></ul></div></div></div><footer><div class=container><div class=row><div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1"><ul class="list-inline text-center footer-links"><li><a href=mailto:liuzh66@gmail.com title="Email me"><span class="fa-stack fa-lg"><i class="fa fa-circle fa-stack-2x"></i><i class="fa fa-envelope fa-stack-1x fa-inverse"></i></span></a></li><li><a href=https://github.com/martinliu title=GitHub><span class="fa-stack fa-lg"><i class="fa fa-circle fa-stack-2x"></i><i class="fa fa-github fa-stack-1x fa-inverse"></i></span></a></li><li><a href=https://gitlab.com/martinliu title=GitLab><span class="fa-stack fa-lg"><i class="fa fa-circle fa-stack-2x"></i><i class="fa fa-gitlab fa-stack-1x fa-inverse"></i></span></a></li><li><a href=https://twitter.com/martinliu title=Twitter><span class="fa-stack fa-lg"><i class="fa fa-circle fa-stack-2x"></i><i class="fa fa-twitter fa-stack-1x fa-inverse"></i></span></a></li><li><a href=https://linkedin.com/in/liuzheng title=LinkedIn><span class="fa-stack fa-lg"><i class="fa fa-circle fa-stack-2x"></i><i class="fa fa-linkedin fa-stack-1x fa-inverse"></i></span></a></li></ul><p class="credits copyright text-muted">&copy;2017-2018
-刘征 Martin Liu
-&nbsp;&bull;&nbsp;
-<a href=https://martinliu.cn/>Martin's Blog</a></p><p class="credits theme-by text-muted">由 <a href=http://gohugo.io>Hugo v0.80.0</a> 强力驱动 &nbsp;&bull;&nbsp; 主题 <a href=https://github.com/halogenica/beautifulhugo>Beautiful Hugo</a> 移植自 <a href=http://deanattali.com/beautiful-jekyll/>Beautiful Jekyll</a></p></div></div></div></footer><script src=https://res.cloudinary.com/martinliu/raw/upload/static/bootstrap.min.js></script><script src=https://res.cloudinary.com/martinliu/raw/upload/static/photoswipe-ui-default.min.js></script><script src=https://res.cloudinary.com/martinliu/raw/upload/static/photoswipe.min.js></script><script src=https://res.cloudinary.com/martinliu/raw/upload/static/auto-render.min.js></script><script src=https://res.cloudinary.com/martinliu/raw/upload/static/main.js></script><script src=https://res.cloudinary.com/martinliu/raw/upload/static/prism.js></script><script src=https://res.cloudinary.com/martinliu/raw/upload/static/katex.min.js></script><script>renderMathInElement(document.body);</script></body></html>
+<!doctype html>
+<html lang="zh-cn">
+  <head>
+  <meta charset="utf-8">
+<title>Hugo Future Imperfect Slim em português</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+<meta name="generator" content="Hugo 0.80.0" /><meta property="og:site_name" content="Hugo Future Imperfect Slim em português">
+  <meta property="og:title" content="Hugo Future Imperfect Slim em português">
+  <meta property="og:description" content="A theme by HTML5 UP, ported by Julio Pescador. Slimmed and enhanced by Patrick Collins. Multilingual by StatnMap. Powered by Hugo.">
+  <meta property="description" content="A theme by HTML5 UP, ported by Julio Pescador. Slimmed and enhanced by Patrick Collins. Multilingual by StatnMap. Powered by Hugo.">
+  <meta property="og:url" content="https://example.com/">
+  <meta property="og:type" content="website">
+  
+    <meta property="og:image" content="https://example.com/img/main/logo.jpg">
+  
+  <link rel="stylesheet" href="/css/bundle.min.d9e04ae08c9b3049b766dbd4aeab7d862c5ea1d13679b621490e0f5df5507497.css" integrity="sha256-2eBK4IybMEm3ZtvUrqt9hixeodE2ebYhSQ4PXfVQdJc="><link rel="stylesheet" href="/css/add-on.css">
+</head>
+
+  <body>
+    
+
+<header id="site-header">
+  <nav id="site-nav">
+    <h1 class="nav-title">
+      <a href="/" class="nav">
+        
+          Future Imperfect
+        
+      </a>
+    </h1>
+    <menu id="site-nav-menu" class="flyout-menu menu">
+      
+        
+          
+          <a href="/" class="nav link"><i class='fas fa-home'></i> 首页</a>
+        
+      
+        
+          
+          <a href="/about/" class="nav link"><i class='far fa-id-card'></i> 关于</a>
+        
+      
+        
+          
+          <a href="/blog/" class="nav link"><i class='far fa-newspaper'></i> 博客</a>
+        
+      
+        
+          
+          <a href="/categories/" class="nav link"><i class='fas fa-sitemap'></i> 分类</a>
+        
+      
+        
+          
+          <a href="/contact/" class="nav link"><i class='far fa-envelope'></i> 联系</a>
+        
+      
+      <a href="#share-menu" class="nav link share-toggle"><i class="fas fa-share-alt">&nbsp;</i>Share</a>
+      <a href="#search-input" class="nav link search-toggle"><i class="fas fa-search">&nbsp;</i>Search</a>
+    </menu>
+    <a href="#search-input" class="nav search-toggle"><i class="fas fa-search fa-2x">&nbsp;</i></a>
+    <a href="#share-menu" class="nav share-toggle"><i class="fas fa-share-alt fa-2x">&nbsp;</i></a>
+    <a href="#lang-menu" class="nav lang-toggle" lang="zh-cn">zh-cn</a>
+    <a href="#site-nav" class="nav nav-toggle"><i class="fas fa-bars fa-2x"></i></a>
+  </nav>
+  <menu id="search" class="menu"><input id="search-input" class="search-input menu"></input><div id="search-results" class="search-results menu"></div></menu>
+  <menu id="lang-menu" class="flyout-menu menu">
+  <a href="#" lang="zh-cn" class="nav link active">中文 (zh-cn)</a>
+  
+      <a href="https://example.com/en/" lang="en" class="nav link">English (en)</a>
+    
+  
+</menu>
+
+  
+    <menu id="share-menu" class="flyout-menu menu">
+      <h1>Share Post</h1>
+      
+
+
+
+
+  
+    
+    <a href="//twitter.com/share?text=Hugo%20Future%20Imperfect%20Slim%20em%20portugu%c3%aas&amp;url=https%3a%2f%2fexample.com%2f" target="_blank" rel="noopener" class="nav share-btn twitter">
+        <p>Twitter</p>
+      </a>
+  
+
+  
+      <a href="//www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fexample.com%2f" target="_blank" rel="noopener" class="nav share-btn facebook">
+        <p>Facebook</p>
+        </a>
+  
+
+  
+    <a href="//www.reddit.com/submit?url=https%3a%2f%2fexample.com%2f&amp;title=Hugo%20Future%20Imperfect%20Slim%20em%20portugu%c3%aas" target="_blank" rel="noopener" class="nav share-btn reddit">
+          <p>Reddit</p>
+        </a>
+  
+
+  
+        <a href="//www.linkedin.com/shareArticle?url=https%3a%2f%2fexample.com%2f&amp;title=Hugo%20Future%20Imperfect%20Slim%20em%20portugu%c3%aas" target="_blank" rel="noopener" class="nav share-btn linkedin">
+            <p>LinkedIn</p>
+          </a>
+  
+
+  
+        <a href="//www.pinterest.com/pin/create/button/?url=https%3a%2f%2fexample.com%2f&amp;description=Hugo%20Future%20Imperfect%20Slim%20em%20portugu%c3%aas" target="_blank" rel="noopener" class="nav share-btn pinterest">
+          <p>Pinterest</p>
+        </a>
+  
+
+  
+        <a href="mailto:?subject=%e6%9f%a5%e7%9c%8b%e6%ad%a4%e5%b8%96%e5%ad%90%e7%9a%84%e4%bd%9c%e8%80%85 %7b%20%20%20%20%20%20%20%20map%5b%5d%7d&amp;body=https%3a%2f%2fexample.com%2f" target="_blank" class="nav share-btn email" data-proofer-ignore>
+          <p>Email</p>
+        </a>
+  
+
+
+    </menu>
+  
+</header>
+
+    <div id="wrapper">
+      <section id="site-intro" >
+  <a href="/"><img src="https://example.com/img/main/logo.jpg" class="circle" width="100" alt="Hugo Future Imperfect Slim" /></a>
+  <header>
+    <h1>Hugo Future Imperfect Slim</h1>
+  </header>
+  <main>
+    <p>Another fine, responsive site template by <a href='http://html5up.net'>HTML5 UP</a>.</p>
+  </main>
+  
+    <footer>
+      <ul class="socnet-icons">
+        
+    <li><a href="/index.xml" type="application/rss+xml" target="_blank" title="RSS" class="fas fa-rss"></a></li>
+
+
+        <li><a href="//github.com/pacollins/hugo-future-imperfect-slim" target="_blank" rel="noopener" title="GitHub" class="fab fa-github"></a></li>
+
+
+
+
+
+
+<li><a href="//flickr.com/photos/example" target="_blank" rel="noopener" title="Flickr" class="fab fa-flickr"></a></li>
+
+
+
+
+<li><a href="//www.linkedin.com/in/example" target="_blank" rel="noopener" title="LinkedIn" class="fab fa-linkedin"></a></li>
+<li><a href="//linkedin.com/company/examplebusiness" target="_blank" rel="noopener" title="LinkedIn Company" class="fab fa-linkedin"></a></li>
+
+
+
+<li><a href="//facebook.com/example" target="_blank" rel="noopener" title="Facebook" class="fab fa-facebook"></a></li>
+<li><a href="//reddit.com/user/example" target="_blank" rel="noopener" title="Reddit" class="fab fa-reddit"></a></li>
+
+
+
+
+
+
+
+<li><a href="//instagram.com/example" target="_blank" rel="noopener" title="Instagram" class="fab fa-instagram"></a></li>
+
+<li><a href="//twitter.com/example" target="_blank" rel="noopener" title="Twitter" class="fab fa-twitter"></a></li>
+
+
+
+<li><a href="//www.pinterest.com/example" target="_blank" rel="noopener" title="Pinterest" class="fab fa-pinterest-p"></a></li>
+<li><a href="//telegram.me/example" target="_blank" rel="noopener" title="telegram" class="fab fa-telegram"></a></li>
+
+
+
+<li><a href="//researchgate.net/profile/example" target="_blank" rel="noopener" title="Research Gate"><i class="ai ai-researchgate"></i></a></li>
+<li><a href="//keybase.io/example" target="_blank" rel="noopener" title="keybase" class="fab fa-keybase"></a></li>
+<li><a href="//example.com/@example" target="_blank" rel="noopener" title="mastodon" class="fab fa-mastodon"></a></li>
+<li><a href="mailto:example" target="_blank" title="Email" class="far fa-envelope"></a></li>
+
+      </ul>
+    </footer>
+  
+</section>
+
+      <main id="site-main">
+        
+  
+  
+    <article class="post">
+  <header>
+  <div class="title">
+    
+      <h2><a href="/blog/running-on-xian-city-wall/">奔跑在西安的城墙上</a></h2>
+    
+    
+  </div>
+  <div class="meta">
+    <time datetime="2017-09-12 00:00:00 &#43;0000 UTC">September 12, 2017</time>
+    
+    <p>1 分钟</p>
+  </div>
+</header>
+
+  <div class="content">
+    
+    
+    <p>来西安出差很多次了，每次都想绕城墙跑一圈，后来也不止一次看到其他朋友，要么绕城跑，要么在城墙上跑过；因此这根草也就越长越高，这次跑步的动力主要是拔草。</p>
+  </div>
+  <footer>
+    <a href="/blog/running-on-xian-city-wall/" class="button big">阅读全文</a>
+    <div class="stats">
+  
+    <ul class="categories">
+      <li>None</li>
+    </ul>
+  
+  
+    <ul class="tags">
+      
+        
+          <li><a class="article-terms-link" href="/tags/running/">Running</a></li>
+        
+      
+    </ul>
+  
+</div>
+
+  </footer>
+</article>
+
+  
+    <article class="post">
+  <header>
+  <div class="title">
+    
+      <h2><a href="/blog/ntu-running/">台大校园游览跑</a></h2>
+    
+    
+  </div>
+  <div class="meta">
+    <time datetime="2017-09-09 00:00:00 &#43;0000 UTC">September 9, 2017</time>
+    
+    <p>1 分钟</p>
+  </div>
+</header>
+
+  <div class="content">
+    
+    
+    <p>趁着参加DevOpsDays Taipei的机会晨跑台大校园。在台北的这几天总体感觉是非常好的，和很多大陆来的好朋友一起，愉快地玩耍了几天。只跑了这一次，算是前往台大打卡留念吧！</p>
+  </div>
+  <footer>
+    <a href="/blog/ntu-running/" class="button big">阅读全文</a>
+    <div class="stats">
+  
+    <ul class="categories">
+      <li>None</li>
+    </ul>
+  
+  
+    <ul class="tags">
+      
+        
+          <li><a class="article-terms-link" href="/tags/%e8%b7%91%e6%ad%a5/">跑步</a></li>
+        
+      
+    </ul>
+  
+</div>
+
+  </footer>
+</article>
+
+  
+    <article class="post">
+  <header>
+  <div class="title">
+    
+      <h2><a href="/blog/aws-vs-azure-vs-gcp/">Game of Cloud 对比三大主流公有云厂商</a></h2>
+    
+    
+  </div>
+  <div class="meta">
+    <time datetime="2017-09-07 00:00:00 &#43;0000 UTC">September 7, 2017</time>
+    
+    <p>3 分钟</p>
+  </div>
+</header>
+
+  <div class="content">
+    
+    
+    <p>在全球范围内，公有云发展的正如火如荼，对IT行业技术的发展产生了很大的影响，从私有云到公有云，到混合云，再到云原生应用和DevOps。这一连串的连锁，也反映出了最近10年来IT行业发展的主流趋势。</p>
+  </div>
+  <footer>
+    <a href="/blog/aws-vs-azure-vs-gcp/" class="button big">阅读全文</a>
+    <div class="stats">
+  
+    <ul class="categories">
+      <li>None</li>
+    </ul>
+  
+  
+    <ul class="tags">
+      
+        
+          <li><a class="article-terms-link" href="/tags/cloud/">cloud</a></li>
+        
+      
+    </ul>
+  
+</div>
+
+  </footer>
+</article>
+
+  
+  <div class="pagination">
+    
+      <a href="/page/2/" class="button left"><span>上页</span></a>
+    
+    
+      <a href="/page/4/" class="button right"><span>下页</span></a>
+    
+  </div>
+
+      </main>
+      <section id="site-sidebar">
+  
+    <section id="recent-posts">
+      <header>
+        <h1>最新文章</h1>
+      </header>
+      
+      <article class="mini-post">
+          
+        <header>
+          <h2><a href="/blog/%E4%BD%BF%E7%94%A8-elastic-stack-%E7%9B%91%E6%8E%A7-covid-19-%E7%96%AB%E6%83%85%E5%8F%91%E5%B1%95/">使用 Elastic Stack 监控 Covid-19 疫情发展</a></h2>
+          <time class="published" datetime="2020-04-08 17:04:08 &#43;0800 CST">April 8, 2020</time>
+        </header>
+      </article>
+      
+      <article class="mini-post">
+          
+        <header>
+          <h2><a href="/blog/nutanix-dvp/">为Docker Swarm群集配置Nutanix持久存储</a></h2>
+          <time class="published" datetime="2017-11-02 00:00:00 &#43;0000 UTC">November 2, 2017</time>
+        </header>
+      </article>
+      
+      <article class="mini-post">
+          
+        <header>
+          <h2><a href="/blog/tips-for-docker-on-mac/">Tips for Docker on Mac</a></h2>
+          <time class="published" datetime="2017-09-26 00:00:00 &#43;0000 UTC">September 26, 2017</time>
+        </header>
+      </article>
+      
+      <article class="mini-post">
+          
+        <header>
+          <h2><a href="/blog/something-you-must-know-about-devops/">关于DevOps 的那些事</a></h2>
+          <time class="published" datetime="2017-09-23 00:00:00 &#43;0000 UTC">September 23, 2017</time>
+        </header>
+      </article>
+      
+      <article class="mini-post">
+          
+        <header>
+          <h2><a href="/blog/welcome-to-ghost/">切换到Ghost&#43;七牛</a></h2>
+          <time class="published" datetime="2017-09-21 00:00:00 &#43;0000 UTC">September 21, 2017</time>
+        </header>
+      </article>
+      
+      
+        <footer>
+          <a href="/posts/" class="button">查看更多</a>
+        </footer>
+      
+    </section>
+  
+
+  
+    
+
+      <section id="categories">
+        <header>
+          <h1><a href="/categories">分类</a></h1>
+        </header>
+        <ul>
+          
+          
+          <li>
+              <a href="/categories/blog/">blog<span class="count">52</span></a>
+          
+          <li>
+              <a href="/categories/nsm/">nsm<span class="count">41</span></a>
+          
+          <li>
+              <a href="/categories/itsm/">itsm<span class="count">21</span></a>
+          
+          <li>
+              <a href="/categories/opensource/">opensource<span class="count">21</span></a>
+          
+          <li>
+              <a href="/categories/running/">running<span class="count">21</span></a>
+          
+          <li>
+              <a href="/categories/cms/cmdb/">cms/cmdb<span class="count">20</span></a>
+          
+          <li>
+              <a href="/categories/infrastructure/">infrastructure<span class="count">18</span></a>
+          
+          <li>
+              <a href="/categories/cloud-computing/">cloud-computing<span class="count">17</span></a>
+          
+          <li>
+              <a href="/categories/wordpress1/">wordpress1<span class="count">15</span></a>
+          
+          <li>
+              <a href="/categories/xendesktop/">xendesktop<span class="count">15</span></a>
+          
+          <li>
+              <a href="/categories/travel/">travel<span class="count">14</span></a>
+          
+          <li>
+              <a href="/categories/itil/itsm/">itil/itsm<span class="count">13</span></a>
+          
+          <li>
+              <a href="/categories/life/">life<span class="count">13</span></a>
+          
+          <li>
+              <a href="/categories/movie/">movie<span class="count">12</span></a>
+          
+          <li>
+              <a href="/categories/asset-mgmt/">asset-mgmt<span class="count">10</span></a>
+          
+          <li>
+              <a href="/categories/bmc/">bmc<span class="count">7</span></a>
+          
+          <li>
+              <a href="/categories/citrix/">citrix<span class="count">7</span></a>
+          
+          <li>
+              <a href="/categories/rhel/">rhel<span class="count">6</span></a>
+          
+          <li>
+              <a href="/categories/xenserver/">xenserver<span class="count">6</span></a>
+          
+          <li>
+              <a href="/categories/apple/">apple<span class="count">4</span></a>
+          
+          <li>
+              <a href="/categories/desktop/">desktop<span class="count">4</span></a>
+          
+          <li>
+              <a href="/categories/opennms/">opennms<span class="count">4</span></a>
+          
+          <li>
+              <a href="/categories/tools/">tools<span class="count">4</span></a>
+          
+          <li>
+              <a href="/categories/container/">container<span class="count">3</span></a>
+          
+          <li>
+              <a href="/categories/linux/">linux<span class="count">3</span></a>
+          
+          <li>
+              <a href="/categories/openstack/">openstack<span class="count">3</span></a>
+          
+          <li>
+              <a href="/categories/project-management/">project-management<span class="count">3</span></a>
+          
+          <li>
+              <a href="/categories/xenapp/">xenapp<span class="count">3</span></a>
+          
+          <li>
+              <a href="/categories/docker/">docker<span class="count">2</span></a>
+          
+          <li>
+              <a href="/categories/hardware/">hardware<span class="count">2</span></a>
+          
+          <li>
+              <a href="/categories/lamp/">lamp<span class="count">2</span></a>
+          
+          <li>
+              <a href="/categories/cloudforms/">cloudforms<span class="count">1</span></a>
+          
+          <li>
+              <a href="/categories/cloudstack/">cloudstack<span class="count">1</span></a>
+          
+          <li>
+              <a href="/categories/devops/">devops<span class="count">1</span></a>
+          
+          <li>
+              <a href="/categories/ovirt/">ovirt<span class="count">1</span></a>
+          
+          <li>
+              <a href="/categories/rhev/">rhev<span class="count">1</span></a>
+          
+          <li>
+              <a href="/categories/storage/">storage<span class="count">1</span></a>
+          
+          </li>
+        </ul>
+      </section>
+    
+  
+
+  
+    <section id="mini-bio">
+      <header>
+        <h1>关于</h1>
+      </header>
+      <p>This theme was developed for Hugo static site generator.</p>
+      <footer>
+        <a href="/about" class="button">详细了解</a>
+      </footer>
+    </section>
+  
+</section>
+
+      <footer id="site-footer">
+  
+      <ul class="socnet-icons">
+        
+    <li><a href="/index.xml" type="application/rss+xml" target="_blank" title="RSS" class="fas fa-rss"></a></li>
+
+
+        <li><a href="//github.com/pacollins/hugo-future-imperfect-slim" target="_blank" rel="noopener" title="GitHub" class="fab fa-github"></a></li>
+
+
+
+
+
+
+<li><a href="//flickr.com/photos/example" target="_blank" rel="noopener" title="Flickr" class="fab fa-flickr"></a></li>
+
+
+
+
+<li><a href="//www.linkedin.com/in/example" target="_blank" rel="noopener" title="LinkedIn" class="fab fa-linkedin"></a></li>
+<li><a href="//linkedin.com/company/examplebusiness" target="_blank" rel="noopener" title="LinkedIn Company" class="fab fa-linkedin"></a></li>
+
+
+
+<li><a href="//facebook.com/example" target="_blank" rel="noopener" title="Facebook" class="fab fa-facebook"></a></li>
+<li><a href="//reddit.com/user/example" target="_blank" rel="noopener" title="Reddit" class="fab fa-reddit"></a></li>
+
+
+
+
+
+
+
+<li><a href="//instagram.com/example" target="_blank" rel="noopener" title="Instagram" class="fab fa-instagram"></a></li>
+
+<li><a href="//twitter.com/example" target="_blank" rel="noopener" title="Twitter" class="fab fa-twitter"></a></li>
+
+
+
+<li><a href="//www.pinterest.com/example" target="_blank" rel="noopener" title="Pinterest" class="fab fa-pinterest-p"></a></li>
+<li><a href="//telegram.me/example" target="_blank" rel="noopener" title="telegram" class="fab fa-telegram"></a></li>
+
+
+
+<li><a href="//researchgate.net/profile/example" target="_blank" rel="noopener" title="Research Gate"><i class="ai ai-researchgate"></i></a></li>
+<li><a href="//keybase.io/example" target="_blank" rel="noopener" title="keybase" class="fab fa-keybase"></a></li>
+<li><a href="//example.com/@example" target="_blank" rel="noopener" title="mastodon" class="fab fa-mastodon"></a></li>
+<li><a href="mailto:example" target="_blank" title="Email" class="far fa-envelope"></a></li>
+
+      </ul>
+  
+  <p class="copyright">
+    © 2020 Hugo Future Imperfect Slim em português
+      <br>
+    主题: <a href='https://themes.gohugo.io/hugo-future-imperfect-slim/' target='_blank' rel='noopener'>Hugo Future Imperfect Slim</a><br>移植自 <a href='https://html5up.net/future-imperfect' target='_blank' rel='noopener'>HTML5 UP</a> | 由 <a href='https://gohugo.io/' target='_blank' rel='noopener' title='0.80.0'>Hugo</a> 驱动
+  </p>
+</footer>
+<a id="back-to-top" href="#" class="fas fa-arrow-up fa-2x"></a>
+
+      <script src="/js/highlight.js"></script>
+    
+    <script>hljs.initHighlightingOnLoad();</script><script src="/js/bundle.min.bbba6b424a8ac5b6858cd5fc80eabc9c5277945cc2dc349204646b84891b4b58.js" integrity="sha256-u7prQkqKxbaFjNX8gOq8nFJ3lFzC3DSSBGRrhIkbS1g="></script>
+    <script src="/js/add-on.js"></script>
+    </div>
+  </body>
+</html>

@@ -1,1 +1,96 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>hdx on Martin's Blog</title><link>https://martinliu.cn/tags/hdx/</link><description>Recent content in hdx on Martin's Blog</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><managingEditor>liuzh66@gmail.com (刘征 Martin Liu)</managingEditor><webMaster>liuzh66@gmail.com (刘征 Martin Liu)</webMaster><lastBuildDate>Tue, 16 Apr 2013 15:29:43 +0000</lastBuildDate><atom:link href="https://martinliu.cn/tags/hdx/index.xml" rel="self" type="application/rss+xml"/><item><title>XenDesktop虚拟桌面精品书籍导读(part3)</title><link>https://martinliu.cn/2013/04/16/xendesktope8999ae68b9fe6a18ce99da2e7b2bee59381e4b9a6e7b18de5afbce8afbbpart3/</link><pubDate>Tue, 16 Apr 2013 15:29:43 +0000</pubDate><author>liuzh66@gmail.com (刘征 Martin Liu)</author><guid>https://martinliu.cn/2013/04/16/xendesktope8999ae68b9fe6a18ce99da2e7b2bee59381e4b9a6e7b18de5afbce8afbbpart3/</guid><description>[box color=&amp;ldquo;orange&amp;rdquo; icon=&amp;ldquo;flag&amp;rdquo;] 感谢 Eric Yao 的供稿，@老树皮Eric [/box] 桌面虚拟化项目的实施白皮书 《Citrix Virtual Desktop Handbook 5.x》，点击下载。 智慧的积累靠一蹴而就很难实现，慢慢</description></item><item><title>XenDesktop虚拟桌面精品书籍导读(part2)</title><link>https://martinliu.cn/2013/04/15/xendesktope8999ae68b9fe6a18ce99da2e7b2bee59381e4b9a6e7b18de5afbce8afbbpart2/</link><pubDate>Mon, 15 Apr 2013 06:52:55 +0000</pubDate><author>liuzh66@gmail.com (刘征 Martin Liu)</author><guid>https://martinliu.cn/2013/04/15/xendesktope8999ae68b9fe6a18ce99da2e7b2bee59381e4b9a6e7b18de5afbce8afbbpart2/</guid><description>[box color=&amp;ldquo;orange&amp;rdquo; icon=&amp;ldquo;flag&amp;rdquo;] 感谢 Eric Yao 的供稿，@老树皮Eric [/box] 桌面虚拟化项目的实施白皮书 《Citrix Virtual Desktop Handbook 5.x》，点击下载。 上周一我们介绍了《Citrix桌面</description></item><item><title>XenDesktop中如何重定向USB设备</title><link>https://martinliu.cn/2013/04/15/xendesktope4b8ade5a682e4bd95e9878de5ae9ae59091usbe8aebee5a487/</link><pubDate>Mon, 15 Apr 2013 06:44:52 +0000</pubDate><author>liuzh66@gmail.com (刘征 Martin Liu)</author><guid>https://martinliu.cn/2013/04/15/xendesktope4b8ade5a682e4bd95e9878de5ae9ae59091usbe8aebee5a487/</guid><description>原文出处：http://support.citrix.com/article/CTX136751 这篇文章你还不会，你就out了！ 概要 本文描述</description></item></channel></rss>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>hdx on Hugo Future Imperfect Slim em português</title>
+    <link>https://example.com/tags/hdx/</link>
+    <description>Recent content in hdx on Hugo Future Imperfect Slim em português</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-CN</language>
+    <lastBuildDate>Tue, 16 Apr 2013 15:29:43 +0000</lastBuildDate><atom:link href="https://example.com/tags/hdx/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>XenDesktop虚拟桌面精品书籍导读(part3)</title>
+      <link>https://example.com/2013/04/16/xendesktope8999ae68b9fe6a18ce99da2e7b2bee59381e4b9a6e7b18de5afbce8afbbpart3/</link>
+      <pubDate>Tue, 16 Apr 2013 15:29:43 +0000</pubDate>
+      
+      <guid>https://example.com/2013/04/16/xendesktope8999ae68b9fe6a18ce99da2e7b2bee59381e4b9a6e7b18de5afbce8afbbpart3/</guid>
+      <description>[box color=&amp;ldquo;orange&amp;rdquo; icon=&amp;ldquo;flag&amp;rdquo;] 感谢 Eric Yao 的供稿，@老树皮Eric [/box]
+桌面虚拟化项目的实施白皮书 《Citrix Virtual Desktop Handbook 5.x》，点击下载。
+智慧的积累靠一蹴而就很难实现，慢慢积累和温故而知新往往是最佳的手段。让我们继续开始《Citrix桌面虚拟化实施部署白皮书》，这晚我们开讲第二部分的第三单元：桌面层。
+四、 桌面层 Desktop Layer
+设计思想的第三层，也是和用户相关的最后一层，就是桌面层。用户是否能接受桌面虚拟化很多程度上就是在这一层实现的，例如包括个性化、应用程序，以及后台操作系统镜像文件的设计。
+ 应用程序交付  选择正确的应用程序交付方法会对整个系统设计的可扩展性、可管理性，以及用户感受起到非常大的帮助。基于我们在前几章节的“四、 应用程序数据搜集”，我们可以考虑以下几种交付方法：
+l 直接安装在操作系统镜像文件上：应用程序是基础操作系统镜像文件的一部分；
+l 安装在Personal vDisk上：物理是分离的，但是逻辑上是直接安装在基础操作系统镜像文件中；
+l 流化（Streaming）：应用程序被profiled（XenApp组件）后通过网络交付到桌面上。应用程序的文件和注册表键值在虚拟桌面的一个容器中保存，但是和基础操作系统镜像文件是分离的。
+l Hosted：应用程序安装在XenApp服务器上，用户通过Citrix HDX协议远程访问。
+ 决断：应用程序交付方法  系统架构师应该在基于用户需求、应用程序兼容性，以及其他通过在前几章（“四、 应用程序数据搜集”）搜集上来的应用程序因素基础之上决定采用何种方法来进行应用程序的交付。通常单一的方法是无法满足用户全部的需求的，所以多种方法组合才是最佳答案。但是不管用什么方法，这些交付手段都应当对整个项目的交付复杂程度和后续跟进步骤与以最小的影响。
+下面的表格就是不同的交付方法对系统不同层面的影响：
+除了应用程序交付方法对系统不同层面的应用之外，系统架构师还应该考虑应用程序在不同交付手段上的适用性。下面的表格就是不同应用程序所推荐的部署方法示例：
+上表中需要注意的是最后一种应用程序，我们往往会觉得这种复杂安装和配置的应用程序最好是安装在操作系统镜像文件中，但是最佳实践告诉我们应该安装在XenApp Server上，通过Hosted的方法发布给用户。
+兼容性  任何一个桌面虚拟化项目都会对一个公司的应用程序交付方法产生巨大的应用。举例来说，许多公司都希望通过在桌面虚拟化中使用流化的应用程序交付或者是XenApp交付应用程序来降低升级用户的桌面操作系统的劳动负荷以及提高管理效率。所以在设计阶段我们就要做很多兼容性测试以确定最正确的应用程序交付方法。最重要需要考虑的兼容性需求一般来说包括以下几点：
+l 桌面操作系统的版本：如果操作系统是通过流化安装或者是直接安装在操作系统中，那么应用程序需要考虑和操作系统的兼容性问题；
+l 服务器操作系统的版本：有一些应用程序可能会更合适通过XenApp的方式来交付，所以，应用程序是否能安装在服务器版本的操作系统平台上是要考虑的因素；
+l 应用程序本身的架构：应用程序本身的开发平台有可能是16位的，32位的，也可能是64位的。16位的应用程序就不能运行在64位的操作系统平台上，例如Windows 2008Server　R2、Windows XP 64bits等；
+l 互操作性：有一些应用程序如果和某些版本的操作系统共存是会有兼容性问题，例如注册表冲突、DLL冲突，或者是ini冲突。
+l 应用程序流化：应用程序流化到桌面虽然可以简化管理，因为操作系统上不用安装那么多的应用程序了，但是记住有些带有设备驱动程序，或者是使用了COM+等应用程序就不适合了
+在做应用程序兼容性测试时的三种主要技术手段有：
+l 手动：不言而喻这种方法最消耗时间，每种交付方法都要测试，每种操作系统版本、不同操作系统语言包等也都要验证。手动模式下想要的出应用程序所有方面的测试结果是非常困难的，对应用程序互操作性的测试是几乎测不出来的。而且更多的测试结果是现场使用人员发现的，而不是测试时发现的。
+l 预验证的应用程序：很多应用程序的开发商都会提供该应用程序的兼容性文档和最佳安装方式的文档。参考这些文档会有直接的帮助。此外，Citrix Community Verified的网站上也有一整系列的由Citrix的客户和合作伙伴验证过包括采用流化方法/XenApp/Xendesktop兼容的应用程序列表。微软公司也提供了类似的应用程序列表：Microsoft Windows 7 Application Compatibility List for IT Professionals；</description>
+    </item>
+    
+    <item>
+      <title>XenDesktop虚拟桌面精品书籍导读(part2)</title>
+      <link>https://example.com/2013/04/15/xendesktope8999ae68b9fe6a18ce99da2e7b2bee59381e4b9a6e7b18de5afbce8afbbpart2/</link>
+      <pubDate>Mon, 15 Apr 2013 06:52:55 +0000</pubDate>
+      
+      <guid>https://example.com/2013/04/15/xendesktope8999ae68b9fe6a18ce99da2e7b2bee59381e4b9a6e7b18de5afbce8afbbpart2/</guid>
+      <description>[box color=&amp;ldquo;orange&amp;rdquo; icon=&amp;ldquo;flag&amp;rdquo;] 感谢 Eric Yao 的供稿，@老树皮Eric [/box]
+桌面虚拟化项目的实施白皮书 《Citrix Virtual Desktop Handbook 5.x》，点击下载。
+上周一我们介绍了《Citrix桌面虚拟化实施部署白皮书》的第二部分《设计篇 Design》的第一单元：用户层。今天我们继续往前进，开讲第二单元：访问层的部分。
+三、 访问层 Access Layer
+访问层的设计主要是基于每个用户组和终端设备的移动性需求。
+ 决断：认证点  让用户在什么地点做认证是管理员的决定，一般而言，有四个认证点：
+a) Web Interface：给XA和XD提供安全访问；
+b) StoreFront：为Receiver交付认证能力和资源；
+c) Secure Gateway (Web Interface): Secure Gateway是一个Windows的应用程序，她和WI配合工作；
+d) Access Gateway: 硬件
+具体采用哪种方式认证由用户组的移动需求来决定，推荐方案如下：
+决断：预认证策略  如果我们使用的是Access Gateway，我们就可以选择是否采用预认证策略，这些策略可以是确定终端是否满足某种接入网络前的扫描条件。
+我们可以配置的策略包括测试防病毒软件、防火墙软件、操作系统，甚至是注册表键值。XA和XD可以利用这些策略的检查结果确认后续的动作，包括剪贴板是否开启，打印机映射，甚至是否开启特定的应用程序访问权限。例如，如果用户没有安装防病毒软件，可以配置策略隐藏敏感的应用程序。
+下面的图标从流程上示例策略配置是如何流转的：
+决断：认证策略  l Web Interface, Secure Gateway (Web Interface), or StoreFront: StoreFront是未来的方向，而Web Interface已经是行将就木，所以下面的策略主要是用在StoreFront上，当然也适用于Web Interface
+n 用户名/密码
+n Domain Pass-Through：允许从用户设备上透传Domain登录信息，用户登录到加入域的电脑后自动登录到Store；
+n Access Gateway Pass-Through：用户登录到Access Gateway后自动登录到Store</description>
+    </item>
+    
+    <item>
+      <title>XenDesktop中如何重定向USB设备</title>
+      <link>https://example.com/2013/04/15/xendesktope4b8ade5a682e4bd95e9878de5ae9ae59091usbe8aebee5a487/</link>
+      <pubDate>Mon, 15 Apr 2013 06:44:52 +0000</pubDate>
+      
+      <guid>https://example.com/2013/04/15/xendesktope4b8ade5a682e4bd95e9878de5ae9ae59091usbe8aebee5a487/</guid>
+      <description>原文出处：http://support.citrix.com/article/CTX136751 这篇文章你还不会，你就out了！
+概要
+本文描述如何映射默认下被禁用的USB设备。
+要求
+当重定向USB设备，终端用户必须首先识别USB设备，将其映射到会话中。假如设备需要特殊驱动，则驱动必须同时安装在客户机和虚拟桌面代理（VDA）上。如果终端识别驱动，设备在没有驱动的情况下仍可映射，但是VDA上需安装驱动以确保工作正常。
+背景
+特定USB Class默认下被禁用因为它们主要用于本地工作站，例如智能卡阅读器。
+步骤
+注意!这个修复需改变注册表。错误使用注册表编辑器可能产生严重问题，导致你需要重装操作系统。Citrix不承诺解决错误使用注册表编辑器的问题。使用注册表编辑器存在风险。确保修改前备份注册表。
+完成以下步骤查找设备的Class ID和Hardware ID：
+ 打开终端客户机的设备管理器，查找需要重定向的USB设备。   右击设备选择属性。注意在Details面板上，显示如下图的Hardware ID 和 Class ID。   在Citrix Desktop Studio &amp;gt; HDX 策略 &amp;gt; 用户中，点击新建USB 设备重定向策略。   点击下一步，类别中选择USB设备 &amp;gt; 客户端USB设备重定向，点击添加，选择允许后确定。  然后，类别中选择USB设备 &amp;gt; 客户端USB设备重定向规则，点击添加
+点击新建添加允许的Hardware ID：
+确定后点击下一步，最后应用此策略。
+ 在终端设备，查看注册表HKLM\Software_WOW6432Node_\Citrix\Ica Client\GenericUSB，设置_DeviceRules_值为‘Allow: VID=0911 PID=1844’  你可以删除_deny class rule_以使能此class的所有设备。但是，为防止非法重定向，增加Allow规则方法更优。
+注意：当增加Allow规则，确保它置于规则列表顶部，使它比规则Deny优先级更高。
+此时在Desktop Viewer 上可见对应USB设备。
+ 假如点击设备仍不能映射至会话中，尝试手动在VDA的注册表中添加允许标记： HKLM\Software\Policies\Citrix\ICA_Client\USB\DeviceRules。  更多信息
+默认值存储于VDA注册表的HKLM\SOFTWARE\Citrix\PortICA\GenericUSB Type=String Name=&amp;ldquo;DeviceRules&amp;rdquo;，但是，不建议修改此值，因为当VDA自检，它首先查看HKLM\Software\Policies\Citrix\ICA_Client\USB\DeviceRules，再查看本地路径。优选修改规则方法是使用组管理对象（GPO）模板。
+**注意：**你必须修改终端客户机注册表以允许对应的USB class。
+查看更多: http://support.</description>
+    </item>
+    
+  </channel>
+</rss>

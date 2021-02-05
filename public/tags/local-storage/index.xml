@@ -1,1 +1,33 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>local storage on Martin's Blog</title><link>https://martinliu.cn/tags/local-storage/</link><description>Recent content in local storage on Martin's Blog</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><managingEditor>liuzh66@gmail.com (刘征 Martin Liu)</managingEditor><webMaster>liuzh66@gmail.com (刘征 Martin Liu)</webMaster><lastBuildDate>Mon, 25 Nov 2013 10:39:00 +0000</lastBuildDate><atom:link href="https://martinliu.cn/tags/local-storage/index.xml" rel="self" type="application/rss+xml"/><item><title>XenServer 添加硬盘做本地存储</title><link>https://martinliu.cn/2013/11/25/xenservere6b7bbe58aa0e7a1ace79b98e5819ae69cace59cb0e5ad98e582a8/</link><pubDate>Mon, 25 Nov 2013 10:39:00 +0000</pubDate><author>liuzh66@gmail.com (刘征 Martin Liu)</author><guid>https://martinliu.cn/2013/11/25/xenservere6b7bbe58aa0e7a1ace79b98e5819ae69cace59cb0e5ad98e582a8/</guid><description>当您的 XenServer 测试机需要增加硬盘的时候，你需要通过简单的几条指令把新硬盘添加为本地存储。 下面的实例情况是： 测试机有两块硬盘 OCZ SSD硬盘一块 SATA 不通硬</description></item></channel></rss>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>local storage on Hugo Future Imperfect Slim em português</title>
+    <link>https://example.com/tags/local-storage/</link>
+    <description>Recent content in local storage on Hugo Future Imperfect Slim em português</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-CN</language>
+    <lastBuildDate>Mon, 25 Nov 2013 10:39:00 +0000</lastBuildDate><atom:link href="https://example.com/tags/local-storage/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>XenServer 添加硬盘做本地存储</title>
+      <link>https://example.com/2013/11/25/xenservere6b7bbe58aa0e7a1ace79b98e5819ae69cace59cb0e5ad98e582a8/</link>
+      <pubDate>Mon, 25 Nov 2013 10:39:00 +0000</pubDate>
+      
+      <guid>https://example.com/2013/11/25/xenservere6b7bbe58aa0e7a1ace79b98e5819ae69cace59cb0e5ad98e582a8/</guid>
+      <description>当您的 XenServer 测试机需要增加硬盘的时候，你需要通过简单的几条指令把新硬盘添加为本地存储。
+下面的实例情况是：
+  测试机有两块硬盘
+  OCZ SSD硬盘一块
+  SATA 不通硬盘一块
+  还有一个U盘插在系统上
+    SATA的硬盘是我需要加载的新硬盘
+  这个新的硬盘希望被处理成XenServer本地的SR
+  添加过程中主要需要使用这样几条指令：
+  查看当前系统上的检查出来并且挂载中的分区： cat /proc/partitions
+  详细查看这些存储和设备对应的情况： ls -l /dev/disk/by-id/
+  创建新的本地SR: xe sr-create content-type=user device-config:device=/dev/disk/by-id/scsi-SATA_ST9320325ASG_5VD7G964 host-uuid=3850317b-d23a-4ed0-87f9-2b27854319e5 name-label=&amp;ldquo;SATA320&amp;rdquo; shared=false type=lvm
+  [bash] [root@XS62 ~]# cat /proc/partitions major minor #blocks name
+7 0 52378 loop0 8 0 250059096 sda 8 1 4193297 sda1 8 2 4193297 sda2 8 3 241669447 sda3 8 16 312571224 sdb 8 17 204800 sdb1 8 18 312235312 sdb2 8 32 4137984 sdc 8 36 4137856 sdc4 252 0 241655808 dm-0</description>
+    </item>
+    
+  </channel>
+</rss>

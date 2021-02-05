@@ -1,20 +1,271 @@
-<!doctype html><html lang=zh><head><meta charset=utf-8><meta http-equiv=x-ua-compatible content="IE=edge"><meta name=viewport content="width=device-width,initial-scale=1,maximum-scale=1"><title>Martin's lab 主服务器搭建 - Martin Liu's Blog</title><meta property="og:title" content="Martin's lab 主服务器搭建"><meta name=twitter:title content="Martin's lab 主服务器搭建"><meta name=description content="经过半年多的思考，终于看清了红帽整体的产品架构；经过无数的测试，经过了一个痛苦学习过程，终于可以讲讲红帽的技术架构了。下面将用一些列文章整理一下，我目前所消化吸收的部分。顺便也对这一段的工作做一个小节。先看看红帽的整体技术架构。"><meta property="og:description" content="经过半年多的思考，终于看清了红帽整体的产品架构；经过无数的测试，经过了一个痛苦学习过程，终于可以讲讲红帽的技术架构了。下面将用一些列文章整理一下，我目前所消化吸收的部分。顺便也对这一段的工作做一个小节。先看看红帽的整体技术架构。"><meta name=twitter:description content="经过半年多的思考，终于看清了红帽整体的产品架构；经过无数的测试，经过了一个痛苦学习过程，终于可以讲讲红帽的技术架构了。下面将用一些列文章整理一下，我目前所消化吸收的部分。顺便也对这一段的工作做一个小节。先看看红帽的整体技术架构。"><meta name=author content="刘征 Martin Liu"><link href=https://martinliu.cn/favicon.ico rel=icon type=image/x-icon><meta name=msvalidate.01 content="12F570013342D1F8B60A455D09221C1D"><meta name=yandex-verification content="7e9acc85531b0f35"><meta name=google-site-verification content="4oSwNTpy1vzip3_lt6XhkhMfImCD_DZlvL3K1k-M8qk"><meta name=baidu-site-verification content="Z7d1tYkxzQ"><script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-TL37V8G');</script><meta property="og:image" content="https://res.cloudinary.com/martinliu/image/upload/q_auto:eco/avatar.jpg"><meta name=twitter:image content="https://res.cloudinary.com/martinliu/image/upload/q_auto:eco/avatar.jpg"><meta name=twitter:card content="summary"><meta name=twitter:site content="@martinliu"><meta name=twitter:creator content="@martinliu"><meta property="og:url" content="https://martinliu.cn/2015/03/08/e4b8bbe69c8de58aa1e599a8e690ade5bbba/"><meta property="og:type" content="website"><meta property="og:site_name" content="Martin's Blog"><meta name=keywords content><meta name=generator content="Hugo 0.80.0"><link rel=canonical href=https://martinliu.cn/2015/03/08/e4b8bbe69c8de58aa1e599a8e690ade5bbba/><link rel=alternate href=https://martinliu.cn/index.xml type=application/rss+xml title="Martin's Blog"><script src=https://res.cloudinary.com/martinliu/raw/upload/static/jquery-1.12.4.min.js></script><link rel=stylesheet href=https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.7.1/katex.min.css integrity=sha384-wITovz90syo1dJWVh32uuETPVEtGigN07tkttEqPv+uR2SE/mbQcG7ATL28aI9H0 crossorigin=anonymous><link rel=stylesheet href=https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css><link rel=stylesheet href=https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css integrity=sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u crossorigin=anonymous><link rel=stylesheet href=https://martinliu.cn/css/main.css><link rel=stylesheet href=https://martinliu.cn/css/search.css><link rel=stylesheet href="https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic"><link rel=stylesheet href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800"><link rel=stylesheet href=https://martinliu.cn/css/prism.css><script data-ad-client=ca-pub-4545355461463255 async src=https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js></script><link rel=stylesheet href=https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.1/photoswipe.min.css integrity="sha256-sCl5PUOGMLfFYctzDW3MtRib0ctyUvI9Qsmq2wXOeBY=" crossorigin=anonymous><link rel=stylesheet href=https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.1/default-skin/default-skin.min.css integrity="sha256-BFeI1V+Vh1Rk37wswuOYn5lsTcaU96hGaI7OUVCLjPc=" crossorigin=anonymous><div class=pswp tabindex=-1 role=dialog aria-hidden=true><div class=pswp__bg></div><div class=pswp__scroll-wrap><div class=pswp__container><div class=pswp__item></div><div class=pswp__item></div><div class=pswp__item></div></div><div class="pswp__ui pswp__ui--hidden"><div class=pswp__top-bar><div class=pswp__counter></div><button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
-<button class="pswp__button pswp__button--share" title=Share></button>
-<button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
-<button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button><div class=pswp__preloader><div class=pswp__preloader__icn><div class=pswp__preloader__cut><div class=pswp__preloader__donut></div></div></div></div></div><div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap"><div class=pswp__share-tooltip></div></div><button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)"></button>
-<button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)"></button><div class=pswp__caption><div class=pswp__caption__center></div></div></div></div></div><script type=application/javascript>var doNotTrack=false;if(!doNotTrack){window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;ga('create','UA-749876-6','auto');ga('send','pageview');}</script><script async src=https://www.google-analytics.com/analytics.js></script></head><body><nav class="navbar navbar-default navbar-fixed-top navbar-custom"><div class=container-fluid><div class=navbar-header><button type=button class=navbar-toggle data-toggle=collapse data-target=#main-navbar>
-<span class=sr-only>切换导航</span>
-<span class=icon-bar></span><span class=icon-bar></span><span class=icon-bar></span></button>
-<a class=navbar-brand href=https://martinliu.cn/>Martin's Blog</a></div><div class="collapse navbar-collapse" id=main-navbar><ul class="nav navbar-nav navbar-right"><li><a title=首页 href=https://martinliu.cn/>首页</a></li><li><a title=标签 href=https://martinliu.cn/tags>标签</a></li><li><a title=关于 href=https://martinliu.cn/about>关于</a></li><li><a title=书籍 href=https://martinliu.cn/book>书籍</a></li></ul></div><div class=avatar-container><div class=avatar-img-border><a title="Martin's Blog" href=https://martinliu.cn/><img class=avatar-img src=https://res.cloudinary.com/martinliu/image/upload/q_auto:eco/avatar.jpg alt="Martin's Blog"></a></div></div></div></nav><header class=header-section><div class="intro-header no-img"><div class=container><div class=row><div class="col-lg-12 col-md-12 col-md-offset-0"><div class=posts-heading><h1 align=center>Martin's lab 主服务器搭建</h1><h2 align=center class=posts-subheading>经过半年多的思考，终于看清了红帽整体的产品架构；经过无数的测试，经过了一个痛苦学习过程，终于可以讲讲红帽的技术架构了。下面将用一些列文章整理一下，我目前所消化吸收的部分。顺便也对这一段的工作做一个小节。先看看红帽的整体技术架构。</h2></div></div></div></div></div></header><div class=container role=main><div class=row><div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1"><div><h5 id=wc>字数：2200 |大约阅读时间 5 分钟</h5><h5 id=tags>标签:
-<a href=https://martinliu.cn//tags/kvm>KVM</a> &nbsp;
-<a href=https://martinliu.cn//tags/lab>lab</a> &nbsp;
-<a href=https://martinliu.cn//tags/nfs>nfs</a> &nbsp;
-<a href=https://martinliu.cn//tags/ntp>ntp</a> &nbsp;
-<a href=https://martinliu.cn//tags/opensouce>opensouce</a> &nbsp;
-<a href=https://martinliu.cn//tags/redhat>redhat</a> &nbsp;
-<a href=https://martinliu.cn//tags/satellite-6>satellite 6</a> &nbsp;
-<a href=https://martinliu.cn//tags/%E8%AE%A2%E9%98%85>订阅</a> &nbsp;</h5></div><article role=main class=blog-post><p><img src=http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2015/05/Red-Hat-open-hybrid-cloud-1000x563_0.png alt=Red-Hat-open-hybrid-cloud-1000x563_0></p><p>上图是红帽产品和技术架构的全貌。来源是：<a href=http://www.redhat.com/en/technologies/cloud-computing>http://www.redhat.com/en/technologies/cloud-computing</a> 这张图我用在了我的首次给公司内部的全体销售培训上。由于我是IT管理背景的，因此我很习惯从云管理层往下看云引擎的各个层面。但是管理层产品，其实是后来整合纳入的。红帽起家的旗舰产品还是在底层的RHEL。总之，我想在一个Lab里面实现以上所有的部分，所谓实现是让其每个部分都能在运行在假象的一个有意义的业务场景里。还好，红帽的产品全都是基于x86平台的，因此我用几个笔记本，再加上我家里的这台HP MicroServer G8服务器应该能够全部部署出来。</p><p>做这样的一个lab还是要一定的规划和设计的，这些初步的规划和设计都在我的本子里手写的，就不在这里敲字了，随后我会抽空上几张图。</p><h2 id=主服务器基本配置>主服务器基本配置</h2><p>硬件：Lenovo W540 CPU Intel i7, RAM 32 GB, SSD 512GB, HD 1TB</p><p>OS : RHEL 7.1</p><p>订阅是红帽公司的业务模式，也是红帽认为最自豪的部分，红帽相信可以成为开源技术和用户之间的催化剂，它不断参与最优秀的开源技术创新，并为其用户提供最强有利的技术服务和支持。红帽技术员工可以申请一个红帽雇员订阅。我的订阅可以在网上查到如下图所示：</p><p><a href=http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2015/03/employee-sub.png><img src=http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2015/03/employee-sub-520x295.png alt=employee-sub></a></p><p>红帽的服务必须是基于订阅的每一个节点（物理、虚拟）都需要有有效的订阅，否则红帽的支持服务不能生效。对于一个已经成功注册到红帽官网，并且状态正常的服务器，应该显示如下的注册状态：</p><p>[bash]
-[root@w540 ~]# subscription-manager list</p><p>+&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;-+
+<!doctype html>
+<html lang="zh-cn">
+  <head>
+  <meta charset="utf-8">
+<title>Martin&#39;s lab 主服务器搭建 - Hugo Future Imperfect Slim em português</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+<meta name="generator" content="Hugo 0.80.0" /><meta property="og:site_name" content="Hugo Future Imperfect Slim em português">
+  <meta property="og:title" content="Martin&#39;s lab 主服务器搭建">
+  <meta property="og:description" content="A theme by HTML5 UP, ported by Julio Pescador. Slimmed and enhanced by Patrick Collins. Multilingual by StatnMap. Powered by Hugo.">
+  <meta property="description" content="A theme by HTML5 UP, ported by Julio Pescador. Slimmed and enhanced by Patrick Collins. Multilingual by StatnMap. Powered by Hugo.">
+  <meta property="og:url" content="https://example.com/2015/03/08/e4b8bbe69c8de58aa1e599a8e690ade5bbba/">
+  <meta property="og:type" content="article">
+  
+    <meta property="og:image" content="https://example.com/img/main/logo.jpg">
+  
+  <link rel="stylesheet" href="/css/bundle.min.d9e04ae08c9b3049b766dbd4aeab7d862c5ea1d13679b621490e0f5df5507497.css" integrity="sha256-2eBK4IybMEm3ZtvUrqt9hixeodE2ebYhSQ4PXfVQdJc="><link rel="stylesheet" href="/css/add-on.css">
+</head>
+
+  <body>
+    
+
+<header id="site-header">
+  <nav id="site-nav">
+    <h1 class="nav-title">
+      <a href="/" class="nav">
+        
+          博客
+        
+      </a>
+    </h1>
+    <menu id="site-nav-menu" class="flyout-menu menu">
+      
+        
+          
+          <a href="/" class="nav link"><i class='fas fa-home'></i> 首页</a>
+        
+      
+        
+          
+          <a href="/about/" class="nav link"><i class='far fa-id-card'></i> 关于</a>
+        
+      
+        
+          
+          <a href="/blog/" class="nav link"><i class='far fa-newspaper'></i> 博客</a>
+        
+      
+        
+          
+          <a href="/categories/" class="nav link"><i class='fas fa-sitemap'></i> 分类</a>
+        
+      
+        
+          
+          <a href="/contact/" class="nav link"><i class='far fa-envelope'></i> 联系</a>
+        
+      
+      <a href="#share-menu" class="nav link share-toggle"><i class="fas fa-share-alt">&nbsp;</i>Share</a>
+      <a href="#search-input" class="nav link search-toggle"><i class="fas fa-search">&nbsp;</i>Search</a>
+    </menu>
+    <a href="#search-input" class="nav search-toggle"><i class="fas fa-search fa-2x">&nbsp;</i></a>
+    <a href="#share-menu" class="nav share-toggle"><i class="fas fa-share-alt fa-2x">&nbsp;</i></a>
+    <a href="#lang-menu" class="nav lang-toggle" lang="zh-cn">zh-cn</a>
+    <a href="#site-nav" class="nav nav-toggle"><i class="fas fa-bars fa-2x"></i></a>
+  </nav>
+  <menu id="search" class="menu"><input id="search-input" class="search-input menu"></input><div id="search-results" class="search-results menu"></div></menu>
+  <menu id="lang-menu" class="flyout-menu menu">
+  <a href="#" lang="zh-cn" class="nav link active">中文 (zh-cn)</a>
+  
+    
+      
+        <a href="/en" lang="en" class="nav no-lang link">English (en)</a>
+      
+    
+      
+    
+  
+</menu>
+
+  
+    <menu id="share-menu" class="flyout-menu menu">
+      <h1>Share Post</h1>
+      
+
+
+
+
+  
+    
+    <a href="//twitter.com/share?text=Martin%27s%20lab%20%e4%b8%bb%e6%9c%8d%e5%8a%a1%e5%99%a8%e6%90%ad%e5%bb%ba&amp;url=https%3a%2f%2fexample.com%2f2015%2f03%2f08%2fe4b8bbe69c8de58aa1e599a8e690ade5bbba%2f" target="_blank" rel="noopener" class="nav share-btn twitter">
+        <p>Twitter</p>
+      </a>
+  
+
+  
+      <a href="//www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fexample.com%2f2015%2f03%2f08%2fe4b8bbe69c8de58aa1e599a8e690ade5bbba%2f" target="_blank" rel="noopener" class="nav share-btn facebook">
+        <p>Facebook</p>
+        </a>
+  
+
+  
+    <a href="//www.reddit.com/submit?url=https%3a%2f%2fexample.com%2f2015%2f03%2f08%2fe4b8bbe69c8de58aa1e599a8e690ade5bbba%2f&amp;title=Martin%27s%20lab%20%e4%b8%bb%e6%9c%8d%e5%8a%a1%e5%99%a8%e6%90%ad%e5%bb%ba" target="_blank" rel="noopener" class="nav share-btn reddit">
+          <p>Reddit</p>
+        </a>
+  
+
+  
+        <a href="//www.linkedin.com/shareArticle?url=https%3a%2f%2fexample.com%2f2015%2f03%2f08%2fe4b8bbe69c8de58aa1e599a8e690ade5bbba%2f&amp;title=Martin%27s%20lab%20%e4%b8%bb%e6%9c%8d%e5%8a%a1%e5%99%a8%e6%90%ad%e5%bb%ba" target="_blank" rel="noopener" class="nav share-btn linkedin">
+            <p>LinkedIn</p>
+          </a>
+  
+
+  
+        <a href="//www.pinterest.com/pin/create/button/?url=https%3a%2f%2fexample.com%2f2015%2f03%2f08%2fe4b8bbe69c8de58aa1e599a8e690ade5bbba%2f&amp;description=Martin%27s%20lab%20%e4%b8%bb%e6%9c%8d%e5%8a%a1%e5%99%a8%e6%90%ad%e5%bb%ba" target="_blank" rel="noopener" class="nav share-btn pinterest">
+          <p>Pinterest</p>
+        </a>
+  
+
+  
+        <a href="mailto:?subject=%e6%9f%a5%e7%9c%8b%e6%ad%a4%e5%b8%96%e5%ad%90%e7%9a%84%e4%bd%9c%e8%80%85 liuadmin&amp;body=https%3a%2f%2fexample.com%2f2015%2f03%2f08%2fe4b8bbe69c8de58aa1e599a8e690ade5bbba%2f" target="_blank" class="nav share-btn email" data-proofer-ignore>
+          <p>Email</p>
+        </a>
+  
+
+
+    </menu>
+  
+</header>
+
+    <div id="wrapper">
+      <section id="site-intro" >
+  <a href="/"><img src="https://example.com/img/main/logo.jpg" class="circle" width="100" alt="Hugo Future Imperfect Slim" /></a>
+  <header>
+    <h1>Hugo Future Imperfect Slim</h1>
+  </header>
+  <main>
+    <p>Another fine, responsive site template by <a href='http://html5up.net'>HTML5 UP</a>.</p>
+  </main>
+  
+    <footer>
+      <ul class="socnet-icons">
+        
+
+        <li><a href="//github.com/pacollins/hugo-future-imperfect-slim" target="_blank" rel="noopener" title="GitHub" class="fab fa-github"></a></li>
+
+
+
+
+
+
+<li><a href="//flickr.com/photos/example" target="_blank" rel="noopener" title="Flickr" class="fab fa-flickr"></a></li>
+
+
+
+
+<li><a href="//www.linkedin.com/in/example" target="_blank" rel="noopener" title="LinkedIn" class="fab fa-linkedin"></a></li>
+<li><a href="//linkedin.com/company/examplebusiness" target="_blank" rel="noopener" title="LinkedIn Company" class="fab fa-linkedin"></a></li>
+
+
+
+<li><a href="//facebook.com/example" target="_blank" rel="noopener" title="Facebook" class="fab fa-facebook"></a></li>
+<li><a href="//reddit.com/user/example" target="_blank" rel="noopener" title="Reddit" class="fab fa-reddit"></a></li>
+
+
+
+
+
+
+
+<li><a href="//instagram.com/example" target="_blank" rel="noopener" title="Instagram" class="fab fa-instagram"></a></li>
+
+<li><a href="//twitter.com/example" target="_blank" rel="noopener" title="Twitter" class="fab fa-twitter"></a></li>
+
+
+
+<li><a href="//www.pinterest.com/example" target="_blank" rel="noopener" title="Pinterest" class="fab fa-pinterest-p"></a></li>
+<li><a href="//telegram.me/example" target="_blank" rel="noopener" title="telegram" class="fab fa-telegram"></a></li>
+
+
+
+<li><a href="//researchgate.net/profile/example" target="_blank" rel="noopener" title="Research Gate"><i class="ai ai-researchgate"></i></a></li>
+<li><a href="//keybase.io/example" target="_blank" rel="noopener" title="keybase" class="fab fa-keybase"></a></li>
+<li><a href="//example.com/@example" target="_blank" rel="noopener" title="mastodon" class="fab fa-mastodon"></a></li>
+<li><a href="mailto:example" target="_blank" title="Email" class="far fa-envelope"></a></li>
+
+      </ul>
+    </footer>
+  
+</section>
+
+      <main id="site-main">
+        
+  <article class="post">
+    <header>
+  <div class="title">
+    
+      <h2><a href="/2015/03/08/e4b8bbe69c8de58aa1e599a8e690ade5bbba/">Martin&#39;s lab 主服务器搭建</a></h2>
+    
+    
+  </div>
+  <div class="meta">
+    <time datetime="2015-03-08 15:42:01 &#43;0000 UTC">March 8, 2015</time>
+    <p>liuadmin</p>
+    <p>2 分钟</p>
+  </div>
+</header>
+
+    <div id="socnet-share">
+      
+
+
+
+
+  
+    
+    <a href="//twitter.com/share?text=Martin%27s%20lab%20%e4%b8%bb%e6%9c%8d%e5%8a%a1%e5%99%a8%e6%90%ad%e5%bb%ba&amp;url=https%3a%2f%2fexample.com%2f2015%2f03%2f08%2fe4b8bbe69c8de58aa1e599a8e690ade5bbba%2f" target="_blank" rel="noopener" class="nav share-btn twitter">
+        <p>Twitter</p>
+      </a>
+  
+
+  
+      <a href="//www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fexample.com%2f2015%2f03%2f08%2fe4b8bbe69c8de58aa1e599a8e690ade5bbba%2f" target="_blank" rel="noopener" class="nav share-btn facebook">
+        <p>Facebook</p>
+        </a>
+  
+
+  
+    <a href="//www.reddit.com/submit?url=https%3a%2f%2fexample.com%2f2015%2f03%2f08%2fe4b8bbe69c8de58aa1e599a8e690ade5bbba%2f&amp;title=Martin%27s%20lab%20%e4%b8%bb%e6%9c%8d%e5%8a%a1%e5%99%a8%e6%90%ad%e5%bb%ba" target="_blank" rel="noopener" class="nav share-btn reddit">
+          <p>Reddit</p>
+        </a>
+  
+
+  
+        <a href="//www.linkedin.com/shareArticle?url=https%3a%2f%2fexample.com%2f2015%2f03%2f08%2fe4b8bbe69c8de58aa1e599a8e690ade5bbba%2f&amp;title=Martin%27s%20lab%20%e4%b8%bb%e6%9c%8d%e5%8a%a1%e5%99%a8%e6%90%ad%e5%bb%ba" target="_blank" rel="noopener" class="nav share-btn linkedin">
+            <p>LinkedIn</p>
+          </a>
+  
+
+  
+        <a href="//www.pinterest.com/pin/create/button/?url=https%3a%2f%2fexample.com%2f2015%2f03%2f08%2fe4b8bbe69c8de58aa1e599a8e690ade5bbba%2f&amp;description=Martin%27s%20lab%20%e4%b8%bb%e6%9c%8d%e5%8a%a1%e5%99%a8%e6%90%ad%e5%bb%ba" target="_blank" rel="noopener" class="nav share-btn pinterest">
+          <p>Pinterest</p>
+        </a>
+  
+
+  
+        <a href="mailto:?subject=%e6%9f%a5%e7%9c%8b%e6%ad%a4%e5%b8%96%e5%ad%90%e7%9a%84%e4%bd%9c%e8%80%85 liuadmin&amp;body=https%3a%2f%2fexample.com%2f2015%2f03%2f08%2fe4b8bbe69c8de58aa1e599a8e690ade5bbba%2f" target="_blank" class="nav share-btn email" data-proofer-ignore>
+          <p>Email</p>
+        </a>
+  
+
+
+    </div>
+    <div class="content">
+      
+      <p><img src="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2015/05/Red-Hat-open-hybrid-cloud-1000x563_0.png" alt="Red-Hat-open-hybrid-cloud-1000x563_0"></p>
+<p>上图是红帽产品和技术架构的全貌。来源是：<a href="http://www.redhat.com/en/technologies/cloud-computing">http://www.redhat.com/en/technologies/cloud-computing</a> 这张图我用在了我的首次给公司内部的全体销售培训上。由于我是IT管理背景的，因此我很习惯从云管理层往下看云引擎的各个层面。但是管理层产品，其实是后来整合纳入的。红帽起家的旗舰产品还是在底层的RHEL。总之，我想在一个Lab里面实现以上所有的部分，所谓实现是让其每个部分都能在运行在假象的一个有意义的业务场景里。还好，红帽的产品全都是基于x86平台的，因此我用几个笔记本，再加上我家里的这台HP MicroServer G8服务器应该能够全部部署出来。</p>
+<p>做这样的一个lab还是要一定的规划和设计的，这些初步的规划和设计都在我的本子里手写的，就不在这里敲字了，随后我会抽空上几张图。</p>
+<h2 id="主服务器基本配置">主服务器基本配置</h2>
+<p>硬件：Lenovo W540 CPU Intel i7, RAM 32 GB, SSD 512GB, HD 1TB</p>
+<p>OS : RHEL 7.1</p>
+<p>订阅是红帽公司的业务模式，也是红帽认为最自豪的部分，红帽相信可以成为开源技术和用户之间的催化剂，它不断参与最优秀的开源技术创新，并为其用户提供最强有利的技术服务和支持。红帽技术员工可以申请一个红帽雇员订阅。我的订阅可以在网上查到如下图所示：</p>
+<p><a href="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2015/03/employee-sub.png"><img src="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2015/03/employee-sub-520x295.png" alt="employee-sub"></a></p>
+<p>红帽的服务必须是基于订阅的每一个节点（物理、虚拟）都需要有有效的订阅，否则红帽的支持服务不能生效。对于一个已经成功注册到红帽官网，并且状态正常的服务器，应该显示如下的注册状态：</p>
+<p>[bash]
+[root@w540 ~]# subscription-manager list</p>
+<p>+&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;-+
 安装的产品状态
 +&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;-+
 产品名称： Red Hat Enterprise Linux Server
@@ -25,8 +276,13 @@
 状态详情：
 开始： 2014年09月09日
 结束： 2015年12月08日
-[/bash]</p><p>红帽员工订阅意味着所有红帽产品。</p><h2 id=基本服务配置>基本服务配置</h2><h3 id=kvm>KVM</h3><p>KVM的上手还真比我想象的速度要慢一些，起码比我用XenServer的经历更加纠结一些。总之现在可以彻底的忘记其它任何的选项，KVM可以满足我的所有需求了。由于主服务器有512SSD + 32GB RAM + 8 vCPU，所以我打算把产品里的所有管理控制节点VM都部署在这个机器上。预计有10个左右的虚拟机。
-安装配置方面这里就不赘述了。只把困扰我许久的几个网络配置贴出来，供参考。</p><p>网桥0的功能是为所有虚拟机提供外网链接，使他们和主机一样直通主机所物理链接的局域网。
+[/bash]</p>
+<p>红帽员工订阅意味着所有红帽产品。</p>
+<h2 id="基本服务配置">基本服务配置</h2>
+<h3 id="kvm">KVM</h3>
+<p>KVM的上手还真比我想象的速度要慢一些，起码比我用XenServer的经历更加纠结一些。总之现在可以彻底的忘记其它任何的选项，KVM可以满足我的所有需求了。由于主服务器有512SSD + 32GB RAM + 8 vCPU，所以我打算把产品里的所有管理控制节点VM都部署在这个机器上。预计有10个左右的虚拟机。
+安装配置方面这里就不赘述了。只把困扰我许久的几个网络配置贴出来，供参考。</p>
+<p>网桥0的功能是为所有虚拟机提供外网链接，使他们和主机一样直通主机所物理链接的局域网。
 [bash]
 [root@w540 ~]# cat /etc/sysconfig/network-scripts/ifcfg-br0
 DEVICE=br0
@@ -44,7 +300,8 @@ IPADDR=192.168.0.5
 PREFIX=24
 GATEWAY=192.168.0.1
 NM_CONTROLLED=no
-[/bash]</p><p>主机原本的一块物理网卡的配置，由于增加了这个网桥，需求更新如下：
+[/bash]</p>
+<p>主机原本的一块物理网卡的配置，由于增加了这个网桥，需求更新如下：
 [bash]
 [root@w540 ~]# cat /etc/sysconfig/network-scripts/ifcfg-enp0s25
 DEVICE=enp0s25
@@ -52,10 +309,14 @@ ONBOOT=yes
 BRIDGE=br0
 NM_CONTROLLED=no
 BOOTPROTO=none
-[/bash]</p><p>kvm这块处理这个折腾我很久的br0之外，其它的功能看起来还不错，运行在SSD上的虚拟机也启动和运行速度飞快。</p><h3 id=repo-服务器>Repo 服务器</h3><p>Repos是红帽软件仓库的简称。它具体指每个订阅内所有软件频道里面下载出来的软件包目录。下载到的某个软件包频道的repos目录中是一堆的rpm包文件，这样的目录可以制作成本地Repos服务器，能够提供给所有LAN里RHEL OS用来做软件的安装和升级用。
-用主服务器上1TB的慢速普通盘来保存这些下载的repos，安装http服务器，把它共享给本lab的lan中。具体的几个参考脚本如下。</p><p>在把本服务器注册到红帽网站之后，他会默认attach一堆可能不需要的repos，因此我的做法是先关闭掉所有的默认开启，然后再开启我所需要并且关注的东西。
+[/bash]</p>
+<p>kvm这块处理这个折腾我很久的br0之外，其它的功能看起来还不错，运行在SSD上的虚拟机也启动和运行速度飞快。</p>
+<h3 id="repo-服务器">Repo 服务器</h3>
+<p>Repos是红帽软件仓库的简称。它具体指每个订阅内所有软件频道里面下载出来的软件包目录。下载到的某个软件包频道的repos目录中是一堆的rpm包文件，这样的目录可以制作成本地Repos服务器，能够提供给所有LAN里RHEL OS用来做软件的安装和升级用。
+用主服务器上1TB的慢速普通盘来保存这些下载的repos，安装http服务器，把它共享给本lab的lan中。具体的几个参考脚本如下。</p>
+<p>在把本服务器注册到红帽网站之后，他会默认attach一堆可能不需要的repos，因此我的做法是先关闭掉所有的默认开启，然后再开启我所需要并且关注的东西。
 [bash]
-[root@w540 repos]# subscription-manager repos &ndash;disable="*"
+[root@w540 repos]# subscription-manager repos &ndash;disable=&quot;*&quot;
 [/bash]
 以上命令的结果会反问，所有的被关闭的repos。下面许开启我当前需求的repos。
 [bash]
@@ -87,7 +348,8 @@ subscription-manager repos &ndash;enable=rhel-7-server-satellite-optional-6.1-rp
 subscription-manager repos &ndash;enable=rhel-7-server-optional-rpms
 subscription-manager repos &ndash;enable=rhel-7-server-satellite-6.0-rpms
 subscription-manager repos &ndash;enable=jb-ews-2-for-rhel-7-server-rpms
-[/bash]</p><p>接下来可以用命令来从红帽CDN同步下载每个Repos里面的软件包。
+[/bash]</p>
+<p>接下来可以用命令来从红帽CDN同步下载每个Repos里面的软件包。
 [bash]
 [root@w540 rhel70]# cat sync.sh
 reposync &ndash;gpgcheck &ndash;newest-only &ndash;plugins &ndash;downloadcomps &ndash;repoid=rhel-7-server-satellite-6.0-rpms &ndash;download_path=/data/Repos/rhel70/
@@ -107,15 +369,18 @@ reposync &ndash;gpgcheck &ndash;newest-only &ndash;plugins &ndash;downloadcomps 
 reposync &ndash;gpgcheck &ndash;newest-only &ndash;plugins &ndash;downloadcomps &ndash;repoid=jb-eap-6.3-for-rhel-7-server-rpms &ndash;download_path=/data/Repos/rhel70/
 reposync &ndash;gpgcheck &ndash;newest-only &ndash;plugins &ndash;downloadcomps &ndash;repoid=rhel-ha-for-rhel-7-server-rpms &ndash;download_path=/data/Repos/rhel70/
 reposync &ndash;gpgcheck &ndash;newest-only &ndash;plugins &ndash;downloadcomps &ndash;repoid=rhel-7-server-supplementary-rpms &ndash;download_path=/data/Repos/rhel70/
-[/bash]</p><p>安装httpd的过程就不叙述了，下面就贴一个本机的配置文件。
+[/bash]</p>
+<p>安装httpd的过程就不叙述了，下面就贴一个本机的配置文件。
 [bash]
 Alias /repos &ldquo;/data/repos&rdquo;
-&lt;Directory &ldquo;/data/repos&rdquo;>
+&lt;Directory &ldquo;/data/repos&rdquo;&gt;
 Options None
 AllowOverride None
 Order allow,deny
 Allow from all
-Require all granted</p><p>[/bash]</p><p>最后，在任何需要的机器上本地repos源的配置文件可以类似如下：
+Require all granted</p>
+<p>[/bash]</p>
+<p>最后，在任何需要的机器上本地repos源的配置文件可以类似如下：
 [bash]
 [root@sat6-leb yum.repos.d]# ls
 rhel70.repo
@@ -124,7 +389,11 @@ rhel70.repo
 name=rhel-7-server-rpms
 baseurl=http://192.168.0.5/repos/rhel70/rhel-7-server-rpms/
 gpgcheck=0
-enable=1</p><p>[/bash]</p><p>当然，我的目标是以后这个lab网内所有的机器都需要受到satellite 6 服务器的管理和控制，并不需要在每个服务器上手动的去安装和管理repos内容和订阅。下面分阶段安装各种控制器节点的时候，在详细说明如何使用satellite 6做种子服务器生出所有的其他节点。这里的repo服务器还是作为最初的种子服务器，它使安装satellite 6 服务器的源。也是作为lab中对于satellite6的一个备份选项。</p><h3 id=nfs服务器>NFS服务器</h3><p>本机的存储空间比较大，可以作为慢速NFS共享存储和ISO镜像文件服务器使用，因此，安装nfs服务器之后，就可以把本地的满速普通硬盘使用nfs的方式共享到lab内网了。配置文件参考如下：
+enable=1</p>
+<p>[/bash]</p>
+<p>当然，我的目标是以后这个lab网内所有的机器都需要受到satellite 6 服务器的管理和控制，并不需要在每个服务器上手动的去安装和管理repos内容和订阅。下面分阶段安装各种控制器节点的时候，在详细说明如何使用satellite 6做种子服务器生出所有的其他节点。这里的repo服务器还是作为最初的种子服务器，它使安装satellite 6 服务器的源。也是作为lab中对于satellite6的一个备份选项。</p>
+<h3 id="nfs服务器">NFS服务器</h3>
+<p>本机的存储空间比较大，可以作为慢速NFS共享存储和ISO镜像文件服务器使用，因此，安装nfs服务器之后，就可以把本地的满速普通硬盘使用nfs的方式共享到lab内网了。配置文件参考如下：
 [bash]
 [root@w540 ~]# cat /etc/exports
 /data/nfs 192.168.0.<em>(rw,async)
@@ -136,7 +405,366 @@ Export list for localhost:
 /data/iso 192.168.0.*
 /data/nfs 192.168.0.*
 [root@w540 ~]#
-[/bash]</p><h3 id=ntp服务器>NTP服务器</h3><p>根据红帽知识库文档，选择本机这个物理服务器作为lab内网的时钟服务器，所有的虚拟机和其他物理机都和他同步时钟。最终的配置还没有确定。随后更新靠谱的可以供参考的配置</p><a href=https://mp.weixin.qq.com/s/elRqbNlidJzmKCejBwtsAg target=_blank><img src=https://martinliu.cn/images/sref-zs.jpg alt="SRE Foundation 招生简章"></a></article><ul class="pager blog-pager"><li class=previous><a href=https://martinliu.cn/posts/flake-it-till-you-make-it/ data-toggle=tooltip data-placement=top title="Flake it till you make it">&larr; 前一篇</a></li><li class=next><a href=https://martinliu.cn/2015/03/08/martins-lab-build-day-1/ data-toggle=tooltip data-placement=top title="martin's lab build day 1">后一篇 &rarr;</a></li></ul><div><h2>See Also</h2><ul><li><a href=https://martinliu.cn/2015/02/09/2014-red-hat-summit-paul-cormier-red-hat-keynote/>2014 Red Hat Summit- Paul Cormier, Red Hat keynote</a></li><li><a href=https://martinliu.cn/2015/01/06/kvm-virt-manager-e5ae9ee794a8e58f82e88083e6898be5868c/>KVM Virt-Manager 实用参考手册</a></li><li><a href=https://martinliu.cn/2014/11/18/e7a1ace4bbb6e5b0b1e7bbaae58fafe5bc80e5b7a5e4ba86/>硬件就绪可开工了</a></li><li><a href=https://martinliu.cn/2014/11/13/e68891e79a8411-11e98787e8b4ad/>我的11.11采购</a></li><li><a href=https://martinliu.cn/2011/03/24/usb-linux/>既要开源，也要环保</a></li></ul></div></div></div></section></div><footer><div class=container><div class=row><div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1"><ul class="list-inline text-center footer-links"><li><a href=mailto:liuzh66@gmail.com title="Email me"><span class="fa-stack fa-lg"><i class="fa fa-circle fa-stack-2x"></i><i class="fa fa-envelope fa-stack-1x fa-inverse"></i></span></a></li><li><a href=https://github.com/martinliu title=GitHub><span class="fa-stack fa-lg"><i class="fa fa-circle fa-stack-2x"></i><i class="fa fa-github fa-stack-1x fa-inverse"></i></span></a></li><li><a href=https://gitlab.com/martinliu title=GitLab><span class="fa-stack fa-lg"><i class="fa fa-circle fa-stack-2x"></i><i class="fa fa-gitlab fa-stack-1x fa-inverse"></i></span></a></li><li><a href=https://twitter.com/martinliu title=Twitter><span class="fa-stack fa-lg"><i class="fa fa-circle fa-stack-2x"></i><i class="fa fa-twitter fa-stack-1x fa-inverse"></i></span></a></li><li><a href=https://linkedin.com/in/liuzheng title=LinkedIn><span class="fa-stack fa-lg"><i class="fa fa-circle fa-stack-2x"></i><i class="fa fa-linkedin fa-stack-1x fa-inverse"></i></span></a></li></ul><p class="credits copyright text-muted">&copy;2017-2018
-刘征 Martin Liu
-&nbsp;&bull;&nbsp;
-<a href=https://martinliu.cn/>Martin's Blog</a></p><p class="credits theme-by text-muted">由 <a href=http://gohugo.io>Hugo v0.80.0</a> 强力驱动 &nbsp;&bull;&nbsp; 主题 <a href=https://github.com/halogenica/beautifulhugo>Beautiful Hugo</a> 移植自 <a href=http://deanattali.com/beautiful-jekyll/>Beautiful Jekyll</a></p></div></div></div></footer><script src=https://res.cloudinary.com/martinliu/raw/upload/static/bootstrap.min.js></script><script src=https://res.cloudinary.com/martinliu/raw/upload/static/photoswipe-ui-default.min.js></script><script src=https://res.cloudinary.com/martinliu/raw/upload/static/photoswipe.min.js></script><script src=https://res.cloudinary.com/martinliu/raw/upload/static/auto-render.min.js></script><script src=https://res.cloudinary.com/martinliu/raw/upload/static/main.js></script><script src=https://res.cloudinary.com/martinliu/raw/upload/static/prism.js></script><script src=https://res.cloudinary.com/martinliu/raw/upload/static/katex.min.js></script><script>renderMathInElement(document.body);</script></body></html>
+[/bash]</p>
+<h3 id="ntp服务器">NTP服务器</h3>
+<p>根据红帽知识库文档，选择本机这个物理服务器作为lab内网的时钟服务器，所有的虚拟机和其他物理机都和他同步时钟。最终的配置还没有确定。随后更新靠谱的可以供参考的配置</p>
+
+    </div>
+    <footer>
+      <div class="stats">
+  
+    <ul class="categories">
+      
+        
+          <li><a class="article-terms-link" href="/categories/opensource/">opensource</a></li>
+        
+          <li><a class="article-terms-link" href="/categories/rhel/">RHEL</a></li>
+        
+      
+    </ul>
+  
+  
+    <ul class="tags">
+      
+        
+          <li><a class="article-terms-link" href="/tags/kvm/">KVM</a></li>
+        
+          <li><a class="article-terms-link" href="/tags/lab/">lab</a></li>
+        
+          <li><a class="article-terms-link" href="/tags/nfs/">nfs</a></li>
+        
+          <li><a class="article-terms-link" href="/tags/ntp/">ntp</a></li>
+        
+          <li><a class="article-terms-link" href="/tags/opensouce/">opensouce</a></li>
+        
+          <li><a class="article-terms-link" href="/tags/redhat/">redhat</a></li>
+        
+          <li><a class="article-terms-link" href="/tags/satellite-6/">satellite 6</a></li>
+        
+          <li><a class="article-terms-link" href="/tags/%e8%ae%a2%e9%98%85/">订阅</a></li>
+        
+      
+    </ul>
+  
+</div>
+
+    </footer>
+  </article>
+  
+    
+  <article class="post">
+    
+    <div>
+      <h2 id="say-something">说些什么</h2>
+        <form id="comment-form" class="new-comment" method="POST">
+          
+          <h3 class='reply-notice hidden'>
+            <span class='reply-name'></span>
+          </h3>
+
+          
+          <input type="hidden" name="options[entryId]" value="9f6ac04046628186e7645384a0118b10">
+          <input type='hidden' name='fields[replyThread]' value=''>
+          <input type='hidden' name='fields[replyID]' value=''>
+          <input type='hidden' name='fields[replyName]' value=''>
+
+          
+          <input required name='fields[name]' type='text' placeholder='你的名字'>
+          <input name='fields[website]' type='text' placeholder='您的网页'>
+          <input required name='fields[email]' type='email' placeholder='你的邮件'>
+          <textarea required name='fields[body]' placeholder='你的信息' rows='10'></textarea>
+
+          
+          
+
+          
+          <div class='submit-notice'>
+            <strong class='submit-notice-text submit-success hidden'>感谢您的评论！被批准后它会立即在此站点展示。</strong>
+            <strong class='submit-notice-text submit-failed hidden'>很抱歉，您的提交存在错误。请确保所有必填字段都已填写正确，然后再试一次。</strong>
+          </div>
+
+          
+          <input type='submit' value='发送' class='button'>
+          <input type='submit' value='已发送' class='hidden button' disabled>
+          <input type='reset' value='重设' class='button'>
+        </form>
+    </div>
+
+    
+    <div>
+      <h2>评论</h2><p>还沒有留言。</p>
+      
+    </div>
+  </article>
+
+
+  
+  <div class="pagination">
+    
+      <a href="/2015/03/08/martins-lab-build-day-1/" class="button left"><span>martin&#39;s lab build day 1</span></a>
+    
+    
+      <a href="/blog/flake-it-till-you-make-it/" class="button right"><span>Flake it till you make it</span></a>
+    
+  </div>
+
+      </main>
+      <section id="site-sidebar">
+  
+    <section id="recent-posts">
+      <header>
+        <h1>最新文章</h1>
+      </header>
+      
+      <article class="mini-post">
+          
+        <header>
+          <h2><a href="/blog/%E4%BD%BF%E7%94%A8-elastic-stack-%E7%9B%91%E6%8E%A7-covid-19-%E7%96%AB%E6%83%85%E5%8F%91%E5%B1%95/">使用 Elastic Stack 监控 Covid-19 疫情发展</a></h2>
+          <time class="published" datetime="2020-04-08 17:04:08 &#43;0800 CST">April 8, 2020</time>
+        </header>
+      </article>
+      
+      <article class="mini-post">
+          
+        <header>
+          <h2><a href="/blog/nutanix-dvp/">为Docker Swarm群集配置Nutanix持久存储</a></h2>
+          <time class="published" datetime="2017-11-02 00:00:00 &#43;0000 UTC">November 2, 2017</time>
+        </header>
+      </article>
+      
+      <article class="mini-post">
+          
+        <header>
+          <h2><a href="/blog/tips-for-docker-on-mac/">Tips for Docker on Mac</a></h2>
+          <time class="published" datetime="2017-09-26 00:00:00 &#43;0000 UTC">September 26, 2017</time>
+        </header>
+      </article>
+      
+      <article class="mini-post">
+          
+        <header>
+          <h2><a href="/blog/something-you-must-know-about-devops/">关于DevOps 的那些事</a></h2>
+          <time class="published" datetime="2017-09-23 00:00:00 &#43;0000 UTC">September 23, 2017</time>
+        </header>
+      </article>
+      
+      <article class="mini-post">
+          
+        <header>
+          <h2><a href="/blog/welcome-to-ghost/">切换到Ghost&#43;七牛</a></h2>
+          <time class="published" datetime="2017-09-21 00:00:00 &#43;0000 UTC">September 21, 2017</time>
+        </header>
+      </article>
+      
+      
+        <footer>
+          <a href="/posts/" class="button">查看更多</a>
+        </footer>
+      
+    </section>
+  
+
+  
+    
+
+      <section id="categories">
+        <header>
+          <h1><a href="/categories">分类</a></h1>
+        </header>
+        <ul>
+          
+          
+          <li>
+              <a href="/categories/blog/">blog<span class="count">52</span></a>
+          
+          <li>
+              <a href="/categories/nsm/">nsm<span class="count">41</span></a>
+          
+          <li>
+              <a href="/categories/itsm/">itsm<span class="count">21</span></a>
+          
+          <li>
+              <a href="/categories/opensource/">opensource<span class="count">21</span></a>
+          
+          <li>
+              <a href="/categories/running/">running<span class="count">21</span></a>
+          
+          <li>
+              <a href="/categories/cms/cmdb/">cms/cmdb<span class="count">20</span></a>
+          
+          <li>
+              <a href="/categories/infrastructure/">infrastructure<span class="count">18</span></a>
+          
+          <li>
+              <a href="/categories/cloud-computing/">cloud-computing<span class="count">17</span></a>
+          
+          <li>
+              <a href="/categories/wordpress1/">wordpress1<span class="count">15</span></a>
+          
+          <li>
+              <a href="/categories/xendesktop/">xendesktop<span class="count">15</span></a>
+          
+          <li>
+              <a href="/categories/travel/">travel<span class="count">14</span></a>
+          
+          <li>
+              <a href="/categories/itil/itsm/">itil/itsm<span class="count">13</span></a>
+          
+          <li>
+              <a href="/categories/life/">life<span class="count">13</span></a>
+          
+          <li>
+              <a href="/categories/movie/">movie<span class="count">12</span></a>
+          
+          <li>
+              <a href="/categories/asset-mgmt/">asset-mgmt<span class="count">10</span></a>
+          
+          <li>
+              <a href="/categories/bmc/">bmc<span class="count">7</span></a>
+          
+          <li>
+              <a href="/categories/citrix/">citrix<span class="count">7</span></a>
+          
+          <li>
+              <a href="/categories/rhel/">rhel<span class="count">6</span></a>
+          
+          <li>
+              <a href="/categories/xenserver/">xenserver<span class="count">6</span></a>
+          
+          <li>
+              <a href="/categories/apple/">apple<span class="count">4</span></a>
+          
+          <li>
+              <a href="/categories/desktop/">desktop<span class="count">4</span></a>
+          
+          <li>
+              <a href="/categories/opennms/">opennms<span class="count">4</span></a>
+          
+          <li>
+              <a href="/categories/tools/">tools<span class="count">4</span></a>
+          
+          <li>
+              <a href="/categories/container/">container<span class="count">3</span></a>
+          
+          <li>
+              <a href="/categories/linux/">linux<span class="count">3</span></a>
+          
+          <li>
+              <a href="/categories/openstack/">openstack<span class="count">3</span></a>
+          
+          <li>
+              <a href="/categories/project-management/">project-management<span class="count">3</span></a>
+          
+          <li>
+              <a href="/categories/xenapp/">xenapp<span class="count">3</span></a>
+          
+          <li>
+              <a href="/categories/docker/">docker<span class="count">2</span></a>
+          
+          <li>
+              <a href="/categories/hardware/">hardware<span class="count">2</span></a>
+          
+          <li>
+              <a href="/categories/lamp/">lamp<span class="count">2</span></a>
+          
+          <li>
+              <a href="/categories/cloudforms/">cloudforms<span class="count">1</span></a>
+          
+          <li>
+              <a href="/categories/cloudstack/">cloudstack<span class="count">1</span></a>
+          
+          <li>
+              <a href="/categories/devops/">devops<span class="count">1</span></a>
+          
+          <li>
+              <a href="/categories/ovirt/">ovirt<span class="count">1</span></a>
+          
+          <li>
+              <a href="/categories/rhev/">rhev<span class="count">1</span></a>
+          
+          <li>
+              <a href="/categories/storage/">storage<span class="count">1</span></a>
+          
+          </li>
+        </ul>
+      </section>
+    
+  
+
+  
+    <section id="mini-bio">
+      <header>
+        <h1>关于</h1>
+      </header>
+      <p>This theme was developed for Hugo static site generator.</p>
+      <footer>
+        <a href="/about" class="button">详细了解</a>
+      </footer>
+    </section>
+  
+</section>
+
+      <footer id="site-footer">
+  
+      <ul class="socnet-icons">
+        
+
+        <li><a href="//github.com/pacollins/hugo-future-imperfect-slim" target="_blank" rel="noopener" title="GitHub" class="fab fa-github"></a></li>
+
+
+
+
+
+
+<li><a href="//flickr.com/photos/example" target="_blank" rel="noopener" title="Flickr" class="fab fa-flickr"></a></li>
+
+
+
+
+<li><a href="//www.linkedin.com/in/example" target="_blank" rel="noopener" title="LinkedIn" class="fab fa-linkedin"></a></li>
+<li><a href="//linkedin.com/company/examplebusiness" target="_blank" rel="noopener" title="LinkedIn Company" class="fab fa-linkedin"></a></li>
+
+
+
+<li><a href="//facebook.com/example" target="_blank" rel="noopener" title="Facebook" class="fab fa-facebook"></a></li>
+<li><a href="//reddit.com/user/example" target="_blank" rel="noopener" title="Reddit" class="fab fa-reddit"></a></li>
+
+
+
+
+
+
+
+<li><a href="//instagram.com/example" target="_blank" rel="noopener" title="Instagram" class="fab fa-instagram"></a></li>
+
+<li><a href="//twitter.com/example" target="_blank" rel="noopener" title="Twitter" class="fab fa-twitter"></a></li>
+
+
+
+<li><a href="//www.pinterest.com/example" target="_blank" rel="noopener" title="Pinterest" class="fab fa-pinterest-p"></a></li>
+<li><a href="//telegram.me/example" target="_blank" rel="noopener" title="telegram" class="fab fa-telegram"></a></li>
+
+
+
+<li><a href="//researchgate.net/profile/example" target="_blank" rel="noopener" title="Research Gate"><i class="ai ai-researchgate"></i></a></li>
+<li><a href="//keybase.io/example" target="_blank" rel="noopener" title="keybase" class="fab fa-keybase"></a></li>
+<li><a href="//example.com/@example" target="_blank" rel="noopener" title="mastodon" class="fab fa-mastodon"></a></li>
+<li><a href="mailto:example" target="_blank" title="Email" class="far fa-envelope"></a></li>
+
+      </ul>
+  
+  <p class="copyright">
+    © 2020 Hugo Future Imperfect Slim em português
+      <br>
+    主题: <a href='https://themes.gohugo.io/hugo-future-imperfect-slim/' target='_blank' rel='noopener'>Hugo Future Imperfect Slim</a><br>移植自 <a href='https://html5up.net/future-imperfect' target='_blank' rel='noopener'>HTML5 UP</a> | 由 <a href='https://gohugo.io/' target='_blank' rel='noopener' title='0.80.0'>Hugo</a> 驱动
+  </p>
+</footer>
+<a id="back-to-top" href="#" class="fas fa-arrow-up fa-2x"></a>
+
+      <script src="/js/highlight.js"></script>
+    
+    <script>hljs.initHighlightingOnLoad();</script><script src="/js/bundle.min.bbba6b424a8ac5b6858cd5fc80eabc9c5277945cc2dc349204646b84891b4b58.js" integrity="sha256-u7prQkqKxbaFjNX8gOq8nFJ3lFzC3DSSBGRrhIkbS1g="></script>
+    <script src="/js/add-on.js"></script>
+    </div>
+  </body>
+</html>

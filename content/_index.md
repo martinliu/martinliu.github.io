@@ -1,1 +1,0 @@
-刘征是[《DevOps Handbook》](http://www.ituring.com.cn/book/1891)和[《The Site Reliability Workbook》](https://www.amazon.com/Site-Reliability-Workbook-Practical-Implement/)译者，中国 DevOps 社区组织者，致力于推广 DevOps 实践、理念和文化。

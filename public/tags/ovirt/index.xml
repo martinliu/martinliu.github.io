@@ -1,1 +1,35 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>ovirt on Martin's Blog</title><link>https://martinliu.cn/tags/ovirt/</link><description>Recent content in ovirt on Martin's Blog</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><managingEditor>liuzh66@gmail.com (刘征 Martin Liu)</managingEditor><webMaster>liuzh66@gmail.com (刘征 Martin Liu)</webMaster><lastBuildDate>Sun, 12 Jul 2015 11:16:44 +0000</lastBuildDate><atom:link href="https://martinliu.cn/tags/ovirt/index.xml" rel="self" type="application/rss+xml"/><item><title>Ovirt 服务器虚拟化测试</title><link>https://martinliu.cn/2015/07/12/ovirt-e69c8de58aa1e599a8e8999ae68b9fe58c96e6b58be8af95/</link><pubDate>Sun, 12 Jul 2015 11:16:44 +0000</pubDate><author>liuzh66@gmail.com (刘征 Martin Liu)</author><guid>https://martinliu.cn/2015/07/12/ovirt-e69c8de58aa1e599a8e8999ae68b9fe58c96e6b58be8af95/</guid><description>本文安装和测试的软件是Ovirt+KVM的服务器虚拟化，这两个项目是红帽RHEVM+KVM服务器虚拟化的上游社区产品。可以通过这个文档清晰的</description></item></channel></rss>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>ovirt on Hugo Future Imperfect Slim em português</title>
+    <link>https://example.com/tags/ovirt/</link>
+    <description>Recent content in ovirt on Hugo Future Imperfect Slim em português</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-CN</language>
+    <lastBuildDate>Sun, 12 Jul 2015 11:16:44 +0000</lastBuildDate><atom:link href="https://example.com/tags/ovirt/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Ovirt 服务器虚拟化测试</title>
+      <link>https://example.com/2015/07/12/ovirt-e69c8de58aa1e599a8e8999ae68b9fe58c96e6b58be8af95/</link>
+      <pubDate>Sun, 12 Jul 2015 11:16:44 +0000</pubDate>
+      
+      <guid>https://example.com/2015/07/12/ovirt-e69c8de58aa1e599a8e8999ae68b9fe58c96e6b58be8af95/</guid>
+      <description>本文安装和测试的软件是Ovirt+KVM的服务器虚拟化，这两个项目是红帽RHEVM+KVM服务器虚拟化的上游社区产品。可以通过这个文档清晰的了解到红帽服务器虚拟化产品的大体功能，基本特点。本测试文档使用的是Centos7+社区yum 源；因此是最新的ovirt和kvm的功能。如果是正式的企业级需求测试，请使用光纤或者传统存储，从而达到和vmware等商业产品最好的类比测试。尽量避免使用嵌套kvm虚拟化的方式，除非您很熟悉Linux，使用两个笔记本是最简单的测试环境。
+下图是Ovirt服务器的详细架构图。其中的ovirt-engine是本文安装和部署的部分，是用一个centos7的虚拟机安装的。Host1也是用一个centos7的虚拟机安装的。半年之前我也配置过一次嵌套kvm，根本是一头雾水，而且还没有成功，不过这次的配置过程却这么简单容易，就正常工作了。希望简单一点的人，可以把Host1用物理机来安装，也会节省很多时间。
+[caption id=&amp;ldquo;attachment_53901&amp;rdquo; align=&amp;ldquo;alignnone&amp;rdquo; width=&amp;ldquo;512&amp;rdquo;]ovirt 架构图[/caption]
+KVM嵌套虚拟化准备 在测试KVM服务器虚拟化的过程中，如果您能有独立的物理机跑Hypervisor，那么您可以忽略本节。至今进入ovirt的安装。 下面的测试的物理机是 Lenovo T440s 笔记本，运行的 Fedora 22 操作系统，使用 KVM manager 做虚拟机的管理工具。本次测试用到两个虚拟机：
+  ovirt: 运行服务器虚拟化的管理机ovirt，这个程序类似于vmware 的 vcenter。
+  ovirt-host : 用来被ovirt管理的hypervisor；使用 kvm 嵌套 kvm 的方式，来跑虚拟机。
+  确认本机的服务器虚拟机CPU Bios配置正常。
+[bash]
+egrep -c &amp;lsquo;(vmx|svm)&amp;rsquo; /proc/cpuinfo 4
+[/bash]
+本机是i5的CPU，双核开启超线程，显示为4。还没有启用嵌套KVM的虚拟机，需要新建下面这个配置文件，操作系统不同，可能稍微不同，下面是以 Fedora 22 为例。
+vi /etc/modprobe.d/kvm-nested.conf 编辑以上文件，增加下面这行参数即可 options kvm_intel nested=1
+运行下面的命令，为操作系统内核加載此功能。
+[bash]
+modprobe -r kvm_intel # unload modprobe kvm_intel # reload again
+cat /sys/module/kvm_intel/parameters/nested Y</description>
+    </item>
+    
+  </channel>
+</rss>

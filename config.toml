@@ -1,90 +1,220 @@
-#baseurl = "https://martinliu.gitlab.io/martinliu-hugo/"
-contentdir    = "content"
-layoutdir     = "layouts"
-publishdir    = "public"
-canonifyurls  = true
+# For a description of these parameters, please visit the theme wiki.
+# https://github.com/pacollins/hugo-future-imperfect-slim/wiki/config.toml
+baseurl                 = "https://example.com/"
+DefaultContentLanguage  = "zh-cn"
+title                   = "Martin Liu's Blog"
+theme                   = "hugo-future-imperfect-slim"
+paginate                = 4
+disqusShortname         = ""
+googleAnalytics         = ""
+pluralizeListTitles     = false
+disableLanguages        = []
+
+[markup.goldmark.renderer]
+  unsafe                = true
+
+[outputs]
+  home                  = ["html", "json", "rss"]
+
+[params]
+  enableCDN             = false
+  cssFiles              = ["default"]
+  jsFiles               = ["default"]
+  highlightjs           = true
+  highlightjsTheme      = ""
+  highlightjsLang       = []
+  viewMorePostsLink     = "/blog/"
+  readingTime           = true
+  imageStretch          = ""
+  removeBlur            = false
+  socialShare           = ["twitter", "facebook", "reddit", "linkedin", "pinterest", "email"]
+  hideEmptyStats        = false
+
+  [params.meta]
+    description         = "Martin's Liu is bloging on DevOps and SRE topics"
+    author              = "Martin Liu"
+    favicon             = false
+    svg                 = true
+    faviconVersion      = "1"
+    msColor             = "#ffffff"
+    iOSColor            = "#ffffff"
+
+  [params.header]
+    navbarTitle         = "DevOps & SRE"
+    dynamicTitles       = true
+    searchMenu          = true
+    shareMenu           = true
+    languageMenu        = true
+
+  [params.intro]
+    header                = "Martin Liu's Blog"
+    paragraph             = "Community Advocate, DevOps China Community Organizer"
+    rssIntro              = true
+    socialIntro           = true
+    hideWhenSingleColumn  = false
+    alwaysOnHomepage      = false
+
+    [params.intro.pic]
+      src                 = "img/main/logo.jpg"
+      shape               = "circle"
+      width               = ""
+      alt                 = "Martin Liu"
+
+  [params.sidebar]
+    about               = "This Blog is sharing DevOps and SRE ariticles. I have translated DevOps Handbook and SRE Workbook."
+    postAmount          = 5
+    categories          = true
+    categoriesByCount   = true
+
+  [params.footer]
+    rssFooter           = true
+    socialFooter        = true
+
+  [params.staticman]
+    enabled             = true
+    api                 = ""  # No Trailing Slash
+    gitProvider         = ""
+    username            = ""
+    repo                = ""
+    branch              = ""
+
+    [params.staticman.recaptcha]
+      siteKey           = ""
+      encryptedKey      = ""
+
+[menu]
+
+  [[menu.main]]
+    name              = "Home"
+    identifier        = "home"
+    url               = "/"
+    pre               = "<i class='fa fa-home'></i>"
+    weight            = 1
+
+  [[menu.main]]
+    name              = "About"
+    identifier        = "about"
+    url               = "/about/"
+    pre               = "<i class='far fa-id-card'></i>"
+    weight            = 2
+
+  [[menu.main]]
+    name              = "Blog"
+    identifier        = "blog"
+    url               = "/blog/"
+    pre               = "<i class='far fa-newspaper'></i>"
+    weight            = 3
+
+  [[menu.main]]
+    name              = "Categories"
+    identifier        = "categories"
+    url               = "/categories/"
+    pre               = "<i class='fas fa-sitemap'></i>"
+    weight            = 5
+
+  [[menu.main]]
+    name              = "Contact"
+    identifier        = "contact"
+    url               = "/contact/"
+    pre               = "<i class='far fa-envelope'></i>"
+    weight            = 6
+
+[Languages]
+
+  [Languages.en]
+    LanguageCode        = "en"
+    LanguageName        = "English"
+    weight              = 1
+
+  [Languages.zh-CN]
+    LanguageCode        = "zh-CN"
+    LanguageName        = "中文"
+    title               = "刘征的博客"
+    description         = "我在这持续分享有关 DevOps 和 SRE 的文章。"
+    weight              = 4
+
+    [[Languages.zh-CN.menu.main]]
+      name              = "首页"
+      identifier        = "home"
+      url               = "/"
+      pre               = "<i class='fas fa-home'></i>"
+      weight            = 1
+
+    [[Languages.zh-CN.menu.main]]
+      name              = "关于"
+      identifier        = "about"
+      url               = "/about/"
+      pre               = "<i class='far fa-id-card'></i>"
+      weight            = 2
+
+    [[Languages.zh-CN.menu.main]]
+      name              = "博客"
+      identifier        = "blog"
+      url               = "/blog/"
+      pre               = "<i class='far fa-newspaper'></i>"
+      weight            = 3
+
+    [[Languages.zh-CN.menu.main]]
+      name              = "分类"
+      identifier        = "categories"
+      url               = "/categories/"
+      pre               = "<i class='fas fa-sitemap'></i>"
+      weight            = 5
+
+    [[Languages.zh-CN.menu.main]]
+      name              = "联系"
+      identifier        = "contact"
+      url               = "/contact/"
+      pre               = "<i class='far fa-envelope'></i>"
+      weight            = 6
 
 
-baseurl = "https://martinliu.cn/"
-DefaultContentLanguage = "zh"
-hasCJKLanguage = true
-languageCode = "zh-cn"
-title = "Martin's Blog" 
-theme = "beautifulhugo"
-metaDataFormat = "yaml"
-pygmentCodeFences = true
-googleAnalytics = "UA-749876-6"
-
-[Params]
-#  hello = "Do you have a pleasent DevOps journey?"
-  hello = "DevOps适用于任何希望持续进化的IT组织"
-  subtitle = "SRE 是实施 DevOps 的一个类"
-#  subtitle = "I am a runner, blogger and huge opensource fun"
-  logo = "https://res.cloudinary.com/martinliu/image/upload/q_auto:eco/avatar.jpg"
-  favicon = "/favicon.ico"
-  dateFormat = "2006, January 2"
-  commit = false
-  #rss = true
-  comments = false
-  sharebutton = true
-  #algolia = "06f3928eb3fad870c9197c68c238dbd3" # API key
-  #gcse = "012737790962522169780:fd1izxsfgrs" # Get your code from google.com/cse. Make sure to go to "Look and Feel" and change Layout to "Full Width" and Theme to "Classic"
-  description = "Martin Liu's Blog"
-  errorpage = "https://res.cloudinary.com/martinliu/image/upload/q_auto:eco/404-error.png"
-
-#[[Params.bigimg]]
-#  src = "https://res.cloudinary.com/martinliu/image/upload/q_auto:eco/header-img1.jpg"
-#  desc = "Fly to cloud"
-#[[Params.bigimg]]
-#  src = "https://res.cloudinary.com/martinliu/image/upload/q_auto:eco/header-img2.jpg"
-#  desc = "Walk your way"
-#[[Params.bigimg]]
-#  src = "https://res.cloudinary.com/martinliu/image/upload/q_auto:eco/sandra_li-2.jpg"
-#  desc = "国家剧院/SandraLi"
-[[Params.bigimg]]
-  src = "https://res.cloudinary.com/martinliu/image/upload/q_auto:eco/fw2.jpg"
-  desc = "DevOps is for everyone"
-
-[Author]
-  name = "刘征 Martin Liu"
-  website = "martinliu.cn"
-  email = "liuzh66@gmail.com"
-  #facebook = "username"
-  #googleplus = "+MartinLiu-cn"
-  #weibo = “martinliu”
-  github = "martinliu"
-  gitlab = "martinliu"
-  twitter = "martinliu"
-#  reddit = "username"
-  linkedin = "liuzheng"
-
-enableRobotsTXT = true
-canonifyURLs = true
-
-[permalinks]
-  post = "/:year/:month/:filename/"
-
-[[menu.main]]
-    name = "首页"
-    url = "/"
-    weight = 1
-
-[[menu.main]]
-    name = "标签"
-    url = "tags"
-    weight = 2
-
-[[menu.main]]
-    name = "关于"
-    url = "about"
-    weight = 3
-
-[[menu.main]]
-    name = "书籍"
-    weight = 4
-    url = "book"
-
-
-[params.adsense]
-  client = "ca-pub-4545355461463255"
-  inArticleSlot = "12345"
+[social]
+  # Coding Communities
+  github                = "martinliu"
+  gitlab                = ""
+  stackoverflow         = "" # User Number
+  bitbucket             = ""
+  jsfiddle              = ""
+  codepen               = ""
+  # Visual Art Communities
+  deviantart            = ""
+  flickr                = ""
+  behance               = ""
+  dribbble              = ""
+  # Publishing Communities
+  wordpress             = ""
+  medium                = ""
+  # Professional/Business Oriented Communities
+  linkedin              = "liuzheng"
+  linkedin_company      = ""
+  foursquare            = ""
+  xing                  = ""
+  slideshare            = ""
+  # Social Networks
+  facebook              = ""
+  googleplus            = ""
+  reddit                = ""
+  quora                 = ""
+  youtube               = ""
+  vimeo                 = ""
+  whatsapp              = "" # WhatsApp Number
+    # WeChat and QQ need testing.
+    wechat              = ""
+    qq                  = "" # User ID Number
+  instagram             = ""
+  tumblr                = ""
+  twitter               = "martinliu"
+  strava                = ""
+  skype                 = ""
+  snapchat              = ""
+  pinterest             = ""
+  telegram              = ""
+  vine                  = ""
+  googlescholar         = ""
+  orcid                 = ""
+  researchgate          = ""
+  keybase               = ""
+  mastodon              = ""
+  # Email
+  email                 = ""

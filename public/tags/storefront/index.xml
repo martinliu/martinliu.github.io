@@ -1,1 +1,32 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>StoreFront on Martin's Blog</title><link>https://martinliu.cn/tags/storefront/</link><description>Recent content in StoreFront on Martin's Blog</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><managingEditor>liuzh66@gmail.com (刘征 Martin Liu)</managingEditor><webMaster>liuzh66@gmail.com (刘征 Martin Liu)</webMaster><lastBuildDate>Thu, 02 May 2013 04:22:36 +0000</lastBuildDate><atom:link href="https://martinliu.cn/tags/storefront/index.xml" rel="self" type="application/rss+xml"/><item><title>XenDesktop虚拟桌面精品书籍导读(part4)</title><link>https://martinliu.cn/2013/05/02/xendesktope8999ae68b9fe6a18ce99da2e7b2bee59381e4b9a6e7b18de5afbce8afbbpart4/</link><pubDate>Thu, 02 May 2013 04:22:36 +0000</pubDate><author>liuzh66@gmail.com (刘征 Martin Liu)</author><guid>https://martinliu.cn/2013/05/02/xendesktope8999ae68b9fe6a18ce99da2e7b2bee59381e4b9a6e7b18de5afbce8afbbpart4/</guid><description>[su_box color=&amp;ldquo;orange&amp;rdquo; icon=&amp;ldquo;flag&amp;rdquo;] 感谢 Eric Yao 的供稿，@老树皮Eric [/su_box] 桌面虚拟化项目的实施白皮书 《Citrix Virtual Desktop Handbook 5.x》，点击下载。 四、 控制层 Control Layer 控制层是设计架构的第</description></item></channel></rss>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>StoreFront on Hugo Future Imperfect Slim em português</title>
+    <link>https://example.com/tags/storefront/</link>
+    <description>Recent content in StoreFront on Hugo Future Imperfect Slim em português</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-CN</language>
+    <lastBuildDate>Thu, 02 May 2013 04:22:36 +0000</lastBuildDate><atom:link href="https://example.com/tags/storefront/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>XenDesktop虚拟桌面精品书籍导读(part4)</title>
+      <link>https://example.com/2013/05/02/xendesktope8999ae68b9fe6a18ce99da2e7b2bee59381e4b9a6e7b18de5afbce8afbbpart4/</link>
+      <pubDate>Thu, 02 May 2013 04:22:36 +0000</pubDate>
+      
+      <guid>https://example.com/2013/05/02/xendesktope8999ae68b9fe6a18ce99da2e7b2bee59381e4b9a6e7b18de5afbce8afbbpart4/</guid>
+      <description>[su_box color=&amp;ldquo;orange&amp;rdquo; icon=&amp;ldquo;flag&amp;rdquo;] 感谢 Eric Yao 的供稿，@老树皮Eric [/su_box]
+桌面虚拟化项目的实施白皮书 《Citrix Virtual Desktop Handbook 5.x》，点击下载。
+四、 控制层 Control Layer 控制层是设计架构的第四层。在上面有关用户的三个层面我们所做的决定都会汇总起来到控制层。
+ 访问控制器  访问控制器子层的职责是给每个用户提供予以支持访问控制层的基础架构组件。这么说可能比较绕口，那就换个说法吧，访问控制器一般包括例如Web Interface、StoreFront，以及NetScaler Access Gateway；
+1) 远程访问架构
+如果有用户需要远程或者是离线的移动访问能力，那么就要设计远程访问基础架构了。
+ **A. **决断：拓扑  网络拓扑的设计对远程访问架构能够支撑功能性、性能以及安全性至关重要。远程访问架构应当和安全团队一起合作以确保符合企业的安全规范。以下三种主要的拓扑结构我们在设计师可以考虑，每种的安全性逐渐递增：
+l 1-Arm (Normal Security**，单臂模式)****：**在这种架构下，Access Gateway使用一个物理的或者是逻辑的Bonded的网络接口，再加上VLAN和IP子网的设计，来传递用户和后台虚拟桌面的流量。
+l 2-Arm (High Security 双臂模式)：在双臂模式下，Access Gateway利用两张或者更多的物理或者逻辑Bonded的网络接口卡，再加上VLAN和IP子网的设计，来传递用户和后台虚拟桌面的流量。前段用户的流量被导向这些网络接口卡的第一张网卡上，前后端的流量是被分离设计的，就是说说后端虚拟桌面架构服务器的流量是被定向到第二张网卡上的。通过这样的设计我们就可以DMZ区来分离前后端的流量，同时还可以定制防火墙策略和流量监控策略。
+l **Double-Hop DMZ (Very High Security): **这种模式既利用了双臂拓扑下的特性，又使用了两个单独的Access Gateway设备。有一些企业使用了三个物理的/逻辑的防火墙结构来保护他们的内部网络。这三个防火墙将DMZ区划分为两个区域来提供额外的内部网络安全。
+在第一个DMZ区的Access Gateway设备处理用户的连接，完成SSL VPN的安全功能。这个Access Gateway设备加密客户端连接，判断用户的认证方式，控制能够访问的内部网络服务器；
+第二个DMZ区域的Access Gateway设备充当与一个代理设备角色。这个Access Gateway设备启用ICA协议将客户端连接穿越第二个DMZ区到后端的服务器场。在第一个DMZ区的Access Gateway设备和内部网络的Secure　Ticket　Authority（STA）也是通过第二个DMZ区的Access Gateway设备来进行代理的。
+ **B. **决断：平台  在Access Gateway部分，我们曾经讨论过只要是涉及到远程访问，我们都会考虑NetScaler Access　Gateway设备。问了确定合适的NetScaler平台来满足项目需求，必须确定一些关键资源。由于所有的远程访问流量都是通过SSL（安全套接层）来加密，再通过HTTPs的HTTP（超文本协议）协议来传输。所以有两种资源metric需要确认：</description>
+    </item>
+    
+  </channel>
+</rss>

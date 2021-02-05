@@ -1,13 +1,603 @@
-<!doctype html><html lang=zh><head><meta charset=utf-8><meta http-equiv=x-ua-compatible content="IE=edge"><meta name=viewport content="width=device-width,initial-scale=1,maximum-scale=1"><title>如何用通过OpenNMS监控Windows 服务器 - Martin Liu's Blog</title><meta property="og:title" content="如何用通过OpenNMS监控Windows 服务器"><meta name=twitter:title content="如何用通过OpenNMS监控Windows 服务器"><meta name=description content="OpenNMS可以监控可用性和性能参数。下面看看OpenNMS监控Windows服务器的三种情况。第一种情况：Windows机器上没有安装S"><meta property="og:description" content="OpenNMS可以监控可用性和性能参数。下面看看OpenNMS监控Windows服务器的三种情况。第一种情况：Windows机器上没有安装S"><meta name=twitter:description content="OpenNMS可以监控可用性和性能参数。下面看看OpenNMS监控Windows服务器的三种情况。第一种情况：Windows机器上没有安装S"><meta name=author content="刘征 Martin Liu"><link href=https://martinliu.cn/favicon.ico rel=icon type=image/x-icon><meta name=msvalidate.01 content="12F570013342D1F8B60A455D09221C1D"><meta name=yandex-verification content="7e9acc85531b0f35"><meta name=google-site-verification content="4oSwNTpy1vzip3_lt6XhkhMfImCD_DZlvL3K1k-M8qk"><meta name=baidu-site-verification content="Z7d1tYkxzQ"><script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-TL37V8G');</script><meta property="og:image" content="https://res.cloudinary.com/martinliu/image/upload/q_auto:eco/avatar.jpg"><meta name=twitter:image content="https://res.cloudinary.com/martinliu/image/upload/q_auto:eco/avatar.jpg"><meta name=twitter:card content="summary"><meta name=twitter:site content="@martinliu"><meta name=twitter:creator content="@martinliu"><meta property="og:url" content="https://martinliu.cn/2007/12/14/opennms-monitoring-ms-windows/"><meta property="og:type" content="website"><meta property="og:site_name" content="Martin's Blog"><meta name=keywords content><meta name=generator content="Hugo 0.80.0"><link rel=canonical href=https://martinliu.cn/2007/12/14/opennms-monitoring-ms-windows/><link rel=alternate href=https://martinliu.cn/index.xml type=application/rss+xml title="Martin's Blog"><script src=https://res.cloudinary.com/martinliu/raw/upload/static/jquery-1.12.4.min.js></script><link rel=stylesheet href=https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.7.1/katex.min.css integrity=sha384-wITovz90syo1dJWVh32uuETPVEtGigN07tkttEqPv+uR2SE/mbQcG7ATL28aI9H0 crossorigin=anonymous><link rel=stylesheet href=https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css><link rel=stylesheet href=https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css integrity=sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u crossorigin=anonymous><link rel=stylesheet href=https://martinliu.cn/css/main.css><link rel=stylesheet href=https://martinliu.cn/css/search.css><link rel=stylesheet href="https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic"><link rel=stylesheet href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800"><link rel=stylesheet href=https://martinliu.cn/css/prism.css><script data-ad-client=ca-pub-4545355461463255 async src=https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js></script><link rel=stylesheet href=https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.1/photoswipe.min.css integrity="sha256-sCl5PUOGMLfFYctzDW3MtRib0ctyUvI9Qsmq2wXOeBY=" crossorigin=anonymous><link rel=stylesheet href=https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.1/default-skin/default-skin.min.css integrity="sha256-BFeI1V+Vh1Rk37wswuOYn5lsTcaU96hGaI7OUVCLjPc=" crossorigin=anonymous><div class=pswp tabindex=-1 role=dialog aria-hidden=true><div class=pswp__bg></div><div class=pswp__scroll-wrap><div class=pswp__container><div class=pswp__item></div><div class=pswp__item></div><div class=pswp__item></div></div><div class="pswp__ui pswp__ui--hidden"><div class=pswp__top-bar><div class=pswp__counter></div><button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
-<button class="pswp__button pswp__button--share" title=Share></button>
-<button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
-<button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button><div class=pswp__preloader><div class=pswp__preloader__icn><div class=pswp__preloader__cut><div class=pswp__preloader__donut></div></div></div></div></div><div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap"><div class=pswp__share-tooltip></div></div><button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)"></button>
-<button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)"></button><div class=pswp__caption><div class=pswp__caption__center></div></div></div></div></div><script type=application/javascript>var doNotTrack=false;if(!doNotTrack){window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;ga('create','UA-749876-6','auto');ga('send','pageview');}</script><script async src=https://www.google-analytics.com/analytics.js></script></head><body><nav class="navbar navbar-default navbar-fixed-top navbar-custom"><div class=container-fluid><div class=navbar-header><button type=button class=navbar-toggle data-toggle=collapse data-target=#main-navbar>
-<span class=sr-only>切换导航</span>
-<span class=icon-bar></span><span class=icon-bar></span><span class=icon-bar></span></button>
-<a class=navbar-brand href=https://martinliu.cn/>Martin's Blog</a></div><div class="collapse navbar-collapse" id=main-navbar><ul class="nav navbar-nav navbar-right"><li><a title=首页 href=https://martinliu.cn/>首页</a></li><li><a title=标签 href=https://martinliu.cn/tags>标签</a></li><li><a title=关于 href=https://martinliu.cn/about>关于</a></li><li><a title=书籍 href=https://martinliu.cn/book>书籍</a></li></ul></div><div class=avatar-container><div class=avatar-img-border><a title="Martin's Blog" href=https://martinliu.cn/><img class=avatar-img src=https://res.cloudinary.com/martinliu/image/upload/q_auto:eco/avatar.jpg alt="Martin's Blog"></a></div></div></div></nav><header class=header-section><div class="intro-header no-img"><div class=container><div class=row><div class="col-lg-12 col-md-12 col-md-offset-0"><div class=posts-heading><h1 align=center>如何用通过OpenNMS监控Windows 服务器</h1></div></div></div></div></div></header><div class=container role=main><div class=row><div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1"><div><h5 id=wc>字数：1500 |大约阅读时间 3 分钟</h5><h5 id=tags>标签:
-<a href=https://martinliu.cn//tags/ms-windows>MS Windows</a> &nbsp;
-<a href=https://martinliu.cn//tags/opennms>OpenNMS</a> &nbsp;</h5></div><article role=main class=blog-post><p>OpenNMS可以监控可用性和性能参数。下面看看OpenNMS监控Windows服务器的三种情况。第一种情况：Windows机器上没有安装SNMP服务，在自动发现了这个节点后，它会被加入节点列表，之后它被定期的轮询。如果这个节点断网了，OpenNMS会报警；同时这个节点的可用性被计算。自动发现还会发现这个机器上的服务。ICMP是肯定会有的，还可能有http等其他的服务；这些服务也会被定时的轮询，如果某个服务停了，这个节点的整个的可用性受到影响。这种情况下该节点的所有服务的响应时间会被OpenNMS收集并保持历史数据。第二种情况：安装了SNMP服务。先说一下windows服务的安全性，默认情况下public是默认的只读密码；为了更加安全可以配置其他的只读密码，并指定某些特定的IP才能访问这个节点。这个策略在Windows的觉策略中很容易实现，或者说建议使用域控制器来管理这个策略，比较方便。假定OpenNMS能访问该节点的snmp服务的情况下。这些数据会增加：SNMP Attributes；在选择了资源图后，可以看到snmp的节点数据和接口数据。进入后可以看到，其实收集 的是一个tcp／ip接口上基本的信息：流量，连接数，丢包，错包等。个人认为流量是个最有用的数据，特别是对于一些简单的web/ftp服务器也就够用了。第三种情况：我们需要监控到操作系统的性能数据cpu/disk/RAM等。就需要安装一个snmp代理，这个代理可以提供这些信息，opennms才能通过snmp协议收集这些数据。需要到下面网址下载一个免费的snmp代理，当然这个产品也有收费版本：http://www.wtcs.org/informant/download.htm 这个代理很小需要在windows机器上安装一下。默认情况下OpenNMS的对windows采集模板中包含了对cpu/disk/ram等数据的采集，等到下一次OpenNMS在采集这个机器的时候相关数据就会被显示在节点snmp数据下面。这里是通过这个免费的snmp代理能采集到的数据：/Program Files/SNMP Informant/standard/mibs/informant-std-tree.txt&ndash;standard(1.3.6.1.4.1.9600.1.1)|+&ndash;logicalDiskTable(1)| || +&ndash;logicalDiskEntry(1) [lDiskInstance]| || +&ndash; r-n InstanceName lDiskInstance(1)| +&ndash; r-n Gauge32 lDiskPercentDiskReadTime(2)| +&ndash; r-n Gauge32 lDiskPercentDiskTime(3)| +&ndash; r-n Gauge32 lDiskPercentDiskWriteTime(4)| +&ndash; r-n Gauge32 lDiskPercentFreeSpace(5)| +&ndash; r-n Gauge32 lDiskPercentIdleTime(6)| +&ndash; r-n Gauge32 lDiskAvgDiskQueueLength(7)| +&ndash; r-n Gauge32 lDiskAvgDiskReadQueueLength(8)| +&ndash; r-n Gauge32 lDiskAvgDiskWriteQueueLength(9)| +&ndash; r-n Gauge32 lDiskAvgDiskSecPerRead(10)| +&ndash; r-n Gauge32 lDiskAvgDiskSecPerTransfer(11)| +&ndash; r-n Gauge32 lDiskAvgDiskSecPerWrite(12)| +&ndash; r-n Gauge32 lDiskCurrentDiskQueueLength(13)| +&ndash; r-n Gauge32 lDiskDiskBytesPerSec(14)| +&ndash; r-n Gauge32 lDiskDiskReadBytesPerSec(15)| +&ndash; r-n Gauge32 lDiskDiskReadsPerSec(16)| +&ndash; r-n Gauge32 lDiskDiskTransfersPerSec(17)| +&ndash; r-n Gauge32 lDiskDiskWriteBytesPerSec(18)| +&ndash; r-n Gauge32 lDiskDiskWritesPerSec(19)| +&ndash; r-n Gauge32 lDiskFreeMegabytes(20)| +&ndash; r-n Gauge32 lDiskSplitIOPerSec(21)|+&ndash;memory(2)| || +&ndash; r-n Gauge32 memoryAvailableBytes(1)| +&ndash; r-n Gauge32 memoryAvailableKBytes(2)| +&ndash; r-n Gauge32 memoryAvailableMBytes(3)| +&ndash; r-n Gauge32 memoryCommittedBytes(4)| +&ndash; r-n Gauge32 memoryCacheBytes(5)| +&ndash; r-n Gauge32 memoryCacheBytesPeak(6)| +&ndash; r-n Gauge32 memoryPageFaultsPerSec(7)| +&ndash; r-n Gauge32 memoryPagesInputPerSec(8)| +&ndash; r-n Gauge32 memoryPagesOutputPerSec(9)| +&ndash; r-n Gauge32 memoryPagesPerSec(10)| +&ndash; r-n Gauge32 memoryPoolNonpagedBytes(11)| +&ndash; r-n Gauge32 memoryPoolPagedBytes(12)| +&ndash; r-n Gauge32 memoryPoolPagedResidentBytes(13)| +&ndash; r-n Gauge32 memorySystemCacheResidentBytes(14)| +&ndash; r-n Gauge32 memorySystemCodeResidentBytes(15)| +&ndash; r-n Gauge32 memorySystemCodeTotalBytes(16)| +&ndash; r-n Gauge32 memorySystemDriverResidentBytes(17)| +&ndash; r-n Gauge32 memorySystemDriverTotalBytes(18)|+&ndash;networkInterfaceTable(3)| || +&ndash;networkInterfaceEntry(1) [netInstance]| || +&ndash; r-n InstanceName netInstance(1)| +&ndash; r-n Gauge32 netBytesReceivedPerSec(2)| +&ndash; r-n Gauge32 netBytesSentPerSec(3)| +&ndash; r-n Gauge32 netBytesTotalPerSec(4)| +&ndash; r-n Gauge32 netCurrentBandwidth(5)| +&ndash; r-n Gauge32 netOutputQueueLength(6)| +&ndash; r-n Gauge32 netPacketsOutboundDiscarded(7)| +&ndash; r-n Gauge32 netPacketsOutboundErrors(8)| +&ndash; r-n Gauge32 netPacketsReceivedDiscarded(9)| +&ndash; r-n Gauge32 netPacketsReceivedErrors(10)| +&ndash; r-n Gauge32 netPacketsReceivedUnknown(11)| +&ndash; r-n Gauge32 netPacketsReceivedPerSec(12)| +&ndash; r-n Gauge32 netPacketsSentPerSec(13)| +&ndash; r-n Gauge32 netPacketsPerSec(14)|+&ndash;objects(4)| || +&ndash; r-n Gauge32 objectsProcesses(1)| +&ndash; r-n Gauge32 objectsThreads(2)|+&ndash;processorTable(5)| || +&ndash;processorEntry(1) [cpuInstance]| || +&ndash; r-n InstanceName cpuInstance(1)| +&ndash; r-n Gauge32 cpuPercentDPCTime(2)| +&ndash; r-n Gauge32 cpuPercentInterruptTime(3)| +&ndash; r-n Gauge32 cpuPercentPrivilegedTime(4)| +&ndash; r-n Gauge32 cpuPercentProcessorTime(5)| +&ndash; r-n Gauge32 cpuPercentUserTime(6)| +&ndash; r-n Gauge32 cpuAPCBypassesPerSec(7)| +&ndash; r-n Gauge32 cpuDPCBypassesPerSec(8)| +&ndash; r-n Gauge32 cpuDPCRate(9)| +&ndash; r-n Gauge32 cpuDPCsQueuedPerSec(10)| +&ndash; r-n Gauge32 cpuInterruptsPerSec(11)|+&ndash;system(6)|+&ndash; r-n Gauge32 systemSystemUpTime(1)最后记得在看看这个许可证文件：Program Files/SNMP Informant/standard/license.txtLICENSE.TXT&mdash;&mdash;&mdash;&ndash;FREE OF CHARGE SOFTWARE PROGRAM LICENSE AGREEMENT forSNMP INFORMANT STANDARD EDITION (The Software)&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;Copyright(c) 2005, Informant Systems, Inc. (<a href=http://www.informant-systems.com>www.informant-systems.com</a>), andCopyright(c) 2003-2005, Williams Technology Consulting Services (<a href=http://www.wtcs.org>www.wtcs.org</a>)&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;Product names used in this document are trademarks of their respective owners.* IMPORTANT-PLEASE READ CAREFULLY BEFORE INSTALLING THE SOFTWARE.&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;后面略&mldr;.在安装了snmp代理之后，我们可以看到OpenNMS可以帮助我们完成windows服务器的可用性和性能管理。</p><a href=https://mp.weixin.qq.com/s/elRqbNlidJzmKCejBwtsAg target=_blank><img src=https://martinliu.cn/images/sref-zs.jpg alt="SRE Foundation 招生简章"></a></article><ul class="pager blog-pager"><li class=previous><a href=https://martinliu.cn/2007/12/13/opennms-yum-install/ data-toggle=tooltip data-placement=top title=OpenNMS的Yum的安装方式，安装简单了很多>&larr; 前一篇</a></li><li class=next><a href=https://martinliu.cn/2007/12/14/gsm-modem-alert-sms/ data-toggle=tooltip data-placement=top title=发送告警短信的方法，德国工艺服了>后一篇 &rarr;</a></li></ul><div><h2>See Also</h2><ul><li><a href=https://martinliu.cn/2007/12/13/opennms-yum-install/>OpenNMS的Yum的安装方式，安装简单了很多</a></li><li><a href=https://martinliu.cn/2007/06/01/top-10-nsm-tools/>[转]10大优秀开源网络管理工具</a></li><li><a href=https://martinliu.cn/2007/05/13/install-opennms-132-on-opensuse-102-system-the-simplest-version/>Install OpenNMS 1.3.2 on OpenSuse 10.2 system (The simplest version )</a></li><li><a href=https://martinliu.cn/2007/05/08/what-is-opennms/>OpenNMS网络和系统管理简介</a></li><li><a href=https://martinliu.cn/2007/05/08/opennms-faqs/>OpenNMS常问问题All-in-One</a></li></ul></div></div></div></section></div><footer><div class=container><div class=row><div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1"><ul class="list-inline text-center footer-links"><li><a href=mailto:liuzh66@gmail.com title="Email me"><span class="fa-stack fa-lg"><i class="fa fa-circle fa-stack-2x"></i><i class="fa fa-envelope fa-stack-1x fa-inverse"></i></span></a></li><li><a href=https://github.com/martinliu title=GitHub><span class="fa-stack fa-lg"><i class="fa fa-circle fa-stack-2x"></i><i class="fa fa-github fa-stack-1x fa-inverse"></i></span></a></li><li><a href=https://gitlab.com/martinliu title=GitLab><span class="fa-stack fa-lg"><i class="fa fa-circle fa-stack-2x"></i><i class="fa fa-gitlab fa-stack-1x fa-inverse"></i></span></a></li><li><a href=https://twitter.com/martinliu title=Twitter><span class="fa-stack fa-lg"><i class="fa fa-circle fa-stack-2x"></i><i class="fa fa-twitter fa-stack-1x fa-inverse"></i></span></a></li><li><a href=https://linkedin.com/in/liuzheng title=LinkedIn><span class="fa-stack fa-lg"><i class="fa fa-circle fa-stack-2x"></i><i class="fa fa-linkedin fa-stack-1x fa-inverse"></i></span></a></li></ul><p class="credits copyright text-muted">&copy;2017-2018
-刘征 Martin Liu
-&nbsp;&bull;&nbsp;
-<a href=https://martinliu.cn/>Martin's Blog</a></p><p class="credits theme-by text-muted">由 <a href=http://gohugo.io>Hugo v0.80.0</a> 强力驱动 &nbsp;&bull;&nbsp; 主题 <a href=https://github.com/halogenica/beautifulhugo>Beautiful Hugo</a> 移植自 <a href=http://deanattali.com/beautiful-jekyll/>Beautiful Jekyll</a></p></div></div></div></footer><script src=https://res.cloudinary.com/martinliu/raw/upload/static/bootstrap.min.js></script><script src=https://res.cloudinary.com/martinliu/raw/upload/static/photoswipe-ui-default.min.js></script><script src=https://res.cloudinary.com/martinliu/raw/upload/static/photoswipe.min.js></script><script src=https://res.cloudinary.com/martinliu/raw/upload/static/auto-render.min.js></script><script src=https://res.cloudinary.com/martinliu/raw/upload/static/main.js></script><script src=https://res.cloudinary.com/martinliu/raw/upload/static/prism.js></script><script src=https://res.cloudinary.com/martinliu/raw/upload/static/katex.min.js></script><script>renderMathInElement(document.body);</script></body></html>
+<!doctype html>
+<html lang="zh-cn">
+  <head>
+  <meta charset="utf-8">
+<title>如何用通过OpenNMS监控Windows 服务器 - Hugo Future Imperfect Slim em português</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+<meta name="generator" content="Hugo 0.80.0" /><meta property="og:site_name" content="Hugo Future Imperfect Slim em português">
+  <meta property="og:title" content="如何用通过OpenNMS监控Windows 服务器">
+  <meta property="og:description" content="A theme by HTML5 UP, ported by Julio Pescador. Slimmed and enhanced by Patrick Collins. Multilingual by StatnMap. Powered by Hugo.">
+  <meta property="description" content="A theme by HTML5 UP, ported by Julio Pescador. Slimmed and enhanced by Patrick Collins. Multilingual by StatnMap. Powered by Hugo.">
+  <meta property="og:url" content="https://example.com/2007/12/14/opennms-monitoring-ms-windows/">
+  <meta property="og:type" content="article">
+  
+    <meta property="og:image" content="https://example.com/img/main/logo.jpg">
+  
+  <link rel="stylesheet" href="/css/bundle.min.d9e04ae08c9b3049b766dbd4aeab7d862c5ea1d13679b621490e0f5df5507497.css" integrity="sha256-2eBK4IybMEm3ZtvUrqt9hixeodE2ebYhSQ4PXfVQdJc="><link rel="stylesheet" href="/css/add-on.css">
+</head>
+
+  <body>
+    
+
+<header id="site-header">
+  <nav id="site-nav">
+    <h1 class="nav-title">
+      <a href="/" class="nav">
+        
+          博客
+        
+      </a>
+    </h1>
+    <menu id="site-nav-menu" class="flyout-menu menu">
+      
+        
+          
+          <a href="/" class="nav link"><i class='fas fa-home'></i> 首页</a>
+        
+      
+        
+          
+          <a href="/about/" class="nav link"><i class='far fa-id-card'></i> 关于</a>
+        
+      
+        
+          
+          <a href="/blog/" class="nav link"><i class='far fa-newspaper'></i> 博客</a>
+        
+      
+        
+          
+          <a href="/categories/" class="nav link"><i class='fas fa-sitemap'></i> 分类</a>
+        
+      
+        
+          
+          <a href="/contact/" class="nav link"><i class='far fa-envelope'></i> 联系</a>
+        
+      
+      <a href="#share-menu" class="nav link share-toggle"><i class="fas fa-share-alt">&nbsp;</i>Share</a>
+      <a href="#search-input" class="nav link search-toggle"><i class="fas fa-search">&nbsp;</i>Search</a>
+    </menu>
+    <a href="#search-input" class="nav search-toggle"><i class="fas fa-search fa-2x">&nbsp;</i></a>
+    <a href="#share-menu" class="nav share-toggle"><i class="fas fa-share-alt fa-2x">&nbsp;</i></a>
+    <a href="#lang-menu" class="nav lang-toggle" lang="zh-cn">zh-cn</a>
+    <a href="#site-nav" class="nav nav-toggle"><i class="fas fa-bars fa-2x"></i></a>
+  </nav>
+  <menu id="search" class="menu"><input id="search-input" class="search-input menu"></input><div id="search-results" class="search-results menu"></div></menu>
+  <menu id="lang-menu" class="flyout-menu menu">
+  <a href="#" lang="zh-cn" class="nav link active">中文 (zh-cn)</a>
+  
+    
+      
+        <a href="/en" lang="en" class="nav no-lang link">English (en)</a>
+      
+    
+      
+    
+  
+</menu>
+
+  
+    <menu id="share-menu" class="flyout-menu menu">
+      <h1>Share Post</h1>
+      
+
+
+
+
+  
+    
+    <a href="//twitter.com/share?text=%e5%a6%82%e4%bd%95%e7%94%a8%e9%80%9a%e8%bf%87OpenNMS%e7%9b%91%e6%8e%a7Windows%20%e6%9c%8d%e5%8a%a1%e5%99%a8&amp;url=https%3a%2f%2fexample.com%2f2007%2f12%2f14%2fopennms-monitoring-ms-windows%2f" target="_blank" rel="noopener" class="nav share-btn twitter">
+        <p>Twitter</p>
+      </a>
+  
+
+  
+      <a href="//www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fexample.com%2f2007%2f12%2f14%2fopennms-monitoring-ms-windows%2f" target="_blank" rel="noopener" class="nav share-btn facebook">
+        <p>Facebook</p>
+        </a>
+  
+
+  
+    <a href="//www.reddit.com/submit?url=https%3a%2f%2fexample.com%2f2007%2f12%2f14%2fopennms-monitoring-ms-windows%2f&amp;title=%e5%a6%82%e4%bd%95%e7%94%a8%e9%80%9a%e8%bf%87OpenNMS%e7%9b%91%e6%8e%a7Windows%20%e6%9c%8d%e5%8a%a1%e5%99%a8" target="_blank" rel="noopener" class="nav share-btn reddit">
+          <p>Reddit</p>
+        </a>
+  
+
+  
+        <a href="//www.linkedin.com/shareArticle?url=https%3a%2f%2fexample.com%2f2007%2f12%2f14%2fopennms-monitoring-ms-windows%2f&amp;title=%e5%a6%82%e4%bd%95%e7%94%a8%e9%80%9a%e8%bf%87OpenNMS%e7%9b%91%e6%8e%a7Windows%20%e6%9c%8d%e5%8a%a1%e5%99%a8" target="_blank" rel="noopener" class="nav share-btn linkedin">
+            <p>LinkedIn</p>
+          </a>
+  
+
+  
+        <a href="//www.pinterest.com/pin/create/button/?url=https%3a%2f%2fexample.com%2f2007%2f12%2f14%2fopennms-monitoring-ms-windows%2f&amp;description=%e5%a6%82%e4%bd%95%e7%94%a8%e9%80%9a%e8%bf%87OpenNMS%e7%9b%91%e6%8e%a7Windows%20%e6%9c%8d%e5%8a%a1%e5%99%a8" target="_blank" rel="noopener" class="nav share-btn pinterest">
+          <p>Pinterest</p>
+        </a>
+  
+
+  
+        <a href="mailto:?subject=%e6%9f%a5%e7%9c%8b%e6%ad%a4%e5%b8%96%e5%ad%90%e7%9a%84%e4%bd%9c%e8%80%85 liuadmin&amp;body=https%3a%2f%2fexample.com%2f2007%2f12%2f14%2fopennms-monitoring-ms-windows%2f" target="_blank" class="nav share-btn email" data-proofer-ignore>
+          <p>Email</p>
+        </a>
+  
+
+
+    </menu>
+  
+</header>
+
+    <div id="wrapper">
+      <section id="site-intro" >
+  <a href="/"><img src="https://example.com/img/main/logo.jpg" class="circle" width="100" alt="Hugo Future Imperfect Slim" /></a>
+  <header>
+    <h1>Hugo Future Imperfect Slim</h1>
+  </header>
+  <main>
+    <p>Another fine, responsive site template by <a href='http://html5up.net'>HTML5 UP</a>.</p>
+  </main>
+  
+    <footer>
+      <ul class="socnet-icons">
+        
+
+        <li><a href="//github.com/pacollins/hugo-future-imperfect-slim" target="_blank" rel="noopener" title="GitHub" class="fab fa-github"></a></li>
+
+
+
+
+
+
+<li><a href="//flickr.com/photos/example" target="_blank" rel="noopener" title="Flickr" class="fab fa-flickr"></a></li>
+
+
+
+
+<li><a href="//www.linkedin.com/in/example" target="_blank" rel="noopener" title="LinkedIn" class="fab fa-linkedin"></a></li>
+<li><a href="//linkedin.com/company/examplebusiness" target="_blank" rel="noopener" title="LinkedIn Company" class="fab fa-linkedin"></a></li>
+
+
+
+<li><a href="//facebook.com/example" target="_blank" rel="noopener" title="Facebook" class="fab fa-facebook"></a></li>
+<li><a href="//reddit.com/user/example" target="_blank" rel="noopener" title="Reddit" class="fab fa-reddit"></a></li>
+
+
+
+
+
+
+
+<li><a href="//instagram.com/example" target="_blank" rel="noopener" title="Instagram" class="fab fa-instagram"></a></li>
+
+<li><a href="//twitter.com/example" target="_blank" rel="noopener" title="Twitter" class="fab fa-twitter"></a></li>
+
+
+
+<li><a href="//www.pinterest.com/example" target="_blank" rel="noopener" title="Pinterest" class="fab fa-pinterest-p"></a></li>
+<li><a href="//telegram.me/example" target="_blank" rel="noopener" title="telegram" class="fab fa-telegram"></a></li>
+
+
+
+<li><a href="//researchgate.net/profile/example" target="_blank" rel="noopener" title="Research Gate"><i class="ai ai-researchgate"></i></a></li>
+<li><a href="//keybase.io/example" target="_blank" rel="noopener" title="keybase" class="fab fa-keybase"></a></li>
+<li><a href="//example.com/@example" target="_blank" rel="noopener" title="mastodon" class="fab fa-mastodon"></a></li>
+<li><a href="mailto:example" target="_blank" title="Email" class="far fa-envelope"></a></li>
+
+      </ul>
+    </footer>
+  
+</section>
+
+      <main id="site-main">
+        
+  <article class="post">
+    <header>
+  <div class="title">
+    
+      <h2><a href="/2007/12/14/opennms-monitoring-ms-windows/">如何用通过OpenNMS监控Windows 服务器</a></h2>
+    
+    
+  </div>
+  <div class="meta">
+    <time datetime="2007-12-14 11:34:00 &#43;0000 UTC">December 14, 2007</time>
+    <p>liuadmin</p>
+    <p>3 分钟</p>
+  </div>
+</header>
+
+    <div id="socnet-share">
+      
+
+
+
+
+  
+    
+    <a href="//twitter.com/share?text=%e5%a6%82%e4%bd%95%e7%94%a8%e9%80%9a%e8%bf%87OpenNMS%e7%9b%91%e6%8e%a7Windows%20%e6%9c%8d%e5%8a%a1%e5%99%a8&amp;url=https%3a%2f%2fexample.com%2f2007%2f12%2f14%2fopennms-monitoring-ms-windows%2f" target="_blank" rel="noopener" class="nav share-btn twitter">
+        <p>Twitter</p>
+      </a>
+  
+
+  
+      <a href="//www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fexample.com%2f2007%2f12%2f14%2fopennms-monitoring-ms-windows%2f" target="_blank" rel="noopener" class="nav share-btn facebook">
+        <p>Facebook</p>
+        </a>
+  
+
+  
+    <a href="//www.reddit.com/submit?url=https%3a%2f%2fexample.com%2f2007%2f12%2f14%2fopennms-monitoring-ms-windows%2f&amp;title=%e5%a6%82%e4%bd%95%e7%94%a8%e9%80%9a%e8%bf%87OpenNMS%e7%9b%91%e6%8e%a7Windows%20%e6%9c%8d%e5%8a%a1%e5%99%a8" target="_blank" rel="noopener" class="nav share-btn reddit">
+          <p>Reddit</p>
+        </a>
+  
+
+  
+        <a href="//www.linkedin.com/shareArticle?url=https%3a%2f%2fexample.com%2f2007%2f12%2f14%2fopennms-monitoring-ms-windows%2f&amp;title=%e5%a6%82%e4%bd%95%e7%94%a8%e9%80%9a%e8%bf%87OpenNMS%e7%9b%91%e6%8e%a7Windows%20%e6%9c%8d%e5%8a%a1%e5%99%a8" target="_blank" rel="noopener" class="nav share-btn linkedin">
+            <p>LinkedIn</p>
+          </a>
+  
+
+  
+        <a href="//www.pinterest.com/pin/create/button/?url=https%3a%2f%2fexample.com%2f2007%2f12%2f14%2fopennms-monitoring-ms-windows%2f&amp;description=%e5%a6%82%e4%bd%95%e7%94%a8%e9%80%9a%e8%bf%87OpenNMS%e7%9b%91%e6%8e%a7Windows%20%e6%9c%8d%e5%8a%a1%e5%99%a8" target="_blank" rel="noopener" class="nav share-btn pinterest">
+          <p>Pinterest</p>
+        </a>
+  
+
+  
+        <a href="mailto:?subject=%e6%9f%a5%e7%9c%8b%e6%ad%a4%e5%b8%96%e5%ad%90%e7%9a%84%e4%bd%9c%e8%80%85 liuadmin&amp;body=https%3a%2f%2fexample.com%2f2007%2f12%2f14%2fopennms-monitoring-ms-windows%2f" target="_blank" class="nav share-btn email" data-proofer-ignore>
+          <p>Email</p>
+        </a>
+  
+
+
+    </div>
+    <div class="content">
+      
+      <p>OpenNMS可以监控可用性和性能参数。下面看看OpenNMS监控Windows服务器的三种情况。<br /><br />第一种情况：<br />Windows机器上没有安装SNMP服务，在自动发现了这个节点后，它会被加入节点列表，之后它被定期的轮询。如果这个节点断网了，OpenNMS会报警；同时这个节点的可用性被计算。自动发现还会发现这个机器上的服务。ICMP是肯定会有的，还可能有http等其他的服务；这些服务也会被定时的轮询，如果某个服务停了，这个节点的整个的可用性受到影响。这种情况下该节点的所有服务的响应时间会被OpenNMS收集并保持历史数据。<br /><br />第二种情况：<br />安装了SNMP服务。先说一下windows服务的安全性，默认情况下public是默认的只读密码；为了更加安全可以配置其他的只读密码，并指定某些特定的IP才能访问这个节点。这个策略在Windows的觉策略中很容易实现，或者说建议使用域控制器来管理这个策略，比较方便。假定OpenNMS能访问该节点的snmp服务的情况下。这些数据会增加：SNMP Attributes；在选择了资源图后，可以看到snmp的节点数据和接口数据。进入后可以看到，其实收集 的是一个tcp／ip接口上基本的信息：流量，连接数，丢包，错包等。个人认为流量是个最有用的数据，特别是对于一些简单的web/ftp服务器也就够用了。<br /><br />第三种情况：<br />我们需要监控到操作系统的性能数据cpu/disk/RAM等。就需要安装一个snmp代理，这个代理可以提供这些信息，opennms才能通过snmp协议收集这些数据。需要到下面网址下载一个免费的snmp代理，当然这个产品也有收费版本：http://www.wtcs.org/informant/download.htm 这个代理很小需要在windows机器上安装一下。默认情况下OpenNMS的对windows采集模板中包含了对cpu/disk/ram等数据的采集，等到下一次OpenNMS在采集这个机器的时候相关数据就会被显示在节点snmp数据下面。<br /><br />这里是通过这个免费的snmp代理能采集到的数据：<br />/Program Files/SNMP Informant/standard/mibs/informant-std-tree.txt<br />&ndash;standard(1.3.6.1.4.1.9600.1.1)<br />|<br />+&ndash;logicalDiskTable(1)<br />|  |<br />|  +&ndash;logicalDiskEntry(1) [lDiskInstance]<br />|     |<br />|     +&ndash; r-n InstanceName lDiskInstance(1)<br />|     +&ndash; r-n Gauge32      lDiskPercentDiskReadTime(2)<br />|     +&ndash; r-n Gauge32      lDiskPercentDiskTime(3)<br />|     +&ndash; r-n Gauge32      lDiskPercentDiskWriteTime(4)<br />|     +&ndash; r-n Gauge32      lDiskPercentFreeSpace(5)<br />|     +&ndash; r-n Gauge32      lDiskPercentIdleTime(6)<br />|     +&ndash; r-n Gauge32      lDiskAvgDiskQueueLength(7)<br />|     +&ndash; r-n Gauge32      lDiskAvgDiskReadQueueLength(8)<br />|     +&ndash; r-n Gauge32      lDiskAvgDiskWriteQueueLength(9)<br />|     +&ndash; r-n Gauge32      lDiskAvgDiskSecPerRead(10)<br />|     +&ndash; r-n Gauge32      lDiskAvgDiskSecPerTransfer(11)<br />|     +&ndash; r-n Gauge32      lDiskAvgDiskSecPerWrite(12)<br />|     +&ndash; r-n Gauge32      lDiskCurrentDiskQueueLength(13)<br />|     +&ndash; r-n Gauge32      lDiskDiskBytesPerSec(14)<br />|     +&ndash; r-n Gauge32      lDiskDiskReadBytesPerSec(15)<br />|     +&ndash; r-n Gauge32      lDiskDiskReadsPerSec(16)<br />|     +&ndash; r-n Gauge32      lDiskDiskTransfersPerSec(17)<br />|     +&ndash; r-n Gauge32      lDiskDiskWriteBytesPerSec(18)<br />|     +&ndash; r-n Gauge32      lDiskDiskWritesPerSec(19)<br />|     +&ndash; r-n Gauge32      lDiskFreeMegabytes(20)<br />|     +&ndash; r-n Gauge32      lDiskSplitIOPerSec(21)<br />|<br />+&ndash;memory(2)<br />|  |<br />|  +&ndash; r-n Gauge32   memoryAvailableBytes(1)<br />|  +&ndash; r-n Gauge32   memoryAvailableKBytes(2)<br />|  +&ndash; r-n Gauge32   memoryAvailableMBytes(3)<br />|  +&ndash; r-n Gauge32   memoryCommittedBytes(4)<br />|  +&ndash; r-n Gauge32   memoryCacheBytes(5)<br />|  +&ndash; r-n Gauge32   memoryCacheBytesPeak(6)<br />|  +&ndash; r-n Gauge32   memoryPageFaultsPerSec(7)<br />|  +&ndash; r-n Gauge32   memoryPagesInputPerSec(8)<br />|  +&ndash; r-n Gauge32   memoryPagesOutputPerSec(9)<br />|  +&ndash; r-n Gauge32   memoryPagesPerSec(10)<br />|  +&ndash; r-n Gauge32   memoryPoolNonpagedBytes(11)<br />|  +&ndash; r-n Gauge32   memoryPoolPagedBytes(12)<br />|  +&ndash; r-n Gauge32   memoryPoolPagedResidentBytes(13)<br />|  +&ndash; r-n Gauge32   memorySystemCacheResidentBytes(14)<br />|  +&ndash; r-n Gauge32   memorySystemCodeResidentBytes(15)<br />|  +&ndash; r-n Gauge32   memorySystemCodeTotalBytes(16)<br />|  +&ndash; r-n Gauge32   memorySystemDriverResidentBytes(17)<br />|  +&ndash; r-n Gauge32   memorySystemDriverTotalBytes(18)<br />|<br />+&ndash;networkInterfaceTable(3)<br />|  |<br />|  +&ndash;networkInterfaceEntry(1) [netInstance]<br />|     |<br />|     +&ndash; r-n InstanceName netInstance(1)<br />|     +&ndash; r-n Gauge32      netBytesReceivedPerSec(2)<br />|     +&ndash; r-n Gauge32      netBytesSentPerSec(3)<br />|     +&ndash; r-n Gauge32      netBytesTotalPerSec(4)<br />|     +&ndash; r-n Gauge32      netCurrentBandwidth(5)<br />|     +&ndash; r-n Gauge32      netOutputQueueLength(6)<br />|     +&ndash; r-n Gauge32      netPacketsOutboundDiscarded(7)<br />|     +&ndash; r-n Gauge32      netPacketsOutboundErrors(8)<br />|     +&ndash; r-n Gauge32      netPacketsReceivedDiscarded(9)<br />|     +&ndash; r-n Gauge32      netPacketsReceivedErrors(10)<br />|     +&ndash; r-n Gauge32      netPacketsReceivedUnknown(11)<br />|     +&ndash; r-n Gauge32      netPacketsReceivedPerSec(12)<br />|     +&ndash; r-n Gauge32      netPacketsSentPerSec(13)<br />|     +&ndash; r-n Gauge32      netPacketsPerSec(14)<br />|<br />+&ndash;objects(4)<br />|  |<br />|  +&ndash; r-n Gauge32   objectsProcesses(1)<br />|  +&ndash; r-n Gauge32   objectsThreads(2)<br />|<br />+&ndash;processorTable(5)<br />|  |<br />|  +&ndash;processorEntry(1) [cpuInstance]<br />|     |<br />|     +&ndash; r-n InstanceName cpuInstance(1)<br />|     +&ndash; r-n Gauge32      cpuPercentDPCTime(2)<br />|     +&ndash; r-n Gauge32      cpuPercentInterruptTime(3)<br />|     +&ndash; r-n Gauge32      cpuPercentPrivilegedTime(4)<br />|     +&ndash; r-n Gauge32      cpuPercentProcessorTime(5)<br />|     +&ndash; r-n Gauge32      cpuPercentUserTime(6)<br />|     +&ndash; r-n Gauge32      cpuAPCBypassesPerSec(7)<br />|     +&ndash; r-n Gauge32      cpuDPCBypassesPerSec(8)<br />|     +&ndash; r-n Gauge32      cpuDPCRate(9)<br />|     +&ndash; r-n Gauge32      cpuDPCsQueuedPerSec(10)<br />|     +&ndash; r-n Gauge32      cpuInterruptsPerSec(11)<br />|<br />+&ndash;system(6)<br />|<br />+&ndash; r-n Gauge32   systemSystemUpTime(1)<br /><br />最后记得在看看这个许可证文件：<br />Program Files/SNMP Informant/standard/license.txt<br />LICENSE.TXT<br />&mdash;&mdash;&mdash;&ndash;<br />FREE OF CHARGE SOFTWARE PROGRAM LICENSE AGREEMENT for<br />SNMP INFORMANT STANDARD EDITION (The Software)<br /><br />&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;<br />Copyright(c) 2005, Informant Systems, Inc. (<a href="http://www.informant-systems.com">www.informant-systems.com</a>), and<br />Copyright(c) 2003-2005, Williams Technology Consulting Services (<a href="http://www.wtcs.org">www.wtcs.org</a>)<br />&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;<br />Product names used in this document are trademarks of their respective owners.<br />* IMPORTANT-PLEASE READ CAREFULLY BEFORE INSTALLING THE SOFTWARE.<br />&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;<br />后面略&hellip;.<br /><br />在安装了snmp代理之后，我们可以看到OpenNMS可以帮助我们完成windows服务器的可用性和性能管理。</p>
+
+    </div>
+    <footer>
+      <div class="stats">
+  
+    <ul class="categories">
+      
+        
+          <li><a class="article-terms-link" href="/categories/nsm/">NSM</a></li>
+        
+      
+    </ul>
+  
+  
+    <ul class="tags">
+      
+        
+          <li><a class="article-terms-link" href="/tags/ms-windows/">MS Windows</a></li>
+        
+          <li><a class="article-terms-link" href="/tags/opennms/">OpenNMS</a></li>
+        
+      
+    </ul>
+  
+</div>
+
+    </footer>
+  </article>
+  
+    
+  <article class="post">
+    
+    <div>
+      <h2 id="say-something">说些什么</h2>
+        <form id="comment-form" class="new-comment" method="POST">
+          
+          <h3 class='reply-notice hidden'>
+            <span class='reply-name'></span>
+          </h3>
+
+          
+          <input type="hidden" name="options[entryId]" value="78d7ecf64da3d95428137c7fa1388cbb">
+          <input type='hidden' name='fields[replyThread]' value=''>
+          <input type='hidden' name='fields[replyID]' value=''>
+          <input type='hidden' name='fields[replyName]' value=''>
+
+          
+          <input required name='fields[name]' type='text' placeholder='你的名字'>
+          <input name='fields[website]' type='text' placeholder='您的网页'>
+          <input required name='fields[email]' type='email' placeholder='你的邮件'>
+          <textarea required name='fields[body]' placeholder='你的信息' rows='10'></textarea>
+
+          
+          
+
+          
+          <div class='submit-notice'>
+            <strong class='submit-notice-text submit-success hidden'>感谢您的评论！被批准后它会立即在此站点展示。</strong>
+            <strong class='submit-notice-text submit-failed hidden'>很抱歉，您的提交存在错误。请确保所有必填字段都已填写正确，然后再试一次。</strong>
+          </div>
+
+          
+          <input type='submit' value='发送' class='button'>
+          <input type='submit' value='已发送' class='hidden button' disabled>
+          <input type='reset' value='重设' class='button'>
+        </form>
+    </div>
+
+    
+    <div>
+      <h2>评论</h2><p>还沒有留言。</p>
+      
+    </div>
+  </article>
+
+
+  
+  <div class="pagination">
+    
+      <a href="/2007/12/14/gsm-modem-alert-sms/" class="button left"><span>发送告警短信的方法，德国工艺服了</span></a>
+    
+    
+      <a href="/2007/12/13/opennms-yum-install/" class="button right"><span>OpenNMS的Yum的安装方式，安装简单了很多</span></a>
+    
+  </div>
+
+      </main>
+      <section id="site-sidebar">
+  
+    <section id="recent-posts">
+      <header>
+        <h1>最新文章</h1>
+      </header>
+      
+      <article class="mini-post">
+          
+        <header>
+          <h2><a href="/blog/%E4%BD%BF%E7%94%A8-elastic-stack-%E7%9B%91%E6%8E%A7-covid-19-%E7%96%AB%E6%83%85%E5%8F%91%E5%B1%95/">使用 Elastic Stack 监控 Covid-19 疫情发展</a></h2>
+          <time class="published" datetime="2020-04-08 17:04:08 &#43;0800 CST">April 8, 2020</time>
+        </header>
+      </article>
+      
+      <article class="mini-post">
+          
+        <header>
+          <h2><a href="/blog/nutanix-dvp/">为Docker Swarm群集配置Nutanix持久存储</a></h2>
+          <time class="published" datetime="2017-11-02 00:00:00 &#43;0000 UTC">November 2, 2017</time>
+        </header>
+      </article>
+      
+      <article class="mini-post">
+          
+        <header>
+          <h2><a href="/blog/tips-for-docker-on-mac/">Tips for Docker on Mac</a></h2>
+          <time class="published" datetime="2017-09-26 00:00:00 &#43;0000 UTC">September 26, 2017</time>
+        </header>
+      </article>
+      
+      <article class="mini-post">
+          
+        <header>
+          <h2><a href="/blog/something-you-must-know-about-devops/">关于DevOps 的那些事</a></h2>
+          <time class="published" datetime="2017-09-23 00:00:00 &#43;0000 UTC">September 23, 2017</time>
+        </header>
+      </article>
+      
+      <article class="mini-post">
+          
+        <header>
+          <h2><a href="/blog/welcome-to-ghost/">切换到Ghost&#43;七牛</a></h2>
+          <time class="published" datetime="2017-09-21 00:00:00 &#43;0000 UTC">September 21, 2017</time>
+        </header>
+      </article>
+      
+      
+        <footer>
+          <a href="/posts/" class="button">查看更多</a>
+        </footer>
+      
+    </section>
+  
+
+  
+    
+
+      <section id="categories">
+        <header>
+          <h1><a href="/categories">分类</a></h1>
+        </header>
+        <ul>
+          
+          
+          <li>
+              <a href="/categories/blog/">blog<span class="count">52</span></a>
+          
+          <li>
+              <a href="/categories/nsm/">nsm<span class="count">41</span></a>
+          
+          <li>
+              <a href="/categories/itsm/">itsm<span class="count">21</span></a>
+          
+          <li>
+              <a href="/categories/opensource/">opensource<span class="count">21</span></a>
+          
+          <li>
+              <a href="/categories/running/">running<span class="count">21</span></a>
+          
+          <li>
+              <a href="/categories/cms/cmdb/">cms/cmdb<span class="count">20</span></a>
+          
+          <li>
+              <a href="/categories/infrastructure/">infrastructure<span class="count">18</span></a>
+          
+          <li>
+              <a href="/categories/cloud-computing/">cloud-computing<span class="count">17</span></a>
+          
+          <li>
+              <a href="/categories/wordpress1/">wordpress1<span class="count">15</span></a>
+          
+          <li>
+              <a href="/categories/xendesktop/">xendesktop<span class="count">15</span></a>
+          
+          <li>
+              <a href="/categories/travel/">travel<span class="count">14</span></a>
+          
+          <li>
+              <a href="/categories/itil/itsm/">itil/itsm<span class="count">13</span></a>
+          
+          <li>
+              <a href="/categories/life/">life<span class="count">13</span></a>
+          
+          <li>
+              <a href="/categories/movie/">movie<span class="count">12</span></a>
+          
+          <li>
+              <a href="/categories/asset-mgmt/">asset-mgmt<span class="count">10</span></a>
+          
+          <li>
+              <a href="/categories/bmc/">bmc<span class="count">7</span></a>
+          
+          <li>
+              <a href="/categories/citrix/">citrix<span class="count">7</span></a>
+          
+          <li>
+              <a href="/categories/rhel/">rhel<span class="count">6</span></a>
+          
+          <li>
+              <a href="/categories/xenserver/">xenserver<span class="count">6</span></a>
+          
+          <li>
+              <a href="/categories/apple/">apple<span class="count">4</span></a>
+          
+          <li>
+              <a href="/categories/desktop/">desktop<span class="count">4</span></a>
+          
+          <li>
+              <a href="/categories/opennms/">opennms<span class="count">4</span></a>
+          
+          <li>
+              <a href="/categories/tools/">tools<span class="count">4</span></a>
+          
+          <li>
+              <a href="/categories/container/">container<span class="count">3</span></a>
+          
+          <li>
+              <a href="/categories/linux/">linux<span class="count">3</span></a>
+          
+          <li>
+              <a href="/categories/openstack/">openstack<span class="count">3</span></a>
+          
+          <li>
+              <a href="/categories/project-management/">project-management<span class="count">3</span></a>
+          
+          <li>
+              <a href="/categories/xenapp/">xenapp<span class="count">3</span></a>
+          
+          <li>
+              <a href="/categories/docker/">docker<span class="count">2</span></a>
+          
+          <li>
+              <a href="/categories/hardware/">hardware<span class="count">2</span></a>
+          
+          <li>
+              <a href="/categories/lamp/">lamp<span class="count">2</span></a>
+          
+          <li>
+              <a href="/categories/cloudforms/">cloudforms<span class="count">1</span></a>
+          
+          <li>
+              <a href="/categories/cloudstack/">cloudstack<span class="count">1</span></a>
+          
+          <li>
+              <a href="/categories/devops/">devops<span class="count">1</span></a>
+          
+          <li>
+              <a href="/categories/ovirt/">ovirt<span class="count">1</span></a>
+          
+          <li>
+              <a href="/categories/rhev/">rhev<span class="count">1</span></a>
+          
+          <li>
+              <a href="/categories/storage/">storage<span class="count">1</span></a>
+          
+          </li>
+        </ul>
+      </section>
+    
+  
+
+  
+    <section id="mini-bio">
+      <header>
+        <h1>关于</h1>
+      </header>
+      <p>This theme was developed for Hugo static site generator.</p>
+      <footer>
+        <a href="/about" class="button">详细了解</a>
+      </footer>
+    </section>
+  
+</section>
+
+      <footer id="site-footer">
+  
+      <ul class="socnet-icons">
+        
+
+        <li><a href="//github.com/pacollins/hugo-future-imperfect-slim" target="_blank" rel="noopener" title="GitHub" class="fab fa-github"></a></li>
+
+
+
+
+
+
+<li><a href="//flickr.com/photos/example" target="_blank" rel="noopener" title="Flickr" class="fab fa-flickr"></a></li>
+
+
+
+
+<li><a href="//www.linkedin.com/in/example" target="_blank" rel="noopener" title="LinkedIn" class="fab fa-linkedin"></a></li>
+<li><a href="//linkedin.com/company/examplebusiness" target="_blank" rel="noopener" title="LinkedIn Company" class="fab fa-linkedin"></a></li>
+
+
+
+<li><a href="//facebook.com/example" target="_blank" rel="noopener" title="Facebook" class="fab fa-facebook"></a></li>
+<li><a href="//reddit.com/user/example" target="_blank" rel="noopener" title="Reddit" class="fab fa-reddit"></a></li>
+
+
+
+
+
+
+
+<li><a href="//instagram.com/example" target="_blank" rel="noopener" title="Instagram" class="fab fa-instagram"></a></li>
+
+<li><a href="//twitter.com/example" target="_blank" rel="noopener" title="Twitter" class="fab fa-twitter"></a></li>
+
+
+
+<li><a href="//www.pinterest.com/example" target="_blank" rel="noopener" title="Pinterest" class="fab fa-pinterest-p"></a></li>
+<li><a href="//telegram.me/example" target="_blank" rel="noopener" title="telegram" class="fab fa-telegram"></a></li>
+
+
+
+<li><a href="//researchgate.net/profile/example" target="_blank" rel="noopener" title="Research Gate"><i class="ai ai-researchgate"></i></a></li>
+<li><a href="//keybase.io/example" target="_blank" rel="noopener" title="keybase" class="fab fa-keybase"></a></li>
+<li><a href="//example.com/@example" target="_blank" rel="noopener" title="mastodon" class="fab fa-mastodon"></a></li>
+<li><a href="mailto:example" target="_blank" title="Email" class="far fa-envelope"></a></li>
+
+      </ul>
+  
+  <p class="copyright">
+    © 2020 Hugo Future Imperfect Slim em português
+      <br>
+    主题: <a href='https://themes.gohugo.io/hugo-future-imperfect-slim/' target='_blank' rel='noopener'>Hugo Future Imperfect Slim</a><br>移植自 <a href='https://html5up.net/future-imperfect' target='_blank' rel='noopener'>HTML5 UP</a> | 由 <a href='https://gohugo.io/' target='_blank' rel='noopener' title='0.80.0'>Hugo</a> 驱动
+  </p>
+</footer>
+<a id="back-to-top" href="#" class="fas fa-arrow-up fa-2x"></a>
+
+      <script src="/js/highlight.js"></script>
+    
+    <script>hljs.initHighlightingOnLoad();</script><script src="/js/bundle.min.bbba6b424a8ac5b6858cd5fc80eabc9c5277945cc2dc349204646b84891b4b58.js" integrity="sha256-u7prQkqKxbaFjNX8gOq8nFJ3lFzC3DSSBGRrhIkbS1g="></script>
+    <script src="/js/add-on.js"></script>
+    </div>
+  </body>
+</html>

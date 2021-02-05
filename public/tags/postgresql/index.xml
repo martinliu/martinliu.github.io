@@ -1,1 +1,36 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>PostgreSQL on Martin's Blog</title><link>https://martinliu.cn/tags/postgresql/</link><description>Recent content in PostgreSQL on Martin's Blog</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><managingEditor>liuzh66@gmail.com (刘征 Martin Liu)</managingEditor><webMaster>liuzh66@gmail.com (刘征 Martin Liu)</webMaster><lastBuildDate>Thu, 03 Apr 2008 08:25:44 +0000</lastBuildDate><atom:link href="https://martinliu.cn/tags/postgresql/index.xml" rel="self" type="application/rss+xml"/><item><title>PostgreSQL基本操作指南</title><link>https://martinliu.cn/2008/04/03/postsql-basic-admin/</link><pubDate>Thu, 03 Apr 2008 08:25:44 +0000</pubDate><author>liuzh66@gmail.com (刘征 Martin Liu)</author><guid>https://martinliu.cn/2008/04/03/postsql-basic-admin/</guid><description>安装我的安装环境是虚拟机下面安装的CentOS4.4；在安装的时候需要注意的是：在安装选择的时候PostgreSQL一共有十几个可选的包，把</description></item></channel></rss>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>PostgreSQL on Hugo Future Imperfect Slim em português</title>
+    <link>https://example.com/tags/postgresql/</link>
+    <description>Recent content in PostgreSQL on Hugo Future Imperfect Slim em português</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-CN</language>
+    <lastBuildDate>Thu, 03 Apr 2008 08:25:44 +0000</lastBuildDate><atom:link href="https://example.com/tags/postgresql/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>PostgreSQL基本操作指南</title>
+      <link>https://example.com/2008/04/03/postsql-basic-admin/</link>
+      <pubDate>Thu, 03 Apr 2008 08:25:44 +0000</pubDate>
+      
+      <guid>https://example.com/2008/04/03/postsql-basic-admin/</guid>
+      <description>安装
+我的安装环境是虚拟机下面安装的CentOS4.4；在安装的时候需要注意的是：在安装选择的时候PostgreSQL一共有十几个可选的包，把可能会用到的包都尽量选中，否则就要手工去安装了，手工解决包之间的依赖关系烦啊。从光盘上装的好处就是它自己帮你把用户和启动脚本建好了，安装后需要检查如下两个文件：1）/etc/init.d/postgresql是否存在；2）/etc/passwd里面有没有postgres用户。
+启动数据库
+第一次启动，用root用户登录，运行命令：[root@RBA init.d]# service postgresql start ；如果需要数据库在系统启动是就启动的话需要运行：
+[root@RBA init.d]# chkconfig postgresql on ； 
+检查结果
+[root@RBA ~]# chkconfig --list postgresql
+postgresql 0:off 1:off 2:on 3:on 4:on 5:on 6:off 
+数据库管理
+先切到postgres用户 su postgres
+新建一个数据库 createdb amp
+新建一个超级用户，需要在shell下运行：
+bash-3.00$ createuser amp
+Shall the new user be allowed to create databases? (y/n) y
+Shall the new user be allowed to create more new users? (y/n) y 
+链接到数据库之后，确认以下：
+amp=# \du</description>
+    </item>
+    
+  </channel>
+</rss>
