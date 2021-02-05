@@ -2,7 +2,7 @@
 
 ## To Do
 
-- use a tags page
+- need a tags page
 - add friends page
 - add my course page
 - develop for theme dev.
