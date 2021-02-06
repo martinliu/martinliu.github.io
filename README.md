@@ -2,11 +2,10 @@
 
 ## To Do
 
-- need a tags page
+- [Done] need a tags page
 - add friends page
-- add my course page
+- [Done] add my course page
 - develop for theme dev.
-- no submodules
 
 ## Acknowledgements
 
