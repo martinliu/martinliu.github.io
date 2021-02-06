@@ -6,7 +6,7 @@ description: "推荐 DevOps 教练学习的全球新闻，文章，宕机事件�
 categories: ["DevOps"]
 tags: ["周刊"]
 keywords: ["DevOps", "DevOps教练", "周刊"]
-images: [{ src= "/images/abstract-3.jpg", alt= "周刊" }]
+images: [{ src= "img/2019/03/pic02.jpg", alt= "周刊" }]
 ---
 
 ## 宕机

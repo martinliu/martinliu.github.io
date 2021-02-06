@@ -1,13 +1,13 @@
----
-date: 2020-07-28T10:35:19+08:00
-title: "DevOps Coach 周刊 #1"
-subtitle: "DevOps 教练需要学习的全球新闻，文章，宕机事件和流行工具"
-description: "DevOps 教练需要学习的全球新闻，文章，宕机事件和流行工具"
-categories: ["DevOps"]
-tags: ["周刊"]
-keywords: ["DevOps","DevOps教练","周刊"]
-images: [{src= "/images/abstract-1.jpg", desc= "DevOps"}]
----
++++
+date= 2020-07-28T10:35:19+08:00
+title= "DevOps Coach 周刊 #1"
+subtitle= "DevOps 教练需要学习的全球新闻，文章，宕机事件和流行工具"
+description= "DevOps 教练需要学习的全球新闻，文章，宕机事件和流行工具"
+categories= ["DevOps"]
+tags= ["周刊"]
+keywords= ["DevOps","DevOps教练","周刊"]
+images= [{src = "img/2019/03/pic02.jpg", alt = "DevOps"}]
++++
 
 ![DevOps Coach weekly update](/images/weeklyupdate.jpg)
 
