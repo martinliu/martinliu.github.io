@@ -1,56 +1,17 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
-  <channel>
-    <title>grid on 刘征的博客</title>
-    <link>https://martinliu.cn/tags/grid/</link>
-    <description>Recent content in grid on 刘征的博客</description>
-    <generator>Hugo -- gohugo.io</generator>
-    <language>zh-CN</language>
-    <lastBuildDate>Sat, 24 May 2008 02:15:27 +0000</lastBuildDate><atom:link href="https://martinliu.cn/tags/grid/index.xml" rel="self" type="application/rss+xml" />
-    <item>
-      <title>Ganglia install and configure</title>
-      <link>https://martinliu.cn/2008/05/24/ganglia-install-and-configure/</link>
-      <pubDate>Sat, 24 May 2008 02:15:27 +0000</pubDate>
-      
-      <guid>https://martinliu.cn/2008/05/24/ganglia-install-and-configure/</guid>
-      <description>我准备安装的版本是ganglia-3.0.7 ， 参考的安装文档是http://www.linuxsir.org/bbs/thread309837.html
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>grid on 刘征的博客</title><link>https://martinliu.cn/tags/grid/</link><description>Recent content in grid on 刘征的博客</description><generator>Hugo -- gohugo.io</generator><language>zh-CN</language><lastBuildDate>Sat, 24 May 2008 02:15:27 +0000</lastBuildDate><atom:link href="https://martinliu.cn/tags/grid/index.xml" rel="self" type="application/rss+xml"/><item><title>Ganglia install and configure</title><link>https://martinliu.cn/2008/05/24/ganglia-install-and-configure/</link><pubDate>Sat, 24 May 2008 02:15:27 +0000</pubDate><guid>https://martinliu.cn/2008/05/24/ganglia-install-and-configure/</guid><description>我准备安装的版本是ganglia-3.0.7 ， 参考的安装文档是http://www.linuxsir.org/bbs/thread309837.html
 rpm的安装会比较省事。rpm安装都会很正常，不过在Suse下面需要注意一下两点：
-
- gmond和gmated的启动脚本不是rpm包中默认装上的那个，那个脚本适用于redhat linux；下载源码编译之后在gmond/ gmated/的文件夹里有后缀为 .SuSE的哪两个文件才对。  rpm吧gmated的web界面默认安装路径是/var/www/http/ ，SuSE下的apache的路径是 /srv/www/htdoc/；安装完后copy或者连接过来 配置：
- gmond.conf 更具我参考的安装文档产生这个文件的命令是 gmond -t &amp;gt; /etc/gmond.conf；rpm安装包中有这个文件，如果需要恢复到默认状态可以使用这个命令。  gmated.conf 是服务器端的主要配置文件，详细阅读一下源码包中的那个html文件对这个文件的配置会有帮助 安装过程中出现的问题如下：在启动gmond的时候启动失败，debug一下可以看到下面的错误。
+gmond和gmated的启动脚本不是rpm包中默认装上的那个，那个脚本适用于redhat linux；下载源码编译之后在gmond/ gmated/的文件夹里有后缀为 .SuSE的哪两个文件才对。 rpm吧gmated的web界面默认安装路径是/var/www/http/ ，SuSE下的apache的路径是 /srv/www/htdoc/；安装完后copy或者连接过来 配置：
+gmond.conf 更具我参考的安装文档产生这个文件的命令是 gmond -t &amp;gt; /etc/gmond.conf；rpm安装包中有这个文件，如果需要恢复到默认状态可以使用这个命令。 gmated.conf 是服务器端的主要配置文件，详细阅读一下源码包中的那个html文件对这个文件的配置会有帮助 安装过程中出现的问题如下：在启动gmond的时候启动失败，debug一下可以看到下面的错误。
 sles:~ # gmond &amp;ndash;debug=9
 slurpfile() open() error on file /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq: No such file or directory
 udp_recv_channel mcast_join=239.2.11.71 mcast_if=NULL port=8649 bind=239.2.11.71
 Error creating multicast server mcast_join=239.2.11.71 port=8649 mcast_if=NULL family=&amp;lsquo;inet4&amp;rsquo;. Exiting.
 在所有虚拟机（host-only 网络设置）上都遇到这个错误。一次一个NAT网络的虚机上正常
-至今觉得这是一个网络的问题，还没有想出正确的配置和解决方法。如果您有什么好建议请留言。  </description>
-    </item>
-    
-    <item>
-      <title>Clouds are coming</title>
-      <link>https://martinliu.cn/2008/04/18/clouds-are-coming/</link>
-      <pubDate>Fri, 18 Apr 2008 15:05:23 +0000</pubDate>
-      
-      <guid>https://martinliu.cn/2008/04/18/clouds-are-coming/</guid>
-      <description>最近两周最吸引我的TAG是这个词“cloud computing”。在我前一个文章中稍微展望了一下云计算的前景“云计算吧电能转化成计算能力，然后向用电一样的来使用，我们甚至不需要使用PC这样的个人信息话设备来管理我们的信息，所有的信息和信息的处理都在云上发生”。在了解了更多的信息之后，这些可能实现，但是这种巨变需要时间，而且可能是很长时间；清醒之后不得不佩服Google在这方面的宣传。
+至今觉得这是一个网络的问题，还没有想出正确的配置和解决方法。如果您有什么好建议请留言。</description></item><item><title>Clouds are coming</title><link>https://martinliu.cn/2008/04/18/clouds-are-coming/</link><pubDate>Fri, 18 Apr 2008 15:05:23 +0000</pubDate><guid>https://martinliu.cn/2008/04/18/clouds-are-coming/</guid><description>最近两周最吸引我的TAG是这个词“cloud computing”。在我前一个文章中稍微展望了一下云计算的前景“云计算吧电能转化成计算能力，然后向用电一样的来使用，我们甚至不需要使用PC这样的个人信息话设备来管理我们的信息，所有的信息和信息的处理都在云上发生”。在了解了更多的信息之后，这些可能实现，但是这种巨变需要时间，而且可能是很长时间；清醒之后不得不佩服Google在这方面的宣传。
 理性认识云计算的简单方式，扫扫盲：
-
- 阅读一下wikipedia对‘cloud computing’的解释  听听John Willi的两个Podcast  多看看非google来源的信息：）  读读这个GRIDtoday的文章 &amp;ndash; &amp;ldquo;Clouds are Looming and We Love It&amp;rdquo; 很多厂商都在参与这个热点，open source也要加油，期待开源在这个领域的发展。  </description>
-    </item>
-    
-    <item>
-      <title>Using Ganglia for cluster and grid monitoring</title>
-      <link>https://martinliu.cn/2008/04/16/using-ganglia-for-cluster-and-grid-monitoring/</link>
-      <pubDate>Wed, 16 Apr 2008 09:41:06 +0000</pubDate>
-      
-      <guid>https://martinliu.cn/2008/04/16/using-ganglia-for-cluster-and-grid-monitoring/</guid>
-      <description>Ganglia是一个用来监控群集和网格计算环境的软件。它是可以扩展的分布式监控系统，它基于多播协议，数据存储和传输的格式都是基于开源的标准：XML/XDR/RRDTool/APR/Apache/php等。
+阅读一下wikipedia对‘cloud computing’的解释 听听John Willi的两个Podcast 多看看非google来源的信息：） 读读这个GRIDtoday的文章 &amp;ndash; &amp;ldquo;Clouds are Looming and We Love It&amp;rdquo; 很多厂商都在参与这个热点，open source也要加油，期待开源在这个领域的发展。</description></item><item><title>Using Ganglia for cluster and grid monitoring</title><link>https://martinliu.cn/2008/04/16/using-ganglia-for-cluster-and-grid-monitoring/</link><pubDate>Wed, 16 Apr 2008 09:41:06 +0000</pubDate><guid>https://martinliu.cn/2008/04/16/using-ganglia-for-cluster-and-grid-monitoring/</guid><description>Ganglia是一个用来监控群集和网格计算环境的软件。它是可以扩展的分布式监控系统，它基于多播协议，数据存储和传输的格式都是基于开源的标准：XML/XDR/RRDTool/APR/Apache/php等。
 应用Ganglia的几个理由：
- 在一个点上监控包含很多服务器的群集，单个cluster内服务器的数量比较多，需要从整体看某个cluster的可用性和性能，也要能看到单独某个机器的运行情况。 监控分布式的cluster环境，例如跨网段和地域的灾备的环境。 需要监控系统能分N级的查看方式，以银行为例：北数据中心&amp;ndash;&amp;gt;网络银行业务&amp;ndash;&amp;gt;个人网银系统&amp;ndash;&amp;gt;web server 群集&amp;ndash;&amp;gt; WebSvr001；可以按业务逻辑和系统架构逻辑。 需要724365的监控整个系统，能得到可用性、性能和容量等方面的报表。  应用Ganglia的几个好处：
- 监控能力的无限扩展，被管理服务器数量达数千个甚至根多。 纯web前端，apache和php的应用页面方便定制 强壮的系统结构，并且具备可以任意扩展采集数据KPI的特点 适合高性能计算或者网格计算环境。  Ganglia应用需要注意的方面：
- 在每一个节点上需要部署一个代理程序，考虑到对代理配置的变更的工作量，在部署代理之前，需要彻底的分析需求，尽量减少部署过程中配置变更带来的多于调试的工作量。 部署后期的变更工作，如果比较频繁的话将导致后台维护工作量增大，可以考虑使用一些开源的软件分发和自动化配置管理的工具。这些配置的初始化工作可以与OS的安装部署工作一起考虑。  它被很多大学和专业机构研究并使用，所以有非常多的专业文档可以参考，哪行文档多分析了Ganglia的系统架构和特点，多系统的原理介绍的非常细致。下面是我收集的几个关于这个软件的文档请参考。并且在它们的网站上也可以看到很多相关的资源连接，都是非常好的实施方面的详细文档。
-If you need more detail please take look those documents below.</description>
-    </item>
-    
-  </channel>
-</rss>
+在一个点上监控包含很多服务器的群集，单个cluster内服务器的数量比较多，需要从整体看某个cluster的可用性和性能，也要能看到单独某个机器的运行情况。 监控分布式的cluster环境，例如跨网段和地域的灾备的环境。 需要监控系统能分N级的查看方式，以银行为例：北数据中心&amp;ndash;&amp;gt;网络银行业务&amp;ndash;&amp;gt;个人网银系统&amp;ndash;&amp;gt;web server 群集&amp;ndash;&amp;gt; WebSvr001；可以按业务逻辑和系统架构逻辑。 需要724365的监控整个系统，能得到可用性、性能和容量等方面的报表。 应用Ganglia的几个好处：
+监控能力的无限扩展，被管理服务器数量达数千个甚至根多。 纯web前端，apache和php的应用页面方便定制 强壮的系统结构，并且具备可以任意扩展采集数据KPI的特点 适合高性能计算或者网格计算环境。 Ganglia应用需要注意的方面：
+在每一个节点上需要部署一个代理程序，考虑到对代理配置的变更的工作量，在部署代理之前，需要彻底的分析需求，尽量减少部署过程中配置变更带来的多于调试的工作量。 部署后期的变更工作，如果比较频繁的话将导致后台维护工作量增大，可以考虑使用一些开源的软件分发和自动化配置管理的工具。这些配置的初始化工作可以与OS的安装部署工作一起考虑。 它被很多大学和专业机构研究并使用，所以有非常多的专业文档可以参考，哪行文档多分析了Ganglia的系统架构和特点，多系统的原理介绍的非常细致。下面是我收集的几个关于这个软件的文档请参考。并且在它们的网站上也可以看到很多相关的资源连接，都是非常好的实施方面的详细文档。
+If you need more detail please take look those documents below.</description></item></channel></rss>

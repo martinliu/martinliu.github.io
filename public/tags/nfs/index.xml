@@ -1,31 +1,11 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
-  <channel>
-    <title>nfs on 刘征的博客</title>
-    <link>https://martinliu.cn/tags/nfs/</link>
-    <description>Recent content in nfs on 刘征的博客</description>
-    <generator>Hugo -- gohugo.io</generator>
-    <language>zh-CN</language>
-    <lastBuildDate>Sun, 08 Mar 2015 15:42:01 +0000</lastBuildDate><atom:link href="https://martinliu.cn/tags/nfs/index.xml" rel="self" type="application/rss+xml" />
-    <item>
-      <title>Martin&#39;s lab 主服务器搭建</title>
-      <link>https://martinliu.cn/2015/03/08/e4b8bbe69c8de58aa1e599a8e690ade5bbba/</link>
-      <pubDate>Sun, 08 Mar 2015 15:42:01 +0000</pubDate>
-      
-      <guid>https://martinliu.cn/2015/03/08/e4b8bbe69c8de58aa1e599a8e690ade5bbba/</guid>
-      <description>上图是红帽产品和技术架构的全貌。来源是：http://www.redhat.com/en/technologies/cloud-computing 这张图我用在了我的首次给公司内部的全体销售培训上。由于我是IT管理背景的，因此我很习惯从云管理层往下看云引擎的各个层面。但是管理层产品，其实是后来整合纳入的。红帽起家的旗舰产品还是在底层的RHEL。总之，我想在一个Lab里面实现以上所有的部分，所谓实现是让其每个部分都能在运行在假象的一个有意义的业务场景里。还好，红帽的产品全都是基于x86平台的，因此我用几个笔记本，再加上我家里的这台HP MicroServer G8服务器应该能够全部部署出来。
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>nfs on 刘征的博客</title><link>https://martinliu.cn/tags/nfs/</link><description>Recent content in nfs on 刘征的博客</description><generator>Hugo -- gohugo.io</generator><language>zh-CN</language><lastBuildDate>Sun, 08 Mar 2015 15:42:01 +0000</lastBuildDate><atom:link href="https://martinliu.cn/tags/nfs/index.xml" rel="self" type="application/rss+xml"/><item><title>Martin's lab 主服务器搭建</title><link>https://martinliu.cn/2015/03/08/e4b8bbe69c8de58aa1e599a8e690ade5bbba/</link><pubDate>Sun, 08 Mar 2015 15:42:01 +0000</pubDate><guid>https://martinliu.cn/2015/03/08/e4b8bbe69c8de58aa1e599a8e690ade5bbba/</guid><description>上图是红帽产品和技术架构的全貌。来源是：http://www.redhat.com/en/technologies/cloud-computing 这张图我用在了我的首次给公司内部的全体销售培训上。由于我是IT管理背景的，因此我很习惯从云管理层往下看云引擎的各个层面。但是管理层产品，其实是后来整合纳入的。红帽起家的旗舰产品还是在底层的RHEL。总之，我想在一个Lab里面实现以上所有的部分，所谓实现是让其每个部分都能在运行在假象的一个有意义的业务场景里。还好，红帽的产品全都是基于x86平台的，因此我用几个笔记本，再加上我家里的这台HP MicroServer G8服务器应该能够全部部署出来。
 做这样的一个lab还是要一定的规划和设计的，这些初步的规划和设计都在我的本子里手写的，就不在这里敲字了，随后我会抽空上几张图。
 主服务器基本配置 硬件：Lenovo W540 CPU Intel i7, RAM 32 GB, SSD 512GB, HD 1TB
 OS : RHEL 7.1
 订阅是红帽公司的业务模式，也是红帽认为最自豪的部分，红帽相信可以成为开源技术和用户之间的催化剂，它不断参与最优秀的开源技术创新，并为其用户提供最强有利的技术服务和支持。红帽技术员工可以申请一个红帽雇员订阅。我的订阅可以在网上查到如下图所示：
-
 红帽的服务必须是基于订阅的每一个节点（物理、虚拟）都需要有有效的订阅，否则红帽的支持服务不能生效。对于一个已经成功注册到红帽官网，并且状态正常的服务器，应该显示如下的注册状态：
 [bash] [root@w540 ~]# subscription-manager list
 +&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;-+ 安装的产品状态 +&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;-+ 产品名称： Red Hat Enterprise Linux Server 产品 ID： 69 版本： 7.0 构架： x86_64 状态： 已订阅 状态详情： 开始： 2014年09月09日 结束： 2015年12月08日 [/bash]
 红帽员工订阅意味着所有红帽产品。
 基本服务配置 KVM KVM的上手还真比我想象的速度要慢一些，起码比我用XenServer的经历更加纠结一些。总之现在可以彻底的忘记其它任何的选项，KVM可以满足我的所有需求了。由于主服务器有512SSD + 32GB RAM + 8 vCPU，所以我打算把产品里的所有管理控制节点VM都部署在这个机器上。预计有10个左右的虚拟机。 安装配置方面这里就不赘述了。只把困扰我许久的几个网络配置贴出来，供参考。
-网桥0的功能是为所有虚拟机提供外网链接，使他们和主机一样直通主机所物理链接的局域网。 [bash] [root@w540 ~]# cat /etc/sysconfig/network-scripts/ifcfg-br0 DEVICE=br0 ONBOOT=yes TYPE=Bridge BOOTPROTO=none STP=on DELAY=0 DNS1=192.</description>
-    </item>
-    
-  </channel>
-</rss>
+网桥0的功能是为所有虚拟机提供外网链接，使他们和主机一样直通主机所物理链接的局域网。 [bash] [root@w540 ~]# cat /etc/sysconfig/network-scripts/ifcfg-br0 DEVICE=br0 ONBOOT=yes TYPE=Bridge BOOTPROTO=none STP=on DELAY=0 DNS1=192.</description></item></channel></rss>

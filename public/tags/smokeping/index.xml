@@ -1,76 +1,24 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
-  <channel>
-    <title>smokeping on 刘征的博客</title>
-    <link>https://martinliu.cn/tags/smokeping/</link>
-    <description>Recent content in smokeping on 刘征的博客</description>
-    <generator>Hugo -- gohugo.io</generator>
-    <language>zh-CN</language>
-    <lastBuildDate>Fri, 16 Feb 2007 16:38:00 +0000</lastBuildDate><atom:link href="https://martinliu.cn/tags/smokeping/index.xml" rel="self" type="application/rss+xml" />
-    <item>
-      <title>Install Smokeping via yum</title>
-      <link>https://martinliu.cn/2007/02/16/install-smokeping-via-yum/</link>
-      <pubDate>Fri, 16 Feb 2007 16:38:00 +0000</pubDate>
-      
-      <guid>https://martinliu.cn/2007/02/16/install-smokeping-via-yum/</guid>
-      <description>From :http://ai.net.nz/horde/wicked/display.php?page=SmokePing
-Install needed packages 
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>smokeping on 刘征的博客</title><link>https://martinliu.cn/tags/smokeping/</link><description>Recent content in smokeping on 刘征的博客</description><generator>Hugo -- gohugo.io</generator><language>zh-CN</language><lastBuildDate>Fri, 16 Feb 2007 16:38:00 +0000</lastBuildDate><atom:link href="https://martinliu.cn/tags/smokeping/index.xml" rel="self" type="application/rss+xml"/><item><title>Install Smokeping via yum</title><link>https://martinliu.cn/2007/02/16/install-smokeping-via-yum/</link><pubDate>Fri, 16 Feb 2007 16:38:00 +0000</pubDate><guid>https://martinliu.cn/2007/02/16/install-smokeping-via-yum/</guid><description>From :http://ai.net.nz/horde/wicked/display.php?page=SmokePing
+Install needed packages
 rrdtool
 `yum install rrdtool &amp;lt;br /&amp;gt;**perl-CGI-SpeedyCGI**&amp;lt;br /&amp;gt; `yum install perl-CGI-SpeedyCGI
- 
 fping
 `yum install fping &amp;lt;br /&amp;gt;** Or do them all together:**&amp;lt;br /&amp;gt; `yum install rrdtool perl-CGI-SpeedyCGI fping
- 
 Smokeping
-`wget http://people.ee.ethz.ch/~oetiker/webtools/smokeping/pub/smokeping-2.0.9.tar.gztar xvzf smokeping-2.0.9.tar.gzmv smokeping-2.0.9 /usr/local/smokepingchown -R root:root /usr/local/smokeping&amp;lt;br /&amp;gt;&amp;lt;br /&amp;gt;cd /usr/local/smokeping/binfor foo in *.dist; do cp $foo `basename $foo .dist`; done&amp;lt;br /&amp;gt;&amp;lt;br /&amp;gt;cd /usr/local/smokeping/etc/for foo in *.dist; do cp $foo `basename $foo .</description>
-    </item>
-    
-    <item>
-      <title>如何看懂Smokeping图表</title>
-      <link>https://martinliu.cn/2007/02/15/smokeping-chart/</link>
-      <pubDate>Thu, 15 Feb 2007 08:45:00 +0000</pubDate>
-      
-      <guid>https://martinliu.cn/2007/02/15/smokeping-chart/</guid>
-      <description>_RTT(Round-Trip Time) _
-
+`wget http://people.ee.ethz.ch/~oetiker/webtools/smokeping/pub/smokeping-2.0.9.tar.gztar xvzf smokeping-2.0.9.tar.gzmv smokeping-2.0.9 /usr/local/smokepingchown -R root:root /usr/local/smokeping&amp;lt;br /&amp;gt;&amp;lt;br /&amp;gt;cd /usr/local/smokeping/binfor foo in *.dist; do cp $foo `basename $foo .dist`; done&amp;lt;br /&amp;gt;&amp;lt;br /&amp;gt;cd /usr/local/smokeping/etc/for foo in *.dist; do cp $foo `basename $foo .</description></item><item><title>如何看懂Smokeping图表</title><link>https://martinliu.cn/2007/02/15/smokeping-chart/</link><pubDate>Thu, 15 Feb 2007 08:45:00 +0000</pubDate><guid>https://martinliu.cn/2007/02/15/smokeping-chart/</guid><description>_RTT(Round-Trip Time) _
 简单说它是一个数据报在网络上两点中间往返一次的时间。是影响TCP性能和表征网络运行状况的重要参数。在网络中实时、准确地测量大量TCP设备和系统的RTT参数是网络管的重要环节之一。Smokeping就是这样的自动测试系统，它向目标设备和系统发送各种类型的测试数据包，测量、记录和展示RTT。
-
-
 _Median RTT _****中间数
-
 它是中间数并不是平均值。Smokeping有多种类型的探针，探针在默认的设置下，每300秒向目标设备发送20测探测数据包。假如这20个数据包都返回的话，它就记录下了20个RTT，那么Median RTT就是第十个包的RTT；如果有5个包丢失的话，那么Median RTT就是第八个返回的包的RTT值。
-
-
 _Avg RTT _****评价值
-
 它是每一个测试回合中所有RTT的算术评价值。
-
-
 Avg pkt loss
-
 它是丢包率。
-
-
 上图中测试的三个服务器，是用默认的FPing探针探测该服务器是否在线。Smokeping就装在OpenNMS上，可以看出它的RTT最小；奇怪的是它的丢包率却是最大。其它的，一个是美国的一个Web服务器，另一个是美国的Exchange邮件服务器。
-
-
-
 Last 3 Hours 最近的3小时
-
 _Median Ping RTT （__506.2 ms avg）_中间数的平均值是5.6.2毫秒。如果是绿色的短横线，说明一个300秒的周期内所有的包都返回都有RTT的时间记录下来；如果是蓝色的短横线则说明有2个包丢失。
-
 _Packet Loss：_丢包率。从上图中我们看出全都是绿线，所以丢包率当然是0。
-
 _Probe：_10 HTTP pings using echoping(1) every 300 seconds
-
 这张图是2007-1-11 12:00:05生成的。每一个绿色的短横线都是一个测试回合300秒内用echoping测试HTTP协议10次。绿色画出的是中间数的位置，一个回合中的其它值都在它附近被以灰度的形式被刻画；灰度的范围越小越好，灰色的范围像是烟雾一样笼罩在中间数附近。在中间数附近的烟越小越好，说明网络很平稳。RTT曲线的起伏还显示了网络的负载情况。
-
 点击这里看一个网上的Demo
-
 update : 2008-1-18
-
-现在OpenNMS把smokeping集成了，你可以在OpenNMS中配置使用这个功能。</description>
-    </item>
-    
-  </channel>
-</rss>
+现在OpenNMS把smokeping集成了，你可以在OpenNMS中配置使用这个功能。</description></item></channel></rss>

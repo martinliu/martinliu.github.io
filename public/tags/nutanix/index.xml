@@ -1,135 +1,43 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
-  <channel>
-    <title>Nutanix on 刘征的博客</title>
-    <link>https://martinliu.cn/tags/nutanix/</link>
-    <description>Recent content in Nutanix on 刘征的博客</description>
-    <generator>Hugo -- gohugo.io</generator>
-    <language>zh-CN</language>
-    <lastBuildDate>Thu, 02 Nov 2017 00:00:00 +0000</lastBuildDate><atom:link href="https://martinliu.cn/tags/nutanix/index.xml" rel="self" type="application/rss+xml" />
-    <item>
-      <title>为Docker Swarm群集配置Nutanix持久存储</title>
-      <link>https://martinliu.cn/blog/nutanix-dvp/</link>
-      <pubDate>Thu, 02 Nov 2017 00:00:00 +0000</pubDate>
-      
-      <guid>https://martinliu.cn/blog/nutanix-dvp/</guid>
-      <description>本文介绍如何用Docker卷插件的方式，给Docker Swarm的群集挂载Nutanix存储。Nutanix Container Volume Plug-in 简称DVP，可以给容器提供数据持久化的功能。
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Nutanix on 刘征的博客</title><link>https://martinliu.cn/tags/nutanix/</link><description>Recent content in Nutanix on 刘征的博客</description><generator>Hugo -- gohugo.io</generator><language>zh-CN</language><lastBuildDate>Thu, 02 Nov 2017 00:00:00 +0000</lastBuildDate><atom:link href="https://martinliu.cn/tags/nutanix/index.xml" rel="self" type="application/rss+xml"/><item><title>为Docker Swarm群集配置Nutanix持久存储</title><link>https://martinliu.cn/blog/nutanix-dvp/</link><pubDate>Thu, 02 Nov 2017 00:00:00 +0000</pubDate><guid>https://martinliu.cn/blog/nutanix-dvp/</guid><description>本文介绍如何用Docker卷插件的方式，给Docker Swarm的群集挂载Nutanix存储。Nutanix Container Volume Plug-in 简称DVP，可以给容器提供数据持久化的功能。
 本文使用ownCloud网盘应用做功能测试。测试的过程如下，安装部署Docker Datacenter，配置好群集，在UCP的界面里调用DVP插件建持久的数据卷，建立ownCloud服务，部署和测试该服务。
 Nutanix DVP (Docker Volume Plug-in)安装和配置 这一部分描述DVP的安装部署过程，需要连接互联网；安装调试完毕之后，作虚拟机的镜像模板使用。这样Docker Swarm的其它节点也都不需要重复这个步骤了。
 本文使用的是Docker社区文档稳定版 17.03.1-ce ；本文使用的OS是CentOS 7.3。所Docker安装的版本如下：
-[root@centos7-temp]# docker version Client: Version: 17.03.1-ce API version: 1.27 Go version: go1.7.5 Git commit: c6d412e Built: Mon Mar 27 17:05:44 2017 OS/Arch: linux/amd64 Server: Version: 17.03.1-ce API version: 1.27 (minimum version 1.12) Go version: go1.7.5 Git commit: c6d412e Built: Mon Mar 27 17:05:44 2017 OS/Arch: linux/amd64 Experimental: false [root@centos7-temp]# rpm -qa|grep docker docker-ce-17.</description>
-    </item>
-    
-    <item>
-      <title>互联网规模的超融合平台</title>
-      <link>https://martinliu.cn/blog/nu-school-converged-platform/</link>
-      <pubDate>Mon, 20 Feb 2017 00:00:00 +0000</pubDate>
-      
-      <guid>https://martinliu.cn/blog/nu-school-converged-platform/</guid>
-      <description>nu.shool 牛学院系列以视频加文字的形式，向您展示Nutanix云平台的技术特性和细节。
+[root@centos7-temp]# docker version Client: Version: 17.03.1-ce API version: 1.27 Go version: go1.7.5 Git commit: c6d412e Built: Mon Mar 27 17:05:44 2017 OS/Arch: linux/amd64 Server: Version: 17.03.1-ce API version: 1.27 (minimum version 1.12) Go version: go1.7.5 Git commit: c6d412e Built: Mon Mar 27 17:05:44 2017 OS/Arch: linux/amd64 Experimental: false [root@centos7-temp]# rpm -qa|grep docker docker-ce-17.</description></item><item><title>互联网规模的超融合平台</title><link>https://martinliu.cn/blog/nu-school-converged-platform/</link><pubDate>Mon, 20 Feb 2017 00:00:00 +0000</pubDate><guid>https://martinliu.cn/blog/nu-school-converged-platform/</guid><description>nu.shool 牛学院系列以视频加文字的形式，向您展示Nutanix云平台的技术特性和细节。
 本期视频是由《Nutanix圣经》的作者Steven Poitras，向您介绍Nutanix超融合系统架构。
-
-《Nutanix圣经》章节推荐。</description>
-    </item>
-    
-    <item>
-      <title>Nutanix AHV（KVM）Windows虚拟机安装全攻略</title>
-      <link>https://martinliu.cn/blog/install-vms-on-nutanix/</link>
-      <pubDate>Sun, 29 Jan 2017 00:00:00 +0000</pubDate>
-      
-      <guid>https://martinliu.cn/blog/install-vms-on-nutanix/</guid>
-      <description>Windows 虚拟机安装 Nutanix的AHV虚拟机是基于KVM的。本文件假设您使用和安装的是Nutanix社区版本的群集。在上面安装Windows虚拟机的步骤如下：
- 下载操作系统安装光盘 上传操作系统安装光盘到Nutanix群集 （安装Windows虚拟机需要 Fedora virtio 驱动） 新建和配置虚拟机 安装OS 安装Nutanix Guest Tools （NGT）  下面用安装Windows 10举例，说明详细的安装步骤。
+《Nutanix圣经》章节推荐。</description></item><item><title>Nutanix AHV（KVM）Windows虚拟机安装全攻略</title><link>https://martinliu.cn/blog/install-vms-on-nutanix/</link><pubDate>Sun, 29 Jan 2017 00:00:00 +0000</pubDate><guid>https://martinliu.cn/blog/install-vms-on-nutanix/</guid><description>Windows 虚拟机安装 Nutanix的AHV虚拟机是基于KVM的。本文件假设您使用和安装的是Nutanix社区版本的群集。在上面安装Windows虚拟机的步骤如下：
+下载操作系统安装光盘 上传操作系统安装光盘到Nutanix群集 （安装Windows虚拟机需要 Fedora virtio 驱动） 新建和配置虚拟机 安装OS 安装Nutanix Guest Tools （NGT） 下面用安装Windows 10举例，说明详细的安装步骤。
 第一步：下载操作系统 ISO 如果你需要下载 Ubuntu Desktop 点这里。
 从微软的TechNet Evaluation Center下载 Microsoft ISO 注意，评估的服务器版只能使用180天，桌面版能使用90天。
 第二步：上传ISO文件到Nutanix群集 Nutanix群集上提供了镜像服务，可以存储几种格式的镜像：ISO格式的操作系统安装镜像，虚拟机的磁盘(如KVM格式等)。这些镜像文件可以被虚拟机通过挂载CD-ROM设备使用，或者直接克隆出虚拟机的磁盘。操作步骤如下。
 点击右上角的齿轮图标，选择image configuration 点击 upload image按钮
 界面字段解释：
- Name: 镜像文件的名字（用ISO来与磁盘镜像区分一下） Image Type: 选择 ISO Container: 选择用来存储ISO文件的容器 Image Source: 选择上传文件作为镜像来源 Save: 点击Save按钮可以看到上传的进度条。  在上传成功之后，镜像清单中显示刚才的镜像为 Active 状态。
+Name: 镜像文件的名字（用ISO来与磁盘镜像区分一下） Image Type: 选择 ISO Container: 选择用来存储ISO文件的容器 Image Source: 选择上传文件作为镜像来源 Save: 点击Save按钮可以看到上传的进度条。 在上传成功之后，镜像清单中显示刚才的镜像为 Active 状态。
 由于Nutanix的hypervisor是基于Linux KVM技术，它需要附加的Windows驱动，需要下载 Fedora Windows virtio 驱动。 下载地址如下：
 https://fedoraproject.org/wiki/Windows_Virtio_Drivers
 点击第三条 Direct download
-点击 “Stable virtio-win iso” 下载最新的驱动 ISO 文件。</description>
-    </item>
-    
-    <item>
-      <title>Nutanix AHV 虚拟机模板制作</title>
-      <link>https://martinliu.cn/blog/clone-ahv-vm-template/</link>
-      <pubDate>Tue, 10 Jan 2017 00:00:00 +0000</pubDate>
-      
-      <guid>https://martinliu.cn/blog/clone-ahv-vm-template/</guid>
-      <description>本文描述了AHV虚拟化的虚拟机模板的制作过程。首先使用ssh登录cvm，进入acropolis命令行。
+点击 “Stable virtio-win iso” 下载最新的驱动 ISO 文件。</description></item><item><title>Nutanix AHV 虚拟机模板制作</title><link>https://martinliu.cn/blog/clone-ahv-vm-template/</link><pubDate>Tue, 10 Jan 2017 00:00:00 +0000</pubDate><guid>https://martinliu.cn/blog/clone-ahv-vm-template/</guid><description>本文描述了AHV虚拟化的虚拟机模板的制作过程。首先使用ssh登录cvm，进入acropolis命令行。
 找出模板对应的虚拟机 使用 vm.disk_get 命令，按多次tab，显示虚拟机清单，复制模板机名称
 &amp;lt;acropolis&amp;gt; vm.disk_get vm-fedora25 ide.0 { addr { bus: &amp;quot;ide&amp;quot; index: 0 } cdrom: True empty: True } scsi.0 { addr { bus: &amp;quot;scsi&amp;quot; index: 0 } container_id: 4427 container_uuid: &amp;quot;9279ba2c-8e8d-4aea-b00f-410df5a18a23&amp;quot; vmdisk_size: 10737418240 vmdisk_uuid: &amp;quot;7476458e-7917-4df8-b830-a0df5a95dae9&amp;quot; } 创建模板镜像 使用从虚拟机磁盘克隆出镜像的命令。
- &amp;lt;acropolis&amp;gt; image.create fedora25-Template clone_from_vmdisk=7476458e-7917-4df8-b830-a0df5a95dae9 image_type=kDiskImage annotation=&#39;Fedora 25 Server Template&#39; fedora25-Template: complete 模板测试 登录Prism界面，点击镜像服务，确认清单中刚才创建的虚拟机模板镜像；进入vm页面，创建虚拟机，使用 fedora25-Template 镜像做磁盘</description>
-    </item>
-    
-    <item>
-      <title>Nutanix资源站点清单</title>
-      <link>https://martinliu.cn/2017/01/07/nutanix-resource-sites/</link>
-      <pubDate>Sat, 07 Jan 2017 00:00:00 +0000</pubDate>
-      
-      <guid>https://martinliu.cn/2017/01/07/nutanix-resource-sites/</guid>
-      <description>做Nutanix的那些不可不知道的资源网站，这里列出了常用的官方和非官方网站。
+&amp;lt;acropolis&amp;gt; image.create fedora25-Template clone_from_vmdisk=7476458e-7917-4df8-b830-a0df5a95dae9 image_type=kDiskImage annotation='Fedora 25 Server Template' fedora25-Template: complete 模板测试 登录Prism界面，点击镜像服务，确认清单中刚才创建的虚拟机模板镜像；进入vm页面，创建虚拟机，使用 fedora25-Template 镜像做磁盘</description></item><item><title>Nutanix资源站点清单</title><link>https://martinliu.cn/2017/01/07/nutanix-resource-sites/</link><pubDate>Sat, 07 Jan 2017 00:00:00 +0000</pubDate><guid>https://martinliu.cn/2017/01/07/nutanix-resource-sites/</guid><description>做Nutanix的那些不可不知道的资源网站，这里列出了常用的官方和非官方网站。
 Nutanix 官方站点 http://portal.nutanix.com/ http://portal.nutanix.com/
- 在线文档 在线技术支持，case查看和操作 产品和补丁下载  https://next.nutanix.com/ https://next.nutanix.com/
- 产品网上论坛和社区 社区版论坛 博客， Nutanix Connect Blog  技术达人网站和博客 myvirtualcloud.net by Andre Leibovici http://myvirtualcloud.net/nutanix/
+在线文档 在线技术支持，case查看和操作 产品和补丁下载 https://next.nutanix.com/ https://next.nutanix.com/
+产品网上论坛和社区 社区版论坛 博客， Nutanix Connect Blog 技术达人网站和博客 myvirtualcloud.net by Andre Leibovici http://myvirtualcloud.net/nutanix/
 Virtual life style by Joep Piscaer https://www.virtuallifestyle.nl/
 The Nutanix Bible by Steven Poitras http://nutanixbible.com/
 Mark&amp;rsquo;s Blog by Mark Lavi http://mlavi.github.io/
 Jeremy Sallee - Nutanix UI/Frontend 设计师 http://salleedesign.com/stuff/sdwip/home/
 想知道Prism是怎么设计出来的：点这里
 Virtual Dennis by Dennis Laube http://www.virtualdennis.com/category/nutanix/
- 如何ova格式的虚拟机导入Nutanix AHV 镜像服务能够支持Web界面上传导入的格式包括：raw, vhd, vmdk, vdi, iso 和 qcow2 磁盘，导入为Disk后，即可用做模板 如何在Nutanix中制作AHV虚拟机模板 使用acli命令：vm.</description>
-    </item>
-    
-    <item>
-      <title>云计算时代的终结</title>
-      <link>https://martinliu.cn/2017/01/05/The-End-of-Cloud-Computing/</link>
-      <pubDate>Thu, 05 Jan 2017 00:00:00 +0000</pubDate>
-      
-      <guid>https://martinliu.cn/2017/01/05/The-End-of-Cloud-Computing/</guid>
-      <description>天下事分久必合，合久必分，移动互联网代表了现在的云计算时代，很多企业还正在朝这个方向发展呢！革命还没有成功，怎么这个时代就要结束了。来听听XenSource前CEO怎么给你解读边缘计算时代的到来。
+如何ova格式的虚拟机导入Nutanix AHV 镜像服务能够支持Web界面上传导入的格式包括：raw, vhd, vmdk, vdi, iso 和 qcow2 磁盘，导入为Disk后，即可用做模板 如何在Nutanix中制作AHV虚拟机模板 使用acli命令：vm.</description></item><item><title>云计算时代的终结</title><link>https://martinliu.cn/2017/01/05/The-End-of-Cloud-Computing/</link><pubDate>Thu, 05 Jan 2017 00:00:00 +0000</pubDate><guid>https://martinliu.cn/2017/01/05/The-End-of-Cloud-Computing/</guid><description>天下事分久必合，合久必分，移动互联网代表了现在的云计算时代，很多企业还正在朝这个方向发展呢！革命还没有成功，怎么这个时代就要结束了。来听听XenSource前CEO怎么给你解读边缘计算时代的到来。
 “I’m going to take you out to the edge to show you what the future looks like.” So begins a16z partner Peter Levine as he takes us on a “crazy” tour of the history and future of cloud computing — from the constant turns between centralized to distributed computing, and even to his “Forrest Gump rule” of investing in these shifts.
-But… how can we say cloud computing is coming to an “end” when it hasn’t even really started yet?</description>
-    </item>
-    
-    <item>
-      <title>Nutanix AOS 5.0 新版本新特性</title>
-      <link>https://martinliu.cn/2017/01/04/Nutanix-AOS-5.0/</link>
-      <pubDate>Wed, 04 Jan 2017 00:00:00 +0000</pubDate>
-      
-      <guid>https://martinliu.cn/2017/01/04/Nutanix-AOS-5.0/</guid>
-      <description>Nutanix AOS 5.0 是一个很重要的功能更新大版本，它一气儿带来了46项之多的新功能；在您安装或者测试这个版本&amp;gt; 之前，先通过本文快速了解一下这些更新，可能是更加节省时间的方法。
+But… how can we say cloud computing is coming to an “end” when it hasn’t even really started yet?</description></item><item><title>Nutanix AOS 5.0 新版本新特性</title><link>https://martinliu.cn/2017/01/04/Nutanix-AOS-5.0/</link><pubDate>Wed, 04 Jan 2017 00:00:00 +0000</pubDate><guid>https://martinliu.cn/2017/01/04/Nutanix-AOS-5.0/</guid><description>Nutanix AOS 5.0 是一个很重要的功能更新大版本，它一气儿带来了46项之多的新功能；在您安装或者测试这个版本&amp;gt; 之前，先通过本文快速了解一下这些更新，可能是更加节省时间的方法。
 主要功能清单 myvirtualcloud.net网站用了4个blog，讲了下面的36项新特性：
- Cisco UCS B-Series Blade Servers Support Acropolis Affinity and Anti-affinity Acropolis Dynamic Scheduling (DRS++) REST API 2.0 and 3.0 Support for XenServer TechPreview Network Visualization What-if analysis for New workloads and Allocation-based forecasting Native Self-Service Portal Snapshots – Self Service Restore UI Network Partner Integration Framework Metro Availability Witness VM Flash Mode Improvements Acropolis File Services GA (ESXi and AHV) Acropolis Block Services (CHAP authentication) Oracle VM and Oracle Linux Certified for AHV SAP Netweaver stack Certified for AHV Prism Search Improvements (support for Boolean expressions) I/O Metrics Visualization 1-Click Licensing LCM – Lifecycle Manager Additional Prism Improvements AHV Scale Improvements AHV CPU and Memory Hot Add (Tech Preview) Advanced Compression for Cold Data Acropolis Change Block Tracking (CBT) for Backup Vendors Predictable Performance with Autonomic QoS NCC 3.</description>
-    </item>
-    
-    <item>
-      <title>HPE 分兵两路进军超融合市场</title>
-      <link>https://martinliu.cn/2017/01/03/HPE%20%E5%88%86%E5%85%B5%E4%B8%A4%E8%B7%AF%E8%BF%9B%E5%86%9B%E8%B6%85%E8%9E%8D%E5%90%88%E5%B8%82%E5%9C%BA/</link>
-      <pubDate>Tue, 03 Jan 2017 00:00:00 +0000</pubDate>
-      
-      <guid>https://martinliu.cn/2017/01/03/HPE%20%E5%88%86%E5%85%B5%E4%B8%A4%E8%B7%AF%E8%BF%9B%E5%86%9B%E8%B6%85%E8%9E%8D%E5%90%88%E5%B8%82%E5%9C%BA/</guid>
-      <description>关于HP超融合产品家族的变迁简史和相关评论，本文转自 HC 250? HC 380? What are they actually for?。
-转帖：《HC 250? HC 380? What are they actually for?》 http://www.theregister.co.uk/2016/12/05/the_state_of_hpes_hyperconverged_play/ 
-HP/HPE 超融合产品线发展如下图所示 +Comment The positioning of these two hyper-converged systems is confusing. We observe that the physically larger and vSphere-only HC 380, with its brand number larger than the HC 250, is for use by operators requiring operational simplicity, whereas the physically smaller and denser HC 250 is for more complicated operations in both vSphere and Hyper-V environments, yet it covers ROBO needs where customers don&amp;rsquo;t have skilled IT staff.</description>
-    </item>
-    
-    <item>
-      <title>Nutanix CE All In One</title>
-      <link>https://martinliu.cn/2017/01/02/Nutanix-CE-all-in-one/</link>
-      <pubDate>Mon, 02 Jan 2017 00:00:00 +0000</pubDate>
-      
-      <guid>https://martinliu.cn/2017/01/02/Nutanix-CE-all-in-one/</guid>
-      <description>Nutanix CE是Nutanix社区版软件的简称，它是Nutanix企业版产品的功能精简集合，是体验和测试Nutanix技术的很方便的途径。
+Cisco UCS B-Series Blade Servers Support Acropolis Affinity and Anti-affinity Acropolis Dynamic Scheduling (DRS++) REST API 2.0 and 3.0 Support for XenServer TechPreview Network Visualization What-if analysis for New workloads and Allocation-based forecasting Native Self-Service Portal Snapshots – Self Service Restore UI Network Partner Integration Framework Metro Availability Witness VM Flash Mode Improvements Acropolis File Services GA (ESXi and AHV) Acropolis Block Services (CHAP authentication) Oracle VM and Oracle Linux Certified for AHV SAP Netweaver stack Certified for AHV Prism Search Improvements (support for Boolean expressions) I/O Metrics Visualization 1-Click Licensing LCM – Lifecycle Manager Additional Prism Improvements AHV Scale Improvements AHV CPU and Memory Hot Add (Tech Preview) Advanced Compression for Cold Data Acropolis Change Block Tracking (CBT) for Backup Vendors Predictable Performance with Autonomic QoS NCC 3.</description></item><item><title>HPE 分兵两路进军超融合市场</title><link>https://martinliu.cn/2017/01/03/HPE%20%E5%88%86%E5%85%B5%E4%B8%A4%E8%B7%AF%E8%BF%9B%E5%86%9B%E8%B6%85%E8%9E%8D%E5%90%88%E5%B8%82%E5%9C%BA/</link><pubDate>Tue, 03 Jan 2017 00:00:00 +0000</pubDate><guid>https://martinliu.cn/2017/01/03/HPE%20%E5%88%86%E5%85%B5%E4%B8%A4%E8%B7%AF%E8%BF%9B%E5%86%9B%E8%B6%85%E8%9E%8D%E5%90%88%E5%B8%82%E5%9C%BA/</guid><description>关于HP超融合产品家族的变迁简史和相关评论，本文转自 HC 250? HC 380? What are they actually for?。
+转帖：《HC 250? HC 380? What are they actually for?》 http://www.theregister.co.uk/2016/12/05/the_state_of_hpes_hyperconverged_play/
+HP/HPE 超融合产品线发展如下图所示 +Comment The positioning of these two hyper-converged systems is confusing. We observe that the physically larger and vSphere-only HC 380, with its brand number larger than the HC 250, is for use by operators requiring operational simplicity, whereas the physically smaller and denser HC 250 is for more complicated operations in both vSphere and Hyper-V environments, yet it covers ROBO needs where customers don&amp;rsquo;t have skilled IT staff.</description></item><item><title>Nutanix CE All In One</title><link>https://martinliu.cn/2017/01/02/Nutanix-CE-all-in-one/</link><pubDate>Mon, 02 Jan 2017 00:00:00 +0000</pubDate><guid>https://martinliu.cn/2017/01/02/Nutanix-CE-all-in-one/</guid><description>Nutanix CE是Nutanix社区版软件的简称，它是Nutanix企业版产品的功能精简集合，是体验和测试Nutanix技术的很方便的途径。
 Nutanix Community Edition 社区版简介 这个产品目前的位置在 https://www.nutanix.com/products/community-edition/；目前这个页面还没有中文化，下面简单介绍以下。
- Feature Rich Software 它是一个功能丰富的软件 Broad Hardware Support &amp;amp; Available On-demand 很丰富的硬件支持，在网上可以按需体验 Zero Cost 零成本  用Nutanix CE社区版体验，体验超融合技术的三个步骤。
- 注册 ： 这次Nutanix社区，下载安装镜像 部署 ： 在你的服务器上部署，或者在Ravello上在线开启体验；官方安装部署视频点这里 玩耍 ： 安装完之后就可以开心地玩耍了，有问题请移步 社区版论坛  用物理机安装和体验的几点注意事项如下：
- 物理机安装支持1，3，4个节点的部署；推荐内存在32GB以上；由于版本CE 2016.12.22的CVM的内存需求是24GB，由于加入了自服务门户功能；建议使用SSD硬盘，最好能混搭一些普通硬盘。 安装后的首次启动需要系统能链接互联网，否则CVM会启动不了，首次启动成功之后就不用再联网了 用虚拟机安装，请注意本机的内存，和给虚拟机分配的内存，网上也有修改对内存和CPU限制修改的脚本  产品在社区里的文档页面： 点这里
+Feature Rich Software 它是一个功能丰富的软件 Broad Hardware Support &amp;amp; Available On-demand 很丰富的硬件支持，在网上可以按需体验 Zero Cost 零成本 用Nutanix CE社区版体验，体验超融合技术的三个步骤。
+注册 ： 这次Nutanix社区，下载安装镜像 部署 ： 在你的服务器上部署，或者在Ravello上在线开启体验；官方安装部署视频点这里 玩耍 ： 安装完之后就可以开心地玩耍了，有问题请移步 社区版论坛 用物理机安装和体验的几点注意事项如下：
+物理机安装支持1，3，4个节点的部署；推荐内存在32GB以上；由于版本CE 2016.12.22的CVM的内存需求是24GB，由于加入了自服务门户功能；建议使用SSD硬盘，最好能混搭一些普通硬盘。 安装后的首次启动需要系统能链接互联网，否则CVM会启动不了，首次启动成功之后就不用再联网了 用虚拟机安装，请注意本机的内存，和给虚拟机分配的内存，网上也有修改对内存和CPU限制修改的脚本 产品在社区里的文档页面： 点这里
 参考配置 Intel NUC 最新版一台，i7处理器，两条16GB内存，两条512GB硬盘。它的好处是便携；然而内存还是有限，不能跑多少个虚拟机。
-相关文档  在VMware Workstation上安装Nutanix CE Nutanix Community Edition安装在vSphere环境中 浅尝超融合之Nutanix(上)介绍篇 浅尝超融合之Nutanix(下)安装篇 Nutanix超”容”合之ACS Acropolis Container Service(下)实战篇01 Nutanix超”容”合之ACS Docker Volume Plugin的使用和数据持久化测试 http://nutanix.club/ Nutanix圣经  </description>
-    </item>
-    
-  </channel>
-</rss>
+相关文档 在VMware Workstation上安装Nutanix CE Nutanix Community Edition安装在vSphere环境中 浅尝超融合之Nutanix(上)介绍篇 浅尝超融合之Nutanix(下)安装篇 Nutanix超”容”合之ACS Acropolis Container Service(下)实战篇01 Nutanix超”容”合之ACS Docker Volume Plugin的使用和数据持久化测试 http://nutanix.club/ Nutanix圣经</description></item></channel></rss>

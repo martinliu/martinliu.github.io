@@ -1,24 +1,9 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
-  <channel>
-    <title>6.0.201 on 刘征的博客</title>
-    <link>https://martinliu.cn/tags/6.0.201/</link>
-    <description>Recent content in 6.0.201 on 刘征的博客</description>
-    <generator>Hugo -- gohugo.io</generator>
-    <language>zh-CN</language>
-    <lastBuildDate>Thu, 21 Feb 2013 09:24:38 +0000</lastBuildDate><atom:link href="https://martinliu.cn/tags/6.0.201/index.xml" rel="self" type="application/rss+xml" />
-    <item>
-      <title>TIPS install XenServer on Mac Mini 6.1 </title>
-      <link>https://martinliu.cn/2013/02/21/tips-install-xenserver-on-mac-mini-6-1/</link>
-      <pubDate>Thu, 21 Feb 2013 09:24:38 +0000</pubDate>
-      
-      <guid>https://martinliu.cn/2013/02/21/tips-install-xenserver-on-mac-mini-6-1/</guid>
-      <description>[caption id=&amp;ldquo;attachment_52258&amp;rdquo; align=&amp;ldquo;aligncenter&amp;rdquo; width=&amp;ldquo;640&amp;rdquo;]mac-mini-2012-with-XenServer[/caption]
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>6.0.201 on 刘征的博客</title><link>https://martinliu.cn/tags/6.0.201/</link><description>Recent content in 6.0.201 on 刘征的博客</description><generator>Hugo -- gohugo.io</generator><language>zh-CN</language><lastBuildDate>Thu, 21 Feb 2013 09:24:38 +0000</lastBuildDate><atom:link href="https://martinliu.cn/tags/6.0.201/index.xml" rel="self" type="application/rss+xml"/><item><title>TIPS install XenServer on Mac Mini 6.1</title><link>https://martinliu.cn/2013/02/21/tips-install-xenserver-on-mac-mini-6-1/</link><pubDate>Thu, 21 Feb 2013 09:24:38 +0000</pubDate><guid>https://martinliu.cn/2013/02/21/tips-install-xenserver-on-mac-mini-6-1/</guid><description>[caption id=&amp;ldquo;attachment_52258&amp;rdquo; align=&amp;ldquo;aligncenter&amp;rdquo; width=&amp;ldquo;640&amp;rdquo;]mac-mini-2012-with-XenServer[/caption]
 今天尝试在Mac Mini上安装XenServer，下面把经验共享一下。我遇到的问题有两个：
-  网卡无法识别：使用默认安装盘安装，提示没有检测到网卡，安装无法继续
-  网卡驱动植入失败：在按了F9加载驱动的时候，没有发现驱动程序，无法继续安装
-  安装完毕之后，重启，屏幕上显示一个带问号的文件夹，一闪一闪无法正常启动XenServer
-  经过一番折腾，发现这些点主意一下，应该就没有问题。
+网卡无法识别：使用默认安装盘安装，提示没有检测到网卡，安装无法继续
+网卡驱动植入失败：在按了F9加载驱动的时候，没有发现驱动程序，无法继续安装
+安装完毕之后，重启，屏幕上显示一个带问号的文件夹，一闪一闪无法正常启动XenServer
+经过一番折腾，发现这些点主意一下，应该就没有问题。
 [caption id=&amp;ldquo;attachment_52255&amp;rdquo; align=&amp;ldquo;aligncenter&amp;rdquo; width=&amp;ldquo;300&amp;rdquo;] 启动Macmini[/caption]
 在启动Mac Mini的时候，在“咚”的一声之前，就按住ALT键，否则没法出现上面的屏幕，我用的是USB盘启动，所以要选择右侧的图标。
 [caption id=&amp;ldquo;attachment_52256&amp;rdquo; align=&amp;ldquo;aligncenter&amp;rdquo; width=&amp;ldquo;300&amp;rdquo;] 进入menu.c32菜单[/caption]
@@ -29,8 +14,4 @@
 [caption id=&amp;ldquo;attachment_52250&amp;rdquo; align=&amp;ldquo;aligncenter&amp;rdquo; width=&amp;ldquo;300&amp;rdquo;] XenServer 6.0.201 with driver[/caption]
 [caption id=&amp;ldquo;attachment_52251&amp;rdquo; align=&amp;ldquo;aligncenter&amp;rdquo; width=&amp;ldquo;300&amp;rdquo;] xs-repository-list 实例[/caption]
 即使你不是安装XenServer6.0.201，也推荐使用UltraISO来把iso文件写入一个USB盘来安装，因为Mac Mini没有光驱，而且这样不用刻盘，更加环保一点。
-最后一个Tips：这个可能是解决问题3的技巧，在安装的最后一个屏幕上，安装程序提示移除Mac Mini上的其他所有截至，然后点击回车完成安装。在这个屏幕上要识时务的把安装U盘从机器上拔除，然后点击回车来重启Mac Mini。经过我的验证，拔出U盘后好像没有在遇到过闪烁文件夹的重启不了的问题。建议都使用自带Broadcom tg3网卡驱动的6.1来安装，否则6.0.201安装完成之后，一旦打了补丁，还需要下载for这个补丁的新版本的网卡驱动，在重新手工打上该驱动，否则网卡会起不起来。</description>
-    </item>
-    
-  </channel>
-</rss>
+最后一个Tips：这个可能是解决问题3的技巧，在安装的最后一个屏幕上，安装程序提示移除Mac Mini上的其他所有截至，然后点击回车完成安装。在这个屏幕上要识时务的把安装U盘从机器上拔除，然后点击回车来重启Mac Mini。经过我的验证，拔出U盘后好像没有在遇到过闪烁文件夹的重启不了的问题。建议都使用自带Broadcom tg3网卡驱动的6.1来安装，否则6.0.201安装完成之后，一旦打了补丁，还需要下载for这个补丁的新版本的网卡驱动，在重新手工打上该驱动，否则网卡会起不起来。</description></item></channel></rss>

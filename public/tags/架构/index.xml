@@ -1,28 +1,12 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
-  <channel>
-    <title>架构 on 刘征的博客</title>
-    <link>https://martinliu.cn/tags/%E6%9E%B6%E6%9E%84/</link>
-    <description>Recent content in 架构 on 刘征的博客</description>
-    <generator>Hugo -- gohugo.io</generator>
-    <language>zh-CN</language>
-    <lastBuildDate>Sun, 17 May 2015 06:29:33 +0000</lastBuildDate><atom:link href="https://martinliu.cn/tags/%E6%9E%B6%E6%9E%84/index.xml" rel="self" type="application/rss+xml" />
-    <item>
-      <title>RedHat互联网平台解决方案</title>
-      <link>https://martinliu.cn/2015/05/17/redhate4ba92e88194e7bd91e5b9b3e58fb0e8a7a3e586b3e696b9e6a188/</link>
-      <pubDate>Sun, 17 May 2015 06:29:33 +0000</pubDate>
-      
-      <guid>https://martinliu.cn/2015/05/17/redhate4ba92e88194e7bd91e5b9b3e58fb0e8a7a3e586b3e696b9e6a188/</guid>
-      <description>ppt点这里下载：[su_button target=&amp;ldquo;blank&amp;rdquo; style=&amp;ldquo;stroked&amp;rdquo; size=&amp;ldquo;2&amp;rdquo; icon=&amp;ldquo;icon: cloud-download&amp;rdquo;]下载[/su_button]
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>架构 on 刘征的博客</title><link>https://martinliu.cn/tags/%E6%9E%B6%E6%9E%84/</link><description>Recent content in 架构 on 刘征的博客</description><generator>Hugo -- gohugo.io</generator><language>zh-CN</language><lastBuildDate>Sun, 17 May 2015 06:29:33 +0000</lastBuildDate><atom:link href="https://martinliu.cn/tags/%E6%9E%B6%E6%9E%84/index.xml" rel="self" type="application/rss+xml"/><item><title>RedHat互联网平台解决方案</title><link>https://martinliu.cn/2015/05/17/redhate4ba92e88194e7bd91e5b9b3e58fb0e8a7a3e586b3e696b9e6a188/</link><pubDate>Sun, 17 May 2015 06:29:33 +0000</pubDate><guid>https://martinliu.cn/2015/05/17/redhate4ba92e88194e7bd91e5b9b3e58fb0e8a7a3e586b3e696b9e6a188/</guid><description>ppt点这里下载：[su_button target=&amp;ldquo;blank&amp;rdquo; style=&amp;ldquo;stroked&amp;rdquo; size=&amp;ldquo;2&amp;rdquo; icon=&amp;ldquo;icon: cloud-download&amp;rdquo;]下载[/su_button]
 参考文档： AS深圳2014演讲PPT最终稿 http://pan.baidu.com/s/1i3KQFRJ QCon北京2015（PPT） http://pan.baidu.com/s/1sj2t1yl 这两个目录里面干货还是不少，可以下载了慢慢看。
-
 学习了一写文档后，逐渐对互联网公司的架构挑战需求和现状有了一些了解。下面先聊下这方面的一些理解。
 中国规模交易量 什么叫中国规模交易量，以淘宝2014-11-11 双十一当天的数据举例：
 [su_list icon=&amp;ldquo;icon: rocket&amp;rdquo;]
-  交易创建 80000笔/秒
-  支付 38000笔/秒
-  24小时完成交易额 571亿元人民币 // 93 亿美元
-  [/su_list]
+交易创建 80000笔/秒
+支付 38000笔/秒
+24小时完成交易额 571亿元人民币 // 93 亿美元
+[/su_list]
 乍一看这个数字可能没什么感觉，可以比较一下美国的情况。全美所有的传统商场在“黑色星期五”一天的销售也仅为91亿美元，即使加上网络销售的24亿美元也比天猫“双十一”多不了太多。也就是说，美国黑五当天全网的电商是中国淘宝/天猫一家的四分之一。
 因此中国人口基数大，网民数量大，假如您能激起大众的兴趣的话，你是不缺访问量的。对于意外的大规模的峰值访问量的处理，如果系统架构和应用没有提前经过特别的架构调整、优化；用膝盖都能想到系统挂掉、基础架构崩溃、交易数据出错是必然的事情。
 理解到这个潜在的风险、需求和调整，我们所有设计和从事IT基础架构技术服务的人，可以想想，不向前看，不向BAT学习，不站在他们的肩膀上设计和调整自己的应用的话。想保证系统平安，除非业务是失败的业务（没有流量），否则没有平安可言。
@@ -32,11 +16,6 @@
 全新的纯X86的架构就在面前，BAT已经证明了它和开源技术组合在一起就是多快好省的架构。因此，IT架构的转型也成了必然选择。试想转型之后的机房，每个机架都是标准化的工作单元，它可能是几种类型：纯物理机计算节点、纯虚拟机计算节点（服务器虚拟化或者OpenStack等）、纯物理机存储节点（软件定义存储）；或运行容器的物理机或者虚拟机。另外机架上的网络设备和核心网络设备必然有他们自己的设计。这是我的一个猜测，有机会还需要和BAT的人多了解。
 开源技术 BAT用到的开源技术真的是不甚枚举，也没有必要逐一分析。基本上各个领域里从开发堆栈、到架构堆栈和运维管理堆栈；各个方面的前几位的项目都有实践和应用。
 红帽 那么红帽的互联网平台解决方案是什么？红帽的定位是基础架构技术厂商，因此红帽的全套技术框架就是它的互联网解决方案。如下图所示。
-
 有些产品模块需要稍微说明一下，方便和开源项目对应起来。
 [su_list icon=&amp;ldquo;icon: linux&amp;rdquo;]
-  Red Hat Storage server / ICE : Gluster, Ceph</description>
-    </item>
-    
-  </channel>
-</rss>
+Red Hat Storage server / ICE : Gluster, Ceph</description></item></channel></rss>

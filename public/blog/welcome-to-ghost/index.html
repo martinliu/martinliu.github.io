@@ -1,303 +1,31 @@
-<!doctype html>
-<html lang="zh-cn">
-  <head>
-  <meta charset="utf-8">
-<title>切换到Ghost&#43;七牛 - 刘征的博客</title>
-<meta name="viewport" content="width=device-width, initial-scale=1">
-
-
-<meta name="generator" content="Hugo 0.80.0" /><meta property="og:site_name" content="刘征的博客">
-  <meta property="og:title" content="切换到Ghost&#43;七牛">
-  <meta property="og:description" content="Martin&#39;s Liu is bloging on DevOps and SRE topics">
-  <meta property="description" content="Martin&#39;s Liu is bloging on DevOps and SRE topics">
-  <meta property="og:url" content="https://martinliu.cn/blog/welcome-to-ghost/">
-  <meta property="og:type" content="article">
-  
-    <meta property="og:image" content="https://martinliu.cn/img/main/logo.jpg">
-  
-  <link rel="stylesheet" href="/css/bundle.min.d9e04ae08c9b3049b766dbd4aeab7d862c5ea1d13679b621490e0f5df5507497.css" integrity="sha256-2eBK4IybMEm3ZtvUrqt9hixeodE2ebYhSQ4PXfVQdJc="><link rel="stylesheet" href="/css/add-on.css">
-</head>
-
-  <body>
-    
-
-<header id="site-header">
-  <nav id="site-nav">
-    <h1 class="nav-title">
-      <a href="/" class="nav">
-        
-          博客
-        
-      </a>
-    </h1>
-    <menu id="site-nav-menu" class="flyout-menu menu">
-      
-        
-          
-          <a href="/" class="nav link"><i class='fas fa-home'></i> 首页</a>
-        
-      
-        
-          
-          <a href="/about/" class="nav link"><i class='far fa-id-card'></i> 关于</a>
-        
-      
-        
-          
-          <a href="/blog/" class="nav link"><i class='far fa-newspaper'></i> 博客</a>
-        
-      
-        
-          
-          <a href="/categories/" class="nav link"><i class='fas fa-sitemap'></i> 分类</a>
-        
-      
-        
-          
-          <a href="/contact/" class="nav link"><i class='far fa-envelope'></i> 联系</a>
-        
-      
-      <a href="#share-menu" class="nav link share-toggle"><i class="fas fa-share-alt">&nbsp;</i>Share</a>
-      <a href="#search-input" class="nav link search-toggle"><i class="fas fa-search">&nbsp;</i>Search</a>
-    </menu>
-    <a href="#search-input" class="nav search-toggle"><i class="fas fa-search fa-2x">&nbsp;</i></a>
-    <a href="#share-menu" class="nav share-toggle"><i class="fas fa-share-alt fa-2x">&nbsp;</i></a>
-    <a href="#lang-menu" class="nav lang-toggle" lang="zh-cn">zh-cn</a>
-    <a href="#site-nav" class="nav nav-toggle"><i class="fas fa-bars fa-2x"></i></a>
-  </nav>
-  <menu id="search" class="menu"><input id="search-input" class="search-input menu"></input><div id="search-results" class="search-results menu"></div></menu>
-  <menu id="lang-menu" class="flyout-menu menu">
-  <a href="#" lang="zh-cn" class="nav link active">中文 (zh-cn)</a>
-  
-    
-      
-        <a href="/en" lang="en" class="nav no-lang link">English (en)</a>
-      
-    
-      
-    
-  
-</menu>
-
-  
-    <menu id="share-menu" class="flyout-menu menu">
-      <h1>Share Post</h1>
-      
-
-
-
-
-  
-    
-    <a href="//twitter.com/share?text=%e5%88%87%e6%8d%a2%e5%88%b0Ghost%2b%e4%b8%83%e7%89%9b&amp;url=https%3a%2f%2fmartinliu.cn%2fblog%2fwelcome-to-ghost%2f" target="_blank" rel="noopener" class="nav share-btn twitter">
-        <p>Twitter</p>
-      </a>
-  
-
-  
-      <a href="//www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fmartinliu.cn%2fblog%2fwelcome-to-ghost%2f" target="_blank" rel="noopener" class="nav share-btn facebook">
-        <p>Facebook</p>
-        </a>
-  
-
-  
-    <a href="//www.reddit.com/submit?url=https%3a%2f%2fmartinliu.cn%2fblog%2fwelcome-to-ghost%2f&amp;title=%e5%88%87%e6%8d%a2%e5%88%b0Ghost%2b%e4%b8%83%e7%89%9b" target="_blank" rel="noopener" class="nav share-btn reddit">
-          <p>Reddit</p>
-        </a>
-  
-
-  
-        <a href="//www.linkedin.com/shareArticle?url=https%3a%2f%2fmartinliu.cn%2fblog%2fwelcome-to-ghost%2f&amp;title=%e5%88%87%e6%8d%a2%e5%88%b0Ghost%2b%e4%b8%83%e7%89%9b" target="_blank" rel="noopener" class="nav share-btn linkedin">
-            <p>LinkedIn</p>
-          </a>
-  
-
-  
-        <a href="//www.pinterest.com/pin/create/button/?url=https%3a%2f%2fmartinliu.cn%2fblog%2fwelcome-to-ghost%2f&amp;description=%e5%88%87%e6%8d%a2%e5%88%b0Ghost%2b%e4%b8%83%e7%89%9b" target="_blank" rel="noopener" class="nav share-btn pinterest">
-          <p>Pinterest</p>
-        </a>
-  
-
-  
-        <a href="mailto:?subject=%e6%9f%a5%e7%9c%8b%e6%ad%a4%e5%b8%96%e5%ad%90%e7%9a%84%e4%bd%9c%e8%80%85 %7b%20%20%20%20%20%20%20%20map%5b%5d%7d&amp;body=https%3a%2f%2fmartinliu.cn%2fblog%2fwelcome-to-ghost%2f" target="_blank" class="nav share-btn email" data-proofer-ignore>
-          <p>Email</p>
-        </a>
-  
-
-
-    </menu>
-  
-</header>
-
-    <div id="wrapper">
-      <section id="site-intro" >
-  <a href="/"><img src="https://martinliu.cn/img/main/logo.jpg" class="circle" width="100" alt="Martin Liu" /></a>
-  <header>
-    <h1>Martin Liu's Blog</h1>
-  </header>
-  <main>
-    <p>Community Advocate, DevOps China Community Organizer</p>
-  </main>
-  
-    <footer>
-      <ul class="socnet-icons">
-        
-
-        <li><a href="//github.com/martinliu" target="_blank" rel="noopener" title="GitHub" class="fab fa-github"></a></li>
-
-
-
-
-
-
-
-
-
-
-
-<li><a href="//www.linkedin.com/in/liuzheng" target="_blank" rel="noopener" title="LinkedIn" class="fab fa-linkedin"></a></li>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<li><a href="//twitter.com/martinliu" target="_blank" rel="noopener" title="Twitter" class="fab fa-twitter"></a></li>
-
-
-
-
-
-
-
-
-
-
-
-
-
-      </ul>
-    </footer>
-  
-</section>
-
-      <main id="site-main">
-        
-  <article class="post">
-    <header>
-  <div class="title">
-    
-      <h2><a href="/blog/welcome-to-ghost/">切换到Ghost&#43;七牛</a></h2>
-    
-    
-  </div>
-  <div class="meta">
-    <time datetime="2017-09-21 00:00:00 &#43;0000 UTC">September 21, 2017</time>
-    
-    <p>2 分钟</p>
-  </div>
-</header>
-
-    <div id="socnet-share">
-      
-
-
-
-
-  
-    
-    <a href="//twitter.com/share?text=%e5%88%87%e6%8d%a2%e5%88%b0Ghost%2b%e4%b8%83%e7%89%9b&amp;url=https%3a%2f%2fmartinliu.cn%2fblog%2fwelcome-to-ghost%2f" target="_blank" rel="noopener" class="nav share-btn twitter">
-        <p>Twitter</p>
-      </a>
-  
-
-  
-      <a href="//www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fmartinliu.cn%2fblog%2fwelcome-to-ghost%2f" target="_blank" rel="noopener" class="nav share-btn facebook">
-        <p>Facebook</p>
-        </a>
-  
-
-  
-    <a href="//www.reddit.com/submit?url=https%3a%2f%2fmartinliu.cn%2fblog%2fwelcome-to-ghost%2f&amp;title=%e5%88%87%e6%8d%a2%e5%88%b0Ghost%2b%e4%b8%83%e7%89%9b" target="_blank" rel="noopener" class="nav share-btn reddit">
-          <p>Reddit</p>
-        </a>
-  
-
-  
-        <a href="//www.linkedin.com/shareArticle?url=https%3a%2f%2fmartinliu.cn%2fblog%2fwelcome-to-ghost%2f&amp;title=%e5%88%87%e6%8d%a2%e5%88%b0Ghost%2b%e4%b8%83%e7%89%9b" target="_blank" rel="noopener" class="nav share-btn linkedin">
-            <p>LinkedIn</p>
-          </a>
-  
-
-  
-        <a href="//www.pinterest.com/pin/create/button/?url=https%3a%2f%2fmartinliu.cn%2fblog%2fwelcome-to-ghost%2f&amp;description=%e5%88%87%e6%8d%a2%e5%88%b0Ghost%2b%e4%b8%83%e7%89%9b" target="_blank" rel="noopener" class="nav share-btn pinterest">
-          <p>Pinterest</p>
-        </a>
-  
-
-  
-        <a href="mailto:?subject=%e6%9f%a5%e7%9c%8b%e6%ad%a4%e5%b8%96%e5%ad%90%e7%9a%84%e4%bd%9c%e8%80%85 %7b%20%20%20%20%20%20%20%20map%5b%5d%7d&amp;body=https%3a%2f%2fmartinliu.cn%2fblog%2fwelcome-to-ghost%2f" target="_blank" class="nav share-btn email" data-proofer-ignore>
-          <p>Email</p>
-        </a>
-  
-
-
-    </div>
-    <div class="content">
-      
-      <p>在经历了一个很长的周期之后，我的blog又回到了最原始的状态。很早以前学习网页开发的时候，用写字板编写html代码，后来是Asp，工作以后是用Blogspot，之后是WordPress，然后是Jekyll+github，现在是Ghost+七牛。</p>
-<p>4个拐点</p>
-<p>我的blog经历了四个转折点，下面稍微说下，为啥选择了某个平台，为啥后来又放弃了。</p>
-<ol>
-<li>
-<pre><code>免费博客平台：最初我试用了几个国内外免费的服务，最后发现Blogspot的体验要优于其他所有平台，而且具备一定的定制能力，还没有广告。然后就一直用到了Blogspot被墙的时候，那时候我还没有买域名。记得MSN的Space也用过，如果你没有用过MSN的话，当我没说这句话。总之免费blog空间的弊端就是，你码的字和图片是给别人的，不属于你自己，没有延续性。
-</code></pre>
-</li>
-<li>
-<pre><code>WordPress：是我用的时间最长的平台，它的好处是可以host在任何php虚拟空间和云主机上；优势就是功能强。曾经浪花费了大量的时间，在测试和感受各种插件和皮肤上。而且WP的搬家工作也容易，因此换了很多个空间，一共有多少个主机空间现在已经都忘了。放弃WP的原因：维护LAMP堆栈的工作量还是有的，即使在PHP的虚拟空间里，这个系统的优化工作还是持续不断的要做的，否则网站速度会很慢，而且时快时慢，网站的访问性能其实无法保证。因此在这个过程中必须使用CDN服务，七牛的wp插件是我用的最长时间的，因此我早期的blog的图片都在七牛上，它给我了一个备份和加速图片的福利。性能不稳定，页面打开速度慢是放弃它的主要原因。
-</code></pre>
-</li>
-<li>
-<pre><code>Jekyll+GitHub：选择这个组合，开始于我重度使用Github的时候。而且macOS上安装Jekyll这种静态blog程序很方便，捣鼓起来之后，就感觉比WP方便简单直接多了。发现这个方式非常轻量和简洁。而且Github.io的免费静态网站host服务还支持自定义域名。因此，我做了把之前所有WP的文章导出为MD格式文档的数据迁移工作。由于之前WP文章里的图，已近都存放在七牛里了，因此这次我做了一个出乎意料敏捷轻松的转身。使用过程中，逐渐发现了Jekyll的各种不足，界面和格式的定制工作还是有的，即使用几十刀买的皮肤都会让你用到难以忍受，毕竟不是想developer那样天天写代码，也逐渐感到Jekyll的简洁变成了简陋。代码定制的工作量和难度大是放弃它的主要原因。
-</code></pre>
-</li>
-<li>
-<pre><code>Ghost+七牛：其实早就瞄上Ghost了，可是一种没有下决心换。直到最近我开始把Ghost安装在Mac OS的笔记本电脑上，发现在本机编辑和维护文章资料，速度飞快，和以前WP在线编辑简直是天壤之别。如果Ghost应用跑在自己的笔记本电脑上的话，既可以离线工作，像之前用Jekyll+Github组合一样，也更可以不需要购买任何虚拟主机和空间了，在本机离线工作的速度和效率好，而且稳定太多了。 buster这个程序是这次切换到Ghost的催化剂，它可以把Ghost网站的全站导出成静态文件，线上就只需要一个CDN空间了。七牛的qshell工具可以方便地把本地的静态网站文件夹，同步到CDN的buckte存储中。切换到这个方案的原因是：网站变为纯静态网页，全站html/css和图片全面上CDN，配置全球加速网站域名，享用七牛的免费套餐。
-</code></pre>
-</li>
-</ol>
-<p>下面花一点篇幅介绍一下目前的blog环境细节。简单地说：目前是在笔记本上跑Ghost服务器，这样就省去了云主机和虚拟主机空间的需求，把ghost的站点导出为静态网页和图片，然后增量地上传到七牛的CDN上去。
-Ghost本地安装</p>
-<p>我的操作系统是MacOS，用的是2017款MBP。</p>
-<p>先安装node.js，进入https://nodejs.org/en/ 在网站的首页上就可以下载到安装包，下载安装即可。也可以用 brew 安装。安装完了以后就获得了 npm 包管理程序。</p>
-<p>之后参考https://docs.ghost.org/v1.0.0/docs/install#pre-requisites 的文档安装 ghost-cli ； 然后用ghost的命令行来实现ghost程序的安装和升级。</p>
-<p>用ghost-cli安装ghost服务器的时候，要选择local的方式，它会使用sqllite作为数据库，这样做管理和维护Ghost应用栈的工作就都在本地了。</p>
-<p>ghost服务器的初始化 ghost install local 这个命令会问你几个问题，全都用默认即可。安装完之后就可以看到服务器运行的状态了。</p>
-<pre><code>martin@mbp ghost status
+<!doctype html><html lang=zh-cn><head><meta charset=utf-8><title>切换到Ghost+七牛 - 刘征的博客</title><meta name=viewport content="width=device-width,initial-scale=1"><meta name=generator content="Hugo 0.80.0"><meta property="og:site_name" content="刘征的博客"><meta property="og:title" content="切换到Ghost+七牛"><meta property="og:description" content="Martin's Liu is bloging on DevOps and SRE topics"><meta property="description" content="Martin's Liu is bloging on DevOps and SRE topics"><meta property="og:url" content="https://martinliu.cn/blog/welcome-to-ghost/"><meta property="og:type" content="article"><meta property="og:image" content="https://martinliu.cn/img/main/logo.jpg"><link rel=stylesheet href=/css/bundle.min.d9e04ae08c9b3049b766dbd4aeab7d862c5ea1d13679b621490e0f5df5507497.css integrity="sha256-2eBK4IybMEm3ZtvUrqt9hixeodE2ebYhSQ4PXfVQdJc="><link rel=stylesheet href=/css/add-on.css></head><body><header id=site-header><nav id=site-nav><h1 class=nav-title><a href=/ class=nav>博客</a></h1><menu id=site-nav-menu class="flyout-menu menu"><a href=/ class="nav link"><i class="fas fa-home"></i>首页</a>
+<a href=/about/ class="nav link"><i class="far fa-id-card"></i>关于</a>
+<a href=/blog/ class="nav link"><i class="far fa-newspaper"></i>博客</a>
+<a href=/categories/ class="nav link"><i class="fas fa-sitemap"></i>分类</a>
+<a href=/contact/ class="nav link"><i class="far fa-envelope"></i>联系</a>
+<a href=#share-menu class="nav link share-toggle"><i class="fas fa-share-alt">&nbsp;</i>Share</a>
+<a href=#search-input class="nav link search-toggle"><i class="fas fa-search">&nbsp;</i>Search</a></menu>
+<a href=#search-input class="nav search-toggle"><i class="fas fa-search fa-2x">&nbsp;</i></a>
+<a href=#share-menu class="nav share-toggle"><i class="fas fa-share-alt fa-2x">&nbsp;</i></a>
+<a href=#lang-menu class="nav lang-toggle" lang=zh-cn>zh-cn</a>
+<a href=#site-nav class="nav nav-toggle"><i class="fas fa-bars fa-2x"></i></a></nav><menu id=search class=menu><input id=search-input class="search-input menu"></input><div id=search-results class="search-results menu"></div></menu><menu id=lang-menu class="flyout-menu menu"><a href=# lang=zh-cn class="nav link active">中文 (zh-cn)</a>
+<a href=/en lang=en class="nav no-lang link">English (en)</a></menu>
+<menu id=share-menu class="flyout-menu menu"><h1>Share Post</h1><a href="//twitter.com/share?text=%e5%88%87%e6%8d%a2%e5%88%b0Ghost%2b%e4%b8%83%e7%89%9b&url=https%3a%2f%2fmartinliu.cn%2fblog%2fwelcome-to-ghost%2f" target=_blank rel=noopener class="nav share-btn twitter"><p>Twitter</p></a><a href="//www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fmartinliu.cn%2fblog%2fwelcome-to-ghost%2f" target=_blank rel=noopener class="nav share-btn facebook"><p>Facebook</p></a><a href="//www.reddit.com/submit?url=https%3a%2f%2fmartinliu.cn%2fblog%2fwelcome-to-ghost%2f&title=%e5%88%87%e6%8d%a2%e5%88%b0Ghost%2b%e4%b8%83%e7%89%9b" target=_blank rel=noopener class="nav share-btn reddit"><p>Reddit</p></a><a href="//www.linkedin.com/shareArticle?url=https%3a%2f%2fmartinliu.cn%2fblog%2fwelcome-to-ghost%2f&title=%e5%88%87%e6%8d%a2%e5%88%b0Ghost%2b%e4%b8%83%e7%89%9b" target=_blank rel=noopener class="nav share-btn linkedin"><p>LinkedIn</p></a><a href="//www.pinterest.com/pin/create/button/?url=https%3a%2f%2fmartinliu.cn%2fblog%2fwelcome-to-ghost%2f&description=%e5%88%87%e6%8d%a2%e5%88%b0Ghost%2b%e4%b8%83%e7%89%9b" target=_blank rel=noopener class="nav share-btn pinterest"><p>Pinterest</p></a><a href="mailto:?subject=%e6%9f%a5%e7%9c%8b%e6%ad%a4%e5%b8%96%e5%ad%90%e7%9a%84%e4%bd%9c%e8%80%85 %7b%20%20%20%20%20%20%20%20map%5b%5d%7d&body=https%3a%2f%2fmartinliu.cn%2fblog%2fwelcome-to-ghost%2f" target=_blank class="nav share-btn email" data-proofer-ignore><p>Email</p></a></menu></header><div id=wrapper><section id=site-intro><a href=/><img src=https://martinliu.cn/img/main/logo.jpg class=circle width=100 alt="Martin Liu"></a><header><h1>Martin Liu's Blog</h1></header><main><p>Community Advocate, DevOps China Community Organizer</p></main><footer><ul class=socnet-icons><li><a href=//github.com/martinliu target=_blank rel=noopener title=GitHub class="fab fa-github"></a></li><li><a href=//www.linkedin.com/in/liuzheng target=_blank rel=noopener title=LinkedIn class="fab fa-linkedin"></a></li><li><a href=//twitter.com/martinliu target=_blank rel=noopener title=Twitter class="fab fa-twitter"></a></li></ul></footer></section><main id=site-main><article class=post><header><div class=title><h2><a href=/blog/welcome-to-ghost/>切换到Ghost+七牛</a></h2></div><div class=meta><time datetime="2017-09-21 00:00:00 +0000 UTC">September 21, 2017</time><p>2 分钟</p></div></header><div id=socnet-share><a href="//twitter.com/share?text=%e5%88%87%e6%8d%a2%e5%88%b0Ghost%2b%e4%b8%83%e7%89%9b&url=https%3a%2f%2fmartinliu.cn%2fblog%2fwelcome-to-ghost%2f" target=_blank rel=noopener class="nav share-btn twitter"><p>Twitter</p></a><a href="//www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fmartinliu.cn%2fblog%2fwelcome-to-ghost%2f" target=_blank rel=noopener class="nav share-btn facebook"><p>Facebook</p></a><a href="//www.reddit.com/submit?url=https%3a%2f%2fmartinliu.cn%2fblog%2fwelcome-to-ghost%2f&title=%e5%88%87%e6%8d%a2%e5%88%b0Ghost%2b%e4%b8%83%e7%89%9b" target=_blank rel=noopener class="nav share-btn reddit"><p>Reddit</p></a><a href="//www.linkedin.com/shareArticle?url=https%3a%2f%2fmartinliu.cn%2fblog%2fwelcome-to-ghost%2f&title=%e5%88%87%e6%8d%a2%e5%88%b0Ghost%2b%e4%b8%83%e7%89%9b" target=_blank rel=noopener class="nav share-btn linkedin"><p>LinkedIn</p></a><a href="//www.pinterest.com/pin/create/button/?url=https%3a%2f%2fmartinliu.cn%2fblog%2fwelcome-to-ghost%2f&description=%e5%88%87%e6%8d%a2%e5%88%b0Ghost%2b%e4%b8%83%e7%89%9b" target=_blank rel=noopener class="nav share-btn pinterest"><p>Pinterest</p></a><a href="mailto:?subject=%e6%9f%a5%e7%9c%8b%e6%ad%a4%e5%b8%96%e5%ad%90%e7%9a%84%e4%bd%9c%e8%80%85 %7b%20%20%20%20%20%20%20%20map%5b%5d%7d&body=https%3a%2f%2fmartinliu.cn%2fblog%2fwelcome-to-ghost%2f" target=_blank class="nav share-btn email" data-proofer-ignore><p>Email</p></a></div><div class=content><p>在经历了一个很长的周期之后，我的blog又回到了最原始的状态。很早以前学习网页开发的时候，用写字板编写html代码，后来是Asp，工作以后是用Blogspot，之后是WordPress，然后是Jekyll+github，现在是Ghost+七牛。</p><p>4个拐点</p><p>我的blog经历了四个转折点，下面稍微说下，为啥选择了某个平台，为啥后来又放弃了。</p><ol><li><pre><code>免费博客平台：最初我试用了几个国内外免费的服务，最后发现Blogspot的体验要优于其他所有平台，而且具备一定的定制能力，还没有广告。然后就一直用到了Blogspot被墙的时候，那时候我还没有买域名。记得MSN的Space也用过，如果你没有用过MSN的话，当我没说这句话。总之免费blog空间的弊端就是，你码的字和图片是给别人的，不属于你自己，没有延续性。
+</code></pre></li><li><pre><code>WordPress：是我用的时间最长的平台，它的好处是可以host在任何php虚拟空间和云主机上；优势就是功能强。曾经浪花费了大量的时间，在测试和感受各种插件和皮肤上。而且WP的搬家工作也容易，因此换了很多个空间，一共有多少个主机空间现在已经都忘了。放弃WP的原因：维护LAMP堆栈的工作量还是有的，即使在PHP的虚拟空间里，这个系统的优化工作还是持续不断的要做的，否则网站速度会很慢，而且时快时慢，网站的访问性能其实无法保证。因此在这个过程中必须使用CDN服务，七牛的wp插件是我用的最长时间的，因此我早期的blog的图片都在七牛上，它给我了一个备份和加速图片的福利。性能不稳定，页面打开速度慢是放弃它的主要原因。
+</code></pre></li><li><pre><code>Jekyll+GitHub：选择这个组合，开始于我重度使用Github的时候。而且macOS上安装Jekyll这种静态blog程序很方便，捣鼓起来之后，就感觉比WP方便简单直接多了。发现这个方式非常轻量和简洁。而且Github.io的免费静态网站host服务还支持自定义域名。因此，我做了把之前所有WP的文章导出为MD格式文档的数据迁移工作。由于之前WP文章里的图，已近都存放在七牛里了，因此这次我做了一个出乎意料敏捷轻松的转身。使用过程中，逐渐发现了Jekyll的各种不足，界面和格式的定制工作还是有的，即使用几十刀买的皮肤都会让你用到难以忍受，毕竟不是想developer那样天天写代码，也逐渐感到Jekyll的简洁变成了简陋。代码定制的工作量和难度大是放弃它的主要原因。
+</code></pre></li><li><pre><code>Ghost+七牛：其实早就瞄上Ghost了，可是一种没有下决心换。直到最近我开始把Ghost安装在Mac OS的笔记本电脑上，发现在本机编辑和维护文章资料，速度飞快，和以前WP在线编辑简直是天壤之别。如果Ghost应用跑在自己的笔记本电脑上的话，既可以离线工作，像之前用Jekyll+Github组合一样，也更可以不需要购买任何虚拟主机和空间了，在本机离线工作的速度和效率好，而且稳定太多了。 buster这个程序是这次切换到Ghost的催化剂，它可以把Ghost网站的全站导出成静态文件，线上就只需要一个CDN空间了。七牛的qshell工具可以方便地把本地的静态网站文件夹，同步到CDN的buckte存储中。切换到这个方案的原因是：网站变为纯静态网页，全站html/css和图片全面上CDN，配置全球加速网站域名，享用七牛的免费套餐。
+</code></pre></li></ol><p>下面花一点篇幅介绍一下目前的blog环境细节。简单地说：目前是在笔记本上跑Ghost服务器，这样就省去了云主机和虚拟主机空间的需求，把ghost的站点导出为静态网页和图片，然后增量地上传到七牛的CDN上去。
+Ghost本地安装</p><p>我的操作系统是MacOS，用的是2017款MBP。</p><p>先安装node.js，进入https://nodejs.org/en/ 在网站的首页上就可以下载到安装包，下载安装即可。也可以用 brew 安装。安装完了以后就获得了 npm 包管理程序。</p><p>之后参考https://docs.ghost.org/v1.0.0/docs/install#pre-requisites 的文档安装 ghost-cli ； 然后用ghost的命令行来实现ghost程序的安装和升级。</p><p>用ghost-cli安装ghost服务器的时候，要选择local的方式，它会使用sqllite作为数据库，这样做管理和维护Ghost应用栈的工作就都在本地了。</p><p>ghost服务器的初始化 ghost install local 这个命令会问你几个问题，全都用默认即可。安装完之后就可以看到服务器运行的状态了。</p><pre><code>martin@mbp ghost status
 Process manager 'systemd' will not run on this system, defaulting to 'local'
 
 │ Name      │ Location       │ Version │ Status               │ URL                    │ Port │ Process Manager │
 
 │ localhost │ ~/source/ghost │ 1.8.7   │ running (production) │ http://martinliu.cn/ │ 2368 │ systemd         │
-</code></pre><p>这样就表明本地安装成功，访问 <a href="http://martinliu.cn/ghost">http://martinliu.cn/ghost</a> 建立管理员账户，登录以后，就可以在本地编辑和维护blog文章了。
-Buster安装和使用</p>
-<p>Buster的安装也很简单，网上有很多安装使用攻略，此处忽略。我用下面的命令来把Ghost网站做导出：</p>
-<pre><code>buster generate --new-domain=martinliu.cn
+</code></pre><p>这样就表明本地安装成功，访问 <a href=http://martinliu.cn/ghost>http://martinliu.cn/ghost</a> 建立管理员账户，登录以后，就可以在本地编辑和维护blog文章了。
+Buster安装和使用</p><p>Buster的安装也很简单，网上有很多安装使用攻略，此处忽略。我用下面的命令来把Ghost网站做导出：</p><pre><code>buster generate --new-domain=martinliu.cn
 
 </code></pre><p>在ghost的根目录下运行这个命令，就可以把本地的ghost网站都导出到一个名为static的目录里。可以直接在这个目录里打开这些html纯静态的网页，可以浏览和验证格式是否正常，一般不需要这样做，格式一般不会出错的。
-配置七牛CDN</p>
-<p>七牛提供了本地的qshell，用于上传和同步文件到云端的存储里。安装过程文档见 <a href="https://github.com/qiniu/qshell">https://github.com/qiniu/qshell</a></p>
-<p>我在ghost的根目录下，编辑了一个上传网站的配置文件upload.conf，内容如下：</p>
-<pre><code>{
+配置七牛CDN</p><p>七牛提供了本地的qshell，用于上传和同步文件到云端的存储里。安装过程文档见 <a href=https://github.com/qiniu/qshell>https://github.com/qiniu/qshell</a></p><p>我在ghost的根目录下，编辑了一个上传网站的配置文件upload.conf，内容如下：</p><pre><code>{
    &quot;src_dir&quot;            :   &quot;/Users/martin/source/ghost/static&quot;,
    &quot;access_key&quot;         :   &quot;XXXXXXXkAA9TYrcDmQPBAAcB7&quot;,
    &quot;secret_key&quot;         :   &quot;XXXXXXXXXXXXXXXXXXXXXndwt&quot;,
@@ -314,20 +42,9 @@ Buster安装和使用</p>
    &quot;file_type&quot;          :   0
 }
 
-</code></pre><p>以上这个配置很重要，它的目的是实现：</p>
-<ul>
-<li>
-<pre><code>增量上传
-</code></pre>
-</li>
-<li>
-<pre><code>修改的文件覆盖上传
-</code></pre>
-</li>
-</ul>
-<p>感谢七牛的工程师茅工，在我调试以上需求的时候，给我提供了及时的帮助。而且七牛的免费账户也可以开工单获取技术支持，支持的响应速度还不错。</p>
-<p>这样执行 qshell qupload 10 upload.conf 既可以完成一次上传同步工作，这个步骤是唯一需要在线操作的步骤。这条命令的输出结果如下：</p>
-<pre><code>2017/09/25 00:00:21 [I] File `tag/cloud/index.html` exists in bucket, hash match, ignore this upload
+</code></pre><p>以上这个配置很重要，它的目的是实现：</p><ul><li><pre><code>增量上传
+</code></pre></li><li><pre><code>修改的文件覆盖上传
+</code></pre></li></ul><p>感谢七牛的工程师茅工，在我调试以上需求的时候，给我提供了及时的帮助。而且七牛的免费账户也可以开工单获取技术支持，支持的响应速度还不错。</p><p>这样执行 qshell qupload 10 upload.conf 既可以完成一次上传同步工作，这个步骤是唯一需要在线操作的步骤。这条命令的输出结果如下：</p><pre><code>2017/09/25 00:00:21 [I] File `tag/cloud/index.html` exists in bucket, hash match, ignore this upload
 Uploading /Users/martin/source/ghost/static/tag/coding/index.html =&gt; tag/coding/index.html [113/119, 95.0%] ...
 2017/09/25 00:00:21 [I] File `tag/coding/index.html` exists in bucket, hash match, ignore this upload
 Uploading /Users/martin/source/ghost/static/tag/devops/index.html =&gt; tag/devops/index.html [114/119, 95.8%] ...
@@ -354,305 +71,25 @@ Uploading /Users/martin/source/ghost/static/test.html =&gt; test.html [119/119, 
 See upload log at path ./upload.log
 
 </code></pre><p>七牛的域名配置如下图所示：
-<img src="/images/Google-Chrome-5.jpg" alt="Google-Chrome-5"></p>
-<h3 id="blog工作流">Blog工作流</h3>
-<p>下面就是我目前的blog工作流程说明。</p>
-<ul>
-<li>
-<pre><code>启动本地的ghost服务器，开始编辑和维护blog文章，如新写一篇blog；其实我也根本就不关这个服务器，感觉它也没有什么消耗。这样的话飞机上的无聊时间，可以彻底得到充分利用了。
-</code></pre>
-</li>
-<li>
-<pre><code>在本地发布和预览blog文章和内容，修订并定稿。
-</code></pre>
-</li>
-<li>
-<pre><code>运行Buster命令导出全站文章到本地。
-</code></pre>
-</li>
-<li>
-<pre><code>在想更新上线新内容的时候，在联网的情况下，运行qshell上传同步命令，把本地static文件夹和七牛上的存储bucket同步一下。
-</code></pre>
-</li>
-</ul>
-<p>至此我完成了从动态blog到纯静态blog的转型，现在网页html和图片文件全都在七牛的CDN里，而且域名 martinliu.cn 的访问配置成了全球加速。</p>
-<p>目前使用的是七牛的免费流量和空间套餐，套餐内的各种数量限制如下。</p>
-<p><img src="/images/Screen-Shot-2017-09-23-at-11.21.57-AM.png" alt="Screen-Shot-2017-09-23-at-11.21.57-A"></p>
-<p>目前的疑问是这个免费套餐是否够用，不知道这个羊毛多久会被我薅完。我会定期在本文跟新以上解决方案，在使用期间的各种配置细节变更，或者遇到的问题和解决方法。</p>
-<p>TO-Do</p>
-<pre><code>把static变成一个git库，以后配置Jenkins，基于它的变化，自动化触发后续的更新和上传动作
+<img src=/images/Google-Chrome-5.jpg alt=Google-Chrome-5></p><h3 id=blog工作流>Blog工作流</h3><p>下面就是我目前的blog工作流程说明。</p><ul><li><pre><code>启动本地的ghost服务器，开始编辑和维护blog文章，如新写一篇blog；其实我也根本就不关这个服务器，感觉它也没有什么消耗。这样的话飞机上的无聊时间，可以彻底得到充分利用了。
+</code></pre></li><li><pre><code>在本地发布和预览blog文章和内容，修订并定稿。
+</code></pre></li><li><pre><code>运行Buster命令导出全站文章到本地。
+</code></pre></li><li><pre><code>在想更新上线新内容的时候，在联网的情况下，运行qshell上传同步命令，把本地static文件夹和七牛上的存储bucket同步一下。
+</code></pre></li></ul><p>至此我完成了从动态blog到纯静态blog的转型，现在网页html和图片文件全都在七牛的CDN里，而且域名 martinliu.cn 的访问配置成了全球加速。</p><p>目前使用的是七牛的免费流量和空间套餐，套餐内的各种数量限制如下。</p><p><img src=/images/Screen-Shot-2017-09-23-at-11.21.57-AM.png alt=Screen-Shot-2017-09-23-at-11.21.57-A></p><p>目前的疑问是这个免费套餐是否够用，不知道这个羊毛多久会被我薅完。我会定期在本文跟新以上解决方案，在使用期间的各种配置细节变更，或者遇到的问题和解决方法。</p><p>TO-Do</p><pre><code>把static变成一个git库，以后配置Jenkins，基于它的变化，自动化触发后续的更新和上传动作
 在上传前运行htlm和css文件的压缩工具（命令行执行），优化页面尺寸
 在上传前运行图片的压缩工具（命令行执行），优化图片尺寸
 在Ghost里加入评论功能
 加入Google网站统计代码
 测试Ghost网站备份和迁移过程，保证当前的ghost服务器崩溃了，数据不会丢失
-</code></pre>
-
-    </div>
-    <footer>
-      <div class="stats">
-  
-    <ul class="categories">
-      <li>None</li>
-    </ul>
-  
-  
-    <ul class="tags">
-      
-        
-          <li><a class="article-terms-link" href="/tags/blog/">blog</a></li>
-        
-      
-    </ul>
-  
-</div>
-
-    </footer>
-  </article>
-  
-    
-  <article class="post">
-    
-    <div>
-      <h2 id="say-something">说些什么</h2>
-        <form id="comment-form" class="new-comment" method="POST">
-          
-          <h3 class='reply-notice hidden'>
-            <span class='reply-name'></span>
-          </h3>
-
-          
-          <input type="hidden" name="options[entryId]" value="b985485e5ef6bf31c74f0d856a976144">
-          <input type='hidden' name='fields[replyThread]' value=''>
-          <input type='hidden' name='fields[replyID]' value=''>
-          <input type='hidden' name='fields[replyName]' value=''>
-
-          
-          <input required name='fields[name]' type='text' placeholder='你的名字'>
-          <input name='fields[website]' type='text' placeholder='您的网页'>
-          <input required name='fields[email]' type='email' placeholder='你的邮件'>
-          <textarea required name='fields[body]' placeholder='你的信息' rows='10'></textarea>
-
-          
-          
-
-          
-          <div class='submit-notice'>
-            <strong class='submit-notice-text submit-success hidden'>感谢您的评论！被批准后它会立即在此站点展示。</strong>
-            <strong class='submit-notice-text submit-failed hidden'>很抱歉，您的提交存在错误。请确保所有必填字段都已填写正确，然后再试一次。</strong>
-          </div>
-
-          
-          <input type='submit' value='送出' class='button'>
-          <input type='submit' value='已送出' class='hidden button' disabled>
-          <input type='reset' value='重设' class='button'>
-        </form>
-    </div>
-
-    
-    <div>
-      <h2>评论</h2><p>还沒有留言。</p>
-      
-    </div>
-  </article>
-
-
-  
-  <div class="pagination">
-    
-      <a href="/blog/something-you-must-know-about-devops/" class="button left"><span>关于DevOps 的那些事</span></a>
-    
-    
-      <a href="/blog/install-minikube-k8s/" class="button right"><span>用Minikube体验单节点K8S</span></a>
-    
-  </div>
-
-      </main>
-      <section id="site-sidebar">
-  
-    <section id="recent-posts">
-      <header>
-        <h1>最新文章</h1>
-      </header>
-      
-      <article class="mini-post">
-          <a href="/blog/workshop-elastic-observability/" class="image" style="--bg-image: url('https://martinliu.cn/img/2019/03/pic01.jpg');">
-    <img class="stretchH" src="https://martinliu.cn/img/2019/03/pic01.jpg" alt="Valley">
-  </a>
-        <header>
-          <h2><a href="/blog/workshop-elastic-observability/">Elastic 可观测性工作坊</a></h2>
-          <time class="published" datetime="2021-02-06 10:36:12 &#43;0800 CST">February 6, 2021</time>
-        </header>
-      </article>
-      
-      <article class="mini-post">
-          <a href="/blog/change-back-on-github-page-again/" class="image" style="--bg-image: url('https://martinliu.cn/img/2019/03/pic03.jpg');">
-    <img class="stretchH" src="https://martinliu.cn/img/2019/03/pic03.jpg" alt="Valley">
-  </a>
-        <header>
-          <h2><a href="/blog/change-back-on-github-page-again/">博客换一个新样式</a></h2>
-          <time class="published" datetime="2021-02-06 00:00:00 &#43;0000 UTC">February 6, 2021</time>
-        </header>
-      </article>
-      
-      <article class="mini-post">
-          <a href="/blog/devopscoach-weekly-6/" class="image" style="--bg-image: url('https://martinliu.cn/');">
-    <img src="https://martinliu.cn/" alt="">
-  </a>
-        <header>
-          <h2><a href="/blog/devopscoach-weekly-6/">DevOps Coach 周刊 #6</a></h2>
-          <time class="published" datetime="2020-08-31 00:11:01 &#43;0800 CST">August 31, 2020</time>
-        </header>
-      </article>
-      
-      <article class="mini-post">
-          <a href="/blog/elasticsearch-3-nodes-cluster-setup/" class="image" style="--bg-image: url('https://martinliu.cn/');">
-    <img src="https://martinliu.cn/" alt="">
-  </a>
-        <header>
-          <h2><a href="/blog/elasticsearch-3-nodes-cluster-setup/">Elasticsearch 3 节点集群搭建 (7.9.0)</a></h2>
-          <time class="published" datetime="2020-08-27 13:54:46 &#43;0800 CST">August 27, 2020</time>
-        </header>
-      </article>
-      
-      <article class="mini-post">
-          <a href="/blog/devopscoach-weekly-5/" class="image" style="--bg-image: url('https://martinliu.cn/');">
-    <img src="https://martinliu.cn/" alt="">
-  </a>
-        <header>
-          <h2><a href="/blog/devopscoach-weekly-5/">DevOps Coach 周刊 #5</a></h2>
-          <time class="published" datetime="2020-08-25 15:20:51 &#43;0800 CST">August 25, 2020</time>
-        </header>
-      </article>
-      
-      
-        <footer>
-          <a href="/blog/" class="button">查看更多</a>
-        </footer>
-      
-    </section>
-  
-
-  
-    
-
-      <section id="categories">
-        <header>
-          <h1><a href="/categories">分类</a></h1>
-        </header>
-        <ul>
-          
-          
-          <li>
-              <a href="/categories/blog/">blog<span class="count">107</span></a>
-          
-          <li>
-              <a href="/categories/itsm/">itsm<span class="count">95</span></a>
-          
-          <li>
-              <a href="/categories/infrastructure/">infrastructure<span class="count">48</span></a>
-          
-          <li>
-              <a href="/categories/devops/">devops<span class="count">38</span></a>
-          
-          <li>
-              <a href="/categories/opensource/">opensource<span class="count">35</span></a>
-          
-          <li>
-              <a href="/categories/cloud-computing/">cloud-computing<span class="count">27</span></a>
-          
-          <li>
-              <a href="/categories/running/">running<span class="count">22</span></a>
-          
-          <li>
-              <a href="/categories/cms/cmdb/">cms/cmdb<span class="count">20</span></a>
-          
-          <li>
-              <a href="/categories/travel/">travel<span class="count">14</span></a>
-          
-          <li>
-              <a href="/categories/sre/">sre<span class="count">2</span></a>
-          
-          </li>
-        </ul>
-      </section>
-    
-  
-
-  
-    <section id="mini-bio">
-      <header>
-        <h1>关于</h1>
-      </header>
-      <p>This Blog is sharing DevOps and SRE ariticles. I have translated DevOps Handbook and SRE Workbook.</p>
-      <footer>
-        <a href="/about" class="button">学到更多</a>
-      </footer>
-    </section>
-  
-</section>
-
-      <footer id="site-footer">
-  
-      <ul class="socnet-icons">
-        
-
-        <li><a href="//github.com/martinliu" target="_blank" rel="noopener" title="GitHub" class="fab fa-github"></a></li>
-
-
-
-
-
-
-
-
-
-
-
-<li><a href="//www.linkedin.com/in/liuzheng" target="_blank" rel="noopener" title="LinkedIn" class="fab fa-linkedin"></a></li>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<li><a href="//twitter.com/martinliu" target="_blank" rel="noopener" title="Twitter" class="fab fa-twitter"></a></li>
-
-
-
-
-
-
-
-
-
-
-
-
-
-      </ul>
-  
-  <p class="copyright">
-    © 2021 刘征的博客
-      <br>
-    主题: <a href='https://themes.gohugo.io/hugo-future-imperfect-slim/' target='_blank' rel='noopener'>Hugo Future Imperfect Slim</a><br>移植自 <a href='https://html5up.net/future-imperfect' target='_blank' rel='noopener'>HTML5 UP</a> | 由 <a href='https://gohugo.io/' target='_blank' rel='noopener' title='0.80.0'>Hugo</a> 驱动
-  </p>
-</footer>
-<a id="back-to-top" href="#" class="fas fa-arrow-up fa-2x"></a>
-
-      <script src="/js/highlight.js"></script>
-    
-    <script>hljs.initHighlightingOnLoad();</script><script src="/js/bundle.min.bbba6b424a8ac5b6858cd5fc80eabc9c5277945cc2dc349204646b84891b4b58.js" integrity="sha256-u7prQkqKxbaFjNX8gOq8nFJ3lFzC3DSSBGRrhIkbS1g="></script>
-    <script src="/js/add-on.js"></script>
-    </div>
-  </body>
-</html>
+</code></pre></div><footer><div class=stats><ul class=categories><li>None</li></ul><ul class=tags><li><a class=article-terms-link href=/tags/blog/>blog</a></li></ul></div></footer></article><article class=post><div><h2 id=say-something>说些什么</h2><form id=comment-form class=new-comment method=post><h3 class="reply-notice hidden"><span class=reply-name></span></h3><input type=hidden name=options[entryId] value=b985485e5ef6bf31c74f0d856a976144>
+<input type=hidden name=fields[replyThread]>
+<input type=hidden name=fields[replyID]>
+<input type=hidden name=fields[replyName]>
+<input required name=fields[name] type=text placeholder=你的名字>
+<input name=fields[website] type=text placeholder=您的网页>
+<input required name=fields[email] type=email placeholder=你的邮件>
+<textarea required name=fields[body] placeholder=你的信息 rows=10></textarea><div class=submit-notice><strong class="submit-notice-text submit-success hidden">感谢您的评论！被批准后它会立即在此站点展示。</strong>
+<strong class="submit-notice-text submit-failed hidden">很抱歉，您的提交存在错误。请确保所有必填字段都已填写正确，然后再试一次。</strong></div><input type=submit value=送出 class=button>
+<input type=submit value=已送出 class="hidden button" disabled>
+<input type=reset value=重设 class=button></form></div><div><h2>评论</h2><p>还沒有留言。</p></div></article><div class=pagination><a href=/blog/something-you-must-know-about-devops/ class="button left"><span>关于DevOps 的那些事</span></a>
+<a href=/blog/install-minikube-k8s/ class="button right"><span>用Minikube体验单节点K8S</span></a></div></main><section id=site-sidebar><section id=recent-posts><header><h1>最新文章</h1></header><article class=mini-post><a href=/blog/workshop-elastic-observability/ class=image style="--bg-image: url('https://martinliu.cn/img/2019/03/pic01.jpg')"><img class=stretchH src=https://martinliu.cn/img/2019/03/pic01.jpg alt=Valley></a><header><h2><a href=/blog/workshop-elastic-observability/>Elastic 可观测性工作坊</a></h2><time class=published datetime="2021-02-06 10:36:12 +0800 CST">February 6, 2021</time></header></article><article class=mini-post><a href=/blog/change-back-on-github-page-again/ class=image style="--bg-image: url('https://martinliu.cn/img/2019/03/pic03.jpg')"><img class=stretchH src=https://martinliu.cn/img/2019/03/pic03.jpg alt=Valley></a><header><h2><a href=/blog/change-back-on-github-page-again/>博客换一个新样式</a></h2><time class=published datetime="2021-02-06 00:00:00 +0000 UTC">February 6, 2021</time></header></article><article class=mini-post><a href=/blog/devopscoach-weekly-6/ class=image style="--bg-image: url('https://martinliu.cn/')"><img src=https://martinliu.cn/ alt></a><header><h2><a href=/blog/devopscoach-weekly-6/>DevOps Coach 周刊 #6</a></h2><time class=published datetime="2020-08-31 00:11:01 +0800 CST">August 31, 2020</time></header></article><article class=mini-post><a href=/blog/elasticsearch-3-nodes-cluster-setup/ class=image style="--bg-image: url('https://martinliu.cn/')"><img src=https://martinliu.cn/ alt></a><header><h2><a href=/blog/elasticsearch-3-nodes-cluster-setup/>Elasticsearch 3 节点集群搭建 (7.9.0)</a></h2><time class=published datetime="2020-08-27 13:54:46 +0800 CST">August 27, 2020</time></header></article><article class=mini-post><a href=/blog/devopscoach-weekly-5/ class=image style="--bg-image: url('https://martinliu.cn/')"><img src=https://martinliu.cn/ alt></a><header><h2><a href=/blog/devopscoach-weekly-5/>DevOps Coach 周刊 #5</a></h2><time class=published datetime="2020-08-25 15:20:51 +0800 CST">August 25, 2020</time></header></article><footer><a href=/blog/ class=button>查看更多</a></footer></section><section id=categories><header><h1><a href=/categories>分类</a></h1></header><ul><li><a href=/categories/blog/>blog<span class=count>107</span></a><li><a href=/categories/itsm/>itsm<span class=count>95</span></a><li><a href=/categories/infrastructure/>infrastructure<span class=count>48</span></a><li><a href=/categories/devops/>devops<span class=count>38</span></a><li><a href=/categories/opensource/>opensource<span class=count>35</span></a><li><a href=/categories/cloud-computing/>cloud-computing<span class=count>27</span></a><li><a href=/categories/running/>running<span class=count>22</span></a><li><a href=/categories/cms/cmdb/>cms/cmdb<span class=count>20</span></a><li><a href=/categories/travel/>travel<span class=count>14</span></a><li><a href=/categories/sre/>sre<span class=count>2</span></a></li></ul></section><section id=mini-bio><header><h1>关于</h1></header><p>This Blog is sharing DevOps and SRE ariticles. I have translated DevOps Handbook and SRE Workbook.</p><footer><a href=/about class=button>学到更多</a></footer></section></section><footer id=site-footer><ul class=socnet-icons><li><a href=//github.com/martinliu target=_blank rel=noopener title=GitHub class="fab fa-github"></a></li><li><a href=//www.linkedin.com/in/liuzheng target=_blank rel=noopener title=LinkedIn class="fab fa-linkedin"></a></li><li><a href=//twitter.com/martinliu target=_blank rel=noopener title=Twitter class="fab fa-twitter"></a></li></ul><p class=copyright>© 2021 刘征的博客<br>主题: <a href=https://themes.gohugo.io/hugo-future-imperfect-slim/ target=_blank rel=noopener>Hugo Future Imperfect Slim</a><br>移植自 <a href=https://html5up.net/future-imperfect target=_blank rel=noopener>HTML5 UP</a> | 由 <a href=https://gohugo.io/ target=_blank rel=noopener title=0.80.0>Hugo</a> 驱动</p></footer><a id=back-to-top href=# class="fas fa-arrow-up fa-2x"></a><script src=/js/highlight.js></script><script>hljs.initHighlightingOnLoad();</script><script src=/js/bundle.min.bbba6b424a8ac5b6858cd5fc80eabc9c5277945cc2dc349204646b84891b4b58.js integrity="sha256-u7prQkqKxbaFjNX8gOq8nFJ3lFzC3DSSBGRrhIkbS1g="></script><script src=/js/add-on.js></script><script type=application/javascript>var doNotTrack=false;if(!doNotTrack){window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;ga('create','UA-749876-6','auto');ga('send','pageview');}</script><script async src=https://www.google-analytics.com/analytics.js></script></div></body></html>

@@ -1,271 +1,17 @@
-<!doctype html>
-<html lang="zh-cn">
-  <head>
-  <meta charset="utf-8">
-<title>Martin&#39;s lab 主服务器搭建 - 刘征的博客</title>
-<meta name="viewport" content="width=device-width, initial-scale=1">
-
-
-<meta name="generator" content="Hugo 0.80.0" /><meta property="og:site_name" content="刘征的博客">
-  <meta property="og:title" content="Martin&#39;s lab 主服务器搭建">
-  <meta property="og:description" content="Martin&#39;s Liu is bloging on DevOps and SRE topics">
-  <meta property="description" content="Martin&#39;s Liu is bloging on DevOps and SRE topics">
-  <meta property="og:url" content="https://martinliu.cn/2015/03/08/e4b8bbe69c8de58aa1e599a8e690ade5bbba/">
-  <meta property="og:type" content="article">
-  
-    <meta property="og:image" content="https://martinliu.cn/img/main/logo.jpg">
-  
-  <link rel="stylesheet" href="/css/bundle.min.d9e04ae08c9b3049b766dbd4aeab7d862c5ea1d13679b621490e0f5df5507497.css" integrity="sha256-2eBK4IybMEm3ZtvUrqt9hixeodE2ebYhSQ4PXfVQdJc="><link rel="stylesheet" href="/css/add-on.css">
-</head>
-
-  <body>
-    
-
-<header id="site-header">
-  <nav id="site-nav">
-    <h1 class="nav-title">
-      <a href="/" class="nav">
-        
-          博客
-        
-      </a>
-    </h1>
-    <menu id="site-nav-menu" class="flyout-menu menu">
-      
-        
-          
-          <a href="/" class="nav link"><i class='fas fa-home'></i> 首页</a>
-        
-      
-        
-          
-          <a href="/about/" class="nav link"><i class='far fa-id-card'></i> 关于</a>
-        
-      
-        
-          
-          <a href="/blog/" class="nav link"><i class='far fa-newspaper'></i> 博客</a>
-        
-      
-        
-          
-          <a href="/categories/" class="nav link"><i class='fas fa-sitemap'></i> 分类</a>
-        
-      
-        
-          
-          <a href="/contact/" class="nav link"><i class='far fa-envelope'></i> 联系</a>
-        
-      
-      <a href="#share-menu" class="nav link share-toggle"><i class="fas fa-share-alt">&nbsp;</i>Share</a>
-      <a href="#search-input" class="nav link search-toggle"><i class="fas fa-search">&nbsp;</i>Search</a>
-    </menu>
-    <a href="#search-input" class="nav search-toggle"><i class="fas fa-search fa-2x">&nbsp;</i></a>
-    <a href="#share-menu" class="nav share-toggle"><i class="fas fa-share-alt fa-2x">&nbsp;</i></a>
-    <a href="#lang-menu" class="nav lang-toggle" lang="zh-cn">zh-cn</a>
-    <a href="#site-nav" class="nav nav-toggle"><i class="fas fa-bars fa-2x"></i></a>
-  </nav>
-  <menu id="search" class="menu"><input id="search-input" class="search-input menu"></input><div id="search-results" class="search-results menu"></div></menu>
-  <menu id="lang-menu" class="flyout-menu menu">
-  <a href="#" lang="zh-cn" class="nav link active">中文 (zh-cn)</a>
-  
-    
-      
-        <a href="/en" lang="en" class="nav no-lang link">English (en)</a>
-      
-    
-      
-    
-  
-</menu>
-
-  
-    <menu id="share-menu" class="flyout-menu menu">
-      <h1>Share Post</h1>
-      
-
-
-
-
-  
-    
-    <a href="//twitter.com/share?text=Martin%27s%20lab%20%e4%b8%bb%e6%9c%8d%e5%8a%a1%e5%99%a8%e6%90%ad%e5%bb%ba&amp;url=https%3a%2f%2fmartinliu.cn%2f2015%2f03%2f08%2fe4b8bbe69c8de58aa1e599a8e690ade5bbba%2f" target="_blank" rel="noopener" class="nav share-btn twitter">
-        <p>Twitter</p>
-      </a>
-  
-
-  
-      <a href="//www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fmartinliu.cn%2f2015%2f03%2f08%2fe4b8bbe69c8de58aa1e599a8e690ade5bbba%2f" target="_blank" rel="noopener" class="nav share-btn facebook">
-        <p>Facebook</p>
-        </a>
-  
-
-  
-    <a href="//www.reddit.com/submit?url=https%3a%2f%2fmartinliu.cn%2f2015%2f03%2f08%2fe4b8bbe69c8de58aa1e599a8e690ade5bbba%2f&amp;title=Martin%27s%20lab%20%e4%b8%bb%e6%9c%8d%e5%8a%a1%e5%99%a8%e6%90%ad%e5%bb%ba" target="_blank" rel="noopener" class="nav share-btn reddit">
-          <p>Reddit</p>
-        </a>
-  
-
-  
-        <a href="//www.linkedin.com/shareArticle?url=https%3a%2f%2fmartinliu.cn%2f2015%2f03%2f08%2fe4b8bbe69c8de58aa1e599a8e690ade5bbba%2f&amp;title=Martin%27s%20lab%20%e4%b8%bb%e6%9c%8d%e5%8a%a1%e5%99%a8%e6%90%ad%e5%bb%ba" target="_blank" rel="noopener" class="nav share-btn linkedin">
-            <p>LinkedIn</p>
-          </a>
-  
-
-  
-        <a href="//www.pinterest.com/pin/create/button/?url=https%3a%2f%2fmartinliu.cn%2f2015%2f03%2f08%2fe4b8bbe69c8de58aa1e599a8e690ade5bbba%2f&amp;description=Martin%27s%20lab%20%e4%b8%bb%e6%9c%8d%e5%8a%a1%e5%99%a8%e6%90%ad%e5%bb%ba" target="_blank" rel="noopener" class="nav share-btn pinterest">
-          <p>Pinterest</p>
-        </a>
-  
-
-  
-        <a href="mailto:?subject=%e6%9f%a5%e7%9c%8b%e6%ad%a4%e5%b8%96%e5%ad%90%e7%9a%84%e4%bd%9c%e8%80%85 liuadmin&amp;body=https%3a%2f%2fmartinliu.cn%2f2015%2f03%2f08%2fe4b8bbe69c8de58aa1e599a8e690ade5bbba%2f" target="_blank" class="nav share-btn email" data-proofer-ignore>
-          <p>Email</p>
-        </a>
-  
-
-
-    </menu>
-  
-</header>
-
-    <div id="wrapper">
-      <section id="site-intro" >
-  <a href="/"><img src="https://martinliu.cn/img/main/logo.jpg" class="circle" width="100" alt="Martin Liu" /></a>
-  <header>
-    <h1>Martin Liu's Blog</h1>
-  </header>
-  <main>
-    <p>Community Advocate, DevOps China Community Organizer</p>
-  </main>
-  
-    <footer>
-      <ul class="socnet-icons">
-        
-
-        <li><a href="//github.com/martinliu" target="_blank" rel="noopener" title="GitHub" class="fab fa-github"></a></li>
-
-
-
-
-
-
-
-
-
-
-
-<li><a href="//www.linkedin.com/in/liuzheng" target="_blank" rel="noopener" title="LinkedIn" class="fab fa-linkedin"></a></li>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<li><a href="//twitter.com/martinliu" target="_blank" rel="noopener" title="Twitter" class="fab fa-twitter"></a></li>
-
-
-
-
-
-
-
-
-
-
-
-
-
-      </ul>
-    </footer>
-  
-</section>
-
-      <main id="site-main">
-        
-  <article class="post">
-    <header>
-  <div class="title">
-    
-      <h2><a href="/2015/03/08/e4b8bbe69c8de58aa1e599a8e690ade5bbba/">Martin&#39;s lab 主服务器搭建</a></h2>
-    
-    
-  </div>
-  <div class="meta">
-    <time datetime="2015-03-08 15:42:01 &#43;0000 UTC">March 8, 2015</time>
-    <p>liuadmin</p>
-    <p>2 分钟</p>
-  </div>
-</header>
-
-    <div id="socnet-share">
-      
-
-
-
-
-  
-    
-    <a href="//twitter.com/share?text=Martin%27s%20lab%20%e4%b8%bb%e6%9c%8d%e5%8a%a1%e5%99%a8%e6%90%ad%e5%bb%ba&amp;url=https%3a%2f%2fmartinliu.cn%2f2015%2f03%2f08%2fe4b8bbe69c8de58aa1e599a8e690ade5bbba%2f" target="_blank" rel="noopener" class="nav share-btn twitter">
-        <p>Twitter</p>
-      </a>
-  
-
-  
-      <a href="//www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fmartinliu.cn%2f2015%2f03%2f08%2fe4b8bbe69c8de58aa1e599a8e690ade5bbba%2f" target="_blank" rel="noopener" class="nav share-btn facebook">
-        <p>Facebook</p>
-        </a>
-  
-
-  
-    <a href="//www.reddit.com/submit?url=https%3a%2f%2fmartinliu.cn%2f2015%2f03%2f08%2fe4b8bbe69c8de58aa1e599a8e690ade5bbba%2f&amp;title=Martin%27s%20lab%20%e4%b8%bb%e6%9c%8d%e5%8a%a1%e5%99%a8%e6%90%ad%e5%bb%ba" target="_blank" rel="noopener" class="nav share-btn reddit">
-          <p>Reddit</p>
-        </a>
-  
-
-  
-        <a href="//www.linkedin.com/shareArticle?url=https%3a%2f%2fmartinliu.cn%2f2015%2f03%2f08%2fe4b8bbe69c8de58aa1e599a8e690ade5bbba%2f&amp;title=Martin%27s%20lab%20%e4%b8%bb%e6%9c%8d%e5%8a%a1%e5%99%a8%e6%90%ad%e5%bb%ba" target="_blank" rel="noopener" class="nav share-btn linkedin">
-            <p>LinkedIn</p>
-          </a>
-  
-
-  
-        <a href="//www.pinterest.com/pin/create/button/?url=https%3a%2f%2fmartinliu.cn%2f2015%2f03%2f08%2fe4b8bbe69c8de58aa1e599a8e690ade5bbba%2f&amp;description=Martin%27s%20lab%20%e4%b8%bb%e6%9c%8d%e5%8a%a1%e5%99%a8%e6%90%ad%e5%bb%ba" target="_blank" rel="noopener" class="nav share-btn pinterest">
-          <p>Pinterest</p>
-        </a>
-  
-
-  
-        <a href="mailto:?subject=%e6%9f%a5%e7%9c%8b%e6%ad%a4%e5%b8%96%e5%ad%90%e7%9a%84%e4%bd%9c%e8%80%85 liuadmin&amp;body=https%3a%2f%2fmartinliu.cn%2f2015%2f03%2f08%2fe4b8bbe69c8de58aa1e599a8e690ade5bbba%2f" target="_blank" class="nav share-btn email" data-proofer-ignore>
-          <p>Email</p>
-        </a>
-  
-
-
-    </div>
-    <div class="content">
-      
-      <p><img src="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2015/05/Red-Hat-open-hybrid-cloud-1000x563_0.png" alt="Red-Hat-open-hybrid-cloud-1000x563_0"></p>
-<p>上图是红帽产品和技术架构的全貌。来源是：<a href="http://www.redhat.com/en/technologies/cloud-computing">http://www.redhat.com/en/technologies/cloud-computing</a> 这张图我用在了我的首次给公司内部的全体销售培训上。由于我是IT管理背景的，因此我很习惯从云管理层往下看云引擎的各个层面。但是管理层产品，其实是后来整合纳入的。红帽起家的旗舰产品还是在底层的RHEL。总之，我想在一个Lab里面实现以上所有的部分，所谓实现是让其每个部分都能在运行在假象的一个有意义的业务场景里。还好，红帽的产品全都是基于x86平台的，因此我用几个笔记本，再加上我家里的这台HP MicroServer G8服务器应该能够全部部署出来。</p>
-<p>做这样的一个lab还是要一定的规划和设计的，这些初步的规划和设计都在我的本子里手写的，就不在这里敲字了，随后我会抽空上几张图。</p>
-<h2 id="主服务器基本配置">主服务器基本配置</h2>
-<p>硬件：Lenovo W540 CPU Intel i7, RAM 32 GB, SSD 512GB, HD 1TB</p>
-<p>OS : RHEL 7.1</p>
-<p>订阅是红帽公司的业务模式，也是红帽认为最自豪的部分，红帽相信可以成为开源技术和用户之间的催化剂，它不断参与最优秀的开源技术创新，并为其用户提供最强有利的技术服务和支持。红帽技术员工可以申请一个红帽雇员订阅。我的订阅可以在网上查到如下图所示：</p>
-<p><a href="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2015/03/employee-sub.png"><img src="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2015/03/employee-sub-520x295.png" alt="employee-sub"></a></p>
-<p>红帽的服务必须是基于订阅的每一个节点（物理、虚拟）都需要有有效的订阅，否则红帽的支持服务不能生效。对于一个已经成功注册到红帽官网，并且状态正常的服务器，应该显示如下的注册状态：</p>
-<p>[bash]
-[root@w540 ~]# subscription-manager list</p>
-<p>+&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;-+
+<!doctype html><html lang=zh-cn><head><meta charset=utf-8><title>Martin's lab 主服务器搭建 - 刘征的博客</title><meta name=viewport content="width=device-width,initial-scale=1"><meta name=generator content="Hugo 0.80.0"><meta property="og:site_name" content="刘征的博客"><meta property="og:title" content="Martin's lab 主服务器搭建"><meta property="og:description" content="Martin's Liu is bloging on DevOps and SRE topics"><meta property="description" content="Martin's Liu is bloging on DevOps and SRE topics"><meta property="og:url" content="https://martinliu.cn/2015/03/08/e4b8bbe69c8de58aa1e599a8e690ade5bbba/"><meta property="og:type" content="article"><meta property="og:image" content="https://martinliu.cn/img/main/logo.jpg"><link rel=stylesheet href=/css/bundle.min.d9e04ae08c9b3049b766dbd4aeab7d862c5ea1d13679b621490e0f5df5507497.css integrity="sha256-2eBK4IybMEm3ZtvUrqt9hixeodE2ebYhSQ4PXfVQdJc="><link rel=stylesheet href=/css/add-on.css></head><body><header id=site-header><nav id=site-nav><h1 class=nav-title><a href=/ class=nav>博客</a></h1><menu id=site-nav-menu class="flyout-menu menu"><a href=/ class="nav link"><i class="fas fa-home"></i>首页</a>
+<a href=/about/ class="nav link"><i class="far fa-id-card"></i>关于</a>
+<a href=/blog/ class="nav link"><i class="far fa-newspaper"></i>博客</a>
+<a href=/categories/ class="nav link"><i class="fas fa-sitemap"></i>分类</a>
+<a href=/contact/ class="nav link"><i class="far fa-envelope"></i>联系</a>
+<a href=#share-menu class="nav link share-toggle"><i class="fas fa-share-alt">&nbsp;</i>Share</a>
+<a href=#search-input class="nav link search-toggle"><i class="fas fa-search">&nbsp;</i>Search</a></menu>
+<a href=#search-input class="nav search-toggle"><i class="fas fa-search fa-2x">&nbsp;</i></a>
+<a href=#share-menu class="nav share-toggle"><i class="fas fa-share-alt fa-2x">&nbsp;</i></a>
+<a href=#lang-menu class="nav lang-toggle" lang=zh-cn>zh-cn</a>
+<a href=#site-nav class="nav nav-toggle"><i class="fas fa-bars fa-2x"></i></a></nav><menu id=search class=menu><input id=search-input class="search-input menu"></input><div id=search-results class="search-results menu"></div></menu><menu id=lang-menu class="flyout-menu menu"><a href=# lang=zh-cn class="nav link active">中文 (zh-cn)</a>
+<a href=/en lang=en class="nav no-lang link">English (en)</a></menu>
+<menu id=share-menu class="flyout-menu menu"><h1>Share Post</h1><a href="//twitter.com/share?text=Martin%27s%20lab%20%e4%b8%bb%e6%9c%8d%e5%8a%a1%e5%99%a8%e6%90%ad%e5%bb%ba&url=https%3a%2f%2fmartinliu.cn%2f2015%2f03%2f08%2fe4b8bbe69c8de58aa1e599a8e690ade5bbba%2f" target=_blank rel=noopener class="nav share-btn twitter"><p>Twitter</p></a><a href="//www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fmartinliu.cn%2f2015%2f03%2f08%2fe4b8bbe69c8de58aa1e599a8e690ade5bbba%2f" target=_blank rel=noopener class="nav share-btn facebook"><p>Facebook</p></a><a href="//www.reddit.com/submit?url=https%3a%2f%2fmartinliu.cn%2f2015%2f03%2f08%2fe4b8bbe69c8de58aa1e599a8e690ade5bbba%2f&title=Martin%27s%20lab%20%e4%b8%bb%e6%9c%8d%e5%8a%a1%e5%99%a8%e6%90%ad%e5%bb%ba" target=_blank rel=noopener class="nav share-btn reddit"><p>Reddit</p></a><a href="//www.linkedin.com/shareArticle?url=https%3a%2f%2fmartinliu.cn%2f2015%2f03%2f08%2fe4b8bbe69c8de58aa1e599a8e690ade5bbba%2f&title=Martin%27s%20lab%20%e4%b8%bb%e6%9c%8d%e5%8a%a1%e5%99%a8%e6%90%ad%e5%bb%ba" target=_blank rel=noopener class="nav share-btn linkedin"><p>LinkedIn</p></a><a href="//www.pinterest.com/pin/create/button/?url=https%3a%2f%2fmartinliu.cn%2f2015%2f03%2f08%2fe4b8bbe69c8de58aa1e599a8e690ade5bbba%2f&description=Martin%27s%20lab%20%e4%b8%bb%e6%9c%8d%e5%8a%a1%e5%99%a8%e6%90%ad%e5%bb%ba" target=_blank rel=noopener class="nav share-btn pinterest"><p>Pinterest</p></a><a href="mailto:?subject=%e6%9f%a5%e7%9c%8b%e6%ad%a4%e5%b8%96%e5%ad%90%e7%9a%84%e4%bd%9c%e8%80%85 liuadmin&body=https%3a%2f%2fmartinliu.cn%2f2015%2f03%2f08%2fe4b8bbe69c8de58aa1e599a8e690ade5bbba%2f" target=_blank class="nav share-btn email" data-proofer-ignore><p>Email</p></a></menu></header><div id=wrapper><section id=site-intro><a href=/><img src=https://martinliu.cn/img/main/logo.jpg class=circle width=100 alt="Martin Liu"></a><header><h1>Martin Liu's Blog</h1></header><main><p>Community Advocate, DevOps China Community Organizer</p></main><footer><ul class=socnet-icons><li><a href=//github.com/martinliu target=_blank rel=noopener title=GitHub class="fab fa-github"></a></li><li><a href=//www.linkedin.com/in/liuzheng target=_blank rel=noopener title=LinkedIn class="fab fa-linkedin"></a></li><li><a href=//twitter.com/martinliu target=_blank rel=noopener title=Twitter class="fab fa-twitter"></a></li></ul></footer></section><main id=site-main><article class=post><header><div class=title><h2><a href=/2015/03/08/e4b8bbe69c8de58aa1e599a8e690ade5bbba/>Martin's lab 主服务器搭建</a></h2></div><div class=meta><time datetime="2015-03-08 15:42:01 +0000 UTC">March 8, 2015</time><p>liuadmin</p><p>2 分钟</p></div></header><div id=socnet-share><a href="//twitter.com/share?text=Martin%27s%20lab%20%e4%b8%bb%e6%9c%8d%e5%8a%a1%e5%99%a8%e6%90%ad%e5%bb%ba&url=https%3a%2f%2fmartinliu.cn%2f2015%2f03%2f08%2fe4b8bbe69c8de58aa1e599a8e690ade5bbba%2f" target=_blank rel=noopener class="nav share-btn twitter"><p>Twitter</p></a><a href="//www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fmartinliu.cn%2f2015%2f03%2f08%2fe4b8bbe69c8de58aa1e599a8e690ade5bbba%2f" target=_blank rel=noopener class="nav share-btn facebook"><p>Facebook</p></a><a href="//www.reddit.com/submit?url=https%3a%2f%2fmartinliu.cn%2f2015%2f03%2f08%2fe4b8bbe69c8de58aa1e599a8e690ade5bbba%2f&title=Martin%27s%20lab%20%e4%b8%bb%e6%9c%8d%e5%8a%a1%e5%99%a8%e6%90%ad%e5%bb%ba" target=_blank rel=noopener class="nav share-btn reddit"><p>Reddit</p></a><a href="//www.linkedin.com/shareArticle?url=https%3a%2f%2fmartinliu.cn%2f2015%2f03%2f08%2fe4b8bbe69c8de58aa1e599a8e690ade5bbba%2f&title=Martin%27s%20lab%20%e4%b8%bb%e6%9c%8d%e5%8a%a1%e5%99%a8%e6%90%ad%e5%bb%ba" target=_blank rel=noopener class="nav share-btn linkedin"><p>LinkedIn</p></a><a href="//www.pinterest.com/pin/create/button/?url=https%3a%2f%2fmartinliu.cn%2f2015%2f03%2f08%2fe4b8bbe69c8de58aa1e599a8e690ade5bbba%2f&description=Martin%27s%20lab%20%e4%b8%bb%e6%9c%8d%e5%8a%a1%e5%99%a8%e6%90%ad%e5%bb%ba" target=_blank rel=noopener class="nav share-btn pinterest"><p>Pinterest</p></a><a href="mailto:?subject=%e6%9f%a5%e7%9c%8b%e6%ad%a4%e5%b8%96%e5%ad%90%e7%9a%84%e4%bd%9c%e8%80%85 liuadmin&body=https%3a%2f%2fmartinliu.cn%2f2015%2f03%2f08%2fe4b8bbe69c8de58aa1e599a8e690ade5bbba%2f" target=_blank class="nav share-btn email" data-proofer-ignore><p>Email</p></a></div><div class=content><p><img src=http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2015/05/Red-Hat-open-hybrid-cloud-1000x563_0.png alt=Red-Hat-open-hybrid-cloud-1000x563_0></p><p>上图是红帽产品和技术架构的全貌。来源是：<a href=http://www.redhat.com/en/technologies/cloud-computing>http://www.redhat.com/en/technologies/cloud-computing</a> 这张图我用在了我的首次给公司内部的全体销售培训上。由于我是IT管理背景的，因此我很习惯从云管理层往下看云引擎的各个层面。但是管理层产品，其实是后来整合纳入的。红帽起家的旗舰产品还是在底层的RHEL。总之，我想在一个Lab里面实现以上所有的部分，所谓实现是让其每个部分都能在运行在假象的一个有意义的业务场景里。还好，红帽的产品全都是基于x86平台的，因此我用几个笔记本，再加上我家里的这台HP MicroServer G8服务器应该能够全部部署出来。</p><p>做这样的一个lab还是要一定的规划和设计的，这些初步的规划和设计都在我的本子里手写的，就不在这里敲字了，随后我会抽空上几张图。</p><h2 id=主服务器基本配置>主服务器基本配置</h2><p>硬件：Lenovo W540 CPU Intel i7, RAM 32 GB, SSD 512GB, HD 1TB</p><p>OS : RHEL 7.1</p><p>订阅是红帽公司的业务模式，也是红帽认为最自豪的部分，红帽相信可以成为开源技术和用户之间的催化剂，它不断参与最优秀的开源技术创新，并为其用户提供最强有利的技术服务和支持。红帽技术员工可以申请一个红帽雇员订阅。我的订阅可以在网上查到如下图所示：</p><p><a href=http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2015/03/employee-sub.png><img src=http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2015/03/employee-sub-520x295.png alt=employee-sub></a></p><p>红帽的服务必须是基于订阅的每一个节点（物理、虚拟）都需要有有效的订阅，否则红帽的支持服务不能生效。对于一个已经成功注册到红帽官网，并且状态正常的服务器，应该显示如下的注册状态：</p><p>[bash]
+[root@w540 ~]# subscription-manager list</p><p>+&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;-+
 安装的产品状态
 +&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;-+
 产品名称： Red Hat Enterprise Linux Server
@@ -276,13 +22,8 @@
 状态详情：
 开始： 2014年09月09日
 结束： 2015年12月08日
-[/bash]</p>
-<p>红帽员工订阅意味着所有红帽产品。</p>
-<h2 id="基本服务配置">基本服务配置</h2>
-<h3 id="kvm">KVM</h3>
-<p>KVM的上手还真比我想象的速度要慢一些，起码比我用XenServer的经历更加纠结一些。总之现在可以彻底的忘记其它任何的选项，KVM可以满足我的所有需求了。由于主服务器有512SSD + 32GB RAM + 8 vCPU，所以我打算把产品里的所有管理控制节点VM都部署在这个机器上。预计有10个左右的虚拟机。
-安装配置方面这里就不赘述了。只把困扰我许久的几个网络配置贴出来，供参考。</p>
-<p>网桥0的功能是为所有虚拟机提供外网链接，使他们和主机一样直通主机所物理链接的局域网。
+[/bash]</p><p>红帽员工订阅意味着所有红帽产品。</p><h2 id=基本服务配置>基本服务配置</h2><h3 id=kvm>KVM</h3><p>KVM的上手还真比我想象的速度要慢一些，起码比我用XenServer的经历更加纠结一些。总之现在可以彻底的忘记其它任何的选项，KVM可以满足我的所有需求了。由于主服务器有512SSD + 32GB RAM + 8 vCPU，所以我打算把产品里的所有管理控制节点VM都部署在这个机器上。预计有10个左右的虚拟机。
+安装配置方面这里就不赘述了。只把困扰我许久的几个网络配置贴出来，供参考。</p><p>网桥0的功能是为所有虚拟机提供外网链接，使他们和主机一样直通主机所物理链接的局域网。
 [bash]
 [root@w540 ~]# cat /etc/sysconfig/network-scripts/ifcfg-br0
 DEVICE=br0
@@ -300,8 +41,7 @@ IPADDR=192.168.0.5
 PREFIX=24
 GATEWAY=192.168.0.1
 NM_CONTROLLED=no
-[/bash]</p>
-<p>主机原本的一块物理网卡的配置，由于增加了这个网桥，需求更新如下：
+[/bash]</p><p>主机原本的一块物理网卡的配置，由于增加了这个网桥，需求更新如下：
 [bash]
 [root@w540 ~]# cat /etc/sysconfig/network-scripts/ifcfg-enp0s25
 DEVICE=enp0s25
@@ -309,14 +49,10 @@ ONBOOT=yes
 BRIDGE=br0
 NM_CONTROLLED=no
 BOOTPROTO=none
-[/bash]</p>
-<p>kvm这块处理这个折腾我很久的br0之外，其它的功能看起来还不错，运行在SSD上的虚拟机也启动和运行速度飞快。</p>
-<h3 id="repo-服务器">Repo 服务器</h3>
-<p>Repos是红帽软件仓库的简称。它具体指每个订阅内所有软件频道里面下载出来的软件包目录。下载到的某个软件包频道的repos目录中是一堆的rpm包文件，这样的目录可以制作成本地Repos服务器，能够提供给所有LAN里RHEL OS用来做软件的安装和升级用。
-用主服务器上1TB的慢速普通盘来保存这些下载的repos，安装http服务器，把它共享给本lab的lan中。具体的几个参考脚本如下。</p>
-<p>在把本服务器注册到红帽网站之后，他会默认attach一堆可能不需要的repos，因此我的做法是先关闭掉所有的默认开启，然后再开启我所需要并且关注的东西。
+[/bash]</p><p>kvm这块处理这个折腾我很久的br0之外，其它的功能看起来还不错，运行在SSD上的虚拟机也启动和运行速度飞快。</p><h3 id=repo-服务器>Repo 服务器</h3><p>Repos是红帽软件仓库的简称。它具体指每个订阅内所有软件频道里面下载出来的软件包目录。下载到的某个软件包频道的repos目录中是一堆的rpm包文件，这样的目录可以制作成本地Repos服务器，能够提供给所有LAN里RHEL OS用来做软件的安装和升级用。
+用主服务器上1TB的慢速普通盘来保存这些下载的repos，安装http服务器，把它共享给本lab的lan中。具体的几个参考脚本如下。</p><p>在把本服务器注册到红帽网站之后，他会默认attach一堆可能不需要的repos，因此我的做法是先关闭掉所有的默认开启，然后再开启我所需要并且关注的东西。
 [bash]
-[root@w540 repos]# subscription-manager repos &ndash;disable=&quot;*&quot;
+[root@w540 repos]# subscription-manager repos &ndash;disable="*"
 [/bash]
 以上命令的结果会反问，所有的被关闭的repos。下面许开启我当前需求的repos。
 [bash]
@@ -348,8 +84,7 @@ subscription-manager repos &ndash;enable=rhel-7-server-satellite-optional-6.1-rp
 subscription-manager repos &ndash;enable=rhel-7-server-optional-rpms
 subscription-manager repos &ndash;enable=rhel-7-server-satellite-6.0-rpms
 subscription-manager repos &ndash;enable=jb-ews-2-for-rhel-7-server-rpms
-[/bash]</p>
-<p>接下来可以用命令来从红帽CDN同步下载每个Repos里面的软件包。
+[/bash]</p><p>接下来可以用命令来从红帽CDN同步下载每个Repos里面的软件包。
 [bash]
 [root@w540 rhel70]# cat sync.sh
 reposync &ndash;gpgcheck &ndash;newest-only &ndash;plugins &ndash;downloadcomps &ndash;repoid=rhel-7-server-satellite-6.0-rpms &ndash;download_path=/data/Repos/rhel70/
@@ -369,18 +104,15 @@ reposync &ndash;gpgcheck &ndash;newest-only &ndash;plugins &ndash;downloadcomps 
 reposync &ndash;gpgcheck &ndash;newest-only &ndash;plugins &ndash;downloadcomps &ndash;repoid=jb-eap-6.3-for-rhel-7-server-rpms &ndash;download_path=/data/Repos/rhel70/
 reposync &ndash;gpgcheck &ndash;newest-only &ndash;plugins &ndash;downloadcomps &ndash;repoid=rhel-ha-for-rhel-7-server-rpms &ndash;download_path=/data/Repos/rhel70/
 reposync &ndash;gpgcheck &ndash;newest-only &ndash;plugins &ndash;downloadcomps &ndash;repoid=rhel-7-server-supplementary-rpms &ndash;download_path=/data/Repos/rhel70/
-[/bash]</p>
-<p>安装httpd的过程就不叙述了，下面就贴一个本机的配置文件。
+[/bash]</p><p>安装httpd的过程就不叙述了，下面就贴一个本机的配置文件。
 [bash]
 Alias /repos &ldquo;/data/repos&rdquo;
-&lt;Directory &ldquo;/data/repos&rdquo;&gt;
+&lt;Directory &ldquo;/data/repos&rdquo;>
 Options None
 AllowOverride None
 Order allow,deny
 Allow from all
-Require all granted</p>
-<p>[/bash]</p>
-<p>最后，在任何需要的机器上本地repos源的配置文件可以类似如下：
+Require all granted</p><p>[/bash]</p><p>最后，在任何需要的机器上本地repos源的配置文件可以类似如下：
 [bash]
 [root@sat6-leb yum.repos.d]# ls
 rhel70.repo
@@ -389,11 +121,7 @@ rhel70.repo
 name=rhel-7-server-rpms
 baseurl=http://192.168.0.5/repos/rhel70/rhel-7-server-rpms/
 gpgcheck=0
-enable=1</p>
-<p>[/bash]</p>
-<p>当然，我的目标是以后这个lab网内所有的机器都需要受到satellite 6 服务器的管理和控制，并不需要在每个服务器上手动的去安装和管理repos内容和订阅。下面分阶段安装各种控制器节点的时候，在详细说明如何使用satellite 6做种子服务器生出所有的其他节点。这里的repo服务器还是作为最初的种子服务器，它使安装satellite 6 服务器的源。也是作为lab中对于satellite6的一个备份选项。</p>
-<h3 id="nfs服务器">NFS服务器</h3>
-<p>本机的存储空间比较大，可以作为慢速NFS共享存储和ISO镜像文件服务器使用，因此，安装nfs服务器之后，就可以把本地的满速普通硬盘使用nfs的方式共享到lab内网了。配置文件参考如下：
+enable=1</p><p>[/bash]</p><p>当然，我的目标是以后这个lab网内所有的机器都需要受到satellite 6 服务器的管理和控制，并不需要在每个服务器上手动的去安装和管理repos内容和订阅。下面分阶段安装各种控制器节点的时候，在详细说明如何使用satellite 6做种子服务器生出所有的其他节点。这里的repo服务器还是作为最初的种子服务器，它使安装satellite 6 服务器的源。也是作为lab中对于satellite6的一个备份选项。</p><h3 id=nfs服务器>NFS服务器</h3><p>本机的存储空间比较大，可以作为慢速NFS共享存储和ISO镜像文件服务器使用，因此，安装nfs服务器之后，就可以把本地的满速普通硬盘使用nfs的方式共享到lab内网了。配置文件参考如下：
 [bash]
 [root@w540 ~]# cat /etc/exports
 /data/nfs 192.168.0.<em>(rw,async)
@@ -405,293 +133,15 @@ Export list for localhost:
 /data/iso 192.168.0.*
 /data/nfs 192.168.0.*
 [root@w540 ~]#
-[/bash]</p>
-<h3 id="ntp服务器">NTP服务器</h3>
-<p>根据红帽知识库文档，选择本机这个物理服务器作为lab内网的时钟服务器，所有的虚拟机和其他物理机都和他同步时钟。最终的配置还没有确定。随后更新靠谱的可以供参考的配置</p>
-
-    </div>
-    <footer>
-      <div class="stats">
-  
-    <ul class="categories">
-      
-        
-          <li><a class="article-terms-link" href="/categories/opensource/">opensource</a></li>
-        
-      
-    </ul>
-  
-  
-    <ul class="tags">
-      
-        
-          <li><a class="article-terms-link" href="/tags/kvm/">KVM</a></li>
-        
-          <li><a class="article-terms-link" href="/tags/lab/">lab</a></li>
-        
-          <li><a class="article-terms-link" href="/tags/nfs/">nfs</a></li>
-        
-          <li><a class="article-terms-link" href="/tags/ntp/">ntp</a></li>
-        
-          <li><a class="article-terms-link" href="/tags/opensouce/">opensouce</a></li>
-        
-          <li><a class="article-terms-link" href="/tags/redhat/">redhat</a></li>
-        
-          <li><a class="article-terms-link" href="/tags/satellite-6/">satellite 6</a></li>
-        
-          <li><a class="article-terms-link" href="/tags/%e8%ae%a2%e9%98%85/">订阅</a></li>
-        
-      
-    </ul>
-  
-</div>
-
-    </footer>
-  </article>
-  
-    
-  <article class="post">
-    
-    <div>
-      <h2 id="say-something">说些什么</h2>
-        <form id="comment-form" class="new-comment" method="POST">
-          
-          <h3 class='reply-notice hidden'>
-            <span class='reply-name'></span>
-          </h3>
-
-          
-          <input type="hidden" name="options[entryId]" value="9f6ac04046628186e7645384a0118b10">
-          <input type='hidden' name='fields[replyThread]' value=''>
-          <input type='hidden' name='fields[replyID]' value=''>
-          <input type='hidden' name='fields[replyName]' value=''>
-
-          
-          <input required name='fields[name]' type='text' placeholder='你的名字'>
-          <input name='fields[website]' type='text' placeholder='您的网页'>
-          <input required name='fields[email]' type='email' placeholder='你的邮件'>
-          <textarea required name='fields[body]' placeholder='你的信息' rows='10'></textarea>
-
-          
-          
-
-          
-          <div class='submit-notice'>
-            <strong class='submit-notice-text submit-success hidden'>感谢您的评论！被批准后它会立即在此站点展示。</strong>
-            <strong class='submit-notice-text submit-failed hidden'>很抱歉，您的提交存在错误。请确保所有必填字段都已填写正确，然后再试一次。</strong>
-          </div>
-
-          
-          <input type='submit' value='送出' class='button'>
-          <input type='submit' value='已送出' class='hidden button' disabled>
-          <input type='reset' value='重设' class='button'>
-        </form>
-    </div>
-
-    
-    <div>
-      <h2>评论</h2><p>还沒有留言。</p>
-      
-    </div>
-  </article>
-
-
-  
-  <div class="pagination">
-    
-      <a href="/2015/03/08/martins-lab-build-day-1/" class="button left"><span>martin&#39;s lab build day 1</span></a>
-    
-    
-      <a href="/blog/flake-it-till-you-make-it/" class="button right"><span>Flake it till you make it</span></a>
-    
-  </div>
-
-      </main>
-      <section id="site-sidebar">
-  
-    <section id="recent-posts">
-      <header>
-        <h1>最新文章</h1>
-      </header>
-      
-      <article class="mini-post">
-          <a href="/blog/workshop-elastic-observability/" class="image" style="--bg-image: url('https://martinliu.cn/img/2019/03/pic01.jpg');">
-    <img class="stretchH" src="https://martinliu.cn/img/2019/03/pic01.jpg" alt="Valley">
-  </a>
-        <header>
-          <h2><a href="/blog/workshop-elastic-observability/">Elastic 可观测性工作坊</a></h2>
-          <time class="published" datetime="2021-02-06 10:36:12 &#43;0800 CST">February 6, 2021</time>
-        </header>
-      </article>
-      
-      <article class="mini-post">
-          <a href="/blog/change-back-on-github-page-again/" class="image" style="--bg-image: url('https://martinliu.cn/img/2019/03/pic03.jpg');">
-    <img class="stretchH" src="https://martinliu.cn/img/2019/03/pic03.jpg" alt="Valley">
-  </a>
-        <header>
-          <h2><a href="/blog/change-back-on-github-page-again/">博客换一个新样式</a></h2>
-          <time class="published" datetime="2021-02-06 00:00:00 &#43;0000 UTC">February 6, 2021</time>
-        </header>
-      </article>
-      
-      <article class="mini-post">
-          <a href="/blog/devopscoach-weekly-6/" class="image" style="--bg-image: url('https://martinliu.cn/');">
-    <img src="https://martinliu.cn/" alt="">
-  </a>
-        <header>
-          <h2><a href="/blog/devopscoach-weekly-6/">DevOps Coach 周刊 #6</a></h2>
-          <time class="published" datetime="2020-08-31 00:11:01 &#43;0800 CST">August 31, 2020</time>
-        </header>
-      </article>
-      
-      <article class="mini-post">
-          <a href="/blog/elasticsearch-3-nodes-cluster-setup/" class="image" style="--bg-image: url('https://martinliu.cn/');">
-    <img src="https://martinliu.cn/" alt="">
-  </a>
-        <header>
-          <h2><a href="/blog/elasticsearch-3-nodes-cluster-setup/">Elasticsearch 3 节点集群搭建 (7.9.0)</a></h2>
-          <time class="published" datetime="2020-08-27 13:54:46 &#43;0800 CST">August 27, 2020</time>
-        </header>
-      </article>
-      
-      <article class="mini-post">
-          <a href="/blog/devopscoach-weekly-5/" class="image" style="--bg-image: url('https://martinliu.cn/');">
-    <img src="https://martinliu.cn/" alt="">
-  </a>
-        <header>
-          <h2><a href="/blog/devopscoach-weekly-5/">DevOps Coach 周刊 #5</a></h2>
-          <time class="published" datetime="2020-08-25 15:20:51 &#43;0800 CST">August 25, 2020</time>
-        </header>
-      </article>
-      
-      
-        <footer>
-          <a href="/blog/" class="button">查看更多</a>
-        </footer>
-      
-    </section>
-  
-
-  
-    
-
-      <section id="categories">
-        <header>
-          <h1><a href="/categories">分类</a></h1>
-        </header>
-        <ul>
-          
-          
-          <li>
-              <a href="/categories/blog/">blog<span class="count">107</span></a>
-          
-          <li>
-              <a href="/categories/itsm/">itsm<span class="count">95</span></a>
-          
-          <li>
-              <a href="/categories/infrastructure/">infrastructure<span class="count">48</span></a>
-          
-          <li>
-              <a href="/categories/devops/">devops<span class="count">38</span></a>
-          
-          <li>
-              <a href="/categories/opensource/">opensource<span class="count">35</span></a>
-          
-          <li>
-              <a href="/categories/cloud-computing/">cloud-computing<span class="count">27</span></a>
-          
-          <li>
-              <a href="/categories/running/">running<span class="count">22</span></a>
-          
-          <li>
-              <a href="/categories/cms/cmdb/">cms/cmdb<span class="count">20</span></a>
-          
-          <li>
-              <a href="/categories/travel/">travel<span class="count">14</span></a>
-          
-          <li>
-              <a href="/categories/sre/">sre<span class="count">2</span></a>
-          
-          </li>
-        </ul>
-      </section>
-    
-  
-
-  
-    <section id="mini-bio">
-      <header>
-        <h1>关于</h1>
-      </header>
-      <p>This Blog is sharing DevOps and SRE ariticles. I have translated DevOps Handbook and SRE Workbook.</p>
-      <footer>
-        <a href="/about" class="button">学到更多</a>
-      </footer>
-    </section>
-  
-</section>
-
-      <footer id="site-footer">
-  
-      <ul class="socnet-icons">
-        
-
-        <li><a href="//github.com/martinliu" target="_blank" rel="noopener" title="GitHub" class="fab fa-github"></a></li>
-
-
-
-
-
-
-
-
-
-
-
-<li><a href="//www.linkedin.com/in/liuzheng" target="_blank" rel="noopener" title="LinkedIn" class="fab fa-linkedin"></a></li>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<li><a href="//twitter.com/martinliu" target="_blank" rel="noopener" title="Twitter" class="fab fa-twitter"></a></li>
-
-
-
-
-
-
-
-
-
-
-
-
-
-      </ul>
-  
-  <p class="copyright">
-    © 2021 刘征的博客
-      <br>
-    主题: <a href='https://themes.gohugo.io/hugo-future-imperfect-slim/' target='_blank' rel='noopener'>Hugo Future Imperfect Slim</a><br>移植自 <a href='https://html5up.net/future-imperfect' target='_blank' rel='noopener'>HTML5 UP</a> | 由 <a href='https://gohugo.io/' target='_blank' rel='noopener' title='0.80.0'>Hugo</a> 驱动
-  </p>
-</footer>
-<a id="back-to-top" href="#" class="fas fa-arrow-up fa-2x"></a>
-
-      <script src="/js/highlight.js"></script>
-    
-    <script>hljs.initHighlightingOnLoad();</script><script src="/js/bundle.min.bbba6b424a8ac5b6858cd5fc80eabc9c5277945cc2dc349204646b84891b4b58.js" integrity="sha256-u7prQkqKxbaFjNX8gOq8nFJ3lFzC3DSSBGRrhIkbS1g="></script>
-    <script src="/js/add-on.js"></script>
-    </div>
-  </body>
-</html>
+[/bash]</p><h3 id=ntp服务器>NTP服务器</h3><p>根据红帽知识库文档，选择本机这个物理服务器作为lab内网的时钟服务器，所有的虚拟机和其他物理机都和他同步时钟。最终的配置还没有确定。随后更新靠谱的可以供参考的配置</p></div><footer><div class=stats><ul class=categories><li><a class=article-terms-link href=/categories/opensource/>opensource</a></li></ul><ul class=tags><li><a class=article-terms-link href=/tags/kvm/>KVM</a></li><li><a class=article-terms-link href=/tags/lab/>lab</a></li><li><a class=article-terms-link href=/tags/nfs/>nfs</a></li><li><a class=article-terms-link href=/tags/ntp/>ntp</a></li><li><a class=article-terms-link href=/tags/opensouce/>opensouce</a></li><li><a class=article-terms-link href=/tags/redhat/>redhat</a></li><li><a class=article-terms-link href=/tags/satellite-6/>satellite 6</a></li><li><a class=article-terms-link href=/tags/%e8%ae%a2%e9%98%85/>订阅</a></li></ul></div></footer></article><article class=post><div><h2 id=say-something>说些什么</h2><form id=comment-form class=new-comment method=post><h3 class="reply-notice hidden"><span class=reply-name></span></h3><input type=hidden name=options[entryId] value=9f6ac04046628186e7645384a0118b10>
+<input type=hidden name=fields[replyThread]>
+<input type=hidden name=fields[replyID]>
+<input type=hidden name=fields[replyName]>
+<input required name=fields[name] type=text placeholder=你的名字>
+<input name=fields[website] type=text placeholder=您的网页>
+<input required name=fields[email] type=email placeholder=你的邮件>
+<textarea required name=fields[body] placeholder=你的信息 rows=10></textarea><div class=submit-notice><strong class="submit-notice-text submit-success hidden">感谢您的评论！被批准后它会立即在此站点展示。</strong>
+<strong class="submit-notice-text submit-failed hidden">很抱歉，您的提交存在错误。请确保所有必填字段都已填写正确，然后再试一次。</strong></div><input type=submit value=送出 class=button>
+<input type=submit value=已送出 class="hidden button" disabled>
+<input type=reset value=重设 class=button></form></div><div><h2>评论</h2><p>还沒有留言。</p></div></article><div class=pagination><a href=/2015/03/08/martins-lab-build-day-1/ class="button left"><span>martin's lab build day 1</span></a>
+<a href=/blog/flake-it-till-you-make-it/ class="button right"><span>Flake it till you make it</span></a></div></main><section id=site-sidebar><section id=recent-posts><header><h1>最新文章</h1></header><article class=mini-post><a href=/blog/workshop-elastic-observability/ class=image style="--bg-image: url('https://martinliu.cn/img/2019/03/pic01.jpg')"><img class=stretchH src=https://martinliu.cn/img/2019/03/pic01.jpg alt=Valley></a><header><h2><a href=/blog/workshop-elastic-observability/>Elastic 可观测性工作坊</a></h2><time class=published datetime="2021-02-06 10:36:12 +0800 CST">February 6, 2021</time></header></article><article class=mini-post><a href=/blog/change-back-on-github-page-again/ class=image style="--bg-image: url('https://martinliu.cn/img/2019/03/pic03.jpg')"><img class=stretchH src=https://martinliu.cn/img/2019/03/pic03.jpg alt=Valley></a><header><h2><a href=/blog/change-back-on-github-page-again/>博客换一个新样式</a></h2><time class=published datetime="2021-02-06 00:00:00 +0000 UTC">February 6, 2021</time></header></article><article class=mini-post><a href=/blog/devopscoach-weekly-6/ class=image style="--bg-image: url('https://martinliu.cn/')"><img src=https://martinliu.cn/ alt></a><header><h2><a href=/blog/devopscoach-weekly-6/>DevOps Coach 周刊 #6</a></h2><time class=published datetime="2020-08-31 00:11:01 +0800 CST">August 31, 2020</time></header></article><article class=mini-post><a href=/blog/elasticsearch-3-nodes-cluster-setup/ class=image style="--bg-image: url('https://martinliu.cn/')"><img src=https://martinliu.cn/ alt></a><header><h2><a href=/blog/elasticsearch-3-nodes-cluster-setup/>Elasticsearch 3 节点集群搭建 (7.9.0)</a></h2><time class=published datetime="2020-08-27 13:54:46 +0800 CST">August 27, 2020</time></header></article><article class=mini-post><a href=/blog/devopscoach-weekly-5/ class=image style="--bg-image: url('https://martinliu.cn/')"><img src=https://martinliu.cn/ alt></a><header><h2><a href=/blog/devopscoach-weekly-5/>DevOps Coach 周刊 #5</a></h2><time class=published datetime="2020-08-25 15:20:51 +0800 CST">August 25, 2020</time></header></article><footer><a href=/blog/ class=button>查看更多</a></footer></section><section id=categories><header><h1><a href=/categories>分类</a></h1></header><ul><li><a href=/categories/blog/>blog<span class=count>107</span></a><li><a href=/categories/itsm/>itsm<span class=count>95</span></a><li><a href=/categories/infrastructure/>infrastructure<span class=count>48</span></a><li><a href=/categories/devops/>devops<span class=count>38</span></a><li><a href=/categories/opensource/>opensource<span class=count>35</span></a><li><a href=/categories/cloud-computing/>cloud-computing<span class=count>27</span></a><li><a href=/categories/running/>running<span class=count>22</span></a><li><a href=/categories/cms/cmdb/>cms/cmdb<span class=count>20</span></a><li><a href=/categories/travel/>travel<span class=count>14</span></a><li><a href=/categories/sre/>sre<span class=count>2</span></a></li></ul></section><section id=mini-bio><header><h1>关于</h1></header><p>This Blog is sharing DevOps and SRE ariticles. I have translated DevOps Handbook and SRE Workbook.</p><footer><a href=/about class=button>学到更多</a></footer></section></section><footer id=site-footer><ul class=socnet-icons><li><a href=//github.com/martinliu target=_blank rel=noopener title=GitHub class="fab fa-github"></a></li><li><a href=//www.linkedin.com/in/liuzheng target=_blank rel=noopener title=LinkedIn class="fab fa-linkedin"></a></li><li><a href=//twitter.com/martinliu target=_blank rel=noopener title=Twitter class="fab fa-twitter"></a></li></ul><p class=copyright>© 2021 刘征的博客<br>主题: <a href=https://themes.gohugo.io/hugo-future-imperfect-slim/ target=_blank rel=noopener>Hugo Future Imperfect Slim</a><br>移植自 <a href=https://html5up.net/future-imperfect target=_blank rel=noopener>HTML5 UP</a> | 由 <a href=https://gohugo.io/ target=_blank rel=noopener title=0.80.0>Hugo</a> 驱动</p></footer><a id=back-to-top href=# class="fas fa-arrow-up fa-2x"></a><script src=/js/highlight.js></script><script>hljs.initHighlightingOnLoad();</script><script src=/js/bundle.min.bbba6b424a8ac5b6858cd5fc80eabc9c5277945cc2dc349204646b84891b4b58.js integrity="sha256-u7prQkqKxbaFjNX8gOq8nFJ3lFzC3DSSBGRrhIkbS1g="></script><script src=/js/add-on.js></script><script type=application/javascript>var doNotTrack=false;if(!doNotTrack){window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;ga('create','UA-749876-6','auto');ga('send','pageview');}</script><script async src=https://www.google-analytics.com/analytics.js></script></div></body></html>
