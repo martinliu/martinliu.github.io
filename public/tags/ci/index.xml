@@ -2,17 +2,26 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>ci on 刘征的博客</title>
-    <link>https://example.com/tags/ci/</link>
+    <link>https://martinliu.cn/tags/ci/</link>
     <description>Recent content in ci on 刘征的博客</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-CN</language>
-    <lastBuildDate>Wed, 15 Jul 2020 00:09:53 +0800</lastBuildDate><atom:link href="https://example.com/tags/ci/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sat, 06 Feb 2021 00:00:00 +0000</lastBuildDate><atom:link href="https://martinliu.cn/tags/ci/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>博客换一个新样式</title>
+      <link>https://martinliu.cn/blog/change-back-on-github-page-again/</link>
+      <pubDate>Sat, 06 Feb 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://martinliu.cn/blog/change-back-on-github-page-again/</guid>
+      <description>&lt;p&gt;这是一个拖了很久的工作，旧的样式被改的太乱了，已经无法继续使用了，更新一下重新来过。&lt;/p&gt;</description>
+    </item>
+    
     <item>
       <title>Skaffold 让 K8s 开发者更加酸爽</title>
-      <link>https://example.com/blog/skaffold-make-local-k8s-dev-easy/</link>
+      <link>https://martinliu.cn/blog/skaffold-make-local-k8s-dev-easy/</link>
       <pubDate>Wed, 15 Jul 2020 00:09:53 +0800</pubDate>
       
-      <guid>https://example.com/blog/skaffold-make-local-k8s-dev-easy/</guid>
+      <guid>https://martinliu.cn/blog/skaffold-make-local-k8s-dev-easy/</guid>
       <description>今天介绍一个本地 Kubernetes 开发的利器 Skaffold。 这是我偶然间发现的一个工具，询问了一下周围的人，居然还没有人用过。测试之后，确实有一种不吐不快的感觉。
 简介 Skaffold Google 开发的一个开源项目。是一个非常轻量的命令行工具，就是一个可执行文件。它的主页上是这样的介绍它的。
  轻量：Skaffold只是一个客户端工具。由于集群上不需要任何的相关组件，您的集群没有任何开销或维护负担。 运行在任何地方：Skaffold是与世界分享你的项目的最简单的方法：&amp;ldquo;git clone&amp;rdquo;，然后 &amp;ldquo;skaffold run&amp;rdquo;。此外，你还可以使用配置文件、本地用户配置、环境变量和标志来轻松地集成不同环境的差异。 功能丰富：Skaffold拥有许多Kubernetes原生开发的基本功能，包括基于策略的打镜像标签、资源端口转发和日志、文件同步等。 优化你的开发：Skaffold使内部循环紧密，高度优化，让您在开发的同时得到即时反馈。  客户评价 &amp;ldquo;我们的客户很喜欢[Kubernetes]，但一直给我们反馈说在Kubernetes上开发很麻烦。Skaffold一针见血地解决了这个问题。以前需要几分钟才能部署的docker镜像或配置的更改，现在只需要几秒钟。Skaffold的插件架构使我们能够部署到Helm或Kustomize，并使用各种docker构建插件，如Kaniko。Skaffold用一个精简的工具取代了我们定制的实用程序和脚本集合，并且易于使用。&amp;rdquo; Warren Strange，ForgeRock的工程总监。
@@ -30,10 +39,10 @@
     
     <item>
       <title>基础架构的持续集成和应用部署</title>
-      <link>https://example.com/blog/devops-infrastructure-ci-app-deployment/</link>
+      <link>https://martinliu.cn/blog/devops-infrastructure-ci-app-deployment/</link>
       <pubDate>Sat, 17 Mar 2018 10:50:57 +0800</pubDate>
       
-      <guid>https://example.com/blog/devops-infrastructure-ci-app-deployment/</guid>
+      <guid>https://martinliu.cn/blog/devops-infrastructure-ci-app-deployment/</guid>
       <description>持续集成通常是针对应用而言的，可是基础架构的持续集成应该怎么做？基础架构的持续集成应该属于持续交付/部署的基础。贯串本文的一个问题，或者在阅读本文时，您应该不断地问自己这个问题：我们的应用部署流程是怎样的？
 在回答这个问题之前，我们先来回顾一下，目前几乎所有人正在使用的手工环境和资源交付流程。在源码被编译打包了以后，安装包文件被上传保存到了内部的某个文件服务器上。Ops团队的某个组/人被分配到工单，根据工单描述的需求，它在测试或者生产环境中开始工作：
  用图形界面进行虚拟机模板的手工克隆工作，或者由于没有相应的权限或者自助服务，不得不给虚拟化管理员发任务单，然后等待回复。 获取用户名和密码手工登录服务器，有些企业还要是等待领导的审批，才能得到密码信封和所需要的访问密码。 根据工单（变更单）里的描述和自己的经验对虚拟机的操作系统进行配置，在这个过程中，Ops往往可能还需和需求方进行不止一次的沟通，确认相关参数。 手工的下载应用安装包，然后分别手工上传到目标的服务器，凭经验和工单信息部署应用，然后测试部署结果，可能是看下页面有没有正常显示，或者服务起没起. 手工测试和确认这些虚拟机的服务和状态，凭经验觉得OK了以后，回复工单，关闭工单。  以上的工作场景，可能是Ops人员很常规的一天，或者是几天内的工作，当然在这个过程中，他们还需要参与一些救火行动；他们在这个过程中也可能会有疑问，也可能会对此工作结果不确定；但是，日常的工作经验告诉他，差不多了，关闭任务单要紧，还有好多项目催活呢！就这样，配置并不精确的虚拟机环境就交给了下游的需求方。
@@ -55,10 +64,10 @@
     
     <item>
       <title>BMC Atrium CMDB CI数据迁移</title>
-      <link>https://example.com/2011/01/12/bmc-atrium-cmdb-ci/</link>
+      <link>https://martinliu.cn/2011/01/12/bmc-atrium-cmdb-ci/</link>
       <pubDate>Wed, 12 Jan 2011 05:08:23 +0000</pubDate>
       
-      <guid>https://example.com/2011/01/12/bmc-atrium-cmdb-ci/</guid>
+      <guid>https://martinliu.cn/2011/01/12/bmc-atrium-cmdb-ci/</guid>
       <description>在不同的CMDB服务器之间做数据迁移之前一定要注意两点：1）保持两边的CDM相同；2）先导入CI数据在导入CI相关的关系数据。另外就是每个类导入完毕之后要做数据完整性和正确性的抽检。以下使用的工具是cmdbdriver，该命令初始化和一般性的参数介绍请参考相关文档。
 CI数据导出示例
 Command: xexpdt XEXPORT DATA Export instance data from all classes? (F): Classes to export data from: Class and its subclasses, From namespace (1,2) (1): Namespace (): BMC.CORE Class name (): BMC_ComputerSystem Dataset ID (): BMC.ASSET Filename for exported data: C:\DEMO\cs-ci Exporting Class BMC_ComputerSystem i=0: namespaceName = BMC.CORE, className = BMC_ComputerSystemExported without errorsExporting Class BMC_MainframeExporti ng Class BMC_PrinterExporting Class BMC_StorageSubsystem CMDBExportData results ReturnCode: OK Status List : 0 items</description>
@@ -66,10 +75,10 @@ Command: xexpdt XEXPORT DATA Export instance data from all classes? (F): Classes
     
     <item>
       <title>[ZT]ITIL V3 服务转换篇 之 资产和配置管理</title>
-      <link>https://example.com/2010/12/20/itil-v3-asset-configuration/</link>
+      <link>https://martinliu.cn/2010/12/20/itil-v3-asset-configuration/</link>
       <pubDate>Mon, 20 Dec 2010 03:01:40 +0000</pubDate>
       
-      <guid>https://example.com/2010/12/20/itil-v3-asset-configuration/</guid>
+      <guid>https://martinliu.cn/2010/12/20/itil-v3-asset-configuration/</guid>
       <description>为了定义和控制服务和基础设施组件。维持当前计划中、历史的服务和基础设施状况配置信息的准确性 **一、先介绍几个基本概念 **1、配置项（CI） 配置项是正在或将要在配置管理控制下的资产、服务组件或其他。配置项在复杂性、大小、种类有很大不同，从整个服务或系统包括硬件、软件、文档、支持人员到单独软件模块或硬件组件。配置项可以集中或分组管理。配置项可以选择使用既定的选择标准、分组、分类和识别方式在整个生命周期中管理和追溯。其包括： A) 服务CI项：服务能力资产、服务资源资产、服务模式、服务包、发布包、验收标准等 B) 组织CI项 C) 内部CI项 D) 外部CI项：包括外部客户需求和协议、供应商发布、分包商及对外服务。 E) 接口CI项：端到端的服务，跨越服务提供者的接口 2、配置管理系统（CMS） 为了管理大型复杂的IT服务和基础设施，资产和配置管理需要使用配置管理系统CMS。在指定范围内CMS掌握着所有配置项信息。CMS为所有服务组件与相关事故、问题、已知错误、变更发布、文档、公司数据、供应商、客户信息做关联。 在数据层面CMS能使数据库存在多个物理CMDB中而后共同组成一个联合的CMDB。其他数据来源也可以加入CMS中。 3、配置管理数据库(CMDB) 所有配置项的信息都包括在配置管理数据库(CMDB)中。配置管理数据库(CMDB)对所有IT 组件、组件的不同版本和状态以及组件之间的相互关系进行跟踪。在其最基本的形式下，配置管理数据库(CMDB)可能仅由一些纸质表格或一套电子表格 (Spreadsheets)组成。 4、最终介质库(DML) DML是用来存储和保护所有已授权的被确认版本介质配置项。 他们存储经过质检的主拷贝版本。这个库可以有一个或多个软件库或存放区来存放开发、测试和实时存储文件。他们包含组织所有软件的主拷贝、购买软件的副本及 受控文件的电子版。DML包含物理的拷贝存储，DML是发布管理的基础。
 **二、配置管理的目的： ** 1. 确定、控制、记录、报告、审计、验证服务资产和配置项包括版本、基线、组成成分、属性和相关关系。 2.通过服务生命周期管理保护资产完整、配置项等账户。确保只有已授权的组件被使用和已授权变更被执行。 3.通过服务生命周期保护服务资产、配置项的完整性。为了建立和维持一个准确和完整的配置管理系统，确保资产和控制服务、IT基础设施的配置需求的完整性。
 三、资产、配置管理的活动
@@ -79,10 +88,10 @@ Command: xexpdt XEXPORT DATA Export instance data from all classes? (F): Classes
     
     <item>
       <title>规划CMDB数据填充-001</title>
-      <link>https://example.com/2010/06/04/plan-cmdb-population-001/</link>
+      <link>https://martinliu.cn/2010/06/04/plan-cmdb-population-001/</link>
       <pubDate>Fri, 04 Jun 2010 06:13:20 +0000</pubDate>
       
-      <guid>https://example.com/2010/06/04/plan-cmdb-population-001/</guid>
+      <guid>https://martinliu.cn/2010/06/04/plan-cmdb-population-001/</guid>
       <description>&lt;p&gt;From 《Step by step to build a CMDB》步骤17-规划CMDB数据填充&lt;/p&gt;
 &lt;p&gt;目标&lt;/p&gt;
 &lt;p&gt;在这一CMDB关键的步骤中，会为CMDB的初始化CI数据填充，做精细的计划。需要考虑到所有CI数据，把不同CI类型对应到不同的数据集中，安排正确的顺序将这些数据集CMDB。其中定义对应的规则来调和重复数据是很重要的，不仅在CMDB初始化数据填充阶段重要，在以后的日常维护过程中也是非常重要的。做出了本阶段的详细规划后，这样在第18步即“选择自动化CMDB填充工具”时，就能考虑需要什么样的配置发现和自动化工具了。&lt;/p&gt;
@@ -114,10 +123,10 @@ Command: xexpdt XEXPORT DATA Export instance data from all classes? (F): Classes
     
     <item>
       <title>资产CI的一生</title>
-      <link>https://example.com/2009/12/13/service-asset-ci-life-cycle/</link>
+      <link>https://martinliu.cn/2009/12/13/service-asset-ci-life-cycle/</link>
       <pubDate>Sun, 13 Dec 2009 07:45:00 +0000</pubDate>
       
-      <guid>https://example.com/2009/12/13/service-asset-ci-life-cycle/</guid>
+      <guid>https://martinliu.cn/2009/12/13/service-asset-ci-life-cycle/</guid>
       <description>在ITIL v3以后，配置管理进化为“服务资产和配置管理SACM”，换句话说，资产和配置管理不分家。两个流程应该是融合的。从微观上看资产管理设计到CI的所有生命周期状态，而这个服务资产在CMDB中出现的状态为整个生命周期中的一部分。
 
 最好能通过资产管理为统一入口，来完成对CMDB中资产的生命周期管理。例如：一台服务器在到货以后，完成资产入库后，就应该在CMDB中自动创建CI，在上架部署了软件后，有配置资产自动采集工具，采集回详细配置信息后，资产状态就自动变为“部署”，当在运行维护中服务器宕机或者维护时，在资产管理中也能看到更新的信息。下面是建议的服务资产的生命周期状态:
@@ -163,10 +172,10 @@ Command: xexpdt XEXPORT DATA Export instance data from all classes? (F): Classes
     
     <item>
       <title>CMDB中存什么？</title>
-      <link>https://example.com/2009/10/05/what-does-cmdb-store/</link>
+      <link>https://martinliu.cn/2009/10/05/what-does-cmdb-store/</link>
       <pubDate>Mon, 05 Oct 2009 15:21:24 +0000</pubDate>
       
-      <guid>https://example.com/2009/10/05/what-does-cmdb-store/</guid>
+      <guid>https://martinliu.cn/2009/10/05/what-does-cmdb-store/</guid>
       <description>[caption id=&amp;quot;&amp;quot; align=&amp;ldquo;alignnone&amp;rdquo; width=&amp;ldquo;406&amp;rdquo; caption=&amp;ldquo;dmtf.org&amp;rdquo;][/caption]
 当然是配置项和它们之间的关系，即：CI 和 Relationship。 那么如何规划那些类型的CI和Relationship需要保存到CMDB中呢？可以参考的数据模型是DMTF的通用信息模型，它是以面相对象的方式来描述各类CI和关系。它是一个工具用来帮你对环境中的各种物理和逻辑的CI和关系进行分类，参考这个模型选择一些有用的类（广度），然后在参考它对每个类属性的描述（粒度）。这些类的选择只是一个初步的研究，每个CMDB厂商和工具对其实施和参考的力度都不同，也需要看您具体实施的是什么工具。例如：你需要描述银行基金业务系统，你可能选择的CI类包括：客户群、业务流程、业务活动、业务服务、IT服务、应用系统、应用、软件服务器、服务器、网络、存储等；关系包括：组件、依赖和影响。CI类和关系的选择也基本上遵循够用就好的原则；而且每个类对应的CI实例都需要有人负责管理维护，需遵循，谁负责、谁维护的原则保障其属性的精确性。对于整个CMDB来说如果存在没有Onwer的CI或者关系，如果它是由自动化配置发现工具来更新的；那么它可以存在，如果不是的话，它可能根本就不该存在。所以CMDB中保存的数据不是越多，越细越好；而是够用就好，能保证更新就好。由于数据根本就不是免费的，即使国内的人力成本低，也不应该雇用一帮专职更新CMDB的人。 综上所述：我们说明了CMDB中数据选取和存放的最基本原则和方法，在CMDB产品选型过程中需要着重考察产品的数据模型本身和其管理的能力，还包括其CI和关系的扩展和定制能力；包括数据类型的支持和界面定制的程度。那么CMDB中的CI和关系有该如何展现呢？这是CMDB系统的另外一个功能：可视化。下面是一个CI和关系展示的实例供参考：
 [http://media-001.yo2cdn.com/wp-content/uploads/266/26670/2009/10/s1-4-blog.swf#swf&amp;amp;width=320&amp;amp;height=320]
@@ -176,10 +185,10 @@ Command: xexpdt XEXPORT DATA Export instance data from all classes? (F): Classes
     
     <item>
       <title>Stop to build CMDB for your IT - CMS是怎样炼成的？</title>
-      <link>https://example.com/2009/03/01/stop-to-build-cmdb-for-your-it/</link>
+      <link>https://martinliu.cn/2009/03/01/stop-to-build-cmdb-for-your-it/</link>
       <pubDate>Sun, 01 Mar 2009 13:40:16 +0000</pubDate>
       
-      <guid>https://example.com/2009/03/01/stop-to-build-cmdb-for-your-it/</guid>
+      <guid>https://martinliu.cn/2009/03/01/stop-to-build-cmdb-for-your-it/</guid>
       <description>ITIL在国内的实施也有8年之久，就我看过和做过的项目中：service desk是最多实施的工具，它包括IM/PM；还有Change Management；用户们还可能会常常认为，Release Management可以和变更流程可以混在一起搞。服务台一般先上，有的变更流程先上，服务台的共同特点还有PM一般形同虚设。就我所见所闻的项目和用户来说，CMDB没有那家能建的好用的好；CMDB的建设的缺失似乎成了所有ITIL用户的通病，应该也是想重点突破的瓶颈。
 ITIL v3发布后，CMDB成了CMS中的一个数据库；而且，CMS中包括不止像CMDB这样的配置信息数据库，其实任何保存配置信息的数据库都算在CMS系统内。既然是一个系统，所以它就不光包含数据还包含一套配套工具集合，通过这套工具，维护和使用配置信息。CMS为其他所有ITIL流程提供基础的配置信息。它的结构如下图所示：
 [caption id=&amp;ldquo;attachment_435&amp;rdquo; align=&amp;ldquo;alignnone&amp;rdquo; width=&amp;ldquo;658&amp;rdquo; caption=&amp;ldquo;配置管理系统&amp;rdquo;][/caption]

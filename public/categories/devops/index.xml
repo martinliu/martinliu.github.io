@@ -2,17 +2,26 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>DevOps on 刘征的博客</title>
-    <link>https://example.com/categories/devops/</link>
+    <link>https://martinliu.cn/categories/devops/</link>
     <description>Recent content in DevOps on 刘征的博客</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-CN</language>
-    <lastBuildDate>Mon, 31 Aug 2020 00:11:01 +0800</lastBuildDate><atom:link href="https://example.com/categories/devops/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sat, 06 Feb 2021 00:00:00 +0000</lastBuildDate><atom:link href="https://martinliu.cn/categories/devops/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>博客换一个新样式</title>
+      <link>https://martinliu.cn/blog/change-back-on-github-page-again/</link>
+      <pubDate>Sat, 06 Feb 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://martinliu.cn/blog/change-back-on-github-page-again/</guid>
+      <description>&lt;p&gt;这是一个拖了很久的工作，旧的样式被改的太乱了，已经无法继续使用了，更新一下重新来过。&lt;/p&gt;</description>
+    </item>
+    
     <item>
       <title>DevOps Coach 周刊 #6</title>
-      <link>https://example.com/blog/devopscoach-weekly-6/</link>
+      <link>https://martinliu.cn/blog/devopscoach-weekly-6/</link>
       <pubDate>Mon, 31 Aug 2020 00:11:01 +0800</pubDate>
       
-      <guid>https://example.com/blog/devopscoach-weekly-6/</guid>
+      <guid>https://martinliu.cn/blog/devopscoach-weekly-6/</guid>
       <description>宕机  上一周新发的宕机事故。 近期全球重大宕机事故的分析总结、事后回顾。   May your queries flow and your pagers stay silent. &amp;ndash;Dave, Betsy, Niall, Stephen, and Ken
  上周新发事故  Zoom 无法开始和加入会议， 官方报道 https://status.zoom.us/incidents/1z2lrf4nrv8p Slack 多个功能模块服务降级，甚至无法使用，官方：https://status.slack.com//2020-08/960bbb3c9d49a3cc Let&amp;rsquo;s Encrypt 数据中心硬件方式故障导致 API 报错，官方：https://status.io/pages/incident/55957a99e800baa4470002da/5f45330250878c04bf3fb6eb NZX 新西兰证券交易所遭受重大DDoS攻击导致NZX停电，交易停止。媒体：https://www.stuff.co.nz/business/122562006/major-ddos-attack-causes-nzx-power-outage-trading-halt eBay宕机。服务器状态最新，DNS故障和服务不可用的错误错误，媒体：https://www.express.co.uk/life-style/science-technology/1329281/eBay-down-server-status-DNS-failure-service-unavailable-error Heroku 发生大量的 H100 报错，官方：https://status.heroku.com/incidents/2101 Fastly CDN 服务商的服务发生多区域性能故障，官方：https://status.fastly.com/incidents/p1lwmmv2j2gq Cloudflare 上周发生的这个问题，我的个人 blog 也遇到了，Google 的搜索索引服务记录了那些 500 错误，我也感到非常诧异；第三方传输供应商问题导致HTTP 5xx错误增加； 官方：https://www.cloudflarestatus.com/incidents/hptvkprkvp23  鳄鱼杯：2020年第二季度最大宕机颁 来源：https://statusgator.com/blog/2020/08/21/5-biggest-outages-of-q2-2020/
 任何可能发生的坏事都会发生。这句古老的谚语100%适用于技术行业，在这个行业中，崩溃和中断远比销售和营销团队希望我们想象的要常见得多。然而，与基础设施打交道的DevOps工程师知道，要确保所有东西都能一直按预期工作是多么困难&amp;ndash;并配置监控，实际跟踪系统的健康状况，帮助防止崩溃和停机。
@@ -24,10 +33,10 @@
     
     <item>
       <title>Elasticsearch 3 节点集群搭建 (7.9.0)</title>
-      <link>https://example.com/blog/elasticsearch-3-nodes-cluster-setup/</link>
+      <link>https://martinliu.cn/blog/elasticsearch-3-nodes-cluster-setup/</link>
       <pubDate>Thu, 27 Aug 2020 13:54:46 +0800</pubDate>
       
-      <guid>https://example.com/blog/elasticsearch-3-nodes-cluster-setup/</guid>
+      <guid>https://martinliu.cn/blog/elasticsearch-3-nodes-cluster-setup/</guid>
       <description>最近发布的 Elastic Stack 7.9 ，带来了很多新的特性。Elastic Agent 统一集成数据采集代理是一大亮点。另外还看增加了企业搜索、端点安全防护等组件。Ingest Manager 统一 Beat 配置管理功能让我们向 SaaS 风格的监控工具又迈进了一步。由代理端自行注册到后端，在后端统一纳管所有被管理服务器，将是一种以后非常通用的模式。这样做的好处是：将数据采集端点的配置工作量和复杂度降低到最低。Beats 的各种相关独立模块也在平行的发布，这种双轨模式也可以让用户更弹性的做出选择，能最大程度的保持旧版本部署环境管理模式的延续性。 Ingest manager 的前提条件是：后台 ES 需要启用 api key 安全，启用 ES 客户端的 HTTPS 访问。我们也可以看到这两个功能选项也有其非常广泛的应用需求。本文将用最简单的文字，向你描述一套 3 节点的 ES 集群的搭建方式，这套系统的核心特性如下：
  启用用户名和密码认证 启用集群内 es 节点间 transport.ssl 通讯加密 启用 es 的 http 客户端 http.ssl 加密通讯 安装脚本中包括创建数字证书的必要命令（没猜错的话，大部分人可能会在这一步花费大量时间）  演示环境介绍 我使用的是本地的测试环境，环境配置如下：
  Mac OS vagrant virtualBox - CentOS 8 Elastic Stack 7.9.0 ip 和主机名分配见 Vagrantfile 文件 Vagrant 的 vagrant-hostsupdater 插件实现了 Mac OS 主机和所有虚拟机的 host 文件 DNS 解析的同步，保证所有相关虚拟机都可以解析其它虚拟机的 FQDN，尽量模拟生产环境。  本文所使用的所有配置文件和安装脚本见：https://github.</description>
@@ -35,10 +44,10 @@
     
     <item>
       <title>DevOps Coach 周刊 #5</title>
-      <link>https://example.com/blog/devopscoach-weekly-5/</link>
+      <link>https://martinliu.cn/blog/devopscoach-weekly-5/</link>
       <pubDate>Tue, 25 Aug 2020 15:20:51 +0800</pubDate>
       
-      <guid>https://example.com/blog/devopscoach-weekly-5/</guid>
+      <guid>https://martinliu.cn/blog/devopscoach-weekly-5/</guid>
       <description>宕机  上一周新发的宕机事故。 近期全球重大宕机事故的分析总结、事后回顾。   May your queries flow and your pagers stay silent. &amp;ndash;Dave, Betsy, Niall, Stephen, and Ken
  Equinix 重大电力故障让数据中心客户大发雷霆  关于 Equinix ：Equinix 是全球领先的数据运营商，目前在美洲、亚太、欧洲及中东 14 个国家（地区）的 31 个市场运营着 94 个国际业务交换。 消息来源 CBR https://www.cbronline.com/news/equinix-outage   教练点评：数据中心 UPS 的单点故障并不稀奇，但是这次 Equinix 的事故堪称史诗级事故。
  &amp;ldquo;经历如此严重的停电，显然是不可接受的&amp;rdquo;
@@ -48,10 +57,10 @@
     
     <item>
       <title>DevOps Coach 周刊 #4</title>
-      <link>https://example.com/blog/devopscoach-weekly-4/</link>
+      <link>https://martinliu.cn/blog/devopscoach-weekly-4/</link>
       <pubDate>Mon, 17 Aug 2020 18:43:26 +0800</pubDate>
       
-      <guid>https://example.com/blog/devopscoach-weekly-4/</guid>
+      <guid>https://martinliu.cn/blog/devopscoach-weekly-4/</guid>
       <description>宕机  上一周新发的宕机事故。 近期全球重大宕机事故的分析总结、事后回顾。   May your queries flow and your pagers stay silent. &amp;ndash;Dave, Betsy, Niall, Stephen, and Kent
  新闻 项目发布速递  Azure Functions 的 PowerShell 7 支持现在是 GA，如果在 PowerShell 中编写无服务器函数对你有吸引力。 Go 1.15 - 流行的编程语言。 AWS Glue 2.0 - AWS 上的 ETL 作业服务。 Node 14.8.0 - 服务器端 JavaScript 运行时。  DevOps 大会/峰会 中国 DevOps 社区流水线大赛 &amp;ndash; Pipeline Craft Championship
  8 月 18 日开始为期两个月，免费活动 报名：https://wj.qq.com/s2/6852880/c181 活动官网：https://Pipeline.devopsmeetup.com  提交大议信息发邮件到：martin@devopscoach.</description>
@@ -59,19 +68,19 @@
     
     <item>
       <title>DevOps Coach 周刊 #3</title>
-      <link>https://example.com/blog/devopscoach-weekly-3/</link>
+      <link>https://martinliu.cn/blog/devopscoach-weekly-3/</link>
       <pubDate>Tue, 11 Aug 2020 15:03:54 +0800</pubDate>
       
-      <guid>https://example.com/blog/devopscoach-weekly-3/</guid>
+      <guid>https://martinliu.cn/blog/devopscoach-weekly-3/</guid>
       <description>宕机  上一周新发的宕机事故。 近期全球重大宕机事故的分析总结、事后回顾。  上周新发宕机事故  Discord 这个值得注意的是，它涉及到谷歌云平台中所谓的 &amp;ldquo;吵闹邻居 &amp;ldquo;情况。https://discord.statuspage.io/incidents/bnv0wbddzz2x Slack 更新缓存基础架构的坑。从2020年7月23日晚上9:00 PDT到2020年8月1日下午5:17 PDT，客户在使用各种API端点时可能会出现滞后或故障。我们于7月29日开始调查这一问题，并将这些问题追溯到最近对我们的缓存基础设施进行的一项变更，旨在增加该基础设施的容量。一个不可预见的副作用导致一小部分API请求需要更长的时间来处理并最终超时。我们在8月1日恢复了这一更改，所有受影响的客户的问题都得到了解决。8月6日, 6:49 AM GMT+8 https://status.slack.com//2020-07/7d32ad54b0703c47 **佳能 ** 遭遇勒索软件攻击，Maze宣称对此事负责 来源： https://www.zdnet.com/article/canon-suffers-ransomware-attack-maze-claims-responsibility/ Steam 服务器目前已经瘫痪 https://gamerant.com/steam-servers-down-8-05/ Fastly 著名 CDN 服务器最近又出性能事故了， 影响范围，Edge Cloud Services (Fastly API, 快速配置应用, TLS 制备) https://status.fastly.com/incidents/d6ljy97shb0p  关于 Quay.io 宕机事故回顾  来源官网： https://www.openshift.com/blog/about-the-quay.io-outage-post-mortem 时间线：5 月 19 日第一次宕机，28 日第二次宕机，这些事故影响了大多数 quay.io 服务的用户。 Red Hat SRE 团队对本次事件的经验总结：  关于谁和什么人在使用你的服务，你永远都不可能有足够的参考数据。 由于Quay &amp;ldquo;一直是正常工作&amp;rdquo;，我们从来不需要花太多时间分析我们的流量模式，处理负载的行为。这创造了一种虚假的安全感，即服务将无限期地扩展。 当服务出现故障时，恢复是你的首要任务。 由于Quay在第一次中断期间不断出现数据库死锁的情况，我们的标准流程并没有明确的实现服务恢复的预期目标。这就导致我们花了更多的时间进行分析和收集数据，希望找到根本原因，而不是把所有的精力都放在让客户恢复运行上。 要了解你的每一个服务功能的影响。 App Registry很少被我们的客户使用，所以它不是我们团队的主要优先事项。当你的产品中有很少使用的功能时，bug就不会被提交，开发人员也不会再看代码。我们很容易认为这不会给团队带来任何负担&amp;ndash;直到它突然成为重大事件的一部分。    关于 Heroku 事故 #2090 的后续分析  概述：此次事件涉及Heroku的基础设施提供商（大概是AWS）的DNS故障。这次事故的坑是 DNS。 来源官网：https://status.</description>
     </item>
     
     <item>
       <title>腾讯云下部署 Elastic Stack 各种 Beat 的最佳实践</title>
-      <link>https://example.com/blog/beats-implement-on-qcloud/</link>
+      <link>https://martinliu.cn/blog/beats-implement-on-qcloud/</link>
       <pubDate>Fri, 07 Aug 2020 17:14:20 +0800</pubDate>
       
-      <guid>https://example.com/blog/beats-implement-on-qcloud/</guid>
+      <guid>https://martinliu.cn/blog/beats-implement-on-qcloud/</guid>
       <description>概述 使用 Elastic Stack 的各种 Beats 模块可以彻底的终结在服务器上手工捞日志查指标的扭曲实践。利用腾讯云提供的 Elasticsearch 服务，可以轻松搞定大规模云环境的运维。本文一次性的帮你梳理清楚了，必备的基础操作，确保你能用 Elastic Stack 安全、稳定和扩展的持续监控你的生产环境。
 创建 ES 集群 登录腾讯云服务控制台，查询并进入 Elasticsearc 服务，点击新建按钮，创建 Elasticsearch 集群。如下图所示。
 集群配置说明：
@@ -85,10 +94,10 @@
     
     <item>
       <title>DevOps Coach 周刊 #2</title>
-      <link>https://example.com/blog/devopscoach-weekly-2/</link>
+      <link>https://martinliu.cn/blog/devopscoach-weekly-2/</link>
       <pubDate>Mon, 03 Aug 2020 22:26:23 +0800</pubDate>
       
-      <guid>https://example.com/blog/devopscoach-weekly-2/</guid>
+      <guid>https://martinliu.cn/blog/devopscoach-weekly-2/</guid>
       <description>宕机 上周全球重大宕机事故清单。
 Facebook  具英媒体报道：7月 28 日 12：20pm， Facebook, Instagram 和 WhatsApp 这三款用户的一半以上的用户，无法加载出页面，无法正常使用服务。 Facebook 官方还没有关于这次事故的回应。实际上整个欧洲大陆，特别是葡萄牙和西班牙的故障更要严重一些。原因不明。 影响范围：London, Birmingham 和 Manchester. 来源： https://metro.co.uk/2020/07/28/facebook-instagram-whatsapp-13048914/  fastly - 知名 CDN 服务商  官方声明：Fastly的网络具有内置冗余和自动故障转移路由，以确保最佳性能和正常运行时间。但当网络问题出现时，我们认为我们的客户应该得到清晰、透明的沟通，这样他们才能保持对我们的服务和团队的信任。当我们重新分配流量、升级硬件或在极少数情况下我们的网络不提供流量时，我们会在这里发布通知。如果您遇到问题而没有看到张贴的通知，请发送电子邮件至 support@fastly.com 寻求帮助。 影响范围：North America (Ashburn (BWI), Ashburn (DCA), Ashburn (IAD), Ashburn (WDC), Atlanta (FTY), Atlanta (PDK), Dallas (DAL), Dallas (DFW), Jacksonville (JAX)). 来源：https://status.fastly.com/history  Heroku  官方声明：JUL 28, 2020 09:15 UTC Heroku 平台的很大的部分都遭受到可用性故障。然后开始和他们的服务提供商一起解决问题。一个多小时后平台恢复了正常。 来源：https://status.heroku.com/incidents/2090  新闻 DevOps实践的采用与组织拥抱数字化转型齐头并进。这两个短语都有被过度使用的风险，但这些帖子讨论了一些有用的心理模型，以帮助聚焦对话。
  https://aws.amazon.com/blogs/enterprise-strategy/mental-models-for-digital-transformation/ https://aws.amazon.com/blogs/enterprise-strategy/mental-models-to-clarify-the-goals-for-of-digital-transformation-part-2/  开发者平台的哪些属性会导致采用？下面的文章是专门关于大规模边缘平台的，但对于任何为开发者构建各种平台的人来说，包括在内部平台团队中这样做的人来说，都是很好的阅读。</description>
@@ -96,10 +105,10 @@ Facebook  具英媒体报道：7月 28 日 12：20pm， Facebook, Instagram 和 
     
     <item>
       <title>APM 分布式追踪为何这么难？</title>
-      <link>https://example.com/blog/apm-why-it-so-hard/</link>
+      <link>https://martinliu.cn/blog/apm-why-it-so-hard/</link>
       <pubDate>Sun, 02 Aug 2020 20:48:30 +0800</pubDate>
       
-      <guid>https://example.com/blog/apm-why-it-so-hard/</guid>
+      <guid>https://martinliu.cn/blog/apm-why-it-so-hard/</guid>
       <description>用跟踪的方式调试计算机程序的调用堆栈的实践其实由来已久，这种方法可能仅次于用 print 输出各种信息。在云原生的时代里，我们还会遭遇工具过剩的情况，工具之间的相生相克加剧了实施分布式追踪的难度。
 总的来说有三个基础难点：
  生成追踪数据难。对已有应用系统的代码库进行埋点处理的挑战巨大，你的应用程序系统的模式可能也不符合埋点的模式需求。 采集存储追踪数据难。捕获和管理大量追踪数据包，即照顾到查询和使用的需求，又要设定成本合理的数据存储策略，处理数据收集能力的扩缩容。 从数据中获益难。如何理解和使用数据产生可执行行动，如何用它优化微服务的遥测，怎么将它的利益扩展到各个相关团队。  分布式追踪系统的实施结果是落地一条能深度洞察目标系统的工具。让人们能轻松的理解局部和整体的状态，特别是在请求堆栈中的任何局部服务出现故障时，可以最快速的定位故障根源。
@@ -114,10 +123,10 @@ Facebook  具英媒体报道：7月 28 日 12：20pm， Facebook, Instagram 和 
     
     <item>
       <title>应用开发 DBA 技巧集锦</title>
-      <link>https://example.com/blog/sql-tricks-application-dba-chinese/</link>
+      <link>https://martinliu.cn/blog/sql-tricks-application-dba-chinese/</link>
       <pubDate>Fri, 31 Jul 2020 22:23:44 +0800</pubDate>
       
-      <guid>https://example.com/blog/sql-tricks-application-dba-chinese/</guid>
+      <guid>https://martinliu.cn/blog/sql-tricks-application-dba-chinese/</guid>
       <description>前言 DBA 可能是经常被其它团队依赖的一种角色、团队，因此他们也会有着很长的等待队列，也经常是事故救火中的英雄和常客。DevOps 强调用跨角色的学习和培训来解决这种依赖，也就是 DevOps 工作三步法的第三步，学习与持续改进。 本文写给所有的应用开发者，希望大家能多学习一些 DBA 知识，减少对专家 DBA 的依赖，加速你们的业务的交付，消除由于等待而造成的浪费。
 本文转载自：https://hakibenita.com/sql-tricks-application-dba
 以下是正文原文：
@@ -139,10 +148,10 @@ db=# UPDATE users SET email = lower(email) db-# WHERE email != lower(email); UPD
     
     <item>
       <title>DevOps Coach 周刊 #1</title>
-      <link>https://example.com/blog/devopscoach-weekly-1/</link>
+      <link>https://martinliu.cn/blog/devopscoach-weekly-1/</link>
       <pubDate>Tue, 28 Jul 2020 10:35:19 +0800</pubDate>
       
-      <guid>https://example.com/blog/devopscoach-weekly-1/</guid>
+      <guid>https://martinliu.cn/blog/devopscoach-weekly-1/</guid>
       <description>新闻 又到了一年一度的时间。定期的Puppet Devops状态调查已经开始。今年的重点是变革管理、持续交付和自服务平台之间的关系。 https://polls.onresearch.net/xsurvey/20JT028/20JT028T1/Survey.aspx?ckie=true
 文档和设计在构建强大的系统中起着至关重要的作用。这篇文章探讨了为什么设计文档是有用的，以及它们应该包含什么样的内容。 https://www.industrialempathy.com/posts/design-docs-at-google/
 一份关于公共Terraform代码安全状况的新报告。对于任何使用Terraform配置服务的人来说，一些有用的数据和一些好的提示。 https://bridgecrew.io/blog/state-of-open-source-terraform-security-report-2020/
@@ -157,10 +166,10 @@ You don’t need SRE. What you need is SRE. […] SRE，也就是谷歌定义的
     
     <item>
       <title>Skaffold 让 K8s 开发者更加酸爽</title>
-      <link>https://example.com/blog/skaffold-make-local-k8s-dev-easy/</link>
+      <link>https://martinliu.cn/blog/skaffold-make-local-k8s-dev-easy/</link>
       <pubDate>Wed, 15 Jul 2020 00:09:53 +0800</pubDate>
       
-      <guid>https://example.com/blog/skaffold-make-local-k8s-dev-easy/</guid>
+      <guid>https://martinliu.cn/blog/skaffold-make-local-k8s-dev-easy/</guid>
       <description>今天介绍一个本地 Kubernetes 开发的利器 Skaffold。 这是我偶然间发现的一个工具，询问了一下周围的人，居然还没有人用过。测试之后，确实有一种不吐不快的感觉。
 简介 Skaffold Google 开发的一个开源项目。是一个非常轻量的命令行工具，就是一个可执行文件。它的主页上是这样的介绍它的。
  轻量：Skaffold只是一个客户端工具。由于集群上不需要任何的相关组件，您的集群没有任何开销或维护负担。 运行在任何地方：Skaffold是与世界分享你的项目的最简单的方法：&amp;ldquo;git clone&amp;rdquo;，然后 &amp;ldquo;skaffold run&amp;rdquo;。此外，你还可以使用配置文件、本地用户配置、环境变量和标志来轻松地集成不同环境的差异。 功能丰富：Skaffold拥有许多Kubernetes原生开发的基本功能，包括基于策略的打镜像标签、资源端口转发和日志、文件同步等。 优化你的开发：Skaffold使内部循环紧密，高度优化，让您在开发的同时得到即时反馈。  客户评价 &amp;ldquo;我们的客户很喜欢[Kubernetes]，但一直给我们反馈说在Kubernetes上开发很麻烦。Skaffold一针见血地解决了这个问题。以前需要几分钟才能部署的docker镜像或配置的更改，现在只需要几秒钟。Skaffold的插件架构使我们能够部署到Helm或Kustomize，并使用各种docker构建插件，如Kaniko。Skaffold用一个精简的工具取代了我们定制的实用程序和脚本集合，并且易于使用。&amp;rdquo; Warren Strange，ForgeRock的工程总监。
@@ -178,10 +187,10 @@ You don’t need SRE. What you need is SRE. […] SRE，也就是谷歌定义的
     
     <item>
       <title>Beats 摄入数据的最佳实践</title>
-      <link>https://example.com/blog/build-security-in-elastic-stack/</link>
+      <link>https://martinliu.cn/blog/build-security-in-elastic-stack/</link>
       <pubDate>Sun, 21 Jun 2020 18:42:56 +0800</pubDate>
       
-      <guid>https://example.com/blog/build-security-in-elastic-stack/</guid>
+      <guid>https://martinliu.cn/blog/build-security-in-elastic-stack/</guid>
       <description>本文概要：配置 ES 3 节点全加密，Kibana 的 SSL 加密配置，Beats 的高可靠性加密传输，用 RBAC 怎样把权限控制到最小，在配置文件中消除明文密码，这些你都做到了么？如何保证安全、能适应和可扩展的配置 Elastic Stack 技术栈，让我们从 Bests 的角度开始讲解。
 前言 本文使用的软版本：
  Elastic Stack 7.8.0 macOS 10.15.5 Vagrant 2.2.9 VirtualBox 6.0 CentOS 8.0  下面的配置和测试过程基于以下 Vagrantfile ，你可以在其它任何同等的环境中测试下面的所有配置。
@@ -190,10 +199,10 @@ You don’t need SRE. What you need is SRE. […] SRE，也就是谷歌定义的
     
     <item>
       <title>徘徊在 3 种 DevOps 平台服务之间难以抉择（上）</title>
-      <link>https://example.com/blog/a-comparison-of-devops-tools-p1/</link>
+      <link>https://martinliu.cn/blog/a-comparison-of-devops-tools-p1/</link>
       <pubDate>Sun, 21 Jun 2020 18:42:56 +0800</pubDate>
       
-      <guid>https://example.com/blog/a-comparison-of-devops-tools-p1/</guid>
+      <guid>https://martinliu.cn/blog/a-comparison-of-devops-tools-p1/</guid>
       <description>中国 DevOps 社区在最近两年期间得到了长足的发展，从最初的单一官网站点，发展到现在的社区官网、社区峰会官网、社区论坛、社区微信公众号和社区服务号等多种对外公众界面。在这些网站平台之后的是 20 多位社区志愿者们的辛勤工作和贡献。
 社区官网最初是在 GitHub 上通过 Github-page 的免费空间发布的，在购买了收费的 Hugo 模板之后；网站的代码有了转为私有仓库的需求，因此CODING就从 GitHub 迁移到了 GitLab；当时 Github 还没有免费不限数量的私有仓库，而且 Github 也不能免费实现 20+ 社区代码贡献者的组队维护多个项目。GitLab 总的来说能满足目前的所有社区开发和协作需求：这些需求包括无限私有仓库，足够数量的代码协作人员，免费的 CI 构建和发布功能。GitLab 平台也可以实现 GitLab-page 的静态网站托管服务，但是，如果代码仓库设置为通过 page 实现静态网站发布的情况，需要整个代码库设置为对外公开访问，而这与代码库本身依然需要保持私密矛盾。因此社区的小伙伴也无奈的在 GitLab 上维护代码，然后将 hugo 构建后的结果再发布到 Github-page 的项目去。
 根据以上社区网站代码库迁移的经历，下面总结一下中国 DevOps 社区在网站开发维护和配套 CI/CD 方面的总体需求：
@@ -202,10 +211,10 @@ You don’t need SRE. What you need is SRE. […] SRE，也就是谷歌定义的
     
     <item>
       <title>入门 Elastic Workplace Search</title>
-      <link>https://example.com/blog/getting-start-elastic-workplace-search/</link>
+      <link>https://martinliu.cn/blog/getting-start-elastic-workplace-search/</link>
       <pubDate>Fri, 24 Apr 2020 10:37:16 +0800</pubDate>
       
-      <guid>https://example.com/blog/getting-start-elastic-workplace-search/</guid>
+      <guid>https://martinliu.cn/blog/getting-start-elastic-workplace-search/</guid>
       <description>简介 Elastic Workplace Search 提供了一个统一的搜索体验，从而便于任何人在任何时间找到所需的文档信息。为企业搭建了一个横跨所有工作内容、所有团队和真相的统一搜索参考平台。
 这个搜索平台能够对接各种数据源，并且实现文档内容级别的索引，目前所支持的数据源包括：OneDrive、SharePoint、ServiceNow、Box、Dropbox、Github、Github Enterprise、Google Drive、JIRA、Confluence、Salesforce、Zendesk 等。
 它具有以下特点：
@@ -217,10 +226,10 @@ echo I am provisioning a Elasticsearch Server... date &amp;gt; /etc/vagrant_prov
     
     <item>
       <title>随心所欲的为应用无痛添加搜索功能</title>
-      <link>https://example.com/blog/getting-start-elastic-app-search/</link>
+      <link>https://martinliu.cn/blog/getting-start-elastic-app-search/</link>
       <pubDate>Sat, 11 Apr 2020 09:36:49 +0800</pubDate>
       
-      <guid>https://example.com/blog/getting-start-elastic-app-search/</guid>
+      <guid>https://martinliu.cn/blog/getting-start-elastic-app-search/</guid>
       <description>开发搜索功能从此再也不用犯愁了，有了 App Search ，为应用增加搜索功能一下子变得简单了很多。本文描述了如何轻松上手这套搜索平台的所有步骤。
 什么是 App Search? 这是一套强大的 API 和开发者工具集，以构建功能强大的面向用户的搜索应用为目标。相关详细介绍见 https://www.elastic.co/cn/app-search
 丰富的开箱即用功能:
@@ -236,10 +245,10 @@ master1: Changed password for user elastic master1: PASSWORD elastic = eczHJ7NPr
     
     <item>
       <title>使用 Elastic Stack 监控 Covid-19 疫情发展</title>
-      <link>https://example.com/blog/%E4%BD%BF%E7%94%A8-elastic-stack-%E7%9B%91%E6%8E%A7-covid-19-%E7%96%AB%E6%83%85%E5%8F%91%E5%B1%95/</link>
+      <link>https://martinliu.cn/blog/%E4%BD%BF%E7%94%A8-elastic-stack-%E7%9B%91%E6%8E%A7-covid-19-%E7%96%AB%E6%83%85%E5%8F%91%E5%B1%95/</link>
       <pubDate>Wed, 08 Apr 2020 17:04:08 +0800</pubDate>
       
-      <guid>https://example.com/blog/%E4%BD%BF%E7%94%A8-elastic-stack-%E7%9B%91%E6%8E%A7-covid-19-%E7%96%AB%E6%83%85%E5%8F%91%E5%B1%95/</guid>
+      <guid>https://martinliu.cn/blog/%E4%BD%BF%E7%94%A8-elastic-stack-%E7%9B%91%E6%8E%A7-covid-19-%E7%96%AB%E6%83%85%E5%8F%91%E5%B1%95/</guid>
       <description>代号为 COVID-19 的新型冠状病毒肺炎在全球肆虐着，剧情翻转的非常快，目前欧美已经成为了全球的重灾区。 本文介绍如何使用 Elastic Stack，实现对国内外疫情发展态势的分析。介绍一种简单易行的数据分析流程。说不定你也可以得出独到的高价值洞察。
 本文使用的 Elastic Stack 版本和环境如下：
  Vagrant 的基础镜像 bento/centos-8 Elasticsearch 7.6.1 Kibana 7.6.1 Logstash 7.6.1  关于使用 Vagrant 环境搭建 Elastic Stack 的方法，见我之前的文章。本文的数据分析处理流程图如下所示。
@@ -252,10 +261,10 @@ git clone https://github.com/BlankerL/DXY-COVID-19-Data.git cd DXY-COVID-19-Data
     
     <item>
       <title>如何在墙内正常导入 Vagrant 虚拟机模板</title>
-      <link>https://example.com/blog/download-import-vagrant-box/</link>
+      <link>https://martinliu.cn/blog/download-import-vagrant-box/</link>
       <pubDate>Thu, 26 Mar 2020 08:57:57 +0800</pubDate>
       
-      <guid>https://example.com/blog/download-import-vagrant-box/</guid>
+      <guid>https://martinliu.cn/blog/download-import-vagrant-box/</guid>
       <description>当你满心欢喜的安装完了 vagrant 之后，在你第一次 vagrant up 命令的时候，是下载超时么？你的内心是什么感受？想放弃了么？
 其实你只需要找到国内的 box 文件镜像服务器，或者下载地址，然后手工下载对应的 Box 文件（操作系统镜像文件），并导入即可，本文将帮你铲除这只官方镜像文件下载失败的拦路虎。
 Vagrant 的优势：
@@ -272,10 +281,10 @@ https://mirrors.tuna.tsinghua.edu.cn/ubuntu-cloud-images/vagrant/
     
     <item>
       <title>最简化 Elasticsearch &amp; Kibana &amp; Filebeat 安装说明</title>
-      <link>https://example.com/blog/install-es-kibana-filebeat/</link>
+      <link>https://martinliu.cn/blog/install-es-kibana-filebeat/</link>
       <pubDate>Thu, 26 Mar 2020 08:51:15 +0800</pubDate>
       
-      <guid>https://example.com/blog/install-es-kibana-filebeat/</guid>
+      <guid>https://martinliu.cn/blog/install-es-kibana-filebeat/</guid>
       <description>本文描述如何搭建一套具备用户名和密码安全认证的 Elastic Stack 系统，并开始使用 Filebeat 的基础模块实现分布式的日志收集。
  安装单节点 Elasticsearch 服务器，启用用户名和密码安全认证，并创建 TLS 数字证书备用 安装 Kibana 服务器，并配置与 Elasticsearch 服务的连接 安装和配置 Filebeat 代理程序，并配置 system 和 auditd 模块 使用 Kibana 监控 Filebeat 所采集的系统日志，并监控系统的状态  为了使你也获得与我一致的安装和测试体验，请先下载并浏览相本文所使用的代码库：https://github.com/martinliu/elastic-labs
 试验环境概述和启动 本文所使用相关软件以及版本。
@@ -285,10 +294,10 @@ https://mirrors.tuna.tsinghua.edu.cn/ubuntu-cloud-images/vagrant/
     
     <item>
       <title>怎样使用两个DevOps研究模型？</title>
-      <link>https://example.com/blog/2019-state-devops-report-insight-2/</link>
+      <link>https://martinliu.cn/blog/2019-state-devops-report-insight-2/</link>
       <pubDate>Sun, 01 Sep 2019 17:27:16 +0800</pubDate>
       
-      <guid>https://example.com/blog/2019-state-devops-report-insight-2/</guid>
+      <guid>https://martinliu.cn/blog/2019-state-devops-report-insight-2/</guid>
       <description>本文要覆盖的章节是《 How to use the research models》 这一章。双模型在今年的报告中首次出现了，它们是效能模型和生产力模型。为什么会存在两个模型？有什么区别？有什么相似之处？最重要的问题是，你怎么用它们来指导你的DevOps工作？
 本文的阅读建议：
  下载我整理的最新版的《DevOps能力成长模型》，含双模型分解图。 阅读和参考前5年的DevOps状态调查报告，了解今年这份报告的历史和发展历程。以前的文章中有下载链接/二维码。 阅读2019年的调查问卷的中文版，感谢中国DevOps社区翻译团队对英文原版问卷的翻译工作，如果你都不知道这些调查结果是通过什么问卷调查得出的，那真的是很可惜。如果你想用这套问卷工具在企业内部做调研，请使用前文中的免费调查服务申请流程。样例问卷的访问地址：https://www.wjx.cn/jq/43837840.aspx 在Google的网站上做极简版DevOps行业基础测试，它是6年行业调查结果数据库的首次对外开放。  模型是怎么诞生的？ 首先，我们需要了解一下这份持续了6年的报告是谁主导并开发的？这是一个怎样的团队？从DORA公司网站的这个页面上，可以看到团队人员介绍。https://devops-research.com/about.html 如下所示。
@@ -310,10 +319,10 @@ Accelerate这本书也提供了这幅图的电子版下载链接：https://devop
     
     <item>
       <title>如何做横向行业的DevOps表现基准测试？</title>
-      <link>https://example.com/blog/2019-state-devops-report-insight-1/</link>
+      <link>https://martinliu.cn/blog/2019-state-devops-report-insight-1/</link>
       <pubDate>Wed, 28 Aug 2019 07:27:16 +0800</pubDate>
       
-      <guid>https://example.com/blog/2019-state-devops-report-insight-1/</guid>
+      <guid>https://martinliu.cn/blog/2019-state-devops-report-insight-1/</guid>
       <description>长期关注我的blog和微信公众号（DevOps教练）的朋友可以发现，我今年从这个调查问卷开始，陆续发布了一些列文章。如果给这些文章一个文集标题的话，那么应该是：死磕2019年加速度全球DevOps状态调查报告系列。 为了帮助大家充分利用这份优秀的行业报告，我会用一些列文章，分章节的解读这份长达80多页的报告。上一篇文章如果你已经解读了该报告的核心重要发现和看点。本文要覆盖的章节是 How do we compare 这一章。
 本文的阅读建议：
  先阅读和参考前5年的DevOps状态调查报告，了解今年这份报告的历史和发展历程。以前的文章中有下载链接/二维码。 阅读2019年的调查问卷的中文版，感谢中国DevOps社区翻译团队对英文原版问卷的翻译工作，如果你都不知道这些调查结果是通过什么问卷调查得出的，那真的是很可惜。如果你想用这套问卷工具在企业内部做调研，请使用前文中的免费调查服务申请流程。样例问卷的访问地址：https://www.wjx.cn/jq/43837840.aspx 在Google的网站上做极简版DevOps行业基础测试，它是6年行业调查结果数据库的首次对外开放。  WHY DEVOPS？ 这是一个可以持续反复问自己的问题，首先让我们澄清一件事情：为什么要做DevOps？
@@ -341,10 +350,10 @@ Accelerate这本书也提供了这幅图的电子版下载链接：https://devop
     
     <item>
       <title>2019年加速度DevOps状态调查报告-导读</title>
-      <link>https://example.com/blog/2019-state-devops-survey-report/</link>
+      <link>https://martinliu.cn/blog/2019-state-devops-survey-report/</link>
       <pubDate>Thu, 22 Aug 2019 07:27:16 +0800</pubDate>
       
-      <guid>https://example.com/blog/2019-state-devops-survey-report/</guid>
+      <guid>https://martinliu.cn/blog/2019-state-devops-survey-report/</guid>
       <description>凭借六年多的来自全球31,000多名专业人士的数据的研究，2019年加速发展状态报告是同类研究中规模最大、持续时间最长的研究。2019年加速度DevOps状态调查首发，首发的位置在Google Cloud网站上的Blog栏目，发布于产品新闻分类下。
   文章使用的主标签 DevOps 、SRE。    文章地址：https://cloud.google.com/blog/products/devops-sre/the-2019-accelerate-state-of-devops-elite-performance-productivity-and-scaling  下文为对Google文章原文的翻译和整理。并且加入了我本人的各种判断和见解。
 关于今年的DevOps状态调查报告有什么更新和变化？报告文章中给我们了一句话的概要介绍：今年会对部署工具链、云计算、灾难恢复和工作方式等主题进行深度调查。更详细的情况，详细的参过问卷调查的您自有评判。
@@ -361,10 +370,10 @@ Accelerate这本书也提供了这幅图的电子版下载链接：https://devop
     
     <item>
       <title>中文版：2019年DevOps状态调查问卷</title>
-      <link>https://example.com/blog/2019-state-devops-survey-chinese-version/</link>
+      <link>https://martinliu.cn/blog/2019-state-devops-survey-chinese-version/</link>
       <pubDate>Mon, 06 May 2019 12:27:16 +0800</pubDate>
       
-      <guid>https://example.com/blog/2019-state-devops-survey-chinese-version/</guid>
+      <guid>https://martinliu.cn/blog/2019-state-devops-survey-chinese-version/</guid>
       <description>本文是中文版《2019年加速度DevOps状态调查》问卷。如果你还没有填写该问卷的话，可以在线上填写英文版，点击这个链接 https://bit.ly/2UzLMH2 ，进入问卷调查网站。本文可以作为你的帮助文档。
  译者团队：刘征、张晔、刘頲、朱婷、王英伟、王虹、李建芳、沈越飞、井建宇、申屠欣欣
  本文由以上翻译团队经过两周的时间，在业余时间翻译完成，如果对本文有任何改进建议请发邮件到 martin AT DevOpsCoach.org
@@ -378,10 +387,10 @@ Accelerate这本书也提供了这幅图的电子版下载链接：https://devop
     
     <item>
       <title>2019年DevOps状态调查问卷开放中</title>
-      <link>https://example.com/blog/2019-state-devops-survey-open/</link>
+      <link>https://martinliu.cn/blog/2019-state-devops-survey-open/</link>
       <pubDate>Sat, 20 Apr 2019 22:27:16 +0800</pubDate>
       
-      <guid>https://example.com/blog/2019-state-devops-survey-open/</guid>
+      <guid>https://martinliu.cn/blog/2019-state-devops-survey-open/</guid>
       <description>2019年加速度DevOps状态调查首发，首发的位置在Google Cloud网站上的Blog栏目，发布于产品新闻分类下。
  文章使用的主标签 DevOps 、SRE。 文章地址：https://cloud.google.com/blog/products/devops-sre/make-your-voice-heard-take-the-2019-accelerate-state-of-devops-survey  关于今年的状态调查有什么更新和变化，文章中只给出了一句话的概况：今年会对部署工具链、云计算、灾难恢复和工作方式等主题进行深度调查。更详细的情况，详细你参与完问卷调查只有自由评判。
 如何参与2019年DevOps状态调查 点击这个链接 https://bit.ly/2UzLMH2 ，进入问卷调查网站。
@@ -397,10 +406,10 @@ Accelerate这本书也提供了这幅图的电子版下载链接：https://devop
     
     <item>
       <title>2019年关于DevOps的几个预测</title>
-      <link>https://example.com/blog/predictions-for-devops-in-2019/</link>
+      <link>https://martinliu.cn/blog/predictions-for-devops-in-2019/</link>
       <pubDate>Sat, 09 Mar 2019 22:27:16 +0800</pubDate>
       
-      <guid>https://example.com/blog/predictions-for-devops-in-2019/</guid>
+      <guid>https://martinliu.cn/blog/predictions-for-devops-in-2019/</guid>
       <description>本文汇聚了来自3个网站的预测文章，他们分别是XebiaLabs、G20Group和Veritis。在总共22项预测中，个别预测是相同的。DevOps是一个持续进化和发展的过程，同时也受到目前各种新技术的影响。
 XebiaLabs的7个预测 英文原文： https://blog.xebialabs.com/2019/01/10/7-predictions-for-devops-in-2019/
 1. 持续集将成作为流水线的重要代办事项 如果企业希望提高团队用在功能开发上的可用时间，从而加速向生产环境中交付的话，那么在整个DevOps流水线中，引进持续集成CI部分将成为高优先级且重要的事项。监控CI流水线相关的数据、活动和流程的能力将变得非常重要，这样可以使发布流程中的所有人都能看到最新的流程状态，从而减少开发人员花费在无关任务上的时间。 【来自：XebiaLabs产品开发副总裁Andreas Prins】
@@ -417,10 +426,10 @@ G20Group的5个预测 原文：https://www.go2group.com/blog/devops-trends-2019-
     
     <item>
       <title>产品管理遇上Devops</title>
-      <link>https://example.com/blog/csg-product-meet-devops/</link>
+      <link>https://martinliu.cn/blog/csg-product-meet-devops/</link>
       <pubDate>Thu, 07 Mar 2019 12:27:16 +0800</pubDate>
       
-      <guid>https://example.com/blog/csg-product-meet-devops/</guid>
+      <guid>https://martinliu.cn/blog/csg-product-meet-devops/</guid>
       <description>DevOps企业峰会是历史悠久的DevOps主题企业级峰会，近年来在北美的拉斯维加斯和欧洲的伦敦每年各举办一次。 这个大会的官网：https://events.itrevolution.com/ 2019年的会议时间已经发布，感兴趣的可以参加。
 CSG公司连续多年参加DevOps企业峰会，本分享主题是CSG在2018年美国拉斯维加斯的峰会上的主旨演讲之一。本文是对这个演讲的视频回放的整理，该视频已经上传到了腾讯视频。
 
@@ -445,10 +454,10 @@ CSG的DevOps转型阶段的重点：
     
     <item>
       <title>成熟度模型已死</title>
-      <link>https://example.com/blog/maturity-is-dead/</link>
+      <link>https://martinliu.cn/blog/maturity-is-dead/</link>
       <pubDate>Wed, 27 Jun 2018 21:34:04 +0800</pubDate>
       
-      <guid>https://example.com/blog/maturity-is-dead/</guid>
+      <guid>https://martinliu.cn/blog/maturity-is-dead/</guid>
       <description>上一篇文章重要观点回顾：
  应用DevOps的企业不应该使用成熟度模型度量 应用DevOps的不同企业/部门不会参考某个所谓标准 应用DevOps的不同企业/部门应该参考5大类24项的能力成长模型，来度量其发展进度，在磨练这些能力的过程中，选择符合自身业务需求的，且优先级别高能力先发展。  成熟度模型已死 这个模型在各行各业都可能存在，而且可能是最容易被人接受的模型之一。对于很多新生的领域，如法炮制的套用这个模型合适么？无论合适与否，它还是会出现在DevOps的领域中。为了避免实践者试错，我们不得来分析一下这种模型的特点。
 特征1 它总是阶梯式的，而且从来都是5个等级，人们经常戏称为Golden 5。常见的5级成熟度模型有下列几种。
@@ -479,10 +488,10 @@ Nicole博士总结出了DevOps能力的5大分类，包含的能力点有24项�
     
     <item>
       <title>参与2018年DevOps状态调查报告</title>
-      <link>https://example.com/blog/2018-devops-survey/</link>
+      <link>https://martinliu.cn/blog/2018-devops-survey/</link>
       <pubDate>Wed, 27 Jun 2018 00:09:21 +0800</pubDate>
       
-      <guid>https://example.com/blog/2018-devops-survey/</guid>
+      <guid>https://martinliu.cn/blog/2018-devops-survey/</guid>
       <description>听说这里有一个15分钟就能完成的DevOps调查问卷，有25位参与者或将得到总值为3200美元的亚马逊购物券。一年也就是这一次机会。问卷调查将在10天后就关闭。
 这是DevOps状态报告调查问卷的第七年。在过去的6年里，已经有两万七千多人参与了这项调查。这项调查已经获得了丰硕的成果，主要是帮助你了解在DevOps之旅上当前的进展。今年又扩展了调查的范围，再度加深了对DevOps之旅的调研。
 我已经帮你把问题的套路摸清楚了，其实问题都很清晰直白，很容易和你所在企业的DevOps状态做匹配。填写问卷调查也是一个学习的过程，可以用开放的心态去了解一下，调查报告对DevOps的观察角度都有哪些？
@@ -494,10 +503,10 @@ Nicole博士总结出了DevOps能力的5大分类，包含的能力点有24项�
     
     <item>
       <title>从完美风暴说开去，直到DevOpsDays社区</title>
-      <link>https://example.com/blog/perfect-storm-devops-days/</link>
+      <link>https://martinliu.cn/blog/perfect-storm-devops-days/</link>
       <pubDate>Sun, 20 May 2018 10:54:51 +0800</pubDate>
       
-      <guid>https://example.com/blog/perfect-storm-devops-days/</guid>
+      <guid>https://martinliu.cn/blog/perfect-storm-devops-days/</guid>
       <description>各种大会、各种喧嚣，你都看够了么？免费的，收费的，都与你有何相干？哪里是你自己的社区，哪里可以找到同类和导师？本文是我对社区的一点个人的思考，感兴趣的读一下。
 本文的标题图片是中国DevOpsDays社区志愿者招募的标题图片，这是NASA的一张完美风暴的航拍图片，暂时不欣赏这幅图的完美之处。让我来先讲讲它的出处，这幅图来自于樊登读书会App，源于他最近读到的一本书《谢谢你迟到》。
 我觉得书名和DevOps有些相关性，DevOps在IT行业中的兴起是最近9年的事，说来这是一段不长不短的时间。纵观最近几年的IT行业，这是一个从业人员的幸福感和优越感急剧下降的过程，是敏捷、精益、CMM和ITSM等管理等套路，在逐渐被人质疑的过程，是IT行业内的大厂纷纷走向没落的9年。DevOps并不是从无到有蹦出来的，它的姗姗来迟也并不具有任何的偶然性，相反它是各种管理实践分久必合的必然结果，它是一个各种最佳实践的聚合体，它是从敏捷社区发源，然后逐步融入了各种必要的元素，而且各种元素之间产生了化学反应后的化合物。
@@ -523,10 +532,10 @@ Nicole博士总结出了DevOps能力的5大分类，包含的能力点有24项�
     
     <item>
       <title>2018年必须认识到的6个DevOps趋势</title>
-      <link>https://example.com/blog/6-devops-trends-aware/</link>
+      <link>https://martinliu.cn/blog/6-devops-trends-aware/</link>
       <pubDate>Fri, 23 Mar 2018 17:50:25 +0800</pubDate>
       
-      <guid>https://example.com/blog/6-devops-trends-aware/</guid>
+      <guid>https://martinliu.cn/blog/6-devops-trends-aware/</guid>
       <description>DevOps已经出现了很长时间，我们中的很多人都认为它只是一个时髦词。现在我们知道这并不是一个神话。DevOps已经成为一个IT主流的焦点，并且在过去的几年里一直在重塑着软件世界。专家表示，DevOps将成为主流，2018年DevOps的人气将达到顶峰。
 下面是术语“DevOps”在Google趋势里的现状，以及对2018年预计增长的假设。 谈到统计数据，从2015年到2016年，DevOps的应用企业数增加了约8%，预计2018年这一数字将大幅增长，如上所示。
 你可以阅读RightScale的整个报告。甚至Forrester的报告也明确提到2018年将是DevOps的一年。
@@ -546,10 +555,10 @@ Nicole博士总结出了DevOps能力的5大分类，包含的能力点有24项�
     
     <item>
       <title>2018值得关注的15个DevOps大会</title>
-      <link>https://example.com/blog/2018-best-devops-event/</link>
+      <link>https://martinliu.cn/blog/2018-best-devops-event/</link>
       <pubDate>Thu, 22 Mar 2018 08:30:13 +0800</pubDate>
       
-      <guid>https://example.com/blog/2018-best-devops-event/</guid>
+      <guid>https://martinliu.cn/blog/2018-best-devops-event/</guid>
       <description>本文向你简要介绍2018年DevOps界的15大最重要的大会活动。DevOps的一个方面就是持续&amp;hellip;&amp;hellip;.参加大会学习！全球范围内看，基本上每个月都至少有一个我们值得重点关注的大会。我们不能奢望都你有机会参加，但是作为DevOps业内人士，如果你不了解这个大会的情况，你就Out了。
 这些大会中有些社偏技术的、有些是注重社交和体验；根据你的业务需求和学习目标，今年走出去参加最高端DevOps盛会的奢望可以有。不提前做功课，怎么能说服领导支持你呢？万一领导批准了呢？
 1. Cloud &amp;amp; DevOps World June 12-14, London
@@ -573,10 +582,10 @@ Continuous Lifecycle每年在伦敦举行，主要集中在开发、容器化、
     
     <item>
       <title>基础架构的持续集成和应用部署</title>
-      <link>https://example.com/blog/devops-infrastructure-ci-app-deployment/</link>
+      <link>https://martinliu.cn/blog/devops-infrastructure-ci-app-deployment/</link>
       <pubDate>Sat, 17 Mar 2018 10:50:57 +0800</pubDate>
       
-      <guid>https://example.com/blog/devops-infrastructure-ci-app-deployment/</guid>
+      <guid>https://martinliu.cn/blog/devops-infrastructure-ci-app-deployment/</guid>
       <description>持续集成通常是针对应用而言的，可是基础架构的持续集成应该怎么做？基础架构的持续集成应该属于持续交付/部署的基础。贯串本文的一个问题，或者在阅读本文时，您应该不断地问自己这个问题：我们的应用部署流程是怎样的？
 在回答这个问题之前，我们先来回顾一下，目前几乎所有人正在使用的手工环境和资源交付流程。在源码被编译打包了以后，安装包文件被上传保存到了内部的某个文件服务器上。Ops团队的某个组/人被分配到工单，根据工单描述的需求，它在测试或者生产环境中开始工作：
  用图形界面进行虚拟机模板的手工克隆工作，或者由于没有相应的权限或者自助服务，不得不给虚拟化管理员发任务单，然后等待回复。 获取用户名和密码手工登录服务器，有些企业还要是等待领导的审批，才能得到密码信封和所需要的访问密码。 根据工单（变更单）里的描述和自己的经验对虚拟机的操作系统进行配置，在这个过程中，Ops往往可能还需和需求方进行不止一次的沟通，确认相关参数。 手工的下载应用安装包，然后分别手工上传到目标的服务器，凭经验和工单信息部署应用，然后测试部署结果，可能是看下页面有没有正常显示，或者服务起没起. 手工测试和确认这些虚拟机的服务和状态，凭经验觉得OK了以后，回复工单，关闭工单。  以上的工作场景，可能是Ops人员很常规的一天，或者是几天内的工作，当然在这个过程中，他们还需要参与一些救火行动；他们在这个过程中也可能会有疑问，也可能会对此工作结果不确定；但是，日常的工作经验告诉他，差不多了，关闭任务单要紧，还有好多项目催活呢！就这样，配置并不精确的虚拟机环境就交给了下游的需求方。
@@ -598,10 +607,10 @@ Continuous Lifecycle每年在伦敦举行，主要集中在开发、容器化、
     
     <item>
       <title>DevOps on Nutanix[Beta]</title>
-      <link>https://example.com/blog/devops-on-nutanix/</link>
+      <link>https://martinliu.cn/blog/devops-on-nutanix/</link>
       <pubDate>Mon, 26 Feb 2018 11:08:53 +0800</pubDate>
       
-      <guid>https://example.com/blog/devops-on-nutanix/</guid>
+      <guid>https://martinliu.cn/blog/devops-on-nutanix/</guid>
       <description>Nutanix是什么？中文名字是路坦力，是我目前所在的公司；我负责运营商行业以及与云服务商的合作业务，解决客户在售前、架构和DevOps等方面的问题，我是Nutanix Calm产品的专家。
 之前也发过一些介绍Nutanix和超融合技术的文章，本文会是一篇持续更新的文章，我会把在Nutanix上开展超融合的方法，持续的更新在这里。
 本文上属于Beta版本，会持续更新，欢迎各种类型的反馈信息，发邮件到： martin.liu@nutanix.com
@@ -618,10 +627,10 @@ Continuous Lifecycle每年在伦敦举行，主要集中在开发、容器化、
     
     <item>
       <title>Devops Handbook《DevOps实践指南》简介</title>
-      <link>https://example.com/blog/devops-handbook/</link>
+      <link>https://martinliu.cn/blog/devops-handbook/</link>
       <pubDate>Sun, 25 Feb 2018 22:27:16 +0800</pubDate>
       
-      <guid>https://example.com/blog/devops-handbook/</guid>
+      <guid>https://martinliu.cn/blog/devops-handbook/</guid>
       <description>企业如何通过DevOps实践提高盈利能力，改善工作文化，实现卓越的生产力目标。如今这些高绩效管理技术比以往的任何时候都要更加重要，由于这对于企业的商业竞争力而言是至关重的，数十年以来，技术组织的领导者们始终在努力地维持这IT系统的敏捷性、可靠性和安全性。然后惨痛的案例依然比比皆是&amp;ndash;不论是healthcare.gov的崩溃，持卡人数据的泄露；还是在云计算环境中大数据的丢失。
 然而，那些运用DevOps原则的高绩效企业（例如Google，Amazon，Facebook，Etsy和Netflix）则每天都可以在生产环境中成百上千次频繁地部署代码。那么DevOps理论、原则和实践到底是何等的殊胜呢？相信所有人在看了本书之后一定会得到答案。
 通过数字看这本书 基础数据 原作者4人 Jene Kim是这本书的主要作者，他在出版了《凤凰项目》之后，开始与其他三位作者编写本书的。Jez Humble是《持续交付》的作者，是持续交付实践和概念的重要发起人。Patrick Debios是DevOpsDays大会的发起人，是他最早在Twiter是用 #DevOps 这个短标签的，是DevOps运动和社区的重要人物。John Willis是DevOps社区早期的推动者之一，曾任Docker公司生态系统发展总监。
@@ -637,10 +646,10 @@ Continuous Lifecycle每年在伦敦举行，主要集中在开发、容器化、
     
     <item>
       <title>DevOps工作三步法：第一步流动原则</title>
-      <link>https://example.com/blog/devops-first-way-flow/</link>
+      <link>https://martinliu.cn/blog/devops-first-way-flow/</link>
       <pubDate>Wed, 21 Feb 2018 23:10:01 +0800</pubDate>
       
-      <guid>https://example.com/blog/devops-first-way-flow/</guid>
+      <guid>https://martinliu.cn/blog/devops-first-way-flow/</guid>
       <description>本文内容主要来源于《DevOps Handbook》-DevOps实践指南，本文概述的原则是DevOps工作三步法的第一步，它的目标是先建立最底层的基础，即：DevOps技术实践和合理的应用架构；只有这样才能使工作快速而稳定地从开发端流动到运维端；与此同时还能保证不会给生产环境带来混乱，不会中断客户的服务。这就意味着需要降低在生产环境中部署和发布变更的风险。可以通过 持续交付 的技术实践来实现这个目标。
 持续交付基于稳定的自动化部署流水线，团队能够使用自动化测试持续验证代码，确保代码始终处于可部署的状态，开发人员要保证每天都向主干提交代码，以及设计和实现有利于实施低发布风险的环境和软件架构。
 在流动原则的指导下，需要开展的重要的工作内容如下：
@@ -663,10 +672,10 @@ Continuous Lifecycle每年在伦敦举行，主要集中在开发、容器化、
     
     <item>
       <title>Container Orchestration Wars</title>
-      <link>https://example.com/blog/2018-1-container-orchestration-wars/</link>
+      <link>https://martinliu.cn/blog/2018-1-container-orchestration-wars/</link>
       <pubDate>Fri, 12 Jan 2018 23:33:32 +0800</pubDate>
       
-      <guid>https://example.com/blog/2018-1-container-orchestration-wars/</guid>
+      <guid>https://martinliu.cn/blog/2018-1-container-orchestration-wars/</guid>
       <description>容器编排器之战 K8s在2017年底为这场速战速决的站点话上了句号，结果是所有竞争对手都选择了增加对K8s的支持。在各自的编排器框架里内置了K8s。本文是根据Mesosphere公司的大拿Karl KARL ISENBERG在各种大会上分享过多次的一份演讲稿改版的。
 KARL ISENBERG 是谁？ 所在公司?
  Mesosphere（当前） Pivotal  做过的产品?
@@ -679,10 +688,10 @@ KARL ISENBERG 是谁？ 所在公司?
     
     <item>
       <title>Kubecon 2017演讲稿和视频下载</title>
-      <link>https://example.com/blog/2018-1-kubecon17/</link>
+      <link>https://martinliu.cn/blog/2018-1-kubecon17/</link>
       <pubDate>Wed, 03 Jan 2018 00:00:00 +0800</pubDate>
       
-      <guid>https://example.com/blog/2018-1-kubecon17/</guid>
+      <guid>https://martinliu.cn/blog/2018-1-kubecon17/</guid>
       <description>KubeCon 2017演讲稿和视频下载 Kubernetes无疑当下最火热的技术之一，Google公司围绕着它下了更大的一盘棋CNCF。这是在国际寡头IT软件公司的统治局面渐渐退去之后，各种新鲜技术百花齐放了一段时间以后，再通过CNCF的形式又逐渐集中化起来的趋势。KubeCon的人气很旺，演讲分享的人很多。
 最近一次的KubeCon，2017年在奥斯汀站的演讲稿和视频下载的清单已经发布出来了：
 https://github.com/cloudyuga/kubecon17
@@ -699,10 +708,10 @@ PS：非常敬佩这种开放和分享的工程式文化。很符合开源的精
     
     <item>
       <title>2017DevOps企业峰会旧金山站</title>
-      <link>https://example.com/blog/2017-does-sfo/</link>
+      <link>https://martinliu.cn/blog/2017-does-sfo/</link>
       <pubDate>Thu, 28 Dec 2017 00:00:00 +0800</pubDate>
       
-      <guid>https://example.com/blog/2017-does-sfo/</guid>
+      <guid>https://martinliu.cn/blog/2017-does-sfo/</guid>
       <description>DevOps Enterprise Summit由美国的Gene Kim发起并举办的，他是两本流行书籍的作者：《凤凰项目》和《DevOps Handbook》（中文书名《DevOps实践指南》预计于2018年春季出版）。
 大会简介 下面是来自这个大会官网的简单介绍：
  DevOps Enterprise Summit is a conference for the leaders of large, complex organizations implementing DevOps principles and practices. The event programming emphasizes both evolving technical and architectural practices and the methods needed to lead widespread change efforts in large organizations. The goal is to give leaders the tools and practices they need to develop and deploy software faster and to win in the marketplace.</description>

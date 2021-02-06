@@ -2,17 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>puppet on 刘征的博客</title>
-    <link>https://example.com/tags/puppet/</link>
+    <link>https://martinliu.cn/tags/puppet/</link>
     <description>Recent content in puppet on 刘征的博客</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-CN</language>
-    <lastBuildDate>Tue, 16 Jun 2015 16:25:34 +0000</lastBuildDate><atom:link href="https://example.com/tags/puppet/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Tue, 16 Jun 2015 16:25:34 +0000</lastBuildDate><atom:link href="https://martinliu.cn/tags/puppet/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>在 RHEL 7 上安装 Foreman 1.8</title>
-      <link>https://example.com/2015/06/16/e59ca8-rhel-7-e4b88ae5ae89e8a385-foreman-1-8/</link>
+      <link>https://martinliu.cn/2015/06/16/e59ca8-rhel-7-e4b88ae5ae89e8a385-foreman-1-8/</link>
       <pubDate>Tue, 16 Jun 2015 16:25:34 +0000</pubDate>
       
-      <guid>https://example.com/2015/06/16/e59ca8-rhel-7-e4b88ae5ae89e8a385-foreman-1-8/</guid>
+      <guid>https://martinliu.cn/2015/06/16/e59ca8-rhel-7-e4b88ae5ae89e8a385-foreman-1-8/</guid>
       <description>首先安装RHEL7使用光盘安装最小化系统，安装完成之后，关闭防火墙和SELinux（为了测试方便），配置主机名为FQDN格式，如 fm1.8.xenlab.com； 加本机的主机名解析到/etc/hosts 文集中。之后注册到RHN。
 [bash]
 [root@fm18 ~]# subscription-manager register [root@fm18 ~]# subscription-manager attach &amp;ndash;auto [root@fm18 ~]# subscription-manager repos &amp;ndash;disable=&amp;quot;*&amp;quot; [root@fm18 ~]# subscription-manager repos &amp;ndash;enable=rhel-7-server-optional-rpms [root@fm18 ~]# subscription-manager repos &amp;ndash;enable=rhel-server-rhscl-7-rpms [root@fm18 ~]# subscription-manager repos &amp;ndash;enable=rhel-7-server-rpms [root@fm18 ~]# rpm -ivh http://yum.puppetlabs.com/puppetlabs-release-el-7.noarch.rpm [root@fm18 ~]# yum -y install http://yum.theforeman.org/releases/1.8/el7/x86_64/foreman-release.rpm [root@fm18 ~]# yum -y install http://ftp.sjtu.edu.cn/fedora/epel/epel-release-latest-7.noarch.rpm [root@fm18 ~]# yum clean all [root@fm18 ~]# yum makecache [root@fm18 ~]# yum update -y [root@fm18 ~]# reboot [root@fm18 ~]# yum install foreman-installer</description>
@@ -20,10 +20,10 @@
     
     <item>
       <title>在CentOS 7上安装部署Katello2.2</title>
-      <link>https://example.com/2015/06/07/e59ca8centos-7e4b88ae5ae89e8a385e983a8e7bdb2katello2-2/</link>
+      <link>https://martinliu.cn/2015/06/07/e59ca8centos-7e4b88ae5ae89e8a385e983a8e7bdb2katello2-2/</link>
       <pubDate>Sun, 07 Jun 2015 16:35:05 +0000</pubDate>
       
-      <guid>https://example.com/2015/06/07/e59ca8centos-7e4b88ae5ae89e8a385e983a8e7bdb2katello2-2/</guid>
+      <guid>https://martinliu.cn/2015/06/07/e59ca8centos-7e4b88ae5ae89e8a385e983a8e7bdb2katello2-2/</guid>
       <description>Katello的系统架构如下图：
 Katell系统是一个复合型开源项目，是Pulp, Candlepin 和 Foreman的组合。Foreman默认使用Puppet作配置管理。
 它的安装文档见官方手册：http://www.katello.org/docs/2.2/installation/index.html
@@ -54,10 +54,10 @@ katello-installer -v
     
     <item>
       <title>服务器虚拟化 RHEV</title>
-      <link>https://example.com/2015/03/27/e69c8de58aa1e599a8e8999ae68b9fe58c96-rhev/</link>
+      <link>https://martinliu.cn/2015/03/27/e69c8de58aa1e599a8e8999ae68b9fe58c96-rhev/</link>
       <pubDate>Fri, 27 Mar 2015 02:11:40 +0000</pubDate>
       
-      <guid>https://example.com/2015/03/27/e69c8de58aa1e599a8e8999ae68b9fe58c96-rhev/</guid>
+      <guid>https://martinliu.cn/2015/03/27/e69c8de58aa1e599a8e8999ae68b9fe58c96-rhev/</guid>
       <description>服务器虚拟在我的lab中是必选项，管理控制器端RHEVM安装在主服务的一个虚拟机里面。在主服务器上使用targetcli做了一个iscsi的共享存储。使用这个命令可以方便的实现iscsi设备。把最终的存储文件放在了SSD盘上的一个100GB的瘦制备文件上。 [bash] ╭─root@w540 ~ ╰─$ targetcli targetcli shell version 2.1.fb37 Copyright 2011-2013 by Datera, Inc and others. For help on commands, type &amp;lsquo;help&amp;rsquo;.
 /&amp;gt; ls o- / &amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;. [&amp;hellip;] o- backstores &amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;.. [&amp;hellip;] | o- block &amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;.. [Storage Objects: 0] | o- fileio &amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;. [Storage Objects: 1] | | o- iscsi1 &amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;. [/root/iscsi01.img (100.0GiB) write-back activated] | o- pscsi &amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;.. [Storage Objects: 0] | o- ramdisk &amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip; [Storage Objects: 0] o- iscsi &amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip; [Targets: 1] | o- iqn.</description>
     </item>

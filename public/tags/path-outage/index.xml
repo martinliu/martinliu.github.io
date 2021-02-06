@@ -2,17 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Path Outage on 刘征的博客</title>
-    <link>https://example.com/tags/path-outage/</link>
+    <link>https://martinliu.cn/tags/path-outage/</link>
     <description>Recent content in Path Outage on 刘征的博客</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-CN</language>
-    <lastBuildDate>Sun, 23 Dec 2007 12:20:00 +0000</lastBuildDate><atom:link href="https://example.com/tags/path-outage/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 23 Dec 2007 12:20:00 +0000</lastBuildDate><atom:link href="https://martinliu.cn/tags/path-outage/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>如何配置OpenNMS中的 Path outage －路径失效</title>
-      <link>https://example.com/2007/12/23/opennms-path-outage/</link>
+      <link>https://martinliu.cn/2007/12/23/opennms-path-outage/</link>
       <pubDate>Sun, 23 Dec 2007 12:20:00 +0000</pubDate>
       
-      <guid>https://example.com/2007/12/23/opennms-path-outage/</guid>
+      <guid>https://martinliu.cn/2007/12/23/opennms-path-outage/</guid>
       <description>这个功能是是1.3.2之后加入的。它解决的问题是：当OpenNMS系统和被监控节点之间的网络路径失效了，或者网络链路down了，那么OpenNMS就需要抑制发送这个节点的告警。例如，如果一个广域网链路down了，所有由这个链路连接的远程站点的所有节点就都看起来down了。因为你将会得到一个路由器上远端链路无响应的告警，而不需要得到在这个路由器后所有节点Down的告警。如果当一个远程节点不响应了，OpenNMS会测试一下那个远程路由器广域网接口的ip，通过对这个ip的测试OpenNMS觉得是否该发出此节点Down的告警。OpenNMS测试的这个节点叫做此节点的Critical Path IP Address（关键路径Ip地址）。
 给一个节点配置Path Outage
 在OpenNMS的节点配置上，点击Admin, 点击 Configure Path Outage，输入对于这个节点来说关键的ip地址。点击Submit按钮。

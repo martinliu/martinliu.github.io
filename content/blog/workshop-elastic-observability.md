@@ -6,7 +6,7 @@ author = "Martin Liu"
 categories = ["SRE"]
 tags = ["elastic", "elk", "elasticsearch", "kibana"]
 [[images]]
-  src = "images/2020-11-05_00-13-06.jpeg"
+  src = "img/2019/03/pic01.jpg"
   alt = "Valley"
   stretch = "horizontal"
 draft = true

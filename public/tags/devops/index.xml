@@ -2,17 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>devops on 刘征的博客</title>
-    <link>https://example.com/tags/devops/</link>
+    <link>https://martinliu.cn/tags/devops/</link>
     <description>Recent content in devops on 刘征的博客</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-CN</language>
-    <lastBuildDate>Thu, 27 Aug 2020 13:54:46 +0800</lastBuildDate><atom:link href="https://example.com/tags/devops/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Thu, 27 Aug 2020 13:54:46 +0800</lastBuildDate><atom:link href="https://martinliu.cn/tags/devops/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Elasticsearch 3 节点集群搭建 (7.9.0)</title>
-      <link>https://example.com/blog/elasticsearch-3-nodes-cluster-setup/</link>
+      <link>https://martinliu.cn/blog/elasticsearch-3-nodes-cluster-setup/</link>
       <pubDate>Thu, 27 Aug 2020 13:54:46 +0800</pubDate>
       
-      <guid>https://example.com/blog/elasticsearch-3-nodes-cluster-setup/</guid>
+      <guid>https://martinliu.cn/blog/elasticsearch-3-nodes-cluster-setup/</guid>
       <description>最近发布的 Elastic Stack 7.9 ，带来了很多新的特性。Elastic Agent 统一集成数据采集代理是一大亮点。另外还看增加了企业搜索、端点安全防护等组件。Ingest Manager 统一 Beat 配置管理功能让我们向 SaaS 风格的监控工具又迈进了一步。由代理端自行注册到后端，在后端统一纳管所有被管理服务器，将是一种以后非常通用的模式。这样做的好处是：将数据采集端点的配置工作量和复杂度降低到最低。Beats 的各种相关独立模块也在平行的发布，这种双轨模式也可以让用户更弹性的做出选择，能最大程度的保持旧版本部署环境管理模式的延续性。 Ingest manager 的前提条件是：后台 ES 需要启用 api key 安全，启用 ES 客户端的 HTTPS 访问。我们也可以看到这两个功能选项也有其非常广泛的应用需求。本文将用最简单的文字，向你描述一套 3 节点的 ES 集群的搭建方式，这套系统的核心特性如下：
  启用用户名和密码认证 启用集群内 es 节点间 transport.ssl 通讯加密 启用 es 的 http 客户端 http.ssl 加密通讯 安装脚本中包括创建数字证书的必要命令（没猜错的话，大部分人可能会在这一步花费大量时间）  演示环境介绍 我使用的是本地的测试环境，环境配置如下：
  Mac OS vagrant virtualBox - CentOS 8 Elastic Stack 7.9.0 ip 和主机名分配见 Vagrantfile 文件 Vagrant 的 vagrant-hostsupdater 插件实现了 Mac OS 主机和所有虚拟机的 host 文件 DNS 解析的同步，保证所有相关虚拟机都可以解析其它虚拟机的 FQDN，尽量模拟生产环境。  本文所使用的所有配置文件和安装脚本见：https://github.</description>
@@ -20,10 +20,10 @@
     
     <item>
       <title>腾讯云下部署 Elastic Stack 各种 Beat 的最佳实践</title>
-      <link>https://example.com/blog/beats-implement-on-qcloud/</link>
+      <link>https://martinliu.cn/blog/beats-implement-on-qcloud/</link>
       <pubDate>Fri, 07 Aug 2020 17:14:20 +0800</pubDate>
       
-      <guid>https://example.com/blog/beats-implement-on-qcloud/</guid>
+      <guid>https://martinliu.cn/blog/beats-implement-on-qcloud/</guid>
       <description>概述 使用 Elastic Stack 的各种 Beats 模块可以彻底的终结在服务器上手工捞日志查指标的扭曲实践。利用腾讯云提供的 Elasticsearch 服务，可以轻松搞定大规模云环境的运维。本文一次性的帮你梳理清楚了，必备的基础操作，确保你能用 Elastic Stack 安全、稳定和扩展的持续监控你的生产环境。
 创建 ES 集群 登录腾讯云服务控制台，查询并进入 Elasticsearc 服务，点击新建按钮，创建 Elasticsearch 集群。如下图所示。
 集群配置说明：
@@ -37,10 +37,10 @@
     
     <item>
       <title>APM 分布式追踪为何这么难？</title>
-      <link>https://example.com/blog/apm-why-it-so-hard/</link>
+      <link>https://martinliu.cn/blog/apm-why-it-so-hard/</link>
       <pubDate>Sun, 02 Aug 2020 20:48:30 +0800</pubDate>
       
-      <guid>https://example.com/blog/apm-why-it-so-hard/</guid>
+      <guid>https://martinliu.cn/blog/apm-why-it-so-hard/</guid>
       <description>用跟踪的方式调试计算机程序的调用堆栈的实践其实由来已久，这种方法可能仅次于用 print 输出各种信息。在云原生的时代里，我们还会遭遇工具过剩的情况，工具之间的相生相克加剧了实施分布式追踪的难度。
 总的来说有三个基础难点：
  生成追踪数据难。对已有应用系统的代码库进行埋点处理的挑战巨大，你的应用程序系统的模式可能也不符合埋点的模式需求。 采集存储追踪数据难。捕获和管理大量追踪数据包，即照顾到查询和使用的需求，又要设定成本合理的数据存储策略，处理数据收集能力的扩缩容。 从数据中获益难。如何理解和使用数据产生可执行行动，如何用它优化微服务的遥测，怎么将它的利益扩展到各个相关团队。  分布式追踪系统的实施结果是落地一条能深度洞察目标系统的工具。让人们能轻松的理解局部和整体的状态，特别是在请求堆栈中的任何局部服务出现故障时，可以最快速的定位故障根源。
@@ -55,10 +55,10 @@
     
     <item>
       <title>应用开发 DBA 技巧集锦</title>
-      <link>https://example.com/blog/sql-tricks-application-dba-chinese/</link>
+      <link>https://martinliu.cn/blog/sql-tricks-application-dba-chinese/</link>
       <pubDate>Fri, 31 Jul 2020 22:23:44 +0800</pubDate>
       
-      <guid>https://example.com/blog/sql-tricks-application-dba-chinese/</guid>
+      <guid>https://martinliu.cn/blog/sql-tricks-application-dba-chinese/</guid>
       <description>前言 DBA 可能是经常被其它团队依赖的一种角色、团队，因此他们也会有着很长的等待队列，也经常是事故救火中的英雄和常客。DevOps 强调用跨角色的学习和培训来解决这种依赖，也就是 DevOps 工作三步法的第三步，学习与持续改进。 本文写给所有的应用开发者，希望大家能多学习一些 DBA 知识，减少对专家 DBA 的依赖，加速你们的业务的交付，消除由于等待而造成的浪费。
 本文转载自：https://hakibenita.com/sql-tricks-application-dba
 以下是正文原文：
@@ -80,10 +80,10 @@ db=# UPDATE users SET email = lower(email) db-# WHERE email != lower(email); UPD
     
     <item>
       <title>Skaffold 让 K8s 开发者更加酸爽</title>
-      <link>https://example.com/blog/skaffold-make-local-k8s-dev-easy/</link>
+      <link>https://martinliu.cn/blog/skaffold-make-local-k8s-dev-easy/</link>
       <pubDate>Wed, 15 Jul 2020 00:09:53 +0800</pubDate>
       
-      <guid>https://example.com/blog/skaffold-make-local-k8s-dev-easy/</guid>
+      <guid>https://martinliu.cn/blog/skaffold-make-local-k8s-dev-easy/</guid>
       <description>今天介绍一个本地 Kubernetes 开发的利器 Skaffold。 这是我偶然间发现的一个工具，询问了一下周围的人，居然还没有人用过。测试之后，确实有一种不吐不快的感觉。
 简介 Skaffold Google 开发的一个开源项目。是一个非常轻量的命令行工具，就是一个可执行文件。它的主页上是这样的介绍它的。
  轻量：Skaffold只是一个客户端工具。由于集群上不需要任何的相关组件，您的集群没有任何开销或维护负担。 运行在任何地方：Skaffold是与世界分享你的项目的最简单的方法：&amp;ldquo;git clone&amp;rdquo;，然后 &amp;ldquo;skaffold run&amp;rdquo;。此外，你还可以使用配置文件、本地用户配置、环境变量和标志来轻松地集成不同环境的差异。 功能丰富：Skaffold拥有许多Kubernetes原生开发的基本功能，包括基于策略的打镜像标签、资源端口转发和日志、文件同步等。 优化你的开发：Skaffold使内部循环紧密，高度优化，让您在开发的同时得到即时反馈。  客户评价 &amp;ldquo;我们的客户很喜欢[Kubernetes]，但一直给我们反馈说在Kubernetes上开发很麻烦。Skaffold一针见血地解决了这个问题。以前需要几分钟才能部署的docker镜像或配置的更改，现在只需要几秒钟。Skaffold的插件架构使我们能够部署到Helm或Kustomize，并使用各种docker构建插件，如Kaniko。Skaffold用一个精简的工具取代了我们定制的实用程序和脚本集合，并且易于使用。&amp;rdquo; Warren Strange，ForgeRock的工程总监。
@@ -101,10 +101,10 @@ db=# UPDATE users SET email = lower(email) db-# WHERE email != lower(email); UPD
     
     <item>
       <title>如何在墙内正常导入 Vagrant 虚拟机模板</title>
-      <link>https://example.com/blog/download-import-vagrant-box/</link>
+      <link>https://martinliu.cn/blog/download-import-vagrant-box/</link>
       <pubDate>Thu, 26 Mar 2020 08:57:57 +0800</pubDate>
       
-      <guid>https://example.com/blog/download-import-vagrant-box/</guid>
+      <guid>https://martinliu.cn/blog/download-import-vagrant-box/</guid>
       <description>当你满心欢喜的安装完了 vagrant 之后，在你第一次 vagrant up 命令的时候，是下载超时么？你的内心是什么感受？想放弃了么？
 其实你只需要找到国内的 box 文件镜像服务器，或者下载地址，然后手工下载对应的 Box 文件（操作系统镜像文件），并导入即可，本文将帮你铲除这只官方镜像文件下载失败的拦路虎。
 Vagrant 的优势：
@@ -121,10 +121,10 @@ https://mirrors.tuna.tsinghua.edu.cn/ubuntu-cloud-images/vagrant/
     
     <item>
       <title>SLA、SLO 和 SLI 还是傻傻分不清么？</title>
-      <link>https://example.com/blog/sre-sla-slo-sli/</link>
+      <link>https://martinliu.cn/blog/sre-sla-slo-sli/</link>
       <pubDate>Thu, 05 Mar 2020 17:37:29 +1100</pubDate>
       
-      <guid>https://example.com/blog/sre-sla-slo-sli/</guid>
+      <guid>https://martinliu.cn/blog/sre-sla-slo-sli/</guid>
       <description>SLA、SLI 和 SLO 是 SRE 工程实践里非常核心的概念，但是大家在同时提到这些概念的时候，经常容易混淆。
 长篇大论的文章反而容易使人更加疑惑，还不如画一张示意图说明一下，帮助大家一次性彻底梳理清楚这些不可以含糊不清的核心概念。说明一下，下图假设所讨论的 SLA 个数为 1，使用了软件工程中 ER 图的表达方式，但也有所变化。
 一图讲清 SLA、SLO、SLI
@@ -137,10 +137,10 @@ https://mirrors.tuna.tsinghua.edu.cn/ubuntu-cloud-images/vagrant/
     
     <item>
       <title>怎样使用两个DevOps研究模型？</title>
-      <link>https://example.com/blog/2019-state-devops-report-insight-2/</link>
+      <link>https://martinliu.cn/blog/2019-state-devops-report-insight-2/</link>
       <pubDate>Sun, 01 Sep 2019 17:27:16 +0800</pubDate>
       
-      <guid>https://example.com/blog/2019-state-devops-report-insight-2/</guid>
+      <guid>https://martinliu.cn/blog/2019-state-devops-report-insight-2/</guid>
       <description>本文要覆盖的章节是《 How to use the research models》 这一章。双模型在今年的报告中首次出现了，它们是效能模型和生产力模型。为什么会存在两个模型？有什么区别？有什么相似之处？最重要的问题是，你怎么用它们来指导你的DevOps工作？
 本文的阅读建议：
  下载我整理的最新版的《DevOps能力成长模型》，含双模型分解图。 阅读和参考前5年的DevOps状态调查报告，了解今年这份报告的历史和发展历程。以前的文章中有下载链接/二维码。 阅读2019年的调查问卷的中文版，感谢中国DevOps社区翻译团队对英文原版问卷的翻译工作，如果你都不知道这些调查结果是通过什么问卷调查得出的，那真的是很可惜。如果你想用这套问卷工具在企业内部做调研，请使用前文中的免费调查服务申请流程。样例问卷的访问地址：https://www.wjx.cn/jq/43837840.aspx 在Google的网站上做极简版DevOps行业基础测试，它是6年行业调查结果数据库的首次对外开放。  模型是怎么诞生的？ 首先，我们需要了解一下这份持续了6年的报告是谁主导并开发的？这是一个怎样的团队？从DORA公司网站的这个页面上，可以看到团队人员介绍。https://devops-research.com/about.html 如下所示。
@@ -162,10 +162,10 @@ Accelerate这本书也提供了这幅图的电子版下载链接：https://devop
     
     <item>
       <title>如何做横向行业的DevOps表现基准测试？</title>
-      <link>https://example.com/blog/2019-state-devops-report-insight-1/</link>
+      <link>https://martinliu.cn/blog/2019-state-devops-report-insight-1/</link>
       <pubDate>Wed, 28 Aug 2019 07:27:16 +0800</pubDate>
       
-      <guid>https://example.com/blog/2019-state-devops-report-insight-1/</guid>
+      <guid>https://martinliu.cn/blog/2019-state-devops-report-insight-1/</guid>
       <description>长期关注我的blog和微信公众号（DevOps教练）的朋友可以发现，我今年从这个调查问卷开始，陆续发布了一些列文章。如果给这些文章一个文集标题的话，那么应该是：死磕2019年加速度全球DevOps状态调查报告系列。 为了帮助大家充分利用这份优秀的行业报告，我会用一些列文章，分章节的解读这份长达80多页的报告。上一篇文章如果你已经解读了该报告的核心重要发现和看点。本文要覆盖的章节是 How do we compare 这一章。
 本文的阅读建议：
  先阅读和参考前5年的DevOps状态调查报告，了解今年这份报告的历史和发展历程。以前的文章中有下载链接/二维码。 阅读2019年的调查问卷的中文版，感谢中国DevOps社区翻译团队对英文原版问卷的翻译工作，如果你都不知道这些调查结果是通过什么问卷调查得出的，那真的是很可惜。如果你想用这套问卷工具在企业内部做调研，请使用前文中的免费调查服务申请流程。样例问卷的访问地址：https://www.wjx.cn/jq/43837840.aspx 在Google的网站上做极简版DevOps行业基础测试，它是6年行业调查结果数据库的首次对外开放。  WHY DEVOPS？ 这是一个可以持续反复问自己的问题，首先让我们澄清一件事情：为什么要做DevOps？
@@ -193,10 +193,10 @@ Accelerate这本书也提供了这幅图的电子版下载链接：https://devop
     
     <item>
       <title>2019年加速度DevOps状态调查报告-导读</title>
-      <link>https://example.com/blog/2019-state-devops-survey-report/</link>
+      <link>https://martinliu.cn/blog/2019-state-devops-survey-report/</link>
       <pubDate>Thu, 22 Aug 2019 07:27:16 +0800</pubDate>
       
-      <guid>https://example.com/blog/2019-state-devops-survey-report/</guid>
+      <guid>https://martinliu.cn/blog/2019-state-devops-survey-report/</guid>
       <description>凭借六年多的来自全球31,000多名专业人士的数据的研究，2019年加速发展状态报告是同类研究中规模最大、持续时间最长的研究。2019年加速度DevOps状态调查首发，首发的位置在Google Cloud网站上的Blog栏目，发布于产品新闻分类下。
   文章使用的主标签 DevOps 、SRE。    文章地址：https://cloud.google.com/blog/products/devops-sre/the-2019-accelerate-state-of-devops-elite-performance-productivity-and-scaling  下文为对Google文章原文的翻译和整理。并且加入了我本人的各种判断和见解。
 关于今年的DevOps状态调查报告有什么更新和变化？报告文章中给我们了一句话的概要介绍：今年会对部署工具链、云计算、灾难恢复和工作方式等主题进行深度调查。更详细的情况，详细的参过问卷调查的您自有评判。
@@ -213,10 +213,10 @@ Accelerate这本书也提供了这幅图的电子版下载链接：https://devop
     
     <item>
       <title>中文版：2019年DevOps状态调查问卷</title>
-      <link>https://example.com/blog/2019-state-devops-survey-chinese-version/</link>
+      <link>https://martinliu.cn/blog/2019-state-devops-survey-chinese-version/</link>
       <pubDate>Mon, 06 May 2019 12:27:16 +0800</pubDate>
       
-      <guid>https://example.com/blog/2019-state-devops-survey-chinese-version/</guid>
+      <guid>https://martinliu.cn/blog/2019-state-devops-survey-chinese-version/</guid>
       <description>本文是中文版《2019年加速度DevOps状态调查》问卷。如果你还没有填写该问卷的话，可以在线上填写英文版，点击这个链接 https://bit.ly/2UzLMH2 ，进入问卷调查网站。本文可以作为你的帮助文档。
  译者团队：刘征、张晔、刘頲、朱婷、王英伟、王虹、李建芳、沈越飞、井建宇、申屠欣欣
  本文由以上翻译团队经过两周的时间，在业余时间翻译完成，如果对本文有任何改进建议请发邮件到 martin AT DevOpsCoach.org
@@ -230,10 +230,10 @@ Accelerate这本书也提供了这幅图的电子版下载链接：https://devop
     
     <item>
       <title>2019年DevOps状态调查问卷开放中</title>
-      <link>https://example.com/blog/2019-state-devops-survey-open/</link>
+      <link>https://martinliu.cn/blog/2019-state-devops-survey-open/</link>
       <pubDate>Sat, 20 Apr 2019 22:27:16 +0800</pubDate>
       
-      <guid>https://example.com/blog/2019-state-devops-survey-open/</guid>
+      <guid>https://martinliu.cn/blog/2019-state-devops-survey-open/</guid>
       <description>2019年加速度DevOps状态调查首发，首发的位置在Google Cloud网站上的Blog栏目，发布于产品新闻分类下。
  文章使用的主标签 DevOps 、SRE。 文章地址：https://cloud.google.com/blog/products/devops-sre/make-your-voice-heard-take-the-2019-accelerate-state-of-devops-survey  关于今年的状态调查有什么更新和变化，文章中只给出了一句话的概况：今年会对部署工具链、云计算、灾难恢复和工作方式等主题进行深度调查。更详细的情况，详细你参与完问卷调查只有自由评判。
 如何参与2019年DevOps状态调查 点击这个链接 https://bit.ly/2UzLMH2 ，进入问卷调查网站。
@@ -249,10 +249,10 @@ Accelerate这本书也提供了这幅图的电子版下载链接：https://devop
     
     <item>
       <title>2019年关于DevOps的几个预测</title>
-      <link>https://example.com/blog/predictions-for-devops-in-2019/</link>
+      <link>https://martinliu.cn/blog/predictions-for-devops-in-2019/</link>
       <pubDate>Sat, 09 Mar 2019 22:27:16 +0800</pubDate>
       
-      <guid>https://example.com/blog/predictions-for-devops-in-2019/</guid>
+      <guid>https://martinliu.cn/blog/predictions-for-devops-in-2019/</guid>
       <description>本文汇聚了来自3个网站的预测文章，他们分别是XebiaLabs、G20Group和Veritis。在总共22项预测中，个别预测是相同的。DevOps是一个持续进化和发展的过程，同时也受到目前各种新技术的影响。
 XebiaLabs的7个预测 英文原文： https://blog.xebialabs.com/2019/01/10/7-predictions-for-devops-in-2019/
 1. 持续集将成作为流水线的重要代办事项 如果企业希望提高团队用在功能开发上的可用时间，从而加速向生产环境中交付的话，那么在整个DevOps流水线中，引进持续集成CI部分将成为高优先级且重要的事项。监控CI流水线相关的数据、活动和流程的能力将变得非常重要，这样可以使发布流程中的所有人都能看到最新的流程状态，从而减少开发人员花费在无关任务上的时间。 【来自：XebiaLabs产品开发副总裁Andreas Prins】
@@ -269,10 +269,10 @@ G20Group的5个预测 原文：https://www.go2group.com/blog/devops-trends-2019-
     
     <item>
       <title>产品管理遇上Devops</title>
-      <link>https://example.com/blog/csg-product-meet-devops/</link>
+      <link>https://martinliu.cn/blog/csg-product-meet-devops/</link>
       <pubDate>Thu, 07 Mar 2019 12:27:16 +0800</pubDate>
       
-      <guid>https://example.com/blog/csg-product-meet-devops/</guid>
+      <guid>https://martinliu.cn/blog/csg-product-meet-devops/</guid>
       <description>DevOps企业峰会是历史悠久的DevOps主题企业级峰会，近年来在北美的拉斯维加斯和欧洲的伦敦每年各举办一次。 这个大会的官网：https://events.itrevolution.com/ 2019年的会议时间已经发布，感兴趣的可以参加。
 CSG公司连续多年参加DevOps企业峰会，本分享主题是CSG在2018年美国拉斯维加斯的峰会上的主旨演讲之一。本文是对这个演讲的视频回放的整理，该视频已经上传到了腾讯视频。
 
@@ -297,10 +297,10 @@ CSG的DevOps转型阶段的重点：
     
     <item>
       <title>成熟度模型已死</title>
-      <link>https://example.com/blog/maturity-is-dead/</link>
+      <link>https://martinliu.cn/blog/maturity-is-dead/</link>
       <pubDate>Wed, 27 Jun 2018 21:34:04 +0800</pubDate>
       
-      <guid>https://example.com/blog/maturity-is-dead/</guid>
+      <guid>https://martinliu.cn/blog/maturity-is-dead/</guid>
       <description>上一篇文章重要观点回顾：
  应用DevOps的企业不应该使用成熟度模型度量 应用DevOps的不同企业/部门不会参考某个所谓标准 应用DevOps的不同企业/部门应该参考5大类24项的能力成长模型，来度量其发展进度，在磨练这些能力的过程中，选择符合自身业务需求的，且优先级别高能力先发展。  成熟度模型已死 这个模型在各行各业都可能存在，而且可能是最容易被人接受的模型之一。对于很多新生的领域，如法炮制的套用这个模型合适么？无论合适与否，它还是会出现在DevOps的领域中。为了避免实践者试错，我们不得来分析一下这种模型的特点。
 特征1 它总是阶梯式的，而且从来都是5个等级，人们经常戏称为Golden 5。常见的5级成熟度模型有下列几种。
@@ -331,10 +331,10 @@ Nicole博士总结出了DevOps能力的5大分类，包含的能力点有24项�
     
     <item>
       <title>参与2018年DevOps状态调查报告</title>
-      <link>https://example.com/blog/2018-devops-survey/</link>
+      <link>https://martinliu.cn/blog/2018-devops-survey/</link>
       <pubDate>Wed, 27 Jun 2018 00:09:21 +0800</pubDate>
       
-      <guid>https://example.com/blog/2018-devops-survey/</guid>
+      <guid>https://martinliu.cn/blog/2018-devops-survey/</guid>
       <description>听说这里有一个15分钟就能完成的DevOps调查问卷，有25位参与者或将得到总值为3200美元的亚马逊购物券。一年也就是这一次机会。问卷调查将在10天后就关闭。
 这是DevOps状态报告调查问卷的第七年。在过去的6年里，已经有两万七千多人参与了这项调查。这项调查已经获得了丰硕的成果，主要是帮助你了解在DevOps之旅上当前的进展。今年又扩展了调查的范围，再度加深了对DevOps之旅的调研。
 我已经帮你把问题的套路摸清楚了，其实问题都很清晰直白，很容易和你所在企业的DevOps状态做匹配。填写问卷调查也是一个学习的过程，可以用开放的心态去了解一下，调查报告对DevOps的观察角度都有哪些？
@@ -346,10 +346,10 @@ Nicole博士总结出了DevOps能力的5大分类，包含的能力点有24项�
     
     <item>
       <title>Kops on Aws</title>
-      <link>https://example.com/blog/kops-on-aws/</link>
+      <link>https://martinliu.cn/blog/kops-on-aws/</link>
       <pubDate>Mon, 02 Apr 2018 00:22:44 +0800</pubDate>
       
-      <guid>https://example.com/blog/kops-on-aws/</guid>
+      <guid>https://martinliu.cn/blog/kops-on-aws/</guid>
       <description>kops这种方式是我找到的最佳的，最适合于培训课堂需要的安装方式，当然对有类似需求的人有帮助。
 Route53 DNS配置 kops需要使用DNS服务，用主机名提供k8s的相关服务访问。配置的注意点：
  域名还是有必要有一个的，没有的话注册一个也不贵，以后用着也方便 建议在aws的Route53里做一个二级域名，例如：k8s.devopscoach.org 这个二级域名最好是能被正常公网解析的，为了便于直接访问集群里的服务 用 dig NS k8s.devopscoach.org 可以能正常解析（Mac上是这个命令）  由于全球的域名同步会需要一些时间，因此可以先做这一步，用到的时候，可能就已经同步好了。
@@ -363,10 +363,10 @@ curl -LO https://storage.googleapis.com/kubernetes-release/release/$(curl -s htt
     
     <item>
       <title>容器化应用的设计原则</title>
-      <link>https://example.com/blog/cloud-native-container-design/</link>
+      <link>https://martinliu.cn/blog/cloud-native-container-design/</link>
       <pubDate>Sat, 24 Mar 2018 20:51:01 +0800</pubDate>
       
-      <guid>https://example.com/blog/cloud-native-container-design/</guid>
+      <guid>https://martinliu.cn/blog/cloud-native-container-design/</guid>
       <description>本文来自于Red Hat咨询顾问Bilgin Ibryam所编写的一篇白皮书，名为《PRINCIPLES OF CONTAINER-BASED APPLICATION DESIGN》。这篇文章在作者的Blog上发表后，作者的twitter被Kubernetes官方twitter转发。白皮书在Red Hat官网的下载地址：https://www.redhat.com/en/resources/cloud-native-container-design-whitepaper 文本是对这篇文章的学习和整理。
 先回顾经典的软件设计原则：
  保持简单，愚蠢（KISS） 不要重复自己（DRY） 你不会需要它 （YAGNI） 关注点分离（SoC） Single responsibility, Open/closed, Liskov substitution, Interface segregation, Dependency inversion （SOLID）  然后是Red Hat的云原生容器设计原则：
@@ -385,10 +385,10 @@ curl -LO https://storage.googleapis.com/kubernetes-release/release/$(curl -s htt
     
     <item>
       <title>7种DevOps工程师必备技能</title>
-      <link>https://example.com/blog/7-skills-devops-engineer/</link>
+      <link>https://martinliu.cn/blog/7-skills-devops-engineer/</link>
       <pubDate>Sat, 24 Mar 2018 00:00:00 +0000</pubDate>
       
-      <guid>https://example.com/blog/7-skills-devops-engineer/</guid>
+      <guid>https://martinliu.cn/blog/7-skills-devops-engineer/</guid>
       <description>使用DevOps的目的是改变和改善开发与IT运营之间的关系，倡导两个部门之间更好的沟通与协作。虽然这看起来有些简单，然后，DevOps工程师还需要做更多的工作，才能成功部署代码，并将Dev和Ops两个部分成功地绑定在一起。
 从应付DevOps压力的角度出发，DevOps工程师除了需要日常技能的基础，每个工程师都必须具备多种技能。DevOps工程师除了要对脚本和编码有着强烈的热情之外，还必须具有开放的思想和协作精神，才能成功地执行该过程。
 “DevOps教练”参考一些文献，已经为你设计了一个清单，列出了下面的7种必备技能，公司的DevOps工程师的招聘需求里，应该明确提出下列所有品质。
@@ -409,10 +409,10 @@ DevOps工程师在受雇时必须具备安全技能，因为软件从部署一�
     
     <item>
       <title>2018年必须认识到的6个DevOps趋势</title>
-      <link>https://example.com/blog/6-devops-trends-aware/</link>
+      <link>https://martinliu.cn/blog/6-devops-trends-aware/</link>
       <pubDate>Fri, 23 Mar 2018 17:50:25 +0800</pubDate>
       
-      <guid>https://example.com/blog/6-devops-trends-aware/</guid>
+      <guid>https://martinliu.cn/blog/6-devops-trends-aware/</guid>
       <description>DevOps已经出现了很长时间，我们中的很多人都认为它只是一个时髦词。现在我们知道这并不是一个神话。DevOps已经成为一个IT主流的焦点，并且在过去的几年里一直在重塑着软件世界。专家表示，DevOps将成为主流，2018年DevOps的人气将达到顶峰。
 下面是术语“DevOps”在Google趋势里的现状，以及对2018年预计增长的假设。 谈到统计数据，从2015年到2016年，DevOps的应用企业数增加了约8%，预计2018年这一数字将大幅增长，如上所示。
 你可以阅读RightScale的整个报告。甚至Forrester的报告也明确提到2018年将是DevOps的一年。
@@ -432,10 +432,10 @@ DevOps工程师在受雇时必须具备安全技能，因为软件从部署一�
     
     <item>
       <title>2018值得关注的15个DevOps大会</title>
-      <link>https://example.com/blog/2018-best-devops-event/</link>
+      <link>https://martinliu.cn/blog/2018-best-devops-event/</link>
       <pubDate>Thu, 22 Mar 2018 08:30:13 +0800</pubDate>
       
-      <guid>https://example.com/blog/2018-best-devops-event/</guid>
+      <guid>https://martinliu.cn/blog/2018-best-devops-event/</guid>
       <description>本文向你简要介绍2018年DevOps界的15大最重要的大会活动。DevOps的一个方面就是持续&amp;hellip;&amp;hellip;.参加大会学习！全球范围内看，基本上每个月都至少有一个我们值得重点关注的大会。我们不能奢望都你有机会参加，但是作为DevOps业内人士，如果你不了解这个大会的情况，你就Out了。
 这些大会中有些社偏技术的、有些是注重社交和体验；根据你的业务需求和学习目标，今年走出去参加最高端DevOps盛会的奢望可以有。不提前做功课，怎么能说服领导支持你呢？万一领导批准了呢？
 1. Cloud &amp;amp; DevOps World June 12-14, London
@@ -459,10 +459,10 @@ Continuous Lifecycle每年在伦敦举行，主要集中在开发、容器化、
     
     <item>
       <title>基础架构的持续集成和应用部署</title>
-      <link>https://example.com/blog/devops-infrastructure-ci-app-deployment/</link>
+      <link>https://martinliu.cn/blog/devops-infrastructure-ci-app-deployment/</link>
       <pubDate>Sat, 17 Mar 2018 10:50:57 +0800</pubDate>
       
-      <guid>https://example.com/blog/devops-infrastructure-ci-app-deployment/</guid>
+      <guid>https://martinliu.cn/blog/devops-infrastructure-ci-app-deployment/</guid>
       <description>持续集成通常是针对应用而言的，可是基础架构的持续集成应该怎么做？基础架构的持续集成应该属于持续交付/部署的基础。贯串本文的一个问题，或者在阅读本文时，您应该不断地问自己这个问题：我们的应用部署流程是怎样的？
 在回答这个问题之前，我们先来回顾一下，目前几乎所有人正在使用的手工环境和资源交付流程。在源码被编译打包了以后，安装包文件被上传保存到了内部的某个文件服务器上。Ops团队的某个组/人被分配到工单，根据工单描述的需求，它在测试或者生产环境中开始工作：
  用图形界面进行虚拟机模板的手工克隆工作，或者由于没有相应的权限或者自助服务，不得不给虚拟化管理员发任务单，然后等待回复。 获取用户名和密码手工登录服务器，有些企业还要是等待领导的审批，才能得到密码信封和所需要的访问密码。 根据工单（变更单）里的描述和自己的经验对虚拟机的操作系统进行配置，在这个过程中，Ops往往可能还需和需求方进行不止一次的沟通，确认相关参数。 手工的下载应用安装包，然后分别手工上传到目标的服务器，凭经验和工单信息部署应用，然后测试部署结果，可能是看下页面有没有正常显示，或者服务起没起. 手工测试和确认这些虚拟机的服务和状态，凭经验觉得OK了以后，回复工单，关闭工单。  以上的工作场景，可能是Ops人员很常规的一天，或者是几天内的工作，当然在这个过程中，他们还需要参与一些救火行动；他们在这个过程中也可能会有疑问，也可能会对此工作结果不确定；但是，日常的工作经验告诉他，差不多了，关闭任务单要紧，还有好多项目催活呢！就这样，配置并不精确的虚拟机环境就交给了下游的需求方。
@@ -484,10 +484,10 @@ Continuous Lifecycle每年在伦敦举行，主要集中在开发、容器化、
     
     <item>
       <title>DevOps on Nutanix[Beta]</title>
-      <link>https://example.com/blog/devops-on-nutanix/</link>
+      <link>https://martinliu.cn/blog/devops-on-nutanix/</link>
       <pubDate>Mon, 26 Feb 2018 11:08:53 +0800</pubDate>
       
-      <guid>https://example.com/blog/devops-on-nutanix/</guid>
+      <guid>https://martinliu.cn/blog/devops-on-nutanix/</guid>
       <description>Nutanix是什么？中文名字是路坦力，是我目前所在的公司；我负责运营商行业以及与云服务商的合作业务，解决客户在售前、架构和DevOps等方面的问题，我是Nutanix Calm产品的专家。
 之前也发过一些介绍Nutanix和超融合技术的文章，本文会是一篇持续更新的文章，我会把在Nutanix上开展超融合的方法，持续的更新在这里。
 本文上属于Beta版本，会持续更新，欢迎各种类型的反馈信息，发邮件到： martin.liu@nutanix.com
@@ -504,10 +504,10 @@ Continuous Lifecycle每年在伦敦举行，主要集中在开发、容器化、
     
     <item>
       <title>Devops Handbook《DevOps实践指南》简介</title>
-      <link>https://example.com/blog/devops-handbook/</link>
+      <link>https://martinliu.cn/blog/devops-handbook/</link>
       <pubDate>Sun, 25 Feb 2018 22:27:16 +0800</pubDate>
       
-      <guid>https://example.com/blog/devops-handbook/</guid>
+      <guid>https://martinliu.cn/blog/devops-handbook/</guid>
       <description>企业如何通过DevOps实践提高盈利能力，改善工作文化，实现卓越的生产力目标。如今这些高绩效管理技术比以往的任何时候都要更加重要，由于这对于企业的商业竞争力而言是至关重的，数十年以来，技术组织的领导者们始终在努力地维持这IT系统的敏捷性、可靠性和安全性。然后惨痛的案例依然比比皆是&amp;ndash;不论是healthcare.gov的崩溃，持卡人数据的泄露；还是在云计算环境中大数据的丢失。
 然而，那些运用DevOps原则的高绩效企业（例如Google，Amazon，Facebook，Etsy和Netflix）则每天都可以在生产环境中成百上千次频繁地部署代码。那么DevOps理论、原则和实践到底是何等的殊胜呢？相信所有人在看了本书之后一定会得到答案。
 通过数字看这本书 基础数据 原作者4人 Jene Kim是这本书的主要作者，他在出版了《凤凰项目》之后，开始与其他三位作者编写本书的。Jez Humble是《持续交付》的作者，是持续交付实践和概念的重要发起人。Patrick Debios是DevOpsDays大会的发起人，是他最早在Twiter是用 #DevOps 这个短标签的，是DevOps运动和社区的重要人物。John Willis是DevOps社区早期的推动者之一，曾任Docker公司生态系统发展总监。
@@ -523,10 +523,10 @@ Continuous Lifecycle每年在伦敦举行，主要集中在开发、容器化、
     
     <item>
       <title>DevOps工作三步法：第一步流动原则</title>
-      <link>https://example.com/blog/devops-first-way-flow/</link>
+      <link>https://martinliu.cn/blog/devops-first-way-flow/</link>
       <pubDate>Wed, 21 Feb 2018 23:10:01 +0800</pubDate>
       
-      <guid>https://example.com/blog/devops-first-way-flow/</guid>
+      <guid>https://martinliu.cn/blog/devops-first-way-flow/</guid>
       <description>本文内容主要来源于《DevOps Handbook》-DevOps实践指南，本文概述的原则是DevOps工作三步法的第一步，它的目标是先建立最底层的基础，即：DevOps技术实践和合理的应用架构；只有这样才能使工作快速而稳定地从开发端流动到运维端；与此同时还能保证不会给生产环境带来混乱，不会中断客户的服务。这就意味着需要降低在生产环境中部署和发布变更的风险。可以通过 持续交付 的技术实践来实现这个目标。
 持续交付基于稳定的自动化部署流水线，团队能够使用自动化测试持续验证代码，确保代码始终处于可部署的状态，开发人员要保证每天都向主干提交代码，以及设计和实现有利于实施低发布风险的环境和软件架构。
 在流动原则的指导下，需要开展的重要的工作内容如下：
@@ -549,10 +549,10 @@ Continuous Lifecycle每年在伦敦举行，主要集中在开发、容器化、
     
     <item>
       <title>DevOps登山指南</title>
-      <link>https://example.com/blog/devops-climbing-guide/</link>
+      <link>https://martinliu.cn/blog/devops-climbing-guide/</link>
       <pubDate>Tue, 20 Feb 2018 00:34:09 +0800</pubDate>
       
-      <guid>https://example.com/blog/devops-climbing-guide/</guid>
+      <guid>https://martinliu.cn/blog/devops-climbing-guide/</guid>
       <description>全美互惠保险公司(Nationwide)美国公司。在2017年6月7日，《财富》2017年美国500强排行榜发布，全美互惠保险公司排名第68位。营业收入40074.1百万美元。
 这家公司是DevOps Handbook（DevOps实践指南）书中的案例研究之一。这是一家DevOps水平较高的企业，是DevOpsDays大会上分享嘉宾的常客，也是各个DevOps工具厂商（New Relic）经常邀请的案例分享嘉宾。他们也经常参加DevOps企业峰会，曾多次做过自己的DevOps应用状况案例分享。
 本文分析和整理了他们在2017年11月旧金山站DevOps企业峰会上他们的演讲，主题为《DevOps Handbook Experiments in Accelerating Delivery - Nationwide》（翻译：使用DevOps Handbook在加速开发交付的过程中的实验）
@@ -573,10 +573,10 @@ Nationwide的核心价值：保护对你最有价值的 公司简介和状况。
     
     <item>
       <title>Kubecon 2017演讲稿和视频下载</title>
-      <link>https://example.com/blog/2018-1-kubecon17/</link>
+      <link>https://martinliu.cn/blog/2018-1-kubecon17/</link>
       <pubDate>Wed, 03 Jan 2018 00:00:00 +0800</pubDate>
       
-      <guid>https://example.com/blog/2018-1-kubecon17/</guid>
+      <guid>https://martinliu.cn/blog/2018-1-kubecon17/</guid>
       <description>KubeCon 2017演讲稿和视频下载 Kubernetes无疑当下最火热的技术之一，Google公司围绕着它下了更大的一盘棋CNCF。这是在国际寡头IT软件公司的统治局面渐渐退去之后，各种新鲜技术百花齐放了一段时间以后，再通过CNCF的形式又逐渐集中化起来的趋势。KubeCon的人气很旺，演讲分享的人很多。
 最近一次的KubeCon，2017年在奥斯汀站的演讲稿和视频下载的清单已经发布出来了：
 https://github.com/cloudyuga/kubecon17
@@ -593,10 +593,10 @@ PS：非常敬佩这种开放和分享的工程式文化。很符合开源的精
     
     <item>
       <title>Tips for Docker on Mac</title>
-      <link>https://example.com/blog/tips-for-docker-on-mac/</link>
+      <link>https://martinliu.cn/blog/tips-for-docker-on-mac/</link>
       <pubDate>Tue, 26 Sep 2017 00:00:00 +0000</pubDate>
       
-      <guid>https://example.com/blog/tips-for-docker-on-mac/</guid>
+      <guid>https://martinliu.cn/blog/tips-for-docker-on-mac/</guid>
       <description>Tips for Docker on Mac 在macOS上使用Docker很长时间了，本文总结一些我不想忘记的tips，方便自己反复使用的同时，也顺便总结分享一下，留下本文作为长期更新的备忘录。
 搭建私有镜像库 运行一个本地镜像库
 $ docker run -d -p 5000:5000 --restart=always --name registry registry:2 这条命令会从docker hub 下载 registry:2 镜像，在本机运行一个镜像库服务。
@@ -613,10 +613,10 @@ cat create-swarm.sh docker-machine create manager --engine-insecure-registry 192
     
     <item>
       <title>关于DevOps 的那些事</title>
-      <link>https://example.com/blog/something-you-must-know-about-devops/</link>
+      <link>https://martinliu.cn/blog/something-you-must-know-about-devops/</link>
       <pubDate>Sat, 23 Sep 2017 00:00:00 +0000</pubDate>
       
-      <guid>https://example.com/blog/something-you-must-know-about-devops/</guid>
+      <guid>https://martinliu.cn/blog/something-you-must-know-about-devops/</guid>
       <description>DevOps是孕育于敏捷社区，又反哺给整个IT技术行业的，是一次彻底而全面的技术和文化运动。本文从它的出处谈起，一直描述到当前国内的现状。最后总结了相关的核心技术和主要实践。
 DevOps简史 在2008年多伦多举办的敏捷大会（Velocity Conf 2008 ）上，Patrick DeBois 和AndrewClay Shafer 先生首次提议讨论“敏捷基础架构”这个话题。在第二年的敏捷大会上有一个具有里程碑的意义技术分享，来自Flickr公司《每天部署10次》的分享，它激发了随后Patrick DeBios在同年十月，在比利时的根特市举办的首届DevOpsDays活动，这个活动是两天的日程，为了大家方便在twitter上的传播，人们把DevOpsDays这个词简写为 “#DevOps” 。 此后，“DevOps”一词问世了，这个词所包含的理念和实践一时在越来越广大的人群中产生了共鸣，随后成为全球IT界在各种大会和论坛里热议和讨论的焦点话题，很多大型IT论坛也都开设出了DevOps专题讨论。这就是DevOps这个词的由来。DevOpsDays活动随后在Patrick DeBios等相关核心发起人的推动下，在全球范围内蓬勃发展了起来。2010年在美国山景城(Mountain View) 举办的DevOpsDays 活动中，Damon Edwards先生使用“CAMS”这个缩写，高度概括和诠释了DevOps，即文化（Culture）、自动化（Automation）、度量（Measurement or Metrics）和分享（Sharing）。随后Jez Humble先生将“L”精益 (Lean) 原则也加入其中，最终变成了CALMS。
  Culture（文化）- 是指拥抱变革，促进协作和沟通 Automation（自动化）- 是指将人为干预的环节从价值链中消除 Lean（精益）- 是指通过使用精益原则促使高频率循环周期 Metrics（指标）- 是指衡量每一个环节，并通过数据来改进循环周期 Sharing（分享）- 是指与他人开放分享成功与失败的经验，并在错误中不断学习改进  “CALMS”完全吻合Patrick DeBois先生所一向倡导的“DevOps is a human problem” (DevOps 是关于人的问题) 的理念 。
@@ -636,10 +636,10 @@ DevOps在国内的现状 随着国内BAT等互联网巨头的崛起，互联网�
     
     <item>
       <title>用Minikube体验单节点K8S</title>
-      <link>https://example.com/blog/install-minikube-k8s/</link>
+      <link>https://martinliu.cn/blog/install-minikube-k8s/</link>
       <pubDate>Thu, 21 Sep 2017 00:00:00 +0000</pubDate>
       
-      <guid>https://example.com/blog/install-minikube-k8s/</guid>
+      <guid>https://martinliu.cn/blog/install-minikube-k8s/</guid>
       <description>Minikube为各种操作系统的开发者，提供了运行K8S最简洁的方式。它最小化了安装k8s的需求和工作量。而且在各种操作系统上可以实现相同的体验。本文用精简的语言，描述了从安装minikube到运行容器化应用的过程。主要命令和输出来自macOS。
 安装Hypervisor 需要在任何笔记本或者工作上安装一个Hypervisor，因此首先你需要坚持电脑的CPU是否开启了虚拟化的支持，检查BIOS的VT-X或者AMD-v的配置。
  OS X，安装 xhyve driver, VirtualBox 或 VMware Fusion Linux， 安装 VirtualBox 或 KVM Windows， 安装 VirtualBox or Hyper-V  Minikube会生成一个虚拟机，用于运行一个安装和部署好的k8s单节点系统。
@@ -656,10 +656,10 @@ Minikube is a CLI tool that provisions and manages single-node Kubernetes cluste
     
     <item>
       <title>2017DevOps采用和趋势现状-信息图</title>
-      <link>https://example.com/blog/state-devops-adoption-trends-2017/</link>
+      <link>https://martinliu.cn/blog/state-devops-adoption-trends-2017/</link>
       <pubDate>Sat, 11 Feb 2017 00:00:00 +0000</pubDate>
       
-      <guid>https://example.com/blog/state-devops-adoption-trends-2017/</guid>
+      <guid>https://martinliu.cn/blog/state-devops-adoption-trends-2017/</guid>
       <description>在过去的一两年里DevOps持续升温，逐渐成为一场IT行业内的谁不可回避的运动。
 DevOps 定义 我个人是一直以来反对给DevOps做一个名词解释样式的定义的。不过这种需求实在强大，摘抄几条供大家参考，上图是一种定义。
  定义2：You cannot buy DevOps and install it. DevOps is not just automation or infrastructure as code. DevOps is people following a process enabled by products to deliver value to end users. &amp;ndash; Donovan Brown, Microsoft DevOps Program Manager
@@ -674,10 +674,10 @@ DevOps应用状态  正在应用的:从66%上升到74% 没有应用的:从19%下
     
     <item>
       <title>DevOps术语表</title>
-      <link>https://example.com/2017/01/07/devops-glossary/</link>
+      <link>https://martinliu.cn/2017/01/07/devops-glossary/</link>
       <pubDate>Sat, 07 Jan 2017 00:00:00 +0000</pubDate>
       
-      <guid>https://example.com/2017/01/07/devops-glossary/</guid>
+      <guid>https://martinliu.cn/2017/01/07/devops-glossary/</guid>
       <description>简介 这份术语表的旨在为DevOps实践者提供参考，在重要的专业术语上保持一致。最初的来源是《DevOps Handbook》英文版。译者在翻译的过程中，梳理和总结了一部分。Exin的DOP认证考试基于此书，考试样题也影响和参考了本术语表。本术语表是开放的，欢迎各界业内人士对其修订和增补。目标是形成一份较为完整和准确的参考资料。参与修订的方式见页脚。欢迎但不限于以下方面的专家参与评审和修订：
  敏捷开发 精益/精益UX/精益创业 丰田生产系统 ITIL 互联网公司 传统企业  这个页面的另外一个存在：https://handbook.martinliu.cn/glossary/
 变更日志  2017年1月7日，在Martin‘s Blog和Github上发布了第一个版本。有几个人在Github上参与了修订（请参与者通过邮件或者其他方式告诉我，这里希望再次申明致谢。） 2017年12月27日，参与修订的人包括卢梦纯（Exin）、刘征、张乐、Wang Jun和许峰。 本网页当前接受繁体中文的增补，所有参与者名单  术语表    英文 中文     A/B Testing A/B测试   Acceptance Stage 验收阶段   Acceptance Test-Driven Development (Atdd) 验收测试驱动开发   Acceptance Tests 验收测试   Accident 事故   Affinity 亲和   Agile 敏捷   Andon Cord 安灯拉绳   Anomaly Detection Techniques 异常探测技术   Antifragility 抗脆弱性   Application Deployment 应用部署   Artifact Management 构件制品库管理   Artifacts 制品   Automated Tests 自动化测试   Automation 自动化   Backlog 待办事项列表   Bad Apple Theory 坏苹果理论   Bad Paths 失败路径   Batch Sizes 批次尺寸、批量大小   Blame 责备   Blameless Post Mortem 免责事后分析   Blamelessness 免责   Blue-Green Deployment 蓝绿部署   Blue-Green Deployment Pattern 蓝绿部署模式   Branching Strategy 分支策略   Brownfield 棕地   Build 构建   Business Value 业务价值   Canary Release 金丝雀发布   Canary Release Pattern 金丝雀发布模式   Card 卡片   Change Categories 变更类别   Change Schedules 变更计划   Cloud Computing 云计算   Cloud Configuration Files 云配置文件   Cluster Immune System Release Pattern 集群免疫系统发布模式   Code Branch 代码分支   Code Review Forms 代码审查表   Codified Nfr 成文的非功能需求   Collaboration 协作   Commit Stage 提交阶段   Commit Code 提交代码   Compliance Requirement 合规性要求   Compliance Checking 合规性检查   Compliancy Officer 合规检测官   Configuration Management 配置管理   Container(S) 容器   Continuous Deployment 持续部署   Continuous Integration 持续集成(CI)   Continuous Delivery 持续交付(CD)   Conways Law 康威定律   Cycle Time 周期时间   Defect Tracking 缺陷跟踪   Definition Of Done (Dod) 完成的定义   Dev Rituals 开发仪式   Developer 开发人员   Development 开发   Devops Transformation DevOps转型   Downstream/Upstream 下游/上游   Downwards Spiral 恶性循环   E-Mail Pass-Around 电子邮件轮查   Expand/Contract Pattern 扩张/收缩模式   Exploratory Test 探索性测试   Fast Feedback 快速反馈   Feature 特性   Feature Flag 特性标志   Feature Toggles 特性开关   Feedback/Feedback Loop 反馈/反馈回路   Feedforward/Feedforward Loop 前馈/前馈回路   Flow 流   Gated Commit 门控提交   Gaussian Distribution 高斯分布   Green Build 绿色构建   Greenfield 绿地   Handoff 交接   Hand-Off Readiness Review 交接就绪评审   Happy Paths 快乐路径   Hypothesis-Driven Development 假设驱动开发   Incident 事件   Information Radiators 信息辐射器   Infosec 信息安全   Infrastructure Automation 基础架构自动化   Infrastructure As Code 基础设施即代码   Integration Tests 集成测试   I-Shaped, T-Shaped, E-Shaped I型，T型，E型   Iteration 迭代   Itsm (It Service Management) IT服务管理   Ji-Kotei-Kanketsu (Jkk) 质量检查（JKK）   Just Culture 公正文化   Just-In-Time (Jit) 准时制   Kaizen (In Lean) 持续改善   Kaizen Blitz (Or Improvement Blitz) 持续改善闪电战   Kanban 看板   Kata Kata   Large Batch Size Merge 大批量合并   Latent Defects 潜在缺陷   Lauching Guidance 发布指导   Launch Readiness Review 投产就绪评审   Lead Time 前置时间   Lean 精益   Learning Culture 学习文化   Logging Levels 日志级别   Loosely Coupled Architecture 松耦合架构   Micro-Services 微服务   Minimum Viable Product 最小化可行产品   Monitoring Framework 监控框架   Monolithic Applications 单体应用   Monolytics 单体应用   Mttr 平均恢复时间   Non-Functional Requirement (Nfr) 非功能性需求   Non-Functional Requirement (Nfr) Testing 非功能需求测试   (Non) Ideal Testing Pyramid （非）理想测试金字塔模型   One-Piece-Flow 单件流   Operations 运维   Operations Story 运维故事   Ops Liaison 运维联络人   Organisational Typology Model 组织结构模型   Organization Archetypes 组织原型   Organizational Learning 组织级学习   Over-The-Shoulder 观察者评审   Packages 包   Pair Programming 结对编程   Peer Review 同行评审   Pilot 试点   Pipeline 流水线   Plan-Do-Check-Act Cycle (Pdca Cycle) 计划-实施-检查-改进 （戴明环）   Post Mortems 事后回顾   Post-Mortem 事后剖析   Process Time 处理时间   Product Owner 产品负责人   Pull Request Process 拉动请求流程   Qa 质量保证   Reduce Batch Size 降低批次尺寸   Reduce Number Of Handoffs 减少交接次数   Regression Test 回归测试   Release Branch 发布分支   Release Managers 发布经理   Release Patterns 发布模式   Retrospective 回顾   Rhythm 节奏   Roll-Back 回滚   Sad Path 悲伤路径   Safety Culture 安全文化   Safety Conditions 安全条件   Scaling 规模化   Scrum Scrum   Scrum Master Scrum Master   Security Testing 安全测试   Self Service Capability 自服务能力   Service Deployment 服务部署   Service Level Agreement (Sla) 服务级别协议(SLA)   Shared Goals 共享目标   Shared Operations Team (Sot) 共享运维团队   Shared Version Control 共享版本控制   Single Repository 单一存储库   Smoke Testing 冒烟测试   Sprint 冲刺   Staging Staging   Staging Environments, Sit 准生产环境   Stakeholder 利益干系人   Standard Deviation 标准差   Standard Operations 标准运维   Static Code Analysis 静态代码分析   Swarm 聚集、聚焦、会诊、围观（动词）   Swarming 聚集   System Of Engagement (Soe) 交互系统   System Of Records (Sor) 记录系统   Technical Debt 技术债务   Technology Adaption Curve 技术适应曲线   Technology Executives 技术主管   Telemetry 遥测   Test Coverage Analysis 测试覆盖率分析   Test Story 测试故事   Test-Driven Development 测试驱动开发   The Downward Spiral - Tds 下行螺旋   The Agile Manifesto 敏捷宣言   The Lean Movement 精益运动   The Simian Army: Chaos Gorilla, Chaos Kong, Conformity Monkey, Doctor Monkey, Janitor,Monkey, Latency Monkey, Security Monkey 猿猴军团（可靠性监控服务），Chaos Gorilla（混沌大猩猩）， Chaos Kong（混沌金刚）, Conformity Monkey（一致性猴子）, Doctor Monkey（医生猴子）, Janitor Monkey（看门猴子）, Latency Monkey（延迟猴子）, Security Monkey（安全猴子）   The Three Ways 三步工作法   Theory Of Constraints 约束理论   Ticketing System 工单系统   Tightly-Coupled 紧耦合   Tool-Assisted Review 工具辅助评审   Tools 工具   Toyota Production System (Tps) 丰田生产系统   Toyoto Kata 丰田套路   Transformation Team 转型团队   Trunk 主干   User Story 用户故事   Value Stream Mapping 价值流映射   Value Stream 价值流   Velocity 速率   Version Control 版本控制   Virtualized Environment 虚拟化环境   Visible 可视的   Visualisation 可视化   Waste 浪费   Waste Reduction 减少浪费   Waterfall 瀑布式   Wip (Work In Progress / Process) 在制品   Wip Limit 在制品限制   Work Center 工作中心                    参与修订说明 请帮忙改进本术语表，请直接Fork本代码库，然后提交PR；或者发邮件到：liuzh66@gmail.</description>
@@ -685,10 +685,10 @@ DevOps应用状态  正在应用的:从66%上升到74% 没有应用的:从19%下
     
     <item>
       <title>Nutanix资源站点清单</title>
-      <link>https://example.com/2017/01/07/nutanix-resource-sites/</link>
+      <link>https://martinliu.cn/2017/01/07/nutanix-resource-sites/</link>
       <pubDate>Sat, 07 Jan 2017 00:00:00 +0000</pubDate>
       
-      <guid>https://example.com/2017/01/07/nutanix-resource-sites/</guid>
+      <guid>https://martinliu.cn/2017/01/07/nutanix-resource-sites/</guid>
       <description>做Nutanix的那些不可不知道的资源网站，这里列出了常用的官方和非官方网站。
 Nutanix 官方站点 http://portal.nutanix.com/ http://portal.nutanix.com/
  在线文档 在线技术支持，case查看和操作 产品和补丁下载  https://next.nutanix.com/ https://next.nutanix.com/
@@ -704,10 +704,10 @@ Virtual Dennis by Dennis Laube http://www.virtualdennis.com/category/nutanix/
     
     <item>
       <title>DevOps书单</title>
-      <link>https://example.com/2017/01/03/devops-booklist/</link>
+      <link>https://martinliu.cn/2017/01/03/devops-booklist/</link>
       <pubDate>Tue, 03 Jan 2017 00:00:00 +0000</pubDate>
       
-      <guid>https://example.com/2017/01/03/devops-booklist/</guid>
+      <guid>https://martinliu.cn/2017/01/03/devops-booklist/</guid>
       <description>学习DevOps应该会使用到的书籍清单。
 我在豆瓣建立了一个书单，欢迎在豆瓣给我留言，评论和建议。豆瓣书单点这里。
  本清单来自于《DevOps Handbook》书中提到的书，更新到第五本；《看板方法》、《精益思想》、《Implementing Lean Software Development: From Concept to Cash》、《第五项修炼:学习型组织的艺术与实践》、《探索吧!深入理解探索式软件测试》
@@ -725,10 +725,10 @@ Virtual Dennis by Dennis Laube http://www.virtualdennis.com/category/nutanix/
     
     <item>
       <title>EXIN DevOps Master 认证考试</title>
-      <link>https://example.com/2016/11/07/exin-devops-master-e8aea4e8af81e88083e8af95/</link>
+      <link>https://martinliu.cn/2016/11/07/exin-devops-master-e8aea4e8af81e88083e8af95/</link>
       <pubDate>Mon, 07 Nov 2016 15:19:08 +0000</pubDate>
       
-      <guid>https://example.com/2016/11/07/exin-devops-master-e8aea4e8af81e88083e8af95/</guid>
+      <guid>https://martinliu.cn/2016/11/07/exin-devops-master-e8aea4e8af81e88083e8af95/</guid>
       <description>DevOps这个词在去年参加红帽全球用户大会的时候就深深吸引了我，实际上哪个会上Docker容器的概念要比DevOps还火爆。Docker／openshift相关的session都尝尝是爆满的。从那里开始我逐渐感觉到了开源容器技术的强大和吸引力。
 从红帽开始OpenShift的考试就是我在完成RHCA红帽认证架构师之后的一个心结，至今也没有完成。不过这根草我早晚是要拔掉的。主要是由于OpenShift是Docker ＋ kubernetes 的组合；是如今企业级PaaS容器平台的主要技术路线。总之离开红帽是如此的仓促，说实话这也是我职业生涯中的一个不小的遗憾。当时确实觉得 kubernetes 的命令行操作不是很方便，而且在OpenShift并没有降低这个门槛，也即是说在OpenShift里面还是要有一定的工作量和技能的要求在编写kubernetes的yml文件上。在这一点上，及时我熟练掌握了Rancher之后，同样发现编写compose file也是难以逃避的。在推广一步，大部分Docker PaaS平台也都是这样，很多产品也是在界面上提供一个文本输入框，让人输入容器服务定义文件的内容。
 在最近的半年中，我的所有技术研究都集中在Docker和其服务编排技术上。与很多用户做过技术交流，PoC测试，有些单子也落地。总结后，有些结果让我感叹。国内的所有企业不区分规模和行业，其实他们对国内原生的创业公司是欢迎的，由于这些公司提供的是国产软件和技术服务。在Docker这个火热的领域中，已经有20多家国内创业公司，我想所有的公司也都已经接受到了这一点的福利了。外国软件通常给人的感觉是：不是国产软件（不要小看国内公司对国产软件的诉求），纯英文操作界面和文档，可能的水土不服，高昂的软件价格和服务费，如果技术太新的化很可能厂商也不具备足够的技术实力和服务力量。
@@ -745,10 +745,10 @@ DevOps Master 认证自由讲师
     
     <item>
       <title>红帽媒体日</title>
-      <link>https://example.com/2015/07/14/e7baa2e5b8bde5aa92e4bd93e697a5/</link>
+      <link>https://martinliu.cn/2015/07/14/e7baa2e5b8bde5aa92e4bd93e697a5/</link>
       <pubDate>Tue, 14 Jul 2015 14:20:24 +0000</pubDate>
       
-      <guid>https://example.com/2015/07/14/e7baa2e5b8bde5aa92e4bd93e697a5/</guid>
+      <guid>https://martinliu.cn/2015/07/14/e7baa2e5b8bde5aa92e4bd93e697a5/</guid>
       <description>本次演讲用了大约25分钟，超时了大约5分钟多，但是其中有些观点还是没有叙述的很倒位。只能算是我的一种理解和解读，希望对道场的媒体朋友们对认识红帽公司有帮助。
 演讲源版slide和录音在这个网页上： http://investors.redhat.com/events.cfm 的这部分：
 Jun 24, 2015
