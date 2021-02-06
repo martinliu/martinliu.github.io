@@ -1,19 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
-  <channel>
-    <title>database on DevOps &amp; SRE Blog</title>
-    <link>https://martinliu.cn/tags/database/</link>
-    <description>Recent content in database on DevOps &amp; SRE Blog</description>
-    <generator>Hugo -- gohugo.io</generator>
-    <language>zh-CN</language>
-    <lastBuildDate>Fri, 31 Jul 2020 22:23:44 +0800</lastBuildDate><atom:link href="https://martinliu.cn/tags/database/index.xml" rel="self" type="application/rss+xml" />
-    <item>
-      <title>应用开发 DBA 技巧集锦</title>
-      <link>https://martinliu.cn/blog/sql-tricks-application-dba-chinese/</link>
-      <pubDate>Fri, 31 Jul 2020 22:23:44 +0800</pubDate>
-      
-      <guid>https://martinliu.cn/blog/sql-tricks-application-dba-chinese/</guid>
-      <description>前言 DBA 可能是经常被其它团队依赖的一种角色、团队，因此他们也会有着很长的等待队列，也经常是事故救火中的英雄和常客。DevOps 强调用跨角色的学习和培训来解决这种依赖，也就是 DevOps 工作三步法的第三步，学习与持续改进。 本文写给所有的应用开发者，希望大家能多学习一些 DBA 知识，减少对专家 DBA 的依赖，加速你们的业务的交付，消除由于等待而造成的浪费。
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>database on DevOps &amp; SRE Blog</title><link>https://martinliu.cn/tags/database/</link><description>Recent content in database on DevOps &amp; SRE Blog</description><generator>Hugo -- gohugo.io</generator><language>zh-CN</language><lastBuildDate>Fri, 31 Jul 2020 22:23:44 +0800</lastBuildDate><atom:link href="https://martinliu.cn/tags/database/index.xml" rel="self" type="application/rss+xml"/><item><title>应用开发 DBA 技巧集锦</title><link>https://martinliu.cn/blog/sql-tricks-application-dba-chinese/</link><pubDate>Fri, 31 Jul 2020 22:23:44 +0800</pubDate><guid>https://martinliu.cn/blog/sql-tricks-application-dba-chinese/</guid><description>前言 DBA 可能是经常被其它团队依赖的一种角色、团队，因此他们也会有着很长的等待队列，也经常是事故救火中的英雄和常客。DevOps 强调用跨角色的学习和培训来解决这种依赖，也就是 DevOps 工作三步法的第三步，学习与持续改进。 本文写给所有的应用开发者，希望大家能多学习一些 DBA 知识，减少对专家 DBA 的依赖，加速你们的业务的交付，消除由于等待而造成的浪费。
 本文转载自：https://hakibenita.com/sql-tricks-application-dba
 以下是正文原文：
 当我开始我的开发生涯时，我的第一份工作是DBA。那时，在AWS RDS、Azure、Google Cloud和其余云服务之前，有两种类型的DBA。
@@ -29,8 +14,4 @@ Image by CommitStrip
 db=# UPDATE users SET email = lower(email); UPDATE 1010000 Time: 1583.935 ms (00:01.584) 看起来很无辜吧，查询更新了1010,000个用户的邮箱。但是，真的需要更新所有的行吗？
 db=# UPDATE users SET email = lower(email) db-# WHERE email != lower(email); UPDATE 10000 Time: 299.470 ms 只需要更新10000行。通过减少受影响的行数，执行时间从1.5秒降到了不到300ms。更新的行数少了，也节省了后期的数据库维护工作。
 这种类型的大更新在数据迁移脚本中非常常见。所以下次写迁移脚本时，一定要只更新需要更新的内容。
-在批量加载过程中禁用约束和索引。 约束是关系型数据库的重要组成部分：它们能保持数据的一致性和可靠性。不过它们的好处是有代价的，在加载或更新大量行时最明显。</description>
-    </item>
-    
-  </channel>
-</rss>
+在批量加载过程中禁用约束和索引。 约束是关系型数据库的重要组成部分：它们能保持数据的一致性和可靠性。不过它们的好处是有代价的，在加载或更新大量行时最明显。</description></item></channel></rss>
