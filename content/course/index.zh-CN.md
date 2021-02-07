@@ -9,7 +9,7 @@ layout = "about"
 
 ### DevOps 免费课程
 
-开发中。
+> 开发中。
 
 本课程包含虚拟化、云计算、配置管理、CI、CD 等各种实操练习实验。
 
@@ -20,6 +20,20 @@ layout = "about"
   - Ansible 实验室
   - Jenkins 实验室
   - Pipeline 流水线实验室
+
+
+### 可观测性管理-免费课程
+
+基于 Elastic Stack 技术栈的可观测性实战工作坊，目标是让参与者彻底理解‘可观测性’对分布式复杂应用系统的作用，正确的使用可观测性工具集，实现对云原生应用或者传统应用的运维管理。
+
+- 课程详细介绍：[见这篇博客文章](https://martinliu.cn/blog/workshop-elastic-observability/)
+- 课程讲师 PPT：[在线查看](https://docs.qq.com/slide/DUGRzYVVTU3ZxblBP)
+- 本地环境的课件：
+  - [‘Elastic Stack 单节点搭建’ 课件](https://elk-workshop.github.io/codelabs/one-nodes-es-server/#0)
+  - [‘Elastic 可观测性方案’ 课件](https://elk-workshop.github.io/codelabs/elastic-observability-foundation/#0)
+- 腾讯云环境录播网址：[腾讯课堂查看](https://cloud.tencent.com/developer/salon/live-1304)
+
+
 
 ### Nutanix 免费课程
 
@@ -67,3 +81,5 @@ layout = "about"
 全国各个城市火热报名中，小班授课，人满就开班。
 
 欲了解详情，请关注微信公众号 “MyDevOps” 联系。
+
+

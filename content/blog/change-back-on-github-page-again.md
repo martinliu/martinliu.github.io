@@ -1,6 +1,6 @@
 +++
-title = "博客换一个新样式"
-description = "将所有可能都放在了 Github 上。"
+title = "在 Github 上搭建基于 Hugo 的免费个人博客"
+description = "GitHub-pages 功能承载个人博客内容，GitHub Actions 功能实现自动化部署。Hugo 为你提供博客所需要的所有功能。"
 author = "Martin Liu"
 date = "2021-02-06"
 tags = ["github", "ci", "cd", "github-pages"]
@@ -11,7 +11,7 @@ categories = ["blog", "Devops"]
   stretch = "horizontal"
 +++
 
-这是一个拖了很久的工作，旧的样式被改的太乱了，已经无法继续使用了，更新一下重新来过。
+最近更新了新的博客样式，再次搬迁回到了 GitHub 平台，并使用了 Github Action 的自动化 CI/CD 发布功能。这个是一个任何人都可以拥有的方案，现在用最简洁的语言分享给大家。
 <!--more-->
 
 ## 新主题

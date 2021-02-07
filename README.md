@@ -5,7 +5,7 @@
 - [Done] need a tags page
 - add friends page
 - [Done] add my course page
-- develop for theme dev.
+- 增加评论功能
 
 ## Acknowledgements
 
