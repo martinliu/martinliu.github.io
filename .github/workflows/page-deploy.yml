@@ -9,7 +9,7 @@ on:
 # 以下是本串行执行工作流的所有组成部分
 jobs:
   # 这里只定义了一个名为 "deploy" 的多步骤作业
-  deploy:
+  build-deploy-hugo-blog:
     # 将后续的所有工作步骤都运行在最新版的 ubuntu 操作系统上
     runs-on: ubuntu-latest
 
@@ -39,7 +39,7 @@ jobs:
 
     # Step 5 - 创建用于私有域名所需要的 CNAME 文件
     - name: Create CNAME file
-      run: echo 'martinliu.cn' #> public/CNAME
+      run: echo 'martinliu.cn' > public/CNAME
 
     # Step 6 - 将构建好的博客站点推送发布到 gh-pages 分支
     - name: Deploy blog to Github-pages
