@@ -6,9 +6,9 @@ author = "Martin Liu"
 categories = ["SRE"]
 tags = ["elastic", "elk", "elasticsearch", "kibana"]
 [[images]]
-  src = "img/2019/03/pic01.jpg"
-  alt = "Valley"
-  stretch = "horizontal"
+  src = "img/2021/Hubble_01.jpg"
+  alt = "Hubble"
+  stretch = "vertical"
 draft = true
 +++
 
@@ -133,4 +133,15 @@ Elastic Stack 的基本状况：
 
 > 课件开发中。
 
+
+## 如何参与本工作坊？
+
+本工作坊会在多个社区中举办，具体安排如下：
+
+* 定期在 Elastic 社区中举办可观测性主题的线上或者线下的社区活动，具体报名方式，
+  1. 请关注 Elastic 公司的官方微公众号 “Elastic搜索”。
+  2. 关注 Elastic 公司社区在百格的社区活动报名网址：https://www.bagevent.com/org/738410
+* Elasitc 用户日 专场活动，接受企业的团队预约，可以在约定的时间里，通过线上或者线下的方式进行，建议参与学习交流的人数在 10~20 人。 预约邮件： zheng.liu@elastic.cn
+
+由于 Elastic Stack 产品的更新迭代速度特别快，本工作坊的软件版本和学习课件也会不定期更新。欢迎大家积极参与 Elastic 技术社区的交流和学习活动。  
 
