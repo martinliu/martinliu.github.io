@@ -20,9 +20,9 @@ documentation improvements 64-bit platform support experimental support for Sola
 备份_ARSystem_数据库 exp aradmin/ar#admin@itil file=c:\before-patch7.dmp log=c:\exp.log compress=n statistics=none
 参数解释： aradmin/ar#admin 是ARS系统默认的用户名和口令 @itil 是ARSystem数据库所在的数据库实例名 file=c:\before-patch7.dmp log=c:\exp.log 是导出的数据库文件和日志文件路径
 删除ARAdmin用户数据 drop user aradmin cascade;
-创建和授权ARAdmin用户 CREATE USER ARADMIN IDENTIFIED BY ar#admin# DEFAULT TABLESPACE ARSYSTEM TEMPORARY TABLESPACE ARTMPSPC PROFILE DEFAULT ACCOUNT UNLOCK;</description></item><item><title>图书推荐《服务建模：原理与应用》</title><link>https://martinliu.cn/2011/02/12/book-service-modelling/</link><pubDate>Sat, 12 Feb 2011 01:17:17 +0000</pubDate><guid>https://martinliu.cn/2011/02/12/book-service-modelling/</guid><description>Learn how to use service modelling to streamline and optimize processes!
-Information about customer needs, the technical composition of services, and service performance are fundamental to effective service management. Service modelling is a structured approach to utilizing this information to improve the way services are delivered. Consistent application of service modelling provides the automation of processes and timely access to information.
-[caption id=&amp;ldquo;attachment_50942&amp;rdquo; align=&amp;ldquo;alignleft&amp;rdquo; width=&amp;ldquo;201&amp;rdquo; caption=&amp;ldquo;Service Modelling: Principles and Applications &amp;ldquo;][/caption]</description></item><item><title>在64位Windows上安装ARS7.5</title><link>https://martinliu.cn/2011/02/10/64-windows-ars-75-install-tips/</link><pubDate>Thu, 10 Feb 2011 17:12:30 +0000</pubDate><guid>https://martinliu.cn/2011/02/10/64-windows-ars-75-install-tips/</guid><description>刚才终于把ARS装上了。费了我两天的力气终于搞定了。错误其实很简单的，现象很多人都见过，ARS在安装完所有的文件后，在系统中建完ARS的服务以后，会继续启动服务，才能做最后的程序文件导入的相关操作。
+创建和授权ARAdmin用户 CREATE USER ARADMIN IDENTIFIED BY ar#admin# DEFAULT TABLESPACE ARSYSTEM TEMPORARY TABLESPACE ARTMPSPC PROFILE DEFAULT ACCOUNT UNLOCK;</description></item><item><title>图书推荐《服务建模：原理与应用》</title><link>https://martinliu.cn/2011/02/12/book-service-modelling/</link><pubDate>Sat, 12 Feb 2011 01:17:17 +0000</pubDate><guid>https://martinliu.cn/2011/02/12/book-service-modelling/</guid><description>《服务建模: 原理与应用》以服务建模为主题，共分 4 部分：第 1 部分介绍了服务建模所需解决的问题，第 2 部分分析了实际应用中的服务建模框架，第 3 部分列举了使用服务建模的案例，第 4 部分则对《服务建模:原理与应用》的中心内容进行了总结，并提出了未来服务建模值得研究的一些领域。
+Learn how to use service modelling to streamline and optimize processes!
+Information about customer needs, the technical composition of services, and service performance are fundamental to effective service management. Service modelling is a structured approach to utilizing this information to improve the way services are delivered. Consistent application of service modelling provides the automation of processes and timely access to information.</description></item><item><title>在64位Windows上安装ARS7.5</title><link>https://martinliu.cn/2011/02/10/64-windows-ars-75-install-tips/</link><pubDate>Thu, 10 Feb 2011 17:12:30 +0000</pubDate><guid>https://martinliu.cn/2011/02/10/64-windows-ars-75-install-tips/</guid><description>刚才终于把ARS装上了。费了我两天的力气终于搞定了。错误其实很简单的，现象很多人都见过，ARS在安装完所有的文件后，在系统中建完ARS的服务以后，会继续启动服务，才能做最后的程序文件导入的相关操作。
 错误的现象是：在启动服务的时，安装程序一直停止在“Starting Remedy ARS services&amp;hellip;.”的屏幕，去arerror日志里面可以看到无法连接到SQL数据库的错误。
 我的安装错误的原因其实很简单：
 如果是64为的Windows操作系统，默认的安装路径是C:\Program Files (x86)\目录
@@ -180,7 +180,7 @@ SNMP采集仍然是他的主要能力，在这方面也有了一些改进
 新增了一些网络设备品牌的支持
 阀值配置也有改进
 总的来说，作为一款能够采集各种snmp mib信息，能够出好看的性能报表，能够作为统一的告警事件平台，能够有简单易用的UI，OpenNMS做的显然是非常不错的。至今还行它还没有提出什么云计算相关的话题，可见他们还是一般比较稳健发展，不爱赶时髦的人。希望他们能做的更好。
-对于我的这个blog来说，之前写的OpenNMS和网管相关的东西比较多，以后可能会越来越少，就此和OpenNMS做一个总结。以后本blog可能会和目前做的cmdb和itsm相关这些内容为主了。</description></item><item><title>CMDB Value Points 价值点</title><link>https://martinliu.cn/2010/01/01/cmdb-value-points/</link><pubDate>Fri, 01 Jan 2010 05:23:06 +0000</pubDate><guid>https://martinliu.cn/2010/01/01/cmdb-value-points/</guid><description>&lt;p>&lt;a href="http://www.flickr.com/photos/waywardsheep/682513568/">&lt;img src="http://farm2.static.flickr.com/1296/682513568_4476244046.jpg" alt="The point value">&lt;/a>&lt;br />&lt;br />CMDB的价值点分为两类：硬收益和软收益。从硬收益的角度，CMDB的用户可能会让你来描述CMDB对他们的价值点。下面的几个轶事可以作为收集CMDB可能为你的企业带来价值点的几个方向：&lt;br />&lt;/p>
+对于我的这个blog来说，之前写的OpenNMS和网管相关的东西比较多，以后可能会越来越少，就此和OpenNMS做一个总结。以后本blog可能会和目前做的cmdb和itsm相关这些内容为主了。</description></item><item><title>CMDB Value Points 价值点</title><link>https://martinliu.cn/2010/01/01/cmdb-value-points/</link><pubDate>Fri, 01 Jan 2010 05:23:06 +0000</pubDate><guid>https://martinliu.cn/2010/01/01/cmdb-value-points/</guid><description>&lt;p>&lt;a href="http://www.flickr.com/photos/waywardsheep/682513568/">&lt;img src="http://farm2.static.flickr.com/1296/682513568_4476244046.jpg" alt="The point value">&lt;/a>&lt;br />&lt;br />CMDB 的价值点分为两类：硬收益和软收益。从硬收益的角度，CMDB 的用户可能会让你来描述 CMDB 对他们的价值点。下面的几个轶事可以作为收集 CMDB 可能为你的企业带来价值点的几个方向：&lt;br />&lt;/p>
 &lt;p>&lt;br />&lt;/p>
 &lt;ul>
 &lt;li>&lt;strong>把IT环境的可视化带到更高程度&lt;/strong> &amp;ndash;一领先的制热和冷却系统供应商指出，他们始终无法很好的理解一个计划外停机时间对用户所造成影响。例如，当只有25个用户受到了网络中断问题的影响，IT部门必须通知用户群中的全部100个用户。这会导致一个客户满意度低的反馈。CMDB使该公司能够理解配置项之间的关系，并确切地知道在任何确定时刻什么用户会受到影响。现在用户间可信的沟通能够来自于各个IT部门，并且使IT成为业务不可分割的一部分。
@@ -247,21 +247,7 @@ Top Ten Reasons to Implement a CMDB
 实施CMDB的10个理由
 The federated CMDB: Getting past the hype to the good stuff
 cmdbf标准的实施在各家产品中尚处于开始阶段，是否大家都会照着做呢。联邦让所有的配置数据更易访问。
-Logo Mark</description></item><item><title>IT服务管理考核向左走向右走: CSF OR KPI?</title><link>https://martinliu.cn/2009/08/29/csf-or-kpi-matrix-itsm/</link><pubDate>Sat, 29 Aug 2009 14:18:33 +0000</pubDate><guid>https://martinliu.cn/2009/08/29/csf-or-kpi-matrix-itsm/</guid><description>最近做的一个项目中需要帮用户设计一个CMDB的成熟度模型，能够从该模型中持续的检查CMDB的建设程度。所以我研究注意了一下的一些书籍，考虑有机会可以买回来研究一下：
-IT服务管理的持续改进需要一定的手段实现，这是ITIL V3中的一个重要流程。CSF是关键成功因素，KPI是关键性能指标，这些都是metrics管理过程中需要关注的手段。每个流程都可以找到相应的CSF和KPI。CSF算是V3的新生事物，我想它可能会对IT管理质量的衡量和改进带来新的方式。
-别的不说，我只想说说KPI管理方法可能带来的坏处。举个例子：有个公司想通过“事件单数”来考核服务台一线人员的工作。结果当他们在执行了一段时间后，他们发现服务台中有大量重复的事件单，实际上服务台对每个收到的电话都新建一个事件单，并没有做重复事件匹配查找的工作。进一步的也影响了通过重复事件来做进一步的问题管理。
-从考核管理的角度看，ITSM的考核指标和体系如何建立的合理，如何才能建立的正确的设计和实施的确是一件大事。否则会有什么后果，我们可以想想三鹿毒奶粉事件，奶粉的蛋白质含量是奶粉质量的重要指标KPI，营养健康是奶粉的终极CSF目标。三鹿真的给了我们一个血的教训啊，想让你的IT服务质量如何呢？可以想想三鹿。不过还是需要多多学习所有可能的CSF和KPI，从何设计出确实可行的管理方式。
-Implementing Metrics for IT Service Management (ITSM)
-ISBN: 9789087531140
-Author: David Smith, Micromation Canada
-Metrics for IT Service Management (Paperback)
-by Peter Brooks (Author)
-Measuring ITIL: Measuring, Reporting and Modeling
-** ** - the IT Service Management Metrics That Matter Most to IT Senior Executives (Paperback)
-by Randy A. Steinberg
-**Step-by-Step Guide to Building a CMDB **
-by BMC Software; Inc (Author)
-后来发现了这个ITSM metrics modeling tools ，觉得这个真的不错。可行性很高。</description></item><item><title>BMC and Cloud computing</title><link>https://martinliu.cn/2009/07/16/bmc-and-cloud-computing/</link><pubDate>Thu, 16 Jul 2009 13:34:31 +0000</pubDate><guid>https://martinliu.cn/2009/07/16/bmc-and-cloud-computing/</guid><description>July 15, 2009 – BMC Software has announced that it is leveraging Amazon Web Services to provide a single, unified management solution meant to give customers control over existing internal IT assets and external cloud infrastructures, according to a company release.
+Logo Mark</description></item><item><title>BMC and Cloud computing</title><link>https://martinliu.cn/2009/07/16/bmc-and-cloud-computing/</link><pubDate>Thu, 16 Jul 2009 13:34:31 +0000</pubDate><guid>https://martinliu.cn/2009/07/16/bmc-and-cloud-computing/</guid><description>July 15, 2009 – BMC Software has announced that it is leveraging Amazon Web Services to provide a single, unified management solution meant to give customers control over existing internal IT assets and external cloud infrastructures, according to a company release.
 http://www.information-management.com/news/amazon_bmc_software_cloud_computing-10015748-1.html
 BTW: it seems the IT management is as important as infrastructure.</description></item><item><title>CMS/CMDB 配置管理系统和发现工具</title><link>https://martinliu.cn/2009/07/15/cms-cmdb-and-discovery-tools/</link><pubDate>Wed, 15 Jul 2009 03:45:03 +0000</pubDate><guid>https://martinliu.cn/2009/07/15/cms-cmdb-and-discovery-tools/</guid><description>最近的一些CMDB项目和测试中都用到和测到了自动发现工具，很多用户对此的理解和看法还不是很到位。**首先：“自动化配置和关系发现工具是什么？” **
 它是CMS工具集当中的数据采集工具。 从产品名称上看，往外都带DDM，它是 Discovery Dependency Mapping的缩写。意思就是帮你发现CI和CI之间关系的工具。很多用户的各种IT管理工具都可以自动发现网络、服务器和应用的配置项以及之间的关系，那么为什么还需要在购买一个新的发现工具呢？其实发现工具解决的真实发现工具不统一和发现数据不统一的问题，更重要的是它可以发现配置项之间的依赖和影响关系。对于一个数据中心来说，变更会经常发生，那么一套应用运行了一段时间之后，你很难准确的说出它都连接了那些其他相关的设备，很难理解它当前的部署状态。我们希望发现工具能帮我们更好的洞察当前IT基础架构的构成，应用对设备的依赖，底层IT服务对业务的影响。
