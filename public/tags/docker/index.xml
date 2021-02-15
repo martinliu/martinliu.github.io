@@ -1,8 +1,32 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>docker on 刘征的博客</title><link>https://martinliu.cn/tags/docker/</link><description>Recent content in docker on 刘征的博客</description><generator>Hugo -- gohugo.io</generator><language>zh-CN</language><lastBuildDate>Thu, 02 Nov 2017 00:00:00 +0000</lastBuildDate><atom:link href="https://martinliu.cn/tags/docker/index.xml" rel="self" type="application/rss+xml"/><item><title>为Docker Swarm群集配置Nutanix持久存储</title><link>https://martinliu.cn/blog/nutanix-dvp/</link><pubDate>Thu, 02 Nov 2017 00:00:00 +0000</pubDate><guid>https://martinliu.cn/blog/nutanix-dvp/</guid><description>本文介绍如何用Docker卷插件的方式，给Docker Swarm的群集挂载Nutanix存储。Nutanix Container Volume Plug-in 简称DVP，可以给容器提供数据持久化的功能。
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>docker on DevOps &amp; SRE Blog</title>
+    <link>https://martinliu.cn/tags/docker/</link>
+    <description>Recent content in docker on DevOps &amp; SRE Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-CN</language>
+    <lastBuildDate>Thu, 02 Nov 2017 00:00:00 +0000</lastBuildDate><atom:link href="https://martinliu.cn/tags/docker/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>为Docker Swarm群集配置Nutanix持久存储</title>
+      <link>https://martinliu.cn/blog/nutanix-dvp/</link>
+      <pubDate>Thu, 02 Nov 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://martinliu.cn/blog/nutanix-dvp/</guid>
+      <description>本文介绍如何用Docker卷插件的方式，给Docker Swarm的群集挂载Nutanix存储。Nutanix Container Volume Plug-in 简称DVP，可以给容器提供数据持久化的功能。
 本文使用ownCloud网盘应用做功能测试。测试的过程如下，安装部署Docker Datacenter，配置好群集，在UCP的界面里调用DVP插件建持久的数据卷，建立ownCloud服务，部署和测试该服务。
 Nutanix DVP (Docker Volume Plug-in)安装和配置 这一部分描述DVP的安装部署过程，需要连接互联网；安装调试完毕之后，作虚拟机的镜像模板使用。这样Docker Swarm的其它节点也都不需要重复这个步骤了。
 本文使用的是Docker社区文档稳定版 17.03.1-ce ；本文使用的OS是CentOS 7.3。所Docker安装的版本如下：
-[root@centos7-temp]# docker version Client: Version: 17.03.1-ce API version: 1.27 Go version: go1.7.5 Git commit: c6d412e Built: Mon Mar 27 17:05:44 2017 OS/Arch: linux/amd64 Server: Version: 17.03.1-ce API version: 1.27 (minimum version 1.12) Go version: go1.7.5 Git commit: c6d412e Built: Mon Mar 27 17:05:44 2017 OS/Arch: linux/amd64 Experimental: false [root@centos7-temp]# rpm -qa|grep docker docker-ce-17.</description></item><item><title>Tips for Docker on Mac</title><link>https://martinliu.cn/blog/tips-for-docker-on-mac/</link><pubDate>Tue, 26 Sep 2017 00:00:00 +0000</pubDate><guid>https://martinliu.cn/blog/tips-for-docker-on-mac/</guid><description>Tips for Docker on Mac 在macOS上使用Docker很长时间了，本文总结一些我不想忘记的tips，方便自己反复使用的同时，也顺便总结分享一下，留下本文作为长期更新的备忘录。
+[root@centos7-temp]# docker version Client: Version: 17.03.1-ce API version: 1.27 Go version: go1.7.5 Git commit: c6d412e Built: Mon Mar 27 17:05:44 2017 OS/Arch: linux/amd64 Server: Version: 17.03.1-ce API version: 1.27 (minimum version 1.12) Go version: go1.7.5 Git commit: c6d412e Built: Mon Mar 27 17:05:44 2017 OS/Arch: linux/amd64 Experimental: false [root@centos7-temp]# rpm -qa|grep docker docker-ce-17.</description>
+    </item>
+    
+    <item>
+      <title>Tips for Docker on Mac</title>
+      <link>https://martinliu.cn/blog/tips-for-docker-on-mac/</link>
+      <pubDate>Tue, 26 Sep 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://martinliu.cn/blog/tips-for-docker-on-mac/</guid>
+      <description>Tips for Docker on Mac 在macOS上使用Docker很长时间了，本文总结一些我不想忘记的tips，方便自己反复使用的同时，也顺便总结分享一下，留下本文作为长期更新的备忘录。
 搭建私有镜像库 运行一个本地镜像库
 $ docker run -d -p 5000:5000 --restart=always --name registry registry:2 这条命令会从docker hub 下载 registry:2 镜像，在本机运行一个镜像库服务。
 下载一个测试用的镜像。
@@ -13,75 +37,134 @@ $ docker push localhost:5000/ubuntu:16.04 这时候你会发现我的本地这�
 当你用docker-machine在本机启动多个个vm的时候，你可能会把它们作出docker Swarm群集，当你在这个群集上启动一个服务的时候，docker compose文件中的镜像地址可以引用这个本地地址，引用地址类似这样 image: 192.168.99.1:5000/influxdb
 当你用 minikube start启动了一个minikube的vm的时候，你可能也需要本机的docker镜像，尤其是在你做demo的时候，这是最快的下载途径。 需要注意的是，以上三种情况都需要指定一下&amp;ndash;engine-insecure-registry 192.168.99.1:5000 这个参数。
 自动化创建Docker Swarm群集 在我的文件目录中存放着这个脚本
-cat create-swarm.sh docker-machine create manager --engine-insecure-registry 192.168.99.1:5000 docker-machine create agent1 --engine-insecure-registry 192.168.99.1:5000 docker-machine create agent2 --engine-insecure-registry 192.</description></item><item><title>关于DevOps 的那些事</title><link>https://martinliu.cn/blog/something-you-must-know-about-devops/</link><pubDate>Sat, 23 Sep 2017 00:00:00 +0000</pubDate><guid>https://martinliu.cn/blog/something-you-must-know-about-devops/</guid><description>DevOps是孕育于敏捷社区，又反哺给整个IT技术行业的，是一次彻底而全面的技术和文化运动。本文从它的出处谈起，一直描述到当前国内的现状。最后总结了相关的核心技术和主要实践。
-DevOps简史 在2008年多伦多举办的敏捷大会（Velocity Conf 2008 ）上，Patrick DeBois 和AndrewClay Shafer 先生首次提议讨论“敏捷基础架构”这个话题。在第二年的敏捷大会上有一个具有里程碑的意义技术分享，来自Flickr公司《每天部署10次》的分享，它激发了随后Patrick DeBios在同年十月，在比利时的根特市举办的首届DevOpsDays活动，这个活动是两天的日程，为了大家方便在twitter上的传播，人们把DevOpsDays这个词简写为 “#DevOps” 。 此后，“DevOps”一词问世了，这个词所包含的理念和实践一时在越来越广大的人群中产生了共鸣，随后成为全球IT界在各种大会和论坛里热议和讨论的焦点话题，很多大型IT论坛也都开设出了DevOps专题讨论。这就是DevOps这个词的由来。DevOpsDays活动随后在Patrick DeBios等相关核心发起人的推动下，在全球范围内蓬勃发展了起来。2010年在美国山景城(Mountain View) 举办的DevOpsDays 活动中，Damon Edwards先生使用“CAMS”这个缩写，高度概括和诠释了DevOps，即文化（Culture）、自动化（Automation）、度量（Measurement or Metrics）和分享（Sharing）。随后Jez Humble先生将“L”精益 (Lean) 原则也加入其中，最终变成了CALMS。
-Culture（文化）- 是指拥抱变革，促进协作和沟通 Automation（自动化）- 是指将人为干预的环节从价值链中消除 Lean（精益）- 是指通过使用精益原则促使高频率循环周期 Metrics（指标）- 是指衡量每一个环节，并通过数据来改进循环周期 Sharing（分享）- 是指与他人开放分享成功与失败的经验，并在错误中不断学习改进 “CALMS”完全吻合Patrick DeBois先生所一向倡导的“DevOps is a human problem” (DevOps 是关于人的问题) 的理念 。
-DevOpsDays活动的现状 从DevOps概念的产生，到如今它在全球范围内的蔓延和认同，已经经历了9个年头的时间。它的火爆推广也伴随着IT行业的迅速变迁和发展，现在已经到了移动互联网时代的后半场，国内的信息化建设已经完成了很多年；如今各行各业的企业也都亟待完成全方位的数字化转型。IT信息技术的先进程度标志着一个企业的核心能力，任何一个成功的企业，敏捷高效的软件开发创新实力和IT管理综合能力不只是门面而已，而是实实在在的市场竞争能力。DevOps倡导打敏捷、持续交付和ITIL三种实践的组合拳，同时应用精益生产理念为基础的管理思想，这正在逐渐地被广泛的接受和认可。
-在过去的几年中，国内的各种IT大会也蓬勃发展，其中DevOps相关的专题和分会场也颇受人们的关注。各种云计算、运维等IT技术的社交媒体也都非常重视DevOps这个话题的分享。一个专属于DevOps社群的、国际性的、有影响力的DevOps大会正呼之欲出。在这样的时代背景下DevOpsDays大会北京站在2017年的3月18日来到中国，在同年的8月18日上海，还要举办DevOpsDays Shanghai站的大会。
-下面列举一些DevOpsDays大会的相关数据，数据来源于DevOpsDays.org 网站。从2009年到2016年，已经在全球的61个城市/国家成功地举办了117场。
-下图是在过去九年中DevOpsDays大会在各个城市/国家的分布和举办次数。
-今年也就是2017年预计举办30场，其中已经有18场确定了举办城市和日期；还有12个城市的召开日期待定；这不包括年内还可能会提出申办的城市。以上数据的统计时间在2017年三月。
-DevOps在国内的现状 随着国内BAT等互联网巨头的崛起，互联网公司的开发运维经验也越来越多的在国内的各种技术大会上传播。从最近这两年（2016年和2017年）的技术活动日程中可以看出，国内互联网从业人员也不约而同的用DevOps来定位和分享自己的优势和经验。他们是传播和分享运维侧DevOps实践的先头部队。
-出了技术论坛的分享之外，很多线上线下的大会、论坛和讨论组也都越来越热议DevOps这一专题。国内其它相关流派的人群，例如敏捷和精益等，也对DevOps的蓬勃发展表示比较惊讶，DevOps与老牌的敏捷和精益等阵营也产生过一些争论。但这一切的发生也都增加了人们对于DevOps的更深入的兴趣。
-在培训认证这方面，Exin DevOps Master是一个国际认证的培训；其它公司和组织也正在举办关于DevOps工具链的培训，这些培训则注重于技术实操，关注在构建端到端的流水线的搭建方面。从DevOps的职位招聘方面，可以看到DevOps工程师相关的职位越来越多了，在职位需求中DevOps这个技能成了加分项，DevOps相关工具的技能也或将成为简历的亮点。在IT行业内不管是开发还是运维团队的人，都开始了学习和接受的过程。
-据我观察DevOps方面的厂商在最近3年呈现爆炸式的发展。我把他们分为三类：
-搭顺风车型：主要是指所有CaaS容器云平台厂商 。Docker是它是在DevOps的时代背景下产生的，是DevOps技术工具集里不可缺少的一员。国内这些厂商目前的数量在20左右，数目趋于稳定。由于今年（2017）Docker公司商业化版本和开源版本正式的划分开来，这些公司的发展可能或多或少受到一些影响。 直奔主题型：这类厂商专注于开发端到端的、用户体验良好的DevOps流水线平台，这些公司的创始人团队多是来自于BAT公司，因此具有很好的DevOps实战经验，他们开发的产品在持续交付和流水线功能上恰好填补了当前企业在这个方面的工具和技术实践的缺位。目前这类公司的数量还不多，数量呈上升趋势。 BATH型：BAT大家都知道，这里的H指的是华为，这些企业在DevOps平台方面都表现出积极的技术输出的态势。BAT是基于过去的互联网运维的经验做DevOps的产品化。华为是成了独立的研发部门，招募业内这方面的精英前来助阵，打造出一方面可以自用，同时也可以商品化的DevOps产品。 目前国内大部分企业慢慢地开始关注了DevOps，大型传统企业也开始逐渐地从各个角度做试点和尝试。试点的角度和方向各不相同，有的从底层基础架构的容器化开始，有的从交付部署流水线的自动化开始；总的来说还处于初级的尝试阶段，还没有大规模成体系的推广。
-综上所述，目前国内DevOps发展的阶段还属于起步阶段。就像是ITIL/ITSM在2003年左右的状态。由于DevOps是去中心化的，所以没有唯一、权威的上游厂商的存在，各种理论实践的争执和PK都将终止与解决问题和提高效率的话题上，因此它具有百花齐放百家争鸣的发展条件。个人认为DevOps的实施和落地也不会完全依赖于传统的大型咨询厂商的咨询工作，由于它应该是在企业的内部，在内驱的作用下，自生长出来的；它必须是服务于企业的业务价值流的优化，加速业务价值产出的；而与之相关的工作和责任的担当，外部力量是很难以等量替换和承担的。
-核心技术和工具 在谈这个话题前先看一下DevOps相关工具集的全貌，如下图所示：</description></item><item><title>用Minikube体验单节点K8S</title><link>https://martinliu.cn/blog/install-minikube-k8s/</link><pubDate>Thu, 21 Sep 2017 00:00:00 +0000</pubDate><guid>https://martinliu.cn/blog/install-minikube-k8s/</guid><description>Minikube为各种操作系统的开发者，提供了运行K8S最简洁的方式。它最小化了安装k8s的需求和工作量。而且在各种操作系统上可以实现相同的体验。本文用精简的语言，描述了从安装minikube到运行容器化应用的过程。主要命令和输出来自macOS。
+cat create-swarm.sh docker-machine create manager --engine-insecure-registry 192.168.99.1:5000 docker-machine create agent1 --engine-insecure-registry 192.168.99.1:5000 docker-machine create agent2 --engine-insecure-registry 192.</description>
+    </item>
+    
+    <item>
+      <title>用Minikube体验单节点K8S</title>
+      <link>https://martinliu.cn/blog/install-minikube-k8s/</link>
+      <pubDate>Thu, 21 Sep 2017 00:00:00 +0000</pubDate>
+      
+      <guid>https://martinliu.cn/blog/install-minikube-k8s/</guid>
+      <description>Minikube为各种操作系统的开发者，提供了运行K8S最简洁的方式。它最小化了安装k8s的需求和工作量。而且在各种操作系统上可以实现相同的体验。本文用精简的语言，描述了从安装minikube到运行容器化应用的过程。主要命令和输出来自macOS。
 安装Hypervisor 需要在任何笔记本或者工作上安装一个Hypervisor，因此首先你需要坚持电脑的CPU是否开启了虚拟化的支持，检查BIOS的VT-X或者AMD-v的配置。
-OS X，安装 xhyve driver, VirtualBox 或 VMware Fusion Linux， 安装 VirtualBox 或 KVM Windows， 安装 VirtualBox or Hyper-V Minikube会生成一个虚拟机，用于运行一个安装和部署好的k8s单节点系统。
+ OS X，安装 xhyve driver, VirtualBox 或 VMware Fusion Linux， 安装 VirtualBox 或 KVM Windows， 安装 VirtualBox or Hyper-V  Minikube会生成一个虚拟机，用于运行一个安装和部署好的k8s单节点系统。
 安装kubectl kubectl是k8s系统的管理工具，是一个命令行工具，它用于和master交互，完成群集和服务的管理等工作。
 kubectl的安装文档： https://kubernetes.io/docs/tasks/tools/install-kubectl/
 在macOS上最简单的安装方法是下面这条命令：
-brew install kubectl brew的好处是后续可以帮忙持续的升级。
+brew install kubectl  brew的好处是后续可以帮忙持续的升级。
 其它非brew安装方法，见以上安装文档的 Install kubectl binary via curl 部分。
 安装 minikube 在macOS上使用的默认的Hypervisor是VirtualBox，如果想要用xhyve需要在启动的时候加上参数 --vm-driver=xhyve
 安装最新版本的 minikube 需要参考这个网页 https://github.com/kubernetes/minikube/releases
 minikube 是一个命令行工具，它的命令行参数如下：
-Minikube is a CLI tool that provisions and manages single-node Kubernetes clusters optimized for development workflows. Usage: minikube [command]</description></item><item><title>DevOps 的起点-入手微型数据中心</title><link>https://martinliu.cn/2016/07/01/devops-in-a-box/</link><pubDate>Fri, 01 Jul 2016 03:11:10 +0000</pubDate><guid>https://martinliu.cn/2016/07/01/devops-in-a-box/</guid><description>测试环境说明 我的笔记本电脑的环境描述如下。
+Minikube is a CLI tool that provisions and manages single-node Kubernetes clusters optimized for development workflows. Usage: minikube [command]</description>
+    </item>
+    
+    <item>
+      <title>DevOps 的起点-入手微型数据中心</title>
+      <link>https://martinliu.cn/2016/07/01/devops-in-a-box/</link>
+      <pubDate>Fri, 01 Jul 2016 03:11:10 +0000</pubDate>
+      
+      <guid>https://martinliu.cn/2016/07/01/devops-in-a-box/</guid>
+      <description>测试环境说明 我的笔记本电脑的环境描述如下。
 OS MacBook Pro 2011 版， 2.3 GHz Intel Core i5， 8GB DDR3， 256 GB SSD。 OS X EI Capitan version 10.11.5
 Docker Docker for Mac Version 1.12.0-rc2-beta17 (build: 9779)
-$ docker version Client: Version: 1.12.0-rc2 API version: 1.24 Go version: go1.6.2 Git commit: 906eacd Built: Fri Jun 17 20:35:33 2016 OS/Arch: darwin/amd64 Experimental: true Server: Version: 1.12.0-rc2 API version: 1.24 Go version: go1.6.2 Git commit: a7119de Built: Wed Jun 29 10:03:33 2016 OS/Arch: linux/amd64 Experimental: true $ docker-machine version docker-machine version 0.</description></item><item><title>DockerCon 2016 D2 超萌码头酷黑客 大会圆满闭幕</title><link>https://martinliu.cn/2016/06/22/closing-general-session-moby-docks-cool-hacks/</link><pubDate>Wed, 22 Jun 2016 02:35:39 +0000</pubDate><guid>https://martinliu.cn/2016/06/22/closing-general-session-moby-docks-cool-hacks/</guid><description>Closing General Session 的主题是 Moby Dock‘s Cool Hacks ； 从字面意思上看，这个主题的意思是“超萌码头酷黑客”的意思。我已经看到了关于最后一天开幕主题演讲的评论，说是“剑指商业”什么的；而我认为 Docker 从开始的第一天，无论它是否开源，它都是为了商业利益而已。话在说回到开源，Docker 只是完美的应用了开源软件这种实践而已；而且docker 把开源这种模式应用的如此成功，并在商业上也如此让人眼红和侧目，这也算是开源软件商业化登峰造极的一种极端性个案。个人认为开源无疑是在软件行业中做出爆款技术当之无愧的首选的实践方式。我在红帽碰到很多参与开源十几二十年的老黑客，他们不乏会表达关于开源纯洁性沦丧的抱怨；我对此也非常理解和认同。而我更认同开源可以对软件技术带来无比活力的这个积极的方面。
+$ docker version Client: Version: 1.12.0-rc2 API version: 1.24 Go version: go1.6.2 Git commit: 906eacd Built: Fri Jun 17 20:35:33 2016 OS/Arch: darwin/amd64 Experimental: true Server: Version: 1.12.0-rc2 API version: 1.24 Go version: go1.6.2 Git commit: a7119de Built: Wed Jun 29 10:03:33 2016 OS/Arch: linux/amd64 Experimental: true $ docker-machine version docker-machine version 0.</description>
+    </item>
+    
+    <item>
+      <title>DockerCon 2016 D2 超萌码头酷黑客 大会圆满闭幕</title>
+      <link>https://martinliu.cn/2016/06/22/closing-general-session-moby-docks-cool-hacks/</link>
+      <pubDate>Wed, 22 Jun 2016 02:35:39 +0000</pubDate>
+      
+      <guid>https://martinliu.cn/2016/06/22/closing-general-session-moby-docks-cool-hacks/</guid>
+      <description>Closing General Session 的主题是 Moby Dock‘s Cool Hacks ； 从字面意思上看，这个主题的意思是“超萌码头酷黑客”的意思。我已经看到了关于最后一天开幕主题演讲的评论，说是“剑指商业”什么的；而我认为 Docker 从开始的第一天，无论它是否开源，它都是为了商业利益而已。话在说回到开源，Docker 只是完美的应用了开源软件这种实践而已；而且docker 把开源这种模式应用的如此成功，并在商业上也如此让人眼红和侧目，这也算是开源软件商业化登峰造极的一种极端性个案。个人认为开源无疑是在软件行业中做出爆款技术当之无愧的首选的实践方式。我在红帽碰到很多参与开源十几二十年的老黑客，他们不乏会表达关于开源纯洁性沦丧的抱怨；我对此也非常理解和认同。而我更认同开源可以对软件技术带来无比活力的这个积极的方面。
 言归正传，小编我还是“模拟现场”播报一下大会闭幕主题演讲的盛况。这是大会的结束的 session，现场的人数明显的少于第一天开幕式的人。在十几分钟内，人们稀稀拉拉的进入了会场。会场中的座位大约还有一部分空位。美女Mano 和 黑客Kristie 作为主要演讲人上台。美女上台后先用手机自拍了几下。两个人开始宣布，Docker 大会之后举行为期一个月的黑客大赛，这是我们的传统，Docker 大会虽然今天会结束，而docer 黑客大赛将从今天开始。我们来请大家欣赏三个非常酷的黑客项目演示。
 本次大会的录音点这里 http://www.ximalaya.com/32280565/sound/17388272
 黑客演示1：微服务自毁平台 Jeff 登场。Jeff 开始讲述微服务的故事，我们都在试图让基础架构做到冗余，容所有的服务都冗余，让群集能够自愈；但是故障，断网，宕机还是会发生。我们所做的这些真的能够保证业务不宕机么，服务不终端么？你怎么能确认这一点？因此回归到故障的发生上吧？如果服务要出故障，请让它有规律的发生。请程序猿和 ops 都投入到故障处理的战斗中，以此为契机来优化和改造应用，让应用变的更加强壮。我们都听说过混乱猴子，而 Jeff 团队正式帮人们构建一堆这样的工具的人。
 有一个思路是：如何让我的系统的服务出故障，如何主动的在系统中注入故障。我们需要一种特殊的编排工具来在系统中模拟和触发故障的发生。我用容器做工具平台来触发故障注入的动作。当然这个故障是在容器架构的微服务系统中触发这个动作。
 Jeff 开始做这个 Demo。说：如果你的”网络没有故障，天下太平。“其实这很无聊的说，有木有？有木有？我现在开始用工具来注入 网络延迟的网络故障吧！ 。用一个基于策略的工具。配置一个网络故障模拟的策略，故障什么时间发生，发生多久。这里设计一个每10秒钟注入一次网络延迟故障提高到600ms 的故障。然后配置故障影响的范围，这里使用 Docker 的 lable 来做故障发生节点的选择的条件。符合标签的系统将受到这次故障影响。我们的这个故障模拟编排系统，帮您提前体验故障的发生。现在你看故障发生了，从这些容器里面 ping google 的网络延迟比之前大多了， 目前延迟到了600ms。希望你们能开始体验和使用这个而工具。
 黑客演示2：Serverless 架构的应用不是梦 Ben 是大家在 Docker 大会喜闻乐见的一个黑客，他经常给做 demo 和 session。他绝对符合超萌的标准。
-Ben 开讲，Serverless 是如何做的？ben 认为 Serverless 是一种全新的应用编程的思路，而 docer 可以很好的支持这种思路，并实现和执行这种思路。docer 群集可以让Serverless引用按需执行，并让该应用的底层变得资源冗余并路由可达。ben 开始演示 他的几张 slides， 说 Sererless == docker这个概念。本开始讲解：如何用Serverless架构来实现投票应用的改造。如何把这个5个服务模块的纯粹容器微服务系统转换为 serverless 架构的应用。开始修改源代码，把发入队列的票，变成一个处理投票的容，把 http 服务器变成一个 CGIHander（）服务；但是 nodejs 不支持 CGIhander，肿么办？我用 perl 重写了这部分，为毛用 perl，被忘了它乃是古董级的黑客神器的好不好，呵呵！改造完之后的系统架构如下。架构是把处理 postgresql 意外的模块都重写了。数据库保留在最下层。这种Serverless重构实践遵从的原则如下。</description></item><item><title>DockerCon 2016 D1 Keynote</title><link>https://martinliu.cn/2016/06/20/dockercon-2016-d1-keynote/</link><pubDate>Mon, 20 Jun 2016 19:30:33 +0000</pubDate><guid>https://martinliu.cn/2016/06/20/dockercon-2016-d1-keynote/</guid><description>看点：开场乌龟引起了喵星人大战，首次有吉祥物开启的科技盛会。 和往常一样 CEO 和 CTO 挑大梁将首日 keynote。 所罗门提出了 Docker 技术发展的三个核心方向和着眼点，并在每个方向上做了新技术发布。 1. 开发者体验提升， 正式发布 Docker for Mac/Windws 2. 编排能力的提升，正式发布 Docker 1.12 ，其中有四项能力提升；这是要废掉所有其他编排器的节奏啊~ 3. 运维体验提升，正式发布 beta.docker.com ；这是和公有云深度结合的产品，分为 AWS 和 Azure 两个模块。 一共有三个实景演示，都没有出现问题，演示很成功。
+Ben 开讲，Serverless 是如何做的？ben 认为 Serverless 是一种全新的应用编程的思路，而 docer 可以很好的支持这种思路，并实现和执行这种思路。docer 群集可以让Serverless引用按需执行，并让该应用的底层变得资源冗余并路由可达。ben 开始演示 他的几张 slides， 说 Sererless == docker这个概念。本开始讲解：如何用Serverless架构来实现投票应用的改造。如何把这个5个服务模块的纯粹容器微服务系统转换为 serverless 架构的应用。开始修改源代码，把发入队列的票，变成一个处理投票的容，把 http 服务器变成一个 CGIHander（）服务；但是 nodejs 不支持 CGIhander，肿么办？我用 perl 重写了这部分，为毛用 perl，被忘了它乃是古董级的黑客神器的好不好，呵呵！改造完之后的系统架构如下。架构是把处理 postgresql 意外的模块都重写了。数据库保留在最下层。这种Serverless重构实践遵从的原则如下。</description>
+    </item>
+    
+    <item>
+      <title>DockerCon 2016 D1 Keynote</title>
+      <link>https://martinliu.cn/2016/06/20/dockercon-2016-d1-keynote/</link>
+      <pubDate>Mon, 20 Jun 2016 19:30:33 +0000</pubDate>
+      
+      <guid>https://martinliu.cn/2016/06/20/dockercon-2016-d1-keynote/</guid>
+      <description>看点：开场乌龟引起了喵星人大战，首次有吉祥物开启的科技盛会。 和往常一样 CEO 和 CTO 挑大梁将首日 keynote。 所罗门提出了 Docker 技术发展的三个核心方向和着眼点，并在每个方向上做了新技术发布。 1. 开发者体验提升， 正式发布 Docker for Mac/Windws 2. 编排能力的提升，正式发布 Docker 1.12 ，其中有四项能力提升；这是要废掉所有其他编排器的节奏啊~ 3. 运维体验提升，正式发布 beta.docker.com ；这是和公有云深度结合的产品，分为 AWS 和 Azure 两个模块。 一共有三个实景演示，都没有出现问题，演示很成功。
 现场录音 点上面的播放键，播放整场录音。请注意中间的数秒钟乃至数十秒的中断是正常，请快进收听。
 开场 屏幕上出现了乌龟开始做 demo，运行了一个容器。 猫咪大战，混乱了，猫星人入侵了。猫叫~~乱作一团··· 发生了什么？ dockercon16 吹起了号角。 乌龟再次出现在电脑上，运行了另外一个容器惊喜，这次是美妙的音乐。 调皮的乌龟折腾完了之后，主题曲想起来。4000多人的场子，大家很期待。
-CEO Ben Golub 演讲 Ben Golub CEO 出场。 Today we are all docker blue. 欢迎所有人。 我们和前两年的不同，我们发布了1.0 等等。 谈了很多 Docker 取得的成就。 感谢和表扬了社区。 感谢2900+贡献者。 社区的状态动态，每周超过300 PR，三分之二来自 Docker 公司之外。 docker meetup 的状况， 250+城市举行，125K 人参加聚会。 内容构建方面，docker hub 上有 460K 个应用，到目前为止有4.</description></item><item><title>Atomic Host 原子主机最简测试</title><link>https://martinliu.cn/2015/07/18/atomic-host-e58e9fe5ad90e4b8bbe69cbae69c80e7ae80e6b58be8af95/</link><pubDate>Sat, 18 Jul 2015 13:29:45 +0000</pubDate><guid>https://martinliu.cn/2015/07/18/atomic-host-e58e9fe5ad90e4b8bbe69cbae69c80e7ae80e6b58be8af95/</guid><description>环境准备 本文使用笔记本电脑+KVM虚拟化进行以下的测试过程，当然也可以用其它的操作系统加虚拟化软件的组合，测试机需要满足以下的条件： 测试虚拟机的建议配置1C/2GB/10GB 虚拟机使用的网络需要能连接到互联网 虚拟机需要能加载光盘iso文件 可以执行起停虚拟机操作，能通过控制它登陆来做初始化配置
+CEO Ben Golub 演讲 Ben Golub CEO 出场。 Today we are all docker blue. 欢迎所有人。 我们和前两年的不同，我们发布了1.0 等等。 谈了很多 Docker 取得的成就。 感谢和表扬了社区。 感谢2900+贡献者。 社区的状态动态，每周超过300 PR，三分之二来自 Docker 公司之外。 docker meetup 的状况， 250+城市举行，125K 人参加聚会。 内容构建方面，docker hub 上有 460K 个应用，到目前为止有4.</description>
+    </item>
+    
+    <item>
+      <title>Atomic Host 原子主机最简测试</title>
+      <link>https://martinliu.cn/2015/07/18/atomic-host-e58e9fe5ad90e4b8bbe69cbae69c80e7ae80e6b58be8af95/</link>
+      <pubDate>Sat, 18 Jul 2015 13:29:45 +0000</pubDate>
+      
+      <guid>https://martinliu.cn/2015/07/18/atomic-host-e58e9fe5ad90e4b8bbe69cbae69c80e7ae80e6b58be8af95/</guid>
+      <description>环境准备 本文使用笔记本电脑+KVM虚拟化进行以下的测试过程，当然也可以用其它的操作系统加虚拟化软件的组合，测试机需要满足以下的条件： 测试虚拟机的建议配置1C/2GB/10GB 虚拟机使用的网络需要能连接到互联网 虚拟机需要能加载光盘iso文件 可以执行起停虚拟机操作，能通过控制它登陆来做初始化配置
 本文测试机是Lenovo T440s笔记本电脑，安装的操作系统是Fedora 22，使用KVM虚拟化，用Virt-Manager做GUI图形管理工具。建立了一个NAT的静态虚拟网络，虚拟机可以使用该网络来从互联网下载需要的文件包。
 下载Fedora Atomic Host虚拟机文件；下载页面： http://www.projectatomic.io/download/ 点击绿色的下载按钮。下载qcow2格式的Atomic Host虚拟机文件。复制下载的文件到虚拟机运行的存储目录中，文件名可以是master.qcow2，新测试虚拟机会基于它创建。
 在通过这个虚拟机模版文件生成测试机前，需要准备一个init.iso的文件，用来初始化测试机的主机名和初始用户密码。
-[bash] [root@martin-fedora vm]# cat meta-data instance-id: master local-hostname: master.xenlab.com [root@martin-fedora vm]# cat user-data #cloud-config password: smartvm ssh_pwauth: True chpasswd: { expire: False } [root@martin-fedora vm]# genisoimage -output init.iso -volid cidata -joliet -rock user-data meta-data I: -input-charset not specified, using utf-8 (detected in locale settings) Total translation table size: 0 Total rockridge attributes bytes: 331 Total directory bytes: 0 Path table size(bytes): 10 Max brk space used 0 183 extents written (0 MB) [/bash]</description></item><item><title>红帽媒体日</title><link>https://martinliu.cn/2015/07/14/e7baa2e5b8bde5aa92e4bd93e697a5/</link><pubDate>Tue, 14 Jul 2015 14:20:24 +0000</pubDate><guid>https://martinliu.cn/2015/07/14/e7baa2e5b8bde5aa92e4bd93e697a5/</guid><description>本次演讲用了大约25分钟，超时了大约5分钟多，但是其中有些观点还是没有叙述的很倒位。只能算是我的一种理解和解读，希望对道场的媒体朋友们对认识红帽公司有帮助。
+[bash] [root@martin-fedora vm]# cat meta-data instance-id: master local-hostname: master.xenlab.com [root@martin-fedora vm]# cat user-data #cloud-config password: smartvm ssh_pwauth: True chpasswd: { expire: False } [root@martin-fedora vm]# genisoimage -output init.iso -volid cidata -joliet -rock user-data meta-data I: -input-charset not specified, using utf-8 (detected in locale settings) Total translation table size: 0 Total rockridge attributes bytes: 331 Total directory bytes: 0 Path table size(bytes): 10 Max brk space used 0 183 extents written (0 MB) [/bash]</description>
+    </item>
+    
+    <item>
+      <title>红帽媒体日</title>
+      <link>https://martinliu.cn/2015/07/14/e7baa2e5b8bde5aa92e4bd93e697a5/</link>
+      <pubDate>Tue, 14 Jul 2015 14:20:24 +0000</pubDate>
+      
+      <guid>https://martinliu.cn/2015/07/14/e7baa2e5b8bde5aa92e4bd93e697a5/</guid>
+      <description>本次演讲用了大约25分钟，超时了大约5分钟多，但是其中有些观点还是没有叙述的很倒位。只能算是我的一种理解和解读，希望对道场的媒体朋友们对认识红帽公司有帮助。
 演讲源版slide和录音在这个网页上： http://investors.redhat.com/events.cfm 的这部分：
 Jun 24, 2015
 10:30 AM - 1:00 PM ET
-Red Hat Analyst Day
-Listen to webcast
+ Red Hat Analyst Day
+Listen to webcast 
 View Presentation
 12.2 MB
 Add to Briefcase
 View Additional Information
-我做了Pual这一段的翻译，翻译的文档下载点这里：[RH_Summit_Analyst_Day_Master_20150714_MartinLiu](http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2015/07/RH_Summit_Analyst_Day_Master_20150714_MartinLiu.pdf)</description></item><item><title>如何参与 Project Atomic</title><link>https://martinliu.cn/2015/03/19/e5a682e4bd95e58f82e4b88e-project-atomic/</link><pubDate>Thu, 19 Mar 2015 03:23:37 +0000</pubDate><guid>https://martinliu.cn/2015/03/19/e5a682e4bd95e58f82e4b88e-project-atomic/</guid><description>关于 Project Atomic 项目
+    我做了Pual这一段的翻译，翻译的文档下载点这里：[RH_Summit_Analyst_Day_Master_20150714_MartinLiu](http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2015/07/RH_Summit_Analyst_Day_Master_20150714_MartinLiu.pdf) </description>
+    </item>
+    
+    <item>
+      <title>如何参与 Project Atomic</title>
+      <link>https://martinliu.cn/2015/03/19/e5a682e4bd95e58f82e4b88e-project-atomic/</link>
+      <pubDate>Thu, 19 Mar 2015 03:23:37 +0000</pubDate>
+      
+      <guid>https://martinliu.cn/2015/03/19/e5a682e4bd95e58f82e4b88e-project-atomic/</guid>
+      <description>关于 Project Atomic 项目 
 Project Atomic 项目相关的开源技术组件如下：
 [wm_list bullet=&amp;ldquo;icon-linux&amp;rdquo; class=&amp;quot;&amp;quot;]
-linux kernel
-systemd
-OSTree and rpm-ostree
-Docker
-kubernetes
-Fedora and CentOS
-[/wm_list]
+  linux kernel
+  systemd
+  OSTree and rpm-ostree
+  Docker
+  kubernetes
+  Fedora and CentOS
+  [/wm_list]
 该项目的网站在： http://www.projectatomic.io/
 加入 Project Atomic 邮件列表 项目一般性讨论： https://lists.projectatomic.io/mailman/listinfo/atomic
 项目开发者：https://lists.projectatomic.io/mailman/listinfo/atomic-devel
 项目版本发布更新：https://lists.projectatomic.io/mailman/listinfo/atomic-announce
 填写自己的邮箱后，别忘了在邮箱里收信，并且确认。如下图所示：
+
 问 Project Atomic 问题和讨论 http://ask.projectatomic.io/en/questions/ 这里是项目的论坛可以在这里提问和帮助其他人。
-了解 Project Atomic 代码 https://github.com/projectatomic/ 项目的代码在Github网站上可以看到，如果你watch这个项目的话，可以收到所有开发者对该项目的所有代码更新等活动。</description></item><item><title>Workshop: Creating a Docker management environment</title><link>https://martinliu.cn/2014/12/04/workshop-creating-docker-management-environment/</link><pubDate>Thu, 04 Dec 2014 02:46:04 +0000</pubDate><guid>https://martinliu.cn/2014/12/04/workshop-creating-docker-management-environment/</guid><description>Red Hat APAC Tech Exchange, Macau
+了解 Project Atomic 代码 https://github.com/projectatomic/ 项目的代码在Github网站上可以看到，如果你watch这个项目的话，可以收到所有开发者对该项目的所有代码更新等活动。</description>
+    </item>
+    
+    <item>
+      <title>Workshop: Creating a Docker management environment</title>
+      <link>https://martinliu.cn/2014/12/04/workshop-creating-docker-management-environment/</link>
+      <pubDate>Thu, 04 Dec 2014 02:46:04 +0000</pubDate>
+      
+      <guid>https://martinliu.cn/2014/12/04/workshop-creating-docker-management-environment/</guid>
+      <description>Red Hat APAC Tech Exchange, Macau
 Day 3 - 4 December 2014 &amp;ndash; Track C
 Command to Run bash &amp;lt;(curl -sSL https://bit.ly/get-fabric8) -k
 Document to read https://docs.docker.com/installation/
@@ -89,4 +172,8 @@ http://fabric8.io/v2/index.html
 https://github.com/fabric8io/quickstarts
 My document: https://access.redhat.com/articles/881893
 Blogs http://rawlingsj.blogspot.com/
-http://macstrac.blogspot.co.uk/</description></item></channel></rss>
+http://macstrac.blogspot.co.uk/</description>
+    </item>
+    
+  </channel>
+</rss>

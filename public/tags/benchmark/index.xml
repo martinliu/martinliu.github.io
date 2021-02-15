@@ -1,9 +1,19 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>benchmark on 刘征的博客</title><link>https://martinliu.cn/tags/benchmark/</link><description>Recent content in benchmark on 刘征的博客</description><generator>Hugo -- gohugo.io</generator><language>zh-CN</language><lastBuildDate>Sat, 04 Jul 2009 05:37:57 +0000</lastBuildDate><atom:link href="https://martinliu.cn/tags/benchmark/index.xml" rel="self" type="application/rss+xml"/><item><title>Tomcat压力测试-挺住200并发</title><link>https://martinliu.cn/2009/07/04/tomcate58e8be58a9be6b58be8af95-e68cbae4bd8f200e5b9b6e58f91/</link><pubDate>Sat, 04 Jul 2009 05:37:57 +0000</pubDate><guid>https://martinliu.cn/2009/07/04/tomcate58e8be58a9be6b58be8af95-e68cbae4bd8f200e5b9b6e58f91/</guid><description>最近在CCB的测试中有一项是住系统登陆页面的压力测试。我一直就很担心是否能通过压力测试，因为一个同事告诉我上次他的结果是80就不行了。总结一下，我这次成功的原因主要就是两个地方：
-1）设置Tomcat启动和最大内存使用都是1500MB
-2）修改server.xml中关于连接数等参数(回头贴出我的那些配置内容)
-我的服务器配置如下：
-Dell 2950 1C4核，8GB内存，单块136GB硬盘，Windows2003系统，JDK1.6，Tomcat 5.5.21
-另外，我一直以为Loadrunner需要真实Lic文件才能用，没想到的是，我随便在网上搜了一个也能用，真是神奇啊！ 不过还是反对盗版哈哈:)</description></item><item><title>For tomcat benchmark testing</title><link>https://martinliu.cn/2009/07/04/for-tomcat-benchmark-testing/</link><pubDate>Sat, 04 Jul 2009 05:36:03 +0000</pubDate><guid>https://martinliu.cn/2009/07/04/for-tomcat-benchmark-testing/</guid><description>Tomcat Configuration 查看一下可以配置的参数设置JVM的参数Setting JVM Options for Tomcat
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>benchmark on DevOps &amp; SRE Blog</title>
+    <link>https://martinliu.cn/tags/benchmark/</link>
+    <description>Recent content in benchmark on DevOps &amp; SRE Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-CN</language>
+    <lastBuildDate>Sat, 04 Jul 2009 05:36:03 +0000</lastBuildDate><atom:link href="https://martinliu.cn/tags/benchmark/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>For tomcat benchmark testing</title>
+      <link>https://martinliu.cn/2009/07/04/for-tomcat-benchmark-testing/</link>
+      <pubDate>Sat, 04 Jul 2009 05:36:03 +0000</pubDate>
+      
+      <guid>https://martinliu.cn/2009/07/04/for-tomcat-benchmark-testing/</guid>
+      <description>Tomcat Configuration 查看一下可以配置的参数设置JVM的参数Setting JVM Options for Tomcat
 Edit the /usr/locat/apache-tomcat/bin/catalina.sh file and add the JVM options to the JAVA_OPTS environment variable.JVM Option Value Description
 -Xmx 4g The maximum Java heap size.
 -Xms 4g The initial Java heap size.
@@ -12,4 +22,8 @@ Edit the /usr/locat/apache-tomcat/bin/catalina.sh file and add the JVM options t
 -XX:PermSize 50m The initial size of permanent generation.
 注释：上面两个4g的值，我没试过，我用8GB内存windows的机器1.5GB能启动，超过了Tomcat服务就启动不了了。
 配置Tomcat Connector Attributes
-Edit the /usr/locat/apache-tomcat/conf/server.xml file and add the attributes listed in Table 3 to the Connector element.</description></item></channel></rss>
+Edit the /usr/locat/apache-tomcat/conf/server.xml file and add the attributes listed in Table 3 to the Connector element.</description>
+    </item>
+    
+  </channel>
+</rss>

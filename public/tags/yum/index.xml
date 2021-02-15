@@ -1,31 +1,70 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Yum on 刘征的博客</title><link>https://martinliu.cn/tags/yum/</link><description>Recent content in Yum on 刘征的博客</description><generator>Hugo -- gohugo.io</generator><language>zh-CN</language><lastBuildDate>Tue, 16 Jun 2015 16:25:34 +0000</lastBuildDate><atom:link href="https://martinliu.cn/tags/yum/index.xml" rel="self" type="application/rss+xml"/><item><title>在 RHEL 7 上安装 Foreman 1.8</title><link>https://martinliu.cn/2015/06/16/e59ca8-rhel-7-e4b88ae5ae89e8a385-foreman-1-8/</link><pubDate>Tue, 16 Jun 2015 16:25:34 +0000</pubDate><guid>https://martinliu.cn/2015/06/16/e59ca8-rhel-7-e4b88ae5ae89e8a385-foreman-1-8/</guid><description>首先安装RHEL7使用光盘安装最小化系统，安装完成之后，关闭防火墙和SELinux（为了测试方便），配置主机名为FQDN格式，如 fm1.8.xenlab.com； 加本机的主机名解析到/etc/hosts 文集中。之后注册到RHN。
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Yum on DevOps &amp; SRE Blog</title>
+    <link>https://martinliu.cn/tags/yum/</link>
+    <description>Recent content in Yum on DevOps &amp; SRE Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-CN</language>
+    <lastBuildDate>Tue, 16 Jun 2015 16:25:34 +0000</lastBuildDate><atom:link href="https://martinliu.cn/tags/yum/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>在 RHEL 7 上安装 Foreman 1.8</title>
+      <link>https://martinliu.cn/2015/06/16/e59ca8-rhel-7-e4b88ae5ae89e8a385-foreman-1-8/</link>
+      <pubDate>Tue, 16 Jun 2015 16:25:34 +0000</pubDate>
+      
+      <guid>https://martinliu.cn/2015/06/16/e59ca8-rhel-7-e4b88ae5ae89e8a385-foreman-1-8/</guid>
+      <description>首先安装RHEL7使用光盘安装最小化系统，安装完成之后，关闭防火墙和SELinux（为了测试方便），配置主机名为FQDN格式，如 fm1.8.xenlab.com； 加本机的主机名解析到/etc/hosts 文集中。之后注册到RHN。
 [bash]
-[root@fm18 ~]# subscription-manager register [root@fm18 ~]# subscription-manager attach &amp;ndash;auto [root@fm18 ~]# subscription-manager repos &amp;ndash;disable=&amp;quot;*&amp;quot; [root@fm18 ~]# subscription-manager repos &amp;ndash;enable=rhel-7-server-optional-rpms [root@fm18 ~]# subscription-manager repos &amp;ndash;enable=rhel-server-rhscl-7-rpms [root@fm18 ~]# subscription-manager repos &amp;ndash;enable=rhel-7-server-rpms [root@fm18 ~]# rpm -ivh http://yum.puppetlabs.com/puppetlabs-release-el-7.noarch.rpm [root@fm18 ~]# yum -y install http://yum.theforeman.org/releases/1.8/el7/x86_64/foreman-release.rpm [root@fm18 ~]# yum -y install http://ftp.sjtu.edu.cn/fedora/epel/epel-release-latest-7.noarch.rpm [root@fm18 ~]# yum clean all [root@fm18 ~]# yum makecache [root@fm18 ~]# yum update -y [root@fm18 ~]# reboot [root@fm18 ~]# yum install foreman-installer</description></item><item><title>opennms 1.6.1-1 quick start guide</title><link>https://martinliu.cn/2009/01/11/161-1-opennms-quick-install-guide/</link><pubDate>Sun, 11 Jan 2009 02:33:12 +0000</pubDate><guid>https://martinliu.cn/2009/01/11/161-1-opennms-quick-install-guide/</guid><description>本安装手册为纯命令版，如果有什么疑问清参考官方安装手册，或给本贴留言。
+[root@fm18 ~]# subscription-manager register [root@fm18 ~]# subscription-manager attach &amp;ndash;auto [root@fm18 ~]# subscription-manager repos &amp;ndash;disable=&amp;quot;*&amp;quot; [root@fm18 ~]# subscription-manager repos &amp;ndash;enable=rhel-7-server-optional-rpms [root@fm18 ~]# subscription-manager repos &amp;ndash;enable=rhel-server-rhscl-7-rpms [root@fm18 ~]# subscription-manager repos &amp;ndash;enable=rhel-7-server-rpms [root@fm18 ~]# rpm -ivh http://yum.puppetlabs.com/puppetlabs-release-el-7.noarch.rpm [root@fm18 ~]# yum -y install http://yum.theforeman.org/releases/1.8/el7/x86_64/foreman-release.rpm [root@fm18 ~]# yum -y install http://ftp.sjtu.edu.cn/fedora/epel/epel-release-latest-7.noarch.rpm [root@fm18 ~]# yum clean all [root@fm18 ~]# yum makecache [root@fm18 ~]# yum update -y [root@fm18 ~]# reboot [root@fm18 ~]# yum install foreman-installer</description>
+    </item>
+    
+    <item>
+      <title>opennms 1.6.1-1 quick start guide</title>
+      <link>https://martinliu.cn/2009/01/11/161-1-opennms-quick-install-guide/</link>
+      <pubDate>Sun, 11 Jan 2009 02:33:12 +0000</pubDate>
+      
+      <guid>https://martinliu.cn/2009/01/11/161-1-opennms-quick-install-guide/</guid>
+      <description>本安装手册为纯命令版，如果有什么疑问清参考官方安装手册，或给本贴留言。
 [install yum on your Linux box]
 选择任意Linux系统，安装上yum工具，在命令行测试 yum -v
 [testing internet connection with those two URL]
 测试是否能上网，用浏览器分别打开这两个网址
-http://www.martinliu.cn/2007/12/13/opennms-yum-install/ http://yum.opennms.org/repofiles/ 先别关闭这两个网页。
+
+ http://www.martinliu.cn/2007/12/13/opennms-yum-install/  http://yum.opennms.org/repofiles/ 先别关闭这两个网页。
 [Install opennms 开始安装:
-yum install yum-fastestmirror rpm -Uvh http://yum.opennms.org/repofiles/opennms-repo-snapshot-rhel4.noarch.rpm yum list opennms yum install opennms [ post-install and config] 开始配置：
-export OPENNMS_HOME=/opt/opennms vi /var/lib/pgsql/data/pg_hba.conf
+ yum install yum-fastestmirror  rpm -Uvh http://yum.opennms.org/repofiles/opennms-repo-snapshot-rhel4.noarch.rpm  yum list opennms  yum install opennms [ post-install and config] 开始配置：
+ export OPENNMS_HOME=/opt/opennms  vi /var/lib/pgsql/data/pg_hba.conf
 1. 注释掉其中所有可用的行，加入下面三行
 local all all trust
 host all all 127.0.0.1/32 trust
-host all all ::1/128 trust /sbin/service postgresql restart /usr/java/jdk1.</description></item><item><title>OpenNMS的Yum的安装方式，安装简单了很多</title><link>https://martinliu.cn/2007/12/13/opennms-yum-install/</link><pubDate>Thu, 13 Dec 2007 10:14:00 +0000</pubDate><guid>https://martinliu.cn/2007/12/13/opennms-yum-install/</guid><description>OpenNMS网站的安装文档：
+host all all ::1/128 trust  /sbin/service postgresql restart  /usr/java/jdk1.</description>
+    </item>
+    
+    <item>
+      <title>OpenNMS的Yum的安装方式，安装简单了很多</title>
+      <link>https://martinliu.cn/2007/12/13/opennms-yum-install/</link>
+      <pubDate>Thu, 13 Dec 2007 10:14:00 +0000</pubDate>
+      
+      <guid>https://martinliu.cn/2007/12/13/opennms-yum-install/</guid>
+      <description>OpenNMS网站的安装文档：
 http://www.opennms.org/index.php/Installation:Yum
 下面是我在一个CentOS4的机器上按照上面文档安装的。
-先浏览一下这个页面 http://yum.opennms.org/repofiles/ 找到适合你的OS的那一行。 我选择安装的是1.3.10-0.8030.snapshot 这是当前开发的最新版本的OpenNMS； 运行命令： rpm -Uvh http://yum.opennms.org/repofiles/opennms-repo-snapshot-rhel4.noarch.rpm 检查是否安装成功， 运行命令： yum list opennms ；我能看到如下输出结果 [root@jng-hkg-48-dyn3328831 ~]# yum list opennms
+
+
+ 先浏览一下这个页面 http://yum.opennms.org/repofiles/ 找到适合你的OS的那一行。  我选择安装的是1.3.10-0.8030.snapshot 这是当前开发的最新版本的OpenNMS； 运行命令： rpm -Uvh http://yum.opennms.org/repofiles/opennms-repo-snapshot-rhel4.noarch.rpm  检查是否安装成功， 运行命令： yum list opennms ；我能看到如下输出结果   [root@jng-hkg-48-dyn3328831 ~]# yum list opennms
+
 Repository opennms-stable-common is listed more than once in the configuration
+
 Repository opennms-stable-rhel4 is listed more than once in the configuration
+
 Setting up repositories
+
 Reading repository metadata in from local files
+
 Available Packages
-opennms.noarch 1.3.10-0.8030.snapshot opennms-snapshot</description></item><item><title>Install Smokeping via yum</title><link>https://martinliu.cn/2007/02/16/install-smokeping-via-yum/</link><pubDate>Fri, 16 Feb 2007 16:38:00 +0000</pubDate><guid>https://martinliu.cn/2007/02/16/install-smokeping-via-yum/</guid><description>From :http://ai.net.nz/horde/wicked/display.php?page=SmokePing
-Install needed packages
-rrdtool
-`yum install rrdtool &amp;lt;br /&amp;gt;**perl-CGI-SpeedyCGI**&amp;lt;br /&amp;gt; `yum install perl-CGI-SpeedyCGI
-fping
-`yum install fping &amp;lt;br /&amp;gt;** Or do them all together:**&amp;lt;br /&amp;gt; `yum install rrdtool perl-CGI-SpeedyCGI fping
-Smokeping
-`wget http://people.ee.ethz.ch/~oetiker/webtools/smokeping/pub/smokeping-2.0.9.tar.gztar xvzf smokeping-2.0.9.tar.gzmv smokeping-2.0.9 /usr/local/smokepingchown -R root:root /usr/local/smokeping&amp;lt;br /&amp;gt;&amp;lt;br /&amp;gt;cd /usr/local/smokeping/binfor foo in *.dist; do cp $foo `basename $foo .dist`; done&amp;lt;br /&amp;gt;&amp;lt;br /&amp;gt;cd /usr/local/smokeping/etc/for foo in *.dist; do cp $foo `basename $foo .</description></item></channel></rss>
+
+opennms.noarch 1.3.10-0.8030.snapshot opennms-snapshot</description>
+    </item>
+    
+  </channel>
+</rss>

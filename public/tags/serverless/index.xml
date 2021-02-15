@@ -1,9 +1,28 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>serverless on 刘征的博客</title><link>https://martinliu.cn/tags/serverless/</link><description>Recent content in serverless on 刘征的博客</description><generator>Hugo -- gohugo.io</generator><language>zh-CN</language><lastBuildDate>Wed, 22 Jun 2016 16:22:51 +0000</lastBuildDate><atom:link href="https://martinliu.cn/tags/serverless/index.xml" rel="self" type="application/rss+xml"/><item><title>用 Docker 构建 Serverless 应用</title><link>https://martinliu.cn/2016/06/22/building-serverless-apps-docker/</link><pubDate>Wed, 22 Jun 2016 16:22:51 +0000</pubDate><guid>https://martinliu.cn/2016/06/22/building-serverless-apps-docker/</guid><description>Martin解读Serverless Serverless 不意味着没有服务器，而是从应用可以在一个抽象层上忽略它的存在，而只关注在功能实现上和自身的请求处理上；每一个功能实现在不是单纯的业务逻辑处理的代码，相反每个功能调用具有了 server 的特质，进化成为了一个具有自省、自知和自治的工作负载单元；他们更像是能够衍生出其它新功能单元的生物体。这样整个 Serverless 应用架构之内，每个生命可以衍生下去，子子孙孙无穷匮也。
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>serverless on DevOps &amp; SRE Blog</title>
+    <link>https://martinliu.cn/tags/serverless/</link>
+    <description>Recent content in serverless on DevOps &amp; SRE Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-CN</language>
+    <lastBuildDate>Wed, 22 Jun 2016 16:22:51 +0000</lastBuildDate><atom:link href="https://martinliu.cn/tags/serverless/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>用 Docker 构建 Serverless 应用</title>
+      <link>https://martinliu.cn/2016/06/22/building-serverless-apps-docker/</link>
+      <pubDate>Wed, 22 Jun 2016 16:22:51 +0000</pubDate>
+      
+      <guid>https://martinliu.cn/2016/06/22/building-serverless-apps-docker/</guid>
+      <description>Martin解读Serverless Serverless 不意味着没有服务器，而是从应用可以在一个抽象层上忽略它的存在，而只关注在功能实现上和自身的请求处理上；每一个功能实现在不是单纯的业务逻辑处理的代码，相反每个功能调用具有了 server 的特质，进化成为了一个具有自省、自知和自治的工作负载单元；他们更像是能够衍生出其它新功能单元的生物体。这样整个 Serverless 应用架构之内，每个生命可以衍生下去，子子孙孙无穷匮也。
 本文编译了：https://blog.docker.com/2016/06/building-serverless-apps-with-docker/ 一下是正文内容。
 处在这技术日新月异的时代里，新的技术浪潮经常对当前的技术产生着威胁和颠覆。在编写应用的时候我们目前经常谈论到“Serverless”技术。它的核心思想是把应用作为一系列的功能/function来部署，这些功能在需要的时候被按需部署。服务器管理应该是不需要去操心的事情，所有功能被按需调用，被运行在群集之上。
 但是 Serverless 里不意味着没有 Docker，事实上 ”Docker 就是 Serverless”。你可以用 Docker 来容器化这些功能，然后按需地运行在 Swarm 群集上。Serverless 是一种构建分布式计算的应用的方法，而 Docker 是完美的构建和运行他们的平台。
 从Server 到 Serverless 那么我们如何来编写 Serverless 的应用？让我们先看下这个例子：“一个有5个子服务组成的投票应用”：
 它的结构如下：
-两个 web 前端 一个后台的处理投票的 worker 服务 一个处理投票的消息队列  一个数据库 那个后台处理投票的进程是非常容易成为转换为 Serverless 架构的目标。在投票应用内，我们可以运行一点类似于下面的代码，来执行后台任务：
-import dockerrun client = dockerrun.from_env() client.run(&amp;quot;bfirsh/serverless-record-vote-task&amp;quot;, [voter_id, vote], detach=True) Worker 和消息队列能用按需在 Swarm 上运行的容器来替换，并自动地按需扩容。
-我们甚至可以消除掉 web 前端。我们可以这么做：用 Docker 容器来相应每一个HTTP 请求，每个 HTTP 请求都用一个自生长的跑着轻量 HTTP 服务器的容器来处理。之前使用的是长时间持续运行的 HTTP 服务器，现在变成了具有 HTTP 相应和处理能力的按需跑起来的容器，而且他们能自动地扩容来支持所有访问请求。</description></item></channel></rss>
+ 两个 web 前端 一个后台的处理投票的 worker 服务 一个处理投票的消息队列  一个数据库  那个后台处理投票的进程是非常容易成为转换为 Serverless 架构的目标。在投票应用内，我们可以运行一点类似于下面的代码，来执行后台任务：
+ import dockerrun client = dockerrun.from_env() client.run(&amp;quot;bfirsh/serverless-record-vote-task&amp;quot;, [voter_id, vote], detach=True) Worker 和消息队列能用按需在 Swarm 上运行的容器来替换，并自动地按需扩容。
+我们甚至可以消除掉 web 前端。我们可以这么做：用 Docker 容器来相应每一个HTTP 请求，每个 HTTP 请求都用一个自生长的跑着轻量 HTTP 服务器的容器来处理。之前使用的是长时间持续运行的 HTTP 服务器，现在变成了具有 HTTP 相应和处理能力的按需跑起来的容器，而且他们能自动地扩容来支持所有访问请求。</description>
+    </item>
+    
+  </channel>
+</rss>

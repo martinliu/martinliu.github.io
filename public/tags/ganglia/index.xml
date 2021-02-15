@@ -1,22 +1,47 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Ganglia on 刘征的博客</title><link>https://martinliu.cn/tags/ganglia/</link><description>Recent content in Ganglia on 刘征的博客</description><generator>Hugo -- gohugo.io</generator><language>zh-CN</language><lastBuildDate>Sun, 15 Jun 2008 15:50:31 +0000</lastBuildDate><atom:link href="https://martinliu.cn/tags/ganglia/index.xml" rel="self" type="application/rss+xml"/><item><title>盛夏严防服务器中暑</title><link>https://martinliu.cn/2008/06/15/monitoring-temperature-and-fan-speed-using-ganglia/</link><pubDate>Sun, 15 Jun 2008 15:50:31 +0000</pubDate><guid>https://martinliu.cn/2008/06/15/monitoring-temperature-and-fan-speed-using-ganglia/</guid><description>哦不是中暑:-)而是发烧；夏天就要到了，监控服务器的主板温度和风扇是否工作正常有变的比较重要起来了。
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Ganglia on DevOps &amp; SRE Blog</title>
+    <link>https://martinliu.cn/tags/ganglia/</link>
+    <description>Recent content in Ganglia on DevOps &amp; SRE Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-CN</language>
+    <lastBuildDate>Sun, 15 Jun 2008 15:50:31 +0000</lastBuildDate><atom:link href="https://martinliu.cn/tags/ganglia/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>盛夏严防服务器中暑</title>
+      <link>https://martinliu.cn/2008/06/15/monitoring-temperature-and-fan-speed-using-ganglia/</link>
+      <pubDate>Sun, 15 Jun 2008 15:50:31 +0000</pubDate>
+      
+      <guid>https://martinliu.cn/2008/06/15/monitoring-temperature-and-fan-speed-using-ganglia/</guid>
+      <description>哦不是中暑:-)而是发烧；夏天就要到了，监控服务器的主板温度和风扇是否工作正常有变的比较重要起来了。
 今天发现一个文档 Monitoring Temperature and Fan Speed Using Ganglia and Winbond Chips 这个是一个不错的文档，值得参考一下。
 文章是写如何在Ganglia中实现对主板温度和风扇的监控。以前也有人问过我这个问题“Ganglia的监控图上为什么没有温度也风扇的图”；相信您看后就知道怎么回事了。
 下面是我对关于温度和风扇监控的一点想法：
-主板的芯片能提供这些数据的访问给操作系统 操作系统上有sensors这个命令工具用来采集这些数据 有合适的脚本分析上面命令的输出数据转换成能被监控工具（ganglia， cacti，nagios， opennms）采集的格式等 往往这两个参数并不是监控工具的默认采集数据，所以需要扩展采集工具的采集集合，收集并保存这些数据。 在监控工具如Ganglia中显示这些数据，当然如果有自动报警功能就好了，可以及时通知管理员给服务器消暑：） Ganglia是最好的网格或者群集的监控软件，不过当你用它的使用也要注意到下面这个问题：
+
+ 主板的芯片能提供这些数据的访问给操作系统  操作系统上有sensors这个命令工具用来采集这些数据  有合适的脚本分析上面命令的输出数据转换成能被监控工具（ganglia， cacti，nagios， opennms）采集的格式等  往往这两个参数并不是监控工具的默认采集数据，所以需要扩展采集工具的采集集合，收集并保存这些数据。  在监控工具如Ganglia中显示这些数据，当然如果有自动报警功能就好了，可以及时通知管理员给服务器消暑：） Ganglia是最好的网格或者群集的监控软件，不过当你用它的使用也要注意到下面这个问题：
 What does Ganglia not provide?
 Ganglia does not attempt to address service monitoring or reporting (unlike Nagios). So far, we have not come across a single monitoring solution that addresses all of our needs effectively.
-上面所说的服务监控是说，它的特点不是想Nagios和OpenNMS那样对服务器系统做非常全面细致的监控，它默认的监控指标比较少不过对于监控网格或者群集这种数量巨大的对象来说这些比较经典的指标也够用了，特别是对服务器的可用性，CUP、RAM，网络资源利用率和工作负载等数据的采集也比较够用了。如果你使用它来监控数量不是很多服务器的话，你可以使用它的可扩展性加入任何想监控的KPI。我最喜欢的还是它能把服务做分组，而且垂直的方向上可以加N层的嵌套；这种组织方式能比较好的适用于业务系统众多而复杂的数据中心。</description></item><item><title>Ganglia install and configure</title><link>https://martinliu.cn/2008/05/24/ganglia-install-and-configure/</link><pubDate>Sat, 24 May 2008 02:15:27 +0000</pubDate><guid>https://martinliu.cn/2008/05/24/ganglia-install-and-configure/</guid><description>我准备安装的版本是ganglia-3.0.7 ， 参考的安装文档是http://www.linuxsir.org/bbs/thread309837.html
+上面所说的服务监控是说，它的特点不是想Nagios和OpenNMS那样对服务器系统做非常全面细致的监控，它默认的监控指标比较少不过对于监控网格或者群集这种数量巨大的对象来说这些比较经典的指标也够用了，特别是对服务器的可用性，CUP、RAM，网络资源利用率和工作负载等数据的采集也比较够用了。如果你使用它来监控数量不是很多服务器的话，你可以使用它的可扩展性加入任何想监控的KPI。我最喜欢的还是它能把服务做分组，而且垂直的方向上可以加N层的嵌套；这种组织方式能比较好的适用于业务系统众多而复杂的数据中心。  </description>
+    </item>
+    
+    <item>
+      <title>Ganglia install and configure</title>
+      <link>https://martinliu.cn/2008/05/24/ganglia-install-and-configure/</link>
+      <pubDate>Sat, 24 May 2008 02:15:27 +0000</pubDate>
+      
+      <guid>https://martinliu.cn/2008/05/24/ganglia-install-and-configure/</guid>
+      <description>我准备安装的版本是ganglia-3.0.7 ， 参考的安装文档是http://www.linuxsir.org/bbs/thread309837.html
 rpm的安装会比较省事。rpm安装都会很正常，不过在Suse下面需要注意一下两点：
-gmond和gmated的启动脚本不是rpm包中默认装上的那个，那个脚本适用于redhat linux；下载源码编译之后在gmond/ gmated/的文件夹里有后缀为 .SuSE的哪两个文件才对。 rpm吧gmated的web界面默认安装路径是/var/www/http/ ，SuSE下的apache的路径是 /srv/www/htdoc/；安装完后copy或者连接过来 配置：
-gmond.conf 更具我参考的安装文档产生这个文件的命令是 gmond -t &amp;gt; /etc/gmond.conf；rpm安装包中有这个文件，如果需要恢复到默认状态可以使用这个命令。 gmated.conf 是服务器端的主要配置文件，详细阅读一下源码包中的那个html文件对这个文件的配置会有帮助 安装过程中出现的问题如下：在启动gmond的时候启动失败，debug一下可以看到下面的错误。
+
+ gmond和gmated的启动脚本不是rpm包中默认装上的那个，那个脚本适用于redhat linux；下载源码编译之后在gmond/ gmated/的文件夹里有后缀为 .SuSE的哪两个文件才对。  rpm吧gmated的web界面默认安装路径是/var/www/http/ ，SuSE下的apache的路径是 /srv/www/htdoc/；安装完后copy或者连接过来 配置：
+ gmond.conf 更具我参考的安装文档产生这个文件的命令是 gmond -t &amp;gt; /etc/gmond.conf；rpm安装包中有这个文件，如果需要恢复到默认状态可以使用这个命令。  gmated.conf 是服务器端的主要配置文件，详细阅读一下源码包中的那个html文件对这个文件的配置会有帮助 安装过程中出现的问题如下：在启动gmond的时候启动失败，debug一下可以看到下面的错误。
 sles:~ # gmond &amp;ndash;debug=9
 slurpfile() open() error on file /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq: No such file or directory
 udp_recv_channel mcast_join=239.2.11.71 mcast_if=NULL port=8649 bind=239.2.11.71
 Error creating multicast server mcast_join=239.2.11.71 port=8649 mcast_if=NULL family=&amp;lsquo;inet4&amp;rsquo;. Exiting.
 在所有虚拟机（host-only 网络设置）上都遇到这个错误。一次一个NAT网络的虚机上正常
-至今觉得这是一个网络的问题，还没有想出正确的配置和解决方法。如果您有什么好建议请留言。</description></item><item><title>Using Ganglia for cluster and grid monitoring</title><link>https://martinliu.cn/2008/04/16/using-ganglia-for-cluster-and-grid-monitoring/</link><pubDate>Wed, 16 Apr 2008 09:41:06 +0000</pubDate><guid>https://martinliu.cn/2008/04/16/using-ganglia-for-cluster-and-grid-monitoring/</guid><description>Ganglia是一个用来监控群集和网格计算环境的软件。它是可以扩展的分布式监控系统，它基于多播协议，数据存储和传输的格式都是基于开源的标准：XML/XDR/RRDTool/APR/Apache/php等。
-应用Ganglia的几个理由：
-在一个点上监控包含很多服务器的群集，单个cluster内服务器的数量比较多，需要从整体看某个cluster的可用性和性能，也要能看到单独某个机器的运行情况。 监控分布式的cluster环境，例如跨网段和地域的灾备的环境。 需要监控系统能分N级的查看方式，以银行为例：北数据中心&amp;ndash;&amp;gt;网络银行业务&amp;ndash;&amp;gt;个人网银系统&amp;ndash;&amp;gt;web server 群集&amp;ndash;&amp;gt; WebSvr001；可以按业务逻辑和系统架构逻辑。 需要724365的监控整个系统，能得到可用性、性能和容量等方面的报表。 应用Ganglia的几个好处：
-监控能力的无限扩展，被管理服务器数量达数千个甚至根多。 纯web前端，apache和php的应用页面方便定制 强壮的系统结构，并且具备可以任意扩展采集数据KPI的特点 适合高性能计算或者网格计算环境。 Ganglia应用需要注意的方面：
-在每一个节点上需要部署一个代理程序，考虑到对代理配置的变更的工作量，在部署代理之前，需要彻底的分析需求，尽量减少部署过程中配置变更带来的多于调试的工作量。 部署后期的变更工作，如果比较频繁的话将导致后台维护工作量增大，可以考虑使用一些开源的软件分发和自动化配置管理的工具。这些配置的初始化工作可以与OS的安装部署工作一起考虑。 它被很多大学和专业机构研究并使用，所以有非常多的专业文档可以参考，哪行文档多分析了Ganglia的系统架构和特点，多系统的原理介绍的非常细致。下面是我收集的几个关于这个软件的文档请参考。并且在它们的网站上也可以看到很多相关的资源连接，都是非常好的实施方面的详细文档。
-If you need more detail please take look those documents below.</description></item></channel></rss>
+至今觉得这是一个网络的问题，还没有想出正确的配置和解决方法。如果您有什么好建议请留言。  </description>
+    </item>
+    
+  </channel>
+</rss>
