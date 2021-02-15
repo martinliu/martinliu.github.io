@@ -6,9 +6,6 @@ comments: true
 date: 2011-04-10T11:11:27Z
 slug: let-ubuntu-fly
 tags:
-- "163"
-- apt-fast
-- lapm
 - opensuse
 - Ubuntu
 title: 让Ubuntu飞一会儿

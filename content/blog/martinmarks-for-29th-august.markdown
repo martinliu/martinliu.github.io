@@ -10,8 +10,6 @@ tags:
 - cms
 - ITIL
 - ITSM
-- 流程
-- 配置经理
 title: MartinMarks for 29th August
 url: /2009/08/29/martinmarks-for-29th-august/
 wordpress_id: 49275

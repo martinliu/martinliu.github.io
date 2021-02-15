@@ -8,10 +8,8 @@ post_format:
 - Status
 slug: my-first-half-marathon
 tags:
-- half
 - marathon
 - Running
-- training
 title: My first half marathon
 url: /2013/03/14/my-first-half-marathon/
 wordpress_id: 52282

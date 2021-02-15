@@ -6,12 +6,10 @@ comments: true
 date: 2009-11-19T16:32:22Z
 slug: how-to-select-a-cmdb
 tags:
-- book
 - cmdb
 - cms
 - ITIL
 - ITSM
-- translation
 title: CMDB选型解密
 url: /2009/11/19/how-to-select-a-cmdb/
 wordpress_id: 49572

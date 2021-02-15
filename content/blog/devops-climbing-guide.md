@@ -10,6 +10,8 @@ postmeta: false
 nocomment: true
 ---
 
+美国金融行业Nationwide保险公司DevOps案例研究，来源DOES17 San Francisco，主题-DevOps Handbook Experiments in Accelerating Delivery
+
 全美互惠保险公司(Nationwide)美国公司。在2017年6月7日，《财富》2017年美国500强排行榜发布，全美互惠保险公司排名第68位。营业收入40074.1百万美元。
 
 这家公司是DevOps Handbook（DevOps实践指南）书中的案例研究之一。这是一家DevOps水平较高的企业，是DevOpsDays大会上分享嘉宾的常客，也是各个DevOps工具厂商（New Relic）经常邀请的案例分享嘉宾。他们也经常参加DevOps企业峰会，曾多次做过自己的DevOps应用状况案例分享。

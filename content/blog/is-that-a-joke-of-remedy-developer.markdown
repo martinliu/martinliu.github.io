@@ -6,10 +6,6 @@ comments: true
 date: 2009-12-24T13:35:26Z
 slug: is-that-a-joke-of-remedy-developer
 tags:
-- ARS
-- ARSlist.org
-- itsm
-- Developer
 - remedy
 title: 老美真的很扯，一个职位的帖子被顶了22次
 url: /2009/12/24/is-that-a-joke-of-remedy-developer/

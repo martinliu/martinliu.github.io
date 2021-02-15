@@ -7,11 +7,6 @@ date: 2010-03-30T14:00:01Z
 slug: phase-roll-out-cmdb-implement
 tags:
 - Atrium
-- itsm
-- cmdb
-- ITIL
-- ITSM
-- itsm
 - remedy
 title: 掀起CMDB的盖头来
 url: /2010/03/30/phase-roll-out-cmdb-implement/

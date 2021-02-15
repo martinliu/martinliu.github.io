@@ -9,11 +9,6 @@ tags:
 - CSI
 - ITIL
 - ITSM
-- SD
-- SO
-- SS
-- ST
-- v3
 title: ITIL V3 Study Notes (2)
 url: /2008/11/04/itil-v3-study-notes-2/
 wordpress_id: 49239

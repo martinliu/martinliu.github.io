@@ -13,8 +13,6 @@ subtitle: This document helps you set up a simplified lab to review hardware-acc
 slug: reviewers-guide-remote-3d-graphics-apps
 tags:
 - infrastructure
-- hdx 3d
-- vgpu
 title: 'Reviewer’s Guide for Remote 3D  Graphics Apps '
 url: /2013/12/31/reviewers-guide-remote-3d-graphics-apps/
 wordpress_id: 52700

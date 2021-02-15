@@ -6,9 +6,6 @@ comments: true
 date: 2010-09-22T13:51:14Z
 slug: install-remedy-ars-itsm-on-aix-oracle
 tags:
-- "7.6"
-- ar
-- ARS
 - cmdb
 - ITSM
 - remedy

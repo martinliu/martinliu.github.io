@@ -8,9 +8,6 @@ slug: rt3-request-tracker
 tags:
 - help desk
 - ITIL
-- OTRS
-- request tacker
-- rt3
 title: RT3 Request Tacker或让你摆脱束缚
 url: /2010/07/18/rt3-request-tracker/
 wordpress_id: 50685

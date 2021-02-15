@@ -6,10 +6,6 @@ comments: true
 date: 2008-10-19T13:01:34Z
 slug: otrs-faq-153-you-have-six-reasons-to-use-it
 tags:
-- faq
-- ITIL
-- KB
-- Knowoledge Base
 - OTRS
 title: 'OTRS FAQ 1.5.3 : you have six reasons to use it'
 url: /2008/10/19/otrs-faq-153-you-have-six-reasons-to-use-it/

@@ -6,9 +6,7 @@ comments: true
 date: 2007-03-21T04:09:00Z
 slug: ntop-web-based-network-traffic-monitor
 tags:
-- Network
 - ntop
-- traffic
 title: ntop ~ Web-based network traffic monitor
 url: /2007/03/21/ntop-web-based-network-traffic-monitor/
 wordpress_id: 49145

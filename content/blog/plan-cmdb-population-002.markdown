@@ -9,11 +9,6 @@ tags:
 - Atrium
 - itsm
 - cmdb
-- cms
-- configuration management
-- ITIL
-- ITSM
-- v3
 title: 规划CMDB数据填充-002
 url: /2010/07/20/plan-cmdb-population-002/
 wordpress_id: 50692

@@ -6,7 +6,6 @@ comments: true
 date: 2010-12-20T03:01:40Z
 slug: itil-v3-asset-configuration
 tags:
-- ci
 - cmdb
 - ITIL
 - ITSM

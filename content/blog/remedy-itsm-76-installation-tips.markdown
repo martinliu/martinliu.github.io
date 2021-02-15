@@ -7,14 +7,8 @@ comments: true
 date: 2009-11-28T09:29:04Z
 slug: remedy-itsm-76-installation-tips
 tags:
-- "7.6"
 - itsm
 - linux
-- oracle
-- remedy
-- SUSE Linux Enterprise Server
-- 安装
-- 技巧
 title: Remedy ITSM 7.6 installation Tips
 url: /2009/11/28/remedy-itsm-76-installation-tips/
 wordpress_id: 50186

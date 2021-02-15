@@ -6,12 +6,7 @@ comments: true
 date: 2011-05-07T10:31:36Z
 slug: let-remedy-ars-fly-2
 tags:
-- ARS
 - ITSM
-- oracle
-- remedy
-- Tomcat
-- 性能调优
 title: 让Remedy飞一会
 url: /2011/05/07/let-remedy-ars-fly-2/
 wordpress_id: 51051

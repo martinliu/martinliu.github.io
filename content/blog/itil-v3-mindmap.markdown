@@ -8,7 +8,6 @@ slug: itil-v3-mindmap
 tags:
 - ITIL
 - ITSM
-- mindmap
 title: ITIL v3 MindMap脑图
 url: /2010/07/29/itil-v3-mindmap/
 wordpress_id: 50735
