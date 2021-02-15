@@ -7,14 +7,6 @@ date: 2010-09-17T18:46:09Z
 slug: zt-bsm-dead
 tags:
 - itsm
-- BSM
-- CA
-- cloud
-- cmdb
-- Integrien
-- ITSM
-- virtuali
-- VMWare
 title: '[ZT] Old BSM is dead'
 url: /2010/09/17/zt-bsm-dead/
 wordpress_id: 50807

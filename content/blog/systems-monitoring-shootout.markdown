@@ -7,11 +7,7 @@ date: 2008-08-04T09:26:57Z
 slug: systems-monitoring-shootout
 tags:
 - GroundWorks
-- Hyperic
 - opensource
-- opensource
-- Zabix
-- Zenoss
 title: Systems Monitoring Shootout
 url: /2008/08/04/systems-monitoring-shootout/
 wordpress_id: 49220

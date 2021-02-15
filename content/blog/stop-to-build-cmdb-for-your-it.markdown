@@ -6,16 +6,7 @@ comments: true
 date: 2009-03-01T13:40:16Z
 slug: stop-to-build-cmdb-for-your-it
 tags:
-- change management
-- ci
 - cmdb
-- cms
-- ITIL
-- reconciliation
-- service desk
-- service model
-- topology
-- v3
 title: Stop to build CMDB for your IT - CMS是怎样炼成的？
 url: /2009/03/01/stop-to-build-cmdb-for-your-it/
 wordpress_id: 49256

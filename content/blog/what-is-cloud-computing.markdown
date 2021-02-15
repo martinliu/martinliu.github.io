@@ -6,7 +6,6 @@ comments: true
 date: 2009-10-21T04:36:11Z
 slug: what-is-cloud-computing
 tags:
-- rPath
 - salesforce
 title: 何谓云？
 url: /2009/10/21/what-is-cloud-computing/

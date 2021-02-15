@@ -6,11 +6,7 @@ comments: true
 date: 2013-05-02T04:22:36Z
 slug: xendesktop%e8%99%9a%e6%8b%9f%e6%a1%8c%e9%9d%a2%e7%b2%be%e5%93%81%e4%b9%a6%e7%b1%8d%e5%af%bc%e8%af%bbpart4
 tags:
-- Ag
-- infrastructure
-- Netscaler
-- StoreFront
-- infrastructure
+- xendesktop
 title: XenDesktop虚拟桌面精品书籍导读(part4)
 url: /2013/05/02/xendesktope8999ae68b9fe6a18ce99da2e7b2bee59381e4b9a6e7b18de5afbce8afbbpart4/
 wordpress_id: 52401

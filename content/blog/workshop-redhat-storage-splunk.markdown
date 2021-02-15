@@ -6,7 +6,6 @@ comments: true
 date: 2014-12-04T02:34:03Z
 slug: workshop-redhat-storage-splunk
 tags:
-- rhs
 - splunk
 title: workshop redhat storage and splunk
 url: /2014/12/04/workshop-redhat-storage-splunk/

@@ -6,8 +6,6 @@ comments: true
 date: 2009-07-04T05:37:57Z
 slug: tomcat%e5%8e%8b%e5%8a%9b%e6%b5%8b%e8%af%95-%e6%8c%ba%e4%bd%8f200%e5%b9%b6%e5%8f%91
 tags:
-- benchmark
-- loadrunner
 - Tomcat
 title: Tomcat压力测试-挺住200并发
 url: /2009/07/04/tomcate58e8be58a9be6b58be8af95-e68cbae4bd8f200e5b9b6e58f91/

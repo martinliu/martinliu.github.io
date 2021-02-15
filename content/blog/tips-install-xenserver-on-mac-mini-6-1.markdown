@@ -6,11 +6,6 @@ comments: true
 date: 2013-02-21T09:24:38Z
 slug: tips-install-xenserver-on-mac-mini-6-1
 tags:
-- 6.0.201
-- "6.1"
-- blog
-- mac
-- mac mini
 - cloud-computing
 title: 'TIPS install XenServer on Mac Mini 6.1 '
 url: /2013/02/21/tips-install-xenserver-on-mac-mini-6-1/

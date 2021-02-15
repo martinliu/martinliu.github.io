@@ -6,11 +6,6 @@ comments: true
 date: 2013-04-23T08:20:59Z
 slug: xen-is-now-a-linux-foundation-collaborative-project
 tags:
-- Apache
-- infrastructure
-- cloud-computing
-- iaas
-- linux
 - xen
 title: 让Xen Project回家
 url: /2013/04/23/xen-is-now-a-linux-foundation-collaborative-project/

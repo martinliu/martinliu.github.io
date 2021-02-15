@@ -8,7 +8,6 @@ slug: start-rhel
 tags:
 - linux
 - RHEL
-- work
 title: Start over from RHEL
 url: /2014/09/21/start-rhel/
 wordpress_id: 53117

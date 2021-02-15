@@ -7,11 +7,6 @@ date: 2008-12-27T08:21:11Z
 slug: training-tips
 tags:
 - itsm
-- ITIL
-- ITSM
-- remedy
-- training
-- v3
 title: Training tips
 url: /2008/12/27/training-tips/
 wordpress_id: 49244

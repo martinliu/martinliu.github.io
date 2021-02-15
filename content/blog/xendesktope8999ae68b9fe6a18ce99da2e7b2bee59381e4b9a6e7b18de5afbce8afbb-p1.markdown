@@ -6,13 +6,7 @@ comments: true
 date: 2013-04-09T02:19:37Z
 slug: xendesktop%e8%99%9a%e6%8b%9f%e6%a1%8c%e9%9d%a2%e7%b2%be%e5%93%81%e4%b9%a6%e7%b1%8d%e5%af%bc%e8%af%bb-p1
 tags:
-- Access
-- deploy
-- Design
-- FlexCast
-- Manitain
-- infrastructure
-- 虚拟桌面
+- xendesktop
 title: XenDesktop虚拟桌面精品书籍导读(part1)
 url: /2013/04/09/xendesktope8999ae68b9fe6a18ce99da2e7b2bee59381e4b9a6e7b18de5afbce8afbb-p1/
 wordpress_id: 52322

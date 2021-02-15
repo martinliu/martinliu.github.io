@@ -6,10 +6,7 @@ comments: true
 date: 2008-05-31T04:59:24Z
 slug: zeuux-free-software-summit-tsinghua
 tags:
-- free software
-- gnu
-- linux
-- zeuux
+- tsinghua
 title: Zeuux Free software summit @Tsinghua
 url: /2008/05/31/zeuux-free-software-summit-tsinghua/
 wordpress_id: 49208

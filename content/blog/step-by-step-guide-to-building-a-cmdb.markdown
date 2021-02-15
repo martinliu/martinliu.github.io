@@ -6,8 +6,6 @@ comments: true
 date: 2009-10-17T09:37:08Z
 slug: step-by-step-guide-to-building-a-cmdb
 tags:
-- Atrium
-- itsm
 - cmdb
 - cms
 title: 手把手教您构建CMDB/CMS

@@ -7,8 +7,6 @@ date: 2008-08-03T07:45:41Z
 slug: this-post-is-too-later
 tags:
 - beijing
-- cms
-- Olympic
 - wordpress
 title: This post is too later
 url: /2008/08/03/this-post-is-too-later/

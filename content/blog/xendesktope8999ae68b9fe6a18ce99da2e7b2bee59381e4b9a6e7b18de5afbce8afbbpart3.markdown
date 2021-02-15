@@ -6,10 +6,7 @@ comments: true
 date: 2013-04-16T15:29:43Z
 slug: xendesktop%e8%99%9a%e6%8b%9f%e6%a1%8c%e9%9d%a2%e7%b2%be%e5%93%81%e4%b9%a6%e7%b1%8d%e5%af%bc%e8%af%bbpart3
 tags:
-- infrastructure
-- hdx
-- infrastructure
-- infrastructure
+- xendesktop
 title: XenDesktop虚拟桌面精品书籍导读(part3)
 url: /2013/04/16/xendesktope8999ae68b9fe6a18ce99da2e7b2bee59381e4b9a6e7b18de5afbce8afbbpart3/
 wordpress_id: 52356

@@ -9,7 +9,6 @@ post_format:
 slug: two-records-xuanhu-lake-10km
 tags:
 - Running
-- Xuanwu lake
 title: 破两项个人记录
 url: /2013/03/28/two-records-xuanhu-lake-10km/
 wordpress_id: 52296
