@@ -29,21 +29,21 @@ jobs:
       with:
           hugo-version: 'latest'
 
-      # Step 3 - 清理代码库中 public 目录中的内容
-      - name: Clean public directory
-        run: rm -rf public # 彻底删除这个目录
+    # Step 3 - 清理代码库中 public 目录中的内容
+    - name: Clean public directory
+      run: rm -rf public # 彻底删除这个目录
 
-      # Step 4 - 用最新版本的 Hugo 构建个人博客站点
-      - name: Build blog site
-        run: hugo --minify
+    # Step 4 - 用最新版本的 Hugo 构建个人博客站点
+    - name: Build blog site
+      run: hugo --minify
 
-      # Step 5 - 创建用于私有域名所需要的 CNAME 文件
-      - name: Create CNAME file
-        run: echo 'martinliu.cn' > public/CNAME
+    # Step 5 - 创建用于私有域名所需要的 CNAME 文件
+    - name: Create CNAME file
+      run: echo 'martinliu.cn' > public/CNAME
 
-      # Step 6 - 将构建好的博客站点推送发布到 gh-pages 分支
-      - name: Deploy blog to Github-pages
-        uses: peaceiris/actions-gh-pages@v3
-        with:
-          github_token: ${{ secrets.DEPLOY_KEY }}
-          publish_dir: ./public
+    # Step 6 - 将构建好的博客站点推送发布到 gh-pages 分支
+    - name: Deploy blog to Github-pages
+      uses: peaceiris/actions-gh-pages@v3
+      with:
+        github_token: ${{ secrets.DEPLOY_KEY }}
+        publish_dir: ./public
