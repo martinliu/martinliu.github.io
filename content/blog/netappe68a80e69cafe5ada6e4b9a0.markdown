@@ -8,7 +8,6 @@ slug: netapp%e6%8a%80%e6%9c%af%e5%ad%a6%e4%b9%a0
 tags:
 - NetApp
 - ONTAP
-- Simulator
 title: NetApp技术学习
 url: /2013/02/26/netappe68a80e69cafe5ada6e4b9a0/
 wordpress_id: 52268

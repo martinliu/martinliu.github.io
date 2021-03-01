@@ -6,9 +6,6 @@ comments: true
 date: 2010-01-07T05:20:06Z
 slug: what-is-das-nas-san
 tags:
-- das
-- nas
-- san
 - storage
 title: 图文阐释-DAS-NAS-SAN
 url: /2010/01/07/what-is-das-nas-san/

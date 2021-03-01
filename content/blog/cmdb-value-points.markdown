@@ -1,32 +1,20 @@
 ---
 author: liuadmin
 categories:
-- CMS/CMDB
+  - CMS/CMDB
 comments: true
 date: 2010-01-01T05:23:06Z
 slug: cmdb-value-points
 tags:
-- itsm
-- BSM
-- cmdb
-- ITIL
-- ITSM
-- license
-- remedy
-- service desk
-- translation
-- value
-- 优先度
-- 变更管理
-- 可视化
-- 持续性管理
-- 服务台
+  - itsm
+  - BSM
+  - remedy
 title: CMDB Value Points 价值点
 url: /2010/01/01/cmdb-value-points/
 wordpress_id: 50437
 ---
 
-[![The point value](http://farm2.static.flickr.com/1296/682513568_4476244046.jpg)](http://www.flickr.com/photos/waywardsheep/682513568/)<br /><br />CMDB的价值点分为两类：硬收益和软收益。从硬收益的角度，CMDB的用户可能会让你来描述CMDB对他们的价值点。下面的几个轶事可以作为收集CMDB可能为你的企业带来价值点的几个方向：<br />
+[![The point value](http://farm2.static.flickr.com/1296/682513568_4476244046.jpg)](http://www.flickr.com/photos/waywardsheep/682513568/)<br /><br />CMDB 的价值点分为两类：硬收益和软收益。从硬收益的角度，CMDB 的用户可能会让你来描述 CMDB 对他们的价值点。下面的几个轶事可以作为收集 CMDB 可能为你的企业带来价值点的几个方向：<br />
 
 <br />	
   * **把IT环境的可视化带到更高程度** --一领先的制热和冷却系统供应商指出，他们始终无法很好的理解一个计划外停机时间对用户所造成影响。例如，当只有25个用户受到了网络中断问题的影响，IT部门必须通知用户群中的全部100个用户。这会导致一个客户满意度低的反馈。CMDB使该公司能够理解配置项之间的关系，并确切地知道在任何确定时刻什么用户会受到影响。现在用户间可信的沟通能够来自于各个IT部门，并且使IT成为业务不可分割的一部分。

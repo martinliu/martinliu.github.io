@@ -6,9 +6,7 @@ comments: true
 date: 2008-04-16T09:41:06Z
 slug: using-ganglia-for-cluster-and-grid-monitoring
 tags:
-- cluster
-- Ganglia
-- grid
+- Opensource
 title: Using Ganglia for cluster and grid monitoring
 url: /2008/04/16/using-ganglia-for-cluster-and-grid-monitoring/
 wordpress_id: 49198

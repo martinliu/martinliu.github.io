@@ -7,8 +7,6 @@ date: 2008-01-21T17:34:00Z
 slug: trap-tools
 tags:
 - itsm
-- blog
-- Trap
 title: 网管系统的测试工具
 url: /2008/01/21/trap-tools/
 wordpress_id: 49181

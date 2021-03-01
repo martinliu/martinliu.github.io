@@ -7,9 +7,6 @@ date: 2009-07-07T01:51:35Z
 slug: martinmark-for-july-7th
 tags:
 - Apache
-- IIS
-- Load balancer
-- Tomcat
 title: MartinMark for July 7th
 url: /2009/07/07/martinmark-for-july-7th/
 wordpress_id: 49266

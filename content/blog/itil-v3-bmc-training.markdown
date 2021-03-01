@@ -7,10 +7,6 @@ date: 2011-02-21T04:11:37Z
 slug: itil-v3-bmc-training
 tags:
 - ITIL
-- traiing
-- V2
-- 上海
-- 培训
 title: ITIL V3中级认证培训-服务生命周期模块
 url: /2011/02/21/itil-v3-bmc-training/
 wordpress_id: 50964

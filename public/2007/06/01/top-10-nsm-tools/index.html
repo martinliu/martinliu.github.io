@@ -1,24 +1,581 @@
-<!doctype html><html lang=zh-cn><head><meta charset=utf-8><title>[转]10大优秀开源网络管理工具 - 刘征的博客</title><meta name=viewport content="width=device-width,initial-scale=1"><meta name=generator content="Hugo 0.80.0"><meta property="og:site_name" content="刘征的博客"><meta property="og:title" content="[转]10大优秀开源网络管理工具"><meta property="og:description" content="Martin's Liu is bloging on DevOps and SRE topics"><meta property="description" content="Martin's Liu is bloging on DevOps and SRE topics"><meta property="og:url" content="https://martinliu.cn/2007/06/01/top-10-nsm-tools/"><meta property="og:type" content="article"><meta property="og:image" content="https://martinliu.cn/img/main/logo.jpg"><link rel=stylesheet href=/css/bundle.min.d9e04ae08c9b3049b766dbd4aeab7d862c5ea1d13679b621490e0f5df5507497.css integrity="sha256-2eBK4IybMEm3ZtvUrqt9hixeodE2ebYhSQ4PXfVQdJc="><link rel=stylesheet href=/css/add-on.css></head><body><header id=site-header><nav id=site-nav><h1 class=nav-title><a href=/ class=nav>博客</a></h1><menu id=site-nav-menu class="flyout-menu menu"><a href=/ class="nav link"><i class="fas fa-home"></i>首页</a>
-<a href=/about/ class="nav link"><i class="far fa-id-card"></i>关于</a>
-<a href=/blog/ class="nav link"><i class="far fa-newspaper"></i>博客</a>
-<a href=/categories/ class="nav link"><i class="fas fa-sitemap"></i>分类</a>
-<a href=/contact/ class="nav link"><i class="far fa-envelope"></i>联系</a>
-<a href=#share-menu class="nav link share-toggle"><i class="fas fa-share-alt">&nbsp;</i>Share</a>
-<a href=#search-input class="nav link search-toggle"><i class="fas fa-search">&nbsp;</i>Search</a></menu>
-<a href=#search-input class="nav search-toggle"><i class="fas fa-search fa-2x">&nbsp;</i></a>
-<a href=#share-menu class="nav share-toggle"><i class="fas fa-share-alt fa-2x">&nbsp;</i></a>
-<a href=#lang-menu class="nav lang-toggle" lang=zh-cn>zh-cn</a>
-<a href=#site-nav class="nav nav-toggle"><i class="fas fa-bars fa-2x"></i></a></nav><menu id=search class=menu><input id=search-input class="search-input menu"></input><div id=search-results class="search-results menu"></div></menu><menu id=lang-menu class="flyout-menu menu"><a href=# lang=zh-cn class="nav link active">中文 (zh-cn)</a>
-<a href=/en lang=en class="nav no-lang link">English (en)</a></menu>
-<menu id=share-menu class="flyout-menu menu"><h1>Share Post</h1><a href="//twitter.com/share?text=%5b%e8%bd%ac%5d10%e5%a4%a7%e4%bc%98%e7%a7%80%e5%bc%80%e6%ba%90%e7%bd%91%e7%bb%9c%e7%ae%a1%e7%90%86%e5%b7%a5%e5%85%b7&url=https%3a%2f%2fmartinliu.cn%2f2007%2f06%2f01%2ftop-10-nsm-tools%2f" target=_blank rel=noopener class="nav share-btn twitter"><p>Twitter</p></a><a href="//www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fmartinliu.cn%2f2007%2f06%2f01%2ftop-10-nsm-tools%2f" target=_blank rel=noopener class="nav share-btn facebook"><p>Facebook</p></a><a href="//www.reddit.com/submit?url=https%3a%2f%2fmartinliu.cn%2f2007%2f06%2f01%2ftop-10-nsm-tools%2f&title=%5b%e8%bd%ac%5d10%e5%a4%a7%e4%bc%98%e7%a7%80%e5%bc%80%e6%ba%90%e7%bd%91%e7%bb%9c%e7%ae%a1%e7%90%86%e5%b7%a5%e5%85%b7" target=_blank rel=noopener class="nav share-btn reddit"><p>Reddit</p></a><a href="//www.linkedin.com/shareArticle?url=https%3a%2f%2fmartinliu.cn%2f2007%2f06%2f01%2ftop-10-nsm-tools%2f&title=%5b%e8%bd%ac%5d10%e5%a4%a7%e4%bc%98%e7%a7%80%e5%bc%80%e6%ba%90%e7%bd%91%e7%bb%9c%e7%ae%a1%e7%90%86%e5%b7%a5%e5%85%b7" target=_blank rel=noopener class="nav share-btn linkedin"><p>LinkedIn</p></a><a href="//www.pinterest.com/pin/create/button/?url=https%3a%2f%2fmartinliu.cn%2f2007%2f06%2f01%2ftop-10-nsm-tools%2f&description=%5b%e8%bd%ac%5d10%e5%a4%a7%e4%bc%98%e7%a7%80%e5%bc%80%e6%ba%90%e7%bd%91%e7%bb%9c%e7%ae%a1%e7%90%86%e5%b7%a5%e5%85%b7" target=_blank rel=noopener class="nav share-btn pinterest"><p>Pinterest</p></a><a href="mailto:?subject=%e6%9f%a5%e7%9c%8b%e6%ad%a4%e5%b8%96%e5%ad%90%e7%9a%84%e4%bd%9c%e8%80%85 liuadmin&body=https%3a%2f%2fmartinliu.cn%2f2007%2f06%2f01%2ftop-10-nsm-tools%2f" target=_blank class="nav share-btn email" data-proofer-ignore><p>Email</p></a></menu></header><div id=wrapper><section id=site-intro><a href=/><img src=https://martinliu.cn/img/main/logo.jpg class=circle width=100 alt="Martin Liu"></a><header><h1>Martin Liu's Blog</h1></header><main><p>Community Advocate, DevOps China Community Organizer</p></main><footer><ul class=socnet-icons><li><a href=//github.com/martinliu target=_blank rel=noopener title=GitHub class="fab fa-github"></a></li><li><a href=//www.linkedin.com/in/liuzheng target=_blank rel=noopener title=LinkedIn class="fab fa-linkedin"></a></li><li><a href=//twitter.com/martinliu target=_blank rel=noopener title=Twitter class="fab fa-twitter"></a></li></ul></footer></section><main id=site-main><article class=post><header><div class=title><h2><a href=/2007/06/01/top-10-nsm-tools/>[转]10大优秀开源网络管理工具</a></h2></div><div class=meta><time datetime="2007-06-01 01:47:00 +0000 UTC">June 1, 2007</time><p>liuadmin</p><p>1 分钟</p></div></header><div id=socnet-share><a href="//twitter.com/share?text=%5b%e8%bd%ac%5d10%e5%a4%a7%e4%bc%98%e7%a7%80%e5%bc%80%e6%ba%90%e7%bd%91%e7%bb%9c%e7%ae%a1%e7%90%86%e5%b7%a5%e5%85%b7&url=https%3a%2f%2fmartinliu.cn%2f2007%2f06%2f01%2ftop-10-nsm-tools%2f" target=_blank rel=noopener class="nav share-btn twitter"><p>Twitter</p></a><a href="//www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fmartinliu.cn%2f2007%2f06%2f01%2ftop-10-nsm-tools%2f" target=_blank rel=noopener class="nav share-btn facebook"><p>Facebook</p></a><a href="//www.reddit.com/submit?url=https%3a%2f%2fmartinliu.cn%2f2007%2f06%2f01%2ftop-10-nsm-tools%2f&title=%5b%e8%bd%ac%5d10%e5%a4%a7%e4%bc%98%e7%a7%80%e5%bc%80%e6%ba%90%e7%bd%91%e7%bb%9c%e7%ae%a1%e7%90%86%e5%b7%a5%e5%85%b7" target=_blank rel=noopener class="nav share-btn reddit"><p>Reddit</p></a><a href="//www.linkedin.com/shareArticle?url=https%3a%2f%2fmartinliu.cn%2f2007%2f06%2f01%2ftop-10-nsm-tools%2f&title=%5b%e8%bd%ac%5d10%e5%a4%a7%e4%bc%98%e7%a7%80%e5%bc%80%e6%ba%90%e7%bd%91%e7%bb%9c%e7%ae%a1%e7%90%86%e5%b7%a5%e5%85%b7" target=_blank rel=noopener class="nav share-btn linkedin"><p>LinkedIn</p></a><a href="//www.pinterest.com/pin/create/button/?url=https%3a%2f%2fmartinliu.cn%2f2007%2f06%2f01%2ftop-10-nsm-tools%2f&description=%5b%e8%bd%ac%5d10%e5%a4%a7%e4%bc%98%e7%a7%80%e5%bc%80%e6%ba%90%e7%bd%91%e7%bb%9c%e7%ae%a1%e7%90%86%e5%b7%a5%e5%85%b7" target=_blank rel=noopener class="nav share-btn pinterest"><p>Pinterest</p></a><a href="mailto:?subject=%e6%9f%a5%e7%9c%8b%e6%ad%a4%e5%b8%96%e5%ad%90%e7%9a%84%e4%bd%9c%e8%80%85 liuadmin&body=https%3a%2f%2fmartinliu.cn%2f2007%2f06%2f01%2ftop-10-nsm-tools%2f" target=_blank class="nav share-btn email" data-proofer-ignore><p>Email</p></a></div><div class=content><p><a href=http://www.itmanagement.com/images/logo-itmanagement2.gif><img src=http://www.itmanagement.com/images/logo-itmanagement2.gif alt></a>转载ITmanagement的一个文章；全文的部分翻译。<a href=http://www.itmanagement.com/images/logo-itmanagement2.gif></a>个人以为这个文章的把网管的开源工具做了一个小结，英文好的同志请直接访问原文地址：<a href=http://www.itmanagement.com/features/10-open-source-network-tools-052407>click Here</a><br><br></p><p>“最高评分的管理管理工具不会使人不得不花未来的钱。来考虑一下这些自由且低成本的开源软件吧。”<br>Leslie T. O’Neill May 24th, 2007</p><p><br>如果您的公司排名在Fortune 1000强和中小企业之间，那么您网络管理的选择形势看似比较严酷。你既不能在小市场上收集一堆拙劣的玩意来组成一个解决方案；你也不能花很多钱买一些真正不需要的高科技产品。这里有一个很好的选择：试用可一个开源的网络管理方案，加专业服务，包括开发和技术支持。<br></p><p>**Open Source = Flexible **<strong>开源＝灵活性</strong></p><p><br></p><p>一个开源的解决方案对厂商来说也是非常灵活性的，他们很快地增加新技术的支持，比改进一个私有系统更快。例如：当Ubuntu 7.04 “Fiesty Fawn”四月份发布之后, Hyperic HQ在发布的第二天就宣布了对其提供技术支持。</p><p><br>当谈到开源的网络管理方案时，公司最需要也用的最多的技术莫过与监控功能。不过监控技术在很大程度上已经变成了日用品。<br><br>通常的，专业化版本的开源IT管理软件平台集成多个其他开源项目在一个框架中，象Nagios网络监控等；并且加入统一的网络界面；并且提供技术支持服务。另外，他们都想通过强大的社区来提高和改进代码，跟踪bug等。<br></p><p><strong>六个企业级平台</strong></p><p><br></p><p>下面的六个开源IT管理都可能用作HP, IBM, CA 和 BMC大型管理套件的替代品。每一个都能提供低价的专业服务和免费软件下载。它们的不同支持在与所提供的功能和支持的操作系统</p><p><br></p><p><strong><a href=http://www.quest.com/bigbrother/>Quest Big Brother</a></strong></p><p><br></p><p>这个Web-based系统和网络监控产品能支持 Windows, Unix 和Linux等操系统, 还有一个通过用户投稿形成的脚本知识库，利用它能容易地定制Big Brother取管理你的网络。它的GUI是一个不错的特色，使用相同的颜色代码；红色代表不好，绿色代表好。</p><p><br></p><p><br></p><p><strong><a href=http://www.groundworkopensource.com/downloads/full_download.html>GroundWork Open Source Monitor Professional</a></strong></p><p><br></p><p>2004年发布，它是最早的企业级网络管理产品之一。它集成了超过100种最好的开源项目，包括Nagios, Apache 和 NMap, 在这个框架之上有添加了很多特有功能，例如Web-based用户界面等。Monitor提供了集中化的监控和管理，管理和监控你的企业网络，包括Linux, Unix 和Windows 服务器, 应用, 数据库和网络设备。</p><p><br></p><p><strong><a href=http://www.hyperic.com/downloads/>Hyperic HQ Enterprise</a></strong></p><p><br></p><p>瞄准的是一个数据中心，Hyperic被设计为去监控和管理Web应用的所有层次， 包括硬件、中间件、虚拟化、Web和开放式应用。它还提供基线和趋势分析。它支持 Apache, JBoss, Linux和更多应用。</p><p><br></p><p><strong><a href="http://www.opennms.com/site/index.php?option=com_frontpage&Itemid=1">OpenNMS</a></strong></p><p><br></p><p>这个 Java-based 网络管理工具专注于网络服务轮询，数据采集和事件/告警管理。它目前支持多种开放式操作系统，包括Linux, Mandrake 和Solaris,还有Mac OS X; Windows 系统的支持计划在OpenNMS 2.0中实现。</p><p><br></p><p><strong><a href=http://www.openqrm.org/>OpenQRM</a></strong></p><p><br></p><p>也瞄准了数据中心的管理，OpenQRM不仅能管理数以千计的Linux和Windows服务器，还能跟踪计量你的数据中心的使用率和效率。 他还能做自动化基于策略的provisioning。它也集成了Nagios作为监控功能。</p><p><br></p><p><strong><a href=http://www.zenoss.com/product/>Zenoss Core</a></strong></p><p><br></p><p>基本上都是Python写的，这个管理平台提供了服务器、网络设备、OS和应用的事件管理、可用管理、和性能管理。Zenoss 能运行于Linux, FreeBSD 和 Mac OS X；它也可以作为一个Zenoss 虚拟应用运行在VMplayer 里。</p><p><br></p><p><br></p><p><strong>四个无支持的项目</strong></p><p><br></p><p>这四个项目位于TOP10 开源网络管理工具中。不象那六个产品，它们不提供商业的服务和企业级的增强功能。但是它们是绝对的free，而且你可以拥有所有需要的网络健康性检查功能。</p><p><br></p><p><strong><a href=http://www.nagios.org/>Nagios</a></strong></p><p><br><br></p><p>这是一个开源的运行在Linux操作系统上的主机、服务和网络监控程序。<br><a href=http://www.jffnms.org/><br></a></p><p><br></p><p><strong><a href=http://www.jffnms.org/>Just For Fun Network Management System (JFFNMS)</a></strong></p><p><br><br></p><p>JFFNMS能监控标准的SNMP (Simple Network Management Protocol) 网络设备，服务器、路由器和TCP端口。它工作在Linux, FreeBSD 和Windows 2000/XP。<br><br>****</p><p><br></p><p><strong><a href=http://www.bigsister.ch/>Big Sister System and Network Monitor</a></strong></p><p><br></p><p>这个项目包括了real-time system 和network health monitor, 一个Web 应用框架和一个系统管理应用。</p><p><br></p><p><strong><a href=http://netdisco.org/>Netdisco</a></strong></p><p><br></p><p>这个Web-based应用被设计为管理中道大型网络和其中的SNMP网络设备。</p><p><br></p><p><br><br></p><hr><p><br></p><p><strong>相关文章:</strong></p><p><br></p><p>· <a href=http://www.itmanagement.com/news/hyperic-interview-part-one-081006/>Interview with Hyperic</a></p><p><br></p><p>· <a href=http://www.itmanagement.com/news/5-up-and-coming-monitoring-vendors/>Top 5 Upstart Monitoring Companies</a></p><p><br></p><p>· <a href=http://www.itmanagement.com/whitepaper/editorials/advantages-open-source-management/>The Advantages of Open Source Management</a></p><p><br></p><p>· <a href=http://www.itmanagement.com/features/10-steps-green-datacenter/>10 Simple Steps to a Green Datacenter</a></p><p><br></p><p><br><br></p><hr><p><br></p><p><br><br></p></div><footer><div class=stats><ul class=categories><li><a class=article-terms-link href=/categories/itsm/>itsm</a></li></ul><ul class=tags><li><a class=article-terms-link href=/tags/groundwork/>GroundWork</a></li><li><a class=article-terms-link href=/tags/hyperic-hq/>Hyperic HQ</a></li><li><a class=article-terms-link href=/tags/nagios/>Nagios</a></li><li><a class=article-terms-link href=/tags/opensource/>opensource</a></li><li><a class=article-terms-link href=/tags/openqrm/>OpenQRM</a></li><li><a class=article-terms-link href=/tags/zenoss/>Zenoss</a></li></ul></div></footer></article><article class=post><div><h2 id=say-something>说些什么</h2><form id=comment-form class=new-comment method=post><h3 class="reply-notice hidden"><span class=reply-name></span></h3><input type=hidden name=options[entryId] value=1d11c33272b131fe7d2726228a33ffff>
-<input type=hidden name=fields[replyThread]>
-<input type=hidden name=fields[replyID]>
-<input type=hidden name=fields[replyName]>
-<input required name=fields[name] type=text placeholder=你的名字>
-<input name=fields[website] type=text placeholder=您的网页>
-<input required name=fields[email] type=email placeholder=你的邮件>
-<textarea required name=fields[body] placeholder=你的信息 rows=10></textarea><div class=submit-notice><strong class="submit-notice-text submit-success hidden">感谢您的评论！被批准后它会立即在此站点展示。</strong>
-<strong class="submit-notice-text submit-failed hidden">很抱歉，您的提交存在错误。请确保所有必填字段都已填写正确，然后再试一次。</strong></div><input type=submit value=送出 class=button>
-<input type=submit value=已送出 class="hidden button" disabled>
-<input type=reset value=重设 class=button></form></div><div><h2>评论</h2><p>还沒有留言。</p></div></article><div class=pagination><a href=/2007/06/01/there-is-the-easiest-way-to-run-it-management-tool/ class="button left"><span>There is the easiest way to run IT management tool</span></a>
-<a href=/2007/05/30/hyperic-hq-testing/ class="button right"><span>Hyperic HQ小测手记</span></a></div></main><section id=site-sidebar><section id=recent-posts><header><h1>最新文章</h1></header><article class=mini-post><a href=/blog/workshop-elastic-observability/ class=image style="--bg-image: url('https://martinliu.cn/img/2019/03/pic01.jpg')"><img class=stretchH src=https://martinliu.cn/img/2019/03/pic01.jpg alt=Valley></a><header><h2><a href=/blog/workshop-elastic-observability/>Elastic 可观测性工作坊</a></h2><time class=published datetime="2021-02-06 10:36:12 +0800 CST">February 6, 2021</time></header></article><article class=mini-post><a href=/blog/change-back-on-github-page-again/ class=image style="--bg-image: url('https://martinliu.cn/img/2019/03/pic03.jpg')"><img class=stretchH src=https://martinliu.cn/img/2019/03/pic03.jpg alt=Valley></a><header><h2><a href=/blog/change-back-on-github-page-again/>博客换一个新样式</a></h2><time class=published datetime="2021-02-06 00:00:00 +0000 UTC">February 6, 2021</time></header></article><article class=mini-post><a href=/blog/devopscoach-weekly-6/ class=image style="--bg-image: url('https://martinliu.cn/')"><img src=https://martinliu.cn/ alt></a><header><h2><a href=/blog/devopscoach-weekly-6/>DevOps Coach 周刊 #6</a></h2><time class=published datetime="2020-08-31 00:11:01 +0800 CST">August 31, 2020</time></header></article><article class=mini-post><a href=/blog/elasticsearch-3-nodes-cluster-setup/ class=image style="--bg-image: url('https://martinliu.cn/')"><img src=https://martinliu.cn/ alt></a><header><h2><a href=/blog/elasticsearch-3-nodes-cluster-setup/>Elasticsearch 3 节点集群搭建 (7.9.0)</a></h2><time class=published datetime="2020-08-27 13:54:46 +0800 CST">August 27, 2020</time></header></article><article class=mini-post><a href=/blog/devopscoach-weekly-5/ class=image style="--bg-image: url('https://martinliu.cn/')"><img src=https://martinliu.cn/ alt></a><header><h2><a href=/blog/devopscoach-weekly-5/>DevOps Coach 周刊 #5</a></h2><time class=published datetime="2020-08-25 15:20:51 +0800 CST">August 25, 2020</time></header></article><footer><a href=/blog/ class=button>查看更多</a></footer></section><section id=categories><header><h1><a href=/categories>分类</a></h1></header><ul><li><a href=/categories/blog/>blog<span class=count>107</span></a><li><a href=/categories/itsm/>itsm<span class=count>95</span></a><li><a href=/categories/infrastructure/>infrastructure<span class=count>48</span></a><li><a href=/categories/devops/>devops<span class=count>38</span></a><li><a href=/categories/opensource/>opensource<span class=count>35</span></a><li><a href=/categories/cloud-computing/>cloud-computing<span class=count>27</span></a><li><a href=/categories/running/>running<span class=count>22</span></a><li><a href=/categories/cms/cmdb/>cms/cmdb<span class=count>20</span></a><li><a href=/categories/travel/>travel<span class=count>14</span></a><li><a href=/categories/sre/>sre<span class=count>2</span></a></li></ul></section><section id=mini-bio><header><h1>关于</h1></header><p>This Blog is sharing DevOps and SRE ariticles. I have translated DevOps Handbook and SRE Workbook.</p><footer><a href=/about class=button>学到更多</a></footer></section></section><footer id=site-footer><ul class=socnet-icons><li><a href=//github.com/martinliu target=_blank rel=noopener title=GitHub class="fab fa-github"></a></li><li><a href=//www.linkedin.com/in/liuzheng target=_blank rel=noopener title=LinkedIn class="fab fa-linkedin"></a></li><li><a href=//twitter.com/martinliu target=_blank rel=noopener title=Twitter class="fab fa-twitter"></a></li></ul><p class=copyright>© 2021 刘征的博客<br>主题: <a href=https://themes.gohugo.io/hugo-future-imperfect-slim/ target=_blank rel=noopener>Hugo Future Imperfect Slim</a><br>移植自 <a href=https://html5up.net/future-imperfect target=_blank rel=noopener>HTML5 UP</a> | 由 <a href=https://gohugo.io/ target=_blank rel=noopener title=0.80.0>Hugo</a> 驱动</p></footer><a id=back-to-top href=# class="fas fa-arrow-up fa-2x"></a><script src=/js/highlight.js></script><script>hljs.initHighlightingOnLoad();</script><script src=/js/bundle.min.bbba6b424a8ac5b6858cd5fc80eabc9c5277945cc2dc349204646b84891b4b58.js integrity="sha256-u7prQkqKxbaFjNX8gOq8nFJ3lFzC3DSSBGRrhIkbS1g="></script><script src=/js/add-on.js></script><script type=application/javascript>var doNotTrack=false;if(!doNotTrack){window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;ga('create','UA-749876-6','auto');ga('send','pageview');}</script><script async src=https://www.google-analytics.com/analytics.js></script></div></body></html>
+<!doctype html>
+<html lang="zh-cn">
+  <head>
+  <meta charset="utf-8">
+<title>[转]10大优秀开源网络管理工具 - DevOps &amp; SRE Blog</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+<meta name="generator" content="Hugo 0.80.0" /><meta property="og:site_name" content="DevOps &amp; SRE Blog">
+  <meta property="og:title" content="[转]10大优秀开源网络管理工具">
+  <meta property="og:description" content="Martin&#39;s Liu is bloging on DevOps and SRE topics">
+  <meta property="description" content="Martin&#39;s Liu is bloging on DevOps and SRE topics">
+  <meta property="og:url" content="https://martinliu.cn/2007/06/01/top-10-nsm-tools/">
+  <meta property="og:type" content="article">
+  
+    <meta property="og:image" content="https://martinliu.cn/img/main/logo.jpg">
+  
+  
+            <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.3/styles/default.min.css">
+          <link rel="stylesheet" href="/css/bundle.min.307f33cd8015e5bab28d6ebda9b400f8d3059bc248b4e60adf4d23469fab5a2b.css" integrity="sha256-MH8zzYAV5bqyjW69qbQA&#43;NMFm8JItOYK300jRp&#43;rWis="><link rel="stylesheet" href="/css/add-on.css">
+</head>
+
+  <body>
+    
+
+<header id="site-header">
+  <nav id="site-nav">
+    <h1 class="nav-title">
+      <a href="/" class="nav">
+        
+          博客
+        
+      </a>
+    </h1>
+    <menu id="site-nav-menu" class="flyout-menu menu">
+      
+        
+          
+          <a href="/" class="nav link"><i class='fas fa-home'></i> 首页</a>
+        
+      
+        
+          
+          <a href="/about/" class="nav link"><i class='far fa-id-card'></i> 关于</a>
+        
+      
+        
+          
+          <a href="/blog/" class="nav link"><i class='far fa-newspaper'></i> 博客</a>
+        
+      
+        
+          
+          <a href="/categories/" class="nav link"><i class='fas fa-sitemap'></i> 分类</a>
+        
+      
+        
+          
+          <a href="/course/" class="nav link"><i class='fa fa-book'></i> 课程</a>
+        
+      
+      <a href="#share-menu" class="nav link share-toggle"><i class="fas fa-share-alt">&nbsp;</i>Share</a>
+      
+    </menu>
+    
+    <a href="#share-menu" class="nav share-toggle"><i class="fas fa-share-alt fa-2x">&nbsp;</i></a>
+    <a href="#lang-menu" class="nav lang-toggle" lang="zh-cn">zh-cn</a>
+    <a href="#site-nav" class="nav nav-toggle"><i class="fas fa-bars fa-2x"></i></a>
+  </nav>
+  
+  <menu id="lang-menu" class="flyout-menu menu">
+  <a href="#" lang="zh-cn" class="nav link active">中文 (zh-cn)</a>
+  
+    
+      
+        <a href="/en" lang="en" class="nav no-lang link">English (en)</a>
+      
+    
+      
+    
+  
+</menu>
+
+  
+    <menu id="share-menu" class="flyout-menu menu">
+      <h1>Share Post</h1>
+      
+
+
+
+
+  
+    
+    <a href="//twitter.com/share?text=%5b%e8%bd%ac%5d10%e5%a4%a7%e4%bc%98%e7%a7%80%e5%bc%80%e6%ba%90%e7%bd%91%e7%bb%9c%e7%ae%a1%e7%90%86%e5%b7%a5%e5%85%b7&amp;url=https%3a%2f%2fmartinliu.cn%2f2007%2f06%2f01%2ftop-10-nsm-tools%2f" target="_blank" rel="noopener" class="nav share-btn twitter">
+        <p>Twitter</p>
+      </a>
+  
+
+  
+      <a href="//www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fmartinliu.cn%2f2007%2f06%2f01%2ftop-10-nsm-tools%2f" target="_blank" rel="noopener" class="nav share-btn facebook">
+        <p>Facebook</p>
+        </a>
+  
+
+  
+    <a href="//www.reddit.com/submit?url=https%3a%2f%2fmartinliu.cn%2f2007%2f06%2f01%2ftop-10-nsm-tools%2f&amp;title=%5b%e8%bd%ac%5d10%e5%a4%a7%e4%bc%98%e7%a7%80%e5%bc%80%e6%ba%90%e7%bd%91%e7%bb%9c%e7%ae%a1%e7%90%86%e5%b7%a5%e5%85%b7" target="_blank" rel="noopener" class="nav share-btn reddit">
+          <p>Reddit</p>
+        </a>
+  
+
+  
+        <a href="//www.linkedin.com/shareArticle?url=https%3a%2f%2fmartinliu.cn%2f2007%2f06%2f01%2ftop-10-nsm-tools%2f&amp;title=%5b%e8%bd%ac%5d10%e5%a4%a7%e4%bc%98%e7%a7%80%e5%bc%80%e6%ba%90%e7%bd%91%e7%bb%9c%e7%ae%a1%e7%90%86%e5%b7%a5%e5%85%b7" target="_blank" rel="noopener" class="nav share-btn linkedin">
+            <p>LinkedIn</p>
+          </a>
+  
+
+  
+        <a href="//www.pinterest.com/pin/create/button/?url=https%3a%2f%2fmartinliu.cn%2f2007%2f06%2f01%2ftop-10-nsm-tools%2f&amp;description=%5b%e8%bd%ac%5d10%e5%a4%a7%e4%bc%98%e7%a7%80%e5%bc%80%e6%ba%90%e7%bd%91%e7%bb%9c%e7%ae%a1%e7%90%86%e5%b7%a5%e5%85%b7" target="_blank" rel="noopener" class="nav share-btn pinterest">
+          <p>Pinterest</p>
+        </a>
+  
+
+  
+        <a href="mailto:?subject=%e6%9f%a5%e7%9c%8b%e6%ad%a4%e5%b8%96%e5%ad%90%e7%9a%84%e4%bd%9c%e8%80%85 liuadmin&amp;body=https%3a%2f%2fmartinliu.cn%2f2007%2f06%2f01%2ftop-10-nsm-tools%2f" target="_blank" class="nav share-btn email" data-proofer-ignore>
+          <p>Email</p>
+        </a>
+  
+
+
+    </menu>
+  
+</header>
+
+    <div id="wrapper">
+      <section id="site-intro" >
+  <a href="/"><img src="https://martinliu.cn/img/main/logo.jpg" class="circle" width="100" alt="Martin Liu" /></a>
+  <header>
+    <h1>Martin Liu's Blog</h1>
+  </header>
+  <main>
+    <p>Community Advocate, DevOps China Community Organizer</p>
+  </main>
+  
+    <footer>
+      <ul class="socnet-icons">
+        
+
+        <li><a href="//github.com/martinliu" target="_blank" rel="noopener" title="GitHub" class="fab fa-github"></a></li>
+
+
+
+
+
+
+
+
+
+
+
+<li><a href="//www.linkedin.com/in/liuzheng" target="_blank" rel="noopener" title="LinkedIn" class="fab fa-linkedin"></a></li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<li><a href="//twitter.com/martinliu" target="_blank" rel="noopener" title="Twitter" class="fab fa-twitter"></a></li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+      </ul>
+    </footer>
+  
+</section>
+
+      <main id="site-main">
+        
+  <article class="post">
+    <header>
+  <div class="title">
+    
+      <h2><a href="/2007/06/01/top-10-nsm-tools/">[转]10大优秀开源网络管理工具</a></h2>
+    
+    
+  </div>
+  <div class="meta">
+    <time datetime="2007-06-01 01:47:00 &#43;0000 UTC">June 1, 2007</time>
+    <p>liuadmin</p>
+    <p>1 分钟</p>
+  </div>
+</header>
+
+    <div id="socnet-share">
+      
+
+
+
+
+  
+    
+    <a href="//twitter.com/share?text=%5b%e8%bd%ac%5d10%e5%a4%a7%e4%bc%98%e7%a7%80%e5%bc%80%e6%ba%90%e7%bd%91%e7%bb%9c%e7%ae%a1%e7%90%86%e5%b7%a5%e5%85%b7&amp;url=https%3a%2f%2fmartinliu.cn%2f2007%2f06%2f01%2ftop-10-nsm-tools%2f" target="_blank" rel="noopener" class="nav share-btn twitter">
+        <p>Twitter</p>
+      </a>
+  
+
+  
+      <a href="//www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fmartinliu.cn%2f2007%2f06%2f01%2ftop-10-nsm-tools%2f" target="_blank" rel="noopener" class="nav share-btn facebook">
+        <p>Facebook</p>
+        </a>
+  
+
+  
+    <a href="//www.reddit.com/submit?url=https%3a%2f%2fmartinliu.cn%2f2007%2f06%2f01%2ftop-10-nsm-tools%2f&amp;title=%5b%e8%bd%ac%5d10%e5%a4%a7%e4%bc%98%e7%a7%80%e5%bc%80%e6%ba%90%e7%bd%91%e7%bb%9c%e7%ae%a1%e7%90%86%e5%b7%a5%e5%85%b7" target="_blank" rel="noopener" class="nav share-btn reddit">
+          <p>Reddit</p>
+        </a>
+  
+
+  
+        <a href="//www.linkedin.com/shareArticle?url=https%3a%2f%2fmartinliu.cn%2f2007%2f06%2f01%2ftop-10-nsm-tools%2f&amp;title=%5b%e8%bd%ac%5d10%e5%a4%a7%e4%bc%98%e7%a7%80%e5%bc%80%e6%ba%90%e7%bd%91%e7%bb%9c%e7%ae%a1%e7%90%86%e5%b7%a5%e5%85%b7" target="_blank" rel="noopener" class="nav share-btn linkedin">
+            <p>LinkedIn</p>
+          </a>
+  
+
+  
+        <a href="//www.pinterest.com/pin/create/button/?url=https%3a%2f%2fmartinliu.cn%2f2007%2f06%2f01%2ftop-10-nsm-tools%2f&amp;description=%5b%e8%bd%ac%5d10%e5%a4%a7%e4%bc%98%e7%a7%80%e5%bc%80%e6%ba%90%e7%bd%91%e7%bb%9c%e7%ae%a1%e7%90%86%e5%b7%a5%e5%85%b7" target="_blank" rel="noopener" class="nav share-btn pinterest">
+          <p>Pinterest</p>
+        </a>
+  
+
+  
+        <a href="mailto:?subject=%e6%9f%a5%e7%9c%8b%e6%ad%a4%e5%b8%96%e5%ad%90%e7%9a%84%e4%bd%9c%e8%80%85 liuadmin&amp;body=https%3a%2f%2fmartinliu.cn%2f2007%2f06%2f01%2ftop-10-nsm-tools%2f" target="_blank" class="nav share-btn email" data-proofer-ignore>
+          <p>Email</p>
+        </a>
+  
+
+
+    </div>
+    <div class="content">
+      
+      <p><a href="http://www.itmanagement.com/images/logo-itmanagement2.gif"><img src="http://www.itmanagement.com/images/logo-itmanagement2.gif" alt=""></a>转载ITmanagement的一个文章；全文的部分翻译。<a href="http://www.itmanagement.com/images/logo-itmanagement2.gif"></a>个人以为这个文章的把网管的开源工具做了一个小结，英文好的同志请直接访问原文地址：<a href="http://www.itmanagement.com/features/10-open-source-network-tools-052407">click Here </a><br /><br /></p>
+<p>“最高评分的管理管理工具不会使人不得不花未来的钱。来考虑一下这些自由且低成本的开源软件吧。”<br />Leslie T. O’Neill May 24th, 2007</p>
+<p><br />如果您的公司排名在Fortune 1000强和中小企业之间，那么您网络管理的选择形势看似比较严酷。你既不能在小市场上收集一堆拙劣的玩意来组成一个解决方案；你也不能花很多钱买一些真正不需要的高科技产品。这里有一个很好的选择：试用可一个开源的网络管理方案，加专业服务，包括开发和技术支持。<br /></p>
+<p>**Open Source = Flexible **<strong>开源＝灵活性</strong></p>
+<p><br /></p>
+<p>一个开源的解决方案对厂商来说也是非常灵活性的，他们很快地增加新技术的支持，比改进一个私有系统更快。例如：当Ubuntu 7.04 “Fiesty Fawn”四月份发布之后, Hyperic HQ在发布的第二天就宣布了对其提供技术支持。</p>
+<p><br />当谈到开源的网络管理方案时，公司最需要也用的最多的技术莫过与监控功能。不过监控技术在很大程度上已经变成了日用品。<br /><br />通常的，专业化版本的开源IT管理软件平台集成多个其他开源项目在一个框架中，象Nagios网络监控等；并且加入统一的网络界面；并且提供技术支持服务。另外，他们都想通过强大的社区来提高和改进代码，跟踪bug等。<br /></p>
+<p><strong>六个企业级平台</strong></p>
+<p><br /></p>
+<p>下面的六个开源IT管理都可能用作HP, IBM, CA 和 BMC大型管理套件的替代品。每一个都能提供低价的专业服务和免费软件下载。它们的不同支持在与所提供的功能和支持的操作系统</p>
+<p><br /></p>
+<p><strong><a href="http://www.quest.com/bigbrother/">Quest Big Brother</a></strong></p>
+<p><br /></p>
+<p>这个Web-based系统和网络监控产品能支持 Windows, Unix 和Linux等操系统, 还有一个通过用户投稿形成的脚本知识库，利用它能容易地定制Big Brother取管理你的网络。它的GUI是一个不错的特色，使用相同的颜色代码；红色代表不好，绿色代表好。</p>
+<p><br /></p>
+<p><br /></p>
+<p><strong><a href="http://www.groundworkopensource.com/downloads/full_download.html">GroundWork Open Source Monitor Professional</a></strong></p>
+<p><br /></p>
+<p>2004年发布，它是最早的企业级网络管理产品之一。它集成了超过100种最好的开源项目，包括Nagios, Apache 和 NMap, 在这个框架之上有添加了很多特有功能，例如Web-based用户界面等。Monitor提供了集中化的监控和管理，管理和监控你的企业网络，包括Linux, Unix 和Windows 服务器, 应用, 数据库和网络设备。</p>
+<p><br /></p>
+<p><strong><a href="http://www.hyperic.com/downloads/">Hyperic HQ Enterprise</a></strong></p>
+<p><br /></p>
+<p>瞄准的是一个数据中心，Hyperic被设计为去监控和管理Web应用的所有层次， 包括硬件、中间件、虚拟化、Web和开放式应用。它还提供基线和趋势分析。它支持 Apache, JBoss, Linux和更多应用。</p>
+<p><br /></p>
+<p><strong><a href="http://www.opennms.com/site/index.php?option=com_frontpage&amp;Itemid=1">OpenNMS</a></strong></p>
+<p><br /></p>
+<p>这个 Java-based 网络管理工具专注于网络服务轮询，数据采集和事件/告警管理。它目前支持多种开放式操作系统，包括Linux, Mandrake 和Solaris,还有Mac OS X; Windows 系统的支持计划在OpenNMS 2.0中实现。</p>
+<p><br /></p>
+<p><strong><a href="http://www.openqrm.org/">OpenQRM</a></strong></p>
+<p><br /></p>
+<p>也瞄准了数据中心的管理，OpenQRM不仅能管理数以千计的Linux和Windows服务器，还能跟踪计量你的数据中心的使用率和效率。 他还能做自动化基于策略的provisioning。它也集成了Nagios作为监控功能。</p>
+<p><br /></p>
+<p><strong><a href="http://www.zenoss.com/product/">Zenoss Core</a></strong></p>
+<p><br /></p>
+<p>基本上都是Python写的，这个管理平台提供了服务器、网络设备、OS和应用的事件管理、可用管理、和性能管理。Zenoss 能运行于Linux, FreeBSD 和 Mac OS X；它也可以作为一个Zenoss 虚拟应用运行在VMplayer 里。</p>
+<p><br /></p>
+<p><br /></p>
+<p><strong>四个无支持的项目</strong></p>
+<p><br /></p>
+<p>这四个项目位于TOP10 开源网络管理工具中。不象那六个产品，它们不提供商业的服务和企业级的增强功能。但是它们是绝对的free，而且你可以拥有所有需要的网络健康性检查功能。</p>
+<p><br /></p>
+<p><strong><a href="http://www.nagios.org/">Nagios</a></strong></p>
+<p><br /><br /></p>
+<p>这是一个开源的运行在Linux操作系统上的主机、服务和网络监控程序。<br /><a href="http://www.jffnms.org/"><br /></a></p>
+<p><br /></p>
+<p><strong><a href="http://www.jffnms.org/">Just For Fun Network Management System (JFFNMS)</a></strong></p>
+<p><br /><br /></p>
+<p>JFFNMS能监控标准的SNMP (Simple Network Management Protocol) 网络设备，服务器、路由器和TCP端口。它工作在Linux, FreeBSD 和Windows 2000/XP。<br /><br />****</p>
+<p><br /></p>
+<p><strong><a href="http://www.bigsister.ch/">Big Sister System and Network Monitor</a></strong></p>
+<p><br /></p>
+<p>这个项目包括了real-time system 和network health monitor, 一个Web 应用框架和一个系统管理应用。</p>
+<p><br /></p>
+<p><strong><a href="http://netdisco.org/">Netdisco</a></strong></p>
+<p><br /></p>
+<p>这个Web-based应用被设计为管理中道大型网络和其中的SNMP网络设备。</p>
+<p><br /></p>
+<p><br /><br /></p>
+<hr>
+<p><br /></p>
+<p><strong>相关文章:</strong></p>
+<p><br /></p>
+<p>· <a href="http://www.itmanagement.com/news/hyperic-interview-part-one-081006/">Interview with Hyperic</a></p>
+<p><br /></p>
+<p>· <a href="http://www.itmanagement.com/news/5-up-and-coming-monitoring-vendors/">Top 5 Upstart Monitoring Companies</a></p>
+<p><br /></p>
+<p>· <a href="http://www.itmanagement.com/whitepaper/editorials/advantages-open-source-management/">The Advantages of Open Source Management</a></p>
+<p><br /></p>
+<p>· <a href="http://www.itmanagement.com/features/10-steps-green-datacenter/">10 Simple Steps to a Green Datacenter</a></p>
+<p><br /></p>
+<p><br /><br /></p>
+<hr>
+<p><br /></p>
+<p><br /><br /></p>
+
+    </div>
+    <footer>
+      <div class="stats">
+  
+    <ul class="categories">
+      
+        
+          <li><a class="article-terms-link" href="/categories/itsm/">itsm</a></li>
+        
+      
+    </ul>
+  
+  
+    <ul class="tags">
+      
+        
+          <li><a class="article-terms-link" href="/tags/groundwork/">GroundWork</a></li>
+        
+          <li><a class="article-terms-link" href="/tags/hyperic-hq/">Hyperic HQ</a></li>
+        
+          <li><a class="article-terms-link" href="/tags/nagios/">Nagios</a></li>
+        
+          <li><a class="article-terms-link" href="/tags/opensource/">opensource</a></li>
+        
+          <li><a class="article-terms-link" href="/tags/openqrm/">OpenQRM</a></li>
+        
+          <li><a class="article-terms-link" href="/tags/zenoss/">Zenoss</a></li>
+        
+      
+    </ul>
+  
+</div>
+
+    </footer>
+  </article>
+  
+    
+
+  
+  <div class="pagination">
+    
+      <a href="/2007/06/07/core-business-hp-ibm/" class="button left"><span>谁来关心核心业务系统</span></a>
+    
+    
+      <a href="/2007/05/30/hyperic-hq-testing/" class="button right"><span>Hyperic HQ小测手记</span></a>
+    
+  </div>
+
+      </main>
+      <section id="site-sidebar">
+  
+    <section id="recent-posts">
+      <header>
+        <h1>最新文章</h1>
+      </header>
+      
+      <article class="mini-post">
+          <a href="/blog/workshop-elastic-observability/" class="image" style="--bg-image: url('https://martinliu.cn/img/2021/Hubble_01.jpg');">
+    <img class="stretchH" src="https://martinliu.cn/img/2021/Hubble_01.jpg" alt="Hubble">
+  </a>
+        <header>
+          <h2><a href="/blog/workshop-elastic-observability/">Elastic 可观测性工作坊</a></h2>
+          <time class="published" datetime="2021-02-06 10:36:12 &#43;0800 CST">February 6, 2021</time>
+        </header>
+      </article>
+      
+      <article class="mini-post">
+          <a href="/blog/change-back-on-github-page-again/" class="image" style="--bg-image: url('https://martinliu.cn/img/2019/03/pic03.jpg');">
+    <img class="stretchH" src="https://martinliu.cn/img/2019/03/pic03.jpg" alt="Valley">
+  </a>
+        <header>
+          <h2><a href="/blog/change-back-on-github-page-again/">在 Github 上搭建基于 Hugo 的免费个人博客</a></h2>
+          <time class="published" datetime="2021-02-06 00:00:00 &#43;0000 UTC">February 6, 2021</time>
+        </header>
+      </article>
+      
+      <article class="mini-post">
+          <a href="/blog/devopscoach-weekly-6/" class="image" style="--bg-image: url('https://martinliu.cn/');">
+    <img class="stretchH" src="https://martinliu.cn/" alt="">
+  </a>
+        <header>
+          <h2><a href="/blog/devopscoach-weekly-6/">DevOps Coach 周刊 #6</a></h2>
+          <time class="published" datetime="2020-08-31 00:11:01 &#43;0800 CST">August 31, 2020</time>
+        </header>
+      </article>
+      
+      <article class="mini-post">
+          <a href="/blog/elasticsearch-3-nodes-cluster-setup/" class="image" style="--bg-image: url('https://martinliu.cn/');">
+    <img class="stretchH" src="https://martinliu.cn/" alt="">
+  </a>
+        <header>
+          <h2><a href="/blog/elasticsearch-3-nodes-cluster-setup/">Elasticsearch 3 节点集群搭建 (7.9.0)</a></h2>
+          <time class="published" datetime="2020-08-27 13:54:46 &#43;0800 CST">August 27, 2020</time>
+        </header>
+      </article>
+      
+      <article class="mini-post">
+          <a href="/blog/devopscoach-weekly-5/" class="image" style="--bg-image: url('https://martinliu.cn/');">
+    <img class="stretchH" src="https://martinliu.cn/" alt="">
+  </a>
+        <header>
+          <h2><a href="/blog/devopscoach-weekly-5/">DevOps Coach 周刊 #5</a></h2>
+          <time class="published" datetime="2020-08-25 15:20:51 &#43;0800 CST">August 25, 2020</time>
+        </header>
+      </article>
+      
+      
+        <footer>
+          <a href="/blog/" class="button">查看更多</a>
+        </footer>
+      
+    </section>
+  
+
+  
+    
+
+      <section id="categories">
+        <header>
+          <h1><a href="/categories">分类</a></h1>
+        </header>
+        <ul>
+          
+          
+          <li>
+              <a href="/categories/blog/">blog<span class="count">96</span></a>
+          
+          <li>
+              <a href="/categories/itsm/">itsm<span class="count">85</span></a>
+          
+          <li>
+              <a href="/categories/infrastructure/">infrastructure<span class="count">46</span></a>
+          
+          <li>
+              <a href="/categories/devops/">devops<span class="count">38</span></a>
+          
+          <li>
+              <a href="/categories/opensource/">opensource<span class="count">32</span></a>
+          
+          <li>
+              <a href="/categories/cloud-computing/">cloud-computing<span class="count">23</span></a>
+          
+          <li>
+              <a href="/categories/cms/cmdb/">cms/cmdb<span class="count">20</span></a>
+          
+          <li>
+              <a href="/categories/running/">running<span class="count">19</span></a>
+          
+          <li>
+              <a href="/categories/travel/">travel<span class="count">13</span></a>
+          
+          <li>
+              <a href="/categories/sre/">sre<span class="count">2</span></a>
+          
+          </li>
+        </ul>
+      </section>
+    
+  
+
+  
+    <section id="mini-bio">
+      <header>
+        <h1>关于</h1>
+      </header>
+      <p>This Blog is sharing DevOps and SRE ariticles. I have translated DevOps Handbook and SRE Workbook.</p>
+      <footer>
+        <a href="/about" class="button">学到更多</a>
+      </footer>
+    </section>
+  
+</section>
+
+      <footer id="site-footer">
+  
+      <ul class="socnet-icons">
+        
+
+        <li><a href="//github.com/martinliu" target="_blank" rel="noopener" title="GitHub" class="fab fa-github"></a></li>
+
+
+
+
+
+
+
+
+
+
+
+<li><a href="//www.linkedin.com/in/liuzheng" target="_blank" rel="noopener" title="LinkedIn" class="fab fa-linkedin"></a></li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<li><a href="//twitter.com/martinliu" target="_blank" rel="noopener" title="Twitter" class="fab fa-twitter"></a></li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+      </ul>
+  
+  <p class="copyright">
+    © 2021 DevOps &amp; SRE Blog
+      <br>
+    主题: <a href='https://themes.gohugo.io/hugo-future-imperfect-slim/' target='_blank' rel='noopener'>Hugo Future Imperfect Slim</a><br>移植自 <a href='https://html5up.net/future-imperfect' target='_blank' rel='noopener'>HTML5 UP</a> | 由 <a href='https://gohugo.io/' target='_blank' rel='noopener' title='0.80.0'>Hugo</a> 驱动
+  </p>
+</footer>
+<a id="back-to-top" href="#" class="fas fa-arrow-up fa-2x"></a>
+
+      <script src="/js/highlight.js"></script>
+    
+    <script>hljs.initHighlightingOnLoad();</script><script src="/js/bundle.min.b4e669fa428a81defb8af0916c53f39cd1b8e0bbab22199c06f0b182907ba474.js" integrity="sha256-tOZp&#43;kKKgd77ivCRbFPznNG44LurIhmcBvCxgpB7pHQ="></script>
+    <script src="/js/add-on.js"></script>
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-749876-6', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+
+    </div>
+  </body>
+</html>

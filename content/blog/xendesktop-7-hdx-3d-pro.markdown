@@ -10,9 +10,7 @@ post_format:
 - Video
 slug: xendesktop-7-hdx-3d-pro
 tags:
-- infrastructure
-- hdx 3d
-- infrastructure
+- xendesktop
 title: XenDesktop 7 HDX 3D Pro
 url: /2013/08/14/xendesktop-7-hdx-3d-pro/
 wordpress_id: 52529

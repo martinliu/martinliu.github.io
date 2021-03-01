@@ -7,15 +7,9 @@ comments: true
 date: 2009-12-13T07:45:00Z
 slug: service-asset-ci-life-cycle
 tags:
-- asset
-- ci
 - cmdb
 - cms
 - ITIL
-- blogcycle
-- sacm
-- status
-- v3
 title: 资产CI的一生
 url: /2009/12/13/service-asset-ci-life-cycle/
 wordpress_id: 49570

@@ -1,27 +1,637 @@
-<!doctype html><html lang=zh-cn><head><meta charset=utf-8><title>虚拟桌面 之我见 - 刘征的博客</title><meta name=viewport content="width=device-width,initial-scale=1"><meta name=generator content="Hugo 0.80.0"><meta property="og:site_name" content="刘征的博客"><meta property="og:title" content="虚拟桌面 之我见"><meta property="og:description" content="Martin's Liu is bloging on DevOps and SRE topics"><meta property="description" content="Martin's Liu is bloging on DevOps and SRE topics"><meta property="og:url" content="https://martinliu.cn/2014/11/23/e8999ae68b9fe6a18ce99da2-e4b98be68891e8a781/"><meta property="og:type" content="article"><meta property="og:image" content="https://martinliu.cn/img/main/logo.jpg"><link rel=stylesheet href=/css/bundle.min.d9e04ae08c9b3049b766dbd4aeab7d862c5ea1d13679b621490e0f5df5507497.css integrity="sha256-2eBK4IybMEm3ZtvUrqt9hixeodE2ebYhSQ4PXfVQdJc="><link rel=stylesheet href=/css/add-on.css></head><body><header id=site-header><nav id=site-nav><h1 class=nav-title><a href=/ class=nav>博客</a></h1><menu id=site-nav-menu class="flyout-menu menu"><a href=/ class="nav link"><i class="fas fa-home"></i>首页</a>
-<a href=/about/ class="nav link"><i class="far fa-id-card"></i>关于</a>
-<a href=/blog/ class="nav link"><i class="far fa-newspaper"></i>博客</a>
-<a href=/categories/ class="nav link"><i class="fas fa-sitemap"></i>分类</a>
-<a href=/contact/ class="nav link"><i class="far fa-envelope"></i>联系</a>
-<a href=#share-menu class="nav link share-toggle"><i class="fas fa-share-alt">&nbsp;</i>Share</a>
-<a href=#search-input class="nav link search-toggle"><i class="fas fa-search">&nbsp;</i>Search</a></menu>
-<a href=#search-input class="nav search-toggle"><i class="fas fa-search fa-2x">&nbsp;</i></a>
-<a href=#share-menu class="nav share-toggle"><i class="fas fa-share-alt fa-2x">&nbsp;</i></a>
-<a href=#lang-menu class="nav lang-toggle" lang=zh-cn>zh-cn</a>
-<a href=#site-nav class="nav nav-toggle"><i class="fas fa-bars fa-2x"></i></a></nav><menu id=search class=menu><input id=search-input class="search-input menu"></input><div id=search-results class="search-results menu"></div></menu><menu id=lang-menu class="flyout-menu menu"><a href=# lang=zh-cn class="nav link active">中文 (zh-cn)</a>
-<a href=/en lang=en class="nav no-lang link">English (en)</a></menu>
-<menu id=share-menu class="flyout-menu menu"><h1>Share Post</h1><a href="//twitter.com/share?text=%e8%99%9a%e6%8b%9f%e6%a1%8c%e9%9d%a2%20%e4%b9%8b%e6%88%91%e8%a7%81&url=https%3a%2f%2fmartinliu.cn%2f2014%2f11%2f23%2fe8999ae68b9fe6a18ce99da2-e4b98be68891e8a781%2f" target=_blank rel=noopener class="nav share-btn twitter"><p>Twitter</p></a><a href="//www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fmartinliu.cn%2f2014%2f11%2f23%2fe8999ae68b9fe6a18ce99da2-e4b98be68891e8a781%2f" target=_blank rel=noopener class="nav share-btn facebook"><p>Facebook</p></a><a href="//www.reddit.com/submit?url=https%3a%2f%2fmartinliu.cn%2f2014%2f11%2f23%2fe8999ae68b9fe6a18ce99da2-e4b98be68891e8a781%2f&title=%e8%99%9a%e6%8b%9f%e6%a1%8c%e9%9d%a2%20%e4%b9%8b%e6%88%91%e8%a7%81" target=_blank rel=noopener class="nav share-btn reddit"><p>Reddit</p></a><a href="//www.linkedin.com/shareArticle?url=https%3a%2f%2fmartinliu.cn%2f2014%2f11%2f23%2fe8999ae68b9fe6a18ce99da2-e4b98be68891e8a781%2f&title=%e8%99%9a%e6%8b%9f%e6%a1%8c%e9%9d%a2%20%e4%b9%8b%e6%88%91%e8%a7%81" target=_blank rel=noopener class="nav share-btn linkedin"><p>LinkedIn</p></a><a href="//www.pinterest.com/pin/create/button/?url=https%3a%2f%2fmartinliu.cn%2f2014%2f11%2f23%2fe8999ae68b9fe6a18ce99da2-e4b98be68891e8a781%2f&description=%e8%99%9a%e6%8b%9f%e6%a1%8c%e9%9d%a2%20%e4%b9%8b%e6%88%91%e8%a7%81" target=_blank rel=noopener class="nav share-btn pinterest"><p>Pinterest</p></a><a href="mailto:?subject=%e6%9f%a5%e7%9c%8b%e6%ad%a4%e5%b8%96%e5%ad%90%e7%9a%84%e4%bd%9c%e8%80%85 liuadmin&body=https%3a%2f%2fmartinliu.cn%2f2014%2f11%2f23%2fe8999ae68b9fe6a18ce99da2-e4b98be68891e8a781%2f" target=_blank class="nav share-btn email" data-proofer-ignore><p>Email</p></a></menu></header><div id=wrapper><section id=site-intro><a href=/><img src=https://martinliu.cn/img/main/logo.jpg class=circle width=100 alt="Martin Liu"></a><header><h1>Martin Liu's Blog</h1></header><main><p>Community Advocate, DevOps China Community Organizer</p></main><footer><ul class=socnet-icons><li><a href=//github.com/martinliu target=_blank rel=noopener title=GitHub class="fab fa-github"></a></li><li><a href=//www.linkedin.com/in/liuzheng target=_blank rel=noopener title=LinkedIn class="fab fa-linkedin"></a></li><li><a href=//twitter.com/martinliu target=_blank rel=noopener title=Twitter class="fab fa-twitter"></a></li></ul></footer></section><main id=site-main><article class=post><header><div class=title><h2><a href=/2014/11/23/e8999ae68b9fe6a18ce99da2-e4b98be68891e8a781/>虚拟桌面 之我见</a></h2></div><div class=meta><time datetime="2014-11-23 10:16:23 +0000 UTC">November 23, 2014</time><p>liuadmin</p><p>1 分钟</p></div></header><div id=socnet-share><a href="//twitter.com/share?text=%e8%99%9a%e6%8b%9f%e6%a1%8c%e9%9d%a2%20%e4%b9%8b%e6%88%91%e8%a7%81&url=https%3a%2f%2fmartinliu.cn%2f2014%2f11%2f23%2fe8999ae68b9fe6a18ce99da2-e4b98be68891e8a781%2f" target=_blank rel=noopener class="nav share-btn twitter"><p>Twitter</p></a><a href="//www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fmartinliu.cn%2f2014%2f11%2f23%2fe8999ae68b9fe6a18ce99da2-e4b98be68891e8a781%2f" target=_blank rel=noopener class="nav share-btn facebook"><p>Facebook</p></a><a href="//www.reddit.com/submit?url=https%3a%2f%2fmartinliu.cn%2f2014%2f11%2f23%2fe8999ae68b9fe6a18ce99da2-e4b98be68891e8a781%2f&title=%e8%99%9a%e6%8b%9f%e6%a1%8c%e9%9d%a2%20%e4%b9%8b%e6%88%91%e8%a7%81" target=_blank rel=noopener class="nav share-btn reddit"><p>Reddit</p></a><a href="//www.linkedin.com/shareArticle?url=https%3a%2f%2fmartinliu.cn%2f2014%2f11%2f23%2fe8999ae68b9fe6a18ce99da2-e4b98be68891e8a781%2f&title=%e8%99%9a%e6%8b%9f%e6%a1%8c%e9%9d%a2%20%e4%b9%8b%e6%88%91%e8%a7%81" target=_blank rel=noopener class="nav share-btn linkedin"><p>LinkedIn</p></a><a href="//www.pinterest.com/pin/create/button/?url=https%3a%2f%2fmartinliu.cn%2f2014%2f11%2f23%2fe8999ae68b9fe6a18ce99da2-e4b98be68891e8a781%2f&description=%e8%99%9a%e6%8b%9f%e6%a1%8c%e9%9d%a2%20%e4%b9%8b%e6%88%91%e8%a7%81" target=_blank rel=noopener class="nav share-btn pinterest"><p>Pinterest</p></a><a href="mailto:?subject=%e6%9f%a5%e7%9c%8b%e6%ad%a4%e5%b8%96%e5%ad%90%e7%9a%84%e4%bd%9c%e8%80%85 liuadmin&body=https%3a%2f%2fmartinliu.cn%2f2014%2f11%2f23%2fe8999ae68b9fe6a18ce99da2-e4b98be68891e8a781%2f" target=_blank class="nav share-btn email" data-proofer-ignore><p>Email</p></a></div><div class=content><h1 id=虚拟桌面-的业务价值>虚拟桌面 的业务价值</h1><p>虚拟应用产生在虚拟桌面之前，虚拟应用是一种和VPN类似的原创访问方法。它其实最初实现的是图形GUI的远程访问，注意不是文字终端。它和VPN具有本质的区别，在于虚拟桌面是“终端不留数据/秘”的；这个它性拜它的传输协议所赐，虚拟桌面传输的主要是图像信息和键鼠指令。它的另外一个特性是“维护渐变”，在终端上维护近似于零（除了安装和配置虚拟桌面连接客户端程序外）；在服务器端应用升级和维护简单，主要是通过升级和更新一堆的Windows操作系统来实现。因此，主要的业务价值有两点：1）数据安全；2）维护简单。基于这些价值取向，它可以很好地胜任一下业务场景：
-[su_list icon=&ldquo;icon: flag&rdquo;]</p><ul><li><p>多网隔离、集中上网、运维/外包/审计人员访问管理</p></li><li><p>前端操作环境和后端业务数据的分离</p></li><li><p>呼叫中心、处理中心和窗口柜员</p></li><li><p>移动办公、BYOD</p></li><li><p>安全研发、协作研发</p></li><li><p>3D虚拟桌面</p></li><li><p>等等等等</p></li></ul><p>[/su_list]</p><p>业务价值很精练，业务场景太多这里就不赘述。</p><h1 id=关键技术点>关键技术点</h1><p>下面是虚拟桌面/应用的基本原理架构图。
-<a href=http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2014/11/xen.png><img src=http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2014/11/xen-520x229.png alt=xen></a>
-通过上图可以对虚拟桌面的技术架构一目了然。虚拟桌面基础架构就是在数据中心里面部署的一堆Windows虚拟机，核心就在于让远程用户可以操作使用这些虚拟机里面的应用或者这些虚拟机桌面。鉴于此，核心技术主要有两个方面：Windows操作系统虚拟机的集中发布更新和管理；远程访问协议和所有终端管控策略。</p><h2 id=windows虚拟机的发布和更新>Windows虚拟机的发布和更新</h2><p>Windows的虚拟机有两种：Server和Desktop；虚拟应用技术主要是利用Windows Server操作系统天然的多用户性质，实现一份安装程序的多用户同时使用。虚拟桌面是复制n个预装应用的Desktop桌面操作系统来实现n个用户的使用。</p><h3 id=1虚拟机克隆>1）虚拟机克隆</h3><p>使用服务器虚拟化技术可以方便地从OS模板中克隆出n个虚拟机，它的挑战在于：</p><ul><li><p>创建和更新的速度要快，特别是在虚拟机数量大的情况下</p></li><li><p>可否永久保持用户的个人数据，更新操作不会清空旧的个人数据</p></li><li><p>存储空间要节省</p></li></ul><h3 id=2stream-os-流化操作系统>2）Stream OS 流化操作系统</h3><p>这种方案是一种古老而容易被人遗忘的技术。就是很久很久以前的无盘工作站的思路。虚拟机或者物理机以网络启动的方法获得一个运行的Windows操作系统。所有的操作系统启动镜像都在服务器端统一管理，一种镜像可以对应启动n可操作系统，这些操作系统目前多以虚拟机的形式存在。它的特点</p><ul><li><p>虚拟机对磁盘的消耗非常小，磁盘是写缓存和用户数据。它的大小可以是0或者几个GB。</p></li><li><p>创建的速度快</p></li><li><p>大批量虚拟机启动过程对网络有一定的压力，一般需要使用隔离的万兆网</p></li><li><p>同样有个人数据保持的问题</p></li><li><p>更新速度非常快，所有的操作系统在母盘更新后，需要重启来更新</p></li></ul><p>不管用什么方式集中管理虚拟机，总之桌面虚拟化是要同时玩转这几个球水晶球。</p><ul><li><p>存储成本和性能</p></li><li><p>操作系统更新和个人数据保持</p></li><li><p>虚拟应用和虚拟桌面的混搭</p></li><li><p>虚拟机发布更新方式的混搭</p></li></ul><h2 id=远程访问协议>远程访问协议</h2><p>远程访问协议哪家强，可以公允的说还是Citrix ICA强。本文不是评测访问协议，只是点到为止。远程GUI界面发的虚拟访问方式一共有以下几种：</p><p>[su_list icon=&ldquo;icon: flask&rdquo;]</p><ul><li><p>Citrix ICA/ HDX ICA : Citriix的发家的技术，具有网络适应性强可用于广域网，后台管控策略精细，用户体验高等特点。</p></li><li><p>PCoIP ：最早适用于非虚拟桌面领域的，后来和VMWare和Teradici共同研发之后用在了VDI的访问上。</p></li><li><p>RDP ：Windows Server操作系统自带的远程桌面访问协议，不管你用还是不用它就在那里，它的技术日趋成熟，体验越来越好，不容忽视，从MS许可证的角度讲，任何一个虚拟桌面就需要购买微软的虚拟桌面windows许可证。</p></li><li><p>SPICE ：它是一个开源的协议，可以和KVM配合实现Windows和Linux的远程桌面范围，自身的成熟度和完整度都一般。由于代码的开放性，有使之在某些公司手里成为可造之材。</p></li><li><p>其它 ：国内主要的方式是类似于破解RDP的形式，基于RDP做一些改进和优化。</p></li></ul><p>[/su_list]</p><p>总之一句话“优秀的访问协议”是好的虚拟桌面的天然基因，但它并不是虚拟桌面的全部。几个核心的考察指标包括：</p><ul><li><p>是否支持集中管理：在一个集中的管理服务器上实现对虚拟机、用户、访问终端等等的集中统一管理。</p></li><li><p>管理的颗粒度：你不清楚的话，就到厂商的管理控制台上数数就行</p></li><li><p>带宽消耗：带宽消耗和视觉效果100%是成反比的，节省带宽就以为这降低显示效果，但是还要要求不降低操作灵敏度的情况下，是否支持WAN。这些看似矛盾的因素就是要在一个共同体里同时寻找。</p></li><li><p>客户端设备兼容：是否任何有计算能力有显示输出的设备都可以操作。主要是设备的类型和操作系统。</p></li></ul><h2 id=服务器虚拟化技术>服务器虚拟化技术</h2><p>没有服务器虚拟化似乎不成虚拟桌面项目。它是运行虚拟机的载体。选择的范围主要几家：vSphere，XenServer、Hyper-V和KVM。可以说他们和虚拟桌面是强相关的有一定的兼容性制约。如果不差钱，那么直接买最贵的。如果非常清晰自己的业务需求，则可以推导出自己合适的技术。</p><h2 id=网络技术>网络技术</h2><p>一个完美的虚拟桌面基础架构需要实现数据中心100%的包裹，需要实现外网设备统一的访问入口。说的更形象一点：虚拟桌面平台的虚拟机操作环境可以成为数据中心企业数据的传输终点，所有用户和数据的交互都在这里发生，数据是否能继续它的旅程传输出去，是受到策略的控制。外部客户访问这个入口，入口想一扇门，打开它用户就能够访问到自己的所有的应用和桌面，这扇门对外只开放一个端口，它起到了远程访问协议的代理服务器的功能，它把虚拟桌面基础架构中成百上千的IP地址的访问都终结掉，给防火墙策略的制定减轻了压力，实为容易忽视的关键技术点。</p><h1 id=项目的成败>项目的成败</h1><p>毫不夸张的讲，能给你把大规模虚拟桌面项目做成功的人才对你有真爱。大规模虚拟桌面项目太复杂，实施难度大，成本高，这是业内的共识。对于大的组织，业务需求的梳理和确认需要有厂商引导，在这个过程中最尖锐的问题会在与：1）应用的兼容性；2）外设的兼容性。目前的Windows应用并非天然能够在虚拟机里面运行的，特别是在有负载外设需要通过远程协议链接的时候，更是如此。让企业修改应用是一个非常头痛的事情；选择修改应用，使之更适用于虚拟化环境，从长远看是明智的选择，并非企业的让步。而逼着厂商来适应一个糟糕的，或者本不该出现在虚拟桌面环境中的应用，即使是花了很大的代价实现了，也是投入和产出及不划算的。</p><p>成本结构的烦恼，宏观的看成本中排名前几位是：存储、服务器、软件许可。也就是说桌面虚拟化厂商玩命的在硬件厂商打工。如何节省存储和服务器成本，方法可以是：减少虚拟机的资源消耗量。注意有些情况下是在不极大降低虚拟的数量上来做的，这就不得不去细看一下虚拟机的制备方法上，各家的优势了。方法也可以是：调整VDI和虚拟应用使用的比例。</p><p>实施的过程不仅是搭建和测试，更要命的时用户的接受程度。在有些地方是需要强推，在某些情况下是要把技术问题留给厂商解决。一切都在于实施成本的平衡，没有一帆风顺的实施。实施的过程也是不断积累运维经验的过程，企业需要做好学习和提高的准备，这个球也不好接住。</p><h1 id=总结>总结</h1><p>桌面虚拟化和应用虚拟化是两个不同的技术。在一个项目和客户里，可能是两种不同的技术路线，在很多情况下也是混合使用的。它们构成了“企业应用交付基础架构”，这个基础架构在数据中心里地地位和网络设备、服务器、存储、数据库等等是相同的。只是它处在一个比较特殊的位置。很多人可能还不能理解到这一层。</p><p>从ITSM的角度看，它提供了一种IT服务。用户通过它可以安全高效地使用各种企业业务应用和数据。企业可以用应用交付基础架构，轻松地把业务系统部署到任何的工作场所；并得到更好地数据安全性的保证，更快速地交付各种业务（甚至所有内网应用）给最终用户（不管他们身在何处）。</p></div><footer><div class=stats><ul class=categories><li><a class=article-terms-link href=/categories/infrastructure/>infrastructure</a></li><li><a class=article-terms-link href=/categories/infrastructure/>infrastructure</a></li><li><a class=article-terms-link href=/categories/infrastructure/>infrastructure</a></li></ul><ul class=tags><li><a class=article-terms-link href=/tags/infrastructure/>infrastructure</a></li><li><a class=article-terms-link href=/tags/ica/>ICA</a></li><li><a class=article-terms-link href=/tags/pcoip/>PCoIP</a></li><li><a class=article-terms-link href=/tags/rdp/>RDP</a></li><li><a class=article-terms-link href=/tags/vmware/>VMWare</a></li></ul></div></footer></article><article class=post><div><h2 id=say-something>说些什么</h2><form id=comment-form class=new-comment method=post><h3 class="reply-notice hidden"><span class=reply-name></span></h3><input type=hidden name=options[entryId] value=a765b12eaaa9e3f8b79a978d55f6e13b>
-<input type=hidden name=fields[replyThread]>
-<input type=hidden name=fields[replyID]>
-<input type=hidden name=fields[replyName]>
-<input required name=fields[name] type=text placeholder=你的名字>
-<input name=fields[website] type=text placeholder=您的网页>
-<input required name=fields[email] type=email placeholder=你的邮件>
-<textarea required name=fields[body] placeholder=你的信息 rows=10></textarea><div class=submit-notice><strong class="submit-notice-text submit-success hidden">感谢您的评论！被批准后它会立即在此站点展示。</strong>
-<strong class="submit-notice-text submit-failed hidden">很抱歉，您的提交存在错误。请确保所有必填字段都已填写正确，然后再试一次。</strong></div><input type=submit value=送出 class=button>
-<input type=submit value=已送出 class="hidden button" disabled>
-<input type=reset value=重设 class=button></form></div><div><h2>评论</h2><p>还沒有留言。</p></div></article><div class=pagination><a href=/2014/11/25/openstack-one/ class="button left"><span>openstack all in one</span></a>
-<a href=/2014/11/22/e581b6e98187e4b880e4b8aae4b88de99499e4b8bbe9a298/ class="button right"><span>偶遇一个不错主题</span></a></div></main><section id=site-sidebar><section id=recent-posts><header><h1>最新文章</h1></header><article class=mini-post><a href=/blog/workshop-elastic-observability/ class=image style="--bg-image: url('https://martinliu.cn/img/2019/03/pic01.jpg')"><img class=stretchH src=https://martinliu.cn/img/2019/03/pic01.jpg alt=Valley></a><header><h2><a href=/blog/workshop-elastic-observability/>Elastic 可观测性工作坊</a></h2><time class=published datetime="2021-02-06 10:36:12 +0800 CST">February 6, 2021</time></header></article><article class=mini-post><a href=/blog/change-back-on-github-page-again/ class=image style="--bg-image: url('https://martinliu.cn/img/2019/03/pic03.jpg')"><img class=stretchH src=https://martinliu.cn/img/2019/03/pic03.jpg alt=Valley></a><header><h2><a href=/blog/change-back-on-github-page-again/>博客换一个新样式</a></h2><time class=published datetime="2021-02-06 00:00:00 +0000 UTC">February 6, 2021</time></header></article><article class=mini-post><a href=/blog/devopscoach-weekly-6/ class=image style="--bg-image: url('https://martinliu.cn/')"><img src=https://martinliu.cn/ alt></a><header><h2><a href=/blog/devopscoach-weekly-6/>DevOps Coach 周刊 #6</a></h2><time class=published datetime="2020-08-31 00:11:01 +0800 CST">August 31, 2020</time></header></article><article class=mini-post><a href=/blog/elasticsearch-3-nodes-cluster-setup/ class=image style="--bg-image: url('https://martinliu.cn/')"><img src=https://martinliu.cn/ alt></a><header><h2><a href=/blog/elasticsearch-3-nodes-cluster-setup/>Elasticsearch 3 节点集群搭建 (7.9.0)</a></h2><time class=published datetime="2020-08-27 13:54:46 +0800 CST">August 27, 2020</time></header></article><article class=mini-post><a href=/blog/devopscoach-weekly-5/ class=image style="--bg-image: url('https://martinliu.cn/')"><img src=https://martinliu.cn/ alt></a><header><h2><a href=/blog/devopscoach-weekly-5/>DevOps Coach 周刊 #5</a></h2><time class=published datetime="2020-08-25 15:20:51 +0800 CST">August 25, 2020</time></header></article><footer><a href=/blog/ class=button>查看更多</a></footer></section><section id=categories><header><h1><a href=/categories>分类</a></h1></header><ul><li><a href=/categories/blog/>blog<span class=count>107</span></a><li><a href=/categories/itsm/>itsm<span class=count>95</span></a><li><a href=/categories/infrastructure/>infrastructure<span class=count>48</span></a><li><a href=/categories/devops/>devops<span class=count>38</span></a><li><a href=/categories/opensource/>opensource<span class=count>35</span></a><li><a href=/categories/cloud-computing/>cloud-computing<span class=count>27</span></a><li><a href=/categories/running/>running<span class=count>22</span></a><li><a href=/categories/cms/cmdb/>cms/cmdb<span class=count>20</span></a><li><a href=/categories/travel/>travel<span class=count>14</span></a><li><a href=/categories/sre/>sre<span class=count>2</span></a></li></ul></section><section id=mini-bio><header><h1>关于</h1></header><p>This Blog is sharing DevOps and SRE ariticles. I have translated DevOps Handbook and SRE Workbook.</p><footer><a href=/about class=button>学到更多</a></footer></section></section><footer id=site-footer><ul class=socnet-icons><li><a href=//github.com/martinliu target=_blank rel=noopener title=GitHub class="fab fa-github"></a></li><li><a href=//www.linkedin.com/in/liuzheng target=_blank rel=noopener title=LinkedIn class="fab fa-linkedin"></a></li><li><a href=//twitter.com/martinliu target=_blank rel=noopener title=Twitter class="fab fa-twitter"></a></li></ul><p class=copyright>© 2021 刘征的博客<br>主题: <a href=https://themes.gohugo.io/hugo-future-imperfect-slim/ target=_blank rel=noopener>Hugo Future Imperfect Slim</a><br>移植自 <a href=https://html5up.net/future-imperfect target=_blank rel=noopener>HTML5 UP</a> | 由 <a href=https://gohugo.io/ target=_blank rel=noopener title=0.80.0>Hugo</a> 驱动</p></footer><a id=back-to-top href=# class="fas fa-arrow-up fa-2x"></a><script src=/js/highlight.js></script><script>hljs.initHighlightingOnLoad();</script><script src=/js/bundle.min.bbba6b424a8ac5b6858cd5fc80eabc9c5277945cc2dc349204646b84891b4b58.js integrity="sha256-u7prQkqKxbaFjNX8gOq8nFJ3lFzC3DSSBGRrhIkbS1g="></script><script src=/js/add-on.js></script><script type=application/javascript>var doNotTrack=false;if(!doNotTrack){window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;ga('create','UA-749876-6','auto');ga('send','pageview');}</script><script async src=https://www.google-analytics.com/analytics.js></script></div></body></html>
+<!doctype html>
+<html lang="zh-cn">
+  <head>
+  <meta charset="utf-8">
+<title>虚拟桌面 之我见 - DevOps &amp; SRE Blog</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+<meta name="generator" content="Hugo 0.80.0" /><meta property="og:site_name" content="DevOps &amp; SRE Blog">
+  <meta property="og:title" content="虚拟桌面 之我见">
+  <meta property="og:description" content="Martin&#39;s Liu is bloging on DevOps and SRE topics">
+  <meta property="description" content="Martin&#39;s Liu is bloging on DevOps and SRE topics">
+  <meta property="og:url" content="https://martinliu.cn/2014/11/23/e8999ae68b9fe6a18ce99da2-e4b98be68891e8a781/">
+  <meta property="og:type" content="article">
+  
+    <meta property="og:image" content="https://martinliu.cn/img/main/logo.jpg">
+  
+  
+            <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.3/styles/default.min.css">
+          <link rel="stylesheet" href="/css/bundle.min.307f33cd8015e5bab28d6ebda9b400f8d3059bc248b4e60adf4d23469fab5a2b.css" integrity="sha256-MH8zzYAV5bqyjW69qbQA&#43;NMFm8JItOYK300jRp&#43;rWis="><link rel="stylesheet" href="/css/add-on.css">
+</head>
+
+  <body>
+    
+
+<header id="site-header">
+  <nav id="site-nav">
+    <h1 class="nav-title">
+      <a href="/" class="nav">
+        
+          博客
+        
+      </a>
+    </h1>
+    <menu id="site-nav-menu" class="flyout-menu menu">
+      
+        
+          
+          <a href="/" class="nav link"><i class='fas fa-home'></i> 首页</a>
+        
+      
+        
+          
+          <a href="/about/" class="nav link"><i class='far fa-id-card'></i> 关于</a>
+        
+      
+        
+          
+          <a href="/blog/" class="nav link"><i class='far fa-newspaper'></i> 博客</a>
+        
+      
+        
+          
+          <a href="/categories/" class="nav link"><i class='fas fa-sitemap'></i> 分类</a>
+        
+      
+        
+          
+          <a href="/course/" class="nav link"><i class='fa fa-book'></i> 课程</a>
+        
+      
+      <a href="#share-menu" class="nav link share-toggle"><i class="fas fa-share-alt">&nbsp;</i>Share</a>
+      
+    </menu>
+    
+    <a href="#share-menu" class="nav share-toggle"><i class="fas fa-share-alt fa-2x">&nbsp;</i></a>
+    <a href="#lang-menu" class="nav lang-toggle" lang="zh-cn">zh-cn</a>
+    <a href="#site-nav" class="nav nav-toggle"><i class="fas fa-bars fa-2x"></i></a>
+  </nav>
+  
+  <menu id="lang-menu" class="flyout-menu menu">
+  <a href="#" lang="zh-cn" class="nav link active">中文 (zh-cn)</a>
+  
+    
+      
+        <a href="/en" lang="en" class="nav no-lang link">English (en)</a>
+      
+    
+      
+    
+  
+</menu>
+
+  
+    <menu id="share-menu" class="flyout-menu menu">
+      <h1>Share Post</h1>
+      
+
+
+
+
+  
+    
+    <a href="//twitter.com/share?text=%e8%99%9a%e6%8b%9f%e6%a1%8c%e9%9d%a2%20%e4%b9%8b%e6%88%91%e8%a7%81&amp;url=https%3a%2f%2fmartinliu.cn%2f2014%2f11%2f23%2fe8999ae68b9fe6a18ce99da2-e4b98be68891e8a781%2f" target="_blank" rel="noopener" class="nav share-btn twitter">
+        <p>Twitter</p>
+      </a>
+  
+
+  
+      <a href="//www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fmartinliu.cn%2f2014%2f11%2f23%2fe8999ae68b9fe6a18ce99da2-e4b98be68891e8a781%2f" target="_blank" rel="noopener" class="nav share-btn facebook">
+        <p>Facebook</p>
+        </a>
+  
+
+  
+    <a href="//www.reddit.com/submit?url=https%3a%2f%2fmartinliu.cn%2f2014%2f11%2f23%2fe8999ae68b9fe6a18ce99da2-e4b98be68891e8a781%2f&amp;title=%e8%99%9a%e6%8b%9f%e6%a1%8c%e9%9d%a2%20%e4%b9%8b%e6%88%91%e8%a7%81" target="_blank" rel="noopener" class="nav share-btn reddit">
+          <p>Reddit</p>
+        </a>
+  
+
+  
+        <a href="//www.linkedin.com/shareArticle?url=https%3a%2f%2fmartinliu.cn%2f2014%2f11%2f23%2fe8999ae68b9fe6a18ce99da2-e4b98be68891e8a781%2f&amp;title=%e8%99%9a%e6%8b%9f%e6%a1%8c%e9%9d%a2%20%e4%b9%8b%e6%88%91%e8%a7%81" target="_blank" rel="noopener" class="nav share-btn linkedin">
+            <p>LinkedIn</p>
+          </a>
+  
+
+  
+        <a href="//www.pinterest.com/pin/create/button/?url=https%3a%2f%2fmartinliu.cn%2f2014%2f11%2f23%2fe8999ae68b9fe6a18ce99da2-e4b98be68891e8a781%2f&amp;description=%e8%99%9a%e6%8b%9f%e6%a1%8c%e9%9d%a2%20%e4%b9%8b%e6%88%91%e8%a7%81" target="_blank" rel="noopener" class="nav share-btn pinterest">
+          <p>Pinterest</p>
+        </a>
+  
+
+  
+        <a href="mailto:?subject=%e6%9f%a5%e7%9c%8b%e6%ad%a4%e5%b8%96%e5%ad%90%e7%9a%84%e4%bd%9c%e8%80%85 liuadmin&amp;body=https%3a%2f%2fmartinliu.cn%2f2014%2f11%2f23%2fe8999ae68b9fe6a18ce99da2-e4b98be68891e8a781%2f" target="_blank" class="nav share-btn email" data-proofer-ignore>
+          <p>Email</p>
+        </a>
+  
+
+
+    </menu>
+  
+</header>
+
+    <div id="wrapper">
+      <section id="site-intro" >
+  <a href="/"><img src="https://martinliu.cn/img/main/logo.jpg" class="circle" width="100" alt="Martin Liu" /></a>
+  <header>
+    <h1>Martin Liu's Blog</h1>
+  </header>
+  <main>
+    <p>Community Advocate, DevOps China Community Organizer</p>
+  </main>
+  
+    <footer>
+      <ul class="socnet-icons">
+        
+
+        <li><a href="//github.com/martinliu" target="_blank" rel="noopener" title="GitHub" class="fab fa-github"></a></li>
+
+
+
+
+
+
+
+
+
+
+
+<li><a href="//www.linkedin.com/in/liuzheng" target="_blank" rel="noopener" title="LinkedIn" class="fab fa-linkedin"></a></li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<li><a href="//twitter.com/martinliu" target="_blank" rel="noopener" title="Twitter" class="fab fa-twitter"></a></li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+      </ul>
+    </footer>
+  
+</section>
+
+      <main id="site-main">
+        
+  <article class="post">
+    <header>
+  <div class="title">
+    
+      <h2><a href="/2014/11/23/e8999ae68b9fe6a18ce99da2-e4b98be68891e8a781/">虚拟桌面 之我见</a></h2>
+    
+    
+  </div>
+  <div class="meta">
+    <time datetime="2014-11-23 10:16:23 &#43;0000 UTC">November 23, 2014</time>
+    <p>liuadmin</p>
+    <p>1 分钟</p>
+  </div>
+</header>
+
+    <div id="socnet-share">
+      
+
+
+
+
+  
+    
+    <a href="//twitter.com/share?text=%e8%99%9a%e6%8b%9f%e6%a1%8c%e9%9d%a2%20%e4%b9%8b%e6%88%91%e8%a7%81&amp;url=https%3a%2f%2fmartinliu.cn%2f2014%2f11%2f23%2fe8999ae68b9fe6a18ce99da2-e4b98be68891e8a781%2f" target="_blank" rel="noopener" class="nav share-btn twitter">
+        <p>Twitter</p>
+      </a>
+  
+
+  
+      <a href="//www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fmartinliu.cn%2f2014%2f11%2f23%2fe8999ae68b9fe6a18ce99da2-e4b98be68891e8a781%2f" target="_blank" rel="noopener" class="nav share-btn facebook">
+        <p>Facebook</p>
+        </a>
+  
+
+  
+    <a href="//www.reddit.com/submit?url=https%3a%2f%2fmartinliu.cn%2f2014%2f11%2f23%2fe8999ae68b9fe6a18ce99da2-e4b98be68891e8a781%2f&amp;title=%e8%99%9a%e6%8b%9f%e6%a1%8c%e9%9d%a2%20%e4%b9%8b%e6%88%91%e8%a7%81" target="_blank" rel="noopener" class="nav share-btn reddit">
+          <p>Reddit</p>
+        </a>
+  
+
+  
+        <a href="//www.linkedin.com/shareArticle?url=https%3a%2f%2fmartinliu.cn%2f2014%2f11%2f23%2fe8999ae68b9fe6a18ce99da2-e4b98be68891e8a781%2f&amp;title=%e8%99%9a%e6%8b%9f%e6%a1%8c%e9%9d%a2%20%e4%b9%8b%e6%88%91%e8%a7%81" target="_blank" rel="noopener" class="nav share-btn linkedin">
+            <p>LinkedIn</p>
+          </a>
+  
+
+  
+        <a href="//www.pinterest.com/pin/create/button/?url=https%3a%2f%2fmartinliu.cn%2f2014%2f11%2f23%2fe8999ae68b9fe6a18ce99da2-e4b98be68891e8a781%2f&amp;description=%e8%99%9a%e6%8b%9f%e6%a1%8c%e9%9d%a2%20%e4%b9%8b%e6%88%91%e8%a7%81" target="_blank" rel="noopener" class="nav share-btn pinterest">
+          <p>Pinterest</p>
+        </a>
+  
+
+  
+        <a href="mailto:?subject=%e6%9f%a5%e7%9c%8b%e6%ad%a4%e5%b8%96%e5%ad%90%e7%9a%84%e4%bd%9c%e8%80%85 liuadmin&amp;body=https%3a%2f%2fmartinliu.cn%2f2014%2f11%2f23%2fe8999ae68b9fe6a18ce99da2-e4b98be68891e8a781%2f" target="_blank" class="nav share-btn email" data-proofer-ignore>
+          <p>Email</p>
+        </a>
+  
+
+
+    </div>
+    <div class="content">
+      
+      <h1 id="虚拟桌面-的业务价值">虚拟桌面 的业务价值</h1>
+<p>虚拟应用产生在虚拟桌面之前，虚拟应用是一种和VPN类似的原创访问方法。它其实最初实现的是图形GUI的远程访问，注意不是文字终端。它和VPN具有本质的区别，在于虚拟桌面是“终端不留数据/秘”的；这个它性拜它的传输协议所赐，虚拟桌面传输的主要是图像信息和键鼠指令。它的另外一个特性是“维护渐变”，在终端上维护近似于零（除了安装和配置虚拟桌面连接客户端程序外）；在服务器端应用升级和维护简单，主要是通过升级和更新一堆的Windows操作系统来实现。因此，主要的业务价值有两点：1）数据安全；2）维护简单。基于这些价值取向，它可以很好地胜任一下业务场景：
+[su_list icon=&ldquo;icon: flag&rdquo;]</p>
+<ul>
+<li>
+<p>多网隔离、集中上网、运维/外包/审计人员访问管理</p>
+</li>
+<li>
+<p>前端操作环境和后端业务数据的分离</p>
+</li>
+<li>
+<p>呼叫中心、处理中心和窗口柜员</p>
+</li>
+<li>
+<p>移动办公、BYOD</p>
+</li>
+<li>
+<p>安全研发、协作研发</p>
+</li>
+<li>
+<p>3D虚拟桌面</p>
+</li>
+<li>
+<p>等等等等</p>
+</li>
+</ul>
+<p>[/su_list]</p>
+<p>业务价值很精练，业务场景太多这里就不赘述。</p>
+<h1 id="关键技术点">关键技术点</h1>
+<p>下面是虚拟桌面/应用的基本原理架构图。
+<a href="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2014/11/xen.png"><img src="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2014/11/xen-520x229.png" alt="xen"></a>
+通过上图可以对虚拟桌面的技术架构一目了然。虚拟桌面基础架构就是在数据中心里面部署的一堆Windows虚拟机，核心就在于让远程用户可以操作使用这些虚拟机里面的应用或者这些虚拟机桌面。鉴于此，核心技术主要有两个方面：Windows操作系统虚拟机的集中发布更新和管理；远程访问协议和所有终端管控策略。</p>
+<h2 id="windows虚拟机的发布和更新">Windows虚拟机的发布和更新</h2>
+<p>Windows的虚拟机有两种：Server和Desktop；虚拟应用技术主要是利用Windows Server操作系统天然的多用户性质，实现一份安装程序的多用户同时使用。虚拟桌面是复制n个预装应用的Desktop桌面操作系统来实现n个用户的使用。</p>
+<h3 id="1虚拟机克隆">1）虚拟机克隆</h3>
+<p>使用服务器虚拟化技术可以方便地从OS模板中克隆出n个虚拟机，它的挑战在于：</p>
+<ul>
+<li>
+<p>创建和更新的速度要快，特别是在虚拟机数量大的情况下</p>
+</li>
+<li>
+<p>可否永久保持用户的个人数据，更新操作不会清空旧的个人数据</p>
+</li>
+<li>
+<p>存储空间要节省</p>
+</li>
+</ul>
+<h3 id="2stream-os-流化操作系统">2）Stream OS 流化操作系统</h3>
+<p>这种方案是一种古老而容易被人遗忘的技术。就是很久很久以前的无盘工作站的思路。虚拟机或者物理机以网络启动的方法获得一个运行的Windows操作系统。所有的操作系统启动镜像都在服务器端统一管理，一种镜像可以对应启动n可操作系统，这些操作系统目前多以虚拟机的形式存在。它的特点</p>
+<ul>
+<li>
+<p>虚拟机对磁盘的消耗非常小，磁盘是写缓存和用户数据。它的大小可以是0或者几个GB。</p>
+</li>
+<li>
+<p>创建的速度快</p>
+</li>
+<li>
+<p>大批量虚拟机启动过程对网络有一定的压力，一般需要使用隔离的万兆网</p>
+</li>
+<li>
+<p>同样有个人数据保持的问题</p>
+</li>
+<li>
+<p>更新速度非常快，所有的操作系统在母盘更新后，需要重启来更新</p>
+</li>
+</ul>
+<p>不管用什么方式集中管理虚拟机，总之桌面虚拟化是要同时玩转这几个球水晶球。</p>
+<ul>
+<li>
+<p>存储成本和性能</p>
+</li>
+<li>
+<p>操作系统更新和个人数据保持</p>
+</li>
+<li>
+<p>虚拟应用和虚拟桌面的混搭</p>
+</li>
+<li>
+<p>虚拟机发布更新方式的混搭</p>
+</li>
+</ul>
+<h2 id="远程访问协议">远程访问协议</h2>
+<p>远程访问协议哪家强，可以公允的说还是Citrix ICA强。本文不是评测访问协议，只是点到为止。远程GUI界面发的虚拟访问方式一共有以下几种：</p>
+<p>[su_list icon=&ldquo;icon: flask&rdquo;]</p>
+<ul>
+<li>
+<p>Citrix ICA/ HDX ICA : Citriix的发家的技术，具有网络适应性强可用于广域网，后台管控策略精细，用户体验高等特点。</p>
+</li>
+<li>
+<p>PCoIP ：最早适用于非虚拟桌面领域的，后来和VMWare和Teradici共同研发之后用在了VDI的访问上。</p>
+</li>
+<li>
+<p>RDP ：Windows Server操作系统自带的远程桌面访问协议，不管你用还是不用它就在那里，它的技术日趋成熟，体验越来越好，不容忽视，从MS许可证的角度讲，任何一个虚拟桌面就需要购买微软的虚拟桌面windows许可证。</p>
+</li>
+<li>
+<p>SPICE ：它是一个开源的协议，可以和KVM配合实现Windows和Linux的远程桌面范围，自身的成熟度和完整度都一般。由于代码的开放性，有使之在某些公司手里成为可造之材。</p>
+</li>
+<li>
+<p>其它 ：国内主要的方式是类似于破解RDP的形式，基于RDP做一些改进和优化。</p>
+</li>
+</ul>
+<p>[/su_list]</p>
+<p>总之一句话“优秀的访问协议”是好的虚拟桌面的天然基因，但它并不是虚拟桌面的全部。几个核心的考察指标包括：</p>
+<ul>
+<li>
+<p>是否支持集中管理：在一个集中的管理服务器上实现对虚拟机、用户、访问终端等等的集中统一管理。</p>
+</li>
+<li>
+<p>管理的颗粒度：你不清楚的话，就到厂商的管理控制台上数数就行</p>
+</li>
+<li>
+<p>带宽消耗：带宽消耗和视觉效果100%是成反比的，节省带宽就以为这降低显示效果，但是还要要求不降低操作灵敏度的情况下，是否支持WAN。这些看似矛盾的因素就是要在一个共同体里同时寻找。</p>
+</li>
+<li>
+<p>客户端设备兼容：是否任何有计算能力有显示输出的设备都可以操作。主要是设备的类型和操作系统。</p>
+</li>
+</ul>
+<h2 id="服务器虚拟化技术">服务器虚拟化技术</h2>
+<p>没有服务器虚拟化似乎不成虚拟桌面项目。它是运行虚拟机的载体。选择的范围主要几家：vSphere，XenServer、Hyper-V和KVM。可以说他们和虚拟桌面是强相关的有一定的兼容性制约。如果不差钱，那么直接买最贵的。如果非常清晰自己的业务需求，则可以推导出自己合适的技术。</p>
+<h2 id="网络技术">网络技术</h2>
+<p>一个完美的虚拟桌面基础架构需要实现数据中心100%的包裹，需要实现外网设备统一的访问入口。说的更形象一点：虚拟桌面平台的虚拟机操作环境可以成为数据中心企业数据的传输终点，所有用户和数据的交互都在这里发生，数据是否能继续它的旅程传输出去，是受到策略的控制。外部客户访问这个入口，入口想一扇门，打开它用户就能够访问到自己的所有的应用和桌面，这扇门对外只开放一个端口，它起到了远程访问协议的代理服务器的功能，它把虚拟桌面基础架构中成百上千的IP地址的访问都终结掉，给防火墙策略的制定减轻了压力，实为容易忽视的关键技术点。</p>
+<h1 id="项目的成败">项目的成败</h1>
+<p>毫不夸张的讲，能给你把大规模虚拟桌面项目做成功的人才对你有真爱。大规模虚拟桌面项目太复杂，实施难度大，成本高，这是业内的共识。对于大的组织，业务需求的梳理和确认需要有厂商引导，在这个过程中最尖锐的问题会在与：1）应用的兼容性；2）外设的兼容性。目前的Windows应用并非天然能够在虚拟机里面运行的，特别是在有负载外设需要通过远程协议链接的时候，更是如此。让企业修改应用是一个非常头痛的事情；选择修改应用，使之更适用于虚拟化环境，从长远看是明智的选择，并非企业的让步。而逼着厂商来适应一个糟糕的，或者本不该出现在虚拟桌面环境中的应用，即使是花了很大的代价实现了，也是投入和产出及不划算的。</p>
+<p>成本结构的烦恼，宏观的看成本中排名前几位是：存储、服务器、软件许可。也就是说桌面虚拟化厂商玩命的在硬件厂商打工。如何节省存储和服务器成本，方法可以是：减少虚拟机的资源消耗量。注意有些情况下是在不极大降低虚拟的数量上来做的，这就不得不去细看一下虚拟机的制备方法上，各家的优势了。方法也可以是：调整VDI和虚拟应用使用的比例。</p>
+<p>实施的过程不仅是搭建和测试，更要命的时用户的接受程度。在有些地方是需要强推，在某些情况下是要把技术问题留给厂商解决。一切都在于实施成本的平衡，没有一帆风顺的实施。实施的过程也是不断积累运维经验的过程，企业需要做好学习和提高的准备，这个球也不好接住。</p>
+<h1 id="总结">总结</h1>
+<p>桌面虚拟化和应用虚拟化是两个不同的技术。在一个项目和客户里，可能是两种不同的技术路线，在很多情况下也是混合使用的。它们构成了“企业应用交付基础架构”，这个基础架构在数据中心里地地位和网络设备、服务器、存储、数据库等等是相同的。只是它处在一个比较特殊的位置。很多人可能还不能理解到这一层。</p>
+<p>从ITSM的角度看，它提供了一种IT服务。用户通过它可以安全高效地使用各种企业业务应用和数据。企业可以用应用交付基础架构，轻松地把业务系统部署到任何的工作场所；并得到更好地数据安全性的保证，更快速地交付各种业务（甚至所有内网应用）给最终用户（不管他们身在何处）。</p>
+
+    </div>
+    <footer>
+      <div class="stats">
+  
+    <ul class="categories">
+      
+        
+          <li><a class="article-terms-link" href="/categories/infrastructure/">infrastructure</a></li>
+        
+          <li><a class="article-terms-link" href="/categories/infrastructure/">infrastructure</a></li>
+        
+          <li><a class="article-terms-link" href="/categories/infrastructure/">infrastructure</a></li>
+        
+      
+    </ul>
+  
+  
+    <ul class="tags">
+      
+        
+          <li><a class="article-terms-link" href="/tags/infrastructure/">infrastructure</a></li>
+        
+          <li><a class="article-terms-link" href="/tags/ica/">ICA</a></li>
+        
+          <li><a class="article-terms-link" href="/tags/pcoip/">PCoIP</a></li>
+        
+          <li><a class="article-terms-link" href="/tags/rdp/">RDP</a></li>
+        
+          <li><a class="article-terms-link" href="/tags/vmware/">VMWare</a></li>
+        
+      
+    </ul>
+  
+</div>
+
+    </footer>
+  </article>
+  
+    
+
+  
+  <div class="pagination">
+    
+      <a href="/2014/12/01/e6988ee5a4a9e6beb3e997a8e8a781/" class="button left"><span>明天澳门见</span></a>
+    
+    
+      <a href="/2014/11/22/e581b6e98187e4b880e4b8aae4b88de99499e4b8bbe9a298/" class="button right"><span>偶遇一个不错主题</span></a>
+    
+  </div>
+
+      </main>
+      <section id="site-sidebar">
+  
+    <section id="recent-posts">
+      <header>
+        <h1>最新文章</h1>
+      </header>
+      
+      <article class="mini-post">
+          <a href="/blog/workshop-elastic-observability/" class="image" style="--bg-image: url('https://martinliu.cn/img/2021/Hubble_01.jpg');">
+    <img class="stretchH" src="https://martinliu.cn/img/2021/Hubble_01.jpg" alt="Hubble">
+  </a>
+        <header>
+          <h2><a href="/blog/workshop-elastic-observability/">Elastic 可观测性工作坊</a></h2>
+          <time class="published" datetime="2021-02-06 10:36:12 &#43;0800 CST">February 6, 2021</time>
+        </header>
+      </article>
+      
+      <article class="mini-post">
+          <a href="/blog/change-back-on-github-page-again/" class="image" style="--bg-image: url('https://martinliu.cn/img/2019/03/pic03.jpg');">
+    <img class="stretchH" src="https://martinliu.cn/img/2019/03/pic03.jpg" alt="Valley">
+  </a>
+        <header>
+          <h2><a href="/blog/change-back-on-github-page-again/">在 Github 上搭建基于 Hugo 的免费个人博客</a></h2>
+          <time class="published" datetime="2021-02-06 00:00:00 &#43;0000 UTC">February 6, 2021</time>
+        </header>
+      </article>
+      
+      <article class="mini-post">
+          <a href="/blog/devopscoach-weekly-6/" class="image" style="--bg-image: url('https://martinliu.cn/');">
+    <img class="stretchH" src="https://martinliu.cn/" alt="">
+  </a>
+        <header>
+          <h2><a href="/blog/devopscoach-weekly-6/">DevOps Coach 周刊 #6</a></h2>
+          <time class="published" datetime="2020-08-31 00:11:01 &#43;0800 CST">August 31, 2020</time>
+        </header>
+      </article>
+      
+      <article class="mini-post">
+          <a href="/blog/elasticsearch-3-nodes-cluster-setup/" class="image" style="--bg-image: url('https://martinliu.cn/');">
+    <img class="stretchH" src="https://martinliu.cn/" alt="">
+  </a>
+        <header>
+          <h2><a href="/blog/elasticsearch-3-nodes-cluster-setup/">Elasticsearch 3 节点集群搭建 (7.9.0)</a></h2>
+          <time class="published" datetime="2020-08-27 13:54:46 &#43;0800 CST">August 27, 2020</time>
+        </header>
+      </article>
+      
+      <article class="mini-post">
+          <a href="/blog/devopscoach-weekly-5/" class="image" style="--bg-image: url('https://martinliu.cn/');">
+    <img class="stretchH" src="https://martinliu.cn/" alt="">
+  </a>
+        <header>
+          <h2><a href="/blog/devopscoach-weekly-5/">DevOps Coach 周刊 #5</a></h2>
+          <time class="published" datetime="2020-08-25 15:20:51 &#43;0800 CST">August 25, 2020</time>
+        </header>
+      </article>
+      
+      
+        <footer>
+          <a href="/blog/" class="button">查看更多</a>
+        </footer>
+      
+    </section>
+  
+
+  
+    
+
+      <section id="categories">
+        <header>
+          <h1><a href="/categories">分类</a></h1>
+        </header>
+        <ul>
+          
+          
+          <li>
+              <a href="/categories/blog/">blog<span class="count">96</span></a>
+          
+          <li>
+              <a href="/categories/itsm/">itsm<span class="count">85</span></a>
+          
+          <li>
+              <a href="/categories/infrastructure/">infrastructure<span class="count">46</span></a>
+          
+          <li>
+              <a href="/categories/devops/">devops<span class="count">38</span></a>
+          
+          <li>
+              <a href="/categories/opensource/">opensource<span class="count">32</span></a>
+          
+          <li>
+              <a href="/categories/cloud-computing/">cloud-computing<span class="count">23</span></a>
+          
+          <li>
+              <a href="/categories/cms/cmdb/">cms/cmdb<span class="count">20</span></a>
+          
+          <li>
+              <a href="/categories/running/">running<span class="count">19</span></a>
+          
+          <li>
+              <a href="/categories/travel/">travel<span class="count">13</span></a>
+          
+          <li>
+              <a href="/categories/sre/">sre<span class="count">2</span></a>
+          
+          </li>
+        </ul>
+      </section>
+    
+  
+
+  
+    <section id="mini-bio">
+      <header>
+        <h1>关于</h1>
+      </header>
+      <p>This Blog is sharing DevOps and SRE ariticles. I have translated DevOps Handbook and SRE Workbook.</p>
+      <footer>
+        <a href="/about" class="button">学到更多</a>
+      </footer>
+    </section>
+  
+</section>
+
+      <footer id="site-footer">
+  
+      <ul class="socnet-icons">
+        
+
+        <li><a href="//github.com/martinliu" target="_blank" rel="noopener" title="GitHub" class="fab fa-github"></a></li>
+
+
+
+
+
+
+
+
+
+
+
+<li><a href="//www.linkedin.com/in/liuzheng" target="_blank" rel="noopener" title="LinkedIn" class="fab fa-linkedin"></a></li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<li><a href="//twitter.com/martinliu" target="_blank" rel="noopener" title="Twitter" class="fab fa-twitter"></a></li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+      </ul>
+  
+  <p class="copyright">
+    © 2021 DevOps &amp; SRE Blog
+      <br>
+    主题: <a href='https://themes.gohugo.io/hugo-future-imperfect-slim/' target='_blank' rel='noopener'>Hugo Future Imperfect Slim</a><br>移植自 <a href='https://html5up.net/future-imperfect' target='_blank' rel='noopener'>HTML5 UP</a> | 由 <a href='https://gohugo.io/' target='_blank' rel='noopener' title='0.80.0'>Hugo</a> 驱动
+  </p>
+</footer>
+<a id="back-to-top" href="#" class="fas fa-arrow-up fa-2x"></a>
+
+      <script src="/js/highlight.js"></script>
+    
+    <script>hljs.initHighlightingOnLoad();</script><script src="/js/bundle.min.b4e669fa428a81defb8af0916c53f39cd1b8e0bbab22199c06f0b182907ba474.js" integrity="sha256-tOZp&#43;kKKgd77ivCRbFPznNG44LurIhmcBvCxgpB7pHQ="></script>
+    <script src="/js/add-on.js"></script>
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-749876-6', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+
+    </div>
+  </body>
+</html>

@@ -1,18 +1,292 @@
-<!doctype html><html lang=zh-cn><head><meta charset=utf-8><title>入手 zsh 和 oh-my-zsh - 刘征的博客</title><meta name=viewport content="width=device-width,initial-scale=1"><meta name=generator content="Hugo 0.80.0"><meta property="og:site_name" content="刘征的博客"><meta property="og:title" content="入手 zsh 和 oh-my-zsh"><meta property="og:description" content="Martin's Liu is bloging on DevOps and SRE topics"><meta property="description" content="Martin's Liu is bloging on DevOps and SRE topics"><meta property="og:url" content="https://martinliu.cn/2015/03/23/e585a5e6898b-zsh-e5928c-oh-my-zsh/"><meta property="og:type" content="article"><meta property="og:image" content="https://martinliu.cn/img/main/logo.jpg"><link rel=stylesheet href=/css/bundle.min.d9e04ae08c9b3049b766dbd4aeab7d862c5ea1d13679b621490e0f5df5507497.css integrity="sha256-2eBK4IybMEm3ZtvUrqt9hixeodE2ebYhSQ4PXfVQdJc="><link rel=stylesheet href=/css/add-on.css></head><body><header id=site-header><nav id=site-nav><h1 class=nav-title><a href=/ class=nav>博客</a></h1><menu id=site-nav-menu class="flyout-menu menu"><a href=/ class="nav link"><i class="fas fa-home"></i>首页</a>
-<a href=/about/ class="nav link"><i class="far fa-id-card"></i>关于</a>
-<a href=/blog/ class="nav link"><i class="far fa-newspaper"></i>博客</a>
-<a href=/categories/ class="nav link"><i class="fas fa-sitemap"></i>分类</a>
-<a href=/contact/ class="nav link"><i class="far fa-envelope"></i>联系</a>
-<a href=#share-menu class="nav link share-toggle"><i class="fas fa-share-alt">&nbsp;</i>Share</a>
-<a href=#search-input class="nav link search-toggle"><i class="fas fa-search">&nbsp;</i>Search</a></menu>
-<a href=#search-input class="nav search-toggle"><i class="fas fa-search fa-2x">&nbsp;</i></a>
-<a href=#share-menu class="nav share-toggle"><i class="fas fa-share-alt fa-2x">&nbsp;</i></a>
-<a href=#lang-menu class="nav lang-toggle" lang=zh-cn>zh-cn</a>
-<a href=#site-nav class="nav nav-toggle"><i class="fas fa-bars fa-2x"></i></a></nav><menu id=search class=menu><input id=search-input class="search-input menu"></input><div id=search-results class="search-results menu"></div></menu><menu id=lang-menu class="flyout-menu menu"><a href=# lang=zh-cn class="nav link active">中文 (zh-cn)</a>
-<a href=/en lang=en class="nav no-lang link">English (en)</a></menu>
-<menu id=share-menu class="flyout-menu menu"><h1>Share Post</h1><a href="//twitter.com/share?text=%e5%85%a5%e6%89%8b%20zsh%20%e5%92%8c%20oh-my-zsh&url=https%3a%2f%2fmartinliu.cn%2f2015%2f03%2f23%2fe585a5e6898b-zsh-e5928c-oh-my-zsh%2f" target=_blank rel=noopener class="nav share-btn twitter"><p>Twitter</p></a><a href="//www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fmartinliu.cn%2f2015%2f03%2f23%2fe585a5e6898b-zsh-e5928c-oh-my-zsh%2f" target=_blank rel=noopener class="nav share-btn facebook"><p>Facebook</p></a><a href="//www.reddit.com/submit?url=https%3a%2f%2fmartinliu.cn%2f2015%2f03%2f23%2fe585a5e6898b-zsh-e5928c-oh-my-zsh%2f&title=%e5%85%a5%e6%89%8b%20zsh%20%e5%92%8c%20oh-my-zsh" target=_blank rel=noopener class="nav share-btn reddit"><p>Reddit</p></a><a href="//www.linkedin.com/shareArticle?url=https%3a%2f%2fmartinliu.cn%2f2015%2f03%2f23%2fe585a5e6898b-zsh-e5928c-oh-my-zsh%2f&title=%e5%85%a5%e6%89%8b%20zsh%20%e5%92%8c%20oh-my-zsh" target=_blank rel=noopener class="nav share-btn linkedin"><p>LinkedIn</p></a><a href="//www.pinterest.com/pin/create/button/?url=https%3a%2f%2fmartinliu.cn%2f2015%2f03%2f23%2fe585a5e6898b-zsh-e5928c-oh-my-zsh%2f&description=%e5%85%a5%e6%89%8b%20zsh%20%e5%92%8c%20oh-my-zsh" target=_blank rel=noopener class="nav share-btn pinterest"><p>Pinterest</p></a><a href="mailto:?subject=%e6%9f%a5%e7%9c%8b%e6%ad%a4%e5%b8%96%e5%ad%90%e7%9a%84%e4%bd%9c%e8%80%85 liuadmin&body=https%3a%2f%2fmartinliu.cn%2f2015%2f03%2f23%2fe585a5e6898b-zsh-e5928c-oh-my-zsh%2f" target=_blank class="nav share-btn email" data-proofer-ignore><p>Email</p></a></menu></header><div id=wrapper><section id=site-intro><a href=/><img src=https://martinliu.cn/img/main/logo.jpg class=circle width=100 alt="Martin Liu"></a><header><h1>Martin Liu's Blog</h1></header><main><p>Community Advocate, DevOps China Community Organizer</p></main><footer><ul class=socnet-icons><li><a href=//github.com/martinliu target=_blank rel=noopener title=GitHub class="fab fa-github"></a></li><li><a href=//www.linkedin.com/in/liuzheng target=_blank rel=noopener title=LinkedIn class="fab fa-linkedin"></a></li><li><a href=//twitter.com/martinliu target=_blank rel=noopener title=Twitter class="fab fa-twitter"></a></li></ul></footer></section><main id=site-main><article class=post><header><div class=title><h2><a href=/2015/03/23/e585a5e6898b-zsh-e5928c-oh-my-zsh/>入手 zsh 和 oh-my-zsh</a></h2></div><div class=meta><time datetime="2015-03-23 02:47:45 +0000 UTC">March 23, 2015</time><p>liuadmin</p><p>1 分钟</p></div></header><div id=socnet-share><a href="//twitter.com/share?text=%e5%85%a5%e6%89%8b%20zsh%20%e5%92%8c%20oh-my-zsh&url=https%3a%2f%2fmartinliu.cn%2f2015%2f03%2f23%2fe585a5e6898b-zsh-e5928c-oh-my-zsh%2f" target=_blank rel=noopener class="nav share-btn twitter"><p>Twitter</p></a><a href="//www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fmartinliu.cn%2f2015%2f03%2f23%2fe585a5e6898b-zsh-e5928c-oh-my-zsh%2f" target=_blank rel=noopener class="nav share-btn facebook"><p>Facebook</p></a><a href="//www.reddit.com/submit?url=https%3a%2f%2fmartinliu.cn%2f2015%2f03%2f23%2fe585a5e6898b-zsh-e5928c-oh-my-zsh%2f&title=%e5%85%a5%e6%89%8b%20zsh%20%e5%92%8c%20oh-my-zsh" target=_blank rel=noopener class="nav share-btn reddit"><p>Reddit</p></a><a href="//www.linkedin.com/shareArticle?url=https%3a%2f%2fmartinliu.cn%2f2015%2f03%2f23%2fe585a5e6898b-zsh-e5928c-oh-my-zsh%2f&title=%e5%85%a5%e6%89%8b%20zsh%20%e5%92%8c%20oh-my-zsh" target=_blank rel=noopener class="nav share-btn linkedin"><p>LinkedIn</p></a><a href="//www.pinterest.com/pin/create/button/?url=https%3a%2f%2fmartinliu.cn%2f2015%2f03%2f23%2fe585a5e6898b-zsh-e5928c-oh-my-zsh%2f&description=%e5%85%a5%e6%89%8b%20zsh%20%e5%92%8c%20oh-my-zsh" target=_blank rel=noopener class="nav share-btn pinterest"><p>Pinterest</p></a><a href="mailto:?subject=%e6%9f%a5%e7%9c%8b%e6%ad%a4%e5%b8%96%e5%ad%90%e7%9a%84%e4%bd%9c%e8%80%85 liuadmin&body=https%3a%2f%2fmartinliu.cn%2f2015%2f03%2f23%2fe585a5e6898b-zsh-e5928c-oh-my-zsh%2f" target=_blank class="nav share-btn email" data-proofer-ignore><p>Email</p></a></div><div class=content><p><img src=http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2015/03/zsh.gif alt=zsh></p><p>安装zsh在任何系统上几乎都是差不多。Zsh 是一款功能强大的交互式 shell，与 Bash 相比，Zsh 下面几点表现令人印象深刻：</p><p>[wm_list bullet=&ldquo;icon-linux&rdquo; class=""]</p><ul><li><p>自动补全</p></li><li><p>拼写纠错</p></li><li><p>定制性强</p></li><li><p>美观的命令提示符（这点吸引力最大）</p></li></ul><p>[/wm_list]</p><p>相信你安装之后，对上面几点会有更加真切的感受！</p><p>下面是RHEL 7 上的安装过程。</p><p>[bash]</p><p>[root@w540]~# yum install git
-[root@w540]~# curl -L <a href=https://github.com/robbyrussell/oh-my-zsh/raw/master/tools/install.sh>https://github.com/robbyrussell/oh-my-zsh/raw/master/tools/install.sh</a> | sh
-[root@w540]~# cat .zshrc</p><h1 id=path-to-your-oh-my-zsh-installation>Path to your oh-my-zsh installation.</h1><p>export ZSH=/root/.oh-my-zsh</p><h1 id=set-name-of-the-theme-to-load>Set name of the theme to load.</h1><h1 id=look-in-oh-my-zshthemes>Look in ~/.oh-my-zsh/themes/</h1><h1 id=optionally-if-you-set-this-to-random-itll-load-a-random-theme-each>Optionally, if you set this to &ldquo;random&rdquo;, it&rsquo;ll load a random theme each</h1><h1 id=time-that-oh-my-zsh-is-loaded>time that oh-my-zsh is loaded.</h1><p>#ZSH_THEME=&ldquo;robbyrussell&rdquo;
+<!doctype html>
+<html lang="zh-cn">
+  <head>
+  <meta charset="utf-8">
+<title>入手 zsh 和 oh-my-zsh - DevOps &amp; SRE Blog</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+<meta name="generator" content="Hugo 0.80.0" /><meta property="og:site_name" content="DevOps &amp; SRE Blog">
+  <meta property="og:title" content="入手 zsh 和 oh-my-zsh">
+  <meta property="og:description" content="Martin&#39;s Liu is bloging on DevOps and SRE topics">
+  <meta property="description" content="Martin&#39;s Liu is bloging on DevOps and SRE topics">
+  <meta property="og:url" content="https://martinliu.cn/2015/03/23/e585a5e6898b-zsh-e5928c-oh-my-zsh/">
+  <meta property="og:type" content="article">
+  
+    <meta property="og:image" content="https://martinliu.cn/img/main/logo.jpg">
+  
+  
+            <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.3/styles/default.min.css">
+          <link rel="stylesheet" href="/css/bundle.min.307f33cd8015e5bab28d6ebda9b400f8d3059bc248b4e60adf4d23469fab5a2b.css" integrity="sha256-MH8zzYAV5bqyjW69qbQA&#43;NMFm8JItOYK300jRp&#43;rWis="><link rel="stylesheet" href="/css/add-on.css">
+</head>
+
+  <body>
+    
+
+<header id="site-header">
+  <nav id="site-nav">
+    <h1 class="nav-title">
+      <a href="/" class="nav">
+        
+          博客
+        
+      </a>
+    </h1>
+    <menu id="site-nav-menu" class="flyout-menu menu">
+      
+        
+          
+          <a href="/" class="nav link"><i class='fas fa-home'></i> 首页</a>
+        
+      
+        
+          
+          <a href="/about/" class="nav link"><i class='far fa-id-card'></i> 关于</a>
+        
+      
+        
+          
+          <a href="/blog/" class="nav link"><i class='far fa-newspaper'></i> 博客</a>
+        
+      
+        
+          
+          <a href="/categories/" class="nav link"><i class='fas fa-sitemap'></i> 分类</a>
+        
+      
+        
+          
+          <a href="/course/" class="nav link"><i class='fa fa-book'></i> 课程</a>
+        
+      
+      <a href="#share-menu" class="nav link share-toggle"><i class="fas fa-share-alt">&nbsp;</i>Share</a>
+      
+    </menu>
+    
+    <a href="#share-menu" class="nav share-toggle"><i class="fas fa-share-alt fa-2x">&nbsp;</i></a>
+    <a href="#lang-menu" class="nav lang-toggle" lang="zh-cn">zh-cn</a>
+    <a href="#site-nav" class="nav nav-toggle"><i class="fas fa-bars fa-2x"></i></a>
+  </nav>
+  
+  <menu id="lang-menu" class="flyout-menu menu">
+  <a href="#" lang="zh-cn" class="nav link active">中文 (zh-cn)</a>
+  
+    
+      
+        <a href="/en" lang="en" class="nav no-lang link">English (en)</a>
+      
+    
+      
+    
+  
+</menu>
+
+  
+    <menu id="share-menu" class="flyout-menu menu">
+      <h1>Share Post</h1>
+      
+
+
+
+
+  
+    
+    <a href="//twitter.com/share?text=%e5%85%a5%e6%89%8b%20zsh%20%e5%92%8c%20oh-my-zsh&amp;url=https%3a%2f%2fmartinliu.cn%2f2015%2f03%2f23%2fe585a5e6898b-zsh-e5928c-oh-my-zsh%2f" target="_blank" rel="noopener" class="nav share-btn twitter">
+        <p>Twitter</p>
+      </a>
+  
+
+  
+      <a href="//www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fmartinliu.cn%2f2015%2f03%2f23%2fe585a5e6898b-zsh-e5928c-oh-my-zsh%2f" target="_blank" rel="noopener" class="nav share-btn facebook">
+        <p>Facebook</p>
+        </a>
+  
+
+  
+    <a href="//www.reddit.com/submit?url=https%3a%2f%2fmartinliu.cn%2f2015%2f03%2f23%2fe585a5e6898b-zsh-e5928c-oh-my-zsh%2f&amp;title=%e5%85%a5%e6%89%8b%20zsh%20%e5%92%8c%20oh-my-zsh" target="_blank" rel="noopener" class="nav share-btn reddit">
+          <p>Reddit</p>
+        </a>
+  
+
+  
+        <a href="//www.linkedin.com/shareArticle?url=https%3a%2f%2fmartinliu.cn%2f2015%2f03%2f23%2fe585a5e6898b-zsh-e5928c-oh-my-zsh%2f&amp;title=%e5%85%a5%e6%89%8b%20zsh%20%e5%92%8c%20oh-my-zsh" target="_blank" rel="noopener" class="nav share-btn linkedin">
+            <p>LinkedIn</p>
+          </a>
+  
+
+  
+        <a href="//www.pinterest.com/pin/create/button/?url=https%3a%2f%2fmartinliu.cn%2f2015%2f03%2f23%2fe585a5e6898b-zsh-e5928c-oh-my-zsh%2f&amp;description=%e5%85%a5%e6%89%8b%20zsh%20%e5%92%8c%20oh-my-zsh" target="_blank" rel="noopener" class="nav share-btn pinterest">
+          <p>Pinterest</p>
+        </a>
+  
+
+  
+        <a href="mailto:?subject=%e6%9f%a5%e7%9c%8b%e6%ad%a4%e5%b8%96%e5%ad%90%e7%9a%84%e4%bd%9c%e8%80%85 liuadmin&amp;body=https%3a%2f%2fmartinliu.cn%2f2015%2f03%2f23%2fe585a5e6898b-zsh-e5928c-oh-my-zsh%2f" target="_blank" class="nav share-btn email" data-proofer-ignore>
+          <p>Email</p>
+        </a>
+  
+
+
+    </menu>
+  
+</header>
+
+    <div id="wrapper">
+      <section id="site-intro" >
+  <a href="/"><img src="https://martinliu.cn/img/main/logo.jpg" class="circle" width="100" alt="Martin Liu" /></a>
+  <header>
+    <h1>Martin Liu's Blog</h1>
+  </header>
+  <main>
+    <p>Community Advocate, DevOps China Community Organizer</p>
+  </main>
+  
+    <footer>
+      <ul class="socnet-icons">
+        
+
+        <li><a href="//github.com/martinliu" target="_blank" rel="noopener" title="GitHub" class="fab fa-github"></a></li>
+
+
+
+
+
+
+
+
+
+
+
+<li><a href="//www.linkedin.com/in/liuzheng" target="_blank" rel="noopener" title="LinkedIn" class="fab fa-linkedin"></a></li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<li><a href="//twitter.com/martinliu" target="_blank" rel="noopener" title="Twitter" class="fab fa-twitter"></a></li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+      </ul>
+    </footer>
+  
+</section>
+
+      <main id="site-main">
+        
+  <article class="post">
+    <header>
+  <div class="title">
+    
+      <h2><a href="/2015/03/23/e585a5e6898b-zsh-e5928c-oh-my-zsh/">入手 zsh 和 oh-my-zsh</a></h2>
+    
+    
+  </div>
+  <div class="meta">
+    <time datetime="2015-03-23 02:47:45 &#43;0000 UTC">March 23, 2015</time>
+    <p>liuadmin</p>
+    <p>1 分钟</p>
+  </div>
+</header>
+
+    <div id="socnet-share">
+      
+
+
+
+
+  
+    
+    <a href="//twitter.com/share?text=%e5%85%a5%e6%89%8b%20zsh%20%e5%92%8c%20oh-my-zsh&amp;url=https%3a%2f%2fmartinliu.cn%2f2015%2f03%2f23%2fe585a5e6898b-zsh-e5928c-oh-my-zsh%2f" target="_blank" rel="noopener" class="nav share-btn twitter">
+        <p>Twitter</p>
+      </a>
+  
+
+  
+      <a href="//www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fmartinliu.cn%2f2015%2f03%2f23%2fe585a5e6898b-zsh-e5928c-oh-my-zsh%2f" target="_blank" rel="noopener" class="nav share-btn facebook">
+        <p>Facebook</p>
+        </a>
+  
+
+  
+    <a href="//www.reddit.com/submit?url=https%3a%2f%2fmartinliu.cn%2f2015%2f03%2f23%2fe585a5e6898b-zsh-e5928c-oh-my-zsh%2f&amp;title=%e5%85%a5%e6%89%8b%20zsh%20%e5%92%8c%20oh-my-zsh" target="_blank" rel="noopener" class="nav share-btn reddit">
+          <p>Reddit</p>
+        </a>
+  
+
+  
+        <a href="//www.linkedin.com/shareArticle?url=https%3a%2f%2fmartinliu.cn%2f2015%2f03%2f23%2fe585a5e6898b-zsh-e5928c-oh-my-zsh%2f&amp;title=%e5%85%a5%e6%89%8b%20zsh%20%e5%92%8c%20oh-my-zsh" target="_blank" rel="noopener" class="nav share-btn linkedin">
+            <p>LinkedIn</p>
+          </a>
+  
+
+  
+        <a href="//www.pinterest.com/pin/create/button/?url=https%3a%2f%2fmartinliu.cn%2f2015%2f03%2f23%2fe585a5e6898b-zsh-e5928c-oh-my-zsh%2f&amp;description=%e5%85%a5%e6%89%8b%20zsh%20%e5%92%8c%20oh-my-zsh" target="_blank" rel="noopener" class="nav share-btn pinterest">
+          <p>Pinterest</p>
+        </a>
+  
+
+  
+        <a href="mailto:?subject=%e6%9f%a5%e7%9c%8b%e6%ad%a4%e5%b8%96%e5%ad%90%e7%9a%84%e4%bd%9c%e8%80%85 liuadmin&amp;body=https%3a%2f%2fmartinliu.cn%2f2015%2f03%2f23%2fe585a5e6898b-zsh-e5928c-oh-my-zsh%2f" target="_blank" class="nav share-btn email" data-proofer-ignore>
+          <p>Email</p>
+        </a>
+  
+
+
+    </div>
+    <div class="content">
+      
+      <p><img src="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2015/03/zsh.gif" alt="zsh"></p>
+<p>安装zsh在任何系统上几乎都是差不多。Zsh 是一款功能强大的交互式 shell，与 Bash 相比，Zsh 下面几点表现令人印象深刻：</p>
+<p>[wm_list bullet=&ldquo;icon-linux&rdquo; class=&quot;&quot;]</p>
+<ul>
+<li>
+<p>自动补全</p>
+</li>
+<li>
+<p>拼写纠错</p>
+</li>
+<li>
+<p>定制性强</p>
+</li>
+<li>
+<p>美观的命令提示符（这点吸引力最大）</p>
+</li>
+</ul>
+<p>[/wm_list]</p>
+<p>相信你安装之后，对上面几点会有更加真切的感受！</p>
+<p>下面是RHEL 7 上的安装过程。</p>
+<p>[bash]</p>
+<p>[root@w540]~# yum install git
+[root@w540]~# curl -L <a href="https://github.com/robbyrussell/oh-my-zsh/raw/master/tools/install.sh">https://github.com/robbyrussell/oh-my-zsh/raw/master/tools/install.sh</a> | sh
+[root@w540]~# cat .zshrc</p>
+<h1 id="path-to-your-oh-my-zsh-installation">Path to your oh-my-zsh installation.</h1>
+<p>export ZSH=/root/.oh-my-zsh</p>
+<h1 id="set-name-of-the-theme-to-load">Set name of the theme to load.</h1>
+<h1 id="look-in-oh-my-zshthemes">Look in ~/.oh-my-zsh/themes/</h1>
+<h1 id="optionally-if-you-set-this-to-random-itll-load-a-random-theme-each">Optionally, if you set this to &ldquo;random&rdquo;, it&rsquo;ll load a random theme each</h1>
+<h1 id="time-that-oh-my-zsh-is-loaded">time that oh-my-zsh is loaded.</h1>
+<p>#ZSH_THEME=&ldquo;robbyrussell&rdquo;
 ZSH_THEME=&ldquo;bira&rdquo; # 后面的文字都省略，我就修改了这个文件的这一个参数，bira的提示符感觉比较新颖和实用
 [root@w540]~# zsh
 ╭─root@w540 ~
@@ -20,15 +294,265 @@ ZSH_THEME=&ldquo;bira&rdquo; # 后面的文字都省略，我就修改了这个�
 anaconda-ks.cfg Desktop Documents Downloads initial-setup-ks.cfg ist Music Pictures Public Templates Videos
 ╭─root@w540 ~
 ╰─$
-[/bash]</p><p>下面是装完之后的截图，以后我的测试机的默认shell应该都是这个样子了：）</p><p><a href=http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2015/03/rhel7-zsh-ohmyzsh.jpg><img src=http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2015/03/rhel7-zsh-ohmyzsh.jpg alt=rhel7-zsh-ohmyzsh></a></p><p>zsh的功能还是比较强大的，然后再加上ohmyzsh这套配置参数文件和工具插件，shell下地工作效率应该可以提高了。下面是一下参考网站：</p><p>[wm_list bullet=&ldquo;icon-linux&rdquo; class=""]</p><ul><li><p>oh-my-zsh入手中文参考：<a href=http://tuhaihe.com/2013/05/17/oh-my-zsh.html>http://tuhaihe.com/2013/05/17/oh-my-zsh.html</a></p></li><li><p>oh-my-zsh 官网（作者认为这是他此生做的最有意义的一件事）：<a href=http://ohmyz.sh/>http://ohmyz.sh/</a></p></li><li><p>zsh 官网：<a href=http://www.zsh.org/>http://www.zsh.org/</a></p></li></ul><p>[/wm_list]</p><p>Mac OS X用户则建议实用iTerm2来替换原声的terminal。下载item2在这里：<a href=http://iterm2.com/>http://iterm2.com/</a></p><p><a href=http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2015/03/iterm2-logo.jpg><img src=http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2015/03/iterm2-logo.jpg alt=iterm2-logo></a></p></div><footer><div class=stats><ul class=categories><li><a class=article-terms-link href=/categories/blog/>Blog</a></li></ul><ul class=tags><li><a class=article-terms-link href=/tags/bash/>bash</a></li><li><a class=article-terms-link href=/tags/shell/>shell</a></li><li><a class=article-terms-link href=/tags/zsh/>zsh</a></li></ul></div></footer></article><article class=post><div><h2 id=say-something>说些什么</h2><form id=comment-form class=new-comment method=post><h3 class="reply-notice hidden"><span class=reply-name></span></h3><input type=hidden name=options[entryId] value=6c11c2f15b92a6e390e1d27e8f10b613>
-<input type=hidden name=fields[replyThread]>
-<input type=hidden name=fields[replyID]>
-<input type=hidden name=fields[replyName]>
-<input required name=fields[name] type=text placeholder=你的名字>
-<input name=fields[website] type=text placeholder=您的网页>
-<input required name=fields[email] type=email placeholder=你的邮件>
-<textarea required name=fields[body] placeholder=你的信息 rows=10></textarea><div class=submit-notice><strong class="submit-notice-text submit-success hidden">感谢您的评论！被批准后它会立即在此站点展示。</strong>
-<strong class="submit-notice-text submit-failed hidden">很抱歉，您的提交存在错误。请确保所有必填字段都已填写正确，然后再试一次。</strong></div><input type=submit value=送出 class=button>
-<input type=submit value=已送出 class="hidden button" disabled>
-<input type=reset value=重设 class=button></form></div><div><h2>评论</h2><p>还沒有留言。</p></div></article><div class=pagination><a href=/2015/03/27/e69c8de58aa1e599a8e8999ae68b9fe58c96-rhev/ class="button left"><span>服务器虚拟化 RHEV</span></a>
-<a href=/2015/03/20/impact-mapping/ class="button right"><span>Impact Mapping</span></a></div></main><section id=site-sidebar><section id=recent-posts><header><h1>最新文章</h1></header><article class=mini-post><a href=/blog/workshop-elastic-observability/ class=image style="--bg-image: url('https://martinliu.cn/img/2019/03/pic01.jpg')"><img class=stretchH src=https://martinliu.cn/img/2019/03/pic01.jpg alt=Valley></a><header><h2><a href=/blog/workshop-elastic-observability/>Elastic 可观测性工作坊</a></h2><time class=published datetime="2021-02-06 10:36:12 +0800 CST">February 6, 2021</time></header></article><article class=mini-post><a href=/blog/change-back-on-github-page-again/ class=image style="--bg-image: url('https://martinliu.cn/img/2019/03/pic03.jpg')"><img class=stretchH src=https://martinliu.cn/img/2019/03/pic03.jpg alt=Valley></a><header><h2><a href=/blog/change-back-on-github-page-again/>博客换一个新样式</a></h2><time class=published datetime="2021-02-06 00:00:00 +0000 UTC">February 6, 2021</time></header></article><article class=mini-post><a href=/blog/devopscoach-weekly-6/ class=image style="--bg-image: url('https://martinliu.cn/')"><img src=https://martinliu.cn/ alt></a><header><h2><a href=/blog/devopscoach-weekly-6/>DevOps Coach 周刊 #6</a></h2><time class=published datetime="2020-08-31 00:11:01 +0800 CST">August 31, 2020</time></header></article><article class=mini-post><a href=/blog/elasticsearch-3-nodes-cluster-setup/ class=image style="--bg-image: url('https://martinliu.cn/')"><img src=https://martinliu.cn/ alt></a><header><h2><a href=/blog/elasticsearch-3-nodes-cluster-setup/>Elasticsearch 3 节点集群搭建 (7.9.0)</a></h2><time class=published datetime="2020-08-27 13:54:46 +0800 CST">August 27, 2020</time></header></article><article class=mini-post><a href=/blog/devopscoach-weekly-5/ class=image style="--bg-image: url('https://martinliu.cn/')"><img src=https://martinliu.cn/ alt></a><header><h2><a href=/blog/devopscoach-weekly-5/>DevOps Coach 周刊 #5</a></h2><time class=published datetime="2020-08-25 15:20:51 +0800 CST">August 25, 2020</time></header></article><footer><a href=/blog/ class=button>查看更多</a></footer></section><section id=categories><header><h1><a href=/categories>分类</a></h1></header><ul><li><a href=/categories/blog/>blog<span class=count>107</span></a><li><a href=/categories/itsm/>itsm<span class=count>95</span></a><li><a href=/categories/infrastructure/>infrastructure<span class=count>48</span></a><li><a href=/categories/devops/>devops<span class=count>38</span></a><li><a href=/categories/opensource/>opensource<span class=count>35</span></a><li><a href=/categories/cloud-computing/>cloud-computing<span class=count>27</span></a><li><a href=/categories/running/>running<span class=count>22</span></a><li><a href=/categories/cms/cmdb/>cms/cmdb<span class=count>20</span></a><li><a href=/categories/travel/>travel<span class=count>14</span></a><li><a href=/categories/sre/>sre<span class=count>2</span></a></li></ul></section><section id=mini-bio><header><h1>关于</h1></header><p>This Blog is sharing DevOps and SRE ariticles. I have translated DevOps Handbook and SRE Workbook.</p><footer><a href=/about class=button>学到更多</a></footer></section></section><footer id=site-footer><ul class=socnet-icons><li><a href=//github.com/martinliu target=_blank rel=noopener title=GitHub class="fab fa-github"></a></li><li><a href=//www.linkedin.com/in/liuzheng target=_blank rel=noopener title=LinkedIn class="fab fa-linkedin"></a></li><li><a href=//twitter.com/martinliu target=_blank rel=noopener title=Twitter class="fab fa-twitter"></a></li></ul><p class=copyright>© 2021 刘征的博客<br>主题: <a href=https://themes.gohugo.io/hugo-future-imperfect-slim/ target=_blank rel=noopener>Hugo Future Imperfect Slim</a><br>移植自 <a href=https://html5up.net/future-imperfect target=_blank rel=noopener>HTML5 UP</a> | 由 <a href=https://gohugo.io/ target=_blank rel=noopener title=0.80.0>Hugo</a> 驱动</p></footer><a id=back-to-top href=# class="fas fa-arrow-up fa-2x"></a><script src=/js/highlight.js></script><script>hljs.initHighlightingOnLoad();</script><script src=/js/bundle.min.bbba6b424a8ac5b6858cd5fc80eabc9c5277945cc2dc349204646b84891b4b58.js integrity="sha256-u7prQkqKxbaFjNX8gOq8nFJ3lFzC3DSSBGRrhIkbS1g="></script><script src=/js/add-on.js></script><script type=application/javascript>var doNotTrack=false;if(!doNotTrack){window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;ga('create','UA-749876-6','auto');ga('send','pageview');}</script><script async src=https://www.google-analytics.com/analytics.js></script></div></body></html>
+[/bash]</p>
+<p>下面是装完之后的截图，以后我的测试机的默认shell应该都是这个样子了：）</p>
+<p><a href="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2015/03/rhel7-zsh-ohmyzsh.jpg"><img src="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2015/03/rhel7-zsh-ohmyzsh.jpg" alt="rhel7-zsh-ohmyzsh"></a></p>
+<p>zsh的功能还是比较强大的，然后再加上ohmyzsh这套配置参数文件和工具插件，shell下地工作效率应该可以提高了。下面是一下参考网站：</p>
+<p>[wm_list bullet=&ldquo;icon-linux&rdquo; class=&quot;&quot;]</p>
+<ul>
+<li>
+<p>oh-my-zsh入手中文参考：<a href="http://tuhaihe.com/2013/05/17/oh-my-zsh.html">http://tuhaihe.com/2013/05/17/oh-my-zsh.html</a></p>
+</li>
+<li>
+<p>oh-my-zsh 官网（作者认为这是他此生做的最有意义的一件事）：<a href="http://ohmyz.sh/">http://ohmyz.sh/</a></p>
+</li>
+<li>
+<p>zsh 官网：<a href="http://www.zsh.org/">http://www.zsh.org/</a></p>
+</li>
+</ul>
+<p>[/wm_list]</p>
+<p>Mac OS X用户则建议实用iTerm2来替换原声的terminal。下载item2在这里：<a href="http://iterm2.com/">http://iterm2.com/</a></p>
+<p><a href="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2015/03/iterm2-logo.jpg"><img src="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2015/03/iterm2-logo.jpg" alt="iterm2-logo"></a></p>
+
+    </div>
+    <footer>
+      <div class="stats">
+  
+    <ul class="categories">
+      
+        
+          <li><a class="article-terms-link" href="/categories/blog/">Blog</a></li>
+        
+      
+    </ul>
+  
+  
+    <ul class="tags">
+      
+        
+          <li><a class="article-terms-link" href="/tags/bash/">bash</a></li>
+        
+          <li><a class="article-terms-link" href="/tags/shell/">shell</a></li>
+        
+          <li><a class="article-terms-link" href="/tags/zsh/">zsh</a></li>
+        
+      
+    </ul>
+  
+</div>
+
+    </footer>
+  </article>
+  
+    
+
+  
+  <div class="pagination">
+    
+      <a href="/2015/03/27/e69c8de58aa1e599a8e8999ae68b9fe58c96-rhev/" class="button left"><span>服务器虚拟化 RHEV</span></a>
+    
+    
+      <a href="/2015/03/20/impact-mapping/" class="button right"><span>Impact Mapping</span></a>
+    
+  </div>
+
+      </main>
+      <section id="site-sidebar">
+  
+    <section id="recent-posts">
+      <header>
+        <h1>最新文章</h1>
+      </header>
+      
+      <article class="mini-post">
+          <a href="/blog/workshop-elastic-observability/" class="image" style="--bg-image: url('https://martinliu.cn/img/2021/Hubble_01.jpg');">
+    <img class="stretchH" src="https://martinliu.cn/img/2021/Hubble_01.jpg" alt="Hubble">
+  </a>
+        <header>
+          <h2><a href="/blog/workshop-elastic-observability/">Elastic 可观测性工作坊</a></h2>
+          <time class="published" datetime="2021-02-06 10:36:12 &#43;0800 CST">February 6, 2021</time>
+        </header>
+      </article>
+      
+      <article class="mini-post">
+          <a href="/blog/change-back-on-github-page-again/" class="image" style="--bg-image: url('https://martinliu.cn/img/2019/03/pic03.jpg');">
+    <img class="stretchH" src="https://martinliu.cn/img/2019/03/pic03.jpg" alt="Valley">
+  </a>
+        <header>
+          <h2><a href="/blog/change-back-on-github-page-again/">在 Github 上搭建基于 Hugo 的免费个人博客</a></h2>
+          <time class="published" datetime="2021-02-06 00:00:00 &#43;0000 UTC">February 6, 2021</time>
+        </header>
+      </article>
+      
+      <article class="mini-post">
+          <a href="/blog/devopscoach-weekly-6/" class="image" style="--bg-image: url('https://martinliu.cn/');">
+    <img class="stretchH" src="https://martinliu.cn/" alt="">
+  </a>
+        <header>
+          <h2><a href="/blog/devopscoach-weekly-6/">DevOps Coach 周刊 #6</a></h2>
+          <time class="published" datetime="2020-08-31 00:11:01 &#43;0800 CST">August 31, 2020</time>
+        </header>
+      </article>
+      
+      <article class="mini-post">
+          <a href="/blog/elasticsearch-3-nodes-cluster-setup/" class="image" style="--bg-image: url('https://martinliu.cn/');">
+    <img class="stretchH" src="https://martinliu.cn/" alt="">
+  </a>
+        <header>
+          <h2><a href="/blog/elasticsearch-3-nodes-cluster-setup/">Elasticsearch 3 节点集群搭建 (7.9.0)</a></h2>
+          <time class="published" datetime="2020-08-27 13:54:46 &#43;0800 CST">August 27, 2020</time>
+        </header>
+      </article>
+      
+      <article class="mini-post">
+          <a href="/blog/devopscoach-weekly-5/" class="image" style="--bg-image: url('https://martinliu.cn/');">
+    <img class="stretchH" src="https://martinliu.cn/" alt="">
+  </a>
+        <header>
+          <h2><a href="/blog/devopscoach-weekly-5/">DevOps Coach 周刊 #5</a></h2>
+          <time class="published" datetime="2020-08-25 15:20:51 &#43;0800 CST">August 25, 2020</time>
+        </header>
+      </article>
+      
+      
+        <footer>
+          <a href="/blog/" class="button">查看更多</a>
+        </footer>
+      
+    </section>
+  
+
+  
+    
+
+      <section id="categories">
+        <header>
+          <h1><a href="/categories">分类</a></h1>
+        </header>
+        <ul>
+          
+          
+          <li>
+              <a href="/categories/blog/">blog<span class="count">96</span></a>
+          
+          <li>
+              <a href="/categories/itsm/">itsm<span class="count">85</span></a>
+          
+          <li>
+              <a href="/categories/infrastructure/">infrastructure<span class="count">46</span></a>
+          
+          <li>
+              <a href="/categories/devops/">devops<span class="count">38</span></a>
+          
+          <li>
+              <a href="/categories/opensource/">opensource<span class="count">32</span></a>
+          
+          <li>
+              <a href="/categories/cloud-computing/">cloud-computing<span class="count">23</span></a>
+          
+          <li>
+              <a href="/categories/cms/cmdb/">cms/cmdb<span class="count">20</span></a>
+          
+          <li>
+              <a href="/categories/running/">running<span class="count">19</span></a>
+          
+          <li>
+              <a href="/categories/travel/">travel<span class="count">13</span></a>
+          
+          <li>
+              <a href="/categories/sre/">sre<span class="count">2</span></a>
+          
+          </li>
+        </ul>
+      </section>
+    
+  
+
+  
+    <section id="mini-bio">
+      <header>
+        <h1>关于</h1>
+      </header>
+      <p>This Blog is sharing DevOps and SRE ariticles. I have translated DevOps Handbook and SRE Workbook.</p>
+      <footer>
+        <a href="/about" class="button">学到更多</a>
+      </footer>
+    </section>
+  
+</section>
+
+      <footer id="site-footer">
+  
+      <ul class="socnet-icons">
+        
+
+        <li><a href="//github.com/martinliu" target="_blank" rel="noopener" title="GitHub" class="fab fa-github"></a></li>
+
+
+
+
+
+
+
+
+
+
+
+<li><a href="//www.linkedin.com/in/liuzheng" target="_blank" rel="noopener" title="LinkedIn" class="fab fa-linkedin"></a></li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<li><a href="//twitter.com/martinliu" target="_blank" rel="noopener" title="Twitter" class="fab fa-twitter"></a></li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+      </ul>
+  
+  <p class="copyright">
+    © 2021 DevOps &amp; SRE Blog
+      <br>
+    主题: <a href='https://themes.gohugo.io/hugo-future-imperfect-slim/' target='_blank' rel='noopener'>Hugo Future Imperfect Slim</a><br>移植自 <a href='https://html5up.net/future-imperfect' target='_blank' rel='noopener'>HTML5 UP</a> | 由 <a href='https://gohugo.io/' target='_blank' rel='noopener' title='0.80.0'>Hugo</a> 驱动
+  </p>
+</footer>
+<a id="back-to-top" href="#" class="fas fa-arrow-up fa-2x"></a>
+
+      <script src="/js/highlight.js"></script>
+    
+    <script>hljs.initHighlightingOnLoad();</script><script src="/js/bundle.min.b4e669fa428a81defb8af0916c53f39cd1b8e0bbab22199c06f0b182907ba474.js" integrity="sha256-tOZp&#43;kKKgd77ivCRbFPznNG44LurIhmcBvCxgpB7pHQ="></script>
+    <script src="/js/add-on.js"></script>
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-749876-6', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+
+    </div>
+  </body>
+</html>

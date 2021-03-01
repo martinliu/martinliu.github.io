@@ -7,9 +7,7 @@ date: 2013-04-07T10:27:38Z
 subtitle: WinXP在XenServer上显示"XenServer tools not installed"的解决办法
 slug: xenserver-tools-not-installed
 tags:
-- winxp
-- cloud-computing
-- xentools
+- xenserver
 title: 解决XenServer tools not installed
 url: /2013/04/07/xenserver-tools-not-installed/
 wordpress_id: 52311

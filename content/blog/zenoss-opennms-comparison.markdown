@@ -6,10 +6,6 @@ comments: true
 date: 2008-05-31T05:52:22Z
 slug: zenoss-opennms-comparison
 tags:
-- cacti
-- Nagios
-- opensource
-- zabbix
 - Zenoss
 title: zenoss opennms comparison/比较
 url: /2008/05/31/zenoss-opennms-comparison/

@@ -1,24 +1,498 @@
-<!doctype html><html lang=zh-cn><head><meta charset=utf-8><title>破门而入Zenoss总部–Break in at Zenoss HQ - 刘征的博客</title><meta name=viewport content="width=device-width,initial-scale=1"><meta name=generator content="Hugo 0.80.0"><meta property="og:site_name" content="刘征的博客"><meta property="og:title" content="破门而入Zenoss总部–Break in at Zenoss HQ"><meta property="og:description" content="Martin's Liu is bloging on DevOps and SRE topics"><meta property="description" content="Martin's Liu is bloging on DevOps and SRE topics"><meta property="og:url" content="https://martinliu.cn/2007/12/07/zenoss-21-beta/"><meta property="og:type" content="article"><meta property="og:image" content="https://martinliu.cn/img/main/logo.jpg"><link rel=stylesheet href=/css/bundle.min.d9e04ae08c9b3049b766dbd4aeab7d862c5ea1d13679b621490e0f5df5507497.css integrity="sha256-2eBK4IybMEm3ZtvUrqt9hixeodE2ebYhSQ4PXfVQdJc="><link rel=stylesheet href=/css/add-on.css></head><body><header id=site-header><nav id=site-nav><h1 class=nav-title><a href=/ class=nav>博客</a></h1><menu id=site-nav-menu class="flyout-menu menu"><a href=/ class="nav link"><i class="fas fa-home"></i>首页</a>
-<a href=/about/ class="nav link"><i class="far fa-id-card"></i>关于</a>
-<a href=/blog/ class="nav link"><i class="far fa-newspaper"></i>博客</a>
-<a href=/categories/ class="nav link"><i class="fas fa-sitemap"></i>分类</a>
-<a href=/contact/ class="nav link"><i class="far fa-envelope"></i>联系</a>
-<a href=#share-menu class="nav link share-toggle"><i class="fas fa-share-alt">&nbsp;</i>Share</a>
-<a href=#search-input class="nav link search-toggle"><i class="fas fa-search">&nbsp;</i>Search</a></menu>
-<a href=#search-input class="nav search-toggle"><i class="fas fa-search fa-2x">&nbsp;</i></a>
-<a href=#share-menu class="nav share-toggle"><i class="fas fa-share-alt fa-2x">&nbsp;</i></a>
-<a href=#lang-menu class="nav lang-toggle" lang=zh-cn>zh-cn</a>
-<a href=#site-nav class="nav nav-toggle"><i class="fas fa-bars fa-2x"></i></a></nav><menu id=search class=menu><input id=search-input class="search-input menu"></input><div id=search-results class="search-results menu"></div></menu><menu id=lang-menu class="flyout-menu menu"><a href=# lang=zh-cn class="nav link active">中文 (zh-cn)</a>
-<a href=/en lang=en class="nav no-lang link">English (en)</a></menu>
-<menu id=share-menu class="flyout-menu menu"><h1>Share Post</h1><a href="//twitter.com/share?text=%e7%a0%b4%e9%97%a8%e8%80%8c%e5%85%a5Zenoss%e6%80%bb%e9%83%a8%e2%80%93Break%20in%20at%20Zenoss%20HQ&url=https%3a%2f%2fmartinliu.cn%2f2007%2f12%2f07%2fzenoss-21-beta%2f" target=_blank rel=noopener class="nav share-btn twitter"><p>Twitter</p></a><a href="//www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fmartinliu.cn%2f2007%2f12%2f07%2fzenoss-21-beta%2f" target=_blank rel=noopener class="nav share-btn facebook"><p>Facebook</p></a><a href="//www.reddit.com/submit?url=https%3a%2f%2fmartinliu.cn%2f2007%2f12%2f07%2fzenoss-21-beta%2f&title=%e7%a0%b4%e9%97%a8%e8%80%8c%e5%85%a5Zenoss%e6%80%bb%e9%83%a8%e2%80%93Break%20in%20at%20Zenoss%20HQ" target=_blank rel=noopener class="nav share-btn reddit"><p>Reddit</p></a><a href="//www.linkedin.com/shareArticle?url=https%3a%2f%2fmartinliu.cn%2f2007%2f12%2f07%2fzenoss-21-beta%2f&title=%e7%a0%b4%e9%97%a8%e8%80%8c%e5%85%a5Zenoss%e6%80%bb%e9%83%a8%e2%80%93Break%20in%20at%20Zenoss%20HQ" target=_blank rel=noopener class="nav share-btn linkedin"><p>LinkedIn</p></a><a href="//www.pinterest.com/pin/create/button/?url=https%3a%2f%2fmartinliu.cn%2f2007%2f12%2f07%2fzenoss-21-beta%2f&description=%e7%a0%b4%e9%97%a8%e8%80%8c%e5%85%a5Zenoss%e6%80%bb%e9%83%a8%e2%80%93Break%20in%20at%20Zenoss%20HQ" target=_blank rel=noopener class="nav share-btn pinterest"><p>Pinterest</p></a><a href="mailto:?subject=%e6%9f%a5%e7%9c%8b%e6%ad%a4%e5%b8%96%e5%ad%90%e7%9a%84%e4%bd%9c%e8%80%85 liuadmin&body=https%3a%2f%2fmartinliu.cn%2f2007%2f12%2f07%2fzenoss-21-beta%2f" target=_blank class="nav share-btn email" data-proofer-ignore><p>Email</p></a></menu></header><div id=wrapper><section id=site-intro><a href=/><img src=https://martinliu.cn/img/main/logo.jpg class=circle width=100 alt="Martin Liu"></a><header><h1>Martin Liu's Blog</h1></header><main><p>Community Advocate, DevOps China Community Organizer</p></main><footer><ul class=socnet-icons><li><a href=//github.com/martinliu target=_blank rel=noopener title=GitHub class="fab fa-github"></a></li><li><a href=//www.linkedin.com/in/liuzheng target=_blank rel=noopener title=LinkedIn class="fab fa-linkedin"></a></li><li><a href=//twitter.com/martinliu target=_blank rel=noopener title=Twitter class="fab fa-twitter"></a></li></ul></footer></section><main id=site-main><article class=post><header><div class=title><h2><a href=/2007/12/07/zenoss-21-beta/>破门而入Zenoss总部–Break in at Zenoss HQ</a></h2></div><div class=meta><time datetime="2007-12-07 03:01:00 +0000 UTC">December 7, 2007</time><p>liuadmin</p><p>1 分钟</p></div></header><div id=socnet-share><a href="//twitter.com/share?text=%e7%a0%b4%e9%97%a8%e8%80%8c%e5%85%a5Zenoss%e6%80%bb%e9%83%a8%e2%80%93Break%20in%20at%20Zenoss%20HQ&url=https%3a%2f%2fmartinliu.cn%2f2007%2f12%2f07%2fzenoss-21-beta%2f" target=_blank rel=noopener class="nav share-btn twitter"><p>Twitter</p></a><a href="//www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fmartinliu.cn%2f2007%2f12%2f07%2fzenoss-21-beta%2f" target=_blank rel=noopener class="nav share-btn facebook"><p>Facebook</p></a><a href="//www.reddit.com/submit?url=https%3a%2f%2fmartinliu.cn%2f2007%2f12%2f07%2fzenoss-21-beta%2f&title=%e7%a0%b4%e9%97%a8%e8%80%8c%e5%85%a5Zenoss%e6%80%bb%e9%83%a8%e2%80%93Break%20in%20at%20Zenoss%20HQ" target=_blank rel=noopener class="nav share-btn reddit"><p>Reddit</p></a><a href="//www.linkedin.com/shareArticle?url=https%3a%2f%2fmartinliu.cn%2f2007%2f12%2f07%2fzenoss-21-beta%2f&title=%e7%a0%b4%e9%97%a8%e8%80%8c%e5%85%a5Zenoss%e6%80%bb%e9%83%a8%e2%80%93Break%20in%20at%20Zenoss%20HQ" target=_blank rel=noopener class="nav share-btn linkedin"><p>LinkedIn</p></a><a href="//www.pinterest.com/pin/create/button/?url=https%3a%2f%2fmartinliu.cn%2f2007%2f12%2f07%2fzenoss-21-beta%2f&description=%e7%a0%b4%e9%97%a8%e8%80%8c%e5%85%a5Zenoss%e6%80%bb%e9%83%a8%e2%80%93Break%20in%20at%20Zenoss%20HQ" target=_blank rel=noopener class="nav share-btn pinterest"><p>Pinterest</p></a><a href="mailto:?subject=%e6%9f%a5%e7%9c%8b%e6%ad%a4%e5%b8%96%e5%ad%90%e7%9a%84%e4%bd%9c%e8%80%85 liuadmin&body=https%3a%2f%2fmartinliu.cn%2f2007%2f12%2f07%2fzenoss-21-beta%2f" target=_blank class="nav share-btn email" data-proofer-ignore><p>Email</p></a></div><div class=content><p>Zenoss 2.1 Beta版有什么新功能，看了这部三分钟的电影您就能知道了：<a href=http://content.screencast.com/media/c01d3364-2df0-4ccd-90f8-964f9268c326_ee342243-dec3-4aaf-bb9e-c82f06220438_static_0_0_Zenoss>http://content.screencast.com/media/c01d3364-2df0-4ccd-90f8-964f9268c326_ee342243-dec3-4aaf-bb9e-c82f06220438_static_0_0_Zenoss</a> Beta 2_1 Compromised.wmv这部电影使用了碟中谍的背景音乐，和星际的片尾字幕显示。为了方便大家的观看，下面是片中部分台词<br>赶快进入看看能找到什么？Zenoss在那，它在哪？就在这，打开门来看看是否有一Zenoss2.1 bate正在运行？快来看看这什么东西，干嘛的？这什么玩意？我不确定我能做这事！这是什么？看上去是一个地图么？Google Map，这是Google Map么？对啊，是Google Map～这些绿色的圆点是什么？来点击一下看看～看上去像是显示了一个数据中心之类的东西！Locations～哦!你可以拖拽这些东西？是的～这看上去，好像布局是可以配置的？哦 My god！哦你可以单击来选择一个最喜欢的布局？是啊，来看看～哇哦～～看这些黄色的按钮，他们是图标还是按钮？来点击一下看看先！这就来到了事件窗口了～来看看这个网络map怎么样？这些玩意还真的是浮动的！！非常cool！这个小企鹅是个啥？这个可能是个Linux服务器～哦，你可以告诉我windows服务器是啥，那个是windows服务器的图标？哦 My God！！！你可以点击之后看到一个小圈在上面。哇！！是在是cool！！我喜欢它！！<br>在拍摄这个电影期间没有Zenoss的员工受伤，如需更多zenoss Beta 2.1的信息请联系我们<a href=http://www.zenoss.com/>www.zenoss.com</a><br><br><br><strong><em>观后感：</em></strong><br>一个貌似比较无知比较神经质傻哥们对Zenoes的新特色进行了一番探索，一个开发人员尝试给他做了一个演示。从一定程度上看出Zenoss开发人员比较兴奋，从侧面可以看出他们比较happy比较喜欢他们的工作，喜欢这个产品。我想这可能是一个产品创造性的主要源泉。开源软件人的创造性大于商业软件，商业软件是金钱驱动的，是商业；我觉得商业软件的开发人员很难把自己的创作性投入产品中，起码在中国是这样。<br>关于Zenoss 2.1，废话少说最快的体验方法莫过于直接使用它。一种不需要安装的方式是直接下载安装好的VMWare虚拟机。你只需要到VMWare下载一个VMWare Player，在下载这个Zenoss的虚拟机压缩文件就成：<a href=http://nchc.dl.sourceforge.net/sourceforge/zenoss/zenoss-2.1.1-x86.vmware.zip>http://nchc.dl.sourceforge.net/sourceforge/zenoss/zenoss-2.1.1-x86.vmware.zip</a>下载并且解压缩后您就可以使用了。它是使用DHCP的在启动之后就能在root登录的console上看到登录的网址，请登录端口8080的那一个。登录密码是admin/zenoss，have fun～～～<br><br><strong><em>功能点评：</em></strong><br>先请看：<a href=http://www.zenoss.com/community/code/zenoss-2.1/zenoss-core-2-1>http://www.zenoss.com/community/code/zenoss-2.1/zenoss-core-2-1</a> 文中提到的电影下载自本页。我仅仅感受了一下界面并没有深入功能。就界面上讲，我觉得他们做的非常好。界面上的每一块基本上都是可以伸缩和隐藏的，好像在非IE的浏览器里显示的更好。主页上的Dashboard是可以配置的象MSN Space的页面一样的定制方式。Google Map的引入使人眼前一亮，我曾经在OpenNMS，Cacti，Unicenter中尝试Map功能;Zenoss在这个功能上创意和功能都大大超出了其他产品。他的网络地图怎一个cool字了得，做到这个份上对于3层网络拓扑图来说算是一种很高的境界了。<br>我准备使用的是它的自动发现功能和对JXM监控的功能。如果您对这个软件有什么心得的话别告诉我。<br><br><strong><em>后记：</em></strong><br>我仔细看了一下Zenoss.com网站，发现两年之内变化还是蛮大的。最大的方面是在它提供的技术支持和服务上。Zenoss Enterprise Edition的 Zenoss Subscriptions定价从66$到150$不等，同时还提供了培训、实施和定制等服务。前一段时间看到的相关新闻中提到了Zenoss可以列入10大最赚钱的开源软件之一（网管类）。他们的Zenoss很happy，他们公司也很happy。还真是鱼和熊掌兼得。</p></div><footer><div class=stats><ul class=categories><li><a class=article-terms-link href=/categories/itsm/>itsm</a></li></ul><ul class=tags><li><a class=article-terms-link href=/tags/zenoss/>Zenoss</a></li></ul></div></footer></article><article class=post><div><h2 id=say-something>说些什么</h2><form id=comment-form class=new-comment method=post><h3 class="reply-notice hidden"><span class=reply-name></span></h3><input type=hidden name=options[entryId] value=3225e4d356bb1eee98c7bad837ef16bd>
-<input type=hidden name=fields[replyThread]>
-<input type=hidden name=fields[replyID]>
-<input type=hidden name=fields[replyName]>
-<input required name=fields[name] type=text placeholder=你的名字>
-<input name=fields[website] type=text placeholder=您的网页>
-<input required name=fields[email] type=email placeholder=你的邮件>
-<textarea required name=fields[body] placeholder=你的信息 rows=10></textarea><div class=submit-notice><strong class="submit-notice-text submit-success hidden">感谢您的评论！被批准后它会立即在此站点展示。</strong>
-<strong class="submit-notice-text submit-failed hidden">很抱歉，您的提交存在错误。请确保所有必填字段都已填写正确，然后再试一次。</strong></div><input type=submit value=送出 class=button>
-<input type=submit value=已送出 class="hidden button" disabled>
-<input type=reset value=重设 class=button></form></div><div><h2>评论</h2><p>还沒有留言。</p></div></article><div class=pagination><a href=/2007/12/13/opennms-yum-install/ class="button left"><span>OpenNMS的Yum的安装方式，安装简单了很多</span></a>
-<a href=/2007/11/08/glpi-features-list/ class="button right"><span>GLPI资产管理系统－－功能列表</span></a></div></main><section id=site-sidebar><section id=recent-posts><header><h1>最新文章</h1></header><article class=mini-post><a href=/blog/workshop-elastic-observability/ class=image style="--bg-image: url('https://martinliu.cn/img/2019/03/pic01.jpg')"><img class=stretchH src=https://martinliu.cn/img/2019/03/pic01.jpg alt=Valley></a><header><h2><a href=/blog/workshop-elastic-observability/>Elastic 可观测性工作坊</a></h2><time class=published datetime="2021-02-06 10:36:12 +0800 CST">February 6, 2021</time></header></article><article class=mini-post><a href=/blog/change-back-on-github-page-again/ class=image style="--bg-image: url('https://martinliu.cn/img/2019/03/pic03.jpg')"><img class=stretchH src=https://martinliu.cn/img/2019/03/pic03.jpg alt=Valley></a><header><h2><a href=/blog/change-back-on-github-page-again/>博客换一个新样式</a></h2><time class=published datetime="2021-02-06 00:00:00 +0000 UTC">February 6, 2021</time></header></article><article class=mini-post><a href=/blog/devopscoach-weekly-6/ class=image style="--bg-image: url('https://martinliu.cn/')"><img src=https://martinliu.cn/ alt></a><header><h2><a href=/blog/devopscoach-weekly-6/>DevOps Coach 周刊 #6</a></h2><time class=published datetime="2020-08-31 00:11:01 +0800 CST">August 31, 2020</time></header></article><article class=mini-post><a href=/blog/elasticsearch-3-nodes-cluster-setup/ class=image style="--bg-image: url('https://martinliu.cn/')"><img src=https://martinliu.cn/ alt></a><header><h2><a href=/blog/elasticsearch-3-nodes-cluster-setup/>Elasticsearch 3 节点集群搭建 (7.9.0)</a></h2><time class=published datetime="2020-08-27 13:54:46 +0800 CST">August 27, 2020</time></header></article><article class=mini-post><a href=/blog/devopscoach-weekly-5/ class=image style="--bg-image: url('https://martinliu.cn/')"><img src=https://martinliu.cn/ alt></a><header><h2><a href=/blog/devopscoach-weekly-5/>DevOps Coach 周刊 #5</a></h2><time class=published datetime="2020-08-25 15:20:51 +0800 CST">August 25, 2020</time></header></article><footer><a href=/blog/ class=button>查看更多</a></footer></section><section id=categories><header><h1><a href=/categories>分类</a></h1></header><ul><li><a href=/categories/blog/>blog<span class=count>107</span></a><li><a href=/categories/itsm/>itsm<span class=count>95</span></a><li><a href=/categories/infrastructure/>infrastructure<span class=count>48</span></a><li><a href=/categories/devops/>devops<span class=count>38</span></a><li><a href=/categories/opensource/>opensource<span class=count>35</span></a><li><a href=/categories/cloud-computing/>cloud-computing<span class=count>27</span></a><li><a href=/categories/running/>running<span class=count>22</span></a><li><a href=/categories/cms/cmdb/>cms/cmdb<span class=count>20</span></a><li><a href=/categories/travel/>travel<span class=count>14</span></a><li><a href=/categories/sre/>sre<span class=count>2</span></a></li></ul></section><section id=mini-bio><header><h1>关于</h1></header><p>This Blog is sharing DevOps and SRE ariticles. I have translated DevOps Handbook and SRE Workbook.</p><footer><a href=/about class=button>学到更多</a></footer></section></section><footer id=site-footer><ul class=socnet-icons><li><a href=//github.com/martinliu target=_blank rel=noopener title=GitHub class="fab fa-github"></a></li><li><a href=//www.linkedin.com/in/liuzheng target=_blank rel=noopener title=LinkedIn class="fab fa-linkedin"></a></li><li><a href=//twitter.com/martinliu target=_blank rel=noopener title=Twitter class="fab fa-twitter"></a></li></ul><p class=copyright>© 2021 刘征的博客<br>主题: <a href=https://themes.gohugo.io/hugo-future-imperfect-slim/ target=_blank rel=noopener>Hugo Future Imperfect Slim</a><br>移植自 <a href=https://html5up.net/future-imperfect target=_blank rel=noopener>HTML5 UP</a> | 由 <a href=https://gohugo.io/ target=_blank rel=noopener title=0.80.0>Hugo</a> 驱动</p></footer><a id=back-to-top href=# class="fas fa-arrow-up fa-2x"></a><script src=/js/highlight.js></script><script>hljs.initHighlightingOnLoad();</script><script src=/js/bundle.min.bbba6b424a8ac5b6858cd5fc80eabc9c5277945cc2dc349204646b84891b4b58.js integrity="sha256-u7prQkqKxbaFjNX8gOq8nFJ3lFzC3DSSBGRrhIkbS1g="></script><script src=/js/add-on.js></script><script type=application/javascript>var doNotTrack=false;if(!doNotTrack){window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;ga('create','UA-749876-6','auto');ga('send','pageview');}</script><script async src=https://www.google-analytics.com/analytics.js></script></div></body></html>
+<!doctype html>
+<html lang="zh-cn">
+  <head>
+  <meta charset="utf-8">
+<title>破门而入Zenoss总部–Break in at Zenoss HQ - DevOps &amp; SRE Blog</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+<meta name="generator" content="Hugo 0.80.0" /><meta property="og:site_name" content="DevOps &amp; SRE Blog">
+  <meta property="og:title" content="破门而入Zenoss总部–Break in at Zenoss HQ">
+  <meta property="og:description" content="Martin&#39;s Liu is bloging on DevOps and SRE topics">
+  <meta property="description" content="Martin&#39;s Liu is bloging on DevOps and SRE topics">
+  <meta property="og:url" content="https://martinliu.cn/2007/12/07/zenoss-21-beta/">
+  <meta property="og:type" content="article">
+  
+    <meta property="og:image" content="https://martinliu.cn/img/main/logo.jpg">
+  
+  
+            <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.3/styles/default.min.css">
+          <link rel="stylesheet" href="/css/bundle.min.307f33cd8015e5bab28d6ebda9b400f8d3059bc248b4e60adf4d23469fab5a2b.css" integrity="sha256-MH8zzYAV5bqyjW69qbQA&#43;NMFm8JItOYK300jRp&#43;rWis="><link rel="stylesheet" href="/css/add-on.css">
+</head>
+
+  <body>
+    
+
+<header id="site-header">
+  <nav id="site-nav">
+    <h1 class="nav-title">
+      <a href="/" class="nav">
+        
+          博客
+        
+      </a>
+    </h1>
+    <menu id="site-nav-menu" class="flyout-menu menu">
+      
+        
+          
+          <a href="/" class="nav link"><i class='fas fa-home'></i> 首页</a>
+        
+      
+        
+          
+          <a href="/about/" class="nav link"><i class='far fa-id-card'></i> 关于</a>
+        
+      
+        
+          
+          <a href="/blog/" class="nav link"><i class='far fa-newspaper'></i> 博客</a>
+        
+      
+        
+          
+          <a href="/categories/" class="nav link"><i class='fas fa-sitemap'></i> 分类</a>
+        
+      
+        
+          
+          <a href="/course/" class="nav link"><i class='fa fa-book'></i> 课程</a>
+        
+      
+      <a href="#share-menu" class="nav link share-toggle"><i class="fas fa-share-alt">&nbsp;</i>Share</a>
+      
+    </menu>
+    
+    <a href="#share-menu" class="nav share-toggle"><i class="fas fa-share-alt fa-2x">&nbsp;</i></a>
+    <a href="#lang-menu" class="nav lang-toggle" lang="zh-cn">zh-cn</a>
+    <a href="#site-nav" class="nav nav-toggle"><i class="fas fa-bars fa-2x"></i></a>
+  </nav>
+  
+  <menu id="lang-menu" class="flyout-menu menu">
+  <a href="#" lang="zh-cn" class="nav link active">中文 (zh-cn)</a>
+  
+    
+      
+        <a href="/en" lang="en" class="nav no-lang link">English (en)</a>
+      
+    
+      
+    
+  
+</menu>
+
+  
+    <menu id="share-menu" class="flyout-menu menu">
+      <h1>Share Post</h1>
+      
+
+
+
+
+  
+    
+    <a href="//twitter.com/share?text=%e7%a0%b4%e9%97%a8%e8%80%8c%e5%85%a5Zenoss%e6%80%bb%e9%83%a8%e2%80%93Break%20in%20at%20Zenoss%20HQ&amp;url=https%3a%2f%2fmartinliu.cn%2f2007%2f12%2f07%2fzenoss-21-beta%2f" target="_blank" rel="noopener" class="nav share-btn twitter">
+        <p>Twitter</p>
+      </a>
+  
+
+  
+      <a href="//www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fmartinliu.cn%2f2007%2f12%2f07%2fzenoss-21-beta%2f" target="_blank" rel="noopener" class="nav share-btn facebook">
+        <p>Facebook</p>
+        </a>
+  
+
+  
+    <a href="//www.reddit.com/submit?url=https%3a%2f%2fmartinliu.cn%2f2007%2f12%2f07%2fzenoss-21-beta%2f&amp;title=%e7%a0%b4%e9%97%a8%e8%80%8c%e5%85%a5Zenoss%e6%80%bb%e9%83%a8%e2%80%93Break%20in%20at%20Zenoss%20HQ" target="_blank" rel="noopener" class="nav share-btn reddit">
+          <p>Reddit</p>
+        </a>
+  
+
+  
+        <a href="//www.linkedin.com/shareArticle?url=https%3a%2f%2fmartinliu.cn%2f2007%2f12%2f07%2fzenoss-21-beta%2f&amp;title=%e7%a0%b4%e9%97%a8%e8%80%8c%e5%85%a5Zenoss%e6%80%bb%e9%83%a8%e2%80%93Break%20in%20at%20Zenoss%20HQ" target="_blank" rel="noopener" class="nav share-btn linkedin">
+            <p>LinkedIn</p>
+          </a>
+  
+
+  
+        <a href="//www.pinterest.com/pin/create/button/?url=https%3a%2f%2fmartinliu.cn%2f2007%2f12%2f07%2fzenoss-21-beta%2f&amp;description=%e7%a0%b4%e9%97%a8%e8%80%8c%e5%85%a5Zenoss%e6%80%bb%e9%83%a8%e2%80%93Break%20in%20at%20Zenoss%20HQ" target="_blank" rel="noopener" class="nav share-btn pinterest">
+          <p>Pinterest</p>
+        </a>
+  
+
+  
+        <a href="mailto:?subject=%e6%9f%a5%e7%9c%8b%e6%ad%a4%e5%b8%96%e5%ad%90%e7%9a%84%e4%bd%9c%e8%80%85 liuadmin&amp;body=https%3a%2f%2fmartinliu.cn%2f2007%2f12%2f07%2fzenoss-21-beta%2f" target="_blank" class="nav share-btn email" data-proofer-ignore>
+          <p>Email</p>
+        </a>
+  
+
+
+    </menu>
+  
+</header>
+
+    <div id="wrapper">
+      <section id="site-intro" >
+  <a href="/"><img src="https://martinliu.cn/img/main/logo.jpg" class="circle" width="100" alt="Martin Liu" /></a>
+  <header>
+    <h1>Martin Liu's Blog</h1>
+  </header>
+  <main>
+    <p>Community Advocate, DevOps China Community Organizer</p>
+  </main>
+  
+    <footer>
+      <ul class="socnet-icons">
+        
+
+        <li><a href="//github.com/martinliu" target="_blank" rel="noopener" title="GitHub" class="fab fa-github"></a></li>
+
+
+
+
+
+
+
+
+
+
+
+<li><a href="//www.linkedin.com/in/liuzheng" target="_blank" rel="noopener" title="LinkedIn" class="fab fa-linkedin"></a></li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<li><a href="//twitter.com/martinliu" target="_blank" rel="noopener" title="Twitter" class="fab fa-twitter"></a></li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+      </ul>
+    </footer>
+  
+</section>
+
+      <main id="site-main">
+        
+  <article class="post">
+    <header>
+  <div class="title">
+    
+      <h2><a href="/2007/12/07/zenoss-21-beta/">破门而入Zenoss总部–Break in at Zenoss HQ</a></h2>
+    
+    
+  </div>
+  <div class="meta">
+    <time datetime="2007-12-07 03:01:00 &#43;0000 UTC">December 7, 2007</time>
+    <p>liuadmin</p>
+    <p>1 分钟</p>
+  </div>
+</header>
+
+    <div id="socnet-share">
+      
+
+
+
+
+  
+    
+    <a href="//twitter.com/share?text=%e7%a0%b4%e9%97%a8%e8%80%8c%e5%85%a5Zenoss%e6%80%bb%e9%83%a8%e2%80%93Break%20in%20at%20Zenoss%20HQ&amp;url=https%3a%2f%2fmartinliu.cn%2f2007%2f12%2f07%2fzenoss-21-beta%2f" target="_blank" rel="noopener" class="nav share-btn twitter">
+        <p>Twitter</p>
+      </a>
+  
+
+  
+      <a href="//www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fmartinliu.cn%2f2007%2f12%2f07%2fzenoss-21-beta%2f" target="_blank" rel="noopener" class="nav share-btn facebook">
+        <p>Facebook</p>
+        </a>
+  
+
+  
+    <a href="//www.reddit.com/submit?url=https%3a%2f%2fmartinliu.cn%2f2007%2f12%2f07%2fzenoss-21-beta%2f&amp;title=%e7%a0%b4%e9%97%a8%e8%80%8c%e5%85%a5Zenoss%e6%80%bb%e9%83%a8%e2%80%93Break%20in%20at%20Zenoss%20HQ" target="_blank" rel="noopener" class="nav share-btn reddit">
+          <p>Reddit</p>
+        </a>
+  
+
+  
+        <a href="//www.linkedin.com/shareArticle?url=https%3a%2f%2fmartinliu.cn%2f2007%2f12%2f07%2fzenoss-21-beta%2f&amp;title=%e7%a0%b4%e9%97%a8%e8%80%8c%e5%85%a5Zenoss%e6%80%bb%e9%83%a8%e2%80%93Break%20in%20at%20Zenoss%20HQ" target="_blank" rel="noopener" class="nav share-btn linkedin">
+            <p>LinkedIn</p>
+          </a>
+  
+
+  
+        <a href="//www.pinterest.com/pin/create/button/?url=https%3a%2f%2fmartinliu.cn%2f2007%2f12%2f07%2fzenoss-21-beta%2f&amp;description=%e7%a0%b4%e9%97%a8%e8%80%8c%e5%85%a5Zenoss%e6%80%bb%e9%83%a8%e2%80%93Break%20in%20at%20Zenoss%20HQ" target="_blank" rel="noopener" class="nav share-btn pinterest">
+          <p>Pinterest</p>
+        </a>
+  
+
+  
+        <a href="mailto:?subject=%e6%9f%a5%e7%9c%8b%e6%ad%a4%e5%b8%96%e5%ad%90%e7%9a%84%e4%bd%9c%e8%80%85 liuadmin&amp;body=https%3a%2f%2fmartinliu.cn%2f2007%2f12%2f07%2fzenoss-21-beta%2f" target="_blank" class="nav share-btn email" data-proofer-ignore>
+          <p>Email</p>
+        </a>
+  
+
+
+    </div>
+    <div class="content">
+      
+      <p>Zenoss 2.1 Beta版有什么新功能，看了这部三分钟的电影您就能知道了：<a href="http://content.screencast.com/media/c01d3364-2df0-4ccd-90f8-964f9268c326_ee342243-dec3-4aaf-bb9e-c82f06220438_static_0_0_Zenoss">http://content.screencast.com/media/c01d3364-2df0-4ccd-90f8-964f9268c326_ee342243-dec3-4aaf-bb9e-c82f06220438_static_0_0_Zenoss</a> Beta 2_1 Compromised.wmv这部电影使用了碟中谍的背景音乐，和星际的片尾字幕显示。为了方便大家的观看，下面是片中部分台词<br />赶快进入看看能找到什么？Zenoss在那，它在哪？就在这，打开门来看看是否有一Zenoss2.1 bate正在运行？快来看看这什么东西，干嘛的？这什么玩意？我不确定我能做这事！这是什么？看上去是一个地图么？Google Map，这是Google Map么？对啊，是Google Map～这些绿色的圆点是什么？来点击一下看看～看上去像是显示了一个数据中心之类的东西！Locations～哦!你可以拖拽这些东西？是的～这看上去，好像布局是可以配置的？哦 My god！哦你可以单击来选择一个最喜欢的布局？是啊，来看看～哇哦～～看这些黄色的按钮，他们是图标还是按钮？来点击一下看看先！这就来到了事件窗口了～来看看这个网络map怎么样？这些玩意还真的是浮动的！！非常cool！这个小企鹅是个啥？这个可能是个Linux服务器～哦，你可以告诉我windows服务器是啥，那个是windows服务器的图标？哦 My God！！！你可以点击之后看到一个小圈在上面。哇！！是在是cool！！我喜欢它！！<br />在拍摄这个电影期间没有Zenoss的员工受伤，如需更多zenoss Beta 2.1的信息请联系我们<a href="http://www.zenoss.com/">www.zenoss.com</a><br /><br /><br /><strong><em>观后感：</em></strong><br />一个貌似比较无知比较神经质傻哥们对Zenoes的新特色进行了一番探索，一个开发人员尝试给他做了一个演示。从一定程度上看出Zenoss开发人员比较兴奋，从侧面可以看出他们比较happy比较喜欢他们的工作，喜欢这个产品。我想这可能是一个产品创造性的主要源泉。开源软件人的创造性大于商业软件，商业软件是金钱驱动的，是商业；我觉得商业软件的开发人员很难把自己的创作性投入产品中，起码在中国是这样。<br />关于Zenoss 2.1，废话少说最快的体验方法莫过于直接使用它。一种不需要安装的方式是直接下载安装好的VMWare虚拟机。你只需要到VMWare下载一个VMWare Player，在下载这个Zenoss的虚拟机压缩文件就成：<a href="http://nchc.dl.sourceforge.net/sourceforge/zenoss/zenoss-2.1.1-x86.vmware.zip">http://nchc.dl.sourceforge.net/sourceforge/zenoss/zenoss-2.1.1-x86.vmware.zip</a>下载并且解压缩后您就可以使用了。它是使用DHCP的在启动之后就能在root登录的console上看到登录的网址，请登录端口8080的那一个。登录密码是admin/zenoss，have fun～～～<br /><br /><strong><em>功能点评：</em></strong><br />先请看：<a href="http://www.zenoss.com/community/code/zenoss-2.1/zenoss-core-2-1">http://www.zenoss.com/community/code/zenoss-2.1/zenoss-core-2-1</a> 文中提到的电影下载自本页。我仅仅感受了一下界面并没有深入功能。就界面上讲，我觉得他们做的非常好。界面上的每一块基本上都是可以伸缩和隐藏的，好像在非IE的浏览器里显示的更好。主页上的Dashboard是可以配置的象MSN Space的页面一样的定制方式。Google Map的引入使人眼前一亮，我曾经在OpenNMS，Cacti，Unicenter中尝试Map功能;Zenoss在这个功能上创意和功能都大大超出了其他产品。他的网络地图怎一个cool字了得，做到这个份上对于3层网络拓扑图来说算是一种很高的境界了。<br />我准备使用的是它的自动发现功能和对JXM监控的功能。如果您对这个软件有什么心得的话别告诉我。<br /><br /><strong><em>后记：</em></strong><br />我仔细看了一下Zenoss.com网站，发现两年之内变化还是蛮大的。最大的方面是在它提供的技术支持和服务上。Zenoss Enterprise Edition的 Zenoss Subscriptions定价从66$到150$不等，同时还提供了培训、实施和定制等服务。前一段时间看到的相关新闻中提到了Zenoss可以列入10大最赚钱的开源软件之一（网管类）。他们的Zenoss很happy，他们公司也很happy。还真是鱼和熊掌兼得。</p>
+
+    </div>
+    <footer>
+      <div class="stats">
+  
+    <ul class="categories">
+      
+        
+          <li><a class="article-terms-link" href="/categories/itsm/">itsm</a></li>
+        
+      
+    </ul>
+  
+  
+    <ul class="tags">
+      
+        
+          <li><a class="article-terms-link" href="/tags/zenoss/">Zenoss</a></li>
+        
+      
+    </ul>
+  
+</div>
+
+    </footer>
+  </article>
+  
+    
+
+  
+  <div class="pagination">
+    
+      <a href="/2007/12/13/opennms-yum-install/" class="button left"><span>OpenNMS的Yum的安装方式，安装简单了很多</span></a>
+    
+    
+      <a href="/2007/11/08/glpi-features-list/" class="button right"><span>GLPI资产管理系统－－功能列表</span></a>
+    
+  </div>
+
+      </main>
+      <section id="site-sidebar">
+  
+    <section id="recent-posts">
+      <header>
+        <h1>最新文章</h1>
+      </header>
+      
+      <article class="mini-post">
+          <a href="/blog/workshop-elastic-observability/" class="image" style="--bg-image: url('https://martinliu.cn/img/2021/Hubble_01.jpg');">
+    <img class="stretchH" src="https://martinliu.cn/img/2021/Hubble_01.jpg" alt="Hubble">
+  </a>
+        <header>
+          <h2><a href="/blog/workshop-elastic-observability/">Elastic 可观测性工作坊</a></h2>
+          <time class="published" datetime="2021-02-06 10:36:12 &#43;0800 CST">February 6, 2021</time>
+        </header>
+      </article>
+      
+      <article class="mini-post">
+          <a href="/blog/change-back-on-github-page-again/" class="image" style="--bg-image: url('https://martinliu.cn/img/2019/03/pic03.jpg');">
+    <img class="stretchH" src="https://martinliu.cn/img/2019/03/pic03.jpg" alt="Valley">
+  </a>
+        <header>
+          <h2><a href="/blog/change-back-on-github-page-again/">在 Github 上搭建基于 Hugo 的免费个人博客</a></h2>
+          <time class="published" datetime="2021-02-06 00:00:00 &#43;0000 UTC">February 6, 2021</time>
+        </header>
+      </article>
+      
+      <article class="mini-post">
+          <a href="/blog/devopscoach-weekly-6/" class="image" style="--bg-image: url('https://martinliu.cn/');">
+    <img class="stretchH" src="https://martinliu.cn/" alt="">
+  </a>
+        <header>
+          <h2><a href="/blog/devopscoach-weekly-6/">DevOps Coach 周刊 #6</a></h2>
+          <time class="published" datetime="2020-08-31 00:11:01 &#43;0800 CST">August 31, 2020</time>
+        </header>
+      </article>
+      
+      <article class="mini-post">
+          <a href="/blog/elasticsearch-3-nodes-cluster-setup/" class="image" style="--bg-image: url('https://martinliu.cn/');">
+    <img class="stretchH" src="https://martinliu.cn/" alt="">
+  </a>
+        <header>
+          <h2><a href="/blog/elasticsearch-3-nodes-cluster-setup/">Elasticsearch 3 节点集群搭建 (7.9.0)</a></h2>
+          <time class="published" datetime="2020-08-27 13:54:46 &#43;0800 CST">August 27, 2020</time>
+        </header>
+      </article>
+      
+      <article class="mini-post">
+          <a href="/blog/devopscoach-weekly-5/" class="image" style="--bg-image: url('https://martinliu.cn/');">
+    <img class="stretchH" src="https://martinliu.cn/" alt="">
+  </a>
+        <header>
+          <h2><a href="/blog/devopscoach-weekly-5/">DevOps Coach 周刊 #5</a></h2>
+          <time class="published" datetime="2020-08-25 15:20:51 &#43;0800 CST">August 25, 2020</time>
+        </header>
+      </article>
+      
+      
+        <footer>
+          <a href="/blog/" class="button">查看更多</a>
+        </footer>
+      
+    </section>
+  
+
+  
+    
+
+      <section id="categories">
+        <header>
+          <h1><a href="/categories">分类</a></h1>
+        </header>
+        <ul>
+          
+          
+          <li>
+              <a href="/categories/blog/">blog<span class="count">96</span></a>
+          
+          <li>
+              <a href="/categories/itsm/">itsm<span class="count">85</span></a>
+          
+          <li>
+              <a href="/categories/infrastructure/">infrastructure<span class="count">46</span></a>
+          
+          <li>
+              <a href="/categories/devops/">devops<span class="count">38</span></a>
+          
+          <li>
+              <a href="/categories/opensource/">opensource<span class="count">32</span></a>
+          
+          <li>
+              <a href="/categories/cloud-computing/">cloud-computing<span class="count">23</span></a>
+          
+          <li>
+              <a href="/categories/cms/cmdb/">cms/cmdb<span class="count">20</span></a>
+          
+          <li>
+              <a href="/categories/running/">running<span class="count">19</span></a>
+          
+          <li>
+              <a href="/categories/travel/">travel<span class="count">13</span></a>
+          
+          <li>
+              <a href="/categories/sre/">sre<span class="count">2</span></a>
+          
+          </li>
+        </ul>
+      </section>
+    
+  
+
+  
+    <section id="mini-bio">
+      <header>
+        <h1>关于</h1>
+      </header>
+      <p>This Blog is sharing DevOps and SRE ariticles. I have translated DevOps Handbook and SRE Workbook.</p>
+      <footer>
+        <a href="/about" class="button">学到更多</a>
+      </footer>
+    </section>
+  
+</section>
+
+      <footer id="site-footer">
+  
+      <ul class="socnet-icons">
+        
+
+        <li><a href="//github.com/martinliu" target="_blank" rel="noopener" title="GitHub" class="fab fa-github"></a></li>
+
+
+
+
+
+
+
+
+
+
+
+<li><a href="//www.linkedin.com/in/liuzheng" target="_blank" rel="noopener" title="LinkedIn" class="fab fa-linkedin"></a></li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<li><a href="//twitter.com/martinliu" target="_blank" rel="noopener" title="Twitter" class="fab fa-twitter"></a></li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+      </ul>
+  
+  <p class="copyright">
+    © 2021 DevOps &amp; SRE Blog
+      <br>
+    主题: <a href='https://themes.gohugo.io/hugo-future-imperfect-slim/' target='_blank' rel='noopener'>Hugo Future Imperfect Slim</a><br>移植自 <a href='https://html5up.net/future-imperfect' target='_blank' rel='noopener'>HTML5 UP</a> | 由 <a href='https://gohugo.io/' target='_blank' rel='noopener' title='0.80.0'>Hugo</a> 驱动
+  </p>
+</footer>
+<a id="back-to-top" href="#" class="fas fa-arrow-up fa-2x"></a>
+
+      <script src="/js/highlight.js"></script>
+    
+    <script>hljs.initHighlightingOnLoad();</script><script src="/js/bundle.min.b4e669fa428a81defb8af0916c53f39cd1b8e0bbab22199c06f0b182907ba474.js" integrity="sha256-tOZp&#43;kKKgd77ivCRbFPznNG44LurIhmcBvCxgpB7pHQ="></script>
+    <script src="/js/add-on.js"></script>
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-749876-6', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+
+    </div>
+  </body>
+</html>

@@ -6,9 +6,7 @@ comments: true
 date: 2013-04-15T06:44:52Z
 slug: xendesktop%e4%b8%ad%e5%a6%82%e4%bd%95%e9%87%8d%e5%ae%9a%e5%90%91usb%e8%ae%be%e5%a4%87
 tags:
-- hdx
-- usb
-- infrastructure
+- xendesktop
 title: XenDesktop中如何重定向USB设备
 url: /2013/04/15/xendesktope4b8ade5a682e4bd95e9878de5ae9ae59091usbe8aebee5a487/
 wordpress_id: 52334

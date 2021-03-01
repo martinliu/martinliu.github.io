@@ -1,11 +1,44 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>cmdb on 刘征的博客</title><link>https://martinliu.cn/tags/cmdb/</link><description>Recent content in cmdb on 刘征的博客</description><generator>Hugo -- gohugo.io</generator><language>zh-CN</language><lastBuildDate>Mon, 14 Feb 2011 15:05:27 +0000</lastBuildDate><atom:link href="https://martinliu.cn/tags/cmdb/index.xml" rel="self" type="application/rss+xml"/><item><title>在Oracle上备份和恢复 Remedy ARS数据库</title><link>https://martinliu.cn/2011/02/14/backup-restore-remedy-ars-oracle-db/</link><pubDate>Mon, 14 Feb 2011 15:05:27 +0000</pubDate><guid>https://martinliu.cn/2011/02/14/backup-restore-remedy-ars-oracle-db/</guid><description>Why ARS system need full backup and restore 众所周知_Remedy ARS_上运行的所有程序代码都是在数据库中存储的，几乎所有的程序代码和相关数据都是存储在后端的数据库里的。基于这种特性，我们可以很方便地从数据库层面实现对ARS系统的备份和恢复。所谓基于数据库的备份和恢复就是指数据库的全库导入和导出。在这方面_Oracle_做的很好，他所提供的imp和exp命令行工具能很好的完成此项任务。 When you may backup BMC Remedy ARS system Database _Remedy ARS_系统数据库全备份可能会发生在下面的几个时间点：
-在安装过程中，_Remedy ITSM_套件的安装都是从ARS开始一个模块一个模块增加安装的，可以在安装每个新模块之前，做一个数据库备份，用于安装失败情况下的现场恢复 在系统上线前，当系统需要做升级/代码更新等等大规模操作之前可以考虑做一次数据库的导出备份 在做系统迁移的情况下，我们甚至可以生产库迁移到开发机上进行问题的重现，或者代码的修改，或者测试，完成之后再导回生产系统（如果生产系统再次期间处于维护状态的话） How-to 下面是我总结的相关操作步骤参考。
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>cmdb on DevOps &amp; SRE Blog</title>
+    <link>https://martinliu.cn/tags/cmdb/</link>
+    <description>Recent content in cmdb on DevOps &amp; SRE Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-CN</language>
+    <lastBuildDate>Mon, 14 Feb 2011 15:05:27 +0000</lastBuildDate><atom:link href="https://martinliu.cn/tags/cmdb/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>在Oracle上备份和恢复 Remedy ARS数据库</title>
+      <link>https://martinliu.cn/2011/02/14/backup-restore-remedy-ars-oracle-db/</link>
+      <pubDate>Mon, 14 Feb 2011 15:05:27 +0000</pubDate>
+      
+      <guid>https://martinliu.cn/2011/02/14/backup-restore-remedy-ars-oracle-db/</guid>
+      <description>Why ARS system need full backup and restore 众所周知_Remedy ARS_上运行的所有程序代码都是在数据库中存储的，几乎所有的程序代码和相关数据都是存储在后端的数据库里的。基于这种特性，我们可以很方便地从数据库层面实现对ARS系统的备份和恢复。所谓基于数据库的备份和恢复就是指数据库的全库导入和导出。在这方面_Oracle_做的很好，他所提供的imp和exp命令行工具能很好的完成此项任务。 When you may backup BMC Remedy ARS system Database _Remedy ARS_系统数据库全备份可能会发生在下面的几个时间点：
+   在安装过程中，_Remedy ITSM_套件的安装都是从ARS开始一个模块一个模块增加安装的，可以在安装每个新模块之前，做一个数据库备份，用于安装失败情况下的现场恢复   在系统上线前，当系统需要做升级/代码更新等等大规模操作之前可以考虑做一次数据库的导出备份   在做系统迁移的情况下，我们甚至可以生产库迁移到开发机上进行问题的重现，或者代码的修改，或者测试，完成之后再导回生产系统（如果生产系统再次期间处于维护状态的话） How-to 下面是我总结的相关操作步骤参考。
 备份_ARSystem_数据库 exp aradmin/ar#admin@itil file=c:\before-patch7.dmp log=c:\exp.log compress=n statistics=none
 参数解释： aradmin/ar#admin 是ARS系统默认的用户名和口令 @itil 是ARSystem数据库所在的数据库实例名 file=c:\before-patch7.dmp log=c:\exp.log 是导出的数据库文件和日志文件路径
 删除ARAdmin用户数据 drop user aradmin cascade;
-创建和授权ARAdmin用户 CREATE USER ARADMIN IDENTIFIED BY ar#admin# DEFAULT TABLESPACE ARSYSTEM TEMPORARY TABLESPACE ARTMPSPC PROFILE DEFAULT ACCOUNT UNLOCK;</description></item><item><title>BMC Atrium CMDB CI数据迁移</title><link>https://martinliu.cn/2011/01/12/bmc-atrium-cmdb-ci/</link><pubDate>Wed, 12 Jan 2011 05:08:23 +0000</pubDate><guid>https://martinliu.cn/2011/01/12/bmc-atrium-cmdb-ci/</guid><description>在不同的CMDB服务器之间做数据迁移之前一定要注意两点：1）保持两边的CDM相同；2）先导入CI数据在导入CI相关的关系数据。另外就是每个类导入完毕之后要做数据完整性和正确性的抽检。以下使用的工具是cmdbdriver，该命令初始化和一般性的参数介绍请参考相关文档。
+创建和授权ARAdmin用户 CREATE USER ARADMIN IDENTIFIED BY ar#admin# DEFAULT TABLESPACE ARSYSTEM TEMPORARY TABLESPACE ARTMPSPC PROFILE DEFAULT ACCOUNT UNLOCK;</description>
+    </item>
+    
+    <item>
+      <title>BMC Atrium CMDB CI数据迁移</title>
+      <link>https://martinliu.cn/2011/01/12/bmc-atrium-cmdb-ci/</link>
+      <pubDate>Wed, 12 Jan 2011 05:08:23 +0000</pubDate>
+      
+      <guid>https://martinliu.cn/2011/01/12/bmc-atrium-cmdb-ci/</guid>
+      <description>在不同的CMDB服务器之间做数据迁移之前一定要注意两点：1）保持两边的CDM相同；2）先导入CI数据在导入CI相关的关系数据。另外就是每个类导入完毕之后要做数据完整性和正确性的抽检。以下使用的工具是cmdbdriver，该命令初始化和一般性的参数介绍请参考相关文档。
 CI数据导出示例
-Command: xexpdt XEXPORT DATA Export instance data from all classes? (F): Classes to export data from: Class and its subclasses, From namespace (1,2) (1): Namespace (): BMC.CORE Class name (): BMC_ComputerSystem Dataset ID (): BMC.ASSET Filename for exported data: C:\DEMO\cs-ci Exporting Class BMC_ComputerSystem i=0: namespaceName = BMC.CORE, className = BMC_ComputerSystemExported without errorsExporting Class BMC_MainframeExporti ng Class BMC_PrinterExporting Class BMC_StorageSubsystem CMDBExportData results ReturnCode: OK Status List : 0 items</description></item><item><title>BMC Atrium CMDB 类定义迁移</title><link>https://martinliu.cn/2011/01/12/bmc-atrium-cmdb-sync-cdm-class/</link><pubDate>Wed, 12 Jan 2011 04:22:44 +0000</pubDate><guid>https://martinliu.cn/2011/01/12/bmc-atrium-cmdb-sync-cdm-class/</guid><description>当对CDM做了定制，并且要在不同的服务器直接做类的迁移的时候，需要把定制过的类都导出，然后在目标机上导入。可以使用的CMDB自带的命令行cmdbdriver工具。
+Command: xexpdt XEXPORT DATA Export instance data from all classes? (F): Classes to export data from: Class and its subclasses, From namespace (1,2) (1): Namespace (): BMC.CORE Class name (): BMC_ComputerSystem Dataset ID (): BMC.ASSET Filename for exported data: C:\DEMO\cs-ci Exporting Class BMC_ComputerSystem i=0: namespaceName = BMC.CORE, className = BMC_ComputerSystemExported without errorsExporting Class BMC_MainframeExporti ng Class BMC_PrinterExporting Class BMC_StorageSubsystem CMDBExportData results ReturnCode: OK Status List : 0 items</description>
+    </item>
+    
+    <item>
+      <title>BMC Atrium CMDB 类定义迁移</title>
+      <link>https://martinliu.cn/2011/01/12/bmc-atrium-cmdb-sync-cdm-class/</link>
+      <pubDate>Wed, 12 Jan 2011 04:22:44 +0000</pubDate>
+      
+      <guid>https://martinliu.cn/2011/01/12/bmc-atrium-cmdb-sync-cdm-class/</guid>
+      <description>当对CDM做了定制，并且要在不同的服务器直接做类的迁移的时候，需要把定制过的类都导出，然后在目标机上导入。可以使用的CMDB自带的命令行cmdbdriver工具。
 cmdbdriver.exe能支持的参数
 Options: -u -a -p -l -s -x&amp;lt;INPUTFILE_FULLPATH&amp;gt; -t&amp;lt;PORT_NUMBER&amp;gt; -q&amp;lt;QUIET_MODE_NUMBER&amp;gt;
 登录CMDBdriver 实例： cmdbdriver -u Demo -p bmc@XXX -s atriumcmdb -t 9988
@@ -13,177 +46,333 @@ Options: -u -a -p -l -s -x&amp;lt;INPUTFILE_FULLPATH&amp;gt; -t&amp;lt;PORT_NUMB
 Command: init INITIALIZATION
 CMDBInitialization results ReturnCode: OK Status List : 0 items
 Command: log Control record: Authentication string () : User name () : Demo Password () : ********** Locale[.charSet] () : TimeZone () : Server () : atriumcmdb
-导出类定义的方法实例 Command: xexpdf XEXPORT DEFINITION Export all classes?</description></item><item><title>[ZT]ITIL V3 服务转换篇 之 资产和配置管理</title><link>https://martinliu.cn/2010/12/20/itil-v3-asset-configuration/</link><pubDate>Mon, 20 Dec 2010 03:01:40 +0000</pubDate><guid>https://martinliu.cn/2010/12/20/itil-v3-asset-configuration/</guid><description>为了定义和控制服务和基础设施组件。维持当前计划中、历史的服务和基础设施状况配置信息的准确性 **一、先介绍几个基本概念 **1、配置项（CI） 配置项是正在或将要在配置管理控制下的资产、服务组件或其他。配置项在复杂性、大小、种类有很大不同，从整个服务或系统包括硬件、软件、文档、支持人员到单独软件模块或硬件组件。配置项可以集中或分组管理。配置项可以选择使用既定的选择标准、分组、分类和识别方式在整个生命周期中管理和追溯。其包括： A) 服务CI项：服务能力资产、服务资源资产、服务模式、服务包、发布包、验收标准等 B) 组织CI项 C) 内部CI项 D) 外部CI项：包括外部客户需求和协议、供应商发布、分包商及对外服务。 E) 接口CI项：端到端的服务，跨越服务提供者的接口 2、配置管理系统（CMS） 为了管理大型复杂的IT服务和基础设施，资产和配置管理需要使用配置管理系统CMS。在指定范围内CMS掌握着所有配置项信息。CMS为所有服务组件与相关事故、问题、已知错误、变更发布、文档、公司数据、供应商、客户信息做关联。 在数据层面CMS能使数据库存在多个物理CMDB中而后共同组成一个联合的CMDB。其他数据来源也可以加入CMS中。 3、配置管理数据库(CMDB) 所有配置项的信息都包括在配置管理数据库(CMDB)中。配置管理数据库(CMDB)对所有IT 组件、组件的不同版本和状态以及组件之间的相互关系进行跟踪。在其最基本的形式下，配置管理数据库(CMDB)可能仅由一些纸质表格或一套电子表格 (Spreadsheets)组成。 4、最终介质库(DML) DML是用来存储和保护所有已授权的被确认版本介质配置项。 他们存储经过质检的主拷贝版本。这个库可以有一个或多个软件库或存放区来存放开发、测试和实时存储文件。他们包含组织所有软件的主拷贝、购买软件的副本及 受控文件的电子版。DML包含物理的拷贝存储，DML是发布管理的基础。
+导出类定义的方法实例 Command: xexpdf XEXPORT DEFINITION Export all classes?</description>
+    </item>
+    
+    <item>
+      <title>[ZT]ITIL V3 服务转换篇 之 资产和配置管理</title>
+      <link>https://martinliu.cn/2010/12/20/itil-v3-asset-configuration/</link>
+      <pubDate>Mon, 20 Dec 2010 03:01:40 +0000</pubDate>
+      
+      <guid>https://martinliu.cn/2010/12/20/itil-v3-asset-configuration/</guid>
+      <description>为了定义和控制服务和基础设施组件。维持当前计划中、历史的服务和基础设施状况配置信息的准确性 **一、先介绍几个基本概念 **1、配置项（CI） 配置项是正在或将要在配置管理控制下的资产、服务组件或其他。配置项在复杂性、大小、种类有很大不同，从整个服务或系统包括硬件、软件、文档、支持人员到单独软件模块或硬件组件。配置项可以集中或分组管理。配置项可以选择使用既定的选择标准、分组、分类和识别方式在整个生命周期中管理和追溯。其包括： A) 服务CI项：服务能力资产、服务资源资产、服务模式、服务包、发布包、验收标准等 B) 组织CI项 C) 内部CI项 D) 外部CI项：包括外部客户需求和协议、供应商发布、分包商及对外服务。 E) 接口CI项：端到端的服务，跨越服务提供者的接口 2、配置管理系统（CMS） 为了管理大型复杂的IT服务和基础设施，资产和配置管理需要使用配置管理系统CMS。在指定范围内CMS掌握着所有配置项信息。CMS为所有服务组件与相关事故、问题、已知错误、变更发布、文档、公司数据、供应商、客户信息做关联。 在数据层面CMS能使数据库存在多个物理CMDB中而后共同组成一个联合的CMDB。其他数据来源也可以加入CMS中。 3、配置管理数据库(CMDB) 所有配置项的信息都包括在配置管理数据库(CMDB)中。配置管理数据库(CMDB)对所有IT 组件、组件的不同版本和状态以及组件之间的相互关系进行跟踪。在其最基本的形式下，配置管理数据库(CMDB)可能仅由一些纸质表格或一套电子表格 (Spreadsheets)组成。 4、最终介质库(DML) DML是用来存储和保护所有已授权的被确认版本介质配置项。 他们存储经过质检的主拷贝版本。这个库可以有一个或多个软件库或存放区来存放开发、测试和实时存储文件。他们包含组织所有软件的主拷贝、购买软件的副本及 受控文件的电子版。DML包含物理的拷贝存储，DML是发布管理的基础。
 **二、配置管理的目的： ** 1. 确定、控制、记录、报告、审计、验证服务资产和配置项包括版本、基线、组成成分、属性和相关关系。 2.通过服务生命周期管理保护资产完整、配置项等账户。确保只有已授权的组件被使用和已授权变更被执行。 3.通过服务生命周期保护服务资产、配置项的完整性。为了建立和维持一个准确和完整的配置管理系统，确保资产和控制服务、IT基础设施的配置需求的完整性。
 三、资产、配置管理的活动
-1、规划 2、识别 配置项识别过程： A) 定义和制定标准文件来选择配置项和他们的组件构成 B) 依据标准选择配置项及其组件并记录他们 C) 给配置项分配唯一的标识符 D) 指定每个配置项相关属性 E) 确认每个配置项是受配置项管理来管理 F) 确定每个配置项的责任人 3、控制 必须有效控制信息以维持配置管理数据库(CMDB)的及时更新。一旦某项活动改变了配置项已记录的特征或配置项之间的关系，则必须在配置管理数据库 (CMDB)中记录该项变动。需注意的是：只有变更管理才有权批准对配置项的特征进行变动，事件管理只能改变某个现有的配置项的状态来反映现实状况。 配置管理负责控制组织接收到的所有IT 组件并需确保这些组件被记录在系统中。硬件可在其已订购或已交付时进行记录，而软件则通常在其被纳入DML时进行记录。 4、记录 组件的生命周期可被划分成多个阶段，每个阶段都可以分配一个状态代码，但具体分成几个阶段则取决于公希望记录IT 基础设施的哪些特征。保持对每次状态变化日期的记录可以提供关于一个产品的生命周期的有用信息，如订购时间、安装时间以及所需的维护和支持。组件的状态决 定了可以对其进行操作的余地。 5、审核和报告 执行审计是为了核实配置管理数据库(CMDB)中记录的信息是否仍然反映了当前的现实状况。这些信息可用来检查和更新配置管理数据库(CMDB)。 在下列情形下需要执行审计： A) 在建立了新的配置管理数据库(CMDB)之后； B) 建立配置管理数据库(CMDB)一段时间之后； C) 重大变更之前或之后； D) 灾难恢复之后； E) 其他任何方便的时候。 审计也可以随机地或在配置经理认为配置管理数据库(CMDB)中的信息不正确时进行。如果配置管理系统与审计工具之间存在关联，则可以每天生成针对某个相 关领域的审计报告。在发现差异时，不应该允许审计工具自动更新配置管理数据库(CMDB)。所有的差异都表明变更管理流程可能被忽视了，所以应该对这些差 异进行调查并通过变更管理对这些差异进行追溯性处理。 三、配置管理管理报告 配置管理流程的管理报告可能包括下列信息： a) 有关流程质量的信息； b) 在审计中发现的记录与实际情形不符的次数； c) 发现未经批准的配置的次数； d) 出现已记录的配置不能被找到情形的次数； e) 审计中发现的有关配置项属性详细程度方面的差异； f) 处理信息记录请求所需的时间； g) 超过给定事件或变更次数的配置项的列表； h) 有关 IT 基础设施的结构和组成的统计信息； i) 有关 IT 基础设施发展情况及其他方面的信息； j) 有关改进措施的总结、报告和建议，例如，针对由于业务、技术、市场价格和其他相关变化所导致的配置管理追踪记录的配置项的范围和详细程度的变更所提出建议； k) 有关实施流程所耗费的人力成本的清单。</description></item><item><title>八月十五月儿圆，我和兄弟们装AR</title><link>https://martinliu.cn/2010/09/22/install-remedy-ars-itsm-on-aix-oracle/</link><pubDate>Wed, 22 Sep 2010 13:51:14 +0000</pubDate><guid>https://martinliu.cn/2010/09/22/install-remedy-ars-itsm-on-aix-oracle/</guid><description>经过几天的奋战，我们终于在中秋月圆之夜，在黑山扈的百望山脚下为客户成功地安装了Remedy ITSM 7.6.03 每当安装程序一次次挂死、安装程序界面不正常显示、安装不完全、安装失败，都让在场的人达到抓狂的后期，无语~~ 这里总结一下这几天的失败安装的血泪史，供后来人参考学习。
+
+1、规划 2、识别 配置项识别过程： A) 定义和制定标准文件来选择配置项和他们的组件构成 B) 依据标准选择配置项及其组件并记录他们 C) 给配置项分配唯一的标识符 D) 指定每个配置项相关属性 E) 确认每个配置项是受配置项管理来管理 F) 确定每个配置项的责任人 3、控制 必须有效控制信息以维持配置管理数据库(CMDB)的及时更新。一旦某项活动改变了配置项已记录的特征或配置项之间的关系，则必须在配置管理数据库 (CMDB)中记录该项变动。需注意的是：只有变更管理才有权批准对配置项的特征进行变动，事件管理只能改变某个现有的配置项的状态来反映现实状况。 配置管理负责控制组织接收到的所有IT 组件并需确保这些组件被记录在系统中。硬件可在其已订购或已交付时进行记录，而软件则通常在其被纳入DML时进行记录。 4、记录 组件的生命周期可被划分成多个阶段，每个阶段都可以分配一个状态代码，但具体分成几个阶段则取决于公希望记录IT 基础设施的哪些特征。保持对每次状态变化日期的记录可以提供关于一个产品的生命周期的有用信息，如订购时间、安装时间以及所需的维护和支持。组件的状态决 定了可以对其进行操作的余地。 5、审核和报告 执行审计是为了核实配置管理数据库(CMDB)中记录的信息是否仍然反映了当前的现实状况。这些信息可用来检查和更新配置管理数据库(CMDB)。 在下列情形下需要执行审计： A) 在建立了新的配置管理数据库(CMDB)之后； B) 建立配置管理数据库(CMDB)一段时间之后； C) 重大变更之前或之后； D) 灾难恢复之后； E) 其他任何方便的时候。 审计也可以随机地或在配置经理认为配置管理数据库(CMDB)中的信息不正确时进行。如果配置管理系统与审计工具之间存在关联，则可以每天生成针对某个相 关领域的审计报告。在发现差异时，不应该允许审计工具自动更新配置管理数据库(CMDB)。所有的差异都表明变更管理流程可能被忽视了，所以应该对这些差 异进行调查并通过变更管理对这些差异进行追溯性处理。 三、配置管理管理报告 配置管理流程的管理报告可能包括下列信息： a) 有关流程质量的信息； b) 在审计中发现的记录与实际情形不符的次数； c) 发现未经批准的配置的次数； d) 出现已记录的配置不能被找到情形的次数； e) 审计中发现的有关配置项属性详细程度方面的差异； f) 处理信息记录请求所需的时间； g) 超过给定事件或变更次数的配置项的列表； h) 有关 IT 基础设施的结构和组成的统计信息； i) 有关 IT 基础设施发展情况及其他方面的信息； j) 有关改进措施的总结、报告和建议，例如，针对由于业务、技术、市场价格和其他相关变化所导致的配置管理追踪记录的配置项的范围和详细程度的变更所提出建议； k) 有关实施流程所耗费的人力成本的清单。</description>
+    </item>
+    
+    <item>
+      <title>八月十五月儿圆，我和兄弟们装AR</title>
+      <link>https://martinliu.cn/2010/09/22/install-remedy-ars-itsm-on-aix-oracle/</link>
+      <pubDate>Wed, 22 Sep 2010 13:51:14 +0000</pubDate>
+      
+      <guid>https://martinliu.cn/2010/09/22/install-remedy-ars-itsm-on-aix-oracle/</guid>
+      <description>经过几天的奋战，我们终于在中秋月圆之夜，在黑山扈的百望山脚下为客户成功地安装了Remedy ITSM 7.6.03 每当安装程序一次次挂死、安装程序界面不正常显示、安装不完全、安装失败，都让在场的人达到抓狂的后期，无语~~ 这里总结一下这几天的失败安装的血泪史，供后来人参考学习。
 版本的确认：所有操作系统，JVM，JDK，数据库，数据库客户端，和以上软件的位数都需要查明，都需要在Remedy的兼容文档中一一确认。
 AIX操作系统的字符集：需要同时安装中英文的UTF8字符集。安装方法smitty，需要有操作系统的安装盘，安装完成之后，locale -a ，需要能看到 ZH_CN, ZH_CN.UTF-8,EN_US, EN_US.UTF-8 这四种字符集缺一不可。否则无法以中文方式安装成功，也无法让操作系统已中文utf8来启动AR服务。
 XManager需要安装在于AR同一网段的Windows服务器上，例如Mid-tier可能安装在Windows上，并与AR在同以网段，那么安装程序最好在该服务器的Xmanager的客户端中安装，从哪里连接AIX服务器并运行安装程序。如果不在同一个网段，安装程序很有可能安装了一半或者无名的消失，安装进程会立刻中断，需要把系统推到重来。
 AIX系统上font server的安装：使用netstat -na|grep 7100， 如果没有结果则需要从AIX的光盘中在AIX的服务器上安装font server和相关的包，并且启动它。如果不装的话，remedy安装程序可能界面显示不正常，或者不显示。
 Oracle上众多僵尸进程：如果在安装CMDB或者ITSM套件的时候，安装界面挂死或者消失，这会是Oracle服务器上产生上百个僵尸进程，这些进程会吃光Oracle服务器的所有物理内存。我们的oracle服务器的16GB内存被吃光之后，ITSM安装界面几乎停止，20~30分钟才能安装完一个定义文件。解决方法是：随时监控Oracle服务器的内存使用情况，当出现内存被僵尸进程吃光的情况，可以考虑使用IT行里无人不知的无敌重启方案，重启Oracle服务器的操作系统，从启动Oracle数据库实例，重启ARS服务，然后再次安装Remedy ITSM。
-Remedy安装之备份：如果是在AIX+Oracle的数据库上安装。Remedy还是非常绿色的软件，需要在安装完AR，CMDB，ITSM套件后各做一个Remedy安装文件目录的备份，在AIX上可以把这个文件夹tar起来备用。Oracle数据库还是非常容易备份的，使用imp和exp命了就可以搞定，具体语句咨询DBA。切忌在安装CMDB和ITSM之前一定要对Remedy系统的安装文件和数据库做备份，一旦安装失败，可以恢复文件，恢复数据库，排错后重新再来。</description></item><item><title>[ZT] Old BSM is dead</title><link>https://martinliu.cn/2010/09/17/zt-bsm-dead/</link><pubDate>Fri, 17 Sep 2010 18:46:09 +0000</pubDate><guid>https://martinliu.cn/2010/09/17/zt-bsm-dead/</guid><description>随着云计算和虚拟化的来临，IT架构愈加复杂，老一套的IT管理方案只能监控静态的基础架构。老一套的CMDB和BSM给运维无法带来实质性的帮助，需要能够具有自适应、自学习IT环境的能力，管理工具需要对IT环境的变化有感知，有学习功能，否则无法对业务故障的处理给予应有的支持。转帖自学一下这个文章，老外从IT架构的历史讲起，横跨跨服务保证和CMDB等领域，讲的还是很不错的。 The Significance of the VMware Integrien Acquisition While it may seem that with Integrien VMware has acquired yet one more piece of the puzzle (a puzzle whose final form no one knows), this acquisition is perhaps one of the most significant if not the most significant that VMware has done. To understand the significance of this acquisition, one has to step back and examine a bit of history in the Systems Management business.</description></item><item><title>Remedy Server Group及负载均衡配置参考步骤</title><link>https://martinliu.cn/2010/08/09/remedy-lb-midtier-server-group-configure/</link><pubDate>Mon, 09 Aug 2010 01:08:31 +0000</pubDate><guid>https://martinliu.cn/2010/08/09/remedy-lb-midtier-server-group-configure/</guid><description>上图为大型用户环境下Remedy ITSM的部署架构，作为本安装步骤参考模型。所不同的是，如下配置步骤只应用了一个最上面的负载均衡器，每个Web对应连接一个ARS服务器，简化掉了中间放在ARS前的负载均衡器。
-第一步 安装前的准备工作。 确定Remedy ARS的服务别名，例如“AtriumCMDB”。在所有的Web服务器（Mid-tier所安装的服务器）的host文件中加入一条Ip地址解析，例如：
-192.168.10.11 AtriumCMDB 此ARS服务别名指向的是该Web服务器所对应的ARS服务器，例如：Web1中AtriumCMDB对应的ip为ARS1，Web2对应ARS2，Web3对应ARS3，以此类推。
-第二步安装第一台ARS服务器 默认所有的ARS都安装了数据库客户端程序，如果是Oracle数据库，ARS上的客户端程序的大小版本号必须和远程数据库的大小版本号完全一致。Windows平台的Oracle客户端只支持32位的程序。在所有ARS服务器的host文件中加入一条Ip地址解析，例如：
-192.168.10.11 AtriumCMDB 此IP地址为每台ARS自己的对外提供ARS服务的IP。ARS上安装完JDK之后，开始安装ARS，安装过程中服务器别名输入AtriumCMDB，其他的选项都按需要配置，所有有关服务器端组件、服务端口、密码、安装路径的信息都要做详细记录，用来安装Server Group中其他成员使用。安装完第一台服务器的ARS之后，申请Remedy License，打License，包括其他所有CMDB、ITSM相关应用模块的License，打完License后导出成文件备用。ARS安装成功之后，顺序安装其他应用，顺序时CMDB 》ITSM 其他。安装完毕后，通过Remedy User来确认所有应用功能是否正常。
-**第三步 **配置第一台ARS服务器为Server Group中的管理服务器 配置方法参照，ARS Configuration Guide中的Server Group的相关章节。配置完毕之后打开Server Group的Log，从启动ARS服务之后，查看该Log看Server Group工作是否正常。
-第四步 安装Server Group中的成员ARS服务器 准备工作参考第一台ARS服务器。运行ARS安装程序，选择Server Group，选择输入AtriumCMDB别名，选择共享的数据库，其他参数与第一台保持一致。安装完毕之后。使用ARS自带的Sample应用新增一个city，在ARS1上查询ARS2上新增的记录。同样参考的Server Group的相关章节，对ARS2进行配置。在ARS2上查看Server Group的日志，确认该ARS已经加入了以第一台ARS为管理服务器的群集中。为第二台ARS服务器打License。在确认第二台ARS服务器成功加入之后，安装CMDB应用。安装完毕之后，在第二台ARS服务器上，使用Remedy User客户端，打开CMDB的相关表单进行新增和查询操作；然后在ARS1上检查操作结果，保证两边一致。安装ITSM：直接把第一台ARS服务器的ar.cfg文件覆盖到第二台ARS的ar.cfg上，一定要修改第一台ARS服务器主机名的哪一行，把它修改为第二台ARS的主机名。复制第一台ARS的ITSM安装目录到第二台ARS的相同路径中，重启ARS服务。查看arerror.log文件看看ARS启动的是否正常。在第二台ARS上使用Remedy User确认ITSM应用是否工作正常，如果一切工作正常，则第二台ARS服务器安装完毕。按照相同的方式安装其他的ARS服务器。
-第五步 配置每台ARS的ranking 按照ARS Configuration Guide中的Server Group的相关章节配置每台ARS服务器处理不同后台工作流的ranking。
-第六步 安装配置所有Web服务器的Remedy Mid-tier 安装Remedy Mid-tier软件，都指向相同的ARS服务别名AtriumCMDB，当然该别名被解析为它所对应的ARS服务器的IP地址。使用浏览器测试每台Web服务器，保证Remedy Mid-tier都能正常工作。
-第七步 配置F5负载均衡 配置F5的分发策略，按不同ARS服务器的用途，来分别不同的用户请求。考虑管理和接口功能的ARS负担少量的用户交互。开发一个jsp的程序部署在Mid-tier的shared目录中，用它来判断Web所对应的ARS的可用性，以此作为唯一判断条件来分发用户请求给可用的web服务器。</description></item><item><title>规划CMDB数据填充-003</title><link>https://martinliu.cn/2010/07/20/cmdb003/</link><pubDate>Tue, 20 Jul 2010 11:35:44 +0000</pubDate><guid>https://martinliu.cn/2010/07/20/cmdb003/</guid><description>From 《Step by step to build a CMDB》步骤17-规划CMDB数据填充
+Remedy安装之备份：如果是在AIX+Oracle的数据库上安装。Remedy还是非常绿色的软件，需要在安装完AR，CMDB，ITSM套件后各做一个Remedy安装文件目录的备份，在AIX上可以把这个文件夹tar起来备用。Oracle数据库还是非常容易备份的，使用imp和exp命了就可以搞定，具体语句咨询DBA。切忌在安装CMDB和ITSM之前一定要对Remedy系统的安装文件和数据库做备份，一旦安装失败，可以恢复文件，恢复数据库，排错后重新再来。</description>
+    </item>
+    
+    <item>
+      <title>规划CMDB数据填充-003</title>
+      <link>https://martinliu.cn/2010/07/20/cmdb003/</link>
+      <pubDate>Tue, 20 Jul 2010 11:35:44 +0000</pubDate>
+      
+      <guid>https://martinliu.cn/2010/07/20/cmdb003/</guid>
+      <description>From 《Step by step to build a CMDB》步骤17-规划CMDB数据填充
 本文描述填充过程的任务3到任务4：
 任务3 映射CI和数据源 现在拿出您的CI清单，并把每一类CI与具有相关信息的数据源映射起来。一个简单的电子数据表格，像图17.2一样的就足够了。有更复杂数据需求的大一点的企业可能需要多个数据页或者通过CI分类来连接到不同的数据页。
 这项工作的最终目标不仅是识别用以填充CMDB数据源，而且还识别了流程和平台的接触点，有些平台对数据填充是有影响的。这项工作也是至关重要，用来定义数据调和规则，定义数据优先度，这些会在下面的步骤，任务7“建立调和规则”中用的。 工具映射如下图17.2所示，包括了每一个CI类，相关的属性，相关的关系数据，和数据源。 图17.2 Ci和数据源之间的对照关系图样例 您可能会发现一些s数据源之间的重叠，特别是CI库存清单的属性数据。这些数据通常包括唯一物理特性和CI的地点的说明 ，例如：型号、序列号、地点和所有者。此信息可能被存储在其他多个地方，它们也可用于CI数据填充的来源和日常维护的来源。 多种的资产和库存清单数据来源可能包括如下：
-审计（资产清单或者配置发现数据库；无代理和有代理方式）
-资产管理系统
-采购系统和许可证管理
-财会系统（采购或者收货）
-合同管理系统
-变更管理系统
-其他财务应用和系统
-任务4 访问数据源环境 为了确保数据质量，你应该访问所有的数据源环境，而不仅仅只是CMDB，还包括连接工具和相关技术，要逐一访问查看每一个数据源。在这里，“进来的是垃圾，出去的就是垃圾”这个俗语是适用的。CMDB项目的成功可能依赖于对系统或者基础架构的更新，以适应网络流量和数据量，还依赖于确保每一个数据源的数据质量。
+  审计（资产清单或者配置发现数据库；无代理和有代理方式）
+  资产管理系统
+  采购系统和许可证管理
+  财会系统（采购或者收货）
+  合同管理系统
+  变更管理系统
+  其他财务应用和系统
+  任务4 访问数据源环境 为了确保数据质量，你应该访问所有的数据源环境，而不仅仅只是CMDB，还包括连接工具和相关技术，要逐一访问查看每一个数据源。在这里，“进来的是垃圾，出去的就是垃圾”这个俗语是适用的。CMDB项目的成功可能依赖于对系统或者基础架构的更新，以适应网络流量和数据量，还依赖于确保每一个数据源的数据质量。
 当你规划CMDB数据填充的时候，要自问这样几个问题，是有关外部映射数据源质量的：
-现在那些信息在那里、怎样被存储的？ &amp;ndash;数据库、电子表格、Word文档？
-当前环境中有没有审计（发现）工具、软件分发、配置管理或者采购系统，用来自动的跟踪和存储这些信息？ 或者数据时被手工地收集和更新的？
-这些系统是基于开放标准还是私有技术的？
-这些系统的厂商有没有标准化的工具？或者CMDB厂商？
-需要被继承的数据源的物理位置在那里？
-在CMDB和数据源之间，通讯的方式是双向的还是单向的？
-还要考虑有关映射数据源性能相关的问题：
-就当前的数据源来说，现实的性能、容量和可靠性是怎样的？</description></item><item><title>规划CMDB数据填充-002</title><link>https://martinliu.cn/2010/07/20/plan-cmdb-population-002/</link><pubDate>Tue, 20 Jul 2010 11:25:18 +0000</pubDate><guid>https://martinliu.cn/2010/07/20/plan-cmdb-population-002/</guid><description>From 《Step by step to build a CMDB》步骤17-规划CMDB数据填充
+  现在那些信息在那里、怎样被存储的？ &amp;ndash;数据库、电子表格、Word文档？
+  当前环境中有没有审计（发现）工具、软件分发、配置管理或者采购系统，用来自动的跟踪和存储这些信息？ 或者数据时被手工地收集和更新的？
+  这些系统是基于开放标准还是私有技术的？
+  这些系统的厂商有没有标准化的工具？或者CMDB厂商？
+  需要被继承的数据源的物理位置在那里？
+  在CMDB和数据源之间，通讯的方式是双向的还是单向的？
+  还要考虑有关映射数据源性能相关的问题：
+  就当前的数据源来说，现实的性能、容量和可靠性是怎样的？</description>
+    </item>
+    
+    <item>
+      <title>规划CMDB数据填充-002</title>
+      <link>https://martinliu.cn/2010/07/20/plan-cmdb-population-002/</link>
+      <pubDate>Tue, 20 Jul 2010 11:25:18 +0000</pubDate>
+      
+      <guid>https://martinliu.cn/2010/07/20/plan-cmdb-population-002/</guid>
+      <description>From 《Step by step to build a CMDB》步骤17-规划CMDB数据填充
 本文描述填充过程的任务1到任务2：
 任务1 再次回顾CMDB范围 现在进行现实检验。你能否确实交付在第2阶段即“定义需求和创建IT服务模型蓝图”中定义的CI范围涉及的相关数据？你在CI数据一旦交付以后，能否有足够的资源来维护整个系统和所有数据？这些都是重要的问题，因为您所选择的CMDB解决方案，可能很容易地就超越了您需要的范围，超出了你可以能容易维护的程度。
 在规划CMDB数据填充时，您的思想应该是“少即是多“。先学会走再跑。让CMDB的首次推广得到充分验证后在考虑扩大范围。您需要帮助保持 CMDB的团队和CMDB数据用户的积极性。同时避免项目范围的蔓延，否则可能破坏的实施的效果，以及用户对新的解决方案的接受度。
 请谨记这样几个考虑因素，从而来帮助您始终专注于那些核心需求上，并能对关键的限制作出反应：
-成本 – 每个人都必须面对业务现实，包括预算和费用的现实。因此，在您的CMDB项目预算范围里，对主要需求排列优先级。如果出现新的想法，那么也只是在新的预算来下了以后才考虑。 时间 &amp;ndash; 您可能需要在给定的时间内实施CMDB，来使您企业在此方面的业务需求得到满足，如 Sarbanes-Oxley 法规，或支持一个非常关键的新流程。当您计划了CI数据填充的顺序后（后面介绍的这一步），不仅要对CI数据排优先级，而且还要明确时间的限制。 实用性 – 如果没有足够的资源用来实施和维持CMDB，以满足CMDB要求，那么您可能需要缩小实施范围，以便您可以在您实际有限的资源里运作项目。你还可以考虑分两个阶段进行实施，把非关键的要求放到第二个阶段中。 外部强加的优先事项 – 有些业务的运作，例如企业治理、数据保护和信息自由，可能会影响您既定的优先次序。您可以通过分阶段实施CMDB数据填充来减少外部因素的影响。如果你没有从一开始就计划足够的时间来达成最后期限，那么你可以尝试投入更多的资源来克服时间上的限制。然而，还要意识到，以后你要申请更多的资源，没有资源的保证，你可能无法充分管理好项目。 所有权 – 有时IT资产的负责人并不属于IT组织。如果资产所有者决定不参与的CMDB，这会严重限制了CI数据内容的提供。您可以提供CMDB部分功能的有限的访问给他们，用来消除他们顾虑，并参与进来。 地区 – 地理区域上的边界，可能会限制建立企业范围的CMDB。由于地理或行政上可能的边界，我们可能听过“最好再也不要从总部传来这样神经质数据库方案”。最好预防这种情况的办法是，尽可能早的让所有地区的相关人员参与到CMDB项目里来。 组织架构 – 很多企业把IT划分成为清晰地、各自为政的独立部门，通过这种方式来对CMDB里的不同范围负责。例如：通信部门的人可能是一个单独的组织结构，他们可能拒绝参与到项目中来，因为他们觉得这超出了他们的控制范围。这时候就要让其他的IT组织参与其中，让每个人都知道谁是项目负责人。 当你计划你的CMDB数据填充的时候，越能专注于关键受益人的需求，就越能够达成项目的业务目标，就越能让您的项目顺利。您需要就已经确定的 CMDB范围，与所有的利益方沟通它可能的影响和效果。收集他们的反馈，并对有必要方面做进一步讨论。
-任务2 识别CI 使用在第15步即“设计IT服务模型蓝图”中设计的IT服务模型蓝图为基础，来生成用于CMDB数据填充的CI以及相关属性和关系数据的清单。这个清单的细节应该到数据字段级别，以便，你能够识别并且映射一个或者多个数据源到特定的CI数据。 例如，如果你把一个实际的服务器CI的属性和关系数据都列出清单，你就可以找出一些现有的能提供属性数据的数据源，可能包括库存管理的数据库和发现或者网络管理工具。但是另外一些数据字段可能没有现成的数据源。你将在第18步“选择自动化CMDB数据填充工具”中用到以上差距分析。或者您可能决定使用手工的方式来填充和更新这个字段，这里还需要仔细的考虑到数据的负责人，和在21步“建立CI生命周期管理流程”中需要支持的流程。 至此，你需要专注于用来满足项目目标的要求。在步骤11到14，你定义了与其他流程的结合点，明确的CI需求。专注于那些能直接对流程收益人产生直接影响的CI数据。</description></item><item><title>规划CMDB数据填充-001</title><link>https://martinliu.cn/2010/06/04/plan-cmdb-population-001/</link><pubDate>Fri, 04 Jun 2010 06:13:20 +0000</pubDate><guid>https://martinliu.cn/2010/06/04/plan-cmdb-population-001/</guid><description>&lt;p>From 《Step by step to build a CMDB》步骤17-规划CMDB数据填充&lt;/p>
-&lt;p>目标&lt;/p>
-&lt;p>在这一CMDB关键的步骤中，会为CMDB的初始化CI数据填充，做精细的计划。需要考虑到所有CI数据，把不同CI类型对应到不同的数据集中，安排正确的顺序将这些数据集CMDB。其中定义对应的规则来调和重复数据是很重要的，不仅在CMDB初始化数据填充阶段重要，在以后的日常维护过程中也是非常重要的。做出了本阶段的详细规划后，这样在第18步即“选择自动化CMDB填充工具”时，就能考虑需要什么样的配置发现和自动化工具了。&lt;/p>
-&lt;p>&lt;img src="http://pursuitmag.com/wp-content/uploads/2010/01/private-investigator-database.jpg" alt="">&lt;/p>
-&lt;p>实际上，把数据填充到CMDB中是非常基础的工作，必须事前做好充分的数据范围和类型的分析。对于一个典型的CMDB数据填过程来说，将需要做如下工作：&lt;/p>
-&lt;ul>
-&lt;li>
-&lt;p>建立里项目程碑和高阶项目计划，以及配套的支撑数据库和操作流程。&lt;/p>
-&lt;/li>
-&lt;li>
-&lt;p>安排项目启动会议，单周或者双周的项目进度沟通会。&lt;/p>
-&lt;/li>
-&lt;li>
-&lt;p>识别子项目（每个数据集分为一个子项目），建立每个子项目的目标和需求清单。识别和制定项目工作活动内容，确定项目的工作流程，并且按照项目计划排程所有活动。包括：
+ 成本 – 每个人都必须面对业务现实，包括预算和费用的现实。因此，在您的CMDB项目预算范围里，对主要需求排列优先级。如果出现新的想法，那么也只是在新的预算来下了以后才考虑。 时间 &amp;ndash; 您可能需要在给定的时间内实施CMDB，来使您企业在此方面的业务需求得到满足，如 Sarbanes-Oxley 法规，或支持一个非常关键的新流程。当您计划了CI数据填充的顺序后（后面介绍的这一步），不仅要对CI数据排优先级，而且还要明确时间的限制。 实用性 – 如果没有足够的资源用来实施和维持CMDB，以满足CMDB要求，那么您可能需要缩小实施范围，以便您可以在您实际有限的资源里运作项目。你还可以考虑分两个阶段进行实施，把非关键的要求放到第二个阶段中。 外部强加的优先事项 – 有些业务的运作，例如企业治理、数据保护和信息自由，可能会影响您既定的优先次序。您可以通过分阶段实施CMDB数据填充来减少外部因素的影响。如果你没有从一开始就计划足够的时间来达成最后期限，那么你可以尝试投入更多的资源来克服时间上的限制。然而，还要意识到，以后你要申请更多的资源，没有资源的保证，你可能无法充分管理好项目。 所有权 – 有时IT资产的负责人并不属于IT组织。如果资产所有者决定不参与的CMDB，这会严重限制了CI数据内容的提供。您可以提供CMDB部分功能的有限的访问给他们，用来消除他们顾虑，并参与进来。 地区 – 地理区域上的边界，可能会限制建立企业范围的CMDB。由于地理或行政上可能的边界，我们可能听过“最好再也不要从总部传来这样神经质数据库方案”。最好预防这种情况的办法是，尽可能早的让所有地区的相关人员参与到CMDB项目里来。 组织架构 – 很多企业把IT划分成为清晰地、各自为政的独立部门，通过这种方式来对CMDB里的不同范围负责。例如：通信部门的人可能是一个单独的组织结构，他们可能拒绝参与到项目中来，因为他们觉得这超出了他们的控制范围。这时候就要让其他的IT组织参与其中，让每个人都知道谁是项目负责人。  当你计划你的CMDB数据填充的时候，越能专注于关键受益人的需求，就越能够达成项目的业务目标，就越能让您的项目顺利。您需要就已经确定的 CMDB范围，与所有的利益方沟通它可能的影响和效果。收集他们的反馈，并对有必要方面做进一步讨论。
+任务2 识别CI 使用在第15步即“设计IT服务模型蓝图”中设计的IT服务模型蓝图为基础，来生成用于CMDB数据填充的CI以及相关属性和关系数据的清单。这个清单的细节应该到数据字段级别，以便，你能够识别并且映射一个或者多个数据源到特定的CI数据。 例如，如果你把一个实际的服务器CI的属性和关系数据都列出清单，你就可以找出一些现有的能提供属性数据的数据源，可能包括库存管理的数据库和发现或者网络管理工具。但是另外一些数据字段可能没有现成的数据源。你将在第18步“选择自动化CMDB数据填充工具”中用到以上差距分析。或者您可能决定使用手工的方式来填充和更新这个字段，这里还需要仔细的考虑到数据的负责人，和在21步“建立CI生命周期管理流程”中需要支持的流程。 至此，你需要专注于用来满足项目目标的要求。在步骤11到14，你定义了与其他流程的结合点，明确的CI需求。专注于那些能直接对流程收益人产生直接影响的CI数据。</description>
+    </item>
+    
+    <item>
+      <title>规划CMDB数据填充-001</title>
+      <link>https://martinliu.cn/2010/06/04/plan-cmdb-population-001/</link>
+      <pubDate>Fri, 04 Jun 2010 06:13:20 +0000</pubDate>
+      
+      <guid>https://martinliu.cn/2010/06/04/plan-cmdb-population-001/</guid>
+      <description>&lt;p&gt;From 《Step by step to build a CMDB》步骤17-规划CMDB数据填充&lt;/p&gt;
+&lt;p&gt;目标&lt;/p&gt;
+&lt;p&gt;在这一CMDB关键的步骤中，会为CMDB的初始化CI数据填充，做精细的计划。需要考虑到所有CI数据，把不同CI类型对应到不同的数据集中，安排正确的顺序将这些数据集CMDB。其中定义对应的规则来调和重复数据是很重要的，不仅在CMDB初始化数据填充阶段重要，在以后的日常维护过程中也是非常重要的。做出了本阶段的详细规划后，这样在第18步即“选择自动化CMDB填充工具”时，就能考虑需要什么样的配置发现和自动化工具了。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;http://pursuitmag.com/wp-content/uploads/2010/01/private-investigator-database.jpg&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
+&lt;p&gt;实际上，把数据填充到CMDB中是非常基础的工作，必须事前做好充分的数据范围和类型的分析。对于一个典型的CMDB数据填过程来说，将需要做如下工作：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;建立里项目程碑和高阶项目计划，以及配套的支撑数据库和操作流程。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;安排项目启动会议，单周或者双周的项目进度沟通会。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;识别子项目（每个数据集分为一个子项目），建立每个子项目的目标和需求清单。识别和制定项目工作活动内容，确定项目的工作流程，并且按照项目计划排程所有活动。包括：
 &amp;mdash;并行开展项目（用户界面定制，DSL数据填充）；
-&amp;mdash;串行开展项目（发现工具，数据调和，等等）&lt;/p>
-&lt;/li>
-&lt;li>
-&lt;p>为每个子项目分配项目负责人，让他们来负责汇报项目的进展、问题升级和下一步的工作。&lt;/p>
-&lt;/li>
-&lt;li>
-&lt;p>为所有项目参与人员建立一个开放的沟通平台，包括所有内部、外部人员（邮件组方式，数据库、通报）&lt;/p>
-&lt;/li>
-&lt;li>
-&lt;p>为可能出现的紧急事件预留至少10%的时间和预算的缓冲。&lt;/p>
-&lt;/li>
-&lt;/ul></description></item><item><title>联邦的CMDB–神话/现实/需求/还是策略？</title><link>https://martinliu.cn/2010/05/31/federation-cmdb/</link><pubDate>Mon, 31 May 2010 03:53:06 +0000</pubDate><guid>https://martinliu.cn/2010/05/31/federation-cmdb/</guid><description>&lt;p>来自：Jonathan Markworth（CompuCom Systems有限公司管理顾问，探讨联邦数据库的优点）&lt;/p>
-&lt;p>使用一个具有单一的、全知的、万能的和自维护功能的工具，来管理IT基础架的方方面面信息，是否是最好的方案呢？使用一个能做所有工作的全集成平台，来替换您积累下来的所有管理工具是否是最佳方式？现实情况是，大多数组织都已经实施了几十种应用程序、工具、实用程序、数据存储、硬件平台和管理框架，它们一起运行着一个或更多的IT服务管理功能。它们中的每一个应用都有自己的数据库，对当前环境中的一些关键管理功能提供信息支持。在CMDB应用场景中，这些工具相关的数据库中，其实也包含了大量关键的CI属性，这些属性可以用于识别CI之间的关系。重要的问题是，如何利用现有的投资和资源来建立一个底层共享的数据库，比如一个CMDB。&lt;/p>
-&lt;p>&lt;img src="http://www.jevotrust.com/Site/graphics/cmdb_config_management.jpg" alt="">&lt;/p></description></item><item><title>CMDB配置采集工具部署之4大挑战</title><link>https://martinliu.cn/2010/04/26/cmdb-addm-tool-implement-good-practice/</link><pubDate>Mon, 26 Apr 2010 12:24:24 +0000</pubDate><guid>https://martinliu.cn/2010/04/26/cmdb-addm-tool-implement-good-practice/</guid><description>&lt;p>[singlepic id=84 w=320 h=240 mode=watermark float=left] &lt;em>&lt;strong>挑战1：沟通成本大&lt;/strong>&lt;/em>
-项目的参与沟通方可能很多，最多的情况下，可能包括：网络部门、系统部门、安全部门和各个业务部门。沟通的内容主要是配置采集的实施技术方式。其中采集的安全性，风险分析是最重要的部分；在部门多的情况下，面对多种选择的时候，逐一给项目各方说清所有方案，特别是讲清楚利弊是非常耗时的。在充分沟通了所有技术可能性之后，才能做出倾向性选择。逐一这是第一轮沟通，搞清楚了倾向性而已。&lt;/p>
-&lt;p>&lt;strong>&lt;em>挑战2：决策成本大&lt;/em>&lt;/strong>
-特别是银行等金融企业，安全性要求特别高。安全风险方面的建议往往是最重要的，他们的建议对配置采集工具的实施具有决定性意义。在各方都充分理解了配置采集工具的架构和安全性之后，就是拍板定夺了。这种逐级的审批和决策是需要较长的周期。&lt;/p>
-&lt;p>&lt;strong>&lt;em>挑战3：前导时间成本太大&lt;/em>&lt;/strong>
-在前导时间里，可能还没有部署正式的ADDM采集服务器。在这个阶段里，要配置网络，让以后的采集服务器能够处于能够扫描到所有目标服务器设备。还可能需要在每台服务器上配置相关的准备工作，主要是坚持主机的操作系统的账户、采集协议和安全配置等是否满足配置采集工具的要求。这写工作是一个群众性运动，需要让所有的系统管理员配合。此项工作的设计人员设备多，最好能尽早的开始。&lt;/p></description></item><item><title>21世纪最缺的是什么？</title><link>https://martinliu.cn/2010/04/15/cmdb-project-need-talents/</link><pubDate>Thu, 15 Apr 2010 16:04:28 +0000</pubDate><guid>https://martinliu.cn/2010/04/15/cmdb-project-need-talents/</guid><description>21世纪最缺的是人才，在ITIL项目中更是重要。特别是CMDB项目，项目团队人员构成是呈金字塔型。
+&amp;mdash;串行开展项目（发现工具，数据调和，等等）&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;为每个子项目分配项目负责人，让他们来负责汇报项目的进展、问题升级和下一步的工作。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;为所有项目参与人员建立一个开放的沟通平台，包括所有内部、外部人员（邮件组方式，数据库、通报）&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;为可能出现的紧急事件预留至少10%的时间和预算的缓冲。&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;</description>
+    </item>
+    
+    <item>
+      <title>联邦的CMDB–神话/现实/需求/还是策略？</title>
+      <link>https://martinliu.cn/2010/05/31/federation-cmdb/</link>
+      <pubDate>Mon, 31 May 2010 03:53:06 +0000</pubDate>
+      
+      <guid>https://martinliu.cn/2010/05/31/federation-cmdb/</guid>
+      <description>&lt;p&gt;来自：Jonathan Markworth（CompuCom Systems有限公司管理顾问，探讨联邦数据库的优点）&lt;/p&gt;
+&lt;p&gt;使用一个具有单一的、全知的、万能的和自维护功能的工具，来管理IT基础架的方方面面信息，是否是最好的方案呢？使用一个能做所有工作的全集成平台，来替换您积累下来的所有管理工具是否是最佳方式？现实情况是，大多数组织都已经实施了几十种应用程序、工具、实用程序、数据存储、硬件平台和管理框架，它们一起运行着一个或更多的IT服务管理功能。它们中的每一个应用都有自己的数据库，对当前环境中的一些关键管理功能提供信息支持。在CMDB应用场景中，这些工具相关的数据库中，其实也包含了大量关键的CI属性，这些属性可以用于识别CI之间的关系。重要的问题是，如何利用现有的投资和资源来建立一个底层共享的数据库，比如一个CMDB。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;http://www.jevotrust.com/Site/graphics/cmdb_config_management.jpg&#34; alt=&#34;&#34;&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>CMDB配置采集工具部署之4大挑战</title>
+      <link>https://martinliu.cn/2010/04/26/cmdb-addm-tool-implement-good-practice/</link>
+      <pubDate>Mon, 26 Apr 2010 12:24:24 +0000</pubDate>
+      
+      <guid>https://martinliu.cn/2010/04/26/cmdb-addm-tool-implement-good-practice/</guid>
+      <description>&lt;p&gt;[singlepic id=84 w=320 h=240 mode=watermark float=left] &lt;em&gt;&lt;strong&gt;挑战1：沟通成本大&lt;/strong&gt;&lt;/em&gt;
+项目的参与沟通方可能很多，最多的情况下，可能包括：网络部门、系统部门、安全部门和各个业务部门。沟通的内容主要是配置采集的实施技术方式。其中采集的安全性，风险分析是最重要的部分；在部门多的情况下，面对多种选择的时候，逐一给项目各方说清所有方案，特别是讲清楚利弊是非常耗时的。在充分沟通了所有技术可能性之后，才能做出倾向性选择。逐一这是第一轮沟通，搞清楚了倾向性而已。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;&lt;em&gt;挑战2：决策成本大&lt;/em&gt;&lt;/strong&gt;
+特别是银行等金融企业，安全性要求特别高。安全风险方面的建议往往是最重要的，他们的建议对配置采集工具的实施具有决定性意义。在各方都充分理解了配置采集工具的架构和安全性之后，就是拍板定夺了。这种逐级的审批和决策是需要较长的周期。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;&lt;em&gt;挑战3：前导时间成本太大&lt;/em&gt;&lt;/strong&gt;
+在前导时间里，可能还没有部署正式的ADDM采集服务器。在这个阶段里，要配置网络，让以后的采集服务器能够处于能够扫描到所有目标服务器设备。还可能需要在每台服务器上配置相关的准备工作，主要是坚持主机的操作系统的账户、采集协议和安全配置等是否满足配置采集工具的要求。这写工作是一个群众性运动，需要让所有的系统管理员配合。此项工作的设计人员设备多，最好能尽早的开始。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>21世纪最缺的是什么？</title>
+      <link>https://martinliu.cn/2010/04/15/cmdb-project-need-talents/</link>
+      <pubDate>Thu, 15 Apr 2010 16:04:28 +0000</pubDate>
+      
+      <guid>https://martinliu.cn/2010/04/15/cmdb-project-need-talents/</guid>
+      <description>21世纪最缺的是人才，在ITIL项目中更是重要。特别是CMDB项目，项目团队人员构成是呈金字塔型。
 最顶端的人是Project Executive Board“项目执行委员会”，简称PEB，它就像是一个公司董事会；它对CMDB项目的目标、预算、工期、项目变更等负责。PEB人员数量应愈少愈好，不过下面的个角色也是缺一不可。首先，要请至少一个C level的人加入，比如数据中心的CIO。其次，关键利益干系人，它们是CMDB的价值的主要承载者，叫好和批评项目成果的都会是它们。然后是CMS/CMDB系统的负责人，它们对CMDB的规划、维护和之后的发展最重要。最后是项目实施资源的主要提供方领导，说白了他就是出人出力的部门，今后项目的执行和实施都靠他们。所以PEB的人数在4人左右。他们是相关部门的领导。我在最近的项目实施中，也遇到了几个问题，需要去找客户的老板来拍，也就是找到PEB的人决策。其实之前也听到其他同事在项目过程中，曾经感慨道“客户的领导还真辛苦，大事小情都需要替下面做决策，他们的脑袋真禁拍！”。国内的管理者的确挺辛苦的，毕竟所带领的团队都还比较的年轻，这也是国内IT管理的成熟度低的一个体现。
 金字塔下面的人就是都是我们的天天加班、做牛做马的辛劳工作的实施人员了。没有规矩不能成方圆，实施团队的技术素质和构成、团队沟通等都是至关重要的。对项目的质量，项目工期都有非常重要的影响。金字塔下面的兄弟姐妹都是一条船上的人，大家要互相配合才能完成项目的各项工作；在这个过程中没有一个船老大也是不行的，船老大就是项目经理。对CMDB的项目经理的要求可不低，重要有以下几点：
-Planning skills
-IT service management background
-Previous involvement in building a database
-ITIL Manager’s certification
-Ability to make decisions
-Capabilities to motivate staff
-Ability to blend a team
-Strength of character to lead a team
-Capacity to present results and status of project to sponsors and stakeholders</description></item><item><title>项目实施之鬼见愁@需求变更@</title><link>https://martinliu.cn/2010/04/02/project-failed-by-requirements-change/</link><pubDate>Fri, 02 Apr 2010 14:59:12 +0000</pubDate><guid>https://martinliu.cn/2010/04/02/project-failed-by-requirements-change/</guid><description>[singlepic id=34 w=320 h=240 mode=watermark float=right]不经意间听到的让我深思的一段对话。 甲：咦，这个功能是什么时候加的？ 乙：哦，我也不知道还有这个功能 丙：那是我加的 甲：需求是谁提的？ 丙：他们那天给我打了一个电话说需要这个功能
+  Planning skills
+  IT service management background
+  Previous involvement in building a database
+  ITIL Manager’s certification
+  Ability to make decisions
+  Capabilities to motivate staff
+  Ability to blend a team
+  Strength of character to lead a team
+  Capacity to present results and status of project to sponsors and stakeholders</description>
+    </item>
+    
+    <item>
+      <title>项目实施之鬼见愁@需求变更@</title>
+      <link>https://martinliu.cn/2010/04/02/project-failed-by-requirements-change/</link>
+      <pubDate>Fri, 02 Apr 2010 14:59:12 +0000</pubDate>
+      
+      <guid>https://martinliu.cn/2010/04/02/project-failed-by-requirements-change/</guid>
+      <description>[singlepic id=34 w=320 h=240 mode=watermark float=right]不经意间听到的让我深思的一段对话。 甲：咦，这个功能是什么时候加的？ 乙：哦，我也不知道还有这个功能 丙：那是我加的 甲：需求是谁提的？ 丙：他们那天给我打了一个电话说需要这个功能
 都说ITSM项目是非常难实施的项目，成功率低；特别是CMDB项目，实施难度大，失败案例比比皆是。首先我觉得ITSM项目的实施有它的特殊性，特殊在于实施顾问对客户需求的理解，在于实施顾问对ITIL最佳实践的经验，在于对产品工具的把握。其中任何一个环节拿捏不准都会到导致需求的泛滥、需求混乱、需求的飘忽不定。
 可见需求管理是项目实施和执行的灵魂，失去了对灵魂的掌控，需求讨论会就将可能进入走火入魔的地步，需求各方争执不下，整个会议室炸开了锅，每个人都争抢着发言，我的脑也几乎要眩晕；我说的这一点也不夸张，没见过只能是你的幸运。
 需求管理包括需求的分析和整理，应该是有层次的，在不同的层次里讲不同的语言，达成共识的讨论结果。层次可以分为这样三层
-业务需求
-用户需求
-功能需求
-所谓业务需求是说站在公司的高度，从最high level角度描述需求之所在。它的语言像是项目使命的宣言，指出为什么要做这个项目，项目的价值点落在哪里。最概况的项目范围。业务需求告诉我们：为什么会有这些需求。
+  业务需求
+  用户需求
+  功能需求
+  所谓业务需求是说站在公司的高度，从最high level角度描述需求之所在。它的语言像是项目使命的宣言，指出为什么要做这个项目，项目的价值点落在哪里。最概况的项目范围。业务需求告诉我们：为什么会有这些需求。
 用户需求是指从项目利益相关人的角度出发。逐一描述各个业务操作环节，这些业务操作由每个可独立执行的条目为单位，每个业务操作中说明业务规则、输入和结果。切忌在这一阶段就进入详细的功能界面或者功能操作上细节的任何讨论。原因很简单：我们在这里还没有进入技术实现环节，依然在以客户或者系统使用者的角度来描述它的需求。系统用户和客户是不需要理解每一个页面跳转和鼠标点击的意义的。在我的经验看来客户在这里最容易陷入技术细节讨论的泥沼，反而可能浪费需求讨论的时间，可能导致项目的延期，需求点难以确定。用户需求告诉我们：用户的需要什么。
 功能需求则需要告诉我们：为了能满足用户需求，我们的系统是怎么做的。这里将用技术的语言，进入系统层面说明系统应该怎么做。功能需求最终将导出概要设计和详细设计。
 业务需求的满足=用户需求的满足+功能需求的满足；用户需求是能推倒出功能需求的，用户需求和功能需求可以是一对一、一对多和多对多的关系。
 以上三个需求是有层次的并与客户递进沟通的产物，既然是沟通，那么在每个层次上都伴随着矛盾、争论、妥协。在任一层次上理不出头绪时，一定要追溯到上一层，通过上一层来指导解决。但是这往往也是很难把握和执行的，最终最可能的结果是在以上三个沟通层次中都伴随着需求的变化、需求的扩大、需求的混乱。甚至于进入了测试阶段还能产生出新的需求和理解的偏差，谁人能不说“需求变更”是项目实施的鬼见愁呢？
-如何解决这个“鬼见愁”？一方面需要时刻对项目预算和时间资源保持清醒的头脑，项目实施比较是那时间和金钱换需求。还有就是通过项目变更委员会来控制需求变更。</description></item><item><title>掀起CMDB的盖头来</title><link>https://martinliu.cn/2010/03/30/phase-roll-out-cmdb-implement/</link><pubDate>Tue, 30 Mar 2010 14:00:01 +0000</pubDate><guid>https://martinliu.cn/2010/03/30/phase-roll-out-cmdb-implement/</guid><description>今天是项目计划提交后的第二天，客户方项目经理对项目的推迟表示感到非常吃惊，期望能让我们给出一个合理的解释。其实这也同样的超出了我的预料，难道软件项目管理和运作都是所谓的人月神话么？
-[singlepic id=22 w=320 h=240 mode=watermark float=left]在我看来CMDB项目的实施和运作有是有可能分阶段、逐步地交付项目成果的。简单的来说首先交付的当然是CMDB和配套发现工具系统本身，丑媳妇不要怕见公婆，把这个不加粉饰的原型系统拿出来，让项目各方包括最终用户来试用和评估。接着按照CMDB配置数据的来源的不同，把数据顺序的导入CMDB，并且开展数据的调和工作，完成基础数据的初始化。在基础数据的基础上，需要对CMDB服务模型加以验证，选取重点的系统来验证，让系统经理和CMDB相关用户也参与进来，用事实和数据讲话，对模型和工具做最终的确认。这个其实是一个小范围内的推广，它的经验可以直接应用于下一个阶段。接下来是对其他所有被采集对象的普遍扫描和CI数据同步，在这个阶段里还需要实现CMDB和所有ITIL流程的集成，ITIL流程是CMDB的主要消费者 ，这个集成往往是两家不同的产品，这种情况下，如果集成的效果欠佳，CMDB的实施成果也会打折扣。最后结尾的交付物可以是CMDB的审核和报表等产品。
-正如ITIL的实施一样，没有两个国内公司的ITSM实施是相似的，就像国内不存在两片相同的树叶一样。那么国外的树叶又如何呢？从ITSM实施方面来看，相同的树叶在国外还是非常多的。相同的原因在于，往往用户选择了相同的产品如Remedy ITSM套件，往往由于定制化的人力成本很多用户也在尽量避免对产品的定制，如果通过配置可以实现的需求，绝不定制或者开发。我们也应该多走工业化标准生产的道路，少以中国特色为借口来实施个性化二次开发。</description></item><item><title>CMDB需求分析之最佳实践</title><link>https://martinliu.cn/2010/03/29/cmdb-requirement-analysis-practice/</link><pubDate>Mon, 29 Mar 2010 15:19:20 +0000</pubDate><guid>https://martinliu.cn/2010/03/29/cmdb-requirement-analysis-practice/</guid><description>[singlepic id=4 w=320 h=240 mode=watermark float=right]今天终于移师厦门开发中心，这意味着我所经历的史上最长CMDB需求分析基本告一阶段，也意味着CMDB的构建、集成、定制和 测试工作也徐徐拉开了大幕。
+如何解决这个“鬼见愁”？一方面需要时刻对项目预算和时间资源保持清醒的头脑，项目实施比较是那时间和金钱换需求。还有就是通过项目变更委员会来控制需求变更。</description>
+    </item>
+    
+    <item>
+      <title>CMDB需求分析之最佳实践</title>
+      <link>https://martinliu.cn/2010/03/29/cmdb-requirement-analysis-practice/</link>
+      <pubDate>Mon, 29 Mar 2010 15:19:20 +0000</pubDate>
+      
+      <guid>https://martinliu.cn/2010/03/29/cmdb-requirement-analysis-practice/</guid>
+      <description>[singlepic id=4 w=320 h=240 mode=watermark float=right]今天终于移师厦门开发中心，这意味着我所经历的史上最长CMDB需求分析基本告一阶段，也意味着CMDB的构建、集成、定制和 测试工作也徐徐拉开了大幕。
 回忆前三个月所做的的需求分析工作，虽然各项调研和讨论工作进行的缓慢，不过细致的工作最终还是换回了令人满意的成果，起码我是这么认为。
 需求分析的过程是对需求的重新整理、重新定义和梳理。项目的立项并不意味着项目目标树立的精准，项目范围控制的合理。实际需求可以在实施的初期阶段来重定义，从新分析，着觉得不是浪费时间。而且这一点对于中国用户至关重要。国内很多项目都是资金或者预算驱动的，先有需求，通过需求推到出项目的价值，在通过项目的投资回报率申报项目预算的过程在国内是很少见得。国内的项目往往是有多少钱需要花，那么大家在来看，如何把需求花到极致，达到最大的产出。这也是很多需求分析做的贪多、贪大、求全的根源，这样做的好处是在一个项目周期内就把需求实现的尽善尽美（愿望是这样），坏处是：可能导致厂商和服务商的服务成本超支，从而造成的项目质量降低，从用户角度来说一次性接受一大堆的系统功能，负担重，接受度低，同时客户满意度低，项目满意度差。
 我认为较好的最佳实践还要抓项目的主要目标，抓需要实现的主要价值点，抓重点放弃那些可做可不做的功能。懂得放弃的人才懂得获得。把所有的功能需求做成能够分批、分期上线的成果；确保让系统用户能buy in每一个阶段性成果，不要奢望给用户带来革命性的提高，由于那样也意味着，你对他们当前工作方式的影响是巨大的，没有用户愿意接受巨变。
-需求分析时，从技术上讲，对会议组织人要求很高。需要此人能非常熟悉CMDB项目实施的方法论，需要此人能够非常熟悉产品的各个功能点，需要引导有效的需求分析会议。在白板上尽可能多的画图，用Visio或者ppt等工具尽量多的讲解各种架构图、功能图、流程图具有事半功倍的效果。不管会议上您可能收到怎样的抱怨、抵制、反对；stakeholder的反馈将是你最宝贵的收获。没有互动和反馈的需求分析会是相当无聊和浪费时间的。切忌在大型的企业中，要慎重地计划每一次需求分析会，理由也很简单，企业组织越大，沟通的成本也越高。需求分析沟通的效率和成功完全取决于CMDB项目执行的方法论，取决于分析引导人的各种项目背景经验，还取决于对客户状况了解和上手的速度。</description></item><item><title>OpenNMS 1.6.1 to 1.6.10</title><link>https://martinliu.cn/2010/03/28/opennms-161-1610/</link><pubDate>Sun, 28 Mar 2010 05:37:04 +0000</pubDate><guid>https://martinliu.cn/2010/03/28/opennms-161-1610/</guid><description>[singlepic id=35 w=320 h=240 float=left]在最近的一年里，我基本上忙于CMDB的工作，没有什么业余时间来看看OpenNMS的情况。其实OpenNMS是最初引入我深入了解开源软件世界的东东。时隔1年之久，我上一篇关于opennms的文章是它是1.6.1版本，刚才查了一下，它最新的稳定版本是1.6.10.
+需求分析时，从技术上讲，对会议组织人要求很高。需要此人能非常熟悉CMDB项目实施的方法论，需要此人能够非常熟悉产品的各个功能点，需要引导有效的需求分析会议。在白板上尽可能多的画图，用Visio或者ppt等工具尽量多的讲解各种架构图、功能图、流程图具有事半功倍的效果。不管会议上您可能收到怎样的抱怨、抵制、反对；stakeholder的反馈将是你最宝贵的收获。没有互动和反馈的需求分析会是相当无聊和浪费时间的。切忌在大型的企业中，要慎重地计划每一次需求分析会，理由也很简单，企业组织越大，沟通的成本也越高。需求分析沟通的效率和成功完全取决于CMDB项目执行的方法论，取决于分析引导人的各种项目背景经验，还取决于对客户状况了解和上手的速度。</description>
+    </item>
+    
+    <item>
+      <title>OpenNMS 1.6.1 to 1.6.10</title>
+      <link>https://martinliu.cn/2010/03/28/opennms-161-1610/</link>
+      <pubDate>Sun, 28 Mar 2010 05:37:04 +0000</pubDate>
+      
+      <guid>https://martinliu.cn/2010/03/28/opennms-161-1610/</guid>
+      <description>[singlepic id=35 w=320 h=240 float=left]在最近的一年里，我基本上忙于CMDB的工作，没有什么业余时间来看看OpenNMS的情况。其实OpenNMS是最初引入我深入了解开源软件世界的东东。时隔1年之久，我上一篇关于opennms的文章是它是1.6.1版本，刚才查了一下，它最新的稳定版本是1.6.10.
 看似它这一年里发展的比较慢，这让我感到些许地失望，大概地看一下一堆相关的release notes。功能性的变化如下：
-新增和增强了一些monitor的和功能，主要有http，dns，ldap，ssh，jmx等，从最初的snmp采集，都这些采集功能；采集能力的增强是它这样的无代理监控程序永远的话题
-UI的功能的增强了一些
-SNMP采集仍然是他的主要能力，在这方面也有了一些改进
-新增了一些网络设备品牌的支持
-阀值配置也有改进
-总的来说，作为一款能够采集各种snmp mib信息，能够出好看的性能报表，能够作为统一的告警事件平台，能够有简单易用的UI，OpenNMS做的显然是非常不错的。至今还行它还没有提出什么云计算相关的话题，可见他们还是一般比较稳健发展，不爱赶时髦的人。希望他们能做的更好。
-对于我的这个blog来说，之前写的OpenNMS和网管相关的东西比较多，以后可能会越来越少，就此和OpenNMS做一个总结。以后本blog可能会和目前做的cmdb和itsm相关这些内容为主了。</description></item><item><title>CMDB Value Points 价值点</title><link>https://martinliu.cn/2010/01/01/cmdb-value-points/</link><pubDate>Fri, 01 Jan 2010 05:23:06 +0000</pubDate><guid>https://martinliu.cn/2010/01/01/cmdb-value-points/</guid><description>&lt;p>&lt;a href="http://www.flickr.com/photos/waywardsheep/682513568/">&lt;img src="http://farm2.static.flickr.com/1296/682513568_4476244046.jpg" alt="The point value">&lt;/a>&lt;br />&lt;br />CMDB的价值点分为两类：硬收益和软收益。从硬收益的角度，CMDB的用户可能会让你来描述CMDB对他们的价值点。下面的几个轶事可以作为收集CMDB可能为你的企业带来价值点的几个方向：&lt;br />&lt;/p>
-&lt;p>&lt;br />&lt;/p>
-&lt;ul>
-&lt;li>&lt;strong>把IT环境的可视化带到更高程度&lt;/strong> &amp;ndash;一领先的制热和冷却系统供应商指出，他们始终无法很好的理解一个计划外停机时间对用户所造成影响。例如，当只有25个用户受到了网络中断问题的影响，IT部门必须通知用户群中的全部100个用户。这会导致一个客户满意度低的反馈。CMDB使该公司能够理解配置项之间的关系，并确切地知道在任何确定时刻什么用户会受到影响。现在用户间可信的沟通能够来自于各个IT部门，并且使IT成为业务不可分割的一部分。
-&lt;br />&lt;/li>
-&lt;li>&lt;strong>按业务目标来安排系统变更的优先度&lt;/strong>&amp;ndash;大型设备制造商不得不关闭了其所有的系统，后来发现不知道哪些服务器应该先启动。CMDB使公司能区分关键业务元素的优先度，确保减少计划外的停机时间，无形中降低了收入损失的风险。
-&lt;br />&lt;/li>
-&lt;li>&lt;strong>减少软件许可证的费用的同时确保用户和服务器能整体的满足许可证遵从性&lt;/strong> &amp;ndash; -的半导体制造商开展了一个审计，结果另他们感到震惊：该公司支持在为大量已经报废的服务器支付支持和维护费用。实际上，该公司关于报废资产的数量已经长期和实际不符了。CMDB有助于该公司发现这一问题，并重新分配预算资金，以更好地支持现有的基础设施。
-&lt;br />&lt;/li>
-&lt;li>&lt;strong>为加快服务器整合提供更深层次的资产和关系信息&lt;/strong> &amp;ndash; 一大型的金融服务提供商注意到，在其行业的公司通常在一个较短的时间内，会进行几次成功并购和整合。对于如何整合所有的IT部门是一个重大挑战（有时是次要的），他们往往是停留在相互隔离的工作状态下。然而，使用CMDB的公司就能够有效地集成新的收购，从而节省资金和为公司内部建立统一的IT业务形象。
-&lt;br />&lt;br />IT要实现CMDB的硬收益，一般通过降低以下对象的相关成本来实现：人、第三方服务、软件、硬件和设施。这些方面的价值点可以通过财务方面的分析报表来反映出来。&lt;br />&lt;br />&lt;/li>
-&lt;/ul></description></item><item><title>资产CI的一生</title><link>https://martinliu.cn/2009/12/13/service-asset-ci-life-cycle/</link><pubDate>Sun, 13 Dec 2009 07:45:00 +0000</pubDate><guid>https://martinliu.cn/2009/12/13/service-asset-ci-life-cycle/</guid><description>在ITIL v3以后，配置管理进化为“服务资产和配置管理SACM”，换句话说，资产和配置管理不分家。两个流程应该是融合的。从微观上看资产管理设计到CI的所有生命周期状态，而这个服务资产在CMDB中出现的状态为整个生命周期中的一部分。
+  新增和增强了一些monitor的和功能，主要有http，dns，ldap，ssh，jmx等，从最初的snmp采集，都这些采集功能；采集能力的增强是它这样的无代理监控程序永远的话题
+  UI的功能的增强了一些
+  SNMP采集仍然是他的主要能力，在这方面也有了一些改进
+  新增了一些网络设备品牌的支持
+  阀值配置也有改进
+  总的来说，作为一款能够采集各种snmp mib信息，能够出好看的性能报表，能够作为统一的告警事件平台，能够有简单易用的UI，OpenNMS做的显然是非常不错的。至今还行它还没有提出什么云计算相关的话题，可见他们还是一般比较稳健发展，不爱赶时髦的人。希望他们能做的更好。
+对于我的这个blog来说，之前写的OpenNMS和网管相关的东西比较多，以后可能会越来越少，就此和OpenNMS做一个总结。以后本blog可能会和目前做的cmdb和itsm相关这些内容为主了。</description>
+    </item>
+    
+    <item>
+      <title>资产CI的一生</title>
+      <link>https://martinliu.cn/2009/12/13/service-asset-ci-life-cycle/</link>
+      <pubDate>Sun, 13 Dec 2009 07:45:00 +0000</pubDate>
+      
+      <guid>https://martinliu.cn/2009/12/13/service-asset-ci-life-cycle/</guid>
+      <description>在ITIL v3以后，配置管理进化为“服务资产和配置管理SACM”，换句话说，资产和配置管理不分家。两个流程应该是融合的。从微观上看资产管理设计到CI的所有生命周期状态，而这个服务资产在CMDB中出现的状态为整个生命周期中的一部分。
+
 最好能通过资产管理为统一入口，来完成对CMDB中资产的生命周期管理。例如：一台服务器在到货以后，完成资产入库后，就应该在CMDB中自动创建CI，在上架部署了软件后，有配置资产自动采集工具，采集回详细配置信息后，资产状态就自动变为“部署”，当在运行维护中服务器宕机或者维护时，在资产管理中也能看到更新的信息。下面是建议的服务资产的生命周期状态:
-编号
-状态名称
-状态描述
-1
-到货
-表示为CI的物品在采购以后，被相关部门签收。
-2
-组装
-设备的组件在被组装的过程中
-3
-维护
-该设备处于宕机后的维护状态
-4
-宕机
-该设备处于宕机状态，还未对其进行维护
-5
-终止
-不在处于被部署的状态
-6
-转移
-该设备正在被转移到其它的地点或者机房途中
-7
-删除
-配置项被标记为删除状态
-8
-库存
-设备处于库存中，还没有被部署
-9
-借出</description></item><item><title>CMDB选型解密</title><link>https://martinliu.cn/2009/11/19/how-to-select-a-cmdb/</link><pubDate>Thu, 19 Nov 2009 16:32:22 +0000</pubDate><guid>https://martinliu.cn/2009/11/19/how-to-select-a-cmdb/</guid><description>自打承接了《Step by Step Guide to Building a CMDB (Updated for ITIL V3)》的翻译工作之后，由于平时工作太忙，翻译工程只能在业余时间完成；现在渐渐感到了此项工作的压力，每每想到读者对英文翻译版本读物的高期望和要求时，就愈加感到此项工作责任之重。不过本书对我来说还是一剂很好的补品，对我最近的ITSM项目都有直接的借鉴和指导作用。
+编号 
+状态名称 
+状态描述 
+
+1 
+到货 
+表示为CI的物品在采购以后，被相关部门签收。 
+
+2 
+组装 
+设备的组件在被组装的过程中 
+
+3 
+维护 
+该设备处于宕机后的维护状态 
+
+4 
+宕机 
+该设备处于宕机状态，还未对其进行维护 
+
+5 
+终止 
+不在处于被部署的状态 
+
+6 
+转移 
+该设备正在被转移到其它的地点或者机房途中 
+
+7 
+删除 
+配置项被标记为删除状态 
+
+8 
+库存 
+设备处于库存中，还没有被部署 
+
+9 
+借出</description>
+    </item>
+    
+    <item>
+      <title>CMDB选型解密</title>
+      <link>https://martinliu.cn/2009/11/19/how-to-select-a-cmdb/</link>
+      <pubDate>Thu, 19 Nov 2009 16:32:22 +0000</pubDate>
+      
+      <guid>https://martinliu.cn/2009/11/19/how-to-select-a-cmdb/</guid>
+      <description>自打承接了《Step by Step Guide to Building a CMDB (Updated for ITIL V3)》的翻译工作之后，由于平时工作太忙，翻译工程只能在业余时间完成；现在渐渐感到了此项工作的压力，每每想到读者对英文翻译版本读物的高期望和要求时，就愈加感到此项工作责任之重。不过本书对我来说还是一剂很好的补品，对我最近的ITSM项目都有直接的借鉴和指导作用。
 说来此书有很多实用且精彩之处，相信读了英文原版的人更能有所体会。我忍不住想把其中的部分内容提前与你们探讨，这里想与你们分享如下两个内容。
+
+
 上图还给所有CMDB用户一个清晰地CMDB功能点考察点，CMDB作为业务服务管理的核心，各个厂商其实并没有达成解决方案功能的标准和共识。通常情况下厂商提供的CMDB产品的发展和起源有以下几种情况：1）按照ITIL中对CMDB的需求和标准从无到有开发的标准CMDB产品；2）伴随变更流程或者业务影响管理而开发的CMDB功能模块；3）伴随配置自动化发现工具而开发的相应CMDB功能模块；4）应资产管理或者监控工具扩展而生的CMDB功能产品。用户在挑选CMDB产品的时候一定要明确CMDB的核心功能，除了以上功能外，其他的附加功能可能是nice to have的功能，而非必须。本图位于原版书的134页，如果您对我的翻译有建议请留言，多谢！
-上表为评估一个CMDB产品厂商的综合打分评价表样例。在选择并且评测一个CMDB厂商时，需要仔细考察的产品功能共有8点。用户需要注意的是一定要搞清楚其中的每一个功能是否是由厂商的CMDB产品的相关模块所提供的，如果不是的话需要搞清楚，每个功能是否是CMDB的外围或者其他产品模块，或者二次开发实现的。如果是这样的话，这种解决方案可能不是一套集成统一的解决方案，可能出现其他附加非CMDB产品的采购，可能在实施阶段付出不必要的集成和开发费用。虽然这些潜在因素在采购和实施阶段可能是隐形出现的。征集上表中相关术语的中文翻译：Weighted ，Weighted Rating Score，Total Weighted Score。有好的建议请留言。本图位于原版书籍的141页。</description></item><item><title>选书名</title><link>https://martinliu.cn/2009/10/29/pick-a-book-name-for-step-by-step-guide-to-building-a-cmdb/</link><pubDate>Thu, 29 Oct 2009 01:48:58 +0000</pubDate><guid>https://martinliu.cn/2009/10/29/pick-a-book-name-for-step-by-step-guide-to-building-a-cmdb/</guid><description>好消息《Step by Step Guide to Building a CMDB (Updated for ITIL V3)》即将翻译成中文出版。市场里ITIL的书越来越多，但是讲CMDB的书却一直很少，能讲解清楚CMDB建设过程的的书就更少。可是国内ITIL用户CMDB建设之瓶颈却越来越明显，我们希望有一本好的书作为这项重要工作的参考指南。
+
+
+上表为评估一个CMDB产品厂商的综合打分评价表样例。在选择并且评测一个CMDB厂商时，需要仔细考察的产品功能共有8点。用户需要注意的是一定要搞清楚其中的每一个功能是否是由厂商的CMDB产品的相关模块所提供的，如果不是的话需要搞清楚，每个功能是否是CMDB的外围或者其他产品模块，或者二次开发实现的。如果是这样的话，这种解决方案可能不是一套集成统一的解决方案，可能出现其他附加非CMDB产品的采购，可能在实施阶段付出不必要的集成和开发费用。虽然这些潜在因素在采购和实施阶段可能是隐形出现的。征集上表中相关术语的中文翻译：Weighted ，Weighted Rating Score，Total Weighted Score。有好的建议请留言。本图位于原版书籍的141页。</description>
+    </item>
+    
+    <item>
+      <title>选书名</title>
+      <link>https://martinliu.cn/2009/10/29/pick-a-book-name-for-step-by-step-guide-to-building-a-cmdb/</link>
+      <pubDate>Thu, 29 Oct 2009 01:48:58 +0000</pubDate>
+      
+      <guid>https://martinliu.cn/2009/10/29/pick-a-book-name-for-step-by-step-guide-to-building-a-cmdb/</guid>
+      <description>好消息《Step by Step Guide to Building a CMDB (Updated for ITIL V3)》即将翻译成中文出版。市场里ITIL的书越来越多，但是讲CMDB的书却一直很少，能讲解清楚CMDB建设过程的的书就更少。可是国内ITIL用户CMDB建设之瓶颈却越来越明显，我们希望有一本好的书作为这项重要工作的参考指南。
+
 给此书起一个好的名字是头等大事，目前能想到的书名如下：
 Step by Step Guide to Building a CMDB 中文书名？(polls)
-寻求前100名投票者，请对以上书名投票，并评论；如果您有更好的书名，欢迎推荐；请在下面留言，请正确填写邮箱，您推荐书名一旦被选用必有感谢送上。</description></item><item><title>DELL如何管理IT？</title><link>https://martinliu.cn/2009/10/20/how-dell-does-it/</link><pubDate>Tue, 20 Oct 2009 03:17:01 +0000</pubDate><guid>https://martinliu.cn/2009/10/20/how-dell-does-it/</guid><description>Dell is a big company, if you wants to know how DELL does IT management with BMC, please check out this vide form Dell website.
-DELL是一个家喻户晓的公司，它是如何做IT管理的呢？请查看这段来自DELL网站的视频。视频中谈到DELL采用的是全套ITSM套件，提到很多的是相关流程是如何使用CMDB的配置信息的，从一个侧面我们可以看到配置管理的重要性。CMDB可以看着成熟客户的标志。</description></item><item><title>手把手教您构建CMDB/CMS</title><link>https://martinliu.cn/2009/10/17/step-by-step-guide-to-building-a-cmdb/</link><pubDate>Sat, 17 Oct 2009 09:37:08 +0000</pubDate><guid>https://martinliu.cn/2009/10/17/step-by-step-guide-to-building-a-cmdb/</guid><description>If you have no idea about how to build a CMDB, you should check out this document. It come from http://www.bmc.com/products/product-listing/53556216-141391-2117.html
+寻求前100名投票者，请对以上书名投票，并评论；如果您有更好的书名，欢迎推荐；请在下面留言，请正确填写邮箱，您推荐书名一旦被选用必有感谢送上。</description>
+    </item>
+    
+    <item>
+      <title>DELL如何管理IT？</title>
+      <link>https://martinliu.cn/2009/10/20/how-dell-does-it/</link>
+      <pubDate>Tue, 20 Oct 2009 03:17:01 +0000</pubDate>
+      
+      <guid>https://martinliu.cn/2009/10/20/how-dell-does-it/</guid>
+      <description>Dell is a big company, if you wants to know how DELL does IT management with BMC, please check out this vide form Dell website.
+DELL是一个家喻户晓的公司，它是如何做IT管理的呢？请查看这段来自DELL网站的视频。视频中谈到DELL采用的是全套ITSM套件，提到很多的是相关流程是如何使用CMDB的配置信息的，从一个侧面我们可以看到配置管理的重要性。CMDB可以看着成熟客户的标志。</description>
+    </item>
+    
+    <item>
+      <title>手把手教您构建CMDB/CMS</title>
+      <link>https://martinliu.cn/2009/10/17/step-by-step-guide-to-building-a-cmdb/</link>
+      <pubDate>Sat, 17 Oct 2009 09:37:08 +0000</pubDate>
+      
+      <guid>https://martinliu.cn/2009/10/17/step-by-step-guide-to-building-a-cmdb/</guid>
+      <description>If you have no idea about how to build a CMDB, you should check out this document. It come from http://www.bmc.com/products/product-listing/53556216-141391-2117.html
 Download it: Step by Step Guide to Building a CMDB (Updated for ITIL V3) (pdf)
 该《手把手CMDB/CMS构建指导手册》包括了配置管理数据库/系统建设的所有相关流程、技术和指导性建议。如果你有CMDB的建设意向，该手册非常值得仔细阅读。
 欢迎留下一个反馈，投票或者留言都行。
-[poll id=&amp;ldquo;8&amp;rdquo;]</description></item><item><title>CMDB中存什么？</title><link>https://martinliu.cn/2009/10/05/what-does-cmdb-store/</link><pubDate>Mon, 05 Oct 2009 15:21:24 +0000</pubDate><guid>https://martinliu.cn/2009/10/05/what-does-cmdb-store/</guid><description>[caption id=&amp;quot;&amp;quot; align=&amp;ldquo;alignnone&amp;rdquo; width=&amp;ldquo;406&amp;rdquo; caption=&amp;ldquo;dmtf.org&amp;rdquo;][/caption]
+[poll id=&amp;ldquo;8&amp;rdquo;]</description>
+    </item>
+    
+    <item>
+      <title>CMDB中存什么？</title>
+      <link>https://martinliu.cn/2009/10/05/what-does-cmdb-store/</link>
+      <pubDate>Mon, 05 Oct 2009 15:21:24 +0000</pubDate>
+      
+      <guid>https://martinliu.cn/2009/10/05/what-does-cmdb-store/</guid>
+      <description>[caption id=&amp;quot;&amp;quot; align=&amp;ldquo;alignnone&amp;rdquo; width=&amp;ldquo;406&amp;rdquo; caption=&amp;ldquo;dmtf.org&amp;rdquo;][/caption]
 当然是配置项和它们之间的关系，即：CI 和 Relationship。 那么如何规划那些类型的CI和Relationship需要保存到CMDB中呢？可以参考的数据模型是DMTF的通用信息模型，它是以面相对象的方式来描述各类CI和关系。它是一个工具用来帮你对环境中的各种物理和逻辑的CI和关系进行分类，参考这个模型选择一些有用的类（广度），然后在参考它对每个类属性的描述（粒度）。这些类的选择只是一个初步的研究，每个CMDB厂商和工具对其实施和参考的力度都不同，也需要看您具体实施的是什么工具。例如：你需要描述银行基金业务系统，你可能选择的CI类包括：客户群、业务流程、业务活动、业务服务、IT服务、应用系统、应用、软件服务器、服务器、网络、存储等；关系包括：组件、依赖和影响。CI类和关系的选择也基本上遵循够用就好的原则；而且每个类对应的CI实例都需要有人负责管理维护，需遵循，谁负责、谁维护的原则保障其属性的精确性。对于整个CMDB来说如果存在没有Onwer的CI或者关系，如果它是由自动化配置发现工具来更新的；那么它可以存在，如果不是的话，它可能根本就不该存在。所以CMDB中保存的数据不是越多，越细越好；而是够用就好，能保证更新就好。由于数据根本就不是免费的，即使国内的人力成本低，也不应该雇用一帮专职更新CMDB的人。 综上所述：我们说明了CMDB中数据选取和存放的最基本原则和方法，在CMDB产品选型过程中需要着重考察产品的数据模型本身和其管理的能力，还包括其CI和关系的扩展和定制能力；包括数据类型的支持和界面定制的程度。那么CMDB中的CI和关系有该如何展现呢？这是CMDB系统的另外一个功能：可视化。下面是一个CI和关系展示的实例供参考：
 [http://media-001.yo2cdn.com/wp-content/uploads/266/26670/2009/10/s1-4-blog.swf#swf&amp;amp;width=320&amp;amp;height=320]
 全屏查看或者下载Flash文件
-第一代的配置展示方式是，纯数据表格方式。第二代具有一种固定格式的图形展示方式，除了那几张视图外，别的需要单独开发。下一代的具有各种视图定制功能，并且支持关系和ci的过滤等等。</description></item><item><title>MartinMarks for 29th August</title><link>https://martinliu.cn/2009/08/29/martinmarks-for-29th-august/</link><pubDate>Sat, 29 Aug 2009 16:27:38 +0000</pubDate><guid>https://martinliu.cn/2009/08/29/martinmarks-for-29th-august/</guid><description>New IT Job: CMDB Manager
+第一代的配置展示方式是，纯数据表格方式。第二代具有一种固定格式的图形展示方式，除了那几张视图外，别的需要单独开发。下一代的具有各种视图定制功能，并且支持关系和ci的过滤等等。</description>
+    </item>
+    
+    <item>
+      <title>MartinMarks for 29th August</title>
+      <link>https://martinliu.cn/2009/08/29/martinmarks-for-29th-august/</link>
+      <pubDate>Sat, 29 Aug 2009 16:27:38 +0000</pubDate>
+      
+      <guid>https://martinliu.cn/2009/08/29/martinmarks-for-29th-august/</guid>
+      <description>New IT Job: CMDB Manager
 从此IT部门有多了一个职位CMDB经理，不过某人的工作量加倍了也没准哈哈，从这个文章中可以看出这并不是一个可有可无的职位，而且CMDB的建设和推广，以及管理和其他的ITIL流程没有区别，需要结合技术、流程和人老三样，而且要再次改造人们对于配置管理的行为方式和文化了。
 Role Overview: CMDB Manager
 CMDB经理负责管理和维护您的CI，工作内容都有了，CIT/CTO招不招这个人由您。
@@ -193,52 +382,101 @@ Top 10 reasons NOT to implement CMDB
 不去实施CMDB的10个理由
 Top Ten Reasons to Implement a CMDB
 实施CMDB的10个理由
-The federated CMDB: Getting past the hype to the good stuff
+The federated CMDB: Getting past the hype to the good stuff 
 cmdbf标准的实施在各家产品中尚处于开始阶段，是否大家都会照着做呢。联邦让所有的配置数据更易访问。
-Logo Mark</description></item><item><title>IT服务管理考核向左走向右走: CSF OR KPI?</title><link>https://martinliu.cn/2009/08/29/csf-or-kpi-matrix-itsm/</link><pubDate>Sat, 29 Aug 2009 14:18:33 +0000</pubDate><guid>https://martinliu.cn/2009/08/29/csf-or-kpi-matrix-itsm/</guid><description>最近做的一个项目中需要帮用户设计一个CMDB的成熟度模型，能够从该模型中持续的检查CMDB的建设程度。所以我研究注意了一下的一些书籍，考虑有机会可以买回来研究一下：
-IT服务管理的持续改进需要一定的手段实现，这是ITIL V3中的一个重要流程。CSF是关键成功因素，KPI是关键性能指标，这些都是metrics管理过程中需要关注的手段。每个流程都可以找到相应的CSF和KPI。CSF算是V3的新生事物，我想它可能会对IT管理质量的衡量和改进带来新的方式。
-别的不说，我只想说说KPI管理方法可能带来的坏处。举个例子：有个公司想通过“事件单数”来考核服务台一线人员的工作。结果当他们在执行了一段时间后，他们发现服务台中有大量重复的事件单，实际上服务台对每个收到的电话都新建一个事件单，并没有做重复事件匹配查找的工作。进一步的也影响了通过重复事件来做进一步的问题管理。
-从考核管理的角度看，ITSM的考核指标和体系如何建立的合理，如何才能建立的正确的设计和实施的确是一件大事。否则会有什么后果，我们可以想想三鹿毒奶粉事件，奶粉的蛋白质含量是奶粉质量的重要指标KPI，营养健康是奶粉的终极CSF目标。三鹿真的给了我们一个血的教训啊，想让你的IT服务质量如何呢？可以想想三鹿。不过还是需要多多学习所有可能的CSF和KPI，从何设计出确实可行的管理方式。
+Logo Mark</description>
+    </item>
+    
+    <item>
+      <title>IT服务管理考核向左走向右走: CSF OR KPI?</title>
+      <link>https://martinliu.cn/2009/08/29/csf-or-kpi-matrix-itsm/</link>
+      <pubDate>Sat, 29 Aug 2009 14:18:33 +0000</pubDate>
+      
+      <guid>https://martinliu.cn/2009/08/29/csf-or-kpi-matrix-itsm/</guid>
+      <description>最近做的一个项目中需要帮用户设计一个 CMDB 的成熟度模型，能够从该模型中持续的检查 CMDB 的建设程度。所以我研究注意了一下的一些书籍，考虑有机会可以买回来研究一下：
+IT 服务管理的持续改进需要一定的手段实现，这是 ITIL V3 中的一个重要流程。CSF 是关键成功因素，KPI 是关键性能指标，这些都是 metrics 管理过程中需要关注的手段。每个流程都可以找到相应的 CSF 和 KPI。CSF 算是 V3 的新生事物，我想它可能会对 IT 管理质量的衡量和改进带来新的方式。
+别的不说，我只想说说 KPI 管理方法可能带来的坏处。举个例子：有个公司想通过“事件单数”来考核服务台一线人员的工作。结果当他们在执行了一段时间后，他们发现服务台中有大量重复的事件单，实际上服务台对每个收到的电话都新建一个事件单，并没有做重复事件匹配查找的工作。进一步的也影响了通过重复事件来做进一步的问题管理。
+从考核管理的角度看，ITSM 的考核指标和体系如何建立的合理，如何才能建立的正确的设计和实施的确是一件大事。否则会有什么后果，我们可以想想三鹿毒奶粉事件，奶粉的蛋白质含量是奶粉质量的重要指标 KPI，营养健康是奶粉的终极 CSF 目标。三鹿真的给了我们一个血的教训啊，想让你的 IT 服务质量如何呢？可以想想三鹿。不过还是需要多多学习所有可能的 CSF 和 KPI，从何设计出确实可行的管理方式。
 Implementing Metrics for IT Service Management (ITSM)
 ISBN: 9789087531140
 Author: David Smith, Micromation Canada
 Metrics for IT Service Management (Paperback)
 by Peter Brooks (Author)
 Measuring ITIL: Measuring, Reporting and Modeling
-** ** - the IT Service Management Metrics That Matter Most to IT Senior Executives (Paperback)
-by Randy A. Steinberg
-**Step-by-Step Guide to Building a CMDB **
-by BMC Software; Inc (Author)
-后来发现了这个ITSM metrics modeling tools ，觉得这个真的不错。可行性很高。</description></item><item><title>CMS/CMDB 配置管理系统和发现工具</title><link>https://martinliu.cn/2009/07/15/cms-cmdb-and-discovery-tools/</link><pubDate>Wed, 15 Jul 2009 03:45:03 +0000</pubDate><guid>https://martinliu.cn/2009/07/15/cms-cmdb-and-discovery-tools/</guid><description>最近的一些CMDB项目和测试中都用到和测到了自动发现工具，很多用户对此的理解和看法还不是很到位。**首先：“自动化配置和关系发现工具是什么？” **
+** ** - the IT Service Management Metrics That Matter Most to IT Senior Executives (Paperback)</description>
+    </item>
+    
+    <item>
+      <title>CMS/CMDB 配置管理系统和发现工具</title>
+      <link>https://martinliu.cn/2009/07/15/cms-cmdb-and-discovery-tools/</link>
+      <pubDate>Wed, 15 Jul 2009 03:45:03 +0000</pubDate>
+      
+      <guid>https://martinliu.cn/2009/07/15/cms-cmdb-and-discovery-tools/</guid>
+      <description>最近的一些CMDB项目和测试中都用到和测到了自动发现工具，很多用户对此的理解和看法还不是很到位。**首先：“自动化配置和关系发现工具是什么？” **
 它是CMS工具集当中的数据采集工具。 从产品名称上看，往外都带DDM，它是 Discovery Dependency Mapping的缩写。意思就是帮你发现CI和CI之间关系的工具。很多用户的各种IT管理工具都可以自动发现网络、服务器和应用的配置项以及之间的关系，那么为什么还需要在购买一个新的发现工具呢？其实发现工具解决的真实发现工具不统一和发现数据不统一的问题，更重要的是它可以发现配置项之间的依赖和影响关系。对于一个数据中心来说，变更会经常发生，那么一套应用运行了一段时间之后，你很难准确的说出它都连接了那些其他相关的设备，很难理解它当前的部署状态。我们希望发现工具能帮我们更好的洞察当前IT基础架构的构成，应用对设备的依赖，底层IT服务对业务的影响。
 **其次：“它是如何工作的？” **
 它的工作原理和其他所有的管理软件也没什么太大的差异。基本上讲有两种技术：无代理发现和有代理发现；三种产品形式：纯粹无代理扫描方式、纯有代理方式和混合方式。无代理采集必须依赖被采集设备的开放协议，常用的采集协议有：snmp,wmi,telnet,ssh,jmx,http等。往往需要在被采集设备上配合一定的账号和权限。采集动作往往是定时、周期性或者触发式执行。扫描结果返回一个数据库中，准备向CMDB同步。
 再次：“它是CMDB必须的工具么？”
 对于下面几种情况我个人认为它是一个必的工具：1）数据中心用户，服务器和应用成百上千套，变更每周都会进行，新业务系统增长快。CMDB需要使用它来自动更新配置项信息。2）应用多是多层的复杂应用，CI之间依赖关系复杂，物理连接图已经不足够用来做影响分析，CMDB需要它来自动化维护配置自己的关联关系，通过它可以减少进70%的手工工作量。从国外的一些项目经验上来看，50%的CMDB用户并没有使用配置自动发现工具，他们使用的配置数据多是监控管理系统中已有的，CI间的关系靠手工维护。
 最后：“它是如何与CMDB同步的？”
-有些厂商的CMDB是从发现工具上起家的，所以他们本来就使用的一个库，没有同步问题。有些厂商的发现工具是整合的其他产品工具或者收购的，他们自己的同步就需要一定得数据模型了。通过数据模型来解决数据字段映射的关系，一般来讲CMDB中会有数据模型CDM，发现工具同步的时候就以该模型为准，把CI和关系经过一定的过滤条件同步到CMDB中。不同厂商的发现工具和CMDB如果需要同步的话，需要满足起码这样几点需要：CMDB必须有标准的数据模型来做数据映射；需要有某种数据集成和同步的工具来连接两个数据库；CMDB中需要具有强大的数据调和功能来处理发现工具带来的数据。</description></item><item><title>CMDB实施的几种误区</title><link>https://martinliu.cn/2009/07/04/cmdbe5ae9ee696bde79a84e587a0e7a78de8afafe58cba/</link><pubDate>Sat, 04 Jul 2009 05:44:02 +0000</pubDate><guid>https://martinliu.cn/2009/07/04/cmdbe5ae9ee696bde79a84e587a0e7a78de8afafe58cba/</guid><description>上面是ITIL v3的定义，CMDB的定义和v2没有变化。可以看出CMDB是一个存储配置记录的数据库，非常多的用户一拍脑门“不就是一个数据库么！我们也可以自己开发一个的。”。这样的情况下，IT组织的不同部门都可能会各自立门户，开发自己的配置管理信息库；例如：资产管理、终端分发和管理、机房管理等等。数据重复、数据不一致、配置信息不对称；无法得到跨部门和系统的报告。所以V3提出了CMS系统，它是CMDB系统的下一代管理系统。CMS系统需要 具有对现有信息资料的兼容性，CMS的建立不能忘记过去；一定要集成已有配置信息。
+有些厂商的CMDB是从发现工具上起家的，所以他们本来就使用的一个库，没有同步问题。有些厂商的发现工具是整合的其他产品工具或者收购的，他们自己的同步就需要一定得数据模型了。通过数据模型来解决数据字段映射的关系，一般来讲CMDB中会有数据模型CDM，发现工具同步的时候就以该模型为准，把CI和关系经过一定的过滤条件同步到CMDB中。不同厂商的发现工具和CMDB如果需要同步的话，需要满足起码这样几点需要：CMDB必须有标准的数据模型来做数据映射；需要有某种数据集成和同步的工具来连接两个数据库；CMDB中需要具有强大的数据调和功能来处理发现工具带来的数据。</description>
+    </item>
+    
+    <item>
+      <title>CMDB实施的几种误区</title>
+      <link>https://martinliu.cn/2009/07/04/cmdbe5ae9ee696bde79a84e587a0e7a78de8afafe58cba/</link>
+      <pubDate>Sat, 04 Jul 2009 05:44:02 +0000</pubDate>
+      
+      <guid>https://martinliu.cn/2009/07/04/cmdbe5ae9ee696bde79a84e587a0e7a78de8afafe58cba/</guid>
+      <description>上面是ITIL v3的定义，CMDB的定义和v2没有变化。可以看出CMDB是一个存储配置记录的数据库，非常多的用户一拍脑门“不就是一个数据库么！我们也可以自己开发一个的。”。这样的情况下，IT组织的不同部门都可能会各自立门户，开发自己的配置管理信息库；例如：资产管理、终端分发和管理、机房管理等等。数据重复、数据不一致、配置信息不对称；无法得到跨部门和系统的报告。所以V3提出了CMS系统，它是CMDB系统的下一代管理系统。CMS系统需要 具有对现有信息资料的兼容性，CMS的建立不能忘记过去；一定要集成已有配置信息。
 错误一：配置信息是一个独立的配置管理系统，由专人负责数据的更新和维护，手工的管理和维护所有数据。
 错误二：最配置管理就是要做的细，我要管理到机房中的每一根网线，CI的属性需要设计的非常多，越细致越好。
 错误三：我们自己有开发人员，我们有CMDB的需求，那就开始做吧，先看法着看看，不就是一个数据的增删改查么！！
 配置管理或者说CMDB的建设可以说是目前，国内ITIL用户共同的瓶颈。ITIL项目中实施最多的三个流程是：Incident Management、Problem Management 和 Change Management。已经实施完毕以上三个流程的用户问的最多的一个问题是：一个故障单、问题单或者变更单一定要和CI想关联么？在解决处理的时候寻找目标CI或者根源CI是必须的么？
-如果ITIL是一种公共语言的话，那么Incident Management、Problem Management 和 Change Management等所有流程都是句式或者时态。而CI则是主语或者宾语，您觉得没有主语或者缺少宾语的句子，会传递怎么的信息呢？</description></item><item><title>Stop to build CMDB for your IT - CMS是怎样炼成的？</title><link>https://martinliu.cn/2009/03/01/stop-to-build-cmdb-for-your-it/</link><pubDate>Sun, 01 Mar 2009 13:40:16 +0000</pubDate><guid>https://martinliu.cn/2009/03/01/stop-to-build-cmdb-for-your-it/</guid><description>ITIL在国内的实施也有8年之久，就我看过和做过的项目中：service desk是最多实施的工具，它包括IM/PM；还有Change Management；用户们还可能会常常认为，Release Management可以和变更流程可以混在一起搞。服务台一般先上，有的变更流程先上，服务台的共同特点还有PM一般形同虚设。就我所见所闻的项目和用户来说，CMDB没有那家能建的好用的好；CMDB的建设的缺失似乎成了所有ITIL用户的通病，应该也是想重点突破的瓶颈。
+如果ITIL是一种公共语言的话，那么Incident Management、Problem Management 和 Change Management等所有流程都是句式或者时态。而CI则是主语或者宾语，您觉得没有主语或者缺少宾语的句子，会传递怎么的信息呢？</description>
+    </item>
+    
+    <item>
+      <title>Stop to build CMDB for your IT - CMS是怎样炼成的？</title>
+      <link>https://martinliu.cn/2009/03/01/stop-to-build-cmdb-for-your-it/</link>
+      <pubDate>Sun, 01 Mar 2009 13:40:16 +0000</pubDate>
+      
+      <guid>https://martinliu.cn/2009/03/01/stop-to-build-cmdb-for-your-it/</guid>
+      <description>ITIL在国内的实施也有8年之久，就我看过和做过的项目中：service desk是最多实施的工具，它包括IM/PM；还有Change Management；用户们还可能会常常认为，Release Management可以和变更流程可以混在一起搞。服务台一般先上，有的变更流程先上，服务台的共同特点还有PM一般形同虚设。就我所见所闻的项目和用户来说，CMDB没有那家能建的好用的好；CMDB的建设的缺失似乎成了所有ITIL用户的通病，应该也是想重点突破的瓶颈。
 ITIL v3发布后，CMDB成了CMS中的一个数据库；而且，CMS中包括不止像CMDB这样的配置信息数据库，其实任何保存配置信息的数据库都算在CMS系统内。既然是一个系统，所以它就不光包含数据还包含一套配套工具集合，通过这套工具，维护和使用配置信息。CMS为其他所有ITIL流程提供基础的配置信息。它的结构如下图所示：
 [caption id=&amp;ldquo;attachment_435&amp;rdquo; align=&amp;ldquo;alignnone&amp;rdquo; width=&amp;ldquo;658&amp;rdquo; caption=&amp;ldquo;配置管理系统&amp;rdquo;][/caption]
 如果说上面这幅图比较还是比较抽象的话，那么请见下图：
 [caption id=&amp;ldquo;attachment_436&amp;rdquo; align=&amp;ldquo;alignnone&amp;rdquo; width=&amp;ldquo;714&amp;rdquo; caption=&amp;ldquo;CMS is a set of tools based on all configuration data&amp;rdquo;][/caption]
 从上图中我们看到，CMS系统一共可以分为四层。上三层是核心CMDB数据库和相关配套工具，最低层Data层则是是所有配置信息的基础来源。从ITIL v3的角度来说，只建设一个集中的CMDB数据库来存储所有的CI信息是不够的，CMS系统中必须能够包含和处理所有企业已有的各个系统中的配置数据。换言之，CMDB建设的局限性在于，它只是配置信息数据化，或者说电子化的第一步。
 当前依然有很多企业雄心勃勃的上马CMDB项目，不过切记在规划时，一定先好好阅读一下ITIL v3中和CMS相关的内容，适当调整项目的目标和预期总是好的，也可以规避一些项目风险。
-CMDB不只是一个数据库那么简单，更不可能在服务台的数据库中建立几张表就可以搞定。从企业IT管理的全局出发，按照ITIL v3的规范，建设CMS应该是所有ITIL项目的当务之急。CMS系统决不能遗忘过去，必须有效整个现有的各个配置信息数据源，无论其以何种形式存在。它必须是一个开放的平台，能过最大限度的和其他任何配置信息的消费者（ITIL流程，以及任何需要获取配置信息的任何应用）整合，
+CMDB不只是一个数据库那么简单，更不可能在服务台的数据库中建立几张表就可以搞定。从企业IT管理的全局出发，按照ITIL v3的规范，建设CMS应该是所有ITIL项目的当务之急。CMS系统决不能遗忘过去，必须有效整个现有的各个配置信息数据源，无论其以何种形式存在。它必须是一个开放的平台，能过最大限度的和其他任何配置信息的消费者（ITIL流程，以及任何需要获取配置信息的任何应用）整合， 
 以上的一些是我对CMS建设的一些认识。如果要落地到项目上还不许经过一个痛苦的过程，那就是产品选型。选项的过程中可以注重一下几点：
-可视化：配置项和之间的关系按拓扑形式展现 标准化：软件、硬件配置项都有完整标准的CTI信息 归一化：与现有各种配置管理系统核心共存同时CMS保持一份完整的户口记录，任何CI都有ID 集成化：CMS中的数据以图形或者裸数据等形式供其他相关消费者流程或者人员使用 联邦化：CMS核心数据库中不保存动态变化的配置信息（DB的最大连接数，网络设备所使用的syslog服务器地址），这些信息通过联邦管理让用户从其他相关的工具系统中查看到最新的数据。 最近可能还会接触一下CMDB的项目，其他经验总结待续。</description></item><item><title>配置管理中几个的误区</title><link>https://martinliu.cn/2008/08/15/e9858de7bdaee7aea1e79086e4b8ade587a0e4b8aae79a84e8afafe58cba/</link><pubDate>Fri, 15 Aug 2008 14:24:25 +0000</pubDate><guid>https://martinliu.cn/2008/08/15/e9858de7bdaee7aea1e79086e4b8ade587a0e4b8aae79a84e8afafe58cba/</guid><description>配置管理的项目可以从CMDB的建设开始，也可以从配置管理的流程建设开始。我在一些配置管理的项目中发现了一些用户容易犯的错误有很多。先说说配置管理，做ITSM的项目，往往CMDB的建设，或者配置管理流程大多不会非常重视，往往作为一种辅助性的环节在项目中得到实施。例如ITSM项目一上来就做服务台，然后是变更管理流程和其他流程；在一些后续的资产管理的项目中CMDB的到重视并建设。其实配置管理流程和CMDB是ITSM项目中非常重要的一环，它建设的效果对整体效果有乘法放大的效果。CMDB的主要功能我认为有两点：
-提供唯一、精确的配置信息库，让所有IT团队的人都明确IT管理配置项范围，有了它所有人都起码能清楚“我管理的东西是什么有哪些？”。都说ITIL的语言是IT管理的共同语言，那么配置信息就是这个语言的主语和宾语；从这里可以看到，如果我们没有这样一个准确的配置信息库，我们彼此之间的沟通会出现多大的误解和迷惑。我在用户现场做项目的时间比较多，耳闻目睹很多沟通障碍；这些障碍不是沟通方式和技术造成的，而是大家没有能从一开始就说清楚“谈论的CI对象到底是什么” 实现一定程度上的业务影响分析。往往都是有IT部门牵头做CMDB，后期也主要是IT部门用。有效的业务影响分析能力，可以彻底提高事件管理的有效性。一般用户可能会有一个集中Event Console，从这个console中事件一般是以生成的时间先后顺序查看和处理的。最差的事件管理方式就是这种“先进先出”的处理应对方式。如果你能说清楚，发生事件的对象（配置项）对业务系统的影响程度，那么你就能够做到按照这些事件的优先级别来处理；事件的优先级就是该事件对业务系统所造成的影响的严重程度。需要做到业务影响分析，就必须做业务模型梳理。每一个业务服务和业务流程也是配置项，IT的人也需要能理解业务。 下面列出一些常见错误，这些错误发生在企业做ITSM项目的前后都有可能，不过多是在实施ITSM项目之前，或者上CMDB工具之前，或者过程中。
+
+ 可视化：配置项和之间的关系按拓扑形式展现  标准化：软件、硬件配置项都有完整标准的CTI信息  归一化：与现有各种配置管理系统核心共存同时CMS保持一份完整的户口记录，任何CI都有ID  集成化：CMS中的数据以图形或者裸数据等形式供其他相关消费者流程或者人员使用  联邦化：CMS核心数据库中不保存动态变化的配置信息（DB的最大连接数，网络设备所使用的syslog服务器地址），这些信息通过联邦管理让用户从其他相关的工具系统中查看到最新的数据。 最近可能还会接触一下CMDB的项目，其他经验总结待续。  </description>
+    </item>
+    
+    <item>
+      <title>配置管理中几个的误区</title>
+      <link>https://martinliu.cn/2008/08/15/e9858de7bdaee7aea1e79086e4b8ade587a0e4b8aae79a84e8afafe58cba/</link>
+      <pubDate>Fri, 15 Aug 2008 14:24:25 +0000</pubDate>
+      
+      <guid>https://martinliu.cn/2008/08/15/e9858de7bdaee7aea1e79086e4b8ade587a0e4b8aae79a84e8afafe58cba/</guid>
+      <description>配置管理的项目可以从CMDB的建设开始，也可以从配置管理的流程建设开始。我在一些配置管理的项目中发现了一些用户容易犯的错误有很多。先说说配置管理，做ITSM的项目，往往CMDB的建设，或者配置管理流程大多不会非常重视，往往作为一种辅助性的环节在项目中得到实施。例如ITSM项目一上来就做服务台，然后是变更管理流程和其他流程；在一些后续的资产管理的项目中CMDB的到重视并建设。其实配置管理流程和CMDB是ITSM项目中非常重要的一环，它建设的效果对整体效果有乘法放大的效果。CMDB的主要功能我认为有两点：
+
+ 提供唯一、精确的配置信息库，让所有IT团队的人都明确IT管理配置项范围，有了它所有人都起码能清楚“我管理的东西是什么有哪些？”。都说ITIL的语言是IT管理的共同语言，那么配置信息就是这个语言的主语和宾语；从这里可以看到，如果我们没有这样一个准确的配置信息库，我们彼此之间的沟通会出现多大的误解和迷惑。我在用户现场做项目的时间比较多，耳闻目睹很多沟通障碍；这些障碍不是沟通方式和技术造成的，而是大家没有能从一开始就说清楚“谈论的CI对象到底是什么”  实现一定程度上的业务影响分析。往往都是有IT部门牵头做CMDB，后期也主要是IT部门用。有效的业务影响分析能力，可以彻底提高事件管理的有效性。一般用户可能会有一个集中Event Console，从这个console中事件一般是以生成的时间先后顺序查看和处理的。最差的事件管理方式就是这种“先进先出”的处理应对方式。如果你能说清楚，发生事件的对象（配置项）对业务系统的影响程度，那么你就能够做到按照这些事件的优先级别来处理；事件的优先级就是该事件对业务系统所造成的影响的严重程度。需要做到业务影响分析，就必须做业务模型梳理。每一个业务服务和业务流程也是配置项，IT的人也需要能理解业务。 下面列出一些常见错误，这些错误发生在企业做ITSM项目的前后都有可能，不过多是在实施ITSM项目之前，或者上CMDB工具之前，或者过程中。
 1）目标不明确，实施结果无法衡量 Goal
+
 所谓目标不明确，并不是说没有目标，而是说：目标定的不太合理。不合理的原因有一下几种：目标过大、目标过于模糊、过于教条、拘泥于ITIL的书本、和实际的工作联系不紧密、没有衡量和控制的方式。在一定的项目时间周期内，总结之前配置管理的问题，作出一个切实可行的配置管理数据库建立目标应该不难，主要以使用为主，不要拘泥于细节。
 2）配置项信息混乱，信息结构无序 Scope
+
 这里的“信息结构”是说CMDB的CI配置项信息查看应该是立体的有结构的很直观的数据信息。在访谈的过程中，有些用户在讨论过程中认为配置项组成的信息结构应该是网状的。其实现实中的IT基础架构组件的确是以网状的形式相关联的，这种想法非常实际。不过人们都太偏重IT了，遗忘了IT部门的最终使命“为企业交付各种业务服务”。业务服务就是CMDB数据金字塔的顶端部分。从IT部门提供的业务服务开始来梳理和建立CMDB配置库是一种“自顶向下”有效方式，是IT部门做CMDB配置管理过程中，与业务部门沟通的“翻译机”。自顶向下的方式需要业务部门的配合，或者IT部门内有精通业务的强人。通过这种方式做出了的CMDB，CI之间的构成方式，从宏观上看：屏幕的投影是树根型的，立体的看是金字塔形的，业务系统模型是树根的根部，是金字塔的顶端部分。微观上看，局部可能是网状的，或者是星型的。没有业务服务作为头部，很难说出CMDB的scope究竟是多大，很难说清楚哪些CI可能会在CMDB中出现。
 3）配置信息随意堆积，纠缠于过多的CI属性 Level
 每一个CI都可能具有非常多的属性，成功选择的标准是：够用就好，精简是王。很多用户都存在的误区就是“复杂比简单好，越复杂越放心”；大多数用户在项目初期的需求整理的时候都觉得，需求提的越全面，越好，越保险。这种心情是可以理解的，毕竟ITSM项目的周期和投入通常都是非常多的。不过对于配置管理来说却，万万不能有这种想法；否则，CMDB的维护和审计的工作量将非常巨大。一个信息量过载的CMDB，就是一个不可用的配置库。一个只有10个属性的CI和有50个属性的CI展现在你面前的时候；你找到你所关心的信息花的时间上看，前者是后者的1/5时间。属性一定要精简，特别是CMDB从零开始的用户。在设计的初期一定预留属性扩展的可能性。
 4）疏于配置信息的准确性和实时性 ** update**
 CMDB一旦建立了之后，所有用户一定要对CMDB使用起来，要为CMDB提供反馈。最终使用配置信息的人，如果发现信息不准确，需要及时报告配置经理。配置经理需要及时维护。配置经理最重要的职责是，确保每一个大小变更实施完毕之后对要对相关CI做更新。你可以没有正规的变更流程系统去跑变更单，不过我所看到的是很多企业即使没有实施ITSM项目，其实他们手工变更单的流程跑的有板有眼，一点都不差。美中不足的是，变更后的结果没有地方更新和反馈。而CMDB就是这样一个变更结果反馈和汇集的目的地。在大家都频繁使用CMDB，并且每一个大小变更都更新CMDB的完美情况下，CMDB中的信息会随之时间的流逝，愈来愈精确，愈来愈完善。
 **5）拘泥于工具的功能，忽略了最终目标 Tool**
-我看到的最多的工具是MS Excel，也有使用自开发系统的，可有自开发系统最终丁不住在转向商业工具的 :( 无论何种工具，假如在一个正确的事实和使用的策略下，我觉得都是可以获得CMDB建设的成功的。一个好的工具还是有必要的。在选择一个成品工具或者开发一个CMDB工具时，需要考虑工具的几个方面。工具应该参考或者借鉴某种国际标准，这里的标准是指某种通用模型标准 Common Data Model (CDM)，例如DTMF的 Common Information Model (CIM),或者WMI等。好的工具需要能和其他ITSM流程紧密结合，特别是事件管理、问题管理和配置管理者三个流程。如果这三个流程是建立在某种工具平台之上的，那么CMDB的信息最好能无缝的整合的流程的处理过程中。</description></item></channel></rss>
+我看到的最多的工具是MS Excel，也有使用自开发系统的，可有自开发系统最终丁不住在转向商业工具的 :( 无论何种工具，假如在一个正确的事实和使用的策略下，我觉得都是可以获得CMDB建设的成功的。一个好的工具还是有必要的。在选择一个成品工具或者开发一个CMDB工具时，需要考虑工具的几个方面。工具应该参考或者借鉴某种国际标准，这里的标准是指某种通用模型标准 Common Data Model (CDM)，例如DTMF的 Common Information Model (CIM),或者WMI等。好的工具需要能和其他ITSM流程紧密结合，特别是事件管理、问题管理和配置管理者三个流程。如果这三个流程是建立在某种工具平台之上的，那么CMDB的信息最好能无缝的整合的流程的处理过程中。  </description>
+    </item>
+    
+  </channel>
+</rss>

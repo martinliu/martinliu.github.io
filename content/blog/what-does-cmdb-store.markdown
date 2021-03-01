@@ -6,11 +6,7 @@ comments: true
 date: 2009-10-05T15:21:24Z
 slug: what-does-cmdb-store
 tags:
-- ci
 - cmdb
-- cms
-- relationship
-- 添加新标签
 title: CMDB中存什么？
 url: /2009/10/05/what-does-cmdb-store/
 wordpress_id: 49393

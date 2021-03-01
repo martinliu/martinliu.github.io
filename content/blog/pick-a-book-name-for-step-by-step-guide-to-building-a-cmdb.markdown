@@ -8,8 +8,6 @@ slug: pick-a-book-name-for-step-by-step-guide-to-building-a-cmdb
 tags:
 - book
 - cmdb
-- cms
-- translation
 title: 选书名
 url: /2009/10/29/pick-a-book-name-for-step-by-step-guide-to-building-a-cmdb/
 wordpress_id: 49595

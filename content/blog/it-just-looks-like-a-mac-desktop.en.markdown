@@ -7,8 +7,6 @@ comments: true
 date: 2009-02-02T14:14:13Z
 slug: it-just-looks-like-a-mac-desktop
 tags:
-- blog
-- blog
 - linux
 - Mac OSX
 - Ubuntu

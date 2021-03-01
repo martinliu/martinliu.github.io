@@ -7,11 +7,7 @@ date: 2010-08-09T01:08:31Z
 slug: remedy-lb-midtier-server-group-configure
 tags:
 - ARS
-- Atrium
-- itsm
-- cmdb
-- LB
-- Mid-tier
+
 - remedy
 title: Remedy Server Group及负载均衡配置参考步骤
 url: /2010/08/09/remedy-lb-midtier-server-group-configure/

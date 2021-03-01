@@ -7,16 +7,6 @@ date: 2008-10-29T03:43:35Z
 slug: some-old-stuff-for-sharing
 tags:
 - cacti
-- FSF
-- GLPI
-- iso
-- Nagios
-- ntop ossim
-- OCSNG
-- opensource
-- OTRS
-- slax
-- Virtual Appliances
 - vyatta
 - Zenoss
 title: Some old stuff for sharing

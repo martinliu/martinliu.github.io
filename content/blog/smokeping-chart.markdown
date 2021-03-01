@@ -6,7 +6,6 @@ comments: true
 date: 2007-02-15T08:45:00Z
 slug: smokeping-chart
 tags:
-- chart
 - smokeping
 title: 如何看懂Smokeping图表
 url: /2007/02/15/smokeping-chart/
@@ -15,19 +14,16 @@ wordpress_id: 49139
 
 ![](http://docs.google.com/File?id=dgt3878v_6z3dfsf)
 
-<br />
 
-<br />
 
 **_RTT(Round-Trip Time) _**
 
-<br />
+
 
 简单说它是一个数据报在网络上两点中间往返一次的时间。是影响TCP性能和表征网络运行状况的重要参数。在网络中实时、准确地测量大量TCP设备和系统的RTT参数是网络管的重要环节之一。Smokeping就是这样的自动测试系统，它向目标设备和系统发送各种类型的测试数据包，测量、记录和展示RTT。
 
 <br />
 
-<br />
 
 **_Median RTT _****_中间数_**
 

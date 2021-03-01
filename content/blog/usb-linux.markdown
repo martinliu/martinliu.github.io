@@ -7,14 +7,6 @@ date: 2011-03-24T13:12:58Z
 slug: usb-linux
 tags:
 - centos
-- Debian
-- fedora
-- linux
-- opensolaris
-- opensource
-- redhat
-- suse
-- SUSE Linux Enterprise Server
 - Ubuntu
 title: 既要开源，也要环保
 url: /2011/03/24/usb-linux/

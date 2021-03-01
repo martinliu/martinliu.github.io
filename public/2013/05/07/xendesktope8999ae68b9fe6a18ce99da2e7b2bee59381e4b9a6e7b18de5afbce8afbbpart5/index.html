@@ -1,26 +1,648 @@
-<!doctype html><html lang=zh-cn><head><meta charset=utf-8><title>XenDesktop虚拟桌面精品书籍导读(part5) - 刘征的博客</title><meta name=viewport content="width=device-width,initial-scale=1"><meta name=generator content="Hugo 0.80.0"><meta property="og:site_name" content="刘征的博客"><meta property="og:title" content="XenDesktop虚拟桌面精品书籍导读(part5)"><meta property="og:description" content="Martin's Liu is bloging on DevOps and SRE topics"><meta property="description" content="Martin's Liu is bloging on DevOps and SRE topics"><meta property="og:url" content="https://martinliu.cn/2013/05/07/xendesktope8999ae68b9fe6a18ce99da2e7b2bee59381e4b9a6e7b18de5afbce8afbbpart5/"><meta property="og:type" content="article"><meta property="og:image" content="https://martinliu.cn/img/main/logo.jpg"><link rel=stylesheet href=/css/bundle.min.d9e04ae08c9b3049b766dbd4aeab7d862c5ea1d13679b621490e0f5df5507497.css integrity="sha256-2eBK4IybMEm3ZtvUrqt9hixeodE2ebYhSQ4PXfVQdJc="><link rel=stylesheet href=/css/add-on.css></head><body><header id=site-header><nav id=site-nav><h1 class=nav-title><a href=/ class=nav>博客</a></h1><menu id=site-nav-menu class="flyout-menu menu"><a href=/ class="nav link"><i class="fas fa-home"></i>首页</a>
-<a href=/about/ class="nav link"><i class="far fa-id-card"></i>关于</a>
-<a href=/blog/ class="nav link"><i class="far fa-newspaper"></i>博客</a>
-<a href=/categories/ class="nav link"><i class="fas fa-sitemap"></i>分类</a>
-<a href=/contact/ class="nav link"><i class="far fa-envelope"></i>联系</a>
-<a href=#share-menu class="nav link share-toggle"><i class="fas fa-share-alt">&nbsp;</i>Share</a>
-<a href=#search-input class="nav link search-toggle"><i class="fas fa-search">&nbsp;</i>Search</a></menu>
-<a href=#search-input class="nav search-toggle"><i class="fas fa-search fa-2x">&nbsp;</i></a>
-<a href=#share-menu class="nav share-toggle"><i class="fas fa-share-alt fa-2x">&nbsp;</i></a>
-<a href=#lang-menu class="nav lang-toggle" lang=zh-cn>zh-cn</a>
-<a href=#site-nav class="nav nav-toggle"><i class="fas fa-bars fa-2x"></i></a></nav><menu id=search class=menu><input id=search-input class="search-input menu"></input><div id=search-results class="search-results menu"></div></menu><menu id=lang-menu class="flyout-menu menu"><a href=# lang=zh-cn class="nav link active">中文 (zh-cn)</a>
-<a href=/en lang=en class="nav no-lang link">English (en)</a></menu>
-<menu id=share-menu class="flyout-menu menu"><h1>Share Post</h1><a href="//twitter.com/share?text=XenDesktop%e8%99%9a%e6%8b%9f%e6%a1%8c%e9%9d%a2%e7%b2%be%e5%93%81%e4%b9%a6%e7%b1%8d%e5%af%bc%e8%af%bb%28part5%29&url=https%3a%2f%2fmartinliu.cn%2f2013%2f05%2f07%2fxendesktope8999ae68b9fe6a18ce99da2e7b2bee59381e4b9a6e7b18de5afbce8afbbpart5%2f" target=_blank rel=noopener class="nav share-btn twitter"><p>Twitter</p></a><a href="//www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fmartinliu.cn%2f2013%2f05%2f07%2fxendesktope8999ae68b9fe6a18ce99da2e7b2bee59381e4b9a6e7b18de5afbce8afbbpart5%2f" target=_blank rel=noopener class="nav share-btn facebook"><p>Facebook</p></a><a href="//www.reddit.com/submit?url=https%3a%2f%2fmartinliu.cn%2f2013%2f05%2f07%2fxendesktope8999ae68b9fe6a18ce99da2e7b2bee59381e4b9a6e7b18de5afbce8afbbpart5%2f&title=XenDesktop%e8%99%9a%e6%8b%9f%e6%a1%8c%e9%9d%a2%e7%b2%be%e5%93%81%e4%b9%a6%e7%b1%8d%e5%af%bc%e8%af%bb%28part5%29" target=_blank rel=noopener class="nav share-btn reddit"><p>Reddit</p></a><a href="//www.linkedin.com/shareArticle?url=https%3a%2f%2fmartinliu.cn%2f2013%2f05%2f07%2fxendesktope8999ae68b9fe6a18ce99da2e7b2bee59381e4b9a6e7b18de5afbce8afbbpart5%2f&title=XenDesktop%e8%99%9a%e6%8b%9f%e6%a1%8c%e9%9d%a2%e7%b2%be%e5%93%81%e4%b9%a6%e7%b1%8d%e5%af%bc%e8%af%bb%28part5%29" target=_blank rel=noopener class="nav share-btn linkedin"><p>LinkedIn</p></a><a href="//www.pinterest.com/pin/create/button/?url=https%3a%2f%2fmartinliu.cn%2f2013%2f05%2f07%2fxendesktope8999ae68b9fe6a18ce99da2e7b2bee59381e4b9a6e7b18de5afbce8afbbpart5%2f&description=XenDesktop%e8%99%9a%e6%8b%9f%e6%a1%8c%e9%9d%a2%e7%b2%be%e5%93%81%e4%b9%a6%e7%b1%8d%e5%af%bc%e8%af%bb%28part5%29" target=_blank rel=noopener class="nav share-btn pinterest"><p>Pinterest</p></a><a href="mailto:?subject=%e6%9f%a5%e7%9c%8b%e6%ad%a4%e5%b8%96%e5%ad%90%e7%9a%84%e4%bd%9c%e8%80%85 liuadmin&body=https%3a%2f%2fmartinliu.cn%2f2013%2f05%2f07%2fxendesktope8999ae68b9fe6a18ce99da2e7b2bee59381e4b9a6e7b18de5afbce8afbbpart5%2f" target=_blank class="nav share-btn email" data-proofer-ignore><p>Email</p></a></menu></header><div id=wrapper><section id=site-intro><a href=/><img src=https://martinliu.cn/img/main/logo.jpg class=circle width=100 alt="Martin Liu"></a><header><h1>Martin Liu's Blog</h1></header><main><p>Community Advocate, DevOps China Community Organizer</p></main><footer><ul class=socnet-icons><li><a href=//github.com/martinliu target=_blank rel=noopener title=GitHub class="fab fa-github"></a></li><li><a href=//www.linkedin.com/in/liuzheng target=_blank rel=noopener title=LinkedIn class="fab fa-linkedin"></a></li><li><a href=//twitter.com/martinliu target=_blank rel=noopener title=Twitter class="fab fa-twitter"></a></li></ul></footer></section><main id=site-main><article class=post><header><div class=title><h2><a href=/2013/05/07/xendesktope8999ae68b9fe6a18ce99da2e7b2bee59381e4b9a6e7b18de5afbce8afbbpart5/>XenDesktop虚拟桌面精品书籍导读(part5)</a></h2></div><div class=meta><time datetime="2013-05-07 02:36:41 +0000 UTC">May 7, 2013</time><p>liuadmin</p><p>3 分钟</p></div></header><div id=socnet-share><a href="//twitter.com/share?text=XenDesktop%e8%99%9a%e6%8b%9f%e6%a1%8c%e9%9d%a2%e7%b2%be%e5%93%81%e4%b9%a6%e7%b1%8d%e5%af%bc%e8%af%bb%28part5%29&url=https%3a%2f%2fmartinliu.cn%2f2013%2f05%2f07%2fxendesktope8999ae68b9fe6a18ce99da2e7b2bee59381e4b9a6e7b18de5afbce8afbbpart5%2f" target=_blank rel=noopener class="nav share-btn twitter"><p>Twitter</p></a><a href="//www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fmartinliu.cn%2f2013%2f05%2f07%2fxendesktope8999ae68b9fe6a18ce99da2e7b2bee59381e4b9a6e7b18de5afbce8afbbpart5%2f" target=_blank rel=noopener class="nav share-btn facebook"><p>Facebook</p></a><a href="//www.reddit.com/submit?url=https%3a%2f%2fmartinliu.cn%2f2013%2f05%2f07%2fxendesktope8999ae68b9fe6a18ce99da2e7b2bee59381e4b9a6e7b18de5afbce8afbbpart5%2f&title=XenDesktop%e8%99%9a%e6%8b%9f%e6%a1%8c%e9%9d%a2%e7%b2%be%e5%93%81%e4%b9%a6%e7%b1%8d%e5%af%bc%e8%af%bb%28part5%29" target=_blank rel=noopener class="nav share-btn reddit"><p>Reddit</p></a><a href="//www.linkedin.com/shareArticle?url=https%3a%2f%2fmartinliu.cn%2f2013%2f05%2f07%2fxendesktope8999ae68b9fe6a18ce99da2e7b2bee59381e4b9a6e7b18de5afbce8afbbpart5%2f&title=XenDesktop%e8%99%9a%e6%8b%9f%e6%a1%8c%e9%9d%a2%e7%b2%be%e5%93%81%e4%b9%a6%e7%b1%8d%e5%af%bc%e8%af%bb%28part5%29" target=_blank rel=noopener class="nav share-btn linkedin"><p>LinkedIn</p></a><a href="//www.pinterest.com/pin/create/button/?url=https%3a%2f%2fmartinliu.cn%2f2013%2f05%2f07%2fxendesktope8999ae68b9fe6a18ce99da2e7b2bee59381e4b9a6e7b18de5afbce8afbbpart5%2f&description=XenDesktop%e8%99%9a%e6%8b%9f%e6%a1%8c%e9%9d%a2%e7%b2%be%e5%93%81%e4%b9%a6%e7%b1%8d%e5%af%bc%e8%af%bb%28part5%29" target=_blank rel=noopener class="nav share-btn pinterest"><p>Pinterest</p></a><a href="mailto:?subject=%e6%9f%a5%e7%9c%8b%e6%ad%a4%e5%b8%96%e5%ad%90%e7%9a%84%e4%bd%9c%e8%80%85 liuadmin&body=https%3a%2f%2fmartinliu.cn%2f2013%2f05%2f07%2fxendesktope8999ae68b9fe6a18ce99da2e7b2bee59381e4b9a6e7b18de5afbce8afbbpart5%2f" target=_blank class="nav share-btn email" data-proofer-ignore><p>Email</p></a></div><div class=content><p>[box color=&ldquo;orange&rdquo; icon=&ldquo;flag&rdquo;]
-感谢 Eric Yao 的供稿，<a href=http://weibo.com/ericyaozhen>@老树皮Eric</a>
-[/box]</p><p>今天是<a href=http://support.citrix.com/article/CTX136546>《Citrix Virtual Desktop Handbook》</a>第二讲的最后一期，专门论述一下PVS的设计。在本期之后我会把所有以往的内容整合在一个完整的白皮书中，稍等几日。。。</p><p>请期待基于本系列5篇文章的完整版中文白皮书下载。</p><p>Citrix桌面虚拟化实施部署白皮书 第二讲之第五期：PVS的设计</p><ol><li>Provisioning Services</li></ol><p>Citrix Provisioning Services（PVS）使用流化的技术简化了虚拟桌面和物理桌面的部署。计算机从一个单个的共享磁盘镜像上被实时制备（Provisioned），管理员完全不需要去管理或者是给每个单独的用户操作系统打补丁。</p><p><strong>1)        <strong><strong>决断：<strong><strong>Farm</strong></strong>（场）的数量</strong></strong></strong></p><p>一个Provisioning Services的场代表着Provisioning Services基础架构的最高层级。所有在一个场的Provisioning Servers（服务器）都共享同一个SQL 数据库哦Citrix License服务器。当确定需要多少个Provisioning Services的场时，我们一般需要考虑以下几个因素：</p><p>l  **网络：**Provisioning Servers会始终和场数据库通信以获取系统配置信息。因此，一般来说每个target devices聚集的地理位置应该部署一个独立的场，当然，如果异地之间的网速足够快，理论上也可以只建立一个Provisioning Services场。</p><p>l  **重要程度：**管理者应该决定它可以容仍什么样的风险。尽管可能性非常的低，但是Provisioning Services场如果出问题还是会影响整个组织架构的使用。如果一个公司需要非常高等级的可用性，那么多个场的搭建就可以避免这个问题。</p><p>l  **可管理性：**管理者可能需要在基于组织架构划分的基础上，例如国家、地区，又或者是不同部门之间，来进行单独的系统管理。尽管听起来这会增加管理的复杂程度，但是实际上只会增加有限多的配置、桌面创建过程，以及操作系统镜像更新。</p><p><strong>2)        <strong><strong>决断：站点（<strong><strong>Sites</strong></strong>）的数量</strong></strong></strong></p><p>每个Provisioning Services的场都包含一个或者多个的站点。一个Provisioning Services的站点是一个逻辑的实体组成部分，包含了Provisioning Servers（服务器）、vDisk pools，以及target devices的集合。多个站点共享同一个数据库。Target devices可以在同一个站点中容错到其他的Provisioning Servers上。在以下的情况下我们建议创建多个站点：</p><p>l  **网络：**站点用来控制Provisioning Services的流数据量。例如，一个站点可以根据站点、rack、或者是刀箱来创建，以确保流数据始终保持在本地而不变成一个网络瓶颈。</p><p>l  **组织架构：**另外一个需要创建多个站点的实际理由是企业组织架构的改变。例如，两个公司通过收购合并了，但是有需要在企业整合过程中保持资源的独立。</p><p>3)         <strong>决断：数据库的配置</strong></p><p>Provisioning Services的数据库存储有所有一个场内的的系统配置信息。Provisioning Services 6.X版本支持一下版本的SQL数据库，包括Express、标准版、企业版的SQL Server 2005、2008R2以及2012版。选择哪一个SQL版本其实是取决于你需要哪一个级别的容错水平。以下的表格是一个SQL 2008R2版本的示例：</p><p>Provisioning Services场的数据库的大小很少会超过250M容量，即使在大型环境下也不会。所以，在测试环境下Express版本是最佳选择，因为不需要容错功能。</p><p>下面的公式是用来计算Provisioning Services的数据库的容量大小：</p><p>4)         <strong>决断：数据库；离线模式</strong></p><p>如果到Provisioning Services场的数据库的连接断开，已经连接到Provisioning Servers的target devices仍然可以正常工作，但是新的target devices将会无法启动。</p><p>支持离线数据库功能可以让Provisioning Services在失去连接到数据库后仍然可以保持正常操作。在服务器启动时会对数据库做个快照，然后定期保持同步。如果连接丢失，Stream Services会使用最新的一个快照以获取场的配置信息。一旦数据库连接建立起来了，Stream过程会把断线期间的变化同步到数据库中。</p><p><em>需要注意的是，离线数据库功能默认下是关闭状态的，而且也仅仅是在生产环境下的稳定的场环境下推荐使用。评估环境下不推荐使用</em></p><p>5)         <strong>决断：服务帐号</strong></p><p>Stream和SOAP服务会和其他许多不同的Provisioning Services基础架构中的组件进行通信，如下图所示：</p><p>6)         <strong>决断：设备集合</strong></p><p>设备集合是用来创建和管理target devices逻辑组。创建设备集合可以简化设备管理，因为将来的操作可以不用基于target device级别，而是基于集合这个级别。</p><p>设备集合可以基于物理地理位置、子网范围、组织架构中不同的部门来设计。也可以考虑基于vDisk的分配来创建不同的设备集合，这样所有分配到一个特定vDisk的所有的target devices就能被快速的定位。</p><p>7)         <strong>决断：<strong><strong>Provisioning Server</strong></strong>（服务器）的内存</strong></p><p>运行Provisioning Services的Windows操作系统会把vDisk的部分内容缓存在内存（系统缓存）中以降低从存储中读取的操作。从存储中读取数据的速度是显著低于从内存中读取数据的，所以，正确计算Provisioning Servers的内存是非常关键的。请参见以下的公式：</p><p>简单地说，就是给每个vDisk分配2G左右的内存。</p><p>8)         <strong>决断：<strong><strong>Scale Up</strong></strong>还是****Scale Out</strong></p><p><em>题外话：首先对这两个词进行一下解释：</em></p><p><em>Scale Out(<strong>向外扩展)</strong>：就是指企业可以根据需求增加不同的服务器应用，依靠多部服务器协同运算，借负载平衡及容错等功能来提高运算能力及可靠度。</em></p><p><em>Scale Up(<strong>向上扩展)</strong>：指企业后端大型服务器以增加处理器等运算资源进行升级以获得对应用性能的要求。</em></p><p>随着Farm场的增长，管理员需要作出决定以判断是不是需要给Provisioning Server增加更高的资源，也可以是在场中增加更加多的Provisioning Servers，一下了可以是考虑因素：</p><p>l  **冗余：**将用户符合扩展到其他负荷不重的服务器上会有助于降低当Provisioning Servers宕机情况下爱所影响的用户数量。如果公司无法接受单点高性能服务器宕机所造成的损失，那就考虑Scaling Out，就是我们说的向外扩展（既增加多台服务器）。</p><p>l  **容错时间：**在一个单台的Provisioning Server上所连接的Target Devices越多，在服务器宕机后所需要的恢复时间也就越多。Citrix的内部测试显示在Provisioning Services 5.6 SP2版本下，1500台Target Devices需要大约8分钟恢复生产能力；</p><p>l  **数据中心容量：**数据中心一般都是只有有限的空间、电源、冷却能力，此时，可以考虑Scaling Up，即向上扩展（增加单台服务器的处理能力）。</p><p>l  **硬件成本：**刚开始时，可能Scale Up会有更高的性价比，但是继续往后可能Scale Out会开始更具性价比，应该做一个成本分析；</p><p>9)         <strong>决断：<strong><strong>vDisk</strong></strong>的存储位置</strong></p><p>一个场可以包含一个或者多个的vDisk存储。一般来说有两个主要的选择：</p><p>l  <strong>本地存储或者是DAS</strong>**：**DAS可以是本地的，或者是基于Block的存储类型，Provisioning Server可以直接访问，例如SATA、SCSI、iSCSI，以及光纤。本地的vDisk就只能被本地的Provisioning Server所反问，因此，vDisk应当被手动或者自动的复制到其他的vDisk存储位置上。</p><p><strong><em>注意：</em></strong><em>将vDisk__部署在本地存储上并不会造成单点故障，因为Provisioning Service__的负载均衡技术可以让target devices__自动的在其他Provisioning Servers__之间做容错动作。</em></p><p>l  <strong>NAS</strong>**：**NAS是一种基于文件级存储的solution。NAS协议包括CIFS和NFS。NAS vDisk可以被多个Provisioning Server同时所访问。NAS由于不需要vDisk复制功能所以能保证vDisk在一个场内的多台Provisioning Server之间保持连续性。</p><p><strong><em>注意：</em></strong><em>NAS__反而会造成单点故障，如果网络共享功能不可用，所有从这个vDisk__上Streamed__的target device__都会变得不可用了。</em></p><p>10)     <strong>决断：评估存储容量</strong></p><p>一个vDisk包含了一个VHD基础镜像文件、一个properties文件（.pvd），也可以能包含了一个链条VHD差异磁盘（.avhd）。每当一个vDisk被Provisioning Services versioing所更新时，一个新的差异磁盘就会被创建。</p><p>一个vDisk所占空间的评估因素大致有以下几点：</p><p>l  **vDisk****的总容量：**顾名思义</p><p>l  **vDisk chain****的最大版本数：**vDisk versioning简化了vDisk升级以及管理的负担，他能够更加灵活和健壮的管理vDisks。</p><p><strong><em>备注：</em></strong><em>太多的差异磁盘会显著降低Provisioning Services__的性能，建议不要超过5-7__个的版本数。</em></p><p>l  **vDisk****版本变化百分比：**差异磁盘的大小是随着对vDisk的改动多少而随着变化的。改得越多，差异磁盘的大小就越大。以下的计算公式可以用于计算vDisk容量：</p><p>举例如下：</p><p>比如你计划部署三个vDisk：</p><p>  Windows 7 (x64) image = 40GB</p><p>  Windows 7 (x86) image = 35GB</p><p>  Windows XP image = 20GB</p><p>每个vDisk都不会超过5个差异磁盘。预计一个差异磁盘大致是20%的主vDisk镜像文件大小，那么估计Provisioning Services存储所需要的空间如下：</p><p>11)     <strong>决断：<strong><strong>RAID</strong></strong>级别</strong></p><p>存储子系统的RAID级别会对应用程序和用户的工作负荷产生直接的影响。RAID 0、1以及10对读操作是最优，而RAID 5和6是对写操作是最优。对于Provisioning Services来说，不同的RAID级别有如下推荐配置：</p><p>Provisioning Services中vDisk主要是读操作，而对Write Cache来说主要是写操作。所以：</p><p>l  <strong>Write Cache</strong>**：**推荐RAID 0、1、10因为这几种RAID的写惩罚较低</p><p>l  **vDisk ****存储：**推荐RAID 0、1、5、10，它可以让读操作分配到RAID中的其他磁盘中；</p><p>如果可能，建议将vDisk放在RAID5上，而写缓存放在RAID10上。如果vDisk和写缓存一定要放在一起，那么建议采用RAID10。</p><p>12)     <strong>决断：写缓存的位置</strong></p><p>写缓存可以有以下位置：</p><p>l  **缓存在Target Device**<strong>的硬盘上：<strong>由于Provisioning Servers不用处理写请求，放在这里会减轻Provisioning Servers的资源消耗。尽管没有放在内存中这么快，这种方式的读写都是在本地，还是能提供快速的响应时间；</strong></strong></p><p>l  **缓存在Target Device****的硬盘上永久保存：**和第一种方式类似，区别在于用户重启之后存储永久保存。该功能目前还是测试阶段，仅在Windows 2008 R2和windows 7上支持。</p><p>l  **缓存在Target Device****的内存中：**尽管这种方式在性能上是最优的，但是如果RAM别耗尽了也会印象系统的稳定性；</p><p>l  **缓存在Provisioning Server****的磁盘上：**缓存在Provisioning Server的磁盘上作为临时文件存储。所有的写操作均发生在Provisioning Server服务器上。这样配置当然会增加Provisioning Server的磁盘IO操作和网络负担。配置上这种方式最为简单，不过这种方式下target device由于所有的到写缓存的读写请求都必须经过网络，target device的性能会受到较大影响。这种方式仅在POC阶段推荐！</p><p>l  **缓存在Provisioning Server****的磁盘上永久保存：**和上一种方式基本类似，区别在于用户重启之后存储永久保存。这种方式的好处在于target device能够保存对vDisk所做的改变，在重启之后也仍然保留。任何对vDisk的改变都会将缓存文件强制标记为失效状态。例如，如果vDisk被设置为Private Image Mode，一下所有的操作都会导致缓存文件被标记为失效状态：</p><p>n  o  Placing a vDisk in Maintenance mode</p><p>n  o  Mapping the drive from the console</p><p>n  o  Changing the location of the write cache file</p><p>n  o  Using Automatic update</p><p>写缓存包含了target device的MAC地址和磁盘识别符，他能独一无二的区分出每一台target device。一个target device可以被分配多个vDisk，因此，也可以关联多个缓存文件。</p><p>将写缓存部署在target device上是最为推荐的配置方法，因为既不用消耗而外的RAM内存，又不会减少Provisioning Servers的扩展性。</p><p>13)     <strong>决断：写缓存的大小</strong></p><p>写缓存的大小取决于很多隐私，一般来说都是基于评估和典型的用户配置文件大小。一般来说应当能够存储一下数据：</p><p>n  Temporary application data</p><p>n  User profile temp files</p><p>n  Windows Event Logs</p><p>n  Citrix Logs</p><p>n  Antivirus pattern files</p><p>n  Citrix Application Streaming/Microsoft App-V Cache</p><p><em>备注：启用了用户配置文件重定向操作能减少写缓存所需要的大小。</em></p><p>写缓存的大小极大程度上取决于安装或者是Streamed到vDisk上的应用程序的大小以及用户配置文件的大小。推荐配置的起点是2GB。对于大部分虚拟桌面来说，我们有如下推荐配置：</p><p>此外，Windows的pagefile也会写入和写缓存同样的磁盘中，所以：</p><p>例如，如果Windows 7的vDisk设计是1.5GB的pagefile，那么写缓存的一个安全的评估数据应该是：</p><p>不过由于Hypervisor都不能将磁盘精确到小数点后，我们姑且分配4GB的空间吧。</p><p>14)     <strong>决断：<strong><strong>vDisk</strong></strong>的格式</strong></p><p>Provisioning Services支持固定磁盘以及动态磁盘格式。</p><p>l  **固定磁盘格式：**对于私有模式（private mode）的vDisk，固定尺寸大小的vDisk可以对存储vDisk磁盘上进行的磁盘碎片整理操作，这对写操作的性能提升会有帮助。不过在私有模式下，访问vDisk受限于一个target device，我们说仅当对vDisk进行维护模式时才有实际意义。</p><p>l  **动态磁盘：**相比较而言他需要更少的磁盘空间，但是在写操作上性能会显著降低。尽管在共享模式下（Shared Mode）的vDisk不会对vDisk执行写操作，不过对完成vDisk合并时所要花费的时间会增加许多。</p><p>15)     <strong>决断：<strong><strong>vDisk</strong></strong>的大小</strong></p><p>vDisk的大小主要取决于操作系统以及安装在操作系统上的应用程序的多少，我们预估的大小如下表所示：</p><p>vDisk的大小如果设置的太小或者是太大，日后我们还可以在Provisioning Services中调整。为了精确的评估vDisk的大小，请遵循以下的准则：</p><p>l  **Target Device**<strong>的空间：<strong>确认目前作为主target device服务的计算机所正在使用的磁盘空间大小；</strong></strong></p><p>l  **应用程序大小：**当应用程序安装时，所需要的空间也在增长。计划大25%的增长</p><p>16)     <strong>决断：<strong><strong>vDisk</strong></strong>复制</strong></p><p>如果vDisk是存储在DAS上就需要在他自己有变化的时候复制到其他DAS上。Provisioning Services支持vDisk从本地复制到Provisioning Servers上，也可以支持在使用共享存储时跨越多个站点之间的复制。复制可以是手动或者是自动：</p><p>l  **手动复制：**简单，但是更耗时；</p><p>l  **自动复制：**大型环境下自动复制更快。一些自动化工具，例如Microsoft DFS-R还支持带宽控制。唯一缺点是如果复制出错，管理员还不支持，除非复制平台支持复制重传。</p><p>17)     <strong>决断：微软****Volume Licensing</strong></p><p>Provisioning Services支持Microsoft Key Management Service (KMS)和Multiple Activation Key (MAK) volume licensing。</p><p>l  <strong>KMS Volume Licensing</strong>**：**可以在用户的本地网络上激活，无需连接到微软的网站。一台KMS服务器支持不受限的JMS客户端。微软公司推荐部署两台KMS服务器。****</p><p>n  Office 2010的部署只支持KSM激活方式；</p><p>l  <strong>MAK Volume Licensing</strong>**：**MS的一次性激活方式。</p><p>18)     <strong>决断：高可用</strong></p><p>Provisioning Services是虚拟桌面基础架构中最重要的组成部分，因此为了避免单点故障，需要考虑一下推荐步骤：</p><p>l  <strong>MAK Volume Licensing</strong>**：**MS的一次性激活方式。</p><p>l  **数据库：**Provisioning Services支持两种数据库的高可用方式：</p><p>n  离线的数据库；</p><p>n  镜像数据库</p><p>l  <strong>Provisioning Servers</strong>**（PVS****服务器）：**所有在一个站点之间的Provisioning Servers都能够被配置为向target device提供同一个vDisk。每个站点最少部署两台PVS服务器。</p><p>n  Provisioning Services启动文件应当配置为高可用。在启动文件中可以配置高达4台PVS服务器的列表。Target Device会按照顺序连接这些PVS服务器。后续所响应的服务器可以不是当初提供Streaming服务的服务器。当然，我们也可以配置负载均衡。</p><p>l  **vDisk****和存储：**对于DAS上存储的vDisk，应当做好同步操作。对于NAS上的vDisk，NAS存储必须提供一条高可用的网络共享连接；</p><p>l  **网络：**Provisioning Servers（PVS服务器）的网卡应当配置为Teamed。</p><p>19)     <strong>决断：带宽需求</strong></p><p>带宽评估对于整体性能是有至关重要的，特别是当Target Device启动的时候。带宽是随着操作系统的不同而有所区别的。Target Device启动所需要的时间可以参考下面的公式：</p><p>例如，500个Windows 7的Target Devices在1G以太网下需要40M启动：</p><p>1.  1 GB Ethernet = 125MB/s</p><p>2.  500 targets x 40 MB = 20GB</p><p>3.  20GB/125MBs = 160 seconds</p><p>下面的表格列举了在10GB网络下启动500台不同操作系统的Target Device时大致的带宽和启动加载时间：</p><p>备注：防火墙会增加网络延迟，同时也会造成网络瓶颈，如果可能，最好禁用防火墙，如果实在不能避免，最好能开放一下端口的完全访问能力：</p><p>20)     <strong>决断：网络配置</strong></p><p>为PVS服务器提供10Gbps网络能提供最够需要的带宽，如果做不到的话，1Gbps也可以提供足够的带宽，但是有可能会成为PVS服务器的瓶颈。将多块网卡做Teaming处理能提供更高的吞吐量，增加网络性能，也能阻止网络的单点故障。下表列出了PVS服务器的网络配置属性，从最大容量到最小：</p><p>以下的NIC属性应当正确配置在PVS服务器以及Target Devices的NIC上：</p><p>简单地说，就是禁用Checksum Offloading属性；关闭Auto Negotiation，使用强制配置；启用Jumbo Frame。</p><p>21)     <strong>决断：交换机配置</strong></p><p>用于PVS服务器和Target Devices的网络交换机应当做一下优化：</p><p>l  <strong>生成树协议（Spanning Tree Protocol</strong>**）/PortFast****：**禁用生成树协议，启用PortFast；</p><p>l  <strong>风暴控制 Storm Control</strong>**：**在Cisco Catalyst交换机上将Unicast流量值设置大一些，或者是禁用Unicast Filtering。</p><p>l  <strong>Broadcast Helper</strong>**：**启用之，这样可以转发PXE和TFTP流量；</p><p>22)     <strong>决断：<strong><strong>Bootstrap</strong></strong>交付</strong></p><p>在一个Target Device开始启动过程的时候，他会首先加载一个bootstrap程序，该程序会初始化Target Device和PVS服务器之间的流化会话过程。有三种方法让Target Device能收到bootstrap程序：</p><p>l  <strong>Broadcast Helper</strong>**：**启用之，这样可以转发PXE和TFTP流量；</p><p>l  <strong>使用带有DHCP<strong><strong>选项的PXE</strong></strong>方式；</strong></p><p>l  <strong>使用不带有DHCP<strong><strong>选项的PXE</strong></strong>方式；</strong></p><p>l  <strong>使用Boot Device Manager</strong>**；**</p><p>在企业无法提供PXE或者是TFTP服务的情况下，或者是无法对DHCP Scope选项修改的情况下，可以考虑使用Boot Device Management工具通过一个ISO文件来提供bootstrap文件。</p><p>23)     <strong>决断：审计</strong></p><p>默认下审计功能是禁用的，管理员可以将将其打开。打开后该工具可以记录在Provisioning Services场内组件所做的配置修改记录，并将结果记录至数据库中。</p><p>24)     <strong>决断：防病毒</strong></p><p>大部分的防病毒软件都会是扫描所有的文件和系统进程，对性能影响很大。所以在PVS环境下必须优化防病毒软件的配置。请参见CTX124185 - Provisioning Services Antivirus Best Practices。</p></div><footer><div class=stats><ul class=categories><li><a class=article-terms-link href=/categories/infrastructure/>infrastructure</a></li></ul><ul class=tags><li><a class=article-terms-link href=/tags/infrastructure/>infrastructure</a></li><li><a class=article-terms-link href=/tags/pvs/>PVS</a></li><li><a class=article-terms-link href=/tags/infrastructure/>infrastructure</a></li></ul></div></footer></article><article class=post><div><h2 id=say-something>说些什么</h2><form id=comment-form class=new-comment method=post><h3 class="reply-notice hidden"><span class=reply-name></span></h3><input type=hidden name=options[entryId] value=288cc52d5eecdf18b8cc57861df5e98f>
-<input type=hidden name=fields[replyThread]>
-<input type=hidden name=fields[replyID]>
-<input type=hidden name=fields[replyName]>
-<input required name=fields[name] type=text placeholder=你的名字>
-<input name=fields[website] type=text placeholder=您的网页>
-<input required name=fields[email] type=email placeholder=你的邮件>
-<textarea required name=fields[body] placeholder=你的信息 rows=10></textarea><div class=submit-notice><strong class="submit-notice-text submit-success hidden">感谢您的评论！被批准后它会立即在此站点展示。</strong>
-<strong class="submit-notice-text submit-failed hidden">很抱歉，您的提交存在错误。请确保所有必填字段都已填写正确，然后再试一次。</strong></div><input type=submit value=送出 class=button>
-<input type=submit value=已送出 class="hidden button" disabled>
-<input type=reset value=重设 class=button></form></div><div><h2>评论</h2><p>还沒有留言。</p></div></article><div class=pagination><a href=/2013/05/14/hide-windows-explorer-items/ class="button left"><span>隐藏Windows Explorer中的各种东西</span></a>
-<a href=/2013/05/07/top10e585a8e79083e68e92e5908de5898de58d81e79a84e4ba91e8aea1e7ae97e585ace58fb8/ class="button right"><span>Top10全球排名前十的云计算公司</span></a></div></main><section id=site-sidebar><section id=recent-posts><header><h1>最新文章</h1></header><article class=mini-post><a href=/blog/workshop-elastic-observability/ class=image style="--bg-image: url('https://martinliu.cn/img/2019/03/pic01.jpg')"><img class=stretchH src=https://martinliu.cn/img/2019/03/pic01.jpg alt=Valley></a><header><h2><a href=/blog/workshop-elastic-observability/>Elastic 可观测性工作坊</a></h2><time class=published datetime="2021-02-06 10:36:12 +0800 CST">February 6, 2021</time></header></article><article class=mini-post><a href=/blog/change-back-on-github-page-again/ class=image style="--bg-image: url('https://martinliu.cn/img/2019/03/pic03.jpg')"><img class=stretchH src=https://martinliu.cn/img/2019/03/pic03.jpg alt=Valley></a><header><h2><a href=/blog/change-back-on-github-page-again/>博客换一个新样式</a></h2><time class=published datetime="2021-02-06 00:00:00 +0000 UTC">February 6, 2021</time></header></article><article class=mini-post><a href=/blog/devopscoach-weekly-6/ class=image style="--bg-image: url('https://martinliu.cn/')"><img src=https://martinliu.cn/ alt></a><header><h2><a href=/blog/devopscoach-weekly-6/>DevOps Coach 周刊 #6</a></h2><time class=published datetime="2020-08-31 00:11:01 +0800 CST">August 31, 2020</time></header></article><article class=mini-post><a href=/blog/elasticsearch-3-nodes-cluster-setup/ class=image style="--bg-image: url('https://martinliu.cn/')"><img src=https://martinliu.cn/ alt></a><header><h2><a href=/blog/elasticsearch-3-nodes-cluster-setup/>Elasticsearch 3 节点集群搭建 (7.9.0)</a></h2><time class=published datetime="2020-08-27 13:54:46 +0800 CST">August 27, 2020</time></header></article><article class=mini-post><a href=/blog/devopscoach-weekly-5/ class=image style="--bg-image: url('https://martinliu.cn/')"><img src=https://martinliu.cn/ alt></a><header><h2><a href=/blog/devopscoach-weekly-5/>DevOps Coach 周刊 #5</a></h2><time class=published datetime="2020-08-25 15:20:51 +0800 CST">August 25, 2020</time></header></article><footer><a href=/blog/ class=button>查看更多</a></footer></section><section id=categories><header><h1><a href=/categories>分类</a></h1></header><ul><li><a href=/categories/blog/>blog<span class=count>107</span></a><li><a href=/categories/itsm/>itsm<span class=count>95</span></a><li><a href=/categories/infrastructure/>infrastructure<span class=count>48</span></a><li><a href=/categories/devops/>devops<span class=count>38</span></a><li><a href=/categories/opensource/>opensource<span class=count>35</span></a><li><a href=/categories/cloud-computing/>cloud-computing<span class=count>27</span></a><li><a href=/categories/running/>running<span class=count>22</span></a><li><a href=/categories/cms/cmdb/>cms/cmdb<span class=count>20</span></a><li><a href=/categories/travel/>travel<span class=count>14</span></a><li><a href=/categories/sre/>sre<span class=count>2</span></a></li></ul></section><section id=mini-bio><header><h1>关于</h1></header><p>This Blog is sharing DevOps and SRE ariticles. I have translated DevOps Handbook and SRE Workbook.</p><footer><a href=/about class=button>学到更多</a></footer></section></section><footer id=site-footer><ul class=socnet-icons><li><a href=//github.com/martinliu target=_blank rel=noopener title=GitHub class="fab fa-github"></a></li><li><a href=//www.linkedin.com/in/liuzheng target=_blank rel=noopener title=LinkedIn class="fab fa-linkedin"></a></li><li><a href=//twitter.com/martinliu target=_blank rel=noopener title=Twitter class="fab fa-twitter"></a></li></ul><p class=copyright>© 2021 刘征的博客<br>主题: <a href=https://themes.gohugo.io/hugo-future-imperfect-slim/ target=_blank rel=noopener>Hugo Future Imperfect Slim</a><br>移植自 <a href=https://html5up.net/future-imperfect target=_blank rel=noopener>HTML5 UP</a> | 由 <a href=https://gohugo.io/ target=_blank rel=noopener title=0.80.0>Hugo</a> 驱动</p></footer><a id=back-to-top href=# class="fas fa-arrow-up fa-2x"></a><script src=/js/highlight.js></script><script>hljs.initHighlightingOnLoad();</script><script src=/js/bundle.min.bbba6b424a8ac5b6858cd5fc80eabc9c5277945cc2dc349204646b84891b4b58.js integrity="sha256-u7prQkqKxbaFjNX8gOq8nFJ3lFzC3DSSBGRrhIkbS1g="></script><script src=/js/add-on.js></script><script type=application/javascript>var doNotTrack=false;if(!doNotTrack){window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;ga('create','UA-749876-6','auto');ga('send','pageview');}</script><script async src=https://www.google-analytics.com/analytics.js></script></div></body></html>
+<!doctype html>
+<html lang="zh-cn">
+  <head>
+  <meta charset="utf-8">
+<title>XenDesktop虚拟桌面精品书籍导读(part5) - DevOps &amp; SRE Blog</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+<meta name="generator" content="Hugo 0.80.0" /><meta property="og:site_name" content="DevOps &amp; SRE Blog">
+  <meta property="og:title" content="XenDesktop虚拟桌面精品书籍导读(part5)">
+  <meta property="og:description" content="Martin&#39;s Liu is bloging on DevOps and SRE topics">
+  <meta property="description" content="Martin&#39;s Liu is bloging on DevOps and SRE topics">
+  <meta property="og:url" content="https://martinliu.cn/2013/05/07/xendesktope8999ae68b9fe6a18ce99da2e7b2bee59381e4b9a6e7b18de5afbce8afbbpart5/">
+  <meta property="og:type" content="article">
+  
+    <meta property="og:image" content="https://martinliu.cn/img/main/logo.jpg">
+  
+  
+            <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.3/styles/default.min.css">
+          <link rel="stylesheet" href="/css/bundle.min.307f33cd8015e5bab28d6ebda9b400f8d3059bc248b4e60adf4d23469fab5a2b.css" integrity="sha256-MH8zzYAV5bqyjW69qbQA&#43;NMFm8JItOYK300jRp&#43;rWis="><link rel="stylesheet" href="/css/add-on.css">
+</head>
+
+  <body>
+    
+
+<header id="site-header">
+  <nav id="site-nav">
+    <h1 class="nav-title">
+      <a href="/" class="nav">
+        
+          博客
+        
+      </a>
+    </h1>
+    <menu id="site-nav-menu" class="flyout-menu menu">
+      
+        
+          
+          <a href="/" class="nav link"><i class='fas fa-home'></i> 首页</a>
+        
+      
+        
+          
+          <a href="/about/" class="nav link"><i class='far fa-id-card'></i> 关于</a>
+        
+      
+        
+          
+          <a href="/blog/" class="nav link"><i class='far fa-newspaper'></i> 博客</a>
+        
+      
+        
+          
+          <a href="/categories/" class="nav link"><i class='fas fa-sitemap'></i> 分类</a>
+        
+      
+        
+          
+          <a href="/course/" class="nav link"><i class='fa fa-book'></i> 课程</a>
+        
+      
+      <a href="#share-menu" class="nav link share-toggle"><i class="fas fa-share-alt">&nbsp;</i>Share</a>
+      
+    </menu>
+    
+    <a href="#share-menu" class="nav share-toggle"><i class="fas fa-share-alt fa-2x">&nbsp;</i></a>
+    <a href="#lang-menu" class="nav lang-toggle" lang="zh-cn">zh-cn</a>
+    <a href="#site-nav" class="nav nav-toggle"><i class="fas fa-bars fa-2x"></i></a>
+  </nav>
+  
+  <menu id="lang-menu" class="flyout-menu menu">
+  <a href="#" lang="zh-cn" class="nav link active">中文 (zh-cn)</a>
+  
+    
+      
+        <a href="/en" lang="en" class="nav no-lang link">English (en)</a>
+      
+    
+      
+    
+  
+</menu>
+
+  
+    <menu id="share-menu" class="flyout-menu menu">
+      <h1>Share Post</h1>
+      
+
+
+
+
+  
+    
+    <a href="//twitter.com/share?text=XenDesktop%e8%99%9a%e6%8b%9f%e6%a1%8c%e9%9d%a2%e7%b2%be%e5%93%81%e4%b9%a6%e7%b1%8d%e5%af%bc%e8%af%bb%28part5%29&amp;url=https%3a%2f%2fmartinliu.cn%2f2013%2f05%2f07%2fxendesktope8999ae68b9fe6a18ce99da2e7b2bee59381e4b9a6e7b18de5afbce8afbbpart5%2f" target="_blank" rel="noopener" class="nav share-btn twitter">
+        <p>Twitter</p>
+      </a>
+  
+
+  
+      <a href="//www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fmartinliu.cn%2f2013%2f05%2f07%2fxendesktope8999ae68b9fe6a18ce99da2e7b2bee59381e4b9a6e7b18de5afbce8afbbpart5%2f" target="_blank" rel="noopener" class="nav share-btn facebook">
+        <p>Facebook</p>
+        </a>
+  
+
+  
+    <a href="//www.reddit.com/submit?url=https%3a%2f%2fmartinliu.cn%2f2013%2f05%2f07%2fxendesktope8999ae68b9fe6a18ce99da2e7b2bee59381e4b9a6e7b18de5afbce8afbbpart5%2f&amp;title=XenDesktop%e8%99%9a%e6%8b%9f%e6%a1%8c%e9%9d%a2%e7%b2%be%e5%93%81%e4%b9%a6%e7%b1%8d%e5%af%bc%e8%af%bb%28part5%29" target="_blank" rel="noopener" class="nav share-btn reddit">
+          <p>Reddit</p>
+        </a>
+  
+
+  
+        <a href="//www.linkedin.com/shareArticle?url=https%3a%2f%2fmartinliu.cn%2f2013%2f05%2f07%2fxendesktope8999ae68b9fe6a18ce99da2e7b2bee59381e4b9a6e7b18de5afbce8afbbpart5%2f&amp;title=XenDesktop%e8%99%9a%e6%8b%9f%e6%a1%8c%e9%9d%a2%e7%b2%be%e5%93%81%e4%b9%a6%e7%b1%8d%e5%af%bc%e8%af%bb%28part5%29" target="_blank" rel="noopener" class="nav share-btn linkedin">
+            <p>LinkedIn</p>
+          </a>
+  
+
+  
+        <a href="//www.pinterest.com/pin/create/button/?url=https%3a%2f%2fmartinliu.cn%2f2013%2f05%2f07%2fxendesktope8999ae68b9fe6a18ce99da2e7b2bee59381e4b9a6e7b18de5afbce8afbbpart5%2f&amp;description=XenDesktop%e8%99%9a%e6%8b%9f%e6%a1%8c%e9%9d%a2%e7%b2%be%e5%93%81%e4%b9%a6%e7%b1%8d%e5%af%bc%e8%af%bb%28part5%29" target="_blank" rel="noopener" class="nav share-btn pinterest">
+          <p>Pinterest</p>
+        </a>
+  
+
+  
+        <a href="mailto:?subject=%e6%9f%a5%e7%9c%8b%e6%ad%a4%e5%b8%96%e5%ad%90%e7%9a%84%e4%bd%9c%e8%80%85 liuadmin&amp;body=https%3a%2f%2fmartinliu.cn%2f2013%2f05%2f07%2fxendesktope8999ae68b9fe6a18ce99da2e7b2bee59381e4b9a6e7b18de5afbce8afbbpart5%2f" target="_blank" class="nav share-btn email" data-proofer-ignore>
+          <p>Email</p>
+        </a>
+  
+
+
+    </menu>
+  
+</header>
+
+    <div id="wrapper">
+      <section id="site-intro" >
+  <a href="/"><img src="https://martinliu.cn/img/main/logo.jpg" class="circle" width="100" alt="Martin Liu" /></a>
+  <header>
+    <h1>Martin Liu's Blog</h1>
+  </header>
+  <main>
+    <p>Community Advocate, DevOps China Community Organizer</p>
+  </main>
+  
+    <footer>
+      <ul class="socnet-icons">
+        
+
+        <li><a href="//github.com/martinliu" target="_blank" rel="noopener" title="GitHub" class="fab fa-github"></a></li>
+
+
+
+
+
+
+
+
+
+
+
+<li><a href="//www.linkedin.com/in/liuzheng" target="_blank" rel="noopener" title="LinkedIn" class="fab fa-linkedin"></a></li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<li><a href="//twitter.com/martinliu" target="_blank" rel="noopener" title="Twitter" class="fab fa-twitter"></a></li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+      </ul>
+    </footer>
+  
+</section>
+
+      <main id="site-main">
+        
+  <article class="post">
+    <header>
+  <div class="title">
+    
+      <h2><a href="/2013/05/07/xendesktope8999ae68b9fe6a18ce99da2e7b2bee59381e4b9a6e7b18de5afbce8afbbpart5/">XenDesktop虚拟桌面精品书籍导读(part5)</a></h2>
+    
+    
+  </div>
+  <div class="meta">
+    <time datetime="2013-05-07 02:36:41 &#43;0000 UTC">May 7, 2013</time>
+    <p>liuadmin</p>
+    <p>5 分钟</p>
+  </div>
+</header>
+
+    <div id="socnet-share">
+      
+
+
+
+
+  
+    
+    <a href="//twitter.com/share?text=XenDesktop%e8%99%9a%e6%8b%9f%e6%a1%8c%e9%9d%a2%e7%b2%be%e5%93%81%e4%b9%a6%e7%b1%8d%e5%af%bc%e8%af%bb%28part5%29&amp;url=https%3a%2f%2fmartinliu.cn%2f2013%2f05%2f07%2fxendesktope8999ae68b9fe6a18ce99da2e7b2bee59381e4b9a6e7b18de5afbce8afbbpart5%2f" target="_blank" rel="noopener" class="nav share-btn twitter">
+        <p>Twitter</p>
+      </a>
+  
+
+  
+      <a href="//www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fmartinliu.cn%2f2013%2f05%2f07%2fxendesktope8999ae68b9fe6a18ce99da2e7b2bee59381e4b9a6e7b18de5afbce8afbbpart5%2f" target="_blank" rel="noopener" class="nav share-btn facebook">
+        <p>Facebook</p>
+        </a>
+  
+
+  
+    <a href="//www.reddit.com/submit?url=https%3a%2f%2fmartinliu.cn%2f2013%2f05%2f07%2fxendesktope8999ae68b9fe6a18ce99da2e7b2bee59381e4b9a6e7b18de5afbce8afbbpart5%2f&amp;title=XenDesktop%e8%99%9a%e6%8b%9f%e6%a1%8c%e9%9d%a2%e7%b2%be%e5%93%81%e4%b9%a6%e7%b1%8d%e5%af%bc%e8%af%bb%28part5%29" target="_blank" rel="noopener" class="nav share-btn reddit">
+          <p>Reddit</p>
+        </a>
+  
+
+  
+        <a href="//www.linkedin.com/shareArticle?url=https%3a%2f%2fmartinliu.cn%2f2013%2f05%2f07%2fxendesktope8999ae68b9fe6a18ce99da2e7b2bee59381e4b9a6e7b18de5afbce8afbbpart5%2f&amp;title=XenDesktop%e8%99%9a%e6%8b%9f%e6%a1%8c%e9%9d%a2%e7%b2%be%e5%93%81%e4%b9%a6%e7%b1%8d%e5%af%bc%e8%af%bb%28part5%29" target="_blank" rel="noopener" class="nav share-btn linkedin">
+            <p>LinkedIn</p>
+          </a>
+  
+
+  
+        <a href="//www.pinterest.com/pin/create/button/?url=https%3a%2f%2fmartinliu.cn%2f2013%2f05%2f07%2fxendesktope8999ae68b9fe6a18ce99da2e7b2bee59381e4b9a6e7b18de5afbce8afbbpart5%2f&amp;description=XenDesktop%e8%99%9a%e6%8b%9f%e6%a1%8c%e9%9d%a2%e7%b2%be%e5%93%81%e4%b9%a6%e7%b1%8d%e5%af%bc%e8%af%bb%28part5%29" target="_blank" rel="noopener" class="nav share-btn pinterest">
+          <p>Pinterest</p>
+        </a>
+  
+
+  
+        <a href="mailto:?subject=%e6%9f%a5%e7%9c%8b%e6%ad%a4%e5%b8%96%e5%ad%90%e7%9a%84%e4%bd%9c%e8%80%85 liuadmin&amp;body=https%3a%2f%2fmartinliu.cn%2f2013%2f05%2f07%2fxendesktope8999ae68b9fe6a18ce99da2e7b2bee59381e4b9a6e7b18de5afbce8afbbpart5%2f" target="_blank" class="nav share-btn email" data-proofer-ignore>
+          <p>Email</p>
+        </a>
+  
+
+
+    </div>
+    <div class="content">
+      
+      <p>[box color=&ldquo;orange&rdquo; icon=&ldquo;flag&rdquo;]
+感谢 Eric Yao 的供稿，<a href="http://weibo.com/ericyaozhen">@老树皮 Eric</a>
+[/box]</p>
+<p>今天是<a href="http://support.citrix.com/article/CTX136546">《Citrix Virtual Desktop Handbook》</a>第二讲的最后一期，专门论述一下 PVS 的设计。在本期之后我会把所有以往的内容整合在一个完整的白皮书中，稍等几日。。。</p>
+<p>请期待基于本系列 5 篇文章的完整版中文白皮书下载。</p>
+<p>Citrix 桌面虚拟化实施部署白皮书 第二讲之第五期：PVS 的设计</p>
+<ol>
+<li>Provisioning Services</li>
+</ol>
+<p>Citrix Provisioning Services（PVS）使用流化的技术简化了虚拟桌面和物理桌面的部署。计算机从一个单个的共享磁盘镜像上被实时制备（Provisioned），管理员完全不需要去管理或者是给每个单独的用户操作系统打补丁。</p>
+<p><strong>1)        **<strong>决断：*</strong>*Farm**</strong>（场）的数量******</p>
+<p>一个 Provisioning Services 的场代表着 Provisioning Services 基础架构的最高层级。所有在一个场的 Provisioning Servers（服务器）都共享同一个 SQL 数据库哦 Citrix License 服务器。当确定需要多少个 Provisioning Services 的场时，我们一般需要考虑以下几个因素：</p>
+<p>l  **网络：**Provisioning Servers 会始终和场数据库通信以获取系统配置信息。因此，一般来说每个 target devices 聚集的地理位置应该部署一个独立的场，当然，如果异地之间的网速足够快，理论上也可以只建立一个 Provisioning Services 场。</p>
+<p>l  **重要程度：**管理者应该决定它可以容仍什么样的风险。尽管可能性非常的低，但是 Provisioning Services 场如果出问题还是会影响整个组织架构的使用。如果一个公司需要非常高等级的可用性，那么多个场的搭建就可以避免这个问题。</p>
+<p>l  **可管理性：**管理者可能需要在基于组织架构划分的基础上，例如国家、地区，又或者是不同部门之间，来进行单独的系统管理。尽管听起来这会增加管理的复杂程度，但是实际上只会增加有限多的配置、桌面创建过程，以及操作系统镜像更新。</p>
+<p><strong>2)        **<strong>决断：站点（*</strong>*Sites**</strong>）的数量******</p>
+<p>每个 Provisioning Services 的场都包含一个或者多个的站点。一个 Provisioning Services 的站点是一个逻辑的实体组成部分，包含了 Provisioning Servers（服务器）、vDisk pools，以及 target devices 的集合。多个站点共享同一个数据库。Target devices 可以在同一个站点中容错到其他的 Provisioning Servers 上。在以下的情况下我们建议创建多个站点：</p>
+<p>l  **网络：**站点用来控制 Provisioning Services 的流数据量。例如，一个站点可以根据站点、rack、或者是刀箱来创建，以确保流数据始终保持在本地而不变成一个网络瓶颈。</p>
+<p>l  **组织架构：**另外一个需要创建多个站点的实际理由是企业组织架构的改变。例如，两个公司通过收购合并了，但是有需要在企业整合过程中保持资源的独立。</p>
+<p>3)         <strong>决断：数据库的配置</strong></p>
+<p>Provisioning Services 的数据库存储有所有一个场内的的系统配置信息。Provisioning Services 6.X 版本支持一下版本的 SQL 数据库，包括 Express、标准版、企业版的 SQL Server 2005、2008R2 以及 2012 版。选择哪一个 SQL 版本其实是取决于你需要哪一个级别的容错水平。以下的表格是一个 SQL 2008R2 版本的示例：</p>
+<p>Provisioning Services 场的数据库的大小很少会超过 250M 容量，即使在大型环境下也不会。所以，在测试环境下 Express 版本是最佳选择，因为不需要容错功能。</p>
+<p>下面的公式是用来计算 Provisioning Services 的数据库的容量大小：</p>
+<p>4)         <strong>决断：数据库；离线模式</strong></p>
+<p>如果到 Provisioning Services 场的数据库的连接断开，已经连接到 Provisioning Servers 的 target devices 仍然可以正常工作，但是新的 target devices 将会无法启动。</p>
+<p>支持离线数据库功能可以让 Provisioning Services 在失去连接到数据库后仍然可以保持正常操作。在服务器启动时会对数据库做个快照，然后定期保持同步。如果连接丢失，Stream Services 会使用最新的一个快照以获取场的配置信息。一旦数据库连接建立起来了，Stream 过程会把断线期间的变化同步到数据库中。</p>
+<p><em>需要注意的是，离线数据库功能默认下是关闭状态的，而且也仅仅是在生产环境下的稳定的场环境下推荐使用。评估环境下不推荐使用</em></p>
+<p>5)         <strong>决断：服务帐号</strong></p>
+<p>Stream 和 SOAP 服务会和其他许多不同的 Provisioning Services 基础架构中的组件进行通信，如下图所示：</p>
+<p>6)         <strong>决断：设备集合</strong></p>
+<p>设备集合是用来创建和管理 target devices 逻辑组。创建设备集合可以简化设备管理，因为将来的操作可以不用基于 target device 级别，而是基于集合这个级别。</p>
+<p>设备集合可以基于物理地理位置、子网范围、组织架构中不同的部门来设计。也可以考虑基于 vDisk 的分配来创建不同的设备集合，这样所有分配到一个特定 vDisk 的所有的 target devices 就能被快速的定位。</p>
+<p>7)         <strong>决断：**<strong>Provisioning Server*</strong>*（服务器）的内存</strong></p>
+<p>运行 Provisioning Services 的 Windows 操作系统会把 vDisk 的部分内容缓存在内存（系统缓存）中以降低从存储中读取的操作。从存储中读取数据的速度是显著低于从内存中读取数据的，所以，正确计算 Provisioning Servers 的内存是非常关键的。请参见以下的公式：</p>
+<p>简单地说，就是给每个 vDisk 分配 2G 左右的内存。</p>
+<p>8)         **决断：**<strong>Scale Up*</strong>*还是****Scale Out**</p>
+<p><em>题外话：首先对这两个词进行一下解释：</em></p>
+<p><em>Scale Out(<strong>向外扩展)</strong>：就是指企业可以根据需求增加不同的服务器应用，依靠多部服务器协同运算，借负载平衡及容错等功能来提高运算能力及可靠度。</em></p>
+<p><em>Scale Up(<strong>向上扩展)</strong>：指企业后端大型服务器以增加处理器等运算资源进行升级以获得对应用性能的要求。</em></p>
+<p>随着 Farm 场的增长，管理员需要作出决定以判断是不是需要给 Provisioning Server 增加更高的资源，也可以是在场中增加更加多的 Provisioning Servers，一下了可以是考虑因素：</p>
+<p>l  **冗余：**将用户符合扩展到其他负荷不重的服务器上会有助于降低当 Provisioning Servers 宕机情况下爱所影响的用户数量。如果公司无法接受单点高性能服务器宕机所造成的损失，那就考虑 Scaling Out，就是我们说的向外扩展（既增加多台服务器）。</p>
+<p>l  **容错时间：**在一个单台的 Provisioning Server 上所连接的 Target Devices 越多，在服务器宕机后所需要的恢复时间也就越多。Citrix 的内部测试显示在 Provisioning Services 5.6 SP2 版本下，1500 台 Target Devices 需要大约 8 分钟恢复生产能力；</p>
+<p>l  **数据中心容量：**数据中心一般都是只有有限的空间、电源、冷却能力，此时，可以考虑 Scaling Up，即向上扩展（增加单台服务器的处理能力）。</p>
+<p>l  **硬件成本：**刚开始时，可能 Scale Up 会有更高的性价比，但是继续往后可能 Scale Out 会开始更具性价比，应该做一个成本分析；</p>
+<p>9)         <strong>决断：**<strong>vDisk*</strong>*的存储位置</strong></p>
+<p>一个场可以包含一个或者多个的 vDisk 存储。一般来说有两个主要的选择：</p>
+<p>l  <strong>本地存储或者是 DAS**</strong>：**DAS 可以是本地的，或者是基于 Block 的存储类型，Provisioning Server 可以直接访问，例如 SATA、SCSI、iSCSI，以及光纤。本地的 vDisk 就只能被本地的 Provisioning Server 所反问，因此，vDisk 应当被手动或者自动的复制到其他的 vDisk 存储位置上。</p>
+<p><strong><em>注意：</em></strong><em>将 vDisk<strong>部署在本地存储上并不会造成单点故障，因为 Provisioning Service</strong>的负载均衡技术可以让 target devices<strong>自动的在其他 Provisioning Servers</strong>之间做容错动作。</em></p>
+<p>l  <strong>NAS**</strong>：**NAS 是一种基于文件级存储的 solution。NAS 协议包括 CIFS 和 NFS。NAS vDisk 可以被多个 Provisioning Server 同时所访问。NAS 由于不需要 vDisk 复制功能所以能保证 vDisk 在一个场内的多台 Provisioning Server 之间保持连续性。</p>
+<p><strong><em>注意：</em></strong><em>NAS<strong>反而会造成单点故障，如果网络共享功能不可用，所有从这个 vDisk</strong>上 Streamed<strong>的 target device</strong>都会变得不可用了。</em></p>
+<p>10)     <strong>决断：评估存储容量</strong></p>
+<p>一个 vDisk 包含了一个 VHD 基础镜像文件、一个 properties 文件（.pvd），也可以能包含了一个链条 VHD 差异磁盘（.avhd）。每当一个 vDisk 被 Provisioning Services versioing 所更新时，一个新的差异磁盘就会被创建。</p>
+<p>一个 vDisk 所占空间的评估因素大致有以下几点：</p>
+<p>l  **vDisk****的总容量：**顾名思义</p>
+<p>l  **vDisk chain****的最大版本数：**vDisk versioning 简化了 vDisk 升级以及管理的负担，他能够更加灵活和健壮的管理 vDisks。</p>
+<p><strong><em>备注：</em></strong><em>太多的差异磁盘会显著降低 Provisioning Services<strong>的性能，建议不要超过 5-7</strong>个的版本数。</em></p>
+<p>l  **vDisk****版本变化百分比：**差异磁盘的大小是随着对 vDisk 的改动多少而随着变化的。改得越多，差异磁盘的大小就越大。以下的计算公式可以用于计算 vDisk 容量：</p>
+<p>举例如下：</p>
+<p>比如你计划部署三个 vDisk：</p>
+<p>  Windows 7 (x64) image = 40GB</p>
+<p>  Windows 7 (x86) image = 35GB</p>
+<p>  Windows XP image = 20GB</p>
+<p>每个 vDisk 都不会超过 5 个差异磁盘。预计一个差异磁盘大致是 20%的主 vDisk 镜像文件大小，那么估计 Provisioning Services 存储所需要的空间如下：</p>
+<p>11)     <strong>决断：**<strong>RAID*</strong>*级别</strong></p>
+<p>存储子系统的 RAID 级别会对应用程序和用户的工作负荷产生直接的影响。RAID 0、1 以及 10 对读操作是最优，而 RAID 5 和 6 是对写操作是最优。对于 Provisioning Services 来说，不同的 RAID 级别有如下推荐配置：</p>
+<p>Provisioning Services 中 vDisk 主要是读操作，而对 Write Cache 来说主要是写操作。所以：</p>
+<p>l  <strong>Write Cache**</strong>：**推荐 RAID 0、1、10 因为这几种 RAID 的写惩罚较低</p>
+<p>l  **vDisk ****存储：**推荐 RAID 0、1、5、10，它可以让读操作分配到 RAID 中的其他磁盘中；</p>
+<p>如果可能，建议将 vDisk 放在 RAID5 上，而写缓存放在 RAID10 上。如果 vDisk 和写缓存一定要放在一起，那么建议采用 RAID10。</p>
+<p>12)     <strong>决断：写缓存的位置</strong></p>
+<p>写缓存可以有以下位置：</p>
+<p>l  **缓存在 Target Device****的硬盘上：<strong>由于 Provisioning Servers 不用处理写请求，放在这里会减轻 Provisioning Servers 的资源消耗。尽管没有放在内存中这么快，这种方式的读写都是在本地，还是能提供快速的响应时间；**</strong></p>
+<p>l  **缓存在 Target Device****的硬盘上永久保存：**和第一种方式类似，区别在于用户重启之后存储永久保存。该功能目前还是测试阶段，仅在 Windows 2008 R2 和 windows 7 上支持。</p>
+<p>l  **缓存在 Target Device****的内存中：**尽管这种方式在性能上是最优的，但是如果 RAM 别耗尽了也会印象系统的稳定性；</p>
+<p>l  **缓存在 Provisioning Server****的磁盘上：**缓存在 Provisioning Server 的磁盘上作为临时文件存储。所有的写操作均发生在 Provisioning Server 服务器上。这样配置当然会增加 Provisioning Server 的磁盘 IO 操作和网络负担。配置上这种方式最为简单，不过这种方式下 target device 由于所有的到写缓存的读写请求都必须经过网络，target device 的性能会受到较大影响。这种方式仅在 POC 阶段推荐！</p>
+<p>l  **缓存在 Provisioning Server****的磁盘上永久保存：**和上一种方式基本类似，区别在于用户重启之后存储永久保存。这种方式的好处在于 target device 能够保存对 vDisk 所做的改变，在重启之后也仍然保留。任何对 vDisk 的改变都会将缓存文件强制标记为失效状态。例如，如果 vDisk 被设置为 Private Image Mode，一下所有的操作都会导致缓存文件被标记为失效状态：</p>
+<p>n  o  Placing a vDisk in Maintenance mode</p>
+<p>n  o  Mapping the drive from the console</p>
+<p>n  o  Changing the location of the write cache file</p>
+<p>n  o  Using Automatic update</p>
+<p>写缓存包含了 target device 的 MAC 地址和磁盘识别符，他能独一无二的区分出每一台 target device。一个 target device 可以被分配多个 vDisk，因此，也可以关联多个缓存文件。</p>
+<p>将写缓存部署在 target device 上是最为推荐的配置方法，因为既不用消耗而外的 RAM 内存，又不会减少 Provisioning Servers 的扩展性。</p>
+<p>13)     <strong>决断：写缓存的大小</strong></p>
+<p>写缓存的大小取决于很多隐私，一般来说都是基于评估和典型的用户配置文件大小。一般来说应当能够存储一下数据：</p>
+<p>n  Temporary application data</p>
+<p>n  User profile temp files</p>
+<p>n  Windows Event Logs</p>
+<p>n  Citrix Logs</p>
+<p>n  Antivirus pattern files</p>
+<p>n  Citrix Application Streaming/Microsoft App-V Cache</p>
+<p><em>备注：启用了用户配置文件重定向操作能减少写缓存所需要的大小。</em></p>
+<p>写缓存的大小极大程度上取决于安装或者是 Streamed 到 vDisk 上的应用程序的大小以及用户配置文件的大小。推荐配置的起点是 2GB。对于大部分虚拟桌面来说，我们有如下推荐配置：</p>
+<p>此外，Windows 的 pagefile 也会写入和写缓存同样的磁盘中，所以：</p>
+<p>例如，如果 Windows 7 的 vDisk 设计是 1.5GB 的 pagefile，那么写缓存的一个安全的评估数据应该是：</p>
+<p>不过由于 Hypervisor 都不能将磁盘精确到小数点后，我们姑且分配 4GB 的空间吧。</p>
+<p>14)     <strong>决断：**<strong>vDisk*</strong>*的格式</strong></p>
+<p>Provisioning Services 支持固定磁盘以及动态磁盘格式。</p>
+<p>l  **固定磁盘格式：**对于私有模式（private mode）的 vDisk，固定尺寸大小的 vDisk 可以对存储 vDisk 磁盘上进行的磁盘碎片整理操作，这对写操作的性能提升会有帮助。不过在私有模式下，访问 vDisk 受限于一个 target device，我们说仅当对 vDisk 进行维护模式时才有实际意义。</p>
+<p>l  **动态磁盘：**相比较而言他需要更少的磁盘空间，但是在写操作上性能会显著降低。尽管在共享模式下（Shared Mode）的 vDisk 不会对 vDisk 执行写操作，不过对完成 vDisk 合并时所要花费的时间会增加许多。</p>
+<p>15)     <strong>决断：**<strong>vDisk*</strong>*的大小</strong></p>
+<p>vDisk 的大小主要取决于操作系统以及安装在操作系统上的应用程序的多少，我们预估的大小如下表所示：</p>
+<p>vDisk 的大小如果设置的太小或者是太大，日后我们还可以在 Provisioning Services 中调整。为了精确的评估 vDisk 的大小，请遵循以下的准则：</p>
+<p>l  **Target Device****的空间：<strong>确认目前作为主 target device 服务的计算机所正在使用的磁盘空间大小；**</strong></p>
+<p>l  **应用程序大小：**当应用程序安装时，所需要的空间也在增长。计划大 25%的增长</p>
+<p>16)     <strong>决断：**<strong>vDisk*</strong>*复制</strong></p>
+<p>如果 vDisk 是存储在 DAS 上就需要在他自己有变化的时候复制到其他 DAS 上。Provisioning Services 支持 vDisk 从本地复制到 Provisioning Servers 上，也可以支持在使用共享存储时跨越多个站点之间的复制。复制可以是手动或者是自动：</p>
+<p>l  **手动复制：**简单，但是更耗时；</p>
+<p>l  **自动复制：**大型环境下自动复制更快。一些自动化工具，例如 Microsoft DFS-R 还支持带宽控制。唯一缺点是如果复制出错，管理员还不支持，除非复制平台支持复制重传。</p>
+<p>17)     **决断：微软****Volume Licensing**</p>
+<p>Provisioning Services 支持 Microsoft Key Management Service (KMS)和 Multiple Activation Key (MAK) volume licensing。</p>
+<p>l  <strong>KMS Volume Licensing**</strong>：<strong>可以在用户的本地网络上激活，无需连接到微软的网站。一台 KMS 服务器支持不受限的 JMS 客户端。微软公司推荐部署两台 KMS 服务器。**</strong></p>
+<p>n  Office 2010 的部署只支持 KSM 激活方式；</p>
+<p>l  <strong>MAK Volume Licensing**</strong>：**MS 的一次性激活方式。</p>
+<p>18)     <strong>决断：高可用</strong></p>
+<p>Provisioning Services 是虚拟桌面基础架构中最重要的组成部分，因此为了避免单点故障，需要考虑一下推荐步骤：</p>
+<p>l  <strong>MAK Volume Licensing**</strong>：**MS 的一次性激活方式。</p>
+<p>l  **数据库：**Provisioning Services 支持两种数据库的高可用方式：</p>
+<p>n  离线的数据库；</p>
+<p>n  镜像数据库</p>
+<p>l  <strong>Provisioning Servers**</strong>（PVS****服务器）：**所有在一个站点之间的 Provisioning Servers 都能够被配置为向 target device 提供同一个 vDisk。每个站点最少部署两台 PVS 服务器。</p>
+<p>n  Provisioning Services 启动文件应当配置为高可用。在启动文件中可以配置高达 4 台 PVS 服务器的列表。Target Device 会按照顺序连接这些 PVS 服务器。后续所响应的服务器可以不是当初提供 Streaming 服务的服务器。当然，我们也可以配置负载均衡。</p>
+<p>l  **vDisk****和存储：**对于 DAS 上存储的 vDisk，应当做好同步操作。对于 NAS 上的 vDisk，NAS 存储必须提供一条高可用的网络共享连接；</p>
+<p>l  **网络：**Provisioning Servers（PVS 服务器）的网卡应当配置为 Teamed。</p>
+<p>19)     <strong>决断：带宽需求</strong></p>
+<p>带宽评估对于整体性能是有至关重要的，特别是当 Target Device 启动的时候。带宽是随着操作系统的不同而有所区别的。Target Device 启动所需要的时间可以参考下面的公式：</p>
+<p>例如，500 个 Windows 7 的 Target Devices 在 1G 以太网下需要 40M 启动：</p>
+<p>1.  1 GB Ethernet = 125MB/s</p>
+<p>2.  500 targets x 40 MB = 20GB</p>
+<p>3.  20GB/125MBs = 160 seconds</p>
+<p>下面的表格列举了在 10GB 网络下启动 500 台不同操作系统的 Target Device 时大致的带宽和启动加载时间：</p>
+<p>备注：防火墙会增加网络延迟，同时也会造成网络瓶颈，如果可能，最好禁用防火墙，如果实在不能避免，最好能开放一下端口的完全访问能力：</p>
+<p>20)     <strong>决断：网络配置</strong></p>
+<p>为 PVS 服务器提供 10Gbps 网络能提供最够需要的带宽，如果做不到的话，1Gbps 也可以提供足够的带宽，但是有可能会成为 PVS 服务器的瓶颈。将多块网卡做 Teaming 处理能提供更高的吞吐量，增加网络性能，也能阻止网络的单点故障。下表列出了 PVS 服务器的网络配置属性，从最大容量到最小：</p>
+<p>以下的 NIC 属性应当正确配置在 PVS 服务器以及 Target Devices 的 NIC 上：</p>
+<p>简单地说，就是禁用 Checksum Offloading 属性；关闭 Auto Negotiation，使用强制配置；启用 Jumbo Frame。</p>
+<p>21)     <strong>决断：交换机配置</strong></p>
+<p>用于 PVS 服务器和 Target Devices 的网络交换机应当做一下优化：</p>
+<p>l  <strong>生成树协议（Spanning Tree Protocol**</strong>）/PortFast****：**禁用生成树协议，启用 PortFast；</p>
+<p>l  <strong>风暴控制 Storm Control**</strong>：**在 Cisco Catalyst 交换机上将 Unicast 流量值设置大一些，或者是禁用 Unicast Filtering。</p>
+<p>l  <strong>Broadcast Helper**</strong>：**启用之，这样可以转发 PXE 和 TFTP 流量；</p>
+<p>22)     <strong>决断：**<strong>Bootstrap*</strong>*交付</strong></p>
+<p>在一个 Target Device 开始启动过程的时候，他会首先加载一个 bootstrap 程序，该程序会初始化 Target Device 和 PVS 服务器之间的流化会话过程。有三种方法让 Target Device 能收到 bootstrap 程序：</p>
+<p>l  <strong>Broadcast Helper**</strong>：**启用之，这样可以转发 PXE 和 TFTP 流量；</p>
+<p>l  <strong>使用带有 DHCP**<strong>选项的 PXE*</strong>*方式；</strong></p>
+<p>l  <strong>使用不带有 DHCP**<strong>选项的 PXE*</strong>*方式；</strong></p>
+<p>l  <strong>使用 Boot Device Manager**</strong>；**</p>
+<p>在企业无法提供 PXE 或者是 TFTP 服务的情况下，或者是无法对 DHCP Scope 选项修改的情况下，可以考虑使用 Boot Device Management 工具通过一个 ISO 文件来提供 bootstrap 文件。</p>
+<p>23)     <strong>决断：审计</strong></p>
+<p>默认下审计功能是禁用的，管理员可以将将其打开。打开后该工具可以记录在 Provisioning Services 场内组件所做的配置修改记录，并将结果记录至数据库中。</p>
+<p>24)     <strong>决断：防病毒</strong></p>
+<p>大部分的防病毒软件都会是扫描所有的文件和系统进程，对性能影响很大。所以在 PVS 环境下必须优化防病毒软件的配置。请参见 CTX124185 - Provisioning Services Antivirus Best Practices。</p>
+
+    </div>
+    <footer>
+      <div class="stats">
+  
+    <ul class="categories">
+      
+        
+          <li><a class="article-terms-link" href="/categories/infrastructure/">infrastructure</a></li>
+        
+      
+    </ul>
+  
+  
+    <ul class="tags">
+      
+        
+          <li><a class="article-terms-link" href="/tags/xendesktop/">xendesktop</a></li>
+        
+      
+    </ul>
+  
+</div>
+
+    </footer>
+  </article>
+  
+    
+
+  
+  <div class="pagination">
+    
+      <a href="/2013/05/14/hide-windows-explorer-items/" class="button left"><span>隐藏Windows  Explorer中的各种东西</span></a>
+    
+    
+      <a href="/2013/05/07/top10e585a8e79083e68e92e5908de5898de58d81e79a84e4ba91e8aea1e7ae97e585ace58fb8/" class="button right"><span>Top10全球排名前十的云计算公司</span></a>
+    
+  </div>
+
+      </main>
+      <section id="site-sidebar">
+  
+    <section id="recent-posts">
+      <header>
+        <h1>最新文章</h1>
+      </header>
+      
+      <article class="mini-post">
+          <a href="/blog/workshop-elastic-observability/" class="image" style="--bg-image: url('https://martinliu.cn/img/2021/Hubble_01.jpg');">
+    <img class="stretchH" src="https://martinliu.cn/img/2021/Hubble_01.jpg" alt="Hubble">
+  </a>
+        <header>
+          <h2><a href="/blog/workshop-elastic-observability/">Elastic 可观测性工作坊</a></h2>
+          <time class="published" datetime="2021-02-06 10:36:12 &#43;0800 CST">February 6, 2021</time>
+        </header>
+      </article>
+      
+      <article class="mini-post">
+          <a href="/blog/change-back-on-github-page-again/" class="image" style="--bg-image: url('https://martinliu.cn/img/2019/03/pic03.jpg');">
+    <img class="stretchH" src="https://martinliu.cn/img/2019/03/pic03.jpg" alt="Valley">
+  </a>
+        <header>
+          <h2><a href="/blog/change-back-on-github-page-again/">在 Github 上搭建基于 Hugo 的免费个人博客</a></h2>
+          <time class="published" datetime="2021-02-06 00:00:00 &#43;0000 UTC">February 6, 2021</time>
+        </header>
+      </article>
+      
+      <article class="mini-post">
+          <a href="/blog/devopscoach-weekly-6/" class="image" style="--bg-image: url('https://martinliu.cn/');">
+    <img class="stretchH" src="https://martinliu.cn/" alt="">
+  </a>
+        <header>
+          <h2><a href="/blog/devopscoach-weekly-6/">DevOps Coach 周刊 #6</a></h2>
+          <time class="published" datetime="2020-08-31 00:11:01 &#43;0800 CST">August 31, 2020</time>
+        </header>
+      </article>
+      
+      <article class="mini-post">
+          <a href="/blog/elasticsearch-3-nodes-cluster-setup/" class="image" style="--bg-image: url('https://martinliu.cn/');">
+    <img class="stretchH" src="https://martinliu.cn/" alt="">
+  </a>
+        <header>
+          <h2><a href="/blog/elasticsearch-3-nodes-cluster-setup/">Elasticsearch 3 节点集群搭建 (7.9.0)</a></h2>
+          <time class="published" datetime="2020-08-27 13:54:46 &#43;0800 CST">August 27, 2020</time>
+        </header>
+      </article>
+      
+      <article class="mini-post">
+          <a href="/blog/devopscoach-weekly-5/" class="image" style="--bg-image: url('https://martinliu.cn/');">
+    <img class="stretchH" src="https://martinliu.cn/" alt="">
+  </a>
+        <header>
+          <h2><a href="/blog/devopscoach-weekly-5/">DevOps Coach 周刊 #5</a></h2>
+          <time class="published" datetime="2020-08-25 15:20:51 &#43;0800 CST">August 25, 2020</time>
+        </header>
+      </article>
+      
+      
+        <footer>
+          <a href="/blog/" class="button">查看更多</a>
+        </footer>
+      
+    </section>
+  
+
+  
+    
+
+      <section id="categories">
+        <header>
+          <h1><a href="/categories">分类</a></h1>
+        </header>
+        <ul>
+          
+          
+          <li>
+              <a href="/categories/blog/">blog<span class="count">96</span></a>
+          
+          <li>
+              <a href="/categories/itsm/">itsm<span class="count">85</span></a>
+          
+          <li>
+              <a href="/categories/infrastructure/">infrastructure<span class="count">46</span></a>
+          
+          <li>
+              <a href="/categories/devops/">devops<span class="count">38</span></a>
+          
+          <li>
+              <a href="/categories/opensource/">opensource<span class="count">32</span></a>
+          
+          <li>
+              <a href="/categories/cloud-computing/">cloud-computing<span class="count">23</span></a>
+          
+          <li>
+              <a href="/categories/cms/cmdb/">cms/cmdb<span class="count">20</span></a>
+          
+          <li>
+              <a href="/categories/running/">running<span class="count">19</span></a>
+          
+          <li>
+              <a href="/categories/travel/">travel<span class="count">13</span></a>
+          
+          <li>
+              <a href="/categories/sre/">sre<span class="count">2</span></a>
+          
+          </li>
+        </ul>
+      </section>
+    
+  
+
+  
+    <section id="mini-bio">
+      <header>
+        <h1>关于</h1>
+      </header>
+      <p>This Blog is sharing DevOps and SRE ariticles. I have translated DevOps Handbook and SRE Workbook.</p>
+      <footer>
+        <a href="/about" class="button">学到更多</a>
+      </footer>
+    </section>
+  
+</section>
+
+      <footer id="site-footer">
+  
+      <ul class="socnet-icons">
+        
+
+        <li><a href="//github.com/martinliu" target="_blank" rel="noopener" title="GitHub" class="fab fa-github"></a></li>
+
+
+
+
+
+
+
+
+
+
+
+<li><a href="//www.linkedin.com/in/liuzheng" target="_blank" rel="noopener" title="LinkedIn" class="fab fa-linkedin"></a></li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<li><a href="//twitter.com/martinliu" target="_blank" rel="noopener" title="Twitter" class="fab fa-twitter"></a></li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+      </ul>
+  
+  <p class="copyright">
+    © 2021 DevOps &amp; SRE Blog
+      <br>
+    主题: <a href='https://themes.gohugo.io/hugo-future-imperfect-slim/' target='_blank' rel='noopener'>Hugo Future Imperfect Slim</a><br>移植自 <a href='https://html5up.net/future-imperfect' target='_blank' rel='noopener'>HTML5 UP</a> | 由 <a href='https://gohugo.io/' target='_blank' rel='noopener' title='0.80.0'>Hugo</a> 驱动
+  </p>
+</footer>
+<a id="back-to-top" href="#" class="fas fa-arrow-up fa-2x"></a>
+
+      <script src="/js/highlight.js"></script>
+    
+    <script>hljs.initHighlightingOnLoad();</script><script src="/js/bundle.min.b4e669fa428a81defb8af0916c53f39cd1b8e0bbab22199c06f0b182907ba474.js" integrity="sha256-tOZp&#43;kKKgd77ivCRbFPznNG44LurIhmcBvCxgpB7pHQ="></script>
+    <script src="/js/add-on.js"></script>
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-749876-6', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+
+    </div>
+  </body>
+</html>

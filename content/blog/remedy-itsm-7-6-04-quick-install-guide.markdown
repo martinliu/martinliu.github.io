@@ -9,7 +9,6 @@ tags:
 - ARS
 - ITSM
 - remedy
-- 安装
 title: Remedy ITSM 7.6.04 套件快速安装
 url: /2011/05/04/remedy-itsm-7-6-04-quick-install-guide/
 wordpress_id: 51038

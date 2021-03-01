@@ -1,14 +1,615 @@
-<!doctype html><html lang=zh-cn><head><meta charset=utf-8><title>ITIL - 刘征的博客</title><meta name=viewport content="width=device-width,initial-scale=1"><meta name=generator content="Hugo 0.80.0"><meta property="og:site_name" content="刘征的博客"><meta property="og:title" content="ITIL"><meta property="og:description" content="Martin's Liu is bloging on DevOps and SRE topics"><meta property="description" content="Martin's Liu is bloging on DevOps and SRE topics"><meta property="og:url" content="https://martinliu.cn/tags/itil/"><meta property="og:type" content="article"><meta property="og:image" content="https://martinliu.cn/img/main/logo.jpg"><link rel=stylesheet href=/css/bundle.min.d9e04ae08c9b3049b766dbd4aeab7d862c5ea1d13679b621490e0f5df5507497.css integrity="sha256-2eBK4IybMEm3ZtvUrqt9hixeodE2ebYhSQ4PXfVQdJc="><link rel=stylesheet href=/css/add-on.css></head><body><header id=site-header><nav id=site-nav><h1 class=nav-title><a href=/ class=nav>标签</a></h1><menu id=site-nav-menu class="flyout-menu menu"><a href=/ class="nav link"><i class="fas fa-home"></i>首页</a>
-<a href=/about/ class="nav link"><i class="far fa-id-card"></i>关于</a>
-<a href=/blog/ class="nav link"><i class="far fa-newspaper"></i>博客</a>
-<a href=/categories/ class="nav link"><i class="fas fa-sitemap"></i>分类</a>
-<a href=/contact/ class="nav link"><i class="far fa-envelope"></i>联系</a>
-<a href=#share-menu class="nav link share-toggle"><i class="fas fa-share-alt">&nbsp;</i>Share</a>
-<a href=#search-input class="nav link search-toggle"><i class="fas fa-search">&nbsp;</i>Search</a></menu>
-<a href=#search-input class="nav search-toggle"><i class="fas fa-search fa-2x">&nbsp;</i></a>
-<a href=#share-menu class="nav share-toggle"><i class="fas fa-share-alt fa-2x">&nbsp;</i></a>
-<a href=#lang-menu class="nav lang-toggle" lang=zh-cn>zh-cn</a>
-<a href=#site-nav class="nav nav-toggle"><i class="fas fa-bars fa-2x"></i></a></nav><menu id=search class=menu><input id=search-input class="search-input menu"></input><div id=search-results class="search-results menu"></div></menu><menu id=lang-menu class="flyout-menu menu"><a href=# lang=zh-cn class="nav link active">中文 (zh-cn)</a>
-<a href=/en lang=en class="nav no-lang link">English (en)</a></menu>
-<menu id=share-menu class="flyout-menu menu"><h1>Share Post</h1><a href="//twitter.com/share?text=ITIL&url=https%3a%2f%2fmartinliu.cn%2ftags%2fitil%2f" target=_blank rel=noopener class="nav share-btn twitter"><p>Twitter</p></a><a href="//www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fmartinliu.cn%2ftags%2fitil%2f" target=_blank rel=noopener class="nav share-btn facebook"><p>Facebook</p></a><a href="//www.reddit.com/submit?url=https%3a%2f%2fmartinliu.cn%2ftags%2fitil%2f&title=ITIL" target=_blank rel=noopener class="nav share-btn reddit"><p>Reddit</p></a><a href="//www.linkedin.com/shareArticle?url=https%3a%2f%2fmartinliu.cn%2ftags%2fitil%2f&title=ITIL" target=_blank rel=noopener class="nav share-btn linkedin"><p>LinkedIn</p></a><a href="//www.pinterest.com/pin/create/button/?url=https%3a%2f%2fmartinliu.cn%2ftags%2fitil%2f&description=ITIL" target=_blank rel=noopener class="nav share-btn pinterest"><p>Pinterest</p></a><a href="mailto:?subject=%e6%9f%a5%e7%9c%8b%e6%ad%a4%e5%b8%96%e5%ad%90%e7%9a%84%e4%bd%9c%e8%80%85 %7b%20%20%20%20%20%20%20%20map%5b%5d%7d&body=https%3a%2f%2fmartinliu.cn%2ftags%2fitil%2f" target=_blank class="nav share-btn email" data-proofer-ignore><p>Email</p></a></menu></header><div id=wrapper><section id=site-intro><a href=/><img src=https://martinliu.cn/img/main/logo.jpg class=circle width=100 alt="Martin Liu"></a><header><h1>Martin Liu's Blog</h1></header><main><p>Community Advocate, DevOps China Community Organizer</p></main><footer><ul class=socnet-icons><li><a href=/tags/itil/index.xml type=application/rss+xml target=_blank title=RSS class="fas fa-rss"></a></li><li><a href=//github.com/martinliu target=_blank rel=noopener title=GitHub class="fab fa-github"></a></li><li><a href=//www.linkedin.com/in/liuzheng target=_blank rel=noopener title=LinkedIn class="fab fa-linkedin"></a></li><li><a href=//twitter.com/martinliu target=_blank rel=noopener title=Twitter class="fab fa-twitter"></a></li></ul></footer></section><main id=site-main><article class=post><header><div class=title><h2><a href=/2008/12/27/training-tips/>Training tips</a></h2></div><div class=meta><time datetime="2008-12-27 08:21:11 +0000 UTC">December 27, 2008</time><p>liuadmin</p><p>1 分钟</p></div></header><div class=content><p><img src=http://www.competencetoexcellence.co.uk/cartoon2.gif alt>上周一周都在广州，为中国最大的直销企业Amway做“Remedy Administration Part 2"的培训，这个培训是我今年第5次做；本周用户还给公司发来了感谢信，可见此次培训也是本年效果很好的一次。其实本月对我来说是一个培训月，第一周在新加坡接受一产品培训“BMC Configuration Automation For Network”；第二周在北京给‘中国人寿’做ITIL v3 Foundation的企业内训；第三周在广州，就是这个Remedy的培训。<br><br>ITIL v3培训和Remedy培训是两个不同类型的培训，一个是最好实践IT管理方法论的培训；另外一个是Remedy系统管理和开发的课程。一个注重理论的讲解，另外一个是注重实际操作的介绍。不过从讲师的角度来说，培训的准备和整个过程的控制都是殊途同归的。<br><br>**准备篇<br>**对整课程内容的整体把握是至关重要的，必须对每一个module的内容谙熟于胸，这样才能控制整个培训课程的节奏，才能对时间做到从容地分配。特别是4～5天的培训，把所有的课程从头到尾贯彻为一个整体，不失课程的整体性，让学员有整体感，不觉得你教的内容没有逻辑、&mldr;</p></div><footer><a href=/2008/12/27/training-tips/ class="button big">阅读全文</a><div class=stats><ul class=categories><li><a class=article-terms-link href=/categories/blog/>Blog</a></li></ul><ul class=tags><li><a class=article-terms-link href=/tags/itsm/>itsm</a></li><li><a class=article-terms-link href=/tags/itil/>ITIL</a></li><li><a class=article-terms-link href=/tags/itsm/>ITSM</a></li><li><a class=article-terms-link href=/tags/remedy/>remedy</a></li><li><a class=article-terms-link href=/tags/training/>training</a></li><li><a class=article-terms-link href=/tags/v3/>v3</a></li></ul></div></footer></article><article class=post><header><div class=title><h2><a href=/2008/12/14/itil-v3-traininig-for-china-life/>ITIL V3 Traininig For China Life</a></h2></div><div class=meta><time datetime="2008-12-14 11:00:42 +0000 UTC">December 14, 2008</time><p>liuadmin</p><p>1 分钟</p></div></header><div class=content><p><img src=http://www.blueloop.net/images/itil-v3.gif alt><br><br>上周给“中国人寿”做了ITIL V3 Foundation Training， 这是一个定制的企业内训，包括3天的理论学习，一天的‘BSM机场模拟沙盘演练’，最后一天进行ITIL V3 Foundation 认证考试。总的来说培训的效果还是非常不错的，学员基本上都能够理解和掌握ITIL v3的基本理论；在随堂的模拟考试后，能够针对一些题和我做非常深入的讨论。BSM机场模拟沙盘演练对于这群基本上比较年轻的学员来说成了一个非常热烈的培训环节，培训教室温度和气氛都比较热，一轮游戏跑下来以后，有些人就已经是满脸通红了；可见沟通也是一件力气活 :) 从学员们填写的反馈表的结果显示，他们对我的平均满意度是 4.35；呵呵这证明经过多日来的备课准备和以前的项目积累还是比较有效的，相信下次能够比这做的更好。</p></div><footer><a href=/2008/12/14/itil-v3-traininig-for-china-life/ class="button big">阅读全文</a><div class=stats><ul class=categories><li><a class=article-terms-link href=/categories/itsm/>ITSM</a></li></ul><ul class=tags><li><a class=article-terms-link href=/tags/china-life/>China Life</a></li><li><a class=article-terms-link href=/tags/itil/>ITIL</a></li><li><a class=article-terms-link href=/tags/training/>training</a></li><li><a class=article-terms-link href=/tags/v3/>v3</a></li></ul></div></footer></article><article class=post><header><div class=title><h2><a href=/2008/11/04/itil-v3-study-notes-2/>ITIL V3 Study Notes (2)</a></h2></div><div class=meta><time datetime="2008-11-04 22:56:57 +0000 UTC">November 4, 2008</time><p>liuadmin</p><p>1 分钟</p></div></header><div class=content><p><img src=http://www.martinliu.cn/wp-content/uploads/2008/11/itilv3model.jpg alt><br><br>这就是全新的ITIL v3的模型个人觉得吧ITIL四个字母放在中间不如把Service放在中间，原因很简单，所有流程和原则都是围绕服务展开，V3是一个关于服务生命周期管理的最好实践集合。<br><br></p></div><footer><a href=/2008/11/04/itil-v3-study-notes-2/ class="button big">阅读全文</a><div class=stats><ul class=categories><li><a class=article-terms-link href=/categories/itsm/>ITSM</a></li></ul><ul class=tags><li><a class=article-terms-link href=/tags/csi/>CSI</a></li><li><a class=article-terms-link href=/tags/itil/>ITIL</a></li><li><a class=article-terms-link href=/tags/itsm/>ITSM</a></li><li><a class=article-terms-link href=/tags/sd/>SD</a></li><li><a class=article-terms-link href=/tags/so/>SO</a></li><li><a class=article-terms-link href=/tags/ss/>SS</a></li><li><a class=article-terms-link href=/tags/st/>ST</a></li><li><a class=article-terms-link href=/tags/v3/>v3</a></li></ul></div></footer></article><article class=post><header><div class=title><h2><a href=/2008/10/19/otrs-faq-153-you-have-six-reasons-to-use-it/>OTRS FAQ 1.5.3 : you have six reasons to use it</a></h2></div><div class=meta><time datetime="2008-10-19 13:01:34 +0000 UTC">October 19, 2008</time><p>liuadmin</p><p>1 分钟</p></div></header><div class=content><p><img src=http://www.martinliu.cn/wp-content/uploads/2008/10/e785a7e78987-004-300x225.jpg alt> I have Christopher T. Kuhn Blog&rsquo;s RSS feed in my blackberry. That&rsquo;s the way I following with OTRS project. Christoper do the best job to explain new features and updated s. I did not try out OTRS FAQ 1.5.3 yet, but it look great from <a href="http://blog.kuhn-kt.de/?p=125">Chrisopher&rsquo;s post</a>.<br><br>知识库、解决方案库或者KB的建设往往被人们忽视，对它的选择也是见仁见智。不过可能也有标准，就像你选择你最喜欢吃的水果一样。你最喜欢吃的水果就是：一年四季你到超市见到就想买的，一年四季都想吃的，而且必须是营养丰富有益于健康的。<br><br>OTRS FAQ 1.5.3 新版的FAQ出来后，OTRS有了真正的Knowoledge Base； 虽然依然是一个简单版的KB，不过已经具备了作为一个KB应该具有的6个主要功能。<br></p></div><footer><a href=/2008/10/19/otrs-faq-153-you-have-six-reasons-to-use-it/ class="button big">阅读全文</a><div class=stats><ul class=categories><li><a class=article-terms-link href=/categories/itsm/>ITSM</a></li></ul><ul class=tags><li><a class=article-terms-link href=/tags/faq/>faq</a></li><li><a class=article-terms-link href=/tags/itil/>ITIL</a></li><li><a class=article-terms-link href=/tags/kb/>KB</a></li><li><a class=article-terms-link href=/tags/knowoledge-base/>Knowoledge Base</a></li><li><a class=article-terms-link href=/tags/otrs/>OTRS</a></li></ul></div></footer></article><div class=pagination><a href=/tags/itil/page/6/ class="button left"><span>上页</span></a>
-<a href=/tags/itil/page/8/ class="button right"><span>下页</span></a></div></main><section id=site-sidebar><section id=recent-posts><header><h1>最新文章</h1></header><article class=mini-post><a href=/blog/workshop-elastic-observability/ class=image style="--bg-image: url('https://martinliu.cn/img/2019/03/pic01.jpg')"><img class=stretchH src=https://martinliu.cn/img/2019/03/pic01.jpg alt=Valley></a><header><h2><a href=/blog/workshop-elastic-observability/>Elastic 可观测性工作坊</a></h2><time class=published datetime="2021-02-06 10:36:12 +0800 CST">February 6, 2021</time></header></article><article class=mini-post><a href=/blog/change-back-on-github-page-again/ class=image style="--bg-image: url('https://martinliu.cn/img/2019/03/pic03.jpg')"><img class=stretchH src=https://martinliu.cn/img/2019/03/pic03.jpg alt=Valley></a><header><h2><a href=/blog/change-back-on-github-page-again/>博客换一个新样式</a></h2><time class=published datetime="2021-02-06 00:00:00 +0000 UTC">February 6, 2021</time></header></article><article class=mini-post><a href=/blog/devopscoach-weekly-6/ class=image style="--bg-image: url('https://martinliu.cn/')"><img src=https://martinliu.cn/ alt></a><header><h2><a href=/blog/devopscoach-weekly-6/>DevOps Coach 周刊 #6</a></h2><time class=published datetime="2020-08-31 00:11:01 +0800 CST">August 31, 2020</time></header></article><article class=mini-post><a href=/blog/elasticsearch-3-nodes-cluster-setup/ class=image style="--bg-image: url('https://martinliu.cn/')"><img src=https://martinliu.cn/ alt></a><header><h2><a href=/blog/elasticsearch-3-nodes-cluster-setup/>Elasticsearch 3 节点集群搭建 (7.9.0)</a></h2><time class=published datetime="2020-08-27 13:54:46 +0800 CST">August 27, 2020</time></header></article><article class=mini-post><a href=/blog/devopscoach-weekly-5/ class=image style="--bg-image: url('https://martinliu.cn/')"><img src=https://martinliu.cn/ alt></a><header><h2><a href=/blog/devopscoach-weekly-5/>DevOps Coach 周刊 #5</a></h2><time class=published datetime="2020-08-25 15:20:51 +0800 CST">August 25, 2020</time></header></article><footer><a href=/blog/ class=button>查看更多</a></footer></section><section id=categories><header><h1><a href=/categories>分类</a></h1></header><ul><li><a href=/categories/blog/>blog<span class=count>107</span></a><li><a href=/categories/itsm/>itsm<span class=count>95</span></a><li><a href=/categories/infrastructure/>infrastructure<span class=count>48</span></a><li><a href=/categories/devops/>devops<span class=count>38</span></a><li><a href=/categories/opensource/>opensource<span class=count>35</span></a><li><a href=/categories/cloud-computing/>cloud-computing<span class=count>27</span></a><li><a href=/categories/running/>running<span class=count>22</span></a><li><a href=/categories/cms/cmdb/>cms/cmdb<span class=count>20</span></a><li><a href=/categories/travel/>travel<span class=count>14</span></a><li><a href=/categories/sre/>sre<span class=count>2</span></a></li></ul></section><section id=mini-bio><header><h1>关于</h1></header><p>This Blog is sharing DevOps and SRE ariticles. I have translated DevOps Handbook and SRE Workbook.</p><footer><a href=/about class=button>学到更多</a></footer></section></section><footer id=site-footer><ul class=socnet-icons><li><a href=/tags/itil/index.xml type=application/rss+xml target=_blank title=RSS class="fas fa-rss"></a></li><li><a href=//github.com/martinliu target=_blank rel=noopener title=GitHub class="fab fa-github"></a></li><li><a href=//www.linkedin.com/in/liuzheng target=_blank rel=noopener title=LinkedIn class="fab fa-linkedin"></a></li><li><a href=//twitter.com/martinliu target=_blank rel=noopener title=Twitter class="fab fa-twitter"></a></li></ul><p class=copyright>© 2021 刘征的博客<br>主题: <a href=https://themes.gohugo.io/hugo-future-imperfect-slim/ target=_blank rel=noopener>Hugo Future Imperfect Slim</a><br>移植自 <a href=https://html5up.net/future-imperfect target=_blank rel=noopener>HTML5 UP</a> | 由 <a href=https://gohugo.io/ target=_blank rel=noopener title=0.80.0>Hugo</a> 驱动</p></footer><a id=back-to-top href=# class="fas fa-arrow-up fa-2x"></a><script src=/js/highlight.js></script><script>hljs.initHighlightingOnLoad();</script><script src=/js/bundle.min.bbba6b424a8ac5b6858cd5fc80eabc9c5277945cc2dc349204646b84891b4b58.js integrity="sha256-u7prQkqKxbaFjNX8gOq8nFJ3lFzC3DSSBGRrhIkbS1g="></script><script src=/js/add-on.js></script><script type=application/javascript>var doNotTrack=false;if(!doNotTrack){window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;ga('create','UA-749876-6','auto');ga('send','pageview');}</script><script async src=https://www.google-analytics.com/analytics.js></script></div></body></html>
+<!doctype html>
+<html lang="zh-cn">
+  <head>
+  <meta charset="utf-8">
+<title>ITIL - DevOps &amp; SRE Blog</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+<meta name="generator" content="Hugo 0.80.0" /><meta property="og:site_name" content="DevOps &amp; SRE Blog">
+  <meta property="og:title" content="ITIL">
+  <meta property="og:description" content="Martin&#39;s Liu is bloging on DevOps and SRE topics">
+  <meta property="description" content="Martin&#39;s Liu is bloging on DevOps and SRE topics">
+  <meta property="og:url" content="https://martinliu.cn/tags/itil/">
+  <meta property="og:type" content="article">
+  
+    <meta property="og:image" content="https://martinliu.cn/img/main/logo.jpg">
+  
+  
+            <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.3/styles/default.min.css">
+          <link rel="stylesheet" href="/css/bundle.min.307f33cd8015e5bab28d6ebda9b400f8d3059bc248b4e60adf4d23469fab5a2b.css" integrity="sha256-MH8zzYAV5bqyjW69qbQA&#43;NMFm8JItOYK300jRp&#43;rWis="><link rel="stylesheet" href="/css/add-on.css">
+</head>
+
+  <body>
+    
+
+<header id="site-header">
+  <nav id="site-nav">
+    <h1 class="nav-title">
+      <a href="/" class="nav">
+        
+          标签
+        
+      </a>
+    </h1>
+    <menu id="site-nav-menu" class="flyout-menu menu">
+      
+        
+          
+          <a href="/" class="nav link"><i class='fas fa-home'></i> 首页</a>
+        
+      
+        
+          
+          <a href="/about/" class="nav link"><i class='far fa-id-card'></i> 关于</a>
+        
+      
+        
+          
+          <a href="/blog/" class="nav link"><i class='far fa-newspaper'></i> 博客</a>
+        
+      
+        
+          
+          <a href="/categories/" class="nav link"><i class='fas fa-sitemap'></i> 分类</a>
+        
+      
+        
+          
+          <a href="/course/" class="nav link"><i class='fa fa-book'></i> 课程</a>
+        
+      
+      <a href="#share-menu" class="nav link share-toggle"><i class="fas fa-share-alt">&nbsp;</i>Share</a>
+      
+    </menu>
+    
+    <a href="#share-menu" class="nav share-toggle"><i class="fas fa-share-alt fa-2x">&nbsp;</i></a>
+    <a href="#lang-menu" class="nav lang-toggle" lang="zh-cn">zh-cn</a>
+    <a href="#site-nav" class="nav nav-toggle"><i class="fas fa-bars fa-2x"></i></a>
+  </nav>
+  
+  <menu id="lang-menu" class="flyout-menu menu">
+  <a href="#" lang="zh-cn" class="nav link active">中文 (zh-cn)</a>
+  
+    
+      
+        <a href="/en" lang="en" class="nav no-lang link">English (en)</a>
+      
+    
+      
+    
+  
+</menu>
+
+  
+    <menu id="share-menu" class="flyout-menu menu">
+      <h1>Share Post</h1>
+      
+
+
+
+
+  
+    
+    <a href="//twitter.com/share?text=ITIL&amp;url=https%3a%2f%2fmartinliu.cn%2ftags%2fitil%2f" target="_blank" rel="noopener" class="nav share-btn twitter">
+        <p>Twitter</p>
+      </a>
+  
+
+  
+      <a href="//www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fmartinliu.cn%2ftags%2fitil%2f" target="_blank" rel="noopener" class="nav share-btn facebook">
+        <p>Facebook</p>
+        </a>
+  
+
+  
+    <a href="//www.reddit.com/submit?url=https%3a%2f%2fmartinliu.cn%2ftags%2fitil%2f&amp;title=ITIL" target="_blank" rel="noopener" class="nav share-btn reddit">
+          <p>Reddit</p>
+        </a>
+  
+
+  
+        <a href="//www.linkedin.com/shareArticle?url=https%3a%2f%2fmartinliu.cn%2ftags%2fitil%2f&amp;title=ITIL" target="_blank" rel="noopener" class="nav share-btn linkedin">
+            <p>LinkedIn</p>
+          </a>
+  
+
+  
+        <a href="//www.pinterest.com/pin/create/button/?url=https%3a%2f%2fmartinliu.cn%2ftags%2fitil%2f&amp;description=ITIL" target="_blank" rel="noopener" class="nav share-btn pinterest">
+          <p>Pinterest</p>
+        </a>
+  
+
+  
+        <a href="mailto:?subject=%e6%9f%a5%e7%9c%8b%e6%ad%a4%e5%b8%96%e5%ad%90%e7%9a%84%e4%bd%9c%e8%80%85 %7b%20%20%20%20%20%20%20%20map%5b%5d%7d&amp;body=https%3a%2f%2fmartinliu.cn%2ftags%2fitil%2f" target="_blank" class="nav share-btn email" data-proofer-ignore>
+          <p>Email</p>
+        </a>
+  
+
+
+    </menu>
+  
+</header>
+
+    <div id="wrapper">
+      <section id="site-intro" >
+  <a href="/"><img src="https://martinliu.cn/img/main/logo.jpg" class="circle" width="100" alt="Martin Liu" /></a>
+  <header>
+    <h1>Martin Liu's Blog</h1>
+  </header>
+  <main>
+    <p>Community Advocate, DevOps China Community Organizer</p>
+  </main>
+  
+    <footer>
+      <ul class="socnet-icons">
+        
+    <li><a href="/tags/itil/index.xml" type="application/rss+xml" target="_blank" title="RSS" class="fas fa-rss"></a></li>
+
+
+        <li><a href="//github.com/martinliu" target="_blank" rel="noopener" title="GitHub" class="fab fa-github"></a></li>
+
+
+
+
+
+
+
+
+
+
+
+<li><a href="//www.linkedin.com/in/liuzheng" target="_blank" rel="noopener" title="LinkedIn" class="fab fa-linkedin"></a></li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<li><a href="//twitter.com/martinliu" target="_blank" rel="noopener" title="Twitter" class="fab fa-twitter"></a></li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+      </ul>
+    </footer>
+  
+</section>
+
+      <main id="site-main">
+        
+  
+  
+    <article class="post">
+  <header>
+  <div class="title">
+    
+      <h2><a href="/2008/04/21/open-source-ticket-request-system-otrs-226/">Open Source Ticket Request System - OTRS 2.2.6</a></h2>
+    
+    
+  </div>
+  <div class="meta">
+    <time datetime="2008-04-21 02:16:20 &#43;0000 UTC">April 21, 2008</time>
+    <p>liuadmin</p>
+    <p>2 分钟</p>
+  </div>
+</header>
+
+  <div class="content">
+    
+    
+    <p>I made a OTRS 2.2.6 virtual machine for anyone who wants to test both OTRS and OTRS::ITSM. It was built on OpenSUSE 10.2, including OTRS 2.2.6 and OTRS::ITSM 1.0.94. OTRS::ITSM implements ITIL (R) focused IT service management. OTRS::ITSM 1.0.94 is still on Beta, you might have some bugs when using this virtual machine. Please download from my box.net, if you have an comment please just let me know. I&rsquo;d like to invite you to improve this virtual machine if you have any good ideal.</p>
+  </div>
+  <footer>
+    <a href="/2008/04/21/open-source-ticket-request-system-otrs-226/" class="button big">阅读全文</a>
+    <div class="stats">
+  
+    <ul class="categories">
+      
+        
+          <li><a class="article-terms-link" href="/categories/itsm/">ITSM</a></li>
+        
+      
+    </ul>
+  
+  
+    <ul class="tags">
+      
+        
+          <li><a class="article-terms-link" href="/tags/itil/">ITIL</a></li>
+        
+          <li><a class="article-terms-link" href="/tags/itsm/">ITSM</a></li>
+        
+          <li><a class="article-terms-link" href="/tags/otrs/">OTRS</a></li>
+        
+          <li><a class="article-terms-link" href="/tags/request-tracer/">Request Tracer</a></li>
+        
+      
+    </ul>
+  
+</div>
+
+  </footer>
+</article>
+
+  
+    <article class="post">
+  <header>
+  <div class="title">
+    
+      <h2><a href="/2007/12/31/itilv2/">看图学话，学ITIL(v2)系列 之1</a></h2>
+    
+    
+  </div>
+  <div class="meta">
+    <time datetime="2007-12-31 14:13:00 &#43;0000 UTC">December 31, 2007</time>
+    <p>liuadmin</p>
+    <p>1 分钟</p>
+  </div>
+</header>
+
+  <div class="content">
+    
+    
+    <p><br />在2007年ITILv3推出之后，ITIL这个概念从最佳Best practice实践变成最好Good practice实践。从此称呼的转变能够看出ITIL思想的普及化、平民化。ITIL v2已经使用了快20多年了，看看如今的ITIL的用户，成熟度依旧参差不齐。有的已开始琢磨着如何完善所有ITIL Support流程并开展实施ITIL Delivery中的各个流程；有的已经在开始实施帮助台并建立事件和问题管理；有的依然处于扫描阶段。<br /><br />在ITILv3即将普及的2008年，v2对于各类用户来说还是基础，是最可实施的框架。v2是v3的核心内容，为了及时的升级到v3，熟练掌握v2的概念是当务之急。下个月公司有ITILv3升级的认证考试，本系列文章可能算是一个v2的复习笔记吧。<br /><br /><a href="http://lh4.google.com/liuzh66/R3j5IoClhRI/AAAAAAAAAJo/GKvNXZ7OEvQ/splash%5B4%5D"><img src="http://lh4.google.com/liuzh66/R3j5IoClhRI/AAAAAAAAAJo/GKvNXZ7OEvQ/s144/splash%5B4%5D.jpg" alt="splash"></a><br /><br />一图胜过千言，本系列通过对一些经典图形的回顾来复习v2的部分概念。由于是看图学话版，所以目标观众是ITIL的学龄前儿童呵呵，学习内容是ITIL Delivery。如果您已经是小学以上水平，请忽略:)<br /></p>
+  </div>
+  <footer>
+    <a href="/2007/12/31/itilv2/" class="button big">阅读全文</a>
+    <div class="stats">
+  
+    <ul class="categories">
+      
+        
+          <li><a class="article-terms-link" href="/categories/itsm/">ITSM</a></li>
+        
+      
+    </ul>
+  
+  
+    <ul class="tags">
+      
+        
+          <li><a class="article-terms-link" href="/tags/itil/">ITIL</a></li>
+        
+          <li><a class="article-terms-link" href="/tags/itsm/">ITSM</a></li>
+        
+          <li><a class="article-terms-link" href="/tags/v2/">V2</a></li>
+        
+      
+    </ul>
+  
+</div>
+
+  </footer>
+</article>
+
+  
+    <article class="post">
+  <header>
+  <div class="title">
+    
+      <h2><a href="/2007/12/27/otrs/">OTRS.ORG，it is time to check it out；不得不：）</a></h2>
+    
+    
+  </div>
+  <div class="meta">
+    <time datetime="2007-12-27 02:12:00 &#43;0000 UTC">December 27, 2007</time>
+    <p>liuadmin</p>
+    <p>1 分钟</p>
+  </div>
+</header>
+
+  <div class="content">
+    
+    
+    <p>一贯喜欢按照Google的指引在互联网上穿梭的你，是否发现了下面的这个现象。如果你搜索itil，无论选择所有网页、中文网页还是简体中文网页；你是否发现了在右边的赞助商连接中，OTRS.org总是能出现在第四个。OTRS.ORG是什么？和ITIL有什么关系？<br /><br /><a href="http://lh6.google.com/liuzh66/R3MJ_YClhPI/AAAAAAAAAJY/q27YWv9OFMs/image%5B7%5D"><img src="http://lh6.google.com/liuzh66/R3MJ_YClhPI/AAAAAAAAAJY/q27YWv9OFMs/image%5B7%5D.png" alt="image"></a><br /><br />热衷于开源ITSM的我不得不揭示这些答案。<br /></p>
+  </div>
+  <footer>
+    <a href="/2007/12/27/otrs/" class="button big">阅读全文</a>
+    <div class="stats">
+  
+    <ul class="categories">
+      
+        
+          <li><a class="article-terms-link" href="/categories/itsm/">ITSM</a></li>
+        
+      
+    </ul>
+  
+  
+    <ul class="tags">
+      
+        
+          <li><a class="article-terms-link" href="/tags/itil/">ITIL</a></li>
+        
+          <li><a class="article-terms-link" href="/tags/itsm/">ITSM</a></li>
+        
+          <li><a class="article-terms-link" href="/tags/otrs/">OTRS</a></li>
+        
+      
+    </ul>
+  
+</div>
+
+  </footer>
+</article>
+
+  
+    <article class="post">
+  <header>
+  <div class="title">
+    
+      <h2><a href="/2007/04/23/otrs-itil-compatible/">OTRS的第一个ITIL兼容版本</a></h2>
+    
+    
+  </div>
+  <div class="meta">
+    <time datetime="2007-04-23 10:51:00 &#43;0000 UTC">April 23, 2007</time>
+    <p>liuadmin</p>
+    <p>1 分钟</p>
+  </div>
+</header>
+
+  <div class="content">
+    
+    
+    <p>从来没用这么期待过一个软件的问世，虽然工具和技术不能画等号，不过它应该是第一个主动与ITIL看起，并且靠拢的开源软件。<br /><br />1下载安装<br />需要下载的软件是OTRS 2.2.0 BETA2 和OTRS:ITIL 1.0；后者只是一个压缩包，它包含了所有ITIL相关的软件包。此次安装并不顺利，归咎于很多Apach上perl的配置；安装之后的问题多是其它依赖的软件包不全造成的。<br /><br />2 CMDB<br />说不上它是一个很好的CMDB，不过用起来到是很方便。在Admin里把所有CI的类都建立出来后，相关的工作人员就能登陆上来，把相关的CI添加尽量。你需要从车轮开始做起，在这里可以说是非常适用，它不想商业软件内置了一堆的预定义的东西。CI直接的联系关系也可以得到表达。<br /><br />3其它功能试用中待续</p>
+  </div>
+  <footer>
+    <a href="/2007/04/23/otrs-itil-compatible/" class="button big">阅读全文</a>
+    <div class="stats">
+  
+    <ul class="categories">
+      
+        
+          <li><a class="article-terms-link" href="/categories/itsm/">ITSM</a></li>
+        
+      
+    </ul>
+  
+  
+    <ul class="tags">
+      
+        
+          <li><a class="article-terms-link" href="/tags/itil/">ITIL</a></li>
+        
+          <li><a class="article-terms-link" href="/tags/otrs/">OTRS</a></li>
+        
+      
+    </ul>
+  
+</div>
+
+  </footer>
+</article>
+
+  
+  <div class="pagination">
+    
+      <a href="/tags/itil/page/6/" class="button left"><span>上页</span></a>
+    
+    
+      <a href="/tags/itil/page/8/" class="button right"><span>下页</span></a>
+    
+  </div>
+
+      </main>
+      <section id="site-sidebar">
+  
+    <section id="recent-posts">
+      <header>
+        <h1>最新文章</h1>
+      </header>
+      
+      <article class="mini-post">
+          <a href="/blog/workshop-elastic-observability/" class="image" style="--bg-image: url('https://martinliu.cn/img/2021/Hubble_01.jpg');">
+    <img class="stretchH" src="https://martinliu.cn/img/2021/Hubble_01.jpg" alt="Hubble">
+  </a>
+        <header>
+          <h2><a href="/blog/workshop-elastic-observability/">Elastic 可观测性工作坊</a></h2>
+          <time class="published" datetime="2021-02-06 10:36:12 &#43;0800 CST">February 6, 2021</time>
+        </header>
+      </article>
+      
+      <article class="mini-post">
+          <a href="/blog/change-back-on-github-page-again/" class="image" style="--bg-image: url('https://martinliu.cn/img/2019/03/pic03.jpg');">
+    <img class="stretchH" src="https://martinliu.cn/img/2019/03/pic03.jpg" alt="Valley">
+  </a>
+        <header>
+          <h2><a href="/blog/change-back-on-github-page-again/">在 Github 上搭建基于 Hugo 的免费个人博客</a></h2>
+          <time class="published" datetime="2021-02-06 00:00:00 &#43;0000 UTC">February 6, 2021</time>
+        </header>
+      </article>
+      
+      <article class="mini-post">
+          <a href="/blog/devopscoach-weekly-6/" class="image" style="--bg-image: url('https://martinliu.cn/');">
+    <img class="stretchH" src="https://martinliu.cn/" alt="">
+  </a>
+        <header>
+          <h2><a href="/blog/devopscoach-weekly-6/">DevOps Coach 周刊 #6</a></h2>
+          <time class="published" datetime="2020-08-31 00:11:01 &#43;0800 CST">August 31, 2020</time>
+        </header>
+      </article>
+      
+      <article class="mini-post">
+          <a href="/blog/elasticsearch-3-nodes-cluster-setup/" class="image" style="--bg-image: url('https://martinliu.cn/');">
+    <img class="stretchH" src="https://martinliu.cn/" alt="">
+  </a>
+        <header>
+          <h2><a href="/blog/elasticsearch-3-nodes-cluster-setup/">Elasticsearch 3 节点集群搭建 (7.9.0)</a></h2>
+          <time class="published" datetime="2020-08-27 13:54:46 &#43;0800 CST">August 27, 2020</time>
+        </header>
+      </article>
+      
+      <article class="mini-post">
+          <a href="/blog/devopscoach-weekly-5/" class="image" style="--bg-image: url('https://martinliu.cn/');">
+    <img class="stretchH" src="https://martinliu.cn/" alt="">
+  </a>
+        <header>
+          <h2><a href="/blog/devopscoach-weekly-5/">DevOps Coach 周刊 #5</a></h2>
+          <time class="published" datetime="2020-08-25 15:20:51 &#43;0800 CST">August 25, 2020</time>
+        </header>
+      </article>
+      
+      
+        <footer>
+          <a href="/blog/" class="button">查看更多</a>
+        </footer>
+      
+    </section>
+  
+
+  
+    
+
+      <section id="categories">
+        <header>
+          <h1><a href="/categories">分类</a></h1>
+        </header>
+        <ul>
+          
+          
+          <li>
+              <a href="/categories/blog/">blog<span class="count">96</span></a>
+          
+          <li>
+              <a href="/categories/itsm/">itsm<span class="count">85</span></a>
+          
+          <li>
+              <a href="/categories/infrastructure/">infrastructure<span class="count">46</span></a>
+          
+          <li>
+              <a href="/categories/devops/">devops<span class="count">38</span></a>
+          
+          <li>
+              <a href="/categories/opensource/">opensource<span class="count">32</span></a>
+          
+          <li>
+              <a href="/categories/cloud-computing/">cloud-computing<span class="count">23</span></a>
+          
+          <li>
+              <a href="/categories/cms/cmdb/">cms/cmdb<span class="count">20</span></a>
+          
+          <li>
+              <a href="/categories/running/">running<span class="count">19</span></a>
+          
+          <li>
+              <a href="/categories/travel/">travel<span class="count">13</span></a>
+          
+          <li>
+              <a href="/categories/sre/">sre<span class="count">2</span></a>
+          
+          </li>
+        </ul>
+      </section>
+    
+  
+
+  
+    <section id="mini-bio">
+      <header>
+        <h1>关于</h1>
+      </header>
+      <p>This Blog is sharing DevOps and SRE ariticles. I have translated DevOps Handbook and SRE Workbook.</p>
+      <footer>
+        <a href="/about" class="button">学到更多</a>
+      </footer>
+    </section>
+  
+</section>
+
+      <footer id="site-footer">
+  
+      <ul class="socnet-icons">
+        
+    <li><a href="/tags/itil/index.xml" type="application/rss+xml" target="_blank" title="RSS" class="fas fa-rss"></a></li>
+
+
+        <li><a href="//github.com/martinliu" target="_blank" rel="noopener" title="GitHub" class="fab fa-github"></a></li>
+
+
+
+
+
+
+
+
+
+
+
+<li><a href="//www.linkedin.com/in/liuzheng" target="_blank" rel="noopener" title="LinkedIn" class="fab fa-linkedin"></a></li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<li><a href="//twitter.com/martinliu" target="_blank" rel="noopener" title="Twitter" class="fab fa-twitter"></a></li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+      </ul>
+  
+  <p class="copyright">
+    © 2021 DevOps &amp; SRE Blog
+      <br>
+    主题: <a href='https://themes.gohugo.io/hugo-future-imperfect-slim/' target='_blank' rel='noopener'>Hugo Future Imperfect Slim</a><br>移植自 <a href='https://html5up.net/future-imperfect' target='_blank' rel='noopener'>HTML5 UP</a> | 由 <a href='https://gohugo.io/' target='_blank' rel='noopener' title='0.80.0'>Hugo</a> 驱动
+  </p>
+</footer>
+<a id="back-to-top" href="#" class="fas fa-arrow-up fa-2x"></a>
+
+      <script src="/js/highlight.js"></script>
+    
+    <script>hljs.initHighlightingOnLoad();</script><script src="/js/bundle.min.b4e669fa428a81defb8af0916c53f39cd1b8e0bbab22199c06f0b182907ba474.js" integrity="sha256-tOZp&#43;kKKgd77ivCRbFPznNG44LurIhmcBvCxgpB7pHQ="></script>
+    <script src="/js/add-on.js"></script>
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-749876-6', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+
+    </div>
+  </body>
+</html>

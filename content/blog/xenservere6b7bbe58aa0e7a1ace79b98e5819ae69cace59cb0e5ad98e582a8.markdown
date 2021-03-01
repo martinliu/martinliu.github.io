@@ -8,10 +8,7 @@ subtitle: 当您的XenServer测试机需要增加硬盘的时候，你需要通�
   不通硬盘一块、还有一个U盘插在系统上、SATA的硬盘是我需要加载的新硬盘
 slug: xenserver%e6%b7%bb%e5%8a%a0%e7%a1%ac%e7%9b%98%e5%81%9a%e6%9c%ac%e5%9c%b0%e5%ad%98%e5%82%a8
 tags:
-- featured
-- hd
-- local storage
-- cloud-computing
+- xenserver
 title: XenServer 添加硬盘做本地存储
 url: /2013/11/25/xenservere6b7bbe58aa0e7a1ace79b98e5819ae69cace59cb0e5ad98e582a8/
 wordpress_id: 52591

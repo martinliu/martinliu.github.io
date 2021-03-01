@@ -1,16 +1,602 @@
-<!doctype html><html lang=zh-cn><head><meta charset=utf-8><title>刘征的博客</title><meta name=viewport content="width=device-width,initial-scale=1"><meta name=generator content="Hugo 0.80.0"><meta property="og:site_name" content="刘征的博客"><meta property="og:title" content="刘征的博客"><meta property="og:description" content="Martin's Liu is bloging on DevOps and SRE topics"><meta property="description" content="Martin's Liu is bloging on DevOps and SRE topics"><meta property="og:url" content="https://martinliu.cn/"><meta property="og:type" content="website"><meta property="og:image" content="https://martinliu.cn/img/main/logo.jpg"><link rel=stylesheet href=/css/bundle.min.d9e04ae08c9b3049b766dbd4aeab7d862c5ea1d13679b621490e0f5df5507497.css integrity="sha256-2eBK4IybMEm3ZtvUrqt9hixeodE2ebYhSQ4PXfVQdJc="><link rel=stylesheet href=/css/add-on.css></head><body><header id=site-header><nav id=site-nav><h1 class=nav-title><a href=/ class=nav>DevOps & SRE
+<!doctype html>
+<html lang="zh-cn">
+  <head>
+  <meta charset="utf-8">
+<title>DevOps &amp; SRE Blog</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+<meta name="generator" content="Hugo 0.80.0" /><meta property="og:site_name" content="DevOps &amp; SRE Blog">
+  <meta property="og:title" content="DevOps &amp; SRE Blog">
+  <meta property="og:description" content="Martin&#39;s Liu is bloging on DevOps and SRE topics">
+  <meta property="description" content="Martin&#39;s Liu is bloging on DevOps and SRE topics">
+  <meta property="og:url" content="https://martinliu.cn/">
+  <meta property="og:type" content="website">
+  
+    <meta property="og:image" content="https://martinliu.cn/img/main/logo.jpg">
+  
+  
+            <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.3/styles/default.min.css">
+          <link rel="stylesheet" href="/css/bundle.min.307f33cd8015e5bab28d6ebda9b400f8d3059bc248b4e60adf4d23469fab5a2b.css" integrity="sha256-MH8zzYAV5bqyjW69qbQA&#43;NMFm8JItOYK300jRp&#43;rWis="><link rel="stylesheet" href="/css/add-on.css">
+</head>
+
+  <body>
+    
+
+<header id="site-header">
+  <nav id="site-nav">
+    <h1 class="nav-title">
+      <a href="/" class="nav">
         
-     </a></h1><menu id=site-nav-menu class="flyout-menu menu"><a href=/ class="nav link"><i class="fas fa-home"></i>首页</a>
-<a href=/about/ class="nav link"><i class="far fa-id-card"></i>关于</a>
-<a href=/blog/ class="nav link"><i class="far fa-newspaper"></i>博客</a>
-<a href=/categories/ class="nav link"><i class="fas fa-sitemap"></i>分类</a>
-<a href=/contact/ class="nav link"><i class="far fa-envelope"></i>联系</a>
-<a href=#share-menu class="nav link share-toggle"><i class="fas fa-share-alt">&nbsp;</i>Share</a>
-<a href=#search-input class="nav link search-toggle"><i class="fas fa-search">&nbsp;</i>Search</a></menu>
-<a href=#search-input class="nav search-toggle"><i class="fas fa-search fa-2x">&nbsp;</i></a>
-<a href=#share-menu class="nav share-toggle"><i class="fas fa-share-alt fa-2x">&nbsp;</i></a>
-<a href=#lang-menu class="nav lang-toggle" lang=zh-cn>zh-cn</a>
-<a href=#site-nav class="nav nav-toggle"><i class="fas fa-bars fa-2x"></i></a></nav><menu id=search class=menu><input id=search-input class="search-input menu"></input><div id=search-results class="search-results menu"></div></menu><menu id=lang-menu class="flyout-menu menu"><a href=# lang=zh-cn class="nav link active">中文 (zh-cn)</a>
-<a href=https://martinliu.cn/en/ lang=en class="nav link">English (en)</a></menu>
-<menu id=share-menu class="flyout-menu menu"><h1>Share Post</h1><a href="//twitter.com/share?text=%e5%88%98%e5%be%81%e7%9a%84%e5%8d%9a%e5%ae%a2&url=https%3a%2f%2fmartinliu.cn%2f" target=_blank rel=noopener class="nav share-btn twitter"><p>Twitter</p></a><a href="//www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fmartinliu.cn%2f" target=_blank rel=noopener class="nav share-btn facebook"><p>Facebook</p></a><a href="//www.reddit.com/submit?url=https%3a%2f%2fmartinliu.cn%2f&title=%e5%88%98%e5%be%81%e7%9a%84%e5%8d%9a%e5%ae%a2" target=_blank rel=noopener class="nav share-btn reddit"><p>Reddit</p></a><a href="//www.linkedin.com/shareArticle?url=https%3a%2f%2fmartinliu.cn%2f&title=%e5%88%98%e5%be%81%e7%9a%84%e5%8d%9a%e5%ae%a2" target=_blank rel=noopener class="nav share-btn linkedin"><p>LinkedIn</p></a><a href="//www.pinterest.com/pin/create/button/?url=https%3a%2f%2fmartinliu.cn%2f&description=%e5%88%98%e5%be%81%e7%9a%84%e5%8d%9a%e5%ae%a2" target=_blank rel=noopener class="nav share-btn pinterest"><p>Pinterest</p></a><a href="mailto:?subject=%e6%9f%a5%e7%9c%8b%e6%ad%a4%e5%b8%96%e5%ad%90%e7%9a%84%e4%bd%9c%e8%80%85 %7b%20%20%20%20%20%20%20%20map%5b%5d%7d&body=https%3a%2f%2fmartinliu.cn%2f" target=_blank class="nav share-btn email" data-proofer-ignore><p>Email</p></a></menu></header><div id=wrapper><section id=site-intro><a href=/><img src=https://martinliu.cn/img/main/logo.jpg class=circle width=100 alt="Martin Liu"></a><header><h1>Martin Liu's Blog</h1></header><main><p>Community Advocate, DevOps China Community Organizer</p></main><footer><ul class=socnet-icons><li><a href=/index.xml type=application/rss+xml target=_blank title=RSS class="fas fa-rss"></a></li><li><a href=//github.com/martinliu target=_blank rel=noopener title=GitHub class="fab fa-github"></a></li><li><a href=//www.linkedin.com/in/liuzheng target=_blank rel=noopener title=LinkedIn class="fab fa-linkedin"></a></li><li><a href=//twitter.com/martinliu target=_blank rel=noopener title=Twitter class="fab fa-twitter"></a></li></ul></footer></section><main id=site-main><article class=post><header><div class=title><h2><a href=/2009/01/07/top-25-oss-projects-on-06-jan-2009/>Top 25 OSS Projects on Jan 2009</a></h2></div><div class=meta><time datetime="2009-01-07 10:18:18 +0000 UTC">January 7, 2009</time><p>liuadmin</p><p>5 分钟</p></div></header><div class=content><p>This list is from SourceForge.net. You may have the question: How do we adapt open source? My answer might be you just should use them as much as you can.   The world is facing economic crisis, you have to saving your budget. How do you deal with that? It&rsquo;s time to think about OSS now.<br><br>1. Shine J2EE Framework 开发框架<br><a href=http://j2sos.org/>http://j2sos.org/</a><br><a href=http://sourceforge.net/projects/shine-app>http://sourceforge.net/projects/shine-app</a><br>Shine is a Java-J2EE Application Framework/JWMS(Java Web Model<br>Service)Framework/MVC Framework/Service Oriented Framework.&mldr;</p></div><footer><a href=/2009/01/07/top-25-oss-projects-on-06-jan-2009/ class="button big">阅读全文</a><div class=stats><ul class=categories><li><a class=article-terms-link href=/categories/infrastructure/>Infrastructure</a></li></ul><ul class=tags><li><a class=article-terms-link href=/tags/7-zip/>7-Zip</a></li><li><a class=article-terms-link href=/tags/adempiere/>ADempiere</a></li><li><a class=article-terms-link href=/tags/dvdstyler/>DVDStyler</a></li><li><a class=article-terms-link href=/tags/ffdshow/>ffdshow</a></li><li><a class=article-terms-link href=/tags/filezilla/>FileZilla</a></li><li><a class=article-terms-link href=/tags/freemind/>FreeMind</a></li><li><a class=article-terms-link href=/tags/freenas/>FreeNAS</a></li><li><a class=article-terms-link href=/tags/hyperic-hq/>Hyperic HQ</a></li><li><a class=article-terms-link href=/tags/notepad++/>Notepad++</a></li><li><a class=article-terms-link href=/tags/oss/>oss</a></li><li><a class=article-terms-link href=/tags/phpmyadmin/>phpMyAdmin</a></li><li><a class=article-terms-link href=/tags/shine/>Shine</a></li><li><a class=article-terms-link href=/tags/zenoss-core/>Zenoss Core</a></li></ul></div></footer></article><article class=post><header><div class=title><h2><a href=/2008/12/27/training-tips/>Training tips</a></h2></div><div class=meta><time datetime="2008-12-27 08:21:11 +0000 UTC">December 27, 2008</time><p>liuadmin</p><p>1 分钟</p></div></header><div class=content><p><img src=http://www.competencetoexcellence.co.uk/cartoon2.gif alt>上周一周都在广州，为中国最大的直销企业Amway做“Remedy Administration Part 2"的培训，这个培训是我今年第5次做；本周用户还给公司发来了感谢信，可见此次培训也是本年效果很好的一次。其实本月对我来说是一个培训月，第一周在新加坡接受一产品培训“BMC Configuration Automation For Network”；第二周在北京给‘中国人寿’做ITIL v3 Foundation的企业内训；第三周在广州，就是这个Remedy的培训。<br><br>ITIL v3培训和Remedy培训是两个不同类型的培训，一个是最好实践IT管理方法论的培训；另外一个是Remedy系统管理和开发的课程。一个注重理论的讲解，另外一个是注重实际操作的介绍。不过从讲师的角度来说，培训的准备和整个过程的控制都是殊途同归的。<br><br>**准备篇<br>**对整课程内容的整体把握是至关重要的，必须对每一个module的内容谙熟于胸，这样才能控制整个培训课程的节奏，才能对时间做到从容地分配。特别是4～5天的培训，把所有的课程从头到尾贯彻为一个整体，不失课程的整体性，让学员有整体感，不觉得你教的内容没有逻辑、&mldr;</p></div><footer><a href=/2008/12/27/training-tips/ class="button big">阅读全文</a><div class=stats><ul class=categories><li><a class=article-terms-link href=/categories/blog/>Blog</a></li></ul><ul class=tags><li><a class=article-terms-link href=/tags/itsm/>itsm</a></li><li><a class=article-terms-link href=/tags/itil/>ITIL</a></li><li><a class=article-terms-link href=/tags/itsm/>ITSM</a></li><li><a class=article-terms-link href=/tags/remedy/>remedy</a></li><li><a class=article-terms-link href=/tags/training/>training</a></li><li><a class=article-terms-link href=/tags/v3/>v3</a></li></ul></div></footer></article><article class=post><header><div class=title><h2><a href=/2008/12/14/itil-v3-traininig-for-china-life/>ITIL V3 Traininig For China Life</a></h2></div><div class=meta><time datetime="2008-12-14 11:00:42 +0000 UTC">December 14, 2008</time><p>liuadmin</p><p>1 分钟</p></div></header><div class=content><p><img src=http://www.blueloop.net/images/itil-v3.gif alt><br><br>上周给“中国人寿”做了ITIL V3 Foundation Training， 这是一个定制的企业内训，包括3天的理论学习，一天的‘BSM机场模拟沙盘演练’，最后一天进行ITIL V3 Foundation 认证考试。总的来说培训的效果还是非常不错的，学员基本上都能够理解和掌握ITIL v3的基本理论；在随堂的模拟考试后，能够针对一些题和我做非常深入的讨论。BSM机场模拟沙盘演练对于这群基本上比较年轻的学员来说成了一个非常热烈的培训环节，培训教室温度和气氛都比较热，一轮游戏跑下来以后，有些人就已经是满脸通红了；可见沟通也是一件力气活 :) 从学员们填写的反馈表的结果显示，他们对我的平均满意度是 4.35；呵呵这证明经过多日来的备课准备和以前的项目积累还是比较有效的，相信下次能够比这做的更好。</p></div><footer><a href=/2008/12/14/itil-v3-traininig-for-china-life/ class="button big">阅读全文</a><div class=stats><ul class=categories><li><a class=article-terms-link href=/categories/itsm/>ITSM</a></li></ul><ul class=tags><li><a class=article-terms-link href=/tags/china-life/>China Life</a></li><li><a class=article-terms-link href=/tags/itil/>ITIL</a></li><li><a class=article-terms-link href=/tags/training/>training</a></li><li><a class=article-terms-link href=/tags/v3/>v3</a></li></ul></div></footer></article><article class=post><header><div class=title><h2><a href=/2008/11/27/ocs-inventory-ng-102-rc3-available-and-glpi-0712-available/>[项目更新] OCS Inventory NG 1.02 RC3 available and GLPI 0.71.2 available</a></h2></div><div class=meta><time datetime="2008-11-27 05:15:26 +0000 UTC">November 27, 2008</time><p>liuadmin</p><p>1 分钟</p></div></header><div class=content><p>如果你了解OCS Inventory NG 的话，您可能会发现这个问题，在家里用adsl上网，可能访问不到这个项目的网站，所以要想下载这个项目的软件，可以去sorceforge.net下载。<br><br>10/28/2008 OCS Inventory NG Server 1.02 RC3 发布了Patch1，Patch1主要是修复了一些数据库创建和更新的问题，具体的内容如下所示：<br></p></div><footer><a href=/2008/11/27/ocs-inventory-ng-102-rc3-available-and-glpi-0712-available/ class="button big">阅读全文</a><div class=stats><ul class=categories><li><a class=article-terms-link href=/categories/itsm/>itsm</a></li></ul><ul class=tags><li><a class=article-terms-link href=/tags/glpi/>GLPI</a></li><li><a class=article-terms-link href=/tags/inventory/>inventory</a></li><li><a class=article-terms-link href=/tags/ocsng/>OCSNG</a></li></ul></div></footer></article><div class=pagination><a href=/page/83/ class="button left"><span>上页</span></a>
-<a href=/page/85/ class="button right"><span>下页</span></a></div></main><section id=site-sidebar><section id=recent-posts><header><h1>最新文章</h1></header><article class=mini-post><a href=/blog/workshop-elastic-observability/ class=image style="--bg-image: url('https://martinliu.cn/img/2019/03/pic01.jpg')"><img class=stretchH src=https://martinliu.cn/img/2019/03/pic01.jpg alt=Valley></a><header><h2><a href=/blog/workshop-elastic-observability/>Elastic 可观测性工作坊</a></h2><time class=published datetime="2021-02-06 10:36:12 +0800 CST">February 6, 2021</time></header></article><article class=mini-post><a href=/blog/change-back-on-github-page-again/ class=image style="--bg-image: url('https://martinliu.cn/img/2019/03/pic03.jpg')"><img class=stretchH src=https://martinliu.cn/img/2019/03/pic03.jpg alt=Valley></a><header><h2><a href=/blog/change-back-on-github-page-again/>博客换一个新样式</a></h2><time class=published datetime="2021-02-06 00:00:00 +0000 UTC">February 6, 2021</time></header></article><article class=mini-post><a href=/blog/devopscoach-weekly-6/ class=image style="--bg-image: url('https://martinliu.cn/')"><img src=https://martinliu.cn/ alt></a><header><h2><a href=/blog/devopscoach-weekly-6/>DevOps Coach 周刊 #6</a></h2><time class=published datetime="2020-08-31 00:11:01 +0800 CST">August 31, 2020</time></header></article><article class=mini-post><a href=/blog/elasticsearch-3-nodes-cluster-setup/ class=image style="--bg-image: url('https://martinliu.cn/')"><img src=https://martinliu.cn/ alt></a><header><h2><a href=/blog/elasticsearch-3-nodes-cluster-setup/>Elasticsearch 3 节点集群搭建 (7.9.0)</a></h2><time class=published datetime="2020-08-27 13:54:46 +0800 CST">August 27, 2020</time></header></article><article class=mini-post><a href=/blog/devopscoach-weekly-5/ class=image style="--bg-image: url('https://martinliu.cn/')"><img src=https://martinliu.cn/ alt></a><header><h2><a href=/blog/devopscoach-weekly-5/>DevOps Coach 周刊 #5</a></h2><time class=published datetime="2020-08-25 15:20:51 +0800 CST">August 25, 2020</time></header></article><footer><a href=/blog/ class=button>查看更多</a></footer></section><section id=categories><header><h1><a href=/categories>分类</a></h1></header><ul><li><a href=/categories/blog/>blog<span class=count>107</span></a><li><a href=/categories/itsm/>itsm<span class=count>95</span></a><li><a href=/categories/infrastructure/>infrastructure<span class=count>48</span></a><li><a href=/categories/devops/>devops<span class=count>38</span></a><li><a href=/categories/opensource/>opensource<span class=count>35</span></a><li><a href=/categories/cloud-computing/>cloud-computing<span class=count>27</span></a><li><a href=/categories/running/>running<span class=count>22</span></a><li><a href=/categories/cms/cmdb/>cms/cmdb<span class=count>20</span></a><li><a href=/categories/travel/>travel<span class=count>14</span></a><li><a href=/categories/sre/>sre<span class=count>2</span></a></li></ul></section><section id=mini-bio><header><h1>关于</h1></header><p>This Blog is sharing DevOps and SRE ariticles. I have translated DevOps Handbook and SRE Workbook.</p><footer><a href=/about class=button>学到更多</a></footer></section></section><footer id=site-footer><ul class=socnet-icons><li><a href=/index.xml type=application/rss+xml target=_blank title=RSS class="fas fa-rss"></a></li><li><a href=//github.com/martinliu target=_blank rel=noopener title=GitHub class="fab fa-github"></a></li><li><a href=//www.linkedin.com/in/liuzheng target=_blank rel=noopener title=LinkedIn class="fab fa-linkedin"></a></li><li><a href=//twitter.com/martinliu target=_blank rel=noopener title=Twitter class="fab fa-twitter"></a></li></ul><p class=copyright>© 2021 刘征的博客<br>主题: <a href=https://themes.gohugo.io/hugo-future-imperfect-slim/ target=_blank rel=noopener>Hugo Future Imperfect Slim</a><br>移植自 <a href=https://html5up.net/future-imperfect target=_blank rel=noopener>HTML5 UP</a> | 由 <a href=https://gohugo.io/ target=_blank rel=noopener title=0.80.0>Hugo</a> 驱动</p></footer><a id=back-to-top href=# class="fas fa-arrow-up fa-2x"></a><script src=/js/highlight.js></script><script>hljs.initHighlightingOnLoad();</script><script src=/js/bundle.min.bbba6b424a8ac5b6858cd5fc80eabc9c5277945cc2dc349204646b84891b4b58.js integrity="sha256-u7prQkqKxbaFjNX8gOq8nFJ3lFzC3DSSBGRrhIkbS1g="></script><script src=/js/add-on.js></script><script type=application/javascript>var doNotTrack=false;if(!doNotTrack){window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;ga('create','UA-749876-6','auto');ga('send','pageview');}</script><script async src=https://www.google-analytics.com/analytics.js></script></div></body></html>
+          DevOps & SRE
+        
+      </a>
+    </h1>
+    <menu id="site-nav-menu" class="flyout-menu menu">
+      
+        
+          
+          <a href="/" class="nav link"><i class='fas fa-home'></i> 首页</a>
+        
+      
+        
+          
+          <a href="/about/" class="nav link"><i class='far fa-id-card'></i> 关于</a>
+        
+      
+        
+          
+          <a href="/blog/" class="nav link"><i class='far fa-newspaper'></i> 博客</a>
+        
+      
+        
+          
+          <a href="/categories/" class="nav link"><i class='fas fa-sitemap'></i> 分类</a>
+        
+      
+        
+          
+          <a href="/course/" class="nav link"><i class='fa fa-book'></i> 课程</a>
+        
+      
+      <a href="#share-menu" class="nav link share-toggle"><i class="fas fa-share-alt">&nbsp;</i>Share</a>
+      
+    </menu>
+    
+    <a href="#share-menu" class="nav share-toggle"><i class="fas fa-share-alt fa-2x">&nbsp;</i></a>
+    <a href="#lang-menu" class="nav lang-toggle" lang="zh-cn">zh-cn</a>
+    <a href="#site-nav" class="nav nav-toggle"><i class="fas fa-bars fa-2x"></i></a>
+  </nav>
+  
+  <menu id="lang-menu" class="flyout-menu menu">
+  <a href="#" lang="zh-cn" class="nav link active">中文 (zh-cn)</a>
+  
+      <a href="https://martinliu.cn/en/" lang="en" class="nav link">English (en)</a>
+    
+  
+</menu>
+
+  
+    <menu id="share-menu" class="flyout-menu menu">
+      <h1>Share Post</h1>
+      
+
+
+
+
+  
+    
+    <a href="//twitter.com/share?text=DevOps%20%26%20SRE%20Blog&amp;url=https%3a%2f%2fmartinliu.cn%2f" target="_blank" rel="noopener" class="nav share-btn twitter">
+        <p>Twitter</p>
+      </a>
+  
+
+  
+      <a href="//www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fmartinliu.cn%2f" target="_blank" rel="noopener" class="nav share-btn facebook">
+        <p>Facebook</p>
+        </a>
+  
+
+  
+    <a href="//www.reddit.com/submit?url=https%3a%2f%2fmartinliu.cn%2f&amp;title=DevOps%20%26%20SRE%20Blog" target="_blank" rel="noopener" class="nav share-btn reddit">
+          <p>Reddit</p>
+        </a>
+  
+
+  
+        <a href="//www.linkedin.com/shareArticle?url=https%3a%2f%2fmartinliu.cn%2f&amp;title=DevOps%20%26%20SRE%20Blog" target="_blank" rel="noopener" class="nav share-btn linkedin">
+            <p>LinkedIn</p>
+          </a>
+  
+
+  
+        <a href="//www.pinterest.com/pin/create/button/?url=https%3a%2f%2fmartinliu.cn%2f&amp;description=DevOps%20%26%20SRE%20Blog" target="_blank" rel="noopener" class="nav share-btn pinterest">
+          <p>Pinterest</p>
+        </a>
+  
+
+  
+        <a href="mailto:?subject=%e6%9f%a5%e7%9c%8b%e6%ad%a4%e5%b8%96%e5%ad%90%e7%9a%84%e4%bd%9c%e8%80%85 %7b%20%20%20%20%20%20%20%20map%5b%5d%7d&amp;body=https%3a%2f%2fmartinliu.cn%2f" target="_blank" class="nav share-btn email" data-proofer-ignore>
+          <p>Email</p>
+        </a>
+  
+
+
+    </menu>
+  
+</header>
+
+    <div id="wrapper">
+      <section id="site-intro" >
+  <a href="/"><img src="https://martinliu.cn/img/main/logo.jpg" class="circle" width="100" alt="Martin Liu" /></a>
+  <header>
+    <h1>Martin Liu's Blog</h1>
+  </header>
+  <main>
+    <p>Community Advocate, DevOps China Community Organizer</p>
+  </main>
+  
+    <footer>
+      <ul class="socnet-icons">
+        
+    <li><a href="/index.xml" type="application/rss+xml" target="_blank" title="RSS" class="fas fa-rss"></a></li>
+
+
+        <li><a href="//github.com/martinliu" target="_blank" rel="noopener" title="GitHub" class="fab fa-github"></a></li>
+
+
+
+
+
+
+
+
+
+
+
+<li><a href="//www.linkedin.com/in/liuzheng" target="_blank" rel="noopener" title="LinkedIn" class="fab fa-linkedin"></a></li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<li><a href="//twitter.com/martinliu" target="_blank" rel="noopener" title="Twitter" class="fab fa-twitter"></a></li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+      </ul>
+    </footer>
+  
+</section>
+
+      <main id="site-main">
+        
+  
+  
+    <article class="post">
+  <header>
+  <div class="title">
+    
+      <h2><a href="/2008/08/08/2008-beijing-olympic-game-introduce-china-to-the-world/">2008 Beijing Olympic Game introduce China to the world</a></h2>
+    
+    
+  </div>
+  <div class="meta">
+    <time datetime="2008-08-08 15:52:40 &#43;0000 UTC">August 8, 2008</time>
+    <p>liuadmin</p>
+    <p>1 分钟</p>
+  </div>
+</header>
+
+  <div class="content">
+    
+    
+    <p>中午后去超市购物；超市的人可真多啊，大家都在采购备战晚上的奥运哈哈。我也买的毫不手软啊，西瓜、王老吉、可乐、牛肉、蔬菜等等！回家后，先炖上一锅牛腩萝卜汤，昨天立秋，今天贴贴秋膘有不迟。<br /><br />准时5点就开始收获在电视机前。等待开幕式的开始。开幕式终于开始，虽然视觉上的冲击性不强，不过还是完美的展示了中华文化的精髓。通过四大发明的展示，以东方人含蓄和细腻的手法，把吾国浩浩汤汤2000多年的历史优美的展示与全球世人面前。地球村的创意我觉得非常好，最后刘欢站在最上方高歌一曲，挺好。兴致最好的时候牛腩汤经过几个小时的熬制，也香气扑鼻了，呵呵来上一碗，继续看<br /><br />总之真个文艺演出，文化气息十足，可圈可点之处也很多；唯一担心的是怕老外们理解不了。现在终于看到中国代表队在姚明的带领下，正缓缓入场；中国体育健儿的队伍可真大啊！！！<br /><br />中国加油!!! <br /><br /><img src="http://www.jxcn.cn/mmsource/image/2008-2-28/U1565P1T1D14341297F21DT20071120190907.jpg" alt=""><br /><br />哈哈忍不住了，我也在blog上喊一嗓子吧，明天奥运的战幕就缓缓拉开了，希望他们拿更多金牌为国争光。<br /><br />现在中国队走到了中场，期待圣火点燃的那一刻吧。顺便说一句，有人说中国队的服装配色有点借鉴了‘西红柿炒鸡蛋’的色彩，呵呵有点象，的确有点象，而且那时我的拿手菜:) 今年北京的天&hellip;</p>
+  </div>
+  <footer>
+    <a href="/2008/08/08/2008-beijing-olympic-game-introduce-china-to-the-world/" class="button big">阅读全文</a>
+    <div class="stats">
+  
+    <ul class="categories">
+      
+        
+          <li><a class="article-terms-link" href="/categories/blog/">Blog</a></li>
+        
+      
+    </ul>
+  
+  
+    <ul class="tags">
+      
+        
+          <li><a class="article-terms-link" href="/tags/olympic/">Olympic</a></li>
+        
+      
+    </ul>
+  
+</div>
+
+  </footer>
+</article>
+
+  
+    <article class="post">
+  <header>
+  <div class="title">
+    
+      <h2><a href="/2008/08/04/systems-monitoring-shootout/">Systems Monitoring Shootout</a></h2>
+    
+    
+  </div>
+  <div class="meta">
+    <time datetime="2008-08-04 09:26:57 &#43;0000 UTC">August 4, 2008</time>
+    <p>liuadmin</p>
+    <p>1 分钟</p>
+  </div>
+</header>
+
+  <div class="content">
+    
+    
+    <p>Please download it here <a href="http://ols.fedoraproject.org/OLS/Reprints-2008/buytaert-reprint.pdf">A paper from Open Management Consortium</a><br /><br /><img src="http://www.isausa.com/img/paper-to-cd-2.jpg" alt=""> This is a paper from &ldquo;2008 Ottawa Linux Symposium&rdquo;. It will give you a nice insight about some great NSM projects. It is talking about OpenNMS, Zabix, Zenoss, GroundWorks and Hyperic, those might b the hottest projects around NMS field.  If you are looking for a open source network and system monitoring solution, or you are testing one of them; you should <a href="http://ols.fedoraproject.org/OLS/Reprints-2008/buytaert-reprint.pdf">check it out</a>. I got this paper from <a href="http://www.open-management.com">Open Management Consortium.&hellip;</a></p>
+  </div>
+  <footer>
+    <a href="/2008/08/04/systems-monitoring-shootout/" class="button big">阅读全文</a>
+    <div class="stats">
+  
+    <ul class="categories">
+      
+        
+          <li><a class="article-terms-link" href="/categories/itsm/">itsm</a></li>
+        
+      
+    </ul>
+  
+  
+    <ul class="tags">
+      
+        
+          <li><a class="article-terms-link" href="/tags/groundworks/">GroundWorks</a></li>
+        
+          <li><a class="article-terms-link" href="/tags/opensource/">opensource</a></li>
+        
+      
+    </ul>
+  
+</div>
+
+  </footer>
+</article>
+
+  
+    <article class="post">
+  <header>
+  <div class="title">
+    
+      <h2><a href="/2008/08/03/this-post-is-too-later/">This post is too later</a></h2>
+    
+    
+  </div>
+  <div class="meta">
+    <time datetime="2008-08-03 07:45:41 &#43;0000 UTC">August 3, 2008</time>
+    <p>liuadmin</p>
+    <p>1 分钟</p>
+  </div>
+</header>
+
+  <div class="content">
+    
+    
+    <p>很久没有更新这个blog了，本来想保持每周一帖的频率，不过最近总被一些事情所耽误了。今天终于有空闲坐下来写点什么了。<br /><br />昨晚无意间发现了这个叫做UnWakeAble的Theme，稍微看了一下马上就更换到这个主题了。这个主题有几个地方非常吸引我：它有自己的配置选项；能配置成2或者3栏的形式；提供3种内置的风格可以切换，这个太空船的黑色风格太吸引我了。我想在没有时间写正经post的时候，用有限的时间调整一下界面风格也不错呵呵，虽然之前曾经发誓，要把主要blog时间都放在提交高质量项目介绍和评论上，不过通过这个blog做适当的娱乐还是未尝不可的呵呵:) 可能是对Wordpress了解的很多了，用的也越来越多了，现在觉得它也可以作为一个公司内部的知识库来使用，知识库有可以说是一种特殊的CMS内容管理系统，它能方便用户查询和浏览相关的知识条目。昨天看了一下wordpress的roadmap，它以后可以提供更多的api，甚至于下离线的编辑内容的功能，我想这些都可以是外部系统和它集成的很好的接口。我说的外部系统可以是：IT管理的服务台系统，现在很多厂商的服务台都有现成的KB模块，不过把知识条目放&hellip;</p>
+  </div>
+  <footer>
+    <a href="/2008/08/03/this-post-is-too-later/" class="button big">阅读全文</a>
+    <div class="stats">
+  
+    <ul class="categories">
+      
+        
+          <li><a class="article-terms-link" href="/categories/blog/">Blog</a></li>
+        
+      
+    </ul>
+  
+  
+    <ul class="tags">
+      
+        
+          <li><a class="article-terms-link" href="/tags/beijing/">beijing</a></li>
+        
+          <li><a class="article-terms-link" href="/tags/wordpress/">wordpress</a></li>
+        
+      
+    </ul>
+  
+</div>
+
+  </footer>
+</article>
+
+  
+    <article class="post">
+  <header>
+  <div class="title">
+    
+      <h2><a href="/2008/07/04/running-linux-from-any-machine-without-installation/">Running Linux from any machine without installation</a></h2>
+    
+    
+  </div>
+  <div class="meta">
+    <time datetime="2008-07-04 14:31:15 &#43;0000 UTC">July 4, 2008</time>
+    <p>liuadmin</p>
+    <p>1 分钟</p>
+  </div>
+</header>
+
+  <div class="content">
+    
+    
+    <p><br /></p>
+  </div>
+  <footer>
+    <a href="/2008/07/04/running-linux-from-any-machine-without-installation/" class="button big">阅读全文</a>
+    <div class="stats">
+  
+    <ul class="categories">
+      
+        
+          <li><a class="article-terms-link" href="/categories/infrastructure/">Infrastructure</a></li>
+        
+      
+    </ul>
+  
+  
+    <ul class="tags">
+      
+        
+          <li><a class="article-terms-link" href="/tags/linux/">linux</a></li>
+        
+          <li><a class="article-terms-link" href="/tags/slax/">slax</a></li>
+        
+          <li><a class="article-terms-link" href="/tags/usb/">usb</a></li>
+        
+      
+    </ul>
+  
+</div>
+
+  </footer>
+</article>
+
+  
+  <div class="pagination">
+    
+      <a href="/page/83/" class="button left"><span>上页</span></a>
+    
+    
+      <a href="/page/85/" class="button right"><span>下页</span></a>
+    
+  </div>
+
+      </main>
+      <section id="site-sidebar">
+  
+    <section id="recent-posts">
+      <header>
+        <h1>最新文章</h1>
+      </header>
+      
+      <article class="mini-post">
+          <a href="/blog/workshop-elastic-observability/" class="image" style="--bg-image: url('https://martinliu.cn/img/2021/Hubble_01.jpg');">
+    <img class="stretchH" src="https://martinliu.cn/img/2021/Hubble_01.jpg" alt="Hubble">
+  </a>
+        <header>
+          <h2><a href="/blog/workshop-elastic-observability/">Elastic 可观测性工作坊</a></h2>
+          <time class="published" datetime="2021-02-06 10:36:12 &#43;0800 CST">February 6, 2021</time>
+        </header>
+      </article>
+      
+      <article class="mini-post">
+          <a href="/blog/change-back-on-github-page-again/" class="image" style="--bg-image: url('https://martinliu.cn/img/2019/03/pic03.jpg');">
+    <img class="stretchH" src="https://martinliu.cn/img/2019/03/pic03.jpg" alt="Valley">
+  </a>
+        <header>
+          <h2><a href="/blog/change-back-on-github-page-again/">在 Github 上搭建基于 Hugo 的免费个人博客</a></h2>
+          <time class="published" datetime="2021-02-06 00:00:00 &#43;0000 UTC">February 6, 2021</time>
+        </header>
+      </article>
+      
+      <article class="mini-post">
+          <a href="/blog/devopscoach-weekly-6/" class="image" style="--bg-image: url('https://martinliu.cn/');">
+    <img class="stretchH" src="https://martinliu.cn/" alt="">
+  </a>
+        <header>
+          <h2><a href="/blog/devopscoach-weekly-6/">DevOps Coach 周刊 #6</a></h2>
+          <time class="published" datetime="2020-08-31 00:11:01 &#43;0800 CST">August 31, 2020</time>
+        </header>
+      </article>
+      
+      <article class="mini-post">
+          <a href="/blog/elasticsearch-3-nodes-cluster-setup/" class="image" style="--bg-image: url('https://martinliu.cn/');">
+    <img class="stretchH" src="https://martinliu.cn/" alt="">
+  </a>
+        <header>
+          <h2><a href="/blog/elasticsearch-3-nodes-cluster-setup/">Elasticsearch 3 节点集群搭建 (7.9.0)</a></h2>
+          <time class="published" datetime="2020-08-27 13:54:46 &#43;0800 CST">August 27, 2020</time>
+        </header>
+      </article>
+      
+      <article class="mini-post">
+          <a href="/blog/devopscoach-weekly-5/" class="image" style="--bg-image: url('https://martinliu.cn/');">
+    <img class="stretchH" src="https://martinliu.cn/" alt="">
+  </a>
+        <header>
+          <h2><a href="/blog/devopscoach-weekly-5/">DevOps Coach 周刊 #5</a></h2>
+          <time class="published" datetime="2020-08-25 15:20:51 &#43;0800 CST">August 25, 2020</time>
+        </header>
+      </article>
+      
+      
+        <footer>
+          <a href="/blog/" class="button">查看更多</a>
+        </footer>
+      
+    </section>
+  
+
+  
+    
+
+      <section id="categories">
+        <header>
+          <h1><a href="/categories">分类</a></h1>
+        </header>
+        <ul>
+          
+          
+          <li>
+              <a href="/categories/blog/">blog<span class="count">96</span></a>
+          
+          <li>
+              <a href="/categories/itsm/">itsm<span class="count">85</span></a>
+          
+          <li>
+              <a href="/categories/infrastructure/">infrastructure<span class="count">46</span></a>
+          
+          <li>
+              <a href="/categories/devops/">devops<span class="count">38</span></a>
+          
+          <li>
+              <a href="/categories/opensource/">opensource<span class="count">32</span></a>
+          
+          <li>
+              <a href="/categories/cloud-computing/">cloud-computing<span class="count">23</span></a>
+          
+          <li>
+              <a href="/categories/cms/cmdb/">cms/cmdb<span class="count">20</span></a>
+          
+          <li>
+              <a href="/categories/running/">running<span class="count">19</span></a>
+          
+          <li>
+              <a href="/categories/travel/">travel<span class="count">13</span></a>
+          
+          <li>
+              <a href="/categories/sre/">sre<span class="count">2</span></a>
+          
+          </li>
+        </ul>
+      </section>
+    
+  
+
+  
+    <section id="mini-bio">
+      <header>
+        <h1>关于</h1>
+      </header>
+      <p>This Blog is sharing DevOps and SRE ariticles. I have translated DevOps Handbook and SRE Workbook.</p>
+      <footer>
+        <a href="/about" class="button">学到更多</a>
+      </footer>
+    </section>
+  
+</section>
+
+      <footer id="site-footer">
+  
+      <ul class="socnet-icons">
+        
+    <li><a href="/index.xml" type="application/rss+xml" target="_blank" title="RSS" class="fas fa-rss"></a></li>
+
+
+        <li><a href="//github.com/martinliu" target="_blank" rel="noopener" title="GitHub" class="fab fa-github"></a></li>
+
+
+
+
+
+
+
+
+
+
+
+<li><a href="//www.linkedin.com/in/liuzheng" target="_blank" rel="noopener" title="LinkedIn" class="fab fa-linkedin"></a></li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<li><a href="//twitter.com/martinliu" target="_blank" rel="noopener" title="Twitter" class="fab fa-twitter"></a></li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+      </ul>
+  
+  <p class="copyright">
+    © 2021 DevOps &amp; SRE Blog
+      <br>
+    主题: <a href='https://themes.gohugo.io/hugo-future-imperfect-slim/' target='_blank' rel='noopener'>Hugo Future Imperfect Slim</a><br>移植自 <a href='https://html5up.net/future-imperfect' target='_blank' rel='noopener'>HTML5 UP</a> | 由 <a href='https://gohugo.io/' target='_blank' rel='noopener' title='0.80.0'>Hugo</a> 驱动
+  </p>
+</footer>
+<a id="back-to-top" href="#" class="fas fa-arrow-up fa-2x"></a>
+
+      <script src="/js/highlight.js"></script>
+    
+    <script>hljs.initHighlightingOnLoad();</script><script src="/js/bundle.min.b4e669fa428a81defb8af0916c53f39cd1b8e0bbab22199c06f0b182907ba474.js" integrity="sha256-tOZp&#43;kKKgd77ivCRbFPznNG44LurIhmcBvCxgpB7pHQ="></script>
+    <script src="/js/add-on.js"></script>
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-749876-6', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+
+    </div>
+  </body>
+</html>

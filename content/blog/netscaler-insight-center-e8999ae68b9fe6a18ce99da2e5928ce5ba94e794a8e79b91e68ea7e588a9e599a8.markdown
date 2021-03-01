@@ -6,8 +6,6 @@ comments: true
 date: 2013-03-28T10:56:04Z
 slug: netscaler-insight-center-%e8%99%9a%e6%8b%9f%e6%a1%8c%e9%9d%a2%e5%92%8c%e5%ba%94%e7%94%a8%e7%9b%91%e6%8e%a7%e5%88%a9%e5%99%a8
 tags:
-- insight
-- insight center
 - Netscaler
 - infrastructure
 - infrastructure

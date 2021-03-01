@@ -6,8 +6,6 @@ comments: true
 date: 2008-04-28T02:01:06Z
 slug: deploy-asset-management-solution
 tags:
-- asset
-- configuration
 - GLPI
 - OCSNG
 title: Deploy asset management solution

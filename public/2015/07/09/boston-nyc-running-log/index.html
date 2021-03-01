@@ -1,24 +1,525 @@
-<!doctype html><html lang=zh-cn><head><meta charset=utf-8><title>Boston 和 NYC 的 运动日志 - 刘征的博客</title><meta name=viewport content="width=device-width,initial-scale=1"><meta name=generator content="Hugo 0.80.0"><meta property="og:site_name" content="刘征的博客"><meta property="og:title" content="Boston 和 NYC 的 运动日志"><meta property="og:description" content="Martin's Liu is bloging on DevOps and SRE topics"><meta property="description" content="Martin's Liu is bloging on DevOps and SRE topics"><meta property="og:url" content="https://martinliu.cn/2015/07/09/boston-nyc-running-log/"><meta property="og:type" content="article"><meta property="og:image" content="https://martinliu.cn/img/main/logo.jpg"><link rel=stylesheet href=/css/bundle.min.d9e04ae08c9b3049b766dbd4aeab7d862c5ea1d13679b621490e0f5df5507497.css integrity="sha256-2eBK4IybMEm3ZtvUrqt9hixeodE2ebYhSQ4PXfVQdJc="><link rel=stylesheet href=/css/add-on.css></head><body><header id=site-header><nav id=site-nav><h1 class=nav-title><a href=/ class=nav>博客</a></h1><menu id=site-nav-menu class="flyout-menu menu"><a href=/ class="nav link"><i class="fas fa-home"></i>首页</a>
-<a href=/about/ class="nav link"><i class="far fa-id-card"></i>关于</a>
-<a href=/blog/ class="nav link"><i class="far fa-newspaper"></i>博客</a>
-<a href=/categories/ class="nav link"><i class="fas fa-sitemap"></i>分类</a>
-<a href=/contact/ class="nav link"><i class="far fa-envelope"></i>联系</a>
-<a href=#share-menu class="nav link share-toggle"><i class="fas fa-share-alt">&nbsp;</i>Share</a>
-<a href=#search-input class="nav link search-toggle"><i class="fas fa-search">&nbsp;</i>Search</a></menu>
-<a href=#search-input class="nav search-toggle"><i class="fas fa-search fa-2x">&nbsp;</i></a>
-<a href=#share-menu class="nav share-toggle"><i class="fas fa-share-alt fa-2x">&nbsp;</i></a>
-<a href=#lang-menu class="nav lang-toggle" lang=zh-cn>zh-cn</a>
-<a href=#site-nav class="nav nav-toggle"><i class="fas fa-bars fa-2x"></i></a></nav><menu id=search class=menu><input id=search-input class="search-input menu"></input><div id=search-results class="search-results menu"></div></menu><menu id=lang-menu class="flyout-menu menu"><a href=# lang=zh-cn class="nav link active">中文 (zh-cn)</a>
-<a href=/en lang=en class="nav no-lang link">English (en)</a></menu>
-<menu id=share-menu class="flyout-menu menu"><h1>Share Post</h1><a href="//twitter.com/share?text=Boston%20%e5%92%8c%20NYC%20%e7%9a%84%20%e8%bf%90%e5%8a%a8%e6%97%a5%e5%bf%97&url=https%3a%2f%2fmartinliu.cn%2f2015%2f07%2f09%2fboston-nyc-running-log%2f" target=_blank rel=noopener class="nav share-btn twitter"><p>Twitter</p></a><a href="//www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fmartinliu.cn%2f2015%2f07%2f09%2fboston-nyc-running-log%2f" target=_blank rel=noopener class="nav share-btn facebook"><p>Facebook</p></a><a href="//www.reddit.com/submit?url=https%3a%2f%2fmartinliu.cn%2f2015%2f07%2f09%2fboston-nyc-running-log%2f&title=Boston%20%e5%92%8c%20NYC%20%e7%9a%84%20%e8%bf%90%e5%8a%a8%e6%97%a5%e5%bf%97" target=_blank rel=noopener class="nav share-btn reddit"><p>Reddit</p></a><a href="//www.linkedin.com/shareArticle?url=https%3a%2f%2fmartinliu.cn%2f2015%2f07%2f09%2fboston-nyc-running-log%2f&title=Boston%20%e5%92%8c%20NYC%20%e7%9a%84%20%e8%bf%90%e5%8a%a8%e6%97%a5%e5%bf%97" target=_blank rel=noopener class="nav share-btn linkedin"><p>LinkedIn</p></a><a href="//www.pinterest.com/pin/create/button/?url=https%3a%2f%2fmartinliu.cn%2f2015%2f07%2f09%2fboston-nyc-running-log%2f&description=Boston%20%e5%92%8c%20NYC%20%e7%9a%84%20%e8%bf%90%e5%8a%a8%e6%97%a5%e5%bf%97" target=_blank rel=noopener class="nav share-btn pinterest"><p>Pinterest</p></a><a href="mailto:?subject=%e6%9f%a5%e7%9c%8b%e6%ad%a4%e5%b8%96%e5%ad%90%e7%9a%84%e4%bd%9c%e8%80%85 liuadmin&body=https%3a%2f%2fmartinliu.cn%2f2015%2f07%2f09%2fboston-nyc-running-log%2f" target=_blank class="nav share-btn email" data-proofer-ignore><p>Email</p></a></menu></header><div id=wrapper><section id=site-intro><a href=/><img src=https://martinliu.cn/img/main/logo.jpg class=circle width=100 alt="Martin Liu"></a><header><h1>Martin Liu's Blog</h1></header><main><p>Community Advocate, DevOps China Community Organizer</p></main><footer><ul class=socnet-icons><li><a href=//github.com/martinliu target=_blank rel=noopener title=GitHub class="fab fa-github"></a></li><li><a href=//www.linkedin.com/in/liuzheng target=_blank rel=noopener title=LinkedIn class="fab fa-linkedin"></a></li><li><a href=//twitter.com/martinliu target=_blank rel=noopener title=Twitter class="fab fa-twitter"></a></li></ul></footer></section><main id=site-main><article class=post><header><div class=title><h2><a href=/2015/07/09/boston-nyc-running-log/>Boston 和 NYC 的 运动日志</a></h2></div><div class=meta><time datetime="2015-07-09 15:42:07 +0000 UTC">July 9, 2015</time><p>liuadmin</p><p>1 分钟</p></div></header><div id=socnet-share><a href="//twitter.com/share?text=Boston%20%e5%92%8c%20NYC%20%e7%9a%84%20%e8%bf%90%e5%8a%a8%e6%97%a5%e5%bf%97&url=https%3a%2f%2fmartinliu.cn%2f2015%2f07%2f09%2fboston-nyc-running-log%2f" target=_blank rel=noopener class="nav share-btn twitter"><p>Twitter</p></a><a href="//www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fmartinliu.cn%2f2015%2f07%2f09%2fboston-nyc-running-log%2f" target=_blank rel=noopener class="nav share-btn facebook"><p>Facebook</p></a><a href="//www.reddit.com/submit?url=https%3a%2f%2fmartinliu.cn%2f2015%2f07%2f09%2fboston-nyc-running-log%2f&title=Boston%20%e5%92%8c%20NYC%20%e7%9a%84%20%e8%bf%90%e5%8a%a8%e6%97%a5%e5%bf%97" target=_blank rel=noopener class="nav share-btn reddit"><p>Reddit</p></a><a href="//www.linkedin.com/shareArticle?url=https%3a%2f%2fmartinliu.cn%2f2015%2f07%2f09%2fboston-nyc-running-log%2f&title=Boston%20%e5%92%8c%20NYC%20%e7%9a%84%20%e8%bf%90%e5%8a%a8%e6%97%a5%e5%bf%97" target=_blank rel=noopener class="nav share-btn linkedin"><p>LinkedIn</p></a><a href="//www.pinterest.com/pin/create/button/?url=https%3a%2f%2fmartinliu.cn%2f2015%2f07%2f09%2fboston-nyc-running-log%2f&description=Boston%20%e5%92%8c%20NYC%20%e7%9a%84%20%e8%bf%90%e5%8a%a8%e6%97%a5%e5%bf%97" target=_blank rel=noopener class="nav share-btn pinterest"><p>Pinterest</p></a><a href="mailto:?subject=%e6%9f%a5%e7%9c%8b%e6%ad%a4%e5%b8%96%e5%ad%90%e7%9a%84%e4%bd%9c%e8%80%85 liuadmin&body=https%3a%2f%2fmartinliu.cn%2f2015%2f07%2f09%2fboston-nyc-running-log%2f" target=_blank class="nav share-btn email" data-proofer-ignore><p>Email</p></a></div><div class=content><h2 id=波士顿的跑步>波士顿的跑步</h2><h3 id=第一跑---12公里>第一跑 - 12公里</h3><p><a href=http://martinliu.cn/boston-running-log/0709_8/><img src=http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2015/07/0709_8-576x1024.jpg alt=0709_8></a></p><p>推辞了饭局的夜跑，跑步过程中被阵雨浇透，找错了回来的桥，路程没有记录完整。</p><h3 id=第二跑---8公里>第二跑 - 8公里</h3><p><a href=http://martinliu.cn/boston-running-log/0709_9/><img src=http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2015/07/0709_9-576x1024.jpg alt=0709_9></a></p><p>本想跑的比前一次更远，结果起晚了，跑了8公里就被晒的不行，汗狂出，提前失去斗志，返回。这时感觉还是有跑友会更好些。</p><h3 id=第三跑---10公里>第三跑 - 10公里</h3><p><a href=http://martinliu.cn/boston-running-log/0709_10/><img src=http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2015/07/0709_10-576x1024.jpg alt=0709_10></a></p><p>陪同事满跑10K，在一个海湾处，居然海湾是闭合的，跑了三圈，其实那个Castle Island Park有点意思，可惜没有进去。</p><h3 id=第四跑---10公里>第四跑 - 10公里</h3><p><a href=http://martinliu.cn/boston-running-log/0709_11/><img src=http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2015/07/0709_11-576x1024.jpg alt=0709_11></a></p><p>领略了市内最繁华的街道，最美的市中心公园，跑过了 林阴道，再次重温河边的感觉，这是下午下班后的跑步，不管你是什么时间，什么地点跑，基本上到处都是跑步的人。</p><h2 id=波士顿骑行>波士顿骑行</h2><h3 id=第一次-464-km>第一次  46.4 km</h3><p><a href=http://martinliu.cn/boston-running-log/screenshot_2015-06-25-21-45-21/><img src=http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2015/07/Screenshot_2015-06-25-21-45-21-576x1024.jpeg alt=Screenshot_2015-06-25-21-45-21></a></p><p>自行车租金是25刀，下午开完会发现其它两个同伴时差严重，因此我独自骑行出去。骑行的方向其实是波士顿马拉松延伸的方向，只是那个路线是要在公路上的，车多没法骑行那个赛道，骑车出去闲逛，也超过了一个全马的距离，基本上把哈佛和MIT逛清楚了。</p><h3 id=第二次-217-km>第二次 21.7 km</h3><p><a href=http://martinliu.cn/boston-running-log/0709_12/><img src=http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2015/07/0709_12-576x1024.jpg alt=0709_12></a></p><p>第二次，本来不想去，可是需要给伙伴去带路，就带他们走了一遍昨天的路，让他们也浏览了我看过的景点。</p><h2 id=纽约跑步---中央公园-10km>纽约跑步 - 中央公园 10KM</h2><p><a href=http://martinliu.cn/boston-running-log/0709_14/><img src=http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2015/07/0709_14-576x1024.jpg alt=0709_14></a></p><p>中央公园打卡跑过，很满意的得到了这个路线，公园里里面的运动氛围很强，爽跑一圈。</p></div><footer><div class=stats><ul class=categories><li><a class=article-terms-link href=/categories/running/>Running</a></li></ul><ul class=tags><li><a class=article-terms-link href=/tags/boston/>Boston</a></li><li><a class=article-terms-link href=/tags/%e6%b3%a2%e5%a3%ab%e9%a1%bf/>波士顿</a></li><li><a class=article-terms-link href=/tags/%e7%ba%bd%e7%ba%a6/>纽约</a></li></ul></div></footer></article><article class=post><div><h2 id=say-something>说些什么</h2><form id=comment-form class=new-comment method=post><h3 class="reply-notice hidden"><span class=reply-name></span></h3><input type=hidden name=options[entryId] value=20811a66027d8247fc6dbc0602085be7>
-<input type=hidden name=fields[replyThread]>
-<input type=hidden name=fields[replyID]>
-<input type=hidden name=fields[replyName]>
-<input required name=fields[name] type=text placeholder=你的名字>
-<input name=fields[website] type=text placeholder=您的网页>
-<input required name=fields[email] type=email placeholder=你的邮件>
-<textarea required name=fields[body] placeholder=你的信息 rows=10></textarea><div class=submit-notice><strong class="submit-notice-text submit-success hidden">感谢您的评论！被批准后它会立即在此站点展示。</strong>
-<strong class="submit-notice-text submit-failed hidden">很抱歉，您的提交存在错误。请确保所有必填字段都已填写正确，然后再试一次。</strong></div><input type=submit value=送出 class=button>
-<input type=submit value=已送出 class="hidden button" disabled>
-<input type=reset value=重设 class=button></form></div><div><h2>评论</h2><p>还沒有留言。</p></div></article><div class=pagination><a href=/2015/07/12/ovirt-e69c8de58aa1e599a8e8999ae68b9fe58c96e6b58be8af95/ class="button left"><span>Ovirt 服务器虚拟化测试</span></a>
-<a href=/2015/07/09/e9a696e6aca1e7be8ee59bbde4b89ce6b5b7e5b2b8e4b98be69785/ class="button right"><span>首次美国东海岸之旅</span></a></div></main><section id=site-sidebar><section id=recent-posts><header><h1>最新文章</h1></header><article class=mini-post><a href=/blog/workshop-elastic-observability/ class=image style="--bg-image: url('https://martinliu.cn/img/2019/03/pic01.jpg')"><img class=stretchH src=https://martinliu.cn/img/2019/03/pic01.jpg alt=Valley></a><header><h2><a href=/blog/workshop-elastic-observability/>Elastic 可观测性工作坊</a></h2><time class=published datetime="2021-02-06 10:36:12 +0800 CST">February 6, 2021</time></header></article><article class=mini-post><a href=/blog/change-back-on-github-page-again/ class=image style="--bg-image: url('https://martinliu.cn/img/2019/03/pic03.jpg')"><img class=stretchH src=https://martinliu.cn/img/2019/03/pic03.jpg alt=Valley></a><header><h2><a href=/blog/change-back-on-github-page-again/>博客换一个新样式</a></h2><time class=published datetime="2021-02-06 00:00:00 +0000 UTC">February 6, 2021</time></header></article><article class=mini-post><a href=/blog/devopscoach-weekly-6/ class=image style="--bg-image: url('https://martinliu.cn/')"><img src=https://martinliu.cn/ alt></a><header><h2><a href=/blog/devopscoach-weekly-6/>DevOps Coach 周刊 #6</a></h2><time class=published datetime="2020-08-31 00:11:01 +0800 CST">August 31, 2020</time></header></article><article class=mini-post><a href=/blog/elasticsearch-3-nodes-cluster-setup/ class=image style="--bg-image: url('https://martinliu.cn/')"><img src=https://martinliu.cn/ alt></a><header><h2><a href=/blog/elasticsearch-3-nodes-cluster-setup/>Elasticsearch 3 节点集群搭建 (7.9.0)</a></h2><time class=published datetime="2020-08-27 13:54:46 +0800 CST">August 27, 2020</time></header></article><article class=mini-post><a href=/blog/devopscoach-weekly-5/ class=image style="--bg-image: url('https://martinliu.cn/')"><img src=https://martinliu.cn/ alt></a><header><h2><a href=/blog/devopscoach-weekly-5/>DevOps Coach 周刊 #5</a></h2><time class=published datetime="2020-08-25 15:20:51 +0800 CST">August 25, 2020</time></header></article><footer><a href=/blog/ class=button>查看更多</a></footer></section><section id=categories><header><h1><a href=/categories>分类</a></h1></header><ul><li><a href=/categories/blog/>blog<span class=count>107</span></a><li><a href=/categories/itsm/>itsm<span class=count>95</span></a><li><a href=/categories/infrastructure/>infrastructure<span class=count>48</span></a><li><a href=/categories/devops/>devops<span class=count>38</span></a><li><a href=/categories/opensource/>opensource<span class=count>35</span></a><li><a href=/categories/cloud-computing/>cloud-computing<span class=count>27</span></a><li><a href=/categories/running/>running<span class=count>22</span></a><li><a href=/categories/cms/cmdb/>cms/cmdb<span class=count>20</span></a><li><a href=/categories/travel/>travel<span class=count>14</span></a><li><a href=/categories/sre/>sre<span class=count>2</span></a></li></ul></section><section id=mini-bio><header><h1>关于</h1></header><p>This Blog is sharing DevOps and SRE ariticles. I have translated DevOps Handbook and SRE Workbook.</p><footer><a href=/about class=button>学到更多</a></footer></section></section><footer id=site-footer><ul class=socnet-icons><li><a href=//github.com/martinliu target=_blank rel=noopener title=GitHub class="fab fa-github"></a></li><li><a href=//www.linkedin.com/in/liuzheng target=_blank rel=noopener title=LinkedIn class="fab fa-linkedin"></a></li><li><a href=//twitter.com/martinliu target=_blank rel=noopener title=Twitter class="fab fa-twitter"></a></li></ul><p class=copyright>© 2021 刘征的博客<br>主题: <a href=https://themes.gohugo.io/hugo-future-imperfect-slim/ target=_blank rel=noopener>Hugo Future Imperfect Slim</a><br>移植自 <a href=https://html5up.net/future-imperfect target=_blank rel=noopener>HTML5 UP</a> | 由 <a href=https://gohugo.io/ target=_blank rel=noopener title=0.80.0>Hugo</a> 驱动</p></footer><a id=back-to-top href=# class="fas fa-arrow-up fa-2x"></a><script src=/js/highlight.js></script><script>hljs.initHighlightingOnLoad();</script><script src=/js/bundle.min.bbba6b424a8ac5b6858cd5fc80eabc9c5277945cc2dc349204646b84891b4b58.js integrity="sha256-u7prQkqKxbaFjNX8gOq8nFJ3lFzC3DSSBGRrhIkbS1g="></script><script src=/js/add-on.js></script><script type=application/javascript>var doNotTrack=false;if(!doNotTrack){window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;ga('create','UA-749876-6','auto');ga('send','pageview');}</script><script async src=https://www.google-analytics.com/analytics.js></script></div></body></html>
+<!doctype html>
+<html lang="zh-cn">
+  <head>
+  <meta charset="utf-8">
+<title>Boston 和 NYC 的 运动日志 - DevOps &amp; SRE Blog</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+<meta name="generator" content="Hugo 0.80.0" /><meta property="og:site_name" content="DevOps &amp; SRE Blog">
+  <meta property="og:title" content="Boston 和 NYC 的 运动日志">
+  <meta property="og:description" content="Martin&#39;s Liu is bloging on DevOps and SRE topics">
+  <meta property="description" content="Martin&#39;s Liu is bloging on DevOps and SRE topics">
+  <meta property="og:url" content="https://martinliu.cn/2015/07/09/boston-nyc-running-log/">
+  <meta property="og:type" content="article">
+  
+    <meta property="og:image" content="https://martinliu.cn/img/main/logo.jpg">
+  
+  
+            <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.3/styles/default.min.css">
+          <link rel="stylesheet" href="/css/bundle.min.307f33cd8015e5bab28d6ebda9b400f8d3059bc248b4e60adf4d23469fab5a2b.css" integrity="sha256-MH8zzYAV5bqyjW69qbQA&#43;NMFm8JItOYK300jRp&#43;rWis="><link rel="stylesheet" href="/css/add-on.css">
+</head>
+
+  <body>
+    
+
+<header id="site-header">
+  <nav id="site-nav">
+    <h1 class="nav-title">
+      <a href="/" class="nav">
+        
+          博客
+        
+      </a>
+    </h1>
+    <menu id="site-nav-menu" class="flyout-menu menu">
+      
+        
+          
+          <a href="/" class="nav link"><i class='fas fa-home'></i> 首页</a>
+        
+      
+        
+          
+          <a href="/about/" class="nav link"><i class='far fa-id-card'></i> 关于</a>
+        
+      
+        
+          
+          <a href="/blog/" class="nav link"><i class='far fa-newspaper'></i> 博客</a>
+        
+      
+        
+          
+          <a href="/categories/" class="nav link"><i class='fas fa-sitemap'></i> 分类</a>
+        
+      
+        
+          
+          <a href="/course/" class="nav link"><i class='fa fa-book'></i> 课程</a>
+        
+      
+      <a href="#share-menu" class="nav link share-toggle"><i class="fas fa-share-alt">&nbsp;</i>Share</a>
+      
+    </menu>
+    
+    <a href="#share-menu" class="nav share-toggle"><i class="fas fa-share-alt fa-2x">&nbsp;</i></a>
+    <a href="#lang-menu" class="nav lang-toggle" lang="zh-cn">zh-cn</a>
+    <a href="#site-nav" class="nav nav-toggle"><i class="fas fa-bars fa-2x"></i></a>
+  </nav>
+  
+  <menu id="lang-menu" class="flyout-menu menu">
+  <a href="#" lang="zh-cn" class="nav link active">中文 (zh-cn)</a>
+  
+    
+      
+        <a href="/en" lang="en" class="nav no-lang link">English (en)</a>
+      
+    
+      
+    
+  
+</menu>
+
+  
+    <menu id="share-menu" class="flyout-menu menu">
+      <h1>Share Post</h1>
+      
+
+
+
+
+  
+    
+    <a href="//twitter.com/share?text=Boston%20%e5%92%8c%20NYC%20%e7%9a%84%20%e8%bf%90%e5%8a%a8%e6%97%a5%e5%bf%97&amp;url=https%3a%2f%2fmartinliu.cn%2f2015%2f07%2f09%2fboston-nyc-running-log%2f" target="_blank" rel="noopener" class="nav share-btn twitter">
+        <p>Twitter</p>
+      </a>
+  
+
+  
+      <a href="//www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fmartinliu.cn%2f2015%2f07%2f09%2fboston-nyc-running-log%2f" target="_blank" rel="noopener" class="nav share-btn facebook">
+        <p>Facebook</p>
+        </a>
+  
+
+  
+    <a href="//www.reddit.com/submit?url=https%3a%2f%2fmartinliu.cn%2f2015%2f07%2f09%2fboston-nyc-running-log%2f&amp;title=Boston%20%e5%92%8c%20NYC%20%e7%9a%84%20%e8%bf%90%e5%8a%a8%e6%97%a5%e5%bf%97" target="_blank" rel="noopener" class="nav share-btn reddit">
+          <p>Reddit</p>
+        </a>
+  
+
+  
+        <a href="//www.linkedin.com/shareArticle?url=https%3a%2f%2fmartinliu.cn%2f2015%2f07%2f09%2fboston-nyc-running-log%2f&amp;title=Boston%20%e5%92%8c%20NYC%20%e7%9a%84%20%e8%bf%90%e5%8a%a8%e6%97%a5%e5%bf%97" target="_blank" rel="noopener" class="nav share-btn linkedin">
+            <p>LinkedIn</p>
+          </a>
+  
+
+  
+        <a href="//www.pinterest.com/pin/create/button/?url=https%3a%2f%2fmartinliu.cn%2f2015%2f07%2f09%2fboston-nyc-running-log%2f&amp;description=Boston%20%e5%92%8c%20NYC%20%e7%9a%84%20%e8%bf%90%e5%8a%a8%e6%97%a5%e5%bf%97" target="_blank" rel="noopener" class="nav share-btn pinterest">
+          <p>Pinterest</p>
+        </a>
+  
+
+  
+        <a href="mailto:?subject=%e6%9f%a5%e7%9c%8b%e6%ad%a4%e5%b8%96%e5%ad%90%e7%9a%84%e4%bd%9c%e8%80%85 liuadmin&amp;body=https%3a%2f%2fmartinliu.cn%2f2015%2f07%2f09%2fboston-nyc-running-log%2f" target="_blank" class="nav share-btn email" data-proofer-ignore>
+          <p>Email</p>
+        </a>
+  
+
+
+    </menu>
+  
+</header>
+
+    <div id="wrapper">
+      <section id="site-intro" >
+  <a href="/"><img src="https://martinliu.cn/img/main/logo.jpg" class="circle" width="100" alt="Martin Liu" /></a>
+  <header>
+    <h1>Martin Liu's Blog</h1>
+  </header>
+  <main>
+    <p>Community Advocate, DevOps China Community Organizer</p>
+  </main>
+  
+    <footer>
+      <ul class="socnet-icons">
+        
+
+        <li><a href="//github.com/martinliu" target="_blank" rel="noopener" title="GitHub" class="fab fa-github"></a></li>
+
+
+
+
+
+
+
+
+
+
+
+<li><a href="//www.linkedin.com/in/liuzheng" target="_blank" rel="noopener" title="LinkedIn" class="fab fa-linkedin"></a></li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<li><a href="//twitter.com/martinliu" target="_blank" rel="noopener" title="Twitter" class="fab fa-twitter"></a></li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+      </ul>
+    </footer>
+  
+</section>
+
+      <main id="site-main">
+        
+  <article class="post">
+    <header>
+  <div class="title">
+    
+      <h2><a href="/2015/07/09/boston-nyc-running-log/">Boston 和 NYC 的 运动日志</a></h2>
+    
+    
+  </div>
+  <div class="meta">
+    <time datetime="2015-07-09 15:42:07 &#43;0000 UTC">July 9, 2015</time>
+    <p>liuadmin</p>
+    <p>1 分钟</p>
+  </div>
+</header>
+
+    <div id="socnet-share">
+      
+
+
+
+
+  
+    
+    <a href="//twitter.com/share?text=Boston%20%e5%92%8c%20NYC%20%e7%9a%84%20%e8%bf%90%e5%8a%a8%e6%97%a5%e5%bf%97&amp;url=https%3a%2f%2fmartinliu.cn%2f2015%2f07%2f09%2fboston-nyc-running-log%2f" target="_blank" rel="noopener" class="nav share-btn twitter">
+        <p>Twitter</p>
+      </a>
+  
+
+  
+      <a href="//www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fmartinliu.cn%2f2015%2f07%2f09%2fboston-nyc-running-log%2f" target="_blank" rel="noopener" class="nav share-btn facebook">
+        <p>Facebook</p>
+        </a>
+  
+
+  
+    <a href="//www.reddit.com/submit?url=https%3a%2f%2fmartinliu.cn%2f2015%2f07%2f09%2fboston-nyc-running-log%2f&amp;title=Boston%20%e5%92%8c%20NYC%20%e7%9a%84%20%e8%bf%90%e5%8a%a8%e6%97%a5%e5%bf%97" target="_blank" rel="noopener" class="nav share-btn reddit">
+          <p>Reddit</p>
+        </a>
+  
+
+  
+        <a href="//www.linkedin.com/shareArticle?url=https%3a%2f%2fmartinliu.cn%2f2015%2f07%2f09%2fboston-nyc-running-log%2f&amp;title=Boston%20%e5%92%8c%20NYC%20%e7%9a%84%20%e8%bf%90%e5%8a%a8%e6%97%a5%e5%bf%97" target="_blank" rel="noopener" class="nav share-btn linkedin">
+            <p>LinkedIn</p>
+          </a>
+  
+
+  
+        <a href="//www.pinterest.com/pin/create/button/?url=https%3a%2f%2fmartinliu.cn%2f2015%2f07%2f09%2fboston-nyc-running-log%2f&amp;description=Boston%20%e5%92%8c%20NYC%20%e7%9a%84%20%e8%bf%90%e5%8a%a8%e6%97%a5%e5%bf%97" target="_blank" rel="noopener" class="nav share-btn pinterest">
+          <p>Pinterest</p>
+        </a>
+  
+
+  
+        <a href="mailto:?subject=%e6%9f%a5%e7%9c%8b%e6%ad%a4%e5%b8%96%e5%ad%90%e7%9a%84%e4%bd%9c%e8%80%85 liuadmin&amp;body=https%3a%2f%2fmartinliu.cn%2f2015%2f07%2f09%2fboston-nyc-running-log%2f" target="_blank" class="nav share-btn email" data-proofer-ignore>
+          <p>Email</p>
+        </a>
+  
+
+
+    </div>
+    <div class="content">
+      
+      <p>很高兴能有机会跑在波士顿的一些地方，还骑行了两次。基本上也了解了这个城市，熟悉了运动的地形，领略了城市的风光，感受了这个城市的运动文化和气息。纽约的行程安排的它紧凑了，导致就跑了一次中央公园，给以后留下很多探索的空白。</p>
+<h2 id="波士顿的跑步">波士顿的跑步</h2>
+<h3 id="第一跑---12-公里">第一跑 - 12 公里</h3>
+<p><a href="http://martinliu.cn/boston-running-log/0709_8/"><img src="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2015/07/0709_8-576x1024.jpg" alt="0709_8"></a></p>
+<p>推辞了饭局的夜跑，跑步过程中被阵雨浇透，找错了回来的桥，路程没有记录完整。</p>
+<h3 id="第二跑---8-公里">第二跑 - 8 公里</h3>
+<p><a href="http://martinliu.cn/boston-running-log/0709_9/"><img src="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2015/07/0709_9-576x1024.jpg" alt="0709_9"></a></p>
+<p>本想跑的比前一次更远，结果起晚了，跑了 8 公里就被晒的不行，汗狂出，提前失去斗志，返回。这时感觉还是有跑友会更好些。</p>
+<h3 id="第三跑---10-公里">第三跑 - 10 公里</h3>
+<p><a href="http://martinliu.cn/boston-running-log/0709_10/"><img src="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2015/07/0709_10-576x1024.jpg" alt="0709_10"></a></p>
+<p>陪同事满跑 10K，在一个海湾处，居然海湾是闭合的，跑了三圈，其实那个 Castle Island Park 有点意思，可惜没有进去。</p>
+<h3 id="第四跑---10-公里">第四跑 - 10 公里</h3>
+<p><a href="http://martinliu.cn/boston-running-log/0709_11/"><img src="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2015/07/0709_11-576x1024.jpg" alt="0709_11"></a></p>
+<p>领略了市内最繁华的街道，最美的市中心公园，跑过了 林阴道，再次重温河边的感觉，这是下午下班后的跑步，不管你是什么时间，什么地点跑，基本上到处都是跑步的人。</p>
+<h2 id="波士顿骑行">波士顿骑行</h2>
+<h3 id="第一次--464-km">第一次   46.4 km</h3>
+<p><a href="http://martinliu.cn/boston-running-log/screenshot_2015-06-25-21-45-21/"><img src="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2015/07/Screenshot_2015-06-25-21-45-21-576x1024.jpeg" alt="Screenshot_2015-06-25-21-45-21"></a></p>
+<p>自行车租金是 25 刀，下午开完会发现其它两个同伴时差严重，因此我独自骑行出去。骑行的方向其实是波士顿马拉松延伸的方向，只是那个路线是要在公路上的，车多没法骑行那个赛道，骑车出去闲逛，也超过了一个全马的距离，基本上把哈佛和 MIT 逛清楚了。</p>
+<h3 id="第二次-217-km">第二次 21.7 km</h3>
+<p><a href="http://martinliu.cn/boston-running-log/0709_12/"><img src="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2015/07/0709_12-576x1024.jpg" alt="0709_12"></a></p>
+<p>第二次，本来不想去，可是需要给伙伴去带路，就带他们走了一遍昨天的路，让他们也浏览了我看过的景点。</p>
+<h2 id="纽约跑步---中央公园-10km">纽约跑步 - 中央公园 10KM</h2>
+<p><a href="http://martinliu.cn/boston-running-log/0709_14/"><img src="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2015/07/0709_14-576x1024.jpg" alt="0709_14"></a></p>
+<p>中央公园打卡跑过，很满意的得到了这个路线，公园里里面的运动氛围很强，爽跑一圈。</p>
+
+    </div>
+    <footer>
+      <div class="stats">
+  
+    <ul class="categories">
+      
+        
+          <li><a class="article-terms-link" href="/categories/running/">Running</a></li>
+        
+      
+    </ul>
+  
+  
+    <ul class="tags">
+      
+        
+          <li><a class="article-terms-link" href="/tags/boston/">Boston</a></li>
+        
+          <li><a class="article-terms-link" href="/tags/%e6%b3%a2%e5%a3%ab%e9%a1%bf/">波士顿</a></li>
+        
+          <li><a class="article-terms-link" href="/tags/%e7%ba%bd%e7%ba%a6/">纽约</a></li>
+        
+      
+    </ul>
+  
+</div>
+
+    </footer>
+  </article>
+  
+    
+
+  
+  <div class="pagination">
+    
+      <a href="/2015/07/12/ovirt-e69c8de58aa1e599a8e8999ae68b9fe58c96e6b58be8af95/" class="button left"><span>Ovirt 服务器虚拟化测试</span></a>
+    
+    
+      <a href="/2015/07/09/e9a696e6aca1e7be8ee59bbde4b89ce6b5b7e5b2b8e4b98be69785/" class="button right"><span>首次美国东海岸之旅</span></a>
+    
+  </div>
+
+      </main>
+      <section id="site-sidebar">
+  
+    <section id="recent-posts">
+      <header>
+        <h1>最新文章</h1>
+      </header>
+      
+      <article class="mini-post">
+          <a href="/blog/workshop-elastic-observability/" class="image" style="--bg-image: url('https://martinliu.cn/img/2021/Hubble_01.jpg');">
+    <img class="stretchH" src="https://martinliu.cn/img/2021/Hubble_01.jpg" alt="Hubble">
+  </a>
+        <header>
+          <h2><a href="/blog/workshop-elastic-observability/">Elastic 可观测性工作坊</a></h2>
+          <time class="published" datetime="2021-02-06 10:36:12 &#43;0800 CST">February 6, 2021</time>
+        </header>
+      </article>
+      
+      <article class="mini-post">
+          <a href="/blog/change-back-on-github-page-again/" class="image" style="--bg-image: url('https://martinliu.cn/img/2019/03/pic03.jpg');">
+    <img class="stretchH" src="https://martinliu.cn/img/2019/03/pic03.jpg" alt="Valley">
+  </a>
+        <header>
+          <h2><a href="/blog/change-back-on-github-page-again/">在 Github 上搭建基于 Hugo 的免费个人博客</a></h2>
+          <time class="published" datetime="2021-02-06 00:00:00 &#43;0000 UTC">February 6, 2021</time>
+        </header>
+      </article>
+      
+      <article class="mini-post">
+          <a href="/blog/devopscoach-weekly-6/" class="image" style="--bg-image: url('https://martinliu.cn/');">
+    <img class="stretchH" src="https://martinliu.cn/" alt="">
+  </a>
+        <header>
+          <h2><a href="/blog/devopscoach-weekly-6/">DevOps Coach 周刊 #6</a></h2>
+          <time class="published" datetime="2020-08-31 00:11:01 &#43;0800 CST">August 31, 2020</time>
+        </header>
+      </article>
+      
+      <article class="mini-post">
+          <a href="/blog/elasticsearch-3-nodes-cluster-setup/" class="image" style="--bg-image: url('https://martinliu.cn/');">
+    <img class="stretchH" src="https://martinliu.cn/" alt="">
+  </a>
+        <header>
+          <h2><a href="/blog/elasticsearch-3-nodes-cluster-setup/">Elasticsearch 3 节点集群搭建 (7.9.0)</a></h2>
+          <time class="published" datetime="2020-08-27 13:54:46 &#43;0800 CST">August 27, 2020</time>
+        </header>
+      </article>
+      
+      <article class="mini-post">
+          <a href="/blog/devopscoach-weekly-5/" class="image" style="--bg-image: url('https://martinliu.cn/');">
+    <img class="stretchH" src="https://martinliu.cn/" alt="">
+  </a>
+        <header>
+          <h2><a href="/blog/devopscoach-weekly-5/">DevOps Coach 周刊 #5</a></h2>
+          <time class="published" datetime="2020-08-25 15:20:51 &#43;0800 CST">August 25, 2020</time>
+        </header>
+      </article>
+      
+      
+        <footer>
+          <a href="/blog/" class="button">查看更多</a>
+        </footer>
+      
+    </section>
+  
+
+  
+    
+
+      <section id="categories">
+        <header>
+          <h1><a href="/categories">分类</a></h1>
+        </header>
+        <ul>
+          
+          
+          <li>
+              <a href="/categories/blog/">blog<span class="count">96</span></a>
+          
+          <li>
+              <a href="/categories/itsm/">itsm<span class="count">85</span></a>
+          
+          <li>
+              <a href="/categories/infrastructure/">infrastructure<span class="count">46</span></a>
+          
+          <li>
+              <a href="/categories/devops/">devops<span class="count">38</span></a>
+          
+          <li>
+              <a href="/categories/opensource/">opensource<span class="count">32</span></a>
+          
+          <li>
+              <a href="/categories/cloud-computing/">cloud-computing<span class="count">23</span></a>
+          
+          <li>
+              <a href="/categories/cms/cmdb/">cms/cmdb<span class="count">20</span></a>
+          
+          <li>
+              <a href="/categories/running/">running<span class="count">19</span></a>
+          
+          <li>
+              <a href="/categories/travel/">travel<span class="count">13</span></a>
+          
+          <li>
+              <a href="/categories/sre/">sre<span class="count">2</span></a>
+          
+          </li>
+        </ul>
+      </section>
+    
+  
+
+  
+    <section id="mini-bio">
+      <header>
+        <h1>关于</h1>
+      </header>
+      <p>This Blog is sharing DevOps and SRE ariticles. I have translated DevOps Handbook and SRE Workbook.</p>
+      <footer>
+        <a href="/about" class="button">学到更多</a>
+      </footer>
+    </section>
+  
+</section>
+
+      <footer id="site-footer">
+  
+      <ul class="socnet-icons">
+        
+
+        <li><a href="//github.com/martinliu" target="_blank" rel="noopener" title="GitHub" class="fab fa-github"></a></li>
+
+
+
+
+
+
+
+
+
+
+
+<li><a href="//www.linkedin.com/in/liuzheng" target="_blank" rel="noopener" title="LinkedIn" class="fab fa-linkedin"></a></li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<li><a href="//twitter.com/martinliu" target="_blank" rel="noopener" title="Twitter" class="fab fa-twitter"></a></li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+      </ul>
+  
+  <p class="copyright">
+    © 2021 DevOps &amp; SRE Blog
+      <br>
+    主题: <a href='https://themes.gohugo.io/hugo-future-imperfect-slim/' target='_blank' rel='noopener'>Hugo Future Imperfect Slim</a><br>移植自 <a href='https://html5up.net/future-imperfect' target='_blank' rel='noopener'>HTML5 UP</a> | 由 <a href='https://gohugo.io/' target='_blank' rel='noopener' title='0.80.0'>Hugo</a> 驱动
+  </p>
+</footer>
+<a id="back-to-top" href="#" class="fas fa-arrow-up fa-2x"></a>
+
+      <script src="/js/highlight.js"></script>
+    
+    <script>hljs.initHighlightingOnLoad();</script><script src="/js/bundle.min.b4e669fa428a81defb8af0916c53f39cd1b8e0bbab22199c06f0b182907ba474.js" integrity="sha256-tOZp&#43;kKKgd77ivCRbFPznNG44LurIhmcBvCxgpB7pHQ="></script>
+    <script src="/js/add-on.js"></script>
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-749876-6', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+
+    </div>
+  </body>
+</html>

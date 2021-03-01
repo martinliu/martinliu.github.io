@@ -9,13 +9,6 @@ tags:
 - CSI
 - ISO20000
 - ITIL
-- process
-- SD
-- Service Lifecycle
-- SO
-- SS
-- ST
-- v3
 title: ITIL V3 Study Notes (1)
 url: /2008/10/19/itil-v3-study-notes-1/
 wordpress_id: 49233

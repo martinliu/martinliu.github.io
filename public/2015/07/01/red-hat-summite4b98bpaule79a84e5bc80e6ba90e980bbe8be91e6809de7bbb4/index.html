@@ -1,24 +1,528 @@
-<!doctype html><html lang=zh-cn><head><meta charset=utf-8><title>Red Hat Summit之Paul的开源逻辑思维 - 刘征的博客</title><meta name=viewport content="width=device-width,initial-scale=1"><meta name=generator content="Hugo 0.80.0"><meta property="og:site_name" content="刘征的博客"><meta property="og:title" content="Red Hat Summit之Paul的开源逻辑思维"><meta property="og:description" content="Martin's Liu is bloging on DevOps and SRE topics"><meta property="description" content="Martin's Liu is bloging on DevOps and SRE topics"><meta property="og:url" content="https://martinliu.cn/2015/07/01/red-hat-summite4b98bpaule79a84e5bc80e6ba90e980bbe8be91e6809de7bbb4/"><meta property="og:type" content="article"><meta property="og:image" content="https://martinliu.cn/img/main/logo.jpg"><link rel=stylesheet href=/css/bundle.min.d9e04ae08c9b3049b766dbd4aeab7d862c5ea1d13679b621490e0f5df5507497.css integrity="sha256-2eBK4IybMEm3ZtvUrqt9hixeodE2ebYhSQ4PXfVQdJc="><link rel=stylesheet href=/css/add-on.css></head><body><header id=site-header><nav id=site-nav><h1 class=nav-title><a href=/ class=nav>博客</a></h1><menu id=site-nav-menu class="flyout-menu menu"><a href=/ class="nav link"><i class="fas fa-home"></i>首页</a>
-<a href=/about/ class="nav link"><i class="far fa-id-card"></i>关于</a>
-<a href=/blog/ class="nav link"><i class="far fa-newspaper"></i>博客</a>
-<a href=/categories/ class="nav link"><i class="fas fa-sitemap"></i>分类</a>
-<a href=/contact/ class="nav link"><i class="far fa-envelope"></i>联系</a>
-<a href=#share-menu class="nav link share-toggle"><i class="fas fa-share-alt">&nbsp;</i>Share</a>
-<a href=#search-input class="nav link search-toggle"><i class="fas fa-search">&nbsp;</i>Search</a></menu>
-<a href=#search-input class="nav search-toggle"><i class="fas fa-search fa-2x">&nbsp;</i></a>
-<a href=#share-menu class="nav share-toggle"><i class="fas fa-share-alt fa-2x">&nbsp;</i></a>
-<a href=#lang-menu class="nav lang-toggle" lang=zh-cn>zh-cn</a>
-<a href=#site-nav class="nav nav-toggle"><i class="fas fa-bars fa-2x"></i></a></nav><menu id=search class=menu><input id=search-input class="search-input menu"></input><div id=search-results class="search-results menu"></div></menu><menu id=lang-menu class="flyout-menu menu"><a href=# lang=zh-cn class="nav link active">中文 (zh-cn)</a>
-<a href=/en lang=en class="nav no-lang link">English (en)</a></menu>
-<menu id=share-menu class="flyout-menu menu"><h1>Share Post</h1><a href="//twitter.com/share?text=Red%20Hat%20Summit%e4%b9%8bPaul%e7%9a%84%e5%bc%80%e6%ba%90%e9%80%bb%e8%be%91%e6%80%9d%e7%bb%b4&url=https%3a%2f%2fmartinliu.cn%2f2015%2f07%2f01%2fred-hat-summite4b98bpaule79a84e5bc80e6ba90e980bbe8be91e6809de7bbb4%2f" target=_blank rel=noopener class="nav share-btn twitter"><p>Twitter</p></a><a href="//www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fmartinliu.cn%2f2015%2f07%2f01%2fred-hat-summite4b98bpaule79a84e5bc80e6ba90e980bbe8be91e6809de7bbb4%2f" target=_blank rel=noopener class="nav share-btn facebook"><p>Facebook</p></a><a href="//www.reddit.com/submit?url=https%3a%2f%2fmartinliu.cn%2f2015%2f07%2f01%2fred-hat-summite4b98bpaule79a84e5bc80e6ba90e980bbe8be91e6809de7bbb4%2f&title=Red%20Hat%20Summit%e4%b9%8bPaul%e7%9a%84%e5%bc%80%e6%ba%90%e9%80%bb%e8%be%91%e6%80%9d%e7%bb%b4" target=_blank rel=noopener class="nav share-btn reddit"><p>Reddit</p></a><a href="//www.linkedin.com/shareArticle?url=https%3a%2f%2fmartinliu.cn%2f2015%2f07%2f01%2fred-hat-summite4b98bpaule79a84e5bc80e6ba90e980bbe8be91e6809de7bbb4%2f&title=Red%20Hat%20Summit%e4%b9%8bPaul%e7%9a%84%e5%bc%80%e6%ba%90%e9%80%bb%e8%be%91%e6%80%9d%e7%bb%b4" target=_blank rel=noopener class="nav share-btn linkedin"><p>LinkedIn</p></a><a href="//www.pinterest.com/pin/create/button/?url=https%3a%2f%2fmartinliu.cn%2f2015%2f07%2f01%2fred-hat-summite4b98bpaule79a84e5bc80e6ba90e980bbe8be91e6809de7bbb4%2f&description=Red%20Hat%20Summit%e4%b9%8bPaul%e7%9a%84%e5%bc%80%e6%ba%90%e9%80%bb%e8%be%91%e6%80%9d%e7%bb%b4" target=_blank rel=noopener class="nav share-btn pinterest"><p>Pinterest</p></a><a href="mailto:?subject=%e6%9f%a5%e7%9c%8b%e6%ad%a4%e5%b8%96%e5%ad%90%e7%9a%84%e4%bd%9c%e8%80%85 liuadmin&body=https%3a%2f%2fmartinliu.cn%2f2015%2f07%2f01%2fred-hat-summite4b98bpaule79a84e5bc80e6ba90e980bbe8be91e6809de7bbb4%2f" target=_blank class="nav share-btn email" data-proofer-ignore><p>Email</p></a></menu></header><div id=wrapper><section id=site-intro><a href=/><img src=https://martinliu.cn/img/main/logo.jpg class=circle width=100 alt="Martin Liu"></a><header><h1>Martin Liu's Blog</h1></header><main><p>Community Advocate, DevOps China Community Organizer</p></main><footer><ul class=socnet-icons><li><a href=//github.com/martinliu target=_blank rel=noopener title=GitHub class="fab fa-github"></a></li><li><a href=//www.linkedin.com/in/liuzheng target=_blank rel=noopener title=LinkedIn class="fab fa-linkedin"></a></li><li><a href=//twitter.com/martinliu target=_blank rel=noopener title=Twitter class="fab fa-twitter"></a></li></ul></footer></section><main id=site-main><article class=post><header><div class=title><h2><a href=/2015/07/01/red-hat-summite4b98bpaule79a84e5bc80e6ba90e980bbe8be91e6809de7bbb4/>Red Hat Summit之Paul的开源逻辑思维</a></h2></div><div class=meta><time datetime="2015-07-01 06:52:00 +0000 UTC">July 1, 2015</time><p>liuadmin</p><p>1 分钟</p></div></header><div id=socnet-share><a href="//twitter.com/share?text=Red%20Hat%20Summit%e4%b9%8bPaul%e7%9a%84%e5%bc%80%e6%ba%90%e9%80%bb%e8%be%91%e6%80%9d%e7%bb%b4&url=https%3a%2f%2fmartinliu.cn%2f2015%2f07%2f01%2fred-hat-summite4b98bpaule79a84e5bc80e6ba90e980bbe8be91e6809de7bbb4%2f" target=_blank rel=noopener class="nav share-btn twitter"><p>Twitter</p></a><a href="//www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fmartinliu.cn%2f2015%2f07%2f01%2fred-hat-summite4b98bpaule79a84e5bc80e6ba90e980bbe8be91e6809de7bbb4%2f" target=_blank rel=noopener class="nav share-btn facebook"><p>Facebook</p></a><a href="//www.reddit.com/submit?url=https%3a%2f%2fmartinliu.cn%2f2015%2f07%2f01%2fred-hat-summite4b98bpaule79a84e5bc80e6ba90e980bbe8be91e6809de7bbb4%2f&title=Red%20Hat%20Summit%e4%b9%8bPaul%e7%9a%84%e5%bc%80%e6%ba%90%e9%80%bb%e8%be%91%e6%80%9d%e7%bb%b4" target=_blank rel=noopener class="nav share-btn reddit"><p>Reddit</p></a><a href="//www.linkedin.com/shareArticle?url=https%3a%2f%2fmartinliu.cn%2f2015%2f07%2f01%2fred-hat-summite4b98bpaule79a84e5bc80e6ba90e980bbe8be91e6809de7bbb4%2f&title=Red%20Hat%20Summit%e4%b9%8bPaul%e7%9a%84%e5%bc%80%e6%ba%90%e9%80%bb%e8%be%91%e6%80%9d%e7%bb%b4" target=_blank rel=noopener class="nav share-btn linkedin"><p>LinkedIn</p></a><a href="//www.pinterest.com/pin/create/button/?url=https%3a%2f%2fmartinliu.cn%2f2015%2f07%2f01%2fred-hat-summite4b98bpaule79a84e5bc80e6ba90e980bbe8be91e6809de7bbb4%2f&description=Red%20Hat%20Summit%e4%b9%8bPaul%e7%9a%84%e5%bc%80%e6%ba%90%e9%80%bb%e8%be%91%e6%80%9d%e7%bb%b4" target=_blank rel=noopener class="nav share-btn pinterest"><p>Pinterest</p></a><a href="mailto:?subject=%e6%9f%a5%e7%9c%8b%e6%ad%a4%e5%b8%96%e5%ad%90%e7%9a%84%e4%bd%9c%e8%80%85 liuadmin&body=https%3a%2f%2fmartinliu.cn%2f2015%2f07%2f01%2fred-hat-summite4b98bpaule79a84e5bc80e6ba90e980bbe8be91e6809de7bbb4%2f" target=_blank class="nav share-btn email" data-proofer-ignore><p>Email</p></a></div><div class=content><p>应用为王，操作系统是心跳。从整个行业的角度，而不只是操作系统和某种工具的角度看，行业已经发生了重大的变化。下面是一些例证。</p><ol><li><p>VMWare几年前说操作系统已死，可是最近却发布了Linux操作系统的容器技术的产品线。</p></li><li><p>微软也把它的一些技术开源了，并且在这些方面取得了一些它们认为可喜的进展。</p></li></ol><p>IDC的调查显示，数据中心的操作系统目前是两个主要选择：Linux和Windows。以上说明了：开源不再是非主流，而进入了数据中心主流技术，企业现在开发的应用将不得不在两种操作系统中做出选择。</p><p>[caption id=&ldquo;attachment_53819&rdquo; align=&ldquo;aligncenter&rdquo; width=&ldquo;800&rdquo;]<a href=http://martinliu.cn/paul%e7%9a%84%e5%bc%80%e6%ba%90%e9%80%bb%e8%be%91%e6%80%9d%e7%bb%b4/cormier_keynote_800px/><img src=http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2015/07/cormier_keynote_800px.jpg alt=cormier_keynote_800px></a> Keynote 笔记[/caption]</p><p>从这个角度出发，Red Hat的使命才刚过开始，它中在用Linux和相关开源技术来变革整个企业数据中心的技术堆栈；从基础架构一直到应用开发。</p><p>为何开源技术当今如此之火热？开源技术正在解决和处理现实社会中那些最复杂的业务问题。为什么会这样？驱动因素是什么？是动态变化的企业业务需求。</p><p>开源技术最擅长的是快速地创新，这成为了企业技术创新和业务变革的动力，IT也逐渐因此从成本中心转变为价值和创新中心。</p><p>开源不仅仅只是看到源代码，更重要的：它是自由开放的平台，是分享的平台，它萌生了持续不断的创新，一个创新基于另外一个创新之上，一环接一环地扩散开来，根本停不下来。 这意味着技术问题能够被更快、更好地解决；而不是丢给私有软件技术厂商们各自独自解决，企业最等来消费他们的产品。</p><p>Linux是计算供给层，毫无疑问云计算和软件定义存储都基于它。它不能叫做一个Linux社区，而是一组相关的社区项目协作在一起共同创新，这样才带来了企业可以使用的高性能稳定的操作系统；这样Red Hat才有可能给企业带来企业级Linux操作系统。</p><p>KVM是计算的虚拟化抽象层，VMWare最先进入这一企业市场，它试图用封闭的管理层和锁定的模式来控制这个市场，从而控制客户。Red Hat的使命是：为企业提供了Linux操作系统和至上的开放虚拟化技术；企业可以在这个层面消费开源开放虚拟化技术，并做出备份的方案选择。</p><p>没有Linux和开放虚拟化云计算就不存在。公有云提供商使用这些技术构建了共有云服务。可是企业不想让自己的业务运行在防火墙之外，因此OpenStack 项目应运而生。它让企业构建私有云成为可能。Red Hat在OpenStack上面所有的贡献都100%的提交到社区，成为主流代码的一部分；从而OpenStack能够运行在Red Hat Linux和KVM之上，这使得Red Hat巨大的Linux生态系统的价值服务与OpenStack领域；企业能够借此放心地在OpenStack构建的私有云，并运行企业重要的业务。</p><p><img src=http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2015/07/paul-keynote.jpg alt=paul-keynote>在开源的开发框架里，开发人员可以有更多、更新的开发语言、开发工具、库和社区的支持，这使他们能更快地解决业务问题。这些框架首先被广泛应用于互联网行业公司。Red Hat基于JBoss社区为企业提供了企业级的应用服务器、集成工具、规则引擎和丰富的开发语言。让企业级应用能像互联网公司一样地使用开放应用所需的开发框架和开发平台。相比私有技术公司用了四十多年达到目前的程度，开源领域的快速创新用十几年就做到了，发展速度比私有软件快很多。</p><p>现在看到了基础架构和开发框架都极大地受到了开源技术的影响、冲击和变革。运维和开发之间亟待出现一种融合技术，来改善目前的互为孤岛的现状。这种联系将使开源技术为他们带来最大的共同价值。</p><p>容器技术实际上在操作系统中存在了很多年了，只是最近才被引入开源领域；它的出现将确实会改善孤岛问题，为开发人员解决了应用在各种混合的计算和存储平台之间的可移植性、一致性和敏捷性等问题。</p><p>开发和运维之间的割裂还导致了业务创新的迟钝，这个问题已经持续存在很多很多年了。因此Red Hat发布了Red Hat Atomic Enterprise Platform。让企业应用可以安全地在各种形式的计算平台上一致地运行。Red Hat 发布了OpenShift v3 ，它是一些列容器的自动化调度和部署管理工具集合，并包含全套的开放应用开发框架平台。它能帮助企业基于容器技术发展出新一代的混合应用。</p><p>为何企业IT技术会有这些变革？为何这些变革会发生？其实还是企业不得不快速地响应业务的变化，企业不得不使用IT技术来创造出更多的价值，应用开发不得不跟上需求变化的脚步，基础架构的运作和运维再也不允许我们手工地安装一台服务器，频繁地去手动更改网口跳线。企业必须面对和适应动态的业务变化，不光要从开发层面，同时从运维层面。</p><p>企业需要构建和重写无状态的业务应用，并使用软件定义存储来解决传统存储的空间不能无限扩容的问题。Gluster和Ceph在这方面已经日臻成熟，并或将去替换私有的传统存储技术。</p><p><a href=http://martinliu.cn/paul%e7%9a%84%e5%bc%80%e6%ba%90%e9%80%bb%e8%be%91%e6%80%9d%e7%bb%b4/devops-in-practice/><img src=http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2015/07/DevOps-in-practice-1024x574.png alt=DevOps-in-practice></a></p><p>企业应用DevOps是一种趋势，它不是一个理论，而是一种实践。Red Hat的全线企业级开源技术平台已经做好了准备，企业现在就可以开始DevOps实践之旅。</p><p>开源和闭源之战将不可逆转地持续下去，Red Hat将持续守护开源阵营。私有软件技术不愿意看到逐渐开放的变化，他们不希望开放，不愿意去分享；Pual坚信开放不仅仅是看到代码而已，而是与之共生，是开放的软件开发流程，是基于开放代码上的不断创新活动。这是一场宏大的战役，开源逐渐开始在一些战斗中取胜，待到明年此时，或将看到开源是如何在企业IT基础架构上全面获胜的。</p><p>本演讲的官方Blog报道：<a href=http://summitblog.redhat.com/2015/06/24/paul-cormier-announces-new-products-and-technologies-at-red-hat-summit/>http://summitblog.redhat.com/2015/06/24/paul-cormier-announces-new-products-and-technologies-at-red-hat-summit/</a></p><p>下面是演讲实况视频。</p></div><footer><div class=stats><ul class=categories><li><a class=article-terms-link href=/categories/opensource/>opensource</a></li></ul><ul class=tags><li><a class=article-terms-link href=/tags/redhat/>redhat</a></li><li><a class=article-terms-link href=/tags/summit/>summit</a></li></ul></div></footer></article><article class=post><div><h2 id=say-something>说些什么</h2><form id=comment-form class=new-comment method=post><h3 class="reply-notice hidden"><span class=reply-name></span></h3><input type=hidden name=options[entryId] value=88770fb997f4e5b64fde0f8c158d2d46>
-<input type=hidden name=fields[replyThread]>
-<input type=hidden name=fields[replyID]>
-<input type=hidden name=fields[replyName]>
-<input required name=fields[name] type=text placeholder=你的名字>
-<input name=fields[website] type=text placeholder=您的网页>
-<input required name=fields[email] type=email placeholder=你的邮件>
-<textarea required name=fields[body] placeholder=你的信息 rows=10></textarea><div class=submit-notice><strong class="submit-notice-text submit-success hidden">感谢您的评论！被批准后它会立即在此站点展示。</strong>
-<strong class="submit-notice-text submit-failed hidden">很抱歉，您的提交存在错误。请确保所有必填字段都已填写正确，然后再试一次。</strong></div><input type=submit value=送出 class=button>
-<input type=submit value=已送出 class="hidden button" disabled>
-<input type=reset value=重设 class=button></form></div><div><h2>评论</h2><p>还沒有留言。</p></div></article><div class=pagination><a href=/2015/07/09/icinga2-e4bc81e4b89ae7baa7e58a9fe883bde8af84e6b58b1/ class="button left"><span>icinga2 企业级功能评测1</span></a>
-<a href=/2015/06/21/boston-running-1-charles-river/ class="button right"><span>Boston Running #1 Charles River</span></a></div></main><section id=site-sidebar><section id=recent-posts><header><h1>最新文章</h1></header><article class=mini-post><a href=/blog/workshop-elastic-observability/ class=image style="--bg-image: url('https://martinliu.cn/img/2019/03/pic01.jpg')"><img class=stretchH src=https://martinliu.cn/img/2019/03/pic01.jpg alt=Valley></a><header><h2><a href=/blog/workshop-elastic-observability/>Elastic 可观测性工作坊</a></h2><time class=published datetime="2021-02-06 10:36:12 +0800 CST">February 6, 2021</time></header></article><article class=mini-post><a href=/blog/change-back-on-github-page-again/ class=image style="--bg-image: url('https://martinliu.cn/img/2019/03/pic03.jpg')"><img class=stretchH src=https://martinliu.cn/img/2019/03/pic03.jpg alt=Valley></a><header><h2><a href=/blog/change-back-on-github-page-again/>博客换一个新样式</a></h2><time class=published datetime="2021-02-06 00:00:00 +0000 UTC">February 6, 2021</time></header></article><article class=mini-post><a href=/blog/devopscoach-weekly-6/ class=image style="--bg-image: url('https://martinliu.cn/')"><img src=https://martinliu.cn/ alt></a><header><h2><a href=/blog/devopscoach-weekly-6/>DevOps Coach 周刊 #6</a></h2><time class=published datetime="2020-08-31 00:11:01 +0800 CST">August 31, 2020</time></header></article><article class=mini-post><a href=/blog/elasticsearch-3-nodes-cluster-setup/ class=image style="--bg-image: url('https://martinliu.cn/')"><img src=https://martinliu.cn/ alt></a><header><h2><a href=/blog/elasticsearch-3-nodes-cluster-setup/>Elasticsearch 3 节点集群搭建 (7.9.0)</a></h2><time class=published datetime="2020-08-27 13:54:46 +0800 CST">August 27, 2020</time></header></article><article class=mini-post><a href=/blog/devopscoach-weekly-5/ class=image style="--bg-image: url('https://martinliu.cn/')"><img src=https://martinliu.cn/ alt></a><header><h2><a href=/blog/devopscoach-weekly-5/>DevOps Coach 周刊 #5</a></h2><time class=published datetime="2020-08-25 15:20:51 +0800 CST">August 25, 2020</time></header></article><footer><a href=/blog/ class=button>查看更多</a></footer></section><section id=categories><header><h1><a href=/categories>分类</a></h1></header><ul><li><a href=/categories/blog/>blog<span class=count>107</span></a><li><a href=/categories/itsm/>itsm<span class=count>95</span></a><li><a href=/categories/infrastructure/>infrastructure<span class=count>48</span></a><li><a href=/categories/devops/>devops<span class=count>38</span></a><li><a href=/categories/opensource/>opensource<span class=count>35</span></a><li><a href=/categories/cloud-computing/>cloud-computing<span class=count>27</span></a><li><a href=/categories/running/>running<span class=count>22</span></a><li><a href=/categories/cms/cmdb/>cms/cmdb<span class=count>20</span></a><li><a href=/categories/travel/>travel<span class=count>14</span></a><li><a href=/categories/sre/>sre<span class=count>2</span></a></li></ul></section><section id=mini-bio><header><h1>关于</h1></header><p>This Blog is sharing DevOps and SRE ariticles. I have translated DevOps Handbook and SRE Workbook.</p><footer><a href=/about class=button>学到更多</a></footer></section></section><footer id=site-footer><ul class=socnet-icons><li><a href=//github.com/martinliu target=_blank rel=noopener title=GitHub class="fab fa-github"></a></li><li><a href=//www.linkedin.com/in/liuzheng target=_blank rel=noopener title=LinkedIn class="fab fa-linkedin"></a></li><li><a href=//twitter.com/martinliu target=_blank rel=noopener title=Twitter class="fab fa-twitter"></a></li></ul><p class=copyright>© 2021 刘征的博客<br>主题: <a href=https://themes.gohugo.io/hugo-future-imperfect-slim/ target=_blank rel=noopener>Hugo Future Imperfect Slim</a><br>移植自 <a href=https://html5up.net/future-imperfect target=_blank rel=noopener>HTML5 UP</a> | 由 <a href=https://gohugo.io/ target=_blank rel=noopener title=0.80.0>Hugo</a> 驱动</p></footer><a id=back-to-top href=# class="fas fa-arrow-up fa-2x"></a><script src=/js/highlight.js></script><script>hljs.initHighlightingOnLoad();</script><script src=/js/bundle.min.bbba6b424a8ac5b6858cd5fc80eabc9c5277945cc2dc349204646b84891b4b58.js integrity="sha256-u7prQkqKxbaFjNX8gOq8nFJ3lFzC3DSSBGRrhIkbS1g="></script><script src=/js/add-on.js></script><script type=application/javascript>var doNotTrack=false;if(!doNotTrack){window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;ga('create','UA-749876-6','auto');ga('send','pageview');}</script><script async src=https://www.google-analytics.com/analytics.js></script></div></body></html>
+<!doctype html>
+<html lang="zh-cn">
+  <head>
+  <meta charset="utf-8">
+<title>Red Hat Summit之Paul的开源逻辑思维 - DevOps &amp; SRE Blog</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+<meta name="generator" content="Hugo 0.80.0" /><meta property="og:site_name" content="DevOps &amp; SRE Blog">
+  <meta property="og:title" content="Red Hat Summit之Paul的开源逻辑思维">
+  <meta property="og:description" content="Martin&#39;s Liu is bloging on DevOps and SRE topics">
+  <meta property="description" content="Martin&#39;s Liu is bloging on DevOps and SRE topics">
+  <meta property="og:url" content="https://martinliu.cn/2015/07/01/red-hat-summite4b98bpaule79a84e5bc80e6ba90e980bbe8be91e6809de7bbb4/">
+  <meta property="og:type" content="article">
+  
+    <meta property="og:image" content="https://martinliu.cn/img/main/logo.jpg">
+  
+  
+            <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.3/styles/default.min.css">
+          <link rel="stylesheet" href="/css/bundle.min.307f33cd8015e5bab28d6ebda9b400f8d3059bc248b4e60adf4d23469fab5a2b.css" integrity="sha256-MH8zzYAV5bqyjW69qbQA&#43;NMFm8JItOYK300jRp&#43;rWis="><link rel="stylesheet" href="/css/add-on.css">
+</head>
+
+  <body>
+    
+
+<header id="site-header">
+  <nav id="site-nav">
+    <h1 class="nav-title">
+      <a href="/" class="nav">
+        
+          博客
+        
+      </a>
+    </h1>
+    <menu id="site-nav-menu" class="flyout-menu menu">
+      
+        
+          
+          <a href="/" class="nav link"><i class='fas fa-home'></i> 首页</a>
+        
+      
+        
+          
+          <a href="/about/" class="nav link"><i class='far fa-id-card'></i> 关于</a>
+        
+      
+        
+          
+          <a href="/blog/" class="nav link"><i class='far fa-newspaper'></i> 博客</a>
+        
+      
+        
+          
+          <a href="/categories/" class="nav link"><i class='fas fa-sitemap'></i> 分类</a>
+        
+      
+        
+          
+          <a href="/course/" class="nav link"><i class='fa fa-book'></i> 课程</a>
+        
+      
+      <a href="#share-menu" class="nav link share-toggle"><i class="fas fa-share-alt">&nbsp;</i>Share</a>
+      
+    </menu>
+    
+    <a href="#share-menu" class="nav share-toggle"><i class="fas fa-share-alt fa-2x">&nbsp;</i></a>
+    <a href="#lang-menu" class="nav lang-toggle" lang="zh-cn">zh-cn</a>
+    <a href="#site-nav" class="nav nav-toggle"><i class="fas fa-bars fa-2x"></i></a>
+  </nav>
+  
+  <menu id="lang-menu" class="flyout-menu menu">
+  <a href="#" lang="zh-cn" class="nav link active">中文 (zh-cn)</a>
+  
+    
+      
+        <a href="/en" lang="en" class="nav no-lang link">English (en)</a>
+      
+    
+      
+    
+  
+</menu>
+
+  
+    <menu id="share-menu" class="flyout-menu menu">
+      <h1>Share Post</h1>
+      
+
+
+
+
+  
+    
+    <a href="//twitter.com/share?text=Red%20Hat%20Summit%e4%b9%8bPaul%e7%9a%84%e5%bc%80%e6%ba%90%e9%80%bb%e8%be%91%e6%80%9d%e7%bb%b4&amp;url=https%3a%2f%2fmartinliu.cn%2f2015%2f07%2f01%2fred-hat-summite4b98bpaule79a84e5bc80e6ba90e980bbe8be91e6809de7bbb4%2f" target="_blank" rel="noopener" class="nav share-btn twitter">
+        <p>Twitter</p>
+      </a>
+  
+
+  
+      <a href="//www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fmartinliu.cn%2f2015%2f07%2f01%2fred-hat-summite4b98bpaule79a84e5bc80e6ba90e980bbe8be91e6809de7bbb4%2f" target="_blank" rel="noopener" class="nav share-btn facebook">
+        <p>Facebook</p>
+        </a>
+  
+
+  
+    <a href="//www.reddit.com/submit?url=https%3a%2f%2fmartinliu.cn%2f2015%2f07%2f01%2fred-hat-summite4b98bpaule79a84e5bc80e6ba90e980bbe8be91e6809de7bbb4%2f&amp;title=Red%20Hat%20Summit%e4%b9%8bPaul%e7%9a%84%e5%bc%80%e6%ba%90%e9%80%bb%e8%be%91%e6%80%9d%e7%bb%b4" target="_blank" rel="noopener" class="nav share-btn reddit">
+          <p>Reddit</p>
+        </a>
+  
+
+  
+        <a href="//www.linkedin.com/shareArticle?url=https%3a%2f%2fmartinliu.cn%2f2015%2f07%2f01%2fred-hat-summite4b98bpaule79a84e5bc80e6ba90e980bbe8be91e6809de7bbb4%2f&amp;title=Red%20Hat%20Summit%e4%b9%8bPaul%e7%9a%84%e5%bc%80%e6%ba%90%e9%80%bb%e8%be%91%e6%80%9d%e7%bb%b4" target="_blank" rel="noopener" class="nav share-btn linkedin">
+            <p>LinkedIn</p>
+          </a>
+  
+
+  
+        <a href="//www.pinterest.com/pin/create/button/?url=https%3a%2f%2fmartinliu.cn%2f2015%2f07%2f01%2fred-hat-summite4b98bpaule79a84e5bc80e6ba90e980bbe8be91e6809de7bbb4%2f&amp;description=Red%20Hat%20Summit%e4%b9%8bPaul%e7%9a%84%e5%bc%80%e6%ba%90%e9%80%bb%e8%be%91%e6%80%9d%e7%bb%b4" target="_blank" rel="noopener" class="nav share-btn pinterest">
+          <p>Pinterest</p>
+        </a>
+  
+
+  
+        <a href="mailto:?subject=%e6%9f%a5%e7%9c%8b%e6%ad%a4%e5%b8%96%e5%ad%90%e7%9a%84%e4%bd%9c%e8%80%85 liuadmin&amp;body=https%3a%2f%2fmartinliu.cn%2f2015%2f07%2f01%2fred-hat-summite4b98bpaule79a84e5bc80e6ba90e980bbe8be91e6809de7bbb4%2f" target="_blank" class="nav share-btn email" data-proofer-ignore>
+          <p>Email</p>
+        </a>
+  
+
+
+    </menu>
+  
+</header>
+
+    <div id="wrapper">
+      <section id="site-intro" >
+  <a href="/"><img src="https://martinliu.cn/img/main/logo.jpg" class="circle" width="100" alt="Martin Liu" /></a>
+  <header>
+    <h1>Martin Liu's Blog</h1>
+  </header>
+  <main>
+    <p>Community Advocate, DevOps China Community Organizer</p>
+  </main>
+  
+    <footer>
+      <ul class="socnet-icons">
+        
+
+        <li><a href="//github.com/martinliu" target="_blank" rel="noopener" title="GitHub" class="fab fa-github"></a></li>
+
+
+
+
+
+
+
+
+
+
+
+<li><a href="//www.linkedin.com/in/liuzheng" target="_blank" rel="noopener" title="LinkedIn" class="fab fa-linkedin"></a></li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<li><a href="//twitter.com/martinliu" target="_blank" rel="noopener" title="Twitter" class="fab fa-twitter"></a></li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+      </ul>
+    </footer>
+  
+</section>
+
+      <main id="site-main">
+        
+  <article class="post">
+    <header>
+  <div class="title">
+    
+      <h2><a href="/2015/07/01/red-hat-summite4b98bpaule79a84e5bc80e6ba90e980bbe8be91e6809de7bbb4/">Red Hat Summit之Paul的开源逻辑思维</a></h2>
+    
+    
+  </div>
+  <div class="meta">
+    <time datetime="2015-07-01 06:52:00 &#43;0000 UTC">July 1, 2015</time>
+    <p>liuadmin</p>
+    <p>1 分钟</p>
+  </div>
+</header>
+
+    <div id="socnet-share">
+      
+
+
+
+
+  
+    
+    <a href="//twitter.com/share?text=Red%20Hat%20Summit%e4%b9%8bPaul%e7%9a%84%e5%bc%80%e6%ba%90%e9%80%bb%e8%be%91%e6%80%9d%e7%bb%b4&amp;url=https%3a%2f%2fmartinliu.cn%2f2015%2f07%2f01%2fred-hat-summite4b98bpaule79a84e5bc80e6ba90e980bbe8be91e6809de7bbb4%2f" target="_blank" rel="noopener" class="nav share-btn twitter">
+        <p>Twitter</p>
+      </a>
+  
+
+  
+      <a href="//www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fmartinliu.cn%2f2015%2f07%2f01%2fred-hat-summite4b98bpaule79a84e5bc80e6ba90e980bbe8be91e6809de7bbb4%2f" target="_blank" rel="noopener" class="nav share-btn facebook">
+        <p>Facebook</p>
+        </a>
+  
+
+  
+    <a href="//www.reddit.com/submit?url=https%3a%2f%2fmartinliu.cn%2f2015%2f07%2f01%2fred-hat-summite4b98bpaule79a84e5bc80e6ba90e980bbe8be91e6809de7bbb4%2f&amp;title=Red%20Hat%20Summit%e4%b9%8bPaul%e7%9a%84%e5%bc%80%e6%ba%90%e9%80%bb%e8%be%91%e6%80%9d%e7%bb%b4" target="_blank" rel="noopener" class="nav share-btn reddit">
+          <p>Reddit</p>
+        </a>
+  
+
+  
+        <a href="//www.linkedin.com/shareArticle?url=https%3a%2f%2fmartinliu.cn%2f2015%2f07%2f01%2fred-hat-summite4b98bpaule79a84e5bc80e6ba90e980bbe8be91e6809de7bbb4%2f&amp;title=Red%20Hat%20Summit%e4%b9%8bPaul%e7%9a%84%e5%bc%80%e6%ba%90%e9%80%bb%e8%be%91%e6%80%9d%e7%bb%b4" target="_blank" rel="noopener" class="nav share-btn linkedin">
+            <p>LinkedIn</p>
+          </a>
+  
+
+  
+        <a href="//www.pinterest.com/pin/create/button/?url=https%3a%2f%2fmartinliu.cn%2f2015%2f07%2f01%2fred-hat-summite4b98bpaule79a84e5bc80e6ba90e980bbe8be91e6809de7bbb4%2f&amp;description=Red%20Hat%20Summit%e4%b9%8bPaul%e7%9a%84%e5%bc%80%e6%ba%90%e9%80%bb%e8%be%91%e6%80%9d%e7%bb%b4" target="_blank" rel="noopener" class="nav share-btn pinterest">
+          <p>Pinterest</p>
+        </a>
+  
+
+  
+        <a href="mailto:?subject=%e6%9f%a5%e7%9c%8b%e6%ad%a4%e5%b8%96%e5%ad%90%e7%9a%84%e4%bd%9c%e8%80%85 liuadmin&amp;body=https%3a%2f%2fmartinliu.cn%2f2015%2f07%2f01%2fred-hat-summite4b98bpaule79a84e5bc80e6ba90e980bbe8be91e6809de7bbb4%2f" target="_blank" class="nav share-btn email" data-proofer-ignore>
+          <p>Email</p>
+        </a>
+  
+
+
+    </div>
+    <div class="content">
+      
+      <p>应用为王，操作系统是心跳。从整个行业的角度，而不只是操作系统和某种工具的角度看，行业已经发生了重大的变化。下面是一些例证。</p>
+<ol>
+<li>
+<p>VMWare几年前说操作系统已死，可是最近却发布了Linux操作系统的容器技术的产品线。</p>
+</li>
+<li>
+<p>微软也把它的一些技术开源了，并且在这些方面取得了一些它们认为可喜的进展。</p>
+</li>
+</ol>
+<p>IDC的调查显示，数据中心的操作系统目前是两个主要选择：Linux和Windows。以上说明了：开源不再是非主流，而进入了数据中心主流技术，企业现在开发的应用将不得不在两种操作系统中做出选择。</p>
+<p>[caption id=&ldquo;attachment_53819&rdquo; align=&ldquo;aligncenter&rdquo; width=&ldquo;800&rdquo;]<a href="http://martinliu.cn/paul%e7%9a%84%e5%bc%80%e6%ba%90%e9%80%bb%e8%be%91%e6%80%9d%e7%bb%b4/cormier_keynote_800px/"><img src="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2015/07/cormier_keynote_800px.jpg" alt="cormier_keynote_800px"></a> Keynote 笔记[/caption]</p>
+<p>从这个角度出发，Red Hat的使命才刚过开始，它中在用Linux和相关开源技术来变革整个企业数据中心的技术堆栈；从基础架构一直到应用开发。</p>
+<p>为何开源技术当今如此之火热？开源技术正在解决和处理现实社会中那些最复杂的业务问题。为什么会这样？驱动因素是什么？是动态变化的企业业务需求。</p>
+<p>开源技术最擅长的是快速地创新，这成为了企业技术创新和业务变革的动力，IT也逐渐因此从成本中心转变为价值和创新中心。</p>
+<p>开源不仅仅只是看到源代码，更重要的：它是自由开放的平台，是分享的平台，它萌生了持续不断的创新，一个创新基于另外一个创新之上，一环接一环地扩散开来，根本停不下来。 这意味着技术问题能够被更快、更好地解决；而不是丢给私有软件技术厂商们各自独自解决，企业最等来消费他们的产品。</p>
+<p>Linux是计算供给层，毫无疑问云计算和软件定义存储都基于它。它不能叫做一个Linux社区，而是一组相关的社区项目协作在一起共同创新，这样才带来了企业可以使用的高性能稳定的操作系统；这样Red Hat才有可能给企业带来企业级Linux操作系统。</p>
+<p>KVM是计算的虚拟化抽象层，VMWare最先进入这一企业市场，它试图用封闭的管理层和锁定的模式来控制这个市场，从而控制客户。Red Hat的使命是：为企业提供了Linux操作系统和至上的开放虚拟化技术；企业可以在这个层面消费开源开放虚拟化技术，并做出备份的方案选择。</p>
+<p>没有Linux和开放虚拟化云计算就不存在。公有云提供商使用这些技术构建了共有云服务。可是企业不想让自己的业务运行在防火墙之外，因此OpenStack 项目应运而生。它让企业构建私有云成为可能。Red Hat在OpenStack上面所有的贡献都100%的提交到社区，成为主流代码的一部分；从而OpenStack能够运行在Red Hat Linux和KVM之上，这使得Red Hat巨大的Linux生态系统的价值服务与OpenStack领域；企业能够借此放心地在OpenStack构建的私有云，并运行企业重要的业务。</p>
+<p><img src="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2015/07/paul-keynote.jpg" alt="paul-keynote">在开源的开发框架里，开发人员可以有更多、更新的开发语言、开发工具、库和社区的支持，这使他们能更快地解决业务问题。这些框架首先被广泛应用于互联网行业公司。Red Hat基于JBoss社区为企业提供了企业级的应用服务器、集成工具、规则引擎和丰富的开发语言。让企业级应用能像互联网公司一样地使用开放应用所需的开发框架和开发平台。相比私有技术公司用了四十多年达到目前的程度，开源领域的快速创新用十几年就做到了，发展速度比私有软件快很多。</p>
+<p>现在看到了基础架构和开发框架都极大地受到了开源技术的影响、冲击和变革。运维和开发之间亟待出现一种融合技术，来改善目前的互为孤岛的现状。这种联系将使开源技术为他们带来最大的共同价值。</p>
+<p>容器技术实际上在操作系统中存在了很多年了，只是最近才被引入开源领域；它的出现将确实会改善孤岛问题，为开发人员解决了应用在各种混合的计算和存储平台之间的可移植性、一致性和敏捷性等问题。</p>
+<p>开发和运维之间的割裂还导致了业务创新的迟钝，这个问题已经持续存在很多很多年了。因此Red Hat发布了Red Hat Atomic Enterprise Platform。让企业应用可以安全地在各种形式的计算平台上一致地运行。Red Hat 发布了OpenShift v3 ，它是一些列容器的自动化调度和部署管理工具集合，并包含全套的开放应用开发框架平台。它能帮助企业基于容器技术发展出新一代的混合应用。</p>
+<p>为何企业IT技术会有这些变革？为何这些变革会发生？其实还是企业不得不快速地响应业务的变化，企业不得不使用IT技术来创造出更多的价值，应用开发不得不跟上需求变化的脚步，基础架构的运作和运维再也不允许我们手工地安装一台服务器，频繁地去手动更改网口跳线。企业必须面对和适应动态的业务变化，不光要从开发层面，同时从运维层面。</p>
+<p>企业需要构建和重写无状态的业务应用，并使用软件定义存储来解决传统存储的空间不能无限扩容的问题。Gluster和Ceph在这方面已经日臻成熟，并或将去替换私有的传统存储技术。</p>
+<p><a href="http://martinliu.cn/paul%e7%9a%84%e5%bc%80%e6%ba%90%e9%80%bb%e8%be%91%e6%80%9d%e7%bb%b4/devops-in-practice/"><img src="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2015/07/DevOps-in-practice-1024x574.png" alt="DevOps-in-practice"></a></p>
+<p>企业应用DevOps是一种趋势，它不是一个理论，而是一种实践。Red Hat的全线企业级开源技术平台已经做好了准备，企业现在就可以开始DevOps实践之旅。</p>
+<p>开源和闭源之战将不可逆转地持续下去，Red Hat将持续守护开源阵营。私有软件技术不愿意看到逐渐开放的变化，他们不希望开放，不愿意去分享；Pual坚信开放不仅仅是看到代码而已，而是与之共生，是开放的软件开发流程，是基于开放代码上的不断创新活动。这是一场宏大的战役，开源逐渐开始在一些战斗中取胜，待到明年此时，或将看到开源是如何在企业IT基础架构上全面获胜的。</p>
+<p>本演讲的官方Blog报道：<a href="http://summitblog.redhat.com/2015/06/24/paul-cormier-announces-new-products-and-technologies-at-red-hat-summit/">http://summitblog.redhat.com/2015/06/24/paul-cormier-announces-new-products-and-technologies-at-red-hat-summit/</a></p>
+<p>下面是演讲实况视频。</p>
+
+    </div>
+    <footer>
+      <div class="stats">
+  
+    <ul class="categories">
+      
+        
+          <li><a class="article-terms-link" href="/categories/opensource/">opensource</a></li>
+        
+      
+    </ul>
+  
+  
+    <ul class="tags">
+      
+        
+          <li><a class="article-terms-link" href="/tags/redhat/">redhat</a></li>
+        
+          <li><a class="article-terms-link" href="/tags/summit/">summit</a></li>
+        
+      
+    </ul>
+  
+</div>
+
+    </footer>
+  </article>
+  
+    
+
+  
+  <div class="pagination">
+    
+      <a href="/2015/07/09/icinga2-e4bc81e4b89ae7baa7e58a9fe883bde8af84e6b58b1/" class="button left"><span>icinga2 企业级功能评测1</span></a>
+    
+    
+      <a href="/2015/06/21/boston-running-1-charles-river/" class="button right"><span>Boston Running #1 Charles River</span></a>
+    
+  </div>
+
+      </main>
+      <section id="site-sidebar">
+  
+    <section id="recent-posts">
+      <header>
+        <h1>最新文章</h1>
+      </header>
+      
+      <article class="mini-post">
+          <a href="/blog/workshop-elastic-observability/" class="image" style="--bg-image: url('https://martinliu.cn/img/2021/Hubble_01.jpg');">
+    <img class="stretchH" src="https://martinliu.cn/img/2021/Hubble_01.jpg" alt="Hubble">
+  </a>
+        <header>
+          <h2><a href="/blog/workshop-elastic-observability/">Elastic 可观测性工作坊</a></h2>
+          <time class="published" datetime="2021-02-06 10:36:12 &#43;0800 CST">February 6, 2021</time>
+        </header>
+      </article>
+      
+      <article class="mini-post">
+          <a href="/blog/change-back-on-github-page-again/" class="image" style="--bg-image: url('https://martinliu.cn/img/2019/03/pic03.jpg');">
+    <img class="stretchH" src="https://martinliu.cn/img/2019/03/pic03.jpg" alt="Valley">
+  </a>
+        <header>
+          <h2><a href="/blog/change-back-on-github-page-again/">在 Github 上搭建基于 Hugo 的免费个人博客</a></h2>
+          <time class="published" datetime="2021-02-06 00:00:00 &#43;0000 UTC">February 6, 2021</time>
+        </header>
+      </article>
+      
+      <article class="mini-post">
+          <a href="/blog/devopscoach-weekly-6/" class="image" style="--bg-image: url('https://martinliu.cn/');">
+    <img class="stretchH" src="https://martinliu.cn/" alt="">
+  </a>
+        <header>
+          <h2><a href="/blog/devopscoach-weekly-6/">DevOps Coach 周刊 #6</a></h2>
+          <time class="published" datetime="2020-08-31 00:11:01 &#43;0800 CST">August 31, 2020</time>
+        </header>
+      </article>
+      
+      <article class="mini-post">
+          <a href="/blog/elasticsearch-3-nodes-cluster-setup/" class="image" style="--bg-image: url('https://martinliu.cn/');">
+    <img class="stretchH" src="https://martinliu.cn/" alt="">
+  </a>
+        <header>
+          <h2><a href="/blog/elasticsearch-3-nodes-cluster-setup/">Elasticsearch 3 节点集群搭建 (7.9.0)</a></h2>
+          <time class="published" datetime="2020-08-27 13:54:46 &#43;0800 CST">August 27, 2020</time>
+        </header>
+      </article>
+      
+      <article class="mini-post">
+          <a href="/blog/devopscoach-weekly-5/" class="image" style="--bg-image: url('https://martinliu.cn/');">
+    <img class="stretchH" src="https://martinliu.cn/" alt="">
+  </a>
+        <header>
+          <h2><a href="/blog/devopscoach-weekly-5/">DevOps Coach 周刊 #5</a></h2>
+          <time class="published" datetime="2020-08-25 15:20:51 &#43;0800 CST">August 25, 2020</time>
+        </header>
+      </article>
+      
+      
+        <footer>
+          <a href="/blog/" class="button">查看更多</a>
+        </footer>
+      
+    </section>
+  
+
+  
+    
+
+      <section id="categories">
+        <header>
+          <h1><a href="/categories">分类</a></h1>
+        </header>
+        <ul>
+          
+          
+          <li>
+              <a href="/categories/blog/">blog<span class="count">96</span></a>
+          
+          <li>
+              <a href="/categories/itsm/">itsm<span class="count">85</span></a>
+          
+          <li>
+              <a href="/categories/infrastructure/">infrastructure<span class="count">46</span></a>
+          
+          <li>
+              <a href="/categories/devops/">devops<span class="count">38</span></a>
+          
+          <li>
+              <a href="/categories/opensource/">opensource<span class="count">32</span></a>
+          
+          <li>
+              <a href="/categories/cloud-computing/">cloud-computing<span class="count">23</span></a>
+          
+          <li>
+              <a href="/categories/cms/cmdb/">cms/cmdb<span class="count">20</span></a>
+          
+          <li>
+              <a href="/categories/running/">running<span class="count">19</span></a>
+          
+          <li>
+              <a href="/categories/travel/">travel<span class="count">13</span></a>
+          
+          <li>
+              <a href="/categories/sre/">sre<span class="count">2</span></a>
+          
+          </li>
+        </ul>
+      </section>
+    
+  
+
+  
+    <section id="mini-bio">
+      <header>
+        <h1>关于</h1>
+      </header>
+      <p>This Blog is sharing DevOps and SRE ariticles. I have translated DevOps Handbook and SRE Workbook.</p>
+      <footer>
+        <a href="/about" class="button">学到更多</a>
+      </footer>
+    </section>
+  
+</section>
+
+      <footer id="site-footer">
+  
+      <ul class="socnet-icons">
+        
+
+        <li><a href="//github.com/martinliu" target="_blank" rel="noopener" title="GitHub" class="fab fa-github"></a></li>
+
+
+
+
+
+
+
+
+
+
+
+<li><a href="//www.linkedin.com/in/liuzheng" target="_blank" rel="noopener" title="LinkedIn" class="fab fa-linkedin"></a></li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<li><a href="//twitter.com/martinliu" target="_blank" rel="noopener" title="Twitter" class="fab fa-twitter"></a></li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+      </ul>
+  
+  <p class="copyright">
+    © 2021 DevOps &amp; SRE Blog
+      <br>
+    主题: <a href='https://themes.gohugo.io/hugo-future-imperfect-slim/' target='_blank' rel='noopener'>Hugo Future Imperfect Slim</a><br>移植自 <a href='https://html5up.net/future-imperfect' target='_blank' rel='noopener'>HTML5 UP</a> | 由 <a href='https://gohugo.io/' target='_blank' rel='noopener' title='0.80.0'>Hugo</a> 驱动
+  </p>
+</footer>
+<a id="back-to-top" href="#" class="fas fa-arrow-up fa-2x"></a>
+
+      <script src="/js/highlight.js"></script>
+    
+    <script>hljs.initHighlightingOnLoad();</script><script src="/js/bundle.min.b4e669fa428a81defb8af0916c53f39cd1b8e0bbab22199c06f0b182907ba474.js" integrity="sha256-tOZp&#43;kKKgd77ivCRbFPznNG44LurIhmcBvCxgpB7pHQ="></script>
+    <script src="/js/add-on.js"></script>
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-749876-6', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+
+    </div>
+  </body>
+</html>

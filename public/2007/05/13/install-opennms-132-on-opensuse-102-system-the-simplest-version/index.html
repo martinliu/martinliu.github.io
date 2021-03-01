@@ -1,24 +1,475 @@
-<!doctype html><html lang=zh-cn><head><meta charset=utf-8><title>Install OpenNMS 1.3.2 on OpenSuse 10.2 system (The simplest version ) - 刘征的博客</title><meta name=viewport content="width=device-width,initial-scale=1"><meta name=generator content="Hugo 0.80.0"><meta property="og:site_name" content="刘征的博客"><meta property="og:title" content="Install OpenNMS 1.3.2 on OpenSuse 10.2 system (The simplest version  )"><meta property="og:description" content="Martin's Liu is bloging on DevOps and SRE topics"><meta property="description" content="Martin's Liu is bloging on DevOps and SRE topics"><meta property="og:url" content="https://martinliu.cn/2007/05/13/install-opennms-132-on-opensuse-102-system-the-simplest-version/"><meta property="og:type" content="article"><meta property="og:image" content="https://martinliu.cn/img/main/logo.jpg"><link rel=stylesheet href=/css/bundle.min.d9e04ae08c9b3049b766dbd4aeab7d862c5ea1d13679b621490e0f5df5507497.css integrity="sha256-2eBK4IybMEm3ZtvUrqt9hixeodE2ebYhSQ4PXfVQdJc="><link rel=stylesheet href=/css/add-on.css></head><body><header id=site-header><nav id=site-nav><h1 class=nav-title><a href=/ class=nav>博客</a></h1><menu id=site-nav-menu class="flyout-menu menu"><a href=/ class="nav link"><i class="fas fa-home"></i>首页</a>
-<a href=/about/ class="nav link"><i class="far fa-id-card"></i>关于</a>
-<a href=/blog/ class="nav link"><i class="far fa-newspaper"></i>博客</a>
-<a href=/categories/ class="nav link"><i class="fas fa-sitemap"></i>分类</a>
-<a href=/contact/ class="nav link"><i class="far fa-envelope"></i>联系</a>
-<a href=#share-menu class="nav link share-toggle"><i class="fas fa-share-alt">&nbsp;</i>Share</a>
-<a href=#search-input class="nav link search-toggle"><i class="fas fa-search">&nbsp;</i>Search</a></menu>
-<a href=#search-input class="nav search-toggle"><i class="fas fa-search fa-2x">&nbsp;</i></a>
-<a href=#share-menu class="nav share-toggle"><i class="fas fa-share-alt fa-2x">&nbsp;</i></a>
-<a href=#lang-menu class="nav lang-toggle" lang=zh-cn>zh-cn</a>
-<a href=#site-nav class="nav nav-toggle"><i class="fas fa-bars fa-2x"></i></a></nav><menu id=search class=menu><input id=search-input class="search-input menu"></input><div id=search-results class="search-results menu"></div></menu><menu id=lang-menu class="flyout-menu menu"><a href=# lang=zh-cn class="nav link active">中文 (zh-cn)</a>
-<a href=/en lang=en class="nav no-lang link">English (en)</a></menu>
-<menu id=share-menu class="flyout-menu menu"><h1>Share Post</h1><a href="//twitter.com/share?text=Install%20OpenNMS%201.3.2%20on%20OpenSuse%2010.2%20system%20%28The%20simplest%20version%20%20%29&url=https%3a%2f%2fmartinliu.cn%2f2007%2f05%2f13%2finstall-opennms-132-on-opensuse-102-system-the-simplest-version%2f" target=_blank rel=noopener class="nav share-btn twitter"><p>Twitter</p></a><a href="//www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fmartinliu.cn%2f2007%2f05%2f13%2finstall-opennms-132-on-opensuse-102-system-the-simplest-version%2f" target=_blank rel=noopener class="nav share-btn facebook"><p>Facebook</p></a><a href="//www.reddit.com/submit?url=https%3a%2f%2fmartinliu.cn%2f2007%2f05%2f13%2finstall-opennms-132-on-opensuse-102-system-the-simplest-version%2f&title=Install%20OpenNMS%201.3.2%20on%20OpenSuse%2010.2%20system%20%28The%20simplest%20version%20%20%29" target=_blank rel=noopener class="nav share-btn reddit"><p>Reddit</p></a><a href="//www.linkedin.com/shareArticle?url=https%3a%2f%2fmartinliu.cn%2f2007%2f05%2f13%2finstall-opennms-132-on-opensuse-102-system-the-simplest-version%2f&title=Install%20OpenNMS%201.3.2%20on%20OpenSuse%2010.2%20system%20%28The%20simplest%20version%20%20%29" target=_blank rel=noopener class="nav share-btn linkedin"><p>LinkedIn</p></a><a href="//www.pinterest.com/pin/create/button/?url=https%3a%2f%2fmartinliu.cn%2f2007%2f05%2f13%2finstall-opennms-132-on-opensuse-102-system-the-simplest-version%2f&description=Install%20OpenNMS%201.3.2%20on%20OpenSuse%2010.2%20system%20%28The%20simplest%20version%20%20%29" target=_blank rel=noopener class="nav share-btn pinterest"><p>Pinterest</p></a><a href="mailto:?subject=%e6%9f%a5%e7%9c%8b%e6%ad%a4%e5%b8%96%e5%ad%90%e7%9a%84%e4%bd%9c%e8%80%85 liuadmin&body=https%3a%2f%2fmartinliu.cn%2f2007%2f05%2f13%2finstall-opennms-132-on-opensuse-102-system-the-simplest-version%2f" target=_blank class="nav share-btn email" data-proofer-ignore><p>Email</p></a></menu></header><div id=wrapper><section id=site-intro><a href=/><img src=https://martinliu.cn/img/main/logo.jpg class=circle width=100 alt="Martin Liu"></a><header><h1>Martin Liu's Blog</h1></header><main><p>Community Advocate, DevOps China Community Organizer</p></main><footer><ul class=socnet-icons><li><a href=//github.com/martinliu target=_blank rel=noopener title=GitHub class="fab fa-github"></a></li><li><a href=//www.linkedin.com/in/liuzheng target=_blank rel=noopener title=LinkedIn class="fab fa-linkedin"></a></li><li><a href=//twitter.com/martinliu target=_blank rel=noopener title=Twitter class="fab fa-twitter"></a></li></ul></footer></section><main id=site-main><article class=post><header><div class=title><h2><a href=/2007/05/13/install-opennms-132-on-opensuse-102-system-the-simplest-version/>Install OpenNMS 1.3.2 on OpenSuse 10.2 system (The simplest version )</a></h2></div><div class=meta><time datetime="2007-05-13 11:40:00 +0000 UTC">May 13, 2007</time><p>liuadmin</p><p>1 分钟</p></div></header><div id=socnet-share><a href="//twitter.com/share?text=Install%20OpenNMS%201.3.2%20on%20OpenSuse%2010.2%20system%20%28The%20simplest%20version%20%20%29&url=https%3a%2f%2fmartinliu.cn%2f2007%2f05%2f13%2finstall-opennms-132-on-opensuse-102-system-the-simplest-version%2f" target=_blank rel=noopener class="nav share-btn twitter"><p>Twitter</p></a><a href="//www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fmartinliu.cn%2f2007%2f05%2f13%2finstall-opennms-132-on-opensuse-102-system-the-simplest-version%2f" target=_blank rel=noopener class="nav share-btn facebook"><p>Facebook</p></a><a href="//www.reddit.com/submit?url=https%3a%2f%2fmartinliu.cn%2f2007%2f05%2f13%2finstall-opennms-132-on-opensuse-102-system-the-simplest-version%2f&title=Install%20OpenNMS%201.3.2%20on%20OpenSuse%2010.2%20system%20%28The%20simplest%20version%20%20%29" target=_blank rel=noopener class="nav share-btn reddit"><p>Reddit</p></a><a href="//www.linkedin.com/shareArticle?url=https%3a%2f%2fmartinliu.cn%2f2007%2f05%2f13%2finstall-opennms-132-on-opensuse-102-system-the-simplest-version%2f&title=Install%20OpenNMS%201.3.2%20on%20OpenSuse%2010.2%20system%20%28The%20simplest%20version%20%20%29" target=_blank rel=noopener class="nav share-btn linkedin"><p>LinkedIn</p></a><a href="//www.pinterest.com/pin/create/button/?url=https%3a%2f%2fmartinliu.cn%2f2007%2f05%2f13%2finstall-opennms-132-on-opensuse-102-system-the-simplest-version%2f&description=Install%20OpenNMS%201.3.2%20on%20OpenSuse%2010.2%20system%20%28The%20simplest%20version%20%20%29" target=_blank rel=noopener class="nav share-btn pinterest"><p>Pinterest</p></a><a href="mailto:?subject=%e6%9f%a5%e7%9c%8b%e6%ad%a4%e5%b8%96%e5%ad%90%e7%9a%84%e4%bd%9c%e8%80%85 liuadmin&body=https%3a%2f%2fmartinliu.cn%2f2007%2f05%2f13%2finstall-opennms-132-on-opensuse-102-system-the-simplest-version%2f" target=_blank class="nav share-btn email" data-proofer-ignore><p>Email</p></a></div><div class=content><p>1>Install dependence packages<br>zliu3:~yast -i rrdtool<br>zliu3:~yast -i postgresql<br>zliu3:~ # rpm -qa |grep rrdtool<br>rrdtool-1.2.15-25<br>zliu3:~ # rpm -qa |grep postgresql<br>postgresql-8.1.5-13<br>postgresql-libs-8.1.5-13<br>postgresql-contrib-8.1.5-13<br>postgresql-pl-8.1.5-15<br>postgresql-server-8.1.5-13<br>rcpostgresql start<br>copy jdk/tomcat 5.5 package files to /opt<br>cd /opt<br>tar xzvf jdk1.5.tar.gz<br>tar xzvf tomcat5.5.tar.gz<br>export JAVA_HOME=/opt/jdk1.5.0_09<br>export OPENNMS_HOME=/opt/opennms<br>export CATALINA_HOME=/opt/apache-tomcat-5.5.20<br>export PATH=$PATH:$JAVA_HOME/bin<br>java -version<br>$CATALINA_HOME/bin/startup.sh<br>Test Tomcat 5.5 http://Ip_address:8080/<br>vi /var/lib/pgsql/data/postgresql.conf<br># - Connection Settings -<br>max_connections = 256<br><br>vi /var/lib/pgsql/data/pg_hba.conf<br>[refer to install guide]<br>#local all all ident sameuser<br>local all all trust<br>host all all 127.0.0.1 255.255.255.255 trust<br>host all all ::1 ffff:ffff:ffff:ffff:ffff:ffff:ffff:ffff trust<br><br>rcpostgresql restart<br><br>2>Install and configure OpenNMS<br>Copy OpenNMS rpm packages to /root<br>rpm -ivh opennms*<br>$OPENNMS_HOME/bin/runjava -s<br>$OPENNMS_HOME/bin/install -dis<br>$OPENNMS_HOME/bin/install -y -w $CATALINA_HOME/conf/Catalina/localhost<br>$CATALINA_HOME/bin/shutdown.sh<br>$CATALINA_HOME/bin/startup.sh<br>/etc/init.d/opennms start<br>/etc/init.d/opennms -v status<br>OpenNMS.Eventd : running<br>OpenNMS.Trapd : running<br>OpenNMS.Dhcpd : running<br>OpenNMS.Actiond : running<br>OpenNMS.Capsd : running<br>OpenNMS.Notifd : running<br>OpenNMS.Scriptd : running<br>OpenNMS.Rtcd : running<br>OpenNMS.Pollerd : running<br>OpenNMS.PollerBackEnd : running<br>OpenNMS.Collectd : running<br>OpenNMS.Threshd : running<br>OpenNMS.Discovery : running<br>OpenNMS.Vacuumd : running<br>OpenNMS.EventTranslator: running<br>OpenNMS.PassiveStatusd : running<br><br>Test OpenNMS login page http://ip_address:8080/opennms</p></div><footer><div class=stats><ul class=categories><li><a class=article-terms-link href=/categories/itsm/>itsm</a></li></ul><ul class=tags><li><a class=article-terms-link href=/tags/opensource/>opensource</a></li><li><a class=article-terms-link href=/tags/opensuse/>opensuse</a></li></ul></div></footer></article><article class=post><div><h2 id=say-something>说些什么</h2><form id=comment-form class=new-comment method=post><h3 class="reply-notice hidden"><span class=reply-name></span></h3><input type=hidden name=options[entryId] value=b4334aa02d09ac0d1e0fa77e44319c57>
-<input type=hidden name=fields[replyThread]>
-<input type=hidden name=fields[replyID]>
-<input type=hidden name=fields[replyName]>
-<input required name=fields[name] type=text placeholder=你的名字>
-<input name=fields[website] type=text placeholder=您的网页>
-<input required name=fields[email] type=email placeholder=你的邮件>
-<textarea required name=fields[body] placeholder=你的信息 rows=10></textarea><div class=submit-notice><strong class="submit-notice-text submit-success hidden">感谢您的评论！被批准后它会立即在此站点展示。</strong>
-<strong class="submit-notice-text submit-failed hidden">很抱歉，您的提交存在错误。请确保所有必填字段都已填写正确，然后再试一次。</strong></div><input type=submit value=送出 class=button>
-<input type=submit value=已送出 class="hidden button" disabled>
-<input type=reset value=重设 class=button></form></div><div><h2>评论</h2><p>还沒有留言。</p></div></article><div class=pagination><a href=/2007/05/22/what-is-zabbix/ class="button left"><span>What is ZABBIX?</span></a>
-<a href=/2007/05/08/what-is-opennms/ class="button right"><span>OpenNMS网络和系统管理简介</span></a></div></main><section id=site-sidebar><section id=recent-posts><header><h1>最新文章</h1></header><article class=mini-post><a href=/blog/workshop-elastic-observability/ class=image style="--bg-image: url('https://martinliu.cn/img/2019/03/pic01.jpg')"><img class=stretchH src=https://martinliu.cn/img/2019/03/pic01.jpg alt=Valley></a><header><h2><a href=/blog/workshop-elastic-observability/>Elastic 可观测性工作坊</a></h2><time class=published datetime="2021-02-06 10:36:12 +0800 CST">February 6, 2021</time></header></article><article class=mini-post><a href=/blog/change-back-on-github-page-again/ class=image style="--bg-image: url('https://martinliu.cn/img/2019/03/pic03.jpg')"><img class=stretchH src=https://martinliu.cn/img/2019/03/pic03.jpg alt=Valley></a><header><h2><a href=/blog/change-back-on-github-page-again/>博客换一个新样式</a></h2><time class=published datetime="2021-02-06 00:00:00 +0000 UTC">February 6, 2021</time></header></article><article class=mini-post><a href=/blog/devopscoach-weekly-6/ class=image style="--bg-image: url('https://martinliu.cn/')"><img src=https://martinliu.cn/ alt></a><header><h2><a href=/blog/devopscoach-weekly-6/>DevOps Coach 周刊 #6</a></h2><time class=published datetime="2020-08-31 00:11:01 +0800 CST">August 31, 2020</time></header></article><article class=mini-post><a href=/blog/elasticsearch-3-nodes-cluster-setup/ class=image style="--bg-image: url('https://martinliu.cn/')"><img src=https://martinliu.cn/ alt></a><header><h2><a href=/blog/elasticsearch-3-nodes-cluster-setup/>Elasticsearch 3 节点集群搭建 (7.9.0)</a></h2><time class=published datetime="2020-08-27 13:54:46 +0800 CST">August 27, 2020</time></header></article><article class=mini-post><a href=/blog/devopscoach-weekly-5/ class=image style="--bg-image: url('https://martinliu.cn/')"><img src=https://martinliu.cn/ alt></a><header><h2><a href=/blog/devopscoach-weekly-5/>DevOps Coach 周刊 #5</a></h2><time class=published datetime="2020-08-25 15:20:51 +0800 CST">August 25, 2020</time></header></article><footer><a href=/blog/ class=button>查看更多</a></footer></section><section id=categories><header><h1><a href=/categories>分类</a></h1></header><ul><li><a href=/categories/blog/>blog<span class=count>107</span></a><li><a href=/categories/itsm/>itsm<span class=count>95</span></a><li><a href=/categories/infrastructure/>infrastructure<span class=count>48</span></a><li><a href=/categories/devops/>devops<span class=count>38</span></a><li><a href=/categories/opensource/>opensource<span class=count>35</span></a><li><a href=/categories/cloud-computing/>cloud-computing<span class=count>27</span></a><li><a href=/categories/running/>running<span class=count>22</span></a><li><a href=/categories/cms/cmdb/>cms/cmdb<span class=count>20</span></a><li><a href=/categories/travel/>travel<span class=count>14</span></a><li><a href=/categories/sre/>sre<span class=count>2</span></a></li></ul></section><section id=mini-bio><header><h1>关于</h1></header><p>This Blog is sharing DevOps and SRE ariticles. I have translated DevOps Handbook and SRE Workbook.</p><footer><a href=/about class=button>学到更多</a></footer></section></section><footer id=site-footer><ul class=socnet-icons><li><a href=//github.com/martinliu target=_blank rel=noopener title=GitHub class="fab fa-github"></a></li><li><a href=//www.linkedin.com/in/liuzheng target=_blank rel=noopener title=LinkedIn class="fab fa-linkedin"></a></li><li><a href=//twitter.com/martinliu target=_blank rel=noopener title=Twitter class="fab fa-twitter"></a></li></ul><p class=copyright>© 2021 刘征的博客<br>主题: <a href=https://themes.gohugo.io/hugo-future-imperfect-slim/ target=_blank rel=noopener>Hugo Future Imperfect Slim</a><br>移植自 <a href=https://html5up.net/future-imperfect target=_blank rel=noopener>HTML5 UP</a> | 由 <a href=https://gohugo.io/ target=_blank rel=noopener title=0.80.0>Hugo</a> 驱动</p></footer><a id=back-to-top href=# class="fas fa-arrow-up fa-2x"></a><script src=/js/highlight.js></script><script>hljs.initHighlightingOnLoad();</script><script src=/js/bundle.min.bbba6b424a8ac5b6858cd5fc80eabc9c5277945cc2dc349204646b84891b4b58.js integrity="sha256-u7prQkqKxbaFjNX8gOq8nFJ3lFzC3DSSBGRrhIkbS1g="></script><script src=/js/add-on.js></script><script type=application/javascript>var doNotTrack=false;if(!doNotTrack){window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;ga('create','UA-749876-6','auto');ga('send','pageview');}</script><script async src=https://www.google-analytics.com/analytics.js></script></div></body></html>
+<!doctype html>
+<html lang="en">
+  <head>
+  <meta charset="utf-8">
+<title>Install OpenNMS 1.3.2 on OpenSuse 10.2 system (The simplest version  ) - Martin Liu&#39;s Blog</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+<meta name="generator" content="Hugo 0.80.0" /><meta property="og:site_name" content="Martin Liu&#39;s Blog">
+  <meta property="og:title" content="Install OpenNMS 1.3.2 on OpenSuse 10.2 system (The simplest version  )">
+  <meta property="og:description" content="Martin&#39;s Liu is bloging on DevOps and SRE topics">
+  <meta property="description" content="Martin&#39;s Liu is bloging on DevOps and SRE topics">
+  <meta property="og:url" content="https://martinliu.cn/2007/05/13/install-opennms-132-on-opensuse-102-system-the-simplest-version/">
+  <meta property="og:type" content="article">
+  
+    <meta property="og:image" content="https://martinliu.cn/img/main/logo.jpg">
+  
+  
+            <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.3/styles/default.min.css">
+          <link rel="stylesheet" href="/css/bundle.min.307f33cd8015e5bab28d6ebda9b400f8d3059bc248b4e60adf4d23469fab5a2b.css" integrity="sha256-MH8zzYAV5bqyjW69qbQA&#43;NMFm8JItOYK300jRp&#43;rWis="><link rel="stylesheet" href="/css/add-on.css">
+</head>
+
+  <body>
+    
+
+<header id="site-header">
+  <nav id="site-nav">
+    <h1 class="nav-title">
+      <a href="/en/" class="nav">
+        
+          Blog
+        
+      </a>
+    </h1>
+    <menu id="site-nav-menu" class="flyout-menu menu">
+      
+        
+          
+          <a href="/en/" class="nav link"><i class='fa fa-home'></i> Home</a>
+        
+      
+        
+          
+          <a href="/en/about/" class="nav link"><i class='far fa-id-card'></i> About</a>
+        
+      
+        
+          
+          <a href="/en/blog/" class="nav link"><i class='far fa-newspaper'></i> Blog</a>
+        
+      
+        
+          
+          <a href="/en/categories/" class="nav link"><i class='fas fa-sitemap'></i> Categories</a>
+        
+      
+        
+          
+          <a href="/en/contact/" class="nav link"><i class='far fa-envelope'></i> Contact</a>
+        
+      
+      <a href="#share-menu" class="nav link share-toggle"><i class="fas fa-share-alt">&nbsp;</i>Share</a>
+      
+    </menu>
+    
+    <a href="#share-menu" class="nav share-toggle"><i class="fas fa-share-alt fa-2x">&nbsp;</i></a>
+    <a href="#lang-menu" class="nav lang-toggle" lang="en">en</a>
+    <a href="#site-nav" class="nav nav-toggle"><i class="fas fa-bars fa-2x"></i></a>
+  </nav>
+  
+  <menu id="lang-menu" class="flyout-menu menu">
+  <a href="#" lang="en" class="nav link active">English (en)</a>
+  
+    
+      
+    
+      
+        <a href="/zh-cn" lang="zh-cn" class="nav no-lang link">中文 (zh-cn)</a>
+      
+    
+  
+</menu>
+
+  
+    <menu id="share-menu" class="flyout-menu menu">
+      <h1>Share Post</h1>
+      
+
+
+
+
+  
+    
+    <a href="//twitter.com/share?text=Install%20OpenNMS%201.3.2%20on%20OpenSuse%2010.2%20system%20%28The%20simplest%20version%20%20%29&amp;url=https%3a%2f%2fmartinliu.cn%2f2007%2f05%2f13%2finstall-opennms-132-on-opensuse-102-system-the-simplest-version%2f" target="_blank" rel="noopener" class="nav share-btn twitter">
+        <p>Twitter</p>
+      </a>
+  
+
+  
+      <a href="//www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fmartinliu.cn%2f2007%2f05%2f13%2finstall-opennms-132-on-opensuse-102-system-the-simplest-version%2f" target="_blank" rel="noopener" class="nav share-btn facebook">
+        <p>Facebook</p>
+        </a>
+  
+
+  
+    <a href="//www.reddit.com/submit?url=https%3a%2f%2fmartinliu.cn%2f2007%2f05%2f13%2finstall-opennms-132-on-opensuse-102-system-the-simplest-version%2f&amp;title=Install%20OpenNMS%201.3.2%20on%20OpenSuse%2010.2%20system%20%28The%20simplest%20version%20%20%29" target="_blank" rel="noopener" class="nav share-btn reddit">
+          <p>Reddit</p>
+        </a>
+  
+
+  
+        <a href="//www.linkedin.com/shareArticle?url=https%3a%2f%2fmartinliu.cn%2f2007%2f05%2f13%2finstall-opennms-132-on-opensuse-102-system-the-simplest-version%2f&amp;title=Install%20OpenNMS%201.3.2%20on%20OpenSuse%2010.2%20system%20%28The%20simplest%20version%20%20%29" target="_blank" rel="noopener" class="nav share-btn linkedin">
+            <p>LinkedIn</p>
+          </a>
+  
+
+  
+        <a href="//www.pinterest.com/pin/create/button/?url=https%3a%2f%2fmartinliu.cn%2f2007%2f05%2f13%2finstall-opennms-132-on-opensuse-102-system-the-simplest-version%2f&amp;description=Install%20OpenNMS%201.3.2%20on%20OpenSuse%2010.2%20system%20%28The%20simplest%20version%20%20%29" target="_blank" rel="noopener" class="nav share-btn pinterest">
+          <p>Pinterest</p>
+        </a>
+  
+
+  
+        <a href="mailto:?subject=Check%20out%20this%20post%20by liuadmin&amp;body=https%3a%2f%2fmartinliu.cn%2f2007%2f05%2f13%2finstall-opennms-132-on-opensuse-102-system-the-simplest-version%2f" target="_blank" class="nav share-btn email" data-proofer-ignore>
+          <p>Email</p>
+        </a>
+  
+
+
+    </menu>
+  
+</header>
+
+    <div id="wrapper">
+      <section id="site-intro" >
+  <a href="/en/"><img src="https://martinliu.cn/img/main/logo.jpg" class="circle" width="100" alt="Martin Liu" /></a>
+  <header>
+    <h1>Martin Liu's Blog</h1>
+  </header>
+  <main>
+    <p>Community Advocate, DevOps China Community Organizer</p>
+  </main>
+  
+    <footer>
+      <ul class="socnet-icons">
+        
+
+        <li><a href="//github.com/martinliu" target="_blank" rel="noopener" title="GitHub" class="fab fa-github"></a></li>
+
+
+
+
+
+
+
+
+
+
+
+<li><a href="//www.linkedin.com/in/liuzheng" target="_blank" rel="noopener" title="LinkedIn" class="fab fa-linkedin"></a></li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<li><a href="//twitter.com/martinliu" target="_blank" rel="noopener" title="Twitter" class="fab fa-twitter"></a></li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+      </ul>
+    </footer>
+  
+</section>
+
+      <main id="site-main">
+        
+  <article class="post">
+    <header>
+  <div class="title">
+    
+      <h2><a href="/2007/05/13/install-opennms-132-on-opensuse-102-system-the-simplest-version/">Install OpenNMS 1.3.2 on OpenSuse 10.2 system (The simplest version  )</a></h2>
+    
+    
+  </div>
+  <div class="meta">
+    <time datetime="2007-05-13 11:40:00 &#43;0000 UTC">May 13, 2007</time>
+    <p>liuadmin</p>
+    <p>1-Minute Read</p>
+  </div>
+</header>
+
+    <div id="socnet-share">
+      
+
+
+
+
+  
+    
+    <a href="//twitter.com/share?text=Install%20OpenNMS%201.3.2%20on%20OpenSuse%2010.2%20system%20%28The%20simplest%20version%20%20%29&amp;url=https%3a%2f%2fmartinliu.cn%2f2007%2f05%2f13%2finstall-opennms-132-on-opensuse-102-system-the-simplest-version%2f" target="_blank" rel="noopener" class="nav share-btn twitter">
+        <p>Twitter</p>
+      </a>
+  
+
+  
+      <a href="//www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fmartinliu.cn%2f2007%2f05%2f13%2finstall-opennms-132-on-opensuse-102-system-the-simplest-version%2f" target="_blank" rel="noopener" class="nav share-btn facebook">
+        <p>Facebook</p>
+        </a>
+  
+
+  
+    <a href="//www.reddit.com/submit?url=https%3a%2f%2fmartinliu.cn%2f2007%2f05%2f13%2finstall-opennms-132-on-opensuse-102-system-the-simplest-version%2f&amp;title=Install%20OpenNMS%201.3.2%20on%20OpenSuse%2010.2%20system%20%28The%20simplest%20version%20%20%29" target="_blank" rel="noopener" class="nav share-btn reddit">
+          <p>Reddit</p>
+        </a>
+  
+
+  
+        <a href="//www.linkedin.com/shareArticle?url=https%3a%2f%2fmartinliu.cn%2f2007%2f05%2f13%2finstall-opennms-132-on-opensuse-102-system-the-simplest-version%2f&amp;title=Install%20OpenNMS%201.3.2%20on%20OpenSuse%2010.2%20system%20%28The%20simplest%20version%20%20%29" target="_blank" rel="noopener" class="nav share-btn linkedin">
+            <p>LinkedIn</p>
+          </a>
+  
+
+  
+        <a href="//www.pinterest.com/pin/create/button/?url=https%3a%2f%2fmartinliu.cn%2f2007%2f05%2f13%2finstall-opennms-132-on-opensuse-102-system-the-simplest-version%2f&amp;description=Install%20OpenNMS%201.3.2%20on%20OpenSuse%2010.2%20system%20%28The%20simplest%20version%20%20%29" target="_blank" rel="noopener" class="nav share-btn pinterest">
+          <p>Pinterest</p>
+        </a>
+  
+
+  
+        <a href="mailto:?subject=Check%20out%20this%20post%20by liuadmin&amp;body=https%3a%2f%2fmartinliu.cn%2f2007%2f05%2f13%2finstall-opennms-132-on-opensuse-102-system-the-simplest-version%2f" target="_blank" class="nav share-btn email" data-proofer-ignore>
+          <p>Email</p>
+        </a>
+  
+
+
+    </div>
+    <div class="content">
+      
+      <p>1&gt;Install dependence packages<br />zliu3:~yast -i rrdtool<br />zliu3:~yast -i postgresql<br />zliu3:~ # rpm -qa |grep rrdtool<br />rrdtool-1.2.15-25<br />zliu3:~ # rpm -qa |grep postgresql<br />postgresql-8.1.5-13<br />postgresql-libs-8.1.5-13<br />postgresql-contrib-8.1.5-13<br />postgresql-pl-8.1.5-15<br />postgresql-server-8.1.5-13<br />rcpostgresql start<br />copy jdk/tomcat 5.5 package files to /opt<br />cd /opt<br />tar xzvf jdk1.5.tar.gz<br />tar xzvf tomcat5.5.tar.gz<br />export  JAVA_HOME=/opt/jdk1.5.0_09<br />export OPENNMS_HOME=/opt/opennms<br />export  CATALINA_HOME=/opt/apache-tomcat-5.5.20<br />export PATH=$PATH:$JAVA_HOME/bin<br />java -version<br />$CATALINA_HOME/bin/startup.sh<br />Test Tomcat 5.5 http://Ip_address:8080/<br />vi /var/lib/pgsql/data/postgresql.conf<br /># - Connection Settings - <br />max_connections = 256<br /><br />vi /var/lib/pgsql/data/pg_hba.conf<br />[refer to install guide] <br />#local  all    all             ident   sameuser<br />local all all trust<br />host all all 127.0.0.1 255.255.255.255 trust<br />host all all ::1 ffff:ffff:ffff:ffff:ffff:ffff:ffff:ffff trust<br /><br />rcpostgresql restart<br /><br />2&gt;Install and configure OpenNMS<br />Copy OpenNMS rpm packages to /root<br />rpm -ivh opennms*<br />$OPENNMS_HOME/bin/runjava -s<br />$OPENNMS_HOME/bin/install -dis<br />$OPENNMS_HOME/bin/install -y -w $CATALINA_HOME/conf/Catalina/localhost<br />$CATALINA_HOME/bin/shutdown.sh<br />$CATALINA_HOME/bin/startup.sh<br />/etc/init.d/opennms start<br />/etc/init.d/opennms -v status<br />OpenNMS.Eventd         : running<br />OpenNMS.Trapd          : running<br />OpenNMS.Dhcpd          : running<br />OpenNMS.Actiond        : running<br />OpenNMS.Capsd          : running<br />OpenNMS.Notifd         : running<br />OpenNMS.Scriptd        : running<br />OpenNMS.Rtcd           : running<br />OpenNMS.Pollerd        : running<br />OpenNMS.PollerBackEnd  : running<br />OpenNMS.Collectd       : running<br />OpenNMS.Threshd        : running<br />OpenNMS.Discovery      : running<br />OpenNMS.Vacuumd        : running<br />OpenNMS.EventTranslator: running<br />OpenNMS.PassiveStatusd : running<br /><br />Test OpenNMS login page http://ip_address:8080/opennms</p>
+
+    </div>
+    <footer>
+      <div class="stats">
+  
+    <ul class="categories">
+      
+        
+          <li><a class="article-terms-link" href="/en/categories/itsm/">itsm</a></li>
+        
+      
+    </ul>
+  
+  
+    <ul class="tags">
+      
+        
+          <li><a class="article-terms-link" href="/en/tags/opensource/">opensource</a></li>
+        
+          <li><a class="article-terms-link" href="/en/tags/opensuse/">opensuse</a></li>
+        
+      
+    </ul>
+  
+</div>
+
+    </footer>
+  </article>
+  
+    
+
+  
+  <div class="pagination">
+    
+      <a href="/2007/06/01/there-is-the-easiest-way-to-run-it-management-tool/" class="button left"><span>There is the easiest way to run IT management tool</span></a>
+    
+    
+      <a href="/2007/02/16/install-smokeping-via-yum/" class="button right"><span>Install Smokeping via yum</span></a>
+    
+  </div>
+
+      </main>
+      <section id="site-sidebar">
+  
+    <section id="recent-posts">
+      <header>
+        <h1>Recent Posts</h1>
+      </header>
+      
+      <article class="mini-post">
+          
+        <header>
+          <h2><a href="/2013/08/01/the-xen-movie-part-1-the-first-ten-years-of-open-source-xen/">The Xen Movie, Part 1: The first ten years of open source Xen.</a></h2>
+          <time class="published" datetime="2013-08-01 09:29:20 &#43;0000 UTC">August 1, 2013</time>
+        </header>
+      </article>
+      
+      <article class="mini-post">
+          
+        <header>
+          <h2><a href="/2011/03/29/how-to-configure-statusnet-default-language/">How to configure statusnet default language</a></h2>
+          <time class="published" datetime="2011-03-29 09:13:03 &#43;0000 UTC">March 29, 2011</time>
+        </header>
+      </article>
+      
+      <article class="mini-post">
+          
+        <header>
+          <h2><a href="/2010/09/15/open-source-software-box-dot-net-lunch/">Open source software box dot net launch</a></h2>
+          <time class="published" datetime="2010-09-15 16:47:22 &#43;0000 UTC">September 15, 2010</time>
+        </header>
+      </article>
+      
+      <article class="mini-post">
+          
+        <header>
+          <h2><a href="/2009/07/07/martinmark-for-july-7th/">MartinMark for July 7th</a></h2>
+          <time class="published" datetime="2009-07-07 01:51:35 &#43;0000 UTC">July 7, 2009</time>
+        </header>
+      </article>
+      
+      <article class="mini-post">
+          
+        <header>
+          <h2><a href="/2009/07/04/some-useful-tools/">Some useful tools</a></h2>
+          <time class="published" datetime="2009-07-04 05:41:06 &#43;0000 UTC">July 4, 2009</time>
+        </header>
+      </article>
+      
+      
+        <footer>
+          <a href="/en/blog/" class="button">See More</a>
+        </footer>
+      
+    </section>
+  
+
+  
+    
+
+      <section id="categories">
+        <header>
+          <h1><a href="/en/categories">Categories</a></h1>
+        </header>
+        <ul>
+          
+          
+          <li>
+              <a href="/en/categories/itsm/">itsm<span class="count">9</span></a>
+          
+          <li>
+              <a href="/en/categories/blog/">blog<span class="count">4</span></a>
+          
+          <li>
+              <a href="/en/categories/cloud-computing/">cloud-computing<span class="count">2</span></a>
+          
+          <li>
+              <a href="/en/categories/infrastructure/">infrastructure<span class="count">1</span></a>
+          
+          <li>
+              <a href="/en/categories/opensource/">opensource<span class="count">1</span></a>
+          
+          </li>
+        </ul>
+      </section>
+    
+  
+
+  
+    <section id="mini-bio">
+      <header>
+        <h1>About</h1>
+      </header>
+      <p>This Blog is sharing DevOps and SRE ariticles. I have translated DevOps Handbook and SRE Workbook.</p>
+      <footer>
+        <a href="/en/about" class="button">Learn More</a>
+      </footer>
+    </section>
+  
+</section>
+
+      <footer id="site-footer">
+  
+      <ul class="socnet-icons">
+        
+
+        <li><a href="//github.com/martinliu" target="_blank" rel="noopener" title="GitHub" class="fab fa-github"></a></li>
+
+
+
+
+
+
+
+
+
+
+
+<li><a href="//www.linkedin.com/in/liuzheng" target="_blank" rel="noopener" title="LinkedIn" class="fab fa-linkedin"></a></li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<li><a href="//twitter.com/martinliu" target="_blank" rel="noopener" title="Twitter" class="fab fa-twitter"></a></li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+      </ul>
+  
+  <p class="copyright">
+    © 2013 Martin Liu&#39;s Blog
+      <br>
+    Theme: <a href='https://github.com/pacollins/hugo-future-imperfect-slim' target='_blank' rel='noopener'>Hugo Future Imperfect Slim</a><br>A <a href='https://html5up.net/future-imperfect' target='_blank' rel='noopener'>HTML5 UP port</a> | Powered by <a href='https://gohugo.io/' title='0.80.0' target='_blank' rel='noopener'>Hugo</a>
+  </p>
+</footer>
+<a id="back-to-top" href="#" class="fas fa-arrow-up fa-2x"></a>
+
+      <script src="/js/highlight.js"></script>
+    
+    <script>hljs.initHighlightingOnLoad();</script><script src="/js/bundle.min.b4e669fa428a81defb8af0916c53f39cd1b8e0bbab22199c06f0b182907ba474.js" integrity="sha256-tOZp&#43;kKKgd77ivCRbFPznNG44LurIhmcBvCxgpB7pHQ="></script>
+    <script src="/js/add-on.js"></script>
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-749876-6', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+
+    </div>
+  </body>
+</html>

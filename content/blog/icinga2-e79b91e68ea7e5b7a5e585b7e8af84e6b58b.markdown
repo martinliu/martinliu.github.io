@@ -8,7 +8,6 @@ subtitle: icinga2是一个优秀的监控软件，它是2009年从nagios中分�
 slug: icinga2-%e7%9b%91%e6%8e%a7%e5%b7%a5%e5%85%b7%e8%af%84%e6%b5%8b
 tags:
 - icinga2
-- monitor
 - Nagios
 title: icinga2 监控工具评测
 url: /2015/06/18/icinga2-e79b91e68ea7e5b7a5e585b7e8af84e6b58b/

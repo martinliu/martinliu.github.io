@@ -6,9 +6,6 @@ comments: true
 date: 2008-04-02T06:46:29Z
 slug: vm-jumpbox-rpath-play-oss
 tags:
-- JumpBox
-- OTRS
-- rPath
 - VMWare
 title: 虚拟让你轻松玩开源
 url: /2008/04/02/vm-jumpbox-rpath-play-oss/

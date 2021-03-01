@@ -8,8 +8,6 @@ slug: otrs-project-news-update
 tags:
 - opensource
 - OTRS
-- service desk
-- sirios
 title: '[项目更新] OTRS project news update'
 url: /2008/11/19/otrs-project-news-update/
 wordpress_id: 49241

@@ -1,24 +1,547 @@
-<!doctype html><html lang=zh-cn><head><meta charset=utf-8><title>DockerCon 2016 D2 超萌码头酷黑客 大会圆满闭幕 - 刘征的博客</title><meta name=viewport content="width=device-width,initial-scale=1"><meta name=generator content="Hugo 0.80.0"><meta property="og:site_name" content="刘征的博客"><meta property="og:title" content="DockerCon 2016 D2 超萌码头酷黑客 大会圆满闭幕"><meta property="og:description" content="Martin's Liu is bloging on DevOps and SRE topics"><meta property="description" content="Martin's Liu is bloging on DevOps and SRE topics"><meta property="og:url" content="https://martinliu.cn/2016/06/22/closing-general-session-moby-docks-cool-hacks/"><meta property="og:type" content="article"><meta property="og:image" content="https://martinliu.cn/img/main/logo.jpg"><link rel=stylesheet href=/css/bundle.min.d9e04ae08c9b3049b766dbd4aeab7d862c5ea1d13679b621490e0f5df5507497.css integrity="sha256-2eBK4IybMEm3ZtvUrqt9hixeodE2ebYhSQ4PXfVQdJc="><link rel=stylesheet href=/css/add-on.css></head><body><header id=site-header><nav id=site-nav><h1 class=nav-title><a href=/ class=nav>博客</a></h1><menu id=site-nav-menu class="flyout-menu menu"><a href=/ class="nav link"><i class="fas fa-home"></i>首页</a>
-<a href=/about/ class="nav link"><i class="far fa-id-card"></i>关于</a>
-<a href=/blog/ class="nav link"><i class="far fa-newspaper"></i>博客</a>
-<a href=/categories/ class="nav link"><i class="fas fa-sitemap"></i>分类</a>
-<a href=/contact/ class="nav link"><i class="far fa-envelope"></i>联系</a>
-<a href=#share-menu class="nav link share-toggle"><i class="fas fa-share-alt">&nbsp;</i>Share</a>
-<a href=#search-input class="nav link search-toggle"><i class="fas fa-search">&nbsp;</i>Search</a></menu>
-<a href=#search-input class="nav search-toggle"><i class="fas fa-search fa-2x">&nbsp;</i></a>
-<a href=#share-menu class="nav share-toggle"><i class="fas fa-share-alt fa-2x">&nbsp;</i></a>
-<a href=#lang-menu class="nav lang-toggle" lang=zh-cn>zh-cn</a>
-<a href=#site-nav class="nav nav-toggle"><i class="fas fa-bars fa-2x"></i></a></nav><menu id=search class=menu><input id=search-input class="search-input menu"></input><div id=search-results class="search-results menu"></div></menu><menu id=lang-menu class="flyout-menu menu"><a href=# lang=zh-cn class="nav link active">中文 (zh-cn)</a>
-<a href=/en lang=en class="nav no-lang link">English (en)</a></menu>
-<menu id=share-menu class="flyout-menu menu"><h1>Share Post</h1><a href="//twitter.com/share?text=DockerCon%202016%20D2%20%e8%b6%85%e8%90%8c%e7%a0%81%e5%a4%b4%e9%85%b7%e9%bb%91%e5%ae%a2%20%e5%a4%a7%e4%bc%9a%e5%9c%86%e6%bb%a1%e9%97%ad%e5%b9%95&url=https%3a%2f%2fmartinliu.cn%2f2016%2f06%2f22%2fclosing-general-session-moby-docks-cool-hacks%2f" target=_blank rel=noopener class="nav share-btn twitter"><p>Twitter</p></a><a href="//www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fmartinliu.cn%2f2016%2f06%2f22%2fclosing-general-session-moby-docks-cool-hacks%2f" target=_blank rel=noopener class="nav share-btn facebook"><p>Facebook</p></a><a href="//www.reddit.com/submit?url=https%3a%2f%2fmartinliu.cn%2f2016%2f06%2f22%2fclosing-general-session-moby-docks-cool-hacks%2f&title=DockerCon%202016%20D2%20%e8%b6%85%e8%90%8c%e7%a0%81%e5%a4%b4%e9%85%b7%e9%bb%91%e5%ae%a2%20%e5%a4%a7%e4%bc%9a%e5%9c%86%e6%bb%a1%e9%97%ad%e5%b9%95" target=_blank rel=noopener class="nav share-btn reddit"><p>Reddit</p></a><a href="//www.linkedin.com/shareArticle?url=https%3a%2f%2fmartinliu.cn%2f2016%2f06%2f22%2fclosing-general-session-moby-docks-cool-hacks%2f&title=DockerCon%202016%20D2%20%e8%b6%85%e8%90%8c%e7%a0%81%e5%a4%b4%e9%85%b7%e9%bb%91%e5%ae%a2%20%e5%a4%a7%e4%bc%9a%e5%9c%86%e6%bb%a1%e9%97%ad%e5%b9%95" target=_blank rel=noopener class="nav share-btn linkedin"><p>LinkedIn</p></a><a href="//www.pinterest.com/pin/create/button/?url=https%3a%2f%2fmartinliu.cn%2f2016%2f06%2f22%2fclosing-general-session-moby-docks-cool-hacks%2f&description=DockerCon%202016%20D2%20%e8%b6%85%e8%90%8c%e7%a0%81%e5%a4%b4%e9%85%b7%e9%bb%91%e5%ae%a2%20%e5%a4%a7%e4%bc%9a%e5%9c%86%e6%bb%a1%e9%97%ad%e5%b9%95" target=_blank rel=noopener class="nav share-btn pinterest"><p>Pinterest</p></a><a href="mailto:?subject=%e6%9f%a5%e7%9c%8b%e6%ad%a4%e5%b8%96%e5%ad%90%e7%9a%84%e4%bd%9c%e8%80%85 liuadmin&body=https%3a%2f%2fmartinliu.cn%2f2016%2f06%2f22%2fclosing-general-session-moby-docks-cool-hacks%2f" target=_blank class="nav share-btn email" data-proofer-ignore><p>Email</p></a></menu></header><div id=wrapper><section id=site-intro><a href=/><img src=https://martinliu.cn/img/main/logo.jpg class=circle width=100 alt="Martin Liu"></a><header><h1>Martin Liu's Blog</h1></header><main><p>Community Advocate, DevOps China Community Organizer</p></main><footer><ul class=socnet-icons><li><a href=//github.com/martinliu target=_blank rel=noopener title=GitHub class="fab fa-github"></a></li><li><a href=//www.linkedin.com/in/liuzheng target=_blank rel=noopener title=LinkedIn class="fab fa-linkedin"></a></li><li><a href=//twitter.com/martinliu target=_blank rel=noopener title=Twitter class="fab fa-twitter"></a></li></ul></footer></section><main id=site-main><article class=post><header><div class=title><h2><a href=/2016/06/22/closing-general-session-moby-docks-cool-hacks/>DockerCon 2016 D2 超萌码头酷黑客 大会圆满闭幕</a></h2></div><div class=meta><time datetime="2016-06-22 02:35:39 +0000 UTC">June 22, 2016</time><p>liuadmin</p><p>1 分钟</p></div></header><div id=socnet-share><a href="//twitter.com/share?text=DockerCon%202016%20D2%20%e8%b6%85%e8%90%8c%e7%a0%81%e5%a4%b4%e9%85%b7%e9%bb%91%e5%ae%a2%20%e5%a4%a7%e4%bc%9a%e5%9c%86%e6%bb%a1%e9%97%ad%e5%b9%95&url=https%3a%2f%2fmartinliu.cn%2f2016%2f06%2f22%2fclosing-general-session-moby-docks-cool-hacks%2f" target=_blank rel=noopener class="nav share-btn twitter"><p>Twitter</p></a><a href="//www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fmartinliu.cn%2f2016%2f06%2f22%2fclosing-general-session-moby-docks-cool-hacks%2f" target=_blank rel=noopener class="nav share-btn facebook"><p>Facebook</p></a><a href="//www.reddit.com/submit?url=https%3a%2f%2fmartinliu.cn%2f2016%2f06%2f22%2fclosing-general-session-moby-docks-cool-hacks%2f&title=DockerCon%202016%20D2%20%e8%b6%85%e8%90%8c%e7%a0%81%e5%a4%b4%e9%85%b7%e9%bb%91%e5%ae%a2%20%e5%a4%a7%e4%bc%9a%e5%9c%86%e6%bb%a1%e9%97%ad%e5%b9%95" target=_blank rel=noopener class="nav share-btn reddit"><p>Reddit</p></a><a href="//www.linkedin.com/shareArticle?url=https%3a%2f%2fmartinliu.cn%2f2016%2f06%2f22%2fclosing-general-session-moby-docks-cool-hacks%2f&title=DockerCon%202016%20D2%20%e8%b6%85%e8%90%8c%e7%a0%81%e5%a4%b4%e9%85%b7%e9%bb%91%e5%ae%a2%20%e5%a4%a7%e4%bc%9a%e5%9c%86%e6%bb%a1%e9%97%ad%e5%b9%95" target=_blank rel=noopener class="nav share-btn linkedin"><p>LinkedIn</p></a><a href="//www.pinterest.com/pin/create/button/?url=https%3a%2f%2fmartinliu.cn%2f2016%2f06%2f22%2fclosing-general-session-moby-docks-cool-hacks%2f&description=DockerCon%202016%20D2%20%e8%b6%85%e8%90%8c%e7%a0%81%e5%a4%b4%e9%85%b7%e9%bb%91%e5%ae%a2%20%e5%a4%a7%e4%bc%9a%e5%9c%86%e6%bb%a1%e9%97%ad%e5%b9%95" target=_blank rel=noopener class="nav share-btn pinterest"><p>Pinterest</p></a><a href="mailto:?subject=%e6%9f%a5%e7%9c%8b%e6%ad%a4%e5%b8%96%e5%ad%90%e7%9a%84%e4%bd%9c%e8%80%85 liuadmin&body=https%3a%2f%2fmartinliu.cn%2f2016%2f06%2f22%2fclosing-general-session-moby-docks-cool-hacks%2f" target=_blank class="nav share-btn email" data-proofer-ignore><p>Email</p></a></div><div class=content><p>Closing General Session 的主题是 Moby Dock‘s Cool Hacks ； 从字面意思上看，这个主题的意思是“超萌码头酷黑客”的意思。我已经看到了关于最后一天开幕主题演讲的评论，说是“剑指商业”什么的；而我认为 Docker 从开始的第一天，无论它是否开源，它都是为了商业利益而已。话在说回到开源，Docker 只是完美的应用了开源软件这种实践而已；而且docker 把开源这种模式应用的如此成功，并在商业上也如此让人眼红和侧目，这也算是开源软件商业化登峰造极的一种极端性个案。个人认为开源无疑是在软件行业中做出爆款技术当之无愧的首选的实践方式。我在红帽碰到很多参与开源十几二十年的老黑客，他们不乏会表达关于开源纯洁性沦丧的抱怨；我对此也非常理解和认同。而我更认同开源可以对软件技术带来无比活力的这个积极的方面。</p><p>言归正传，小编我还是“模拟现场”播报一下大会闭幕主题演讲的盛况。这是大会的结束的 session，现场的人数明显的少于第一天开幕式的人。在十几分钟内，人们稀稀拉拉的进入了会场。会场中的座位大约还有一部分空位。美女Mano 和 黑客Kristie 作为主要演讲人上台。美女上台后先用手机自拍了几下。两个人开始宣布，Docker 大会之后举行为期一个月的黑客大赛，这是我们的传统，Docker 大会虽然今天会结束，而docer 黑客大赛将从今天开始。我们来请大家欣赏三个非常酷的黑客项目演示。</p><p>本次大会的录音点这里 <a href=http://www.ximalaya.com/32280565/sound/17388272>http://www.ximalaya.com/32280565/sound/17388272</a></p><h2 id=黑客演示1微服务自毁平台>黑客演示1：微服务自毁平台</h2><p>Jeff 登场。Jeff 开始讲述微服务的故事，我们都在试图让基础架构做到冗余，容所有的服务都冗余，让群集能够自愈；但是故障，断网，宕机还是会发生。我们所做的这些真的能够保证业务不宕机么，服务不终端么？你怎么能确认这一点？因此回归到故障的发生上吧？如果服务要出故障，请让它有规律的发生。请程序猿和 ops 都投入到故障处理的战斗中，以此为契机来优化和改造应用，让应用变的更加强壮。我们都听说过混乱猴子，而 Jeff 团队正式帮人们构建一堆这样的工具的人。</p><p>有一个思路是：如何让我的系统的服务出故障，如何主动的在系统中注入故障。我们需要一种特殊的编排工具来在系统中模拟和触发故障的发生。我用容器做工具平台来触发故障注入的动作。当然这个故障是在容器架构的微服务系统中触发这个动作。</p><p>Jeff 开始做这个 Demo。说：如果你的”网络没有故障，天下太平。“其实这很无聊的说，有木有？有木有？我现在开始用工具来注入 网络延迟的网络故障吧！ 。用一个基于策略的工具。配置一个网络故障模拟的策略，故障什么时间发生，发生多久。这里设计一个每10秒钟注入一次网络延迟故障提高到600ms 的故障。然后配置故障影响的范围，这里使用 Docker 的 lable 来做故障发生节点的选择的条件。符合标签的系统将受到这次故障影响。我们的这个故障模拟编排系统，帮您提前体验故障的发生。现在你看故障发生了，从这些容器里面 ping google 的网络延迟比之前大多了， 目前延迟到了600ms。希望你们能开始体验和使用这个而工具。</p><h2 id=黑客演示2serverless-架构的应用不是梦>黑客演示2：Serverless 架构的应用不是梦</h2><p>Ben 是大家在 Docker 大会喜闻乐见的一个黑客，他经常给做 demo 和 session。他绝对符合超萌的标准。</p><p><img src=http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2016/06/40906-1.jpeg alt="40906 (1)"></p><p>Ben 开讲，Serverless 是如何做的？ben 认为 Serverless 是一种全新的应用编程的思路，而 docer 可以很好的支持这种思路，并实现和执行这种思路。docer 群集可以让Serverless引用按需执行，并让该应用的底层变得资源冗余并路由可达。ben 开始演示 他的几张 slides， 说 Sererless == docker这个概念。本开始讲解：如何用Serverless架构来实现投票应用的改造。如何把这个5个服务模块的纯粹容器微服务系统转换为 serverless 架构的应用。开始修改源代码，把发入队列的票，变成一个处理投票的容，把 http 服务器变成一个 CGIHander（）服务；但是 nodejs 不支持 CGIhander，肿么办？我用 perl 重写了这部分，为毛用 perl，被忘了它乃是古董级的黑客神器的好不好，呵呵！改造完之后的系统架构如下。架构是把处理 postgresql 意外的模块都重写了。数据库保留在最下层。这种Serverless重构实践遵从的原则如下。</p><p><img src=http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2016/06/2-1.jpg alt=2></p><p>三个原则翻译一下：</p><ol><li><p>把每个模块的核心功能打包，并作为容器来运行。解读：这意味着把所有服务模块组重构，把每个服务模块中的核心功能代码作为一个在容器里面跑的对象。这里其实牵扯到很深的业务重构和应用重构，程序猿或将抛弃以前的代码，甚至以前所习惯使用的程序开发堆栈。</p></li><li><p>把这些容器用 Docker 的 Swarm 跑起来。解读：docker 原生的Swarm 编排能力将为您的应用提供，功能的运行，workload 的分布，服务的冗余，服务的路由等等支持；这样的架构能支持到 Serverless 的应用的模型。</p></li><li><p>从容器中去运行其它容器。解读：容器编排平台或将不是容器生命起源的唯一起点，容器里面的应用可能可以决定系统中需要滋生出什么样的容器，当然说的是需要实现和运行什么功能的容器。</p></li></ol><p>好了，目前为止，ben 的心的应用重构完成，还是用 docker-compose up 启动了改造之后的应用。现在看到了这个 serverless 的应用工作正常。</p><p>Ben 说：我们在这demo 了 serverless  应用的改造的过程，可以看到 docker 是如何支持这种应用架构的。你可以打包 web front 为服务，它自动的在 Swarm 群集上无限延展这个服务。成为分布式计算的架构。还可以打包微服务的其它应用模块为 Serverless 应用架构。欢迎大家 参与到我的 Serverless github 项目中，和我一起互动，把 Serverless 在 docker 上的应用搞起来。<a href=https://github.com/bfirsh/serverless-docker>https://github.com/bfirsh/serverless-docker</a> 这里包括了以上演示的应用。</p><h2 id=黑客演示3在线更新的无人机>黑客演示3：在线更新的无人机</h2><p>这个团队做 in the air update 无人机实时演示。无人机其实是树莓派加他们的 docker 软件系统。这是一个嵌入式系统的设计。</p><p><img src=http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2016/06/3-1.jpg alt=3></p><p><img src=http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2016/06/4.jpg alt=4></p><p><img src=http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2016/06/5.jpg alt=5></p><p>实时新旧系统的切换秘密在这里。新版的容器会先运行起来，新系统用一个队列来接收旧系统的数据，这些数据是新旧系统交接的必要的数据，系统会判断需要多长时间，需要收集那些数据来完成这个交接的过程。直到旧系统到新系统的割接完毕。</p><p>程序猿开始更新 v1的代码，加入了摄像头实时视频功能。更新提交了 v2的镜像文件。在下图可以实时的监视到无人机的状态。</p><p><img src=http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2016/06/6.jpg alt=6></p><p><img src=http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2016/06/1-1.jpg alt=1></p><p>无人机在在线更新软件中。并没有掉地上哈哈哈！</p><p><img src=http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2016/06/6.1.jpg alt=6.1></p><p>右下角是新版本软件的摄像头把大会现场的视频拍摄，并实时传递到控制台的效果。此图上面的那个图，中间凸起震荡的那个块是无人机软件升级实时更新的过程。</p><p>本黑科技演示完毕。</p><h2 id=hackathon-黑客大赛启动>hackathon 黑客大赛启动</h2><p>主此人再次上台启动了黑客大赛。</p><p><img src=http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2016/06/7.jpg alt=7></p><p>为期一个月的 hackathon 正式开始。</p><h2 id=最后看点>最后看点</h2><p>CEO CTO 上台感谢赞助商。所罗门开始讲黑客骚扰现象。号召大家通过<a href=http://hackharassment.com> http://hackharassment.com</a> 网站来抵制中现象。</p><p>Bump UP 是通过手环实现的，人们的手环彼此碰撞会在系统中增加一个点数。宣布了碰撞点数最多的前5名，感谢他们在本次大会中，积极的和其它人互动和沟通，请他们去领奖。所罗门号召所有现场的人再次相互碰撞手环，系统系统的点数增加到两百万。来解锁 Docker 奖学金基金。很快大家碰撞起来。奖学金解锁。</p><p>感谢进三千名的社区 贡献者，感谢 docker 的员工。所有人发来的自拍形成了一个西雅图拼图。最后大会圆满结束。</p><p>看到最后的才能做最后的评论。这更感觉是一个黑客大会，引入了 docker 对社会的责任感的概念。商业财富越大的人社会责任感应该更多。更像是黑客公司商业成功之后，继续创新，并开始践行自己的社会责任的大会。大会并没有结束，黑客大赛在接下来的一个月里将在全球各地延续。</p></div><footer><div class=stats><ul class=categories><li><a class=article-terms-link href=/categories/opensource/>opensource</a></li></ul><ul class=tags><li><a class=article-terms-link href=/tags/docker/>docker</a></li><li><a class=article-terms-link href=/tags/twitter/>twitter</a></li></ul></div></footer></article><article class=post><div><h2 id=say-something>说些什么</h2><form id=comment-form class=new-comment method=post><h3 class="reply-notice hidden"><span class=reply-name></span></h3><input type=hidden name=options[entryId] value=6f72f8dfefc0762f38c086fada7e6bd7>
-<input type=hidden name=fields[replyThread]>
-<input type=hidden name=fields[replyID]>
-<input type=hidden name=fields[replyName]>
-<input required name=fields[name] type=text placeholder=你的名字>
-<input name=fields[website] type=text placeholder=您的网页>
-<input required name=fields[email] type=email placeholder=你的邮件>
-<textarea required name=fields[body] placeholder=你的信息 rows=10></textarea><div class=submit-notice><strong class="submit-notice-text submit-success hidden">感谢您的评论！被批准后它会立即在此站点展示。</strong>
-<strong class="submit-notice-text submit-failed hidden">很抱歉，您的提交存在错误。请确保所有必填字段都已填写正确，然后再试一次。</strong></div><input type=submit value=送出 class=button>
-<input type=submit value=已送出 class="hidden button" disabled>
-<input type=reset value=重设 class=button></form></div><div><h2>评论</h2><p>还沒有留言。</p></div></article><div class=pagination><a href=/2016/06/22/building-serverless-apps-docker/ class="button left"><span>用 Docker 构建 Serverless 应用</span></a>
-<a href=/2016/06/20/dockercon-2016-d1-keynote/ class="button right"><span>DockerCon 2016 D1 Keynote</span></a></div></main><section id=site-sidebar><section id=recent-posts><header><h1>最新文章</h1></header><article class=mini-post><a href=/blog/workshop-elastic-observability/ class=image style="--bg-image: url('https://martinliu.cn/img/2019/03/pic01.jpg')"><img class=stretchH src=https://martinliu.cn/img/2019/03/pic01.jpg alt=Valley></a><header><h2><a href=/blog/workshop-elastic-observability/>Elastic 可观测性工作坊</a></h2><time class=published datetime="2021-02-06 10:36:12 +0800 CST">February 6, 2021</time></header></article><article class=mini-post><a href=/blog/change-back-on-github-page-again/ class=image style="--bg-image: url('https://martinliu.cn/img/2019/03/pic03.jpg')"><img class=stretchH src=https://martinliu.cn/img/2019/03/pic03.jpg alt=Valley></a><header><h2><a href=/blog/change-back-on-github-page-again/>博客换一个新样式</a></h2><time class=published datetime="2021-02-06 00:00:00 +0000 UTC">February 6, 2021</time></header></article><article class=mini-post><a href=/blog/devopscoach-weekly-6/ class=image style="--bg-image: url('https://martinliu.cn/')"><img src=https://martinliu.cn/ alt></a><header><h2><a href=/blog/devopscoach-weekly-6/>DevOps Coach 周刊 #6</a></h2><time class=published datetime="2020-08-31 00:11:01 +0800 CST">August 31, 2020</time></header></article><article class=mini-post><a href=/blog/elasticsearch-3-nodes-cluster-setup/ class=image style="--bg-image: url('https://martinliu.cn/')"><img src=https://martinliu.cn/ alt></a><header><h2><a href=/blog/elasticsearch-3-nodes-cluster-setup/>Elasticsearch 3 节点集群搭建 (7.9.0)</a></h2><time class=published datetime="2020-08-27 13:54:46 +0800 CST">August 27, 2020</time></header></article><article class=mini-post><a href=/blog/devopscoach-weekly-5/ class=image style="--bg-image: url('https://martinliu.cn/')"><img src=https://martinliu.cn/ alt></a><header><h2><a href=/blog/devopscoach-weekly-5/>DevOps Coach 周刊 #5</a></h2><time class=published datetime="2020-08-25 15:20:51 +0800 CST">August 25, 2020</time></header></article><footer><a href=/blog/ class=button>查看更多</a></footer></section><section id=categories><header><h1><a href=/categories>分类</a></h1></header><ul><li><a href=/categories/blog/>blog<span class=count>107</span></a><li><a href=/categories/itsm/>itsm<span class=count>95</span></a><li><a href=/categories/infrastructure/>infrastructure<span class=count>48</span></a><li><a href=/categories/devops/>devops<span class=count>38</span></a><li><a href=/categories/opensource/>opensource<span class=count>35</span></a><li><a href=/categories/cloud-computing/>cloud-computing<span class=count>27</span></a><li><a href=/categories/running/>running<span class=count>22</span></a><li><a href=/categories/cms/cmdb/>cms/cmdb<span class=count>20</span></a><li><a href=/categories/travel/>travel<span class=count>14</span></a><li><a href=/categories/sre/>sre<span class=count>2</span></a></li></ul></section><section id=mini-bio><header><h1>关于</h1></header><p>This Blog is sharing DevOps and SRE ariticles. I have translated DevOps Handbook and SRE Workbook.</p><footer><a href=/about class=button>学到更多</a></footer></section></section><footer id=site-footer><ul class=socnet-icons><li><a href=//github.com/martinliu target=_blank rel=noopener title=GitHub class="fab fa-github"></a></li><li><a href=//www.linkedin.com/in/liuzheng target=_blank rel=noopener title=LinkedIn class="fab fa-linkedin"></a></li><li><a href=//twitter.com/martinliu target=_blank rel=noopener title=Twitter class="fab fa-twitter"></a></li></ul><p class=copyright>© 2021 刘征的博客<br>主题: <a href=https://themes.gohugo.io/hugo-future-imperfect-slim/ target=_blank rel=noopener>Hugo Future Imperfect Slim</a><br>移植自 <a href=https://html5up.net/future-imperfect target=_blank rel=noopener>HTML5 UP</a> | 由 <a href=https://gohugo.io/ target=_blank rel=noopener title=0.80.0>Hugo</a> 驱动</p></footer><a id=back-to-top href=# class="fas fa-arrow-up fa-2x"></a><script src=/js/highlight.js></script><script>hljs.initHighlightingOnLoad();</script><script src=/js/bundle.min.bbba6b424a8ac5b6858cd5fc80eabc9c5277945cc2dc349204646b84891b4b58.js integrity="sha256-u7prQkqKxbaFjNX8gOq8nFJ3lFzC3DSSBGRrhIkbS1g="></script><script src=/js/add-on.js></script><script type=application/javascript>var doNotTrack=false;if(!doNotTrack){window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;ga('create','UA-749876-6','auto');ga('send','pageview');}</script><script async src=https://www.google-analytics.com/analytics.js></script></div></body></html>
+<!doctype html>
+<html lang="zh-cn">
+  <head>
+  <meta charset="utf-8">
+<title>DockerCon 2016 D2 超萌码头酷黑客 大会圆满闭幕 - DevOps &amp; SRE Blog</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+<meta name="generator" content="Hugo 0.80.0" /><meta property="og:site_name" content="DevOps &amp; SRE Blog">
+  <meta property="og:title" content="DockerCon 2016 D2 超萌码头酷黑客 大会圆满闭幕">
+  <meta property="og:description" content="Martin&#39;s Liu is bloging on DevOps and SRE topics">
+  <meta property="description" content="Martin&#39;s Liu is bloging on DevOps and SRE topics">
+  <meta property="og:url" content="https://martinliu.cn/2016/06/22/closing-general-session-moby-docks-cool-hacks/">
+  <meta property="og:type" content="article">
+  
+    <meta property="og:image" content="https://martinliu.cn/img/main/logo.jpg">
+  
+  
+            <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.3/styles/default.min.css">
+          <link rel="stylesheet" href="/css/bundle.min.307f33cd8015e5bab28d6ebda9b400f8d3059bc248b4e60adf4d23469fab5a2b.css" integrity="sha256-MH8zzYAV5bqyjW69qbQA&#43;NMFm8JItOYK300jRp&#43;rWis="><link rel="stylesheet" href="/css/add-on.css">
+</head>
+
+  <body>
+    
+
+<header id="site-header">
+  <nav id="site-nav">
+    <h1 class="nav-title">
+      <a href="/" class="nav">
+        
+          博客
+        
+      </a>
+    </h1>
+    <menu id="site-nav-menu" class="flyout-menu menu">
+      
+        
+          
+          <a href="/" class="nav link"><i class='fas fa-home'></i> 首页</a>
+        
+      
+        
+          
+          <a href="/about/" class="nav link"><i class='far fa-id-card'></i> 关于</a>
+        
+      
+        
+          
+          <a href="/blog/" class="nav link"><i class='far fa-newspaper'></i> 博客</a>
+        
+      
+        
+          
+          <a href="/categories/" class="nav link"><i class='fas fa-sitemap'></i> 分类</a>
+        
+      
+        
+          
+          <a href="/course/" class="nav link"><i class='fa fa-book'></i> 课程</a>
+        
+      
+      <a href="#share-menu" class="nav link share-toggle"><i class="fas fa-share-alt">&nbsp;</i>Share</a>
+      
+    </menu>
+    
+    <a href="#share-menu" class="nav share-toggle"><i class="fas fa-share-alt fa-2x">&nbsp;</i></a>
+    <a href="#lang-menu" class="nav lang-toggle" lang="zh-cn">zh-cn</a>
+    <a href="#site-nav" class="nav nav-toggle"><i class="fas fa-bars fa-2x"></i></a>
+  </nav>
+  
+  <menu id="lang-menu" class="flyout-menu menu">
+  <a href="#" lang="zh-cn" class="nav link active">中文 (zh-cn)</a>
+  
+    
+      
+        <a href="/en" lang="en" class="nav no-lang link">English (en)</a>
+      
+    
+      
+    
+  
+</menu>
+
+  
+    <menu id="share-menu" class="flyout-menu menu">
+      <h1>Share Post</h1>
+      
+
+
+
+
+  
+    
+    <a href="//twitter.com/share?text=DockerCon%202016%20D2%20%e8%b6%85%e8%90%8c%e7%a0%81%e5%a4%b4%e9%85%b7%e9%bb%91%e5%ae%a2%20%e5%a4%a7%e4%bc%9a%e5%9c%86%e6%bb%a1%e9%97%ad%e5%b9%95&amp;url=https%3a%2f%2fmartinliu.cn%2f2016%2f06%2f22%2fclosing-general-session-moby-docks-cool-hacks%2f" target="_blank" rel="noopener" class="nav share-btn twitter">
+        <p>Twitter</p>
+      </a>
+  
+
+  
+      <a href="//www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fmartinliu.cn%2f2016%2f06%2f22%2fclosing-general-session-moby-docks-cool-hacks%2f" target="_blank" rel="noopener" class="nav share-btn facebook">
+        <p>Facebook</p>
+        </a>
+  
+
+  
+    <a href="//www.reddit.com/submit?url=https%3a%2f%2fmartinliu.cn%2f2016%2f06%2f22%2fclosing-general-session-moby-docks-cool-hacks%2f&amp;title=DockerCon%202016%20D2%20%e8%b6%85%e8%90%8c%e7%a0%81%e5%a4%b4%e9%85%b7%e9%bb%91%e5%ae%a2%20%e5%a4%a7%e4%bc%9a%e5%9c%86%e6%bb%a1%e9%97%ad%e5%b9%95" target="_blank" rel="noopener" class="nav share-btn reddit">
+          <p>Reddit</p>
+        </a>
+  
+
+  
+        <a href="//www.linkedin.com/shareArticle?url=https%3a%2f%2fmartinliu.cn%2f2016%2f06%2f22%2fclosing-general-session-moby-docks-cool-hacks%2f&amp;title=DockerCon%202016%20D2%20%e8%b6%85%e8%90%8c%e7%a0%81%e5%a4%b4%e9%85%b7%e9%bb%91%e5%ae%a2%20%e5%a4%a7%e4%bc%9a%e5%9c%86%e6%bb%a1%e9%97%ad%e5%b9%95" target="_blank" rel="noopener" class="nav share-btn linkedin">
+            <p>LinkedIn</p>
+          </a>
+  
+
+  
+        <a href="//www.pinterest.com/pin/create/button/?url=https%3a%2f%2fmartinliu.cn%2f2016%2f06%2f22%2fclosing-general-session-moby-docks-cool-hacks%2f&amp;description=DockerCon%202016%20D2%20%e8%b6%85%e8%90%8c%e7%a0%81%e5%a4%b4%e9%85%b7%e9%bb%91%e5%ae%a2%20%e5%a4%a7%e4%bc%9a%e5%9c%86%e6%bb%a1%e9%97%ad%e5%b9%95" target="_blank" rel="noopener" class="nav share-btn pinterest">
+          <p>Pinterest</p>
+        </a>
+  
+
+  
+        <a href="mailto:?subject=%e6%9f%a5%e7%9c%8b%e6%ad%a4%e5%b8%96%e5%ad%90%e7%9a%84%e4%bd%9c%e8%80%85 liuadmin&amp;body=https%3a%2f%2fmartinliu.cn%2f2016%2f06%2f22%2fclosing-general-session-moby-docks-cool-hacks%2f" target="_blank" class="nav share-btn email" data-proofer-ignore>
+          <p>Email</p>
+        </a>
+  
+
+
+    </menu>
+  
+</header>
+
+    <div id="wrapper">
+      <section id="site-intro" >
+  <a href="/"><img src="https://martinliu.cn/img/main/logo.jpg" class="circle" width="100" alt="Martin Liu" /></a>
+  <header>
+    <h1>Martin Liu's Blog</h1>
+  </header>
+  <main>
+    <p>Community Advocate, DevOps China Community Organizer</p>
+  </main>
+  
+    <footer>
+      <ul class="socnet-icons">
+        
+
+        <li><a href="//github.com/martinliu" target="_blank" rel="noopener" title="GitHub" class="fab fa-github"></a></li>
+
+
+
+
+
+
+
+
+
+
+
+<li><a href="//www.linkedin.com/in/liuzheng" target="_blank" rel="noopener" title="LinkedIn" class="fab fa-linkedin"></a></li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<li><a href="//twitter.com/martinliu" target="_blank" rel="noopener" title="Twitter" class="fab fa-twitter"></a></li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+      </ul>
+    </footer>
+  
+</section>
+
+      <main id="site-main">
+        
+  <article class="post">
+    <header>
+  <div class="title">
+    
+      <h2><a href="/2016/06/22/closing-general-session-moby-docks-cool-hacks/">DockerCon 2016 D2 超萌码头酷黑客 大会圆满闭幕</a></h2>
+    
+    
+  </div>
+  <div class="meta">
+    <time datetime="2016-06-22 02:35:39 &#43;0000 UTC">June 22, 2016</time>
+    <p>liuadmin</p>
+    <p>1 分钟</p>
+  </div>
+</header>
+
+    <div id="socnet-share">
+      
+
+
+
+
+  
+    
+    <a href="//twitter.com/share?text=DockerCon%202016%20D2%20%e8%b6%85%e8%90%8c%e7%a0%81%e5%a4%b4%e9%85%b7%e9%bb%91%e5%ae%a2%20%e5%a4%a7%e4%bc%9a%e5%9c%86%e6%bb%a1%e9%97%ad%e5%b9%95&amp;url=https%3a%2f%2fmartinliu.cn%2f2016%2f06%2f22%2fclosing-general-session-moby-docks-cool-hacks%2f" target="_blank" rel="noopener" class="nav share-btn twitter">
+        <p>Twitter</p>
+      </a>
+  
+
+  
+      <a href="//www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fmartinliu.cn%2f2016%2f06%2f22%2fclosing-general-session-moby-docks-cool-hacks%2f" target="_blank" rel="noopener" class="nav share-btn facebook">
+        <p>Facebook</p>
+        </a>
+  
+
+  
+    <a href="//www.reddit.com/submit?url=https%3a%2f%2fmartinliu.cn%2f2016%2f06%2f22%2fclosing-general-session-moby-docks-cool-hacks%2f&amp;title=DockerCon%202016%20D2%20%e8%b6%85%e8%90%8c%e7%a0%81%e5%a4%b4%e9%85%b7%e9%bb%91%e5%ae%a2%20%e5%a4%a7%e4%bc%9a%e5%9c%86%e6%bb%a1%e9%97%ad%e5%b9%95" target="_blank" rel="noopener" class="nav share-btn reddit">
+          <p>Reddit</p>
+        </a>
+  
+
+  
+        <a href="//www.linkedin.com/shareArticle?url=https%3a%2f%2fmartinliu.cn%2f2016%2f06%2f22%2fclosing-general-session-moby-docks-cool-hacks%2f&amp;title=DockerCon%202016%20D2%20%e8%b6%85%e8%90%8c%e7%a0%81%e5%a4%b4%e9%85%b7%e9%bb%91%e5%ae%a2%20%e5%a4%a7%e4%bc%9a%e5%9c%86%e6%bb%a1%e9%97%ad%e5%b9%95" target="_blank" rel="noopener" class="nav share-btn linkedin">
+            <p>LinkedIn</p>
+          </a>
+  
+
+  
+        <a href="//www.pinterest.com/pin/create/button/?url=https%3a%2f%2fmartinliu.cn%2f2016%2f06%2f22%2fclosing-general-session-moby-docks-cool-hacks%2f&amp;description=DockerCon%202016%20D2%20%e8%b6%85%e8%90%8c%e7%a0%81%e5%a4%b4%e9%85%b7%e9%bb%91%e5%ae%a2%20%e5%a4%a7%e4%bc%9a%e5%9c%86%e6%bb%a1%e9%97%ad%e5%b9%95" target="_blank" rel="noopener" class="nav share-btn pinterest">
+          <p>Pinterest</p>
+        </a>
+  
+
+  
+        <a href="mailto:?subject=%e6%9f%a5%e7%9c%8b%e6%ad%a4%e5%b8%96%e5%ad%90%e7%9a%84%e4%bd%9c%e8%80%85 liuadmin&amp;body=https%3a%2f%2fmartinliu.cn%2f2016%2f06%2f22%2fclosing-general-session-moby-docks-cool-hacks%2f" target="_blank" class="nav share-btn email" data-proofer-ignore>
+          <p>Email</p>
+        </a>
+  
+
+
+    </div>
+    <div class="content">
+      
+      <p>Closing General Session 的主题是 Moby Dock‘s Cool Hacks ； 从字面意思上看，这个主题的意思是“超萌码头酷黑客”的意思。我已经看到了关于最后一天开幕主题演讲的评论，说是“剑指商业”什么的；而我认为 Docker 从开始的第一天，无论它是否开源，它都是为了商业利益而已。话在说回到开源，Docker 只是完美的应用了开源软件这种实践而已；而且docker 把开源这种模式应用的如此成功，并在商业上也如此让人眼红和侧目，这也算是开源软件商业化登峰造极的一种极端性个案。个人认为开源无疑是在软件行业中做出爆款技术当之无愧的首选的实践方式。我在红帽碰到很多参与开源十几二十年的老黑客，他们不乏会表达关于开源纯洁性沦丧的抱怨；我对此也非常理解和认同。而我更认同开源可以对软件技术带来无比活力的这个积极的方面。</p>
+<p>言归正传，小编我还是“模拟现场”播报一下大会闭幕主题演讲的盛况。这是大会的结束的 session，现场的人数明显的少于第一天开幕式的人。在十几分钟内，人们稀稀拉拉的进入了会场。会场中的座位大约还有一部分空位。美女Mano 和 黑客Kristie 作为主要演讲人上台。美女上台后先用手机自拍了几下。两个人开始宣布，Docker 大会之后举行为期一个月的黑客大赛，这是我们的传统，Docker 大会虽然今天会结束，而docer 黑客大赛将从今天开始。我们来请大家欣赏三个非常酷的黑客项目演示。</p>
+<p>本次大会的录音点这里 <a href="http://www.ximalaya.com/32280565/sound/17388272">http://www.ximalaya.com/32280565/sound/17388272</a></p>
+<h2 id="黑客演示1微服务自毁平台">黑客演示1：微服务自毁平台</h2>
+<p>Jeff 登场。Jeff 开始讲述微服务的故事，我们都在试图让基础架构做到冗余，容所有的服务都冗余，让群集能够自愈；但是故障，断网，宕机还是会发生。我们所做的这些真的能够保证业务不宕机么，服务不终端么？你怎么能确认这一点？因此回归到故障的发生上吧？如果服务要出故障，请让它有规律的发生。请程序猿和 ops 都投入到故障处理的战斗中，以此为契机来优化和改造应用，让应用变的更加强壮。我们都听说过混乱猴子，而 Jeff 团队正式帮人们构建一堆这样的工具的人。</p>
+<p>有一个思路是：如何让我的系统的服务出故障，如何主动的在系统中注入故障。我们需要一种特殊的编排工具来在系统中模拟和触发故障的发生。我用容器做工具平台来触发故障注入的动作。当然这个故障是在容器架构的微服务系统中触发这个动作。</p>
+<p>Jeff 开始做这个 Demo。说：如果你的”网络没有故障，天下太平。“其实这很无聊的说，有木有？有木有？我现在开始用工具来注入 网络延迟的网络故障吧！ 。用一个基于策略的工具。配置一个网络故障模拟的策略，故障什么时间发生，发生多久。这里设计一个每10秒钟注入一次网络延迟故障提高到600ms 的故障。然后配置故障影响的范围，这里使用 Docker 的 lable 来做故障发生节点的选择的条件。符合标签的系统将受到这次故障影响。我们的这个故障模拟编排系统，帮您提前体验故障的发生。现在你看故障发生了，从这些容器里面 ping google 的网络延迟比之前大多了， 目前延迟到了600ms。希望你们能开始体验和使用这个而工具。</p>
+<h2 id="黑客演示2serverless-架构的应用不是梦">黑客演示2：Serverless 架构的应用不是梦</h2>
+<p>Ben 是大家在 Docker 大会喜闻乐见的一个黑客，他经常给做 demo 和 session。他绝对符合超萌的标准。</p>
+<p><img src="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2016/06/40906-1.jpeg" alt="40906 (1)"></p>
+<p>Ben 开讲，Serverless 是如何做的？ben 认为 Serverless 是一种全新的应用编程的思路，而 docer 可以很好的支持这种思路，并实现和执行这种思路。docer 群集可以让Serverless引用按需执行，并让该应用的底层变得资源冗余并路由可达。ben 开始演示 他的几张 slides， 说 Sererless == docker这个概念。本开始讲解：如何用Serverless架构来实现投票应用的改造。如何把这个5个服务模块的纯粹容器微服务系统转换为 serverless 架构的应用。开始修改源代码，把发入队列的票，变成一个处理投票的容，把 http 服务器变成一个 CGIHander（）服务；但是 nodejs 不支持 CGIhander，肿么办？我用 perl 重写了这部分，为毛用 perl，被忘了它乃是古董级的黑客神器的好不好，呵呵！改造完之后的系统架构如下。架构是把处理 postgresql 意外的模块都重写了。数据库保留在最下层。这种Serverless重构实践遵从的原则如下。</p>
+<p><img src="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2016/06/2-1.jpg" alt="2"></p>
+<p>三个原则翻译一下：</p>
+<ol>
+<li>
+<p>把每个模块的核心功能打包，并作为容器来运行。解读：这意味着把所有服务模块组重构，把每个服务模块中的核心功能代码作为一个在容器里面跑的对象。这里其实牵扯到很深的业务重构和应用重构，程序猿或将抛弃以前的代码，甚至以前所习惯使用的程序开发堆栈。</p>
+</li>
+<li>
+<p>把这些容器用 Docker 的 Swarm 跑起来。解读：docker 原生的Swarm 编排能力将为您的应用提供，功能的运行，workload 的分布，服务的冗余，服务的路由等等支持；这样的架构能支持到 Serverless 的应用的模型。</p>
+</li>
+<li>
+<p>从容器中去运行其它容器。解读：容器编排平台或将不是容器生命起源的唯一起点，容器里面的应用可能可以决定系统中需要滋生出什么样的容器，当然说的是需要实现和运行什么功能的容器。</p>
+</li>
+</ol>
+<p>好了，目前为止，ben 的心的应用重构完成，还是用 docker-compose up 启动了改造之后的应用。现在看到了这个 serverless 的应用工作正常。</p>
+<p>Ben 说：我们在这demo 了 serverless  应用的改造的过程，可以看到 docker 是如何支持这种应用架构的。你可以打包 web front 为服务，它自动的在 Swarm 群集上无限延展这个服务。成为分布式计算的架构。还可以打包微服务的其它应用模块为 Serverless 应用架构。欢迎大家 参与到我的 Serverless github 项目中，和我一起互动，把 Serverless 在 docker 上的应用搞起来。<a href="https://github.com/bfirsh/serverless-docker">https://github.com/bfirsh/serverless-docker</a> 这里包括了以上演示的应用。</p>
+<h2 id="黑客演示3在线更新的无人机">黑客演示3：在线更新的无人机</h2>
+<p>这个团队做 in the air update 无人机实时演示。无人机其实是树莓派加他们的 docker 软件系统。这是一个嵌入式系统的设计。</p>
+<p><img src="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2016/06/3-1.jpg" alt="3"></p>
+<p><img src="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2016/06/4.jpg" alt="4"></p>
+<p><img src="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2016/06/5.jpg" alt="5"></p>
+<p>实时新旧系统的切换秘密在这里。新版的容器会先运行起来，新系统用一个队列来接收旧系统的数据，这些数据是新旧系统交接的必要的数据，系统会判断需要多长时间，需要收集那些数据来完成这个交接的过程。直到旧系统到新系统的割接完毕。</p>
+<p>程序猿开始更新 v1的代码，加入了摄像头实时视频功能。更新提交了 v2的镜像文件。在下图可以实时的监视到无人机的状态。</p>
+<p><img src="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2016/06/6.jpg" alt="6"></p>
+<p><img src="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2016/06/1-1.jpg" alt="1"></p>
+<p>无人机在在线更新软件中。并没有掉地上哈哈哈！</p>
+<p><img src="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2016/06/6.1.jpg" alt="6.1"></p>
+<p>右下角是新版本软件的摄像头把大会现场的视频拍摄，并实时传递到控制台的效果。此图上面的那个图，中间凸起震荡的那个块是无人机软件升级实时更新的过程。</p>
+<p>本黑科技演示完毕。</p>
+<h2 id="hackathon-黑客大赛启动">hackathon 黑客大赛启动</h2>
+<p>主此人再次上台启动了黑客大赛。</p>
+<p><img src="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2016/06/7.jpg" alt="7"></p>
+<p>为期一个月的 hackathon 正式开始。</p>
+<h2 id="最后看点">最后看点</h2>
+<p>CEO CTO 上台感谢赞助商。所罗门开始讲黑客骚扰现象。号召大家通过<a href="http://hackharassment.com"> http://hackharassment.com</a> 网站来抵制中现象。</p>
+<p>Bump UP 是通过手环实现的，人们的手环彼此碰撞会在系统中增加一个点数。宣布了碰撞点数最多的前5名，感谢他们在本次大会中，积极的和其它人互动和沟通，请他们去领奖。所罗门号召所有现场的人再次相互碰撞手环，系统系统的点数增加到两百万。来解锁 Docker 奖学金基金。很快大家碰撞起来。奖学金解锁。</p>
+<p>感谢进三千名的社区 贡献者，感谢 docker 的员工。所有人发来的自拍形成了一个西雅图拼图。最后大会圆满结束。</p>
+<p>看到最后的才能做最后的评论。这更感觉是一个黑客大会，引入了 docker 对社会的责任感的概念。商业财富越大的人社会责任感应该更多。更像是黑客公司商业成功之后，继续创新，并开始践行自己的社会责任的大会。大会并没有结束，黑客大赛在接下来的一个月里将在全球各地延续。</p>
+
+    </div>
+    <footer>
+      <div class="stats">
+  
+    <ul class="categories">
+      
+        
+          <li><a class="article-terms-link" href="/categories/opensource/">opensource</a></li>
+        
+      
+    </ul>
+  
+  
+    <ul class="tags">
+      
+        
+          <li><a class="article-terms-link" href="/tags/docker/">docker</a></li>
+        
+          <li><a class="article-terms-link" href="/tags/twitter/">twitter</a></li>
+        
+      
+    </ul>
+  
+</div>
+
+    </footer>
+  </article>
+  
+    
+
+  
+  <div class="pagination">
+    
+      <a href="/2016/06/22/building-serverless-apps-docker/" class="button left"><span>用 Docker 构建 Serverless 应用</span></a>
+    
+    
+      <a href="/2016/06/20/dockercon-2016-d1-keynote/" class="button right"><span>DockerCon 2016 D1 Keynote</span></a>
+    
+  </div>
+
+      </main>
+      <section id="site-sidebar">
+  
+    <section id="recent-posts">
+      <header>
+        <h1>最新文章</h1>
+      </header>
+      
+      <article class="mini-post">
+          <a href="/blog/workshop-elastic-observability/" class="image" style="--bg-image: url('https://martinliu.cn/img/2021/Hubble_01.jpg');">
+    <img class="stretchH" src="https://martinliu.cn/img/2021/Hubble_01.jpg" alt="Hubble">
+  </a>
+        <header>
+          <h2><a href="/blog/workshop-elastic-observability/">Elastic 可观测性工作坊</a></h2>
+          <time class="published" datetime="2021-02-06 10:36:12 &#43;0800 CST">February 6, 2021</time>
+        </header>
+      </article>
+      
+      <article class="mini-post">
+          <a href="/blog/change-back-on-github-page-again/" class="image" style="--bg-image: url('https://martinliu.cn/img/2019/03/pic03.jpg');">
+    <img class="stretchH" src="https://martinliu.cn/img/2019/03/pic03.jpg" alt="Valley">
+  </a>
+        <header>
+          <h2><a href="/blog/change-back-on-github-page-again/">在 Github 上搭建基于 Hugo 的免费个人博客</a></h2>
+          <time class="published" datetime="2021-02-06 00:00:00 &#43;0000 UTC">February 6, 2021</time>
+        </header>
+      </article>
+      
+      <article class="mini-post">
+          <a href="/blog/devopscoach-weekly-6/" class="image" style="--bg-image: url('https://martinliu.cn/');">
+    <img class="stretchH" src="https://martinliu.cn/" alt="">
+  </a>
+        <header>
+          <h2><a href="/blog/devopscoach-weekly-6/">DevOps Coach 周刊 #6</a></h2>
+          <time class="published" datetime="2020-08-31 00:11:01 &#43;0800 CST">August 31, 2020</time>
+        </header>
+      </article>
+      
+      <article class="mini-post">
+          <a href="/blog/elasticsearch-3-nodes-cluster-setup/" class="image" style="--bg-image: url('https://martinliu.cn/');">
+    <img class="stretchH" src="https://martinliu.cn/" alt="">
+  </a>
+        <header>
+          <h2><a href="/blog/elasticsearch-3-nodes-cluster-setup/">Elasticsearch 3 节点集群搭建 (7.9.0)</a></h2>
+          <time class="published" datetime="2020-08-27 13:54:46 &#43;0800 CST">August 27, 2020</time>
+        </header>
+      </article>
+      
+      <article class="mini-post">
+          <a href="/blog/devopscoach-weekly-5/" class="image" style="--bg-image: url('https://martinliu.cn/');">
+    <img class="stretchH" src="https://martinliu.cn/" alt="">
+  </a>
+        <header>
+          <h2><a href="/blog/devopscoach-weekly-5/">DevOps Coach 周刊 #5</a></h2>
+          <time class="published" datetime="2020-08-25 15:20:51 &#43;0800 CST">August 25, 2020</time>
+        </header>
+      </article>
+      
+      
+        <footer>
+          <a href="/blog/" class="button">查看更多</a>
+        </footer>
+      
+    </section>
+  
+
+  
+    
+
+      <section id="categories">
+        <header>
+          <h1><a href="/categories">分类</a></h1>
+        </header>
+        <ul>
+          
+          
+          <li>
+              <a href="/categories/blog/">blog<span class="count">96</span></a>
+          
+          <li>
+              <a href="/categories/itsm/">itsm<span class="count">85</span></a>
+          
+          <li>
+              <a href="/categories/infrastructure/">infrastructure<span class="count">46</span></a>
+          
+          <li>
+              <a href="/categories/devops/">devops<span class="count">38</span></a>
+          
+          <li>
+              <a href="/categories/opensource/">opensource<span class="count">32</span></a>
+          
+          <li>
+              <a href="/categories/cloud-computing/">cloud-computing<span class="count">23</span></a>
+          
+          <li>
+              <a href="/categories/cms/cmdb/">cms/cmdb<span class="count">20</span></a>
+          
+          <li>
+              <a href="/categories/running/">running<span class="count">19</span></a>
+          
+          <li>
+              <a href="/categories/travel/">travel<span class="count">13</span></a>
+          
+          <li>
+              <a href="/categories/sre/">sre<span class="count">2</span></a>
+          
+          </li>
+        </ul>
+      </section>
+    
+  
+
+  
+    <section id="mini-bio">
+      <header>
+        <h1>关于</h1>
+      </header>
+      <p>This Blog is sharing DevOps and SRE ariticles. I have translated DevOps Handbook and SRE Workbook.</p>
+      <footer>
+        <a href="/about" class="button">学到更多</a>
+      </footer>
+    </section>
+  
+</section>
+
+      <footer id="site-footer">
+  
+      <ul class="socnet-icons">
+        
+
+        <li><a href="//github.com/martinliu" target="_blank" rel="noopener" title="GitHub" class="fab fa-github"></a></li>
+
+
+
+
+
+
+
+
+
+
+
+<li><a href="//www.linkedin.com/in/liuzheng" target="_blank" rel="noopener" title="LinkedIn" class="fab fa-linkedin"></a></li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<li><a href="//twitter.com/martinliu" target="_blank" rel="noopener" title="Twitter" class="fab fa-twitter"></a></li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+      </ul>
+  
+  <p class="copyright">
+    © 2021 DevOps &amp; SRE Blog
+      <br>
+    主题: <a href='https://themes.gohugo.io/hugo-future-imperfect-slim/' target='_blank' rel='noopener'>Hugo Future Imperfect Slim</a><br>移植自 <a href='https://html5up.net/future-imperfect' target='_blank' rel='noopener'>HTML5 UP</a> | 由 <a href='https://gohugo.io/' target='_blank' rel='noopener' title='0.80.0'>Hugo</a> 驱动
+  </p>
+</footer>
+<a id="back-to-top" href="#" class="fas fa-arrow-up fa-2x"></a>
+
+      <script src="/js/highlight.js"></script>
+    
+    <script>hljs.initHighlightingOnLoad();</script><script src="/js/bundle.min.b4e669fa428a81defb8af0916c53f39cd1b8e0bbab22199c06f0b182907ba474.js" integrity="sha256-tOZp&#43;kKKgd77ivCRbFPznNG44LurIhmcBvCxgpB7pHQ="></script>
+    <script src="/js/add-on.js"></script>
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-749876-6', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+
+    </div>
+  </body>
+</html>
