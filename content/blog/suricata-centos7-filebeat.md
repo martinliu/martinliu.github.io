@@ -1,28 +1,36 @@
 +++
-date = {{ .Date }}
+date = 2021-02-12T14:42:40+08:00
 draft = true
-title = "{{ replace .TranslationBaseName "-" " " | title }}"
-description = ""
+title = "开源 IDS Suricata 4.1.10 新手部署指南"
+description = "Suricata 是一款轻量的开源网络流量检测软件，它的周边社区开发了丰富的分析规则"
 author = "Martin Liu"
-categories = ["DevOps"]
-tags = ["github", "ci", "cd", "github-pages"]
+categories = ["Security"]
+tags = ["DevOps", "DevSecOps", "IDS", "Suricata"]
 [[images]]
-  src = "img/2021/process01.jpg"
-  alt = "流程设计"
-  stretch = "vertical"
-[[images]]
-  src = "img/2021/pencil01.jpg"
-  alt = "细节雕琢"
-[[images]]
-  src = "img/2021/process01.jpg"
-  alt = "获取目标"
+  src = "img/2021/flag01.jpg"
+  alt = "Valley"
   stretch = "horizontal"
 +++
-
+本文基于 CentOS Server 7 环境安装和配置，文中提到的概念和知识也适用于 Suricata 的其它版本和操作系统。网络流量检测结果事件和告警结果使用 Filebeat 发送到 Elastic Stack 中，并使用 Kibana 可视化展示。
 <!--more-->
 
+![Suricata Logo](/img/2021/suri-400x400.png)
 
-## 新主题
+Suricata 是一款高性能的网络IDS、IPS和网络安全监控引擎。它是由the Open Information Security Foundation开发，是一款开源的系统。软件的源代码可以在它的官网： [http://suricata-ids.org/](http://suricata-ids.org/) 获得。
+
+Suricata 可以作为入侵检测(IDS)引擎、在线入侵防御系统(IPS)、网络安全监控(NSM)以及离线pcap处理工具。它的工作原理是利用规则和签名检查网络流量，并支持Lua脚本来检测复杂的威胁。
+
+![Suricata workflow](/img/2021/20190809183352238.png)
+
+由于 Suricata 能够以 YAML 和 JSON 格式编写日志，因此它可以与其他工具集成，如SIEM、Splunk、Logstash/Elasticsearch、Kibana等，以实现进一步的日志处理和可视化。
+
+
+
+## 网络环境介绍
+
+如果是纯粹功能性的测试，你几乎可以在任何操作系统上安装和运行 Suricata 应用，在 Debian 或者 CentOS/RHEL 下使用二进制安装包可能是最快的方法。在单网卡的操作系统里，就能够测试它的所有功能。
+
+在我的实验环境里有一个可网管的交换机，因此可以用端口镜像的方式
 
 The following HTML `<h1>`—`<h6>` elements represent six levels of section headings. `<h1>` is the highest section level while `<h6>` is the lowest.
 
@@ -79,13 +87,33 @@ Tables aren't part of the core Markdown spec, but Hugo supports supports them ou
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Example HTML5 Document</title>
+  <title>Example çΩzzz Document</title>
 </head>
 <body>
   <p>Test</p>
 </body>
 </html>
 ```
+
+e
+ddddd
+
+e
+
+e
+e
+e
+e
+
+e
+
+
+eeee
+
+ççççccccccccccccccccççççççcccccc√√√√√√√√ççççccccccccccccccccççççççcccccc
+
+<iframe width="800" height="600" src="//player.bilibili.com/player.html?aid=797592076&bvid=BV1zy4y1r7qT&cid=250759042&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"> </iframe>
+
 #### Code block indented with four spaces
 
     <!DOCTYPE html>

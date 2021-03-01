@@ -8,8 +8,7 @@ tags = ["elastic", "elk", "elasticsearch", "kibana"]
 [[images]]
   src = "img/2021/Hubble_01.jpg"
   alt = "Hubble"
-  stretch = "vertical"
-draft = true
+  stretch = "horizontal"
 +++
 
 本工作坊包括本地虚拟机版本、AWS 和腾讯云共三个版本，目标是用实践的方式理解 Elastic 可观测性解决方案。可观测性是解决运维云原生应用的复杂性和分布式式难点的关键所在。
@@ -42,7 +41,7 @@ Elastic 可观测性解决方案是基于 Elastic Stack 的一站式解决方案
 您将会学到：
 
 1. 搭建单节点 Elasticsearch 服务，并且配置好 Kibana 管理图形管理界面。
-2. 学习可观测性的基本感念和实施步骤
+2. 学习可观测性的基本概念和实施步骤
 3. 搭建和配置服务健康检查的探针
 4. 部署采集操作系统性能监控指标的流程
 5. 配置操作系统日志的采集和分析工具
@@ -59,7 +58,7 @@ Elastic 可观测性解决方案是基于 Elastic Stack 的一站式解决方案
 * 多层宠物商店应用系统
 * 所有组件都部署在一个虚拟机上
 * 包括前端、后端和内置的数据库
-* 使用到的而技术有 JavaScript、NodeJs 和 Java Spring 等。
+* 使用到的技术有 JavaScript、NodeJs 和 Java Spring 等。
 * 本应用系统是被监控的对象
 
 
@@ -73,7 +72,7 @@ Elastic Stack 的基本状况：
 * 本地虚拟机环境，打包好的虚拟机里包含了所有必要的软件包和演示应用。
 * AWS 云环境，本课程所使用的公共 AMI 操作系统镜像：宁夏区 `ami-0e5a0e294902966af` 北京区 `ami-0e1382088b62cb38d`
 * 腾讯云环境，基于腾讯云提供的 Elasticsearch 服务，演示用的虚拟机在制作中，稍后会发布到云市场。
-* 阿里云环境，基于阿里云提供的 Elasticsearch 服务，课件正在开发中。
+* 阿里云环境，基于阿里云提供的 Elasticsearch 服务的课件正在开发中。
 
 
 ## 可观测性构建四步法
@@ -129,7 +128,7 @@ Elastic Stack 的基本状况：
 
 #### 阿里云计算环境
 
-可以使用阿里云计环境，配合以下的课件完成所有练习。
+可以使用阿里云环境，配合以下的课件完成所有练习。
 
 > 课件开发中。
 
