@@ -6,14 +6,12 @@ description: "推荐 DevOps 教练学习的全球新闻，文章，宕机事件�
 categories: ["DevOps"]
 tags: ["周刊"]
 keywords: ["DevOps","DevOps教练","周刊"]
-images: [{src= "/images/abstract-4.jpg", desc= "周刊"}]
+images: [{src= "images/abstract-4.jpg", desc= "周刊"}]
 ---
-
 
 ![DevOps Coach weekly update](/images/weeklyupdate.jpg)
 
 ## 宕机
-
 
 * 上一周新发的宕机事故。
 * 近期全球重大宕机事故的分析总结、事后回顾。
