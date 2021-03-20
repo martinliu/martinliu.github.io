@@ -139,3 +139,5 @@ NoOps 的思想是去除DevOps中所有的平台管理部分，减少开发者�
 GitOps 是一种集部署、监控、管理于一体的构建云应用的运维模式。GitOps 允许 DevOps 使用开发者工具来驱动运维，在DevOps中建立了一个 "你构建，你负责" 的流程。
 
 如果你想了解更多关于 GitOps的信息，请查看我们的播客集[GitOps: This is What You Need to Know.](https://anchor.fm/thedevopsfauncast/episodes/GitOps-This-is-What-You-Need-to-Know-12-epga8p?ref=thechiefio?ref=thechiefio)
+
+![](https://elasticstack-1300734579.cos.ap-nanjing.myqcloud.com/2021-03-20-The-Future-Is-Bright.jpg)
