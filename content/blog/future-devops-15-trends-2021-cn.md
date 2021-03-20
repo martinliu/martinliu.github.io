@@ -16,6 +16,8 @@ tags = ["DevSecOps", "AIOps", "IaC", "KUBERNETES"]
 
 <!--more-->
 
+![](https://elasticstack-1300734579.cos.ap-nanjing.myqcloud.com/2021-03-20-Screen%20Shot%202021-03-21%20at%201.26.38%20AM.jpg)
+
 DevOps  和整个IT运维是一个不断发展的领域，本文的趋势就是证明。总是需要跟上趋势并利用其优势。
 
 DevOps 正在与机器学习和人工智能等各种技术创新不断发展和融合，这些创新将在2021年占据更多的领域。
@@ -23,6 +25,9 @@ DevOps 正在与机器学习和人工智能等各种技术创新不断发展和�
 学习这些趋势，并在你的 DevOps 实践中实施它们，将使你在这个革命性的领域中保持活力。
 
 在过去十年的引入中，DevOps 已经成长为许多IT公司不可或缺的一部分。
+
+
+
 
 专家预测，到2025年，DevOps 市场规模将达到128.5亿美元。在软件工程中实施 DevOps 所带来的效率和众多优势，是其被大量采用的关键驱动力。
 
@@ -139,5 +144,3 @@ NoOps 的思想是去除DevOps中所有的平台管理部分，减少开发者�
 GitOps 是一种集部署、监控、管理于一体的构建云应用的运维模式。GitOps 允许 DevOps 使用开发者工具来驱动运维，在DevOps中建立了一个 "你构建，你负责" 的流程。
 
 如果你想了解更多关于 GitOps的信息，请查看我们的播客集[GitOps: This is What You Need to Know.](https://anchor.fm/thedevopsfauncast/episodes/GitOps-This-is-What-You-Need-to-Know-12-epga8p?ref=thechiefio?ref=thechiefio)
-
-![](https://elasticstack-1300734579.cos.ap-nanjing.myqcloud.com/2021-03-20-The-Future-Is-Bright.jpg)
