@@ -1,13 +1,11 @@
 +++
-title = "课程"
-description = "我教授的关于 DevOps 和 SRE 的课程简介。"
+title = "学习"
+description = "所提供的 DevOps 和 SRE 课程的简介如下。"
 author = "Martin Liu"
 date = "2021-02-06"
 layout = "about"
 +++
-
-
-### DevOps 免费课程
+### DevOps - 免费课程
 
 > 开发中。
 
@@ -22,7 +20,7 @@ layout = "about"
   - Pipeline 流水线实验室
 
 
-### 可观测性管理-免费课程
+### 可观测性管理 - 免费课程
 
 基于 Elastic Stack 技术栈的可观测性实战工作坊，目标是让参与者彻底理解‘可观测性’对分布式复杂应用系统的作用，正确的使用可观测性工具集，实现对云原生应用或者传统应用的运维管理。
 
@@ -33,9 +31,7 @@ layout = "about"
   - [‘Elastic 可观测性方案’ 课件](https://elk-workshop.github.io/codelabs/elastic-observability-foundation/#0)
 - 腾讯云环境录播网址：[腾讯课堂查看](https://cloud.tencent.com/developer/salon/live-1304)
 
-
-
-### Nutanix 免费课程
+### Nutanix - 免费课程
 
 - 访问地址：https://nutanix.martinliu.cn
 - 简介：本实验室包含 Nutanix CE 的基础安装，没有 Nutanix 专用服务器的朋友，可以从这一步开始。这里的所有练习步骤都是 Nutanix 软件的基础操作，在企业版软件上也同样适用。
@@ -43,8 +39,6 @@ layout = "about"
   1. Prism Central 部署和配置
   2. Nutanix Calm 基础功能
   3. Nutanix Calm 中级操作
-
-
 
 ### SRE 实践必修课（收费）
 

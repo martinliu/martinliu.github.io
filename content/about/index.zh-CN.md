@@ -10,37 +10,13 @@ http://www.martinliu.cn 是我的个人博客，开始于 2007 年。
 
 ## BIO 个人简介
 
-Elastic 公司社区布道师，中国 DevOps 社区核心组织者，《DevOps Handbook》《The Site Reliability Workbook》译者；精通 DevOps/SRE/ITSM 等理论体系和相关实践等落地实现。致力于在全国范围内通过社区来推广 DevOps 的理念、技术和实践。推动开源 Elastic Stack 技术堆栈的应用，包括运维大数据分析平台、云原生服务治理、APM 全链路监控和 AIOps 等使用场景。
+Elastic 开发者布道师，中国DevOps社区组织者，《DevOps Handbook》《The Site Reliability Workbook》译者；精通 DevOps/SRE/ITSM 等理论体系和相关实践等落地实现。致力于在全国范围内通过社区来推广 DevOps 的理念、技术和实践。推动开源 Elastic Stack 技术堆栈的应用，包括运维大数据分析平台、云原生服务治理、APM 全链路监控和 AIOps 等使用场景。
 
 ## 关注我
 
 - B 站 - DevOps 教练 https://space.bilibili.com/477542716
-- [DevOps Coach 网站](https://devopscoach.org)
+- 邮箱 - 67120666@qq.com
 - 微信公众号 - DevOps 教练（MyDevOps）
-
-## 实验室
-
-### DevOps 教练实验室
-
-- 访问地址： https://devopscoach.org
-- 简介：本实验室包含虚拟化、云计算、配置管理、CI、CD 等各种实验。
-- 实验内容：
-  - Vagrant 实验室
-  - Elastic Stack 实验室
-  - Chef 实验室
-  - Ansible 实验室
-  - Jenkins 实验室
-  - Pipeline 流水线实验室
-
-### Nutanix 实验室
-
-- 访问地址：https://nutanix.martinliu.cn
-- 简介：本实验室包含 Nutanix CE 的基础安装，没有 Nutanix 专用服务器的朋友，可以从这一步开始。这里的所有练习步骤都是 Nutanix 软件的基础操作，在企业版软件上也同样适用。
-- 实验内容：
-  - Prism Central 部署和配置
-  - Nutanix Calm 基础功能
-  - Nutanix Calm 中级操作
-
 
 
 ## 《DevOps Handbook》- 《DevOps 实践指南》
@@ -49,11 +25,29 @@ Elastic 公司社区布道师，中国 DevOps 社区核心组织者，《DevOps 
 
 ![DevOps Handbook](http://res.cloudinary.com/martinliu/image/upload/v1524360305/devops-handboo-3d-500x500.jpg)
 
-京东和亚马逊有售。
+已出版，网上有售。
 
-- 京东书店：https://item.jd.com/26848921955.html
-- 英文原版-亚马逊书店：http://a.co/95lK7hC
+- 京东：[https://item.jd.com/26848921955.html](https://item.jd.com/26848921955.html)
+- 英文原版-亚马逊书店：[http://a.co/95lK7hC](http://a.co/95lK7hC)
 
 ## 《SRE Workbook》 - 《SRE 工作手册》
 
+![](https://img1.doubanio.com/view/subject/l/public/s33762007.jpg)
+
+已经出版，网上有售。
+
+- 京东：[https://item.jd.com/12983982.html](https://item.jd.com/12983982.html)
+- 英文原版-亚马逊书店：[https://www.amazon.com/Site-Reliability-Workbook-Practical-Implement/dp/1492029505/](https://www.amazon.com/Site-Reliability-Workbook-Practical-Implement/dp/1492029505/)
+
+
 ## 《SRE Paradox》 - 《DevOps 悖论》
+
+已翻译完，预计 2021 年 5 月份出版。
+
+![](https://elasticstack-1300734579.cos.ap-nanjing.myqcloud.com/2021-04-01-Screen%20Shot%202021-04-01%20at%208.53.23%20PM.jpg)
+
+
+## 友情链接
+
+- [敏捷开发资源大全](https://www.agile123.net/)
+
