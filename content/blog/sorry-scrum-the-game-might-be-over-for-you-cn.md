@@ -125,7 +125,7 @@ Scrum 所宣称的开发者有自主权，但他们得到了吗？我认为自�
 
 Scrum Master 是 Scrum 中最遭受鄙视的角色。没有 Scrum Master 的 Scrum 团队是很常见的，因为公司不愿意雇佣专人来做这个工作。不过，即便有些公司雇佣了 Scrum Master ，但还是会经常让他们虚弱无力。
 
-> Scrum Master 的失效无法避免，因为他们也不能促不能催生出任何必需的改变，能让 Scrum 蓬勃发展起来。
+> Scrum Master 的失效无法避免，因为他们也不能催生出任何必需的改变，能让 Scrum 蓬勃发展起来。
 
 Scrum Master 和其他角色也没有什么不同。要找到一个人，他能够完全像Scrum指南中所建议的那样，成为真正的 Scrum Master 是不太可能的。Scrum Master 通常无力促进组织中所需要的变化。
 
