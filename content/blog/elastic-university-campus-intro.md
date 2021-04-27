@@ -1,6 +1,6 @@
 +++
 date = 2021-04-27T09:48:32+08:00
-title = "通过 Elastic 公司的故事探究全球开源大潮"
+title = "探究改变了整个行业的全球开源大潮"
 description = "Elastic 是 Elasticsearch 背后的公司，这是一家专注于搜索技术的公司。"
 author = "Martin Liu"
 categories = ["blog"]
