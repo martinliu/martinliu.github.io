@@ -1,6 +1,5 @@
 +++
 date = {{ .Date }}
-draft = true
 title = "{{ replace .TranslationBaseName "-" " " | title }}"
 description = ""
 author = "Martin Liu"
@@ -19,10 +18,8 @@ tags = ["github", "ci", "cd", "github-pages"]
   stretch = "horizontal"
 +++
 
+
 <!--more-->
-
-
-## 新主题
 
 The following HTML `<h1>`—`<h6>` elements represent six levels of section headings. `<h1>` is the highest section level while `<h6>` is the lowest.
 
