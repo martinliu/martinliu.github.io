@@ -19,6 +19,19 @@ Elastic 开发者布道师，中国DevOps社区组织者，《DevOps Handbook》
 - 微信公众号 - DevOps 教练（MyDevOps）
 
 
+
+### 跟踪我的分享
+
+#### 2021 年
+
+* [5 月 21日（周五)  **洞悉安全事态感知和预警平台最佳实践**](http://www.owasp.org.cn/OWASP_Events/owasp4e2d56fd56db5ddd533a57df5b8951686c999f99)
+* [5月 22 日（周六）**Elastic Stack 可观测性工作坊**](https://www.hudongba.com/party/gwb55.html)
+
+
+
+
+
+
 ## 《DevOps Handbook》- 《DevOps 实践指南》
 
 翻译书籍 [《DevOps Handbook》](https://itrevolution.com/book/the-devops-handbook/)
