@@ -20,19 +20,45 @@ Elastic 开发者布道师，中国DevOps社区组织者，《DevOps Handbook》
 
 
 
-### 跟踪我的分享
+##我的社区布道
+
+这里是我当前和曾经的社区分享。
 
 #### 2021 年
 
-* [5 月 21日（周五)  **洞悉安全事态感知和预警平台最佳实践**](http://www.owasp.org.cn/OWASP_Events/owasp4e2d56fd56db5ddd533a57df5b8951686c999f99)
-* [5月 22 日（周六）**Elastic Stack 可观测性工作坊**](https://www.hudongba.com/party/gwb55.html)
+
+
+* 5 月 19 日（周三） 天津理工大学 - **《[探究改变了整个行业的全球开源大潮](https://martinliu.cn/blog/elastic-university-campus-intro/)》**
+* [5 月 21日（周五) OWASP China Conf - **《洞悉安全事态感知和预警平台最佳实践》**](http://www.owasp.org.cn/OWASP_Events/owasp4e2d56fd56db5ddd533a57df5b8951686c999f99)
+* [5月 22 日（周六）DevOps China Chengdu Meetup - **《Elastic Stack 可观测性工作坊》**](https://www.hudongba.com/party/gwb55.html)
+* 
+
+
+
+#### 2020 年
+
+
+
+* [10 月 18 日：PHPCon China 2020- **《SRE如何提高服务的质量和稳定性》**](http://www.phpconchina.com/)
+
+
+
+#### 2019 年
+
+
+
+* [8 月 11 日 ： PHPCon China 2019 Shanghai - **《破解云原生应用的可观测性》**](http://www.phpconchina.com/2019)
+* [12 月 7 日：Elastic DevDay 2019 - **《用Elastic Stack破解云原生的可观测性》**](http://conf.elasticsearch.cn/2019/beijing/schedule.html)
 
 
 
 
 
+## 我翻译的书籍
 
-## 《DevOps Handbook》- 《DevOps 实践指南》
+这里是我主导和组织翻译的书籍。
+
+#### 《DevOps Handbook》- 《DevOps 实践指南》
 
 翻译书籍 [《DevOps Handbook》](https://itrevolution.com/book/the-devops-handbook/)
 
@@ -43,7 +69,7 @@ Elastic 开发者布道师，中国DevOps社区组织者，《DevOps Handbook》
 - 京东：[https://item.jd.com/26848921955.html](https://item.jd.com/26848921955.html)
 - 英文原版-亚马逊书店：[http://a.co/95lK7hC](http://a.co/95lK7hC)
 
-## 《SRE Workbook》 - 《SRE 工作手册》
+#### 《SRE Workbook》 - 《SRE 工作手册》
 
 ![](https://img1.doubanio.com/view/subject/l/public/s33762007.jpg)
 
@@ -53,7 +79,7 @@ Elastic 开发者布道师，中国DevOps社区组织者，《DevOps Handbook》
 - 英文原版-亚马逊书店：[https://www.amazon.com/Site-Reliability-Workbook-Practical-Implement/dp/1492029505/](https://www.amazon.com/Site-Reliability-Workbook-Practical-Implement/dp/1492029505/)
 
 
-## 《SRE Paradox》 - 《DevOps 悖论》
+#### 《SRE Paradox》 - 《DevOps 悖论》
 
 已翻译完，预计 2021 年 5 月份出版。
 
