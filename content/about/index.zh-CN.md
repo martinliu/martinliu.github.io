@@ -15,12 +15,16 @@ Elastic 开发者布道师，中国DevOps社区组织者，《DevOps Handbook》
 ## 关注我
 
 - B 站 - DevOps 教练 https://space.bilibili.com/477542716
+- Twitter  - [@martinliu](https://twitter.com/martinliu)
+- LinkedIn - [MartinLiu](https://www.linkedin.com/in/liuzheng/)
 - 邮箱 - 67120666@qq.com
 - 微信公众号 - DevOps 教练（MyDevOps）
 
+![](https://elasticstack-1300734579.cos.ap-nanjing.myqcloud.com/2021-05-11-DevOps-qrc-mydevops.jpg)
 
 
-##我的社区布道
+
+## 我的社区布道
 
 这里是我当前和曾经的社区分享。
 
@@ -31,7 +35,9 @@ Elastic 开发者布道师，中国DevOps社区组织者，《DevOps Handbook》
 * 5 月 19 日（周三） 天津理工大学 - **《[探究改变了整个行业的全球开源大潮](https://martinliu.cn/blog/elastic-university-campus-intro/)》**
 * [5 月 21日（周五) OWASP China Conf - **《洞悉安全事态感知和预警平台最佳实践》**](http://www.owasp.org.cn/OWASP_Events/owasp4e2d56fd56db5ddd533a57df5b8951686c999f99)
 * [5月 22 日（周六）DevOps China Chengdu Meetup - **《Elastic Stack 可观测性工作坊》**](https://www.hudongba.com/party/gwb55.html)
-* 
+* [3 月 31 日 Elastic Community - **《Elastic Security 安全管理实战工作坊》**](https://community.elastic.co/events/details/elastic-apj-virtual-presents-elastic-security-an-quan-guan-li-shi-zhan-gong-zuo-fang/)
+* [2 月 2 日 阿里云 Elasticsearch 生态&技术峰会 - **《如何规划和执行威胁狩猎》**](https://developer.aliyun.com/topic/esanniv3rd?utm_content=g_1000231789)
+* [2 月 27 日 Elastic Community 2021 - **《如何使用Elastic Stack规划和执行威胁狩猎 [CN]》**](https://community.elastic.co/events/details/elastic-global-community-presents-community-conference-2021/)
 
 
 
@@ -40,6 +46,8 @@ Elastic 开发者布道师，中国DevOps社区组织者，《DevOps Handbook》
 
 
 * [10 月 18 日：PHPCon China 2020- **《SRE如何提高服务的质量和稳定性》**](http://www.phpconchina.com/)
+* [12 月 23 日：腾讯云+社区沙龙online - **《Elasticsearch 应用监控管理平台搭建实战》**](https://cloud.tencent.com/developer/salon/live-1304)
+* 
 
 
 
@@ -62,7 +70,7 @@ Elastic 开发者布道师，中国DevOps社区组织者，《DevOps Handbook》
 
 翻译书籍 [《DevOps Handbook》](https://itrevolution.com/book/the-devops-handbook/)
 
-![DevOps Handbook](http://res.cloudinary.com/martinliu/image/upload/v1524360305/devops-handboo-3d-500x500.jpg)
+![DevOps Handbook](https://elasticstack-1300734579.cos.ap-nanjing.myqcloud.com/2021-05-11-025310.jpg)
 
 已出版，网上有售。
 
@@ -71,7 +79,7 @@ Elastic 开发者布道师，中国DevOps社区组织者，《DevOps Handbook》
 
 #### 《SRE Workbook》 - 《SRE 工作手册》
 
-![](https://img1.doubanio.com/view/subject/l/public/s33762007.jpg)
+![](https://elasticstack-1300734579.cos.ap-nanjing.myqcloud.com/2021-05-11-025343.jpg)
 
 已经出版，网上有售。
 
