@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>elasticsearch on DevOps &amp; SRE Blog</title>
+    <link>https://martinliu.cn/tags/elasticsearch/</link>
+    <description>Recent content in elasticsearch on DevOps &amp; SRE Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-CN</language>
+    <lastBuildDate>Sat, 06 Feb 2021 10:36:12 +0800</lastBuildDate><atom:link href="https://martinliu.cn/tags/elasticsearch/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Elastic 可观测性工作坊</title>
+      <link>https://martinliu.cn/blog/workshop-elastic-observability/</link>
+      <pubDate>Sat, 06 Feb 2021 10:36:12 +0800</pubDate>
+      
+      <guid>https://martinliu.cn/blog/workshop-elastic-observability/</guid>
+      <description>&lt;p&gt;本工作坊包括本地虚拟机版本、AWS 和腾讯云共三个版本，目标是用实践的方式理解 Elastic 可观测性解决方案。可观测性是解决运维云原生应用的复杂性和分布式式难点的关键所在。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Elasticsearch 3 节点集群搭建 (7.9.0)</title>
+      <link>https://martinliu.cn/blog/elasticsearch-3-nodes-cluster-setup/</link>
+      <pubDate>Thu, 27 Aug 2020 13:54:46 +0800</pubDate>
+      
+      <guid>https://martinliu.cn/blog/elasticsearch-3-nodes-cluster-setup/</guid>
+      <description>最近发布的 Elastic Stack 7.9 ，带来了很多新的特性。Elastic Agent 统一集成数据采集代理是一大亮点。另外还看增加了企业搜索、端点安全防护等组件。Ingest Manager 统一 Beat 配置管理功能让我们向 SaaS 风格的监控工具又迈进了一步。由代理端自行注册到后端，在后端统一纳管所有被管理服务器，将是一种以后非常通用的模式。这样做的好处是：将数据采集端点的配置工作量和复杂度降低到最低。Beats 的各种相关独立模块也在平行的发布，这种双轨模式也可以让用户更弹性的做出选择，能最大程度的保持旧版本部署环境管理模式的延续性。 Ingest manager 的前提条件是：后台 ES 需要启用 api key 安全，启用 ES 客户端的 HTTPS 访问。我们也可以看到这两个功能选项也有其非常广泛的应用需求。本文将用最简单的文字，向你描述一套 3 节点的 ES 集群的搭建方式，这套系统的核心特性如下：
+ 启用用户名和密码认证 启用集群内 es 节点间 transport.ssl 通讯加密 启用 es 的 http 客户端 http.ssl 加密通讯 安装脚本中包括创建数字证书的必要命令（没猜错的话，大部分人可能会在这一步花费大量时间）  演示环境介绍 我使用的是本地的测试环境，环境配置如下：
+ Mac OS vagrant virtualBox - CentOS 8 Elastic Stack 7.9.0 ip 和主机名分配见 Vagrantfile 文件 Vagrant 的 vagrant-hostsupdater 插件实现了 Mac OS 主机和所有虚拟机的 host 文件 DNS 解析的同步，保证所有相关虚拟机都可以解析其它虚拟机的 FQDN，尽量模拟生产环境。  本文所使用的所有配置文件和安装脚本见：https://github.</description>
+    </item>
+    
+    <item>
+      <title>腾讯云下部署 Elastic Stack 各种 Beat 的最佳实践</title>
+      <link>https://martinliu.cn/blog/beats-implement-on-qcloud/</link>
+      <pubDate>Fri, 07 Aug 2020 17:14:20 +0800</pubDate>
+      
+      <guid>https://martinliu.cn/blog/beats-implement-on-qcloud/</guid>
+      <description>概述 使用 Elastic Stack 的各种 Beats 模块可以彻底的终结在服务器上手工捞日志查指标的扭曲实践。利用腾讯云提供的 Elasticsearch 服务，可以轻松搞定大规模云环境的运维。本文一次性的帮你梳理清楚了，必备的基础操作，确保你能用 Elastic Stack 安全、稳定和扩展的持续监控你的生产环境。
+创建 ES 集群 登录腾讯云服务控制台，查询并进入 Elasticsearc 服务，点击新建按钮，创建 Elasticsearch 集群。如下图所示。
+集群配置说明：
+ 北京区 7.5.1 - 白金版 单可用区 冷热模式  本实例其它参数保持默认，可以根据实际业务需求修改这些参数。
+点击下一步后，设置 Elasticsearch 集群的超级用户名和密码。
+在几分钟之后这个集群就成功创建了。查看下面这些基础的配置。
+ 启用 Kibana 内网地址： http://es-ot7wei87.internal.kibana.tencentelasticsearch.com:5601 用于 Bests 的 Setup 命令 启用 Kibana 公网地址： https://es-ot7wei87.kibana.tencentelasticsearch.com:5601 用户Elastic Stack 的初始化配置，如创建角色和调整索引生命周期策略等。  这样我们就有了一个安全、可扩展和性能足够的 ES 后台服务。
+创建 Beats 写入角色和用户 登录 Kibana ，点击角色和用户管理，创建用于 Beast 配置文件的‘只写’权限用户。
+ 创建 beats-writer 角色 创建 beats-writer 用户，该用户只赋予beats-writer角色，自定义一个安全的复杂密码。  Beats-write 角色设置如下图所示：</description>
+    </item>
+    
+    <item>
+      <title>最简化 Elasticsearch &amp; Kibana &amp; Filebeat 安装说明</title>
+      <link>https://martinliu.cn/blog/install-es-kibana-filebeat/</link>
+      <pubDate>Thu, 26 Mar 2020 08:51:15 +0800</pubDate>
+      
+      <guid>https://martinliu.cn/blog/install-es-kibana-filebeat/</guid>
+      <description>本文描述如何搭建一套具备用户名和密码安全认证的 Elastic Stack 系统，并开始使用 Filebeat 的基础模块实现分布式的日志收集。
+ 安装单节点 Elasticsearch 服务器，启用用户名和密码安全认证，并创建 TLS 数字证书备用 安装 Kibana 服务器，并配置与 Elasticsearch 服务的连接 安装和配置 Filebeat 代理程序，并配置 system 和 auditd 模块 使用 Kibana 监控 Filebeat 所采集的系统日志，并监控系统的状态  为了使你也获得与我一致的安装和测试体验，请先下载并浏览相本文所使用的代码库：https://github.com/martinliu/elastic-labs
+试验环境概述和启动 本文所使用相关软件以及版本。
+ macOS Catalina version 10.15.3 Vagrant 2.2.4 VirtalBox 6.0 操作系统镜像: bento/centos-8 (virtualbox, 202002.04.0) Elastic Stack 安装包（RPM）  Elasticsearch 7.6.1 Kibana 7.6.1 Filebeat 7.6.1   使用 Vagrant 的目录共享功能，分享安装包到测试机的 /vagrant/rpm 目录下  注意事项：
+ 你也可以使用任何一台 CentOS 8 虚拟机或者云主机，则后续的安装命令和 rpm 安装包的路径需要有所变化。 Vagrant 文件中定义的虚拟机配置为 4 GB 内存，建议你的操作系统最低为 8GB 内存，推荐 16GB 或者更高， 本文也适用于 Linux 或 Windows 操作系统的 Vagrant 测试环境，需要提前下载并且准备好 bento/centos-8 的基础操作系统镜像。  启动测试环境。</description>
+    </item>
+    
+  </channel>
+</rss>
