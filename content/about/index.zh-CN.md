@@ -32,7 +32,7 @@ Elastic 开发者布道师，中国DevOps社区组织者，《DevOps Handbook》
 
 
 
-* [6 月 5 日（周六）Dev Together 2021 **《从草根社区转身为千人级上市公司》**](https://pages.segmentfault.com/dev-eco-2021)
+* [6 月 5 日（周六）Dev Together 2021 **《从开源社区转身为千人级上市公司》**](https://pages.segmentfault.com/dev-eco-2021)
 * 5 月 19 日（周三） 天津理工大学 - **《[探究改变了整个行业的全球开源大潮](https://martinliu.cn/blog/elastic-university-campus-intro/)》**
 * [5 月 21日（周五) OWASP China Conf - **《洞悉安全事态感知和预警平台最佳实践》**](http://www.owasp.org.cn/OWASP_Events/owasp4e2d56fd56db5ddd533a57df5b8951686c999f99)
 * [5月 22 日（周六）DevOps China Chengdu Meetup - **《Elastic Stack 可观测性工作坊》**](https://www.hudongba.com/party/gwb55.html)
