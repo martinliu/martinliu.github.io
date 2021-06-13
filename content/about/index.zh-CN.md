@@ -30,6 +30,9 @@ Elastic 开发者布道师，中国DevOps社区组织者，《DevOps Handbook》
 
 #### 2021 年
 
+* [7 月 31 日（周六）COSCUP - **《谈谈开源的求生通道》**](https://coscup.org/2021/)
+* [7 月 25 日（周日）Elastic Security Workshop x 阿里云 ](https://elastic.co/)
+* [7 月 24 日（周六）中国DevOps社区武汉第4届Meetup - **《Elastic Security Workshop》**](https://www.hudongba.com/party/gde75.html)
 * [6 月 26 日（周六）中国DevOps社区沈阳首届Meetup - **《SRE提高服务质量和稳定性的套路》**](https://www.hudongba.com/party/gde75.html)
 * [6 月 20 日（周日）中国DevOps社区北京第11届Meetup - **《懂 SRE 么？直到你理解了 SLO 的原理》**](https://www.hudongba.com/party/t9y75.html)
 * [6 月 5 日（周六）Dev Together 2021 **《从开源社区转身为千人级上市公司》**](https://pages.segmentfault.com/dev-eco-2021)
