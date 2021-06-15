@@ -4,7 +4,7 @@ title = "Hashicorp 的 Terraform 1.0 正式 GA 了！"
 description = "Hashicorp 公司十年磨一剑的经典产品的下载达到 10 亿次的里程碑"
 author = "Martin Liu"
 categories = ["DevOps"]
-tags = ["hashicorp", "terrafor", "ica"]
+tags = ["hashicorp", "terraform", "ica"]
 [[images]]
   src = "img/2021/06/0gLZ2oH.png"
   alt = "细节雕琢"
