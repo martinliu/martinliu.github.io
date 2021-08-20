@@ -15,13 +15,12 @@ Elastic 开发者布道师，中国DevOps社区组织者，《DevOps Handbook》
 ## 关注我
 
 - B 站 - DevOps 教练 https://space.bilibili.com/477542716
-- Twitter  - [@martinliu](https://twitter.com/martinliu)
+- Twitter - [@martinliu](https://twitter.com/martinliu)
 - LinkedIn - [MartinLiu](https://www.linkedin.com/in/liuzheng/)
 - 邮箱 - 67120666@qq.com
 - 微信公众号 - DevOps 教练（MyDevOps）
 
-![](https://elasticstack-1300734579.cos.ap-nanjing.myqcloud.com/2021-05-11-DevOps-qrc-mydevops.jpg)
-
+![MyDevOps](https://elasticstack-1300734579.cos.ap-nanjing.myqcloud.com/2021-05-11-DevOps-qrc-mydevops.jpg)
 
 
 ## 我的社区布道
@@ -32,8 +31,8 @@ Elastic 开发者布道师，中国DevOps社区组织者，《DevOps Handbook》
 
 ##### Upcoming Events
 
-* [9 月 4 日 中国DevOps社区峰会 - 大连 - 2021 - **《用OpenTelemetry透明数字化系统的可观测性》**](hudongba.com/party/0wrt5.html)
-* [8 月 26 日 腾讯云 实战工作坊 - **《Elastic Security 安全管理实操》**](https://cloud.tencent.com/developer/salon/live-1549)
+- [9 月 4 日 中国DevOps社区峰会 - 大连 - 2021 - **《用OpenTelemetry透明数字化系统的可观测性》**](hudongba.com/party/0wrt5.html)
+- [8 月 26 日 腾讯云 实战工作坊 - **《Elastic Security 安全管理实操》**](https://cloud.tencent.com/developer/salon/live-1549)
 
 ##### Past Events
 
@@ -100,7 +99,7 @@ Elastic 开发者布道师，中国DevOps社区组织者，《DevOps Handbook》
 
 这里是我主导和组织翻译的书籍。
 
-#### 《DevOps Handbook》- 《DevOps 实践指南》
+#### 《DevOps Handbook》-《DevOps 实践指南》
 
 翻译书籍 [《DevOps Handbook》](https://itrevolution.com/book/the-devops-handbook/)
 
@@ -113,7 +112,7 @@ Elastic 开发者布道师，中国DevOps社区组织者，《DevOps Handbook》
 
 #### 《SRE Workbook》 - 《SRE 工作手册》
 
-![](https://elasticstack-1300734579.cos.ap-nanjing.myqcloud.com/2021-05-11-025343.jpg)
+![SRE Workbook](https://elasticstack-1300734579.cos.ap-nanjing.myqcloud.com/2021-05-11-025343.jpg)
 
 已经出版，网上有售。
 
@@ -125,10 +124,10 @@ Elastic 开发者布道师，中国DevOps社区组织者，《DevOps Handbook》
 
 已翻译完，预计 2021 年 5 月份出版。
 
-![](https://elasticstack-1300734579.cos.ap-nanjing.myqcloud.com/2021-04-01-Screen%20Shot%202021-04-01%20at%208.53.23%20PM.jpg)
-
+![DevOps Pradox](https://elasticstack-1300734579.cos.ap-nanjing.myqcloud.com/2021-04-01-Screen%20Shot%202021-04-01%20at%208.53.23%20PM.jpg)
 
 ## 友情链接
 
 - [敏捷开发资源大全](https://www.agile123.net/)
 
+注：欢迎友情链接，如果您希望将您的网站放在上面的清单中，请邮件联系我，或者直接在在 GitHub 上修改这个页面后提交 PR。

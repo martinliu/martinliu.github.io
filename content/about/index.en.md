@@ -12,11 +12,9 @@ Martin will take the initiatives and spread high-quality knowledge to the commun
 
 I will take the initiatives and spread high-quality knowledge to the community, in this way to helping more peoples to adopting DevOps practices as early as possible. I believes joining a global community can establish a two-way connection with the world, that will exchange new ideas and bring value back to local as well. 
 
-
 ## Events
 
-
-#### 2021 
+#### 2021
 
 ##### Upcoming Events
 
