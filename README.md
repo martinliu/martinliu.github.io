@@ -14,4 +14,4 @@
 - [Cloudinary](https://www.cloudinary.com/): some of old images
 - [Github](https://pages.github.com/): code repo and GitHube Action for Hugo building and publishing full site.
 - [Hugo](https://gohugo.io/): A static website builder
-- [Hugo theme - Hugo Future Imperfect Slim](https://themes.gohugo.io/themes/hugo-future-imperfect-slim/)
+- Hugo theme : [Hugo Future Imperfect Slim](https://themes.gohugo.io/themes/hugo-future-imperfect-slim/)

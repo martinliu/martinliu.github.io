@@ -1,24 +1,17 @@
 +++
-date = {{ .Date }}
-title = "{{ replace .TranslationBaseName "-" " " | title }}"
-description = ""
+date = 2021-09-12T16:16:29+08:00
+title = "DevOps社区峰会2021大连后记"
+description = "此次社区峰会很可能创在了国内社区峰会的新境界和标准。"
 author = "Martin Liu"
-categories = ["DevOps"]
-tags = ["github", "ci", "cd", "github-pages"]
-[[images]]
-  src = "img/2021/process01.jpg"
-  alt = "流程设计"
-  stretch = "vertical"
-[[images]]
-  src = "img/2021/pencil01.jpg"
-  alt = "细节雕琢"
+categories = ["Travel"]
+tags = ["大连", "DevOps", "峰会", "社区"]
+draft = true
 [[images]]
   src = "img/2021/process01.jpg"
   alt = "获取目标"
   stretch = "horizontal"
-draft = true
 +++
-
+又一次险中求胜的记忆。没有社区志愿者的支持，我们肯定无法确定这样的成功。
 
 <!--more-->
 
