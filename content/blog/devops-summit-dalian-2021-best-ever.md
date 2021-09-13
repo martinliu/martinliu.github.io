@@ -5,6 +5,7 @@ description = "此次社区峰会很可能创在了国内社区峰会的新境�
 author = "Martin Liu"
 categories = ["Travel"]
 tags = ["大连", "DevOps", "峰会", "社区"]
+draft = true
 [[images]]
   src = "img/2021/process01.jpg"
   alt = "获取目标"

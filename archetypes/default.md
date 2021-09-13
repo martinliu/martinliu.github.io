@@ -16,6 +16,7 @@ tags = ["github", "ci", "cd", "github-pages"]
   src = "img/2021/process01.jpg"
   alt = "获取目标"
   stretch = "horizontal"
+draft = true
 +++
 
 
