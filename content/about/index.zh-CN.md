@@ -8,6 +8,8 @@ layout = "about"
 
 http://www.martinliu.cn 是我的个人博客，开始于 2007 年。
 
+在GitHub上开通了一个关于本博客的论坛，如果您对我有任何反馈和问题，[请点这里直达论坛](https://github.com/martinliu/martinliu.github.io/discussions)
+
 ## BIO 个人简介
 
 Elastic 开发者布道师，中国DevOps社区组织者，《DevOps Handbook》《The Site Reliability Workbook》译者；精通 DevOps/SRE/ITSM 等理论体系和相关实践等落地实现。致力于在全国范围内通过社区来推广 DevOps 的理念、技术和实践。推动开源 Elastic Stack 技术堆栈的应用，包括运维大数据分析平台、云原生服务治理、APM 全链路监控和 AIOps 等使用场景。
