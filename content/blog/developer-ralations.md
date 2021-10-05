@@ -223,7 +223,7 @@ Product/platform ｜产品/平台 -- 用户参与上游厂商的产品构建协�
 
 [点此进入测试页面](https://leggetter.github.io/devrelometer/)
 
-下面再从Google专家的角度看看DevRel这件事。下面转载 Reto Meier 【Developer Advocate @ Google, software engineer, and author of “Professional Android” series from Wrox. All opinions are my own.】到两篇文章：
+下面再从Google专家的角度看看DevRel这件事。下面转载 Reto Meier 【Developer Advocate @ Google, software engineer, and author of “Professional Android” series from Wrox. All opinions are my own.】到两篇文章的部分内容：
 
 1. [Why Do We Pay These People Anyway?](https://medium.com/google-developers/why-do-we-pay-these-people-anyway-d7ed706d6d55#.438f1qn4x)
 2. [The Core Competencies of Developer Relations](https://medium.com/google-developers/the-core-competencies-of-developer-relations-f3e1c04c0f5b#.q1c9719cz)
