@@ -33,7 +33,7 @@ tags = ["开发者", "开源", "DevRel"]
 
 以上两种定义的区别是：这个职位在Google偏重于双向接口，在Twilio偏向于单向对外赋能。
 
-Michael Mahemoff 曾经写过一篇博客文章(《Developer Relations: A Five-Level Maturity Model》)[http://softwareas.com/developer-relations-a-five-level-maturity-model/]
+Michael Mahemoff 曾经写过一篇博客文章[《Developer Relations: A Five-Level Maturity Model》](http://softwareas.com/developer-relations-a-five-level-maturity-model/)
 
  级别 | 描述
 --------|------
@@ -172,8 +172,8 @@ Phil Leggetter 将 AARRR 【[客户生命周期：成功获客的5个步骤](htt
 3. Activation ｜激活 -- 在自己开发的应用中积极使用该平台/技术/产品
 4. Retention ｜保留 -- 持续使用和跟踪该平台/技术/产品，使用新的/附加的功能，并在新的应用程序中继续使用。
 5. Revenue ｜收入 -- 付费使用该平台/技术/产品，或者从开源软件版本用户提升为付费版客户。
-Referral ｜推荐 -- 告诉别人这个平台的情况，分享自己踩过的坑和技术。
-Product/platform ｜产品/平台 -- 用户参与上游厂商的产品构建协作，并提供对平台/产品和技术的反馈。
+6. Referral ｜推荐 -- 告诉别人这个平台的情况，分享自己踩过的坑和技术。
+7. Product/platform ｜产品/平台 -- 用户参与上游厂商的产品构建协作，并提供对平台/产品和技术的反馈。
 
 有一系列广泛而多样的活动可以归入开发者关系DevRel的日常工作中。这些活动中的每一项都可能与实现AAARRRP目标的计划的一个或多个属性相关。
 
