@@ -1,6 +1,5 @@
 +++
 date = 2021-03-16T19:23:15+08:00
-draft = true
 title = "DevOps 教练周刊 #7 | 全球 DevOps + SRE 精选资讯"
 description = "为 DevOps 教练 之成长，提供必备的滋养，定期为你整理最值得了解的新闻、文章、工具和宕机事故分析"
 author = "Martin Liu - 刘征"
