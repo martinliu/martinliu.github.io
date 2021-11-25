@@ -11,130 +11,43 @@ draft = false
   alt = "获取目标"
   stretch = "horizontal"
 +++
-又一次险中求胜的记忆。没有社区志愿者的支持，我们肯定无法确定这样的成功。
+
+这是一次激动人心的记忆。没有 DevOPs 社区志愿者的共同努力，我们肯定无法取得成功。
 
 <!--more-->
 
-这个变更只希望在预览的网站上看到。
+先总结一下我对这次盛会的感受和记忆。我曾经多次到大连出差，大连并不算是陌生的城市。由于海滨城市对人们吸引，以及人们对大连一如既往的美誉，本次峰会让我尤为期待。
 
-The following HTML `<h1>`—`<h6>` elements represent six levels of section headings. `<h1>` is the highest section level while `<h6>` is the lowest.
+美好的事情都必须天时地利人和，可是无奈新冠疫情几乎将大连这个港口城市的地利改写为劣势。大连峰会本来计划于 2020 年举办，但是去年大连在机会每次的疫情爆发时，经常陪跑；这导致我们不得不将准备了一半的峰会往后延期到 2021 年，大连峰会在 2020 年无奈跳票，不得不将其改到了北京，也幸亏 DevOps 社区北京的小伙伴们也是不负众望。今年在幸运之神的眷顾下，我们终于圆梦大连。
 
-# H1
-## H2
-### H3
-#### H4
-##### H5
-###### H6
+于 2021 年 9 ⽉ 4 ⽇，中国 DevOps 社区峰会⼤连站，在位于市中心的⽇航酒店隆重举⾏。本次峰会报名⼈数约 500 ⼈，峰会当天进 450 ⼈到达现场，这创下 DevOps 社区有史以来，社区峰会到场⼈数最多的纪录【2020 年 12 月北京，2020 年 9 月成都，2019 年 10 月杭州】。我们有幸邀请到了⼤连软件⾏业协会秘书⻓秦健致开幕辞，邀请了全国各地的讲师、参会者及志愿者们来到这个浪漫的海滨城市，大家共聚一堂，火热的分享和交流 DevOps ⽂化。
 
-## Paragraph
+DevOps 社区峰会的举办权，是 DevOps 社区在各个城市的组织者们，通过竞投标的流程而产生。DevOps 社区每年两次峰会的举办城市和时间具有不确定性。在当年第二次峰会的复盘回顾会议上，我们为下一年峰会设置了申办和竞标环节。任何有意获取申办权的社区组织者都可以为其所在城市拉票，所有参会社区组织们会用投票的方式 选取前两名的申办城市。
 
-Xerum, quo qui aut unt expliquam qui dolut labo. Aque venitatiusda cum, voluptionse latur sitiae dolessi aut parist aut dollo enim qui voluptate ma dolestendit peritin re plis aut quas inctum laceat est volestemque commosa as cus endigna tectur, offic to cor sequas etum rerum idem sintibus eiur? Quianimin porecus evelectur, cum que nis nust voloribus ratem aut omnimi, sitatur? Quiatem. Nam, omnis sum am facea corem alique molestrunt et eos evelece arcillit ut aut eos eos nus, sin conecerem erum fuga. Ri oditatquam, ad quibus unda veliamenimin cusam et facea ipsamus es exerum sitate dolores editium rerore eost, temped molorro ratiae volorro te reribus dolorer sperchicium faceata tiustia prat.
+峰会举办城市的组织者会成立峰会筹备小组，本次⼤连峰会的筹备⼩组中有来⾃全国的 56 名志愿者，其中⼤连本地的志愿者占了绝⼤多数；而且大连的 DevOps 社区呈现出了极佳的多样性，志愿者们的背景、职位、公司类型、年龄和性别都非常多元化。在当天大会现场，据目测观测，女性参会者的人数和比例也会略高于其他城市的同类会议。
 
-Itatur? Quiatae cullecum rem ent aut odis in re eossequodi nonsequ idebis ne sapicia is sinveli squiatum, core et que aut hariosam ex eat.
+下⾯是我对⼤连社区环境的概要分析：
 
-## Blockquotes
+- 据不完全统计，⼤连的软件从业⼈员是 20 万⼈。【2021 年常住人口 745 万】
+- 软件公司的业态主要为外包业务，给国内外企业提供项目开发、技术⽀持、运营和呼叫中⼼等服务，还有⼀些企业提供国内外电商平台的技术⽀撑服务，线上教育服务等等。通过云计算交付的业务系统，全生命周期的软件开发业务正在逐渐递增，交付⽔平受整个⾏业的带动，正逐年提⾼。
+- ⼤连软件企业所服务的客户既包括国内的⾏业⻰头企业【通信和金融等】，还有更多的是⼤量的⽇本企业，并且与很多优质的⽇本企业具有稳定而长期的业务关系。受疫情影响，⽇本等外资客户对⼤连软件企业的依赖性有提⾼的趋势。
+- ⼤连本地有⽐较丰富的社区存在，敏捷社区、云原⽣社区、项目管理社区都在⼤连举办过线下和线上的技术交流活动。DevOps 社区已经在⼤连持续发展了三年，我们和其他社区直接也有⼀定的⼈员重叠和合作关系。
+- ⼤连本地的软件从业者，基本上没有加班的习惯，下班后或者周末加班并不是常⻅的现象。⼯作之余他们会从事⾮常丰富的户外活动，跑步、滑雪和帆船等活动非常普遍。
 
-The blockquote element represents content that is quoted from another source, optionally with a citation which must be within a `footer` or `cite` element, and optionally with in-line changes such as annotations and abbreviations.
+历届的 DevOps 社区峰会都是一个完整和复杂的项目。当地的组织者在社区核心运营团队的配合下，完成了各项工作。包括峰会前宣传⽂案、讲师招募、盲⻦票推广、讲师⽇程推广、赞助商⽂案、赞助商讲师海报推广等。这些工作过程和海报都会在 DevOps 社区全国的所有微信群发布，还会在其他合作社区的微信群⾥做了推荐。⽂案详⻅社区微信公众号（DevOpsMeetup）。本次大连峰会的总计注册人数是 492 人，由于大连峰会的举办日期距离这个城市上一次的疫情封闭时间并不遥远，因此这个注册人数已经相当的完美；而且实现了 80+%的签到率。峰会后的宣传包括峰会总结⽂案（内含演讲者的 ppt 下载）。社区为每个演讲者都做了现场演讲稿的速记，随 PPT 图⽚⼀起发布⼀篇推广⽂案。还为演讲者制作了演讲 PPT 录屏视频（带同步⾳频），会后社区将所有视频都发布到了 DevOp 社区的 B 站【https://space.bilibili.com/370989874】和 YouTube 频道【https://www.youtube.com/channel/UC_gVuu1g05VREvNp2pwJbvw】。
 
-#### Blockquote without attribution
+大连峰会⼀整天的活动内容包括上午半天的主会场学习分享，下午设置了三个分会场和⼀个⼯作坊。分享演讲总数：21 个。
 
-> Tiam, ad mint andaepu dandae nostion secatur sequo quae.
-> **Note** that you can use *Markdown syntax* within a blockquote.
+本次峰会为了给与会者提供更多层⾯的交流机会，我们在会前组织了夜跑活动，这次夜跑活动的⼈数是有史以来最多的⼀次。在⼤会的前⼀天晚上参与者们分组完成了在星海湾⼤桥的夜跑活动，参与者最后合影留念，并领取了社区定制款夜跑服装。
 
-#### Blockquote with attribution
+在峰会的第⼆天，DevOps 社区组织了志愿者的内部回顾会议和团建活动，在为期⼀天的社区交流活动中，参与者们详细的回顾了本次峰会的整个历程。大家组团游览了当地的部分经典名胜景点，包括：乘坐游艇出海东港投喂海鸥，游览棒槌岛景区和海滩，在渔老人码头的品海楼吃海鲜大餐，去老虎滩极地海洋公园畅游，最后大家一起回到市中心的星海广场观赏海景和星海大桥。我在整天的活动中，和所有人没完没了的聊天内容还是大连本地的软件行业发展和现状，DevOps 社区的凝聚⼒得到了充分增强。
 
-> Don't communicate by sharing memory, share memory by communicating.</p>
-> — <cite>Rob Pike[^1]</cite>
+在会后第⼆天，我们向所有与会者推送了峰会满意度调查问卷，收到了 87 份有效分析数据，占到场与会者的 19.3%。本次峰会到场⼈数（450）在此刷新了记录，随着社区影响⼒的扩⼤，参与者满意度调查的⼈数和满意程度均呈现上涨趋势。与会者中，公司项目经理、团队负责⼈、管理者和⾼管的报名⽐例⾼于以往历届峰会。参会者在自于各个本地知名的⼤型软件服务商东软、埃森哲、IBM、日立、IBM、中软等咨询公司，其他⼤型外企和软企业占⽐较多。从调查数据中看到：非常满意（67.82%）和满意（26.44%）。对本次活动的净推荐值 NPS 高达 9.01 分，推荐率为 64.37%，这个数据同比预全行业而言，已经是一个非常不错的结果。反馈者们也给我们本次峰会提供了很多有价值的改进建议，非常感谢所有参会者对社区活动的参与。
 
-[^1]: The above quote is excerpted from Rob Pike's [talk](https://www.youtube.com/watch?v=PAAkCSZUG1c) during Gopherfest, November 18, 2015.
+和其它同类峰会不同的是，我们在峰会满意度调查问卷中加入了 Top10 Speaker 的评选环节，选出了本次峰会的民选十佳讲师：
 
-## Tables
+-
 
-Tables aren't part of the core Markdown spec, but Hugo supports supports them out-of-the-box.
+中国 DevOps 社区是⼀个公益、中⽴、开放的专业 DevOps 社区。我们会在社区的建设过程中，努⼒创新，着⼒打造⼀个充满温度的，对所有参与者友好的学习环境，同时实现多赢的局⾯，为全国软件开发行业的相关从业人员作出应有的贡献。
 
-   Name | Age
---------|------
-    Bob | 27
-  Alice | 23
-
-#### Inline Markdown within tables
-
-| Inline&nbsp;&nbsp;&nbsp;     | Markdown&nbsp;&nbsp;&nbsp;  | In&nbsp;&nbsp;&nbsp;                | Table      |
-| ---------- | --------- | ----------------- | ---------- |
-| *italics*  | **bold**  | ~~strikethrough~~&nbsp;&nbsp;&nbsp; | `code`     |
-
-## Code Blocks
-
-#### Code block with backticks
-
-```
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>Example HTML5 Document</title>
-</head>
-<body>
-  <p>Test</p>
-</body>
-</html>
-```
-#### Code block indented with four spaces
-
-    <!DOCTYPE html>
-    <html lang="en">
-    <head>
-      <meta charset="UTF-8">
-      <title>Example HTML5 Document</title>
-    </head>
-    <body>
-      <p>Test</p>
-    </body>
-    </html>
-
-#### Code block with Hugo's internal highlight shortcode
-{{< highlight html >}}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>Example HTML5 Document</title>
-</head>
-<body>
-  <p>Test</p>
-</body>
-</html>
-{{< /highlight >}}
-
-## List Types
-
-#### Ordered List
-
-1. First item
-2. Second item
-3. Third item
-
-#### Unordered List
-
-* List item
-* Another item
-* And another item
-
-#### Nested list
-
-* Item
-    1. First Sub-item
-    2. Second Sub-item
-
-## Other Elements — abbr, sub, sup, kbd, mark
-
-<abbr title="Graphics Interchange Format">GIF</abbr> is a bitmap image format.
-
-H<sub>2</sub>O
-
-X<sup>n</sup> + Y<sup>n</sup> = Z<sup>n</sup>
-
-Press <kbd><kbd>CTRL</kbd>+<kbd>ALT</kbd>+<kbd>Delete</kbd></kbd> to end the session.
-
-Most <mark>salamanders</mark> are nocturnal, and hunt for insects, worms, and other small creatures.
-
+基于本次峰会的整体感受，我也确实是理解到了大连 DevOps 社区核心组织者黄隽（黄岛主）曾经在举办城市竞标拉票宣言中的那句话“大连是一个浪漫的海滨城市”；本文写在峰会结束了两个月以后，所有难忘瞬间还都历历在目。对我而言本次峰会意味着：会前与小姐姐和小伙伴们一起夜跑打卡星海大桥并观赏完美大连夜景，浪漫对任何人都可能会意味着：冒险、经历和激情；而这次黄岛主带领着大连本地的社区志愿者们为我们完美的诠释了“何为社区的浪漫”，这不禁给我们种下了解锁中国所有其它著名网红城市的小愿望。
