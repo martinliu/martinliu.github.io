@@ -1,138 +1,85 @@
 +++
 date = 2021-09-12T16:16:29+08:00
 title = "DevOps社区峰会2021大连后记"
-description = "此次社区峰会很可能创在了国内社区峰会的新境界和标准。"
+description = "此次社区峰会可能创造了国内技术社区峰会的新境界。With❤️ & DevOps"
 author = "Martin Liu"
 categories = ["Travel"]
-tags = ["大连", "DevOps", "峰会", "社区"]
-draft = true
+tags = ["大连", "DevOps", "峰会"]
+draft = false
 [[images]]
-  src = "img/2021/process01.jpg"
-  alt = "获取目标"
+  src = "https://elasticstack-1300734579.cos.ap-nanjing.myqcloud.com/2021-11-25-IMG_7942.JPG"
+  alt = "大连峰会"
   stretch = "horizontal"
+
 +++
-又一次险中求胜的记忆。没有社区志愿者的支持，我们肯定无法确定这样的成功。
+
+这是一次激动人心的记忆。没有 DevOps 社区志愿者的共同努力，我们肯定无法将峰会办的如此成功。
 
 <!--more-->
 
-The following HTML `<h1>`—`<h6>` elements represent six levels of section headings. `<h1>` is the highest section level while `<h6>` is the lowest.
+我在拖了很长时间之后，我还是一定要总结一下有关这次盛会的点滴记忆和感受。我曾经多次去大连出差，于我而言大连不算是一个陌生的城市。可以由于海滨城市对人吸引力，人们对大连一如既往的美誉，本次峰会让我尤为期待。
 
-# H1
-## H2
-### H3
-#### H4
-##### H5
-###### H6
+![bangchuidao.jpg](https://elasticstack-1300734579.cos.ap-nanjing.myqcloud.com/2021-11-25-113246.jpg)
 
-## Paragraph
+对于美好的事情而言，它们都必然要符合天时地利人和。可是在新冠疫情的影响下，大连这座港口城市的地利，也几乎改写成了劣势。大连峰会本来是计划在 2020年就要举办的，但是去年大连在几乎每次的疫情爆发时，都参与了陪跑的角色；因此小伙伴们准备了一半的大连峰会，不得不往后顺延到了 2021 年。大连峰会在 2020 年无奈跳票，也导致我们不得不将其改到了北京，幸亏 DevOps 社区北京的小伙伴们也是不负众望，20年的北京峰会也在望京庆丰包子疫情事件期间如期举办。今年又在幸运之神的眷顾下，让我们终于得以圆梦大连。
 
-Xerum, quo qui aut unt expliquam qui dolut labo. Aque venitatiusda cum, voluptionse latur sitiae dolessi aut parist aut dollo enim qui voluptate ma dolestendit peritin re plis aut quas inctum laceat est volestemque commosa as cus endigna tectur, offic to cor sequas etum rerum idem sintibus eiur? Quianimin porecus evelectur, cum que nis nust voloribus ratem aut omnimi, sitatur? Quiatem. Nam, omnis sum am facea corem alique molestrunt et eos evelece arcillit ut aut eos eos nus, sin conecerem erum fuga. Ri oditatquam, ad quibus unda veliamenimin cusam et facea ipsamus es exerum sitate dolores editium rerore eost, temped molorro ratiae volorro te reribus dolorer sperchicium faceata tiustia prat.
+于 2021 年 9 ⽉ 4 ⽇，中国 DevOps 社区峰会⼤连站，在位于市中心的⽇航酒店隆重举⾏。本次峰会报名⼈数约 500 ⼈，峰会当天近 450 ⼈签到，这也创下 DevOps 社区有史以来，签到⼈数最多的纪录【2020 年 12 月北京，2020 年 9 月成都，2019 年 10 月杭州】。我们有幸邀请到了⼤连软件⾏业协会秘书⻓秦健致开幕辞，邀请到了来自全国各地的讲师和志愿者来到这个浪漫的海滨城市，大家在DevOps社区里欢聚一堂，火热的分享和交流 了一天的DevOps ⽂化、理念、技术和实践。
 
-Itatur? Quiatae cullecum rem ent aut odis in re eossequodi nonsequ idebis ne sapicia is sinveli squiatum, core et que aut hariosam ex eat.
+![keynotes](https://elasticstack-1300734579.cos.ap-nanjing.myqcloud.com/2021-11-25-110555.jpg)
 
-## Blockquotes
+每年“DevOps社区峰会的举办权”是 DevOps 社区各个城市的组织者们，通过公开竞投标的流程而产生的。因此，DevOps 社区下一年两次峰会的举办城市和时间具有不确定性。在当年第二次峰会的复盘回顾会议中，我们设置了一个峰会申办和竞标环节。任何有意申办的社区组织者都可以为其所在城市投标和拉票，所有参会的社区志愿者们会公开用投票的方式选举出得票数前两名的申办城市，这两个投标成功的城市会从此开始下次峰会的筹备工作。
 
-The blockquote element represents content that is quoted from another source, optionally with a citation which must be within a `footer` or `cite` element, and optionally with in-line changes such as annotations and abbreviations.
+峰会举办城市的组织者会成立峰会筹备小组，本次⼤连峰会的筹备⼩组中有来⾃全国的 56 名志愿者，其中⼤连本地的志愿者占了绝⼤多数。在整个峰会举办的过程中大家用定期周会的方式组织和安排各种峰会的工作事项。大连的 DevOps 社区呈现出了极佳的多样性，志愿者们的背景、职位、公司类型、年龄和性别都非常多元化。在当天大会现场，据目测观测，女性参会者的人数和比例也略高于其他城市的同类会议。
 
-#### Blockquote without attribution
+![IMG_7964](https://elasticstack-1300734579.cos.ap-nanjing.myqcloud.com/2021-11-25-110725.jpg)
 
-> Tiam, ad mint andaepu dandae nostion secatur sequo quae.
-> **Note** that you can use *Markdown syntax* within a blockquote.
+下⾯是我对⼤连社区环境的概要分析：
 
-#### Blockquote with attribution
+- 据不完全统计，⼤连的软件从业⼈员是 20 万⼈。【2021 年常住人口 745 万】
+- 软件公司的业态主要为外包业务，给国内外企业提供项目开发、技术⽀持、运营和呼叫中⼼等服务，还有⼀些企业提供国内外电商平台的技术⽀撑服务，线上教育服务等等。通过云计算交付业务系统，全生命周期软件开发业务正在逐渐递增，交付⽔平受整个⾏业的带动，正逐年提⾼。
+- ⼤连软件企业所服务的客户既包括国内的⾏业⻰头企业【通信和金融等】，还有更多的是⼤量的⽇本企业，并且与很多优质的⽇本企业具有稳定而长期的业务关系。受疫情影响，⽇本等外资客户对⼤连软件企业的依赖性有提⾼的趋势。
+- ⼤连本地有⽐较丰富的社区存在，敏捷社区、云原⽣社区、项目管理社区都在⼤连举办过线下和线上的技术交流活动。DevOps 社区已经在⼤连持续发展了三年，我们和其他社区直接也有⼀定的⼈员重叠和合作关系。
+- ⼤连本地的软件从业者，基本上没有加班的习惯，在下班后或者周末里加班并不是常⻅的现象。⼯作之余他们会从事⾮常丰富的户外活动，跑步、滑雪和帆船等活动非常普遍。
 
-> Don't communicate by sharing memory, share memory by communicating.</p>
-> — <cite>Rob Pike[^1]</cite>
+历届 DevOps 社区峰会都是一个完整和复杂的项目。当社区组织者在全国社区核心运营团队的配合下，成功的完成了各项大会工作。包括峰会前的宣传⽂案、讲师招募、盲⻦票推广、讲师⽇程推广、赞助商⽂案、赞助商讲师海报推广等。这些工作过程和海报都会在 DevOps 社区全国的所有微信群发布，在其他合作社区的微信群⾥做了联合推荐。这些文案和过程都可以在社区的微信公众号（DevOpsMeetup）上查看到。本次大连峰会的总计注册人数是 492 人，由于大连峰会的举办日期距离这个城市上一次的疫情封闭时间并不遥远，因此这个注册人数确实来之不易，堪称相当完美；我们甚至做了转线上峰会的方案。而且实现了 80+%的签到率，更表现出了在一个解封不久之后的城市里，大家报复性的出门参与社区活动的现实。峰会后的宣传包括峰会总结⽂案（内含演讲者的 ppt 下载）。社区为每个演讲者都做了现场演讲稿的速记，随 PPT 图⽚⼀起发布⼀篇推广⽂案。还为演讲者制作了演讲 PPT 录屏视频（带同步⾳频），会后社区将所有视频都发布到了 [DevOp 社区的 B 站](https://space.bilibili.com/370989874)【https://space.bilibili.com/370989874】和 [YouTube 频道](https://www.youtube.com/channel/UC_gVuu1g05VREvNp2pwJbvw)【https://www.youtube.com/channel/UC_gVuu1g05VREvNp2pwJbvw】。
 
-[^1]: The above quote is excerpted from Rob Pike's [talk](https://www.youtube.com/watch?v=PAAkCSZUG1c) during Gopherfest, November 18, 2015.
+![2021-11-25_18-52-04](https://elasticstack-1300734579.cos.ap-nanjing.myqcloud.com/2021-11-25-112907.jpg)
 
-## Tables
+大连峰会⼀整天的活动内容包括上午半天的集中式主会场学习，下午设置了三个分会场和⼀个⼯作坊。分享演讲总数：21 个。
 
-Tables aren't part of the core Markdown spec, but Hugo supports supports them out-of-the-box.
+为了给本次峰会的与会者提供更多层⾯的交流机会，我们在会前组织了夜跑活动。这又是一项DevOps社区的文化传统，首次峰会也跑是三年前的环杭州西湖夜跑，当时我们喊出了“随风奔跑，DevOps是方向”的口号，这句口号被沿用至今。这次大连峰会的夜跑活动的⼈数是有史以来最多的⼀次。在⼤会的前⼀天晚上参与者们分组完成了在星海湾⼤桥的夜跑活动，参与者最后合影留念，并领取了社区定制款夜跑服装。我完美的完成了首次星海湾大桥往返十公里的首刷，和其他社区的小伙伴们一起在桥上海上欣赏到了完美的大连市夜景。在跑步活动结束以后，又去参加了老同事安排的烧烤酒局，这真的是要感恩大连当地志愿者的完美会前准备工作，峰会前的当晚，社区居然没有任何人需要奋战在会场加班，我也首次实现了峰会前撸串的自由。
 
-   Name | Age
---------|------
-    Bob | 27
-  Alice | 23
+![running](https://elasticstack-1300734579.cos.ap-nanjing.myqcloud.com/2021-11-25-113715.jpg)
 
-#### Inline Markdown within tables
+峰会当天的我，应该说是非常兴奋的，虽然我们没有能通过大连在9月开海季节的天时地利拉取到大量到外地参会者，但当天早晨的签到数量也让我们非常激动。也有参展商遇到了所有资料和礼品在上午就很快的全部发放完毕的情况。会场之外我们也能感受到热闹非凡的交流氛围。我的主题分享在下午，晚上我们为所有志愿者和讲师准备了晚宴；席间我们还请到了一桌CxO贵客，大家畅聊DevOps实践相见恨晚。
 
-| Inline&nbsp;&nbsp;&nbsp;     | Markdown&nbsp;&nbsp;&nbsp;  | In&nbsp;&nbsp;&nbsp;                | Table      |
-| ---------- | --------- | ----------------- | ---------- |
-| *italics*  | **bold**  | ~~strikethrough~~&nbsp;&nbsp;&nbsp; | `code`     |
+![seafood](https://elasticstack-1300734579.cos.ap-nanjing.myqcloud.com/2021-11-25-112048.jpg)
 
-## Code Blocks
+在峰会的第⼆天，DevOps 社区组织了志愿者的内部回顾会议和团建活动，在为期⼀天的社区交流活动中，参与者们详细的回顾了本次峰会的整个历程。大家组团游览了当地的部分经典名胜景点，包括：乘坐游艇出海东港投喂海鸥，游览棒槌岛景区和海滩，在渔老人码头的品海楼品尝大连当地特色的海鲜大餐，去老虎滩极地海洋公园畅游，最后大家回到市中心的星海广场观赏海景和星海大桥。在整天的社区团建活动中，我和所有人没完没了的聊天，内容大多还是围绕着大连本地的软件行业发展和现状。通过本次全国志愿者的团结活动，DevOps 社区的文化和凝聚⼒得到了巨大的提升，这进一步确信了全国社区一盘棋的发展方针。
 
-#### Code block with backticks
+![team-building](https://elasticstack-1300734579.cos.ap-nanjing.myqcloud.com/2021-11-25-112517.jpg)
 
-```
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>Example HTML5 Document</title>
-</head>
-<body>
-  <p>Test</p>
-</body>
-</html>
-```
-#### Code block indented with four spaces
+会后，我们还向所有与会者推送了峰会满意度调查问卷，收到近签到人数20%的有效分析数据。从调查数据中看到：非常满意（67.82%）和满意（26.44%）。对本次活动的净推荐值 NPS 高达 9.01 分，推荐率为 64.37%，这个数据同比预全行业而言，是一个非常不错的成绩。反馈者们也给我们本次峰会提供了很多有价值的改进建议，非常感谢所有参会者对社区活动的参与。本次峰会到场⼈数（450）在此刷新了记录，随着社区影响⼒的扩⼤，参与者满意度调查的⼈数和满意程度均呈现上涨趋势。与会者中，公司项目经理、团队负责⼈、管理者和⾼管的报名⽐例⾼于以往历届峰会。参会者在自于各个本地知名的⼤型软件服务商东软、埃森哲、IBM、日立、IBM、中软等咨询公司，其他⼤型外企和软企业占⽐较多。
 
-    <!DOCTYPE html>
-    <html lang="en">
-    <head>
-      <meta charset="UTF-8">
-      <title>Example HTML5 Document</title>
-    </head>
-    <body>
-      <p>Test</p>
-    </body>
-    </html>
+和其它同类峰会不同的是，我们在峰会满意度调查问卷中加入了 Top10 Speaker 的评选环节，选出了本次峰会的民选十佳讲师：
 
-#### Code block with Hugo's internal highlight shortcode
-{{< highlight html >}}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>Example HTML5 Document</title>
-</head>
-<body>
-  <p>Test</p>
-</body>
-</html>
-{{< /highlight >}}
+1. 科创时代下的创新与敏捷 | 王立杰–IDCF
+2. 中国DevOps社区 快乐中砥砺前行 | 姚冬 – 华为
+3. 数字化转型成就业务价值 | 黄隽（黄岛主）- 腾讯
+4. 云原生DevOps与Continuous Everything的实践 | 王宇博-亚马逊科技
+5. 用OpenTelemetry通明数字化系统的可观测性 | 刘征– Elastic
+6. 基于DevOps的开源治理 | 庄表伟 – 华为
+7. AI智能分析和数字化质量管控应用实践 | 高蕊 – 中信银行
+8. 数字化转型趋势下NGINX KIC的高级应用技巧 | 罗剑锋 – F5/Nginx
+9. 容器应用交付控制持续集成持续部署最佳实践 | 宋志麒– F5/Nginx
+10. 从DevOps发展角度看应用架构的演进 | 张卫滨 – 大连金兰软件
 
-## List Types
+![2021-11-25_18-48-55](https://elasticstack-1300734579.cos.ap-nanjing.myqcloud.com/2021-11-25-111002.jpg)
 
-#### Ordered List
+以上就是我本次大连峰会完美体验的一些记录。我非常期待深圳峰会的举办，非常期待明年峰会城市的竞标结果。
 
-1. First item
-2. Second item
-3. Third item
+中国 DevOps 社区是⼀个公益、中⽴、开放的专业 DevOps 社区。我们会在社区的建设过程中，努⼒创新，着⼒打造⼀个充满温度的，对所有参与者友好的学习环境，同时实现多赢的局⾯，为全国软件开发行业的相关从业人员作出应有的贡献。社区的发展离不开所有赞助商和合作社区的支持，衷心感谢大连峰会的所有赞助商和合作方。
 
-#### Unordered List
+![2021-11-25_18-50-43](https://elasticstack-1300734579.cos.ap-nanjing.myqcloud.com/2021-11-25-111100.jpg)
 
-* List item
-* Another item
-* And another item
-
-#### Nested list
-
-* Item
-    1. First Sub-item
-    2. Second Sub-item
-
-## Other Elements — abbr, sub, sup, kbd, mark
-
-<abbr title="Graphics Interchange Format">GIF</abbr> is a bitmap image format.
-
-H<sub>2</sub>O
-
-X<sup>n</sup> + Y<sup>n</sup> = Z<sup>n</sup>
-
-Press <kbd><kbd>CTRL</kbd>+<kbd>ALT</kbd>+<kbd>Delete</kbd></kbd> to end the session.
-
-Most <mark>salamanders</mark> are nocturnal, and hunt for insects, worms, and other small creatures.
-
+基于本次峰会的整体感受，我也确实体会到了大连 DevOps 社区核心组织者黄隽（黄岛主）曾经在举办城市竞标拉票宣言中的那句话“大连是一个浪漫的海滨城市”；本文写在峰会结束了两个月以后，所有难忘瞬间还都历历在目。对我个人而言本次峰会意味着：会前与小伙伴们一起夜跑打卡星海大桥并观赏完美大连夜景；和老同事新朋友们品尝大连小海鲜和烧烤，喝到不醉不归；在峰会现场的主题分享，和会场的与会者们做种层面的交流；在会后社区峰会团结活动中团体的享受和放松；这样的精彩还有很多很多，言之不尽。可是浪漫本身意味着：冒险、经历和激情；而这次黄岛主带领着大连本地的社区志愿者们，通过一次惊艳的社区峰会为我们完美的诠释了“何为社区的浪漫”，我们需要在此感谢所有大连本地的社区志愿者们。这不禁给我们种下了解锁中国所有其它著名网红城市的小愿望。
