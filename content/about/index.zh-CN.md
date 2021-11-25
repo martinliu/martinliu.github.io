@@ -33,11 +33,12 @@ Elastic 开发者布道师，中国 DevOps 社区组织者，《DevOps Handbook�
 
 ##### Upcoming Events
 
-- [9 月 4 日 中国 DevOps 社区峰会 - 大连 - 2021 - **《用 OpenTelemetry 透明数字化系统的可观测性》**](hudongba.com/party/0wrt5.html)
-- [8 月 26 日 腾讯云 实战工作坊 - **《Elastic Security 安全管理实操》**](https://cloud.tencent.com/developer/salon/live-1549)
+- [12 月 4 日 中国 DevOps 社区峰会 - 深圳 - 2021 - **《用 OpenTelemetry 透明数字化系统的可观测性》**](hudongba.com/party/ufpe5.html)
 
 ##### Past Events
 
+- [9 月 4 日 中国 DevOps 社区峰会 - 大连 - 2021 - **《用 OpenTelemetry 透明数字化系统的可观测性》**](hudongba.com/party/0wrt5.html)
+- [8 月 26 日 腾讯云 实战工作坊 - **《Elastic Security 安全管理实操》**](https://cloud.tencent.com/developer/salon/live-1549)
 - [7 月 31 日（周六-下午）COSCUP - **《谈谈开源的求生通道》**](https://coscup.org/2021/zh-TW/session/XL7QML) | [B 站](https://www.bilibili.com/video/BV1y64y1W7fu) | [YouTube](https://www.youtube.com/watch?v=5Ej6vR6hIzY)
 - [7 月 31 日（周六-上午）阿里云 ACE×Elastic **可观测性工作坊/Meetup** 北京同城会站](https://www.hudongba.com/party/gde75.html)
 - [7 月 9 日 中国 DevOps 社区武汉第 4 届 Meetup - **《Elastic O11y Workshop》**](https://www.huodongxing.com/event/2604289049100)
@@ -92,7 +93,7 @@ Elastic 开发者布道师，中国 DevOps 社区组织者，《DevOps Handbook�
 - [9 月 6 日：DevOps Days Taipei 2017 - **《DevOps 的核心理念和實踐》**](https://devopsdays.tw/2017/sessions.html)
 - [3 月 18 日：DevOps Days Beijing 2017 - **OpenSpace Facilitator. Brought this internal community into China**](https://www.bagevent.com/event/devopsdays-beijing2017)
 
-## 我翻译的书籍
+## ß翻译的书籍
 
 这里是我主导和组织翻译的书籍。
 
