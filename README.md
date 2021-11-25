@@ -1,11 +1,13 @@
 # Martin's blog Souce code
 
+I have opened a discuess here at https://github.com/martinliu/martinliu.github.io/discussions ; pls feel free to ask me any questions.
+
 ## To Do
 
 - [Done] need a tags page
 - [Done] add friends page
 - [Done] add my course page
-- [doing] 增加评论功能, trying to add saticman comment systeml. Have to connect heroku app with Github app
+- [doing] trying to add saticman comment systeml. Have to connect heroku app with Github app
 
 ## Acknowledgements
 
