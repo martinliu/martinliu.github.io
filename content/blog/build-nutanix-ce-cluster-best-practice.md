@@ -1,0 +1,152 @@
++++
+date = 2021-11-26T23:05:40+08:00
+title = "构建 Nutanix CE 集群最佳实践"
+description = "免费使用业内最佳超融合平台的详细攻略"
+author = "Martin Liu"
+categories = ["DevOps"]
+tags = ["超融合", "HCI", "nutanix"]
+[[images]]
+  src = "img/2021/11/hci-nutanix.jpeg"
+  alt = "流程设计"
+  stretch = "horizontal"
++++
+
+本文总结了我从单机 esxi 的 Home Lab 环境，扩展到三节点 Nutanix 超融合混合盘集群的经验和教训。
+
+<!--more-->
+
+## 为什么需要这个集群
+
+Home lab 的进化史
+
+- 长期保持一些特定功能的虚拟机，消耗资源
+- 丰富的虚拟机模版和快照，消耗存储
+- 将照片和视频等资源线上访问
+- 尝试监控摄像头
+- 计算资源超分
+- 存储空间通过压缩，去重，纠删码等功能节省；通过 SSD+HDD 实现鱼和熊掌兼得
+- 尝试万兆网
+- 排除 NAS、ALL in One 主机和云的选项
+
+其他可能选项
+
+- esxi
+- Xenserver
+- 其他开业虚拟化
+
+## 最小化可用系统
+
+### Intel NUC
+
+- 集成主板
+- 32GB 内存
+- 2 个 M.2 nvme 磁盘
+
+| Name  | Age |
+| ----- | --- |
+| Bob   | 27  |
+| Alice | 23  |
+
+1. CPU 不足，可用资源不足
+2. 散热不理想
+3. 无法扩展
+4. 不适合长期开机
+5. AHV 超分能力不足
+
+### Lenovo P720
+
+配置
+
+- CPU 2 路
+- 72 GB 内存
+- 两个 SSD
+
+| Name  | Age |
+| ----- | --- |
+| Bob   | 27  |
+| Alice | 23  |
+
+1. 存储不足
+2. 内存不足
+3. VSAN 无法实现混合磁盘组
+
+## 建议平台选型
+
+### 国产主板套装
+
+- 华南金牌 AD4 套装
+- SSD x 2 ， HDD x 2
+- 万兆网卡
+- 千兆网卡
+
+| Name  | Age |
+| ----- | --- |
+| Bob   | 27  |
+| Alice | 23  |
+
+### 超微豪华高仿
+
+- 单路或者双路超微主板
+- E5 2690 v3 CPU
+- SSD x3， HDD x2+
+- 万兆网卡 x1
+
+| Name  | Age |
+| ----- | --- |
+| Bob   | 27  |
+| Alice | 23  |
+
+### 其他相关组件
+
+- 机箱
+- 电源
+- 显卡
+
+| Name  | Age |
+| ----- | --- |
+| Bob   | 27  |
+| Alice | 23  |
+
+## 集群搭建流程
+
+### 环境准备
+
+安装盘
+
+1. Windows 10 + Ruft
+2. 下载 Nutanix-2020-9016.tar
+3. Fedora 35 Live CD
+4. 16 GB U 盘 x2
+
+网络环境
+
+1. 千兆 + 万兆 （DAC 铜缆）
+2. DHCP + DNS + Internet 网络
+3. Web 服务器 + esxi702a.iso
+
+### 安装流程
+
+1. Fedora Live CD 启动，磁盘工具删除分区
+2. 插好网线
+3. Nutanix 安装盘启动，观察网卡 IP 地址获取
+4. 设置 Hypervisor 类型、磁盘布局、集群信息等
+5. 重启服务器，首次 host 启动，观察 cvm 安装过程和结果，等待 CVM 就绪，确认 CVM 上硬盘的挂载情况
+6. 配置网络 VLAN：管理网、IPMI 网络、存储网和生产 VM 网
+7. 重复以上步骤，安装其他 2 ～ 3 个节点
+8. 检查和确认集群的网络状态
+9. 创建 Nutanix 集群
+10. 首次登陆集群，完成初始化配置
+11. 配置集群的共享存储
+12. 安装部署 vcenter，注册 vcenter 到集群
+13. 安装虚拟机模版
+14. 创建虚拟机测试
+15. 运行基本的性能验收测试
+16. 正式投产
+17. 可选：安装 PC、Fileserver、CALM、K8s
+
+### 问题解决
+
+- python 脚本执行报错
+- long script 分辨率不足
+- 安装界面闪退
+- cvm 安装失败
