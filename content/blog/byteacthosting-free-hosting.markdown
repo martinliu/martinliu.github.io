@@ -1,13 +1,13 @@
 ---
-author: liuadmin
+author: Martin Liu
 categories:
-- Blog
+  - Blog
 comments: true
 date: 2009-07-04T14:47:23Z
 slug: byteacthosting-free-hosting
 tags:
-- freehosting
-- wordpress
+  - freehosting
+  - wordpress
 title: ByteactHosting-free hosting
 url: /2009/07/04/byteacthosting-free-hosting/
 wordpress_id: 49264

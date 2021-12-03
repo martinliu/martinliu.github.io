@@ -1,7 +1,7 @@
 ---
-author: liuadmin
+author: Martin Liu
 categories:
-- cloud-computing
+  - cloud-computing
 comments: true
 date: 2013-08-01T09:29:20Z
 subtitle: On April 15, 2013 Xen (which has always been open source) became the
@@ -9,13 +9,13 @@ subtitle: On April 15, 2013 Xen (which has always been open source) became the
   where industry players collaborate to create value, and how the Linux Foundation
   move is good for the Xen Project,Citrix and our customers.
 post_format:
-- Video
+  - Video
 slug: the-xen-movie-part-1-the-first-ten-years-of-open-source-xen
 tags:
-- infrastructure
-- xen
-- cloud-computing
-title: 'The Xen Movie, Part 1: The first ten years of open source Xen.'
+  - infrastructure
+  - xen
+  - cloud-computing
+title: "The Xen Movie, Part 1: The first ten years of open source Xen."
 url: /2013/08/01/the-xen-movie-part-1-the-first-ten-years-of-open-source-xen/
 wordpress_id: 52521
 ---

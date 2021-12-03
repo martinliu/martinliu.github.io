@@ -1,11 +1,11 @@
 ---
-author: liuadmin
-categories: 
-- DevOps
+author: Martin Liu
+categories:
+  - DevOps
 date: 2020-04-08T17:04:08+08:00
 slug: "使用 Elastic Stack 监控 Covid-19 疫情发展"
-tags: 
-- elk
+tags:
+  - elk
 title: "使用 Elastic Stack 监控 Covid-19 疫情发展"
 ---
 
@@ -14,10 +14,10 @@ title: "使用 Elastic Stack 监控 Covid-19 疫情发展"
 
 本文使用的 Elastic Stack 版本和环境如下：
 
-* Vagrant 的基础镜像 bento/centos-8
-* Elasticsearch 7.6.1
-* Kibana 7.6.1
-* Logstash 7.6.1
+- Vagrant 的基础镜像 bento/centos-8
+- Elasticsearch 7.6.1
+- Kibana 7.6.1
+- Logstash 7.6.1
 
 关于使用 Vagrant 环境搭建 Elastic Stack 的方法，见我之前的文章。本文的数据分析处理流程图如下所示。
 
@@ -29,10 +29,10 @@ title: "使用 Elastic Stack 监控 Covid-19 疫情发展"
 
 丁香园网页的数据被香港大学的 Isaac Lin 同学，通过他所开发的网络爬虫抓取加工后，用 API 的形式和 csv 数据文件的形式提供了出来，他的爬虫程序和结果数据给很多目前分析疫情的人带来了很大的帮助，有不少人去他的 blog 和 github 上点赞和评论的。
 
-* https://github.com/BlankerL/DXY-COVID-19-Data/tree/master/csv
-* https://lab.isaaclin.cn/nCoV/
+- https://github.com/BlankerL/DXY-COVID-19-Data/tree/master/csv
+- https://lab.isaaclin.cn/nCoV/
 
-你可以用 Python 程序调用Lin 同学的 API 然后在将处理后的结果写入 ES，这样的脚本可以参考 Rockybean  的这个 https://www.yuque.com/elastictalk/blog/et25?from=timeline。也可以用下面的命令将Github 的 csv 文件下载到本地，在做手工的数据分析，这样也等于是对林同学的数据内容和定义进行一次深入的探索，这也将更有益于你理解数据，方面后面使用 Kibana 做数据分析。
+你可以用 Python 程序调用 Lin 同学的 API 然后在将处理后的结果写入 ES，这样的脚本可以参考 Rockybean 的这个 https://www.yuque.com/elastictalk/blog/et25?from=timeline。也可以用下面的命令将Github 的 csv 文件下载到本地，在做手工的数据分析，这样也等于是对林同学的数据内容和定义进行一次深入的探索，这也将更有益于你理解数据，方面后面使用 Kibana 做数据分析。
 
 在本机使用 git 做数据下载和同步的命令如下。
 
@@ -42,13 +42,13 @@ cd DXY-COVID-19-Data/
 git pull
 ```
 
-你也可以用用` git pull `命令在日后做数据更新，并进行后续的跟踪分析。
+你也可以用用`git pull`命令在日后做数据更新，并进行后续的跟踪分析。
 
 同步到本地的数据也可以使用 Logstash 或者是 Filebeat 持续的同步到 ES 中，这样就可以在 Kibana 上看到每日的实时更新结果。
 
 ### 导入数据并初始化索引
 
-本文选择了最简单直接的方式，使用 Kibana 自带的数据导入功能，手工导入丁香园的 csv 时序数据文件 ` csv/DXYArea.csv `。 如下图所示。
+本文选择了最简单直接的方式，使用 Kibana 自带的数据导入功能，手工导入丁香园的 csv 时序数据文件 `csv/DXYArea.csv`。 如下图所示。
 
 ![](/images/2020-04-08_10-23-22.jpeg)
 
@@ -56,8 +56,8 @@ git pull
 
 ![](/images/2020-04-08_10-27-15.jpeg)
 
-* 可以在 index name 中可以输入` dxy-area-m5 ` 作为本次新建的索引名称。
-* 然后删除默认的 Mapping 定义，输入下面的重新重定义的数据结构。
+- 可以在 index name 中可以输入`dxy-area-m5` 作为本次新建的索引名称。
+- 然后删除默认的 Mapping 定义，输入下面的重新重定义的数据结构。
 
 ```
 {
@@ -138,30 +138,30 @@ git pull
 
 对以上 Mapping 的简要说明：
 
-* 增加了字段 level, is_china 和 Location，你也可以加入你所需要的其它待用字段，所有新增无值字段都需要后期进行初始化。
-* level 定义了数据记录的级别为：国家、港澳台和省级。
-* is_china 定义了国内外数据标识
-* 在导入后，本文使用的字段的批量初始化/维护是调用 /_update_by_query 方法，也可以是使用 ingest pipline 的方式，或者其它 Elastic Stack 中的其它替代功能。
+- 增加了字段 level, is_china 和 Location，你也可以加入你所需要的其它待用字段，所有新增无值字段都需要后期进行初始化。
+- level 定义了数据记录的级别为：国家、港澳台和省级。
+- is_china 定义了国内外数据标识
+- 在导入后，本文使用的字段的批量初始化/维护是调用 /\_update_by_query 方法，也可以是使用 ingest pipline 的方式，或者其它 Elastic Stack 中的其它替代功能。
 
 如上图所示的数据导入成功之后，点击 View index in Discovery， 我们可以使用 Kibana 的 Discovery 功能来对所导入的数据进行分析和确认，特别是一些关键字段的数值。观察这些数据的格式和内容的含义是什么。使用 filter 功能了解数据的内容和特征。建议使用下面的 filter 和组合探索一下【也可以使用 kql 语言做查询，如果用 kql 做查询的话，也可以很方便的将这些查询条件进行复用】。
 
-* countryName:中国
-* NOT countryName:中国 
-* countryName:中国  / provinceName:中国
-* countryName:中国  / NOT provinceName:中国  / cityName exists  
-* countryName:中国  / NOT provinceName:中国  / NOT cityName exists 
-* countryName:中国  /  cityName: 境外输入
+- countryName:中国
+- NOT countryName:中国
+- countryName:中国 / provinceName:中国
+- countryName:中国 / NOT provinceName:中国 / cityName exists
+- countryName:中国 / NOT provinceName:中国 / NOT cityName exists
+- countryName:中国 / cityName: 境外输入
 
 以上的 / 是多个 filter 叠加的含义，可以大概的猜测出下面的结论。
 
-* 中国国内数据
-* 国外数据
-* 中国省级统计数据
-* 中国各省的各个城市的统计数据
-* 中国的港澳台数据
-* 中国海关所监控到的境外输入数据
+- 中国国内数据
+- 国外数据
+- 中国省级统计数据
+- 中国各省的各个城市的统计数据
+- 中国的港澳台数据
+- 中国海关所监控到的境外输入数据
 
-为了后面使用省的名称做地图分析，这里需要查看数据中各个省英文名称，以广西为例，设置查询条件：provinceEnglishName	Guangxi
+为了后面使用省的名称做地图分析，这里需要查看数据中各个省英文名称，以广西为例，设置查询条件：provinceEnglishName Guangxi
 
 现在来浏览 Elastic Map 地图服务所引用的中国各省的中英文名称和代码，查看 https://maps.elastic.co/#file/china_provinces ；
 
@@ -241,11 +241,11 @@ POST dxy-area-m5/_update_by_query
           if (ctx._source.provinceEnglishName == "Xizang") {
             ctx._source.provinceEnglishName = "Tibet";
           }
-          
+
           if (ctx._source.cityName == "境外输入人员") {
             ctx._source.cityName = "境外输入";
           }
-          
+
     """
   }
 }
@@ -258,7 +258,7 @@ POST dxy-area-m5/_update_by_query
 在分析数据就绪了以后，下面介绍一组通过 Kibana 进行数据可视化分析展示的思路和方法。
 
 #### 💻 从 Discovery 界面中直接调用可视化视图创建
- 
+
 在 Discovery 的查询界面里，点击左侧 fields 清单中的 provinceName，或者其它想进行可视化分析的字段，点击后即可查看其中一部分的数值分布情况，点击下面的 Visualize 按钮。就可以进入可视化编辑模式。
 
 ![](/images/2020-04-08_11-11-13.jpeg)
@@ -268,7 +268,6 @@ POST dxy-area-m5/_update_by_query
 ![](/images/2020-04-08_11-09-48.jpeg)
 
 还可以对 Buckets 里面 X 轴的值进行调整，使用省的名字。 这样基本上得出了确诊数省排名的结果。或者你还可以调整出其它的分析结论。在分析结束后，点击左上角的 Save ，将分析组合保存下来用于后期的仪表板的制作。
-
 
 #### 💻 使用 Visualization 的 lens 功能探索数据
 
@@ -300,21 +299,21 @@ POST dxy-area-m5/_update_by_query
 
 我们可以使用已经导入的数据在地图上显示省级的累计确诊和治愈人数。过程是这样的：
 
-* 点击 Kibana 左侧的 Maps 图标，创建一个新的地图。
-* 创建图层，选择 EMS Boundaries ，选择这个图层所使用的基础地图为 China Provinces 
-* 点击 Add layer 按钮
-* 在图层配置里输入图层名称缩放级别，透明度的设置
-* 设置 Tooltip fields 的设置中增加 name(zh) ,中文的省名称
-* 设置 Term Joins 的规则，点击 Join 关键字，设置索引中的数据和地图的关联。如下图所示，这就是我们为什么要把导入数据中的省英文名称与 EMS 的定义数据对齐了。
+- 点击 Kibana 左侧的 Maps 图标，创建一个新的地图。
+- 创建图层，选择 EMS Boundaries ，选择这个图层所使用的基础地图为 China Provinces
+- 点击 Add layer 按钮
+- 在图层配置里输入图层名称缩放级别，透明度的设置
+- 设置 Tooltip fields 的设置中增加 name(zh) ,中文的省名称
+- 设置 Term Joins 的规则，点击 Join 关键字，设置索引中的数据和地图的关联。如下图所示，这就是我们为什么要把导入数据中的省英文名称与 EMS 的定义数据对齐了。
 
 ![](/images/2020-04-08_21-30-40.jpeg)
 
-* 点击 and use metrics 设置在每个省上显示的数据。如下图所示。
+- 点击 and use metrics 设置在每个省上显示的数据。如下图所示。
 
 ![](/images/2020-04-08_21-31-05.jpeg)
 
-* 最后设置 Layer Style， 将 Fill color 填色设置为 By Value， 选择省累计确诊，下面的颜色可以选择白色到深红的过度。
-* 最后点击 Save & close 按钮。
+- 最后设置 Layer Style， 将 Fill color 填色设置为 By Value， 选择省累计确诊，下面的颜色可以选择白色到深红的过度。
+- 最后点击 Save & close 按钮。
 
 这里的技术点在于：Elastic 地图中的基础数据（地理名称代码）必须和目标索引中的相关字段能够匹配上（join）上，然后才能将索引中的实际做聚合运算的字段根据地理名称进行处理，例如根据数值的大小，将各个省填充成不同的颜色，用 tooltips 显示这个省的数据信息。
 
@@ -340,28 +339,29 @@ POST dxy-area-m5/_update_by_query
 
 你可以参考下面的安装步骤和注意事项。
 
-* 登录 Kibana，进入 Dev Tool 中，将文件 index-template-mapping.json 中的内容复制进去并点击执行按钮。
-* 安装 Logstash 7.6.1 
+- 登录 Kibana，进入 Dev Tool 中，将文件 index-template-mapping.json 中的内容复制进去并点击执行按钮。
+- 安装 Logstash 7.6.1
 
 ```
 yum install java-11-openjdk-11.0.6.10-0.el8_1.x86_64
 rpm -ivh logstash-7.6.1.rpm
 
 ```
-* 将配置文件中的 /etc/logstash/covid-19-hashes.json  修改为 /usr/share/logstash/covid-19-hashes.json 然后把它们复制到 logstash 的配置目录中
 
+- 将配置文件中的 /etc/logstash/covid-19-hashes.json 修改为 /usr/share/logstash/covid-19-hashes.json 然后把它们复制到 logstash 的配置目录中
 
 ```
 cp logstash-github-covid-19-daily-reports-template.conf  logstash-github-covid-19-time-series-template.conf  /etc/logstash/conf.d/
 
 ```
 
-* 确保你的虚拟机（测试环境和 github 以及其他的国外基本正常的情况下）网络正常的情况下，启动 logstash 服务并且关注该服务的日志信息
+- 确保你的虚拟机（测试环境和 github 以及其他的国外基本正常的情况下）网络正常的情况下，启动 logstash 服务并且关注该服务的日志信息
 
 ```
 sudo systemctl start logstash
 sudo tail -f /var/log/logstash/logstash-plain.log
 ```
+
 PS:在日志中可以看到 logstash 完全正常的启动成功，或者看到报错，这时候就需要停止 logstash 服务，并进行调整。直到服务彻底运行成功不报错。
 
 在 logstash 服务正常运行的情况下，世卫组织的数据是会被正常的导入到 ES 中的，你可以在 Discovery 中查看如下的查询结果。那么恭喜你，你已经和世卫组织的数据保持实时同步了。
@@ -370,33 +370,30 @@ PS:在日志中可以看到 logstash 完全正常的启动成功，或者看到�
 
 最后是导入该项目的仪表板对象。操作步骤参考：登录 kibana， 进入管理， 点击 Kibana 下面的 saved objeces ； 点击 import 按钮。选择 kibana-7.6.1-covid-19-dashboard.ndjson ，然后即可浏览名为 COVID 19 的仪表板了。导入后在 Kibana 的仪表板清单中选择查看名为 “COCID 19” 的仪表板。预祝你能看到和我相同的结果，建议仔细查看他们的地图设计，做的是非常的细致，如下图所示，它是三个图层叠加的显示效果。
 
-
 ![](/images/2020-04-08_23-34-36.jpeg)
-
 
 ## 总结
 
 最后希望你通过本文已经成功的展示出了以上的预期结果。下面简单总结一下相关知识点。
 
-* 对陌生数据集的首次探索可以是手动导入 csv 文件的手动过程
-* 在导入的过程中需要做适当的 field mapping 的调整，和扩展，让后期的查询和数据分析更加清晰
-* 对导入后的数据，充分利用 Discovery 的查询和分析能力，确定好数据校准和调优的更新策略
-* 充分利用 ES 的批量查询修改API，可以轻松快捷的实现数据修订。
-* 地图的使用重点在地理信息代码和数据索引中的实际 field 的 join，因此需要特别设计和维护 join 的字段，确保他们的精确性。
-* 仪表板的制作和设计依赖于各种图标的设计
+- 对陌生数据集的首次探索可以是手动导入 csv 文件的手动过程
+- 在导入的过程中需要做适当的 field mapping 的调整，和扩展，让后期的查询和数据分析更加清晰
+- 对导入后的数据，充分利用 Discovery 的查询和分析能力，确定好数据校准和调优的更新策略
+- 充分利用 ES 的批量查询修改 API，可以轻松快捷的实现数据修订。
+- 地图的使用重点在地理信息代码和数据索引中的实际 field 的 join，因此需要特别设计和维护 join 的字段，确保他们的精确性。
+- 仪表板的制作和设计依赖于各种图标的设计
 
 Elastic Stack 在本案例中得到了充分而综合的运用。从 E 到 L 到 K 一个都不能少。建议大家能平衡掌握这个技术栈的各种技术能力，补足不太擅长的部分。
 
 本文参考的网址如下：
 
-* https://gisanddata.maps.arcgis.com/apps/opsdashboard/index.html#/bda7594740fd40299423467b48e9ecf6
-* http://covid.surge.sh/
-* https://informationisbeautiful.net/visualizations/covid-19-coronavirus-infographic-datapack/
-* https://ncov.dxy.cn/ncovh5/view/pneumonia
-* https://github.com/CSSEGISandData/COVID-19
-* https://lab.isaaclin.cn/nCoV/
-* https://github.com/siscale/covid-19-elk
-* https://www.mapbox.cn/coronavirusmap/#3.35/28.47/109.74
-* https://ncov.deepeye.tech/
-* https://www.siscale.com/importing-covid-19-data-into-elasticsearch/
-
+- https://gisanddata.maps.arcgis.com/apps/opsdashboard/index.html#/bda7594740fd40299423467b48e9ecf6
+- http://covid.surge.sh/
+- https://informationisbeautiful.net/visualizations/covid-19-coronavirus-infographic-datapack/
+- https://ncov.dxy.cn/ncovh5/view/pneumonia
+- https://github.com/CSSEGISandData/COVID-19
+- https://lab.isaaclin.cn/nCoV/
+- https://github.com/siscale/covid-19-elk
+- https://www.mapbox.cn/coronavirusmap/#3.35/28.47/109.74
+- https://ncov.deepeye.tech/
+- https://www.siscale.com/importing-covid-19-data-into-elasticsearch/

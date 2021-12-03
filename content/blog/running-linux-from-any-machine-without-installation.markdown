@@ -1,14 +1,14 @@
 ---
-author: liuadmin
+author: Martin Liu
 categories:
-- Infrastructure
+  - Infrastructure
 comments: true
 date: 2008-07-04T14:31:15Z
 slug: running-linux-from-any-machine-without-installation
 tags:
-- linux
-- slax
-- usb
+  - linux
+  - slax
+  - usb
 title: Running Linux from any machine without installation
 url: /2008/07/04/running-linux-from-any-machine-without-installation/
 wordpress_id: 49215
@@ -37,6 +37,7 @@ wordpress_id: 49215
 **Slax How to**
 
 <br /><br /><table cellpadding="5" cellspacing="0" border="0" width="100%" ><br /><tbody ><br /><tr ><br />
+
 <td ><br />	
 * [Key features of Slax 6](http://www.slax.org/documentation_key_features.php)
 <br />	

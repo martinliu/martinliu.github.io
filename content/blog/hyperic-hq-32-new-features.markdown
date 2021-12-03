@@ -1,14 +1,14 @@
 ---
-author: liuadmin
+author: Martin Liu
 categories:
-- itsm
+  - itsm
 comments: true
 date: 2008-02-02T06:02:00Z
 slug: hyperic-hq-32-new-features
 tags:
-- Hyperic HQ
-- new features
-- itsm
+  - Hyperic HQ
+  - new features
+  - itsm
 title: Hyperic HQ 3.2 new features
 url: /2008/02/02/hyperic-hq-32-new-features/
 wordpress_id: 49183
@@ -18,15 +18,15 @@ If you'd like to check out release note, please click here. [http://support.hype
 
 ## New Nav menu 新导航菜单
 
-<br />![](http://lh5.google.com/liuzh66/R6QKZn2WokI/AAAAAAAAAeo/ZYObo0rO5Dc/image%5B15%5D.png)导航菜单的名称变成了：Dashboard -- Resources -- Analyze -- Administration 菜单的风格稍微有一点变化。Analyze下面可以进入Alert Center去查看报警信息。我觉得3.2毕竟是一个小的功能增进板，添加了支持MY SQL的支持。增强了对Nagios的集成。对Nagios的集成对它还是很有好处的，由于它自己是Agent Based的监控方法，而Nagios是Agentless的监控方法；集成之后通过它的web界面能统一管理，还是挺好的。不过和Nagios具体能集成到什么程度，我还没有试过。<br />
+<br />![](http://lh5.google.com/liuzh66/R6QKZn2WokI/AAAAAAAAAeo/ZYObo0rO5Dc/image%5B15%5D.png)导航菜单的名称变成了：Dashboard -- Resources -- Analyze -- Administration 菜单的风格稍微有一点变化。Analyze 下面可以进入 Alert Center 去查看报警信息。我觉得 3.2 毕竟是一个小的功能增进板，添加了支持 MY SQL 的支持。增强了对 Nagios 的集成。对 Nagios 的集成对它还是很有好处的，由于它自己是 Agent Based 的监控方法，而 Nagios 是 Agentless 的监控方法；集成之后通过它的 web 界面能统一管理，还是挺好的。不过和 Nagios 具体能集成到什么程度，我还没有试过。<br />
 
-## Currently Down Resources当前宕机资源
+## Currently Down Resources 当前宕机资源
 
-<br />![](http://lh4.google.com/liuzh66/R6QK9X2WomI/AAAAAAAAAe4/iGNp8zHxnok/image%5B19%5D.png)<br />如果所示：各种有问题的资源安装各种分类都显示出来，同实现时什么时间出的问题，持续了多久，点击放大镜后查看相关的报警信息。上图显示的是：HQ Agent在w2k3vm这一Windows服务器上没有启动的情况，它报告了包括hq agent自身以及所有相关资源的都宕机的情形。同时作为一个监控系统来说，管理员最需要看到的信息可能主要包括两种：1）有那些资源出了问题；2）当前有什么样的告警事件。这里对这两类信息提供了一个非常不错的访问入口。<br />
+<br />![](http://lh4.google.com/liuzh66/R6QK9X2WomI/AAAAAAAAAe4/iGNp8zHxnok/image%5B19%5D.png)<br />如果所示：各种有问题的资源安装各种分类都显示出来，同实现时什么时间出的问题，持续了多久，点击放大镜后查看相关的报警信息。上图显示的是：HQ Agent 在 w2k3vm 这一 Windows 服务器上没有启动的情况，它报告了包括 hq agent 自身以及所有相关资源的都宕机的情形。同时作为一个监控系统来说，管理员最需要看到的信息可能主要包括两种：1）有那些资源出了问题；2）当前有什么样的告警事件。这里对这两类信息提供了一个非常不错的访问入口。<br />
 
-## Live Exec Data实时数据获取
+## Live Exec Data 实时数据获取
 
-<br />![](http://lh6.google.com/liuzh66/R6QLY32WooI/AAAAAAAAAfI/JDuTMobC7IE/image%5B24%5D.png)<br />HQ-agent本身只能周期性的采集matrix，在汇报给管理服务器。实时的数据采集对排错还是非常有帮助的。此功能我觉得是3.2版中的最好的增强。它应该是远程的让agent去执行一下命令在把最终结果返回到页面上：<br />
+<br />![](http://lh6.google.com/liuzh66/R6QLY32WooI/AAAAAAAAAfI/JDuTMobC7IE/image%5B24%5D.png)<br />HQ-agent 本身只能周期性的采集 matrix，在汇报给管理服务器。实时的数据采集对排错还是非常有帮助的。此功能我觉得是 3.2 版中的最好的增强。它应该是远程的让 agent 去执行一下命令在把最终结果返回到页面上：<br />
 
 <br />	
   * Cpuinfo  CPU信息
@@ -46,11 +46,11 @@ If you'd like to check out release note, please click here. [http://support.hype
 
 ## HQ Health Check 管理服务器自身检查
 
-<br />![](http://lh4.google.com/liuzh66/R6QLxX2WoqI/AAAAAAAAAfY/_qW9Xr0ni6w/image%5B28%5D.png)<br />一个真正的自监控功能最好能做到对相关指标的报警处理。能设置一些条件，在不正常情况发生的时候报告管理员说出管理服务器那里有问题了。上图可以看出，hq已经做出了第一步，能采集并且显示很多HQ服务器运行的状态信息。<br />
+<br />![](http://lh4.google.com/liuzh66/R6QLxX2WoqI/AAAAAAAAAfY/_qW9Xr0ni6w/image%5B28%5D.png)<br />一个真正的自监控功能最好能做到对相关指标的报警处理。能设置一些条件，在不正常情况发生的时候报告管理员说出管理服务器那里有问题了。上图可以看出，hq 已经做出了第一步，能采集并且显示很多 HQ 服务器运行的状态信息。<br />
 
 ## Summary：
 
-<br />在3.2的发布说明中还提到它自身的扩展性也很大的增强，这一点对hq来说尤为重要。由于它的结构是基于代理的，当监控的设备和资源都非常多时，hq管理服务器自身的处理能理将会成为瓶颈，如果它的处理，存储和网络上的任何一个环节出现了问题，整个监控系统就失效了。由于事件有限，目前还留下了一些问题：<br />
+<br />在 3.2 的发布说明中还提到它自身的扩展性也很大的增强，这一点对 hq 来说尤为重要。由于它的结构是基于代理的，当监控的设备和资源都非常多时，hq 管理服务器自身的处理能理将会成为瓶颈，如果它的处理，存储和网络上的任何一个环节出现了问题，整个监控系统就失效了。由于事件有限，目前还留下了一些问题：<br />
 
 <br />	
   * Global Alert Disable是在那里设置的？

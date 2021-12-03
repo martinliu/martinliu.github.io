@@ -1,25 +1,26 @@
 ---
-author: liuadmin
+author: Martin Liu
 categories:
-- itsm
-- CMS/CMDB
+  - itsm
+  - CMS/CMDB
 comments: true
 date: 2009-12-13T07:45:00Z
 slug: service-asset-ci-life-cycle
 tags:
-- cmdb
-- cms
-- ITIL
+  - cmdb
+  - cms
+  - ITIL
 title: 资产CI的一生
 url: /2009/12/13/service-asset-ci-life-cycle/
 wordpress_id: 49570
 ---
 
-在ITIL v3以后，配置管理进化为“服务资产和配置管理SACM”，换句话说，资产和配置管理不分家。两个流程应该是融合的。从微观上看资产管理设计到CI的所有生命周期状态，而这个服务资产在CMDB中出现的状态为整个生命周期中的一部分。<br />
+在 ITIL v3 以后，配置管理进化为“服务资产和配置管理 SACM”，换句话说，资产和配置管理不分家。两个流程应该是融合的。从微观上看资产管理设计到 CI 的所有生命周期状态，而这个服务资产在 CMDB 中出现的状态为整个生命周期中的一部分。<br />
 
 ![](http://www.butterfliesandart.com/Butterfly_Life_Cycle/Lifecycle3large.jpg)
 
-<br /><br />最好能通过资产管理为统一入口，来完成对CMDB中资产的生命周期管理。例如：一台服务器在到货以后，完成资产入库后，就应该在CMDB中自动创建CI，在上架部署了软件后，有配置资产自动采集工具，采集回详细配置信息后，资产状态就自动变为“部署”，当在运行维护中服务器宕机或者维护时，在资产管理中也能看到更新的信息。下面是建议的服务资产的生命周期状态:<br /><table cellpadding="0" cellspacing="0" border="1" width="709" > <br /><tbody ><br /><tr ><br />
+<br /><br />最好能通过资产管理为统一入口，来完成对 CMDB 中资产的生命周期管理。例如：一台服务器在到货以后，完成资产入库后，就应该在 CMDB 中自动创建 CI，在上架部署了软件后，有配置资产自动采集工具，采集回详细配置信息后，资产状态就自动变为“部署”，当在运行维护中服务器宕机或者维护时，在资产管理中也能看到更新的信息。下面是建议的服务资产的生命周期状态:<br /><table cellpadding="0" cellspacing="0" border="1" width="709" > <br /><tbody ><br /><tr ><br />
+
 <td width="69" height="32" >编号
 </td><br />
 <td width="115" >状态名称

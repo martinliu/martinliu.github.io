@@ -1,12 +1,12 @@
 ---
-author: liuadmin
+author: Martin Liu
 categories:
-- ITSM
+  - ITSM
 comments: true
 date: 2007-06-01T09:53:00Z
 slug: there-is-the-easiest-way-to-run-it-management-tool
 tags:
-- VMWare
+  - VMWare
 title: There is the easiest way to run IT management tool
 url: /2007/06/01/there-is-the-easiest-way-to-run-it-management-tool/
 wordpress_id: 49159

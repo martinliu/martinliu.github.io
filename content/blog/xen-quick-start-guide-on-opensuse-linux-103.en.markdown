@@ -1,12 +1,12 @@
 ---
-author: liuadmin
+author: Martin Liu
 categories:
-- Infrastructure
+  - Infrastructure
 comments: true
 date: 2008-08-27T14:43:05Z
 slug: xen-quick-start-guide-on-opensuse-linux-103
 tags:
-- opensuse
+  - opensuse
 title: Xen quick start guide on openSuSE Linux 10.3
 url: /2008/08/27/xen-quick-start-guide-on-opensuse-linux-103/
 wordpress_id: 49225

@@ -1,12 +1,12 @@
 ---
-author: liuadmin
+author: Martin Liu
 categories:
-- Blog
+  - Blog
 comments: true
 date: 2009-01-25T17:23:30Z
 slug: welcome-to-the-year-of-the-ox
 tags:
-- Chinese new year
+  - Chinese new year
 title: Welcome to The Year of the Ox
 url: /2009/01/25/welcome-to-the-year-of-the-ox/
 wordpress_id: 49251

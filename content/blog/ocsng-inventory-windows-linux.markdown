@@ -1,12 +1,12 @@
 ---
-author: liuadmin
+author: Martin Liu
 categories:
-- itsm
+  - itsm
 comments: true
 date: 2007-06-15T10:17:00Z
 slug: ocsng-inventory-windows-linux
 tags:
-- inventory
+  - inventory
 title: OCSNG 代理程序生成的清单扫描信息
 url: /2007/06/15/ocsng-inventory-windows-linux/
 wordpress_id: 49166

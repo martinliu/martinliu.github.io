@@ -1,12 +1,12 @@
 ---
-author: liuadmin
+author: Martin Liu
 categories:
-- blog
+  - blog
 comments: true
 date: 2009-11-09T02:52:10Z
 slug: knowing
 tags:
-- blog
+  - blog
 title: Knowing
 url: /2009/11/09/knowing/
 wordpress_id: 49968

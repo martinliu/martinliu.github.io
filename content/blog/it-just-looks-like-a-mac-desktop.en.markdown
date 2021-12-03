@@ -1,15 +1,15 @@
 ---
-author: liuadmin
+author: Martin Liu
 categories:
-- Blog
-- Cloud Computing
+  - Blog
+  - Cloud Computing
 comments: true
 date: 2009-02-02T14:14:13Z
 slug: it-just-looks-like-a-mac-desktop
 tags:
-- linux
-- Mac OSX
-- Ubuntu
+  - linux
+  - Mac OSX
+  - Ubuntu
 title: It just looks like a Mac desktop
 url: /2009/02/02/it-just-looks-like-a-mac-desktop/
 wordpress_id: 49253

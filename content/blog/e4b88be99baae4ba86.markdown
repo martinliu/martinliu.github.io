@@ -1,13 +1,13 @@
 ---
-author: liuadmin
+author: Martin Liu
 categories:
-- Blog
+  - Blog
 comments: true
 date: 2009-11-10T06:42:20Z
-slug: '%e4%b8%8b%e9%9b%aa%e4%ba%86'
+slug: "%e4%b8%8b%e9%9b%aa%e4%ba%86"
 tags:
-- Blog
-- snow
+  - Blog
+  - snow
 title: 下雪了
 url: /2009/11/10/e4b88be99baae4ba86/
 wordpress_id: 49983

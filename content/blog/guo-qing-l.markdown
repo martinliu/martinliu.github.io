@@ -1,14 +1,14 @@
 ---
-author: liuadmin
+author: Martin Liu
 categories:
-- Blog
+  - Blog
 comments: true
 date: 2009-10-05T04:29:44Z
 slug: guo-qing-l
 tags:
-- 北京
-- 国庆
-- 节日
+  - 北京
+  - 国庆
+  - 节日
 title: 国庆掠影
 url: /2009/10/05/guo-qing-l/
 wordpress_id: 49352

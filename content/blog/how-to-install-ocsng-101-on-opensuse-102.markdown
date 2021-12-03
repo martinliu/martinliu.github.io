@@ -1,19 +1,19 @@
 ---
-author: liuadmin
+author: Martin Liu
 categories:
-- itsm
+  - itsm
 comments: true
 date: 2007-06-15T08:06:00Z
 slug: how-to-install-ocsng-101-on-opensuse-102
 tags:
-- OCSNG
-- opensuse
+  - OCSNG
+  - opensuse
 title: How to install OCSNG 1.0.1 on OpenSuse 10.2
 url: /2007/06/15/how-to-install-ocsng-101-on-opensuse-102/
 wordpress_id: 49165
 ---
 
-下面我将描述如何安装OCSNG服务器和客户端.服务器的安装在openSuse Linux中,文中将提到Linux和Windows代理的安装方法.最终能在界面中看到两个节点的清单信息,不过只有Linux的哪个会每天更新.<br /><br />This article is talking about how to install OCSNG 1.0.1 on a openSuSE 10.2 system.<br />
+下面我将描述如何安装 OCSNG 服务器和客户端.服务器的安装在 openSuse Linux 中,文中将提到 Linux 和 Windows 代理的安装方法.最终能在界面中看到两个节点的清单信息,不过只有 Linux 的哪个会每天更新.<br /><br />This article is talking about how to install OCSNG 1.0.1 on a openSuSE 10.2 system.<br />
 
 <br />	
   * Requirements:

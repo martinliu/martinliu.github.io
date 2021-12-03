@@ -1,19 +1,19 @@
 ---
-author: liuadmin
+author: Martin Liu
 categories:
-- Infrastructure
+  - Infrastructure
 comments: true
 date: 2007-06-09T08:56:00Z
 slug: go-open-sourcego-vyatta-network
 tags:
-- Network
-- swithch
+  - Network
+  - swithch
 title: Go Open Source,GO! Vyatta开源软件挺进网络硬件领域
 url: /2007/06/09/go-open-sourcego-vyatta-network/
 wordpress_id: 49161
 ---
 
-[![](http://www.vyatta.com/images/masthead.jpg)](http://www.vyatta.com/images/masthead.jpg)<br />这是一个比较新的产品，提供开源的软件路由的解决方案；他们的目标直指Cisco这些大牌网络硬件厂商。它能简单的安装和运行在32bit的普通计算机硬件上，实现路由器的几乎所有功能；能支持的硬件平台和路由协议还真不少，请查看 [Datasheet](http://www.vyatta.com/products/vyatta_software_datasheet.pdf)；下载[ 网址](http://www.vyatta.com/download/)<br /><br />在VMWare中安装了一下发现它可以完全满足我需求：<br />1）在公司中办公网络建立一个隔离的测试网。<br />2）测试网中提供DHCP,DNS服务<br />3）提供NAT,Firewall<br />4）安装简单，硬件需求低<br /><br />准备在公司实际环境中安装测试，安装和配置信息待续。<br /><br />现在我正在Vyatta Router后面的小网内更新这个Blog。<br />上午的安装过程如下：<br />（硬件准备）<br />测试机一台 Dell Gx620，主板上带Intel的内置网卡一块TP-LINK TG-3269C，网线若干<br />（网络环境）<br />在一台办公网的机器上，寻找一个未使用的IP地址，这个地址会分配给Router的Internet网卡上；然后运行 ipconfig /all 记录下默认网关、默认DNS和子网掩码，这些信息会配置到Router上。<br />（安装过程）<br />
+[![](http://www.vyatta.com/images/masthead.jpg)](http://www.vyatta.com/images/masthead.jpg)<br />这是一个比较新的产品，提供开源的软件路由的解决方案；他们的目标直指 Cisco 这些大牌网络硬件厂商。它能简单的安装和运行在 32bit 的普通计算机硬件上，实现路由器的几乎所有功能；能支持的硬件平台和路由协议还真不少，请查看 [Datasheet](http://www.vyatta.com/products/vyatta_software_datasheet.pdf)；下载[ 网址](http://www.vyatta.com/download/)<br /><br />在 VMWare 中安装了一下发现它可以完全满足我需求：<br />1）在公司中办公网络建立一个隔离的测试网。<br />2）测试网中提供 DHCP,DNS 服务<br />3）提供 NAT,Firewall<br />4）安装简单，硬件需求低<br /><br />准备在公司实际环境中安装测试，安装和配置信息待续。<br /><br />现在我正在 Vyatta Router 后面的小网内更新这个 Blog。<br />上午的安装过程如下：<br />（硬件准备）<br />测试机一台 Dell Gx620，主板上带 Intel 的内置网卡一块 TP-LINK TG-3269C，网线若干<br />（网络环境）<br />在一台办公网的机器上，寻找一个未使用的 IP 地址，这个地址会分配给 Router 的 Internet 网卡上；然后运行 ipconfig /all 记录下默认网关、默认 DNS 和子网掩码，这些信息会配置到 Router 上。<br />（安装过程）<br />
 
 <br />	
   1. 下载Vyatta的试用手册 [Quick Eval Guide - Boot, Configure & Test the Vyatta software](http://www.vyatta.com/documentation/vyatta_evalguide.pdf)翻到手册的第三页，重新标准出你的网络信息，注意后面的配置跟这里的信息有关。为了简单起见，我就改了对外链接的哪个网卡的IP地址，至于内网么，有什么ip地址范围都无所谓了呵呵

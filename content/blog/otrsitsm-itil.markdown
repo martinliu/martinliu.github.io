@@ -1,19 +1,19 @@
 ---
-author: liuadmin
+author: Martin Liu
 categories:
-- ITSM
+  - ITSM
 comments: true
 date: 2007-02-26T07:19:00Z
 slug: otrsitsm-itil
 tags:
-- ITIL
-- OTRS
+  - ITIL
+  - OTRS
 title: OTRS::ITSM期待中的开源ITIL工具
 url: /2007/02/26/otrsitsm-itil/
 wordpress_id: 49142
 ---
 
-[![](http://www.otrs.com/otrs-web/images/Standard//name.jpg)](http://www.otrs.com/otrs-web/images/Standard//name.jpg)<br /><br />下个月就OTRS::ITSM 1.0 Beta1就发布了。OTRS是一不错的开源的帮助台程序。之所以说它还不错是由于以下几点：<br />
+[![](http://www.otrs.com/otrs-web/images/Standard//name.jpg)](http://www.otrs.com/otrs-web/images/Standard//name.jpg)<br /><br />下个月就 OTRS::ITSM 1.0 Beta1 就发布了。OTRS 是一不错的开源的帮助台程序。之所以说它还不错是由于以下几点：<br />
 
 <br />	
   1. 能支持平台非常广。操作系统有Linux、Unix还有Windows；数据库有MySQL，PostgreSQL，Oracle和SQL Server。这些东西里多一个东西，多于商业软件来讲测试的工作量起码就要乘二。

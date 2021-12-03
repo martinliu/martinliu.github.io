@@ -1,22 +1,22 @@
 ---
-author: liuadmin
+author: Martin Liu
 categories:
-- infrastructure
+  - infrastructure
 comments: true
 date: 2013-04-09T02:19:37Z
 slug: xendesktop%e8%99%9a%e6%8b%9f%e6%a1%8c%e9%9d%a2%e7%b2%be%e5%93%81%e4%b9%a6%e7%b1%8d%e5%af%bc%e8%af%bb-p1
 tags:
-- xendesktop
+  - xendesktop
 title: XenDesktop虚拟桌面精品书籍导读(part1)
 url: /2013/04/09/xendesktope8999ae68b9fe6a18ce99da2e7b2bee59381e4b9a6e7b18de5afbce8afbb-p1/
 wordpress_id: 52322
 ---
 
 [box color="orange" icon="flag"]
-感谢 Eric Yao 的供稿，[@老树皮Eric](http://weibo.com/ericyaozhen)
+感谢 Eric Yao 的供稿，[@老树皮 Eric](http://weibo.com/ericyaozhen)
 [/box]
 
-桌面虚拟化项目的实施白皮书 《Citrix Virtual Desktop Handbook 5.x》，[点击下载](http://support.citrix.com/article/CTX136546)。该文档是由Citrix全球顶级Consultant系统架构师Daniel Feller, Thomas Berger, Rich Meesters, Matt Brooks, Ed Duncan 以及 Roger LaMarca等大牛合作完成，它介绍了桌面虚拟化架构设计、方法论、经验总结以及最佳实践等知识，更是包含了一步一步指导手册、真实案例分析以及模板手册等。
+桌面虚拟化项目的实施白皮书  《Citrix Virtual Desktop Handbook 5.x》，[点击下载](http://support.citrix.com/article/CTX136546)。该文档是由 Citrix 全球顶级 Consultant 系统架构师 Daniel Feller, Thomas Berger, Rich Meesters, Matt Brooks, Ed Duncan 以及 Roger LaMarca 等大牛合作完成，它介绍了桌面虚拟化架构设计、方法论、经验总结以及最佳实践等知识，更是包含了一步一步指导手册、真实案例分析以及模板手册等。
 
 序言：关于方法论
 一、 Access
@@ -31,40 +31,38 @@ wordpress_id: 52322
 三、 用户数据搜集
 四、 应用程序数据搜集
 五、 用户分类
-1. FlexCast模型比较
-2. FlexCast模型选择
-六、 应用程序评估
-七、 项目管理
-1. Roadmap
-2. 项目团队
-a) 业务角色
-b) 技术角色
+
+1. FlexCast 模型比较
+2. FlexCast 模型选择
+   六、 应用程序评估
+   七、 项目管理
+3. Roadmap
+4. 项目团队
+   a) 业务角色
+   b) 技术角色
 
 第二部分：Design
 一、 概况
 二、 用户层 User Layer
+
 1. 终端类型的选择
-2. Receiver的选择
+2. Receiver 的选择
 3. 资源需求
-三、 访问层 Access Layer
-
-
+   三、 访问层 Access Layer
 
 序言：关于方法论
 
-Citrix Virtual Desktop handbook会紧密遵循Citrix顾问实施方法论，即如下图所示：
-
-
+Citrix Virtual Desktop handbook 会紧密遵循 Citrix 顾问实施方法论，即如下图所示：
 
 一、 Access
 
-Access阶段主要提供Design阶段所需要的信息，包括：
+Access 阶段主要提供 Design 阶段所需要的信息，包括：
 
 1. 业务驱动力；
 
 2. 数据搜集：包括用户、应用程序、设备以及基础架构；
 
-3. 用户的分类：用户要根据需要的分类而分成不同的组别，随之应对着不同的FlexCast方法论；
+3. 用户的分类：用户要根据需要的分类而分成不同的组别，随之应对着不同的 FlexCast 方法论；
 
 4. 应用程序分类：旧的应用程序应该被删除、应用程序版本应该标准化、非公司程序应该删除，等等这些构成了应用程序的标准化和合理化；
 
@@ -76,9 +74,9 @@ Access阶段主要提供Design阶段所需要的信息，包括：
 
 1. 用户层：描述推荐的终端以及所需要的用户功能体验；
 
-2. 访问层：描述用户层是如何连接到他们的桌面，例如本地桌面是直接连接StoreFront，而外界用户往往要通过Firewall层才能进来，这就涉及到了FW、VPN等技术；
+2. 访问层：描述用户层是如何连接到他们的桌面，例如本地桌面是直接连接 StoreFront，而外界用户往往要通过 Firewall 层才能进来，这就涉及到了 FW、VPN 等技术；
 
-3. 桌面层：主要指用户的虚拟桌面实现技术，即FlexCast技术，主要好汉三个主要成分，分别是镜像文件、应用程序，以及个性化内容；
+3. 桌面层：主要指用户的虚拟桌面实现技术，即 FlexCast 技术，主要好汉三个主要成分，分别是镜像文件、应用程序，以及个性化内容；
 
 4. 控制层：如何管理和维护其他层，又分为访问控制、桌面控制，以及基础架构控制；
 
@@ -86,7 +84,7 @@ Access阶段主要提供Design阶段所需要的信息，包括：
 
 三、 Deploy
 
-按照第二部分设计好的FlexCast方式实施。
+按照第二部分设计好的 FlexCast 方式实施。
 
 四、 Manitain
 
@@ -102,7 +100,7 @@ Access阶段主要提供Design阶段所需要的信息，包括：
 
 一个设计详尽的项目计划对项目成功的实施时至关重要的。项目经理要通过项目计划来监控成本、管理项目组成员、跟进项目实施进度等。同时项目进度要及时通告项目组所有成员让大家都知道项目的进度。
 
-在项目的初期一般只需要做Access阶段的计划，这个时段需要多FlexCast模式、容量、用户分组等有更多的交接，所以无需做Design的计划。如下图所示就是一个计划表：
+在项目的初期一般只需要做 Access 阶段的计划，这个时段需要多 FlexCast 模式、容量、用户分组等有更多的交接，所以无需做 Design 的计划。如下图所示就是一个计划表：
 
 第一部分：Access
 
@@ -122,7 +120,7 @@ Access阶段主要提供Design阶段所需要的信息，包括：
 
 小型企业有可能通过访问每台终端，或者是远程连接凡是来搜集数据。
 
-中大型企业一般般都有了ESD（Enterprise Software Deployment），例如微软的SCCM等。可以通过这些平台去搜集应用程序的使用情况等信息。但是ESD一般都不能提供应用程序性能需求和实际使用的信息。
+中大型企业一般般都有了 ESD（Enterprise Software Deployment），例如微软的 SCCM 等。可以通过这些平台去搜集应用程序的使用情况等信息。但是 ESD 一般都不能提供应用程序性能需求和实际使用的信息。
 
 2. 调查表
 
@@ -130,7 +128,7 @@ Access阶段主要提供Design阶段所需要的信息，包括：
 
 3. 自动化搜集
 
-这样的工具有很多，一般都能自动化生成报表。Citrix公司为了帮助用户节省实施成本，和LanDesk公司合作，为Project Accelerator用户提供了一个60天免费试用的LanDesk FastTack 软件License。LanDesk FastTack 软件是一个专门为Citrix实施方法论开发设计的一个专业信息搜集工具。
+这样的工具有很多，一般都能自动化生成报表。Citrix 公司为了帮助用户节省实施成本，和 LanDesk 公司合作，为 Project Accelerator 用户提供了一个 60 天免费试用的 LanDesk FastTack 软件 License。LanDesk FastTack 软件是一个专门为 Citrix 实施方法论开发设计的一个专业信息搜集工具。
 
 上述三种方法的优势和劣势如下表所示：
 
@@ -172,15 +170,15 @@ a) 工作负荷
 
 3. 用户环境
 
-a) 用户Profile
+a) 用户 Profile
 
-i. Profile类型：包括本地、漫游、强制、第三方、未知
+i. Profile 类型：包括本地、漫游、强制、第三方、未知
 
-ii. Profile版本：Windows XP和Windows Vista/7
+ii. Profile 版本：Windows XP 和 Windows Vista/7
 
-iii. Profile位置：文件服务器在哪里
+iii. Profile 位置：文件服务器在哪里
 
-iv. 大小：用户Profile的大小
+iv. 大小：用户 Profile 的大小
 
 b) 用户数据主目录
 
@@ -250,13 +248,13 @@ d) 兼容性
 
 五、 用户分类
 
-一旦数据搜集工作完成之后，我们就可以开始准备将用户分成不同的组了，这个时候就要按照FlexCast模型的要求去分配不同的实现方式给不同的用户组了。
+一旦数据搜集工作完成之后，我们就可以开始准备将用户分成不同的组了，这个时候就要按照 FlexCast 模型的要求去分配不同的实现方式给不同的用户组了。
 
 我们一般都是按照人物性工作者、分支机构办公人员、移动工作者等方式去区分用户，但是实际上用户的分类远不止这几类，更有甚者，很多用户组都是同时属于上述几个组的。
 
-最快区分用户的方法就是按照用户的需求不同来分组，一旦将用户的需求区分之后，就可以将这些数据填入Citrix Virtual Desktop Handbook - Assess Workbook.xlsx 了。
+最快区分用户的方法就是按照用户的需求不同来分组，一旦将用户的需求区分之后，就可以将这些数据填入 Citrix Virtual Desktop Handbook - Assess Workbook.xlsx 了。
 
-1. FlexCast模型比较
+1. FlexCast 模型比较
 
 1) Hosted Shared
 
@@ -274,19 +272,17 @@ e) Existing
 
 f) Psysical/Remote PC
 
-3) Steamed VHD
+3. Steamed VHD
 
-4) Local VM
+4. Local VM
 
-5) On-Demand Apps
+5. On-Demand Apps
 
+下表是关于 FlexCast 整体技术的一个概览：
 
+2. FlexCast 模型选择
 
-下表是关于FlexCast整体技术的一个概览：
-
-2. FlexCast模型选择
-
-在XenApp和XenDesktop之间有很多技术上的区别，但是他们都是通过HDX来提供的最佳用户体验。他们的区别如下：
+在 XenApp 和 XenDesktop 之间有很多技术上的区别，但是他们都是通过 HDX 来提供的最佳用户体验。他们的区别如下：
 
 六、 应用程序评估
 
@@ -298,15 +294,13 @@ f) Psysical/Remote PC
 
 3. 兼容性
 
-
-
 七、 项目管理
 
 1. Roadmap
 
 2. 项目团队
 
-下面的表格示例告诉我们在一个虚拟桌面项目中可以建议的业务角色和技术角色分类。虽然角色有很多种，但是很多角色的存在时间都很短，同时很多角色都由一个人同时完成。项目经理和Citrix架构师自然是贯穿整个项目的角色，其他就不一定了。
+下面的表格示例告诉我们在一个虚拟桌面项目中可以建议的业务角色和技术角色分类。虽然角色有很多种，但是很多角色的存在时间都很短，同时很多角色都由一个人同时完成。项目经理和 Citrix 架构师自然是贯穿整个项目的角色，其他就不一定了。
 
 a) 业务角色
 

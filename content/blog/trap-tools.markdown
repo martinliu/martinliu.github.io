@@ -1,18 +1,18 @@
 ---
-author: liuadmin
+author: Martin Liu
 categories:
-- itsm
+  - itsm
 comments: true
 date: 2008-01-21T17:34:00Z
 slug: trap-tools
 tags:
-- itsm
+  - itsm
 title: 网管系统的测试工具
 url: /2008/01/21/trap-tools/
 wordpress_id: 49181
 ---
 
-很多网络系统管理软件都有Trap管理的功能，在系统的安装和配置过程中；验证系统是否能正常处理Trap是很麻烦的事情。原因有很多，发送trap的设备没有，设备上的snmp没有启用，或者设备都正常，到网管系统的网络可能有防火墙吧snmp给堵住了。<br /><br />为了方便的测试和配置网络管理监控系统，需要手工生产和验证trap的发送和接收。最近偶然在网上发现了这样几个免费（非OSS软件）软件工具，可以做这件事。<br /><br />下载的网站是：[http://www.ncomtech.com/](http://www.ncomtech.com/) 下面吧我所下载和测试的软件做一个小结，希望对您有所帮助：<br />
+很多网络系统管理软件都有 Trap 管理的功能，在系统的安装和配置过程中；验证系统是否能正常处理 Trap 是很麻烦的事情。原因有很多，发送 trap 的设备没有，设备上的 snmp 没有启用，或者设备都正常，到网管系统的网络可能有防火墙吧 snmp 给堵住了。<br /><br />为了方便的测试和配置网络管理监控系统，需要手工生产和验证 trap 的发送和接收。最近偶然在网上发现了这样几个免费（非 OSS 软件）软件工具，可以做这件事。<br /><br />下载的网站是：[http://www.ncomtech.com/](http://www.ncomtech.com/) 下面吧我所下载和测试的软件做一个小结，希望对您有所帮助：<br />
 
 <br />	
   * **Trap Receiver** [http://www.trapreceiver.com/](http://www.trapreceiver.com/) 是一个Windows程序非常小，安装了之后会在windows安装一个服务。程序的启动目录是C:\Program Files\Trap Receiver\TrapRcvr.exe 程序界面非常简单，如下图所示：

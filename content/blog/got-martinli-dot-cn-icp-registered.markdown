@@ -1,12 +1,12 @@
 ---
-author: liuadmin
+author: Martin Liu
 categories:
-- Blog
+  - Blog
 comments: true
 date: 2009-08-01T14:33:32Z
 slug: got-martinli-dot-cn-icp-registered
 tags:
-- Blog
+  - Blog
 title: 关于ICP备案申请审核通过的通知
 url: /2009/08/01/got-martinli-dot-cn-icp-registered/
 wordpress_id: 49271

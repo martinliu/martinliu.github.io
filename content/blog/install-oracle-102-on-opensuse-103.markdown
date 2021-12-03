@@ -1,13 +1,13 @@
 ---
-author: liuadmin
+author: Martin Liu
 categories:
-- Infrastructure
+  - Infrastructure
 comments: true
 date: 2008-05-08T01:51:16Z
 slug: install-oracle-102-on-opensuse-103
 tags:
-- opensuse
-- oracle
+  - opensuse
+  - oracle
 title: Install Oracle 10.2.01 on OpenSuSE 10.3
 url: /2008/05/08/install-oracle-102-on-opensuse-103/
 wordpress_id: 49203

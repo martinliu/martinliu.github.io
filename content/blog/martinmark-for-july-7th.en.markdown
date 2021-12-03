@@ -1,12 +1,12 @@
 ---
-author: liuadmin
+author: Martin Liu
 categories:
-- opensource
+  - opensource
 comments: true
 date: 2009-07-07T01:51:35Z
 slug: martinmark-for-july-7th
 tags:
-- Apache
+  - Apache
 title: MartinMark for July 7th
 url: /2009/07/07/martinmark-for-july-7th/
 wordpress_id: 49266

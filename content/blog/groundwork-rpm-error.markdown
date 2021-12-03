@@ -1,19 +1,19 @@
 ---
-author: liuadmin
+author: Martin Liu
 categories:
-- itsm
+  - itsm
 comments: true
 date: 2007-02-28T09:14:00Z
 slug: groundwork-rpm-error
 tags:
-- GroundWork
-- rpm
+  - GroundWork
+  - rpm
 title: GroundWork rpm 安装会导致原系统的一些改变
 url: /2007/02/28/groundwork-rpm-error/
 wordpress_id: 49144
 ---
 
-GroundWork rpm安装对系统造成的改变有：<br />
+GroundWork rpm 安装对系统造成的改变有：<br />
 
 <br />	
   1. /etc/init.d/apache2 被改名为 apache2-save 导致，以前的Apache不能启动

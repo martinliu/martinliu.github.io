@@ -1,14 +1,14 @@
 ---
-author: liuadmin
+author: Martin Liu
 categories:
-- itsm
+  - itsm
 comments: true
 date: 2008-01-30T13:22:00Z
 slug: build-zenoss-212-on-redhat-enterprise-linux-5
 tags:
-- itsm
-- RHEL 5
-- Zenoss
+  - itsm
+  - RHEL 5
+  - Zenoss
 title: Build Zenoss 2.1.2 on Redhat Enterprise Linux 5
 url: /2008/01/30/build-zenoss-212-on-redhat-enterprise-linux-5/
 wordpress_id: 49182
@@ -46,7 +46,7 @@ wordpress_id: 49182
   * Then I access to Zenoss portal, got this error.
 <br /><br />
 
-###  HTTP Status 404 - /zport/dmd
+### HTTP Status 404 - /zport/dmd
 
 <br />
 
@@ -72,7 +72,7 @@ wordpress_id: 49182
 
 # Auto-Discovery of Devices
 
-<br />It's time to read ZenossAdminGuide211.pdf; BTW that's a good document. I will go ahead to note down what I did in my testing evn.  Please turn to P47, I will go from there. For sure you have something discovered, please read the following tips:<br />
+<br />It's time to read ZenossAdminGuide211.pdf; BTW that's a good document. I will go ahead to note down what I did in my testing evn. Please turn to P47, I will go from there. For sure you have something discovered, please read the following tips:<br />
 
 <br />	
   * **The Zenoss machine should have snmp installed**, including the following packages:

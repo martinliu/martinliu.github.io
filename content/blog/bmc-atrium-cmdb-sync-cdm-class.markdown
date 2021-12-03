@@ -1,23 +1,23 @@
 ---
-author: liuadmin
+author: Martin Liu
 categories:
-- CMS/CMDB
+  - CMS/CMDB
 comments: true
 date: 2011-01-12T04:22:44Z
 slug: bmc-atrium-cmdb-sync-cdm-class
 tags:
-- Atrium
-- itsm
-- class
-- cmdb
+  - Atrium
+  - itsm
+  - class
+  - cmdb
 title: BMC Atrium CMDB 类定义迁移
 url: /2011/01/12/bmc-atrium-cmdb-sync-cdm-class/
 wordpress_id: 50854
 ---
 
-当对CDM做了定制，并且要在不同的服务器直接做类的迁移的时候，需要把定制过的类都导出，然后在目标机上导入。可以使用的CMDB自带的命令行cmdbdriver工具。
+当对 CDM 做了定制，并且要在不同的服务器直接做类的迁移的时候，需要把定制过的类都导出，然后在目标机上导入。可以使用的 CMDB 自带的命令行 cmdbdriver 工具。
 
-_**cmdbdriver.exe能支持的参数**_
+_**cmdbdriver.exe 能支持的参数**_
 
 Options:
 -u<USER>
@@ -29,9 +29,9 @@ Options:
 -t<PORT_NUMBER>
 -q<QUIET_MODE_NUMBER>
 
-登录CMDBdriver 实例：   cmdbdriver -u Demo -p bmc@XXX -s atriumcmdb -t 9988
+登录 CMDBdriver 实例：   cmdbdriver -u Demo -p bmc@XXX -s atriumcmdb -t 9988
 
-登录之后在运行另外用于初始化的两个命令 init 和log
+登录之后在运行另外用于初始化的两个命令 init 和 log
 
 Command: init
 INITIALIZATION
@@ -44,7 +44,7 @@ Command: log
 Control record:
 Authentication string () :
 User name () : Demo
-Password () : **********
+Password () : ****\*\*****
 Locale[.charSet] () :
 TimeZone () :
 Server () : atriumcmdb
@@ -64,7 +64,7 @@ CMDBXExportDef  results
 ReturnCode:  OK
 Status List : 0 items
 
-使用文本编辑器查看c:\demo\BMC_ComputerSystem.xml的导出结果
+使用文本编辑器查看 c:\demo\BMC_ComputerSystem.xml 的导出结果
 
 _**导入类定义的方法：**_
 Command: impdf
@@ -78,4 +78,4 @@ CMDBImportDef  results
 ReturnCode:  OK
 Status List : 0 items
 
-使用Remedy User，用Demo登录，把语言切换到英文，然后在查BMC_ComputerSystem表达，在custom 2 ～n的tab页面里面查看哪些导入的属性。或者使用class manager查看确认导入是否成功。
+使用 Remedy User，用 Demo 登录，把语言切换到英文，然后在查 BMC_ComputerSystem 表达，在 custom 2 ～ n 的 tab 页面里面查看哪些导入的属性。或者使用 class manager 查看确认导入是否成功。

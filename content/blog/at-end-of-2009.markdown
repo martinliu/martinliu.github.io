@@ -1,16 +1,16 @@
 ---
-author: liuadmin
+author: Martin Liu
 categories:
-- Blog
+  - Blog
 comments: true
 date: 2009-12-31T09:26:10Z
 slug: at-end-of-2009
 tags:
-- 72pines
-- Blog
-- freehos
-- martinliu
-- wordpress
+  - 72pines
+  - Blog
+  - freehos
+  - martinliu
+  - wordpress
 title: At end of 2009
 url: /2009/12/31/at-end-of-2009/
 wordpress_id: 50429

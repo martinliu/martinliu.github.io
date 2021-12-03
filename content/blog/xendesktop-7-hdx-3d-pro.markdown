@@ -1,16 +1,17 @@
 ---
-author: liuadmin
+author: Martin Liu
 categories:
-- infrastructure
+  - infrastructure
 comments: true
 date: 2013-08-14T15:38:07Z
-subtitle: 桌面虚拟化中的高精尖场景，成本高、技术高、效果精益求精 Citrix XenDesktop + nVidia = 业内最好3D设计虚拟桌面平台
+subtitle:
+  桌面虚拟化中的高精尖场景，成本高、技术高、效果精益求精 Citrix XenDesktop + nVidia = 业内最好3D设计虚拟桌面平台
   Citrix可以兼顾 VDI+独占GPU和 共享桌面+共享GPU两种模式
 post_format:
-- Video
+  - Video
 slug: xendesktop-7-hdx-3d-pro
 tags:
-- xendesktop
+  - xendesktop
 title: XenDesktop 7 HDX 3D Pro
 url: /2013/08/14/xendesktop-7-hdx-3d-pro/
 wordpress_id: 52529
@@ -22,25 +23,10 @@ Description
 
 Windows 7 HDX3D Windows Server 2008R2 3D Network Constrained Environment (Simulating 3G speeds) No network constraints Windows Client iPad Client NVidia Demo software utilized is available on NVidia.com Solarwinds Software used for monitoring network traffic
 
-
-
-
 看点:
 
-
-
-
-
-
-
-	
-  * 桌面虚拟化中的高精尖场景，成本高、技术高、效果精益求精
-
-	
-  * Citrix XenDesktop + nVidia = 业内最好3D设计虚拟桌面平台
-
-	
-  * Citrix可以兼顾 VDI+独占GPU和 共享桌面+共享GPU两种模式
-
+- 桌面虚拟化中的高精尖场景，成本高、技术高、效果精益求精
+- Citrix XenDesktop + nVidia = 业内最好 3D 设计虚拟桌面平台
+- Citrix 可以兼顾 VDI+独占 GPU 和 共享桌面+共享 GPU 两种模式
 
 来源：[http://www.citrix.com/tv/#videos/9008](http://www.citrix.com/tv/#videos/9008)

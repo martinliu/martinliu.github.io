@@ -1,18 +1,18 @@
 ---
-author: liuadmin
+author: Martin Liu
 categories:
-- Infrastructure
+  - Infrastructure
 comments: true
 date: 2008-06-21T07:01:58Z
 slug: google-infrastructure
 tags:
-- BigTable
-- cluster
-- data center
-- GFS
-- Google
-- MapReduce
-- opensource
+  - BigTable
+  - cluster
+  - data center
+  - GFS
+  - Google
+  - MapReduce
+  - opensource
 title: What is Google Infrastructure?
 url: /2008/06/21/google-infrastructure/
 wordpress_id: 49214

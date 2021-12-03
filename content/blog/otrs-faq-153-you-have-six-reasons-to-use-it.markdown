@@ -1,18 +1,18 @@
 ---
-author: liuadmin
+author: Martin Liu
 categories:
-- ITSM
+  - ITSM
 comments: true
 date: 2008-10-19T13:01:34Z
 slug: otrs-faq-153-you-have-six-reasons-to-use-it
 tags:
-- OTRS
-title: 'OTRS FAQ 1.5.3 : you have six reasons to use it'
+  - OTRS
+title: "OTRS FAQ 1.5.3 : you have six reasons to use it"
 url: /2008/10/19/otrs-faq-153-you-have-six-reasons-to-use-it/
 wordpress_id: 49234
 ---
 
-![](http://www.martinliu.cn/wp-content/uploads/2008/10/e785a7e78987-004-300x225.jpg) I have Christopher T. Kuhn Blog's RSS feed in my blackberry. That's the way I following with OTRS project. Christoper do the best job to explain new features and updated s. I did not try out OTRS FAQ 1.5.3 yet, but it look great from [Chrisopher's post](http://blog.kuhn-kt.de/?p=125).<br /><br />知识库、解决方案库或者KB的建设往往被人们忽视，对它的选择也是见仁见智。不过可能也有标准，就像你选择你最喜欢吃的水果一样。你最喜欢吃的水果就是：一年四季你到超市见到就想买的，一年四季都想吃的，而且必须是营养丰富有益于健康的。<br /><br />OTRS FAQ 1.5.3 新版的FAQ出来后，OTRS有了真正的Knowoledge Base； 虽然依然是一个简单版的KB，不过已经具备了作为一个KB应该具有的6个主要功能。<br />
+![](http://www.martinliu.cn/wp-content/uploads/2008/10/e785a7e78987-004-300x225.jpg) I have Christopher T. Kuhn Blog's RSS feed in my blackberry. That's the way I following with OTRS project. Christoper do the best job to explain new features and updated s. I did not try out OTRS FAQ 1.5.3 yet, but it look great from [Chrisopher's post](http://blog.kuhn-kt.de/?p=125).<br /><br />知识库、解决方案库或者 KB 的建设往往被人们忽视，对它的选择也是见仁见智。不过可能也有标准，就像你选择你最喜欢吃的水果一样。你最喜欢吃的水果就是：一年四季你到超市见到就想买的，一年四季都想吃的，而且必须是营养丰富有益于健康的。<br /><br />OTRS FAQ 1.5.3 新版的 FAQ 出来后，OTRS 有了真正的 Knowoledge Base； 虽然依然是一个简单版的 KB，不过已经具备了作为一个 KB 应该具有的 6 个主要功能。<br />
 
 <br />	
   1. **所见即所得的编辑方式 **创建包含图片和丰富文字和是的知识库或者FAQ条目。

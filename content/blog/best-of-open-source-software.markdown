@@ -1,13 +1,13 @@
 ---
-author: liuadmin
+author: Martin Liu
 categories:
-- Blog
+  - Blog
 comments: true
 date: 2008-09-04T08:13:52Z
 slug: best-of-open-source-software
 tags:
-- infoworld
-- oss
+  - infoworld
+  - oss
 title: best of open source  software [InfoWold OSS AWARRDS]
 url: /2008/09/04/best-of-open-source-software/
 wordpress_id: 49226

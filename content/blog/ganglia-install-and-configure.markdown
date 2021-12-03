@@ -1,20 +1,20 @@
 ---
-author: liuadmin
+author: Martin Liu
 categories:
-- itsm
+  - itsm
 comments: true
 date: 2008-05-24T02:15:27Z
 slug: ganglia-install-and-configure
 tags:
-- cluster
-- Ganglia
-- grid
+  - cluster
+  - Ganglia
+  - grid
 title: Ganglia install and configure
 url: /2008/05/24/ganglia-install-and-configure/
 wordpress_id: 49207
 ---
 
-我准备安装的版本是ganglia-3.0.7 ， 参考的安装文档是[http://www.linuxsir.org/bbs/thread309837.html](http://www.linuxsir.org/bbs/thread309837.html)<br /><br />rpm的安装会比较省事。rpm安装都会很正常，不过在Suse下面需要注意一下两点：<br />
+我准备安装的版本是 ganglia-3.0.7 ， 参考的安装文档是[http://www.linuxsir.org/bbs/thread309837.html](http://www.linuxsir.org/bbs/thread309837.html)<br /><br />rpm 的安装会比较省事。rpm 安装都会很正常，不过在 Suse 下面需要注意一下两点：<br />
 
 <br />	
   * gmond和gmated的启动脚本不是rpm包中默认装上的那个，那个脚本适用于redhat linux；下载源码编译之后在gmond/ gmated/的文件夹里有后缀为 .SuSE的哪两个文件才对。

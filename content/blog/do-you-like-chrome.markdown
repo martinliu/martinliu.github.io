@@ -1,13 +1,13 @@
 ---
-author: liuadmin
+author: Martin Liu
 categories:
-- Blog
+  - Blog
 comments: true
 date: 2008-09-05T05:10:15Z
 slug: do-you-like-chrome
 tags:
-- chrome
-- Google
+  - chrome
+  - Google
 title: Do you like Chrome?
 url: /2008/09/05/do-you-like-chrome/
 wordpress_id: 49227

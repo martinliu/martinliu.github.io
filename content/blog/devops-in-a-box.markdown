@@ -1,14 +1,14 @@
 ---
-author: liuadmin
+author: Martin Liu
 categories:
-- Opensource
+  - Opensource
 comments: true
 date: 2016-07-01T03:11:10Z
 slug: devops-in-a-box
 tags:
-- docker
-- Habitat
-- rancher
+  - docker
+  - Habitat
+  - rancher
 title: DevOps 的起点-入手微型数据中心
 url: /2016/07/01/devops-in-a-box/
 wordpress_id: 54178
@@ -16,23 +16,15 @@ wordpress_id: 54178
 
 ## 测试环境说明
 
-
 我的笔记本电脑的环境描述如下。
-
 
 ### OS
 
-
 MacBook Pro 2011 版， 2.3 GHz Intel Core i5， 8GB DDR3， 256 GB SSD。 OS X EI Capitan version 10.11.5
-
 
 ### Docker
 
-
 Docker for Mac Version 1.12.0-rc2-beta17 (build: 9779)
-
-
-
 
 ```
 $ docker version
@@ -67,16 +59,9 @@ OpenSSL version: OpenSSL 1.0.2h  3 May 2016
 
 ```
 
-
-
-
 VirtualBox version 5.0.22r108108
 
-
 ### 本机下载的 Docker 镜像
-
-
-
 
 /Users/martin/Downloads/1.12.0-rc2/boot2docker.iso
 
@@ -88,48 +73,28 @@ VirtualBox version 5.0.22r108108
 
 ~/Downloads/rancher-all/rancher-server-stable.tar
 
-
 我本机还有一个 Docker Registry 的 vm，这里面提供了我需要积累以后用的镜像存储，想象一下你在飞机上的时候去哪里拉取镜像 ：）
 
-
 ### 本机下载的代码
-
 
 https://github.com/habitat-sh/habitat-example-plans https://github.com/janeczku/habitat-plans https://github.com/chrisurwin/may2016-demo https://github.com/docker/example-voting-app
 
 注意以上代码可能需要修改才能在本机调试成功。
 
-
 ## 创建 Rancher 服务器
-
-
-
 
 ### 生成虚拟机
 
-
 用 docker-machine 创建 rancher 服务器。
-
-
-
 
 ```
 docker-machine create rancher --driver virtualbox --virtualbox-cpu-count "1" --virtualbox-disk-size "8000" --virtualbox-memory "1024" --virtualbox-boot2docker-url=/Users/martin/Downloads/1.12.0-rc2/boot2docker.iso && eval $(docker-machine env rancher)
 
 ```
 
-
-
-
-
-
 ### 导入 Rancher 服务器镜像
 
-
 用 docker-machine ls 应该看到 rancher 这个节点打了星号。否则 docker 命令会执行失败或者错误。
-
-
-
 
 ```
 docker load < ~/Downloads/rancher-all/rancher-server-stable.tar
@@ -138,16 +103,11 @@ docker logs -f rancher-srv
 
 ```
 
-
-
 查看 rancher 服务器的 ip 地址。 docker-machine ip rancher
 
-用浏览器打开Rancher 服务器的登录页面。 open http://Rancher_Server_IP:8080
+用浏览器打开 Rancher 服务器的登录页面。 open http://Rancher_Server_IP:8080
 
 下面是一些如何让虚拟机保持固定 IP 和 rancher 容器存储的数据持久存在的代码，我没有测试成功，留下大家一起搞，成功了，给我一个回复。另外还有关于稿 jekins 和 mirror 的代码。
-
-
-
 
 ```
 echo "ifconfig eth1 192.168.99.60 netmask 255.255.255.0 broadcast 192.168.99.255 up" | docker-machine ssh node1 sudo tee /var/lib/boot2docker/bootsync.sh > /dev/null
@@ -176,22 +136,11 @@ docker run -d -p 80:5000 --restart=always --name registry registry:2
 
 ```
 
-
-
-
-
 ## 容器运行节点 Rancher Agent 节点
-
-
-
 
 ### 创建 node1 虚拟机
 
-
-使用 docker-machine  命令创建容器运行节点。
-
-
-
+使用 docker-machine 命令创建容器运行节点。
 
 ```
 docker-machine create node1 --driver virtualbox --engine-insecure-registry 192.168.99.20:5000 --virtualbox-cpu-count "1" --virtualbox-disk-size "80000" --virtualbox-memory "1024" --virtualbox-boot2docker-url=/Users/martin/Downloads/1.12.0-rc2/boot2docker.iso
@@ -200,28 +149,18 @@ docker-machine create node2 --driver virtualbox --engine-insecure-registry 192.1
 
 ```
 
-
-在 node1 或者 node2 测试运行一个容器，使用 mirror 中的 busybox 镜像。如果你的笔记本内存小于8GB 的话，node2就别搞了。一个 node 也够用了。
-
-
-
+在 node1 或者 node2 测试运行一个容器，使用 mirror 中的 busybox 镜像。如果你的笔记本内存小于 8GB 的话，node2 就别搞了。一个 node 也够用了。
 
 ```
 docker pull 192.168.99.20:5000/busybox:latest
 
 ```
 
-
-docker run 一下这个镜像，验证 node1工作正常。
-
+docker run 一下这个镜像，验证 node1 工作正常。
 
 ### 加载 Rancher Agent 的镜像
 
-
 确保 node1 是 docker-machine ls 中打星号的。
-
-
-
 
 ```
 docker load < ~/Downloads/rancher-all/rancher-agent-v1.0.1.tar
@@ -230,57 +169,36 @@ docker load < ~/Downloads/habitat-docker-registry.bintray.io-studio.tar
 
 ```
 
-
-你翻墙下载回来的habitat-docker-registry.bintray.io/studio镜像可能需要打标签，否则回头 hab 命令执行失败。 先用 docer images 看下是否所有 image 的标签信息正确。
-
+你翻墙下载回来的 habitat-docker-registry.bintray.io/studio 镜像可能需要打标签，否则回头 hab 命令执行失败。 先用 docer images 看下是否所有 image 的标签信息正确。
 
 ```
 docker tag fc27342e5e0e habitat-docker-registry.bintray.io/studio:latest
 ```
 
-
-
 ### 添加 node1 节点到 Rancher Server。
-
-
-
-
-
 
 ```
 docker run -d --privileged -v /var/run/docker.sock:/var/run/docker.sock -v /var/lib/rancher:/var/lib/rancher rancher/agent:v1.0.1 http://192.168.99.100:8080/v1/scripts/33B68ED65CEF18F6D7BD:1466694000000:lug2KswoXOOQV4d09ZNMGTphVs0
 
 ```
 
-
-
 <blockquote>注意：以上命令需要到您的 Rancher Server 的页面上获取，否则参数都是不对的。</blockquote>
-
 
 现在在 Hosts 页面上应该能看到该刚创建的节点。在页面上创建一个最小化的容器（如 busybox），来拉起 Network Agent 容器。
 
-
 ## 调试 habitat 的测试程序
-
 
 参考的文档 https://www.habitat.sh/tutorials/ 记得一定要把这一组文章先看完，在去调试它的代码，不懂这些基本概念的话，后面对了错了都不知道该怎么搞。
 
 前置条件，翻墙下载 habitat studio 的 docker image 镜像，load 到 node1 上，下面的所有测试都是在 node1 上完成的。
 
-
 ### 安装 hab
-
 
 habitat 的程序只有一个可执行程序， 目前支持 mac 和 linux 版本。下载地址： https://www.habitat.sh/docs/get-habitat 就是一个 tag 包，解压缩后放到 shell 的 PATH 里面就安装完了。
 
-
 ### 配置 hab cli
 
-
 运行 hab setup
-
-
-
 
 ```
 martin@localhost ~/Documents                                                                                  $ hab setup
@@ -375,14 +293,7 @@ martin@localhost ~/Documents                                                    
 
 ```
 
-
-
-
-
 该注意的都写到上面的代码里面了。这个配置的结果在这里
-
-
-
 
 ```
 $ cat ~/.hab/etc/cli.toml
@@ -391,16 +302,11 @@ origin = "martin"
 
 ```
 
-
-
-
 ### 调试 Habitat demo 应用
-
 
 ```
 git clone https://github.com/habitat-sh/habitat-example-plans
 ```
-
 
 进入到 mytutorialapp 目录，修改 plan.sh 的 第二行代码，我改后的代码是
 
@@ -410,12 +316,9 @@ pkg_origin=martin
 
 martin 是我在 hab cli 里面配置的 origin。
 
-其实下面的测试就执行了两个 hab 的命令，都是在 hab studi 的 shell里面执行的，这个 shell 其实就是一个studio 容器的 shell。
+其实下面的测试就执行了两个 hab 的命令，都是在 hab studi 的 shell 里面执行的，这个 shell 其实就是一个 studio 容器的 shell。
 
-在运行下面的命令，确保你是和 node1正常通讯的，下面我用 default 节点做演示。做完的演示环境我已经删除了。
-
-
-
+在运行下面的命令，确保你是和 node1 正常通讯的，下面我用 default 节点做演示。做完的演示环境我已经删除了。
 
 ```
 $ docker-machine ls                                                                                      NAME      ACTIVE   DRIVER       STATE     URL                         SWARM   DOCKER    ERRORS
@@ -426,20 +329,14 @@ $ docker ps                                                                     
 
 ```
 
-
 正常的意思是执行所有 docker 命令不报错。
-
 
 ### build habitat demo 代码
 
-
 进入到代码的 plan.sh 的目录 执行 hab studio enter 命令。
 
-
-
-
 ```
-martin@localhost ~/Documents/GitHub/habitat-example-plans/mytutorialapp                                      
+martin@localhost ~/Documents/GitHub/habitat-example-plans/mytutorialapp
  $ hab studio enter                                                                                       [±master ●●]
    hab-studio: Creating Studio at /hab/studios/src (default)
    hab-studio: Importing martin secret origin key
@@ -539,8 +436,6 @@ nconf@0.8.4 node_modules/nconf
 
 ```
 
-
-
 检查结果，在代码的目录中可以看的 result 目录，关注一下这个目录，关键看 build 命令的最后一段。
 
 ```
@@ -549,16 +444,11 @@ mytutorialapp: hab-plan-build cleanup mytutorialapp: mytutorialapp: Source Cache
 
 ```
 
-
 ### 昨晚分享的高潮部分, habitat 导出 docker image
-
 
 其实就是一条命令，在 habitat Studio 中执行 导出命令 hab pkg export docker martin/mytutorialapp
 
-导出 docker 镜像的过程和 build 的过程一样，都可能会失败；由于它需要到网上下载所需要的代码，下载所需要的 habitat 模块，core/ 开头的都是 habitat出品的核心的模块，他们的想法基本也是说把所有的可能用到的模块都做封装，成为自己的 pkg 格式的内容。然后在用他们的 Habitat 服务来解析、部署和运行。
-
-
-
+导出 docker 镜像的过程和 build 的过程一样，都可能会失败；由于它需要到网上下载所需要的代码，下载所需要的 habitat 模块，core/ 开头的都是 habitat 出品的核心的模块，他们的想法基本也是说把所有的可能用到的模块都做封装，成为自己的 pkg 格式的内容。然后在用他们的 Habitat 服务来解析、部署和运行。
 
 ```
 [4][default:/src:0]#  hab pkg export docker martin/mytutorialapp
@@ -640,9 +530,6 @@ Successfully built 8d5e0fe85395
 
 查看 docker 镜像是否存在。推出 studio 容器，运行 docker images
 
-
-
-
 ```
 [5][default:/src:0]# exit
 logout
@@ -655,55 +542,38 @@ martin/mytutorialapp                        latest                 8d5e0fe85395 
 
 ```
 
-
-
 ### 运行这个 demo
-
 
 在命令行运行
 
 $ docker run -it -p 8080:8080 martin/mytutorialapp
 
-用浏览器打开 node1的 ip 8080 端口，应该可以看到 hello world 页面。
+用浏览器打开 node1 的 ip 8080 端口，应该可以看到 hello world 页面。
 
 在 rancher web 页面添加测试
 
-
 ### 在 rancher 中上架这个 demo
-
 
 https://github.com/martinliu/hab-catalog 以上代码是半成品，欢迎协助完成。
 
-
 ### 测试 Rancher 官方的 redis demo
-
 
 参考文章 http://rancher.com/using-habitat-to-create-rancher-catalog-templates/ 它的 demo 和上架的目录都可以正常测试通过，但是服务运行不起来，报主机名错误，redis 节点的群集建立不起来。
 
 如果您修复了，请回复贴出代码位置。
 
-
 ## 福利：调试 docker 官方投票应用
 
-
 下载投票实例程序。
-
-
-
 
 ```
 git clone https://github.com/martinliu/example-voting-app.git
 
 ```
 
-
-
 进入该程序的目录，修改所有 image 的来源镜像库，修改为指向本地的 mirror 服务器。 1. result/tests/Dcokerfile -> FROM 192.168.99.20:5000/node 2. result/Dockerfile -> FROM 192.168.99.20:5000/node:5.11.0-slim 3. vote/Dockerfile -> FROM 192.168.99.20:5000/python:2.7-alpine 4. worker/Dockerfile -> FROM 192.168.99.20:5000/microsoft/dotnet:1.0.0-preview1 5. docker-compose.yml -> image: 192.168.99.20:5000/redis:alpine 6. docker-compose.yml -> image: 192.168.99.20:5000/postgres:9.4
 
 由于以上应用在构建的过程中需要在线安装各种软件包，最好先翻墙，确认你有足够稳定的国外的互联网访问，建议翻墙到美国，然后在执行项目的构建命令。
-
-
-
 
 ```
 ping facebook.com
@@ -722,16 +592,12 @@ docker-compose build
 
 ```
 
-
 以上结果表明，翻墙成功，以上结果显示翻墙的效果比较差，延迟和丢包都比较严重，可能到只构建的时候下载软件包失败。
 
 构建完毕之后，可以检查一下是否生产了目标镜像文件，如果输出如下所示，则表明本次本地的项目集成构建成功。
 
-
-
-
 ```
-$ docker images                                                                                                                            
+$ docker images
 REPOSITORY                            TAG                 IMAGE ID            CREATED             SIZE
 examplevotingapp_result               latest              9bb4126b0905        5 minutes ago       225.8 MB
 examplevotingapp_worker               latest              292396a5aba4        6 minutes ago       644.1 MB
@@ -740,14 +606,10 @@ examplevotingapp_vote                 latest              28052191beea        10
 
 ```
 
-
 在当前 node1 节点上做本地的集成结果的功能测试，用 docker-compose 启动这个项目。先检查 compose 文件，然后运行 up。
 
-
-
-
-```
-$ docker-compose config                                                                                                                      
+````
+$ docker-compose config
 networks: {}
 services:
   db:
@@ -779,7 +641,7 @@ services:
 version: '2.0'
 volumes: {}
 
-$ docker-compose up                                                                                                                            
+$ docker-compose up
 Recreating examplevotingapp_vote_1
 Recreating examplevotingapp_worker_1
 Starting examplevotingapp_db_1
@@ -829,13 +691,9 @@ result_1  | App running on port 80
 result_1  | Connected to db
 
 
-```
-
+````
 
 打开浏览器测试 vote 应用。
-
-
-
 
 ```
 open http://192.168.99.114:5000
@@ -843,14 +701,9 @@ open http://192.168.99.114:5000
 
 ```
 
-
-
 正常显示结果如下图所示： ![voting](http://yzd.io/images/voting-1.jpg)
 
 打开浏览器测试 result 应用。
-
-
-
 
 ```
 open http://192.168.99.114:5001
@@ -858,15 +711,11 @@ open http://192.168.99.114:5001
 
 ```
 
-
 正常显示结果如下图所示： ![result](http://yzd.io/images/result-1.jpg)
 
 在 Rancher 的 hosts 界面中应该看到这些运行的容器。 ![voting-in-ranche](http://yzd.io/images/voting-in-rancher-1.jpg)
 
 至此所有关于应用构建和功能测试的过程完成，按 ctl + c 结束 docker-compose up 的运行。
-
-
-
 
 ```
 ^CGracefully stopping... (press Ctrl+C again to force)

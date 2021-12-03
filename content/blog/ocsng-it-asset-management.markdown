@@ -1,19 +1,19 @@
 ---
-author: liuadmin
+author: Martin Liu
 categories:
-- itsm
+  - itsm
 comments: true
 date: 2007-04-29T09:26:00Z
 slug: ocsng-it-asset-management
 tags:
-- inventory
-- OCSNG
+  - inventory
+  - OCSNG
 title: OCSNG － IT资产管理软件
 url: /2007/04/29/ocsng-it-asset-management/
 wordpress_id: 49150
 ---
 
-[![](http://www.ocsinventory-ng.org/uploads/images/logo-ocs.gif)](http://www.ocsinventory-ng.org/uploads/images/logo-ocs.gif)<br /><br />最近在网上又发现了一个不错的开源软件，这就是OCSNG资产管理软件。他能提供非常好的Inventory功能，发现并、更新计算机系统上的软硬件清单信息。下面是从他们的网站上找到特色介绍的信息：<br />
+[![](http://www.ocsinventory-ng.org/uploads/images/logo-ocs.gif)](http://www.ocsinventory-ng.org/uploads/images/logo-ocs.gif)<br /><br />最近在网上又发现了一个不错的开源软件，这就是 OCSNG 资产管理软件。他能提供非常好的 Inventory 功能，发现并、更新计算机系统上的软硬件清单信息。下面是从他们的网站上找到特色介绍的信息：<br />
 
 <br />	
   * [Relevant inventory](http://www.ocsinventory-ng.org/index.php?page=features) 资产清单管理.
