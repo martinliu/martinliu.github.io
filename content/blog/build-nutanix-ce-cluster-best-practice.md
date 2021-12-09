@@ -50,12 +50,9 @@ Home lab 的进化史
 硬件平台：
 
 - 集成主板，i7 8 Core + 集成Interl显卡
-
 - 32GB 内存，DDR4 - 2133 MHz
-
 - SSD 500GB x 2 ， M.2 nvme 接口
 
-  
 
 使用体验：
 
@@ -159,8 +156,7 @@ Home lab 的进化史
 - SATA3: x 10
   - SSD 1/2
   - HDD x2
-
-- 主板集成双千兆网卡 （ESX i 6/7 兼容）
+- 主板集成双千兆网卡 （ESXi 6/7 兼容）
 
 用这块主板 + 以上华南金牌的全套磁盘+CPU+内存+万兆网卡，安装Nutanix CE，ESXi 6/7都可以顺利安装，连CVM都能够自动创建成功，不需要手工拯救失败的CVM，这个平台安装部署Nutanix CE应该是毫无压力感。
 
