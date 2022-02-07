@@ -25,7 +25,7 @@ tags = ["php", "drupal", "github", "docker"]
 
 ![Acquia Dev Desktop 2](https://elasticstack-1300734579.cos.ap-nanjing.myqcloud.com/2022-02-05-2022-02-05_11-08-30.png)
 
-这种集成的 PHP 运行/开发/管理环境，还有很多其它选择，这里不展开。我的目标是：保持最简化和易用，与其它社区伙伴的协作，紧跟 Durpal 版本发布和补丁更新，用容器化实现云上的按需扩展。
+这种集成的 PHP 运行/开发/管理环境，还有很多其它选择，这里不展开。我的目标是：保持最简化和易用，与其它社区伙伴的协作，紧跟 Drupal 版本发布和补丁更新，用容器化实现云上的按需扩展。
 
 首先，我使用 Acquia Dev Desktop 2 创建了一个本地的测试站点，用于学习 Drupal 的使用、定制和开发。它不仅是一个友好的 GUI 工具，其实还附带了 php 开发环境的命令行工具：composer 和 drush 。 使用这两个命令行工具可以完成 Drupal 系统的一键式搭建。在开发一个真实的内容管理系统网站以前，最基础的铺垫工作可能差不多了。
 
@@ -75,7 +75,7 @@ mysql -u root -e "grant all privileges on local_devopschina.* to ddoc@localhost 
 
 以上是一个写死了的 shell 脚本，还可以对其中的关键参数进行变量替换，使之最终成为一个可以传入参数的可用脚本。
 
-## 进入 Durpal 开发流程
+## 进入 Drupal 开发流程
 
 下图展示了 Drupal 网站开发的工作流程。
 
@@ -89,15 +89,15 @@ mysql -u root -e "grant all privileges on local_devopschina.* to ddoc@localhost 
 2.0 | Fields | 是组成任何内容和实体数据结构的信息点，包含PHP编程语言的数据类型和Drupal 社区里的各种模块，例如‘电话号码’这样的数据结构的引用就是先启用对应的模块| php开发 | Drupal 社区已有模块不满足才做开发
 2.1 | Taxonomy | 就像是一个二位数组，在每一个分类里有一堆确切的词汇表。例如社区网站的文章、活动和论坛里的帖子都可以引用“话题”这样一个字段，用于单选或者多选，“话题”这个字段里包含了很多DevOps术语“ci”、“敏捷”、“SRE”等。 | 领域知识、数据机构 | 随着网站内容建设的过程而演进
 2.2 | Media | 文档、音频、图片和视频的统一管理，这样方便任意媒体文件的使用；Drupal 9 自带的 Media Libary 模块能够满足需求 | 数字媒体管理、CDN加速 | 所有用户生成媒体都在这个范畴，会严重影响网站速度，依赖与网站 CDN 加速的实施
-2.3 | Modules | Durpal 模块非常丰富，从电话号码这样的数据结构，到文本地址到百度地图的转化，到整个知识库结构的定义；社区参与者积分和排名这样的功能将会使用自开发的模块实现 | php开发、数据库 | 需要懂 php 开发语言，可独立开发
+2.3 | Modules | Drupal 模块非常丰富，从电话号码这样的数据结构，到文本地址到百度地图的转化，到整个知识库结构的定义；社区参与者积分和排名这样的功能将会使用自开发的模块实现 | php开发、数据库 | 需要懂 php 开发语言，可独立开发
 3.0 | Path | 每一个内容实体在 Drupal 中被称之为 node，它们都有默认的访问路径，例如：/node/12/；需要整体规划网站的访问路径，不但让网站变得更加有条理，而且还会提高人和搜索引擎的友好程度，Drupal 的相关模块可以实现 | 内容系统梳理 | 尽量保持简单、清晰和持久
 4.0 | Permessions | 用户权限需要提前设计，Drupal 除了具有内置的权限机制外，它对任何一个功能模块（内容分类）都可以实施给予角色的矩阵式权限设置，需要提前设计好用户角色类型，权限体系 | 权限设计、信息安全 | 这是实施文章内容上传、论坛和社区活动管理的基础。
 4.1 | Workflows | 工作流是 Drupal 系统中默认的功能模块，经过定制以后可以实现社区贡献文章的审核功能。例如开放所有注册用户的投稿权限，投稿文章必须经过审核人员确认后才能发不出来。还可以用于知识库或者编辑的多重审核功能 | 流程定制 | 需要掌握 Drupal 相关模块的使用，确保流程简单易用
-5.0 | Layout | 网页布局结构设计 |  |
-5.1 | Blocks | 实施页面中的每个模块 |  |
-5.2 | Layout Builder | Drupal 的页面设计实施工具 |  |
-5.3 | Views | 信息显示视图 |  |
-6.0 | Add Content | 在以上工作基本完成之后，就可以进入网站内容的填充阶段 |  |
+5.0 | Layout | 网页布局结构设计，manage display of nodes 这是基础工作 -> blocks -> layout builder -> views -> image styles ，不同的 theme 自带一套 block 的布局  | |
+5.1 | Blocks | 实施页面中的每个模块，模块是一个实体可以容纳视频、文字、图片和其他更多，搜索栏，菜单等；他不是内容，是一个 placeholder  |  |
+5.2 | Layout Builder | 一个核心模块，拖拽式可视化页面设计实施工具，可以为不同的内容类型、实体和其它创建定制的布局。 |  |
+5.3 | Views | 创建数据库查询，过滤和筛选内容，静态的操作或者根据上下文的 。Display【page、block】，format，lields,filter,sort,|  |
+6.0 | Add Content | 在以上工作基本完成之后，就可以进入网站内容的填充阶段 | SQL查询 |
 6.1 | Menus | 菜单包括网站的主导航菜单，页脚导航和各个页面上可能使用到的分类选项 |  |
 6.2 | Site Management | 开发、测试和生产环境之间的迁移和更新流程 | CI、CD、Cloud、DNS、CDN | 用 GitHub 、Docker 和 Azure 等技术实施必要的工作流程
 7.0 | Theme | 网站展示风格的开发贯穿于以上所有工作内容的过程中。需要基于某种Drupal网站皮肤作为底板，开发自己的定制皮肤，在需要改进的时候随时调整和更新 | 前端开发、CSS | 图片等美工设计需要交付给社区的设计同学
@@ -116,7 +116,7 @@ mysql -u root -e "grant all privileges on local_devopschina.* to ddoc@localhost 
 
 初始化上面所创建的项目文件夹。将其推送到 [https://github.com/DevopsChina/drupal-dev.git](https://github.com/DevopsChina/drupal-dev.git)
 
-先参考 Durpal 代码库 web 目录下的样例文件，在项目目录中创建 .gitignore 文件。应该在这两个文件中排出以下文件，处于演示目的，本项目并没有将其排除在外。
+先参考 Drupal 代码库 web 目录下的样例文件，在项目目录中创建 .gitignore 文件。应该在这两个文件中排出以下文件，处于演示目的，本项目并没有将其排除在外。
 
 * .env
 * sites/*/settings*.php
@@ -158,7 +158,7 @@ mysqldump -u root local_devopschina > sql/dump.sql
 
 在项目文件夹中，执行以上命令，就可以得到的到一个大约十几兆的 MySQL 数据库备份文件。
 
-### 2 - 参数化 Durpal 主配置文件
+### 2 - 参数化 Drupal 主配置文件
 
 Drupal 的数据库链接字符串和账号信息都位于  `web/sites/settings.php` 文件中。为了确保 Drupal 镜像启动后可以链接到正确的 MySQL 数据库服务。需要改此文件。
 
