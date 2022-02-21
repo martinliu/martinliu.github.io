@@ -1,15 +1,15 @@
 ---
-author: liuadmin
+author: Martin Liu
 categories:
-- Cloud Computing
+  - Cloud Computing
 comments: true
 date: 2009-07-14T05:34:26Z
 slug: cloud-computing-infrastructure-and-architecture-guide-from-sun
 tags:
-- Apache
-- mysql
-- opensource
-- sun
+  - Apache
+  - mysql
+  - opensource
+  - sun
 title: Cloud Computing Infrastructure and Architecture Guide-From SUN
 url: /2009/07/14/cloud-computing-infrastructure-and-architecture-guide-from-sun/
 wordpress_id: 49268

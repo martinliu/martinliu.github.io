@@ -1,12 +1,12 @@
 ---
-author: liuadmin
+author: Martin Liu
 categories:
-- itsm
+  - itsm
 comments: true
 date: 2008-09-13T15:47:28Z
 slug: nedi-a-swiss-army-knife-of-network-device-management
 tags:
-- NeDi
+  - NeDi
 title: NeDi - A Swiss Army Knife of network device management
 url: /2008/09/13/nedi-a-swiss-army-knife-of-network-device-management/
 wordpress_id: 49228

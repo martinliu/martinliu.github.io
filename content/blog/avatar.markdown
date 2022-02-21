@@ -1,13 +1,13 @@
 ---
-author: liuadmin
+author: Martin Liu
 categories:
-- blog
+  - blog
 comments: true
 date: 2010-01-09T11:07:36Z
 slug: avatar
 tags:
-- Avatar
-- blog
+  - Avatar
+  - blog
 title: AVATAR
 url: /2010/01/09/avatar/
 wordpress_id: 50453

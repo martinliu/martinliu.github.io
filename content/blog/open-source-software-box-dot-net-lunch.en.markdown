@@ -1,12 +1,12 @@
 ---
-author: liuadmin
+author: Martin Liu
 categories:
-- Blog
+  - Blog
 comments: true
 date: 2010-09-15T16:47:22Z
 slug: open-source-software-box-dot-net-lunch
 tags:
-- oss
+  - oss
 title: Open source software box dot net launch
 url: /2010/09/15/open-source-software-box-dot-net-lunch/
 wordpress_id: 50802

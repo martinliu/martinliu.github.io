@@ -1,19 +1,19 @@
 ---
-author: liuadmin
+author: Martin Liu
 categories:
-- opensource
+  - opensource
 comments: true
 date: 2009-01-11T02:33:12Z
 slug: 161-1-opennms-quick-install-guide
 tags:
-- opensource
-- Yum
+  - opensource
+  - Yum
 title: opennms 1.6.1-1 quick start guide
 url: /2009/01/11/161-1-opennms-quick-install-guide/
 wordpress_id: 49246
 ---
 
-![](http://www.etproductions.com/images/start.jpg)<br /><br />本安装手册为纯命令版，如果有什么疑问清参考官方安装手册，或给本贴留言。<br /><br />[install yum on your Linux box]<br />选择任意Linux系统，安装上yum工具，在命令行测试 yum -v<br /><br />[testing internet connection with those two URL]<br />测试是否能上网，用浏览器分别打开这两个网址<br />
+![](http://www.etproductions.com/images/start.jpg)<br /><br />本安装手册为纯命令版，如果有什么疑问清参考官方安装手册，或给本贴留言。<br /><br />[install yum on your Linux box]<br />选择任意 Linux 系统，安装上 yum 工具，在命令行测试 yum -v<br /><br />[testing internet connection with those two URL]<br />测试是否能上网，用浏览器分别打开这两个网址<br />
 
 <br />	
   1. [http://www.martinliu.cn/2007/12/13/opennms-yum-install/](http://www.martinliu.cn/2007/12/13/opennms-yum-install/)

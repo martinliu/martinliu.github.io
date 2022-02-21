@@ -1,14 +1,14 @@
 ---
-author: liuadmin
+author: Martin Liu
 categories:
-- blog
+  - blog
 comments: true
 date: 2009-01-24T15:50:18Z
 slug: gos-looks-green
 tags:
-- Google
-- gOS
-- Ubuntu
+  - Google
+  - gOS
+  - Ubuntu
 title: gOS looks green
 url: /2009/01/24/gos-looks-green/
 wordpress_id: 49250

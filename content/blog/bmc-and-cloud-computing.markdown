@@ -1,14 +1,14 @@
 ---
-author: liuadmin
+author: Martin Liu
 categories:
-- Cloud Computing
+  - Cloud Computing
 comments: true
 date: 2009-07-16T13:34:31Z
 slug: bmc-and-cloud-computing
 tags:
-- itsm
-- cloud
-- Cloud Computing
+  - itsm
+  - cloud
+  - Cloud Computing
 title: BMC and Cloud computing
 url: /2009/07/16/bmc-and-cloud-computing/
 wordpress_id: 49270

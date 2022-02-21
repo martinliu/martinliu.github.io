@@ -1,18 +1,18 @@
 ---
-author: liuadmin
+author: Martin Liu
 categories:
-- Infrastructure
+  - Infrastructure
 comments: true
 date: 2008-04-03T08:25:44Z
 slug: postsql-basic-admin
 tags:
-- PostgreSQL
+  - PostgreSQL
 title: PostgreSQL基本操作指南
 url: /2008/04/03/postsql-basic-admin/
 wordpress_id: 49195
 ---
 
-**安装**<br /><br />我的安装环境是虚拟机下面安装的CentOS4.4；在安装的时候需要注意的是：在安装选择的时候PostgreSQL一共有十几个可选的包，把可能会用到的包都尽量选中，否则就要手工去安装了，手工解决包之间的依赖关系烦啊。从光盘上装的好处就是它自己帮你把用户和启动脚本建好了，安装后需要检查如下两个文件：1）/etc/init.d/postgresql是否存在；2）/etc/passwd里面有没有postgres用户。<br /><br />**启动数据库**<br /><br />第一次启动，用root用户登录，运行命令：[root@RBA init.d]# service postgresql start ；如果需要数据库在系统启动是就启动的话需要运行：<br />
+**安装**<br /><br />我的安装环境是虚拟机下面安装的 CentOS4.4；在安装的时候需要注意的是：在安装选择的时候 PostgreSQL 一共有十几个可选的包，把可能会用到的包都尽量选中，否则就要手工去安装了，手工解决包之间的依赖关系烦啊。从光盘上装的好处就是它自己帮你把用户和启动脚本建好了，安装后需要检查如下两个文件：1）/etc/init.d/postgresql 是否存在；2）/etc/passwd 里面有没有 postgres 用户。<br /><br />**启动数据库**<br /><br />第一次启动，用 root 用户登录，运行命令：[root@RBA init.d]# service postgresql start ；如果需要数据库在系统启动是就启动的话需要运行：<br />
 
 <blockquote>[root@RBA init.d]# chkconfig postgresql on ；</blockquote>
 
@@ -20,7 +20,7 @@ wordpress_id: 49195
 
 <blockquote>[root@RBA ~]# chkconfig --list postgresql<br />postgresql      0:off   1:off   2:on    3:on    4:on    5:on    6:off</blockquote>
 
-<br />**数据库管理**<br /><br />先切到postgres用户  su postgres<br /><br />新建一个数据库 createdb amp<br /><br />新建一个超级用户，需要在shell下运行：<br />
+<br />**数据库管理**<br /><br />先切到 postgres 用户 su postgres<br /><br />新建一个数据库 createdb amp<br /><br />新建一个超级用户，需要在 shell 下运行：<br />
 
 <blockquote>bash-3.00$ createuser amp<br />Shall the new user be allowed to create databases? (y/n) y<br />Shall the new user be allowed to create more new users? (y/n) y</blockquote>
 

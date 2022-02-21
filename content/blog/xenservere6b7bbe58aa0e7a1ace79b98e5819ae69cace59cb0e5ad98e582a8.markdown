@@ -1,14 +1,15 @@
 ---
-author: liuadmin
+author: Martin Liu
 categories:
-- cloud-computing
+  - cloud-computing
 comments: true
 date: 2013-11-25T10:39:00Z
-subtitle: 当您的XenServer测试机需要增加硬盘的时候，你需要通过简单的几条指令把新硬盘添加为本地存储。下面的实例情况是：测试机有两块硬盘、OCZ  SSD硬盘一块、SATA
+subtitle:
+  当您的XenServer测试机需要增加硬盘的时候，你需要通过简单的几条指令把新硬盘添加为本地存储。下面的实例情况是：测试机有两块硬盘、OCZ  SSD硬盘一块、SATA
   不通硬盘一块、还有一个U盘插在系统上、SATA的硬盘是我需要加载的新硬盘
 slug: xenserver%e6%b7%bb%e5%8a%a0%e7%a1%ac%e7%9b%98%e5%81%9a%e6%9c%ac%e5%9c%b0%e5%ad%98%e5%82%a8
 tags:
-- xenserver
+  - xenserver
 title: XenServer 添加硬盘做本地存储
 url: /2013/11/25/xenservere6b7bbe58aa0e7a1ace79b98e5819ae69cace59cb0e5ad98e582a8/
 wordpress_id: 52591
@@ -18,41 +19,24 @@ wordpress_id: 52591
 
 下面的实例情况是：
 
+- 测试机有两块硬盘
 
+  - OCZ  SSD 硬盘一块
 
-	
-  * 测试机有两块硬盘
+  - SATA 不通硬盘一块
 
-	
-    * OCZ  SSD硬盘一块
+  - 还有一个 U 盘插在系统上
 
-	
-    * SATA 不通硬盘一块
-
-	
-    * 还有一个U盘插在系统上
-
-
-
-
-	
-  * SATA的硬盘是我需要加载的新硬盘
-
-	
-  * 这个新的硬盘希望被处理成XenServer本地的SR
-
+- SATA 的硬盘是我需要加载的新硬盘
+- 这个新的硬盘希望被处理成 XenServer 本地的 SR
 
 添加过程中主要需要使用这样几条指令：
 
-	
-  1. 查看当前系统上的检查出来并且挂载中的分区： cat /proc/partitions
+1. 查看当前系统上的检查出来并且挂载中的分区： cat /proc/partitions
 
-	
-  2. 详细查看这些存储和设备对应的情况： ls -l /dev/disk/by-id/
+2. 详细查看这些存储和设备对应的情况： ls -l /dev/disk/by-id/
 
-	
-  3. 创建新的本地SR: xe sr-create content-type=user device-config:device=/dev/disk/by-id/scsi-SATA_ST9320325ASG_5VD7G964 host-uuid=3850317b-d23a-4ed0-87f9-2b27854319e5 name-label="SATA320" shared=false type=lvm
-
+3. 创建新的本地 SR: xe sr-create content-type=user device-config:device=/dev/disk/by-id/scsi-SATA_ST9320325ASG_5VD7G964 host-uuid=3850317b-d23a-4ed0-87f9-2b27854319e5 name-label="SATA320" shared=false type=lvm
 
 [bash]
 [root@XS62 ~]# cat /proc/partitions
@@ -91,4 +75,4 @@ lrwxrwxrwx 1 root root 10 Nov 22 19:52 usb-Generic_Flash_Disk_4266F915-part4 -> 
 cf0893c3-9398-d802-0706-66a8699c3a59
 [/bash]
 
-从上面的命令可以看到，最后一条命令完成后，系统返回了新SR的ID;然后在登录XenCenter就可以看到这个存储了，虚拟现在就可以使用这个存储了。
+从上面的命令可以看到，最后一条命令完成后，系统返回了新 SR 的 ID;然后在登录 XenCenter 就可以看到这个存储了，虚拟现在就可以使用这个存储了。

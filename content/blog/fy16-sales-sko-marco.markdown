@@ -1,14 +1,14 @@
 ---
-author: liuadmin
+author: Martin Liu
 categories:
-- Travel
+  - Travel
 comments: true
 date: 2015-03-17T13:23:32Z
 post_format:
-- Status
+  - Status
 slug: fy16-sales-sko-marco
 tags:
-- Marco
+  - Marco
 title: FY16 Sales SKO Marco
 url: /2015/03/17/fy16-sales-sko-marco/
 wordpress_id: 53577

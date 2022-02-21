@@ -1,13 +1,13 @@
 ---
-author: liuadmin
+author: Martin Liu
 categories:
-- Blog
+  - Blog
 comments: true
 date: 2008-10-27T13:32:49Z
-slug: '%e5%85%ab%e8%be%be%e5%b2%ad%e6%a3%ae%e6%9e%97%e5%85%ac%e5%9b%ad-%e7%ba%a2%e5%8f%b6%e5%b2%ad'
+slug: "%e5%85%ab%e8%be%be%e5%b2%ad%e6%a3%ae%e6%9e%97%e5%85%ac%e5%9b%ad-%e7%ba%a2%e5%8f%b6%e5%b2%ad"
 tags:
-- Great wall
-- 红叶
+  - Great wall
+  - 红叶
 title: 八达岭森林公园-红叶岭
 url: /2008/10/27/e585abe8bebee5b2ade6a3aee69e97e585ace59bad-e7baa2e58fb6e5b2ad/
 wordpress_id: 49236

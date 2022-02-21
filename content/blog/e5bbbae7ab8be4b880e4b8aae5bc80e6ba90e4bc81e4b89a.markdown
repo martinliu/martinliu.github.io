@@ -1,19 +1,19 @@
 ---
-author: liuadmin
+author: Martin Liu
 categories:
-- Infrastructure
+  - Infrastructure
 comments: true
 date: 2007-06-12T09:18:00Z
-slug: '%e5%bb%ba%e7%ab%8b%e4%b8%80%e4%b8%aa%e5%bc%80%e6%ba%90%e4%bc%81%e4%b8%9a'
+slug: "%e5%bb%ba%e7%ab%8b%e4%b8%80%e4%b8%aa%e5%bc%80%e6%ba%90%e4%bc%81%e4%b8%9a"
 tags:
-- Enterprise
-- opensource
+  - Enterprise
+  - opensource
 title: 建立一个开源企业
 url: /2007/06/12/e5bbbae7ab8be4b880e4b8aae5bc80e6ba90e4bc81e4b89a/
 wordpress_id: 49162
 ---
 
-需求分析<br />如果你开一个公司的话，如果你的公司需要提供人们某些在线服务的话，如果有的office 需要200人同时上网工作的话，如果您在在线业务需要三层结构的话，如果您的服务器需要7×24小时监控的话，如果您的ITsupport工程是需要同时 照顾50个服务器和200个最终用户的话，如果您的企业随时收到黑客的攻击的话、、、、、、挑战<br />如果您是公司的总裁或者CTO的话，试想您将如何为公司节约成本？如果建立一个可管理的基础架构？如果保证IT满足业务的需求？如果相应各种IT维护需求？如果降低企业的运行维护成本？、、、、、、<br /><br />开源领域里的可选组件如下<br /><br />外界链接设备<br />
+需求分析<br />如果你开一个公司的话，如果你的公司需要提供人们某些在线服务的话，如果有的 office 需要 200 人同时上网工作的话，如果您在在线业务需要三层结构的话，如果您的服务器需要 7×24 小时监控的话，如果您的 ITsupport 工程是需要同时 照顾 50 个服务器和 200 个最终用户的话，如果您的企业随时收到黑客的攻击的话、、、、、、挑战<br />如果您是公司的总裁或者 CTO 的话，试想您将如何为公司节约成本？如果建立一个可管理的基础架构？如果保证 IT 满足业务的需求？如果相应各种 IT 维护需求？如果降低企业的运行维护成本？、、、、、、<br /><br />开源领域里的可选组件如下<br /><br />外界链接设备<br />
 
 <br />	
   * Vyatta路由器，可运行于低端PC，能实现DHCP，DNS，Firewall，NAT，DMZ以及多种路由协议 [http://www.vyatta.com/](http://www.vyatta.com/)

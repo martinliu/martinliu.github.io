@@ -1,19 +1,19 @@
 ---
-author: liuadmin
+author: Martin Liu
 categories:
-- Blog
+  - Blog
 comments: true
 date: 2009-10-05T09:16:20Z
 slug: bo-ke-zai-ci-ban-jia-hui-guo
 tags:
-- Blog
-- wordpress
+  - Blog
+  - wordpress
 title: 博客再次搬家回国
 url: /2009/10/05/bo-ke-zai-ci-ban-jia-hui-guo/
 wordpress_id: 49379
 ---
 
-趁着国庆长假，我有空吧Blog从国外的免费虚拟主机搬回国，搬到了yo2.cn。原因意外，不知道为啥，访问martinliu.cn首页时，总是被重定向到myfacebook.net上，访问其它二级页面没有问题。这个问题让我着实抓狂了好几周，国庆前的几周一直在上海出差，比较忙，基本上9月九荒废了，别说解决这个问题，就连一篇blog也没有时间写啊！想到现在还是没有想清楚，被重定向的原因到底为何？可能是被黑了，可能是被强制添加了广告。<br /><br />不过这个事件也不全是我搬回国的原因，其它原因：<br />
+趁着国庆长假，我有空吧 Blog 从国外的免费虚拟主机搬回国，搬到了 yo2.cn。原因意外，不知道为啥，访问 martinliu.cn 首页时，总是被重定向到 myfacebook.net 上，访问其它二级页面没有问题。这个问题让我着实抓狂了好几周，国庆前的几周一直在上海出差，比较忙，基本上 9 月九荒废了，别说解决这个问题，就连一篇 blog 也没有时间写啊！想到现在还是没有想清楚，被重定向的原因到底为何？可能是被黑了，可能是被强制添加了广告。<br /><br />不过这个事件也不全是我搬回国的原因，其它原因：<br />
 
 <br />	
   1. 国内读者居多，从google的统计上可以看出，本blog的主要读者都在国内。

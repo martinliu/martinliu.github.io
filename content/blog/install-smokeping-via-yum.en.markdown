@@ -1,13 +1,13 @@
 ---
-author: liuadmin
+author: Martin Liu
 categories:
-- itsm
+  - itsm
 comments: true
 date: 2007-02-16T16:38:00Z
 slug: install-smokeping-via-yum
 tags:
-- smokeping
-- Yum
+  - smokeping
+  - Yum
 title: Install Smokeping via yum
 url: /2007/02/16/install-smokeping-via-yum/
 wordpress_id: 49140
@@ -18,6 +18,7 @@ From :[ http://ai.net.nz/horde/wicked/display.php?page=SmokePing](http://www2.bl
 ## Install needed packages
 
 <br />**rrdtool**<br />
+
 ```
 `yum install rrdtool
 ```
@@ -25,11 +26,15 @@ From :[ http://ai.net.nz/horde/wicked/display.php?page=SmokePing](http://www2.bl
 ```
 <br />**perl-CGI-SpeedyCGI**<br />
 ```
+
 `yum install perl-CGI-SpeedyCGI
+
 ```
 
 ```
+
 <br />**fping**<br />
+
 ```
 `yum install fping
 ```
@@ -37,11 +42,15 @@ From :[ http://ai.net.nz/horde/wicked/display.php?page=SmokePing](http://www2.bl
 ```
 <br />** Or do them all together:**<br />
 ```
+
 `yum install rrdtool perl-CGI-SpeedyCGI fping
+
 ```
 
 ```
+
 <br />**Smokeping**<br />
+
 ```
 `wget http://people.ee.ethz.ch/~oetiker/webtools/smokeping/pub/smokeping-2.0.9.tar.gztar xvzf smokeping-2.0.9.tar.gzmv smokeping-2.0.9 /usr/local/smokepingchown -R root:root /usr/local/smokeping<br /><br />cd /usr/local/smokeping/binfor foo in *.dist; do cp $foo `basename $foo .dist`; done<br /><br />cd  /usr/local/smokeping/etc/for foo in *.dist; do cp $foo `basename $foo .dist`; done<br /><br />cd /usr/local/smokeping/htdocsfor foo in *.dist; do cp $foo `basename $foo .dist`; done
 ```
@@ -119,11 +128,15 @@ From :[ http://ai.net.nz/horde/wicked/display.php?page=SmokePing](http://www2.bl
 <td class="table-cell" >Smokeping::cgi("/usr/local/smokeping/etc/config");
 </td><br /></tr><br /></table><br />
 ```
+
 `cp /usr/local/smokeping/htdocs/smokeping.cgi /var/www/cgi-bin<br /><br />pico /usr/local/smokeping/etc/config
+
 ```
 
 ```
-<br />**etc/config**<br />*** General ***<br /><table class="table" ><br /><tr ><br />
+
+<br />**etc/config**<br />**_ General _**<br /><table class="table" ><br /><tr ><br />
+
 <td class="table-cell" >_**Default**_
 </td><br />
 <td class="table-cell" >_**New**_
@@ -221,10 +234,13 @@ From :[ http://ai.net.nz/horde/wicked/display.php?page=SmokePing](http://www2.bl
 ```
 <br />
 ```
+
 `vi /etc/rc.d/rc.local/usr/local/smokeping/bin/smokeping &
+
 ```
 
 ```
+
 <br />
 
-* * *
+---

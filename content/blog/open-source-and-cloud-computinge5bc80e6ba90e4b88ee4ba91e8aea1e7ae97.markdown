@@ -1,14 +1,14 @@
 ---
-author: liuadmin
+author: Martin Liu
 categories:
-- Cloud Computing
+  - Cloud Computing
 comments: true
 date: 2008-10-16T13:09:16Z
 slug: open-source-and-cloud-computing%e5%bc%80%e6%ba%90%e4%b8%8e%e4%ba%91%e8%ae%a1%e7%ae%97
 tags:
-- cloud
-- Cloud Computing
-- opensource
+  - cloud
+  - Cloud Computing
+  - opensource
 title: Open Source and Cloud Computing(开源与云计算)
 url: /2008/10/16/open-source-and-cloud-computinge5bc80e6ba90e4b88ee4ba91e8aea1e7ae97/
 wordpress_id: 49232

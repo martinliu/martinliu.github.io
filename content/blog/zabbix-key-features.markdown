@@ -1,12 +1,12 @@
 ---
-author: liuadmin
+author: Martin Liu
 categories:
-- itsm
+  - itsm
 comments: true
 date: 2007-05-22T14:53:00Z
 slug: zabbix-key-features
 tags:
-- zabbix
+  - zabbix
 title: ZABBIX特点介绍，转自它们的网站
 url: /2007/05/22/zabbix-key-features/
 wordpress_id: 49156

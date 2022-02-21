@@ -1,20 +1,20 @@
 ---
-author: liuadmin
+author: Martin Liu
 categories:
-- Blog
+  - Blog
 comments: true
 date: 2008-10-29T03:43:35Z
 slug: some-old-stuff-for-sharing
 tags:
-- cacti
-- vyatta
-- Zenoss
+  - cacti
+  - vyatta
+  - Zenoss
 title: Some old stuff for sharing
 url: /2008/10/29/some-old-stuff-for-sharing/
 wordpress_id: 49237
 ---
 
-I think the following open source software resources could be helpful to you.<br /><br />本页面上是我认为可能对您有用的资源连接，目的是让您能以最小的时间和精力代价来体验开源软件。使用一个虚拟应用可能是一个比较方便的途径；有些开源应用做的非常体贴用户，软件提供ISO文件下载，通过这个ISO文件甚至能一键安装，在一个物理和虚拟的硬件上试用这个软件了。<br />
+I think the following open source software resources could be helpful to you.<br /><br />本页面上是我认为可能对您有用的资源连接，目的是让您能以最小的时间和精力代价来体验开源软件。使用一个虚拟应用可能是一个比较方便的途径；有些开源应用做的非常体贴用户，软件提供 ISO 文件下载，通过这个 ISO 文件甚至能一键安装，在一个物理和虚拟的硬件上试用这个软件了。<br />
 
 ### Virtual Appliances / 虚拟应用
 

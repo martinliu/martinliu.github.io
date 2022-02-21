@@ -1,12 +1,12 @@
 ---
-author: liuadmin
+author: Martin Liu
 categories:
-- itsm
+  - itsm
 comments: true
 date: 2007-04-26T10:47:00Z
 slug: opennms-install-sample
 tags:
-- opensource
+  - opensource
 title: OpenNMS 安装说明－精简版
 url: /2007/04/26/opennms-install-sample/
 wordpress_id: 49148

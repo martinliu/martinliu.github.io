@@ -1,12 +1,12 @@
 ---
-author: liuadmin
+author: Martin Liu
 categories:
-- Blog
+  - Blog
 comments: true
 date: 2008-10-06T08:05:07Z
 slug: welcome-to-my-oss-forum
 tags:
-- bbPress
+  - bbPress
 title: Welcome to my OSS forum
 url: /2008/10/06/welcome-to-my-oss-forum/
 wordpress_id: 49231

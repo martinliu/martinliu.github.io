@@ -1,5 +1,5 @@
 ---
-author: liuadmin
+author: Martin Liu
 categories:
   - Blog
 comments: true

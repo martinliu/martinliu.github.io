@@ -1,15 +1,16 @@
 ---
-author: liuadmin
+author: Martin Liu
 categories:
-- opensource
+  - opensource
 comments: true
 date: 2014-12-24T01:43:03Z
-subtitle: wget 下载大文件-断点续传\r<br />wget -c -b -t 0 -O CentOS-7.0-1406-x86_64-Everything.iso  http://mirrors.sohu.com/centos/7/isos/x86_64/CentOS-7.0-1406-x86_64-Everything.iso
+subtitle:
+  wget 下载大文件-断点续传\r<br />wget -c -b -t 0 -O CentOS-7.0-1406-x86_64-Everything.iso  http://mirrors.sohu.com/centos/7/isos/x86_64/CentOS-7.0-1406-x86_64-Everything.iso
   -o centos.log\r<br />
 slug: wget-%e4%b8%8b%e8%bd%bd%e5%a4%a7%e6%96%87%e4%bb%b6-%e6%96%ad%e7%82%b9%e7%bb%ad%e4%bc%a0
 tags:
-- tips
-- wget
+  - tips
+  - wget
 title: wget 下载大文件-断点续传
 url: /2014/12/24/wget-e4b88be8bdbde5a4a7e69687e4bbb6-e696ade782b9e7bbade4bca0/
 wordpress_id: 53329
@@ -19,9 +20,10 @@ wordpress_id: 53329
 
 wget -c -b -t 0 -O CentOS-7.0-1406-x86_64-Everything.iso  http://mirrors.sohu.com/centos/7/isos/x86_64/CentOS-7.0-1406-x86_64-Everything.iso -o centos.log
 
-下载一个7GB的DVD文件，能够断点续传，能够把状态写入centos.log文件中。具体参数说明如下：
+下载一个 7GB 的 DVD 文件，能够断点续传，能够把状态写入 centos.log 文件中。具体参数说明如下：
 
 [su_table]
+
 <table >
 <tbody >
 <tr >

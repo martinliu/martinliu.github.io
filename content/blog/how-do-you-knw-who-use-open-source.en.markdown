@@ -1,14 +1,14 @@
 ---
-author: liuadmin
+author: Martin Liu
 categories:
-- ITSM
+  - ITSM
 comments: true
 date: 2008-09-21T14:21:28Z
 slug: how-do-you-knw-who-use-open-source
 tags:
-- opensource
-- OTRS
-- service desk
+  - opensource
+  - OTRS
+  - service desk
 title: How do you know who uses open source?
 url: /2008/09/21/how-do-you-knw-who-use-open-source/
 wordpress_id: 49229
@@ -18,7 +18,7 @@ It's hard to get a answer. But I am always thanking about this question. The peo
 
 <blockquote>Who are using [**OTRS**](http://www.martinliu.cn/orts/) as help desk on the **Internet**?</blockquote>
 
-<br /><!--more-->Now this question is easier to be figured out. I did a litter bit research for that. The following is what I did<br /><br />Use a google search tips inurl.** **<br /><br />Search "inurl:otrs/customer.pl" in google.<br />
+<br /><!--more-->Now this question is easier to be figured out. I did a litter bit research for that. The following is what I did<br /><br />Use a google search tips inurl.\*\* \*\*<br /><br />Search "inurl:otrs/customer.pl" in google.<br />
 
 <br />	
   * [inurl:] Get to know it from [http://www.xilinx.com/company/search-tips.htm](http://www.xilinx.com/company/search-tips.htm)

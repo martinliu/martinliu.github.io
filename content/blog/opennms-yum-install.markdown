@@ -1,21 +1,21 @@
 ---
-author: liuadmin
+author: Martin Liu
 categories:
-- itsm
+  - itsm
 comments: true
 date: 2007-12-13T10:14:00Z
 slug: opennms-yum-install
 tags:
-- opensource
-- Yum
+  - opensource
+  - Yum
 title: OpenNMS的Yum的安装方式，安装简单了很多
 url: /2007/12/13/opennms-yum-install/
 wordpress_id: 49172
 ---
 
-OpenNMS网站的安装文档：<br />[http://www.opennms.org/index.php/Installation:Yum](http://www.opennms.org/index.php/Installation:Yum)<br />
+OpenNMS 网站的安装文档：<br />[http://www.opennms.org/index.php/Installation:Yum](http://www.opennms.org/index.php/Installation:Yum)<br />
 
-下面是我在一个CentOS4的机器上按照上面文档安装的。
+下面是我在一个 CentOS4 的机器上按照上面文档安装的。
 
 <br /><br />
 
@@ -51,7 +51,7 @@ Available Packages
 
 <br />
 
-opennms.noarch                           1.3.10-0.8030.snapshot opennms-snapshot
+opennms.noarch 1.3.10-0.8030.snapshot opennms-snapshot
 
 <br />
 
@@ -69,7 +69,7 @@ Dependencies Resolved
 
 <br />
 
-Package                 Arch       Version          Repository        Size
+Package Arch Version Repository Size
 
 <br />
 
@@ -81,7 +81,7 @@ Installing:
 
 <br />
 
-opennms                 noarch     1.3.10-0.8030.snapshot  opennms-snapshot-common  5.0 k
+opennms noarch 1.3.10-0.8030.snapshot opennms-snapshot-common 5.0 k
 
 <br />
 
@@ -89,31 +89,31 @@ Installing for dependencies:
 
 <br />
 
-iplike                  i386       1.0.6-1          opennms-snapshot-rhel4   10 k
+iplike i386 1.0.6-1 opennms-snapshot-rhel4 10 k
 
 <br />
 
-jdk                     i586       2000:1.5.0_13-fcs  opennms-snapshot-common   46 M
+jdk i586 2000:1.5.0_13-fcs opennms-snapshot-common 46 M
 
 <br />
 
-jicmp                   i386       1.0.4-1          opennms-snapshot-rhel4   43 k
+jicmp i386 1.0.4-1 opennms-snapshot-rhel4 43 k
 
 <br />
 
-opennms-core            noarch     1.3.10-0.8030.snapshot  opennms-snapshot-common   47 M
+opennms-core noarch 1.3.10-0.8030.snapshot opennms-snapshot-common 47 M
 
 <br />
 
-opennms-webapp-jetty    noarch     1.3.10-0.8030.snapshot  opennms-snapshot-common   27 M
+opennms-webapp-jetty noarch 1.3.10-0.8030.snapshot opennms-snapshot-common 27 M
 
 <br />
 
-postgresql              i386       7.4.17-1.RHEL4.1  update            2.0 M
+postgresql i386 7.4.17-1.RHEL4.1 update 2.0 M
 
 <br />
 
-postgresql-server       i386       7.4.17-1.RHEL4.1  update            3.0 M
+postgresql-server i386 7.4.17-1.RHEL4.1 update 3.0 M
 
 <br />
 
@@ -125,15 +125,15 @@ Transaction Summary
 
 <br />
 
-Install      8 Package(s)
+Install 8 Package(s)
 
 <br />
 
-Update       0 Package(s)
+Update 0 Package(s)
 
 <br />
 
-Remove       0 Package(s)
+Remove 0 Package(s)
 
 <br />
 
@@ -153,15 +153,15 @@ Is this ok [y/N]: y
   7. 修改/var/lib/pgsql/data/pg_hba.conf      文件；内容如下。
 <br /><br />
 
-local   all         all                               trust
+local all all trust
 
 <br />
 
-host    all         all         127.0.0.1/32          trust
+host all all 127.0.0.1/32 trust
 
 <br />
 
-host    all         all         ::1/128               trust
+host all all ::1/128 trust
 
 <br /><br />
 

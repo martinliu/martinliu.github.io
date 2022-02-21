@@ -1,18 +1,18 @@
 ---
-author: liuadmin
+author: Martin Liu
 categories:
-- itsm
+  - itsm
 comments: true
 date: 2008-06-15T15:50:31Z
 slug: monitoring-temperature-and-fan-speed-using-ganglia
 tags:
-- Ganglia
+  - Ganglia
 title: 盛夏严防服务器中暑
 url: /2008/06/15/monitoring-temperature-and-fan-speed-using-ganglia/
 wordpress_id: 49213
 ---
 
-![](http://www.hlj.xinhuanet.com/xw/2007-03/24/xin_190304241641921962117.jpg)哦不是中暑:-)而是发烧；夏天就要到了，监控服务器的主板温度和风扇是否工作正常有变的比较重要起来了。<br /><br />今天发现一个文档 [Monitoring Temperature and Fan Speed Using Ganglia and Winbond Chips](http://www.slac.stanford.edu/gen/edu/suli2006/finaltalks_thurs/caitie.ppt) 这个是一个不错的文档，值得参考一下。<br /><br />文章是写如何在Ganglia中实现对主板温度和风扇的监控。以前也有人问过我这个问题“Ganglia的监控图上为什么没有温度也风扇的图”；相信您看后就知道怎么回事了。<br /><br />下面是我对关于温度和风扇监控的一点想法：<br />
+![](http://www.hlj.xinhuanet.com/xw/2007-03/24/xin_190304241641921962117.jpg)哦不是中暑:-)而是发烧；夏天就要到了，监控服务器的主板温度和风扇是否工作正常有变的比较重要起来了。<br /><br />今天发现一个文档 [Monitoring Temperature and Fan Speed Using Ganglia and Winbond Chips](http://www.slac.stanford.edu/gen/edu/suli2006/finaltalks_thurs/caitie.ppt) 这个是一个不错的文档，值得参考一下。<br /><br />文章是写如何在 Ganglia 中实现对主板温度和风扇的监控。以前也有人问过我这个问题“Ganglia 的监控图上为什么没有温度也风扇的图”；相信您看后就知道怎么回事了。<br /><br />下面是我对关于温度和风扇监控的一点想法：<br />
 
 <br />	
   * 主板的芯片能提供这些数据的访问给操作系统

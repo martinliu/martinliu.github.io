@@ -1,13 +1,13 @@
 ---
-author: liuadmin
+author: Martin Liu
 categories:
-- Blog
+  - Blog
 comments: true
 date: 2008-08-10T13:01:27Z
 slug: one-minute-to-build-your-wap-version-blog
 tags:
-- Google
-- Moblizer
+  - Google
+  - Moblizer
 title: one minute to build your wap version blog
 url: /2008/08/10/one-minute-to-build-your-wap-version-blog/
 wordpress_id: 49222

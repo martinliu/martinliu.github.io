@@ -1,20 +1,20 @@
 ---
-author: liuadmin
+author: Martin Liu
 categories:
-- infrastructure
+  - infrastructure
 comments: true
 date: 2013-05-14T04:10:35Z
 slug: hide-windows-explorer-items
 tags:
-- infrastructure
-- Windows Explorer
-- infrastructure
+  - infrastructure
+  - Windows Explorer
+  - infrastructure
 title: 隐藏Windows  Explorer中的各种东西
 url: /2013/05/14/hide-windows-explorer-items/
 wordpress_id: 52413
 ---
 
-XenApp实施工具，隐藏Windows  Explorer中的各种东西。
+XenApp 实施工具，隐藏 Windows  Explorer 中的各种东西。
 
 HideLibraries
 Hide libraries icon in the navigation pane of Windows Explorer.
@@ -45,4 +45,4 @@ Displays this usage information.
 
 点此处下载： [download id="19"]
 
-几乎是做XenApp共享桌面的必备工具。
+几乎是做 XenApp 共享桌面的必备工具。

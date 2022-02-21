@@ -1,12 +1,12 @@
 ---
-author: liuadmin
+author: Martin Liu
 categories:
-- Blog
+  - Blog
 comments: true
 date: 2009-01-27T10:44:29Z
 slug: my-firecrackers-for-beginning-of-the-year-of-ox-2009
 tags:
-- Spring Festival
+  - Spring Festival
 title: My firecrackers for beginning of the year of ox 2009
 url: /2009/01/27/my-firecrackers-for-beginning-of-the-year-of-ox-2009/
 wordpress_id: 49252

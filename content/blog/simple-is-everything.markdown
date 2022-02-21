@@ -1,18 +1,18 @@
 ---
-author: liuadmin
+author: Martin Liu
 categories:
-- Blog
+  - Blog
 comments: true
 date: 2008-04-01T12:27:26Z
 slug: simple-is-everything
 tags:
-- oss
+  - oss
 title: 化繁为简
 url: /2008/04/01/simple-is-everything/
 wordpress_id: 49193
 ---
 
-这几天我对blog做的做多的工作就是找一个好看的Theme。由于受[blogspot](http://lzheng.blogspot.com)的影响，所找到的都是黑色两列的；后来觉得样式还是太花哨了，花哨的外表和化繁为简的思想不相投啊。简单并不意味着丑陋，想想Apple就行了，看看它的产品吧，外观上无不简洁大方。<br /><br />今天对blog做了一些简化工作：<br />
+这几天我对 blog 做的做多的工作就是找一个好看的 Theme。由于受[blogspot](http://lzheng.blogspot.com)的影响，所找到的都是黑色两列的；后来觉得样式还是太花哨了，花哨的外表和化繁为简的思想不相投啊。简单并不意味着丑陋，想想 Apple 就行了，看看它的产品吧，外观上无不简洁大方。<br /><br />今天对 blog 做了一些简化工作：<br />
 
 <br />	
   1. 对左侧模块的精简，去掉了不需要的模块，把模块标题字数减少。
