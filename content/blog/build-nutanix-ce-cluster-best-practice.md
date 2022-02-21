@@ -1,12 +1,12 @@
 +++
-date = 2021-11-26T23:05:40+08:00
+date = 2022-02-20T23:05:40+08:00
 title = "HCI | 超融合平台线上训练营第二期"
 description = "进阶学习vSphere虚拟化与Nutanix社区版超融合平台的集成，体验资源超分、精简制备和混合分层存储等极致体验。"
 author = "Martin Liu"
 categories = ["DevOps"]
 tags = ["超融合", "HCI", "nutanix", "vsphere"]
 [[images]]
-  src = "img/2021/11/hci-nutanix.jpeg"
+  src = "https://elasticstack-1300734579.cos.ap-nanjing.myqcloud.com/2022-02-21-hci-nutanix.jpeg"
   alt = "流程设计"
   stretch = "horizontal"
 
