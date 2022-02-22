@@ -27,12 +27,12 @@ tags = ["超融合", "HCI", "nutanix", "vsphere"]
 - 充分利用虚拟话带来的福利，计算和存储资源超量分配
 - 利用高级分布式软件定义存储都高级功能，空间的节省：压缩，去重，纠删码等；性能提升：虚拟机享受全闪存本地磁盘+精简制备；同时享用性能和空间：通过 SSD+HDD的混合容量存储池实现鱼和熊掌兼得。
 - 本地实验室网速提升到万兆以太网，尝试最新的数据中心DPU（智能网卡）、边缘计算和IoT趣味设备。
-- 排除 NAS、ALL in One 主机、云和容器等选项
+- 排除家用 NAS主机（群晖）、ALL in One 主机、云和容器等选项
 
 
 其他可能选项
 
-- VMware 的 ESXi 平台 + VSAN ；熟悉 vmwre 技术栈； 或被人带着追捧者多用。
+- VMware 的 ESXi 平台 + VSAN ；熟悉 VMware 技术栈； 或被人带着追捧者多用。
 - Citrix 的 XenServer + 家用集中存储；少见家用的人。
 - 其他的开源虚拟化选项 Proxmox ，单机版家用服务区比较常见。
 
@@ -237,8 +237,8 @@ tags = ["超融合", "HCI", "nutanix", "vsphere"]
 
 - 【vSphere虚拟化】cvm 创建成功且运行正常，但是不能正常挂载 HDD
 
-![CVM HDD](https://elasticstack-1300734579.cos.ap-nanjing.myqcloud.com/2022-02-21-2021-11-27_22-00-44.png)
-![CVM HDD](https://elasticstack-1300734579.cos.ap-nanjing.myqcloud.com/2022-02-21-2022-02-21_19-16-35.png)
+![CVM lost one hdd](https://elasticstack-1300734579.cos.ap-nanjing.myqcloud.com/2022-02-21-2022-02-21_19-17-50.png)
+![CVM lost one HDD](https://elasticstack-1300734579.cos.ap-nanjing.myqcloud.com/2022-02-21-2022-02-21_19-16-35.png)
 
 ### ESXi 安装后 CVM 创建失败/HDD挂载问题
 
