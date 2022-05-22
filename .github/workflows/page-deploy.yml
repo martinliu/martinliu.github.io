@@ -48,6 +48,6 @@ jobs:
           github_token: ${{ secrets.DEPLOY_KEY }}
           publish_dir: ./public
 
-      # Step 7 - CloudFlare发布到 Pages CDN中，完成最后到生产环境发布。
+      # Step 7 - CloudFlare发布到 Pages CDN 的生产环境
       - name: Triger CloudFlare hook
         run: curl -X POST "https://api.cloudflare.com/client/v4/pages/webhooks/deploy_hooks/b1b6b15d-b582-4304-bb0a-238b32bc3eb7"
