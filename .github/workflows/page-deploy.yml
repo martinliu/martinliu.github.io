@@ -19,9 +19,9 @@ jobs:
       # Step 1 - Checks-out Hugo 博客代码库到 $GITHUB_WORKSPACE
       - name: Checkout blog code repo
         uses: actions/checkout@v2 # 这是 Github 官方提供的一个Action模块
-        with:
-          submodules: true # 同步更新所使用的 Hugo 模板
-          fetch-depth: 0 # 更新到该模板最新的版本
+        # with:
+        #   submodules: true # 同步更新所使用的 Hugo 模板
+        #   fetch-depth: 0 # 更新到该模板最新的版本
 
       # Step 2 - 配置最新版本的 Hugo 环境
       - name: Setup Hugo
@@ -48,6 +48,6 @@ jobs:
           github_token: ${{ secrets.DEPLOY_KEY }}
           publish_dir: ./public
 
-      # Step 7 - CloudFlare发布到 Pages CDN中，完成最后到生产环境发布。
+      # Step 7 - CloudFlare发布到 Pages CDN 的生产环境
       - name: Triger CloudFlare hook
         run: curl -X POST "https://api.cloudflare.com/client/v4/pages/webhooks/deploy_hooks/b1b6b15d-b582-4304-bb0a-238b32bc3eb7"
