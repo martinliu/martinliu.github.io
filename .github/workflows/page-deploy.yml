@@ -16,38 +16,6 @@ jobs:
 
     # 所有步骤Actions的定义如下
     steps:
-      # Step 1 - Checks-out Hugo 博客代码库到 $GITHUB_WORKSPACE
-      - name: Checkout blog code repo
-        uses: actions/checkout@v2 # 这是 Github 官方提供的一个Action模块
-        # with:
-        #   submodules: true # 同步更新所使用的 Hugo 模板
-        #   fetch-depth: 0 # 更新到该模板最新的版本
-
-      # Step 2 - 配置最新版本的 Hugo 环境
-      - name: Setup Hugo
-        uses: peaceiris/actions-hugo@v2 # 这是 Github Actions 市场中的一个Action模块
-        with:
-          hugo-version: 'latest' # 选择最新版本，或者特定版本
-
-      # Step 3 - 清理代码库中 public 目录中旧的内容
-      - name: Clean public directory
-        run: rm -rf public # 彻底删除这个目录
-
-      # Step 4 - 用最新版本的 Hugo 构建个人博客站点
-      - name: Build blog site
-        run: hugo --minify
-
-      # Step 5 - 创建用于私有域名所需要的 CNAME 文件 【这是 github-page 定制化域名的需求，这次不需要。
-      #- name: Create CNAME file
-      #  run: echo 'martinliu.cn' > public/CNAME
-
-      # Step 6 - 将构建好的博客站点推送发布到 gh-pages 分支
-      - name: Deploy blog to Github-pages
-        uses: peaceiris/actions-gh-pages@v3
-        with:
-          github_token: ${{ secrets.DEPLOY_KEY }}
-          publish_dir: ./public
-
-      # Step 7 - CloudFlare发布到 Pages CDN 的生产环境
+      # Step 1 - CloudFlare发布到 Pages CDN 的生产环境
       - name: Triger CloudFlare hook
         run: curl -X POST "https://api.cloudflare.com/client/v4/pages/webhooks/deploy_hooks/b1b6b15d-b582-4304-bb0a-238b32bc3eb7"

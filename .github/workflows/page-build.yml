@@ -17,9 +17,9 @@ jobs:
       # Step 1 - Checks-out Hugo 博客代码库到 $GITHUB_WORKSPACE
       - name: Checkout blog code repo
         uses: actions/checkout@v2 # 这是 Github 官方提供的一个动作模块
-        with:
-          submodules: true # 同步更新所使用的 Hugo 模板
-          fetch-depth: 0 # 更新到该模板最新的版本
+        # with:
+        #   submodules: true # 同步更新所使用的 Hugo 模板
+        #   fetch-depth: 0 # 更新到该模板最新的版本
 
       # Step 2 - 配置最新版本的 Hugo 环境
       - name: Setup Hugo
@@ -34,3 +34,10 @@ jobs:
       # Step 4 - 用最新版本的 Hugo 构建个人博客站点
       - name: Build blog site
         run: hugo --minify
+     
+      # Step 5 - 部署到 gh-page 预览
+      - name: Deploy blog to Github-pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.DEPLOY_KEY }}
+          publish_dir: ./public
