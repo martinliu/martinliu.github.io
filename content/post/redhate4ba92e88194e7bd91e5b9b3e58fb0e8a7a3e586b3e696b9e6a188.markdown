@@ -1,0 +1,82 @@
+---
+author: Martin Liu
+categories:
+  - opensource
+comments: true
+date: 2015-05-17T06:29:33Z
+subtitle: 昨天很累，下午参加了两个重要的活动，一个是某行业客户会，另一个是CCB CIO来访公司。针对这个特殊意义的客户会，我准备了ppt，为了准备这个ppt我学习并总结了一些互联网公司数据中心应用和架构的特点。
+slug: redhat%e4%ba%92%e8%81%94%e7%bd%91%e5%b9%b3%e5%8f%b0%e8%a7%a3%e5%86%b3%e6%96%b9%e6%a1%88
+tags:
+  - BAT
+  - 开源
+  - 架构
+title: RedHat互联网平台解决方案
+url: /2015/05/17/redhate4ba92e88194e7bd91e5b9b3e58fb0e8a7a3e586b3e696b9e6a188/
+wordpress_id: 53686
+---
+
+ppt 点这里下载：[su_button target="blank" style="stroked" size="2" icon="icon: cloud-download"]下载[/su_button]
+
+参考文档：
+AS 深圳 2014 演讲 PPT 最终稿   [http://pan.baidu.com/s/1i3KQFRJ](http://pan.baidu.com/s/1i3KQFRJ)
+QCon 北京 2015（PPT） [http://pan.baidu.com/s/1sj2t1yl](http://pan.baidu.com/s/1sj2t1yl)
+这两个目录里面干货还是不少，可以下载了慢慢看。
+
+[![redhat-sulution](http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2015/05/redhat-sulution.jpg)](http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2015/05/redhat-sulution.jpg)
+
+学习了一写文档后，逐渐对互联网公司的架构挑战需求和现状有了一些了解。下面先聊下这方面的一些理解。
+
+# 中国规模交易量
+
+什么叫中国规模交易量，以淘宝 2014-11-11 双十一当天的数据举例：
+
+[su_list icon="icon: rocket"]
+
+- 交易创建     80000 笔/秒
+- 支付     38000 笔/秒
+- 24 小时完成交易额 571 亿元人民币 // 93 亿美元
+
+[/su_list]
+
+乍一看这个数字可能没什么感觉，可以比较一下美国的情况。全美所有的传统商场在“黑色星期五”一天的销售也仅为 91 亿美元，即使加上网络销售的 24 亿美元也比天猫“双十一”多不了太多。也就是说，美国黑五当天全网的电商是中国淘宝/天猫一家的四分之一。
+
+因此中国人口基数大，网民数量大，假如您能激起大众的兴趣的话，你是不缺访问量的。对于意外的大规模的峰值访问量的处理，如果系统架构和应用没有提前经过特别的架构调整、优化；用膝盖都能想到系统挂掉、基础架构崩溃、交易数据出错是必然的事情。
+
+理解到这个潜在的风险、需求和调整，我们所有设计和从事 IT 基础架构技术服务的人，可以想想，不向前看，不向 BAT 学习，不站在他们的肩膀上设计和调整自己的应用的话。想保证系统平安，除非业务是失败的业务（没有流量），否则没有平安可言。
+
+# 架构特点
+
+且不说马云家系统已经多么牛叉，我们看下京东的架构，我们也可以看到其架构设计在两个维度都非常清晰到位。业务架构维度上尽可能的松耦合，所有业务单元分解清晰，貌似莫名的遵循了分布式架构的要求；这样每个业务单元都可以对 IT 资源的消耗联动，弹性的供给必要的业务处理能力。IT 架构维度上分解为三个层次：应用架构、数据架构、基础架构。基本上 JD 的这个 PPT 改变了我对这个企业的印象。从我的职业经验告诉我，这份 PPT 中规中矩，比较专业，堪称教科书式的架构设计。相对马云家的架构师的 PPT 图画的比较豪放，风格不同。JD 这份 PPT 下载在这里。
+
+[su_button url="http://pan.baidu.com/s/1o6MI0t0" target="blank" style="stroked" size="2" icon="icon: cloud-download"]AS 深圳 2014 京东架构设计-吴博[/su_button]
+
+除了分层细致设计业务架构之外，我们还能看到，电商公司多使用多数据中心多活的模式并发处理海量交易量，每个数据中心都可以处理全业务，都能在灾备和并行处理上一石二鸟。这和我们高贵的传统企业不同，他们往往可以实现同城双中心运行，异地数据中心往往是灾备中心；有些灾备切换并不是全业务的切换，有些灾备中只用于灾备切换演练，并不真的运行业务；有些异地灾备中心也会和主数据中心中的一部分业务做周期性的切换运行。这些高贵的客户往往把核心的数据放在主机上，这在他们想扩展到 3 个或者更多个数据中心的时候，略显尴尬；新增的数据中心也要配置一套新主机系统么？新的主机上数据和应用怎样快速迁移过来？需要多长时间？数据同步的和其他两个数据中心一致么？这些问题的回答都不简单？主机硬件固然是贵？但是所有问题都解决周全的话，可能更贵。
+
+全新的纯 X86 的架构就在面前，BAT 已经证明了它和开源技术组合在一起就是多快好省的架构。因此，IT 架构的转型也成了必然选择。试想转型之后的机房，每个机架都是标准化的工作单元，它可能是几种类型：纯物理机计算节点、纯虚拟机计算节点（服务器虚拟化或者 OpenStack 等）、纯物理机存储节点（软件定义存储）；或运行容器的物理机或者虚拟机。另外机架上的网络设备和核心网络设备必然有他们自己的设计。这是我的一个猜测，有机会还需要和 BAT 的人多了解。
+
+# 开源技术
+
+BAT 用到的开源技术真的是不甚枚举，也没有必要逐一分析。基本上各个领域里从开发堆栈、到架构堆栈和运维管理堆栈；各个方面的前几位的项目都有实践和应用。
+
+# 红帽
+
+那么红帽的互联网平台解决方案是什么？红帽的定位是基础架构技术厂商，因此红帽的全套技术框架就是它的互联网解决方案。如下图所示。
+
+[![Red-Hat-open-hybrid-cloud-1000x563_0](http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2015/05/Red-Hat-open-hybrid-cloud-1000x563_0.png)](http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2015/05/Red-Hat-open-hybrid-cloud-1000x563_0.png)
+
+有些产品模块需要稍微说明一下，方便和开源项目对应起来。
+
+[su_list icon="icon: linux"]
+
+- Red Hat Storage server / ICE : Gluster, Ceph
+- Red Hat Enterprise Linux : Fedora Linux
+- RHEV-M : Ovirt - 服务器虚拟化
+- RHELOSP ： OpenStack 企业版 IaaS 平台
+- OpenShift ：OpenShift 社区
+- JBoss : JBoss 社区
+- Satellite ： Puppet + Foreman 等等其它配置管理工具
+- CloudForms ：CloudForms 社区 - 混合云管理
+
+[/su_list]
+
+红帽的技术支持范围还包括很多操作系统内的功能组件，包括：HA-Proxy，LVS，MySQL 等等。在技术面的广度上，并不限于以上框架图。不过那幅图是全堆栈的最简易的展示。
