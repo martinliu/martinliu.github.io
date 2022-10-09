@@ -24,6 +24,62 @@ tags:
 * deploy-2-page.yml : 在所有分支的 push 操作上触发构建动作，并且把更新的网站内容发布到 GitHub Pages 的部署分支中，用这个方式实现线上的网站内容预览；当新的分支在本地预览正常后，就可以 push 到远程了，push 之后就可以先在 martinliu.github.io 的域名下实现分支合并前的线上预览，如果线上预览正常的话，在进行合并分支 pr 的操作；如果线上预览有问题，则继续在本地更新，直到线上预览正常之后在合并。
 * page-deploy.yml : 当 master 分支上收到 pr 时触发这个发布操作，我将 GitHub Pages 的免费空间当做了发布前的预览的空间；而网站的内容是通过 CloudFlare 的 Pages 功能 host 的。通过这种方式，将 GitHub 的所有功能和空间作为开发服务；而 CloudFlare 定位为 DNS 和静态内的生产环境。
 
+目前我的 blog 的工作流程是这样的：
+
+```sh
+# 第一步：在本地创建新的分支，并 push 同步到远程
+➜  martinliu.github.io git:(master) git branch build-your-best-rack  
+➜  martinliu.github.io git:(master) git checkout build-your-best-rack 
+M       themes/hugo-theme-stack
+Switched to branch 'build-your-best-rack'
+➜  martinliu.github.io git:(build-your-best-rack) git push origin build-your-best-rack        
+Total 0 (delta 0), reused 0 (delta 0), pack-reused 0
+remote: 
+remote: Create a pull request for 'build-your-best-rack' on GitHub by visiting:
+remote:      https://github.com/martinliu/martinliu.github.io/pull/new/build-your-best-rack
+remote: 
+To github.com:martinliu/martinliu.github.io.git
+ * [new branch]          build-your-best-rack -> build-your-best-rack
+
+# 第二步：用 hugo 命令创建新文章的文件，然后开始编写更新新文章
+➜  martinliu.github.io git:(build-your-best-rack) hugo new content/post/build-your-best-rack/index.md
+Content "/Users/martinliu/code/martinliu.github.io/content/post/build-your-best-rack/index.md" created
+
+# 第三步：本地预览正常后，push 到 GitHub Pages 空间在远程预览 https://martinliu.github.io
+➜  martinliu.github.io git:(build-your-best-rack) ✗ git add .                           
+➜  martinliu.github.io git:(build-your-best-rack) ✗ git commit -m "review new post online"[build-your-best-rack e21fffe8f] review new post online
+ 1 file changed, 6 insertions(+)
+ create mode 100644 content/post/build-your-best-rack/index.md
+➜  martinliu.github.io git:(build-your-best-rack) git push --set-upstream origin build-your-best-rack
+Enumerating objects: 9, done.
+Counting objects: 100% (9/9), done.
+Delta compression using up to 10 threads
+Compressing objects: 100% (5/5), done.
+Writing objects: 100% (6/6), 540 bytes | 540.00 KiB/s, done.
+Total 6 (delta 3), reused 0 (delta 0), pack-reused 0
+remote: Resolving deltas: 100% (3/3), completed with 3 local objects.
+To github.com:martinliu/martinliu.github.io.git
+   49d889b6e..e21fffe8f  build-your-best-rack -> build-your-best-rack
+branch 'build-your-best-rack' set up to track 'origin/build-your-best-rack'.
+
+# 第四步：在 GitHub 上发起并合并 pr
+# 第五步：删除本地特性分支，删除远程特性分支，更新本地 master 分支。
+
+➜  martinliu.github.io git:(change-to-new-theme) git checkout master              
+warning: unable to rmdir 'themes/hugo-theme-stack': Directory not empty
+Switched to branch 'master'
+Your branch is behind 'origin/master' by 5 commits, and can be fast-forwarded.
+  (use "git pull" to update your local branch)
+➜  martinliu.github.io git:(master) ✗ git push origin --delete origin/change-to-new-theme 
+error: unable to delete 'origin/change-to-new-theme': remote ref does not exist
+error: failed to push some refs to 'github.com:martinliu/martinliu.github.io.git'
+➜  martinliu.github.io git:(master) ✗ git push origin --delete change-to-new-theme 
+To github.com:martinliu/martinliu.github.io.git
+ - [deleted]             change-to-new-theme
+➜  martinliu.github.io git:(master) ✗ git pull                                    
+
+```
+
 根据这款新皮肤的提示，我查看了最新的 Hugo 的文档，为了发挥这个皮肤的图像 resize 功能，并且遵从新的编写 post 的规范。以后的所有新文章的 md 文件和图片文件都需要放到一个独立的新目录中。
 
 新创建一篇 post 的时候使用这个命令：
