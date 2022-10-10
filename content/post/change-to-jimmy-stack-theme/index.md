@@ -114,3 +114,4 @@ hugo new content/post/new-blog-test/index.md
 
 * 左上角的头像图片无法正常显示
 * 添加一种免费好用的评论互动插件
+* 增加搜索功能
