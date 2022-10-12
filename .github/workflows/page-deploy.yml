@@ -2,9 +2,10 @@
 name: Deploy to CloudFlare
 
 # 在pr发生的时候这个Action才会触发
-on: 
-  pull_request:
-    branch: [master]
+on:
+  push:
+    branches:
+      - main
 
 # 以下是本串行执行工作流的所有组成部分
 jobs:
