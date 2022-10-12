@@ -1,6 +1,6 @@
 ---
 title : "关于"
-description : "我的博客持续分享 DevOps 和 SRE 相关的文章。"
+description : "持续分享 DevOps 和 SRE 。"
 author : "Martin Liu"
 date : "2019-02-28"
 layout : "page"
@@ -12,13 +12,11 @@ menu:
             icon: messages
 ---
 
-http://www.martinliu.cn 是我的个人博客，开始于 2007 年。
-
-在 GitHub 上开通了一个关于本博客的论坛，[请点这里直达论坛交流](https://github.com/martinliu/martinliu.github.io/discussions)
+>[请点这里直达论坛与我交流](https://github.com/martinliu/martinliu.github.io/discussions)
 
 ## BIO 个人简介
 
-Elastic 开发者布道师，中国 DevOps 社区组织者，《DevOps Handbook》《The Site Reliability Workbook》译者；精通 DevOps/SRE/ITSM 等理论体系和相关实践等落地实现。致力于在全国范围内通过社区来推广 DevOps 的理念、技术和实践。推动开源 Elastic Stack 技术堆栈的应用，包括运维大数据分析平台、云原生服务治理、APM 全链路监控和 AIOps 等使用场景。
+Elastic 开发者布道师，中国DevOps社区创始人，《DevOps Handbook》《The Site Reliability Workbook》译者；精通 DevOps/SRE/ITSM 等理论体系和相关实践等落地实现。致力于在全国范围内通过社区来推广 DevOps 的理念、技术和实践。推动开源 Elastic Stack 技术堆栈的应用，包括运维大数据分析平台、云原生服务治理、APM 全链路监控和 AIOps 等使用场景。
 
 ## 关注我
 
