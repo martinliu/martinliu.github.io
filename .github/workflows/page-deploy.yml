@@ -1,10 +1,11 @@
 # 将 Hubo 博客构建后部署到 Github Pages
 name: Deploy to CloudFlare
 
-# 在pr发生的时候这个Action才会触发
-on: 
-  pull_request:
-    branch: [master]
+# 在pr成功的被合并到主干以后会触发 CloudFlare 的部署
+on:
+  push:
+    branches:
+      - master
 
 # 以下是本串行执行工作流的所有组成部分
 jobs:
