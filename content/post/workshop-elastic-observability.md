@@ -4,14 +4,12 @@ title = "Elastic 可观测性工作坊"
 description = "从 Elastic Stack 搭建开始直至云原生应用的运维和管理"
 author = "Martin Liu"
 categories = ["SRE"]
+slug = "workshop-elastic-observability"
 tags = ["elastic", "elk", "elasticsearch", "kibana"]
 image = "img/2021/Hubble_01.jpg"
 +++
 
 本工作坊包括本地虚拟机版本、AWS 和腾讯云共三个版本，目标是用实践的方式理解 Elastic 可观测性解决方案。可观测性是解决运维云原生应用的复杂性和分布式式难点的关键所在。
-
-<!--more-->
-
 
 ## 简介
 
