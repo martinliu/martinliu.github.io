@@ -14,7 +14,7 @@ menu:
 
 http://www.martinliu.cn 是我的个人博客，开始于 2007 年。
 
-在 GitHub 上开通了一个关于本博客的论坛，如果您对我有任何反馈和问题，[请点这里直达论坛](https://github.com/martinliu/martinliu.github.io/discussions)
+在 GitHub 上开通了一个关于本博客的论坛，[请点这里直达论坛交流](https://github.com/martinliu/martinliu.github.io/discussions)
 
 ## BIO 个人简介
 
