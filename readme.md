@@ -2,6 +2,8 @@
 
 I have opened a discuess here at https://github.com/martinliu/martinliu.github.io/discussions ; pls feel free to ask me any questions.
 
+[![Netlify Status](https://api.netlify.com/api/v1/badges/a5f4869b-1dcc-4662-9dae-1c6e67070590/deploy-status)](https://app.netlify.com/sites/dynamic-pixie-c24532/deploys)
+
 ## To Do
 
 - [doing] 增加评论功能
