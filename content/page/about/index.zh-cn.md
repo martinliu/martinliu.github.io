@@ -5,7 +5,7 @@ author : "Martin Liu"
 date : "2019-02-28"
 layout : "page"
 slug: "about"
-img: "img/cover.jpg"
+image: "img/cover.jpg"
 menu:
     main:
         weight: 3
