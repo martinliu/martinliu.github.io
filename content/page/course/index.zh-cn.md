@@ -1,17 +1,18 @@
 ---
-title : "教程"
-description : "所提供的 DevOps 和 SRE 课程的简介如下。"
-author : "Martin Liu"
-date : "2021-02-06"
-layout : "page"
+title: "教程"
+description: "所提供的 DevOps 和 SRE 课程的简介如下。"
+author: "Martin Liu"
+date: "2021-02-06"
+layout: "page"
 slug: "course"
 image: "img/student-g0c2d46b41_640.jpg"
 menu:
-    main:
-        weight: 6
-        params: 
-            icon: archives
+  main:
+    weight: 6
+    params:
+      icon: archives
 ---
+
 ### DevOps - 免费课程
 
 > 开发中。
@@ -25,7 +26,6 @@ menu:
   - Ansible 实验室
   - Jenkins 实验室
   - Pipeline 流水线实验室
-
 
 ### 可观测性管理 - 免费课程
 
@@ -49,24 +49,26 @@ menu:
 
 ### SRE 实践必修课（收费）
 
-- 简介：本课程是IT从业人员的SRE必修课。适合于覆盖所有级别的相关人员。适合在企业在导入SRE 和 DevOps实践，并改革前行。一天或者两天内训。
+- 简介：本课程是 IT 从业人员的 SRE 必修课。适合于覆盖所有级别的相关人员。适合在企业在导入 SRE 和 DevOps 实践，并改革前行。一天或者两天内训。
 
 - 目标：
-  -	在组织中对SRE相关的 基础、实践流程达成高度一致和认同
-  -	详细了解在组织中制定 SLO的流程、实施的方式
-  -	彻底梳理SRE的知识体系和重要的技术实践实践
-  -	对SRE 的实施过程和相关案例做针对性的研讨
+
+  - 在组织中对 SRE 相关的 基础、实践流程达成高度一致和认同
+  - 详细了解在组织中制定 SLO 的流程、实施的方式
+  - 彻底梳理 SRE 的知识体系和重要的技术实践实践
+  - 对 SRE 的实施过程和相关案例做针对性的研讨
 
 - 课程对象
-  -	所有对SRE感兴趣的人员
-  -	从CxO到各种类型的工程师
-  -	想成为SRE/DevOps工程师的人员
-  -	产品经理、项目经理、一线运维经理
-  -	DevOps Professional/Master 认证人员，Srcum Master 认证人员
-  -	敏捷教练，DevOps 教练
+
+  - 所有对 SRE 感兴趣的人员
+  - 从 CxO 到各种类型的工程师
+  - 想成为 SRE/DevOps 工程师的人员
+  - 产品经理、项目经理、一线运维经理
+  - DevOps Professional/Master 认证人员，Srcum Master 认证人员
+  - 敏捷教练，DevOps 教练
 
 - 课程内容概要
-  1. SRE的由来和定义
+  1. SRE 的由来和定义
   2. SRE 的 5 大核心基础
   3. SRE 的实践和流程的特性
   4. 经典案例分享
@@ -77,10 +79,8 @@ menu:
 
 详细课程介绍点下图。
 
-[![](/images/sref-zs.jpg)](https://mp.weixin.qq.com/s/LqRJfXWdm0yOlEwUa3qDDg) 
+[![](/images/sref-zs.jpg)](https://mp.weixin.qq.com/s/LqRJfXWdm0yOlEwUa3qDDg)
 
 全国各个城市火热报名中，小班授课，人满就开班。
 
 欲了解详情，请关注微信公众号 “MyDevOps” 联系。
-
-
