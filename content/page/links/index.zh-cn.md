@@ -16,4 +16,5 @@ menu:
             icon: link
 
 comments: false
+image: "img/cyberspace-gc5b941535_640.jpg"
 ---
