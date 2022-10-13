@@ -5,6 +5,7 @@ author : "Martin Liu"
 date : "2019-02-28"
 layout : "page"
 slug: "about"
+img: "img/cover.jpg"
 menu:
     main:
         weight: 3
@@ -12,35 +13,37 @@ menu:
             icon: messages
 ---
 
->[请点这里直达论坛与我交流](https://github.com/martinliu/martinliu.github.io/discussions)
+>[点这里直达论坛与我交流](https://github.com/martinliu/martinliu.github.io/discussions)
 
-## BIO 个人简介
+## 个人简介
 
-Elastic 开发者布道师，中国DevOps社区创始人，《DevOps Handbook》《The Site Reliability Workbook》译者；精通 DevOps/SRE/ITSM 等理论体系和相关实践等落地实现。致力于在全国范围内通过社区来推广 DevOps 的理念、技术和实践。推动开源 Elastic Stack 技术堆栈的应用，包括运维大数据分析平台、云原生服务治理、APM 全链路监控和 AIOps 等使用场景。
+Elastic 资深开发者布道师，中国DevOps社区创始人，《DevOps Handbook》《The Site Reliability Workbook》译者；精通 DevOps/SRE/ITSM 等理论体系和相关实践等落地实现。致力于在全国范围内通过社区来推广 DevOps&SRE 的理念、技术和实践。推动开源 Elastic Stack 技术堆栈的应用，探讨运维大数据分析平台、云原生服务治理、APM 全链路监控和 AIOps 等使用场景。
 
 ## 关注我
 
-- B 站 - DevOps 教练 https://space.bilibili.com/477542716
+- B 站 - DevOps 教练 <https://space.bilibili.com/477542716>
 - Twitter - [@martinliu](https://twitter.com/martinliu)
 - LinkedIn - [MartinLiu](https://www.linkedin.com/in/liuzheng/)
 - 邮箱 - 67120666@qq.com
 - 微信公众号 - DevOps 教练（MyDevOps）
-- 交流论坛点这里进入 - https://github.com/martinliu/martinliu.github.io/discussions
+- 交流论坛点这里进入 - <https://github.com/martinliu/martinliu.github.io/discussions>
 
 ![MyDevOps](https://elasticstack-1300734579.cos.ap-nanjing.myqcloud.com/2021-05-11-DevOps-qrc-mydevops.jpg)
 
-## 我的社区布道
+## 社区布道记录
 
-这里是我当前和曾经的社区分享。
+我当前和曾经的社区分享。
 
-#### 2021
+### 2022
 
-##### Upcoming Events
-
-- [12 月 4 日 中国 DevOps 社区峰会 - 深圳 - 2021 - **《用 OpenTelemetry 透明数字化系统的可观测性》**](hudongba.com/party/ufpe5.html)
+#### Upcoming Events
 
 ##### Past Events
 
+
+### 2021
+
+- [12 月 4 日 中国 DevOps 社区峰会 - 深圳 - 2021 - **《用 OpenTelemetry 透明数字化系统的可观测性》**](hudongba.com/party/ufpe5.html)
 - [9 月 4 日 中国 DevOps 社区峰会 - 大连 - 2021 - **《用 OpenTelemetry 透明数字化系统的可观测性》**](hudongba.com/party/0wrt5.html)
 - [8 月 26 日 腾讯云 实战工作坊 - **《Elastic Security 安全管理实操》**](https://cloud.tencent.com/developer/salon/live-1549)
 - [7 月 31 日（周六-下午）COSCUP - **《谈谈开源的求生通道》**](https://coscup.org/2021/zh-TW/session/XL7QML) | [B 站](https://www.bilibili.com/video/BV1y64y1W7fu) | [YouTube](https://www.youtube.com/watch?v=5Ej6vR6hIzY)
@@ -99,7 +102,7 @@ Elastic 开发者布道师，中国DevOps社区创始人，《DevOps Handbook》
 
 ## ß翻译的书籍
 
-这里是我主导和组织翻译的书籍。
+我主导组织翻译的书籍。
 
 #### 《DevOps Handbook》-《DevOps 实践指南》
 
@@ -123,12 +126,10 @@ Elastic 开发者布道师，中国DevOps社区创始人，《DevOps Handbook》
 
 #### 《SRE Paradox》 - 《DevOps 悖论》
 
-已翻译完，预计 2021 年 5 月份出版。
 
 ![DevOps Pradox](https://elasticstack-1300734579.cos.ap-nanjing.myqcloud.com/2021-04-01-Screen%20Shot%202021-04-01%20at%208.53.23%20PM.jpg)
 
-## 友情链接
+已经出版，网上有售。
 
-- [敏捷开发资源大全](https://www.agile123.net/)
-
-注：欢迎友情链接，如果您希望将您的网站放在上面的清单中，请邮件联系我，或者直接在在 GitHub 上修改这个页面后提交 PR。
+- 京东：[https://item.jd.com/13047191.html](https://item.jd.com/13047191.html)
+- 英文原版-亚马逊书店：[https://www.amazon.com/DevOps-Paradox-truth-about-people-ebook/](https://www.amazon.com/DevOps-Paradox-truth-about-people-ebook/)
