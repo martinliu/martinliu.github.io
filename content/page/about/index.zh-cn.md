@@ -1,23 +1,21 @@
 ---
-title : "关于"
-description : "持续分享 DevOps 和 SRE 。"
-author : "Martin Liu"
-date : "2019-02-28"
-layout : "page"
+title: "关于"
+description: "持续分享 DevOps 和 SRE 。"
+author: "Martin Liu"
+date: "2019-02-28"
+layout: "page"
 slug: "about"
 image: "img/cover.jpg"
 menu:
-    main:
-        weight: 3
-        params: 
-            icon: messages
+  main:
+    weight: 3
+    params:
+      icon: messages
 ---
-
->[点这里直达论坛与我交流](https://github.com/martinliu/martinliu.github.io/discussions)
 
 ## 个人简介
 
-Elastic 资深开发者布道师，中国DevOps社区创始人，《DevOps Handbook》《The Site Reliability Workbook》译者；精通 DevOps/SRE/ITSM 等理论体系和相关实践等落地实现。致力于在全国范围内通过社区来推广 DevOps&SRE 的理念、技术和实践。推动开源 Elastic Stack 技术堆栈的应用，探讨运维大数据分析平台、云原生服务治理、APM 全链路监控和 AIOps 等使用场景。
+Elastic 资深开发者布道师，中国 DevOps 社区创始人，《DevOps Handbook》《The Site Reliability Workbook》译者；精通 DevOps/SRE/ITSM 等理论体系和相关实践等落地实现。致力于在全国范围内通过社区来推广 DevOps&SRE 的理念、技术和实践。推动开源 Elastic Stack 技术堆栈的应用，探讨运维大数据分析平台、云原生服务治理、APM 全链路监控和 AIOps 等使用场景。
 
 ## 关注我
 
@@ -26,9 +24,10 @@ Elastic 资深开发者布道师，中国DevOps社区创始人，《DevOps Handb
 - LinkedIn - [MartinLiu](https://www.linkedin.com/in/liuzheng/)
 - 邮箱 - 67120666@qq.com
 - 微信公众号 - DevOps 教练（MyDevOps）
-- 交流论坛点这里进入 - <https://github.com/martinliu/martinliu.github.io/discussions>
 
-![MyDevOps](https://elasticstack-1300734579.cos.ap-nanjing.myqcloud.com/2021-05-11-DevOps-qrc-mydevops.jpg)
+> [点这里直达论坛与我交流](https://github.com/martinliu/martinliu.github.io/discussions)
+
+![微信公众号 - MyDevOps](https://elasticstack-1300734579.cos.ap-nanjing.myqcloud.com/2021-05-11-DevOps-qrc-mydevops.jpg)
 
 ## 社区布道记录
 
@@ -39,7 +38,6 @@ Elastic 资深开发者布道师，中国DevOps社区创始人，《DevOps Handb
 #### Upcoming Events
 
 ##### Past Events
-
 
 ### 2021
 
@@ -100,7 +98,7 @@ Elastic 资深开发者布道师，中国DevOps社区创始人，《DevOps Handb
 - [9 月 6 日：DevOps Days Taipei 2017 - **《DevOps 的核心理念和實踐》**](https://devopsdays.tw/2017/sessions.html)
 - [3 月 18 日：DevOps Days Beijing 2017 - **OpenSpace Facilitator. Brought this internal community into China**](https://www.bagevent.com/event/devopsdays-beijing2017)
 
-## ß翻译的书籍
+## ß 翻译的书籍
 
 我主导组织翻译的书籍。
 
@@ -125,7 +123,6 @@ Elastic 资深开发者布道师，中国DevOps社区创始人，《DevOps Handb
 - 英文原版-亚马逊书店：[https://www.amazon.com/Site-Reliability-Workbook-Practical-Implement/dp/1492029505/](https://www.amazon.com/Site-Reliability-Workbook-Practical-Implement/dp/1492029505/)
 
 #### 《SRE Paradox》 - 《DevOps 悖论》
-
 
 ![DevOps Pradox](https://elasticstack-1300734579.cos.ap-nanjing.myqcloud.com/2021-04-01-Screen%20Shot%202021-04-01%20at%208.53.23%20PM.jpg)
 
