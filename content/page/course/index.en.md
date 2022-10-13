@@ -5,6 +5,7 @@ author : "Martin Liu"
 date : "2021-02-06"
 layout : "page"
 slug: "course"
+image: "img/student-g0c2d46b41_640.jpg"
 menu:
     main:
         weight: 6

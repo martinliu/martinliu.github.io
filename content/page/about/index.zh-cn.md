@@ -5,7 +5,7 @@ author: "Martin Liu"
 date: "2019-02-28"
 layout: "page"
 slug: "about"
-image: "img/cover.jpg"
+image: "img/technology-g3f8878988_640.jpg"
 menu:
   main:
     weight: 3
