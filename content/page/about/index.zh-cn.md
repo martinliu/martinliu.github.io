@@ -1,39 +1,41 @@
 ---
-title : "关于"
-description : "持续分享 DevOps 和 SRE 。"
-author : "Martin Liu"
-date : "2019-02-28"
-layout : "page"
+title: "关于"
+description: "持续分享 DevOps 和 SRE 。"
+author: "Martin Liu"
+date: "2019-02-28"
+layout: "page"
 slug: "about"
+image: "img/technology-g3f8878988_640.jpg"
 menu:
-    main:
-        weight: 3
-        params: 
-            icon: messages
+  main:
+    weight: 3
+    params:
+      icon: messages
 ---
+> [点这里直达论坛与我交流](https://github.com/martinliu/martinliu.github.io/discussions)
 
->[请点这里直达论坛与我交流](https://github.com/martinliu/martinliu.github.io/discussions)
+## 个人简介
 
-## BIO 个人简介
-
-Elastic 开发者布道师，中国DevOps社区创始人，《DevOps Handbook》《The Site Reliability Workbook》译者；精通 DevOps/SRE/ITSM 等理论体系和相关实践等落地实现。致力于在全国范围内通过社区来推广 DevOps 的理念、技术和实践。推动开源 Elastic Stack 技术堆栈的应用，包括运维大数据分析平台、云原生服务治理、APM 全链路监控和 AIOps 等使用场景。
+Elastic 资深开发者布道师，中国 DevOps 社区创始人，《DevOps Handbook》《The Site Reliability Workbook》译者；精通 DevOps/SRE/ITSM 等理论体系和相关实践等落地实现。致力于在全国范围内通过社区来推广 DevOps&SRE 的理念、技术和实践。推动开源 Elastic Stack 技术堆栈的应用，探讨运维大数据分析平台、云原生服务治理、APM 全链路监控和 AIOps 等使用场景。
 
 ## 关注我
 
-- B 站 - DevOps 教练 https://space.bilibili.com/477542716
+- B 站 - DevOps 教练 <https://space.bilibili.com/477542716>
 - Twitter - [@martinliu](https://twitter.com/martinliu)
 - LinkedIn - [MartinLiu](https://www.linkedin.com/in/liuzheng/)
 - 邮箱 - 67120666@qq.com
 - 微信公众号 - DevOps 教练（MyDevOps）
-- 交流论坛点这里进入 - https://github.com/martinliu/martinliu.github.io/discussions
 
-![MyDevOps](https://elasticstack-1300734579.cos.ap-nanjing.myqcloud.com/2021-05-11-DevOps-qrc-mydevops.jpg)
+![微信公众号 - MyDevOps](https://elasticstack-1300734579.cos.ap-nanjing.myqcloud.com/2021-05-11-DevOps-qrc-mydevops.jpg)
+
 
 ## 社区布道记录
 
 这里是即将发生和以前的部分社区分享。
 
-##### Upcoming Events
+### 2022
+
+#### Upcoming Events
 
 - [12 月 17 日 中国 DevOps 社区峰会 - 武汉 - 2022 - **《剖析APM分布式追踪的作用和副作用》**](https://www.hudongba.com/party/gtxy5.html)
 
@@ -42,10 +44,10 @@ Elastic 开发者布道师，中国DevOps社区创始人，《DevOps Handbook》
 - [4 月 15 日 ~ 9 月 2 日； - **《DevOps工具鉴宝》第一季，共 10 集，系列线上直播活动**](https://space.bilibili.com/370989874/channel/collectiondetail?sid=338624) | [GitHub 代码库](https://github.com/DevopsChina/lab.git)
 - [8 月 13 日 中国 DevOps 社区峰会 - 天津 - 2022 - **《APM分布式追踪不只是埋点》**](https://www.hudongba.com/party/nuul5.html)
 
-#### 2021
+### 2021
 
-- [12 月 4 日 中国 DevOps 社区峰会 - 深圳 - 2021 - **《用 OpenTelemetry 透明数字化系统的可观测性》**](https://www.hudongba.com/party/ufpe5.html)
-- [9 月 4 日 中国 DevOps 社区峰会 - 大连 - 2021 - **《用 OpenTelemetry 透明数字化系统的可观测性》**](https://www.hudongba.com/party/0wrt5.html)
+- [12 月 4 日 中国 DevOps 社区峰会 - 深圳 - 2021 - **《用 OpenTelemetry 透明数字化系统的可观测性》**](hudongba.com/party/ufpe5.html)
+- [9 月 4 日 中国 DevOps 社区峰会 - 大连 - 2021 - **《用 OpenTelemetry 透明数字化系统的可观测性》**](hudongba.com/party/0wrt5.html)
 - [8 月 26 日 腾讯云 实战工作坊 - **《Elastic Security 安全管理实操》**](https://cloud.tencent.com/developer/salon/live-1549)
 - [7 月 31 日（周六-下午）COSCUP - **《谈谈开源的求生通道》**](https://coscup.org/2021/zh-TW/session/XL7QML) | [B 站](https://www.bilibili.com/video/BV1y64y1W7fu) | [YouTube](https://www.youtube.com/watch?v=5Ej6vR6hIzY)
 - [7 月 31 日（周六-上午）阿里云 ACE×Elastic **可观测性工作坊/Meetup** 北京同城会站](https://www.hudongba.com/party/gde75.html)
@@ -101,9 +103,9 @@ Elastic 开发者布道师，中国DevOps社区创始人，《DevOps Handbook》
 - [9 月 6 日：DevOps Days Taipei 2017 - **《DevOps 的核心理念和實踐》**](https://devopsdays.tw/2017/sessions.html)
 - [3 月 18 日：DevOps Days Beijing 2017 - **OpenSpace Facilitator. Brought this internal community into China**](https://www.bagevent.com/event/devopsdays-beijing2017)
 
-## ß翻译的书籍
+## ß 翻译的书籍
 
-这里是我主导和组织翻译的书籍。
+我主导组织翻译的书籍。
 
 #### 《DevOps Handbook》-《DevOps 实践指南》
 
@@ -127,8 +129,9 @@ Elastic 开发者布道师，中国DevOps社区创始人，《DevOps Handbook》
 
 #### 《SRE Paradox》 - 《DevOps 悖论》
 
-已翻译完，预计 2021 年 5 月份出版。
-
 ![DevOps Pradox](https://elasticstack-1300734579.cos.ap-nanjing.myqcloud.com/2021-04-01-Screen%20Shot%202021-04-01%20at%208.53.23%20PM.jpg)
 
+已经出版，网上有售。
 
+- 京东：[https://item.jd.com/13047191.html](https://item.jd.com/13047191.html)
+- 英文原版-亚马逊书店：[https://www.amazon.com/DevOps-Paradox-truth-about-people-ebook/](https://www.amazon.com/DevOps-Paradox-truth-about-people-ebook/)
