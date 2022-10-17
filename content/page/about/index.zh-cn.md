@@ -12,6 +12,7 @@ menu:
     params:
       icon: messages
 ---
+> [点这里直达论坛与我交流](https://github.com/martinliu/martinliu.github.io/discussions)
 
 ## 个人简介
 
@@ -25,19 +26,23 @@ Elastic 资深开发者布道师，中国 DevOps 社区创始人，《DevOps Han
 - 邮箱 - 67120666@qq.com
 - 微信公众号 - DevOps 教练（MyDevOps）
 
-> [点这里直达论坛与我交流](https://github.com/martinliu/martinliu.github.io/discussions)
-
 ![微信公众号 - MyDevOps](https://elasticstack-1300734579.cos.ap-nanjing.myqcloud.com/2021-05-11-DevOps-qrc-mydevops.jpg)
+
 
 ## 社区布道记录
 
-我当前和曾经的社区分享。
+这里是即将发生和以前的部分社区分享。
 
 ### 2022
 
 #### Upcoming Events
 
+- [12 月 17 日 中国 DevOps 社区峰会 - 武汉 - 2022 - **《剖析APM分布式追踪的作用和副作用》**](https://www.hudongba.com/party/gtxy5.html)
+
 ##### Past Events
+
+- [4 月 15 日 ~ 9 月 2 日； - **《DevOps工具鉴宝》第一季，共 10 集，系列线上直播活动**](https://space.bilibili.com/370989874/channel/collectiondetail?sid=338624) | [GitHub 代码库](https://github.com/DevopsChina/lab.git)
+- [8 月 13 日 中国 DevOps 社区峰会 - 天津 - 2022 - **《APM分布式追踪不只是埋点》**](https://www.hudongba.com/party/nuul5.html)
 
 ### 2021
 
