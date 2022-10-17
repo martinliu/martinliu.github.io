@@ -1,11 +1,11 @@
 ---
 title: "关于"
-description: "持续分享 DevOps 和 SRE 。"
+description: "最近这些年我专注于社区建设，并持续的分享 DevOps 和 SRE 的技术、理念和实践。"
 author: "Martin Liu"
 date: "2019-02-28"
 layout: "page"
 slug: "about"
-image: "img/technology-g3f8878988_640.jpg"
+image: "img/about.JPG"
 menu:
   main:
     weight: 3
@@ -35,14 +35,16 @@ Elastic 资深开发者布道师，中国 DevOps 社区创始人，《DevOps Han
 
 ### 2022
 
-#### Upcoming Events
+*Upcoming Events*
 
 - [12 月 17 日 中国 DevOps 社区峰会 - 武汉 - 2022 - **《剖析APM分布式追踪的作用和副作用》**](https://www.hudongba.com/party/gtxy5.html)
+- [10 月 29 日 Elastic Dev Day China 2022 - 深圳 - **《面向未来的 Elastic Stack 数据摄入架构
+》**](http://conf.elasticsearch.cn/2022/schedule.html)
 
-##### Past Events
+*Past Events*
 
-- [4 月 15 日 ~ 9 月 2 日； - **《DevOps工具鉴宝》第一季，共 10 集，系列线上直播活动**](https://space.bilibili.com/370989874/channel/collectiondetail?sid=338624) | [GitHub 代码库](https://github.com/DevopsChina/lab.git)
 - [8 月 13 日 中国 DevOps 社区峰会 - 天津 - 2022 - **《APM分布式追踪不只是埋点》**](https://www.hudongba.com/party/nuul5.html)
+- [4 月 15 日 ~ 9 月 2 日； - **《DevOps工具鉴宝》第一季，共 10 集，系列线上直播活动**](https://space.bilibili.com/370989874/channel/collectiondetail?sid=338624) | [GitHub 代码库](https://github.com/DevopsChina/lab.git)
 
 ### 2021
 
@@ -62,7 +64,7 @@ Elastic 资深开发者布道师，中国 DevOps 社区创始人，《DevOps Han
 - [2 月 2 日 阿里云 Elasticsearch 生态&技术峰会 - **《如何规划和执行威胁狩猎》**](https://developer.aliyun.com/topic/esanniv3rd?utm_content=g_1000231789)
 - [2 月 27 日 Elastic Community 2021 - **《如何使用 Elastic Stack 规划和执行威胁狩猎》**](https://community.elastic.co/events/details/elastic-global-community-presents-community-conference-2021/)
 
-#### 2020
+### 2020
 
 - [12 月 19 日：中国 DevOps 社区峰会-北京站 — **《中国 DevOps 社区的现状和未来》KEYNOTES**](https://www.hudongba.com/party/0h2wa.html)
 - [12 月 19 日：中国 DevOps 社区峰会-北京站 — **《SRE 提高服务的质量和稳定性的套路》Track**](https://www.hudongba.com/party/0h2wa.html)
@@ -72,7 +74,7 @@ Elastic 资深开发者布道师，中国 DevOps 社区创始人，《DevOps Han
 - [8 月 10 日：中国 DevOps 社区首届 — **《Pipeline Craft 流水线大赛 》Hackathon Organizer**](https://www.hudongba.com/party/4rl9a.html)
 - [4 月 1 日：中国 DevOps 社区第 18 期线上直播— **《运维、开发和管理者们必备的 SRE 核心体系解读》**](https://www.hudongba.com/party/kkcza.html/) [B 站](https://www.bilibili.com/video/BV1ak4y1975Z)
 
-#### 2019
+### 2019
 
 - [12 月 7 日：Elastic DevDay 2019 - **《用 Elastic Stack 破解云原生的可观测性》KEYNOTES**](http://conf.elasticsearch.cn/2019/beijing/schedule.html)
 - [10 月 26 日：中国 DevOps 社区峰会-杭州 — **《中国 DevOps 社区的现状和规划》KEYNOTES**](https://www.hudongba.com/party/js53a.html)
@@ -85,7 +87,7 @@ Elastic 资深开发者布道师，中国 DevOps 社区创始人，《DevOps Han
 - [6 月 2 日 ： 中国 DevOps 社区重庆首届 Meetup - **《DevOps 工作三步法精讲》**](https://www.hudongba.com/party/lwina.html)
 - [5 月 25 日 ： 中国 DevOps 社区济南首届 Meetup - **《用 Jenkins 实施 CI/CD 工作坊》Workshop**](https://www.hudongba.com/party/wjz2a.html)
 
-#### 2018
+### 2018
 
 - [12 月 16 日：中国 DevOps 社区北京第 3 届 Meetup - **《中国 DevOpsDays 社区回顾》**](https://www.hudongba.com/party/24epn.html)
 - [11 月 3 日：DevOps Days Shenzhen 2018 - **《2018 DevOps 状态报告深度解读》KEYNOTES**](https://www.bagevent.com/event/1797956?bag_track=bagevent)
@@ -98,16 +100,16 @@ Elastic 资深开发者布道师，中国 DevOps 社区创始人，《DevOps Han
 - [7 月 22 日：中国 DevOps 社区北京首届 Meetup - **《欢迎来到中国 DevOps 社区》KEYNOTES**](https://www.bagevent.com/event/1602498)
 - [5 月 5 日： DevOps Days Beijing 2018 - **《怎样挑战 DevOps 实践之旅？》KEYNOTES**](http://event.31huiyi.com/1281765435/)
 
-#### 2017
+### 2017
 
 - [9 月 6 日：DevOps Days Taipei 2017 - **《DevOps 的核心理念和實踐》**](https://devopsdays.tw/2017/sessions.html)
 - [3 月 18 日：DevOps Days Beijing 2017 - **OpenSpace Facilitator. Brought this internal community into China**](https://www.bagevent.com/event/devopsdays-beijing2017)
 
-## ß 翻译的书籍
+## 翻译的书籍
 
 我主导组织翻译的书籍。
 
-#### 《DevOps Handbook》-《DevOps 实践指南》
+### 《DevOps Handbook》-《DevOps 实践指南》
 
 翻译书籍 [《DevOps Handbook》](https://itrevolution.com/book/the-devops-handbook/)
 
@@ -118,7 +120,7 @@ Elastic 资深开发者布道师，中国 DevOps 社区创始人，《DevOps Han
 - 京东：[https://item.jd.com/26848921955.html](https://item.jd.com/26848921955.html)
 - 英文原版-亚马逊书店：[http://a.co/95lK7hC](http://a.co/95lK7hC)
 
-#### 《SRE Workbook》 - 《SRE 工作手册》
+### 《SRE Workbook》 - 《SRE 工作手册》
 
 ![SRE Workbook](https://elasticstack-1300734579.cos.ap-nanjing.myqcloud.com/2021-05-11-025343.jpg)
 
@@ -127,7 +129,7 @@ Elastic 资深开发者布道师，中国 DevOps 社区创始人，《DevOps Han
 - 京东：[https://item.jd.com/12983982.html](https://item.jd.com/12983982.html)
 - 英文原版-亚马逊书店：[https://www.amazon.com/Site-Reliability-Workbook-Practical-Implement/dp/1492029505/](https://www.amazon.com/Site-Reliability-Workbook-Practical-Implement/dp/1492029505/)
 
-#### 《SRE Paradox》 - 《DevOps 悖论》
+### 《SRE Paradox》 - 《DevOps 悖论》
 
 ![DevOps Pradox](https://elasticstack-1300734579.cos.ap-nanjing.myqcloud.com/2021-04-01-Screen%20Shot%202021-04-01%20at%208.53.23%20PM.jpg)
 
