@@ -1,11 +1,11 @@
 ---
 title: "关于"
-description: "持续分享 DevOps 和 SRE 。"
+description: "最近这些年我专注于社区建设，并持续的分享 DevOps 和 SRE 的技术、理念和实践。"
 author: "Martin Liu"
 date: "2019-02-28"
 layout: "page"
 slug: "about"
-image: "img/technology-g3f8878988_640.jpg"
+image: "img/about.JPG"
 menu:
   main:
     weight: 3
