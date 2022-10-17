@@ -29,19 +29,23 @@ Elastic 开发者布道师，中国DevOps社区创始人，《DevOps Handbook》
 
 ![MyDevOps](https://elasticstack-1300734579.cos.ap-nanjing.myqcloud.com/2021-05-11-DevOps-qrc-mydevops.jpg)
 
-## 我的社区布道
+## 社区布道记录
 
-这里是我当前和曾经的社区分享。
-
-#### 2021
+这里是即将发生和以前的部分社区分享。
 
 ##### Upcoming Events
 
-- [12 月 4 日 中国 DevOps 社区峰会 - 深圳 - 2021 - **《用 OpenTelemetry 透明数字化系统的可观测性》**](hudongba.com/party/ufpe5.html)
+- [12 月 17 日 中国 DevOps 社区峰会 - 武汉 - 2022 - **《剖析APM分布式追踪的作用和副作用》**](https://www.hudongba.com/party/gtxy5.html)
 
 ##### Past Events
 
-- [9 月 4 日 中国 DevOps 社区峰会 - 大连 - 2021 - **《用 OpenTelemetry 透明数字化系统的可观测性》**](hudongba.com/party/0wrt5.html)
+- [4 月 15 日 ~ 9 月 2 日； - **《DevOps工具鉴宝》第一季，共 10 集，系列线上直播活动**](https://space.bilibili.com/370989874/channel/collectiondetail?sid=338624) | [GitHub 代码库](https://github.com/DevopsChina/lab.git)
+- [8 月 13 日 中国 DevOps 社区峰会 - 天津 - 2022 - **《APM分布式追踪不只是埋点》**](https://www.hudongba.com/party/nuul5.html)
+
+#### 2021
+
+- [12 月 4 日 中国 DevOps 社区峰会 - 深圳 - 2021 - **《用 OpenTelemetry 透明数字化系统的可观测性》**](https://www.hudongba.com/party/ufpe5.html)
+- [9 月 4 日 中国 DevOps 社区峰会 - 大连 - 2021 - **《用 OpenTelemetry 透明数字化系统的可观测性》**](https://www.hudongba.com/party/0wrt5.html)
 - [8 月 26 日 腾讯云 实战工作坊 - **《Elastic Security 安全管理实操》**](https://cloud.tencent.com/developer/salon/live-1549)
 - [7 月 31 日（周六-下午）COSCUP - **《谈谈开源的求生通道》**](https://coscup.org/2021/zh-TW/session/XL7QML) | [B 站](https://www.bilibili.com/video/BV1y64y1W7fu) | [YouTube](https://www.youtube.com/watch?v=5Ej6vR6hIzY)
 - [7 月 31 日（周六-上午）阿里云 ACE×Elastic **可观测性工作坊/Meetup** 北京同城会站](https://www.hudongba.com/party/gde75.html)
@@ -127,8 +131,4 @@ Elastic 开发者布道师，中国DevOps社区创始人，《DevOps Handbook》
 
 ![DevOps Pradox](https://elasticstack-1300734579.cos.ap-nanjing.myqcloud.com/2021-04-01-Screen%20Shot%202021-04-01%20at%208.53.23%20PM.jpg)
 
-## 友情链接
 
-- [敏捷开发资源大全](https://www.agile123.net/)
-
-注：欢迎友情链接，如果您希望将您的网站放在上面的清单中，请邮件联系我，或者直接在在 GitHub 上修改这个页面后提交 PR。
