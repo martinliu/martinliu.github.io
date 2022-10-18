@@ -1,14 +1,16 @@
 ---
 title: "{{ replace .Name "-" " " | title }}"
 date: {{ .Date }}
-draft: true
 description:  副标题
-slug: slug-url
-image: cover.jpg
+slug: 
+image: 
 categories:
-    - blog
+    - DevOps
 tags:
     - hugo
+comments: true
+toc: true
+
 ---
 
 
