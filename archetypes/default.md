@@ -3,7 +3,7 @@ title: "{{ replace .Name "-" " " | title }}"
 date: {{ .Date }}
 draft: true
 description:  副标题
-slug: {{title}}
+slug: slug-url
 image: cover.jpg
 categories:
     - blog
