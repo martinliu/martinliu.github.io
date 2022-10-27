@@ -3,7 +3,7 @@ title: "Elastic Agent 和 Fleet 服务器 安装手册 v8.4"
 date: 2022-10-18T21:32:14+08:00
 description: 用当前最新版本的 Elastic Stack 软件测试验证崭新的 ELK 架构，初步体验可观测性和安全管理解决方案。
 slug: elastic-agent-fleet-update-8-4
-image: pexels-brett-sayles-2881224.jpg
+image: observability.png
 categories:
     - DevOps
 tags:
