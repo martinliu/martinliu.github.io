@@ -5,7 +5,7 @@ description:  在经过多年的 HomeLab 实践，前后折腾了几个月的 DI
 slug: build-your-best-rack
 image: R-C.jpg
 categories:
-    - blog
+    - homelab
 tags:
     - rack
     - HomeLab
