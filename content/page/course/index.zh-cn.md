@@ -15,7 +15,7 @@ menu:
 
 ### DevOps - 免费课程
 
-> 开发中。
+> 持续开发中。
 
 本课程包含虚拟化、云计算、配置管理、CI、CD 等各种实操练习实验。
 
@@ -40,7 +40,7 @@ menu:
 
 ### Nutanix - 免费课程
 
-- 访问地址：https://nutanix.martinliu.cn
+- 访问地址：[点这里](https://nutanix.martinliu.cn)
 - 简介：本实验室包含 Nutanix CE 的基础安装，没有 Nutanix 专用服务器的朋友，可以从这一步开始。这里的所有练习步骤都是 Nutanix 软件的基础操作，在企业版软件上也同样适用。
 - 实验内容：
   1. Prism Central 部署和配置
