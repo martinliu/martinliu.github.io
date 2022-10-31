@@ -13,7 +13,7 @@ menu:
       icon: messages
 ---
 
-For anyone, asking me anything, [pls click here. by GitHub discussions](https://github.com/martinliu/martinliu.github.io/discussions)
+Asking me anything, [pls click here. at GitHub discussions](https://github.com/martinliu/martinliu.github.io/discussions)
 
 Martin lives to build community since 2017, Martin started his mission from the first DevOps Days event in China, also as a core organizer of DevOps Days in Beijing, Shanghai and Shenzhen in 2018. As a community builder, Martin is onefounder of DevOps community China, he is actively organizing various events, including community meetups in near 20 cities. Martin has translated two famous books, DevOps Handbook and SRE Workbook. Martin’s primary target is focusing on building offline sharing and communication network. Martin works with other community organizers to do planning and executing weekly. Martin contributes his knowledge by doing blog, speech and webinar as frequently as possible.
 
@@ -23,15 +23,24 @@ I will take the initiatives and spread high-quality knowledge to the community, 
 
 ## Events
 
+### 2022
+
+*Upcoming Events*
+
+- [12 月 17 日 中国 DevOps 社区峰会 - 武汉 - 2022 - **《剖析APM分布式追踪的作用和副作用》**](https://www.hudongba.com/party/gtxy5.html)
+- [10 月 29 日 Elastic Dev Day China 2022 - 深圳 - **《面向未来的 Elastic Stack 数据摄入架构
+》**](http://conf.elasticsearch.cn/2022/schedule.html)
+
+*Past Events*
+
+- [8 月 13 日 中国 DevOps 社区峰会 - 天津 - 2022 - **《APM分布式追踪不只是埋点》**](https://www.hudongba.com/party/nuul5.html)
+- [4 月 15 日 ~ 9 月 2 日； - **《DevOps工具鉴宝》第一季，共 10 集，系列线上直播活动**](https://space.bilibili.com/370989874/channel/collectiondetail?sid=338624) | [GitHub 代码库](https://github.com/DevopsChina/lab.git)
+
 #### 2021
 
-##### Upcoming Events
-
+- [12 月 4 日 中国 DevOps 社区峰会 - 深圳 - 2021 - **《用 OpenTelemetry 透明数字化系统的可观测性》**](hudongba.com/party/ufpe5.html)
 - [9 月 4 日 中国 DevOps 社区峰会 - 大连 - 2021 - **《用 OpenTelemetry 透明数字化系统的可观测性》**](hudongba.com/party/0wrt5.html)
 - [8 月 26 日 腾讯云 实战工作坊 - **《Elastic Security 安全管理实操》**](https://cloud.tencent.com/developer/salon/live-1549)
-
-##### Past Events
-
 - [7 月 31 日（周六-下午）COSCUP - **《谈谈开源的求生通道》**](https://coscup.org/2021/zh-TW/session/XL7QML) | [B 站](https://www.bilibili.com/video/BV1y64y1W7fu) | [YouTube](https://www.youtube.com/watch?v=5Ej6vR6hIzY)
 - [7 月 31 日（周六-上午）阿里云 ACE×Elastic **可观测性工作坊/Meetup** 北京同城会站](https://www.hudongba.com/party/gde75.html)
 - [7 月 9 日 中国 DevOps 社区武汉第 4 届 Meetup - **《Elastic O11y Workshop》**](https://www.huodongxing.com/event/2604289049100)
