@@ -1,5 +1,6 @@
-name: Deploy to Github Pages
+name: CI - build and test on gh-pages
 
+# 在任何非 master 分支 push 时触发
 on:  
    push:
        branches-ignore:    
@@ -8,7 +9,6 @@ on:
 jobs:
     build:
         runs-on: ubuntu-latest
-
         steps:
             - uses: actions/checkout@v2
 
@@ -22,10 +22,10 @@ jobs:
 
             - uses: actions/setup-go@v2
               with:
-                  go-version: "^1.17.0"
+                  go-version: "^1.19.1"  # 设定 Go 的版本
             - run: go version
 
-            - name: Cache Go Modules
+            - name: Cache Go Modules # 当前的模板依赖于这样的更新方式
               uses: actions/cache@v2
               with:
                   path: |
@@ -34,16 +34,17 @@ jobs:
                   key: ${{ runner.os }}-go-${{ hashFiles('**/go.sum') }}
                   restore-keys: |
                       ${{ runner.os }}-go-
-            - name: Setup Hugo ✨
+            
+            - name: Setup Hugo ✨  # 使用最新版本的扩展版 Hugo 构建
               uses: peaceiris/actions-hugo@v2
               with:
                   hugo-version: "latest"
                   extended: true
 
-            - name: Build 🛠️
+            - name: Hugo Build 🛠️
               run: hugo --minify --gc
 
-            - name: Deploy 🚀
+            - name: Deploy to gh-pages 🚀  # gh-pages 用于测试目的，同时也是 staging 环境
               uses: JamesIves/github-pages-deploy-action@4.1.4
               with:
                   branch: gh-pages
