@@ -1,21 +1,19 @@
-# 将 Hubo 博客构建后部署到 Github Pages
-name: Deploy to CloudFlare
+# 触发 CloudFlare 生产环境部署 
+name: Deploy to PRD - CloudFlare
 
-# 在pr成功的被合并到主干以后会触发 CloudFlare 的部署
+# 仅在 pr 合并到主干成功以后才会触发
 on:
   push:
     branches:
       - master
 
-# 以下是本串行执行工作流的所有组成部分
 jobs:
-  # 这里只定义了一个多步骤的作业
-  I-will-triger-CloudFlare-hook-after-you-merge:
+  
+  triger-CloudFlare-hook-after-merge-success:
     # 将后续的所有工作步骤都运行在最新版的 ubuntu 操作系统容器中
     runs-on: ubuntu-latest
 
-    # 所有步骤Actions的定义如下
     steps:
-      # Step 1 - CloudFlare发布到 Pages CDN 的生产环境
+      # Step 1 - CloudFlare发布到 Pages CDN 的生产环境，CloudFlare 将 gh-pages 作为部署目标
       - name: Triger CloudFlare hook
         run: curl -X POST "https://api.cloudflare.com/client/v4/pages/webhooks/deploy_hooks/b1b6b15d-b582-4304-bb0a-238b32bc3eb7"
