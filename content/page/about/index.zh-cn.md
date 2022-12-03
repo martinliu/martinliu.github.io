@@ -1,6 +1,6 @@
 ---
 title: "关于"
-description: "最近这些年我专注于社区建设，并持续的分享 DevOps 和 SRE 的技术、理念和实践。"
+description: "专注于社区建设，持续分享 DevOps 和 SRE 的技术、理念和实践。"
 author: "Martin Liu"
 date: "2019-02-28"
 layout: "page"
@@ -12,37 +12,42 @@ menu:
     params:
       icon: messages
 ---
-> [点这里直达论坛与我交流](https://github.com/martinliu/martinliu.github.io/discussions)
-
 ## 个人简介
 
-Elastic 资深开发者布道师，中国 DevOps 社区创始人，《DevOps Handbook》《The Site Reliability Workbook》译者；精通 DevOps/SRE/ITSM 等理论体系和相关实践等落地实现。致力于在全国范围内通过社区来推广 DevOps&SRE 的理念、技术和实践。推动开源 Elastic Stack 技术堆栈的应用，探讨运维大数据分析平台、云原生服务治理、APM 全链路监控和 AIOps 等使用场景。
+Elastic 资深开发者布道师，中国 DevOps 社区创始人，《DevOps Handbook》和《The Site Reliability Workbook》译者；精通 DevOps/SRE/ITSM 等理论体系和相关实践等落地实现。致力于在全国范围内通过社区来推广 DevOps&SRE 的理念、技术和实践。
 
 ## 关注我
 
 - B 站 - DevOps 教练 <https://space.bilibili.com/477542716>
 - Twitter - [@martinliu](https://twitter.com/martinliu)
 - LinkedIn - [MartinLiu](https://www.linkedin.com/in/liuzheng/)
-- 邮箱 - 67120666@qq.com
-- 微信公众号 - DevOps 教练（MyDevOps）
+- 邮箱 - liuzh66@gmail.com
+- 微信公众号 - DevOps教练（MyDevOps）
 
 ![微信公众号 - MyDevOps](https://elasticstack-1300734579.cos.ap-nanjing.myqcloud.com/2021-05-11-DevOps-qrc-mydevops.jpg)
-
+> [直达我的 GitHub discuessions 论坛](https://github.com/martinliu/martinliu.github.io/discussions)
 
 ## 社区布道记录
 
 这里是即将发生和以前的部分社区分享。
 
-### 2022
+### 2023
 
 *Upcoming Events*
 
-- [12 月 17 日 中国 DevOps 社区峰会 - 武汉 - 2022 - **《剖析APM分布式追踪的作用和副作用》**](https://www.hudongba.com/party/gtxy5.html)
-- [10 月 29 日 Elastic Dev Day China 2022 - 深圳 - **《面向未来的 Elastic Stack 数据摄入架构
-》**](http://conf.elasticsearch.cn/2022/schedule.html)
+- [3 月 25 日 中国 DevOps 社区峰会 - 武汉 - 2022 - **《剖析APM分布式追踪的作用和副作用》**](https://www.hudongba.com/party/gtxy5.html)
+
+
+
 
 *Past Events*
 
+### 2022
+
+> 倾情分享：双周线上直播活动 “DevOps 工具鉴宝” ，第一季开始于 4 月 15 日，在 B 站收看 10 集直播视频 [DevOps 工具鉴宝 - 播放清单](https://www.youtube.com/playlist?list=PLjF62SePsId5XwaVcmQRTn5SYtgOc61w6)
+
+- [10 月 29 日 Elastic Dev Day China 2022 - 深圳 - **《面向未来的 Elastic Stack 数据摄入架构
+》**](http://conf.elasticsearch.cn/2022/schedule.html)
 - [8 月 13 日 中国 DevOps 社区峰会 - 天津 - 2022 - **《APM分布式追踪不只是埋点》**](https://www.hudongba.com/party/nuul5.html)
 - [4 月 15 日 ~ 9 月 2 日； - **《DevOps工具鉴宝》第一季，共 10 集，系列线上直播活动**](https://space.bilibili.com/370989874/channel/collectiondetail?sid=338624) | [GitHub 代码库](https://github.com/DevopsChina/lab.git)
 
@@ -107,29 +112,31 @@ Elastic 资深开发者布道师，中国 DevOps 社区创始人，《DevOps Han
 
 ## 翻译的书籍
 
-我主导组织翻译的书籍。
+我翻译的书籍。
 
 ### 《DevOps Handbook》-《DevOps 实践指南》
 
-翻译书籍 [《DevOps Handbook》](https://itrevolution.com/book/the-devops-handbook/)
+翻译书籍 [《DevOps Handbook》](https://itrevolution.com/book/the-devops-handbook/) 来自 *IT Revolution Press*
 
 ![DevOps Handbook](https://elasticstack-1300734579.cos.ap-nanjing.myqcloud.com/2021-05-11-025310.jpg)
 
 已出版，网上有售。
 
 - 京东：[https://item.jd.com/26848921955.html](https://item.jd.com/26848921955.html)
-- 英文原版-亚马逊书店：[http://a.co/95lK7hC](http://a.co/95lK7hC)
+- 英文原版-亚马逊书店：[http://a.co/95lK7hC](http://a.co/95lK7hC) *Selling on Amazon*
 
 ### 《SRE Workbook》 - 《SRE 工作手册》
 
-![SRE Workbook](https://elasticstack-1300734579.cos.ap-nanjing.myqcloud.com/2021-05-11-025343.jpg)
+翻译书籍 《SRE Workbook》来自  O'Reilly Media
+
+![SRE Workbook](https://elasticstack-1300734579.cos.ap-nanjing.myqcloud.com/2021-05-11-025343.jpg) 
 
 已经出版，网上有售。
 
 - 京东：[https://item.jd.com/12983982.html](https://item.jd.com/12983982.html)
 - 英文原版-亚马逊书店：[https://www.amazon.com/Site-Reliability-Workbook-Practical-Implement/dp/1492029505/](https://www.amazon.com/Site-Reliability-Workbook-Practical-Implement/dp/1492029505/)
 
-### 《SRE Paradox》 - 《DevOps 悖论》
+### 《DevOps Paradox》 - 《DevOps 悖论》
 
 ![DevOps Pradox](https://elasticstack-1300734579.cos.ap-nanjing.myqcloud.com/2021-04-01-Screen%20Shot%202021-04-01%20at%208.53.23%20PM.jpg)
 
@@ -137,3 +144,14 @@ Elastic 资深开发者布道师，中国 DevOps 社区创始人，《DevOps Han
 
 - 京东：[https://item.jd.com/13047191.html](https://item.jd.com/13047191.html)
 - 英文原版-亚马逊书店：[https://www.amazon.com/DevOps-Paradox-truth-about-people-ebook/](https://www.amazon.com/DevOps-Paradox-truth-about-people-ebook/)
+
+
+即将出版：
+
+* 97 Things Every SRE Should Know
+
+![97 Things Every SRE Should Know](https://learning.oreilly.com/library/cover/9781492081487/250w/)
+
+* Distributed Tracing in Practice
+
+![Distributed Tracing in Practice](https://learning.oreilly.com/library/cover/9781492056621/250w/)
