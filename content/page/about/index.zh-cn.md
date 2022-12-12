@@ -46,8 +46,9 @@ Elastic 资深开发者布道师，中国 DevOps 社区创始人，《DevOps Han
 
 > 倾情分享：双周线上直播活动 “DevOps 工具鉴宝” ，第一季开始于 4 月 15 日，在 B 站收看 10 集直播视频 [DevOps 工具鉴宝 - 播放清单](https://www.youtube.com/playlist?list=PLjF62SePsId5XwaVcmQRTn5SYtgOc61w6)
 
-- [10 月 29 日 Elastic Dev Day China 2022 - 深圳 - **《面向未来的 Elastic Stack 数据摄入架构
-》**](http://conf.elasticsearch.cn/2022/schedule.html)
+- [12 月 8 日 Red Hat 邀请 webinar - **《eBPF 在在SRE中的应用》**]()
+- [10 月 29 日 Elastic Dev Day China 2022 - 深圳 - **《面向未来的 Elastic Stack 数据摄入架构》**](http://conf.elasticsearch.cn/2022/schedule.html)
+- [8 月 11 日 Red Hat 邀请 webinar - **《Ansible自动化及在SRE中的实践》**](https://www.bilibili.com/video/BV1ca411N7yo)
 - [8 月 13 日 中国 DevOps 社区峰会 - 天津 - 2022 - **《APM分布式追踪不只是埋点》**](https://www.hudongba.com/party/nuul5.html)
 - [4 月 15 日 ~ 9 月 2 日； - **《DevOps工具鉴宝》第一季，共 10 集，系列线上直播活动**](https://space.bilibili.com/370989874/channel/collectiondetail?sid=338624) | [GitHub 代码库](https://github.com/DevopsChina/lab.git)
 
