@@ -172,6 +172,3 @@ DevOps和多云环境相辅相成，具有同义关系。他们的结合提供�
 * https://ozone.one/top-6-devops-trends-to-look-for-in-2023/
 * <https://www.solutionanalysts.com/blog/top-10-trends-of-devops-in-2023/>
 * <https://www.analyticsinsight.net/top-10-devops-trends-and-predictions-to-follow-up-in-2023/>
-
-
-Feature picture ❤️ 
