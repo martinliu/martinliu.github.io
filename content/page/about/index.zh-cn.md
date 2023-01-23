@@ -21,11 +21,10 @@ Elastic 资深开发者布道师，中国 DevOps 社区创始人，《DevOps Han
 - B 站 - DevOps 教练 <https://space.bilibili.com/477542716>
 - Twitter - [@martinliu](https://twitter.com/martinliu)
 - LinkedIn - [MartinLiu](https://www.linkedin.com/in/liuzheng/)
-- 邮箱 - liuzh66@gmail.com
+- 邮箱 - liu.martin@outlook.com
 - 微信公众号 - DevOps教练（MyDevOps）
 
 ![微信公众号 - MyDevOps](https://elasticstack-1300734579.cos.ap-nanjing.myqcloud.com/2021-05-11-DevOps-qrc-mydevops.jpg)
-> [直达我的 GitHub discuessions 论坛](https://github.com/martinliu/martinliu.github.io/discussions)
 
 ## 社区布道记录
 
