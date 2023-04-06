@@ -30,14 +30,10 @@ Elastic 资深开发者布道师，中国 DevOps 社区创始人，《DevOps Han
 
 这里是即将发生和以前的部分社区分享。
 
-### 2023
 
 *Upcoming Events*
 
-
-
-
-
+- 
 
 *Past Events*
 

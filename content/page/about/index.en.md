@@ -30,11 +30,9 @@ I have translated two famous books, DevOps Handbook and SRE Workbook. My primary
 
 ## Events
 
-
-### 2023
-
 *Upcoming Events*
 
+- 
 
 *Past Events*
 
