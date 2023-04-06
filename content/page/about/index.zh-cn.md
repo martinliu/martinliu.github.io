@@ -30,16 +30,18 @@ Elastic 资深开发者布道师，中国 DevOps 社区创始人，《DevOps Han
 
 这里是即将发生和以前的部分社区分享。
 
-### 2023
 
 *Upcoming Events*
 
-- [3 月 25 日 中国 DevOps 社区峰会 - 武汉 - 2022 - **《剖析APM分布式追踪的作用和副作用》**](https://www.hudongba.com/party/gtxy5.html)
-
-
-
+- 
 
 *Past Events*
+
+### 2023
+
+- [3 月 25 日  中国开发者生态峰会 - 北京 - 2023 - **《社区人必备的运营之道》**](https://www.bagevent.com/event/dev-together-2022)
+- [3 月 18 日 中国 DevOps 社区峰会 - 武汉 - 2023 - **《用AI加速度DevOps的实现步伐》**](https://www.hudongba.com/party/gtxy5.html)
+
 
 ### 2022
 
