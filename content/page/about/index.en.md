@@ -39,7 +39,7 @@ I have translated two famous books, DevOps Handbook and SRE Workbook. My primary
 ### 2023
 
 - [March 25  Dev Together Summit - Beijing - 2023 - **《社区人必备的运营之道》**](https://www.bagevent.com/event/dev-together-2022)
-- [March 18th 中国 DevOps 社区峰会 - Wuhan - 2023 - **《用AI加速度DevOps的实现步伐》**](https://www.hudongba.com/party/gtxy5.html)
+- [March 18th DevOps China Summit - Wuhan - 2023 - **《用AI加速度DevOps的实现步伐》**](https://www.hudongba.com/party/gtxy5.html)
 
 ### 2022
 
