@@ -1,4 +1,4 @@
-module github.com/martinliu/martinliu.io
+module github.com/martinliu/martinliu.github.io
 
 go 1.19
 

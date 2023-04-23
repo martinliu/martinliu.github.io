@@ -23,11 +23,10 @@ I have translated two famous books, DevOps Handbook and SRE Workbook. My primary
 - Bilibili - DevOps教练 <https://space.bilibili.com/477542716>
 - Twitter - [@martinliu](https://twitter.com/martinliu)
 - LinkedIn - [Martin Liu](https://www.linkedin.com/in/liuzheng/)
-- Email - liuzh66@gmail.com
+- Email - liu.martin@outlook.com
 - Wechat - DevOps教练（MyDevOps）
 
 ![微信公众号 - MyDevOps](https://elasticstack-1300734579.cos.ap-nanjing.myqcloud.com/2021-05-11-DevOps-qrc-mydevops.jpg)
-> [Ask me anything on GitHub discuessions](https://github.com/martinliu/martinliu.github.io/discussions)
 
 
 ## Events
