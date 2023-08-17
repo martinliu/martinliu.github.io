@@ -3,6 +3,7 @@ title: "可观测性究竟能带给我们什么？"
 date: 2023-08-15T16:17:43+08:00
 description:  随着可观测性平台逐渐进入落地阶段，它的先进性已经毋庸置疑；而另外一只靴子是：它什么时候开始以一个统一融合的平台普及到各个企业中。
 image: pexels-pixabay-237258.jpg
+slug: what-observability-give-us
 categories:
     - DevOps
 tags:
