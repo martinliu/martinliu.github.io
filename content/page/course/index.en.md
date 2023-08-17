@@ -13,14 +13,19 @@ menu:
       icon: archives
 ---
 
-## Free DevOps course
+### Elastic Stack 
 
-Coming soon.
+* tutorials - https://elastic.martinliu.cn
+* codelabs 
+  * [Enterprise Search](https://elastic.martinliu.cn/codelabs/entprise-search-foundation/#0) 
+  * [Observibility](https://elastic.martinliu.cn/codelabs/elastic-observability-foundation-qq/#0)
+  * [Security](https://elastic.martinliu.cn/codelabs/elastic-security-foundation/#0)
 
-## Free Nubnix course
 
-- 访问地址：https://nutanix.martinliu.cn
+### Nutanix
 
-## SRE FOUNDATION℠ Certification Training
+- [Hanson labs](https://nutanix.martinliu.cn)
+- agenda：
+  1. Prism Central deploy and configuration
+  2. Nutanix Calm foundation
 
-[![](/images/sref-zs.jpg)](https://mp.weixin.qq.com/s/LqRJfXWdm0yOlEwUa3qDDg)

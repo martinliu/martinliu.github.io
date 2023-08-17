@@ -1,13 +1,39 @@
 ---
 title: "{{ replace .Name "-" " " | title }}"
 date: {{ .Date }}
-draft: true
 description:  副标题
-slug: change-to-jimmy-stack-theme
-image: img/cover.jpg
+slug: 
+image: 
 categories:
-    - blog
+    - DevOps
 tags:
     - hugo
+comments: true
+toc: true
+
 ---
 
+
+
+
+[]()
+
+[]()
+
+
+[]()
+
+[]()
+
+
+
+![]()
+
+![]()
+
+![]()
+
+
+
+
+Feature picture ❤️ 
