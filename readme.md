@@ -4,7 +4,7 @@ I have opened a discuess here at https://github.com/martinliu/martinliu.github.i
 
 ## To Do
 
-- [doing] 增加评论功能
+- [Done] 增加评论功能
 - [Done] 修复左上角图片显示 
 - []
 - []
