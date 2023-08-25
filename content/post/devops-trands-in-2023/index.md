@@ -172,3 +172,7 @@ DevOps和多云环境相辅相成，具有同义关系。他们的结合提供�
 * https://ozone.one/top-6-devops-trends-to-look-for-in-2023/
 * <https://www.solutionanalysts.com/blog/top-10-trends-of-devops-in-2023/>
 * <https://www.analyticsinsight.net/top-10-devops-trends-and-predictions-to-follow-up-in-2023/>
+
+![可观测性简史](/img/O11y-infograph.jpg)
+> [欢迎直接开通观测云商业版，即可获得 500 元无限制代金券，](https://auth.guance.com/businessRegister?source=martinLiu)
+> [也可以选择开通个人体验版，每天有2000的免费额度畅快使用，可点此处参考费用表。](https://www.guance.com/billing#business#China?source=martinLiu)

@@ -90,3 +90,7 @@ toc:  false
 * 用尼龙绷带，将位置基本上固定不变的设备的网线固定在机架的立柱上。
 * 优化核心交换机的 VLAN 配置，调整VLAN 中的端口数量。调整 esxi 服务器管理网和虚拟机网的端口配置（Trunk 配置）
 * 优化 10GB 光纤交换机上 1GB 以太网口的配置，将其作为 Trunk 模式，接入存储网 VLAN 意外的其他 VLAN。让后续 Nutanix CE 重构后，虚拟机和存储网可以都在这个万兆交换机上，但是流量是隔离开的。
+
+![可观测性简史](/img/O11y-infograph.jpg)
+> [欢迎直接开通观测云商业版，即可获得 500 元无限制代金券，](https://auth.guance.com/businessRegister?source=martinLiu)
+> [也可以选择开通个人体验版，每天有2000的免费额度畅快使用，可点此处参考费用表。](https://www.guance.com/billing#business#China?source=martinLiu)

@@ -85,3 +85,7 @@ tags:
 ## 总结
 
 本文从四个层面对可观测性平台实现的技术要点，做出了一定深度和时间跨度上的探讨。希望：在您的工作环境中，统一融合的可观测性平台可以很快的落地。穿上两只靴子的你，可以脱离以前赤足上阵，光脚救火的困境。希望可观测性平台能够帮助到软件交付流水线中的所有人，运用可观测性来补Ops的锅，助SRE的威，壮Dev胆。
+
+![可观测性简史](/img/O11y-infograph.jpg)
+> [欢迎直接开通观测云商业版，即可获得 500 元无限制代金券，](https://auth.guance.com/businessRegister?source=martinLiu)
+> [也可以选择开通个人体验版，每天有2000的免费额度畅快使用，可点此处参考费用表。](https://www.guance.com/billing#business#China?source=martinLiu)
