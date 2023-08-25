@@ -115,3 +115,7 @@ hugo new content/post/new-blog-test/index.md
 * 左上角的头像图片无法正常显示
 * 添加一种免费好用的评论互动插件
 * 增加搜索功能
+
+![可观测性简史](/img/O11y-infograph.jpg)
+> [欢迎直接开通观测云商业版，即可获得 500 元无限制代金券，](https://auth.guance.com/businessRegister?source=martinLiu)
+> [也可以选择开通个人体验版，每天有2000的免费额度畅快使用，可点此处参考费用表。](https://www.guance.com/billing#business#China?source=martinLiu)

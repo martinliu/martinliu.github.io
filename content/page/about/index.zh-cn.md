@@ -39,6 +39,7 @@ Elastic 资深开发者布道师，中国 DevOps 社区创始人，《DevOps Han
 
 ### 2023
 
+- [7 月 21 日 K+全球软件研发行业创新峰会 - 北京 - **《用可观测性工程构建生产环境的护城河》**](http://www.2023beijing.keylinkcon.com/col.jsp?id=416&id=416)
 - [3 月 25 日  中国开发者生态峰会 - 北京 - 2023 - **《社区人必备的运营之道》**](https://www.bagevent.com/event/dev-together-2022)
 - [3 月 18 日 中国 DevOps 社区峰会 - 武汉 - 2023 - **《用AI加速度DevOps的实现步伐》**](https://www.hudongba.com/party/gtxy5.html)
 
