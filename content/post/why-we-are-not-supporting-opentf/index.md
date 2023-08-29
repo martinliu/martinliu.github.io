@@ -13,7 +13,8 @@ comments: true
 toc: false
 
 ---
-
+>作者：dragondrop.cloud
+>来源：<https://medium.com/@hello_9187/>
 
 ## 背景
 
@@ -31,7 +32,7 @@ toc: false
 
 ## 许可证偏颇和扭曲的陈述
 
-**1）**在宣言的开头部分“我们的关切：BUSL 许可证是 Terraform 的毒丸”，他们声称：
+**1）** 在宣言的开头部分“我们的关切：BUSL 许可证是 Terraform 的毒丸”，他们声称：
 “...现在，使用 Terraform 的每家公司、供应商和开发人员都必须考虑他们的行为是否可能被视为与 HashiCorp 的产品竞争。”
 
 这个说法似乎相当不准确。唯一需要担心许可证变更的公司是那些将“在托管或嵌入的基础上为第三方提供 Licensed Work”的公司，这些行为与 HashiCorp 的产品竞争。
@@ -81,3 +82,6 @@ Terraform社区主要是由HashiCorp维护的，与之相关的成本非常高�
 
 >本文作者所在的公司：如果对我们自己的偏见感到好奇，我们的公司构建了一个嵌入了Terraform CLI的产品，并具有与Terraform Cloud重叠的一些功能，特别是漂移检测，因此受到了BSL更改对Terraform 1.5.5之后版本的影响。dragondrop.cloud的使命是在使用基础设施作为代码时自动化开发者的最佳实践。我们的旗舰开源产品cloud-concierge允许开发者将他们的云计算进行编码，检测漂移，估计云计算成本和安全风险等，更多地通过拉取请求提供结果。对于大规模运行cloud-concierge的企业，我们提供了一个自托管的管理平台。
 
+![可观测性简史](/img/O11y-infograph.jpg)
+> [欢迎直接开通观测云商业版，即可获得 500 元无限制代金券，](https://auth.guance.com/businessRegister?source=martinLiu)
+> [也可以选择开通个人体验版，每天有2000的免费额度畅快使用，可点此处参考费用表。](https://www.guance.com/billing#business#China?source=martinLiu)
