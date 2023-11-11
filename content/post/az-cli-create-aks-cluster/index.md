@@ -109,27 +109,18 @@ az aks create -h
 az aks get-versions --location $LOCATION -o table
 ```
 
-为 AKS 集群创建 SSH 秘钥对，用于后续的 SSH 访问：
-
-```bash
-ssh-keygen -t rsa -b 4096 -N "VeryStrongSecret123!" -C "your_email@example.com" -q -f  ~/.ssh/id_rsa
-cp ~/.ssh/id_rsa* .
-```
-如果你不想使用 SSH 访问，可以跳过上面的步骤。或者直接使用本机已有的 SSH 秘钥对，那么只运行第二条命令即可。
-
 创建 AKS 集群：
 
 ```bash
-az aks create -n aks-getting-started \
+az aks create -n $AKS_CLUSTER_NAME \
 --resource-group $RESOURCE_GROUP_NAME \
 --location $LOCATION \
---kubernetes-version 1.28.3 \
+--kubernetes-version $AKS_CLUSTER_VERSION \
 --load-balancer-sku standard \
 --nodepool-name default \
---node-count 1 \
---node-vm-size Standard_DS2_v2 \
---node-osdisk-size 50 \
---ssh-key-value ./id_rsa.pub \
+--node-count $AKS_NODE_COUNT \
+--node-vm-size $AKS_NODE_VM_SIZE \
+--node-osdisk-size $AKS_NODE_DISK_SIZE \
 --network-plugin kubenet \
 --service-principal $SERVICE_PRINCIPAL \
 --client-secret "$SERVICE_PRINCIPAL_SECRET"
@@ -140,7 +131,7 @@ az aks create -n aks-getting-started \
 使用下面的命令，获取 AKS 集群的连接信息：
 
 ```bash
-az aks get-credentials --resource-group $RESOURCE_GROUP_NAME --name aks-getting-started
+az aks get-credentials --resource-group $RESOURCE_GROUP_NAME --name $AKS_CLUSTER_NAME
 ```
 
 这条命令会将 AKS 集群的连接信息，写入到 `~/.kube/config` 文件中，然后你就可以使用 `kubectl` 命令行工具，连接到 AKS 集群了。
@@ -416,9 +407,35 @@ kubectl get service store-front --watch
 ```bash
 az aks delete --resource-group $RESOURCE_GROUP_NAME
 az ad sp delete --id $SERVICE_PRINCIPAL
-kubectl config delete-content aks-getting-started 
+kubectl config delete-content $AKS_CLUSTER_NAME
 ```
 
 ## 总结
 
 本文主要讲解了使用 Azure CLI 创建 K8S 集群所使用到的一般性流程和选项，目标是为你更复杂的使用场景打下基础。
+
+Azure CLI、Terraform 和 Pulumi 都是创建和管理云资源的工具，但它们各有优势：
+
+Azure CLI：
+
+* 简单易用：Azure CLI 的命令结构简洁明了，易于理解和使用。
+* Azure 专用：Azure CLI 是专为 Azure 设计的，对 Azure 的各种服务和资源有深度集成。
+
+Terraform：
+
+* 提供声明式语法：Terraform 使用声明式语法，用户只需描述他们希望达到的最终状态，Terraform 将处理如何达到这个状态。
+提供状态管理：Terraform 能够跟踪和管理每个部署的状态，这对于管理复杂的系统非常有用。
+* 跨平台：Terraform 支持多个云服务提供商，不仅限于 Azure。
+
+Pulumi：
+
+* 使用常规编程语言：Pulumi 允许使用常规编程语言（如 Python、JavaScript、TypeScript、Go 等）来描述和管理云资源，这使得开发者可以利用他们已有的编程知识和技能。
+* 提供状态管理：与 Terraform 类似，Pulumi 也提供状态管理功能。
+跨平台：Pulumi 同样支持多个云服务提供商。
+
+选择哪种工具取决于你的具体需求和偏好。后续我们演示使用 Terraform 和 Pulumi 创建 K8S 集群的方式。
+
+## 参考
+
+- [Quickstart: Deploy an Azure Kubernetes Service (AKS) cluster using the Azure CLI](https://docs.microsoft.com/en-us/azure/aks/kubernetes-walkthrough)
+- <https://github.com/marcel-dempers/docker-development-youtube-series>
