@@ -177,7 +177,7 @@ kubectl get service store-front --watch
 使用下面的命令，删除整个测试的资源组、Service Principal 和 AKS 集群，以及当前命令行中 kubctl 的配置文件中的 K8S 集群的上下文。
 
 ```bash
-az aks delete --resource-group $RESOURCE_GROUP_NAME
+az aks delete --resource-group  $RESOURCE_GROUP_NAME  --name $RESOURCE_GROUP_NAME --yes
 az ad sp delete --id $SERVICE_PRINCIPAL
 kubectl config delete-content $AKS_CLUSTER_NAME
 ```
