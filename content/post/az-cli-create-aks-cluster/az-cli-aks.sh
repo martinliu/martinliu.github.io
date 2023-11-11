@@ -32,6 +32,6 @@ kubectl get pods  --watch
 kubectl get service store-front
 
 
-az group delete -n $RESOURCE_GROUP_NAME
+az group delete -n $RESOURCE_GROUP_NAME --name $RESOURCE_GROUP_NAME --yes
 az ad sp delete --id $SERVICE_PRINCIPAL
 kubectl config delete-content $AKS_CLUSTER_NAME
