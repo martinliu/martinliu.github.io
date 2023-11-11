@@ -15,19 +15,13 @@ toc: true
 
 ---
 
-使用 Azure CLI 创建 K8S 集群是一种非常简单易用的方式。它的依赖就是 Azure CLI 命令行工具的安装，你可以安装在任何操作系统中； 或者启动含有 Azure CLI 的容器，然后在容器内使用 Azure CLI 。
+使用 Azure CLI 创建 K8S 集群是一种非常简单易用的方式。你可以安装在任何操作系统中安装 Azure CLI 命令行工具； 或者启动含有 Azure CLI 的容器，然后在容器内使用 Azure CLI 。
 
-## Azure CLI 的准备
+## 准备 Azure CLI 
 
 本文的演示命令都是在 macOS 上操作的，Azure CLI 在任何 OS 上安装的文档见 [Install Azure CLI](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli) 。
 
-如果你不想在本机安装 Azure CLI 命令行工具，可以使用 Docker 容器的方式，启动一个含有 Azure CLI 的容器，然后在容器内使用 Azure CLI 命令行工具。
-
-```bash
-docker run -it --rm mcr.microsoft.com/azure-cli
-```
-
-下面这个参考命令，是在此容器中带入当前路径做为容器内工作目录，并且制定的 Azure CLI 版本的例子：
+如果你不想在本机安装 Azure CLI 命令行工具，可以使用 Docker 容器的方式，启动一个含有 Azure CLI 的容器，然后在容器内使用 Azure CLI 命令行工具。下面这个参考命令，是在此容器中带入当前路径做为容器内工作目录，并且制定的 Azure CLI 版本的例子：
 
 ```bash
 docker run -it --rm -v $(pwd):/work -w /work mcr.microsoft.com/azure-cli:2.0.80
@@ -53,17 +47,23 @@ az account list -o table
 
 ```bash
 az account set --subscription <subscription-id>
+export SUBSCRIPTION=b8c52dfc-99f8-4f13-a7d1-5e1d6537dccf
 ```
 
 ## 创建资源组
 
 为了让本次操作的过程产物，都放在一个资源组中，我们先创建一个资源组。这样方便在测试完的时候，可以一次性删除所有曾经用到过的资源。
 
-使用命令行变量设定资源组的名称和所在的区域：
+使用命令行变量设定资源组的名称和所在的区域，以及其他的参数：
 
 ```bash
 export RESOURCE_GROUP_NAME=aks-getting-started
 export LOCATION=eastasia
+export AKS_CLUSTER_NAME=aks-getting-started
+export AKS_CLUSTER_VERSION=1.28.3
+export AKS_NODE_COUNT=2
+export AKS_NODE_VM_SIZE=Standard_B2s
+export AKS_NODE_DISK_SIZE=50
 ```
 
 创建资源组：
@@ -71,7 +71,6 @@ export LOCATION=eastasia
 ```bash
 az group create --name $RESOURCE_GROUP_NAME --location $LOCATION
 ```
-
 
 ## 创建 Service Principal
 
