@@ -15,13 +15,15 @@ toc: true
 
 ---
 
-使用 Azure CLI 创建 K8S 集群是一种非常简单易用的方式。你可以安装在任何操作系统中安装 Azure CLI 命令行工具； 或者启动含有 Azure CLI 的容器，然后在容器内使用 Azure CLI 。
+使用 Azure CLI 创建 K8S 集群是一种非常简单易用的方式。你可以在任何操作系统中安装 Azure CLI 命令行工具； 或者启动含有 Azure CLI 的容器，然后在容器内使用 Azure CLI 。
 
-## 准备 Azure CLI 
+{{< bilibili BV18Q4y187ng >}}
+
+## 准备 Azure CLI
 
 本文的演示命令都是在 macOS 上操作的，Azure CLI 在任何 OS 上安装的文档见 [Install Azure CLI](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli) 。
 
-如果你不想在本机安装 Azure CLI 命令行工具，可以使用 Docker 容器的方式，启动一个含有 Azure CLI 的容器，然后在容器内使用 Azure CLI 命令行工具。下面这个参考命令，是在此容器中带入当前路径做为容器内工作目录，并且制定的 Azure CLI 版本的例子：
+如果你不想在本机安装 Azure CLI 命令行工具，可以使用 Docker 容器的方式，启动一个含有 Azure CLI 的容器，然后在容器内使用 Azure CLI 命令行工具。下面这个参考命令，是在此容器中带入当前路径做为容器内工作目录，并且指定运行特定 Azure CLI 版本的例子：
 
 ```bash
 docker run -it --rm -v $(pwd):/work -w /work mcr.microsoft.com/azure-cli:2.0.80
@@ -35,7 +37,7 @@ docker run -it --rm -v $(pwd):/work -w /work mcr.microsoft.com/azure-cli:2.0.80
 az login
 ```
 
-假设你是使用本机安装的 Azure CLI 做 Azure 的命令登录认证，那么在运行了以上命令后，会弹出一个浏览器窗口，让你输入 Azure 的账号和密码，然后完成登录认证。
+假设你是使用本机安装的 Azure CLI 做 Azure CLI 的命令行登录认证，那么在运行了以上命令后，会弹出一个浏览器窗口，让你输入 Azure 的账号和密码，然后完成登录认证。
 
 然后，你可以查看当前账号中的订阅；确保随后使用中一个正确的订阅，用于创建 K8S 集群。
 
@@ -43,7 +45,7 @@ az login
 az account list -o table
 ```
 
-为了确保后续的命令行操作使用正确的订阅，可以用下面的命令，使用命令行变量的方式，设置当前使用的订阅。
+为了确保后续的命令行操作使用正确的订阅，可以用下面的命令设定订阅 ID；并且使用命令行变量的方式，设置当前使用的订阅。
 
 ```bash
 az account set --subscription <subscription-id>
@@ -59,7 +61,7 @@ export SUBSCRIPTION=b8c52dfc-99f8-4f13-a7d1-5e1d6537dccf
 ```bash
 export RESOURCE_GROUP_NAME=aks-getting-started
 export LOCATION=eastasia
-export AKS_CLUSTER_NAME=aks-getting-started
+export AKS_CLUSTER_NAME=aks-4-devops
 export AKS_CLUSTER_VERSION=1.28.3
 export AKS_NODE_COUNT=2
 export AKS_NODE_VM_SIZE=Standard_B2s
@@ -77,20 +79,13 @@ az group create --name $RESOURCE_GROUP_NAME --location $LOCATION
 为了让 K8S 可以使用到 Azure 账号中的各种必要的资源服务（disk，负载均衡，存储等等），需要创建一个 Service Principal，用于 K8S 访问 Azure 资源。下面用新的命令行变量携带 Service Principal 的相关信息：
 
 ```bash
-
 SERVICE_PRINCIPAL_JSON=$(az ad sp create-for-rbac --skip-assignment --name aks-getting-started-sp -o json)
-
-#将 `appId` 和 `password` 保存在变量中，用于后续的命令行操作
-
 SERVICE_PRINCIPAL=$(echo $SERVICE_PRINCIPAL_JSON | jq -r '.appId')
 SERVICE_PRINCIPAL_SECRET=$(echo $SERVICE_PRINCIPAL_JSON | jq -r '.password')
 
-#给上面所创建的 Service Principal 赋予 Contributor 角色，用于后续的 K8S 集群创建的参数
-
 az role assignment create --assignee $SERVICE_PRINCIPAL \
---scope "/subscriptions/$SUBSCRIPTION/resourceGroups/$RESOURCEGROUP" \
+--scope "/subscriptions/$SUBSCRIPTION/resourceGroups/$RESOURCE_GROUP_NAME" \
 --role Contributor
-
 ```
 
 关于 Service Principal 的更多信息，可以参考 [Azure AD Service Principal](https://docs.microsoft.com/en-us/azure/active-directory/develop/app-objects-and-service-principals) 。
@@ -109,7 +104,7 @@ az aks create -h
 az aks get-versions --location $LOCATION -o table
 ```
 
-创建 AKS 集群：
+运行创建 AKS 集群的命令：
 
 ```bash
 az aks create -n $AKS_CLUSTER_NAME \
@@ -151,7 +146,6 @@ kubectl get nodes
 
 创建名为 [aks-store-quickstart.yaml ，清单文件点此下载](aks-store-quickstart.yaml) ，并将以下清单复制到其中：
 
-
 使用 kubectl apply 命令部署上面的应用：
 
 ```bash
@@ -164,13 +158,13 @@ kubectl apply -f aks-store-quickstart.yaml
 kubectl get pods
 ```
 
-使用下面的命令获取 store-front 服务的公共 IP 地址：
+使用下面的命令获取 store-front 服务的外网 IP 地址：
 
 ```bash
 kubectl get service store-front --watch
 ```
 
-最后，打开 Web 浏览器并转到服务的外部 IP 地址，以查看 Azure 应用商店应用的实际效果。
+最后，打开 Web 浏览器并转到服务的外网 IP 地址，以查看 Azure 应用商店应用的实际效果。
 
 ## 清理资源
 
@@ -178,7 +172,7 @@ kubectl get service store-front --watch
 
 ```bash
 az aks delete --resource-group  $RESOURCE_GROUP_NAME  --name $RESOURCE_GROUP_NAME --yes
-az ad sp delete --id $SERVICE_PRINCIPAL
+az ad sp delete --id aks-getting-started-sp
 kubectl config delete-content $AKS_CLUSTER_NAME
 ```
 
