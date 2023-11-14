@@ -49,7 +49,7 @@ az account list -o table
 
 ```bash
 az account set --subscription <subscription-id>
-export SUBSCRIPTION=b8c52dfc-99f8-4f13-a7d1-5e1d6537dccf
+export SUBSCRIPTION=XXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXXXX
 ```
 
 ## 创建资源组
