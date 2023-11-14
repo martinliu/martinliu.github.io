@@ -13,7 +13,7 @@ toc: true
 
 ---
 
-DevOps的工作流程中所需要到各种各样的命令行工具，在 Azure 的环境中，不同的 DevOps 工具在运行之前，都必须先完成 Azuore 账号的登录认证。而且，最好是在非用户干预和交互的方式下，完成登录认证。在这种情况想就可以使用 Service Principal 的方式，来完成 Azure 账号的登录认证。本文介绍如何创建一个用于在命令行登录认证 Azure 的 Service Principal。
+DevOps的工作流程中所需要到各种各样的命令行工具，在 Azure 的环境中，不同的 DevOps 工具在运行之前，都必须先完成 Azuore 账号的登录认证。而且，最好是在非用户干预和交互的方式下，完成登录认证。在这种情况下就可以使用 Service Principal 的方式，来完成 Azure 账号的登录认证。本文介绍如何创建一个用于在命令行登录认证 Azure 的 Service Principal。
 
 ## 创建 Service Principal
 
@@ -21,9 +21,7 @@ DevOps的工作流程中所需要到各种各样的命令行工具，在 Azure �
 
 ```bash
 az ad sp create-for-rbac --name azure-sp-4-devops \
-
 --role Contributor \
-
 --scopes /subscriptions/${SUBSCRIPTION}/resourceGroups/${RESOURCE_GROUP}
 ```
 
@@ -69,15 +67,10 @@ TENANT_ID=$(echo $SERVICE_PRINCIPAL_JSON | jq -r '.tenant')
 
 ```bash
 az login \
-
 --service-principal \
-
 --tenant $TENANT_ID \
-
 --username $SERVICE_PRINCIPAL \
-
 --password $SERVICE_PRINCIPAL_SECRET \
-
 --output table
 ```
 
