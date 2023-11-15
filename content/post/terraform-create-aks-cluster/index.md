@@ -61,7 +61,7 @@ terraform login
 
 ## 创建 AKS 集群
 
-本文使用的样例代码在 [GitHub](<https://github.com/martinliu/azure-labs/tree/main/lab02) 上，你可以直接使用这个样例代码，也可以参考这个样例代码，自己创建一个 AKS 集群。
+本文使用的样例代码在 [GitHub](https://github.com/martinliu/azure-labs/tree/main/lab02) 上，你可以直接使用这个样例代码，也可以参考这个样例代码，自己创建一个 AKS 集群。
 
 下面是样例代码中的 `main.tf` 文件，这个文件中包含了创建 AKS 集群的所有必要的配置。
 
