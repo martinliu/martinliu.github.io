@@ -1,5 +1,5 @@
 ---
-title: "先睹为快由 Azure OpenAI 驱动的 Elastic 可观测性‘AI 助理’"
+title: "先睹为快 Azure OpenAI 驱动的 Elastic 可观测性 ‘AI 助理’"
 date: 2023-12-05T13:10:43+08:00
 description:  Elastic 可观测性解决方案中的 AI 助理目前还处于技术预览阶段，本文将介绍基本的配置和使用体验。
 slug: elastic-elastic-obs-ai-assistant-aoai
@@ -21,12 +21,19 @@ toc: true
 
 我最近好在学习微软的 Azure OpenAI 服务，在我的 Azure 环境中，已经创建了一个 OpenAI 服务，可以用于AI Assistant 的测试。因此，我就想看看 Elastic 的 AI Assistant 和 Azure 的 OpenAI 服务结合起来的效果如何。
 
+![](AIOps_blog-720x420.png)
+
 ## Elastic 可观测性的 AI Assistant
 
-它有两个使用场景：
+它有两个使用方式：
 
 1. Contextual insights ： 在可观测性 APP 的界面中，在很多特定的位置，都可以点击右上角的 AI Assistant 链接，然后进入当前界面的上下文分析，在日志和 APM 中都已经做了集成。此功能的目标是：帮你理解错误日志和指标信息，并尽可能的给你一定的解释和建议。
-2. Chat ： 以可观测性数据为基础，你可以请求机器人为你汇总、分析、和可视化数据。从而得到你想要的结果，可能是为了制作某个报表，也可以能是开始探索分析某个性能问题。
+   1. Universal Profiling - 解释了车队中最昂贵的库和函数，并提供优化建议。
+   2. 应用性能监控（APM） - 解释了APM错误并提供纠正建议。
+   3. 基础设施可观测性 （Infrastructure observability）- 解释了在主机上运行的进程。
+   4. 日志 （log）- 解释了日志消息并生成搜索模式以查找类似问题。
+   5. 告警 （alerting） - 为日志速率变化提供可能的原因和纠正建议。
+2. Chat 聊天会话 ： 以可观测性数据为基础，你可以请求机器人为你汇总、分析、和可视化数据。从而得到你想要的结果，可能是为了制作某个报表，也可以能是开始探索分析某个性能问题。
 
 运行这个功能的前提条件：
 
@@ -62,6 +69,10 @@ https://{your-resource-name}.openai.azure.com/openai/deployments/{deployment-id}
 ```
 
 其中，`{your-resource-name}` 是你创建的 Azure OpenAI 服务的名称，`{deployment-id}` 是你创建的 Azure OpenAI 服务的部署 ID（即名称），`{api-version}` 是你创建的 Azure OpenAI 服务的 API 版本。这里的 `{deployment-id}` 与 `{api-version}` 有一定的排列组合，某些组合是不工作的，我当前的选择是可以工作：`gpt4（32k 0613 版本） 和 2023-07-01-preview`
+
+```
+https://ai4elasticstack.openai.azure.com/openai/deployments/gpt432k0613/chat/completions?api-version=2023-07-01-preview
+```
 
 这里配置完 URL 和 API 秘钥之后，点击“测试”页面，如果一切正常，你会看到一个绿色的正常调用 OpenAI 的返回。这样你的 AI Assistant 就可以正常工作了。
 
@@ -135,10 +146,46 @@ Elastic Assistant ：这个错误信息表示 Metricbeat 无法获取 Docker 容
 
 我并没有继续这个会话，如果继续问答下去的话，如果 AI Assistant 的聊天内容总是我所期望的正确的结果内容；那么，很可能我们就不需要在去各种界面里到处点击、查看和分析各种数据图表和原始数据了。假如以后接入了自然语音的输入界面，那么，未来这种排错和分析场景还确实是一种比较科幻的感觉。
 
+AI助手使用函数通过文本、数据和可视化组件在聊天对话中包含相关上下文。您和AI助手都可以提出函数建议。您还可以编辑AI助手的函数建议并检查函数响应。
+
+以下表格列出了可用的函数：
+
+* summarize ：总结对话的部分。
+
+* recall ：回顾先前的学习。
+
+* lens ：使用Lens创建自定义可视化，可以添加到仪表板中。
+
+* elasticsearch ：代表您调用Elasticsearch API。
+
+* kibana ：代表您调用Kibana API。
+
+* alerts ：获取可观测性的警报。
+
+* get_apm_timeseries ：显示任何服务或所有服务及其任何或所有依赖项的不同APM指标（如吞吐量、故障率或延迟）。既显示为时间序列，也显示为单一统计数据。此外，该函数返回任何更改，如峰值、步进和趋势更改或下降。您还可以使用它通过请求两个不同的时间范围，或者例如两个不同的服务版本来比较数据。
+
+* get_apm_error_document ：根据分组名称获取示例错误文档。这还包括错误的堆栈跟踪，这可能提示错误的原因。
+
+* get_apm_correlations ：获取在前景集中比背景集更突出的字段值。这对于确定哪些属性（例如error.message、service.node.name或transaction.name）对高延迟的贡献是有用的。另一个选项是基于时间的比较，您可以在更改点之前和之后进行比较。
+
+* get_apm_downstream_dependencies ：获取服务的下游依赖项（服务或未被检测的后端）。通过返回span.destination.service.resource和service.name两者将下游依赖项名称映射到服务。如果需要，可以使用此功能进一步深入挖掘。
+
+* get_apm_service_summary ： 获取单个服务的摘要，包括语言、服务版本、部署、环境以及它运行的基础设施。例如，pod的数量和它们的下游依赖项列表。它还返回活动警报和异常。
+
+* get_apm_services_list ：获取受监控服务的列表，它们的健康状态和警报。
+
 ## 总结
 
 由于时间有限，我并没有做知识库的导入，从文档中看到，知识库私域信息的注入基本上是这样的过程：首先将知识库文档整理后导入到 Elasticsearch 的一个索引中，然后使用结合 Elasticsearch 本身的 ELSER 自然语音处理能力和 OpenAI 的理解推理能力，来支撑 AI 辅助分析排查问题的过程。
 
 以上功能测试的配置非常简单，在 Elastic Cloud 的环境中，参考本文，你应该在 10 分钟内就可以完成所有配置。从上下文分析和聊天的两个场景中，我们可以很快的找到 AI 辅助运维的感觉。
+
+> 参考文章 ：
+>
+> * <https://www.elastic.co/guide/en/observability/current/obs-ai-assistant.html>
+> * <https://www.youtube.com/watch?v=AQ4sPC_O2Ck&ab_channel=Elastic>
+> * <https://www.elastic.co/blog/context-aware-insights-elastic-ai-assistant-observability>
+> * <https://www.elastic.co/blog/whats-new-elastic-observability-8-9-0>
+> * <https://www.elastic.co/blog/whats-new-elastic-observability-8-10-0>
 
 Feature picture ❤️ cottonbro studio : <https://www.pexels.com/zh-cn/photo/6153354/>
