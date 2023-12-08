@@ -5,7 +5,7 @@ description = "随着国内开源软件事业的蓬勃发展，DevRel成为了�
 author = "Martin Liu"
 categories = ["Blog"]
 tags = ["开发者", "开源", "DevRel"]
-image = "https://elasticstack-1300734579.cos.ap-nanjing.myqcloud.com/2021-10-05-people-g95677a868_1920.jpg"
+image = "2021-10-05-people-g95677a868_1920.jpg"
 +++
 国内很多公司比较多认同的是这样一些职位：开发者社区运营、技术品牌运营、开发者市场运营等，这些都是偏运营的职位。在挺多的职位描述中，往往只需要比较少的工作经验。
 
