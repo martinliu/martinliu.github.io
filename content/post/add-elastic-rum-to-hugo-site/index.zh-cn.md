@@ -3,7 +3,7 @@ title: "为 Hugo 网站添加 Elastic RUM 用户体验监控"
 date: 2023-12-08T09:44:13+08:00
 description: RUM 对于网站的用户体验监控非常重要，本文介绍如何为 Hugo 网站添加 Elastic RUM 监控。
 slug: add-elastic-rum-to-hugo-site
-image: 
+image: pexels-amina-filkins-5424636.jpg
 categories:
     - SRE
 tags:
@@ -23,7 +23,7 @@ Elastic RUM 的优势包括：
 
 1. **实时性能监控：** Elastic RUM 提供实时性能监控，使你能够迅速发现并解决用户可能遇到的性能问题。
 
-2. **端到端可观察性：** 与 Elastic Stack 的其他组件集成，Elastic RUM 可以与日志、指标和其他数据源一起使用，为你提供端到端的可观察性，帮助你全面了解应用程序的运行状况。
+2. **端到端可观测性：** 与 Elastic Stack 的其他组件集成，Elastic RUM 可以与日志、指标和其他数据源一起使用，为你提供端到端的可观测性，帮助你全面了解应用程序的运行状况。
 
 3. **用户行为分析：** Elastic RUM 能够捕获用户与应用程序的交互信息，使你能够分析用户行为、浏览模式和访问路径，从而优化用户体验。
 
@@ -33,7 +33,7 @@ Elastic RUM 的优势包括：
 
 Elastic RUM 通过提供实时性能监控和与 Elastic Stack 的集成，帮助开发人员和运维团队更好地理解和优化用户体验，提高应用程序的性能和可用性。
 
-## Elastic APM 真实用户体验监控概述
+## Elastic RUM 概述
 
 Elastic APM实时用户体验监控（RUM）JavaScript代理提供了对你的Web应用程序的详细性能指标和错误跟踪。它内置了对流行平台和框架的支持，并提供了用于自定义仪表化的API。
 
@@ -54,7 +54,7 @@ Elastic APM实时用户体验监控（RUM）JavaScript代理提供了对你的We
 * 分布式跟踪
 * 拆分指标
 
-## Elastic RUM 准备 JS Agent 代码
+## 准备 JS Agent 代码
 
 本文以 Hugo 网站为例，介绍如何为 Hugo 网站添加 Elastic RUM 监控。我使用 Elastic Cloud 的 SaaS 服务作为数据存储和分析平台，你也可以使用自己搭建的 Elastic Stack 集群。
 
@@ -109,7 +109,7 @@ Elastic APM实时用户体验监控（RUM）JavaScript代理提供了对你的We
 
 ## Hugo 站点的改造
 
-根据你所使用的 theme 的不同，你需要找到在 `footer` 中添加 Elastic RUM 的 JavaScript 代码的位置。根据我的主题文档的介绍：<https://stack.jimmycai.com/config/header-footer>。
+根据你所使用的 theme 的不同，你需要找到在 `footer` 中添加 Elastic RUM 的 JavaScript 代码的位置。根据我的Hugo主题用户文档的介绍：<https://stack.jimmycai.com/config/header-footer>。
 
 我在 Hugo 网站的根目录下创建了目录：`layouts/partials/footer`，然后创建了文件：`custom.html`，并将 Elastic RUM 的 JavaScript 代码添加到了这个文件中。
 
@@ -117,7 +117,7 @@ Elastic APM实时用户体验监控（RUM）JavaScript代理提供了对你的We
 
 ## Elastic RUM 的效果
 
-在完成了以上的步骤后，我们可以在 Elastic Cloud 的 APM 页面上看到 Hugo 网站的用户体验监控数据了。
+在完成了以上的步骤后，我们可以在 Elastic Cloud 的 RUM 和 APM 页面上看到 Hugo 网站的用户体验监控数据了。
 
 点击Kibana界面左侧导航栏里的 `User Experience 仪表板` 就可以看到下图。
 
@@ -165,7 +165,7 @@ JavaScript错误可能对用户在你的网站上的体验产生负面影响。�
 
 点击Kibana界面左侧导航栏里的 `APM 服务` ，选择我的 blog 的服务名称，就可以看到下图。
 
-![Elastic APM RUM](elastic-cloud-apm-rum-3.png)
+![Elastic APM](elastic-cloud-apm-rum-3.png)
 
 由于 Elastic RUM 和 Elastic APM 实现的是全链路的追踪，如果我的 Blog 会访问到其他后台服务，而且那些后台服务也接入了 APM 监控，那么在 APM 的界面里，就可以看到端到端的追踪监控视图。
 
@@ -178,13 +178,15 @@ JavaScript错误可能对用户在你的网站上的体验产生负面影响。�
 
 当然，我们还可以根据这些数据，使用 Elastic 的机器学习进行异常检查分析，从而并不需要为任何一个指标的数值做阀值告警管理；当然如果某个指标恰好是我们所需要的 SLI，那么我们可以在 SLO 管理功能中，其设置 SLO 的数值，并增加告警策略。
 
+在完成了以上配置之后，Elastic RUM 帮助我发现了一个问题：Blog 网站的部分图片使用了腾讯云的对象存储，我的腾讯云账户由于欠费，对象存储服务应该是已经停止服务一段时间了，因此部分图片已经无法正常加载，影响到很多篇文章上图片的正常显示。我会根据 Elastic RUM 的错误告警，尽快将那些无法加载图片的文章页面进行修复。
+
 ## 总结
 
 本文介绍了如何为 Hugo 网站添加 Elastic RUM 监控。Elastic RUM 是 Elastic Observability 中的实时用户体验监控（Real User Monitoring，RUM）功能，是 Elastic Stack 中的一部分。
 
-如果读者也运行着 Hugo 的网站，可以参考本文，完成 Elastic RUM 的接入。当然这个过程也可以参考其他的静态网站生成器，只是具体的实现方式可能有所不同。这里所接受的知识和配置方式，也同样适用于你所工作的其他前端项目。
+如果读者也运行着 Hugo 的网站，可以参考本文，完成 Elastic RUM 的接入。当然其他的静态网站生成器构建的网站也可以参考这个过程，只是具体的实现方式可能有所不同。这里所介绍的知识和配置方式，也同样适用于你正在工作的前端项目。
 
-# 参考资料
+## 参考资料
 
 * [Elastic RUM 产品文档](https://www.elastic.co/guide/en/observability/current/user-experience.html)
 * [Real User Monitoring JavaScript Agent 配置参考](https://www.elastic.co/guide/en/apm/agent/rum-js/current/configuration.html)
@@ -193,4 +195,4 @@ JavaScript错误可能对用户在你的网站上的体验产生负面影响。�
 * [Elastic Cloud APM 解决方案](https://www.elastic.co/cn/apm)
 * [Elastic Cloud APM RUM 概述](https://www.elastic.co/cn/apm/real-user-monitoring)
 
-Feature picture ❤️
+Feature picture ❤️ Amina Filkins: <https://www.pexels.com/photo/crop-man-with-documents-and-laptop-at-table-5424636/>
