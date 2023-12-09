@@ -5,7 +5,7 @@ description = "超融合技术线上学习训练营开营，用超融合解决�
 author = "Martin Liu"
 categories = ["DevOps"]
 tags = ["hci", "nutanix", "超融合"]
-image = "https://elasticstack-1300734579.cos.ap-nanjing.myqcloud.com/2022-01-04-th1.jpg"
+image = "img/cos/2022-01-04-th1.jpg"
 
 +++
 
@@ -25,7 +25,7 @@ image = "https://elasticstack-1300734579.cos.ap-nanjing.myqcloud.com/2022-01-04-
 
 从我个人角度看，我的对基于OpenStack的私有云持有消极的态度。虽然，OpenStack 给企业数据中心基础设施的建设路线带来了不小的影响；但是，它还是无法解决传统数据中心里经典的三层架构基础设施的三大根本痛点。
 
-![](https://elasticstack-1300734579.cos.ap-nanjing.myqcloud.com/2022-01-04-%E5%B9%BB%E7%81%AF%E7%89%872.JPG)
+![](img/cos/2022-01-04-%E5%B9%BB%E7%81%AF%E7%89%872.JPG)
 
 三层架构即由x86服务器层、网络层（以太网/SAN）和存储层所搭建的规模不大数量巨多的虚拟化/物理机集群资源池。由于虚拟化技术的成熟和普及，这些虚拟化集群资源池为业务应用提供了所需要的计算、存储和网络资源。在最近十几年的企业数据中心中处于主力架构，但是它有其核心的三大问题：
 
@@ -41,14 +41,14 @@ image = "https://elasticstack-1300734579.cos.ap-nanjing.myqcloud.com/2022-01-04-
 
 HCI系统是虚拟化、x86计算机、万兆以太网和超融合软件完美的组合。在你的工作环境中就存在着大量可用的机器，经过一定的挑选和准备之后，你就应该可以操练超融合技术了。
 
-![](https://elasticstack-1300734579.cos.ap-nanjing.myqcloud.com/2022-01-04-%E5%B9%BB%E7%81%AF%E7%89%873.JPG)
+![](img/cos/2022-01-04-%E5%B9%BB%E7%81%AF%E7%89%873.JPG)
 
 任何可以运行服务器虚拟化【esxi/kvm】软件的x86计算机都可以，最近10年以内采购的机器应该都可以适用。为了让其发挥应有的价值和意义，下面是一些建议选项：
 
 * 最低配置：cpu 桌面机 i5/i7级别起步，4个物理核，或更高配置；服务器推荐E3/E5的多核处理器起步，或者更优CPU；内存32 GB，或更多。
 * 建议配置：cpu尽量选择双路E5级别，或更新的CPU；单机内存建议128GB，或更多，或者按需增加。
 
-![](https://elasticstack-1300734579.cos.ap-nanjing.myqcloud.com/2022-01-04-%E5%B9%BB%E7%81%AF%E7%89%874.JPG)
+![](img/cos/2022-01-04-%E5%B9%BB%E7%81%AF%E7%89%874.JPG)
 
 磁盘选择是超融合系统的重点之一，通常包括SSD和机械磁盘，它是组成分布式存储服务的基础。对于使用RAID卡的服务器，RAID卡上需要删除所有盘的任何RAID配置，确保所有磁盘都直通给主板，SATA接口的主板，请直接按照先后顺序，先连接SSD磁盘，后连结机械盘。
 
@@ -65,7 +65,7 @@ HCI系统是虚拟化、x86计算机、万兆以太网和超融合软件完美�
 
 ## 准备工作
 
-![](https://elasticstack-1300734579.cos.ap-nanjing.myqcloud.com/2022-01-04-%E5%B9%BB%E7%81%AF%E7%89%875.JPG)
+![](img/cos/2022-01-04-%E5%B9%BB%E7%81%AF%E7%89%875.JPG)
 
 必须在 https://next.nutanix.com 注册社区账号，记录登录邮箱和密码备用。访问 [Download Community Edition | Nutanix Community](https://next.nutanix.com/discussion-forum-14/download-community-edition-38417) 这个帖子，下载 Installer ISO  https://download.nutanix.com/ce/2020.09.16/ce-2020.09.16.iso 。将这个ISO文件刻录在启动U盘中。安装前确保网线已经连结正常，且能访问Internet。
 
@@ -75,7 +75,7 @@ Nutanix CE安装文件也可以在这个网盘中下载：链接：https://pan.b
 
 Nutanix CE版的安装可能会持续1小时左右，过程中包含比较多的自动化操作流程，基本需要用户少量的输入操作，其他更多的是等待时间。
 
-![](https://elasticstack-1300734579.cos.ap-nanjing.myqcloud.com/2022-01-04-%E5%B9%BB%E7%81%AF%E7%89%876.JPG)
+![](img/cos/2022-01-04-%E5%B9%BB%E7%81%AF%E7%89%876.JPG)
 
 下面是必须要关注的注意事项，相当于checklist：
 
@@ -85,7 +85,7 @@ Nutanix CE版的安装可能会持续1小时左右，过程中包含比较多的
 4. 用Linux Live CD中的图形化磁盘分区工具，检查所有磁盘的空间，SMART信息，如果磁盘已经可见的老化或者错误，就替换掉在进行后续的装机。删除掉所有磁盘中的分区。重启。
 5. 插入Nutanix CE社区版安装U盘。开始正式的刷机流程。
 
-![](https://elasticstack-1300734579.cos.ap-nanjing.myqcloud.com/2022-01-04-disk.png)
+![](img/cos/2022-01-04-disk.png)
 
 选项介绍：
 
@@ -95,21 +95,21 @@ Nutanix CE版的安装可能会持续1小时左右，过程中包含比较多的
 * CVM ip：超融合软件运行的网段IP，必须通Internet。
 * 不要选则创建单节点集群选项。
 
-![](https://elasticstack-1300734579.cos.ap-nanjing.myqcloud.com/2022-01-04-license.png)
+![](img/cos/2022-01-04-license.png)
 
 阅读完用户许可证全文后，选中接受，并且点击开始。Nutanix CE是一个裁剪版本有限制的软件，本文建议用于开发测试环境。
 
-![](https://elasticstack-1300734579.cos.ap-nanjing.myqcloud.com/2022-01-04-hypervisor.png)
+![](img/cos/2022-01-04-hypervisor.png)
 
 开始了物理机的虚拟化的安装，然后自动开始CVM的安装，CVM是一个虚拟机软件，会被自动启动和部分初始化。
 
-![](https://elasticstack-1300734579.cos.ap-nanjing.myqcloud.com/2022-01-04-end.png)
+![](img/cos/2022-01-04-end.png)
 
 最后，安装成功的话，拔出U盘，重启服务器。如果是多节点安装，每个节点都需重复这个过程，注意提前规划好Host Ip和CVM Ip的网段。
 
 ## 初始化配置
 
-![](https://elasticstack-1300734579.cos.ap-nanjing.myqcloud.com/2022-01-04-%E5%B9%BB%E7%81%AF%E7%89%8711.JPG)
+![](img/cos/2022-01-04-%E5%B9%BB%E7%81%AF%E7%89%8711.JPG)
 
 在安装完第一次重启的过程中，我们需要一些等待时间，逐步确认超融合系统的充分就绪，一下每个步骤必须顺序进行，不可跳跃进行：
 
@@ -133,7 +133,7 @@ Nutanix CE版的安装可能会持续1小时左右，过程中包含比较多的
 
 顺序只需一下基础的配置和功能操作。
 
-![](https://elasticstack-1300734579.cos.ap-nanjing.myqcloud.com/2022-01-04-%E5%B9%BB%E7%81%AF%E7%89%8713.JPG)
+![](img/cos/2022-01-04-%E5%B9%BB%E7%81%AF%E7%89%8713.JPG)
 
 1. 在浏览器中访问任一cvm的ip地址，使用默认用户名 admin 密码 nutanix/4u登录，立刻会让你修改 admin 的默认密码，使用并记录这个新密码备用。
 2. 用新密码登录。
@@ -148,11 +148,11 @@ Nutanix CE版的安装可能会持续1小时左右，过程中包含比较多的
 
 我个人喜欢在本地运行很多虚拟机的测试环境，属于 self-host 粉。我的虚拟机数量逐渐增加。从一个Intel NUC的单机微型测试机。 到单机联想工作站（双路E5CPU），到现在新增了两个某宝的组装兼容机，最后组成了三节点的Nutanix 超融合集群【vSphere 虚拟化】。个人实现多节点超融合集群的必要性因人而异，这里只是告诉大家，使用Nutanix CE在这些机器上是可行的。
 
-![](https://elasticstack-1300734579.cos.ap-nanjing.myqcloud.com/2022-01-04-%E5%B9%BB%E7%81%AF%E7%89%871.JPG)
+![](img/cos/2022-01-04-%E5%B9%BB%E7%81%AF%E7%89%871.JPG)
 
 下面是网购订单的统计信息，希望对于想自行攒机的朋友，或者对扩容利旧服务器的朋友有些帮助。
 
-![](https://elasticstack-1300734579.cos.ap-nanjing.myqcloud.com/2022-01-04-2021-12-29_12-32-49.png)
+![](img/cos/2022-01-04-2021-12-29_12-32-49.png)
 
 ## 下期预告
 
@@ -170,8 +170,8 @@ HCI系统的搭建还有很多问题值得一起探讨和学习，HCI超融合�
 
 HCI超融合技术对于了解它的人来说很火热，但是还有很多不太了解HCI的人；HCI的用户对它也有不同的使用场景和期望。请大家参与这个《中国超融合状态调查》，我们每月为参与本调查的朋友进行抽奖，抽奖结果在下次直播的时候公布。扫码参与调查。
 
-![](https://elasticstack-1300734579.cos.ap-nanjing.myqcloud.com/2022-01-04-dc.png)
+![](img/cos/2022-01-04-dc.png)
 
 我们为希望学习HCI技术的朋友们创建了一个qq群，希望可以给大家带来一定帮助。扫码加入我们的QQ群。
 
-![](https://elasticstack-1300734579.cos.ap-nanjing.myqcloud.com/2022-01-04-qq.png)
+![](img/cos/2022-01-04-qq.png)

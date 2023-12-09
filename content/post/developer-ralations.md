@@ -5,7 +5,7 @@ description = "随着国内开源软件事业的蓬勃发展，DevRel成为了�
 author = "Martin Liu"
 categories = ["Blog"]
 tags = ["开发者", "开源", "DevRel"]
-image = "2021-10-05-people-g95677a868_1920.jpg"
+image = "img/cos/2021-10-05-people-g95677a868_1920.jpg"
 +++
 国内很多公司比较多认同的是这样一些职位：开发者社区运营、技术品牌运营、开发者市场运营等，这些都是偏运营的职位。在挺多的职位描述中，往往只需要比较少的工作经验。
 
@@ -81,7 +81,7 @@ LEVEL 1: 非正式的 | 没有官方的开发者关系人员或规划，但一�
 
 尽管公司在做开发者关系时有各种不同的原因和动机，但不论他们怎样做，都是基于一套类似的技能和策略，我们称之为开发者关系的四个支柱。
 
-![DevRel的四大支柱](https://elasticstack-1300734579.cos.ap-nanjing.myqcloud.com/2021-10-05-cycle-of-developer-relations.webp)
+![DevRel的四大支柱](img/cos/2021-10-05-cycle-of-developer-relations.webp)
 
 “DevRel的四大支柱”
 
@@ -216,7 +216,7 @@ Phil Leggetter 将 AARRR 【[客户生命周期：成功获客的5个步骤](htt
 
 好了现在你可以使用‘DevRelOMeter’下面这个工具来测试一下，你自己的日常工作中都从事了以上那些工作，包括主动和被动的，看看你的工作性质是偏 Advocate 还是 Evangelist。
 
-![DevRelOMeter](https://elasticstack-1300734579.cos.ap-nanjing.myqcloud.com/2021-10-05-devrelometer.gif)
+![DevRelOMeter](img/cos/2021-10-05-devrelometer.gif)
 
 [点此进入测试页面](https://leggetter.github.io/devrelometer/)
 
@@ -258,7 +258,7 @@ Reto Meier是从谷歌的Android的生态系统方向考虑和描述DevRel的，
 
 最终，开发者关系负责你的平台的开发者体验。这将帮助开发者打造更好的产品，从而创造更好的用户体验，从而能构建更成功的应用程序，以及更成功的生态系统--这反过来又鼓励开发者打造更好的应用程序。
 
-![开发者关系的良性循环](https://elasticstack-1300734579.cos.ap-nanjing.myqcloud.com/2021-10-05-0_bE4D-7g4Eu2V84SP.png)
+![开发者关系的良性循环](img/cos/2021-10-05-0_bE4D-7g4Eu2V84SP.png)
 
 “开发者关系的良性循环”
 
@@ -286,7 +286,7 @@ Reto Meier是从谷歌的Android的生态系统方向考虑和描述DevRel的，
 
 一个繁荣的开发者生态系统需要一个由工程师组成的值得信赖的开发者关系团队，他们是第三方开发者和构建底层平台的工程和产品团队之间的接口。
 
-![开发者关系的持续的接口循环](https://elasticstack-1300734579.cos.ap-nanjing.myqcloud.com/2021-10-05-1__JYUgsgR0IYcbuLAAaqIHw.png)
+![开发者关系的持续的接口循环](img/cos/2021-10-05-1__JYUgsgR0IYcbuLAAaqIHw.png)
 
 “开发者关系的持续的接口循环”
 

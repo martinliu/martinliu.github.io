@@ -5,7 +5,7 @@ description = "进阶学习vSphere虚拟化与Nutanix社区版超融合平台的
 author = "Martin Liu"
 categories = ["DevOps"]
 tags = ["超融合", "HCI", "nutanix", "vsphere"]
-image = "https://elasticstack-1300734579.cos.ap-nanjing.myqcloud.com/2022-02-21-hci-nutanix.jpeg"
+image = "img/cos/2022-02-21-hci-nutanix.jpeg"
 +++
 
 本文总结了我从单机的 Home Lab 环境，发展到三节点 Nutanix 超融合混合盘集群的经验和教训。
@@ -170,7 +170,7 @@ image = "https://elasticstack-1300734579.cos.ap-nanjing.myqcloud.com/2022-02-21-
 ## 集群搭建流程
 
 
-![test machine](https://elasticstack-1300734579.cos.ap-nanjing.myqcloud.com/2022-02-21-WechatIMG1773.jpeg)
+![test machine](img/cos/2022-02-21-WechatIMG1773.jpeg)
 
 ### 准备工作
 
@@ -196,14 +196,14 @@ image = "https://elasticstack-1300734579.cos.ap-nanjing.myqcloud.com/2022-02-21-
 3. Nutanix 安装盘启动，观察网卡 IP 地址获取
 4. 设置 Hypervisor 类型、磁盘布局、集群信息等，建议不要勾选创建点节点集群的选项，后期手工创建更可控。
 
-![setup](https://elasticstack-1300734579.cos.ap-nanjing.myqcloud.com/2022-02-21-WechatIMG1774.jpeg)
+![setup](img/cos/2022-02-21-WechatIMG1774.jpeg)
 5. 同意软件许可
 6. 等待 Hypervisor （ahv一般较快，或者vsphere）成功安装
 
 
-![hypervisor 安装过程中](https://elasticstack-1300734579.cos.ap-nanjing.myqcloud.com/2022-02-21-WechatIMG1775.jpeg)
+![hypervisor 安装过程中](img/cos/2022-02-21-WechatIMG1775.jpeg)
 
-![hypervisor 安装完毕](https://elasticstack-1300734579.cos.ap-nanjing.myqcloud.com/2022-02-21-WechatIMG1776.jpeg)
+![hypervisor 安装完毕](img/cos/2022-02-21-WechatIMG1776.jpeg)
 
 5. 安装后重启服务器，首次 host 启动，观察 cvm 启动过程和结果，等待 CVM 就绪，确认 CVM 上硬盘的挂载情况
 6. 登录后确保集群处于未配置状态
@@ -223,18 +223,18 @@ image = "https://elasticstack-1300734579.cos.ap-nanjing.myqcloud.com/2022-02-21-
 
 - 【Hypervisor】安装过程中 screen is terminating
 
-![terminal screen](https://elasticstack-1300734579.cos.ap-nanjing.myqcloud.com/2022-02-21-WechatIMG1777.jpeg)
+![terminal screen](img/cos/2022-02-21-WechatIMG1777.jpeg)
 
 - 【vSphere虚拟化】虚拟化安装成功，但是重启后 cvm 创建失败
 
-![failed-install](https://elasticstack-1300734579.cos.ap-nanjing.myqcloud.com/2022-02-21-WechatIMG1778.jpeg)
+![failed-install](img/cos/2022-02-21-WechatIMG1778.jpeg)
 
-![CVM failed](https://elasticstack-1300734579.cos.ap-nanjing.myqcloud.com/2022-02-21-2021-11-27_22-00-44.png)
+![CVM failed](img/cos/2022-02-21-2021-11-27_22-00-44.png)
 
 - 【vSphere虚拟化】cvm 创建成功且运行正常，但是不能正常挂载 HDD
 
-![CVM lost one hdd](https://elasticstack-1300734579.cos.ap-nanjing.myqcloud.com/2022-02-21-2022-02-21_19-17-50.png)
-![CVM lost one HDD](https://elasticstack-1300734579.cos.ap-nanjing.myqcloud.com/2022-02-21-2022-02-21_19-16-35.png)
+![CVM lost one hdd](img/cos/2022-02-21-2022-02-21_19-17-50.png)
+![CVM lost one HDD](img/cos/2022-02-21-2022-02-21_19-16-35.png)
 
 ### ESXi 安装后 CVM 创建失败/HDD挂载问题
 
@@ -294,11 +294,11 @@ CVM 正常运行后，才可以作为空白节点加入群集，或者用于创�
 
 HCI超融合技术对于了解它的人来说很火热，但是还有很多不太了解HCI的人；HCI的用户对它也有不同的使用场景和期望。请大家参与这个《中国超融合状态调查》，我们每月为参与本调查的朋友进行抽奖，抽奖结果在下次直播的时候公布。扫码参与调查。
 
-![CVM HDD](https://elasticstack-1300734579.cos.ap-nanjing.myqcloud.com/2022-01-04-dc.png)
+![CVM HDD](img/cos/2022-01-04-dc.png)
 
 我们为希望学习HCI技术的朋友们创建了一个qq群，希望可以给大家带来一定帮助。扫码加入我们的QQ群。
 
-![CVM HDD](https://elasticstack-1300734579.cos.ap-nanjing.myqcloud.com/2022-01-04-qq.png)
+![CVM HDD](img/cos/2022-01-04-qq.png)
 
 
 ## 下期预告

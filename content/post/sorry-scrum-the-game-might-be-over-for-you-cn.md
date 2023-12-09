@@ -5,7 +5,7 @@ description = "市场正在向新的方向转变，Scrum还能找到自己的空
 author = "Martin Liu"
 categories = ["DevOps"]
 tags = ["SAFe", "Kanban ", "Scrum"]
-image = "https://elasticstack-1300734579.cos.ap-nanjing.myqcloud.com/2021-04-10-0_IFV2UEaD1Vj4S_to.jpg"
+image = "img/cos/2021-04-10-0_IFV2UEaD1Vj4S_to.jpg"
 +++
 
 我们不可能忽视 Scrum 的知名度。多年来，Scrum 是全球大多数公司在敏捷框架中的首选；只有少数公司会挑战它。但最近，发生了一些变化，组织正在失去对Scrum的信任。在未能获得有意义的结果之后，在许多地方，人们正在用 SAFe、Kanban 或其他框架取代 Scrum。
@@ -47,7 +47,7 @@ image = "https://elasticstack-1300734579.cos.ap-nanjing.myqcloud.com/2021-04-10-
 
 我们以足球为例，在瓜迪奥拉(Pep Guardiola)的领导下，巴塞罗那在4年内赢得了14个冠军。从2008年到2012年，巴塞罗那绝对是世界上最强的足球队。很多人将成功归功于瓜迪奥拉执教球队的方式。其中一个显著的方面是主导比赛；巴塞罗那经常拥有70%以上的控球率。这是否意味着将 ["Tiki Taka "](https://en.wikipedia.org/wiki/Tiki-taka) 运用到另外一支球队后，他们就能达到类似的效果呢？
 
-![](https://elasticstack-1300734579.cos.ap-nanjing.myqcloud.com/2021-04-10-1_0UHTWnUk-eJ16jd7vGqPXw.png)
+![](img/cos/2021-04-10-1_0UHTWnUk-eJ16jd7vGqPXw.png)
 
 瓜迪奥拉从2013年到2016年执教拜仁慕尼黑，他应用了和巴塞罗那一样的风格。然而，所取得的成功与巴萨不相上下；在拜仁慕尼黑，他获得了5个国家冠军，却没有获得欧冠冠军。要想实现伟大的成就，仅仅靠一个‘流程’是不够的，还需要其它更多的东西。
 
@@ -94,7 +94,7 @@ Scrum 自称简单易行，其实很难掌握。几乎我认识的每个人都�
 
 高层管理人员们往往无法充分给个人授权，因为他们想继续自己的控制。所以他们才会走捷径。首先，改变执行力。然后，如果 Scrum 证明了它的价值，那再来改变文化。好吧，这样做是行不通的，结果是大家都很沮丧。当Scrum 变成了一个过场（译者注：此处突出一下形同虚设的空架子流程的含义，请酌情理解），角色就会变异成毫无意义的东西。让我来分享一下我的一些心得。
 
-![](https://elasticstack-1300734579.cos.ap-nanjing.myqcloud.com/2021-04-10-0-vZwKs-yTiUrjsf1F.jpeg)
+![](img/cos/2021-04-10-0-vZwKs-yTiUrjsf1F.jpeg)
 
 Photo by [Maria Teneva](https://unsplash.com/@miteneva?utm_source=medium&utm_medium=referral) on [Unsplash](https://unsplash.com/?utm_source=medium&utm_medium=referral)
 
@@ -136,7 +136,7 @@ Scrum Master 和其他角色也没有什么不同。要找到一个人，他能�
 
 我很害怕 SAFe，因为它是一个沉重的流程，它看起来一点也不像是一个敏捷的方法。这台沉重的机器怎么能让人背得滚瓜烂熟呢？我真不知道他们凭什么敢说这也是敏捷。
 
-![](https://elasticstack-1300734579.cos.ap-nanjing.myqcloud.com/2021-04-10-0_Zm_LEQK00gf_arR-.png)
+![](img/cos/2021-04-10-0_Zm_LEQK00gf_arR-.png)
 
 [SAFe 5.0](https://www.scaledagileframework.com/)
 

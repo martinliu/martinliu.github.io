@@ -24,7 +24,7 @@ Elastic 资深开发者布道师，中国 DevOps 社区创始人，《DevOps Han
 - 邮箱 - liu.martin@outlook.com
 - 微信公众号 - DevOps教练（MyDevOps）
 
-![微信公众号 - MyDevOps](https://elasticstack-1300734579.cos.ap-nanjing.myqcloud.com/2021-05-11-DevOps-qrc-mydevops.jpg)
+![微信公众号 - MyDevOps](img/cos/2021-05-11-DevOps-qrc-mydevops.jpg)
 
 ## 社区布道记录
 
@@ -122,7 +122,7 @@ Elastic 资深开发者布道师，中国 DevOps 社区创始人，《DevOps Han
 
 翻译书籍 [《DevOps Handbook》](https://itrevolution.com/book/the-devops-handbook/) 来自 *IT Revolution Press*
 
-![DevOps Handbook](https://elasticstack-1300734579.cos.ap-nanjing.myqcloud.com/2021-05-11-025310.jpg)
+![DevOps Handbook](img/cos/2021-05-11-025310.jpg)
 
 已出版，网上有售。
 
@@ -133,7 +133,7 @@ Elastic 资深开发者布道师，中国 DevOps 社区创始人，《DevOps Han
 
 翻译书籍 《SRE Workbook》来自  O'Reilly Media
 
-![SRE Workbook](https://elasticstack-1300734579.cos.ap-nanjing.myqcloud.com/2021-05-11-025343.jpg) 
+![SRE Workbook](img/cos/2021-05-11-025343.jpg) 
 
 已经出版，网上有售。
 
@@ -142,7 +142,7 @@ Elastic 资深开发者布道师，中国 DevOps 社区创始人，《DevOps Han
 
 ### 《DevOps Paradox》 - 《DevOps 悖论》
 
-![DevOps Pradox](https://elasticstack-1300734579.cos.ap-nanjing.myqcloud.com/2021-04-01-Screen%20Shot%202021-04-01%20at%208.53.23%20PM.jpg)
+![DevOps Pradox](img/cos/2021-04-01-Screen%20Shot%202021-04-01%20at%208.53.23%20PM.jpg)
 
 已经出版，网上有售。
 

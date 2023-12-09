@@ -40,7 +40,7 @@ K8s在2017年底为这场速战速决的站点话上了句号，结果是所有�
 
 ### 可扩展的单体应用架构
 
-![Screen Shot 2018-01-12 at 11.42.23 P](http://martinliu.qiniudn.com/images/Screen%20Shot%202018-01-12%20at%2011.42.23%20PM.png)
+![Screen Shot 2018-01-12 at 11.42.23 P](images/Screen%20Shot%202018-01-12%20at%2011.42.23%20PM.png)
 
 关键词：
 
@@ -57,7 +57,7 @@ K8s在2017年底为这场速战速决的站点话上了句号，结果是所有�
 
 ### 可扩展的微服务架构
 
-![Screen Shot 2018-01-12 at 11.50.47 P](http://martinliu.qiniudn.com/images/Screen%20Shot%202018-01-12%20at%2011.50.47%20PM.png)
+![Screen Shot 2018-01-12 at 11.50.47 P](images/Screen%20Shot%202018-01-12%20at%2011.50.47%20PM.png)
 
 上图出处：Wheel of Doom ，来自[ A Journey into Microservices by Hailo](https://sudo.hailoapp.com/services/2015/03/09/journey-into-a-microservice-world-part-3/)
 
@@ -69,7 +69,7 @@ ON
 BARE METAL
 
 
-![Screen Shot 2018-01-12 at 11.54.26 P](http://martinliu.qiniudn.com/images/Screen%20Shot%202018-01-12%20at%2011.54.26%20PM.png)
+![Screen Shot 2018-01-12 at 11.54.26 P](images/Screen%20Shot%202018-01-12%20at%2011.54.26%20PM.png)
 
 
 
@@ -90,7 +90,7 @@ what really fuels the consumption of open
 source infrastructure.”
 --Brian Stein (Rackspace VP - 2017)
 
-![Screen Shot 2018-01-12 at 11.58.36 P](http://martinliu.qiniudn.com/images/images/Screen%20Shot%202018-01-12%20at%2011.58.36%20PM.png)
+![Screen Shot 2018-01-12 at 11.58.36 P](images/images/Screen%20Shot%202018-01-12%20at%2011.58.36%20PM.png)
 
 
 ### 应用+PaaS/aPaaS+IaaS
@@ -107,7 +107,7 @@ PLATFORM
 controls back in the hands of developers so they can
 self-provision, so there aren’t a lot of roadblocks in their way. But it gives a lot of guardrails.”
 -- Chip Childers (Cloud Foundry Foundation CTO - 2017)
-![Screen Shot 2018-01-13 at 12.03.37 A](http://martinliu.qiniudn.com/images/Screen%20Shot%202018-01-13%20at%2012.03.37%20AM.png)
+![Screen Shot 2018-01-13 at 12.03.37 A](images/Screen%20Shot%202018-01-13%20at%2012.03.37%20AM.png)
 
 ### 容器编排器+IaaS
 
@@ -126,7 +126,7 @@ and that’s the opinionated developer
 experience.”
 --Brendan Burns (Kubernetes Cofounder - 2017)
 
-![Screen Shot 2018-01-13 at 12.08.37 A](http://martinliu.qiniudn.com/images/Screen%20Shot%202018-01-13%20at%2012.08.37%20AM.png)
+![Screen Shot 2018-01-13 at 12.08.37 A](images/Screen%20Shot%202018-01-13%20at%2012.08.37%20AM.png)
 
 
 ### CaaS+IaaS
@@ -138,7 +138,7 @@ ON
 INFRASTRUCTURE
 PLATFORM
 (IaaS)
-![Screen Shot 2018-01-13 at 12.10.28 A](http://martinliu.qiniudn.com/images/Screen%20Shot%202018-01-13%20at%2012.10.28%20AM.png)
+![Screen Shot 2018-01-13 at 12.10.28 A](images/Screen%20Shot%202018-01-13%20at%2012.10.28%20AM.png)
 
 
 ### CaaS+裸金属服务器
@@ -149,7 +149,7 @@ PLATFORM
 ON
 BARE METAL
 
-![Screen Shot 2018-01-13 at 12.11.42 A](http://martinliu.qiniudn.com/images/Screen%20Shot%202018-01-13%20at%2012.11.42%20AM.png)
+![Screen Shot 2018-01-13 at 12.11.42 A](images/Screen%20Shot%202018-01-13%20at%2012.11.42%20AM.png)
 
 ### FaaS+IaaS
 
@@ -164,7 +164,7 @@ PLATFORM
 > “If your PaaS can efficiently start instances in 20ms that run for half a second, then call it serverless.”
 --Adrian Cockcroft-(AWS VP - 2016)
 
-![Screen Shot 2018-01-13 at 12.13.46 A](http://martinliu.qiniudn.com/images/Screen%20Shot%202018-01-13%20at%2012.13.46%20AM.png)
+![Screen Shot 2018-01-13 at 12.13.46 A](images/Screen%20Shot%202018-01-13%20at%2012.13.46%20AM.png)
 
 
 ### FaaS+CaaS
@@ -176,7 +176,7 @@ ON
 CONTAINER
 PLATFORM
 (CaaS)
-![Screen Shot 2018-01-13 at 6.43.06 A](http://martinliu.qiniudn.com/images/Screen%20Shot%202018-01-13%20at%206.43.06%20AM.png)
+![Screen Shot 2018-01-13 at 6.43.06 A](images/Screen%20Shot%202018-01-13%20at%206.43.06%20AM.png)
 
 ### FaaS+CaaS+IaaS
 
@@ -189,21 +189,21 @@ ON
 INFRASTRUCTURE PLATFORM
 (IaaS)
 
-![Screen Shot 2018-01-13 at 6.44.49 A](http://martinliu.qiniudn.com/images/Screen%20Shot%202018-01-13%20at%206.44.49%20AM.png)
+![Screen Shot 2018-01-13 at 6.44.49 A](images/Screen%20Shot%202018-01-13%20at%206.44.49%20AM.png)
 
 
 ## 平台频谱 - PLATFORM SPECTRUM
 
 从左到右，资源的抽象程度不断提高；最左侧的弹性最高，最右侧的速率最高。
-![Screen Shot 2018-01-13 at 6.47.36 A](http://martinliu.qiniudn.com/images/Screen%20Shot%202018-01-13%20at%206.47.36%20AM.png)
+![Screen Shot 2018-01-13 at 6.47.36 A](images/Screen%20Shot%202018-01-13%20at%206.47.36%20AM.png)
 
 下图是不同类型里的厂商和软件。
-![Screen Shot 2018-01-13 at 6.48.19 A](http://martinliu.qiniudn.com/images/Screen%20Shot%202018-01-13%20at%206.48.19%20AM.png)
+![Screen Shot 2018-01-13 at 6.48.19 A](images/Screen%20Shot%202018-01-13%20at%206.48.19%20AM.png)
 
 ## 容器平台层次
 
 容器编排器的层次如下：
-![Screen Shot 2018-01-13 at 6.49.36 A](http://martinliu.qiniudn.com/images/Screen%20Shot%202018-01-13%20at%206.49.36%20AM.png)
+![Screen Shot 2018-01-13 at 6.49.36 A](images/Screen%20Shot%202018-01-13%20at%206.49.36%20AM.png)
 
 - User workloads 用户工作负载
 - Distributed container management 分布式容器管理
@@ -211,7 +211,7 @@ INFRASTRUCTURE PLATFORM
 - Container agnostic infrastructure 容器无关性基础架构
 
 容器平台的层次如下：
-![Screen Shot 2018-01-13 at 6.51.23 A](http://martinliu.qiniudn.com/images/Screen%20Shot%202018-01-13%20at%206.51.23%20AM.png)
+![Screen Shot 2018-01-13 at 6.51.23 A](images/Screen%20Shot%202018-01-13%20at%206.51.23%20AM.png)
 
 CONTAINER PLATFORM
 
@@ -224,7 +224,7 @@ CONTAINER PLATFORM
 
 
 分布式操作系统的层次如下：
-![Screen Shot 2018-01-13 at 6.52.52 A](http://martinliu.qiniudn.com/images/Screen%20Shot%202018-01-13%20at%206.52.52%20AM.png)
+![Screen Shot 2018-01-13 at 6.52.52 A](images/Screen%20Shot%202018-01-13%20at%206.52.52%20AM.png)
 
 
 ## 容器平台功能点
@@ -435,12 +435,12 @@ MULTI-INFRASTRUCTURE
 
 
 市场里的主要技术厂商如下。
-![Screen Shot 2018-01-13 at 6.57.44 A](http://martinliu.qiniudn.com/images/Screen%20Shot%202018-01-13%20at%206.57.44%20AM.png)
+![Screen Shot 2018-01-13 at 6.57.44 A](images/Screen%20Shot%202018-01-13%20at%206.57.44%20AM.png)
 
 
 其它值得考虑的厂商如下。
 
-![Screen Shot 2018-01-13 at 6.58.36 A](http://martinliu.qiniudn.com/images/Screen%20Shot%202018-01-13%20at%206.58.36%20AM.png)
+![Screen Shot 2018-01-13 at 6.58.36 A](images/Screen%20Shot%202018-01-13%20at%206.58.36%20AM.png)
 
 下面的能力对比的时间点是 06/2017，这个时候K8s是否能胜出还是个悬念。
 
@@ -451,15 +451,15 @@ MULTI-INFRASTRUCTURE
 * 绿勾：包含此能力
 * 横杠：New/External/Partial/Experimental
 
-![Screen Shot 2018-01-13 at 6.59.42 A](http://martinliu.qiniudn.com/images/Screen%20Shot%202018-01-13%20at%206.59.42%20AM.png)
+![Screen Shot 2018-01-13 at 6.59.42 A](images/Screen%20Shot%202018-01-13%20at%206.59.42%20AM.png)
 
 ### 资源管理
 
-![Screen Shot 2018-01-13 at 7.00.38 A](http://martinliu.qiniudn.com/images/Screen%20Shot%202018-01-13%20at%207.00.38%20AM.png)
+![Screen Shot 2018-01-13 at 7.00.38 A](images/Screen%20Shot%202018-01-13%20at%207.00.38%20AM.png)
 
 ### 服务管理
 
-![Screen Shot 2018-01-13 at 7.01.16 A](http://martinliu.qiniudn.com/images/Screen%20Shot%202018-01-13%20at%207.01.16%20AM.png)
+![Screen Shot 2018-01-13 at 7.01.16 A](images/Screen%20Shot%202018-01-13%20at%207.01.16%20AM.png)
 
 ## 如何选择
 

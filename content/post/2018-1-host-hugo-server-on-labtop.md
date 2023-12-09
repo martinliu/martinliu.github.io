@@ -44,7 +44,7 @@ Press Ctrl+C to stop
 
 以 macOS 为例，当你启动了这个 Hugo 服务器的时候，你访问 Security & Privacy 配置的时候，选择 Firewall 标签的时候，会自动弹出一个对话框，询问是否允许 incoming 的网络连接到 hugo 的应用服务。点击允许即可，这样防火墙配置里就多了一条配置，如下图所示：
 
-![firewall](http://martinliu.qiniudn.com/images/hugo-firewall-rule.jpeg)
+![firewall](images/hugo-firewall-rule.jpeg)
 
 ## 总结
 

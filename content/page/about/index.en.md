@@ -26,7 +26,7 @@ I have translated two famous books, DevOps Handbook and SRE Workbook. My primary
 - Email -  liu.martin@outlook.com
 - Wechat - DevOps教练（MyDevOps）
 
-![微信公众号 - MyDevOps](https://elasticstack-1300734579.cos.ap-nanjing.myqcloud.com/2021-05-11-DevOps-qrc-mydevops.jpg)
+![微信公众号 - MyDevOps](img/cos/2021-05-11-DevOps-qrc-mydevops.jpg)
 
 ## Events
 
@@ -135,7 +135,7 @@ The Site Reliability Workbook from  O'Reilly Media
 
 ### DevOps Paradox
 
-![DevOps Pradox](https://elasticstack-1300734579.cos.ap-nanjing.myqcloud.com/2021-04-01-Screen%20Shot%202021-04-01%20at%208.53.23%20PM.jpg)
+![DevOps Pradox](img/cos/2021-04-01-Screen%20Shot%202021-04-01%20at%208.53.23%20PM.jpg)
 
 - 京东：[https://item.jd.com/13047191.html](https://item.jd.com/13047191.html)
 - *Selling on Amazon* [https://www.amazon.com/DevOps-Paradox-truth-about-people-ebook/](https://www.amazon.com/DevOps-Paradox-truth-about-people-ebook/)

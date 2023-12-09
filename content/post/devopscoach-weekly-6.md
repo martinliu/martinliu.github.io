@@ -1,12 +1,14 @@
 ---
 date: 2020-08-31T00:11:01+08:00
-title: "DevOps 教练周刊 #6 | 全球 DevOps + SRE 精选资讯"
+title: "DevOps 教练周刊 6"
 description: "为 DevOps 教练 之成长，提供必备的滋养，定期为你整理最值得了解的新闻、文章、工具和宕机事故分析"
 categories: ["DevOps"]
 tags: ["周刊"]
 keywords: ["DevOps", "DevOps教练", "SRE", "周刊"]
 image : "images/weeklyupdate.jpg"
 ---
+
+全球 DevOps + SRE 精选资讯
 
 ## 宕机
 

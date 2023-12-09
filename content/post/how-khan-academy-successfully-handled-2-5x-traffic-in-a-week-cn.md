@@ -5,7 +5,7 @@ description = "疫情导致的居家学习办公，造成了可汗学院在一�
 author = "Martin Liu"
 categories = ["SRE"]
 tags = ["Serverless", "SRE"]
-image = "https://elasticstack-1300734579.cos.ap-nanjing.myqcloud.com/2021-03-24-sunrise-5863751_1920.png"
+image = "img/cos/2021-03-24-sunrise-5863751_1920.png"
 +++
 
 可汗学员处理流量突然暴增的过程离不开 SRE 的设计和工作。他们的应对策略包括使用云和CDN。
@@ -32,7 +32,7 @@ image = "https://elasticstack-1300734579.cos.ap-nanjing.myqcloud.com/2021-03-24-
 
 
 
-![](https://elasticstack-1300734579.cos.ap-nanjing.myqcloud.com/2021-03-24-scaling-traffic-in-a-week.png)
+![](img/cos/2021-03-24-scaling-traffic-in-a-week.png)
 
 
 
