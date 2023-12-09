@@ -16,7 +16,7 @@ Terraform 拥有数以亿计的下载量、成千上万的贡献和令人难以�
 
 
 
-![Terraform 的历史](https://elasticstack-1300734579.cos.ap-nanjing.myqcloud.com/2021-06-15-terrafor-history.png)
+![Terraform 的历史](img/cos/2021-06-15-terrafor-history.png)
 
 本文来自：https://www.hashicorp.com/blog/announcing-hashicorp-terraform-1-0-general-availability
 

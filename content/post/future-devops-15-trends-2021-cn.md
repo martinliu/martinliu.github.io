@@ -12,7 +12,7 @@ image = "img/2021/03/The-Future-Is-Bright.jpg"
 
 <!--more-->
 
-![](https://elasticstack-1300734579.cos.ap-nanjing.myqcloud.com/2021-03-20-Screen%20Shot%202021-03-21%20at%201.26.38%20AM.jpg)
+![](img/cos/2021-03-20-Screen%20Shot%202021-03-21%20at%201.26.38%20AM.jpg)
 
 DevOps  和整个IT运维是一个不断发展的领域，本文的趋势就是证明。总是需要跟上趋势并利用其优势。
 

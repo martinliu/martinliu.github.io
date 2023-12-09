@@ -16,13 +16,13 @@ keywords:
 
 元旦这天早晨送女儿去中国儿童艺术剧院看剧，这正好是我跑步的大好时机。正好是一个大晴天，这样的蓝天岂能辜负。环绕故宫的路线是一根长了很久的草，今天总算可以拔除了。于是我从东华门开始往北，沿着逆时针方向开始跑。下面是这次的跑步路线图。
 
-![故宫天安门和天安门广场](http://martinliu.qiniudn.com/images/forbidden-city-tiananmenSQ.PNG)
+![故宫天安门和天安门广场](images/forbidden-city-tiananmenSQ.PNG)
 
 ## 跑步路线评价
 
 东华门一侧向北的路上，直到故宫西北角的角楼；刚开始游客和行人还不是很多，但是到了故宫博物院的北门，哪里的游客非常多，需要躲开行人往前跑；在10点以后的时间里，保证你想跑也跑不快，人确实是比较多的，而且正好赶上了元旦这一天。听说有9万人在天安门广场观看了升旗仪式。
 
-![故宫天安门和天安门广场](http://martinliu.qiniudn.com/images/north-west.jpg)
+![故宫天安门和天安门广场](images/north-west.jpg)
 
 故宫的西侧南长街这条路是很窄的人行道，由于也是有不少游客，我后半程是机动车上和机动车流逆行了一段跑的，虽然有点危险，不过机动车开得都不快，也在明显的躲让这行人，跑后还是感觉还是不建议这么跑。
 
@@ -36,9 +36,9 @@ keywords:
 
 在东华门终点附近，排了两张故宫外侧的图片。
 
-![东华门附近](http://martinliu.qiniudn.com/images/donghua-gate.jpg)
+![东华门附近](images/donghua-gate.jpg)
 
-![东单方向](http://martinliu.qiniudn.com/images/dong-dan.jpg)
+![东单方向](images/dong-dan.jpg)
 
 2018年必须是一个不平凡的一年，我将这一年的基调定义为：停止开始，开始结束，全面开挂！
 

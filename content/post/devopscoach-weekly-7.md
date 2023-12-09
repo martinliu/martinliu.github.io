@@ -1,6 +1,6 @@
 +++
 date = 2021-03-16T19:23:15+08:00
-title = "DevOps 教练周刊 #7 | 全球 DevOps + SRE 精选资讯"
+title = "DevOps 教练周刊 7"
 description = "为 DevOps 教练 之成长，提供必备的滋养，定期为你整理最值得了解的新闻、文章、工具和宕机事故分析"
 author = "Martin Liu - 刘征"
 categories = ["DevOps"]
@@ -8,24 +8,22 @@ tags = ["周刊"]
 image = "images/weeklyupdate.jpg"
 +++
 
+全球 DevOps + SRE 精选资讯
+
 本期有 6 个公司的服务出现了宕机事故，一如既往的为你精选了十几篇值得学习的内容。
 
-<!--more--> 
+<!--more-->
 
-> [EN] May your queries flow and your pagers stay silent. 
+> [EN] May your queries flow and your pagers stay silent.
 > --Dave, Betsy, Niall, Stephen, and Ken
 
 【译】：愿你的咨询队列和传呼机都保持静默。
 
 ## 宕机
 
-
-
 ## Fastly 3 月事故一览
 
-Fastly是一家 CDN 服务提供商，每个月的事故披露条数大约是 20 到 30 条。本月（三月）已经可以在 https://status.fastly.com/history 看到 23 条事故披露通告。主要内容有三种：事故时间线记录，事故回顾和计划内活动（扩容等）。
-
-
+Fastly是一家 CDN 服务提供商，每个月的事故披露条数大约是 20 到 30 条。本月（三月）已经可以在 <https://status.fastly.com/history> 看到 23 条事故披露通告。主要内容有三种：事故时间线记录，事故回顾和计划内活动（扩容等）。
 
 回顾三月份的事故历史，事故类型组要是：
 
@@ -33,15 +31,9 @@ Fastly是一家 CDN 服务提供商，每个月的事故披露条数大约是 20
 * 网络路由和 DNS 故障
 * 数据中心计划内的维护、扩容和新上线（新加坡）。
 
-
-
 目前一共有 8 个事故回顾。浏览一下大致内容主要是对过去发生过的事故的确认。每一条事故回顾中精确的描述了事故影响起始时间点和影响范围。
 
-
-
 > 教练观点：看起来他们三月份的日子过的不咋样，不知道这个月的错误预算是否快烧完了。
-
-
 
 ## OVH Cloud 数据中心发生火灾
 
@@ -49,17 +41,13 @@ Fastly是一家 CDN 服务提供商，每个月的事故披露条数大约是 20
 
 3 月 10 日这次发生火灾的是位于法国Strasbourg的一个数据中心，该数据中心园区里有 4 栋大楼。从新闻图片上看到有一栋大楼几乎彻底烧毁。
 
-
-
-![2021-03-21_23-05-14](https://elasticstack-1300734579.cos.ap-nanjing.myqcloud.com/2021-03-21-151636.png)
-
-
+![2021-03-21_23-05-14](img/cos/2021-03-21-151636.png)
 
 该公司的创始人/CEO 第一时间在 Twitter 上发布和更新着火灾的状态。
 
-![2021-03-21_23-06-03](https://elasticstack-1300734579.cos.ap-nanjing.myqcloud.com/2021-03-21-151729.png)
+![2021-03-21_23-06-03](img/cos/2021-03-21-151729.png)
 
-从这可以看到，数据中心园区中的 SBG2 大楼发生火灾，因此直接关闭里其它的大楼。他每天在 Twitter 上更新一次，在公司官网上 https://www.ovh.com/world/news/press/cpl1787.fire-our-strasbourg-site?124 也可以看到每天一次的更新。
+从这可以看到，数据中心园区中的 SBG2 大楼发生火灾，因此直接关闭里其它的大楼。他每天在 Twitter 上更新一次，在公司官网上 <https://www.ovh.com/world/news/press/cpl1787.fire-our-strasbourg-site?124> 也可以看到每天一次的更新。
 
 至今火灾的原因还没有说明，从每日的更新里还可以看到，火灾的影响目前没有完全消除，其它数据中心的电池还有冒烟的情况出现。
 
@@ -76,11 +64,7 @@ Fastly是一家 CDN 服务提供商，每个月的事故披露条数大约是 20
 
 以上三项救灾工作的数据都是日更在以上的网页中。
 
-
-
 > 教练观点：这个数据中心可谓是非常罕见的大规模灾难，救灾速度和进展还是比较缓慢的，但愿受影响的公司都有自己的扩域高可用容灾方案，希望 DRP 计划执行的顺利有效。
-
-
 
 ## 俄罗斯发生大规模域名解析故障
 
@@ -88,11 +72,9 @@ Fastly是一家 CDN 服务提供商，每个月的事故披露条数大约是 20
 
 参考Twitter 上的信息如下：
 
-![2021-03-21_23-38-50](https://elasticstack-1300734579.cos.ap-nanjing.myqcloud.com/2021-03-21-153938.png)
+![2021-03-21_23-38-50](img/cos/2021-03-21-153938.png)
 
 >教练观点：感觉这个错误犯的有点低级了。
-
-
 
 ## Dyn DNS 服务器故障
 
@@ -100,19 +82,13 @@ Fastly是一家 CDN 服务提供商，每个月的事故披露条数大约是 20
 
 调查得到的主要根因：Oracle Public DNS 基础设施实施配置变更是发生了问题。
 
-
-
 ## Chef 服务发生大量 5xx 错误
 
 Chef 的服务不经常发生故障，这次 api.chef.io 服务发生了大量 5xx 错误增多的事故，错误的对象是索引集群。目前故障已经排除，服务恢复了正常。
 
-
-
 ## GitHub 3 月事故
 
-https://www.githubstatus.com/history 在这个页面上可以看到本月已经发生了 7 次事故。在 3 个严重事故中，有 2 个的事故影响时间接近 2 小时。3-15 日的事故影响了 GitHub Actions 服务。12 日的事故中影响到了绝大多数服务的可用性，但是恢复的还比较快。
-
-
+<https://www.githubstatus.com/history> 在这个页面上可以看到本月已经发生了 7 次事故。在 3 个严重事故中，有 2 个的事故影响时间接近 2 小时。3-15 日的事故影响了 GitHub Actions 服务。12 日的事故中影响到了绝大多数服务的可用性，但是恢复的还比较快。
 
 > 教练观点：我本月体验到了一次 GitHub Actions 构建报错挂住僵死的问题，后来继续提交，GitHub Actions 的 pipeline 又恢复正常工作了。持续时间不太长。
 
@@ -122,8 +98,6 @@ https://www.githubstatus.com/history 在这个页面上可以看到本月已经�
 
 * [CD Foundation Announces Industry Initiative to Standardize Events from CI/CD Systems](https://kubernetes.us10.list-manage.com/track/click?u=3885586f8f1175194017967d6&id=5a32cff75d&e=7098f23071) 持续交付基金会发生了，宣布行业级 CI/CD 系统的标准化事件的号召。他们搞了一个  [Events SIG](https://github.com/cdfoundation/sig-events) 厂商中立的兴趣讨论小组，这个计划对以后所有 CI/CD 流水线系统间的互操作性比较重要。
 
-  
-
 ## 软件发布
 
 * Java 16 发布
@@ -132,8 +106,6 @@ https://www.githubstatus.com/history 在这个页面上可以看到本月已经�
 * Ghost 4.0 开源 CMS 系统
 * Audacity 3.0.0 开源音频编辑软件
 * SQLite 3.35 发布
-
-
 
 # 文章
 
@@ -162,8 +134,3 @@ https://www.githubstatus.com/history 在这个页面上可以看到本月已经�
 
 * [如何以成长的心态打造SRE团队？](https://www.blameless.com/blog/how-to-build-an-sre-team-with-a-growth-mindset)
   这篇文章解释了成长型思维方式的含义，并展示了它如何应用于SRE。艾米丽-阿诺特--Blameless
-
-
-
-
-

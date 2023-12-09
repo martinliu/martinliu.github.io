@@ -81,7 +81,7 @@ AIOps 不仅仅是一个数据存储和检索系统。此外，该平台不限�
 
 AIOps 的目标是通过策划和提高摄入数据的质量，以便 I&O 的领导者能够将多种用例推向相关的合适实践或角色。例如，模式发现可以有助于预测新出现的行为，IT 实体之间的关系，以及（IT工件、用户和代理）的基准行为，从而识别出异常情况，并给业务所有者提供相关背景。分析也促成了自动化的洞察力，简化了根本原因的定位，并使能了运用自动化解决所已发现问题的行动（见图1）。
 
-图1: AIOps 跨多 IT 运维监控(ITOM)领域使能持续生成洞见 ![Figure 1: AIOps Platform Enabling Continuous Insights Across IT Operations Monitoring (ITOM)](https://elasticstack-1300734579.cos.ap-nanjing.myqcloud.com/2021-04-28-Figure_1_AIOps_Platform_Enabling_Continuous_Insights_Across_IT_Operations_Monitoring_ITOM.png)
+图1: AIOps 跨多 IT 运维监控(ITOM)领域使能持续生成洞见 ![Figure 1: AIOps Platform Enabling Continuous Insights Across IT Operations Monitoring (ITOM)](img/cos/2021-04-28-Figure_1_AIOps_Platform_Enabling_Continuous_Insights_Across_IT_Operations_Monitoring_ITOM.png)
 
 图片翻译如下：
 
@@ -168,7 +168,7 @@ AIOps 市场继续朝着更广泛和更好的解决方案发展，在这两个�
 
 尽管 AIOps 尚未成熟，但只要使用案例合适，AIOps 就会被认为是企业内部的一个有价值的工具，并能长期保持持有的状态（见图2）。
 
-图 2: 组织计划持续使用 CMP 和 AIOps![Of the DevOps initiatives organizations began using in response to COVID-19, CMP and AIOps are the ones organizations most intend to continue using.](https://elasticstack-1300734579.cos.ap-nanjing.myqcloud.com/2021-04-28-Figure_2_Organizations_Plans_to_Continue_Using_CMP_and_AIOps.png)
+图 2: 组织计划持续使用 CMP 和 AIOps![Of the DevOps initiatives organizations began using in response to COVID-19, CMP and AIOps are the ones organizations most intend to continue using.](img/cos/2021-04-28-Figure_2_Organizations_Plans_to_Continue_Using_CMP_and_AIOps.png)
 
 
 
@@ -213,7 +213,7 @@ AIOps  平台必须能够摄取静态（历史）数据和动态（实时、流�
 
 随着技术的成熟，用户将能够利用该平台的建议，实现行动阶段（见注4）。这方面的步骤如图3所示。
 
-图3: AI 辅助自动化的未来 —问题的分类和补救![Graphic illustrates the problem-remediation process with AI-assisted automation.](https://elasticstack-1300734579.cos.ap-nanjing.myqcloud.com/2021-04-28-Figure_3_The_Future_of_AI-Assisted_Automation__Triage_and_Remediation_of_Problems.png)
+图3: AI 辅助自动化的未来 —问题的分类和补救![Graphic illustrates the problem-remediation process with AI-assisted automation.](img/cos/2021-04-28-Figure_3_The_Future_of_AI-Assisted_Automation__Triage_and_Remediation_of_Problems.png)
 
 图片翻译：
 
@@ -269,7 +269,7 @@ Gartner 客户的一个共同抱怨是，部署、配置和从AIOps解决方案�
 作为IT运维工具与DevOps流水线整合的 "左移 "大趋势的一部分，早期采用者正在开发流水线的早期尝试AIOps。结合越来越多的自动化使用，开发人员正在使用人工智能来更快、更安全地交付软件，在生产中更容易管理。图4显示了AIOps 存在于 DevOps 流水线中的例子。
 图4：在应用程序的生命周期中，在一系列的使用案例中应用AIOps平台
 
-![Graphic illustrates how to apply AIOps throughout an application’s nonexistent, from development through IT service management.](https://elasticstack-1300734579.cos.ap-nanjing.myqcloud.com/2021-04-28-Figure_4_Applying_AIOps_Platforms_Across_a_Spectrum_of_Use_Cases_Over_the_Life_Cycle_of_an_Application.png)
+![Graphic illustrates how to apply AIOps throughout an application’s nonexistent, from development through IT service management.](img/cos/2021-04-28-Figure_4_Applying_AIOps_Platforms_Across_a_Spectrum_of_Use_Cases_Over_the_Life_Cycle_of_an_Application.png)
 
 图片翻译：
 
@@ -489,7 +489,7 @@ I&O领导通常不希望将行动完全交给机器，并要求在触发自动�
 
 ## 注5: AIOps 作为 IT 监控策略的一部分
 
-Figure 5: AIOps as Part of an IT Monitoring Strategy![Where AIOps Contributes to a Sample IT Monitoring Strategy](https://elasticstack-1300734579.cos.ap-nanjing.myqcloud.com/2021-04-28-Figure_5_AIOps_as_Part_of_an_IT_Monitoring_Strategy.png)
+Figure 5: AIOps as Part of an IT Monitoring Strategy![Where AIOps Contributes to a Sample IT Monitoring Strategy](img/cos/2021-04-28-Figure_5_AIOps_as_Part_of_an_IT_Monitoring_Strategy.png)
 
 
 

@@ -1,6 +1,6 @@
 ---
 date: 2020-08-17T18:43:26+08:00
-title: "DevOps Coach 周刊 #4"
+title: "DevOps Coach 周刊 4"
 subtitle: "推荐 DevOps 教练学习的全球新闻，文章，宕机事件和流行工具"
 description: "推荐 DevOps 教练学习的全球新闻，文章，宕机事件和流行工具"
 categories: ["DevOps"]
@@ -9,7 +9,6 @@ keywords: ["DevOps", "DevOps教练", "周刊"]
 image : "images/weeklyupdate.jpg"
 ---
 
-![DevOps Coach weekly update](/images/weeklyupdate.jpg)
 
 ## 宕机
 

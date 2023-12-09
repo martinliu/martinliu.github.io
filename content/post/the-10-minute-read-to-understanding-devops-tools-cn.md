@@ -5,7 +5,7 @@ description = "DevOps 工具链的复杂性是客观的，all in one只是理想
 author = "Martin Liu"
 categories = ["DevOps"]
 tags = ["github", "ci", "cd", "github-pages"]
-image = "https://elasticstack-1300734579.cos.ap-nanjing.myqcloud.com/2021-04-03-eggs-3216877_1920.jpeg"
+image = "img/cos/2021-04-03-eggs-3216877_1920.jpeg"
 +++
 
 【译文】上周，我和我的几位非常资深的同事都在评论说，有很多新的DevOps工具正在出现，而且每天都越来越难跟踪它们，以及它们在DevOps 领域的定位。我问了他们几个工具，Ansible、Terraform、Salt、Chef、Bamboo、CloudFormation这些工具的定位在哪里？我为什么要用这个而不是那个？它们甚至是同一种东西吗？我是不是漏掉了一个主要角色？我得到了什么，一些白眼和问题。所以，我想我会做一些研究，阅读，并试图让我们所有人理解它，以便我们可以将那些产品都分类到我们都熟悉的类别或用途。
@@ -20,11 +20,11 @@ image = "https://elasticstack-1300734579.cos.ap-nanjing.myqcloud.com/2021-04-03-
 
 **虚拟机** - **Virtual Machine**：在主机上运行的计算机系统的模拟器（虚拟机管理程序）；vm 通常可以在CPU、内存和磁盘使用方面与其他操作系统隔离。
 
-![](https://elasticstack-1300734579.cos.ap-nanjing.myqcloud.com/2021-04-02-0-cuHFPvnmr141Dfcc.png)
+![](img/cos/2021-04-02-0-cuHFPvnmr141Dfcc.png)
 
 **容器**--**Containers**：打包一个软件及其所有依赖，使其能够在任何基础设施上统一、一致地运行。Docker容器是最流行的。它们允许你打包一堆东西（你的软件、配置和其他软件），以便于部署和传输。你可以把容器看作是虚拟化的下一代进化（继虚拟机之后）。
 
-![](https://elasticstack-1300734579.cos.ap-nanjing.myqcloud.com/2021-04-02-0-hWRNCynYRFw2KCxn.png)
+![](img/cos/2021-04-02-0-hWRNCynYRFw2KCxn.png)
 
 **网络设备** - **Network Device**：在设备之间路由网络流量的硬件。例如路由器、负载平衡器和防火墙。
 
@@ -80,7 +80,7 @@ image = "https://elasticstack-1300734579.cos.ap-nanjing.myqcloud.com/2021-04-03-
 
 当然，和其他任何一套产品一样，类别也不一定完全清晰。许多工具都是跨类别的，并提供两个或多个类别的功能。下面是我试图展示大多数非常流行的工具，并可视化它们在这些类别中的位置。
 
-![](https://elasticstack-1300734579.cos.ap-nanjing.myqcloud.com/2021-04-02-1-wTp-r9QJvF-DXGZDZUHmbA.jpeg)
+![](img/cos/2021-04-02-1-wTp-r9QJvF-DXGZDZUHmbA.jpeg)
 
 正如你所看到的，有几个玩家，如Ansible、Terraform和云工具(AWS、GCP和Azure)，正试图通过他们的产品覆盖部署、配置管理和编排类别。老牌工具集Puppet、Chef和Salt Stack专注于配置管理和自动化，但已经扩展到编排和部署的。还有像GitLab和Azure DevOps这样的工具，几乎试图跨越DevOps的所有类别。
 
