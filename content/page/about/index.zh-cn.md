@@ -21,7 +21,7 @@ Elastic 资深开发者布道师，中国 DevOps 社区创始人，《DevOps Han
 - B 站 - DevOps 教练 <https://space.bilibili.com/477542716>
 - Twitter - [@martinliu](https://twitter.com/martinliu)
 - LinkedIn - [MartinLiu](https://www.linkedin.com/in/liuzheng/)
-- 邮箱 - liu.martin@outlook.com
+- 邮箱 - <liu.martin@outlook.com>
 - 微信公众号 - DevOps教练（MyDevOps）
 
 ![微信公众号 - MyDevOps](img/cos/2021-05-11-DevOps-qrc-mydevops.jpg)
@@ -30,19 +30,17 @@ Elastic 资深开发者布道师，中国 DevOps 社区创始人，《DevOps Han
 
 这里是即将发生和以前的部分社区分享。
 
-
 *Upcoming Events*
 
-- 
 
-*Past Events*
 
 ### 2023
 
+- [12 月 27 日 中国信通院 - 2023年系统稳定性与精益软件工程大会 - 北京 **《在大规模系统中实施 SLO 的艺术》**](https://mp.weixin.qq.com/s/GrckGISPvtJuQiYueRE7Xw)
+- [11 月 25 日 2023年DevOps社区峰会 - 广州 **《用可观测性之眼洞悉复杂生产系统》**](https://www.hudongba.com/party/34xi5.html)
 - [7 月 21 日 K+全球软件研发行业创新峰会 - 北京 - **《用可观测性工程构建生产环境的护城河》**](http://www.2023beijing.keylinkcon.com/col.jsp?id=416&id=416)
 - [3 月 25 日  中国开发者生态峰会 - 北京 - 2023 - **《社区人必备的运营之道》**](https://www.bagevent.com/event/dev-together-2022)
 - [3 月 18 日 中国 DevOps 社区峰会 - 武汉 - 2023 - **《用AI加速度DevOps的实现步伐》**](https://www.hudongba.com/party/gtxy5.html)
-
 
 ### 2022
 
@@ -133,7 +131,7 @@ Elastic 资深开发者布道师，中国 DevOps 社区创始人，《DevOps Han
 
 翻译书籍 《SRE Workbook》来自  O'Reilly Media
 
-![SRE Workbook](img/cos/2021-05-11-025343.jpg) 
+![SRE Workbook](img/cos/2021-05-11-025343.jpg)
 
 已经出版，网上有售。
 
@@ -149,13 +147,12 @@ Elastic 资深开发者布道师，中国 DevOps 社区创始人，《DevOps Han
 - 京东：[https://item.jd.com/13047191.html](https://item.jd.com/13047191.html)
 - 英文原版-亚马逊书店：[https://www.amazon.com/DevOps-Paradox-truth-about-people-ebook/](https://www.amazon.com/DevOps-Paradox-truth-about-people-ebook/)
 
-
 即将出版：
 
-* 97 Things Every SRE Should Know
+- 97 Things Every SRE Should Know
 
 ![97 Things Every SRE Should Know](https://learning.oreilly.com/library/cover/9781492081487/250w/)
 
-* Distributed Tracing in Practice
+- Distributed Tracing in Practice
 
 ![Distributed Tracing in Practice](https://learning.oreilly.com/library/cover/9781492056621/250w/)

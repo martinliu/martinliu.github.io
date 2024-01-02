@@ -1,5 +1,5 @@
 ---
-title: "教程"
+title: "课程"
 description: "所提供的 DevOps 和 SRE 课程的简介如下。"
 author: "Martin Liu"
 date: "2021-02-06"
