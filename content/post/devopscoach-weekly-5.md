@@ -20,7 +20,7 @@ image : "images/weeklyupdate.jpg"
 ### Equinix 重大电力故障让数据中心客户大发雷霆
 
 - 关于 Equinix ：Equinix 是全球领先的数据运营商，目前在美洲、亚太、欧洲及中东 14 个国家（地区）的 31 个市场运营着 94 个国际业务交换。
-- 消息来源 CBR https://www.cbronline.com/news/equinix-outage
+- 消息来源 CBR <https://www.cbronline.com/news/equinix-outage>
 
 > 教练点评：数据中心 UPS 的单点故障并不稀奇，但是这次 Equinix 的事故堪称史诗级事故。
 
@@ -48,13 +48,13 @@ Giganet 补充道："我们已经在凌晨 4.23 时左右失去了我们 2 个 E
 
 ### Google 公司的云平台和 G Stuit 系列事故
 
-- 来源官方 https://status.cloud.google.com/incident/zall/20008#20008005
+- 来源官方 <https://status.cloud.google.com/incident/zall/20008#20008005>
 - Google Cloud Infrastructure Components Incident #20008
 - GCP 多个产品发生故障：App Engine, Cloud Storage 和 Cloud Logging
 - G Suit 多个模块和功能：Gmail, Drive, Docs/Editor, Chat, Meet, Keep, Voice, Jamboard, Admin Console
 - 事故时间：August 19, 2020, from 20:55 to 03:30
 - 诊断：AppEngine 的部署会报错，访问 GCS 桶时的高延迟，以及 Cloud Logging 中的日志条目丢失。G Suit 多种产品报错和无法使用。
-- 详细的事故总结报告https://static.googleusercontent.com/media/www.google.com/zh-CN//appsstatus/ir/bd9m3vkqwpvkk4j.pdf
+- 详细的事故总结报告<https://static.googleusercontent.com/media/www.google.com/zh-CN//appsstatus/ir/bd9m3vkqwpvkk4j.pdf>
 - 根本原因
   - 许多 Google 服务使用一个通用的、内部的、分布式的系统来存储不可变的、非结构化的数据，也就是二进制大对象，或者说 blob。这个 blob 存储系统包含一个与 Google 内部客户端服务对接的前端，一个处理元数据操作的中层，以及一个用于存储数据的后端。blobs 本身。当客户端向前端提出请求时，元数据操作被转发到元数据服务，元数据服务与存储服务进行通信。
   - 来自另一个 Google 服务的流量增加开始使元数据服务超载，导致任务变得不健康，请求的延迟增加。这种延迟促使这些操作的过度重试，导致资源耗尽。自动化系统试图启动新的元数据任务。然而，其中许多任务立即被其收到的流量所淹没，而这些任务也被淹没。由于资源枯竭，分配到的资源不足。这一问题因以下原因而更加严重： 策略用于取消和重试失败的请求，这对流量造成了倍增效应。
@@ -64,9 +64,9 @@ Giganet 补充道："我们已经在凌晨 4.23 时左右失去了我们 2 个 E
 
 ### Spotify
 
-- 来源官方 Twitter 账号： https://twitter.com/SpotifyStatus/status/1296064517504409600
+- 来源官方 Twitter 账号： <https://twitter.com/SpotifyStatus/status/1296064517504409600>
 - 这好像是由于 TLS 证书过期导致的。
-- 其它媒体报道： https://www.teiss.co.uk/spotify-outage-expired-tls-cert/
+- 其它媒体报道： <https://www.teiss.co.uk/spotify-outage-expired-tls-cert/>
 - 据报道，周三发生了影响音乐流媒体服务 Spotify 的长达一小时的大规模中断，原因是该公司未能在 TLS 证书到期前更新。
 - 不过，Cloudflare 的网络工程师 Louis Poinsignon 提供了 Spotify 系统内部到底发生了什么事情的线索。据他介绍，该公司显然没有及时更新 TLS 证书，证书过期导致中断。在 TLS 证书更新后，Spotify 的服务很快就恢复了在线。
 
@@ -79,20 +79,20 @@ Giganet 补充道："我们已经在凌晨 4.23 时左右失去了我们 2 个 E
 中国 DevOps 社区流水线大赛 -- Pipeline Craft Championship
 
 - 8 月 18 日开始为期两个月，免费活动
-- 报名：https://wj.qq.com/s2/6852880/c181
-- 活动官网：https://Pipeline.devopsmeetup.com
+- 报名：<https://wj.qq.com/s2/6852880/c181>
+- 活动官网：<https://Pipeline.devopsmeetup.com>
 
 GitLab 的大会 -- Commit: You belong here
 
 - 8 月 26 日
 - 线上免费峰会
-- https://about.gitlab.com/events/commit/
+- <https://about.gitlab.com/events/commit/>
 
-推荐你感兴趣的大会和峰会，发邮件到：martin@devopscoach.org
+推荐你感兴趣的大会和峰会，发邮件到：<martin@devopscoach.org>
 
 ### Grafana Labs 喜提 B 轮 5000 万美元融资
 
-- 来源官方：https://grafana.com/about/press/2020-08-17-series-b-announcement/
+- 来源官方：<https://grafana.com/about/press/2020-08-17-series-b-announcement/>
 - 8 月 27 日宣布
 - Grafana Labs 还宣布了 Grafana 加速器计划（GAP），以培养在更广泛的 Grafana 生态系统中进行创新的早期公司和副业项目。GAP 将提供免费的 Grafana Cloud 和 Grafana Enterprise 订阅、现金补助、股权融资以及进入 Grafana Labs 核心开发者的内部通道。
 
@@ -102,39 +102,39 @@ GitLab 的大会 -- Commit: You belong here
 
 - 《 Ops 工作的未来 》
 - 一篇关于运维角色变化的好文章。对于那些想知道现代运维是什么样子的人来说，有一些很好的提示，包括供应商管理、外包基础设施和理解社会技术系统的重要性。
-- https://acloudguru.com/blog/engineering/the-future-of-ops-jobs
+- <https://acloudguru.com/blog/engineering/the-future-of-ops-jobs>
 
 - 《 NAT 是如何工作的 》
 - 对于任何想要更好地了解这个网络领域的人来说，这是一本很好的 NAT 网络介绍。好的图和例子，还有很多细节。
-- https://tailscale.com/blog/how-nat-traversal-works/
+- <https://tailscale.com/blog/how-nat-traversal-works/>
 
 - 《 如何打造给董事会看的软件开发 KPI 报表 》
 - 度量标准有很多不同的用途，包括向组织高层报告。这篇文章探讨了用于董事会对话的工程 KPI。
-- https://codeclimate.com/blog/engineering-kpis-board-deck/
+- <https://codeclimate.com/blog/engineering-kpis-board-deck/>
 
 - 《 马丁富乐老师：单链接通道 》
 - 有没有想过确保服务之间的消息保持有序，并为任何丢失的消息建立重试机制？这篇文章描述了一个具体的模式，但也是一组关于分布式计算模式的文章的一部分，值得探讨。
-- https://martinfowler.com/articles/patterns-of-distributed-systems/single-socket-channel.html
+- <https://martinfowler.com/articles/patterns-of-distributed-systems/single-socket-channel.html>
 
 - 《 提升事故回顾质量的套路 》
 - 事故回顾越来越常见，但往往很难做好。这段视频和详细的文字记录有各种改进流程的技巧。
-- https://www.blameless.com/blog/improving-postmortems-paul-osman
+- <https://www.blameless.com/blog/improving-postmortems-paul-osman>
 
 - 《 应用日志开发的最佳实践 》
 - 即使你不是用 Java 编写应用程序，掌握一些关于日志工作的知识通常也是有用的，因为你可能最终会至少运行一些 Java 应用程序。这些帖子提供了一个坚实的基础。
-- https://sematext.com/blog/java-logging/
-- https://sematext.com/blog/java-logging-best-practices/
+- <https://sematext.com/blog/java-logging/>
+- <https://sematext.com/blog/java-logging-best-practices/>
 
 ## 工具
 
 - 标签对于大规模管理 AWS 资源至关重要。Awstaghelper 提供了一个命令行工具，可以轻松地在广泛的 AWS 资源中向 CSV 文件或从 CSV 文件中添加和管理标签。
-- https://github.com/mpostument/awstaghelper
+- <https://github.com/mpostument/awstaghelper>
 
-* GitOps 工具包是一套可组合的 API 和专门的工具，可用于在 Kubernetes 之上构建一个持续交付平台。它们应该可以为 Flux 的 v2 提供基础，但也可以用来构建其他有趣的高级工具，采用同样的控制循环方法。
-* https://toolkit.fluxcd.io/
+- GitOps 工具包是一套可组合的 API 和专门的工具，可用于在 Kubernetes 之上构建一个持续交付平台。它们应该可以为 Flux 的 v2 提供基础，但也可以用来构建其他有趣的高级工具，采用同样的控制循环方法。
+- <https://toolkit.fluxcd.io/>
 
 - Kip 是一个虚拟 Kubelet 提供商，它允许 Kubernetes 集群透明地将 pods 发射到自己的云实例上。如果你需要额外的工作负载隔离，这很方便。
-- https://github.com/elotl/kip
+- <https://github.com/elotl/kip>
 
 ## 学习资源
 
@@ -144,29 +144,29 @@ GitLab 的大会 -- Commit: You belong here
 
 波波老师的系列课程
 
-- https://space.bilibili.com/518029478/video
+- <https://space.bilibili.com/518029478/video>
 - 包括 k8s 和微服务等 DevOps 技术
 
 【SpringBoot 项目实战】 2020 最新在线教育 spring boot 分布式项目实战
 
 - 系统后端接口部分，使用目前流行的 SpringBoot+SpringCloud 进行微服务架构，使用 Feign、Gateway、Hystrix，以及阿里巴巴的 Nacos 等组件搭建了项目的基础环境。项目中还使用 MyBatisPlus 进行持久层的操作，使用了 OAuth2+JWT 实现了分布式的访问，项目中整合了 SpringSecurity 进行了权限控制。除此之外，项目中使用了阿里巴巴的 EasyExcel 实现对 Excel 的读写操作，使用了 Redis 进行首页数据的缓存，使用 Git 进行代码的版本控制
-- https://www.bilibili.com/video/BV1y7411y7am
+- <https://www.bilibili.com/video/BV1y7411y7am>
 - 播放量： 10w+
 
 2019 谷粒商城微服务 SpringBoot,Dubbo,MySql 高级,Redis 秒杀,ElasticSearch,ActiveMQ,SSO 单点登
 
-- https://www.bilibili.com/video/BV1B4411V7cA
+- <https://www.bilibili.com/video/BV1B4411V7cA>
 - 2019 谷粒商城微服务 SpringBoot, zookeep 注册中心, Dubbo, MySql 高级, ElasticSearch, ActiveMQ, 通用 mapper, 解决秒杀, SSO 单点登录, OAuth2 协议三方登录, 第三方支付接口对接, Redis lua 脚本, Redis 秒杀, Redis 分布式锁, 集群搭建, 分布式, sku,spu 表结构介绍, 等等技术结合使用~~~~~~~~~~~
 - 播放量： 10w+
 
 Git+GitHub 教程
 
-- https://www.bilibili.com/video/BV1pW411A7a5
+- <https://www.bilibili.com/video/BV1pW411A7a5>
 - Git 是先进的分布式版本控制系统，而 Github 是常用的 Git 代码托管中心。
   本套教程内容丰富、详实，囊括：Git 安装过程、本地库基本操作、远程基本操作、基于分支的 Gitflow 工作流、跨团队协作的 Forking 工作流、Eclipse 中的 Git 版本控制以及 Git 对 Eclipse 特定文件忽略的配置方法。还通过展示 Git 内部版本管理机制，让你了解 到 Git 高效操作的底层逻辑。教程的最后完整演示了 Gitlab 服务器的搭建过程。
 - 播放量： 21w+
 
 GitLab 与 GitFlow 的简单使用
 
-- https://www.bilibili.com/video/BV1Wb411e7ec
+- <https://www.bilibili.com/video/BV1Wb411e7ec>
 - 播放量： 1w+
