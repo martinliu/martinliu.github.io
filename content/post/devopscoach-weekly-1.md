@@ -65,22 +65,22 @@ How to Classify Incidents  如何对事件进行分类 什么是事件分类？�
 上周全球重大宕机事故清单。
 
 * Garmin 作为佳明手表和 app 的用户，我体验到了这场 24+小时的服务中断
- 	* <https://spectrumlocalnews.com/nys/rochester/ap-online/2020/07/24/garmin-fitness-tracking-service-goes-down-frustrating-users>
+  * <https://spectrumlocalnews.com/nys/rochester/ap-online/2020/07/24/garmin-fitness-tracking-service-goes-down-frustrating-users>
 * Snapchat 打不开 app，黑屏，无法使用摄像头相关功能
- 	* <https://screenrant.com/snapchat-down-app-slow-response-messages-not-sent-issues/>
+  * <https://screenrant.com/snapchat-down-app-slow-response-messages-not-sent-issues/>
 * Tweetdeck  Twitter 客户的工具服务发生故障。
- 	* <https://www.independent.co.uk/life-style/gadgets-and-tech/news/tweetdeck-down-twitter-not-working-loading-a9633636.html>
+  * <https://www.independent.co.uk/life-style/gadgets-and-tech/news/tweetdeck-down-twitter-not-working-loading-a9633636.html>
 * GGPoker  在 World Series of Poker (WSOP) 世界扑克大赛赛事期间发生一些列问题.
- 	* <https://portswigger.net/daily-swig/online-poker-operator-hit-by-ddos-attack-on-opening-day-of-wsop-event>
+  * <https://portswigger.net/daily-swig/online-poker-operator-hit-by-ddos-attack-on-opening-day-of-wsop-event>
 * Fastly (control plane) Full disclosure: Fastly is my employer.
- 	* <https://status.fastly.com/incidents/7q2psqf255wl>
+  * <https://status.fastly.com/incidents/7q2psqf255wl>
 * Squarespace  这一周非常痛苦，在July 21 事故后发生的相关事件：
   *July 21  <https://status.squarespace.com/incidents/hh3p432jcq03>
   * July 22 (包含事件详细分析) <https://status.squarespace.com/incidents/3cgg1171wyvz>
   *July 24 <https://status.squarespace.com/incidents/x63nssl9kzvm>
   * July 24 <https://status.squarespace.com/incidents/v6ql728f1f4d>
 * Google Cloud Platform 几个谷歌云平台组件受到影响，包括 7 层负载均衡器。
- 	* <https://status.cloud.google.com/incident/zall/20006>
+  * <https://status.cloud.google.com/incident/zall/20006>
 
 ## 工具
 
@@ -89,6 +89,7 @@ Shell-operator是一个在Kubernetes集群中运行事件驱动脚本的工具�
 
 <https://github.com/Fizzadar/pyinfra>
 pyinfra在大规模的基础架构中实现了超快的自动化。它可以用于临时命令执行、服务部署、配置管理等。
+
 # python #配置管理
 
 <https://github.com/alerta/alerta>
@@ -96,18 +97,22 @@ Alerta 监测系统
 
 <https://github.com/GoogleCloudPlatform/terraformer>
 CLI工具可以从现有的基础设施中生成terraform文件（反向Terraform）。
+
 # 基础设施即代码
 
 <https://github.com/visenger/awesome-mlops>
 MLOps的精选参考资料清单。
+
 # github
 
 <https://github.com/cycloidio/inframap>
 读取你的tfstate或HCL，为每个提供者生成一个特定的图表，只显示最重要/相关的资源。
+
 # terraform
 
 <https://github.com/Hack-with-Github/Awesome-Hacking>
 一个为黑客、Pentesters和安全研究人员提供的各种令人敬畏的列表的集合。
+
 # github #安全
 
 <https://github.com/box/kube-iptables-tailer>

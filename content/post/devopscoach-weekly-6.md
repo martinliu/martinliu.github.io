@@ -20,20 +20,18 @@ image : "images/weeklyupdate.jpg"
 
 ### 上周新发事故
 
-* Zoom 无法开始和加入会议， 官方报道 https://status.zoom.us/incidents/1z2lrf4nrv8p
-* Slack 多个功能模块服务降级，甚至无法使用，官方：https://status.slack.com//2020-08/960bbb3c9d49a3cc 
-* Let's Encrypt 数据中心硬件方式故障导致 API 报错，官方：https://status.io/pages/incident/55957a99e800baa4470002da/5f45330250878c04bf3fb6eb 
-* NZX 新西兰证券交易所遭受重大DDoS攻击导致NZX停电，交易停止。媒体：https://www.stuff.co.nz/business/122562006/major-ddos-attack-causes-nzx-power-outage-trading-halt 
-* eBay宕机。服务器状态最新，DNS故障和服务不可用的错误错误，媒体：https://www.express.co.uk/life-style/science-technology/1329281/eBay-down-server-status-DNS-failure-service-unavailable-error
-* Heroku 发生大量的 H100 报错，官方：https://status.heroku.com/incidents/2101
-* Fastly CDN 服务商的服务发生多区域性能故障，官方：https://status.fastly.com/incidents/p1lwmmv2j2gq
-* Cloudflare 上周发生的这个问题，我的个人 blog 也遇到了，Google 的搜索索引服务记录了那些 500 错误，我也感到非常诧异；第三方传输供应商问题导致HTTP 5xx错误增加； 官方：https://www.cloudflarestatus.com/incidents/hptvkprkvp23
-
-
+- Zoom 无法开始和加入会议， 官方报道 <https://status.zoom.us/incidents/1z2lrf4nrv8p>
+- Slack 多个功能模块服务降级，甚至无法使用，官方：<https://status.slack.com//2020-08/960bbb3c9d49a3cc>
+- Let's Encrypt 数据中心硬件方式故障导致 API 报错，官方：<https://status.io/pages/incident/55957a99e800baa4470002da/5f45330250878c04bf3fb6eb>
+- NZX 新西兰证券交易所遭受重大DDoS攻击导致NZX停电，交易停止。媒体：<https://www.stuff.co.nz/business/122562006/major-ddos-attack-causes-nzx-power-outage-trading-halt>
+- eBay宕机。服务器状态最新，DNS故障和服务不可用的错误错误，媒体：<https://www.express.co.uk/life-style/science-technology/1329281/eBay-down-server-status-DNS-failure-service-unavailable-error>
+- Heroku 发生大量的 H100 报错，官方：<https://status.heroku.com/incidents/2101>
+- Fastly CDN 服务商的服务发生多区域性能故障，官方：<https://status.fastly.com/incidents/p1lwmmv2j2gq>
+- Cloudflare 上周发生的这个问题，我的个人 blog 也遇到了，Google 的搜索索引服务记录了那些 500 错误，我也感到非常诧异；第三方传输供应商问题导致HTTP 5xx错误增加； 官方：<https://www.cloudflarestatus.com/incidents/hptvkprkvp23>
 
 ### 鳄鱼杯：2020年第二季度最大宕机颁
 
-来源：https://statusgator.com/blog/2020/08/21/5-biggest-outages-of-q2-2020/
+来源：<https://statusgator.com/blog/2020/08/21/5-biggest-outages-of-q2-2020/>
 
 ![](/images/crocodile-cup-3-1.jpg)
 
@@ -67,7 +65,7 @@ Zoom发言人回应称，承认意识到了这一情况，并提到这只影响�
 
 微软正在努力将GitHub变成一个比以前更好的开发者场所。这家雷德蒙德巨头在今年早些时候让所有的付费计划变得更加实惠，并免费提供一些关键功能，将更多的工具放在IT专业人士的手中。微软、苹果、AWS、谷歌、Facebook和其他数千家公司使用GitHub来存储和运行他们的代码仓库，因此它的正常运行时间是最重要的。
 
-然而，GitHub在2020年6月29日出现了两个小时的故障。整个网站及其服务都无法访问，因此许多开发人员甚至无法推送代码或部署他们的应用程序，因为GitHub集成的数量没有响应。自然，这引起了很大的反响，并导致GitHub除了状态页面外，还推出了每月的可用性报告，对每次中断的原因和结果进行了详细的解释。 
+然而，GitHub在2020年6月29日出现了两个小时的故障。整个网站及其服务都无法访问，因此许多开发人员甚至无法推送代码或部署他们的应用程序，因为GitHub集成的数量没有响应。自然，这引起了很大的反响，并导致GitHub除了状态页面外，还推出了每月的可用性报告，对每次中断的原因和结果进行了详细的解释。
 
 #### 第四名 IBM Cloud 挂了，服务状态页面有更新, June 10, 2020
 
@@ -81,7 +79,7 @@ Zoom发言人回应称，承认意识到了这一情况，并提到这只影响�
 
 但IBM能做什么呢？自然是有一个独立的状态页面! 下面只是他们可以使用的一些变种。
 
-#### 第五名 T-Mobile冲洗其网络下水道，2020年6月15日。
+#### 第五名 T-Mobile冲洗其网络下水道，2020年6月15日
 
 作为美国、欧盟和英国最大的移动网络运营商之一，T-Mobile最近发现自己正处于一场完美的风暴之中，它在美国各地连续13个小时无法提供语音和短信服务。外界观察家马修-普林斯（Matthew Prince，CEO@Cloudflare）认为，"T-Mobile对他们的网络进行了一些改变，但这些改变出了问题，导致他们的用户出现了一连串的故障"。他还表示，"这场灾难几乎可以肯定完全是T-Mobile团队自己造成的"。
 
@@ -92,7 +90,6 @@ Zoom发言人回应称，承认意识到了这一情况，并提到这只影响�
 由于无法接触到大多数服务，T-Mobile的客户开始报告Facebook、Instagram和其他平台无法使用，而实际上离线的是他们的移动运营商网络。Business Insider报道称，虽然T-mobile客户将故障归咎于AT&T和Verizon，但这两家运营商都是在正常的负载水平下运营的。不过，前述Neville Ray的帖子表示，T-Mobile正在采取一切必要措施，通过为所有核心系统建立双重弹性和冗余措施，确保未来不可能发生此类事件。
 
 可以看到，公司无法明确表达自己的立场，从一开始就不愿意承担失败的责任，以及在故障发生后缺乏透明度，都没能让T-mobile毫无污点地走出困境。这甚至导致了他们面临大规模DDoS攻击却未能击退的传闻。
-
 
 ### StatusGator为第二季参赛者颁奖
 
@@ -106,86 +103,73 @@ Zoom发言人回应称，承认意识到了这一情况，并提到这只影响�
 
 ## 软件发布
 
-* Kubernetes 1.19 发布了， 它由34项增强功能组成。10个增强版转为稳定版，15个增强版在测试版，9个增强版在alpha版。
-* AWS 发布新的 EBS 卷类型 (io2) 提高 100x 持久性，和 10x 倍的 IOPS/GiB
-* Tekton Hub 预览版上线，随着该项目对底层流水线和构建的定义的日臻成熟，开放出一个相关的自由市场也是必然的，开源生态催生出来的上下游技术提供和消费的模式正在普及中，无周边生态的很难获利和发展，https://hub-preview.tekton.dev/
+- Kubernetes 1.19 发布了， 它由34项增强功能组成。10个增强版转为稳定版，15个增强版在测试版，9个增强版在alpha版。
+- AWS 发布新的 EBS 卷类型 (io2) 提高 100x 持久性，和 10x 倍的 IOPS/GiB
+- Tekton Hub 预览版上线，随着该项目对底层流水线和构建的定义的日臻成熟，开放出一个相关的自由市场也是必然的，开源生态催生出来的上下游技术提供和消费的模式正在普及中，无周边生态的很难获利和发展，<https://hub-preview.tekton.dev/>
 
 ### DevOps 大会/峰会
 
 #### 中国 DevOps 社区流水线大赛 -- Pipeline Craft Championship
 
 - 8 月 18 日开始为期两个月，免费活动
-- 报名：https://wj.qq.com/s2/6852880/c181
-- 活动官网：https://Pipeline.devopsmeetup.com
+- 报名：<https://wj.qq.com/s2/6852880/c181>
+- 活动官网：<https://Pipeline.devopsmeetup.com>
 
 #### SnykCon
 
-* 将在10月21日/22日举行一个关于所有应用安全和 DevOps 的在线活动。免费注册，CFP现在开放。
-* https://snyk.io/snykcon/
+- 将在10月21日/22日举行一个关于所有应用安全和 DevOps 的在线活动。免费注册，CFP现在开放。
+- <https://snyk.io/snykcon/>
 
-
-推荐和分享你感兴趣的大会和峰会给我和其它人吧？发邮件到：martin@devopscoach.org
-
-
+推荐和分享你感兴趣的大会和峰会给我和其它人吧？发邮件到：<martin@devopscoach.org>
 
 ## 文章
 
 ![](/images/WhyAvoidAutomation.gif)
 
-* 这是一篇很好的文章，讲述了在整个组织中获得变革的支持时，自动化这个词所带来的问题，以及为什么观念很重要。
-* https://blogs.starcio.com/2020/08/avoid-calling-it-automation.html
+- 这是一篇很好的文章，讲述了在整个组织中获得变革的支持时，自动化这个词所带来的问题，以及为什么观念很重要。
+- <https://blogs.starcio.com/2020/08/avoid-calling-it-automation.html>
 
-* 什么是Kubernetes Operators，为什么它对SRE很重要？
-* 在Kubernetes Operators: 自动化容器编排平台》中，作者Jason Dobies和Joshua Wood将Operators描述为 "其应用的自动化站点可靠性工程师"。鉴于SRE的多方面经验和多样化的工作量，这是一个大胆的说法。那么，Operators到底能做什么呢？
-* https://www.blameless.com/blog/what-is-a-kubernetes-operators-and-how-to-automate-sre
+- 什么是Kubernetes Operators，为什么它对SRE很重要？
+- 在Kubernetes Operators: 自动化容器编排平台》中，作者Jason Dobies和Joshua Wood将Operators描述为 "其应用的自动化站点可靠性工程师"。鉴于SRE的多方面经验和多样化的工作量，这是一个大胆的说法。那么，Operators到底能做什么呢？
+- <https://www.blameless.com/blog/what-is-a-kubernetes-operators-and-how-to-automate-sre>
 
+- 探讨遗留IT系统的隐秘世界。探讨了一些值得注意的事件，以及我们需要更多地了解如何建立可长期运行的系统。
+- <https://spectrum.ieee.org/computing/it/inside-hidden-world-legacy-it-systems>
 
-* 探讨遗留IT系统的隐秘世界。探讨了一些值得注意的事件，以及我们需要更多地了解如何建立可长期运行的系统。
-* https://spectrum.ieee.org/computing/it/inside-hidden-world-legacy-it-systems
+- 一篇文章，讲述了随着组织的发展，增加一个总括性的平台团队的风险，以及为什么向平台组件和重用发展可以更具扩展性。
+- <https://kislayverma.com/organizations/a-case-against-platform-teams/>
 
-
-* 一篇文章，讲述了随着组织的发展，增加一个总括性的平台团队的风险，以及为什么向平台组件和重用发展可以更具扩展性。
-* https://kislayverma.com/organizations/a-case-against-platform-teams/
-
-
-* NoOps Go on Cloud Run 
-* https://medium.com/@peter.malina/noops-go-on-cloud-run-689d92215c5c
-
-
-
+- NoOps Go on Cloud Run
+- <https://medium.com/@peter.malina/noops-go-on-cloud-run-689d92215c5c>
 
 ## 工具
 
-* werf/werf : GitOps 交付工具 
-* ovh/cds : 企业级持续交付和 DevOps 自动化开源平台，
-* markphelps/flipt 一个现代的功能开关方案
-* fluxcd/toolkit ： 用 GitOps 的方式组装 CD 流水线的体验版工具包。
-* 
+- werf/werf : GitOps 交付工具
+- ovh/cds : 企业级持续交付和 DevOps 自动化开源平台，
+- markphelps/flipt 一个现代的功能开关方案
+- fluxcd/toolkit ： 用 GitOps 的方式组装 CD 流水线的体验版工具包。
+-
 
 ## 学习资源
 
 本周推荐如下 B 站学习资源。
 
-
 Jenkins+Ansible+Gitlab自动化部署（CI/CD）
 
-* https://www.bilibili.com/video/BV1Dp411Z7Lf
-* 持续集成在工作中的应用。
+- <https://www.bilibili.com/video/BV1Dp411Z7Lf>
+- 持续集成在工作中的应用。
 
 通俗易懂ElasticSearch 项目实践课程
 
-* https://www.bilibili.com/video/BV1wA411n7LY
-* 搜房网实例项目讲解
-
+- <https://www.bilibili.com/video/BV1wA411n7LY>
+- 搜房网实例项目讲解
 
 【Python趣味教学】99%相似度！手把手教你用Python制作超级玛丽游戏
 
-* https://www.bilibili.com/video/BV1G54y197C2
-* 前26集都在这了，爱编程的小伙伴们，一起来重现童年经典吧！
-
+- <https://www.bilibili.com/video/BV1G54y197C2>
+- 前26集都在这了，爱编程的小伙伴们，一起来重现童年经典吧！
 
 Kubernetes教程 k8s企业级DevOps实践
 
-* https://www.bilibili.com/video/BV1c64y1F7wP
-* k8s是一个开源的，用于管理云平台中多个主机上的容器化的应用，Kubernetes的目标是让部署容器化的应用简单并且高效（powerful）,Kubernetes提供了应用部署，规划，更新，维护的一种机制。
-
+- <https://www.bilibili.com/video/BV1c64y1F7wP>
+- k8s是一个开源的，用于管理云平台中多个主机上的容器化的应用，Kubernetes的目标是让部署容器化的应用简单并且高效（powerful）,Kubernetes提供了应用部署，规划，更新，维护的一种机制。
