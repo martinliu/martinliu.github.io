@@ -3,7 +3,7 @@ title: "告别Terraform：使用为人类设计的基础设施即代码Pulumi"
 date: 2024-01-08T11:01:38+08:00
 description: 正当 Terraform 被 CNCF 切了 Toufu 之后，大家应该考虑一下 Pulumi 了。
 slug: infrastructure-as-code-for-humans-with-pulumi
-image: 
+image: 0_94eq9GcVBbFH3TeR.webp
 categories:
     - DevOps
 tags:
@@ -12,7 +12,6 @@ tags:
     - terraform
 comments: true
 toc: true
-
 ---
 
 本文原作者：[Santiago González](https://medium.com/aws-tip/say-goodbye-to-terraform-infrastructure-as-code-for-humans-with-pulumi-76e72de1c3d9)
@@ -134,3 +133,5 @@ class PulumiIntegrationTest extends Specification {
 尽管Terraform拥有着强大的社区支持，但实际上，对于开发团队来说，通常大家还是觉得太复杂，难以用它实现 IaC 基础设施即代码的管理。这主要是由于学习曲线及其HCL语言，它与命令性语言的逻辑不一致。由于替代解决方案如Pulumi的出现，我们可以使用软件项目中的程序语言配置基础设施资源。实际上，与Terraform相比，Pulumi会提高效率和生产力。如果您尚未决定使用哪种IaC工具，值得 先考虑Terraform可能对您的组织产生的潜在影响。
 
 来源：<https://medium.com/aws-tip/say-goodbye-to-terraform-infrastructure-as-code-for-humans-with-pulumi-76e72de1c3d9>
+
+Feature picture ❤️ :  kike [vega on Unsplash](https://unsplash.com/@kikekiks?utm_source=medium&utm_medium=referral)
