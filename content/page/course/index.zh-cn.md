@@ -13,9 +13,13 @@ menu:
       icon: archives
 ---
 
+## 《SRE 理念和实践必修课》
+
+[详细信息](sre-foundation/)
+
 ## 《实施 SLO 的艺术》
 
-[详细信息](art-of-implement-slo/)
+[详细信息](/course/art-of-implement-slo/)
 
 ### DevOps - 免费课程
 
