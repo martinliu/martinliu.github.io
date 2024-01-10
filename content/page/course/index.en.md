@@ -13,6 +13,12 @@ menu:
       icon: archives
 ---
 
+
+## 实施 SLO 的艺术
+
+[详细描述](art-of-implement-slo/)
+
+
 ### Elastic Stack 
 
 * tutorials - https://elastic.martinliu.cn
