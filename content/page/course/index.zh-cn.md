@@ -13,29 +13,33 @@ menu:
       icon: archives
 ---
 
+> 特色培训
+
 ## 《SRE 理念和实践必修课》
 
-[详细信息](/course/sre-foundation/)
+[详细信息](/course/sre-foundation/) | [报名培训](https://wj.qq.com/s2/14022549/fb96/)
 
 ## 《实施 SLO 的艺术》
 
-[详细信息](/course/art-of-implement-slo/)
+[详细信息](/course/art-of-implement-slo/) | [报名培训](https://wj.qq.com/s2/14022549/fb96/)
 
 ## 《可观测性工程理念和实践必修课》
 
-[详细信息](/course/o11y-foundation/)
+[详细信息](/course/o11y-foundation/) | [报名培训](https://wj.qq.com/s2/14022549/fb96/)
+
+> 认证考试培训
 
 ## 《DOI 的 SRE 认证培训》
 
-[认证培训+证书考试](/course/doi-sre-cert/)
+[认证培训+证书考试](/course/doi-sre-cert/) | [报名培训](https://wj.qq.com/s2/14022549/fb96/)
 
 ## 《DOI 的可观测性认证培训》
 
-[认证培训+证书考试](/course/doi-o11y-cert/)
+[认证培训+证书考试](/course/doi-o11y-cert/) | [报名培训](https://wj.qq.com/s2/14022549/fb96/)
+
+> 免费培训课程
 
 ## DevOps - 免费课程
-
-> 持续开发中。
 
 本课程包含虚拟化、云计算、配置管理、CI、CD 等各种实操练习实验。
 
@@ -68,40 +72,4 @@ menu:
   2. Nutanix Calm 基础功能
   3. Nutanix Calm 中级操作
 
-### SRE 实践必修课（收费）
-
-- 简介：本课程是 IT 从业人员的 SRE 必修课。适合于覆盖所有级别的相关人员。适合在企业在导入 SRE 和 DevOps 实践，并改革前行。一天或者两天内训。
-
-- 目标：
-
-  - 在组织中对 SRE 相关的 基础、实践流程达成高度一致和认同
-  - 详细了解在组织中制定 SLO 的流程、实施的方式
-  - 彻底梳理 SRE 的知识体系和重要的技术实践实践
-  - 对 SRE 的实施过程和相关案例做针对性的研讨
-
-- 课程对象
-
-  - 所有对 SRE 感兴趣的人员
-  - 从 CxO 到各种类型的工程师
-  - 想成为 SRE/DevOps 工程师的人员
-  - 产品经理、项目经理、一线运维经理
-  - DevOps Professional/Master 认证人员，Srcum Master 认证人员
-  - 敏捷教练，DevOps 教练
-
-- 课程内容概要
-  1. SRE 的由来和定义
-  2. SRE 的 5 大核心基础
-  3. SRE 的实践和流程的特性
-  4. 经典案例分享
-
-欲了解详情，请关注微信公众号 “MyDevOps” 联系。
-
-### SRE Foundation℠ 认证培训（收费）
-
-详细课程介绍点下图。
-
 [![](/images/sref-zs.jpg)](https://mp.weixin.qq.com/s/LqRJfXWdm0yOlEwUa3qDDg)
-
-全国各个城市火热报名中，小班授课，人满就开班。
-
-欲了解详情，请关注微信公众号 “MyDevOps” 联系。
