@@ -3,7 +3,7 @@ title: "SLO 兵法 — 在SRE 中实施 SLO 的艺术"
 description: "所提供的 DevOps 和 SRE 课程的简介如下。"
 author: "Martin Liu"
 date: 2024-01-10T15:19:04+08:00
-slug: course/art-of-implement-slo
+slug: art-of-implement-slo
 image: 
 layout: "page"
 ---
