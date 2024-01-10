@@ -14,24 +14,18 @@ menu:
 ---
 
 
-## 实施 SLO 的艺术
 
-[详细描述](art-of-implement-slo/)
+### Elastic Stack
 
-
-### Elastic Stack 
-
-* tutorials - https://elastic.martinliu.cn
-* codelabs 
-  * [Enterprise Search](https://elastic.martinliu.cn/codelabs/entprise-search-foundation/#0) 
+* tutorials - <https://elastic.martinliu.cn>
+* codelabs
+  * [Enterprise Search](https://elastic.martinliu.cn/codelabs/entprise-search-foundation/#0)
   * [Observibility](https://elastic.martinliu.cn/codelabs/elastic-observability-foundation-qq/#0)
   * [Security](https://elastic.martinliu.cn/codelabs/elastic-security-foundation/#0)
 
-
 ### Nutanix
 
-- [Hanson labs](https://nutanix.martinliu.cn)
-- agenda：
+* [Hanson labs](https://nutanix.martinliu.cn)
+* agenda：
   1. Prism Central deploy and configuration
   2. Nutanix Calm foundation
-

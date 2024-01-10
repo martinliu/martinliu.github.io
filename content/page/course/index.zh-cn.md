@@ -13,6 +13,10 @@ menu:
       icon: archives
 ---
 
+## 《实施 SLO 的艺术》
+
+[详细信息](art-of-implement-slo/)
+
 ### DevOps - 免费课程
 
 > 持续开发中。
@@ -32,6 +36,7 @@ menu:
 基于 Elastic Stack 技术栈的可观测性实战工作坊，目标是让参与者彻底理解‘可观测性’对分布式复杂应用系统的作用，正确的使用可观测性工具集，实现对云原生应用或者传统应用的运维管理。
 
 - 课程详细介绍：[见这篇博客文章](https://martinliu.cn/blog/workshop-elastic-observability/)
+
 - 课程讲师 PPT：[在线查看](https://docs.qq.com/slide/DUGRzYVVTU3ZxblBP)
 - 本地环境的课件：
   - [‘Elastic Stack 单节点搭建’ 课件](https://elk-workshop.github.io/codelabs/one-nodes-es-server/#0)
