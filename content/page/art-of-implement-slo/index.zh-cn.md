@@ -3,9 +3,13 @@ title: "SLO 兵法 — 在SRE 中实施 SLO 的艺术"
 description: "SLO兵法是一个工作坊类型的培训"
 author: "Martin Liu"
 date: 2024-01-10T15:19:04+08:00
-slug: art-of-implement-slo
+slug: course/art-of-implement-slo
 image: 
 layout: "page"
+categories:
+- SRE
+tags:
+- SRE
 ---
 
 
@@ -14,6 +18,15 @@ layout: "page"
 * 面向人群：工程师、SRE/DevOps、运维、研发
 * 交付形式：线上或线下
 * 时长：一天
+
+## 课程对象
+
+* 所有对SRE感兴趣的人员
+* 从CxO到各种类型的工程师
+* 想成为SRE/DevOps工程师的人员
+* 产品经理、项目经理、一线运维经理
+* DevOps Professional/Master 认证人员，Srcum Master 认证人员
+* 敏捷教练，DevOps 教练
 
 ## 课程目标
 

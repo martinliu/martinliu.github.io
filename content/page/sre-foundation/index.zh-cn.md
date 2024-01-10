@@ -3,9 +3,13 @@ title: "SRE 理念和实践必修课"
 description: "SRE 核心理念和实践必修课"
 author: "Martin Liu"
 date: 2024-01-10T16:19:04+08:00
-slug: sre-foundation
+slug: course/sre-foundation
 image: 
 layout: "page"
+categories:
+- SRE
+tags:
+- SRE
 ---
 
 
