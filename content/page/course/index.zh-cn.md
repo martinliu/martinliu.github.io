@@ -15,13 +15,25 @@ menu:
 
 ## 《SRE 理念和实践必修课》
 
-[详细信息](sre-foundation/)
+[详细信息](/course/sre-foundation/)
 
 ## 《实施 SLO 的艺术》
 
 [详细信息](/course/art-of-implement-slo/)
 
-### DevOps - 免费课程
+## 《可观测性工程理念和实践必修课》
+
+[详细信息](/course/o11y-foundation/)
+
+## 《DOI 的 SRE 认证培训》
+
+[认证培训+证书考试](/course/doi-sre-cert/)
+
+## 《DOI 的可观测性认证培训》
+
+[认证培训+证书考试](/course/doi-o11y-cert/)
+
+## DevOps - 免费课程
 
 > 持续开发中。
 
