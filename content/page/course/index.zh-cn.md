@@ -21,7 +21,7 @@ menu:
 
 ## 《实施 SLO 的艺术》
 
-[详细信息](/course/art-of-implement-slo/) | [报名培训](https://wj.qq.com/s2/14022549/fb96/)
+[详细信息](/course/slo-art-of-implement-sre) | [报名培训](https://wj.qq.com/s2/14022549/fb96/)
 
 ## 《可观测性工程理念和实践必修课》
 
