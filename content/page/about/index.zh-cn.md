@@ -30,11 +30,15 @@ Elastic 资深开发者布道师，中国 DevOps 社区创始人，《DevOps Han
 
 这里是即将发生和以前的部分社区分享。
 
-*Upcoming Events*
+**Upcoming Events**
 
+### 2024 年
 
+<https://www.bagevent.com/event/8185587>
 
-### 2023
+- [2024 年 1 月 27 日 中关村开源生态论坛暨大模型智能应用生态大会 - 北京 - **分论坛3：AIGC 时代的技术创作《圆桌讨论--经典的技术内容是如何锤炼的？》**](https://www.bagevent.com/event/8185587)
+
+### 2023 年
 
 - [12 月 27 日 中国信通院 - 2023年系统稳定性与精益软件工程大会 - 北京 **《在大规模系统中实施 SLO 的艺术》**](https://mp.weixin.qq.com/s/GrckGISPvtJuQiYueRE7Xw)
 - [11 月 25 日 2023年DevOps社区峰会 - 广州 **《用可观测性之眼洞悉复杂生产系统》**](https://www.hudongba.com/party/34xi5.html)
@@ -42,7 +46,7 @@ Elastic 资深开发者布道师，中国 DevOps 社区创始人，《DevOps Han
 - [3 月 25 日  中国开发者生态峰会 - 北京 - 2023 - **《社区人必备的运营之道》**](https://www.bagevent.com/event/dev-together-2022)
 - [3 月 18 日 中国 DevOps 社区峰会 - 武汉 - 2023 - **《用AI加速度DevOps的实现步伐》**](https://www.hudongba.com/party/gtxy5.html)
 
-### 2022
+### 2022 年
 
 > 倾情分享：双周线上直播活动 “DevOps 工具鉴宝” ，第一季开始于 4 月 15 日，在 B 站收看 10 集直播视频 [DevOps 工具鉴宝 - 播放清单](https://www.youtube.com/playlist?list=PLjF62SePsId5XwaVcmQRTn5SYtgOc61w6)
 
@@ -53,7 +57,7 @@ Elastic 资深开发者布道师，中国 DevOps 社区创始人，《DevOps Han
 - [8 月 13 日 中国 DevOps 社区峰会 - 天津 - 2022 - **《APM分布式追踪不只是埋点》**](https://www.hudongba.com/party/nuul5.html)
 - [4 月 15 日 ~ 9 月 2 日； - **《DevOps工具鉴宝》第一季，共 10 集，系列线上直播活动**](https://space.bilibili.com/370989874/channel/collectiondetail?sid=338624) | [GitHub 代码库](https://github.com/DevopsChina/lab.git)
 
-### 2021
+### 2021 年
 
 - [12 月 4 日 中国 DevOps 社区峰会 - 深圳 - 2021 - **《用 OpenTelemetry 透明数字化系统的可观测性》**](hudongba.com/party/ufpe5.html)
 - [9 月 4 日 中国 DevOps 社区峰会 - 大连 - 2021 - **《用 OpenTelemetry 透明数字化系统的可观测性》**](hudongba.com/party/0wrt5.html)
@@ -71,7 +75,7 @@ Elastic 资深开发者布道师，中国 DevOps 社区创始人，《DevOps Han
 - [2 月 2 日 阿里云 Elasticsearch 生态&技术峰会 - **《如何规划和执行威胁狩猎》**](https://developer.aliyun.com/topic/esanniv3rd?utm_content=g_1000231789)
 - [2 月 27 日 Elastic Community 2021 - **《如何使用 Elastic Stack 规划和执行威胁狩猎》**](https://community.elastic.co/events/details/elastic-global-community-presents-community-conference-2021/)
 
-### 2020
+### 2020 年
 
 - [12 月 19 日：中国 DevOps 社区峰会-北京站 — **《中国 DevOps 社区的现状和未来》KEYNOTES**](https://www.hudongba.com/party/0h2wa.html)
 - [12 月 19 日：中国 DevOps 社区峰会-北京站 — **《SRE 提高服务的质量和稳定性的套路》Track**](https://www.hudongba.com/party/0h2wa.html)
@@ -81,7 +85,7 @@ Elastic 资深开发者布道师，中国 DevOps 社区创始人，《DevOps Han
 - [8 月 10 日：中国 DevOps 社区首届 — **《Pipeline Craft 流水线大赛 》Hackathon Organizer**](https://www.hudongba.com/party/4rl9a.html)
 - [4 月 1 日：中国 DevOps 社区第 18 期线上直播— **《运维、开发和管理者们必备的 SRE 核心体系解读》**](https://www.hudongba.com/party/kkcza.html/) [B 站](https://www.bilibili.com/video/BV1ak4y1975Z)
 
-### 2019
+### 2019 年
 
 - [12 月 7 日：Elastic DevDay 2019 - **《用 Elastic Stack 破解云原生的可观测性》KEYNOTES**](http://conf.elasticsearch.cn/2019/beijing/schedule.html)
 - [10 月 26 日：中国 DevOps 社区峰会-杭州 — **《中国 DevOps 社区的现状和规划》KEYNOTES**](https://www.hudongba.com/party/js53a.html)
@@ -94,7 +98,7 @@ Elastic 资深开发者布道师，中国 DevOps 社区创始人，《DevOps Han
 - [6 月 2 日 ： 中国 DevOps 社区重庆首届 Meetup - **《DevOps 工作三步法精讲》**](https://www.hudongba.com/party/lwina.html)
 - [5 月 25 日 ： 中国 DevOps 社区济南首届 Meetup - **《用 Jenkins 实施 CI/CD 工作坊》Workshop**](https://www.hudongba.com/party/wjz2a.html)
 
-### 2018
+### 2018 年
 
 - [12 月 16 日：中国 DevOps 社区北京第 3 届 Meetup - **《中国 DevOpsDays 社区回顾》**](https://www.hudongba.com/party/24epn.html)
 - [11 月 3 日：DevOps Days Shenzhen 2018 - **《2018 DevOps 状态报告深度解读》KEYNOTES**](https://www.bagevent.com/event/1797956?bag_track=bagevent)
@@ -107,7 +111,7 @@ Elastic 资深开发者布道师，中国 DevOps 社区创始人，《DevOps Han
 - [7 月 22 日：中国 DevOps 社区北京首届 Meetup - **《欢迎来到中国 DevOps 社区》KEYNOTES**](https://www.bagevent.com/event/1602498)
 - [5 月 5 日： DevOps Days Beijing 2018 - **《怎样挑战 DevOps 实践之旅？》KEYNOTES**](http://event.31huiyi.com/1281765435/)
 
-### 2017
+### 2017 年
 
 - [9 月 6 日：DevOps Days Taipei 2017 - **《DevOps 的核心理念和實踐》**](https://devopsdays.tw/2017/sessions.html)
 - [3 月 18 日：DevOps Days Beijing 2017 - **OpenSpace Facilitator. Brought this internal community into China**](https://www.bagevent.com/event/devopsdays-beijing2017)
