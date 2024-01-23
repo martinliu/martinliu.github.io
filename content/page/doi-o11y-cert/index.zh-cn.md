@@ -4,7 +4,7 @@ description: "SRE 核心理念和实践必修课"
 author: "Martin Liu"
 date: 2024-01-10T16:19:04+08:00
 slug: course/doi-o11y-cert
-image: 
+image: woman-surrounded-by-monitors.jpg
 layout: "page"
 categories:
 - SRE
@@ -23,6 +23,8 @@ tags:
 可观测性（Observability）课程介绍了一系列结合应用程序生命周期和复杂体系架构中推进可观测性的核心概念和实践。为关注全栈可观测性（Full Stack Observability）和站点可靠性工程（SRE）的学员量身定制。
 
 微服务和云原生架构一直是许多组织提高速度和灵活性的目标，但随着复杂性的增加，系统的观察变得越来越困难。当出现问题时，这些问题往往难以定位并确定根本原因。
+
+![](DOI-DevOps-Observability-Foundation-New-Badge-1200x1200px-1.jpg)
 
 可观测性（Observability）课程介绍了在组织内实现可观测性的方法。它探讨了通过可观测性关键要素：包括事件（Events）、指标 （Metrics）、跟踪（Tracing）和上下文（Context），通过构建智能的异常检测、故障排除、根因定位能力，实现全栈可观测性，提升组织的故障处理、业务洞察、跨职能协作能力。
 
