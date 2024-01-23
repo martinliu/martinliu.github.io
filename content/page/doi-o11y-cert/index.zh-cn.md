@@ -1,5 +1,5 @@
 ---
-title: "DOI 认证培训 - 可观测性系列"
+title: "DOI 认证培训 - 可观测性基础"
 description: "SRE 核心理念和实践必修课"
 author: "Martin Liu"
 date: 2024-01-10T16:19:04+08:00
