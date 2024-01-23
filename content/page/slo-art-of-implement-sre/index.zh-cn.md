@@ -1,5 +1,5 @@
 ---
-title: "《SLO兵法》实施 SRE 艺术"
+title: "《SLO兵法》实施 SRE 的艺术"
 description: "SLO兵法是一个工作坊类型的培训，学员需要分组完成课堂练习"
 author: "Martin Liu"
 date: 2024-01-10T15:19:04+08:00
