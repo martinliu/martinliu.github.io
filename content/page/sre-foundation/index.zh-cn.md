@@ -1,10 +1,10 @@
 ---
-title: "SRE理念和实践必修课"
-description: "SRE 核心理念和实践必修课"
+title: "SRE实战引擎：构建高效稳定的生产环境"
+description: "这是一门专为IT专业人士设计的实战课程。课程深入探讨SRE的核心理念，详解实践流程，并通过实战演练和案例研讨，让你在理论与实践中找到平衡，全面提升SRE能力。无论你是DevOps工程师，还是想进阶成为SRE，本课程都能为你提供宝贵的学习机会。"
 author: "Martin Liu"
 date: 2024-01-10T16:19:04+08:00
 slug: course/sre-foundation
-image: 
+image: sref.png
 layout: "page"
 categories:
 - SRE
