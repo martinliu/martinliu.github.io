@@ -1,10 +1,10 @@
 ---
-title: "《SLO兵法》实施 SRE 的艺术"
+title: "‘SLO兵法’实施 SRE 的艺术"
 description: "SLO兵法是一个工作坊类型的培训，学员需要分组完成课堂练习"
 author: "Martin Liu"
 date: 2024-01-10T15:19:04+08:00
 slug: course/slo-art-of-implement-sre
-image: 
+image: art-slo.png
 layout: "page"
 categories:
 - SRE
@@ -16,6 +16,7 @@ tags:
 
 ## 课程简介
 
+* 课程名称：‘SLO兵法’实施 SRE 的艺术
 * 交付形式：线上或线下
 * 时长：一天
 

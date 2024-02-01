@@ -15,15 +15,15 @@ menu:
 
 > 特色培训
 
-## 《SRE 理念和实践必修课》
+## 《SRE实战引擎：构建高效稳定的生产环境》
 
 [详细信息](/course/sre-foundation/) | [报名培训](https://wj.qq.com/s2/14022549/fb96/)
 
-## 《实施 SLO 的艺术》
+## 《“SLO兵法” 实施 SRE 的艺术》
 
 [详细信息](/course/slo-art-of-implement-sre) | [报名培训](https://wj.qq.com/s2/14022549/fb96/)
 
-## 《可观测性工程理念和实践必修课》
+## 《精通可观测性：系统运维实践的跃迁》
 
 [详细信息](/course/o11y-foundation/) | [报名培训](https://wj.qq.com/s2/14022549/fb96/)
 

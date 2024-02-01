@@ -1,10 +1,10 @@
 ---
-title: 
-description: "可观测性工程核心理念和实践必修课"
+title: 精通可观测性：系统运维实践的跃迁
+description: 以全面深入的理论与实践，引领你探索可观测性的核心，挑战未知。涵盖从基础理论到高效调试，再到大规模可观测性管理与团队协作的全方位训练。适合各类IT人员，无论是期望提升技能还是推动团队协作，都能在这里找到答案。
 author: "Martin Liu"
 date: 2024-01-10T16:19:04+08:00
 slug: course/o11y-foundation
-image: 
+image: o11yf.png
 layout: "page"
 categories:
 - SRE
@@ -17,6 +17,7 @@ tags:
 
 ## 概述
 
+* 课程名称：《精通可观测性：系统运维实践的跃迁》
 * 交付形式：线上或线下
 * 时长：2天
 
