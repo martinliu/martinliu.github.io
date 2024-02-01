@@ -1,0 +1,790 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>云计算 on Martin Liu's Blog</title><link>https://martinliu.cn/categories/cloud/</link><description>Recent content in 云计算 on Martin Liu's Blog</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><lastBuildDate>Sat, 24 Mar 2018 20:51:01 +0800</lastBuildDate><atom:link href="https://martinliu.cn/categories/cloud/index.xml" rel="self" type="application/rss+xml"/><item><title>容器化应用的设计原则</title><link>https://martinliu.cn/blog/%E5%AE%B9%E5%99%A8%E5%8C%96%E5%BA%94%E7%94%A8%E7%9A%84%E8%AE%BE%E8%AE%A1%E5%8E%9F%E5%88%99/</link><pubDate>Sat, 24 Mar 2018 20:51:01 +0800</pubDate><guid>https://martinliu.cn/blog/%E5%AE%B9%E5%99%A8%E5%8C%96%E5%BA%94%E7%94%A8%E7%9A%84%E8%AE%BE%E8%AE%A1%E5%8E%9F%E5%88%99/</guid><description>&lt;img src="https://res.cloudinary.com/martinliu/image/upload/BingWallpaper-2018-03-20.jpg" alt="Featured image of post 容器化应用的设计原则" />&lt;p>本文来自于Red Hat咨询顾问Bilgin Ibryam所编写的一篇白皮书，名为《PRINCIPLES OF CONTAINER-BASED APPLICATION DESIGN》。这篇文章在作者的Blog上发表后，作者的twitter被Kubernetes官方twitter转发。白皮书在Red Hat官网的下载地址：&lt;a class="link" href="https://www.redhat.com/en/resources/cloud-native-container-design-whitepaper" target="_blank" rel="noopener"
+>https://www.redhat.com/en/resources/cloud-native-container-design-whitepaper&lt;/a> 文本是对这篇文章的学习和整理。&lt;/p>
+&lt;p>先回顾经典的软件设计原则：&lt;/p>
+&lt;ul>
+&lt;li>保持简单，愚蠢（KISS）&lt;/li>
+&lt;li>不要重复自己（DRY）&lt;/li>
+&lt;li>你不会需要它 （YAGNI）&lt;/li>
+&lt;li>关注点分离（SoC）&lt;/li>
+&lt;li>Single responsibility, Open/closed, Liskov substitution, Interface segregation, Dependency inversion （SOLID）&lt;/li>
+&lt;/ul>
+&lt;p>然后是Red Hat的云原生容器设计原则：&lt;/p>
+&lt;ul>
+&lt;li>唯一关注性原则（SCP）&lt;/li>
+&lt;li>高度可观测性原则（HOP）&lt;/li>
+&lt;li>生命周期一致性原则（LCP）&lt;/li>
+&lt;li>镜像不可变性原则（IIP）&lt;/li>
+&lt;li>进程可处置性原则（PDP）&lt;/li>
+&lt;li>自包含性原则（S-CP）&lt;/li>
+&lt;li>运行时约束性原则（RCP）&lt;/li>
+&lt;/ul>
+&lt;p>很多组织都理解云原生的重要性和必要性，但是并不知道从哪里开始。那么请确保：云原生平台和容器化应用能无缝的运行在一起，并且具备抵御故障的能力，甚至在底层的基础架构出现宕机的时候，也能通过过弹性扩展的方式表现出可靠性。本文描述了容器化应用时需要遵循的基本准则，实施这些原则有助于使之与云原生平台Kubernetes更加适配。&lt;/p>
+&lt;h2 id="唯一关注性原则-single-concern-principlescp">唯一关注性原则 SINGLE CONCERN PRINCIPLE（SCP）&lt;/h2>
+&lt;p>在许多方面，唯一关注性原则与来自SOLID的SRP是类似的，它建议一个类应该只有一个责任。SRP背后的动机是每个责任是变更的一个轴心，一个类应该有，且也只有一个需要改变的理由。SCP原则中的“关注”一词强调关注是一种更高层次的抽象的责任，而且它更好地将范围描述为一个容器而不是一个类。虽然SRP的主要动机是变化原因的唯一性，而SCP的主要动机是容器镜像重用和可替换性。如果你创建一个解决单个问题的容器，并且以功能完整的方式来实现，不同应用程序中的容器镜像重用的可能性就会更高。&lt;/p>
+&lt;p>因此，SCP原则规定每个集容器都应该解决一个问题，并做得很好。 实现这一点，通常比在面向对象的世界中实现SRP更容易，容器通常管理的一个单一的进程，大多数情况下一个进程解决一个问题。&lt;/p>
+&lt;p>&lt;img src="https://res.cloudinary.com/martinliu/image/upload/scp.png"
+loading="lazy"
+alt="scp 容器化应用的设计原则"
+>
+&lt;/p>
+&lt;p>如果你的容器化微服务需要解决多个问题，它可以使用这样的模式，将多个容器用sidecar和init-containers的模式合并成一个部署单元（pod），这样每个容器仍然是处理单个问题。同样，您可以替换处理同样问题的容器。 例如，将Web服务器容器或队列实现容器，更新为更具可扩展性的容器。&lt;/p>
+&lt;h2 id="高度可观测性原则-high-observability-principlehop">高度可观测性原则 HIGH OBSERVABILITY PRINCIPLE（HOP）&lt;/h2>
+&lt;p>容器提供了一种统一的方式来打包和运行应用程序，将它们视为一个黑盒子对象。 但任何旨在成为云原生公民的容器都必须提供API支持，要为运行时环境编写接口（API），以观察容器的健康状况和行为。 这是自动化容器更新和生命周期回收的基本先决条件和统一的方式，从而提高系统的弹性和用户体验。&lt;/p>
+&lt;p>&lt;img src="https://res.cloudinary.com/martinliu/image/upload/hop.png"
+loading="lazy"
+alt="hop 容器化应用的设计原则"
+>
+&lt;/p>
+&lt;p>实际上，您的容器化应用程序必须至少为其提供不同类型的健康检查的API&amp;ndash;活动和就绪等状态。更好的应用程序的行为则必须提供其他手段来观察容器化应用程序的状态。应用程序应该将重要事件记录到标准错误（STDERR）和标准输出（STDOUT）中，从而通过统一的日志聚合工具（诸如Fluentd和Logstash之类的工具）进行分析，并与跟踪和指标收集库相结合，例如OpenTracing，Prometheus等。&lt;/p>
+&lt;p>将您的应用程序视为黑盒子，但实施所有必要的API以帮助平台对其进行观测，并以最佳方式管理您的应用程序。&lt;/p>
+&lt;h2 id="生命周期一致性原则-life-cycle-conformance-principlelcp">生命周期一致性原则 LIFE-CYCLE CONFORMANCE PRINCIPLE（LCP）&lt;/h2>
+&lt;p>HOP规定了你的容器提供供平台观测的API。 LCP则规定：您的应用程序有办法读取来自平台的事件。 此外，除了获得事件以外，容器还应该对这些事件相应地作出反应。这就是此原则名字由来。这几乎就像在应用程序通过一个“写入API”与平台进行交互。&lt;/p>
+&lt;p>&lt;img src="https://res.cloudinary.com/martinliu/image/upload/lcp.png"
+loading="lazy"
+alt="lcp 容器化应用的设计原则"
+>
+&lt;/p>
+&lt;p>来自管理平台的各种事件都是为了帮助您管理您的容器的生命周期的。决定处理哪些事件取决于您的应用程序 以及是否对这些事件做出反应。&lt;/p>
+&lt;p>但有些事件比其他事件更重要。例如，任何需要一个干净的关闭进程，这就需要捕获信号：终止（SIGTERM）消息，并尽可能迅速关闭。 这是为了避免通过强制关闭信号：kill（SIGKILL），之后跟随一个SIGTERM。&lt;/p>
+&lt;p>还有其他事件，例如PostStart和PreStop，可能对您的应用程序生命周期管理也非常重要。 例如，某些应用程序需要在服务之前进行预热请求和一些需要在关闭干净之前释放资源。&lt;/p>
+&lt;h2 id="镜像不可变性原则-image-immutability-principleiip">镜像不可变性原则 IMAGE IMMUTABILITY PRINCIPLE（IIP）&lt;/h2>
+&lt;p>IMAGE IMMUTABILITY PRINCIPLE（IIP）容器化的应用程序是不可变更的，镜像一旦完成了构建，预计在不同的环境中运行都不会改变。这意味着在因外部环境的不同，在需要的时候需要使用外部手法处理所依赖的外部配置数据，而不是每个环境修改或者构建不同的容器。而容器应用程序中的任何变更，都应该因此触发构建新的容器映像，并在所有环境中重用它。相同于这个原理的，不可变服务器和不可变基础架构的概念也很受欢迎，并且对于服务器/主机管理也是如此。&lt;/p>
+&lt;p>&lt;img src="https://res.cloudinary.com/martinliu/image/upload/iip.png"
+loading="lazy"
+alt="iip 容器化应用的设计原则"
+>
+&lt;/p>
+&lt;p>在遵循IIP原则的情况下，应该防止为不同的环境创建相似的容器镜像，要始终坚持为所有环境只配置一个容器映像。 这个原则允许在应用程序更新期间，采用自动回滚和前滚等做法，这是云原生自动化的重要方面。&lt;/p>
+&lt;h2 id="进程可处置性原则-process-disposability-principlepdp">进程可处置性原则 PROCESS DISPOSABILITY PRINCIPLE（PDP）&lt;/h2>
+&lt;p>迁移到容器应用程序的主要动机之一是：容器需要尽可能做到临时性，并做好在任何时候被另一个容器实例替换的准备。需要更换容器的原因有很多，比如：健康检查失败、缩容、应用程序将容器迁移到不同的主机，平台资源匮乏或其它的问题。&lt;/p>
+&lt;p>&lt;img src="https://res.cloudinary.com/martinliu/image/upload/pdp.png"
+loading="lazy"
+alt="pdp 容器化应用的设计原则"
+>
+&lt;/p>
+&lt;p>这意味着容器化的应用程序必须保持其状态为向外扩展的或分布式和冗余的。这也意味着应用程序应该快速启动和关闭，甚至为彻底的硬件故障做好准备。 实施这一原则的另一个有用的做法是创建小容器。 容器在云原生环境可以自动调度并在不同的主机上启动。较小的容器可以实现更快启动时间，因为在重新启动之前容器镜像需要被物理地复制到主机系统。&lt;/p>
+&lt;h2 id="自包含性原则-self-containment-principles-cp">自包含性原则 SELF-CONTAINMENT PRINCIPLE（S-CP）&lt;/h2>
+&lt;p>这个原则规定一个容器应该在构建时包含所有需要的东西。容器的存在应该仅仅依赖于Linux®内核，在并添加相关额外的库，在容器构建时加入它们。除了库之外，它还应该包含语言运行时，应用程序平台（如果需要），以及运行所需的其他依赖关系，等运行容器化应用所需要的诸如此类的东西。&lt;/p>
+&lt;p>&lt;img src="https://res.cloudinary.com/martinliu/image/upload/s-cp.png"
+loading="lazy"
+alt="s-cp 容器化应用的设计原则"
+>
+&lt;/p>
+&lt;p>唯一的例外是：由于不同环境之间差异，并且只能在运行时提供的配置; 例如，通过Kubernetes提供的ConfigMap。&lt;/p>
+&lt;p>某些应用程序由多个容器组件组成。 例如，容器化的Web应用程序也可能需要数据库容器。 根据这个原则，并不建议合并两个容器。相反，它建议的是数据库容器只包含运行数据库所需的所有内容，Web应用程序容器只包含运行Web应用程序所需的所有内容，如Web服务器。 在运行时，Web应用程序容器将根据需要依赖于并访问数据库容器。&lt;/p>
+&lt;h2 id="运行时约束性原则-runtime-confinement-principlercp">运行时约束性原则 RUNTIME CONFINEMENT PRINCIPLE（RCP）&lt;/h2>
+&lt;p>S-CP从构建时的角度查看容器，并关注于生成的二进制文件及其内容。但是容器不仅仅是磁盘上一个只有尺寸大小的单一维度的黑盒子。 容器运行时有多个维度，例如内存使用维度，CPU使用维度等资源消耗维度。&lt;/p>
+&lt;p>&lt;img src="https://res.cloudinary.com/martinliu/image/upload/rcp.png"
+loading="lazy"
+alt="rcp 容器化应用的设计原则"
+>
+&lt;/p>
+&lt;p>这个RCP原则建议每个容器申报资源需求，并发送信息到平台。它应该分享容器的资源配置文件，从CPU，内存，网络，磁盘的角度声明。这影响到平台如何执行调度，自动扩展，容量 管理以及容器常规的服务级别协议（SLA）等。&lt;/p>
+&lt;p>除了向平台声明容器的资源需求之外，还有一点也很重要， 应用被约束在使用所声明的资源需求内。如果应用程序对资源的使用保持在约束的范围内，则当资源匮乏发生时，平台不太可能将其终止和迁移。&lt;/p>
+&lt;h2 id="结论">结论&lt;/h2>
+&lt;p>云原生不仅仅是一种最终状态 - 它也是一种工作方式。 本份白皮书描述了一系列容器应用的基本原则，必须遵守才能成为优秀的云原生公民。&lt;/p>
+&lt;p>除了这些原则之外，创建良好的容器应用程序还需要熟悉其他容器相关的最佳实践和技术。 尽管上述原则非常根本，适用于大多数用例，下面列出的最佳实践在应用和不应用的时候，则需要判断力。以下是一些与容器相关的更常见的最佳实践：&lt;/p>
+&lt;ul>
+&lt;li>&lt;strong>镜像要尽可能的小&lt;/strong>。 通过清理临时文件，并避免安装不必要的软件包来构建小尺寸镜像。 这减少了容器的尺寸，构建时间和复制容器镜像的网络传输时间。&lt;/li>
+&lt;li>&lt;strong>支持任意用户ID&lt;/strong>。 避免使用sudo命令或要求特定用户名运行你的容器。&lt;/li>
+&lt;li>&lt;strong>标记重要的端口&lt;/strong>。 虽然可以在运行时指定端口号，然而使用EXPOSE命令在运行的时候指定，则可以让镜像的使用者更轻松。&lt;/li>
+&lt;li>&lt;strong>为持久数据使用卷&lt;/strong>。 在容器摧毁之后还需要保存的容器数据的，必须将数据写入一个数据卷。&lt;/li>
+&lt;li>&lt;strong>设置镜像元数据&lt;/strong>。 以标签和注释形式存在的镜像元数据可以使您的容器镜像更加实用，从而为使用您的容器的开发人员提供了更好的体验。&lt;/li>
+&lt;li>&lt;strong>使主机和镜像同步&lt;/strong>。 一些容器应用需要容器在某些属性（如时间和机器ID）上与主机同步。&lt;/li>
+&lt;/ul>
+&lt;p>这里是指向各种模式和最佳实践的资源的链接，以帮助您能有效地实现上述目标：&lt;/p>
+&lt;ul>
+&lt;li>• &lt;a class="link" href="https://www.slideshare.net/luebken/container-patterns" target="_blank" rel="noopener"
+>https://www.slideshare.net/luebken/container-patterns&lt;/a>&lt;/li>
+&lt;li>• &lt;a class="link" href="https://docs.docker.com/engine/userguide/eng-image/dockerfile_best-practices" target="_blank" rel="noopener"
+>https://docs.docker.com/engine/userguide/eng-image/dockerfile_best-practices&lt;/a>&lt;/li>
+&lt;li>• &lt;a class="link" href="http://docs.projectatomic.io/container-best-practices" target="_blank" rel="noopener"
+>http://docs.projectatomic.io/container-best-practices&lt;/a>&lt;/li>
+&lt;li>• &lt;a class="link" href="https://docs.openshift.com/enterprise/3.0/creating_images/guidelines.html" target="_blank" rel="noopener"
+>https://docs.openshift.com/enterprise/3.0/creating_images/guidelines.html&lt;/a>&lt;/li>
+&lt;li>• &lt;a class="link" href="https://www.usenix.org/system/files/conference/hotcloud16/hotcloud16_burns.pdf" target="_blank" rel="noopener"
+>https://www.usenix.org/system/files/conference/hotcloud16/hotcloud16_burns.pdf&lt;/a>&lt;/li>
+&lt;li>• &lt;a class="link" href="https://leanpub.com/k8spatterns/" target="_blank" rel="noopener"
+>https://leanpub.com/k8spatterns/&lt;/a>&lt;/li>
+&lt;li>• &lt;a class="link" href="https://12factor.net" target="_blank" rel="noopener"
+>https://12factor.net&lt;/a>&lt;/li>
+&lt;/ul></description></item><item><title>EXIN DevOps Master 认证考试</title><link>https://martinliu.cn/2016/11/07/exin-devops-master-e8aea4e8af81e88083e8af95/</link><pubDate>Mon, 07 Nov 2016 15:19:08 +0000</pubDate><guid>https://martinliu.cn/2016/11/07/exin-devops-master-e8aea4e8af81e88083e8af95/</guid><description>&lt;p>DevOps 这个词在去年参加红帽全球用户大会的时候就深深吸引了我，实际上哪个会上 Docker 容器的概念要比 DevOps 还火爆。Docker／openshift 相关的 session 都尝尝是爆满的。从那里开始我逐渐感觉到了开源容器技术的强大和吸引力。&lt;/p>
+&lt;p>从红帽开始 OpenShift 的考试就是我在完成 RHCA 红帽认证架构师之后的一个心结，至今也没有完成。不过这根草我早晚是要拔掉的。主要是由于 OpenShift 是 Docker ＋ kubernetes 的组合；是如今企业级 PaaS 容器平台的主要技术路线。总之离开红帽是如此的仓促，说实话这也是我职业生涯中的一个不小的遗憾。当时确实觉得 kubernetes 的命令行操作不是很方便，而且在 OpenShift 并没有降低这个门槛，也即是说在 OpenShift 里面还是要有一定的工作量和技能的要求在编写 kubernetes 的 yml 文件上。在这一点上，及时我熟练掌握了 Rancher 之后，同样发现编写 compose file 也是难以逃避的。在推广一步，大部分 Docker PaaS 平台也都是这样，很多产品也是在界面上提供一个文本输入框，让人输入容器服务定义文件的内容。&lt;/p>
+&lt;p>在最近的半年中，我的所有技术研究都集中在 Docker 和其服务编排技术上。与很多用户做过技术交流，PoC 测试，有些单子也落地。总结后，有些结果让我感叹。国内的所有企业不区分规模和行业，其实他们对国内原生的创业公司是欢迎的，由于这些公司提供的是国产软件和技术服务。在 Docker 这个火热的领域中，已经有 20 多家国内创业公司，我想所有的公司也都已经接受到了这一点的福利了。外国软件通常给人的感觉是：不是国产软件（不要小看国内公司对国产软件的诉求），纯英文操作界面和文档，可能的水土不服，高昂的软件价格和服务费，如果技术太新的化很可能厂商也不具备足够的技术实力和服务力量。&lt;/p>
+&lt;p>经过了一些 Docker 容器项目之后，可以断言的是容器市场的火爆和它的技术优势是直接相关的。容器化之后的应用可以通过服务编排工具快速地部署／更新、弹性地伸缩和使用资源，优化其传统应用运维的若干缺陷。容器的轻量和 just enough 的隔离技术让资源池的管理更加简单，利用率大幅度提升，这对研发部门的环境管理是不小的提升，使 CI 的过程更加高效和经济。Docker 对微服务的支持也深深地诱惑了所有开发者，做系统微服务实施开发者能想到的实施技术大多数会是容器。&lt;/p>
+&lt;p>以上容器的优势和特性使得国内的这些项目落地和实施的可能性进一步提高，甚至很多项目的速度远远超预期；按照我多年的经验看，一个软件技术型的项目，用户纠结半年到一年以上是很正常的。可能也跟国内企业包容本土化软件公司，追捧新潮技术直接相关；我观察到的一些项目，在 2 ～ 4 个月内落单的屡见不鲜。有些试点的 DevOps 咨询项目也落地很快。&lt;/p>
+&lt;p>这些项目都殊途同归地指向了 DevOps 这个关键词，这让我不得不从去年开始就关注和学习这个最佳实践。当然，我对 DevOps 的前途非常看好，因此当我听说业内出现了相关认证考试之后，我毫不犹豫地报名参加了。经过 2 个多月的缜密的准备，我终于幸运地一次通过了这个考试。考试获得了两个证书。&lt;/p>
+&lt;p>&lt;img src="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2016/11/EXIN-DevOps-Master-Cert-Martin-Liu.jpg"
+loading="lazy"
+alt="exin-devops-master-cert-martin-liu"
+>
+DevOps Master&lt;/p>
+&lt;p>&lt;img src="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2016/11/certificate-devops-freelance-trainer-Liu-Zheng.jpg"
+loading="lazy"
+alt="DevOps Master 认证自由讲师"
+>
+DevOps Master 认证自由讲师&lt;/p>
+&lt;p>我参加的是讲师认证培训 TTT，很高兴能成为 Exin 在国内的首批 5 个认证人员之一。在准备这个考试的过程中我学习了一些书籍，现在还在深度学习的书有两本。&lt;/p>
+&lt;p>&lt;img src="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2016/11/14678659256890.jpg"
+loading="lazy"
+alt="14678659256890"
+>
+&lt;/p>
+&lt;p>我完成了这本黑皮书的读书笔记，很遗憾的是，我发现它的最新版，把封面改成了白底的了，我不能在叫它黑皮书／黑宝书了。这本书我起码看了两遍；目前正在调试它的书中的代码，代码中的营养还是很高的，计划尽快把所有代码调试通过；从而完成我许下多次的线上分享本书的诺言。&lt;/p>
+&lt;p>&lt;img src="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2016/11/14749866044733.jpg"
+loading="lazy"
+alt="14749866044733"
+>
+&lt;/p>
+&lt;p>这本书被我称为 CD 红皮书／红宝书。本书早在 10 年就出版了，也就是说比 Docker 早好多年。他给我最大的印象就是，作者每一页上似乎都在介绍这做事情的原则和规矩是什么？我一点也不夸张，他对 CD 的介绍，就是通过讲解一系列在项目上的经验总结。对作者这种级别的经验，和写书的房子只能用一个词总结“服”。这本书太干，我至今还没有消化完。他让我看到了解决发布和变更风险的终极解决方案，没有一次性解决问题的部署／配置／发布工具，有的是历练和打磨了千万次的持续部署流水线；隐约地觉得没用入手的企业都会慢慢跟上的。&lt;/p>
+&lt;p>以上是我对 DevOps 的阶段性总结，跨度有半年之久。这半年中我逐渐看清了我的主要兴趣点，抛除所有其他主题，目前剩下的就是：云计算和 DevOps。一方面觉得年纪不饶人，不能可能在和年轻人拼精力、体力和创意；我的背景和经验都让我感觉，在这两个话题上，我还是有很多年的经验和技术积累和总结的。云计算是（公有云＋私有云）未来企业 IT 基础架构的走向；DevOps 是目前看比较正确的运作实践。一个便技术，一个便管理，正好完整覆盖了我的经验；在其对应的开源技术这个分支里，我想它们都还有这很多的为探索和研究的项目。&lt;/p></description></item><item><title>下一代应用为中心的平台 OpenShift</title><link>https://martinliu.cn/2016/01/12/e4b88be4b880e4bba3e5ba94e794a8e4b8bae4b8ade5bf83e79a84e5b9b3e58fb0-openshift/</link><pubDate>Tue, 12 Jan 2016 04:05:46 +0000</pubDate><guid>https://martinliu.cn/2016/01/12/e4b88be4b880e4bba3e5ba94e794a8e4b8bae4b8ade5bf83e79a84e5b9b3e58fb0-openshift/</guid><description>&lt;img src="https://martinliu.cn/images/abstract-8.jpg" alt="Featured image of post 下一代应用为中心的平台 OpenShift" />&lt;p>&lt;a class="link" href="https://vimeo.com/151465422" target="_blank" rel="noopener"
+>Amadeus uses next-generation containerized application platform with OpenShift&lt;/a> from &lt;a class="link" href="https://vimeo.com/martinliu" target="_blank" rel="noopener"
+>Martin&lt;/a> on &lt;a class="link" href="https://vimeo.com" target="_blank" rel="noopener"
+>Vimeo&lt;/a>.&lt;/p>
+&lt;p>以上视频来源于：&lt;a class="link" href="https://blog.openshift.com/openshift-3-amadeus-red-hat-summit-session-recording-recap/" target="_blank" rel="noopener"
+>https://blog.openshift.com/openshift-3-amadeus-red-hat-summit-session-recording-recap/&lt;/a>&lt;/p></description></item><item><title>OpenStack Enterprise Ready</title><link>https://martinliu.cn/2015/05/14/openstack-enterprise-ready/</link><pubDate>Thu, 14 May 2015 16:36:27 +0000</pubDate><guid>https://martinliu.cn/2015/05/14/openstack-enterprise-ready/</guid><description>&lt;h2 id="不是好不好而是用不用">不是好不好，而是用不用？&lt;/h2>
+&lt;p>要说 OpenStack 的优点，技术人员能说出一堆词汇，如开源、弹性、稳定、可扩展、迅速搭建私有云、对硬件要求不高、解耦、能快速扩展新业务等等。但实际应用的案例为何这么少。&lt;/p>
+&lt;blockquote>
+&lt;blockquote>
+&lt;blockquote>
+&lt;blockquote>
+&lt;p>国内传统企业用的少，互联网公司用了不少了，创业公司捣鼓 OpenStack 部署公有云服务的业务也不少了，总体看 OpenStack 水平高的人不在数量巨大的传统企业里，当前人员也不存在这个流向，更重要的是传统企业没有合适的在 OpenStack 上跑的 workload。因此少。&lt;/p>
+&lt;/blockquote>
+&lt;/blockquote>
+&lt;/blockquote>
+&lt;/blockquote>
+&lt;p>一个数据是，这两年计划部署 OpenStack 的企业为 84%，可见大多数企业仍观望。这问题出在哪里？&lt;/p>
+&lt;blockquote>
+&lt;blockquote>
+&lt;blockquote>
+&lt;p>原因同上。&lt;/p>
+&lt;/blockquote>
+&lt;/blockquote>
+&lt;/blockquote>
+&lt;p>技术仍旧是问题。OpenStack 的问题是半年快速迭代，发布新产品，速度太快，老版本跟不上。理论上，新版本向下兼容。但在一些版本较大改动，加入新的功能时，如果企业已经深度应用了旧版本，可能面临技术无法升级，或者需要重度开发的问题。&lt;/p>
+&lt;blockquote>
+&lt;blockquote>
+&lt;blockquote>
+&lt;blockquote>
+&lt;blockquote>
+&lt;p>开发改动大么？那些地方大改动了？深度开发的部分是什么组件？是遵循了向下一个版本兼容的原则了么？代码提交会社区了么？OpenStack 社区版升级了，企业就一定要升级旧的版本么？什么情况下升级版本？什么情况下打补丁知道么？OpenStack 是云操作系统，我们看到的常见的开发场景是：界面友好度的调整、虚拟机功能的增强、辅助管理功能的增加等等。如果基于某个版本把这些附加功能开发出来了，其实业务需求清晰和随后调整不大的话，其实是可以用一定时间的。升级有两个原因：修复 bug，增加新版本的功能。我见过创业公司把之前开发的东西一次一次废掉重来的情况，主要原因还是他们首先不能提交代码会社区，其次开发的东西不是外挂式和主框架松耦合的。企业面对开发是谨慎的，往往不会在投入大量功能评估后，在清晰的需求下二次开发。二次开发做的多得还是想做 OpenStack 生意的创业公司，而传统企业的这些金主客户，我感觉他们还真没有这个需求和闲工夫。因此开发重，不能平滑进入下一代新版本不是用的少和不用的原因。&lt;/p>
+&lt;/blockquote>
+&lt;/blockquote>
+&lt;/blockquote>
+&lt;/blockquote>
+&lt;/blockquote>
+&lt;p>另外与企业规模有关。多大企业需要使用 OpenStack，需要部署在哪些生产环境，是否是全面替代，还是迁移，包括从 VMware 迁移到 OpenStack，或者是新应用局部部署 OpenStack？这些不考虑清楚，没办法应用。&lt;/p>
+&lt;blockquote>
+&lt;blockquote>
+&lt;blockquote>
+&lt;blockquote>
+&lt;blockquote>
+&lt;p>这是一个很普遍的误区，太多人这么想了。从 VMWare 迁移到 OpenStack 真的这么重要么？真的存在这个场景了？服务器虚拟化和 OpenStack 是两种同类型的基础架构技术。服务器虚拟化跑传统的有状态应用；OpenStack 跑需要弹性扩展的无状态应用。有状态应用不适合跑在 OpenStack 上。也不太可能不做任何改变就能适应 OpenStack 环境。企业的无状态应用少，但这是一个发展过程和阶段。原因在于无状态应用和合适在 OpenStack 上跑得 workload 太少了。企业目前的应用 workload 是因，OpenStack 部署少是果。不存在 OpenStack 替代服务器虚拟化的事情，他俩会并存很长时间，不是非黑即白的替代逻辑。&lt;/p>
+&lt;/blockquote>
+&lt;/blockquote>
+&lt;/blockquote>
+&lt;/blockquote>
+&lt;/blockquote>
+&lt;p>当前看，对企业应用需求的评估太少，大多是 IT 产业（厂商）一头热，鼓吹 OpenStack 太好，反而令人生疑。&lt;/p>
+&lt;blockquote>
+&lt;blockquote>
+&lt;blockquote>
+&lt;blockquote>
+&lt;blockquote>
+&lt;blockquote>
+&lt;p>说的好就怀疑了？这里说的应用需求评估有两方面。或者两个理解方向。这里可能是说 OpenStack 功能性方面，客观的讲，当一个技术在风口上的时候，说好话的多，这是客观规律，多年前服务器虚拟化也这样，现在热度低了，它再发新版本大家连个搭理的功夫都没有了，也没有啥评测文章出来，这都是自然规律。OpenStack 也有失去热捧的那天，我最近看了一些基于它创业的技术型公司也都在反思和总结经验中。&lt;/p>
+&lt;/blockquote>
+&lt;/blockquote>
+&lt;/blockquote>
+&lt;/blockquote>
+&lt;/blockquote>
+&lt;/blockquote>
+&lt;h2 id="怎么用谁来带头">怎么用，谁来带头？&lt;/h2>
+&lt;p>当前案例也有，如电信运营商阿尔卡特朗讯（名字太长，以后会不会再加上西门子诺基亚）、诺基亚、西班牙电信；汽车领域宝马汽车、银行企业西班牙 BBVA、传媒领域时代华纳有线等。这些企业具有标杆意义，不具有示范效应。企业规模不一样，生产环境不同，这是最大的不同。这些案例最明显的是以信息为核心资源的企业，IT 系统建设较为完善和复杂，有意愿、有钱尝试新的 IT 技术。&lt;/p>
+&lt;blockquote>
+&lt;blockquote>
+&lt;blockquote>
+&lt;blockquote>
+&lt;blockquote>
+&lt;blockquote>
+&lt;p>规模、环境、以信息为核心资源、IT 成熟、有意愿、有钱；这些都不能说成是中外企业 IT 的差异，也完全和是否用 OpenStack 无关的因素。我朝存在大量的传统大型企业，都已经排名全球 100 强了，很多是我们的客户。它们的市值比以上公司大得多。举个例子：CCB 的市值是 2015 年 4 月 30 日 - 成交量 4.88 亿股 市值 18,151.51 亿；宝马的市值是 2012 年 12 月 宝马市值增至奔驰两倍 达 3700 亿元；这么高大上制造型企业，连 CCB 的零头都不如。&lt;/p>
+&lt;/blockquote>
+&lt;/blockquote>
+&lt;/blockquote>
+&lt;/blockquote>
+&lt;/blockquote>
+&lt;/blockquote>
+&lt;p>总体看，当前应用较多的是 IT 产公司（包括互联网公司），国内互联网公司如去哪儿、携程等公司都有应用。&lt;/p>
+&lt;blockquote>
+&lt;blockquote>
+&lt;blockquote>
+&lt;div class="codeblock">
+&lt;header>
+&lt;span class="codeblock-lang">&lt;/span>
+&lt;button
+class="codeblock-copy"
+data-id="codeblock-id-0"
+data-copied-text=""
+>
+&lt;/button>
+&lt;/header>
+&lt;code id="codeblock-id-0" style="display:none;">&lt;/code>&lt;pre>&lt;code class="">&lt;/code>&lt;/pre>&lt;/div>
+&lt;/blockquote>
+&lt;/blockquote>
+&lt;/blockquote>
+&lt;p>传统的金融部门呢，我国核心的制造企业呢？可能本人孤陋寡闻，如果多一些传统企业的案例会好一些。&lt;/p>
+&lt;blockquote>
+&lt;blockquote>
+&lt;blockquote>
+&lt;blockquote>
+&lt;blockquote>
+&lt;blockquote>
+&lt;p>做过 OpenStack 测试的，验证过功能的很多，包括我以前了解的 CloudStack 的测试和评估也很多。金融行业企业它们都懂 OpenStack，甚至有些做定制开发的也有。这些作者可能确实看不到。他们已经准备好了，时间到了，无状态的合适的 workload 出现了，OpenStack 这种东西自然就上去了，根本不用急着看案例。&lt;/p>
+&lt;/blockquote>
+&lt;/blockquote>
+&lt;/blockquote>
+&lt;/blockquote>
+&lt;/blockquote>
+&lt;/blockquote>
+&lt;h2 id="这么多企业如何选择">这么多企业如何选择？&lt;/h2>
+&lt;p>每个厂商说完 OpenStack 的好处之后，必然要说自己公司长处，这对用户来说，容易困扰：市面上一堆的 IT 企业，该如何选择？比如中国，传统 IT 企业几乎都有 OpenStack 的团队，如红帽、HP、戴尔、IBM、华为等；还有些初创企业如 AWcloud 、99cloud 等，也是不容忽视的力量。&lt;/p>
+&lt;blockquote>
+&lt;blockquote>
+&lt;blockquote>
+&lt;blockquote>
+&lt;blockquote>
+&lt;p>企业自己的 OpenStack 专业团队还真不多见，现在传统企业还没有合适 workload 就养一堆 OpenStack 工程师是罕见的。&lt;/p>
+&lt;/blockquote>
+&lt;/blockquote>
+&lt;/blockquote>
+&lt;/blockquote>
+&lt;/blockquote>
+&lt;p>红帽说自己的优点是，在开源方面具有优势，懂底层的代码，而像 HP 这样的公司，自己写了 Unix 代码，比较封闭等。它强调的是开源。&lt;/p>
+&lt;blockquote>
+&lt;blockquote>
+&lt;blockquote>
+&lt;blockquote>
+&lt;p>红帽就是做开源的，无需强调开源了好么？这也不是红帽的优势。红帽在 OpenStack 上做的工作和他在 RHEL 上的工作、和在 JBoss，在 Ceph，在其他任何产品上做的工作和优势没有任何差异，就是“提供企业支持”，提供长生命周期的企业支持。懂底层代码的人很多很多，红帽其中的一部分。而从公司层面，提供商业化发行版，并且对其发出的每个版本做长生命周期的企业支持和服务，是很少的公司可以做的。这是红帽的优势。作者对开源业务模式欠了解。&lt;/p>
+&lt;/blockquote>
+&lt;/blockquote>
+&lt;/blockquote>
+&lt;/blockquote>
+&lt;p>当然，像华为这种公司也可以强调是软硬件通吃，更能提供整体的解决方案。像联想这种公司，可以强调资金实力和技术实力，以及对行业的理解能力。&lt;/p>
+&lt;blockquote>
+&lt;blockquote>
+&lt;blockquote>
+&lt;blockquote>
+&lt;p>不评价。&lt;/p>
+&lt;/blockquote>
+&lt;/blockquote>
+&lt;/blockquote>
+&lt;/blockquote>
+&lt;p>都有道理，如果要选择，还是选择资金实力、历史悠久的公司可能靠谱一些。有些初创企业在技术上领先，但它们的首要问题是活下来，才能保障 3~5 年的服务期。&lt;/p>
+&lt;blockquote>
+&lt;blockquote>
+&lt;blockquote>
+&lt;blockquote>
+&lt;p>OpenStack 的全方位长期的核心级别技术服务是很重要的。&lt;/p>
+&lt;/blockquote>
+&lt;/blockquote>
+&lt;/blockquote>
+&lt;/blockquote>
+&lt;h2 id="运维之后是否被绑定-it-公司">运维之后，是否被绑定 IT 公司？&lt;/h2>
+&lt;p>企业要上 OpenStack，最缺的是技术人，而不是钱、技术等问题。&lt;/p>
+&lt;blockquote>
+&lt;blockquote>
+&lt;blockquote>
+&lt;blockquote>
+&lt;p>市场上 OpenStack 人员不少了，真的有岗位出来，肯出钱，从业者不成问题。&lt;/p>
+&lt;/blockquote>
+&lt;/blockquote>
+&lt;/blockquote>
+&lt;/blockquote>
+&lt;p>着重说明的是，OpenStack 不是产品，只是架构。所以，在开源社区开发的各类版本，只有在“封装”之后才可以使用。一般的企业不具备这种技术实力，所以需要 IT 公司帮助实施、运维、开发等工作。&lt;/p>
+&lt;blockquote>
+&lt;blockquote>
+&lt;blockquote>
+&lt;p>封装之后可用是个普遍的错误观点，纯属于界面看着难受不改就不用的想法。选择合适的发行版，附加有能力的公司来做架构设计和实施，虚拟机就可以跑起来了，就可以上线了。不做定制开发就用了的也大有人在。我也问过一个云计算创业的公司，你们用的什么版本？回答是我们选择了一个版本就是部署了，碰到 bug 我们自己的研发就看代码搞定了。它们关注的事提供虚拟机给客户，这才是业务。&lt;/p>
+&lt;/blockquote>
+&lt;/blockquote>
+&lt;/blockquote>
+&lt;p>极端的情况，假如企业用了 A 公司提供的某个版本的产品，A 公司忽然倒闭或者技术实力跟不上，无法后续运维，B 公司接手是否可行？理论上可以，由于代码开源，B 公司可以直接读 A 公司开发过的产品；但实际操作，要看系统规模的大小，以及复杂度。毕竟，当前是推广阶段，这种实施失败的案例极少。&lt;/p>
+&lt;blockquote>
+&lt;blockquote>
+&lt;blockquote>
+&lt;blockquote>
+&lt;p>要看开发的是什么？有代码就可以维护的。规模大小和复杂是无法接手的因素么？他俩加一起也不能就直接推出接不上手吧？在这种场景下，现实项目的操作实践是，抛弃 A 公司做的，B 公司再从头做一遍。看到的项目案例也是这样。&lt;/p>
+&lt;/blockquote>
+&lt;/blockquote>
+&lt;/blockquote>
+&lt;/blockquote>
+&lt;h2 id="中国企业的贡献有多大">中国企业的贡献有多大？&lt;/h2>
+&lt;p>如果只从基金会来看，中国企业仍旧没有进入核心层。基金会的白金会员只有 8 个名额，AT&amp;amp;T、惠普、IBM、Inetl、Rackspace、Red Hat 和 SUSE 等，每年缴纳 50 万美金的费用。除非有企业退出，否则不可能进入。在最新的 Kilo 版本中，按照贡献代码数来计算，中国企业贡献最多的几位是华为、99Cloud、Awcloud、Kylin Cloud（为啥都叫 Cloud）；尤其是华为，代码贡献是 2681，远超其他公司。有嘉宾解释这个排名时说，华为人也太多了，别家都是初创企业，比不了。这种大公司一旦下决心布局，立即显示出整体的优势，举个例子，如联想在 2015 年 1 月加入基金会，3 月就正式成为企业代码贡献者，以它的战略和技术背景来看，绝对是 2015 年黑马。当然，初创公司的专注度、贴身的服务能力、快速的反应能力，也是大公司比不了的，各有所长。中国企业在这一轮技术升级中，几乎都抓住了好机会。接下来要比战略和市场行动了，其实是一场长跑。&lt;/p>
+&lt;blockquote>
+&lt;blockquote>
+&lt;blockquote>
+&lt;blockquote>
+&lt;blockquote>
+&lt;p>国人对 OpenStack 的贡献多少？和企业是否用 OpenStack 也没有必要的联系。OpenStack 的出现，也不是给企业 IT 带来整体升级的机会。现实看 OpenStack 只是一种基础架构技术而已。它和传统的服务器虚拟化技术是同层面的东西。只是它带有更多的和网络存储技术的相关性；特别是在网络、存储相关的技术上确实颠覆传统技术的势头十足。但是这只是现象。实际变了么？&lt;/p>
+&lt;/blockquote>
+&lt;/blockquote>
+&lt;/blockquote>
+&lt;/blockquote>
+&lt;/blockquote>
+&lt;h2 id="后续问题是什么">后续问题是什么？&lt;/h2>
+&lt;p>总体感觉，OpenStack 已经过了市场炒作期，完胜其他三个开源架构；但处于普及期，尚未真正进入大规模的应用阶段。有技术原因，也有市场原因，还有厂商推广原因。比如技术，每一个版本的功能是否有较大提升，在新技术之间的快速迭代和平衡问题，怎么做好开源的商业化问题，又不能受控于几家核心的企业？在打包后的产品中，怎么解决各个厂商分化的问题？&lt;/p>
+&lt;blockquote>
+&lt;blockquote>
+&lt;blockquote>
+&lt;blockquote>
+&lt;p>纠结下一个版本新功能的人，属于根本不知道自己当前需要使用 OpenStack 什么功能的人。上游大厂的利益划分和最终对用户的影响并不大。各个厂商提供的功能和模块往往是不冲突的，即使是是重叠了，对用户也是好事。OpenStack 架构最大的好处就在于，它是分布式架构，任何一个用户不可能用足它的全功能场景。常规跑虚拟机的场景用到了 OpenStack 的全套功能的很小一部分。当然 OpenStack 社区虽然没把用户的利益完全放在第一位，对用户来说，用户是由自由选择其中的任何功能组件的，就是搭积木而已。&lt;/p>
+&lt;/blockquote>
+&lt;/blockquote>
+&lt;/blockquote>
+&lt;/blockquote>
+&lt;p>比如市场，对于企业来说，如何选择合适的机会应用，这考量 IT 企业对 OpenStack 的全面评估以及对自己业务的评估，而不仅仅站在 IT 的角度看技术发展。其实，最考验的是 IT 厂商的交付能力、运维能力以及服务能力，这才是最关键的。没有交付能力的 IT 厂商，你再吹捧 OpenStack 的好处，那也是别人家的，也是圈子内的，和你没有一毛钱关系。用户要的是效率，是业务的可靠性和连续性，是 IT 的扩展性和精简、敏捷、高效，不站在用户角度推广 OpenStack 的厂商就是耍流氓。&lt;/p>
+&lt;blockquote>
+&lt;blockquote>
+&lt;blockquote>
+&lt;blockquote>
+&lt;p>红帽本身来讲看的还是发布的发行版是否足够稳定，是否修复了足够的 bug，是否在安装部署方面有提升。其它交付和运维等等是周边生态系统公司的范围。红帽对 OpenStack 社区的重要价值，还在于向社区提交 bug 修复，这些 bug 很多都是红帽客户碰到的。一旦提交成功了，未来版本中基本就没有这个问题了。&lt;/p>
+&lt;/blockquote>
+&lt;/blockquote>
+&lt;/blockquote>
+&lt;/blockquote>
+&lt;p>真实情况是，云计算还没有真正普及，怎么谈 OpenStack 的应用呢？&lt;/p>
+&lt;blockquote>
+&lt;blockquote>
+&lt;blockquote>
+&lt;blockquote>
+&lt;blockquote>
+&lt;p>敢问云计算怎么才算是真正普及？OpenStack 也不是填饱肚子的最后一个馒头。云计算相关技术发展的还不够快么？君不见容器如日中天么？那天人们谈云计算，不谈 OpenStack 的可能都有，OpenStack 只是云计算发展过程中的一个场景而已。&lt;/p>
+&lt;/blockquote>
+&lt;/blockquote>
+&lt;/blockquote>
+&lt;/blockquote>
+&lt;/blockquote>
+&lt;p>比如推广，要接地气，要说人话，不能自说自话，一厢情愿的说自己好。&lt;/p>
+&lt;blockquote>
+&lt;blockquote>
+&lt;blockquote>
+&lt;blockquote>
+&lt;p>凡是开这种会，没人说自己不好的对么？&lt;/p>
+&lt;/blockquote>
+&lt;/blockquote>
+&lt;/blockquote>
+&lt;/blockquote>
+&lt;p>在饭桌上听来的段子。在香港 OpenStack 峰会中，某企业也学其他厂商发帽子，由于企业 LOGO 是绿色的，它发的竟然是“绿帽子”。还有一家企业，觉得要贴合中国元素，在展台挂上了灯笼。不过是“白灯笼”，不是红灯笼。可想而知，这两排慎人的白灯笼，距离用户有多远就滚多远吧。&lt;/p>
+&lt;blockquote>
+&lt;blockquote>
+&lt;blockquote>
+&lt;blockquote>
+&lt;blockquote>
+&lt;p>。。。。。！！！！&lt;/p>
+&lt;/blockquote>
+&lt;/blockquote>
+&lt;/blockquote>
+&lt;/blockquote>
+&lt;/blockquote>
+&lt;p>原文微信：&lt;a class="link" href="http://mp.weixin.qq.com/s?__biz=MjM5MzYwMTE5OQ==&amp;amp;mid=205642335&amp;amp;idx=1&amp;amp;sn=abc8da56bfa748c895a6f7e61ee70d7c&amp;amp;scene=1&amp;amp;key=1936e2bc22c2ceb550a9ed47d35d37ac6649fc2fd92aedfaeae9a37f83c1bc9a01d8c07369a095226703791790b8081a&amp;amp;ascene=0&amp;amp;uin=ODYyMzEyOTQw&amp;amp;devicetype=iMac&amp;#43;MacBookPro8%2C1&amp;#43;OSX&amp;#43;OSX&amp;#43;10.10.3&amp;#43;build%2814D136%29&amp;amp;version=11020012&amp;amp;pass_ticket=9113SDOfWN%2BqnP3yogS7%2FwP2x2VDHEgF3ksia4%2Bbngq1OKnK1y4ajPkfu8mgg8MO" target="_blank" rel="noopener"
+>http://mp.weixin.qq.com/s?__biz=MjM5MzYwMTE5OQ==&amp;amp;mid=205642335&amp;amp;idx=1&amp;amp;sn=abc8da56bfa748c895a6f7e61ee70d7c&amp;amp;scene=1&amp;amp;key=1936e2bc22c2ceb550a9ed47d35d37ac6649fc2fd92aedfaeae9a37f83c1bc9a01d8c07369a095226703791790b8081a&amp;amp;ascene=0&amp;amp;uin=ODYyMzEyOTQw&amp;amp;devicetype=iMac+MacBookPro8%2C1+OSX+OSX+10.10.3+build%2814D136%29&amp;amp;version=11020012&amp;amp;pass_ticket=9113SDOfWN%2BqnP3yogS7%2FwP2x2VDHEgF3ksia4%2Bbngq1OKnK1y4ajPkfu8mgg8MO&lt;/a>&lt;/p></description></item><item><title>你还在为失去服务器感到焦虑？</title><link>https://martinliu.cn/2015/02/15/e4bda0e8bf98e59ca8e4b8bae5a4b1e58ebbe69c8de58aa1e599a8e6849fe588b0e784a6e89991efbc9f/</link><pubDate>Sun, 15 Feb 2015 13:14:59 +0000</pubDate><guid>https://martinliu.cn/2015/02/15/e4bda0e8bf98e59ca8e4b8bae5a4b1e58ebbe69c8de58aa1e599a8e6849fe588b0e784a6e89991efbc9f/</guid><description>&lt;p>我耐心看了以下这篇文章&lt;a class="link" href="http://www.serverwatch.com/server-trends/aws-lambda-debuts-for-running-code-in-the-cloud.html" target="_blank" rel="noopener"
+>《AWS Lambda Debuts for Running Code in the Cloud 》&lt;/a>。我还没有来得及去测试一下这个服务，我只是对它感到新奇。有了它，业务应用可能就只需要 Dev 了，而不需要 Ops 了；更不用提什么 DevOps 了。当然这个观点稍微有点极端了。它的确实现了：程序代码可以基于事件在 AWS 的各种服务中运行。看完了那片文章我也没有察觉到它底层到底使用的是什么技术。只是说 AWS 再次走到了共有云服务的最前端。&lt;/p>
+&lt;p>传统的共有云服务里，大家还停留在虚拟机提供，网络隔离的认识阶段。数据库服务、大数据服务、配套的程序部署和管理监控服务，对于一般性的共有云提供商，也不尽完全。曾经和作共有云的人聊过，他们觉得：传统企业数据中心的拥有着和管理这依然有巨大的纠结“失去对服务器的管控，就会有事业的风险”。因此，可见对服务器的管理是多么的重要。但是，如果你拥有了服务器的控制，并坐拥巨大的私有云建设的资金，那么您能如何很快交付出靠谱的云服务呢？说实话，目前私有云的建设很缓慢，也就是作个大批量的服务器虚拟化。IaaS 的建设案例还很少，即使有人说他们建成了新一代的云平台，近看一下大多还仅仅是增强版的虚拟机提供。当然这个虚拟机的提供是基本功，做不好这一客其它的云服务也面谈。我们详细观察以下 AWS，它大量的服务，像是 RDS，LB，Auto Scaling 等等功能，无处不见 AWS EC2 的扎实功底和无限变化。&lt;/p>
+&lt;p>国内的广大用户，已经选择了私有云了；越大的企业，越有条件大赶快上云建设。只是却是道路艰辛，图省事的有钱人，可以上全套 V 公司的云计算，却是它的吸引力、炫耀力和安慰力都是无法阻挡的。底层上的技术的引用是至关重要的，越省事的套件，等同于越少的弹性和自由度，等同于更少的自由发挥的空间，和更少的创造。AWS 是基于 Xen 的服务器虚拟化技术，和一堆的其他开源技术。入手这条路解决了启动费用高的问题，带来了无限的创新和发展自由空间。他们不需要商业化软件或者产品么，例如，AWS 是重要的 Citrix netscaler 用户。&lt;/p></description></item><item><title>AWS 服务索引地图</title><link>https://martinliu.cn/2015/02/11/aws-e69c8de58aa1e7b4a2e5bc95e59cb0e59bbe/</link><pubDate>Wed, 11 Feb 2015 14:41:22 +0000</pubDate><guid>https://martinliu.cn/2015/02/11/aws-e69c8de58aa1e7b4a2e5bc95e59cb0e59bbe/</guid><description>&lt;p>以上图片用 FreeMind 软件生成，下载英文版原图点击这里：&lt;a class="link" href="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2015/02/aws-service-map.mm_.zip" target="_blank" rel="noopener"
+>aws-service-map.mm&lt;/a>&lt;/p>
+&lt;p>&lt;a class="link" href="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2015/02/aws-service-map.jpeg" target="_blank" rel="noopener"
+>&lt;img src="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2015/02/aws-service-map-1024x710.jpeg"
+loading="lazy"
+alt="aws-service-map"
+>
+&lt;/a>&lt;/p>
+&lt;p>下载中文版 PDF 全图点击这里：&lt;a class="link" href="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2015/02/aws-%e6%9c%8d%e5%8a%a1-%e8%84%91%e5%9b%be.pdf" target="_blank" rel="noopener"
+>aws-服务-脑图&lt;/a>&lt;/p>
+&lt;p>&lt;a class="link" href="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2015/02/aws-%e6%9c%8d%e5%8a%a1-%e8%84%91%e5%9b%be.jpeg" target="_blank" rel="noopener"
+>&lt;img src="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2015/02/aws-%e6%9c%8d%e5%8a%a1-%e8%84%91%e5%9b%be-1024x446.jpeg"
+loading="lazy"
+alt="aws-服务-脑图"
+>
+&lt;/a>&lt;/p></description></item><item><title>2014年AWS服务更新总结</title><link>https://martinliu.cn/2015/02/08/2014e5b9b4awse69c8de58aa1e69bb4e696b0e680bbe7bb93/</link><pubDate>Sun, 08 Feb 2015 14:24:33 +0000</pubDate><guid>https://martinliu.cn/2015/02/08/2014e5b9b4awse69c8de58aa1e69bb4e696b0e680bbe7bb93/</guid><description>&lt;p>从去年新增的服务中可以看出，其中多半是管理和基础服务类型的更新。因此，我感觉这也预示着，公有云技术的领头羊的发展也上到一定的成熟度上了。相比而言，企业私有云的建设还是纠结在几个症结上：选择私有云平台软件难，选择部署实施的落地工具和服务难，市场上相关的人才难找，大多出人连试点的经验还没还有获得，云应用-无状态应用踪影难觅。这些事实下，我看到了私有云建设的广阔服务前景，特别是企业服务这块。感觉有技术的实力派大牛们，应该趁着国产化软件的浪潮，踏踏实施做两年企业级产品，踏踏试试走下企业服务的路。别惦记着风头的那些钱，别惦记着做个公有云服务出来走出国门走向世界。我朝企业不差钱的主，土豪的企业有的事。毕竟近水楼台先得月。&lt;/p>
+&lt;p>有一段时间没有关注 AWS 了，下面是在 &lt;a class="link" href="http://aws-faq.com" target="_blank" rel="noopener"
+>aws-faq.com &lt;/a>发的新贴。顺便梳理了一下过去一年的更新情况，&lt;/p>
+&lt;p>&lt;a class="link" href="http://www.aws-faq.com/featured/aws-%e6%9c%8d%e5%8a%a12015%e5%b9%b4%e5%bc%80%e5%b9%b4%e6%9c%89%e5%95%a5%e6%9b%b4%e6%96%b0.html" target="_blank" rel="noopener"
+>http://www.aws-faq.com/featured/aws-服务 2015 年开年有啥更新.html&lt;/a>&lt;/p>
+&lt;p>AWS 在去年新增了 6 个服务，整体的更新和服务升级的频率是一周一次；也就是说他们发布新版本的频率是每周一次，当然这是有网上发布信息为依推理出来的；感觉一周很可能超过一次。他们的电商也其它业务的发布评论，很可能就更高了。&lt;/p>
+&lt;p>AWS 的公有云服务的技术成熟度和领先度我感觉是第一名的。它激发和促进了整个行业的发展。对私有云的促进和很明显。OpenStack 的更新是半年一个新版本。其参考和兼容 AWS 服务是很明显的。它可以很大的满足于企业自建云服务的需求。&lt;/p></description></item><item><title>AWS-FAQ post - AWS 一月有什么动态?</title><link>https://martinliu.cn/2015/02/07/aws-faq-post-aws-e4b880e69c88e69c89e4bb80e4b988e58aa8e68081/</link><pubDate>Sat, 07 Feb 2015 15:07:42 +0000</pubDate><guid>https://martinliu.cn/2015/02/07/aws-faq-post-aws-e4b880e69c88e69c89e4bb80e4b988e58aa8e68081/</guid><description>&lt;p>AWS-FAQ post - AWS 一月有什么动态?&lt;/p>
+&lt;p>&lt;a class="link" href="http://www.aws-faq.com/blog/aws-blog/aws-%E4%B8%8A%E5%91%A8%E5%8F%91%E7%94%9F%E4%BA%86%E4%BB%80%E4%B9%88-2015-%E5%B9%B41%E6%9C%88.html" target="_blank" rel="noopener"
+>http://www.aws-faq.com/blog/aws-blog/aws-%E4%B8%8A%E5%91%A8%E5%8F%91%E7%94%9F%E4%BA%86%E4%BB%80%E4%B9%88-2015-%E5%B9%B41%E6%9C%88.html&lt;/a>&lt;/p>
+&lt;ul>
+&lt;li>AWS 邮件服务的推出还是比较有趣，虽然很晚推出这个服务，但是还是推出了&lt;/li>
+&lt;li>__ 总之 1 月的动静不大&lt;/li>
+&lt;/ul></description></item><item><title>XenServer 添加硬盘做本地存储</title><link>https://martinliu.cn/2013/11/25/xenservere6b7bbe58aa0e7a1ace79b98e5819ae69cace59cb0e5ad98e582a8/</link><pubDate>Mon, 25 Nov 2013 10:39:00 +0000</pubDate><guid>https://martinliu.cn/2013/11/25/xenservere6b7bbe58aa0e7a1ace79b98e5819ae69cace59cb0e5ad98e582a8/</guid><description>&lt;p>当您的 XenServer 测试机需要增加硬盘的时候，你需要通过简单的几条指令把新硬盘添加为本地存储。&lt;/p>
+&lt;p>下面的实例情况是：&lt;/p>
+&lt;ul>
+&lt;li>
+&lt;p>测试机有两块硬盘&lt;/p>
+&lt;ul>
+&lt;li>
+&lt;p>OCZ  SSD 硬盘一块&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>SATA 不通硬盘一块&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>还有一个 U 盘插在系统上&lt;/p>
+&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>
+&lt;p>SATA 的硬盘是我需要加载的新硬盘&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>这个新的硬盘希望被处理成 XenServer 本地的 SR&lt;/p>
+&lt;/li>
+&lt;/ul>
+&lt;p>添加过程中主要需要使用这样几条指令：&lt;/p>
+&lt;ol>
+&lt;li>
+&lt;p>查看当前系统上的检查出来并且挂载中的分区： cat /proc/partitions&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>详细查看这些存储和设备对应的情况： ls -l /dev/disk/by-id/&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>创建新的本地 SR: xe sr-create content-type=user device-config:device=/dev/disk/by-id/scsi-SATA_ST9320325ASG_5VD7G964 host-uuid=3850317b-d23a-4ed0-87f9-2b27854319e5 name-label=&amp;ldquo;SATA320&amp;rdquo; shared=false type=lvm&lt;/p>
+&lt;/li>
+&lt;/ol>
+&lt;p>[bash]
+[root@XS62 ~]# cat /proc/partitions
+major minor #blocks name&lt;/p>
+&lt;p>7 0 52378 loop0
+8 0 250059096 sda
+8 1 4193297 sda1
+8 2 4193297 sda2
+8 3 241669447 sda3
+8 16 312571224 sdb
+8 17 204800 sdb1
+8 18 312235312 sdb2
+8 32 4137984 sdc
+8 36 4137856 sdc4
+252 0 241655808 dm-0&lt;/p>
+&lt;p>[root@XS62 ~]# ls /dev/disk/by-id/
+scsi-SATA_OCZ-AGILITY4_OCZ-DY4J9LY3615W5MF2 scsi-SATA_OCZ-AGILITY4_OCZ-DY4J9LY3615W5MF2-part3 scsi-SATA_ST9320325ASG_5VD7G964-part2
+scsi-SATA_OCZ-AGILITY4_OCZ-DY4J9LY3615W5MF2-part1 scsi-SATA_ST9320325ASG_5VD7G964 usb-Generic_Flash_Disk_4266F915
+scsi-SATA_OCZ-AGILITY4_OCZ-DY4J9LY3615W5MF2-part2 scsi-SATA_ST9320325ASG_5VD7G964-part1 usb-Generic_Flash_Disk_4266F915-part4&lt;/p>
+&lt;p>[root@XS62 ~]# ll /dev/disk/by-id/
+total 0
+lrwxrwxrwx 1 root root 9 Nov 22 19:52 scsi-SATA_OCZ-AGILITY4_OCZ-DY4J9LY3615W5MF2 -&amp;gt; ../../sda
+lrwxrwxrwx 1 root root 10 Nov 22 19:52 scsi-SATA_OCZ-AGILITY4_OCZ-DY4J9LY3615W5MF2-part1 -&amp;gt; ../../sda1
+lrwxrwxrwx 1 root root 10 Nov 22 19:52 scsi-SATA_OCZ-AGILITY4_OCZ-DY4J9LY3615W5MF2-part2 -&amp;gt; ../../sda2
+lrwxrwxrwx 1 root root 10 Nov 22 19:52 scsi-SATA_OCZ-AGILITY4_OCZ-DY4J9LY3615W5MF2-part3 -&amp;gt; ../../sda3
+lrwxrwxrwx 1 root root 9 Nov 22 19:52 scsi-SATA_ST9320325ASG_5VD7G964 -&amp;gt; ../../sdb
+lrwxrwxrwx 1 root root 10 Nov 22 19:52 scsi-SATA_ST9320325ASG_5VD7G964-part1 -&amp;gt; ../../sdb1
+lrwxrwxrwx 1 root root 10 Nov 22 19:52 scsi-SATA_ST9320325ASG_5VD7G964-part2 -&amp;gt; ../../sdb2
+lrwxrwxrwx 1 root root 9 Nov 22 19:52 usb-Generic_Flash_Disk_4266F915 -&amp;gt; ../../sdc
+lrwxrwxrwx 1 root root 10 Nov 22 19:52 usb-Generic_Flash_Disk_4266F915-part4 -&amp;gt; ../../sdc4&lt;/p>
+&lt;p>[root@XS62 ~]# xe sr-create content-type=user device-config:device=/dev/disk/by-id/scsi-SATA_ST9320325ASG_5VD7G964 host-uuid=3850317b-d23a-4ed0-87f9-2b27854319e5 name-label=&amp;ldquo;SATA320&amp;rdquo; shared=false type=lvm
+cf0893c3-9398-d802-0706-66a8699c3a59
+[/bash]&lt;/p>
+&lt;p>从上面的命令可以看到，最后一条命令完成后，系统返回了新 SR 的 ID;然后在登录 XenCenter 就可以看到这个存储了，虚拟现在就可以使用这个存储了。&lt;/p></description></item><item><title>AWS 免费套餐截止后必须终止</title><link>https://martinliu.cn/2013/09/24/aws-e5858de8b4b9e5a597e9a490e688aae6ada2e5908ee5bf85e9a1bbe7bb88e6ada2/</link><pubDate>Tue, 24 Sep 2013 05:26:22 +0000</pubDate><guid>https://martinliu.cn/2013/09/24/aws-e5858de8b4b9e5a597e9a490e688aae6ada2e5908ee5bf85e9a1bbe7bb88e6ada2/</guid><description>&lt;p>对于亚马逊 AWS 的测试用户来说，你要知道你的免费套餐的截止日期，否则预期就会收费了，会计时收费，像叫停车费一样。我今天收到了亚马逊的提醒邮件，被告知，我的免费套餐将在本月截止，然后我不得不终止了该服务器。&lt;/p>
+&lt;p>我是去年 10 月 19 日开通的这个免费实例，作为一个一年的 AWS 用户来说，深深的体会到了 AWS 的强大，它的管理控制台非常成熟，它的提供的服务非常全面，它的云市场做的相当好。对于任何一个普通人，你可以无痛，无压力的面对一个自己的数据中心，你可以假象你拥有一个世界上最高级的数据中心，你可以给你的应用任意、随时随地的附件任何一种高级的数据中心基础架构服务，你可以具有无限的资源，并且这个资源不限制类型和容量。共有云必将和私有云二分天下，共有云必将赢得所有中小企业用户。&lt;/p>
+&lt;p>[caption id=&amp;ldquo;attachment_52574&amp;rdquo; align=&amp;ldquo;aligncenter&amp;rdquo; width=&amp;ldquo;300&amp;rdquo;]&lt;img src="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2013/09/EC2_Management_Console-300x225.png"
+loading="lazy"
+alt="EC2_Management_Console"
+>
+](&lt;a class="link" href="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2013/09/EC2_Management_Console.png" target="_blank" rel="noopener"
+>http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2013/09/EC2_Management_Console.png&lt;/a>) EC2_Management_Console[/caption]&lt;/p>
+&lt;p>[caption id=&amp;ldquo;attachment_52575&amp;rdquo; align=&amp;ldquo;aligncenter&amp;rdquo; width=&amp;ldquo;300&amp;rdquo;]&lt;img src="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2013/09/Try_Cloud_Computing_Free_with_AWS_Free_Tier-300x106.png"
+loading="lazy"
+alt="Try_Cloud_Computing_Free_with_AWS_Free_Tier"
+>
+](&lt;a class="link" href="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2013/09/Try_Cloud_Computing_Free_with_AWS_Free_Tier.png" target="_blank" rel="noopener"
+>http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2013/09/Try_Cloud_Computing_Free_with_AWS_Free_Tier.png&lt;/a>) Try_Cloud_Computing_Free_with_AWS_Free_Tier[/caption]&lt;/p></description></item><item><title>CloudStack+Swift 我心中的黄金搭档</title><link>https://martinliu.cn/2013/09/03/cloudstack-swift/</link><pubDate>Tue, 03 Sep 2013 08:25:46 +0000</pubDate><guid>https://martinliu.cn/2013/09/03/cloudstack-swift/</guid><description>&lt;p>迪斯尼是一个有魔力的组织，在它的电影里冤家可以变伙伴。甚至 CloudStack 和 OpenStack 两大私有云死对头来到迪斯尼这个神奇的地方也可以“在一起”。当迪斯尼决定建设自己的云计算基础设施时，与很多企业一样面临一个艰难的抉择，从众多云计算技术方案和产品中选择一条道路。如今的云计算市场规模已 达数百亿美元，水已经很深，领头的是亚马逊这样的公共云巨头，以及亚马逊的对手们：Rackspace、Google、CloudStack、 Eucalyptus、OpenNebula 等多种私有云和公共云技术与服务，每家都有绝活和独到之处。&lt;/p>
+&lt;p>&lt;a class="link" href="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2013/09/disney-cloudstack.png" target="_blank" rel="noopener"
+>&lt;img src="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2013/09/disney-cloudstack.png"
+loading="lazy"
+alt="disney-cloudstack"
+>
+&lt;/a>&lt;/p>
+&lt;p>对于身价上千亿美元的娱乐和媒体巨头迪斯尼来说，业界可供选择的云计算路线太多，到底是走公共云、私有云、混合云还是多重云的路子？&lt;/p>
+&lt;p>迪斯尼的选择是走自己的路。（迪斯尼的系统架构师 Lopez 将 9 月 9 日在&lt;a class="link" href="http://cloudbeat2013-intext.eventbrite.com/" target="_blank" rel="noopener"
+>CloudBeat&lt;/a>上介绍其云计算建设经验。）&lt;/p>
+&lt;p>在概念验证阶段，迪斯尼更加青睐 CloudStack，在私有云领域 CloudStack 吸引力很多大型用户，如 Zynga 和诺基亚都选择了 CloudStack。迪斯尼的系统架构师 Lopez 表示，相比 OpenStack，CloudStack 的部署和运行速度要快得多。迪斯尼可以在数天能 部署好 CloudStack 服务，而 OpenStack 则需要数周。当然，两大私有云服务部署周期相差如此之大的部分原因也与迪斯尼的特殊要求和原有技术 投资有关。&lt;/p>
+&lt;p>不管怎样，迪斯尼目前对 CloudStack 非常满意，但迪斯尼的团队希望在私有云中增加对象存储技术。这一次迪斯尼倾向使用 OpenStack 阵 营的对象存储工具——Swift。事实上，开源的 OpenStack 之所以如此流行，与大量参与者提供的丰富功能密不可分，Swift 就是一个很好的例 子。&lt;/p>
+&lt;p>于是，迪斯尼的团队与 Citrix 合作，确保 OpenStack 的 Swift 技术能够与 CloudStack 搭建的私有云紧密集成。在迪斯尼这个神奇的地方，OpenStack 和 CloudStack 之间的深沟裂隙被弥合了。&lt;/p>
+&lt;p>在迪斯尼的案例中，CIO 能够参考的经验是：云计算的实施方案并非黑白分明，非此即彼，随着云计算服务商提供越来越多的相对独立的云计算功能，CIO 们可以不受“站队”的局限，从不同阵营选择最好的云计算工具进行整合。&lt;/p>
+&lt;!-- raw HTML omitted -->
+&lt;h2 id="how-disney-built-a-giant-cloud-by-bolting-two-together">How Disney built a giant cloud by bolting two together&lt;/h2>
+&lt;p>下面这个文章值得读一下。
+&lt;a class="link" href="http://venturebeat.com/2013/08/30/how-disney-built-a-giant-cloud-by-bolting-two-together/" target="_blank" rel="noopener"
+>http://venturebeat.com/2013/08/30/how-disney-built-a-giant-cloud-by-bolting-two-together/&lt;/a>&lt;/p>
+&lt;h2 id="转帖迪斯尼云计算之路选择-cloudstack">转帖：迪斯尼云计算之路选择 CloudStack&lt;/h2>
+&lt;p>&lt;a class="link" href="http://www.ctocio.com/ccnews/13420.html" target="_blank" rel="noopener"
+>原文链接&lt;/a>： 文章来自&lt;a class="link" href="http://www.ctocio.com" target="_blank" rel="noopener"
+>IT 经理网&lt;/a>&lt;/p></description></item><item><title>Citrix XenServer is Now Fully Open Source</title><link>https://martinliu.cn/2013/08/01/citrix-xenserver-is-now-fully-open-source/</link><pubDate>Thu, 01 Aug 2013 09:26:51 +0000</pubDate><guid>https://martinliu.cn/2013/08/01/citrix-xenserver-is-now-fully-open-source/</guid><description>&lt;p>With the release of Citrix XenServer 6.2, Citrix is pleased to announce
+that XenServer is now fully open source. In this video, Richard Sharp, Vice President
+of XenServer Product Development, explains why Citrix open sourced XenServer, what
+it means to our customers and how it will help the entire XenServer platform.&lt;/p>
+&lt;p>&lt;a class="link" href="http://brightcove.vo.llnwd.net/e1/uds/pd/13639319001/13639319001_2488040716001_XenServer-OSS-Richard-Sharp-Final.mp4" target="_blank" rel="noopener"
+>http://brightcove.vo.llnwd.net/e1/uds/pd/13639319001/13639319001_2488040716001_XenServer-OSS-Richard-Sharp-Final.mp4&lt;/a>&lt;/p>
+&lt;p>With the release of Citrix XenServer 6.2, Citrix is pleased to announce that XenServer is now fully open source. In this video, Richard Sharp, Vice President of XenServer Product Development, explains why Citrix open sourced XenServer, what it means to our customers and how it will help the entire XenServer platform.&lt;/p></description></item><item><title>A new open source strategy for Citrix XenServer</title><link>https://martinliu.cn/2013/08/01/a-new-open-source-strategy-for-citrix-xenserver/</link><pubDate>Thu, 01 Aug 2013 09:21:01 +0000</pubDate><guid>https://martinliu.cn/2013/08/01/a-new-open-source-strategy-for-citrix-xenserver/</guid><description>&lt;p>Sameer Dholakia, Vice President and General Manager of the Citrix Cloud
+Division, talks about the full open source strategy for XenServer. Learn why Citrix
+made XenServer open source and how this will benefit our customers and ecosystem
+partners.&lt;/p>
+&lt;p>&lt;a class="link" href="http://brightcove.vo.llnwd.net/e1/uds/pd/13639319001/13639319001_2503709704001_Sameer-Dholakia-v3.mp4" target="_blank" rel="noopener"
+>http://brightcove.vo.llnwd.net/e1/uds/pd/13639319001/13639319001_2503709704001_Sameer-Dholakia-v3.mp4&lt;/a>&lt;/p>
+&lt;p>Sameer Dholakia, Vice President and General Manager of the Citrix Cloud Division, talks about the full open source strategy for XenServer. Learn why Citrix made XenServer open source and how this will benefit our customers and ecosystem partners.&lt;/p></description></item><item><title>什么是真的云？</title><link>https://martinliu.cn/2013/04/15/forrester-private-clouds-what-is-cloud-computing/</link><pubDate>Mon, 15 Apr 2013 17:31:21 +0000</pubDate><guid>https://martinliu.cn/2013/04/15/forrester-private-clouds-what-is-cloud-computing/</guid><description>&lt;p>[su_box  ]
+最近有一篇比较热的文章，中文标题《Forrester：70%的“私有云”根本不是云》；你如果稍微搜索一下，你发现它几乎被转载烂了，但是我看了几篇，真心的担心读者们是否都能正确的理解。写本文，全当是给您的一个阅读帮助。
+[/su_box]&lt;/p>
+&lt;p>&lt;a class="link" href="http://www.cnw.com.cn/news-international/htm2013/20130227_264664.shtml" target="_blank" rel="noopener"
+>中文版网页点这里&lt;/a>
+&lt;a class="link" href="http://www.networkworld.com/news/2013/022613-forrester-private-clouds-267108.html" target="_blank" rel="noopener"
+>英文版网页点这里&lt;/a>&lt;/p>
+&lt;p>&lt;strong>中文翻译的质量有限，有些概念和逻辑错误，我做了一点点的修订，从而避免误解。&lt;/strong>&lt;/p>
+&lt;p>**【基于 CNW.com.cn 译稿】**如果企业数据中心拥有高度虚拟化的环境，有一个 Web 门户供商业用户申请和访问虚机，再有一种方法可以跟踪有多少资源被使用了……拥有这一切并不能叫做有了一个&lt;a class="link" href="http://search.cnw.com.cn/searchview.aspx?searchtype=Content&amp;amp;searchstr=%CB%BD%D3%D0%D4%C6" target="_blank" rel="noopener"
+>私有云&lt;/a>。&lt;/p>
+&lt;p>假如有足够大的容量可以为员工提供他们所需要的任意数量的计算资源，并能够动态地上下扩展或收缩容量，但仍然需要 IT 人员制备好系统的话，那么这仍然不能叫私有云。&lt;/p>
+&lt;p>虚拟化和私有云之间的界限是比较模糊的，根据 Forrester 的最新报告，在企业的 IT 高管们所自诩的私有云中，高达 70%的 IT 环境其实并非私有云。“这是个严重的问题。实际上是在做云洗白而已。”Forrester 的云专家 James Staten 如此说。&lt;/p>
+&lt;p>为什么说这个问题非常重要? Staten 认为，如果将一个高度虚拟化的环境称为云环境，但它又不具备私有云的一项或多项关键特征，那么 IT 部门就给了用户一个不切实际的期望。假如用户们发现这个环境不能自配置，或者没有弹性&lt;a class="link" href="http://search.cnw.com.cn/searchview.aspx?searchtype=Content&amp;amp;searchstr=%D7%CA%D4%B4%B3%D8" target="_blank" rel="noopener"
+>资源池&lt;/a>而感到不满时，他们就有可能因此而气馁。那么当下一次用户需要实时运行一个虚机时，他们会选择在哪里运行呢? 是 IT 部门给他们的伪私有云? 还是亚马逊的 AWS? 如此一来，IT 部门就无法控制事态了。&lt;/p>
+&lt;p>大多数云专家已经对云计算(公有云或私有云)的定义有了普遍的共识，这就是 NIST 提出的五个关键特征。这些特征包括：&lt;/p>
+&lt;p>● 用户可按需索取、&lt;a class="link" href="http://search.cnw.com.cn/searchview.aspx?searchtype=Content&amp;amp;searchstr=%D7%D4%B7%FE%CE%F1" target="_blank" rel="noopener"
+>自服务&lt;/a>&lt;/p>
+&lt;p>● 泛在的网络接入&lt;/p>
+&lt;p>● 共享资源池&lt;/p>
+&lt;p>● &lt;a class="link" href="http://search.cnw.com.cn/searchview.aspx?searchtype=Content&amp;amp;searchstr=%B5%AF%D0%D4%C0%A9%D5%B9" target="_blank" rel="noopener"
+>弹性扩展&lt;/a>资源的能力&lt;/p>
+&lt;p>● 拥有可计量的服务&lt;/p>
+&lt;p>如果没有这五大特征，那从技术上说就不能叫云。和某些人的想法相悖的是，虚拟化并不是私有云。它只是为云提供动力的一个基本要素，但只依靠它是创建不出一个云的。VMware 的营销经理 Mike Adams 说，私有云必须在虚拟化环境之上综合更多复杂的管理功能，方能满足 NIST 的定义要求。&lt;/p>
+&lt;p>CA 的战略解决方案副总裁兼云专家 Andi Mann 给这场讨论踩了一脚刹车。“如果你不符合所有这五大特征，那么你就陷入了语义学纠结中。”他认为真正的问题并不是说符合这五个复选标记的东西就叫做云，而是在于 IT 能否为用户提供适当的服务。“有时候，80%的云都已足够好了，”他说。“用户真正在意的是业务服务。谁会在意你的环境叫什么。你要关心的就是客户，就是业务用户是不是得到了他们需要的资源。”&lt;/p>
+&lt;p>也许企业并不需要弹性扩展，因为原本就是静态工作负载。即便不需要弹性的资源扩展能力，它仍然还可以需要云的其他特征——自服务、计费、泛在网络接入和共享资源池。但它在技术上可能并不符合 NIST 的定义。“所以，如果你要想技术上也说得过去，也可以将其称为：高效率的虚拟环境，”Mann 说。&lt;/p>
+&lt;p>那么，所有这些云洗白来自哪里? Staten 认为，IT 管理人员基本上对云都抱有恐惧心理。企业内的虚拟化专家通常都处于支配地位; 在需要资源时，他们可以去制备相应的资源容量。而云被视为一种赋予用户自服务和动态扩展资源权力的模式，对 IT 是一种威胁。如果用户可以自己开通了，那还要他们这些虚拟化专家干什么呢?&lt;/p>
+&lt;p>Staten 认为，这样想上述问题是错误的。即便有了云，IT 管理人员还是有大量的工作可做，比如需要设置和确保云服务有一个可供用户选择的服务目录，需要完成安全访问协议配置，提供资源可用性和虚拟化组件等。管理人员必须接受这样一个理念：如果他们不这么做，那么用户不论如何还是需要访问和使用他们所需要的资源，这样还是会陷入可怕的“影子 IT”的局面。(Martin 修订)&lt;/p>
+&lt;p>我想先对以上的几个关键点和名词做一些解释，从而能让我们更好的理解原文作者的意图。&lt;/p>
+&lt;ol>
+&lt;li>
+&lt;p>&amp;ldquo;cloud-washing&amp;rdquo;  &amp;ndash;  “云洗白”   这个比喻是说：本来根本什么云都不是！但是还是要狡辩和伪装为私有云。真像是：纯虚拟化环境不等于云&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>&amp;ldquo;shadow IT.&amp;rdquo;   &amp;ndash;  “影子 IT”   这个比喻是说：IT 部门是业务部门挥之不去的阴霾，他们跟没发赶上业务部门需求变化请求的脚本，业务部门的人从来不管你是用的是神马云，你们这帮人根本没有按时的交付过任何东西，甚至于每当想起需要 IT 部门来配合做什么东西，就感到没有指望，啥都需要漫长的等待。&lt;/p>
+&lt;/li>
+&lt;/ol>
+&lt;p>IT 部门真的是技术不行么？IT 部门真的是干活的人不够么？这个比喻后背后真是的故事：特别是大规模的企业，业务部门所需要的任何 IT 资源和变更都必须通过 IT 自动、半自动或者手工配置实现；小的到开通一个邮箱，重置一次密码；大到新的业务系统的升级和上线；往往 IT 或者业务用户发频繁和密集地发起种种请求时，没有任何一家传统企业的 IT 部门（亚马逊、谷歌这种公司除外，因为它们已经是云计算公司了）能够很有自信地、充分让业务部门满意地完成被要求完成的所有工作。它们为什么完成不了呢？这个就走入了 IT 管理的经典理论，这就是我之前十年工作经验中天天和用户沟通的东西：“保持 IT 系统的稳定，还是接受变化”；为了既能响应业务部门不断的变化请求和 IT 用户的日常需求，IT 部门想到了很好的流程来加以解决，这个流程是什么？它叫“变更管理流程”。举个例子，大型的商业银行一般一周或者两周有一次系统变更日；所有的对 IT 系统的配置和改变，必须提前计划安排好工作顺序，只能在变更日当晚的固定时间窗口中完成，例如晚上 11 点到凌晨 5 点；如果在这个时间段某个工作没有完成怎么办？对不起！没有完成的变更叫做失败变更，你还必须在变更窗前前就把系统回退到未变更前的状态！你现在发现了么？对生产系统是多么严肃的事情！如果你在变更前，没有万无一失的备份计划，你但失误，你就歇菜了；或者你觉得是顺利完成变更了，但是营业厅一开门，IT 的投诉热线就被打爆了，这也不行；变更一但导致生产系统的宕机，轻则 IT 部门的领导引咎辞职，重则数据中心的大领导乌纱帽不保。&lt;/p>
+&lt;p>以上讲述的故事可以说是我的亲身经历，就是中国的国情；那么这个文章的出处毕竟是国外的，这几个发话的大佬们都是何方神圣？&lt;/p>
+&lt;p>Forrester 的云专家 James Staten ：&lt;a class="link" href="http://www.forrester.com/james-staten" target="_blank" rel="noopener"
+>BIO&lt;/a>  从 Bio 上看，他好像是 Forrester 的头牌云分析师之一，有 20 年的 IT 从业经验。&lt;/p>
+&lt;p>VMware 的营销经理 Mike Adams ：网上查不到它的 Bio，在 VMWare 网站搜索，也只能看到他是http://blogs.vmware.com/vsphere/ 的负责人。网上并没有关于此人的详细介绍，但是我们从 vsphere 的 blog 上在读一下这个产品的定位“BEGIN THE JOURNEY TO A PRIVATE CLOUD WITH DATACENTER VIRTUALIZATION”；这个说法和此大师在文章中说的一样：vsphere 是数据中心虚拟化的一个技术组建，数据中心虚拟化技术是私有云建设的起点。但是它是起点，不是私有云。纯种的服务器虚拟化项目也不是那天就能进化成私有云了。&lt;/p>
+&lt;p>CA 的战略解决方案副总裁兼云专家 Andi Mann ：&lt;a class="link" href="http://www.linkedin.com/in/andimann" target="_blank" rel="noopener"
+>BIO&lt;/a>  从 Bio 上可以看出，这大叔才是练家子，人家 84 年从 IT 管理员出身干起；感觉它说的话比较在点子上，并没有去忽悠云；而是从云的本质，也就是 IT 的本质去看，去分析的。也就是“IT 是提供服务和支持的，为的是让用户能够操作和使用业务系统去完成业务工作。” 如果这句话抽象，我可以举个例子：领导需要阅读邮件，他关心的是 IT 能否让我安全的在设备上查邮箱，浏览和回复邮件；当然你能让他在任何设备、任何网络上、任何时间都能完成以上动作，那就再好不过了。银行的储蓄业务柜员需要的是完成一个存、取钱、开销户等相关操作，他关心的是 IT 系统能够正常快速的相应，让客户快速的离开柜台；她根本不关心，网线后面连接的系统是啥做的。&lt;/p>
+&lt;p>言归正传：把焦点放到“云”的概念上一点意义都没有！倒不如把心思放在云的价值上；把心思放在私/公有云的建设方案上！我试图从云计算的基础特征上来解读一下云计算对云企业的价值：&lt;/p>
+&lt;ol>
+&lt;li>
+&lt;p>用户可按需索取、自服务：让用户能够更方便的访问（请求、开通和使用）IT 资源和服务，用户无需等待，资源召之即来&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>泛在的网络接入：个人觉得这个应该翻译为高速度高带宽的网络接入，这个是外界访问到计算资源的必要条件之一；如果你资源再多，但是出口太窄也没有意义；如果翻译成这样也凑合如果能理解为，在个中网络条件下都能够正常安全的加入到云所提供的 IT 服务上也可以。&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>共享资源池： 这个可以提高 IT 资源的利用率，利用率高了，投资就减少了，浪费了低了&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>弹性扩展资源的能力：这个可以应付突发的大批量用户访问请求，并且能够自动资源回收，最重要的是这些扩展和收缩的发生都是云系统自动完成的，不需要管理员手工操作&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>拥有可计量的服务 ： 这个对于 IT 部门需要向用户收钱的实在是重要；或者对服务提供商更重要，如果国内的用户实在没有这个需求也可以不强求。&lt;/p>
+&lt;/li>
+&lt;/ol>
+&lt;p>那么，我们清楚了云的标准和价值后，我们需要判断的是什么？我认为是，我们为什么要建云？你在建云的时候，必须要有一个原因；有了这个原因了才有云的价值取向，才能谈到云的需求，才能谈到云的方案。当然，云就是以云的方案和设计理念去建设的，不存在伪云计算最终能进化或者发展成云计算这一说，就像是，猴子长的年纪在大也无法开口讲话一样。厂商也要不要故意误导，用户也不要片面理解。&lt;/p>
+&lt;p>在引申一下：云计算和虚拟化究竟有啥关系？我斗胆从云的经典分类上来说 Iaas\PaaS\SaaS；从技术上讲，只有 IaaS 和服务器虚拟化有必然联系，其它两种 PaaS 和 SaaS 可以和虚拟化一点必然关系都没有，但是如果他们需要的话，可能可以利用到虚拟化技术的某些优势，但是用非虚拟化技术的架构实现这两种云计算一点问题都没有。网上盛传的“虚拟化是云计算的基石”根本就是一种误解；不过虚拟化的确能帮你做很多事，能帮助你交付很多种的 IT 服务。如果你一定要把他们挂上钩，那么你需要回答的是，你是否要建设 IaaS 云？你的 IaaS 云管理平台是什么，要关注在 IaaS 云计算管理平台的功能和能力上来，看你的 IaaS 是否需要管理多种类型的 Hypersior？是否需要管理到分布在各地的成千上万个服务器？等等。。。从这些需求中才会细化出 IaaS 云管理平台对服务器虚拟化平台的需求。云计算建设是自顶向下的过程，从清晰的概念和建设思路出发，切勿本末倒置，切勿舍本逐末。&lt;/p></description></item><item><title>解决XenServer tools not installed</title><link>https://martinliu.cn/2013/04/07/xenserver-tools-not-installed/</link><pubDate>Sun, 07 Apr 2013 10:27:38 +0000</pubDate><guid>https://martinliu.cn/2013/04/07/xenserver-tools-not-installed/</guid><description>&lt;p>[box color=&amp;ldquo;orange&amp;rdquo; icon=&amp;ldquo;flag&amp;rdquo;]
+鸣谢：Michael Zhang 的经验分享，有需要的请收藏备用。
+[/box]&lt;/p>
+&lt;p>刚刚搞定了 POC 环境中一个很诡异的问题。把过程写出来以供大家参考。建议可以把这个设置放到 POC 的实施手册中。
+刚开始做 POC 时，我们安装了 XP 的模板，并且安装了同版本的 XenTools，此时 XenCenter 面板上显示虚机的 IP 地址没有问题。但是跑了一段时间后发现，所有的虚机的 IP 地址都显示不出来了，并且 XenCenter 面板上显示 XenServer tools not installed，虚机的内存信息，Disk IO 等信息，都没有显示：
+&lt;a class="link" href="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2013/04/xentools1.png" target="_blank" rel="noopener"
+>&lt;img src="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2013/04/xentools1.png"
+loading="lazy"
+alt="xentools1"
+>
+&lt;/a>&lt;/p>
+&lt;p>&lt;a class="link" href="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2013/04/xentools8.png" target="_blank" rel="noopener"
+>&lt;img src="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2013/04/xentools8.png"
+loading="lazy"
+alt="xentools8"
+>
+&lt;/a>&lt;/p>
+&lt;p>后来重装了模板，重新发布了虚机，一切就 OK 了，此时我认为是原先的模板有问题，所以导致了这个 issue。
+但是后来跑了几天，某台虚机又出现了类似的症状，此时我意识到应该不是模板的问题了。然后我就检查了这台虚机的 Service，发现：&lt;/p>
+&lt;p>&lt;a class="link" href="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2013/04/xentools2.png" target="_blank" rel="noopener"
+>&lt;img src="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2013/04/xentools2.png"
+loading="lazy"
+alt="xentools2"
+>
+&lt;/a>&lt;/p>
+&lt;p>这个 Service 就是 XenTool 的 Service，因为没有启动，所以导致了上述的问题。
+但是当我用手工试图重启该 Service 的时候，系统报改 Service 启动时停止，没有给出任何原因。Windows Event Log 里也没看到任何报错。
+后来上网查了下，原来是 Windows Event Log 的 Application 类的 log 满了以后，会导致该 Service 启动异常。
+看了下 XP 的 Windows Event Log 的 Application 类日志的属性，默认只有 64K：&lt;/p>
+&lt;p>&lt;a class="link" href="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2013/04/xentools3.png" target="_blank" rel="noopener"
+>&lt;img src="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2013/04/xentools3.png"
+loading="lazy"
+alt="xentools3"
+>
+&lt;/a>&lt;/p>
+&lt;p>我把上面的日志文件大小阀值改成了 1024K，清空 Application 类的 log，重启上面的 Service, 成功，问题解决。&lt;/p>
+&lt;p>&lt;a class="link" href="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2013/04/xentools5.png" target="_blank" rel="noopener"
+>&lt;img src="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2013/04/xentools5.png"
+loading="lazy"
+alt="xentools5"
+>
+&lt;/a>
+&lt;a class="link" href="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2013/04/xentools6.png" target="_blank" rel="noopener"
+>&lt;img src="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2013/04/xentools6.png"
+loading="lazy"
+alt="xentools6"
+>
+&lt;/a>&lt;/p>
+&lt;p>&lt;a class="link" href="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2013/04/xentools7.png" target="_blank" rel="noopener"
+>&lt;img src="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2013/04/xentools7.png"
+loading="lazy"
+alt="xentools7"
+>
+&lt;/a>&lt;/p>
+&lt;p>上述类似的问题我记得也有兄弟曾经遇到过，发邮件出来问过，当时怀疑是 XenServer 跟 VDA 的时间不同步造成，现在感觉也许跟这个原因有关。&lt;/p>
+&lt;p>[box color=&amp;ldquo;gray&amp;rdquo; icon=&amp;ldquo;order-check&amp;rdquo;]
+欢迎投稿，请发邮件到： &lt;a class="link" href="mailto:liuzh66@gmail.com" >liuzh66@gmail.com&lt;/a>
+[/box]&lt;/p></description></item><item><title>TIPS install XenServer on Mac Mini 6.1</title><link>https://martinliu.cn/2013/02/21/tips-install-xenserver-on-mac-mini-6-1/</link><pubDate>Thu, 21 Feb 2013 09:24:38 +0000</pubDate><guid>https://martinliu.cn/2013/02/21/tips-install-xenserver-on-mac-mini-6-1/</guid><description>&lt;p>[caption id=&amp;ldquo;attachment_52258&amp;rdquo; align=&amp;ldquo;aligncenter&amp;rdquo; width=&amp;ldquo;640&amp;rdquo;]&lt;img src="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2013/02/mac-mini-2012-vs-old-mac-mini.jpg"
+loading="lazy"
+alt="mac-mini-2012-with-XenServer"
+>
+mac-mini-2012-with-XenServer[/caption]&lt;/p>
+&lt;p>今天尝试在 Mac Mini 上安装 XenServer，下面把经验共享一下。我遇到的问题有两个：&lt;/p>
+&lt;ol>
+&lt;li>
+&lt;p>网卡无法识别：使用默认安装盘安装，提示没有检测到网卡，安装无法继续&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>网卡驱动植入失败：在按了 F9 加载驱动的时候，没有发现驱动程序，无法继续安装&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>安装完毕之后，重启，屏幕上显示一个带问号的文件夹，一闪一闪无法正常启动 XenServer&lt;/p>
+&lt;/li>
+&lt;/ol>
+&lt;p>经过一番折腾，发现这些点主意一下，应该就没有问题。&lt;/p>
+&lt;p>[caption id=&amp;ldquo;attachment_52255&amp;rdquo; align=&amp;ldquo;aligncenter&amp;rdquo; width=&amp;ldquo;300&amp;rdquo;]&lt;img src="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2013/02/boot-300x224.jpg"
+loading="lazy"
+alt="启动Macmini"
+>
+](&lt;a class="link" href="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2013/02/boot.jpg" target="_blank" rel="noopener"
+>http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2013/02/boot.jpg&lt;/a>) 启动 Macmini[/caption]&lt;/p>
+&lt;p>在启动 Mac Mini 的时候，在“咚”的一声之前，就按住 ALT 键，否则没法出现上面的屏幕，我用的是 USB 盘启动，所以要选择右侧的图标。&lt;/p>
+&lt;p>[caption id=&amp;ldquo;attachment_52256&amp;rdquo; align=&amp;ldquo;aligncenter&amp;rdquo; width=&amp;ldquo;300&amp;rdquo;]&lt;img src="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2013/02/boot2-300x224.jpg"
+loading="lazy"
+alt="进入menu.c32菜单"
+>
+](&lt;a class="link" href="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2013/02/boot2.jpg" target="_blank" rel="noopener"
+>http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2013/02/boot2.jpg&lt;/a>) 进入 menu.c32 菜单[/caption]&lt;/p>
+&lt;p>我遵循前人的经验，乖乖到此来禁止 gpt；首先在这里要迅速输入 menu.c32，输入完了就过了，就必须重新关机，重启 mac mini。&lt;/p>
+&lt;p>[caption id=&amp;ldquo;attachment_52257&amp;rdquo; align=&amp;ldquo;aligncenter&amp;rdquo; width=&amp;ldquo;300&amp;rdquo;]&lt;img src="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2013/02/boot3-300x224.jpg"
+loading="lazy"
+alt="输入disable-gpt参数"
+>
+](&lt;a class="link" href="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2013/02/boot3.jpg" target="_blank" rel="noopener"
+>http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2013/02/boot3.jpg&lt;/a>) 输入 disable-gpt 参数[/caption]&lt;/p>
+&lt;p>进入这个屏幕了，要快速按 TAB 键，否则启动参数无法编辑，输入 disable-gpt 参数的机会就失去了。编辑启动参数的时候，把参数加载第二个&amp;mdash;（三个短横线）前即可，上图我为了拍照在参数之前加了很多空格，其实这个参数和前后要至少一个空格就够了。&lt;/p>
+&lt;p>在进入安装的屏幕后，如果是 XenServer6.0.201 的源安装盘，还必须下载 tg3 的网卡驱动，并且用工具打入 iso 文件，这样安装的时候，就可以选择到加载网卡启动，否则 6.0.201 的安装盘即不自带此网卡驱动，也无法正常识别附加的驱动。网卡驱动下载地址为：&lt;a class="link" href="http://support.citrix.com/article/CTX135328" target="_blank" rel="noopener"
+>http://support.citrix.com/article/CTX135328&lt;/a>  要把加压后的 iso 文件，再次加压到对应的目录里才行，直接把解压后的几个文件放入目录，安装程序是无法识别到网卡驱动的。如果能正常识别的话，会出现选择框，让你选择  Broadcom tg3。如果是 XenServer6.1 的安装盘，就不需要折腾驱动了，原盘自带了 Broadcom tg3 网卡驱动。下面有两张截图，供必须要使用 XenServer 6.0.201 的人参考。&lt;/p>
+&lt;p>[caption id=&amp;ldquo;attachment_52250&amp;rdquo; align=&amp;ldquo;aligncenter&amp;rdquo; width=&amp;ldquo;300&amp;rdquo;]&lt;img src="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2013/02/xenserver6.1-300x215.jpg"
+loading="lazy"
+alt="XenServer 6.0.201 with driver"
+>
+](&lt;a class="link" href="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2013/02/xenserver6.1.jpg" target="_blank" rel="noopener"
+>http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2013/02/xenserver6.1.jpg&lt;/a>) XenServer 6.0.201 with driver[/caption]&lt;/p>
+&lt;p>[caption id=&amp;ldquo;attachment_52251&amp;rdquo; align=&amp;ldquo;aligncenter&amp;rdquo; width=&amp;ldquo;300&amp;rdquo;]&lt;img src="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2013/02/xs-repository-list-300x253.jpg"
+loading="lazy"
+alt="xs-repository-list 实例"
+>
+](&lt;a class="link" href="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2013/02/xs-repository-list.jpg" target="_blank" rel="noopener"
+>http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2013/02/xs-repository-list.jpg&lt;/a>) xs-repository-list 实例[/caption]&lt;/p>
+&lt;p>即使你不是安装 XenServer6.0.201，也推荐使用 UltraISO 来把 iso 文件写入一个 USB 盘来安装，因为 Mac Mini 没有光驱，而且这样不用刻盘，更加环保一点。&lt;/p>
+&lt;p>最后一个 Tips：这个可能是解决问题 3 的技巧，在安装的最后一个屏幕上，安装程序提示移除 Mac Mini 上的其他所有截至，然后点击回车完成安装。在这个屏幕上要识时务的把安装 U 盘从机器上拔除，然后点击回车来重启 Mac Mini。经过我的验证，拔出 U 盘后好像没有在遇到过闪烁文件夹的重启不了的问题。建议都使用自带 Broadcom tg3 网卡驱动的 6.1 来安装，否则 6.0.201 安装完成之后，一旦打了补丁，还需要下载 for 这个补丁的新版本的网卡驱动，在重新手工打上该驱动，否则网卡会起不起来。&lt;/p></description></item><item><title>2012 Hadoop与大数据技术大会PPT下载</title><link>https://martinliu.cn/2013/01/09/2012-hadoope4b88ee5a4a7e695b0e68daee68a80e69cafe5a4a7e4bc9appte4b88be8bdbd/</link><pubDate>Wed, 09 Jan 2013 06:24:06 +0000</pubDate><guid>https://martinliu.cn/2013/01/09/2012-hadoope4b88ee5a4a7e695b0e68daee68a80e69cafe5a4a7e4bc9appte4b88be8bdbd/</guid><description>&lt;p>&lt;a class="link" href="http://hbtc2012.hadooper.cn/download.html" target="_blank" rel="noopener"
+>http://hbtc2012.hadooper.cn/download.html&lt;/a>&lt;/p></description></item><item><title>2013年的云计算，您准备好了么？</title><link>https://martinliu.cn/2012/12/18/2013e5b9b4e79a84e4ba91e8aea1e7ae97e682a8e58786e5a487e5a5bde4ba86e4b988/</link><pubDate>Tue, 18 Dec 2012 16:12:30 +0000</pubDate><guid>https://martinliu.cn/2012/12/18/2013e5b9b4e79a84e4ba91e8aea1e7ae97e682a8e58786e5a487e5a5bde4ba86e4b988/</guid><description>&lt;p>&lt;a class="link" href="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2012/06/cropped-Cloud1.jpg" target="_blank" rel="noopener"
+>&lt;img src="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2012/06/cropped-Cloud1-300x60.jpg"
+loading="lazy"
+alt="cropped-Cloud1.jpg"
+>
+&lt;/a>&lt;/p>
+&lt;p>&lt;a class="link" href="http://www.datamation.com/cloud-computing/getting-ready-for-cloud-computing-2013.html" target="_blank" rel="noopener"
+>Getting Ready for Cloud Computing 2013&lt;/a>&lt;/p>
+&lt;p>[dc]看[/dc]到篇不错的文章，值得分享一下。在最近的三四年里面，厂商都忙着炒作概念，用似云非云的各种虚拟化来对付用户，实际上云计算并没有那么简单，我一直不敢给客户讲，也讲不好的东西就是：对于一个特定的用户，告诉它什么是云？他应该怎么怎么过渡到云？先从那里做起？大致的路径是怎么样的？一旦对应到具体的用户环境里面，以上每个用户的答案都是不同的，感觉没有十足实践经验的人，根本无法和用户达成共鸣和一致。这个和我以前做 ITSM/ITIL 完全不同，在那块领域里面，讲究的是管理的思路和理念，等你做了一些项目之后，你从项目中的总结和提炼，就成了你的炮弹，用在其它新用户身上，用不好，也用不错；管理的学问往往是殊途同归的。而云计算，目前国内真的还属于初级阶段，就像是在 2002 年左右的时候，我们给银行做 ITIL 做服务台一样，对无论是用户和厂商的人来说，还不夸张的说，都是雾里看花。&lt;/p>
+&lt;p>[tab label=&amp;ldquo;云计算七大注意事项&amp;rdquo; first=&amp;ldquo;yes&amp;rdquo;]&lt;/p>
+&lt;p>[list icon=&amp;ldquo;star&amp;rdquo;]&lt;/p>
+&lt;ul>
+&lt;li>
+&lt;ol>
+&lt;li>检查和评估您的网络 : 如果数据中心不做网络架构的巨大调整，给云平台配置足够强大的带宽资源，上云计算，基本上就是让用户和运维人员都痛苦不堪，不会有啥好结果。&lt;/li>
+&lt;/ol>
+&lt;/li>
+&lt;li>
+&lt;ol start="2">
+&lt;li>建立鼓励员工进谏的机制 : 识别、评估、选择和实施云计算方案的流程需要提前设计好。在每个阶段和过程里让最终用户、开发人员和管理层都充分的参与意见。&lt;/li>
+&lt;/ol>
+&lt;/li>
+&lt;li>
+&lt;ol start="3">
+&lt;li>聚焦在立竿见影的运维痛点和功能差距上: 瞄准那些影响最终用户生产力和新上面的应用部署项目上。让云计算的高效和灵活等优势小试牛刀一下，从而验证需求点的准确性和方案的靠谱性。&lt;/li>
+&lt;/ol>
+&lt;/li>
+&lt;li>
+&lt;ol start="4">
+&lt;li>先尝后买 : 云计算是最着急投胎的，没有必要大干快上，对于数据中心来说也是一个渐进的温和的改良的过程。选定一个足够小的范围，先尝后买，分区分配扩容，放大项目范围。&lt;/li>
+&lt;/ol>
+&lt;/li>
+&lt;li>
+&lt;ol start="5">
+&lt;li>承载应用（App hosting）和 SaaS 应用不能划等号 : 这根本就是个误解，无须多说。&lt;/li>
+&lt;/ol>
+&lt;/li>
+&lt;li>
+&lt;ol start="6">
+&lt;li>监控利用率和满意度 : 不管云做的大小，资源都要物尽其用，跟踪最终用户和领导大满意度，与同行用户横向比较数据，找出自己的所处位置和程度。实施反馈机制，让用户驱动云的需求和建设方向。&lt;/li>
+&lt;/ol>
+&lt;/li>
+&lt;li>
+&lt;ol start="7">
+&lt;li>眼观六路，站足先机 : 市场风云莫测，业务模式层出不穷，这些都不断催熟这云方案。所以广泛关注，收集跟多信息，为云计算建立多个选项，多种选择总是好事。&lt;/li>
+&lt;/ol>
+&lt;/li>
+&lt;/ul>
+&lt;p>[/list]
+[/tab]&lt;/p>
+&lt;p>[tab label=&amp;ldquo;英文原文&amp;rdquo;]&lt;/p>
+&lt;p>If you’ve been holding back about moving to the ‘Cloud’, it is time to get onboard the &lt;a class="link" href="http://www.datamation.com/cloud-computing/" target="_blank" rel="noopener"
+>Cloud Computing&lt;/a> express.&lt;/p>
+&lt;p>Not only has every major research firm published market forecasts indicating that Cloud services are growing exponentially, but we see multiplying customer success stories that clearly illustrate the immediate and measurable business benefits of moving to the Cloud.&lt;/p>
+&lt;p>Here are some simple rules you should follow to help you move ahead in the coming year and successfully leverage today’s rapidly evolving Cloud alternatives:&lt;/p>
+&lt;p>&lt;strong>1. Check your networks:&lt;/strong> Adopting Cloud solutions doesn’t make sense if you don’t have sufficient bandwidth capabilities. Without adequate connectivity, accessing Cloud services will be like stepping back in time and only frustrate your end-users and executives.&lt;/p>
+&lt;p>&lt;strong>2. Establish policies that encourage employee input:&lt;/strong> Develop straightforward procedures for identifying, evaluating, selecting and implementing Cloud solutions. Your end-users, developers and executives are being exposed to Software-as-a-Service (SaaS) applications, Platform-as-a-Service (PaaS) solutions and Infrastructure-as-a-Service (IaaS) alternatives every day. Invite them to recommend those they like.&lt;/p>
+&lt;p>&lt;strong>3. Focus on your immediate pain-points and functional gaps:&lt;/strong> Don’t rip out existing applications that work and cost little to maintain. Instead, target those cumbersome old applications that get in the way of end-user productivity and new applications to fill immediate needs.&lt;/p>
+&lt;p>&lt;strong>4. Start small and try before you buy:&lt;/strong> One of the greatest advantages of today’s Cloud solutions is that they mitigate many of the risks associated with traditional, legacy applications. Rather than paying for a perpetual license upfront without having an opportunity to test how it will meet your needs, many of today’s Cloud solutions allow you to try them out before you subscribe to them. And, you can start with a small group of users, or a single department, before you roll out the solution across your organization.&lt;/p>
+&lt;p>&lt;strong>5. Recognize that application hosting doesn’t equal Software-as-a-Service (SaaS):&lt;/strong> There is a growing number of legacy, on-premise software vendors who are offering hosted versions of their applications on a subscription pricing basis and calling them “SaaS” solutions. Although these hosted applications alleviate some of the operational hassles and reduce the upfront cost associated with traditional software deployment, they still fall short of the fundamental benefits of true ‘multitenant’ SaaS solutions, such as ongoing enhancements and aggregated benchmarks. In addition, the legacy software vendors can’t scale their hosted services if their customers are using varying versions of the hosted application.&lt;/p>
+&lt;p>&lt;strong>6. Monitor utilization and measure satisfaction:&lt;/strong> Track how your end-users and executives are using the SaaS apps and other Cloud services. Be sure the utilization levels justify the current subscription fees to prevent overspending. Investigate how your utilization levels compare with other organizations by requesting benchmark information from SaaS/Cloud vendors. Implement feedback mechanisms to ensure satisfaction and generate new ideas. Use data to determine future service requirements.&lt;/p>
+&lt;p>&lt;strong>7. Stay informed to stay ahead:&lt;/strong> The Cloud marketplace is changing rapidly from a technological perspective and maturing quickly from a business model point of view. Keeping up on the latest developments may be a challenge, but is also essential to take full advantage of the increasingly powerful solutions being delivered via the Cloud. Maintain an ‘open door’ policy and utilize social networking tools to invite your end-users, executives and others to share information about new services and best practices.
+[/tab]&lt;/p></description></item><item><title>何谓云？</title><link>https://martinliu.cn/2009/10/21/what-is-cloud-computing/</link><pubDate>Wed, 21 Oct 2009 04:36:11 +0000</pubDate><guid>https://martinliu.cn/2009/10/21/what-is-cloud-computing/</guid><description>&lt;p>下面是两个 Youtube 上的视频，短短 5 分钟的视频就把云计算的相关核心概念解释的很清楚。&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->好像国内吧 Youtube 给屏蔽了，上面的视频可能看不到，Google 真的应该和中国政府把关系搞好，哎~~&lt;/p></description></item><item><title>BMC and Cloud computing</title><link>https://martinliu.cn/2009/07/16/bmc-and-cloud-computing/</link><pubDate>Thu, 16 Jul 2009 13:34:31 +0000</pubDate><guid>https://martinliu.cn/2009/07/16/bmc-and-cloud-computing/</guid><description>&lt;p>July 15, 2009 – BMC Software has announced that it is leveraging Amazon Web Services to provide a single, unified management solution meant to give customers control over existing internal IT assets and external cloud infrastructures, according to a company release.&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->&lt;a class="link" href="http://www.information-management.com/news/amazon_bmc_software_cloud_computing-10015748-1.html" target="_blank" rel="noopener"
+>http://www.information-management.com/news/amazon_bmc_software_cloud_computing-10015748-1.html&lt;/a>&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->BTW: it seems the IT management is as important as infrastructure.&lt;/p></description></item><item><title>Cloud Computing Infrastructure and Architecture Guide-From SUN</title><link>https://martinliu.cn/2009/07/14/cloud-computing-infrastructure-and-architecture-guide-from-sun/</link><pubDate>Tue, 14 Jul 2009 05:34:26 +0000</pubDate><guid>https://martinliu.cn/2009/07/14/cloud-computing-infrastructure-and-architecture-guide-from-sun/</guid><description>&lt;p>&lt;img src="http://blogs.sun.com/staso/resource/question-cloud.jpg"
+loading="lazy"
+>
+&lt;!-- raw HTML omitted -->&lt;/p>
+&lt;p>&lt;a class="link" href="http://cn.sun.com/offers/docs/sun_353cloudcomputing_chinese.pdf" target="_blank" rel="noopener"
+>** » 下载本指南**&lt;/a> （中文版）&lt;!-- raw HTML omitted -->《云计算基础设施和体系架构指南》&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->&lt;a class="link" href="http://www.sun.com/featured-articles/CloudComputing.pdf" target="_blank" rel="noopener"
+>** » 下载本指南**&lt;/a> （英文版）&lt;!-- raw HTML omitted -->《Cloud Computing Infrastructure and Architecture Guide》&lt;!-- raw HTML omitted -->&lt;/p>
+&lt;p>&lt;strong>&lt;a class="link" href="http://hk.sun.com/resources" target="_blank" rel="noopener"
+> » 更多 Sun 白皮书、指南、蓝图&lt;/a>&lt;/strong> (英文版)&lt;/p></description></item><item><title>从云计算联想到第一代电脑系统</title><link>https://martinliu.cn/2009/01/19/e4bb8ee4ba91e8aea1e7ae97e88194e683b3e588b0e7acace4b880e4bba3e794b5e88491e7b3bbe7bb9f/</link><pubDate>Mon, 19 Jan 2009 07:32:50 +0000</pubDate><guid>https://martinliu.cn/2009/01/19/e4bb8ee4ba91e8aea1e7ae97e88194e683b3e588b0e7acace4b880e4bba3e794b5e88491e7b3bbe7bb9f/</guid><description>&lt;p>&lt;img src="http://www.cartoonstock.com/newscartoons/cartoonists/ato/lowres/aton964l.jpg"
+loading="lazy"
+>
+记得以前看过一本描写 Bill Gets 的书，他上中学的时候，在河滨中心通过一个远程终端，连接到某大学的计算机系统，输入程序代码，并且得到代码在远程电脑系统中的输出，输出好像是在屏幕上出现的，或从打印机上输出的。我基本上忘了那电脑系统的名称，不过它的特点基本上是这样的：当时电脑系统很少，可能全世界上也没有多少台功能全面的电脑；用户使用的特别像是一种计算服务，由于终端设备根本没有技术能力，当时还没有个人电脑；接入方式根本不是 tcp/ip 更不是 internet，当时还没 internet。在学习了云计算的一些概念之后，我迷惑了，这个时尚的技术，怎么越看越眼熟啊。&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->IBM 的主机系统可谓是当今电脑世界的恐龙化石级产品，他是一个活化石基本的技术，在经历了开放系统时代之后，我们即将进入云计算时代，我总感觉云计算是一种技术路线的复古。主机系统和第一代电脑系统最相似，区别是可以通过 TCP/ip 网络，和开放系统通信了。最为一种新兴起的技术，我试图 follow &lt;a class="link" href="http://www.johnmwillis.com/" target="_blank" rel="noopener"
+>http://www.johnmwillis.com/&lt;/a>来学习云计算，遗憾的是从 08 年初以来并没有仔细听他所有的 colud cafe；这个老兄在把 blog 改名为 IT Management and Cloud Blog，真可谓是一高产的 blogger，这哥们每天能发四五个 post，强啊。最近找时间&lt;a class="link" href="http://media.libsyn.com/media/botchagalupe/cafe27.mp3" target="_blank" rel="noopener"
+>听了一段 cloud cafe&lt;/a>，我发现到目前为止还没有一个能让大多数人都认同的云计算的概念，基本上对云计算的感念方面有两道三种说法。可以看看 &lt;a class="link" href="http://en.wikipedia.org/wiki/Cloud_computing" target="_blank" rel="noopener"
+>http://en.wikipedia.org/wiki/Cloud_computing&lt;/a> 参考这上面的说法也只能有一个模糊的感觉。&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->看看电脑技术打发展历程：最早的电脑系统，主机系统，开放系统，群集，网格，云计算。前一段时间看过一个非常抢眼的标题“以后世界上将只有 5 台电脑”。SaaS 是一个比较火热的和云计算相关的技术，我认为它像是在 web2.0 发展到一定阶段后 Web 应用的一个发展，这方面的强者为 salesforce 之流。Google 和 Salesforce 不同的是，Google 提供网上 office 套件的同时，还开发他的平台，并提供与之配套的 SDK。Amazon 不提供应用也没有 SDK，他只提供平台，平台上包括基本的计算和存储服务。Google 和 Amazon 说起来算是基础架构作为一种服务。抛开云计算本身不谈，用户使用和访问的方式并没有发生变化，在任何一个 web 浏览器存在的地方都能使用或者管理到云计算。客户端的计算和存储能力再次此退化到零，这不能说不是计算机技术发展的返祖现象吧！哈哈～～我也快糊涂了！&lt;/p></description></item><item><title>Open Source and Cloud Computing(开源与云计算)</title><link>https://martinliu.cn/2008/10/16/open-source-and-cloud-computinge5bc80e6ba90e4b88ee4ba91e8aea1e7ae97/</link><pubDate>Thu, 16 Oct 2008 13:09:16 +0000</pubDate><guid>https://martinliu.cn/2008/10/16/open-source-and-cloud-computinge5bc80e6ba90e4b88ee4ba91e8aea1e7ae97/</guid><description>&lt;p>Link：&lt;a class="link" href="http://radar.oreilly.com.cn/blog/tim/open-source-and-cloud-computing" target="_blank" rel="noopener"
+>Open Source and Cloud Computing(开源与云计算)&lt;/a>&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->From above post:&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->开源的成功有几个关键元素：&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->1.许可证要允许和鼓励再发布、修改乃至发展分支；&lt;!-- raw HTML omitted -->2.一个体系结构要使程序能被作为组件在任何可能的地方重用，以及可以被扩展，而不是被替换来提供新功能；&lt;!-- raw HTML omitted -->3.低门槛，让新用户轻松上手一试。&lt;!-- raw HTML omitted -->4.低门槛，让开发人员构建新的应用与大家分享。&lt;!-- raw HTML omitted -->&lt;/p>
+&lt;!-- raw HTML omitted -->
+&lt;p>&lt;!-- raw HTML omitted -->个人认为：使用云计算的用户并不一定是租用土地的佃户；佃户把自己的收成都给了地主，自己剩下的少的可怜。云计算的用户会愿意付出多少成本给地主是可以计算的，计算的原则就是‘保证自己的利益、安全等’。&lt;!-- raw HTML omitted -->&lt;/p>
+&lt;!-- raw HTML omitted --></description></item></channel></rss>

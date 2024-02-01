@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>jekyll on Martin Liu's Blog</title><link>https://martinliu.cn/tags/jekyll/</link><description>Recent content in jekyll on Martin Liu's Blog</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><lastBuildDate>Sun, 10 Jan 2016 01:01:25 +0000</lastBuildDate><atom:link href="https://martinliu.cn/tags/jekyll/index.xml" rel="self" type="application/rss+xml"/><item><title>用 Jekyll + Github 建立静态站点</title><link>https://martinliu.cn/2016/01/10/e794a8-jekyll-github-e5bbbae7ab8be99d99e68081e7ab99e782b9/</link><pubDate>Sun, 10 Jan 2016 01:01:25 +0000</pubDate><guid>https://martinliu.cn/2016/01/10/e794a8-jekyll-github-e5bbbae7ab8be99d99e68081e7ab99e782b9/</guid><description>&lt;img src="https://martinliu.cn/images/abstract-6.jpg" alt="Featured image of post 用 Jekyll + Github 建立静态站点" />&lt;h2 id="新建库">新建库&lt;/h2>
+&lt;p>建立一个用户名开头的库，如我的 github 用户名是 martinliu， 新建的库的名字为 martinliu.github.io ; 这个库将是存放 web 页面的。包括该域名下的站点的所有相关页码代码文件和相关 css,图片等文件。&lt;/p>
+&lt;h2 id="更新并上传新库">更新并上传新库&lt;/h2>
+&lt;p>参考的命令如下：&lt;/p>
+&lt;p>[bash]
+git clone &lt;a class="link" href="https://github.com/martinliu/martinliu.github.io" target="_blank" rel="noopener"
+>https://github.com/martinliu/martinliu.github.io&lt;/a>
+cd martinliu.github.io
+echo &amp;ldquo;Martin Liu&amp;rsquo;s Github Homepage&amp;rdquo; &amp;gt; index.html
+git add &amp;ndash;all
+git commit -m &amp;ldquo;Initial commit&amp;rdquo;
+git push -u origin master
+[/bash]&lt;/p>
+&lt;p>打开浏览器测试你的网站，访问网址： &lt;a class="link" href="http://martinliu.github.io" target="_blank" rel="noopener"
+>http://martinliu.github.io&lt;/a> ， 你已经可以看到你的初始化页码了。&lt;/p>
+&lt;h2 id="jekyll-博客系统">Jekyll 博客系统&lt;/h2>
+&lt;p>Github 网站上推荐使用 Jekyll 创建和管理这个博客系统。它是支持 Markdown 语法，不需要使用数据库，纯文本的静态网站和博客系统。使用它可以建立和管理一个风格美观，容易管理的网站，生成的网页可以上传到以上生成的网站库中。&lt;/p>
+&lt;h2 id="安装-jekyll-系统">安装 Jekyll 系统&lt;/h2>
+&lt;p>我的测试系统：Fedora 23。操作步骤如下。
+安装依赖的包和 ruby 环境&lt;/p>
+&lt;p>[bash]
+dnf install ruby  ruby-devel gem gcc libffi redhat-rpm-config
+[/bash]&lt;/p>
+&lt;p>更用国内的 rubygem 源
+[bash]
+gem source -r &lt;a class="link" href="https://rubygems.org/" target="_blank" rel="noopener"
+>https://rubygems.org/&lt;/a>
+gem source -a &lt;a class="link" href="http://mirrors.aliyun.com/rubygems/" target="_blank" rel="noopener"
+>http://mirrors.aliyun.com/rubygems/&lt;/a>
+gem update &amp;ndash;system&lt;/p>
+&lt;p>gem install jekyll
+[/bash]&lt;/p>
+&lt;p>##本地测试 jekyll 站点
+进入克隆到本地的库，并创建 jekyll 站点。&lt;/p>
+&lt;p>[bash]
+cd martinliu.github.io
+rm index.html&lt;/p>
+&lt;p>jekyll new .
+New jekyll site installed in /root/martinliu.github.io.
+[root@demo-w540 martinliu.github.io]# ls
+about.md     css       _includes   _layouts  _sass
+_config.yml  feed.xml  index.html  _posts
+[root@demo-w540 martinliu.github.io]# jekyll server
+Configuration file: /root/martinliu.github.io/_config.yml
+Source: /root/martinliu.github.io
+Destination: /root/martinliu.github.io/_site
+Incremental build: disabled. Enable with &amp;ndash;incremental
+Generating&amp;hellip;
+done in 0.205 seconds.
+Auto-regeneration: enabled for &amp;lsquo;/root/martinliu.github.io&amp;rsquo;
+Configuration file: /root/martinliu.github.io/_config.yml
+Server address: http://127.0.0.1:4000/
+Server running&amp;hellip; press ctrl-c to stop.
+[/bash]&lt;/p>
+&lt;p>编辑站点的相关文件，测试成功之后，在上传到 github 上，然可到 maritnliu.github.io 上检查和本地的显示效果是否相同。&lt;/p></description></item></channel></rss>

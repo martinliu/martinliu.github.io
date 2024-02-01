@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>rpm on Martin Liu's Blog</title><link>https://martinliu.cn/tags/rpm/</link><description>Recent content in rpm on Martin Liu's Blog</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><lastBuildDate>Wed, 28 Feb 2007 09:14:00 +0000</lastBuildDate><atom:link href="https://martinliu.cn/tags/rpm/index.xml" rel="self" type="application/rss+xml"/><item><title>GroundWork rpm 安装会导致原系统的一些改变</title><link>https://martinliu.cn/2007/02/28/groundwork-rpm-error/</link><pubDate>Wed, 28 Feb 2007 09:14:00 +0000</pubDate><guid>https://martinliu.cn/2007/02/28/groundwork-rpm-error/</guid><description>&lt;p>GroundWork rpm 安装对系统造成的改变有：&lt;!-- raw HTML omitted -->&lt;/p>
+&lt;p>&lt;!-- raw HTML omitted -->&lt;/p>
+&lt;ol>
+&lt;li>/etc/init.d/apache2 被改名为 apache2-save 导致，以前的Apache不能启动
+&lt;!-- raw HTML omitted -->&lt;/li>
+&lt;li>会在/etc/ld.so.conf中加入一行/usr/local/groundwork/lib ；不知道为什么这会导致一下系统的服务不能正常运行，如：PostgreSQL和snmpd。修复方法是注释掉这一行，然后运ldconfig命令。还不知道GroundWork在没有这一行的情况下有什么问题，注释掉之后好像它还是能正常运行的。
+&lt;!-- raw HTML omitted -->&lt;/li>
+&lt;/ol></description></item></channel></rss>

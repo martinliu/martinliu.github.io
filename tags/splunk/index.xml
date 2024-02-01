@@ -1,0 +1,221 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>splunk on Martin Liu's Blog</title><link>https://martinliu.cn/tags/splunk/</link><description>Recent content in splunk on Martin Liu's Blog</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><lastBuildDate>Thu, 04 Dec 2014 02:34:03 +0000</lastBuildDate><atom:link href="https://martinliu.cn/tags/splunk/index.xml" rel="self" type="application/rss+xml"/><item><title>workshop redhat storage and splunk</title><link>https://martinliu.cn/2014/12/04/workshop-redhat-storage-splunk/</link><pubDate>Thu, 04 Dec 2014 02:34:03 +0000</pubDate><guid>https://martinliu.cn/2014/12/04/workshop-redhat-storage-splunk/</guid><description>&lt;h2 id="instance-details">Instance Details&lt;/h2>
+&lt;p>Replace userX with your user id. For example, user1 &amp;ndash;&amp;gt; user 30&lt;/p>
+&lt;!-- raw HTML omitted -->
+&lt;!-- raw HTML omitted -->
+&lt;!-- raw HTML omitted -->
+&lt;!-- raw HTML omitted -->
+&lt;!-- raw HTML omitted -->
+&lt;!-- raw HTML omitted -->
+&lt;!-- raw HTML omitted -->
+&lt;!-- raw HTML omitted -->
+&lt;!-- raw HTML omitted -->
+&lt;!-- raw HTML omitted -->
+&lt;!-- raw HTML omitted -->
+&lt;!-- raw HTML omitted -->
+&lt;!-- raw HTML omitted -->
+&lt;!-- raw HTML omitted -->
+&lt;!-- raw HTML omitted -->
+&lt;!-- raw HTML omitted -->
+&lt;!-- raw HTML omitted -->
+&lt;!-- raw HTML omitted -->
+&lt;!-- raw HTML omitted -->
+&lt;!-- raw HTML omitted -->
+&lt;!-- raw HTML omitted -->
+&lt;!-- raw HTML omitted -->
+&lt;!-- raw HTML omitted -->
+&lt;!-- raw HTML omitted -->
+&lt;!-- raw HTML omitted -->
+&lt;!-- raw HTML omitted -->
+&lt;!-- raw HTML omitted -->
+&lt;!-- raw HTML omitted -->
+&lt;!-- raw HTML omitted -->
+&lt;!-- raw HTML omitted -->
+&lt;!-- raw HTML omitted -->
+&lt;!-- raw HTML omitted -->
+&lt;!-- raw HTML omitted -->
+&lt;!-- raw HTML omitted -->
+&lt;!-- raw HTML omitted -->
+&lt;!-- raw HTML omitted -->
+&lt;!-- raw HTML omitted -->
+&lt;!-- raw HTML omitted -->
+&lt;!-- raw HTML omitted -->
+&lt;!-- raw HTML omitted -->
+&lt;!-- raw HTML omitted -->
+&lt;!-- raw HTML omitted -->
+&lt;h3 id="on-your-laptop">On your laptop&lt;/h3>
+&lt;p>cd ~/.ssh
+wget &lt;a class="link" href="https://s3-ap-southeast-1.amazonaws.com/splunk-lab/rhte-splunk-lab" target="_blank" rel="noopener"
+>https://s3-ap-southeast-1.amazonaws.com/splunk-lab/rhte-splunk-lab&lt;/a>
+wget &lt;a class="link" href="https://s3-ap-southeast-1.amazonaws.com/splunk-lab/rhte-splunk-lab.pub" target="_blank" rel="noopener"
+>https://s3-ap-southeast-1.amazonaws.com/splunk-lab/rhte-splunk-lab.pub&lt;/a>
+chmod 600 rhte-splunk-lab
+chmod 644 rhte-splunk-lab.pub&lt;/p>
+&lt;p>ssh -i ~/.ssh/rhte-splunk-lab -l ec2-user gw-userX.apac.red&lt;/p>
+&lt;h3 id="on-all-rhs-nodes">On all RHS Nodes&lt;/h3>
+&lt;p>sudo su -
+subscription-manager attach &amp;ndash;pool 8a85f9864675056e014684868378649c
+subscription-manager repos &amp;ndash;disable=*
+subscription-manager repos &amp;ndash;enable rhel-6-server-rpms &amp;ndash;enable rhs-3-for-rhel-6-server-rpms &amp;ndash;enable rhel-scalefs-for-rhel-6-server-rpms&lt;/p>
+&lt;p>yum -y update&lt;/p>
+&lt;p>cat /etc/redhat-* # should say Red Hat Enterprise Linux 6.6 (Santiago) and Red Hat Storage 3.0 Update 2&lt;/p>
+&lt;p>/sbin/service glusterd restart&lt;/p>
+&lt;h3 id="on-rhs-01">On RHS-01&lt;/h3>
+&lt;p>gluster peer probe rhs-02.userX.apac.red
+gluster peer probe rhs-03.userX.apac.red
+gluster peer probe rhs-04.userX.apac.red&lt;/p>
+&lt;p>gluster pool list&lt;/p>
+&lt;p>gluster volume create splunk replica 2 rhs-01.userX.apac.red:/srv/brick1/splunk rhs-02.userX.apac.red:/srv/brick1/splunk rhs-03.userX.apac.red:/srv/brick1/splunk rhs-04.userX.apac.red:/srv/brick1/splunk&lt;/p>
+&lt;p>gluster volume set splunk storage.owner-uid 1001
+gluster volume set splunk storage.owner-gid 1001
+gluster volume set splunk user.nfs disable&lt;/p>
+&lt;p>gluster volume start splunk&lt;/p>
+&lt;p>gluster volume info
+gluster volume status&lt;/p>
+&lt;h3 id="on-splunk-master-and-splunk-search-nodes">On Splunk Master and Splunk Search Nodes&lt;/h3>
+&lt;p>subscription-manager attach &amp;ndash;pool 8a85f9864675056e014684868378649c
+subscription-manager repos &amp;ndash;disable=*
+subscription-manager repos &amp;ndash;enable rhel-7-server-rpms&lt;/p>
+&lt;p>yum -y update&lt;/p>
+&lt;p>wget &lt;a class="link" href="https://s3-ap-southeast-1.amazonaws.com/splunk-lab/splunk-6.2.0-237341-linux-2.6-x86_64.rpm" target="_blank" rel="noopener"
+>https://s3-ap-southeast-1.amazonaws.com/splunk-lab/splunk-6.2.0-237341-linux-2.6-x86_64.rpm&lt;/a> &amp;ndash;no-check-certificate&lt;/p>
+&lt;h3 id="on-all-splunk-nodes">On all Splunk Nodes&lt;/h3>
+&lt;p>subscription-manager attach &amp;ndash;pool 8a85f9864675056e014684868378649c
+subscription-manager repos &amp;ndash;disable=*
+subscription-manager repos &amp;ndash;enable rhel-7-server-rpms &amp;ndash;enable rhel-7-server-openstack-5.0-rpms &amp;ndash;enable rhel-7-server-rh-common-rpms&lt;/p>
+&lt;p>yum -y update&lt;/p>
+&lt;p>yum -y install wget lvm2&lt;/p>
+&lt;p>wget &lt;a class="link" href="https://s3-ap-southeast-1.amazonaws.com/splunk-lab/splunk-6.2.0-237341-linux-2.6-x86_64.rpm" target="_blank" rel="noopener"
+>https://s3-ap-southeast-1.amazonaws.com/splunk-lab/splunk-6.2.0-237341-linux-2.6-x86_64.rpm&lt;/a> &amp;ndash;no-check-certificate&lt;/p>
+&lt;p>/bin/systemctl start lvm2-lvmetad.service
+/bin/systemctl start lvm2-monitor.service&lt;/p>
+&lt;p>pvcreate &amp;ndash;dataalignment 1024k /dev/xvdb1
+vgcreate splunkdb /dev/xvdb1
+/sbin/lvcreate -a y -l 100%VG -n splunkdb splunkdb
+mkfs.xfs -i size=512 /dev/mapper/splunkdb-splunkdb&lt;/p>
+&lt;h3 id="on-all-splunk-nodes-1">On all Splunk Nodes&lt;/h3>
+&lt;p>echo -e &lt;code>blkid /dev/mapper/splunkdb-splunkdb | cut -d &amp;quot; &amp;quot; -f 2&lt;/code>&amp;quot;\t/opt/\txfs\tdefaults,inode64,noatime\t0\t0&amp;quot; &amp;raquo; /etc/fstab
+mount /opt&lt;/p>
+&lt;p>yum -y localinstall splunk-6.2.0-237341-linux-2.6-x86_64.rpm&lt;/p>
+&lt;p>echo -e &amp;ldquo;splunk\t\tsoft\tnofile\t10240&amp;rdquo; &amp;raquo; /etc/security/limits.conf
+echo -e &amp;ldquo;splunk\t\thard\tnofile\t20480&amp;rdquo; &amp;raquo; /etc/security/limits.conf&lt;/p>
+&lt;h3 id="on-splunk-master-and-splunk-search">On Splunk Master and Splunk Search&lt;/h3>
+&lt;p>cd /lib/systemd/system
+wget &lt;a class="link" href="https://s3-ap-southeast-1.amazonaws.com/splunk-lab/splunkd.service" target="_blank" rel="noopener"
+>https://s3-ap-southeast-1.amazonaws.com/splunk-lab/splunkd.service&lt;/a> &amp;ndash;no-check-certificate&lt;/p>
+&lt;p>sed -i.bak &amp;lsquo;/^After|^Requires/d&amp;rsquo; splunkd.service
+sed -i.bak &amp;lsquo;/Description/a After=network.target local-fs.target&amp;rsquo; splunkd.service
+systemctl daemon-reload
+systemctl enable splunkd.service
+systemctl start splunkd.service&lt;/p>
+&lt;p>runuser -l splunk -c &amp;lsquo;splunk status&amp;rsquo;
+q
+y
+systemctl restart splunkd.service
+runuser -l splunk -c &amp;lsquo;splunk status&amp;rsquo;&lt;/p>
+&lt;h3 id="on-splunk-peer-nodes">On Splunk Peer Nodes&lt;/h3>
+&lt;p>yum install -y glusterfs-fuse python-httplib2 attr&lt;/p>
+&lt;p>mkdir /mnt/glusterfs
+echo -e &amp;ldquo;rhs-01.userX.apac.red:/splunk\t\t/mnt/glusterfs\t\tglusterfs\t\tdefaults,_netdev,backup-volfile-servers=rhs02.userX.apac.red:rhs-03.userX.apac.red:rhs-04.userX.apac.red\t0\t0&amp;rdquo; &amp;raquo; /etc/fstab
+mount /mnt/glusterfs&lt;/p>
+&lt;p>runuser -l splunk -c &amp;lsquo;mkdir -p /opt/splunk/var/lib/splunk/glusterfs&amp;rsquo;
+runuser -l splunk -c &amp;lsquo;mkdir -p /mnt/glusterfs/$(hostname -s)&amp;rsquo;&lt;/p>
+&lt;p>cd /lib/systemd/system
+wget &lt;a class="link" href="https://s3-ap-southeast-1.amazonaws.com/splunk-lab/splunkd-pre.service" target="_blank" rel="noopener"
+>https://s3-ap-southeast-1.amazonaws.com/splunk-lab/splunkd-pre.service&lt;/a>
+systemctl enable splunkd-pre.service
+systemctl start splunkd-pre.service&lt;/p>
+&lt;p>echo OPTIMISTIC_ABOUT_FILE_LOCKING = 1 &amp;raquo; /opt/splunk/etc/splunk-launch.conf&lt;/p>
+&lt;p>wget &lt;a class="link" href="https://s3-ap-southeast-1.amazonaws.com/splunk-lab/splunkd.service" target="_blank" rel="noopener"
+>https://s3-ap-southeast-1.amazonaws.com/splunk-lab/splunkd.service&lt;/a>
+systemctl daemon-reload
+systemctl enable splunkd.service
+systemctl start splunkd.service
+runuser -l splunk -c &amp;lsquo;splunk status&amp;rsquo;
+q
+y
+systemctl start splunkd.service
+runuser -l splunk -c &amp;lsquo;splunk status&amp;rsquo;&lt;/p>
+&lt;p>cd /opt/splunk/bin
+wget &lt;a class="link" href="https://s3-ap-southeast-1.amazonaws.com/splunk-lab/rhsBucketMover.py" target="_blank" rel="noopener"
+>https://s3-ap-southeast-1.amazonaws.com/splunk-lab/rhsBucketMover.py&lt;/a>
+wget &lt;a class="link" href="https://s3-ap-southeast-1.amazonaws.com/splunk-lab/rhsBucketMover.sh" target="_blank" rel="noopener"
+>https://s3-ap-southeast-1.amazonaws.com/splunk-lab/rhsBucketMover.sh&lt;/a>
+wget &lt;a class="link" href="https://s3-ap-southeast-1.amazonaws.com/splunk-lab/rhsLinkChecker.py" target="_blank" rel="noopener"
+>https://s3-ap-southeast-1.amazonaws.com/splunk-lab/rhsLinkChecker.py&lt;/a>&lt;/p>
+&lt;p>chown splunk:splunk/rhs*&lt;/p>
+&lt;h3 id="on-gw-userxapacred">on gw-userX.apac.red&lt;/h3>
+&lt;p>iptables -t nat -A PREROUTING -p tcp &amp;ndash;dport 8001 -j DNAT &amp;ndash;to-destination 10.100.0.211:8000
+iptables -t nat -A PREROUTING -p tcp &amp;ndash;dport 8002 -j DNAT &amp;ndash;to-destination 10.100.0.212:8000
+iptables -t nat -A PREROUTING -p tcp &amp;ndash;dport 8003 -j DNAT &amp;ndash;to-destination 10.100.0.213:8000&lt;/p>
+&lt;h3 id="web-gui-on-splunk-master-httpsplunkuserxapacred8000">Web GUI on Splunk Master (&lt;a class="link" href="http://splunk.userX.apac.red:8000/" target="_blank" rel="noopener"
+>http://splunk.userX.apac.red:8000/&lt;/a>)&lt;/h3>
+&lt;p>Settings &amp;ndash;&amp;gt; Indexer Clustering
+Replication Factor 3
+Search Factor 2
+Enable Clustering - accept until restart and hit ok&lt;/p>
+&lt;h3 id="on-each">on each&lt;/h3>
+&lt;p>Web GUI on Splunk Peer 01 (&lt;a class="link" href="http://gw-userX.apac.red:8001/" target="_blank" rel="noopener"
+>http://gw-userX.apac.red:8001/&lt;/a>)
+Web GUI on Splunk Peer 02 (&lt;a class="link" href="http://gw-userX.apac.red:8002/" target="_blank" rel="noopener"
+>http://gw-userX.apac.red:8002/&lt;/a>)
+Web GUI on Splunk Peer 03 (&lt;a class="link" href="http://gw-userX.apac.red:8003/" target="_blank" rel="noopener"
+>http://gw-userX.apac.red:8003/&lt;/a>)&lt;/p>
+&lt;p>Settings &amp;ndash;&amp;gt; Indexer Clustering
+Enable Clustering
+Type - Peer
+host = &lt;a class="link" href="https://splunkmaster.userX.apac.red" target="_blank" rel="noopener"
+>https://splunkmaster.userX.apac.red&lt;/a>
+port 8089
+replication port 8090&lt;/p>
+&lt;h3 id="web-gui-on-splunk-search-httpsearchuserxapacred8000">Web GUI on Splunk Search (&lt;a class="link" href="http://search.userX.apac.red:8000/" target="_blank" rel="noopener"
+>http://search.userX.apac.red:8000/&lt;/a>)&lt;/h3>
+&lt;p>Settings &amp;ndash;&amp;gt; Indexer Clustering
+Enable Clustering
+Type - Search
+host = &lt;a class="link" href="https://splunkmaster.userX.apac.red" target="_blank" rel="noopener"
+>https://splunkmaster.userX.apac.red&lt;/a>
+port 8089
+replication port 8090&lt;/p>
+&lt;h3 id="on-splunk-master-node">on Splunk Master Node&lt;/h3>
+&lt;p>cd /opt/splunk/etc/master-apps/_cluster/local directory
+wget &lt;a class="link" href="https://s3-ap-southeast-1.amazonaws.com/splunk-lab/indexes.conf" target="_blank" rel="noopener"
+>https://s3-ap-southeast-1.amazonaws.com/splunk-lab/indexes.conf&lt;/a>
+runuser -l splunk -c &amp;lsquo;splunk apply cluster-bundle &amp;ndash;answer-yes&amp;rsquo;
+admin
+password
+runuser -l splunk -c &amp;lsquo;splunk show cluster-bundle-status&amp;rsquo;&lt;/p>
+&lt;h3 id="on-each-node">On each Node&lt;/h3>
+&lt;p>runuser -l splunk -c &amp;lsquo;splunk search &amp;ldquo;| rest /services/data/indexes | table title, homePath, coldPath&amp;rdquo;&amp;rsquo;|grep demo
+&amp;lt; look for $SPLUNKDB/glusterfs/demo/colddb&lt;/p>
+&lt;h3 id="on-splunk-master-node-1">on Splunk Master Node&lt;/h3>
+&lt;p>su - ec2-user&lt;/p>
+&lt;p>cd ~/.ssh
+wget &lt;a class="link" href="https://s3-ap-southeast-1.amazonaws.com/splunk-lab/rhte-splunk-lab" target="_blank" rel="noopener"
+>https://s3-ap-southeast-1.amazonaws.com/splunk-lab/rhte-splunk-lab&lt;/a>
+wget &lt;a class="link" href="https://s3-ap-southeast-1.amazonaws.com/splunk-lab/rhte-splunk-lab.pub" target="_blank" rel="noopener"
+>https://s3-ap-southeast-1.amazonaws.com/splunk-lab/rhte-splunk-lab.pub&lt;/a>
+chmod 600 rhte-splunk-lab
+chmod 644 rhte-splunk-lab.pub&lt;/p>
+&lt;p>cd /tmp
+wget &lt;a class="link" href="https://s3-ap-southeast-1.amazonaws.com/splunk-lab/eventgen.tar.gz" target="_blank" rel="noopener"
+>https://s3-ap-southeast-1.amazonaws.com/splunk-lab/eventgen.tar.gz&lt;/a>
+scp -i ~/.ssh/rhte-splunk-lab eventgen.tar.gz splunkpeer-01.userX.apac.red:eventgen.tar.gz
+scp -i ~/.ssh/rhte-splunk-lab eventgen.tar.gz splunkpeer-02.userX.apac.red:eventgen.tar.gz
+scp -i ~/.ssh/rhte-splunk-lab eventgen.tar.gz splunkpeer-03.userX.apac.red:eventgen.tar.gz&lt;/p>
+&lt;h3 id="on-each-peer-node">On each Peer Node&lt;/h3>
+&lt;p>cd /opt/splunk
+mv ~ec2-user/eventgen.tar.gz /opt/splunk
+chown splunk:splunk eventgen.tar.gz
+runuser -l splunk -c &amp;lsquo;splunk install app /opt/splunk/eventgen.tar.gz&amp;rsquo;
+runuser -l splunk -c &amp;lsquo;splunk restart&amp;rsquo;&lt;/p>
+&lt;p>cd /opt/splunk/etc/apps/eventgen/samples
+cp sample.tutorial1 demo_data
+sed -i.bak s/main/demo/g demo_data
+cd /opt/splunk/etc/apps/eventgen/local
+cp ../README/eventgen.conf.tutorial1 eventgen.conf
+sed -i.bak &amp;rsquo;s/main/demo/g;s/sample.tutorial1/demo_data/g&amp;rsquo; eventgen.conf&lt;/p>
+&lt;p>runuser -l splunk -c &amp;lsquo;splunk restart&amp;rsquo;&lt;/p>
+&lt;p>Log into WebUI on Splunk Master
+search &amp;ldquo;index = demo&amp;rdquo;
+timeframe = realtime &amp;gt; 5 minutes&lt;/p>
+&lt;p>check /opt/splunk/var/lib/splunk/demo/db&lt;/p></description></item></channel></rss>

@@ -1,0 +1,261 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>pulumi on Martin Liu's Blog</title><link>https://martinliu.cn/tags/pulumi/</link><description>Recent content in pulumi on Martin Liu's Blog</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><lastBuildDate>Mon, 08 Jan 2024 11:01:38 +0800</lastBuildDate><atom:link href="https://martinliu.cn/tags/pulumi/index.xml" rel="self" type="application/rss+xml"/><item><title>告别Terraform：使用为人类设计的基础设施即代码Pulumi</title><link>https://martinliu.cn/blog/infrastructure-as-code-for-humans-with-pulumi/</link><pubDate>Mon, 08 Jan 2024 11:01:38 +0800</pubDate><guid>https://martinliu.cn/blog/infrastructure-as-code-for-humans-with-pulumi/</guid><description>&lt;img src="https://martinliu.cn/blog/infrastructure-as-code-for-humans-with-pulumi/0_94eq9GcVBbFH3TeR.webp" alt="Featured image of post 告别Terraform：使用为人类设计的基础设施即代码Pulumi" />&lt;p>本文原作者：&lt;a class="link" href="https://medium.com/aws-tip/say-goodbye-to-terraform-infrastructure-as-code-for-humans-with-pulumi-76e72de1c3d9" target="_blank" rel="noopener"
+>Santiago González&lt;/a>&lt;/p>
+&lt;p>事先声明一下：本文并非另一篇黑HashiCorp更改Terraform许可的文章。我还有很多不再使用Terraform的考虑。在这篇文章中，我们将回顾Pulumi相对于Terraform的一些优势。这并不意味着要成为Pulumi的追捧者。它只是Terraform的替代解决方案之一，使开发人员能够直观地使用基础设施配置工具。&lt;/p>
+&lt;h2 id="为什么讨厌terraform">为什么讨厌Terraform？&lt;/h2>
+&lt;p>显然，我在这里写的一切都是主观的，也可能是错的。但这里总结的一切表明了，与我类似的其他许多尝试拥抱Terraform的人，希望用它作为IcA工具所遭受的挫折。&lt;/p>
+&lt;ul>
+&lt;li>&lt;strong>学习曲线&lt;/strong>：Terraform拥有自己专用的领域特定语言（HCL），作为一种定义基础设施的独特方式，与传统编程语言迥然不同。这种语言遵循着对其他语言而言比较陌生的逻辑。因此，对团队来说，学习它是需要：付出极大努力，并且遵循这种&amp;hellip; 魔鬼般逻辑的语言更是需要额外的努力。&lt;/li>
+&lt;li>&lt;strong>违背DevOps原则的DevOps工具&lt;/strong>：如果你在Terraform中编写代码的已经很复杂了，想象一下去编写测试，有可能是什么样子。在这里，您可以了解一下要如何才能做到这一点。这绝对是疯狂的。实际上，这意味着：并非在Terraform的代码上直接实施测试。至少我从来没见过这样的。&lt;/li>
+&lt;li>&lt;strong>秘钥管理&lt;/strong>：Terraform需要与第三方解决方案集成来实现秘钥的管理。或者，您大可以使用环境变量。&lt;/li>
+&lt;li>&lt;strong>团队生产力&lt;/strong>：其实很难找到一个开发人员的简历上，就写着他已经熟悉了 Terraform。因此，这意味着：你必须使用一种与项目上所使用的语言相异的语言来实现基础设施的配置，由于使用和学习其他新语言的额外工作量，会导致生产力的下降。&lt;/li>
+&lt;/ul>
+&lt;h2 id="pulumi能做什么">Pulumi能做什么？&lt;/h2>
+&lt;p>以下是使Pulumi相对于Terraform更好的功能。&lt;/p>
+&lt;div class="codeblock">
+&lt;header>
+&lt;span class="codeblock-lang">java&lt;/span>
+&lt;button
+class="codeblock-copy"
+data-id="codeblock-id-0"
+data-copied-text=""
+>
+&lt;/button>
+&lt;/header>
+&lt;code id="codeblock-id-0" style="display:none;">import com.pulumi.pulumi;
+import com.pulumi.pulumi.aws.ec2;
+import com.pulumi.pulumi.aws.rds;
+import com.pulumi.pulumi.aws.vpc;
+public class Main {
+public static void main(String[] args) {
+// Crear una VPC
+Vpc myVpc = new Vpc(&amp;#34;myVpc&amp;#34;, VpcArgs.builder()
+.cidrBlock(&amp;#34;10.0.0.0/16&amp;#34;)
+.build());
+// Crear un grupo de subredes
+SubnetGroup dbSubnetGroup = new SubnetGroup(&amp;#34;myDbSubnetGroup&amp;#34;, SubnetGroupArgs.builder()
+.subnetIds(myVpc.getPrivateSubnetIds())
+.build());
+// Crear una instancia de AWS DocumentDB
+Cluster documentDbCluster = new Cluster(&amp;#34;myDocumentDBCluster&amp;#34;, ClusterArgs.builder()
+.clusterIdentifier(&amp;#34;my-docdb-cluster&amp;#34;)
+.availabilityZones(&amp;#34;us-east-1a&amp;#34;, &amp;#34;us-east-1b&amp;#34;)
+.dbSubnetGroupName(dbSubnetGroup.getId())
+.masterUsername(&amp;#34;admin&amp;#34;)
+.masterPassword(&amp;#34;mysecretpassword&amp;#34;)
+.skipFinalSnapshot(true)
+.storageEncrypted(true)
+.applyImmediately(true)
+.engine(&amp;#34;docdb&amp;#34;)
+.engineVersion(&amp;#34;4.0&amp;#34;)
+.instanceType(&amp;#34;db.r5.large&amp;#34;)
+.build());
+pulumi.export(&amp;#34;clusterEndpoint&amp;#34;, documentDbCluster.getEndpoint());
+}
+}&lt;/code>&lt;div class="">&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;span class="lnt">14
+&lt;/span>&lt;span class="lnt">15
+&lt;/span>&lt;span class="lnt">16
+&lt;/span>&lt;span class="lnt">17
+&lt;/span>&lt;span class="lnt">18
+&lt;/span>&lt;span class="lnt">19
+&lt;/span>&lt;span class="lnt">20
+&lt;/span>&lt;span class="lnt">21
+&lt;/span>&lt;span class="lnt">22
+&lt;/span>&lt;span class="lnt">23
+&lt;/span>&lt;span class="lnt">24
+&lt;/span>&lt;span class="lnt">25
+&lt;/span>&lt;span class="lnt">26
+&lt;/span>&lt;span class="lnt">27
+&lt;/span>&lt;span class="lnt">28
+&lt;/span>&lt;span class="lnt">29
+&lt;/span>&lt;span class="lnt">30
+&lt;/span>&lt;span class="lnt">31
+&lt;/span>&lt;span class="lnt">32
+&lt;/span>&lt;span class="lnt">33
+&lt;/span>&lt;span class="lnt">34
+&lt;/span>&lt;span class="lnt">35
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-java" data-lang="java">&lt;span class="line">&lt;span class="cl">&lt;span class="kn">import&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nn">com.pulumi.pulumi&lt;/span>&lt;span class="p">;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="kn">import&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nn">com.pulumi.pulumi.aws.ec2&lt;/span>&lt;span class="p">;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="kn">import&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nn">com.pulumi.pulumi.aws.rds&lt;/span>&lt;span class="p">;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="kn">import&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nn">com.pulumi.pulumi.aws.vpc&lt;/span>&lt;span class="p">;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="kd">public&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="kd">class&lt;/span> &lt;span class="nc">Main&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">{&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="kd">public&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="kd">static&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="kt">void&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nf">main&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">String&lt;/span>&lt;span class="o">[]&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">args&lt;/span>&lt;span class="p">)&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">{&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="c1">// Crear una VPC&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="n">Vpc&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">myVpc&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="k">new&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">Vpc&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s">&amp;#34;myVpc&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">VpcArgs&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="na">builder&lt;/span>&lt;span class="p">()&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="na">cidrBlock&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s">&amp;#34;10.0.0.0/16&amp;#34;&lt;/span>&lt;span class="p">)&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="na">build&lt;/span>&lt;span class="p">());&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="c1">// Crear un grupo de subredes&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="n">SubnetGroup&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">dbSubnetGroup&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="k">new&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">SubnetGroup&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s">&amp;#34;myDbSubnetGroup&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">SubnetGroupArgs&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="na">builder&lt;/span>&lt;span class="p">()&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="na">subnetIds&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">myVpc&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="na">getPrivateSubnetIds&lt;/span>&lt;span class="p">())&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="na">build&lt;/span>&lt;span class="p">());&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="c1">// Crear una instancia de AWS DocumentDB&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="n">Cluster&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">documentDbCluster&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="k">new&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">Cluster&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s">&amp;#34;myDocumentDBCluster&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">ClusterArgs&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="na">builder&lt;/span>&lt;span class="p">()&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="na">clusterIdentifier&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s">&amp;#34;my-docdb-cluster&amp;#34;&lt;/span>&lt;span class="p">)&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="na">availabilityZones&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s">&amp;#34;us-east-1a&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="s">&amp;#34;us-east-1b&amp;#34;&lt;/span>&lt;span class="p">)&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="na">dbSubnetGroupName&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">dbSubnetGroup&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="na">getId&lt;/span>&lt;span class="p">())&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="na">masterUsername&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s">&amp;#34;admin&amp;#34;&lt;/span>&lt;span class="p">)&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="na">masterPassword&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s">&amp;#34;mysecretpassword&amp;#34;&lt;/span>&lt;span class="p">)&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="na">skipFinalSnapshot&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="kc">true&lt;/span>&lt;span class="p">)&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="na">storageEncrypted&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="kc">true&lt;/span>&lt;span class="p">)&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="na">applyImmediately&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="kc">true&lt;/span>&lt;span class="p">)&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="na">engine&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s">&amp;#34;docdb&amp;#34;&lt;/span>&lt;span class="p">)&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="na">engineVersion&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s">&amp;#34;4.0&amp;#34;&lt;/span>&lt;span class="p">)&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="na">instanceType&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s">&amp;#34;db.r5.large&amp;#34;&lt;/span>&lt;span class="p">)&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="na">build&lt;/span>&lt;span class="p">());&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="n">pulumi&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="na">export&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s">&amp;#34;clusterEndpoint&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">documentDbCluster&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="na">getEndpoint&lt;/span>&lt;span class="p">());&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="p">}&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="p">}&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;/div>&lt;/div>
+&lt;h3 id="语言支持">语言支持&lt;/h3>
+&lt;p>多语言和多云支持：使其具有很大的灵活性。这使您能够使用与软件项目相同的编程语言，让它对开发人员而言更加友好。此外，它实现了对所需架构的更好抽象，并且还能实现“在产生云账单之前就进行代码测试”。&lt;/p>
+&lt;h3 id="pulumi具有秘钥存储">Pulumi具有秘钥存储&lt;/h3>
+&lt;p>它使用集成的秘钥存储来保护所有敏感数据。这个秘钥存储解决方案在各种部署场景中无缝运行，无论您是使用我们托管的Pulumi服务、自托管的Pulumi服务、还是自我管理的后端。当您使用&amp;rsquo;pulumi new&amp;rsquo;或&amp;rsquo;pulumi stack init&amp;rsquo;创建堆栈时，Pulumi服务会自动保护好秘钥信息。如果你选择使用AWS S3或Google Cloud Storage等自我管理的云存储后端，也是在使用&amp;rsquo;pulumi new&amp;rsquo;初始化新堆栈时定义的口令来保护秘钥。无论场景如何，每个Pulumi堆栈都会收到唯一的加密密钥。&lt;/p>
+&lt;h3 id="团队生产力">团队生产力&lt;/h3>
+&lt;p>如果团队使用了与其项目相关联（相同）的程序开发语言，那么，他们就将更容易的对所需使用的组件负责和提供支持。这样，使用和理解具有HCL结构的项目的工作量就被消除了，团队可以继续专注于开发功能，而减少了开发成本和时间。&lt;/p>
+&lt;h3 id="使用terraform状态">使用Terraform状态&lt;/h3>
+&lt;p>Pulumi提供了访问和利用本地和远程Terraform状态的能力。在过渡到Pulumi或您组织内的各个团队具有不同的工具偏好时，这可能非常有价值。通过诸如状态引用支持之类的功能，您基于Terraform的构建的基础架构之上，构建Pulumi中的项目，例如利用Terraform所创建的关键VPC详细信息，如VPC ID和子网ID等信息。这简化了Pulumi和Terraform之间的集成，使其从 Terraform 的迁移变成了一个无缝的过程。&lt;/p>
+&lt;h3 id="测试">测试&lt;/h3>
+&lt;p>您可以选择所喜欢的测试框架，并开发进行对基础设施进行必要验证的单元和集成测试。&lt;/p>
+&lt;div class="codeblock">
+&lt;header>
+&lt;span class="codeblock-lang">java&lt;/span>
+&lt;button
+class="codeblock-copy"
+data-id="codeblock-id-1"
+data-copied-text=""
+>
+&lt;/button>
+&lt;/header>
+&lt;code id="codeblock-id-1" style="display:none;">import spock.lang.Specification
+import io.pulumi.pulumi
+import io.pulumi.pulumi.aws.s3.Bucket
+import io.pulumi.pulumi.runtime.Mocks
+import org.mockito.Mockito
+class PulumiIntegrationTest extends Specification {
+def setup() {
+// Set up AWS and Pulumi configurations for testing
+pulumi.runtime.setMocks(new Mocks()) // Configure Pulumi mocks
+}
+def cleanup() {
+// Clean up configurations after tests
+pulumi.runtime.setMocks(null) // Restore Pulumi mocks
+}
+def &amp;#34;test AWS S3 bucket creation&amp;#34;() {
+given:
+// Set up the environment for the Pulumi program
+def program = new pulumi.Stack(&amp;#34;mystack&amp;#34;)
+when:
+// Execute the Pulumi program that creates the S3 bucket
+program.apply()
+then:
+// Verify that the S3 bucket was created successfully
+def bucketName = program.getOutput(Bucket.BucketName)
+assert bucketName != null &amp;amp;&amp;amp; bucketName != &amp;#34;&amp;#34;
+cleanup:
+// Perform additional cleanup tasks if necessary
+}
+}&lt;/code>&lt;div class="">&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;span class="lnt">14
+&lt;/span>&lt;span class="lnt">15
+&lt;/span>&lt;span class="lnt">16
+&lt;/span>&lt;span class="lnt">17
+&lt;/span>&lt;span class="lnt">18
+&lt;/span>&lt;span class="lnt">19
+&lt;/span>&lt;span class="lnt">20
+&lt;/span>&lt;span class="lnt">21
+&lt;/span>&lt;span class="lnt">22
+&lt;/span>&lt;span class="lnt">23
+&lt;/span>&lt;span class="lnt">24
+&lt;/span>&lt;span class="lnt">25
+&lt;/span>&lt;span class="lnt">26
+&lt;/span>&lt;span class="lnt">27
+&lt;/span>&lt;span class="lnt">28
+&lt;/span>&lt;span class="lnt">29
+&lt;/span>&lt;span class="lnt">30
+&lt;/span>&lt;span class="lnt">31
+&lt;/span>&lt;span class="lnt">32
+&lt;/span>&lt;span class="lnt">33
+&lt;/span>&lt;span class="lnt">34
+&lt;/span>&lt;span class="lnt">35
+&lt;/span>&lt;span class="lnt">36
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-java" data-lang="java">&lt;span class="line">&lt;span class="cl">&lt;span class="kn">import&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nn">spock.lang.Specification&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="kn">import&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nn">io.pulumi.pulumi&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="kn">import&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nn">io.pulumi.pulumi.aws.s3.Bucket&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="kn">import&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nn">io.pulumi.pulumi.runtime.Mocks&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="kn">import&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nn">org.mockito.Mockito&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="kd">class&lt;/span> &lt;span class="nc">PulumiIntegrationTest&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="kd">extends&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">Specification&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">{&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="n">def&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nf">setup&lt;/span>&lt;span class="p">()&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">{&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="c1">// Set up AWS and Pulumi configurations for testing&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="n">pulumi&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="na">runtime&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="na">setMocks&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="k">new&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">Mocks&lt;/span>&lt;span class="p">())&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="c1">// Configure Pulumi mocks&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="p">}&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="n">def&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nf">cleanup&lt;/span>&lt;span class="p">()&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">{&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="c1">// Clean up configurations after tests&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="n">pulumi&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="na">runtime&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="na">setMocks&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="kc">null&lt;/span>&lt;span class="p">)&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="c1">// Restore Pulumi mocks&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="p">}&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="n">def&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="s">&amp;#34;test AWS S3 bucket creation&amp;#34;&lt;/span>&lt;span class="p">()&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">{&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="n">given&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="c1">// Set up the environment for the Pulumi program&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="n">def&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">program&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="k">new&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">pulumi&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="na">Stack&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s">&amp;#34;mystack&amp;#34;&lt;/span>&lt;span class="p">)&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nl">when&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="c1">// Execute the Pulumi program that creates the S3 bucket&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="n">program&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="na">apply&lt;/span>&lt;span class="p">()&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nl">then&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="c1">// Verify that the S3 bucket was created successfully&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="n">def&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">bucketName&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">program&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="na">getOutput&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">Bucket&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="na">BucketName&lt;/span>&lt;span class="p">)&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="k">assert&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">bucketName&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="o">!=&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="kc">null&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="o">&amp;amp;&amp;amp;&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">bucketName&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="o">!=&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="s">&amp;#34;&amp;#34;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nl">cleanup&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="c1">// Perform additional cleanup tasks if necessary&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="p">}&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="p">}&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;/div>&lt;/div>
+&lt;h2 id="tldr-太长不读">TL;DR; 太长不读&lt;/h2>
+&lt;p>尽管Terraform拥有着强大的社区支持，但实际上，对于开发团队来说，通常大家还是觉得太复杂，难以用它实现 IaC 基础设施即代码的管理。这主要是由于学习曲线及其HCL语言，它与命令性语言的逻辑不一致。由于替代解决方案如Pulumi的出现，我们可以使用软件项目中的程序语言配置基础设施资源。实际上，与Terraform相比，Pulumi会提高效率和生产力。如果您尚未决定使用哪种IaC工具，值得 先考虑Terraform可能对您的组织产生的潜在影响。&lt;/p>
+&lt;p>来源：&lt;a class="link" href="https://medium.com/aws-tip/say-goodbye-to-terraform-infrastructure-as-code-for-humans-with-pulumi-76e72de1c3d9" target="_blank" rel="noopener"
+>https://medium.com/aws-tip/say-goodbye-to-terraform-infrastructure-as-code-for-humans-with-pulumi-76e72de1c3d9&lt;/a>&lt;/p>
+&lt;p>Feature picture ❤️ : kike &lt;a class="link" href="https://unsplash.com/@kikekiks?utm_source=medium&amp;amp;utm_medium=referral" target="_blank" rel="noopener"
+>vega on Unsplash&lt;/a>&lt;/p></description></item></channel></rss>

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>cfme on Martin Liu's Blog</title><link>https://martinliu.cn/tags/cfme/</link><description>Recent content in cfme on Martin Liu's Blog</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><lastBuildDate>Mon, 30 Mar 2015 03:13:47 +0000</lastBuildDate><atom:link href="https://martinliu.cn/tags/cfme/index.xml" rel="self" type="application/rss+xml"/><item><title>Import CloudForms into rhevm</title><link>https://martinliu.cn/2015/03/30/import-cloudforms-into-rhevm/</link><pubDate>Mon, 30 Mar 2015 03:13:47 +0000</pubDate><guid>https://martinliu.cn/2015/03/30/import-cloudforms-into-rhevm/</guid><description>&lt;p>[bash]
+[root@rhevm03 export]# cat /etc/exports
+/var/lib/exports/iso _(rw)
+/export/rhev_import_export_disk _(rw,sync,no_subtree_check,all_squash,anonuid=36,anongid=36)
+/export/template *(rw,sync,no_subtree_check,all_squash,anonuid=36,anongid=36)&lt;/p>
+&lt;h1 id="rootrhevm03-export-engine-image-uploader--n-cfme5351--e-export-nfs-rhevm--v--m-upload-tmpcfme-rhevm-53-51x86_64rhevmova">[root@rhevm03 export]# engine-image-uploader -N cfme5351 -e export-nfs-rhevm -v -m upload /tmp/cfme-rhevm-5.3-51.x86_64.rhevm.ova&lt;/h1>
+&lt;p>[/bash]&lt;/p>
+&lt;p>然后从 Web Console 上导入这个模板，创建一个目标规格的虚拟机。&lt;/p></description></item></channel></rss>
