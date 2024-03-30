@@ -2,6 +2,7 @@
 title: "DOI 认证培训 - SRE Foundation"
 description: "SRE 核心理念和实践必修课"
 author: "Martin Liu"
+draft: true
 date: 2024-01-10T16:19:04+08:00
 slug: course/doi-sre-cert
 image: sref-header.jpg
