@@ -27,18 +27,6 @@ menu:
 
 [详细信息](/course/o11y-foundation/) | [报名培训](https://wj.qq.com/s2/14022549/fb96/)
 
-> 认证考试培训
-
-## 《DOI 的 SRE 认证培训》
-
-[认证培训+证书考试](/course/doi-sre-cert/) | [报名培训](https://wj.qq.com/s2/14022549/fb96/)
-
-## 《DOI 的可观测性认证培训》
-
-[认证培训+证书考试](/course/doi-o11y-cert/) | [报名培训](https://wj.qq.com/s2/14022549/fb96/)
-
-> 免费培训课程
-
 ## DevOps - 免费课程
 
 本课程包含虚拟化、云计算、配置管理、CI、CD 等各种实操练习实验。
