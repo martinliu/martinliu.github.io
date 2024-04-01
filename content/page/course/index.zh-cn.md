@@ -59,5 +59,3 @@ menu:
   1. Prism Central 部署和配置
   2. Nutanix Calm 基础功能
   3. Nutanix Calm 中级操作
-
-[![](/images/sref-zs.jpg)](https://mp.weixin.qq.com/s/LqRJfXWdm0yOlEwUa3qDDg)
