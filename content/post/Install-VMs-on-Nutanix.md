@@ -1,13 +1,17 @@
 ---
 date: 2017-01-29T00:00:00Z
 subtitle: 本文使用Nutanix CE版本的群集来完成默认的KVM虚拟化下，Windows 10虚拟机的安装
+catagories:
+- infrastructure
 tags:
 - Nutanix
 title: Nutanix AHV（KVM）Windows虚拟机安装全攻略
 image : "images/abstract-5.jpg"
 ---
 
-# Windows 虚拟机安装
+# Nutanix AHV（KVM）Windows虚拟机安装全攻略
+
+## Windows 虚拟机安装
 Nutanix的AHV虚拟机是基于KVM的。本文件假设您使用和安装的是Nutanix社区版本的群集。在上面安装Windows虚拟机的步骤如下：
 
 1. 下载操作系统安装光盘
