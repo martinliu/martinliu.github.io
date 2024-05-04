@@ -3,8 +3,9 @@ date = 2021-02-06T10:36:12+08:00
 title = "Elastic 可观测性工作坊"
 description = "从 Elastic Stack 搭建开始直至云原生应用的运维和管理"
 author = "Martin Liu"
+slug = "workshop-elastic-observability"
 categories = ["SRE"]
-tags = ["elastic", "elk", "elasticsearch", "kibana"]
+tags = ["elastic", "elk", "elasticsearch", "kibana","可观测性"]
 image = "img/2021/Hubble_01.jpg"
 +++
 
@@ -12,13 +13,11 @@ image = "img/2021/Hubble_01.jpg"
 
 <!--more-->
 
-
 ## 简介
 
 Elastic 可观测性解决方案是基于 Elastic Stack 的一站式解决方案。该解决方案具有完备的日志、指标、APM 和可用性采集能力，可以在大规模/云原生的环境下，完成服务质量目标（SLO）的管理。本实战工作坊基于多层架构的宠物诊所为示例应用程序，手把手的引导参与者搭建可观测性管理平台，体验分层次的收集整合、分析、关联和搜索运维数据的全过程。
 
 ![可观测性解决方案](/images/elastic-obv-solution.png)
-
 
 ## 为什么要做这个工作坊？
 
@@ -58,7 +57,6 @@ Elastic 可观测性解决方案是基于 Elastic Stack 的一站式解决方案
 * 使用到的技术有 JavaScript、NodeJs 和 Java Spring 等。
 * 本应用系统是被监控的对象
 
-
 Elastic Stack 的基本状况：
 
 * 版本 7.9.3
@@ -70,7 +68,6 @@ Elastic Stack 的基本状况：
 * AWS 云环境，本课程所使用的公共 AMI 操作系统镜像：宁夏区 `ami-0e5a0e294902966af` 北京区 `ami-0e1382088b62cb38d`
 * 腾讯云环境，基于腾讯云提供的 Elasticsearch 服务，演示用的虚拟机在制作中，稍后会发布到云市场。
 * 阿里云环境，基于阿里云提供的 Elasticsearch 服务的课件正在开发中。
-
 
 ## 可观测性构建四步法
 
@@ -85,7 +82,6 @@ Elastic Stack 的基本状况：
 3. STEP2：使用 Filebeat 构建高维度的日志采集能力
 4. STEP3：使用 APM 构建分布式应用系统的全堆栈追踪能力
 
-
 通过以上的四个构建步骤，使用 Elastic Stack 实施四大服务质量监控能力的构建，搭建了持续统一运维管理的工具平台。
 
 使用 SRE 基于‘用户旅程’或‘系统边界’的 SLO 分析设定方法，从 Elastic Stack 的已有数据采集能力中，选取第批直接可用的 SLI 采集点。在基于 SLO 的监控过程中，不断的优选 SLI，调整告警的数量和质量，为开发团队提供持续有效的反馈。
@@ -96,8 +92,7 @@ Elastic Stack 的基本状况：
 
 ## 工作坊课件
 
-讲师 PPT 下载： https://docs.qq.com/slide/DUGRzYVVTU3ZxblBP
-
+讲师 PPT 下载： <https://docs.qq.com/slide/DUGRzYVVTU3ZxblBP>
 
 #### 本地虚拟机环境
 
@@ -106,14 +101,12 @@ Elastic Stack 的基本状况：
 1. [‘Elastic Stack 单节点搭建’ 课件](https://elk-workshop.github.io/codelabs/one-nodes-es-server/#0)
 2. [‘Elastic 可观测性方案’ 课件](https://elk-workshop.github.io/codelabs/elastic-observability-foundation/#0)
 
-
 #### AWS 云计算环境
 
 可以使用 AWS 云计算（中国区北京或宁夏区）环境，配合以下的课件完成所有练习。
 
 1. [‘Elastic Stack 单节点搭建’ 课件](https://elk-workshop.github.io/codelabs/one-nodes-es-server/#0)
 2. [‘Elastic 可观测性方案’ 课件](https://elk-workshop.github.io/codelabs/elastic-observability-foundation/#0)
-
 
 #### 腾讯云计算环境
 
@@ -129,15 +122,13 @@ Elastic Stack 的基本状况：
 
 > 课件开发中。
 
-
 ## 如何参与本工作坊？
 
 本工作坊会在多个社区中举办，具体安排如下：
 
 * 定期在 Elastic 社区中举办可观测性主题的线上或者线下的社区活动，具体报名方式，
   1. 请关注 Elastic 公司的官方微公众号 “Elastic搜索”。
-  2. 关注 Elastic 公司社区在百格的社区活动报名网址：https://www.bagevent.com/org/738410
-* Elasitc 用户日 专场活动，接受企业的团队预约，可以在约定的时间里，通过线上或者线下的方式进行，建议参与学习交流的人数在 10~20 人。 预约邮件： zheng.liu@elastic.co
+  2. 关注 Elastic 公司社区在百格的社区活动报名网址：<https://www.bagevent.com/org/738410>
+* Elasitc 用户日 专场活动，接受企业的团队预约，可以在约定的时间里，通过线上或者线下的方式进行，建议参与学习交流的人数在 10~20 人。 预约邮件： <zheng.liu@elastic.co>
 
 由于 Elastic Stack 产品的更新迭代速度特别快，本工作坊的软件版本和学习课件也会不定期更新。欢迎大家积极参与 Elastic 技术社区的交流和学习活动。  
-
