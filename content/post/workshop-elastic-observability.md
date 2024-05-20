@@ -47,7 +47,7 @@ Elastic 可观测性解决方案是基于 Elastic Stack 的一站式解决方案
 
 本工作坊课程基于如下的应用系统。
 
-![](/images/16042852442364.png)
+![架构图](/images/16042852442364.png)
 
 应用基本概况：
 
@@ -94,21 +94,21 @@ Elastic Stack 的基本状况：
 
 讲师 PPT 下载： <https://docs.qq.com/slide/DUGRzYVVTU3ZxblBP>
 
-#### 本地虚拟机环境
+### 本地虚拟机环境
 
 可以使用本地的 VirtualBox 或者 VMWare 的虚拟机环境，配合以下课件完成所有练习。
 
 1. [‘Elastic Stack 单节点搭建’ 课件](https://elk-workshop.github.io/codelabs/one-nodes-es-server/#0)
 2. [‘Elastic 可观测性方案’ 课件](https://elk-workshop.github.io/codelabs/elastic-observability-foundation/#0)
 
-#### AWS 云计算环境
+### AWS 云计算环境
 
 可以使用 AWS 云计算（中国区北京或宁夏区）环境，配合以下的课件完成所有练习。
 
 1. [‘Elastic Stack 单节点搭建’ 课件](https://elk-workshop.github.io/codelabs/one-nodes-es-server/#0)
 2. [‘Elastic 可观测性方案’ 课件](https://elk-workshop.github.io/codelabs/elastic-observability-foundation/#0)
 
-#### 腾讯云计算环境
+### 腾讯云计算环境
 
 可以使用腾讯云计环境，配合以下的课件完成所有练习。
 
@@ -116,7 +116,7 @@ Elastic Stack 的基本状况：
 2. [‘Elastic 可观测性方案’ 课件](https://elk-workshop.github.io/codelabs/elastic-observability-foundation-qq/#0)
 3. 腾讯云环境录播网址：[腾讯课堂查看](https://cloud.tencent.com/developer/salon/live-1304)
 
-#### 阿里云计算环境
+### 阿里云计算环境
 
 可以使用阿里云环境，配合以下的课件完成所有练习。
 

@@ -38,7 +38,6 @@ wordpress_id: 53898
 [bash]
 
 egrep -c '(vmx|svm)' /proc/cpuinfo
-4
 
 [/bash]
 
@@ -81,11 +80,15 @@ virsh edit ovirt-host
 
 本嵌套 kvm 的虚拟机 cpu 参数如下，如果测试的物理机使用非 i5 的 CPU， 实际的配置参数应该和下面不同。
 
+[bash]
+
 <cpu mode='custom' match='exact'>
 <model fallback='allow'>Westmere</model>
 <vendor>Intel</vendor>
 <feature policy='require' name='vmx'/>
 </cpu>
+
+[/bash]
 
 保存配置，启动这个虚拟机，配置好主机名和网络 ip 地址。安装 ovirt yum 源。做 yum update 之后，reboot 待用。
 
@@ -101,11 +104,11 @@ yum install http://plain.resources.ovirt.org/pub/yum-repo/ovirt-release35.rpm
 
 安装和配置 NFS 的过程如下：
 
-# 安装 nfs 服务相关的包
+## 安装 nfs 服务相关的包
 
 yum install -y nfs-utils
 
-# 创建存储目录
+## 创建存储目录
 
 mkdir -p /srv/ovirt/{iso,export,sata}
 chown -R vdsm:kvm /srv/ovirt/
@@ -122,7 +125,8 @@ chmod -R 770 /srv/ovirt/
 Defaultvers=3
 Nfsvers=3
 
-#重启动 nfs 服务器 ，设置开机启动服务
+## 重启动 nfs 服务器 ，设置开机启动服务
+
 systemctl start rpcbind.service && systemctl enable rpcbind.service
 systemctl start nfs-server.service && systemctl enable nfs-server.service
 

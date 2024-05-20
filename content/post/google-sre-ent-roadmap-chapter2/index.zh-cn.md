@@ -2,7 +2,7 @@
 title: "《企业 SRE 路线图》第二章：SRE 方法对可靠性的意义何在？"
 date: 2024-04-30T21:41:05+08:00
 description:  Google SRE 整理了一些建议，希望能帮助到更多企业。通过评估企业现有的环境、设定合理的预期，并确保企业朝着正确的方向迈出正确的步伐，企业可以从评估 SRE的原则和实践，从评估SRE在组织中的运作方式开始。
-slug: google-sre-ent-roadmap-chapter2
+slug: google-enterprise-roadmap-to-sre-chapter2
 image: pexels-anete-lusina-4792380.jpg
 categories:
     - SRE
