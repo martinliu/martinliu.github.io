@@ -30,11 +30,7 @@ Elastic 资深开发者布道师，中国 DevOps 社区创始人，《DevOps Han
 
 这里是即将发生和以前的部分社区分享。
 
-**Upcoming Events**
-
 ### 2024 年
-
-<https://www.bagevent.com/event/8185587>
 
 - [2024 年 1 月 27 日 中关村开源生态论坛暨大模型智能应用生态大会 - 北京 - **分论坛3：AIGC 时代的技术创作《圆桌讨论--经典的技术内容是如何锤炼的？》**](https://www.bagevent.com/event/8185587)
 
