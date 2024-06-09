@@ -2,7 +2,7 @@
 title: "《2024 年 SRE 报告》by Catchpoint"
 date: 2024-06-06T21:04:19+08:00
 description:  这是 Catchpoint 连续第多年出品的 SRE 专题行业调查报告
-slug: 
+slug: sre-report-2024-by-catchpoint
 image: 2024-06-07_18-15-59.png
 categories:
     - SRE
@@ -13,6 +13,8 @@ comments: true
 toc: true
 
 ---
+
+>英文报告 PDF 下载链接：[《2024 年 SRE 报告》](sre-report-2024.pdf)
 
 ## 前言
 
