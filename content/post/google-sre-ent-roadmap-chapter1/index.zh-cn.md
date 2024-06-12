@@ -16,6 +16,11 @@ toc: true
 
 >译者：刘征
 
+* [下载中文版 PDF 文件](/wp/enterprise-roadmap-to-sre-cn.pdf)
+* [下载英文版 PDF 文件](/wp/enterprise-roadmap-to-sre.pdf)
+* [从 Oreilly 阅读白皮书](https://www.oreilly.com/library/view/enterprise-roadmap-to/9781098117740/)
+* [从 Google 下载白皮书](https://sre.google/resources/practices-and-processes/enterprise-roadmap-to-sre/)
+
 将 SRE 导入当前的各种传统企业，是一项看似可能艰巨的工作，因此 Google SRE 整理了一些建议，希望能帮助到更多企业。通过评估企业现有的环境、设定合理的预期，并确保企业朝着正确的方向迈出正确的步伐，企业可以从评估 SRE的原则和实践，从评估SRE在组织中的运作方式开始。
 
 ## 演进优于革命

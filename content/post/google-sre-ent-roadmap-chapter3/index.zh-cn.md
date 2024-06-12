@@ -16,6 +16,11 @@ toc: true
 
 >译者：刘征
 
+* [下载中文版 PDF 文件](/wp/enterprise-roadmap-to-sre-cn.pdf)
+* [下载英文版 PDF 文件](/wp/enterprise-roadmap-to-sre.pdf)
+* [从 Oreilly 阅读白皮书](https://www.oreilly.com/library/view/enterprise-roadmap-to/9781098117740/)
+* [从 Google 下载白皮书](https://sre.google/resources/practices-and-processes/enterprise-roadmap-to-sre/)
+
 在我们探讨具体的实践方法之前，首先要明白的是原则的重要性，这就像法律中遵守法律的字面含义和精神含义。单单实践方法本身并不足够；SRE 的核心精神在于它的原则中。实践方法也面面俱到————它们只是原则的外在体现，也会随着时间和组织的不同而随机应变。
 
 原则是你转型基础的基本真理，它们在你的决策过程中提供帮助和指导。实现业务目标通常有多种方式，因此鼓励人们充分理解和执行核心原则，要优于：设定一套面子工程的详尽的规则，那只让人按照字面意义去机械的执行，而忽视了核心精神。以 Google 的原则为例，虽然我们有多种：关于如何设计和构建新服务的内部政策，但我们始终坚持的核心原则是：“以用户为中心，其他一切都会随之而来”。  

@@ -16,16 +16,26 @@ toc: true
 
 ![Enterprise roadmap to SRE](2024-04-30_11-55-54.png)
 
+* [下载中文版 PDF 文件](/wp/enterprise-roadmap-to-sre-cn.pdf)
+* [下载英文版 PDF 文件](/wp/enterprise-roadmap-to-sre.pdf)
 * [从 Oreilly 阅读白皮书](https://www.oreilly.com/library/view/enterprise-roadmap-to/9781098117740/)
 * [从 Google 下载白皮书](https://sre.google/resources/practices-and-processes/enterprise-roadmap-to-sre/)
-* [点这里下载 PDF 文件](/wp/enterprise-roadmap-to-sre.pdf)
 
 这份文档是一本关于如何构建和维持一个站点可靠性工程（SRE）职能部门的书籍，名为《企业 SRE 路线图》（Enterprise Roadmap to SRE），由 James Brookbank 和 Steve McGhee 撰写。这本书由O'Reilly Media, Inc.在 2022 年出版，旨在帮助大型和复杂的组织（即企业）采用SRE。
 
 下面是对本白皮书的简要概述。
 
 **前言**
-本书基于 Google 的之前出版的两本书籍《Site Reliability Engineering》和《The Site Reliability Workbook》，更深入地探讨了在大型组织中采用 SRE 的挑战。尽管 SRE 在过去几年中非常受欢迎，但许多企业在对 SRE 的热情和实际采用程度之间存在一定落差。作者认为这是一个重要的差距，需要弥合，因为：可靠性正日益成为企业的主要差异化因素。
+
+SRE 的实施与挑战
+
+Google 的两本 O'Reilly 书籍——《站点可靠性工程》和《站点可靠性工作手册》——展示了为什么承诺整个服务生命周期可以使组织成功地构建、部署、监控和维护软件系统。前者由 Betsy Beyer、Chris Jones、Niall Richard Murphy 和 Jennifer Petoff 编辑，后者由 Betsy Beyer、Niall Richard Murphy、David K. Rensin、Kent Kawahara 和 Stephen Thorne 编辑。
+
+本报告旨在在这些书籍的基础上，深入探讨在大型复杂组织（即企业）中采用 SRE 的挑战。尽管 SRE 在过去几年中非常流行，但我们从许多企业获得的反馈表明，SRE 的热情与实际采用之间存在差距。
+
+我们认为这是一个需要弥合的重要差距，因为可靠性正日益成为企业的重要区分点。云采用和 COVID-19 大流行引发的技术变革速度和规模，通常需要不同的技术来应对增加的复杂性。
+
+如果您参与生产系统的可靠性，或者依赖其可靠性，并且需要了解更多关于 SRE 采用的信息，这些主题将引起您的兴趣。这包括执行和领导角色，也包括个体贡献者（如云架构师、站点可靠性工程师 [SRE]、平台开发人员等）。无论您的角色是什么，如果您设计、实施或维护技术系统，这里都有适合您的内容。
 
 **第1章：企业 SRE 入门**
 介绍如何将 SRE 引入现有企业，建议首先评估现有环境，设定期望，并确保在评估 SRE 及其在组织内可能的工作方式时，朝着正确的方向迈出合理的步伐。
