@@ -1,7 +1,7 @@
 ---
 title: "产品导向的 SRE 可靠性"
 date: 2024-06-12T13:25:58+08:00
-description:  讨论了一些 Google SRE 团队如何通过将支持重新聚焦于产品和最终用户需求来解决服务 SLO 的问题，而不是集中于基础设施和服务。
+description:  本文讨论 Google SRE 团队如何通过将支持重新聚焦于产品和最终用户需求来解决服务 SLO 的问题，而不是集中于基础设施和服务。
 slug: product-focused-reliability-for-sre
 image: pexels-pavel-danilyuk-7868970.jpg
 categories:
@@ -18,10 +18,11 @@ toc: true
 
 
 >作者：Carl Crous, Parker Roth 和 Victoria Hurd； 译者：刘征
+>原文：https://sre.google/resources/practices-and-processes/product-focused-reliability-for-sre/
 
 ## 介绍
 
-站点可靠性工程师（SRE）传统上通过其服务间接支持产品，负责服务质量目标（SLO），并提高服务的可靠性。然而，这种方法存在一些限制，可能影响产品和用户体验：
+站点可靠性工程师（SRE）传统上通过其服务间接支持产品，负责服务质量目标（SLO），并提高服务的可靠性。然而，这种方法存在一些局限，有可能影响产品和用户体验：
 
 - 服务仅能部分满足用户需求和业务目标。度量服务的可靠性只是对用户需求或业务目标的近似。
 - 用户界面（UI）越来越复杂。在 UI 和 SRE 度量的服务之间存在许多层次，导致产品覆盖的显著差距。
@@ -366,7 +367,7 @@ SRE 团队推动这个过程，与相关利益相关者会面，并与产品团�
 
 将 SRE 支持集中在产品 SLO 上而不是服务上，可以使 SRE 支持更多产品，并将这种支持与产品最重要的部分对齐。
 
-## 何时适用产品可靠性模型
+## 产品可靠性模型的前提条件
 
 产品导向支持模型并不适用于所有用例。在实施前，建议您评估项目是否满足以下要求，以确定模型的适用性。
 
@@ -427,6 +428,5 @@ SRE 可以尝试为现有产品重新调整和推导用户目标，但没有组�
 [6] Google Cloud. (n.d.). Incidents and the Google Cloud Service Health Dashboard | Support Documentation. [在线] 可在： <https://cloud.google.com/support/docs/dashboard#major_incident> [访问时间：2023 年 4 月 20 日]。
 
 [7] Wikipedia Contributors (2019). Responsibility Assignment Matrix. [在线] Wikipedia. 可在： <https://en.wikipedia.org/wiki/Responsibility_assignment_matrix>
-
 
  ❤️ Photo by Pavel Danilyuk: <https://www.pexels.com/photo/group-of-people-discussion-on-a-wooden-table-7868970/>
