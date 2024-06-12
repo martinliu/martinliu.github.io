@@ -15,6 +15,11 @@ toc: true
 
 >译者：刘征
 
+* [下载中文版 PDF 文件](/wp/enterprise-roadmap-to-sre-cn.pdf)
+* [下载英文版 PDF 文件](/wp/enterprise-roadmap-to-sre.pdf)
+* [从 Oreilly 阅读白皮书](https://www.oreilly.com/library/view/enterprise-roadmap-to/9781098117740/)
+* [从 Google 下载白皮书](https://sre.google/resources/practices-and-processes/enterprise-roadmap-to-sre/)
+
 为完善本报告中的观点，我们与来自不同行业的三位 SRE 领导者进行了交谈，他们在过去几年中以各种形式采用了 SRE。每个人都有关于采用 SRE 的独特故事以及他们可能会做出不同选择的见解，此外还有关于在他们的行业或组织中使 SRE 工作的洞见。
 
 ## 医疗保健 // Joseph
