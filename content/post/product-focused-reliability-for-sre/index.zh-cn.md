@@ -17,7 +17,8 @@ toc: true
 ---
 
 
->作者：Carl Crous, Parker Roth 和 Victoria Hurd； 译者：刘征
+>作者：Carl Crous, Parker Roth 和 Victoria Hurd； 
+>译者：刘征
 >原文：<https://sre.google/resources/practices-and-processes/product-focused-reliability-for-sre/>
 
 ## 介绍
