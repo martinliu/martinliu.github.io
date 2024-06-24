@@ -6,6 +6,7 @@ author = "Martin Liu"
 categories = ["DevOps"]
 tags = ["超融合", "HCI", "nutanix", "vsphere"]
 image = "img/cos/2022-02-21-hci-nutanix.jpeg"
+slug = "hci-nutanix-ce-training-camp"
 +++
 
 本文总结了我从单机的 Home Lab 环境，发展到三节点 Nutanix 超融合混合盘集群的经验和教训。

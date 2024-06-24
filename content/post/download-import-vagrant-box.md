@@ -7,6 +7,7 @@ categories: ["DevOps"]
 tags: ["DevOps"]
 keywords: ["DevOps"]
 image: "/images/vagrant-download-box.jpg"
+slug: "download-import-vagrant-box"
 draft: false
 ---
 

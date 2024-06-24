@@ -8,7 +8,7 @@ slug: small-person-big-hero
 tags:
   - blog
 title: 小人物大英雄
-url: /2009/10/22/small-person-big-hero/
+slug: /2009/10/22/small-person-big-hero/
 wordpress_id: 49502
 ---
 

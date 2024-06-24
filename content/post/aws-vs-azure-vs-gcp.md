@@ -4,6 +4,8 @@ subtitle: 云之战
 date: 2017-09-07
 tags: ["cloud"]
 image:  "/images/abstract-10.jpg"
+categories: ["Cloud"]
+slug: "game-of-cloud"
 ---
 
 在全球范围内，公有云发展的正如火如荼，对IT行业技术的发展产生了很大的影响，从私有云到公有云，到混合云，再到云原生应用和DevOps。这一连串的连锁，也反映出了最近10年来IT行业发展的主流趋势。

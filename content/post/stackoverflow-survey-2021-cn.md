@@ -6,6 +6,7 @@ author = "Martin Liu"
 categories = ["DevOps"]
 tags = ["开发者",  "Stack Overflow"]
 image = "img/cos/2021-08-13-134055.jpg"
+slug = "stackoverflow-survey-2021-cn"
 +++
 
 从开发者画像、技术流行趋势、工作就业和薪酬状态和社区等方面完整的描述了当今开发者的众生相。虽然调查人数有限，只有中国开发者人数的十分之一，但是也基本上反应了欧美发达国家的开发者现状。

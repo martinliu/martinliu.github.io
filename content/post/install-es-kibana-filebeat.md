@@ -7,6 +7,7 @@ categories: ["DevOps"]
 tags: ["ELK","kibana","filebeat","Elasticsearch"]
 keywords:  ["ELK","kibana","filebeat","Elasticsearch"]
 image: "images/abstract-1.jpg"
+slug: "elk-stack-install"
 ---
 ![elk](/images/980-elastic-stack.jpg)
 

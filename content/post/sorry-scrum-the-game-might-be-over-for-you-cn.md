@@ -6,6 +6,7 @@ author = "Martin Liu"
 categories = ["DevOps"]
 tags = ["SAFe", "Kanban ", "Scrum"]
 image = "img/cos/2021-04-10-0_IFV2UEaD1Vj4S_to.jpg"
+slug = "sorry-scrum-the-game-might-be-over-for-you-cn"
 +++
 
 我们不可能忽视 Scrum 的知名度。多年来，Scrum 是全球大多数公司在敏捷框架中的首选；只有少数公司会挑战它。但最近，发生了一些变化，组织正在失去对Scrum的信任。在未能获得有意义的结果之后，在许多地方，人们正在用 SAFe、Kanban 或其他框架取代 Scrum。

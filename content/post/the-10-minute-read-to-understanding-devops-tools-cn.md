@@ -6,6 +6,7 @@ author = "Martin Liu"
 categories = ["DevOps"]
 tags = ["github", "ci", "cd", "github-pages"]
 image = "img/cos/2021-04-03-eggs-3216877_1920.jpeg"
+slug = "10-minute-read-to-understanding-devops-tools"
 +++
 
 【译文】上周，我和我的几位非常资深的同事都在评论说，有很多新的DevOps工具正在出现，而且每天都越来越难跟踪它们，以及它们在DevOps 领域的定位。我问了他们几个工具，Ansible、Terraform、Salt、Chef、Bamboo、CloudFormation这些工具的定位在哪里？我为什么要用这个而不是那个？它们甚至是同一种东西吗？我是不是漏掉了一个主要角色？我得到了什么，一些白眼和问题。所以，我想我会做一些研究，阅读，并试图让我们所有人理解它，以便我们可以将那些产品都分类到我们都熟悉的类别或用途。

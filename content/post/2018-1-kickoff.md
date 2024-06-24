@@ -10,7 +10,7 @@ keywords:
 - 2018
 - New Year
 - 跑步
-
+slug: "2018-1-kickoff"
 ---
 # 用跑步的方式启动2018年
 

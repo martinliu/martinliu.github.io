@@ -7,6 +7,7 @@ categories: ["DevOps"]
 tags: ["DevOps"]
 keywords: ["DevOps"]
 image:  "https://res.cloudinary.com/martinliu/image/upload/carauari-brazil.png"
+slug: "2018-best-devops-event"
 ---
 
 本文向你简要介绍2018年DevOps界的15大最重要的大会活动。DevOps的一个方面就是持续.......参加大会学习！全球范围内看，基本上每个月都至少有一个我们值得重点关注的大会。我们不能奢望都你有机会参加，但是作为DevOps业内人士，如果你不了解这个大会的情况，你就Out了。

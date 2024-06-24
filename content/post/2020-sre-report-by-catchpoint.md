@@ -6,6 +6,7 @@ author = "Martin Liu"
 categories = ["SRE"]
 tags = [" SRE ", "2002", "report", "报告"]
 image = "img/2021/03/2020-sre-report.jpg"
+slug = "2020-sre-report-by-catchpoint"
 +++
 
 2020 年是不寻常的疫情年，所有行业都受到了巨大的影响， SRE 纯分布式工作方式的转型也是本报告的亮点之一。报告从 4 个方面详细介绍了疫情年中  SRE  的众生相。

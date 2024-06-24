@@ -5,6 +5,7 @@ title = "开源 IDS Suricata 4.1.10 新手部署指南"
 description = "Suricata 是一款轻量的开源网络流量检测软件，它的周边社区开发了丰富的分析规则"
 author = "Martin Liu"
 categories = ["Security"]
+slug = "suricata-centos7-filebeat"
 tags = ["DevOps", "DevSecOps", "IDS", "Suricata"]
 [[images]]
   src = "img/2021/flag01.jpg"

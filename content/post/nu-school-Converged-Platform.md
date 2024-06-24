@@ -6,6 +6,8 @@ tags:
 - cloud
 title: 互联网规模的超融合平台
 image : "images/abstract-3.jpg"
+categories: ["Cloud"]
+slug: nu-school-Converged-Platform
 ---
 
 nu.shool 牛学院系列以视频加文字的形式，向您展示Nutanix云平台的技术特性和细节。

@@ -7,6 +7,7 @@ categories: ["DevOps"]
 tags: ["DevOps"]
 keywords: ["度量"]
 image: "https://res.cloudinary.com/martinliu/image/upload/v1549271017/Anubis-Background-Download-Free.jpg"
+slug: "maturity-is-dead"
 ---
 
 上一篇文章重要观点回顾：

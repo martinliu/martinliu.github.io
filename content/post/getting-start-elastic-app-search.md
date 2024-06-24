@@ -1,12 +1,13 @@
 ---
 date: 2020-04-11T09:36:49+08:00
 title: "随心所欲的为应用无痛添加搜索功能"
-subtitle: ""
-description: ""
+subtitle: "开发搜索功能从此再也不用犯愁了，有了 App Search ，为应用增加搜索功能一下子变得简单了很多。本文描述了如何轻松上手这套搜索平台的所有步骤。"
+description: "开发搜索功能从此再也不用犯愁了，有了 App Search ，为应用增加搜索功能一下子变得简单了很多。本文描述了如何轻松上手这套搜索平台的所有步骤。"
 categories: ["DevOps"]
 tags: ["elk"]
 keywords: ["DevOps","elastic stack","app-search"]
 image: "images/abstract-1.jpg"
+slug: "getting-start-elastic-app-search"
 ---
 
 开发搜索功能从此再也不用犯愁了，有了 App Search ，为应用增加搜索功能一下子变得简单了很多。本文描述了如何轻松上手这套搜索平台的所有步骤。

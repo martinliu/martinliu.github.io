@@ -6,6 +6,7 @@ author = "Martin Liu"
 categories = ["DevOps"]
 tags = ["China", "读后感"]
 image = "/img/2021/06/guild-1573610501.jpg"
+slug = "the-unicorn-project-review-devops-in-china"
 +++
 
 这本以“DevOps”为主题的小说的故事情节很接地气，引人入胜的剧情会让人很难放手，所以我在周末只用了两个长 sprint（迭代）就读完了。

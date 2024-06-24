@@ -6,6 +6,7 @@ author = "Martin Liu"
 categories = ["DevOps"]
 tags = ["hashicorp", "terraform", "ica"]
 image = "img/2021/06/0gLZ2oH.png"
+slug = "hashicorp-terraform-1-0-general-availability-cn"
 +++
 
 Terraform 1.0--现在GA了--标志着你的自动化工作流程的互操作性、易于升级和维护方面的一个重要里程碑。

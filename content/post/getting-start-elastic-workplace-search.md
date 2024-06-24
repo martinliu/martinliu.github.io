@@ -7,6 +7,7 @@ categories: ["DevOps"]
 tags: ["ELK"]
 keywords: ["Elastic","workplace","search"]
 image:  "images/abstract-1.jpg"
+slug: "getting-start-elastic-workplace-search"
 ---
 
 ## 简介 

@@ -7,6 +7,7 @@ categories: ["DevOps"]
 tags: ["DevOps", "csg", "DOES"]
 keywords: ["DevOps","csg", "DOES","does2018", "pm"]
 image:  "https://res.cloudinary.com/martinliu/image/upload/v1551950710/bjxysnye.png"
+slug: "csg-product-meet-devops"
 ---
 
 DevOps企业峰会是历史悠久的DevOps主题企业级峰会，近年来在北美的拉斯维加斯和欧洲的伦敦每年各举办一次。

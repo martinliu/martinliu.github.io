@@ -6,6 +6,7 @@ author = "Martin Liu"
 categories = ["DevOps"]
 tags = ["AIops", "ITSM"]
 image  = "img/2021/4/AIOps-an-Industrial-Benchmark-2048x719.jpg"
+slug = "gartner-aiops-platform-market-guide-2021"
 +++
 
 本文是翻译整理的 Gartner 的行业调查报告，原文在：https://www.gartner.com/doc/reprints?id=1-25RAD0H3&ct=210407&st=sb

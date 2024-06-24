@@ -7,6 +7,7 @@ categories: ["DevOps"]
 tags: ["DevOps","APM","TOOL"]
 keywords: ["DevOps","APM","TOOL"]
 image:  "/images/abstract-3.jpg"
+slug: "apm-why-it-so-hard"
 ---
 
 用跟踪的方式调试计算机程序的调用堆栈的实践其实由来已久，这种方法可能仅次于用 print 输出各种信息。在云原生的时代里，我们还会遭遇工具过剩的情况，工具之间的相生相克加剧了实施分布式追踪的难度。

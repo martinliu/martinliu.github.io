@@ -6,6 +6,7 @@ description: "死磕2019年加速度全球DevOps状态调查报告系列，深�
 categories: ["DevOps"]
 tags: ["DevOps","DORA","Google"]
 keywords: ["DevOps","DORA", "Report","2019"]
+slug: "2019-state-devops-report-insight-1"
 image: "https://res.cloudinary.com/martinliu/image/upload/v1567000726/1-jafadjf.jpg"
 ---
 

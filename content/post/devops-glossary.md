@@ -6,6 +6,8 @@ tags:
 - DevOps
 title: DevOps术语表
 url: /2017/01/07/devops-glossary/
+categories:
+- DevOps
 ---
 
 ## 简介

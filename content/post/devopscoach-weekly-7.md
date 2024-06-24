@@ -6,6 +6,7 @@ author = "Martin Liu - 刘征"
 categories = ["DevOps"]
 tags = ["周刊"]
 image = "images/weeklyupdate.jpg"
+slug = "devopscoach-weekly-7"
 +++
 
 全球 DevOps + SRE 精选资讯

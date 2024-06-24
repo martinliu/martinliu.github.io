@@ -7,6 +7,7 @@ categories: ["DevOps"]
 tags: ["Elastic","Beats"]
 keywords: ["Metricbeat","Elastic Stack","Filebeat"]
 image: "/images/locked-up.jpg"
+slug: "build-security-in-elastic-stack"
 ---
 
 本文概要：配置 ES 3 节点全加密，Kibana 的 SSL 加密配置，Beats 的高可靠性加密传输，用 RBAC 怎样把权限控制到最小，在配置文件中消除明文密码，这些你都做到了么？如何保证安全、能适应和可扩展的配置 Elastic Stack 技术栈，让我们从 Bests 的角度开始讲解。

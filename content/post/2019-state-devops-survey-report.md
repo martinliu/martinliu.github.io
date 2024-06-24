@@ -7,6 +7,7 @@ categories: ["DevOps"]
 tags: ["DevOps","DORA","Google"]
 keywords: ["DevOps","DORA", "Google","2019"]
 image:  "https://res.cloudinary.com/martinliu/image/upload/abstract-4.jpg"
+slug: "2019-state-devops-survey-report"
 ---
 
 凭借六年多的来自全球31,000多名专业人士的数据的研究，2019年加速发展状态报告是同类研究中规模最大、持续时间最长的研究。2019年加速度DevOps状态调查首发，首发的位置在Google Cloud网站上的Blog栏目，发布于产品新闻分类下。

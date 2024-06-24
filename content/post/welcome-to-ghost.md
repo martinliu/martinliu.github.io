@@ -4,6 +4,8 @@ subtitle: 折腾
 date: 2017-09-21
 tags: ["blog"]
 image:  "/images/abstract-12.jpg"
+categories: ["blog"]
+slug: welcome-to-ghost
 ---
 
 

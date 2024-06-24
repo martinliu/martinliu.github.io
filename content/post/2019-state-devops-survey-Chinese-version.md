@@ -7,6 +7,7 @@ categories: ["DevOps"]
 tags: ["DevOps","DORA","Google"]
 keywords: ["DevOps","DORA", "Google","2019", "中文"]
 image: "https://res.cloudinary.com/martinliu/image/upload/2019-dora.png"
+slug: "2019-state-devops-survey-Chinese-version"
 ---
 本文是中文版《2019年加速度DevOps状态调查》问卷。如果你还没有填写该问卷的话，可以在线上填写英文版，点击这个链接 https://bit.ly/2UzLMH2 ，进入问卷调查网站。本文可以作为你的帮助文档。
 

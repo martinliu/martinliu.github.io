@@ -7,7 +7,7 @@ categories = ["Travel"]
 tags = ["大连", "DevOps", "峰会"]
 draft = false
 image = "img/cos/2021-11-25-IMG_7942.JPG"
-
+slug = "devops-summit-dalian-2021-best-ever"
 +++
 
 这是一次激动人心的记忆。没有 DevOps 社区志愿者的共同努力，我们肯定无法将峰会办的如此成功。

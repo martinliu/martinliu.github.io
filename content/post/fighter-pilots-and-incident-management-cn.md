@@ -6,6 +6,7 @@ author = "Martin Liu"
 categories = ["SRE"]
 tags = ["事故管理", "sre", "devops"]
 image = "img/cos/2021-03-23-f-16-fighter-pilot-1-scaled.jpg"
+slug = "fighter-pilots-and-incident-management-cn"
 +++
 
 你的事故管理与战斗机飞行员的有什么共同点？经验丰富的战斗机飞行员，Transposit 的 Anthony "AB " Bourke 说，他最近在DevOps企业峰会的快乐时光上做了这个演讲。

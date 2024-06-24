@@ -7,6 +7,7 @@ categories: ["DevOps"]
 tags: ["运维","DevOps","elasticsearch","elasticstack","filebeat","metricbeat"]
 keywords: ["运维","DevOps","elasticsearch","elasticstack","filebeat","metricbeat"]
 image :  "/images/abstract-6.jpg"
+slug: "beats-implement-on-qcloud"
 ---
 
 

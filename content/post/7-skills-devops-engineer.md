@@ -4,6 +4,9 @@ title = "7种DevOps工程师必备技能"
 description = "7种DevOps工程师必备技能"
 tags = ["DevOps"]
 image = "https://res.cloudinary.com/martinliu/image/upload/Nyala_ZH-CN13349334824_1920x1080.jpg"
+slug = "7-skills-devops-engineer"
+keywords = ["DevOps","技能"]
+categories = ["DevOps"]
 +++
 
 使用DevOps的目的是改变和改善开发与IT运营之间的关系，倡导两个部门之间更好的沟通与协作。虽然这看起来有些简单，然后，DevOps工程师还需要做更多的工作，才能成功部署代码，并将Dev和Ops两个部分成功地绑定在一起。

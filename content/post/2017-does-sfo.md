@@ -7,6 +7,7 @@ description= "在就旧金山顺利举办，规模一次比一次大"
 tags= ["DOES, DevOps"]
 categories= ["DevOps"]
 image = "/images/abstract-7.jpg"
+slug = "2017-does-sfo"
 +++
 
 
@@ -17,12 +18,11 @@ DevOps Enterprise Summit由美国的Gene Kim发起并举办的，他是两本流
 
 ![DOES Logo](/images/does-logo.png)
 
-
 下面是来自这个大会官网的简单介绍：
 
 > DevOps Enterprise Summit is a conference for the leaders of large, complex organizations implementing DevOps principles and practices. The event programming emphasizes both evolving technical and architectural practices and the methods needed to lead widespread change efforts in large organizations. The goal is to give leaders the tools and practices they need to develop and deploy software faster and to win in the marketplace.
 
-From:[ https://events.itrevolution.com/us/](https://events.itrevolution.com/us/)
+From:[https://events.itrevolution.com/us/](https://events.itrevolution.com/us/)
 
 ![15048603211912](/images/DOES-2017-header-web.jpg)
 
@@ -32,10 +32,7 @@ From:[ https://events.itrevolution.com/us/](https://events.itrevolution.com/us/)
 
 <p style="text-align: center"><iframe class="video_iframe" style="z-index:1;" src="http://v.qq.com/iframe/player.html?vid=b0525neb761&amp;width=660&amp;height=400&amp;auto=0" allowfullscreen="" frameborder="0" height="400" width="660"></iframe></p>
 
-
-
 ## 演讲稿目录
-
 
 | 星期 | 场次 | 名称 |
 | --- | --- | --- |
@@ -102,7 +99,6 @@ From:[ https://events.itrevolution.com/us/](https://events.itrevolution.com/us/)
 | Wednesday | General Session |Hendrickson, Elisabeth, Data and DevOps Breaking Down the Silos.pdf
 | Wednesday | General Session |Dekker, Sindey, The human factor Inspiring the pursuit of success and averting drift into failure.pdf
 
-
 ## 演讲稿下载
 
 我从官网的Dropbox网盘里下载了所有演讲稿，分享到了微云的网盘里。
@@ -112,6 +108,4 @@ From:[ https://events.itrevolution.com/us/](https://events.itrevolution.com/us/)
 
 也可以从GitHub看到这些分享的文件：[https://github.com/devopsenterprise/2017-San-Francisco](https://github.com/devopsenterprise/2017-San-Francisco)
 
-
 同样的今年6月份在伦敦举行的欧洲场次的DevOps企业峰会的演讲稿下载地址在：[https://github.com/devopsenterprise/2017-london](https://github.com/devopsenterprise/2017-london)
-

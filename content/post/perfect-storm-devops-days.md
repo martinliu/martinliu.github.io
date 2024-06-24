@@ -7,6 +7,7 @@ categories: ["DevOps"]
 tags: ["DevOpsDays"]
 keywords: ["DevOpsDays"]
 image: "http://res.cloudinary.com/martinliu/image/upload/v1526781579/Eye_Of_The_Storm_Hurricane_From_Space_freecomputerdesktopwallpaper_1600x900.jpg"
+slug: "perfect-storm-devops-days"
 ---
 
 各种大会、各种喧嚣，你都看够了么？免费的，收费的，都与你有何相干？哪里是你自己的社区，哪里可以找到同类和导师？本文是我对社区的一点个人的思考，感兴趣的读一下。

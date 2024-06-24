@@ -6,6 +6,7 @@ subtitle: "把笔记本上的Hugo站点分享给局域网里的其它人"
 categories: ["blog"]
 tags: ["hugo"]
 image: "/images/abstract-12.jpg"
+slug: "share-hugo-site-to-lan"
 ---
 
 我的笔记本上有好几个 Hugo 做的静态的站点，有自己的个人 Blog，有公司产品的培训文档；其中的有些站点内容，有可能是不方便发布到 Internet 上，有可能是你的观众并没有条件访问 Internet，但是使大家同在一个局域网里是一个很现实很方便的做法。那么怎样以最小的代价实现这个需求呢？

@@ -4,6 +4,7 @@ title: "SLA、SLO 和 SLI 还是傻傻分不清么？"
 subtitle: "一幅图一次性搞懂 SRE 的三个核心概念"
 description: "SLA、SLI 和 SLO 是 SRE 工程实践里非常核心的概念，但是大家在同时提到这些概念的时候，经常容易混淆。"
 categories: ["SRE"]
+slug: sre-sla-slo-sli
 tags: ["DevOps","SRE"]
 keywords: ["DevOps","sli","sla","slo","google"]
 image: "images/abstract-6.jpg"

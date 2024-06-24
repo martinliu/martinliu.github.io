@@ -7,6 +7,7 @@ tags:
 - Nutanix
 title: Nutanix AHV（KVM）Windows虚拟机安装全攻略
 image : "images/abstract-5.jpg"
+slug: Install-VMs-on-Nutanix
 ---
 
 # Nutanix AHV（KVM）Windows虚拟机安装全攻略

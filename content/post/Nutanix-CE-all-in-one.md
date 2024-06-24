@@ -6,6 +6,8 @@ tags:
 - Nutanix
 title: Nutanix CE All In One
 url: /2017/01/02/Nutanix-CE-all-in-one/
+slug: Nutanix-CE-all-in-one
+categories: ["Cloud"]
 ---
 
 Nutanix CE是Nutanix社区版软件的简称，它是Nutanix企业版产品的功能精简集合，是体验和测试Nutanix技术的很方便的途径。

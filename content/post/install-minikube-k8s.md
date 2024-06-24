@@ -6,6 +6,9 @@ image: "/images/abstract-1.jpg"
 tags:
 - DevOps
 - Docker
+categories:
+- DevOps
+slug: install-minikube-k8s
 ---
 
 <p>Minikube为各种操作系统的开发者，提供了运行K8S最简洁的方式。它最小化了安装k8s的需求和工作量。而且在各种操作系统上可以实现相同的体验。本文用精简的语言，描述了从安装minikube到运行容器化应用的过程。主要命令和输出来自macOS。</p>

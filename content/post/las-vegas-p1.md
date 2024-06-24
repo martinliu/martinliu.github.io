@@ -4,6 +4,8 @@ subtitle: 拉斯维加斯
 date: 2017-08-08
 tags: ["旅行"]
 image: "/images/las-vegas-strip-at-night.jpg"
+categories: ["Travel"]
+slug: las-vegas-p1
 ---
 
 

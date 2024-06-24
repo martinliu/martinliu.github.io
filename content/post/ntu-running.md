@@ -5,6 +5,9 @@ date: 2017-09-09
 image: "/images/abstract-2.jpg"
 tags:
 - 跑步
+categories:
+- running
+slug: ntu-running
 ---
 
 
