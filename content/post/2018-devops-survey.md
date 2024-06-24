@@ -2,10 +2,11 @@
 date: 2018-06-27T00:09:21+08:00
 title: "参与2018年DevOps状态调查报告"
 subtitle: ""
-description: ""
+description: "这是DevOps状态报告调查问卷的第七年。在过去的6年里，已经有两万七千多人参与了这项调查。这项调查已经获得了丰硕的成果，主要是帮助你了解在DevOps之旅上当前的进展。今年又扩展了调查的范围，再度加深了对DevOps之旅的调研。"
 categories: ["DevOps"]
 tags: ["DevOps"]
 keywords: ["DevOps"]
+slug: "2018-devops-survey"
 image: "https://res.cloudinary.com/martinliu/image/upload/abstract-6.jpg"
 ---
 

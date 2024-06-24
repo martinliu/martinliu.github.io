@@ -6,7 +6,9 @@ image:  "/images/sandrali-3.JPG"
 tags:
 - DevOps
 - Docker
-postmeta: false
+categories:
+- DevOps
+slug: tips-for-docker-on-mac
 ---
 
 # Tips for Docker on Mac

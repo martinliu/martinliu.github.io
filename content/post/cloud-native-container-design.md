@@ -7,6 +7,7 @@ categories: ["Cloud"]
 tags: ["DevOps","Container","Red Hat"]
 keywords: ["DevOps","Container","Red Hat"]
 image: "https://res.cloudinary.com/martinliu/image/upload/BingWallpaper-2018-03-20.jpg"
+slug: "cloud-native-container-design"
 ---
 
 本文来自于Red Hat咨询顾问Bilgin Ibryam所编写的一篇白皮书，名为《PRINCIPLES OF CONTAINER-BASED APPLICATION DESIGN》。这篇文章在作者的Blog上发表后，作者的twitter被Kubernetes官方twitter转发。白皮书在Red Hat官网的下载地址：[https://www.redhat.com/en/resources/cloud-native-container-design-whitepaper](https://www.redhat.com/en/resources/cloud-native-container-design-whitepaper) 文本是对这篇文章的学习和整理。

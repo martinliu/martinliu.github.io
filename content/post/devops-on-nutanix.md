@@ -7,6 +7,7 @@ categories: ["DevOps"]
 tags: ["DevOps"]
 keywords: ["DevOps", "持续交付", "Nutanix", "HCI", "超融合"]
 image: "https://res.cloudinary.com/martinliu/image/upload/testdrive_background.jpg"
+slug: "devops-on-nutanix"
 ---
 
 Nutanix是什么？中文名字是路坦力，是我目前所在的公司；我负责运营商行业以及与云服务商的合作业务，解决客户在售前、架构和DevOps等方面的问题，我是Nutanix Calm产品的专家。

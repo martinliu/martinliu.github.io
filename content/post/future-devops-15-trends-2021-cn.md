@@ -3,7 +3,8 @@ date = 2021-03-21T00:05:58+08:00
 title = " DevOps  的未来：2021 年的 15 个趋势"
 description = "本文最初发布在 The chief i/o，每年我都会分析整理一篇类似的文章，这篇文章确实不错。"
 author = "Martin Liu"
-categories = ["DevOps "]
+categories = ["DevOps"]
+slug = "future-devops-15-trends-2021"
 tags = ["DevSecOps", "AIOps", "IaC", "KUBERNETES"]
 image = "img/2021/03/The-Future-Is-Bright.jpg"
 +++

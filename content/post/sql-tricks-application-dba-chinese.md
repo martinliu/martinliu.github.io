@@ -7,6 +7,7 @@ categories: ["DevOps"]
 tags: ["DevOps","DBA","SQL","database"]
 keywords: ["DevOps","DBA","SQL","database"]
 image:  "/images/abstract-1.jpg"
+slug: "sql-tricks-application-dba"
 ---
 
 ## 前言

@@ -6,7 +6,7 @@ author = "Martin Liu"
 categories = ["DevOps"]
 tags = ["hci", "nutanix", "超融合"]
 image = "img/cos/2022-01-04-th1.jpg"
-
+slug = "hci-01-nutanix-ce-ahv-setup"
 +++
 
 本期分享的内容是超融合的基础知识，Nutanix CE社区版AHV/KVM单节点集群的搭建。

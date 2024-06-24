@@ -7,6 +7,7 @@ categories= ["DevOps"]
 tags= ["周刊"]
 keywords= ["DevOps","DevOps教练","周刊"]
 image = "images/weeklyupdate.jpg"
+slug = "devopscoach-weekly-1"
 +++
 
 

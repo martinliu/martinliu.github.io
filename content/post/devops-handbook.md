@@ -7,6 +7,7 @@ categories: ["DevOps"]
 tags: ["DevOps", "DevOps实践指南"]
 keywords: ["DevOps","DevOps Handbook", "DevOps实践指南"]
 image:  "https://res.cloudinary.com/martinliu/image/upload/IT_Revolution_press.png"
+slug: "devops-handbook"
 ---
 
 ![本文内容主要来源](https://res.cloudinary.com/martinliu/image/upload/TMNS-book-review-DevOps-1.png)

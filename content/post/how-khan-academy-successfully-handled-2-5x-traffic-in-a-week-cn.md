@@ -6,6 +6,7 @@ author = "Martin Liu"
 categories = ["SRE"]
 tags = ["Serverless", "SRE"]
 image = "img/cos/2021-03-24-sunrise-5863751_1920.png"
+slug = "how-khan-academy-successfully-handled-2-5x-traffic-in-a-week-cn"
 +++
 
 可汗学员处理流量突然暴增的过程离不开 SRE 的设计和工作。他们的应对策略包括使用云和CDN。

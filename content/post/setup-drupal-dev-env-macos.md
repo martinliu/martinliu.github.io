@@ -1,11 +1,12 @@
 +++
 date = 2022-02-05T11:11:55+08:00
-title = "img/cos/"
+title = "在本地搭建容器化的 Drupal 开发环境"
 description = "在本地构建可以重复创建、版本控制、持续更新、无缝迁移，且容器化的 Drupal 开发环境。"
 author = "Martin Liu"
 categories = ["DevOps"]
 tags = ["php", "drupal", "github", "docker"]
 image = "img/989197bbd274de342caf84c3642d8c6bc7b980ea-1920x700.png"
+slug = "setup-drupal-dev-env-macos"
 +++
 
 过年前给自己挖了一个 Drupal 的坑，经过一些时间的研究之后，感觉这个系统和 Remedy 非常神似。说到底它们其实都是表单系统。每个表单表达一种分类的信息而已。Drupal 注重的是表单上的信息点的记录、管理和展示，Remedy 注重的则是每种表单（工作类型）上“工单流程状态”字段变化的记录和管理。

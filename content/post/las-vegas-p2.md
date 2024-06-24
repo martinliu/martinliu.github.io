@@ -4,6 +4,8 @@ subtitle: 大峡谷
 date: 2017-08-13
 tags: ["旅行"]
 image: "/images/abstract-11.jpg"
+categories: ["Travel"]
+slug: las-vegas-p2
 ---
 
 Las Vegas到大峡谷（Grand Canyon National Park）的距离并不遥远，但是离最佳风景观看点南峡（South RIM）还有大半天的路程。很值得去，绝对不会后悔。

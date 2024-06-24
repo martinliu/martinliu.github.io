@@ -6,6 +6,7 @@ categories: ["DevOps"]
 tags: ["周刊"]
 keywords: ["DevOps", "DevOps教练", "SRE", "周刊"]
 image : "images/weeklyupdate.jpg"
+slug: "devopscoach-weekly-6"
 ---
 
 全球 DevOps + SRE 精选资讯

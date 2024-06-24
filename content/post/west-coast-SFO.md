@@ -6,7 +6,8 @@ tags:
 - 旅行
 - SFO
 title: 美国西岸旧金山之行
-url: /2016/12/31/west-coast-SFO/
+slug: west-coast-SFO
+categories: ["旅行"]
 ---
 
 这次旅行的目的地是硅谷腹地圣何塞，工作了一周之后，周末在旧金山简单游玩了一下。

@@ -5,6 +5,9 @@ date: 2017-09-23
 image:  "/images/tf_5.jpg"
 tags:
 - DevOps
+categories:
+- DevOps
+slug: about-devops-china
 ---
 DevOps是孕育于敏捷社区，又反哺给整个IT技术行业的，是一次彻底而全面的技术和文化运动。本文从它的出处谈起，一直描述到当前国内的现状。最后总结了相关的核心技术和主要实践。
 

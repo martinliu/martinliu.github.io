@@ -7,6 +7,7 @@ categories: ["DevOps"]
 tags: ["DevOps","CI","IaC"]
 keywords: ["DevOps","CI","IaC","CD","Jenkins","Chef"]
 image:  "https://res.cloudinary.com/martinliu/image/upload/coding-snippet.jpg"
+slug: "devops-infrastructure-ci-app-deployment"
 ---
 
 持续集成通常是针对应用而言的，可是基础架构的持续集成应该怎么做？基础架构的持续集成应该属于持续交付/部署的基础。贯串本文的一个问题，或者在阅读本文时，您应该不断地问自己这个问题：我们的应用部署流程是怎样的？

@@ -6,6 +6,9 @@ tags:
 title: "DevOps书单"
 url: /2017/01/03/devops-booklist/
 image:  "https://res.cloudinary.com/martinliu/image/upload/pexels-photo.jpg"
+slug: devops-booklist
+categories:
+- DevOps
 ---
 
 学习DevOps应该会使用到的书籍清单。 

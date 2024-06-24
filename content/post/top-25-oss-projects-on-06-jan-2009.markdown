@@ -8,7 +8,6 @@ slug: top-25-oss-projects-on-06-jan-2009
 tags:
   - opensource
 title: Top 25 OSS Projects on Jan 2009
-url: /2009/01/07/top-25-oss-projects-on-06-jan-2009/
 wordpress_id: 49245
 ---
 

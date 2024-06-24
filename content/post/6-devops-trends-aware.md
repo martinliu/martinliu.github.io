@@ -7,6 +7,7 @@ categories =  ["DevOps"]
 tags =  ["DevOps"]
 keywords =  ["DevOps"]
 image = "https://res.cloudinary.com/martinliu/image/upload/Decaying_Startrails_nimiaRM_165652_1080_HD_ZH-CN1933491271.jpg"
+slug = "6-devops-trends-aware"
 +++
 DevOps已经出现了很长时间，我们中的很多人都认为它只是一个时髦词。现在我们知道这并不是一个神话。DevOps已经成为一个IT主流的焦点，并且在过去的几年里一直在重塑着软件世界。专家表示，DevOps将成为主流，2018年DevOps的人气将达到顶峰。
 

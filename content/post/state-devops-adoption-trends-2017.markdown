@@ -5,6 +5,7 @@ image: "/images/BingWallpaper-2017-02-10_Fotor.jpg"
 tags:
 - DevOps
 title: 2017年DevOps采用和趋势现状-信息图
+slug: state-devops-adoption-trends-2017
 ---
 
 ![](/images/14868257964355.jpg)

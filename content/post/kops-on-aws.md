@@ -7,6 +7,7 @@ categories: ["opensource"]
 tags: ["DevOps","Kuberneters","kops","aws"]
 keywords: ["DevOps","Kuberneters","kops","aws"]
 image:  "https://res.cloudinary.com/martinliu/image/upload/BingWallpaper-2018-03-17.jpg"
+slug: "kops-on-aws"
 ---
 
 kops这种方式是我找到的最佳的，最适合于培训课堂需要的安装方式，当然对有类似需求的人有帮助。

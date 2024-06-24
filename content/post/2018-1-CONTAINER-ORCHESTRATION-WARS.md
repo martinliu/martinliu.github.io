@@ -6,6 +6,7 @@ subtitle: "虽然容器编排器之战已经被K8s终结，可是这篇文章对
 categories: ["devops"]
 tags: ["container"]
 image:  "images/abstract-11.jpg"
+slug: "container-orchestration-wars"
 ---
 
 # 容器编排器之战

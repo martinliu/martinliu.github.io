@@ -6,6 +6,7 @@ date = "2021-02-06"
 tags = ["github", "ci", "cd", "github-pages"]
 categories = ["blog", "Devops"]
 image = "img/2019/03/pic03.jpg"
+slug = "github-hugo-blog"
 +++
 
 最近更新了新的博客样式，再次搬迁回到了 GitHub 平台，并使用了 Github Action 的自动化 CI/CD 发布功能。这个是一个任何人都可以拥有的方案，现在用最简洁的语言分享给大家。

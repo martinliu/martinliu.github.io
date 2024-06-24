@@ -7,6 +7,7 @@ keywords: ["DevOps", "Flow", "cd" , "流水线" , "持续集成" , "自动化测
 tags: ["DevOps", "DevOps实践指南"]
 categories: ["DevOps"]
 image: "https://res.cloudinary.com/martinliu/image/upload/IT_Revolution_press.png"
+slug: "devops-first-way-flow"
 ---
 
 ![本文内容主要来源](https://res.cloudinary.com/martinliu/image/upload/TMNS-book-review-DevOps-1.png)

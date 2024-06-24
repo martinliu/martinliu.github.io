@@ -5,6 +5,9 @@ tags:
 - Nutanix
 title: Nutanix AHV 虚拟机模板制作
 image : "images/abstract-10.jpg"
+slug: clone-ahv-vm-template
+categories:
+- Cloud
 ---
 
 本文描述了AHV虚拟化的虚拟机模板的制作过程。首先使用ssh登录cvm，进入acropolis命令行。

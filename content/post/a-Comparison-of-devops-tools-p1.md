@@ -7,6 +7,7 @@ categories: ["DevOps"]
 tags: ["GitLab","Jira","CODING"]
 keywords: ["GitLab","Jira","CODING"]
 images: [{src= "/images/evolution.JPEG", desc= "DevOps"}]
+slug: "a-Comparison-of-devops-tools-p1"
 ---
 
 中国 DevOps 社区在最近两年期间得到了长足的发展，从最初的单一官网站点，发展到现在的社区官网、社区峰会官网、社区论坛、社区微信公众号和社区服务号等多种对外公众界面。在这些网站平台之后的是 20 多位社区志愿者们的辛勤工作和贡献。

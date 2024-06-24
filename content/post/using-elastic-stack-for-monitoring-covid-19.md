@@ -3,7 +3,8 @@ author: Martin Liu
 categories:
   - DevOps
 date: 2020-04-08T17:04:08+08:00
-slug: "使用 Elastic Stack 监控 Covid-19 疫情发展"
+description: "本文介绍如何使用 Elastic Stack，实现对国内外疫情发展态势的分析。介绍一种简单易行的数据分析流程。说不定你也可以得出独到的高价值洞察。"
+slug: using-elastic-stack-for-monitoring-covid-19
 tags:
   - elk
 title: "使用 Elastic Stack 监控 Covid-19 疫情发展"

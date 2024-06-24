@@ -6,6 +6,8 @@ tags:
 - Nutanix
 title: Nutanix AOS 5.0 新版本新特性
 url: /2017/01/04/Nutanix-AOS-5.0/
+categories: ["Cloud"]
+slug: Nutanix-AOS-5.0
 ---
 
 Nutanix AOS 5.0 是一个很重要的功能更新大版本，它一气儿带来了46项之多的新功能；在您安装或者测试这个版本>    之前，先通过本文快速了解一下这些更新，可能是更加节省时间的方法。

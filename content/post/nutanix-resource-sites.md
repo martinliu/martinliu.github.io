@@ -6,7 +6,8 @@ tags:
 - Nutanix
 - DevOps
 title: Nutanix资源站点清单
-url: /2017/01/07/nutanix-resource-sites/
+slug: nutanix-resource-sites
+categories: ["Cloud"]
 ---
 
 做Nutanix的那些不可不知道的资源网站，这里列出了常用的官方和非官方网站。

@@ -8,6 +8,8 @@ tags: ["DevOps"]
 image: "https://res.cloudinary.com/martinliu/image/upload/q_auto:eco/Evest.jpg"
 postmeta: false
 nocomment: true
+categories: ["DevOps"]
+slug: "devops-climbing-guide"
 ---
 
 美国金融行业Nationwide保险公司DevOps案例研究，来源DOES17 San Francisco，主题-DevOps Handbook Experiments in Accelerating Delivery

@@ -8,7 +8,6 @@ slug: transformers-revenge-of-the-fall-theme-music
 tags:
   - blog
 title: Transformers-Revenge of the Fall-Theme Music
-url: /2009/07/06/transformers-revenge-of-the-fall-theme-music/
 wordpress_id: 49265
 ---
 

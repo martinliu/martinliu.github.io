@@ -4,6 +4,8 @@ subtitle: 在Nutanix平台上为Docker配置存储
 date: 2017-11-02
 tags: ["Nutanix","docker"]
 image : "/images/abstract-4.jpg"
+categories: ["Cloud"]
+slug: nutanix-dvp
 ---
 
 本文介绍如何用Docker卷插件的方式，给Docker Swarm的群集挂载Nutanix存储。[Nutanix Container Volume Plug-in ](https://store.docker.com/plugins/nutanix-dvp-docker-volume-plug-in)简称DVP，可以给容器提供数据持久化的功能。

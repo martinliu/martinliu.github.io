@@ -4,6 +4,8 @@ subtitle: 台湾爽玩一周游
 date: 2017-09-07
 tags: ["旅行"]
 image:  "/images/abstract-11.jpg"
+categories: ["Blog"]
+slug: taipei
 ---
 <p>这是一次偶然的旅行，在最近的两年里，我很荣幸的认识了很多新朋友；偶然间受到了台湾朋友的邀请；这也是一次必然的旅行，由于我锁定了DevOps这个方向，参加更多的DevOpsDays活动也就成了必然。</p>
 

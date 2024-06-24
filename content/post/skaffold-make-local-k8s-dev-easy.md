@@ -7,6 +7,7 @@ categories: ["DevOps"]
 tags: ["DevOps","Kubernetes","CI"]
 keywords: ["DevOps","Kubernetes","CI","CD","Skaffold"]
 image:  "images/abstract-1.jpg"
+slug: "skaffold-make-local-k8s-dev-easy"
 ---
 
 
