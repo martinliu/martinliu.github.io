@@ -18,8 +18,6 @@ image: "https://res.cloudinary.com/martinliu/image/upload/abstract-6.jpg"
 
 对其中的部分问题做出了简要的说明，预祝你在参加这项全球性著名调查的过程中，有一个愉快的体验。
 
-
-
 ## 今年的看点
 
 据说DevOps状态调查报告的一个最大的价值就是：在你的组织中，你可以用这些数据展示出DevOps的价值，从而取得管理层的支持，并启动DevOps项目。
@@ -36,10 +34,9 @@ image: "https://res.cloudinary.com/martinliu/image/upload/abstract-6.jpg"
 2. $200 8 人
 3. $100 15 人
 
-注：规则完整版 https://puppet.com/2018-devops-survey-contest-rules
+注：规则完整版 <https://puppet.com/2018-devops-survey-contest-rules>
 
 ## 参与此项调研报告
-
 
 每道问题选择了答案之后，会影响到后续所出现的问题，我选择了金融（含保险）行业的DevOps软件工程师的路径。
 
@@ -51,7 +48,6 @@ image: "https://res.cloudinary.com/martinliu/image/upload/abstract-6.jpg"
 
 ### 第一部分
 
-
 1. Where do you work? / 你在那个大洲工作？
 2. In which country do you work? / 在那个国家工作？
 3. What is the principal industry of your organization? / 你的组织是什么行业的？
@@ -59,8 +55,6 @@ image: "https://res.cloudinary.com/martinliu/image/upload/abstract-6.jpg"
 5. What department do you work in? / 你什么部门工作？
 6. And what team do you work on? / 你在什么团队工作？
 7. Which of the following describes your level of knowledge regarding your organization’s IT operations and software delivery? / 下面那一项最准确地描述了你的组织在IT运维和软件交付方面的知识程度？
-
-
 
 ### 第二部分
 
@@ -81,7 +75,7 @@ The next few questions will ask about each of these elements.
 4. Where would you say you are at sharing-wise, on your DevOps journey so far? / 在你目前的DevOps旅程中，在分享方面是怎么做的？
 5. How frequently do each of these practices occur in your organization? / 下列实践在你的组织中发生的频率？从来没用过 ~ 总是在用 5级
 
-    * We balance lowering technical debt, with new feature work 
+    * We balance lowering technical debt, with new feature work
     * Configurations are managed by a configuration management tool
     * A cross-functional review is done before implementation of a project
     * Teams use continuous delivery
@@ -97,7 +91,7 @@ The next few questions will ask about each of these elements.
     * Experiences and lessons are shared externally (e.g., meetups / conferences, blog posts, etc.)
 
 6. How frequently were each of these practices used when you were first starting out with DevOps? / 在你的DevOps刚刚起步的阶段，下列实践的使用频率是怎样的？从来没用过 ~ 总是在用 5级
-    
+
     * Application configurations are in version control
     * Infrastructure teams use version control
     * Automate system configurations (e.g. operating system baselines)
@@ -106,9 +100,7 @@ The next few questions will ask about each of these elements.
     * Application development teams use version control
     * Automate security policy configurations
 
-
 7. How frequently were these practices used after you started to see some traction with DevOps? / 在你开始感受到DevOps的优势以后，下列实践的使用频率是怎样的？从来没用过 ~ 总是在用
-
 
     * We reuse deployment patterns for building applications or services
     * Monitoring and alerting are configurable by the team operating the service
@@ -130,7 +122,6 @@ The next few questions will ask about each of these elements.
 
 9. How frequently were these practices used while you were optimizing your DevOps practices? / 当你在优化DevOps实践的过程中，下列实践的使用频率是怎样的？从来没用过 ~ 总是在用 5级
 
-
     * Infrastructure changes are tested before deploying to production
     * Rearchitect applications based on business needs (e.g., reducing operational costs, ease of deployment, etc.)
     * Individuals accomplish changes without significant wait times
@@ -141,7 +132,6 @@ The next few questions will ask about each of these elements.
 
 10. How frequently were these practices used while you were enabling self-service? / 在你管理自助服务的情况下，下列实践的使用频率是怎样的？从来没用过 ~ 总是在用 5级
 
-
     * Teams contribute improvements to tooling provided by other teams
     * Resources (e.g., accounts, infrastructure, etc.) made available via self-service
     * Logging configuration is deployed with the application or service
@@ -150,7 +140,6 @@ The next few questions will ask about each of these elements.
 
 11. Which, if any, of the following processes or tools are “self-service” in your DevOps approach? Please select all that apply. / 在你的DevOps计划中，下列哪些流程或者工具会做成自助服务？
 12. Which of the following organizational structures have you used in your DevOps journey? / 在你DevOps的旅程中，你曾经用过下列哪些组织结构？
-
 
     * Cross-functional teams that are responsible for specific services or applications
     * A centralized IT team and multiple application development teams
@@ -179,9 +168,9 @@ The next few questions will ask about each of these elements.
 
 ![开始](https://res.cloudinary.com/martinliu/image/upload/survy.jpg)
 
-本文来源：https://puppet.com/blog/introducing-2018-state-devops-survey-new-research-focus
+本文来源：<https://puppet.com/blog/introducing-2018-state-devops-survey-new-research-focus>
 
-调查问卷网址：https://polls.onresearch.net/DevOps/blog
+调查问卷网址：<https://polls.onresearch.net/DevOps/blog>
 
 ## 后记
 
@@ -201,17 +190,8 @@ DevOps圈子里的人都知道，这项问卷调查在IT行业里的知名度和
 
 ![开始](https://res.cloudinary.com/martinliu/image/upload/nengli.jpg)
 
-
 我在这本刚发布的时候购买了电子版。在参加5月份的DevOpsDays大会北京站的深度培训“持续交付”课上，遇到了这个培训老师的Jez Humble先生，他也是本书的合著者之一。意外地获赠了一本他的签名实体书。
-
 
 ![开始](https://res.cloudinary.com/martinliu/image/upload/my-acceleate.jpg)
 
-
 在学习了一段时间以后，我总结和归纳了一些内容：关于对DevOps能力发展模型的详细剖析，对24项DevOps主要发展能力之间的关联关系的解读；这些内容将会在8月份上海的DevOpsDays大会上呈现。
-
-
-
-
-
-

@@ -18,7 +18,7 @@ slug: "elk-stack-install"
 * 安装和配置 Filebeat 代理程序，并配置 system 和 auditd 模块
 * 使用 Kibana 监控 Filebeat 所采集的系统日志，并监控系统的状态
 
-为了使你也获得与我一致的安装和测试体验，请先下载并浏览相本文所使用的代码库：https://github.com/martinliu/elastic-labs
+为了使你也获得与我一致的安装和测试体验，请先下载并浏览相本文所使用的代码库：<https://github.com/martinliu/elastic-labs>
 
 ## 试验环境概述和启动
 
@@ -42,7 +42,6 @@ slug: "elk-stack-install"
 
 启动测试环境。
 
-
 ```
 vagrant up
 vagrant status
@@ -64,7 +63,6 @@ sudo systemctl enable elasticsearch.service
 sudo systemctl start elasticsearch.service
 sudo systemctl status elasticsearch.service
 ```
-
 
 测试 Elasticsearch 服务是否功能正常 【 Dry run 】
 
@@ -92,6 +90,7 @@ curl localhost:9200
 }
 
 ```
+
 浏览和学习 Elasticsearch 默认的配置文件。
 
 `sudo cat /etc/elasticsearch/elasticsearch.yml`
@@ -104,6 +103,7 @@ sudo systemctl restart  elasticsearch.service
 sudo systemctl status   elasticsearch.service
 
 ```
+
 手工查看 Elasticsearch 服务器的日志，并确认服务启动正常。
 
 `sudo tail -f /var/log/elasticsearch/my-elk.log`
@@ -154,6 +154,7 @@ sudo systemctl restart  elasticsearch.service
 sudo systemctl status  elasticsearch.service
 
 ```
+
 确认服务已经正常启动。
 
 `sudo tail -f /var/log/elasticsearch/my-elk.log`
@@ -189,7 +190,7 @@ Changed password for user elastic
 PASSWORD elastic = RO11xymgXTCD16ivTP33
 ```
 
-在浏览器中访问http://192.168.50.10:9200/ ，测试并确认上面的 elastic 用户的密码。
+在浏览器中访问<http://192.168.50.10:9200/> ，测试并确认上面的 elastic 用户的密码。
 
 ## 安装和配置 Kibana 服务器
 
@@ -199,6 +200,7 @@ PASSWORD elastic = RO11xymgXTCD16ivTP33
 cd /vagrant/rpm/
 sudo rpm -ivh  kibana-7.6.1-x86_64.rpm
 ```
+
 查看并学习 Kibana 默认配置文件
 
 `sudo cat /etc/kibana/kibana.yml`
@@ -215,7 +217,7 @@ sudo systemctl status   kibana.service
 
 `sudo tail -f /var/log/messages`
 
-在浏览器里测试登录 Kibana  http://192.168.50.10:5601 ，使用 elastic 的用户名和密码。
+在浏览器里测试登录 Kibana  <http://192.168.50.10:5601> ，使用 elastic 的用户名和密码。
 
 ## 安装 filebeat 并配置 2 个模块
 
@@ -255,14 +257,13 @@ sudo ls -l modules.d/
 
 `sudo filebeat setup`
 
-在浏览器中登录 http://192.168.50.10:5601 Kibana 后，点击左侧的 Dashboard 图标，查看所有刚才导入的内容，搜索并打开 System 关键字的 Dasboard。
+在浏览器中登录 <http://192.168.50.10:5601> Kibana 后，点击左侧的 Dashboard 图标，查看所有刚才导入的内容，搜索并打开 System 关键字的 Dasboard。
 
 在启动日志收集代理 Filebeat 服务前，运行一下命令测试 Filebeat 配置文件的正确性。
 
 `sudo filebeat test config`
 
 启动 Filebeat 服务，开始对这台操作系统的日志进行监控。
-
 
 ```
 sudo systemctl start filebeat
@@ -271,12 +272,10 @@ sudo systemctl status filebeat
 
 ## 建议的测试
 
-
 1. 点击左侧的 Dicovery 图标，选中 Filebeat-* 索引，打开并一条日志数据，并查看所有字段；用 KQL 进行全文搜索。
 2. 点击左侧的 Dashboard 图标，搜索 system 关键字，查看一个仪表板的日志展示；搜索 audit 关键字，并查打开一个仪表板，在命令行中尝试 ssh localhost，多尝试几次，刷新 Audit 仪表板，观察数据是否发生了变化。
-3. 点击左侧的 Logs 图标，用鼠标上下滚动日志信息流， 点击右上角的开始 Live Stream 查看模式，观察日志信息流的自动滚动效果，在 KQL 搜素框中输入 tags : demo-service ，体验它的搜索建议功能，在 Highlight 中输入 http://192.168.50.10:5601/app/infra ，观察日志信息流显示的变化。
+3. 点击左侧的 Logs 图标，用鼠标上下滚动日志信息流， 点击右上角的开始 Live Stream 查看模式，观察日志信息流的自动滚动效果，在 KQL 搜素框中输入 tags : demo-service ，体验它的搜索建议功能，在 Highlight 中输入 <http://192.168.50.10:5601/app/infra> ，观察日志信息流显示的变化。
 4. 点击左侧的 SIEM 图标，看看这里都有什么内容。
-
 
 ## 后续
 
@@ -284,5 +283,4 @@ sudo systemctl status filebeat
 * 安装 Apache, MySQL 等软件，并开启 Filebeat 的日志监控模块
 
 参考文档：
-https://www.elastic.co/guide/en/elasticsearch/reference/current/setting-system-settings.html
-
+<https://www.elastic.co/guide/en/elasticsearch/reference/current/setting-system-settings.html>

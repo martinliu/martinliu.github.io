@@ -41,7 +41,6 @@ kops会将所有主机的域名解析都自动化的添加A记录到这里。
 
 这台虚拟机启动之后，安装kubectl和kops。
 
-
 ```
 curl -LO https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl
 sudo chmod +x kubectl
@@ -95,8 +94,6 @@ make_bucket: clusters.k8s.devopscoach.org
 在集群安装完成之后，bucket里面的文件如下：
 
 ![kops On aws](https://res.cloudinary.com/martinliu/image/upload/s3.png)
-
-
 
 ## 创建Kubernetes Cluster
 
@@ -158,12 +155,10 @@ Finally configure your cluster with: kops update cluster dev.k8s.devopscoach.org
 [ec2-user@ip-172-31-27-182 ~]$                     
 ```
 
-
 kops命令列出了所有需要建立的资源清单。而真实的开始资源创建，并搭建和配置Kubernetes集群还需要执行，以上输出中提示的最后一条命令: `kops update cluster dev.k8s.devopscoach.org --yes
 `
 
 执行结果如下：
-
 
 ```
 [ec2-user@ip-172-31-27-182 ~]$ kops update cluster dev.k8s.devopscoach.org --yes
@@ -231,7 +226,6 @@ The admin user is specific to Debian. If not using Debian please use the appropr
 
 在安装完成之后，用一下命令确认集群状态如下：
 
-
 ```
 [ec2-user@ip-172-31-27-182 ~]$ kops validate cluster
 Using cluster from kubectl context: dev.k8s.devopscoach.org
@@ -291,10 +285,9 @@ sample-nginx   LoadBalancer   100.64.127.19   ae3a1ca9235d111e890d706038dd676b-3
 
 ![kops On aws](https://res.cloudinary.com/martinliu/image/upload/nginx.png)
 
-##  删除集群
+## 删除集群
 
 用一条命令就能删除以上所建立的Kubernetes集群。
-
 
 ```
 kops delete cluster --name=dev.k8s.devopscoach.org --yes

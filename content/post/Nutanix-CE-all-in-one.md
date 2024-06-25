@@ -37,6 +37,7 @@ Nutanix CE是Nutanix社区版软件的简称，它是Nutanix企业版产品的�
 产品在社区里的文档页面： [点这里](http://next.nutanix.com/t5/Discussion-Forum/Download-Nutanix-CE-Docs-and-Guides/m-p/16442#U16442)
 
 ## 参考配置
+
 Intel NUC 最新版一台，i7处理器，两条16GB内存，两条512GB硬盘。它的好处是便携；然而内存还是有限，不能跑多少个虚拟机。
 
 ## 相关文档
@@ -49,5 +50,3 @@ Intel NUC 最新版一台，i7处理器，两条16GB内存，两条512GB硬盘�
 * [Nutanix超”容”合之ACS Docker Volume Plugin的使用和数据持久化测试](http://www.dockerinfo.net/1867.html)
 * [http://nutanix.club/](http://nutanix.club/)
 * [Nutanix圣经](http://nutanixbible.com/)
-
-

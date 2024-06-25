@@ -57,8 +57,6 @@ slug: "a-Comparison-of-devops-tools-p1"
 
 ![CODING plan](/images/CODING-plan.jpeg)
 
-
-
 ## 构建 - Build
 
 **代码托管 ：** 社区需要使用 Git 代码仓库管理各种网站和应用的代码开发，包括markdown 格式的网站内容更新，主要是用基于主干的开发，或者部分功能分支的方式。
@@ -71,8 +69,7 @@ slug: "a-Comparison-of-devops-tools-p1"
 
 * GitLab：代码库中的每个文件都可以通过 Web IDE 功能打开，能实现代码的语法检查、提交变化提示、Markdonwn 编辑/预览等功能。具备一定的可用性。
 * Jira Cloud：在 bitbucket 中选取文件点击编辑后，能进入一个基本的文本文件编辑模式。无其他高级功能，很难胜任稍微复杂一些的程序代码变更。
-* CODING：代码库中的代码文件可以支持在线的编辑，具有一定的语法加亮和变更对比功能，能提供基础的线上开发能力。同时还提供了全功能的线上 IDE 环境 https://cloudstudio.net/，这个功能很类似于一个线上版本的 vs code，它可以拉取 git 仓库地址，并在与之的多种语言环境中开展代码开发工作。
-
+* CODING：代码库中的代码文件可以支持在线的编辑，具有一定的语法加亮和变更对比功能，能提供基础的线上开发能力。同时还提供了全功能的线上 IDE 环境 <https://cloudstudio.net/，这个功能很类似于一个线上版本的> vs code，它可以拉取 git 仓库地址，并在与之的多种语言环境中开展代码开发工作。
 
 **代码检查 ：** 在尽可能的提供代码质量扫码、评估和反馈会对每个社区开发者的工作质量提供帮助，需要帮助社区小伙伴们开发出高质量和安全的社区网站代码。
 
@@ -89,17 +86,14 @@ slug: "a-Comparison-of-devops-tools-p1"
 * Jira Cloud：需要集成第三方的服务实现。
 * CODING：为每个项目提供了各种类型的制品仓库，包括：Generic、Docker, Maven, NPM, PyPi, Helm, Composer, NuGet, Conan。可以设置项目内、团队内和公开的访问范围权限。
 
-
 **编译构建 ：** 需要提供自动化的编译构建能力，通过自动化的 CI 流水线给开发者快速的反馈，提供友好的 DevOps 流水线构建和修订界面。平台提供免费的构建算力，能够按需要自行接入构建节点和 K8S 环境。
 
 * GitLab：提供基于 gitlab-ci.yml 文件的 Pipeline as Code 的流水线管理模式。无流水线的图形编辑界面。可以通过部署 Runner 的方式扩展构建环境到外部的服务器上，或者 k8s 的环境中。
 * Jira Cloud：在 Bitbucket 中提供基于 bitbucket-pipelines.yml 文件的 Pipeline as Code 的流水线管理模式。无流水线的图形编辑界面。这个流水线的后台应该是一个共享的基于 Bamboo 的SaaS 服务，还没有发现扩展这个部署环境的方法。
 * CODING：提供基于 Jenkins 的 CI 服务。也就是说 CODING 服务用套娃的方式包装了 Jenkins 服务，通过共享的构建服务提供基础的构建算力，如果需要的话也可以和 GitLab 一样扩展到外部的构建服务器或者 K8s 服务集群。这里 CODING 还提供了 构建服务到腾讯云的相关服务的集成。因此它能提供 Jenkins+ 的服务能力，对于 Jenkins 服务的构建能力这里就不在赘述。由于 Jenkins 流水线技术比较普及。社区的同学用了半天的时间实现了社区官网构建发布流水线的调试。将基于 Hugo 的网站构建结果用 ssh 命令的方式发布到腾讯云里的 Nginx 服务器的目录中。
 
-
 下图是在图形流水线编辑器中对标准模板的调试，这里简单的实现了构建和打包的过程，在部署的步骤里，通过远程 ssh 的命令实现了对网站发布包到腾讯云虚拟机的部署。
 ![CODING plan](/images/CODING-pipeline.jpeg)
-
 
 ## 总结
 

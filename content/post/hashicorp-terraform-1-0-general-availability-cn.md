@@ -15,15 +15,11 @@ Terraform 1.0--现在GA了--标志着你的自动化工作流程的互操作性�
 
 Terraform 拥有数以亿计的下载量、成千上万的贡献和令人难以置信的社区，是最广泛采用的基础设施即代码工具。达到 1.0 是一个重要的里程碑。
 
-
-
 ![Terraform 的历史](img/cos/2021-06-15-terrafor-history.png)
 
-本文来自：https://www.hashicorp.com/blog/announcing-hashicorp-terraform-1-0-general-availability
+本文来自：<https://www.hashicorp.com/blog/announcing-hashicorp-terraform-1-0-general-availability>
 
 6 月 8 日，在 HashiConf 欧洲会议上，我们很高兴地宣布HashiCorp Terraform 1.0全面上市，这是您自动化工作流程的互操作性、易于升级和维护的一个重要里程碑。Terraform 1.0[立即可供下载](https://www.terraform.io/downloads.html)，也可在HashiCorp Terraform Cloud 中使用。HashiCorp Terraform已经被大小公司的个人和团队广泛使用，成为多云配置和自动化的标准。这篇文章介绍了新的内容，以及1.0的命名对Terraform用户的意义。
-
-
 
 ## 更好的 Terraform State 互操作性
 
@@ -54,4 +50,3 @@ Terraform 在互操作性方面取得了巨大的进步。Terraform state 现在
 第四个要求是确保产品的技术架构是成熟和稳定的。
 
 Terraform 1.0以更大的互操作性、更容易的升级以及重要的维护期来巩固你的自动化工作流程和Terraform功能集的稳定性的形式满足了所有四个要求。
-

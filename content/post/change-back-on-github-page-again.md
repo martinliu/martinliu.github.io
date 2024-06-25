@@ -22,7 +22,7 @@ slug = "github-hugo-blog"
 
 ## 选择 Hugo 博客主题
 
-在 https://themes.gohugo.io/ 可以搜索到大量的免费网站模板。我这次选择了名为 “HUGO FUTURE IMPERFECT SLIM” 的模板。
+在 <https://themes.gohugo.io/> 可以搜索到大量的免费网站模板。我这次选择了名为 “HUGO FUTURE IMPERFECT SLIM” 的模板。
 
 这是一个功能非常丰富的模板：
 
@@ -42,14 +42,14 @@ Hugo 博客本地安装和配置新手指南，参考这两篇文章。
 
 ## GitHub Pages 新手指南
 
-在 https://pages.github.com/ 提供了视频和文字版本的新手指南教程。为了方便新手理解，下面就使用‘user or organization site’这个最常用的选项做简要说明：
+在 <https://pages.github.com/> 提供了视频和文字版本的新手指南教程。为了方便新手理解，下面就使用‘user or organization site’这个最常用的选项做简要说明：
 
 1. 创建与自己的 **Github 用户/组织** 同名前缀的公开代码仓库，例如：zhangsan/zhangsan.github.io
 2. 选择在命令行里（前提是安装配置好了 Git，否则使用图形化界面 GitHub Desktop 工具）
 3. 克隆第一步创建的那个代码库到本地电脑的目录中。
 4. 创建只包含 ‘Hello World’ 为内容的主页测试文件。
 5. 推送本地的更新到 Github 服务器端
-6. 在本地的浏览器中查看测试网页 http://zhagnsan.github.io/
+6. 在本地的浏览器中查看测试网页 <http://zhagnsan.github.io/>
 
 GitHub Pages 的新手指南已经包含在了上一节推荐的两篇文章中。
 
@@ -119,10 +119,8 @@ jobs:
           publish_dir: ./public
 ```
 
-
 ## 后续事项
 
 1. 解决旧文章头图空白的问题
 2. 增加文章评论功能
 3. 增加 CDN 功能
-

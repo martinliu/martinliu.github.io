@@ -9,7 +9,7 @@ tags = ["DevSecOps", "AIOps", "IaC", "KUBERNETES"]
 image = "img/2021/03/The-Future-Is-Bright.jpg"
 +++
 
-本文的原文地址：[https://thechief.io/c/editorial/future-DevOps -15-trends-2021/](https://thechief.io/c/editorial/future-DevOps -15-trends-2021/ )  本文是一篇译文，旨在学习，并分享给社区。
+本文的原文地址：[https://thechief.io/c/editorial/future-DevOps -15-trends-2021/](<https://thechief.io/c/editorial/future-DevOps> -15-trends-2021/ )  本文是一篇译文，旨在学习，并分享给社区。
 
 <!--more-->
 
@@ -23,16 +23,13 @@ DevOps 正在与机器学习和人工智能等各种技术创新不断发展和�
 
 在过去十年的引入中，DevOps 已经成长为许多IT公司不可或缺的一部分。
 
-
-
-
 专家预测，到2025年，DevOps 市场规模将达到128.5亿美元。在软件工程中实施 DevOps 所带来的效率和众多优势，是其被大量采用的关键驱动力。
 
 年复一年，软件开发领域总有一些新的实践出现，有些则被抛弃。
 
 在本文中，我们将探讨 DevOps 的上升趋势和实践，以及对2021年该行业的期望。
 
-# 1-DevSecOps 将成为新的 DevOps 
+# 1-DevSecOps 将成为新的 DevOps
 
 随着企业拥抱无服务器、Docker、Kubernetes和其他现代云技术，安全将一如既往地成为高度优先级，成为 DevOps 的默认部分。
 
@@ -101,8 +98,6 @@ DataOps 将通过使用机器学习模型来预测事故或中断，从而彻底
 Itamar Ben Hemo 是 Rivery 的CEO和联合创始人，他写道。
 
 > 就像DevOps将软件开发系统化了一样，DataOps旨在加速数据的收集、处理和分析。正如CIO所指出的，"IDC在'数据到见解'的管道中定义了四个核心阶段。识别数据、收集数据、转换数据和分析数据。这些阶段也共同构成了这门新兴学科 DataOps 的核心要素。"
-
-
 
 根据Nexla进行的一项调查，73%的公司计划投资DataOps来管理数据团队，关于他们如何使用数据，他们的团队结构和数据挑战发现，73%的公司正在投资DataOps。
 

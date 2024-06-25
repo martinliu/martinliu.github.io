@@ -17,7 +17,7 @@ slug = "hci-01-nutanix-ce-ahv-setup"
 
 观看本次直播并且中奖的朋友们是：我是ZCQQQ、盔甲小子、繁硕星辰、壮星豆、flyinghourse110、YS8297和阿尔萨狮123，请联系微信 Jane-happylife 索取你的奖品。本次奖品是Nutanix提供的空气加湿器或者运动背包。备注 12月超融合直播活动 领取礼品。两种礼品（根据库存来决定随机寄出）。
 
-本期的视频回放链接在这里：https://www.bilibili.com/video/BV1YY411a7w2/
+本期的视频回放链接在这里：<https://www.bilibili.com/video/BV1YY411a7w2/>
 
 ## 认识 HCI 超融合
 
@@ -67,9 +67,9 @@ HCI系统是虚拟化、x86计算机、万兆以太网和超融合软件完美�
 
 ![](img/cos/2022-01-04-%E5%B9%BB%E7%81%AF%E7%89%875.JPG)
 
-必须在 https://next.nutanix.com 注册社区账号，记录登录邮箱和密码备用。访问 [Download Community Edition | Nutanix Community](https://next.nutanix.com/discussion-forum-14/download-community-edition-38417) 这个帖子，下载 Installer ISO  https://download.nutanix.com/ce/2020.09.16/ce-2020.09.16.iso 。将这个ISO文件刻录在启动U盘中。安装前确保网线已经连结正常，且能访问Internet。
+必须在 <https://next.nutanix.com> 注册社区账号，记录登录邮箱和密码备用。访问 [Download Community Edition | Nutanix Community](https://next.nutanix.com/discussion-forum-14/download-community-edition-38417) 这个帖子，下载 Installer ISO  <https://download.nutanix.com/ce/2020.09.16/ce-2020.09.16.iso> 。将这个ISO文件刻录在启动U盘中。安装前确保网线已经连结正常，且能访问Internet。
 
-Nutanix CE安装文件也可以在这个网盘中下载：链接：https://pan.baidu.com/s/1DdvvfcPhcpR1jkfrXhCraA    提取码：4dgc 
+Nutanix CE安装文件也可以在这个网盘中下载：链接：<https://pan.baidu.com/s/1DdvvfcPhcpR1jkfrXhCraA>    提取码：4dgc
 
 ## 安装过程
 
@@ -160,7 +160,7 @@ HCI系统的搭建还有很多问题值得一起探讨和学习，HCI超融合�
 
 1. 日期：2022年1月26日中午1点
 2. 内容1：Nutanix CE版AHV安装答疑解惑
-3. 内容2：VMware vSphere 集群的搭建 
+3. 内容2：VMware vSphere 集群的搭建
 4. 主持人：刘征，吴孔辉
 5. 直播平台：B站搜/关注：中国DevOps社区
 6. 直播抽奖：未知

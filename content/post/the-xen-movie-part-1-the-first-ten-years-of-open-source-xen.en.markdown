@@ -19,4 +19,4 @@ title: "The Xen Movie, Part 1: The first ten years of open source Xen."
 wordpress_id: 52521
 ---
 
-http://brightcove.vo.llnwd.net/e1/uds/pd/13639319001/13639319001_2484626552001_Citrix-Open-Source--Public-Version-.mp4
+<http://brightcove.vo.llnwd.net/e1/uds/pd/13639319001/13639319001_2484626552001_Citrix-Open-Source--Public-Version-.mp4>

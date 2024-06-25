@@ -37,7 +37,7 @@ slug: "perfect-storm-devops-days"
 
 ---
 
-我现在所深度参与的是“DevOpsDays社区”，它的历史可以追溯到 #DevOps 这个词的诞生，它的全球广泛程度可以参考官网 https://DevOpsDays.org ； 这也是我喜爱这个社区的两个原因。
+我现在所深度参与的是“DevOpsDays社区”，它的历史可以追溯到 #DevOps 这个词的诞生，它的全球广泛程度可以参考官网 <https://DevOpsDays.org> ； 这也是我喜爱这个社区的两个原因。
 
 另外，我觉得DevOps本身对这个时代应该是很有价值的；此时此刻的深夜，我扫了一眼微信朋友圈，还是能看到“深夜、聚众、上线加夜班的团队”在上演着这不断重复的人间悲喜剧，看到他们相互的点赞、加油和鼓励；可是从DevOps的观点出发，我们其实可以冒出这样一句话：“其实还有一条更好的路”。
 
@@ -61,6 +61,6 @@ slug: "perfect-storm-devops-days"
 * 加入，分担一些志愿者工作，结交新朋友。
 * 分享，为这个社区注入新鲜的知识和经验，社区需要更多这样的人，需要有更多的人可以成长为分享者，分享也是一种更高阶的学习。
 
-中国DevOpsDays社区的官网是： http://ChinaDevOpsDays.org
+中国DevOpsDays社区的官网是： <http://ChinaDevOpsDays.org>
 
 .

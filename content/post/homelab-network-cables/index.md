@@ -20,7 +20,7 @@ toc:  false
 从 homelab 的规模上来说，我的这个并不算什么，可是从设备的种类和目标上来说，就稍微有点复杂了，和我多年积累电子设备有关，和我的好奇心有关。
 
 * cisco ccna lab: router = 2x2800 + 1x2600, sw = 2 x 3560; firewall = 1x pix 515; 希望有机会用他们恢复一下我生锈的网络知识。
-* 4 x raspberry pi ，没有玩多久就放一边吃灰了。 
+* 4 x raspberry pi ，没有玩多久就放一边吃灰了。
 * 2 x MacBook Pro，之中一台 2011 年的老款，外壳上亮灯型号。1 x MacBook
 * 1 x Hp Z420 当时想用来做 TrueNAS 的，后来运行 esxi 了。
 * 1 x Dell R220，身材精干，莫却虽小五脏俱全的企业级服务器。
@@ -36,7 +36,7 @@ toc:  false
 
 * VLAN ：必用功能，特别是在虚拟化场景和多个子网隔离的需求下。
 * Trunk / Access mode 端口：VLAN+Access port 的模式是最多用的；在 esxi 虚拟化服务器上会用到 VLAN+Trunk port 的需求。
-* Routing / DHCP ： 可以开启 VLAN 之间的路由功能，由于我用 pfSense 服务器做的防火墙，因此 DHCP 和各个子网的网关都用 pfSense 服务器做了；因此这个功能在我这里就测试了一下，据说这个功能开启了以后也会比较消耗资源。 
+* Routing / DHCP ： 可以开启 VLAN 之间的路由功能，由于我用 pfSense 服务器做的防火墙，因此 DHCP 和各个子网的网关都用 pfSense 服务器做了；因此这个功能在我这里就测试了一下，据说这个功能开启了以后也会比较消耗资源。
 * 我还配备了一台  Cisco 3560 PoE-24，最初是为了试一下我的两个 PoE 供电的设备，它们是 piHat 和 海康威视监控头。不过这个设备以后主要会用于 NetDevOps 的研究，Ansible 的 Cisco 模块一直没有研究过。
 
 ## 配线架 - patch panel
@@ -56,13 +56,11 @@ toc:  false
 
 ![换下一半手工打造的粗跳线](WechatIMG155.jpeg)
 
-
 ![完全替换为细跳线，未关闭理线器盖子的状态](WechatIMG153.jpeg)
 
 ![盖上了理线架的盖子后的效果](cover.jpg)
 
 这个视觉效果应该是可以了，而且从功能上来说，理线器中宽松的空间，让我以后给不同的配线架端口变更网络配置的时候，就轻松自如多了。
-
 
 ## 网线 - cables
 
@@ -90,7 +88,3 @@ toc:  false
 * 用尼龙绷带，将位置基本上固定不变的设备的网线固定在机架的立柱上。
 * 优化核心交换机的 VLAN 配置，调整VLAN 中的端口数量。调整 esxi 服务器管理网和虚拟机网的端口配置（Trunk 配置）
 * 优化 10GB 光纤交换机上 1GB 以太网口的配置，将其作为 Trunk 模式，接入存储网 VLAN 意外的其他 VLAN。让后续 Nutanix CE 重构后，虚拟机和存储网可以都在这个万兆交换机上，但是流量是隔离开的。
-
-![可观测性简史](/img/O11y-infograph.jpg)
-> [欢迎直接开通观测云商业版，即可获得 500 元无限制代金券，](https://auth.guance.com/businessRegister?source=martinLiu)
-> [也可以选择开通个人体验版，每天有2000的免费额度畅快使用，可点此处参考费用表。](https://www.guance.com/billing#business#China?source=martinLiu)

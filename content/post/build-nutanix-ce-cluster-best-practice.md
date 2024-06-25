@@ -26,14 +26,11 @@ slug = "hci-nutanix-ce-training-camp"
 - 本地实验室网速提升到万兆以太网，尝试最新的数据中心DPU（智能网卡）、边缘计算和IoT趣味设备。
 - 排除家用 NAS主机（群晖）、ALL in One 主机、云和容器等选项
 
-
 其他可能选项
 
 - VMware 的 ESXi 平台 + VSAN ；熟悉 VMware 技术栈； 或被人带着追捧者多用。
 - Citrix 的 XenServer + 家用集中存储；少见家用的人。
 - 其他的开源虚拟化选项 Proxmox ，单机版家用服务区比较常见。
-
-
 
 ## 各种系统使用体验
 
@@ -73,12 +70,11 @@ slug = "hci-nutanix-ce-training-camp"
 
 经过一年多的扩容，截止到现在的配置如下：
 
-* 56 logical core： 2 x Intel(R) Xeon(R) CPU E5-2680 v4 @ 2.40GHz -14 core 【保持】
-* 128 GB DDR4 2011Mhz 【感谢上海网友】
-* HDD：西部数据WD 4Tb 5400rpm x 2 【增加了两块 HDD】
-* SSD：三星750 Evo 120GB，三星870 Evo 250 GB，三星870 Evo 1TB 【新增一块 SSD】
-* NIC：Boardcom BCM57412 NetXtreme-E 10Gb SPF+双口 【感谢panpan】
-
+- 56 logical core： 2 x Intel(R) Xeon(R) CPU E5-2680 v4 @ 2.40GHz -14 core 【保持】
+- 128 GB DDR4 2011Mhz 【感谢上海网友】
+- HDD：西部数据WD 4Tb 5400rpm x 2 【增加了两块 HDD】
+- SSD：三星750 Evo 120GB，三星870 Evo 250 GB，三星870 Evo 1TB 【新增一块 SSD】
+- NIC：Boardcom BCM57412 NetXtreme-E 10Gb SPF+双口 【感谢panpan】
 
 使用体验：
 
@@ -90,10 +86,10 @@ slug = "hci-nutanix-ce-training-camp"
 
 单机工作站的 HomeLab 模式无法实现，我对更多集群型软件的部署使用场景，包括：
 
-* Elasticsearch 冷热温多层架构 + ELK 全家桶的长期数据本地保留
-* 高可用 K8S 集群搭建和长期持有
+- Elasticsearch 冷热温多层架构 + ELK 全家桶的长期数据本地保留
+- 高可用 K8S 集群搭建和长期持有
 *更多 DevOps 开源工具链的搭建，新版本更新，长期随时可用
-* 还有其它，不赘述。
+- 还有其它，不赘述。
 
 ## 建议平台选型
 
@@ -111,7 +107,7 @@ slug = "hci-nutanix-ce-training-camp"
   - nvme接口：1 x M.2 - AHV 可用，ESXi不可用
   - NGFF接口:  1 x M.2 - 同上
   - sSATA x 2：空闲
-  - SATA x 6: 
+  - SATA x 6:
     - SSD1: KINGSTON 60GB x 2
     - SSD2: Samsung SSD 860  500GB + Samsung  MZ7TE 256GB
     - HDD3/4: 西部数据WD 4Tb 5400rpm x 4
@@ -158,7 +154,7 @@ slug = "hci-nutanix-ce-training-camp"
 | 超微平台 | SuperMicro X10SRL-F |/|/|/| / | 1/3/4 | 随意搭配，参考市价 |
 | 旧服务器 | Dell/Lenvov/HP/浪潮 |/|2+直通|2+直通| 1Gx2+10Gx2 | 1/3/4 | 参考市价 |
 
-### 其他组件的选择：
+### 其他组件的选择
 
 下面是对于自选平台的DYI的建议：
 
@@ -170,12 +166,11 @@ slug = "hci-nutanix-ce-training-camp"
 
 ## 集群搭建流程
 
-
 ![test machine](img/cos/2022-02-21-WechatIMG1773.jpeg)
 
 ### 准备工作
 
-注册Nutanix社区帐号，https://next.nutanix.com/，必须用公司邮箱注册，才能下载最新的Nutanix CE安装镜像，和其它相关组件。在首次登陆Nutanix CE群集的时候，也需要输入这个帐号和密码验证。
+注册Nutanix社区帐号，<https://next.nutanix.com/，必须用公司邮箱注册，才能下载最新的Nutanix> CE安装镜像，和其它相关组件。在首次登陆Nutanix CE群集的时候，也需要输入这个帐号和密码验证。
 
 准备安装镜像：
 
@@ -201,7 +196,6 @@ slug = "hci-nutanix-ce-training-camp"
 5. 同意软件许可
 6. 等待 Hypervisor （ahv一般较快，或者vsphere）成功安装
 
-
 ![hypervisor 安装过程中](img/cos/2022-02-21-WechatIMG1775.jpeg)
 
 ![hypervisor 安装完毕](img/cos/2022-02-21-WechatIMG1776.jpeg)
@@ -213,7 +207,7 @@ slug = "hci-nutanix-ce-training-camp"
 9. 在其中一个 cvm 上，运行创建 Nutanix 集群的命令， cluster create
 10. 首次登陆集群，完成初始化配置
 11. 配置并确认网络配置，在存储迟管理的地方，创建过载到所有vsphere 主机的共享 NFS 统一存储空间。存储资源就绪。
-12. 安装部署 vcenter，在 Prism 中注册 vcenter 
+12. 安装部署 vcenter，在 Prism 中注册 vcenter
 13. 安装虚拟机模版
 14. 创建虚拟机测试
 15. 运行基本的性能验收测试
@@ -272,9 +266,9 @@ slug = "hci-nutanix-ce-training-camp"
    2. 用命令 `ls /vmfs/devices/disks/` 查看系统上的所有磁盘设备，记录未挂载上的HDD的设备路径，例如：`/vmfs/devices/disks/t10.ATA_____WDC_WD40EFRX2D68N32N0_________________________WD2DWCC7K0ZN6E93`
    3. 进入 CVM 虚拟机的配置文件目录 【如：`/vmfs/volumes/NTNX-local-ds-4abcf92c-A/`】，创建所有HDD的直通磁盘，参考命令：`vmkfstools -z /vmfs/devices/disks/t10.ATA_____WDC_WD40EFRX2D68N32N0_________________________WD`
       `2DWCC7K0ZN6E93  ./wd4t-1.vmdk`
-   4.  在ESXi web client中，关机（PowerOff） CVM，修改配置
-      1. 将上一步创建的直通HDD添加进来
-      2. 修改虚拟机选项的操作系统，改为CentOS7
+   4. 在ESXi web client中，关机（PowerOff） CVM，修改配置
+   1. 将上一步创建的直通HDD添加进来
+   2. 修改虚拟机选项的操作系统，改为CentOS7
    5. 查看CVM虚拟机所有磁盘，确保所有SSD和HDD都已经加载，先不要修改其它任何配置，开机，观察虚拟机是否可以正常启动。
 
 6. ssh登陆CVM虚拟机的操作系统，使用默认用户名【nutanix】和密码【nutanix/4u】。用ping其它集群节点的（host和cvm）ip地址，确保网关和DNS服务器都可达。
@@ -300,7 +294,6 @@ HCI超融合技术对于了解它的人来说很火热，但是还有很多不�
 我们为希望学习HCI技术的朋友们创建了一个qq群，希望可以给大家带来一定帮助。扫码加入我们的QQ群。
 
 ![CVM HDD](img/cos/2022-01-04-qq.png)
-
 
 ## 下期预告
 

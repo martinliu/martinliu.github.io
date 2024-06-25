@@ -35,8 +35,8 @@ slug: "beats-implement-on-qcloud"
 
 在几分钟之后这个集群就成功创建了。查看下面这些基础的配置。
 
-* 启用 Kibana 内网地址： http://es-ot7wei87.internal.kibana.tencentelasticsearch.com:5601 用于 Bests 的 Setup 命令
-* 启用  Kibana 公网地址： https://es-ot7wei87.kibana.tencentelasticsearch.com:5601 用户Elastic Stack 的初始化配置，如创建角色和调整索引生命周期策略等。 
+* 启用 Kibana 内网地址： <http://es-ot7wei87.internal.kibana.tencentelasticsearch.com:5601> 用于 Bests 的 Setup 命令
+* 启用  Kibana 公网地址： <https://es-ot7wei87.kibana.tencentelasticsearch.com:5601> 用户Elastic Stack 的初始化配置，如创建角色和调整索引生命周期策略等。
 
 这样我们就有了一个安全、可扩展和性能足够的 ES 后台服务。
 
@@ -53,8 +53,7 @@ Beats-write 角色设置如下图所示：
 
 这个用户会用到后面的所有 Beats 配置文件中，用最小化权限用户极大的降低了数据泄露的风险。
 
-
-## Beats 初始化配置 
+## Beats 初始化配置
 
 登录准备好的一个 Linux 服务器，在这台机器上做 Beats 相关的初始化工作；也就是要执行一些列的 setup 命令；这些命令的作用是：
 
@@ -107,7 +106,6 @@ sh add-agent.sh
 * 建议根据需求增加 beats 相关的模块
 * 根据需求加入必要的 Beat 配置参数
 
-
 实例配置文件如。
 
 filebeat.yml
@@ -153,7 +151,6 @@ queue.spool: ~
 monitoring:
   enabled: true
 ```
-
 
 metricbeat.yml
 
@@ -215,7 +212,6 @@ monitoring:
 
 ## 排错方法
 
-
 ### filebeat setup 不成功
 
 在任何 beats 首次做 setup 命令的时候，它可能是会在分钟级别成功结束。如果发生失败或者卡顿的情况，可以等一下，等更长时间看看。不成功的话，需要反复执行，排查 es 和 kibana 服务是否能正常工作。知道陈功了，才能进行下一步的安装工作。
@@ -232,6 +228,4 @@ monitoring:
 
 以上是在 Beats 部署相关基础最佳实践，也就是说在生产环境中 ES 后台和 beats 的搭配，以及本文所涉及的内容都是基线配置。建议根据自己的需求做更多的调优，这里使用 shell 脚本的方式部署 beats 和相关的配置，shell 脚本适合用于演示原理，建议替换成你所熟悉的自动化运维工具，例如 ansible 等工具。从而保证更大规模的自动化部署和维护。
 
-本相关的配置文件和脚本位于：https://github.com/martinliu/elastic-stack-lab.git
-
-
+本相关的配置文件和脚本位于：<https://github.com/martinliu/elastic-stack-lab.git>

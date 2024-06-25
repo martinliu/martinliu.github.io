@@ -1,5 +1,5 @@
 ---
-title: "Container Orchestration Wars"
+title: "容器编排器之战"
 date: 2018-01-12T23:33:32+08:00
 draft: false
 subtitle: "虽然容器编排器之战已经被K8s终结，可是这篇文章对架构分层的整理和分析还是值得架构师们借鉴的"
@@ -8,8 +8,6 @@ tags: ["container"]
 image:  "images/abstract-11.jpg"
 slug: "container-orchestration-wars"
 ---
-
-# 容器编排器之战
 
 K8s在2017年底为这场速战速决的站点话上了句号，结果是所有竞争对手都选择了增加对K8s的支持。在各自的编排器框架里内置了K8s。本文是根据Mesosphere公司的大拿Karl KARL ISENBERG在各种大会上分享过多次的一份演讲稿改版的。
 
@@ -22,18 +20,17 @@ K8s在2017年底为这场速战速决的站点话上了句号，结果是所有�
 
 做过的产品?
 
-- DC/OS
-- opensource
-- CloudFoundry
-- BOSH
+* DC/OS
+* opensource
+* CloudFoundry
+* BOSH
 
 联络信息：
 
-- github.com/karlkfi
-- twitter.com/karlkfi
-- linkedin.com/in/karlkfi
-- karl.isenberg.us
-
+* github.com/karlkfi
+* twitter.com/karlkfi
+* linkedin.com/in/karlkfi
+* karl.isenberg.us
 
 ## 基础架构的进化
 
@@ -55,12 +52,11 @@ K8s在2017年底为这场速战速决的站点话上了句号，结果是所有�
 * Data Replication  区内数据多副本
 * Data Synchronization   跨区数据同步
 
-
 ### 可扩展的微服务架构
 
 ![Screen Shot 2018-01-12 at 11.50.47 P](images/Screen%20Shot%202018-01-12%20at%2011.50.47%20PM.png)
 
-上图出处：Wheel of Doom ，来自[ A Journey into Microservices by Hailo](https://sudo.hailoapp.com/services/2015/03/09/journey-into-a-microservice-world-part-3/)
+上图出处：Wheel of Doom ，来自[A Journey into Microservices by Hailo](https://sudo.hailoapp.com/services/2015/03/09/journey-into-a-microservice-world-part-3/)
 
 ### 应用+裸金属服务器
 
@@ -69,10 +65,7 @@ PROVISIONING
 ON
 BARE METAL
 
-
 ![Screen Shot 2018-01-12 at 11.54.26 P](images/Screen%20Shot%202018-01-12%20at%2011.54.26%20PM.png)
-
-
 
 ### 应用+IaaS
 
@@ -92,7 +85,6 @@ source infrastructure.”
 --Brian Stein (Rackspace VP - 2017)
 
 ![Screen Shot 2018-01-12 at 11.58.36 P](images/images/Screen%20Shot%202018-01-12%20at%2011.58.36%20PM.png)
-
 
 ### 应用+PaaS/aPaaS+IaaS
 
@@ -129,7 +121,6 @@ experience.”
 
 ![Screen Shot 2018-01-13 at 12.08.37 A](images/Screen%20Shot%202018-01-13%20at%2012.08.37%20AM.png)
 
-
 ### CaaS+IaaS
 
 CONTAINER
@@ -140,7 +131,6 @@ INFRASTRUCTURE
 PLATFORM
 (IaaS)
 ![Screen Shot 2018-01-13 at 12.10.28 A](images/Screen%20Shot%202018-01-13%20at%2012.10.28%20AM.png)
-
 
 ### CaaS+裸金属服务器
 
@@ -167,7 +157,6 @@ PLATFORM
 
 ![Screen Shot 2018-01-13 at 12.13.46 A](images/Screen%20Shot%202018-01-13%20at%2012.13.46%20AM.png)
 
-
 ### FaaS+CaaS
 
 FUNCTION
@@ -192,7 +181,6 @@ INFRASTRUCTURE PLATFORM
 
 ![Screen Shot 2018-01-13 at 6.44.49 A](images/Screen%20Shot%202018-01-13%20at%206.44.49%20AM.png)
 
-
 ## 平台频谱 - PLATFORM SPECTRUM
 
 从左到右，资源的抽象程度不断提高；最左侧的弹性最高，最右侧的速率最高。
@@ -206,27 +194,25 @@ INFRASTRUCTURE PLATFORM
 容器编排器的层次如下：
 ![Screen Shot 2018-01-13 at 6.49.36 A](images/Screen%20Shot%202018-01-13%20at%206.49.36%20AM.png)
 
-- User workloads 用户工作负载
-- Distributed container management 分布式容器管理
-- Local container management 本地容器管理
-- Container agnostic infrastructure 容器无关性基础架构
+* User workloads 用户工作负载
+* Distributed container management 分布式容器管理
+* Local container management 本地容器管理
+* Container agnostic infrastructure 容器无关性基础架构
 
 容器平台的层次如下：
 ![Screen Shot 2018-01-13 at 6.51.23 A](images/Screen%20Shot%202018-01-13%20at%206.51.23%20AM.png)
 
 CONTAINER PLATFORM
 
-- User workloads 用户工作负载
-- System management & service enablement  系统管理和服务管理
-- Distributed container management 分布式容器管理
-- Local container management 本地容器管理
-- Container aware infrastructure 容器感知的基础架构
-- Container agnostic infrastructure 容器无关的基础架构
-
+* User workloads 用户工作负载
+* System management & service enablement  系统管理和服务管理
+* Distributed container management 分布式容器管理
+* Local container management 本地容器管理
+* Container aware infrastructure 容器感知的基础架构
+* Container agnostic infrastructure 容器无关的基础架构
 
 分布式操作系统的层次如下：
 ![Screen Shot 2018-01-13 at 6.52.52 A](images/Screen%20Shot%202018-01-13%20at%206.52.52%20AM.png)
-
 
 ## 容器平台功能点
 
@@ -238,206 +224,204 @@ CAPABILITIES
 
 1 容器
 
-- Resource Isolation
-- Resource Constraints
-- Process Tree
-- Environment Isolation
-- Shell / Exec
+* Resource Isolation
+* Resource Constraints
+* Process Tree
+* Environment Isolation
+* Shell / Exec
 
 2 镜像
 
-- Build
-- Layers
-- Download
-- Cache
-- Publish
-- Prune
+* Build
+* Layers
+* Download
+* Cache
+* Publish
+* Prune
 
 3 网络
 
-- Container
-- Bridge
-- Host
-- Virtual
-- Overlay
-- Remote
-- User-defined
-- Port Mapping
+* Container
+* Bridge
+* Host
+* Virtual
+* Overlay
+* Remote
+* User-defined
+* Port Mapping
 
 4 数据卷
-- Ephemeral
-- Host
-- Backup / Restore
-- Copy In / Out
-- Shared
 
+* Ephemeral
+* Host
+* Backup / Restore
+* Copy In / Out
+* Shared
 
 ### 编排器的能力
 
 调度
 
-- Placement
-- Replication/Scaling
-- Readiness Checking
-- Resurrection
-- Rescheduling
-- Rolling Updates
-- Collocation
-- Daemons
-- Cron Jobs
+* Placement
+* Replication/Scaling
+* Readiness Checking
+* Resurrection
+* Rescheduling
+* Rolling Updates
+* Collocation
+* Daemons
+* Cron Jobs
 
 资源管理
 
-- Memory
-- CPU
-- GPU
-- Ephemeral Volumes
-- Remote Persistent Volumes
-- Local Persistent Volumes
-- Ports
-- IPs (per container)
+* Memory
+* CPU
+* GPU
+* Ephemeral Volumes
+* Remote Persistent Volumes
+* Local Persistent Volumes
+* Ports
+* IPs (per container)
 
 服务管理
 
-- Labels
-- Groups/Namespaces
-- Dependencies
-- Load Balancing (L7)
-- VIPs (L3/L4 LB)
-- DNS
-- DNS Proxy
-- Secrets
-- Config Mgmt
+* Labels
+* Groups/Namespaces
+* Dependencies
+* Load Balancing (L7)
+* VIPs (L3/L4 LB)
+* DNS
+* DNS Proxy
+* Secrets
+* Config Mgmt
 
 ### 运维方面的能力
 
 管理
 
-- GUI
-- CLI
-- Metrics API
-- Logs API
-- Events API
-- Rolling Upgrades
-- Backups & Restores
+* GUI
+* CLI
+* Metrics API
+* Logs API
+* Events API
+* Rolling Upgrades
+* Backups & Restores
 
 MULTI-INFRASTRUCTURE
 
-- Multi-cloud
-- Multi-zone
-- Multi-region
-- Hybrid-cloud
-- Federation
+* Multi-cloud
+* Multi-zone
+* Multi-region
+* Hybrid-cloud
+* Federation
 
 系统服务
 
-- Auto-Scaling
-- Package Management
-- Service Catalog
-- Service Brokers
-- Admin Proxy
-- API Gateway
+* Auto-Scaling
+* Package Management
+* Service Catalog
+* Service Brokers
+* Admin Proxy
+* API Gateway
 
 ### 平台的能力
 
 容器网络
 
-- Overlay
-- Routing
-- Network Address Translation (NAT)
-- Firewalls
-- Access Control Lists
-- Quality of Service
+* Overlay
+* Routing
+* Network Address Translation (NAT)
+* Firewalls
+* Access Control Lists
+* Quality of Service
 
 容器存储
 
-- Local Volumes
-- Remote Volumes
-- Block Storage
-- File System Storage
-- Object Storage
+* Local Volumes
+* Remote Volumes
+* Block Storage
+* File System Storage
+* Object Storage
 
 平台数据库
 
-- Lock Service
-- Key-Value Database
-- Relational Database
-- Time Series Database
+* Lock Service
+* Key-Value Database
+* Relational Database
+* Time Series Database
 
 安全
 
-- User Accounts
-- Service Accounts
-- System/User Space
-- E2E Encryption
-- Non-root User Workloads
-- Audit Logging
-- Public Key Infrastructure
-- Certifications
+* User Accounts
+* Service Accounts
+* System/User Space
+* E2E Encryption
+* Non-root User Workloads
+* Audit Logging
+* Public Key Infrastructure
+* Certifications
 
 多租户
 
-- User Groups
-- Permissions
-- RBAC
-- ABAC
-- Resource Sharing
-    - FIFO
-    - Fair
-    - Quotas
-- Branding
-- Quality of Service
+* User Groups
+* Permissions
+* RBAC
+* ABAC
+* Resource Sharing
+  * FIFO
+  * Fair
+  * Quotas
+* Branding
+* Quality of Service
 
 非功能需求
 
 稳定性
 
-- Performance
-- Responsiveness
-- Efficiency
+* Performance
+* Responsiveness
+* Efficiency
 
 可用性
 
-- Fault Tolerance
-- Robustness,
-- Reliability,
-- Resilience,
-- Disaster Recovery
+* Fault Tolerance
+* Robustness,
+* Reliability,
+* Resilience,
+* Disaster Recovery
 
 灵活性
 
-- Format Support,
-- Interoperability,
-- Extensibility,
-- Container Runtimes
+* Format Support,
+* Interoperability,
+* Extensibility,
+* Container Runtimes
 
 可用度
 
-- Familiarity,
-- Maintainability,
-- Compatibility,
-- Debuggability
+* Familiarity,
+* Maintainability,
+* Compatibility,
+* Debuggability
 
 可移植性
 
-- Host OS,
-- Cloud,
-- Bare-Metal,
-- Hybrid
+* Host OS,
+* Cloud,
+* Bare-Metal,
+* Hybrid
 
 安全性
 
-- Encryption Quality,
-- Vulnerability Process,
-- Fast Patching,
-- Backporting
+* Encryption Quality,
+* Vulnerability Process,
+* Fast Patching,
+* Backporting
 
 ## 容器平台对比
 
-
 市场里的主要技术厂商如下。
 ![Screen Shot 2018-01-13 at 6.57.44 A](images/Screen%20Shot%202018-01-13%20at%206.57.44%20AM.png)
-
 
 其它值得考虑的厂商如下。
 
@@ -468,78 +452,75 @@ MULTI-INFRASTRUCTURE
 
 KUBERNETES
 
-- Huge community
-- Solid API
-- Some assembly required
-- Multitude of vendors/installers
+* Huge community
+* Solid API
+* Some assembly required
+* Multitude of vendors/installers
 
 OPENSHIFT
 
-- Application platform based on Kubernetes
-- Always trailing Kubernetes releases
-- No assembly required
-- Open core, enterprise platform
+* Application platform based on Kubernetes
+* Always trailing Kubernetes releases
+* No assembly required
+* Open core, enterprise platform
 
 DC/OS
 
-- Runs native applications (non-Docker)
-- Specialized in data services
-- Ambitious scope (on-prem AWS)
-- No assembly required
-- Open core, enterprise platform
+* Runs native applications (non-Docker)
+* Specialized in data services
+* Ambitious scope (on-prem AWS)
+* No assembly required
+* Open core, enterprise platform
 
 DOCKER
 
-- Huge community
-- Fast moving API
-- Integrated orchestration and runtime
-- Recent pivot from runtime to orchestration
-- Open core, enterprise platform
+* Huge community
+* Fast moving API
+* Integrated orchestration and runtime
+* Recent pivot from runtime to orchestration
+* Open core, enterprise platform
 
 ### 第二阵营：轻量级
 
 EC2 CONTAINER SERVICE (ECS)
 
-- Hosted-only solution
-- Tight integration with AWS services
-- Closed platform
+* Hosted-only solution
+* Tight integration with AWS services
+* Closed platform
 
 RANCHER CATTLE
 
-- Gateway to Kubernetes, Mesos, and Docker
-- Open platform, enterprise support
+* Gateway to Kubernetes, Mesos, and Docker
+* Open platform, enterprise support
 
 NOMAD
 
-- Provisioner with orchestration features
-- Runs native applications (non-Docker)
-- Tight integration with Vault and Consul
-- Some assembly required
-- Open platform, enterprise support
+* Provisioner with orchestration features
+* Runs native applications (non-Docker)
+* Tight integration with Vault and Consul
+* Some assembly required
+* Open platform, enterprise support
 
 KONTENA
 
-- Simple to set up
-- No assembly required
-- Open core, enterprise platform
+* Simple to set up
+* No assembly required
+* Open core, enterprise platform
 
 ### Karl个人的考察点？
 
-
-- Which is more important to you: **velocity or flexibility**?
-- Do you want an **opinionated** application platform?
-- Do you need to support **Big Data** initiatives and pipelines?
-- Do you want a **hosted** solution?
-- Are you willing to **build out your own integrations**?
-- Do you need **on-prem & hybrid** capabilities?
-- Do you want to avoid infrastructure **lock-in**?
-- Are you already invested in a specific infrastructure?
-- Are you already invested in a specific operating system?
-- Do you need **federation and multi-region **support?
-- Do you want **multi-tenancy** or is multi-instance good enough?
-- How important are seamless automated **rolling upgrades**?
-- **How many nines** do your customers need?
-- How important is reverse compatibility & API **stability**?
-- Do you need to support **non-Docker workloads**?
-
-
+* Which is more important to you: **velocity or flexibility**?
+* Do you want an **opinionated** application platform?
+* Do you need to support **Big Data** initiatives and pipelines?
+* Do you want a **hosted** solution?
+* Are you willing to **build out your own integrations**?
+* Do you need **on-prem & hybrid** capabilities?
+* Do you want to avoid infrastructure **lock-in**?
+* Are you already invested in a specific infrastructure?
+* Are you already invested in a specific operating system?
+* Do you need **federation and multi-region**support?
+* Do you want **multi-tenancy** or is multi-instance good enough?
+* How important are seamless automated **rolling upgrades**?
+* **How many nines** do your customers need?
+* How important is reverse compatibility & API **stability**?
+* Do you need to support **non-Docker workloads**?

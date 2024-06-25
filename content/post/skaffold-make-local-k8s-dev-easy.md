@@ -20,7 +20,6 @@ slug: "skaffold-make-local-k8s-dev-easy"
 
 ![](/images/intro.gif)
 
-
 Skaffold Google 开发的一个开源项目。是一个非常轻量的命令行工具，就是一个可执行文件。它的主页上是这样的介绍它的。
 
 * 轻量：Skaffold只是一个客户端工具。由于集群上不需要任何的相关组件，您的集群没有任何开销或维护负担。
@@ -40,7 +39,6 @@ Warren Strange，ForgeRock的工程总监。
 "当我们评估我们可以使用Kubernetes的工作流程时，Skaffold脱颖而出，成为我们在开发和部署中都想要的工具。它为我们提供了一个跨应用程序的通用入口点，我们也可以为CI/CD重用。现在，我们所有的Kubernetes应用的CI/CD管道在构建和部署时都使用Skaffold。"
 Taylor Barrella，Quora的软件工程师
 
-
 ![](/images/tng.png)
 
 "Skaffold是一个了不起的工具，它为我们简化了开发和交付。Skaffold通过覆盖两个维度，击中了我们的甜蜜点。第一，从本地开发、集成测试到交付的整个开发周期。第二，Skaffold让我们能够在Linux、OSX和Windows上独立开发，不需要特定的平台逻辑。"
@@ -50,7 +48,7 @@ Martin Höfling，TNG技术咨询有限公司首席顾问
 
 前置条件，你的开发用工作电脑上已经安装了它需要调用的 kubectl 和 docker 命令，kubectl 需要有至少一个可用的配置，这个配置可以指向任一一个你有权限部署的 Kubernetes 集群。
 
-我在 macOS 上，直接运行 `‌brew install skaffold` 即可，其它系统参考：https://skaffold.dev/docs/install/
+我在 macOS 上，直接运行 `‌brew install skaffold` 即可，其它系统参考：<https://skaffold.dev/docs/install/>
 
 克隆 Skaffold 的代码库到本地，获取必要的测试应用代码。
 
@@ -60,7 +58,7 @@ Martin Höfling，TNG技术咨询有限公司首席顾问
 
 执行：`‌cd skaffold/examples/getting-started`
 
-执行 `‌skaffold dev` ，你会看到 Skaffold 进入了这个项目的构建和运行的状态，执行结果是持续的输出 ”[getting-started] Hello world!“ 
+执行 `‌skaffold dev` ，你会看到 Skaffold 进入了这个项目的构建和运行的状态，执行结果是持续的输出 ”[getting-started] Hello world!“
 
 现在 Skaffold 就进入了 /getting-started 的监视状态。观察任何代码文件的修改存盘动作，每次代码的变更会触发 Skaffold 流水线的执行，skaffold.yaml 文件中描述了本地流水线中的相关动作：
 
@@ -84,22 +82,21 @@ Skaffold 主要会用到五个阶段。
 
 其所有阶段如下：
 
-* Init ：	generate a starting point for Skaffold configuration	
-* Build ：build images with different builders	
-* Tag ：	tag images based on different policies	
-* Test	 ：test images with structure tests	
-* Deploy	 ：deploy with kubectl, kustomize or helm	
-* File Sync ：	sync changed files directly to containers	
-* Log ： Tailing	tail logs from workloads	
-* Port Forwarding	 ：forward ports from services and arbitrary resources to localhost	
-* Cleanup ：	cleanup manifests and images
+* Init ： generate a starting point for Skaffold configuration 
+* Build ：build images with different builders 
+* Tag ： tag images based on different policies 
+* Test  ：test images with structure tests 
+* Deploy  ：deploy with kubectl, kustomize or helm 
+* File Sync ： sync changed files directly to containers 
+* Log ： Tailing tail logs from workloads 
+* Port Forwarding  ：forward ports from services and arbitrary resources to localhost 
+* Cleanup ： cleanup manifests and images
 
 当你启动Skaffold时，它就会收集你项目中的源代码，并使用你所选择的工具构建工件；工件一旦成功构建，就会根据你的需要进行标记，并推送到你指定的仓库中。在工作流程的最后，Skaffold还帮助你将工件部署到你的Kubernetes集群中，同样使用你喜欢的工具。
 
 Skaffold允许你跳过各个阶段。例如，如果你在本地使用Minikube运行Kubernetes，Skaffold不会将工件推送到远程仓库。
 
-每个阶段的详情见：https://skaffold.dev/docs/pipeline-stages/
-
+每个阶段的详情见：<https://skaffold.dev/docs/pipeline-stages/>
 
 ## 架构设计
 
@@ -110,25 +107,26 @@ Skaffold 秉承着插件化的设计思想。
 以上架构内置了对下来工具的支持：
 
 * Build
-	- Dockerfile locally, in-cluster with kaniko or on cloud using Google Cloud Build
-	- Jib Maven and Jib Gradle locally or on cloud using Google Cloud Build
-	- Bazel locally
-	- Cloud Native Buildpacks locally or on cloud using Google Cloud Build
-	- Custom script locally or in-cluster
+ 	* Dockerfile locally, in-cluster with kaniko or on cloud using Google Cloud Build
+ 	* Jib Maven and Jib Gradle locally or on cloud using Google Cloud Build
+ 	* Bazel locally
+ 	* Cloud Native Buildpacks locally or on cloud using Google Cloud Build
+ 	* Custom script locally or in-cluster
 * Test
-	- container-structure-test
+ 	* container-structure-test
 * Tag
-- 	Git tagger
-- 	Sha256 tagger
-- 	Env Template tagger
-- 	DateTime tagger
-* Deploy
-- 	Kubernetes Command-Line Interface (kubectl)
-- 	Helm
-- 	kustomize
 
+-  Git tagger
+*  Sha256 tagger
+*  Env Template tagger
+*  DateTime tagger
+
+* Deploy
+
+-  Kubernetes Command-Line Interface (kubectl)
+*  Helm
+*  kustomize
 
 ## 总结
 
 Skaffold 确实让基于 Kubernetes 的开发者的本地工作环境更加优化和整洁了。希望本文对你的工作有所帮助。
-

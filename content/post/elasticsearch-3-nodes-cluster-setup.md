@@ -17,20 +17,18 @@ slug: "elasticsearch-3-nodes-cluster-setup"
 * 启用 es 的 http 客户端 http.ssl 加密通讯
 * 安装脚本中包括创建数字证书的必要命令（没猜错的话，大部分人可能会在这一步花费大量时间）
 
-
 ## 演示环境介绍
 
 我使用的是本地的测试环境，环境配置如下：
 
 * Mac OS
 * vagrant
-* virtualBox  - CentOS 8 
+* virtualBox  - CentOS 8
 * Elastic Stack 7.9.0
 * ip 和主机名分配见 Vagrantfile 文件
 * Vagrant 的 vagrant-hostsupdater 插件实现了 Mac OS 主机和所有虚拟机的 host 文件 DNS 解析的同步，保证所有相关虚拟机都可以解析其它虚拟机的 FQDN，尽量模拟生产环境。
 
-本文所使用的所有配置文件和安装脚本见：https://github.com/DevOps-Coach/elasticstack.git
-
+本文所使用的所有配置文件和安装脚本见：<https://github.com/DevOps-Coach/elasticstack.git>
 
 ```
 ➜  elasticstack git:(master) ✗ vagrant up es1 es2 es3
@@ -179,7 +177,6 @@ echo Please access Elasticsearch https://192.168.50.11:9200
 说明：你也可以参考以上脚本手工执行，如果是非 Vagrant 环境，请注意替换各个命令中相关文件的路径。第二个和第三个节点的安装脚本稍有不同，详情见代码库。
 
 ## Elasticsearch 配置文件
-
 
 下面是第一个 Elasticsearch 节点的参考配置文件， es1.yml ：
 

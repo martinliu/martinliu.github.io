@@ -122,8 +122,4 @@ toc: false
 
 >本文参考《可观测性工程》第一章内容。
 
-![可观测性简史](/img/O11y-infograph.jpg)
-> [欢迎直接开通观测云商业版，即可获得 500 元无限制代金券，](https://auth.guance.com/businessRegister?source=martinLiu)
-> [也可以选择开通个人体验版，每天有2000的免费额度畅快使用，可点此处参考费用表。](https://www.guance.com/billing#business#China?source=martinLiu)
-
 ❤️ Feature Photo by Joshua Woroniecki: <https://www.pexels.com/photo/person-holding-a-compass-3832684/>

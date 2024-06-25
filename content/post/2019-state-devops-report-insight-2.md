@@ -16,13 +16,12 @@ image: "https://res.cloudinary.com/martinliu/image/upload/v1567000726/1-jafadjf.
 
 * 下载我整理的最新版的《DevOps能力成长模型》，含双模型分解图。
 * 阅读和参考前5年的DevOps状态调查报告，了解今年这份报告的历史和发展历程。以前的文章中有下载链接/二维码。
-* 阅读2019年的调查问卷的中文版，感谢中国DevOps社区翻译团队对英文原版问卷的翻译工作，如果你都不知道这些调查结果是通过什么问卷调查得出的，那真的是很可惜。如果你想用这套问卷工具在企业内部做调研，请使用前文中的免费调查服务申请流程。样例问卷的访问地址：https://www.wjx.cn/jq/43837840.aspx
+* 阅读2019年的调查问卷的中文版，感谢中国DevOps社区翻译团队对英文原版问卷的翻译工作，如果你都不知道这些调查结果是通过什么问卷调查得出的，那真的是很可惜。如果你想用这套问卷工具在企业内部做调研，请使用前文中的免费调查服务申请流程。样例问卷的访问地址：<https://www.wjx.cn/jq/43837840.aspx>
 * 在Google的网站上做极简版DevOps行业基础测试，它是6年行业调查结果数据库的首次对外开放。
-
 
 ## 模型是怎么诞生的？
 
-首先，我们需要了解一下这份持续了6年的报告是谁主导并开发的？这是一个怎样的团队？从DORA公司网站的这个页面上，可以看到团队人员介绍。https://devops-research.com/about.html 如下所示。
+首先，我们需要了解一下这份持续了6年的报告是谁主导并开发的？这是一个怎样的团队？从DORA公司网站的这个页面上，可以看到团队人员介绍。<https://devops-research.com/about.html> 如下所示。
 
 ![](https://res.cloudinary.com/martinliu/image/upload/v1567336555/1sajldfkj.png)
 
@@ -31,12 +30,11 @@ image: "https://res.cloudinary.com/martinliu/image/upload/v1567000726/1-jafadjf.
 其次，如果你也回顾了所有往届的DevOps状态调查报告，我们应该能体会到这场历时6年行业调研的基本逻辑和脉络。在第一年就已经提出了四大黄金度量指标，并且以此为主线；每年反复验证状态，以及其他相关影响因素。使用了**穷举**的逻辑，每年根据行业的发展动态，根据和其它业内大咖的讨论，适当的加入新的调查点。当然每个调查的能力点也是需要每年反复确认和验证，调查点之间的逻辑关系也越来越明显，经过二次研究之后就形成了DevOps能力成长模型。
 
 最后，DevOps能力成长模型诞生于《Accelerate:The Science of Lean Software and DevOps: Building and Scaling High Performing Technology Organizations  》这本书。
-https://www.amazon.com/Accelerate-Software-Performing-Technology-Organizations/dp/1942788339
+<https://www.amazon.com/Accelerate-Software-Performing-Technology-Organizations/dp/1942788339>
 
 ![](https://res.cloudinary.com/martinliu/image/upload/v1530036828/Accelerate.jpg)
 
 在这本书里分模块（局部）的介绍了DevOps能力模型的影响逻辑关系，从转型型领导力一直推导出模型的最右侧：组织效能和非商业效能。这个模型应该就是历届DevOps状态调查研究背后的理论基础，当然它也应该是慢慢发展和完善出来的，起码数字转型这个话题是2018年才出现的热点。模型的数值计算算法，见近两年报告的附录部分。这个模型在本书中是从各个不同的局部关系逐渐介绍的。如下图所示：
-
 
 ![](https://res.cloudinary.com/martinliu/image/upload/v1567337105/3-jsfjaksjf333.png)
 
@@ -44,18 +42,16 @@ Accelerate全书的逻辑不仅在于介绍各种DevOp实践、技术、文化�
 
 ![](https://res.cloudinary.com/martinliu/image/upload/v1567337168/4-ruwiur848.png)
 
-Accelerate这本书也提供了这幅图的电子版下载链接：https://devops-research.com/assets/transformation_practices.pdf
+Accelerate这本书也提供了这幅图的电子版下载链接：<https://devops-research.com/assets/transformation_practices.pdf>
 
 这是一份非常棒的学习资料，如果你还没有买本书的话，也可以下载学习这份精华资料。这份文档的总标题是：”调研总体策划“，除了模型之外该文档还提供了一张全面复杂的表格，表格的名字：”高效能团队，管理、领导力行为和实践调查表，由Steve Bell，Karen Whitley Bell“；如果你想对自己的组织进行全面的调研的话，这也是一份优秀的调研方案。调研的矩阵如下：
 
 * 纵向：文化、组织结构、直接学习和对齐价值、部署策略、通过分析提高流动性和训练有素的问题解决、工作方式节奏化&日常化
 * 横向：团队实践、管理实践、领导力实践。
 
-
 我很有幸2017年在北京DevOpsDays大会上参加Jez先生的培训，并获赠了Jez先生的签名版《Accelerate》纸版书，其实在这以前我已经购买了Kindle的电子版和Audible的有声书版。我反复研读了这本书的各种版本，再次强烈推荐所有DevOps相关的管理者一定要学习这本书。
 
 以书中的模型为基础，2018年的DevOps状态报告里以又进一步做了各种扩展，如果你读过去年的报告，你可以看到如下的各种局部的扩展。
-
 
 ![](https://res.cloudinary.com/martinliu/image/upload/v1567337168/7asdfweruui238.png)
 
@@ -87,7 +83,6 @@ Accelerate这本书也提供了这幅图的电子版下载链接：https://devop
 
 新增的生产力模型令我感到相当意外，它的结构如下所示：
 
-
 ![](https://res.cloudinary.com/martinliu/image/upload/v1567339754/2019-dora-prod.jpg)
 
 总之，还无法预测明年的调研范围会有怎样的更新。可以确认的是行业DevOps的能力模型是在动态变化的，想跟上世界级的水平还必须不断刷新自己的能力组合。否则你的同行的对手可能早就一骑绝尘而去了。DevOps能力发展不是一个有限游戏（例如刷黄金5级），是每年都和整个行业一起发展的无限游戏。
@@ -108,7 +103,7 @@ Accelerate这本书也提供了这幅图的电子版下载链接：https://devop
 
 ### 怎样阅读模型？
 
-报告使用了结构方程模型 （Structural equation modeling https://en.wikipedia.org/wiki/Structural_equation_modeling） ，来作为一种预测模型，用它测试各个构造之间的关系。模型中的每个方块就是一个调研度量的点，就是一个构造。剪头表示了构造之间的关系。一个大的包含多个构造的方框称之为二级构造。淡蓝色的构造表示一个控制变量，它用点线连接。
+报告使用了结构方程模型 （Structural equation modeling <https://en.wikipedia.org/wiki/Structural_equation_modeling）> ，来作为一种预测模型，用它测试各个构造之间的关系。模型中的每个方块就是一个调研度量的点，就是一个构造。剪头表示了构造之间的关系。一个大的包含多个构造的方框称之为二级构造。淡蓝色的构造表示一个控制变量，它用点线连接。
 
 在报告原文中，将第31页和57页的模型称之为全模型，见报告的27页的原文：”See pages 31 and 57 for full models.“；而在我的系列文章中，则将下图称之为全模型。
 
@@ -128,8 +123,6 @@ Accelerate这本书也提供了这幅图的电子版下载链接：https://devop
 
 投资在代码可维护性、松耦合架构和监控方面，也能同时帮助SDO效能、生产力（它们是通过消减技术债间接的影响到生产力的）。好的工具和系统也非常值得关注。
 
-
-
 ## 总结
 
 通过本文我相信你已经可以正确的理解2019年状态报告中的模型了，模型包括SDO效能模型和生产力模型。包括我绘制的全模型。希望DORA官方能后续推出官方版模型全图。
@@ -142,6 +135,4 @@ TOC是一个值得关注的问题解决套路，参考其它的相关文章和�
 
 ![](https://res.cloudinary.com/martinliu/image/upload/v1566516259/DevOps-Coach-qrcode_for_gh_bce38ef330e5_430.jpg)
 
-
 -------
-

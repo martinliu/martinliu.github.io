@@ -14,14 +14,13 @@ Nutanix是什么？中文名字是路坦力，是我目前所在的公司；我�
 
 之前也发过一些介绍Nutanix和超融合技术的文章，本文会是一篇持续更新的文章，我会把在Nutanix上开展超融合的方法，持续的更新在这里。
 
-本文上属于Beta版本，会持续更新，欢迎各种类型的反馈信息，发邮件到： martin.liu@nutanix.com
+本文上属于Beta版本，会持续更新，欢迎各种类型的反馈信息，发邮件到： <martin.liu@nutanix.com>
 
 变更日志：
 
 * 2018-2-26，发表了相关概况介绍性内容
 
 ## 什么是DevOps？
-
 
 > 我的定义：DevOps是为了将软件开发、运维和质量保证等部门紧密地协作和集成在一起，而运用的一组成熟的、相互融合在一起的最佳实践。它使人们能准时/及时地生产软件产品或服务，从而满足企业的某个业务目标，开发与运维工作将在一个统一的目标之下协同工作，它是对IT组织内部各个角色之间的相互依存关系的一种新的理解。这个实践集合主要包含了四种最佳实践，如下图所示：
 
@@ -39,7 +38,6 @@ Nutanix是什么？中文名字是路坦力，是我目前所在的公司；我�
 
 以上出自：[维基百科 Wikipedia - DevOps](http://zh.wikipedia.org/wiki/DevOps)
 
-
 ## 什么是HCI-超融合基础架构
 
 我对超融合的定义：将计算、存储和网络这三种资源的至少两种融合在一起的技术就可以称之为超融合技术。Nutanix是将计算和存储融合在了一个系统只能，这里说的系统可以理解一个物理的机箱，并且在这个机箱里搭载了目前业内最通用的KVM虚拟化功能。Nutanix的超融合系统是开箱即用的IaaS平台，可以无节点数限制的水平扩展，能够支持服务器虚拟化、VDI、Oracle RAC等关键性数据库、企业核心业务系统、大数据和私有云等工作负载。在性能和功能上是专门为HCI而打造的。HCI技术正在颠覆着传统的三层架构技术堆栈（指的是：服务器-存储网络-集中存储）。
@@ -47,7 +45,6 @@ Nutanix是什么？中文名字是路坦力，是我目前所在的公司；我�
 Nutanix在2018年Gartner融合基础架构分析报告中，Nutanix在领导象限里遥遥领先。
 
 ![Gartner 报告](http://res.cloudinary.com/martinliu/image/upload/Gartner-report-2018.png)
-
 
 2018 年 2 月 9 日，北京 ——企业云计算领域的领先企业 Nutanix（纳斯达克：NTNX）今天宣布， Gartner 将 Nutanix 评为 2018 年 Gartner 超融合基础架构（HCI）魔力象限领导者。Nutanix 认为，此次跻身“领导者”象限有力印证了 Nutanix 在其率先开拓的市场上的领导地位，也充分彰显了公司致力于提供下一代企业云操作系统的愿景。
 
@@ -69,14 +66,11 @@ Nutanix提供免费的社区版本，对此感兴趣的人都可以下载和使�
 
 关于如何安装和试用Nutanix CE版本的技术文档，访问我的Nutanix实验室文档站点：[https://nutanix.martinliu.cn/](https://nutanix.martinliu.cn/)
 
-
 ## 使用Nutanix Calm实现DevOps持续交付
 
 Nutanix是一种开箱即用的高性价比的虚拟化资源池，你可以用最小的时间成本完成大规模资源池的搭建和部署。而现实情况下：所有企业的虚拟化管理员的工作模式还是基于工单的手工VM模板克隆的方式。还没有人能将基于vm的业务系统做到自动化的持续交付。Nutanix Calm就是一项解决这个问题的技术。它是Nutanix超融合系统内置的一个功能，可以一键式的开启这项功能。
 
-
 ![Nutanix Calm](http://res.cloudinary.com/martinliu/image/upload/WechatIMG224.jpeg)
-
 
 Nutanix Calm的主要功能如下所示：
 
@@ -91,7 +85,6 @@ Nutanix Calm的蓝图编辑器如下所示。
 ![Nutanix Calm Blueprint](http://res.cloudinary.com/martinliu/image/upload/blueprint.png)
 
 在我的[Nutanix实验室：](https://nutanix.martinliu.cn/)文档站点里已经写了一些操作使用的方法和产品截图。如果您已经是Nutanix用户了，请参考和使用这些文档。如果你还不是的话，可以联系Nutanix试用这个产品。
-
 
 -------
 后续会持续更新这一部分，会根据DevOps的逻辑将Nutanix Calm的能力全面的展示出来，敬请期待。
@@ -117,9 +110,6 @@ CaaS on IaaS的简洁实现方式莫过于在Nutanix超融合平台上部署Dock
 * 不建议这个环境跑生产负载，记住不要把研发环境不算生产负载。
 * 如果需要生产级别的保障，请考虑使用费CE版本的正式Nutanix产品。
 
-
-
 ## 使用Nutanix ACS2.0实现完美的K8s体验
 
 此产品预计18年发布，敬请期待。
-

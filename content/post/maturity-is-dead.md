@@ -32,8 +32,7 @@ slug: "maturity-is-dead"
 
 ![ITIL](http://www.jp1.cn/image/h1/2_200644102151993.jpg)
 
-
-*IT与业务融合的成熟度* http://www.cio.com.cn/eyan/1431.html
+*IT与业务融合的成熟度* <http://www.cio.com.cn/eyan/1431.html>
 
 ![ITIL](http://www.cio.com.cn/source/attachments/image/20120417/20120417164221_20236.jpg)
 
@@ -44,7 +43,6 @@ slug: "maturity-is-dead"
 *持续交付流程成熟度*
 
 ![CD](http://www.ibm.com/developerworks/cn/rational/1402_zhaojing_urbancode1/image011.jpg)
-
 
 如果你百度“成熟度模型”，还可以轻易地找到很多类似模型。客观的讲，这个模型是被广泛应用的神五级。
 
@@ -89,8 +87,6 @@ IT行业每天都在发生着巨大的变化，这就是我么经常提到的乌
 ![模型](https://res.cloudinary.com/martinliu/image/upload/Accelerate.jpg)
 
 这本书的目标是解密高效能组织的高明之处，以及背后的原因。从探寻影响组织绩效的因素为起点，经过了四年的不断调研，Nicole博士向我们展示了一个相对比较完整的，各种影响因素的关系网。特别说明的是：下图来自于《加速器》这本书，这个形态是经过4年演进出来的，我们无法猜测2018年Nicole博士究竟怎样地拓展了调研的范围；更无法猜测的是：在2018年的状态报告结果中，这幅图会变成什么样子？
-
-
 
 ![开始](https://res.cloudinary.com/martinliu/image/upload/devops-cap-mod.jpg)
 
@@ -155,5 +151,3 @@ Nicole博士总结出了DevOps能力的5大分类，包含的能力点有24项�
 * 度量关键产出：这些指标是衡量你的团队软件交付的好坏与否的一个高阶的度量。相关指标有：IT效能、前置时间、部署频率、MTTR、变更失败率、加班程度和部署痛点。
 * 能力驱动的改进：这些能力是你提升关键产出的抓手。由于你提高了一些能力，你在这些能力得到提升的同时，还能更快且可靠的交付软件。
 * 按优先级改进：通过能力模型的评估，你识别出了那些能力约束点/瓶颈，是它们在阻止你达到更高的技术阶段，然后确定那些能力需要先优先发展。
-
-

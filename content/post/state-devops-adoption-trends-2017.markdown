@@ -12,13 +12,11 @@ slug: state-devops-adoption-trends-2017
 
 在过去的一两年里DevOps持续升温，逐渐成为一场IT行业内的谁不可回避的运动。
 
-
 ## DevOps 定义
 
 ![1-X](/images/1-X.jpg)
 
 我个人是一直以来反对给DevOps做一个名词解释样式的定义的。不过这种需求实在强大，摘抄几条供大家参考，上图是一种定义。
-
 
 > 定义2：You cannot buy DevOps and install it. DevOps is not just automation or infrastructure as code. DevOps is people following a process enabled by products to deliver value to end users.   -- Donovan Brown, Microsoft DevOps Program Manager
 
@@ -35,16 +33,16 @@ slug: state-devops-adoption-trends-2017
 以上结果来自Google趋势，上图是从2004年到现在，一共13年的趋势图。下面再看一下最近五年的趋势详情。
 
 ### 最近5年的搜索趋势
+
 ![2-2](/images/2-2.png)
 
 ### 国际关注度
+
 ![2-1](/images/2-1.png)
 
-
 ### 相关话题和查询
+
 ![2-3](/images/2-3.png)
-
-
 
 ## 关注者年龄和性别
 
@@ -56,6 +54,7 @@ slug: state-devops-adoption-trends-2017
 上图是性别分布情况。
 
 ## DevOps应用状态
+
 ![5](/images/5.jpg)
 
 * 正在应用的:从66%上升到74%
@@ -63,6 +62,7 @@ slug: state-devops-adoption-trends-2017
 * 不知道的：从15%下降到6%
 
 ## DevOps Checklist
+
 不管你做不做DevOps？不管你知不知道你是不是DevOps？不管你从哪个角度入手DevOps？看看这个清单中有几项和您相关，就知道你和DevOps的关系是否密切。
 ![6](/images/6.jpg)
 
@@ -70,10 +70,9 @@ slug: state-devops-adoption-trends-2017
 
 * 基础架构即代码
 * 每天多次部署
-    * 研发人员直接部署都生产环境
-    * 研发和运维共同奋战在支持的一线
+  * 研发人员直接部署都生产环境
+  * 研发和运维共同奋战在支持的一线
 * 消除研发和运维的部门墙
-
 
 ## DevOps流程
 
@@ -109,11 +108,10 @@ slug: state-devops-adoption-trends-2017
 6. 自动化测试和持续测试将变得更加普遍，且更加重要。
 7. 必须拥有的工具和平台，包括Docker、AWS、GitHub和JIRA将在开发者社区更受欢迎。
 
-
 本文参考来源：
 
-* http://www.rightscale.com/blog/cloud-industry-insights/new-devops-trends-2016-state-cloud-survey
-* https://www.storybase.com
-* http://pt.slideshare.net/johnpviner/devops-be-careful-what-you-wish-for
-* https://en.wikipedia.org/wiki/DevOps
-* http://www.Google.com
+* <http://www.rightscale.com/blog/cloud-industry-insights/new-devops-trends-2016-state-cloud-survey>
+* <https://www.storybase.com>
+* <http://pt.slideshare.net/johnpviner/devops-be-careful-what-you-wish-for>
+* <https://en.wikipedia.org/wiki/DevOps>
+* <http://www.Google.com>

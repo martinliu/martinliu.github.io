@@ -8,12 +8,9 @@ categories: ["Cloud"]
 slug: nutanix-dvp
 ---
 
-本文介绍如何用Docker卷插件的方式，给Docker Swarm的群集挂载Nutanix存储。[Nutanix Container Volume Plug-in ](https://store.docker.com/plugins/nutanix-dvp-docker-volume-plug-in)简称DVP，可以给容器提供数据持久化的功能。
+本文介绍如何用Docker卷插件的方式，给Docker Swarm的群集挂载Nutanix存储。[Nutanix Container Volume Plug-in](https://store.docker.com/plugins/nutanix-dvp-docker-volume-plug-in)简称DVP，可以给容器提供数据持久化的功能。
 
 本文使用ownCloud网盘应用做功能测试。测试的过程如下，安装部署Docker Datacenter，配置好群集，在UCP的界面里调用DVP插件建持久的数据卷，建立ownCloud服务，部署和测试该服务。
-
-
-
 
 ## Nutanix DVP (Docker Volume Plug-in)安装和配置
 
@@ -114,7 +111,6 @@ gpgcheck=1
 gpgkey=https://download.docker.com/linux/centos/gpg
 ```
 
-
 本机所使用的所有安装源如下：
 
 ```
@@ -161,7 +157,6 @@ repolist: 23,415
 [https://store.docker.com/plugins/nutanix-dvp-docker-volume-plug-in](https://store.docker.com/plugins/nutanix-dvp-docker-volume-plug-in)
 
 下面是给操作系统安装iscsi initiator服务的参考步骤：
-
 
 ```
 yum install -y iscsi-initiator-utils 
@@ -232,6 +227,7 @@ f0e38fbc11b3        nutanix:latest      Nutanix volume plugin for docker   true
 ```
 
 执行下面的测试，确认DVP工作正常。
+
 ```
 [root@centos7-temp]# docker volume create testvol -d nutanix:latest
 testvol
@@ -243,9 +239,7 @@ nutanix:latest      testvol
 
 回到Nutanix的Prisum界面（主要的群集管理图形化界面）中查看Storage --> table  --> Volume Group，应该能看到这个命令所创建的名为testvol的数据卷。如下图所示：
 
-
 ![](/images/Screen%20Shot%202017-06-20%20at%209.07.13%20PM.png)
-
 
 在命令行删除这个测试的卷。
 
@@ -258,7 +252,6 @@ DRIVER              VOLUME NAME
 ```
 
 在回到Prisum界面中查看刚才看到的那个卷应该就消失了。到此为止所有节点的DVP部署配置工作就完毕了，并且确认docker服务和DVP功能都很正常。用 sys-unconfig 命令关机，把这个虚拟机在Prisum里面做一个快照备用，也可以在Nutanix的acli命令行里面把它做成一个基础镜像。
-
 
 我们已经理解和熟悉了DVP的基本操作，配置和部署，下面开始安装Docker Datacenter；Docker Datacenter的架构图如下所示：
 ![](/images/14979754711332.jpg)
@@ -279,7 +272,7 @@ DRIVER              VOLUME NAME
 
 在Nutanix的Prisum中从刚才新建的四个虚拟机中选择一个，Power on开机；ssh登录到操作系统内之后，设定主机名和IP地址。
 
-安装配置参考文档：https://docs.docker.com/datacenter/ucp/2.1/guides/admin/install/install-offline/#download-the-offline-package
+安装配置参考文档：<https://docs.docker.com/datacenter/ucp/2.1/guides/admin/install/install-offline/#download-the-offline-package>
 
 注意事项，提前下载好安装包，这个tar包里面包含了UCP需要的所有镜像，可以一次性导入到UCP的节点上。
 
@@ -324,7 +317,7 @@ docker run --rm -it --name ucp \
 
 参考以下文档，完成UCP的安装步骤，其中需要到Docker网站获得30天的试用版许可证文件。
 
-https://docs.docker.com/datacenter/ucp/2.1/guides/admin/install/
+<https://docs.docker.com/datacenter/ucp/2.1/guides/admin/install/>
 
 能够正常登陆访问UCP之后，在首页下方点击 【Add Node】按钮，获得加其它节点到群集里的命令，参考命令如下：
 
@@ -349,9 +342,6 @@ docker swarm join \
 下面就可以把上一步所记录命令在命令行里面执行以下，完毕之后回到UCP的界面中查看是否它们已经添加成功。如下图所示：
 ![Screen Shot 2017-06-20 at 9.49.32 P](/images//Screen%20Shot%202017-06-20%20at%209.49.32%20PM.png)
 
-
-
-
 ## 安装DTR-Docker镜像仓库
 
 在UCP首页的下方，找到并点击 【Install DTR】的按钮，取得安装命令（记得从清单中选择固定IP地址的DTR主机）；在登录DTR主机的控制台里面输入这个命令，命令如下：
@@ -366,7 +356,7 @@ docker run -it --rm \
 DTR节点没有离线安装的整合包，它需要联网下载很多相关镜像，如果网络速度不是很快的话，下载和安装的过程需要至少半个小时，过程中还需要输入UCP的管理员，用户名和密码。
 
 参考文档如：
-https://docs.docker.com/datacenter/dtr/2.2/guides/admin/install/#step-3-install-dtr
+<https://docs.docker.com/datacenter/dtr/2.2/guides/admin/install/#step-3-install-dtr>
 
 DTR正常工作了以后，登录建立一个名为owncloud的镜像库，点击【New Rrepository】输入owncloud。
 在一个节点上下载owncloud镜像，添加新的tag，上传到这个镜像到镜像库里备用。参考命令如下：
@@ -377,15 +367,15 @@ docker pull owncloud
 docker tag owncloud:latest dtr.zenlab.local/admin/owncloud:latest
 docker push dtr.zenlab.local/admin/owncloud:latest
 ```
+
 ![Screen Shot 2017-06-20 at 10.10.13 P](/images/Screen%20Shot%202017-06-20%20at%2010.10.13%20PM.png)
-
-
 
 注意：如果你的环境中没有DNS，就把dtr.zenlab.local换成DTR的IP地址。
 
 以上这个步骤主要是方便以后，反复使用和测试这个镜像的可能性，如果所有的节点都有高速的互联网链接，可以忽略以上步骤。
 
 ## Docker Swarm群集中使用DVP
+
 这里使用UCP的图形化界面，在一个所有节点都配置和部署了VDP的群集上，给群集挂载外部Nutanix的数据卷。
 
 登录UCP主页，点击Resource，点击Volumes，点击 【Create Volume】，输入相关参数，如下图所示。图中的sizeMb=500000这个参数是制定VolumeGroup的大小，不设定这个参数的话，默认是10GB。
@@ -395,20 +385,16 @@ docker push dtr.zenlab.local/admin/owncloud:latest
 
 ![Screen Shot 2017-06-21 at 12.23.32 A](/images/Screen%20Shot%202017-06-21%20at%2012.23.32%20AM.png)
 
-
 ## 部署OwnCloud网盘服务
 
 登录UCP主页，点击 Service ， 点击 【Create a Service】按钮；开始建立这个服务。输入服务名，镜像名；点击 【Next】按钮。
 
 ![Screen Shot 2017-06-20 at 10.49.10 P](/images/Screen%20Shot%202017-06-20%20at%2010.49.10%20PM.png)
 
-
 点击 【Next】按钮。进入 Resource页面，这里需要配置端口和数据卷。
 ![Screen Shot 2017-06-20 at 10.49.35 P](/images/Screen%20Shot%202017-06-20%20at%2010.49.35%20PM.png)
 
 ![Screen Shot 2017-06-20 at 10.49.58 P](/images/Screen%20Shot%202017-06-20%20at%2010.49.58%20PM.png)
-
-
 
 最后点击【Deploy Now】按钮。 部署完毕之后，显示这个服务的状态为正常。
 ![Screen Shot 2017-06-21 at 12.25.51 A](/images/Screen%20Shot%202017-06-21%20at%2012.25.51%20AM.png)
@@ -418,12 +404,9 @@ docker push dtr.zenlab.local/admin/owncloud:latest
 点击这个服务，到这个页面的最下方，找到右下角的发布端口的链接，点击后，就可以看到ownCloud的初始化配置页面了。
 ![Screen Shot 2017-06-20 at 10.53.24 P](/images/Screen%20Shot%202017-06-20%20at%2010.53.24%20PM.png)
 
-
-
 输入管理员的用户名和密码，进入之后，上传一些图片，测试一下功能是否正常。
 
 ![Screen Shot 2017-06-20 at 10.54.06 P](/images/Screen%20Shot%202017-06-20%20at%2010.54.06%20PM.png)
-
 
 尝试一些Docker Datacenter的高级功能，如服务的高可用性；同时Nutanix的DVP在底层保障了数据的持久性和完全性。测试步骤如下：
 
@@ -434,12 +417,5 @@ docker push dtr.zenlab.local/admin/owncloud:latest
 5. 查看和确认刚才上传的文件是否还在
 
 ## 总结
-Nutanix是一种融合和了计算、存储和虚拟化（内置KVM）的超融合平台。Nutanix DVP (Docker Volume Plug-in)可以让平台里的容器用上持久化存储服务。DVP不仅可以给单独虚拟机里的容器提供持久卷服务，还能给类似于Docker Swarm的其它容器编排平台提供持久化数据服务功能。我后续的文章还会分享路测试Kubernetes等其它平台。 
 
-
-
-
-
-
-
-
+Nutanix是一种融合和了计算、存储和虚拟化（内置KVM）的超融合平台。Nutanix DVP (Docker Volume Plug-in)可以让平台里的容器用上持久化存储服务。DVP不仅可以给单独虚拟机里的容器提供持久卷服务，还能给类似于Docker Swarm的其它容器编排平台提供持久化数据服务功能。我后续的文章还会分享路测试Kubernetes等其它平台。

@@ -14,7 +14,7 @@ categories: ["Cloud"]
 
 ## Nutanix 官方站点
 
-### http://portal.nutanix.com/
+### <http://portal.nutanix.com/>
 
 [http://portal.nutanix.com/](http://portal.nutanix.com/)
 
@@ -22,16 +22,13 @@ categories: ["Cloud"]
 * 在线技术支持，case查看和操作
 * 产品和补丁下载
 
-### https://next.nutanix.com/
+### <https://next.nutanix.com/>
 
 [https://next.nutanix.com/](https://next.nutanix.com/)
 
 * 产品网上论坛和社区
 * 社区版论坛
 * 博客， Nutanix Connect Blog
-
-
-
 
 ## 技术达人网站和博客
 
@@ -44,11 +41,12 @@ categories: ["Cloud"]
 [https://www.virtuallifestyle.nl/](https://www.virtuallifestyle.nl/
 )
 
-
 ### The Nutanix Bible by Steven Poitras
+
 [http://nutanixbible.com/](http://nutanixbible.com/)
 
 ### Mark's Blog by Mark Lavi
+
 [http://mlavi.github.io/](http://mlavi.github.io/)
 
 ### Jeremy Sallee -  Nutanix UI/Frontend 设计师
@@ -70,5 +68,3 @@ categories: ["Cloud"]
 ### Nutanix viso 图标下载
 
 [http://www.visiocafe.com/nutanix.htm](http://www.visiocafe.com/nutanix.htm)
-
-

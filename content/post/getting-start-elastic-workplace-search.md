@@ -10,7 +10,8 @@ image:  "images/abstract-1.jpg"
 slug: "getting-start-elastic-workplace-search"
 ---
 
-## 简介 
+## 简介
+
 Elastic Workplace Search 提供了一个统一的搜索体验，从而便于任何人在任何时间找到所需的文档信息。为企业搭建了一个横跨所有工作内容、所有团队和真相的统一搜索参考平台。
 
 ![](/images/Picture1.jpg)
@@ -26,7 +27,7 @@ Elastic Workplace Search 提供了一个统一的搜索体验，从而便于任�
 
 ## 系统安装配置
 
-本文的假设，文中所使用的安装包和需要部署的配置文件都在 /vagrant 这个目录下面。下面的所有命令中都假设从这个目录里选用和复制。配置文件见代码库：https://github.com/martinliu/elastic-labs
+本文的假设，文中所使用的安装包和需要部署的配置文件都在 /vagrant 这个目录下面。下面的所有命令中都假设从这个目录里选用和复制。配置文件见代码库：<https://github.com/martinliu/elastic-labs>
 
 本文所使用的安装测试环境是：
 
@@ -37,7 +38,6 @@ Elastic Workplace Search 提供了一个统一的搜索体验，从而便于任�
 * Elastic Workplace Search 7.6.1
 
 下面使用 `vagrant up` 一键式拉起基础测试环境的说明，请参考之前的文章。本测试所使用的基础 ES 安装脚本如下。
-
 
 ```
 echo I am provisioning a Elasticsearch Server...
@@ -90,7 +90,6 @@ echo Please go to http://192.168.50.10:9200/  using above passwords
 
 ![](/images/2020-04-22_09-15-47.jpeg )
 
-
 这些是测试用户，用于 Elastic Workplace Search 的测试中。
 
 ## 安装 Elastic Enterprise Search
@@ -98,7 +97,6 @@ echo Please go to http://192.168.50.10:9200/  using above passwords
 Elastic Enterprise Search 需要 JDK 8 或者 JDK 11， 本实例安装了 Oracle JDK 11。
 
 `sudo rpm -ivh /vagrant/rpm/jdk-11.0.6_linux-x64_bin.rpm`
-
 
 复制 Enterprise Search 的安装包到 `/opt` 目录下，解压缩这个安装包。
 
@@ -123,7 +121,6 @@ ent_search.listen_port: 3002
 
 将以上目标配置文件复制到 Elastic Workplace Search 的配置文件目录中，覆盖默认配置文件。
 
-
 ```
 sudo cp /vagrant/enterprise-search/enterprise-search.yml /opt/enterprise-search-7.6.0/config/enterprise-search.yml
 ```
@@ -133,6 +130,7 @@ sudo cp /vagrant/enterprise-search/enterprise-search.yml /opt/enterprise-search-
 ```
 sudo ENT_SEARCH_DEFAULT_PASSWORD=martin1demo  /opt/enterprise-search-7.6.0/bin/enterprise-search
 ```
+
 在启动的过程中，关注一下的屏幕输出信息，则表示一切正常。
 
 ```
@@ -148,11 +146,12 @@ You can use the following generated encryption key in your config file to store 
 secret_management.encryption_keys: [911f804cd11f7bc2dd338743ea1752b0b7cd2589cc80060159ed94a918bc09d3]
 
 ```
+
 等待服务器启动正常后，参考相关文档。完成 Github、Jira 和 Confluence 等数据源的配置。
 
 ## 配置数据源
 
-见介绍文档 https://www.elastic.co/guide/en/workplace-search/current/workplace-search-content-sources.html 
+见介绍文档 <https://www.elastic.co/guide/en/workplace-search/current/workplace-search-content-sources.html>
 
 * Confluence Cloud
 * Confluence Server
@@ -179,7 +178,6 @@ secret_management.encryption_keys: [911f804cd11f7bc2dd338743ea1752b0b7cd2589cc80
 在 GitHub 中找到需要搜索的组织，每个 repo 的 issue 和 pr 都是全文搜索的目标。
 ![](/images/2020-04-21_14-31-43.jpeg )
 
-
 在 GitHub 的账户中创建一个 OAuth App，图中 1、2、3、4 信息点需要和你的测试环境匹配。复制出 client ID 和 Client Secret 备用。
 
 ![](/images/2020-04-21_14-17-22.jpeg )
@@ -200,7 +198,7 @@ secret_management.encryption_keys: [911f804cd11f7bc2dd338743ea1752b0b7cd2589cc80
 
 支持对 Confluence 和 Jira 两款产品的云服务和本地部署的搜索。配置的过程非常简单， 如果你有多套独立的 Confluence 和 Jira 环境，那么就可以给每个需要搜索的环境配置一个数据源，并且按照需要将对它们的统一搜索配置到一个统一的搜索平台之内。
 
-配置文档见： https://www.elastic.co/guide/en/workplace-search/current/workplace-search-confluence-cloud-connector.html  和其它。下面是一个配置成功的 Jira 云服务的结果。
+配置文档见： <https://www.elastic.co/guide/en/workplace-search/current/workplace-search-confluence-cloud-connector.html>  和其它。下面是一个配置成功的 Jira 云服务的结果。
 
 ![](/images/2020-04-26_10-23-51.jpeg)
 
@@ -214,14 +212,11 @@ secret_management.encryption_keys: [911f804cd11f7bc2dd338743ea1752b0b7cd2589cc80
 
 配置完成以后，默认的同步周期是 2 小时做一次增量索引。下图是用户对 Jira 和 Confluence 的两个本地部署服务器联合统一搜索的效果。管理员可设置任何一个人和用户组能搜索那些数据源，每个数据源在搜索结果中的权重排位。从而实现对任何一个用户组定制化搜索结果的作用。
 
-
 ![](/images/WechatIMG32.jpeg)
-
 
 ## 用户配置示例
 
 本文的目标是给两个用户组的人分配不同的数据源权重，从而得到各异的搜索结果排名。下面是一些建议的思路和配置过程。
-
 
 这里把仅有的两个数据源设置成了组织级别的可搜索，也就是他可以进入任何一个合法用户的搜索清单中。加入是特定团队所使用的数据源，在这里需要关闭搜索开关。
 ![](/images/2020-04-26_11-17-20.jpeg)
@@ -252,13 +247,11 @@ secret_management.encryption_keys: [911f804cd11f7bc2dd338743ea1752b0b7cd2589cc80
 
 在上图中，搜索用户可以点击右侧的数据源图标，点选其中的一个数据源作为搜索范围，可以点击 All Time 时间设置条件，筛选出目标时段的文档等。还可以在搜索框中使用类似 `ppt` 等文件类型搜索条件。 搜索结果是故意设置的，这是 Jira 中的一个 pdf 附件，pdf 的原文也可以搜索，而且对于 销售&市场 用户组来说， Jira 的权重大于 GitHub 很多，因此即使 Github 中有四个匹配的结果，也就将其排了在了最下面。
 
-
 下图是 dev1 用户（属于产品开发&运维组）的登录后界面。这里显示了建议的搜索快捷短语 `pull requests form last week` ，页面上的搜索结果是按照数据源中最更新的文档靠前的规则排列的。
 ![](/images/2020-04-26_20-01-51.jpeg)
 
 下面这个用户搜索可关键词 `app search`，从这个结果中可以看出，即使是在 GitHub 中的一半匹配（并无完整的 app search 这个词组出现在任何文档里）搜索结果的排名都比 Jira 中的完全命中的排名高。
 ![](/images/2020-04-26_20-03-00.jpeg)
-
 
 ## 测试总结
 
@@ -279,4 +272,3 @@ secret_management.encryption_keys: [911f804cd11f7bc2dd338743ea1752b0b7cd2589cc80
 * 内网搜索
 
 在这个部分有两项生产力影响因素能力是关于搜索的。在我国的很多工作环境中，特别是开发相关的工作，无 Internet 环境的纯内网是很普遍的。而内网上的 Atlassian 相关产品，微软相关产品又是最多用的；不同业务部门或者团队拥有自建的 Jira 或者 Confulence 服务器；在团队协作的时候，或者在执行跨部门的项目的时候，项目资料的统一搜索就成了问题。类似的需求和现象不胜枚举，希望本文介绍的 Elastic Workplace Search 统一搜索平台可以成为你的帮手，为你填补 DevOps 能力成长模型中关于 `内网搜索` 的这一项空白。当然，这个平台所支持的外网 SaaS 服务也是很多的，可以综合使用。
-

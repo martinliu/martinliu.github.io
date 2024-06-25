@@ -16,32 +16,33 @@ slug: tips-for-docker-on-mac
 在macOS上使用Docker很长时间了，本文总结一些我不想忘记的tips，方便自己反复使用的同时，也顺便总结分享一下，留下本文作为长期更新的备忘录。
 
 ## 搭建私有镜像库
+
 运行一个本地镜像库
 
-
 ```
-$ docker run -d  -p 5000:5000 --restart=always --name registry registry:2
+docker run -d  -p 5000:5000 --restart=always --name registry registry:2
 ```
 
 这条命令会从docker hub 下载 registry:2 镜像，在本机运行一个镜像库服务。
 
 下载一个测试用的镜像。
 
-
 ```
-$ docker pull ubuntu:16.04
+docker pull ubuntu:16.04
 ```
 
 给这个镜像打上私有镜像库的标签
 
 ```
-$ docker tag ubuntu:16.04 localhost:5000/ubuntu:16.04
+docker tag ubuntu:16.04 localhost:5000/ubuntu:16.04
 ```
+
 push这个测试镜像到本地的镜像库
 
 ```
-$ docker push localhost:5000/ubuntu:16.04
+docker push localhost:5000/ubuntu:16.04
 ```
+
 这时候你会发现我的本地这样岂不是有了两份相同的镜像了，有这个必要么？是不是多余了？下面几个场景中会用到：
 
 当你用docker-machine在本机启动1个vm的时候，你运行任何docker run或者docker-compose up的时候你可能需要一个之前在本地就有的image，这是一种分享本机image给docker-machine vm的一种方式。
@@ -76,5 +77,3 @@ docker node ls
 ```
 docker-machine rm -y manager agent1 agent2 agent3
 ```
-
-

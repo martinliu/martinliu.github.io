@@ -345,6 +345,6 @@ toc: true
 - [2] D. Hixson and K. Guliani, “Capacity Planning,” ;login:,vol. 40, no. 1 (February 2015): <https://www.usenix.org/system/files/login/articles/login_feb15_07_hixson.pdf>.
 - [3] B. Beyer, C. Jones, N. R. Murphy, and J. Petoff, eds., Site Reliability Engineering, Chapters 18, 23, and 27: <https://landing.google.com/sre/sre-book/toc/index.html>.
 
->原文地址: https://static.googleusercontent.com/media/sre.google/en//static/pdf/login_winter20_10_torres.pdf
+>原文地址: <https://static.googleusercontent.com/media/sre.google/en//static/pdf/login_winter20_10_torres.pdf>
 
 ❤️ Photo by FOX: <https://www.pexels.com/photo/clear-drinking-glass-with-brown-liquid-9097039/>

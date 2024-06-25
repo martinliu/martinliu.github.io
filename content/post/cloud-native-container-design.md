@@ -20,7 +20,6 @@ slug: "cloud-native-container-design"
 * 关注点分离（SoC）
 * Single responsibility, Open/closed, Liskov substitution, Interface segregation, Dependency inversion （SOLID）
 
-
 然后是Red Hat的云原生容器设计原则：
 
 * 唯一关注性原则（SCP）
@@ -49,7 +48,6 @@ slug: "cloud-native-container-design"
 
 ![hop 容器化应用的设计原则](https://res.cloudinary.com/martinliu/image/upload/hop.png)
 
-
 实际上，您的容器化应用程序必须至少为其提供不同类型的健康检查的API--活动和就绪等状态。更好的应用程序的行为则必须提供其他手段来观察容器化应用程序的状态。应用程序应该将重要事件记录到标准错误（STDERR）和标准输出（STDOUT）中，从而通过统一的日志聚合工具（诸如Fluentd和Logstash之类的工具）进行分析，并与跟踪和指标收集库相结合，例如OpenTracing，Prometheus等。
 
 将您的应用程序视为黑盒子，但实施所有必要的API以帮助平台对其进行观测，并以最佳方式管理您的应用程序。
@@ -60,13 +58,11 @@ HOP规定了你的容器提供供平台观测的API。 LCP则规定：您的应�
 
 ![lcp 容器化应用的设计原则](https://res.cloudinary.com/martinliu/image/upload/lcp.png)
 
-
 来自管理平台的各种事件都是为了帮助您管理您的容器的生命周期的。决定处理哪些事件取决于您的应用程序 以及是否对这些事件做出反应。
 
 但有些事件比其他事件更重要。例如，任何需要一个干净的关闭进程，这就需要捕获信号：终止（SIGTERM）消息，并尽可能迅速关闭。 这是为了避免通过强制关闭信号：kill（SIGKILL），之后跟随一个SIGTERM。
 
 还有其他事件，例如PostStart和PreStop，可能对您的应用程序生命周期管理也非常重要。 例如，某些应用程序需要在服务之前进行预热请求和一些需要在关闭干净之前释放资源。
-
 
 ## 镜像不可变性原则 IMAGE IMMUTABILITY PRINCIPLE（IIP）
 
@@ -82,7 +78,6 @@ IMAGE IMMUTABILITY PRINCIPLE（IIP）容器化的应用程序是不可变更的�
 
 ![pdp 容器化应用的设计原则](https://res.cloudinary.com/martinliu/image/upload/pdp.png)
 
-
 这意味着容器化的应用程序必须保持其状态为向外扩展的或分布式和冗余的。这也意味着应用程序应该快速启动和关闭，甚至为彻底的硬件故障做好准备。 实施这一原则的另一个有用的做法是创建小容器。 容器在云原生环境可以自动调度并在不同的主机上启动。较小的容器可以实现更快启动时间，因为在重新启动之前容器镜像需要被物理地复制到主机系统。
 
 ## 自包含性原则 SELF-CONTAINMENT PRINCIPLE（S-CP）
@@ -91,11 +86,9 @@ IMAGE IMMUTABILITY PRINCIPLE（IIP）容器化的应用程序是不可变更的�
 
 ![s-cp 容器化应用的设计原则](https://res.cloudinary.com/martinliu/image/upload/s-cp.png)
 
-
 唯一的例外是：由于不同环境之间差异，并且只能在运行时提供的配置; 例如，通过Kubernetes提供的ConfigMap。
 
 某些应用程序由多个容器组件组成。 例如，容器化的Web应用程序也可能需要数据库容器。 根据这个原则，并不建议合并两个容器。相反，它建议的是数据库容器只包含运行数据库所需的所有内容，Web应用程序容器只包含运行Web应用程序所需的所有内容，如Web服务器。 在运行时，Web应用程序容器将根据需要依赖于并访问数据库容器。
-
 
 ## 运行时约束性原则 RUNTIME CONFINEMENT PRINCIPLE（RCP）
 
@@ -106,7 +99,6 @@ S-CP从构建时的角度查看容器，并关注于生成的二进制文件及�
 这个RCP原则建议每个容器申报资源需求，并发送信息到平台。它应该分享容器的资源配置文件，从CPU，内存，网络，磁盘的角度声明。这影响到平台如何执行调度，自动扩展，容量 管理以及容器常规的服务级别协议（SLA）等。
 
 除了向平台声明容器的资源需求之外，还有一点也很重要， 应用被约束在使用所声明的资源需求内。如果应用程序对资源的使用保持在约束的范围内，则当资源匮乏发生时，平台不太可能将其终止和迁移。
-
 
 ## 结论
 
@@ -123,10 +115,10 @@ S-CP从构建时的角度查看容器，并关注于生成的二进制文件及�
 
 这里是指向各种模式和最佳实践的资源的链接，以帮助您能有效地实现上述目标：
 
-* • https://www.slideshare.net/luebken/container-patterns
-* • https://docs.docker.com/engine/userguide/eng-image/dockerfile_best-practices
-* • http://docs.projectatomic.io/container-best-practices
-* • https://docs.openshift.com/enterprise/3.0/creating_images/guidelines.html
-* • https://www.usenix.org/system/files/conference/hotcloud16/hotcloud16_burns.pdf
-* • https://leanpub.com/k8spatterns/
-* • https://12factor.net
+* • <https://www.slideshare.net/luebken/container-patterns>
+* • <https://docs.docker.com/engine/userguide/eng-image/dockerfile_best-practices>
+* • <http://docs.projectatomic.io/container-best-practices>
+* • <https://docs.openshift.com/enterprise/3.0/creating_images/guidelines.html>
+* • <https://www.usenix.org/system/files/conference/hotcloud16/hotcloud16_burns.pdf>
+* • <https://leanpub.com/k8spatterns/>
+* • <https://12factor.net>

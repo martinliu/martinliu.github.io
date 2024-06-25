@@ -19,7 +19,7 @@ slug = "elastic-university-campus-intro"
 
 开源方式是在开源社区内进行思考和协作的一种形式。这一理念基于知识自由和核心原则：透明、协作、交付、包容和社区。社区的思想交流和软件开发推动了以下行业的创新、科学和技术进步：教育、政府、法律、医疗保健和制造业。这项活动提供了一种通过源代码协作、共享和协助实现个人及团体目标的方式。
 
-开源软件是协作性的，依靠社区生产和同行评审来使用、更改和共享源代码。开发人员分享洞察、构想和代码，共同和单独创建更多创新的软件解决方案。这种可扩展且灵活的软件可确保任何拥有源代码的人都能将其修改、增强和重新分发，从而提高可复用性和可访问性。开源软件基于对等生产和大规模协作的基本原则，从而为最终用户创造更可持续的软件开发体验。 
+开源软件是协作性的，依靠社区生产和同行评审来使用、更改和共享源代码。开发人员分享洞察、构想和代码，共同和单独创建更多创新的软件解决方案。这种可扩展且灵活的软件可确保任何拥有源代码的人都能将其修改、增强和重新分发，从而提高可复用性和可访问性。开源软件基于对等生产和大规模协作的基本原则，从而为最终用户创造更可持续的软件开发体验。
 
 封源软件 (CSS) 是不向公众分发的专有软件。这类软件进行了加密，因此仅创建该代码的原始作者有权合法复制、修改、更新和编辑源代码。闭源软件会限制最终用户对应用可以执行的操作，防止用户修改、共享、复制或重新发布源代码。
 
@@ -27,15 +27,16 @@ slug = "elastic-university-campus-intro"
 
 一些最受欢迎的开源软件许可证包括：
 
-* MIT 许可证©：MIT 许可证是一种免费的软件许可证，允许用户修改原始代码，而且限制要求非常少。 
-* GNU General Public© (GPL)：GNU 是一系列免费的软件许可证，可确保最终用户能够运行、研究、共享和修改软件。 
-* Apache®：Apache License 2.0 是一种免费的软件许可证，允许用户出于任何目的使用、修改和分发软件。 
+* MIT 许可证©：MIT 许可证是一种免费的软件许可证，允许用户修改原始代码，而且限制要求非常少。
+* GNU General Public© (GPL)：GNU 是一系列免费的软件许可证，可确保最终用户能够运行、研究、共享和修改软件。
+* Apache®：Apache License 2.0 是一种免费的软件许可证，允许用户出于任何目的使用、修改和分发软件。
 * BSD：此许可证对开发人员的限制较少，允许用户使用和修改代码而不必共享修改。
 * MySQL™：MySQL 是一个开源数据库管理系统，具有两个单独的许可证 - mySQL Standard Edition 和 MySQL Enterprise Edition。
 * SUSE：SUSE Linux 建立在开源 Linux 内核上，并随系统和应用软件一起分发。
 * Ubuntu®：Ubuntu 是一个 Linux 发行版，由在桌面、云端和物联网中发布的免费和开源软件组成。
 
 开源软件大事记：
+
 1. 在 1969 年 AT&T® 贝尔实验室，Unix 做为一种专有但可许可的产品诞生。很快加州大学伯克利分校开发了自己的 Unix 操作系统，名为 Berkley Software Distribution（BSD 许可证）的学术版本。BSD 和 AT&T 的 System V 版最终合并成为统一的第七版 Unix，然后进一步演进为：Sun Solaris、FreeBSD、NetBSD 和 OpenBSD。
 2. 1984 年，Richard Stallman 创建了一个名为 GNU (GNU's Not Unix) 的自由 Unix 克隆。此版本是开放的，可根据需要自由使用、修改和重新分发。Richard Stallman 是 Open Source 界的伟大人物之一, 他是gcc, gdb, emacs的作者。
 3. 1991 年，Linus Torvalds 创建了名为“Linux”或 Linux 内核的操作系统内核。通过与 FSF 和 BSD 组件相结合，Linux 成为一个完整的操作系统。Linux 正式踏上了颠覆整个 IT 行业和改造这个世界的使命，知道今天无不知，无人不晓的云计算和智能硬件，知道工业物联网和火星登录计划。
@@ -56,7 +57,6 @@ Elastic Stack 就是 ELK Stack，但是更加灵活，可以帮助人们出色�
 2. 使用 Kibana 可视化分析和展示航公公司航班信息、电商平台订单和Web 网络服务器的日志。
 3. 导入最近几年的电影数据，尝试从多个角度分析和展示这些数据
 
-
 ## 开源及就业答疑
 
 在这个环节里，我们也准备了一些求职准备的经验技巧。
@@ -68,8 +68,9 @@ Elastic Stack 就是 ELK Stack，但是更加灵活，可以帮助人们出色�
 最后，希望和同学们做自由交流，内容范围和问题不限。
 
 参考文档：
-* https://www.ibm.com/cn-zh/topics/open-source
-* https://www.elastic.co/cn/
-* https://www.elastic.co/cn/what-is/elk-stack
-* https://ld.sogou.com/article/i5634372.htm?ch=lds.pc.sh.media.all
-* https://www.163.com/dy/article/G0NG79CD0543QP26.html
+
+* <https://www.ibm.com/cn-zh/topics/open-source>
+* <https://www.elastic.co/cn/>
+* <https://www.elastic.co/cn/what-is/elk-stack>
+* <https://ld.sogou.com/article/i5634372.htm?ch=lds.pc.sh.media.all>
+* <https://www.163.com/dy/article/G0NG79CD0543QP26.html>

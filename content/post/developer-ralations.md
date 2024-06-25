@@ -21,7 +21,6 @@ slug = "developer-relation-devrel"
 
 [^1]: What is Developer Relations? - from Why Do We Pay These People Anyway*? [blog](https://medium.com/google-developers/why-do-we-pay-these-people-anyway-d7ed706d6d55#.438f1qn4x)
 
-
 #### Twilio 的定义
 
 > Our job is to inspire and equip developers to build the next generation of amazing applications. This means understanding what they are trying to do, pointing them to tools and training and generally helping them be successful. <cite>(From)[^2]</cite></p>
@@ -85,7 +84,6 @@ LEVEL 1: 非正式的 | 没有官方的开发者关系人员或规划，但一�
 ![DevRel的四大支柱](img/cos/2021-10-05-cycle-of-developer-relations.webp)
 
 “DevRel的四大支柱”
-
 
 就像市场营销不全是广告一样，开发者关系也不只是建立知名度。虽然不是每个人都同意这个命名，但DevRel有四个互补的领域。
 
@@ -175,36 +173,36 @@ Phil Leggetter 将 AARRR 【[客户生命周期：成功获客的5个步骤](htt
 
 有一系列广泛而多样的活动可以归入开发者关系DevRel的日常工作中。这些活动中的每一项都可能与实现AAARRRP目标的计划的一个或多个属性相关。
 
-- 编写文档（获取、激活、产品）。
-  - 参考资料
-  - 指南（How-to）
-- 库开发（激活，产品）
-- 快速上手的杨例应用程序（激活、产品）
-- 博客文章（认知、获取、激活、保留）
-  - 教程
-  - 实用技巧
-  - 思路指导
-- 网络研讨会 (认知、获取、激活、保留)
-- 活动赞助（认知、获取）。
-  - Meetup 赞助
-  - 会议展位
-- 分享演讲（认知、获取）
-  - 聚会
-  - 会议
-  - 社区/社团
-- 支持（激活、保留、产品）
-  - 用户支持系统，如：Zendesk
-  - StackOverflow 回答问题
-  - 公司和第三方论坛，如：Discuss等
-- 售前技术讨论（收入、激活）。
-  - 呼叫 Calls
-  - 电子邮件
-  - 技术支持
-- 专用论坛，如Google Groups或Discourse，如SmartThings社区（激活、保留）。
-- Alpha/Beta 产品试用计划（保留、产品）
-- 办公时间 Office Hours（激活、保留）。
-- 获取开发者的反馈（保留、产品）
-- 帮助公司招聘（宣传）。
+* 编写文档（获取、激活、产品）。
+  * 参考资料
+  * 指南（How-to）
+* 库开发（激活，产品）
+* 快速上手的杨例应用程序（激活、产品）
+* 博客文章（认知、获取、激活、保留）
+  * 教程
+  * 实用技巧
+  * 思路指导
+* 网络研讨会 (认知、获取、激活、保留)
+* 活动赞助（认知、获取）。
+  * Meetup 赞助
+  * 会议展位
+* 分享演讲（认知、获取）
+  * 聚会
+  * 会议
+  * 社区/社团
+* 支持（激活、保留、产品）
+  * 用户支持系统，如：Zendesk
+  * StackOverflow 回答问题
+  * 公司和第三方论坛，如：Discuss等
+* 售前技术讨论（收入、激活）。
+  * 呼叫 Calls
+  * 电子邮件
+  * 技术支持
+* 专用论坛，如Google Groups或Discourse，如SmartThings社区（激活、保留）。
+* Alpha/Beta 产品试用计划（保留、产品）
+* 办公时间 Office Hours（激活、保留）。
+* 获取开发者的反馈（保留、产品）
+* 帮助公司招聘（宣传）。
 
 成功地开展这些活动的结果是：对某受众产生积极的影响，并与之建立关系，对公司的形象和公司本身的可信度将提升。这可以增加被推荐的可能性。但这些建立这些关系是需要时间的。
 

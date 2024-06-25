@@ -15,7 +15,7 @@ slug = "how-khan-academy-successfully-handled-2-5x-traffic-in-a-week-cn"
 
 可汗学院是一家非营利性机构，其使命是为任何人、任何地方提供免费的世界级教育。
 
-本文原文出处：https://blog.khanacademy.org/how-khan-academy-successfully-handled-2-5x-traffic-in-a-week/ 
+本文原文出处：<https://blog.khanacademy.org/how-khan-academy-successfully-handled-2-5x-traffic-in-a-week/>
 
 这篇文章的发布时间在去年（2020 年 5 月），大约是全球疫情最严重的时候。以下是正文。
 
@@ -29,13 +29,7 @@ slug = "how-khan-academy-successfully-handled-2-5x-traffic-in-a-week-cn"
 
 我们架构的两个基本组件在这里为我们提供了特别好的服务。我们使用谷歌云，包括AppEngine、Datastore和Memcache，以及Fastly CDN，它们是无服务器和缓存策略的支柱，这是我们扩展性的关键。
 
-
-
-
-
 ![](img/cos/2021-03-24-scaling-traffic-in-a-week.png)
-
-
 
 ## 无服务器基础设施
 

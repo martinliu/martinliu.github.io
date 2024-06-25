@@ -30,9 +30,9 @@ Ghost本地安装
 
 我的操作系统是MacOS，用的是2017款MBP。
 
-先安装node.js，进入https://nodejs.org/en/ 在网站的首页上就可以下载到安装包，下载安装即可。也可以用 brew 安装。安装完了以后就获得了 npm 包管理程序。
+先安装node.js，进入<https://nodejs.org/en/> 在网站的首页上就可以下载到安装包，下载安装即可。也可以用 brew 安装。安装完了以后就获得了 npm 包管理程序。
 
-之后参考https://docs.ghost.org/v1.0.0/docs/install#pre-requisites 的文档安装 ghost-cli ； 然后用ghost的命令行来实现ghost程序的安装和升级。
+之后参考<https://docs.ghost.org/v1.0.0/docs/install#pre-requisites> 的文档安装 ghost-cli ； 然后用ghost的命令行来实现ghost程序的安装和升级。
 
 用ghost-cli安装ghost服务器的时候，要选择local的方式，它会使用sqllite作为数据库，这样做管理和维护Ghost应用栈的工作就都在本地了。
 
@@ -47,7 +47,7 @@ Process manager 'systemd' will not run on this system, defaulting to 'local'
 │ localhost │ ~/source/ghost │ 1.8.7   │ running (production) │ http://martinliu.cn/ │ 2368 │ systemd         │
 ```
 
-这样就表明本地安装成功，访问 http://martinliu.cn/ghost 建立管理员账户，登录以后，就可以在本地编辑和维护blog文章了。
+这样就表明本地安装成功，访问 <http://martinliu.cn/ghost> 建立管理员账户，登录以后，就可以在本地编辑和维护blog文章了。
 Buster安装和使用
 
 Buster的安装也很简单，网上有很多安装使用攻略，此处忽略。我用下面的命令来把Ghost网站做导出：
@@ -56,10 +56,11 @@ Buster的安装也很简单，网上有很多安装使用攻略，此处忽略�
 buster generate --new-domain=martinliu.cn
 
 ```
+
 在ghost的根目录下运行这个命令，就可以把本地的ghost网站都导出到一个名为static的目录里。可以直接在这个目录里打开这些html纯静态的网页，可以浏览和验证格式是否正常，一般不需要这样做，格式一般不会出错的。
 配置七牛CDN
 
-七牛提供了本地的qshell，用于上传和同步文件到云端的存储里。安装过程文档见 https://github.com/qiniu/qshell
+七牛提供了本地的qshell，用于上传和同步文件到云端的存储里。安装过程文档见 <https://github.com/qiniu/qshell>
 
 我在ghost的根目录下，编辑了一个上传网站的配置文件upload.conf，内容如下：
 
@@ -82,6 +83,7 @@ buster generate --new-domain=martinliu.cn
 }
 
 ```
+
 以上这个配置很重要，它的目的是实现：
 
 *     增量上传
@@ -119,10 +121,9 @@ Uploading /Users/martin/source/ghost/static/test.html => test.html [119/119, 100
 See upload log at path ./upload.log
 
 ```
+
 七牛的域名配置如下图所示：
 ![Google-Chrome-5](/images/Google-Chrome-5.jpg)
-
-
 
 ### Blog工作流
 
@@ -137,10 +138,7 @@ See upload log at path ./upload.log
 
 目前使用的是七牛的免费流量和空间套餐，套餐内的各种数量限制如下。
 
-
 ![Screen-Shot-2017-09-23-at-11.21.57-A](/images/Screen-Shot-2017-09-23-at-11.21.57-AM.png)
-
-
 
 目前的疑问是这个免费套餐是否够用，不知道这个羊毛多久会被我薅完。我会定期在本文跟新以上解决方案，在使用期间的各种配置细节变更，或者遇到的问题和解决方法。
 
@@ -152,4 +150,3 @@ TO-Do
     在Ghost里加入评论功能
     加入Google网站统计代码
     测试Ghost网站备份和迁移过程，保证当前的ghost服务器崩溃了，数据不会丢失
-

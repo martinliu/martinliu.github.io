@@ -13,6 +13,7 @@ slug: Install-VMs-on-Nutanix
 # Nutanix AHV（KVM）Windows虚拟机安装全攻略
 
 ## Windows 虚拟机安装
+
 Nutanix的AHV虚拟机是基于KVM的。本文件假设您使用和安装的是Nutanix社区版本的群集。在上面安装Windows虚拟机的步骤如下：
 
 1. 下载操作系统安装光盘
@@ -24,11 +25,13 @@ Nutanix的AHV虚拟机是基于KVM的。本文件假设您使用和安装的是N
 下面用安装Windows 10举例，说明详细的安装步骤。
 
 ## 第一步：下载操作系统 ISO
+
 如果你需要下载 Ubuntu Desktop [点这里](https://www.ubuntu.com/desktop)。
 
 从微软的TechNet Evaluation Center下载 [Microsoft ISO](https://www.microsoft.com/en-us/evalcenter/) 注意，评估的服务器版只能使用180天，桌面版能使用90天。
 
 ## 第二步：上传ISO文件到Nutanix群集
+
 Nutanix群集上提供了镜像服务，可以存储几种格式的镜像：ISO格式的操作系统安装镜像，虚拟机的磁盘(如KVM格式等)。这些镜像文件可以被虚拟机通过挂载CD-ROM设备使用，或者直接克隆出虚拟机的磁盘。操作步骤如下。
 
 点击右上角的齿轮图标，选择image configuration
@@ -52,7 +55,6 @@ Nutanix群集上提供了镜像服务，可以存储几种格式的镜像：ISO�
 
 ![](/images/14857479049693.jpg)
 
-
 由于Nutanix的hypervisor是基于Linux KVM技术，它需要附加的Windows驱动，需要下载 Fedora Windows virtio 驱动。 下载地址如下：
 
 [https://fedoraproject.org/wiki/Windows_Virtio_Drivers](https://fedoraproject.org/wiki/Windows_Virtio_Drivers)
@@ -60,7 +62,6 @@ Nutanix群集上提供了镜像服务，可以存储几种格式的镜像：ISO�
 点击第三条 Direct download
 
 ![](/images/14857480805485.jpg)
-
 
 点击 “Stable virtio-win iso” 下载最新的驱动 ISO 文件。
 
@@ -70,20 +71,17 @@ Nutanix群集上提供了镜像服务，可以存储几种格式的镜像：ISO�
 
 Fedora 的开源版 VirtIO驱动和Nutanix的版本稍微有些不同。Nutanix的 VirtioIO驱动是经过数字签名的，能从Nutanix客户门户下载。由于Nutanix CE社区版是提供给所有人做体验测试的，因此这里使用的是开源版本的VirtioIO驱动，而不是Nutanix的官方版本的驱动。
 
-##第三步：创建和配置虚拟机
+## 第三步：创建和配置虚拟机
 
 我们已经准备好了Windows 10 ISO文件和 Fedora VirtIO驱动IOS文件，现在可以安装虚拟机了。步骤如下：
 
 点击 Home--VM
 
-
  ![](/images/14857485236059.jpg)
-
 
 点击右侧的 Create VM 按钮。
 
 ![](/images/14857485706681.jpg)
-
 
 在下面的页面中输入虚拟机的配置。
 
@@ -107,7 +105,6 @@ Fedora 的开源版 VirtIO驱动和Nutanix的版本稍微有些不同。Nutanix�
 
 ![](/images/14857490738212.jpg)
 
-
 添加一个新的CDROM驱动盘，用来挂载 Windows 10 的ISO镜像文件，如下图所示。
 
 * Type: CDROM 类型
@@ -128,11 +125,9 @@ Fedora 的开源版 VirtIO驱动和Nutanix的版本稍微有些不同。Nutanix�
 
 ![](/images/14857493954380.jpg)
 
-
 现在来添加网卡，点击下面的按钮。
 
 ![](/images/14857494220235.jpg)
-
 
 使用默认的ID为0的网络，如下图所示。（此VLAN时之前建立好的）
 
@@ -140,14 +135,11 @@ Fedora 的开源版 VirtIO驱动和Nutanix的版本稍微有些不同。Nutanix�
 
 现在所有配置都已经完成，点击 Save 保存按钮。
 
-
  ![](/images/14857495029831.jpg)
 
 页面的状态栏会出现一个绿色的执行的提示，表示后天虚拟机正在创建中。
 
 ![](/images/14857495959115.jpg)
-
-
 
 ## 第四步：运行并安装虚拟机
 
@@ -185,11 +177,9 @@ Fedora 的开源版 VirtIO驱动和Nutanix的版本稍微有些不同。Nutanix�
 
 ![](/images/14857504579467.jpg)
 
-
 选择 amd64 目录，点击 ok
 
 ![](/images/14857504816806.jpg)
-
 
 选择所显示出来的 Red Hat VirtIO SCSI 驱动，点击 Next
 
@@ -206,8 +196,6 @@ Fedora 的开源版 VirtIO驱动和Nutanix的版本稍微有些不同。Nutanix�
 
 ![](/images/14858815713785.jpg)
 
-
-
 在设备官开启中，我们需要更新一下网卡设备的驱动。
 
 ![](/images/14858816384447.jpg)
@@ -219,7 +207,6 @@ Fedora 的开源版 VirtIO驱动和Nutanix的版本稍微有些不同。Nutanix�
 点击 Browse，选择当前的 virtio-win-0.11 ，也就是 Fedora VirtIO 驱动的光驱设备，点击 Next
 
 ![](/images/14858817470182.jpg)
-
 
 选中了合适的目录后，网卡设备的驱动安装正常了显示如下：
 
@@ -238,7 +225,6 @@ Nutanix Guest Tools 可以实现自服务恢复和应用一致性快照功能，
 5. 在后续的窗口中点击 Yes
 
 ![](/images/14858821642374.jpg)
-
 
 在网页上成功启用了NGT之后，进入Windows 10桌面的控制台页面。打开Windows的资源管理器，双击带有Nutanix图标的CDROM设备，进入该设备安装NGT软件。
 

@@ -72,7 +72,7 @@ Flags:
       --loglevel int                     Log level (0 = DEBUG, 5 = FATAL) (default 1)
       --logtostderr                      log to standard error instead of files
   -p, --profile string                   The name of the minikube VM being used.
-	This can be modified to allow for multiple minikube instances to be run independently (default "minikube")
+ This can be modified to allow for multiple minikube instances to be run independently (default "minikube")
       --stderrthreshold severity         logs at or above this threshold go to stderr (default 2)
   -v, --v Level                          log level for V logs
       --vmodule moduleSpec               comma-separated list of pattern=N settings for file-filtered logging
@@ -108,7 +108,7 @@ Kubectl is now configured to use the cluster.
 <h3 id="minikubessh">minikube ssh</h3>
 <p>登录到minikube的虚拟机里的命令就是ssh，进去之后，查看一下docker镜像。</p>
 <pre><code>minikube ssh
-                        ##         .
+                        ##         
                   ## ## ##        ==
                ## ## ## ## ##    ===
            /"""""""""""""""""\___/ ===
@@ -152,16 +152,23 @@ $ kubectl expose deployment hello-minikube --type=NodePort
 service "hello-minikube" exposed
 
 # We have now launched an echoserver pod but we have to wait until the pod is up before curling/accessing it
-# via the exposed service.
-# To check whether the pod is up and running we can use the following:
+
+# via the exposed service
+
+# To check whether the pod is up and running we can use the following
+
 $ kubectl get pod
 NAME                              READY     STATUS              RESTARTS   AGE
 hello-minikube-3383150820-vctvh   1/1       ContainerCreating   0          3s
+
 # We can see that the pod is still being created from the ContainerCreating status
+
 $ kubectl get pod
 NAME                              READY     STATUS    RESTARTS   AGE
 hello-minikube-3383150820-vctvh   1/1       Running   0          13s
-# We can see that the pod is now Running and we will now be able to curl it:
+
+# We can see that the pod is now Running and we will now be able to curl it
+
 $ curl $(minikube service hello-minikube --url)
 CLIENT VALUES:
 client_address=172.17.0.2
@@ -169,7 +176,7 @@ command=GET
 real path=/
 query=nil
 request_version=1.1
-request_uri=http://192.168.99.100:8080/
+request_uri=<http://192.168.99.100:8080/>
 
 SERVER VALUES:
 server_version=nginx: 1.10.0 - lua: 10001
@@ -264,15 +271,12 @@ $  curl $APISERVER --header "Authorization: Bearer $TOKEN" --insecure
   ]
 }%
 
-
 </code></pre>
 <h3 id="webuidashboard">访问Web UI (Dashboard)</h3>
 <p>Dashboad是k8s的一个图形界面，可以用它部署容器化的应用，排错和管理k8s群集。在minikube上启动这个界面的命令是 <code>minikube dashboard</code> ，你系统的默认浏览器会自动弹出如下界面。</p>
-
 
 ![year-map](/images/Overview---Kubernetes-Dashboard.jpg)
 <p>关于Dashbaord的文档在： <a href="https://kubernetes.io/docs/tasks/access-application-cluster/web-ui-dashboard/">https://kubernetes.io/docs/tasks/access-application-cluster/web-ui-dashboard/</a></p>
 
 <h2 id="minikube">用minikube运行应用</h2>
 <p>minikube正常运行起来以后，就可以参考文档 <a href="https://kubernetes.io/docs/tasks/run-application/run-stateless-application-deployment/">https://kubernetes.io/docs/tasks/run-application/run-stateless-application-deployment/</a> 在这个k8s系统上运行一些demo的应用，对应用做启停、扩缩容等体验。</p>
-

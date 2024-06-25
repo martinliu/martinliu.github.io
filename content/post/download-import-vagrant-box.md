@@ -36,36 +36,34 @@ Vagrant 的优势：
 
 Ubuntu 的可以浏览这两个目标下载网址。
 
-https://mirrors.tuna.tsinghua.edu.cn/ubuntu-cloud-images/vagrant/
+<https://mirrors.tuna.tsinghua.edu.cn/ubuntu-cloud-images/vagrant/>
 
 然后用vagrant 下面的命令就可以将 box 下载并且添加到本地。
 
 * ubuntu 18.04 LTS:
 
-vagrant box add https://mirrors.tuna.tsinghua.edu.cn/ubuntu-cloud-images/bionic/current/bionic-server-cloudimg-amd64-vagrant.box --name ubuntu18
+vagrant box add <https://mirrors.tuna.tsinghua.edu.cn/ubuntu-cloud-images/bionic/current/bionic-server-cloudimg-amd64-vagrant.box> --name ubuntu18
 
 * ubunt 16.04 LTS：
 
-vagrant box add https://mirrors.tuna.tsinghua.edu.cn/ubuntu-cloud-images/xenial/current/xenial-server-cloudimg-amd64-vagrant.box --name ubuntu16
+vagrant box add <https://mirrors.tuna.tsinghua.edu.cn/ubuntu-cloud-images/xenial/current/xenial-server-cloudimg-amd64-vagrant.box> --name ubuntu16
 
 * ubuntu14：
 
-vagrant box add https://mirrors.tuna.tsinghua.edu.cn/ubuntu-cloud-images/vagrant/trusty/current/trusty-server-cloudimg-amd64-vagrant-disk1.box --name ubuntu14
+vagrant box add <https://mirrors.tuna.tsinghua.edu.cn/ubuntu-cloud-images/vagrant/trusty/current/trusty-server-cloudimg-amd64-vagrant-disk1.box> --name ubuntu14
 
 对于 CentOS 而言，它的官网整理的比较好，提供了各种格式的下载，可能需要科学上网才能访问到 Centos 的下载网址。
 
-http://cloud.centos.org/centos/7/vagrant/
-http://cloud.centos.org/centos/8/vagrant/
+<http://cloud.centos.org/centos/7/vagrant/>
+<http://cloud.centos.org/centos/8/vagrant/>
 
 实战建议：你并不需要下载过多的 box 操作系统镜像文件，够用即可。建议将最近有可能使用到的 Box 文件用断点续传的多线程下载工具下载到本机磁盘备用。我下载了一些，关注的微信号‘ MyDevOps ’ 回复 box1 即可获得百度网盘下载地址，这个共享目录中有本文中所提到的所有 Box 文件。
-
 
 ## 导入 Box 文件
 
 用 `vagrant box add` 命令将本地下载好的 box 文件导入到 vagrant 的主目录中，macOS 下是在`~/.vagrant/` 目录里。
 
 使用` vagrant box list `名先查看本地已有的 box 清单，下面的执行结果如下。
-
 
 ```
 ➜  ~ vagrant box list
@@ -248,7 +246,7 @@ Bringing machine 'default' up with 'virtualbox' provider...
 
 现在 ssh 登录到这个崭新的 vm 。
 
-```    
+```
 ➜  test vagrant ssh
 Welcome to Ubuntu 18.04.4 LTS (GNU/Linux 4.15.0-91-generic x86_64)
 
@@ -270,16 +268,13 @@ Welcome to Ubuntu 18.04.4 LTS (GNU/Linux 4.15.0-91-generic x86_64)
 
 vagrant@ubuntu-bionic:~$ top
 ```
+
 ## 导入 CentOS 7 可能遇到的问题
 
 CentOS 7 和 8 的相关版本在我的测试环境中都出现了导入正常 vagrant up 异常的问题，通常网络搜索错误代码后，就可以解决了，如果有任何问题，欢迎到我的微信公众后台留言。
-
-
-
 
 ## 总结
 
 Vagrant 的功能性和必要性是非常高的，特别是对于天朝的码农而言，就更加重要了。它是 DevOps 工具链上的知名工具，而它的使用率和广泛性却不高。后续还会出这方面的系列内容，讲解更多关于 Vagrant 的优化和功能。
 
 2io
-

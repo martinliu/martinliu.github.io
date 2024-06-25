@@ -24,7 +24,6 @@ slug: "build-security-in-elastic-stack"
 
 下面的配置和测试过程基于以下 Vagrantfile ，你可以在其它任何同等的环境中测试下面的所有配置。
 
-
 ```
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
@@ -95,7 +94,6 @@ end
 
 注：下文中所有路径中的 `/vagrant/` 目录是本 vagrant 测试环境中，所有虚拟机的共享目录，是所有节点上配置文件的原路径。如果你使用的不是 vagrant 环境，你需要在下面的测试中适当的替换。
 
-
 ## 三节点 Elasticsearch 服务器集群
 
 在每个节点上使用下面的初始化脚本，部署 Elasticsearch 服务器。
@@ -146,12 +144,12 @@ instances:
     dns: [ 'lk.zenlab.local' ]
 ```
 
-用  ` elasticsearch-certutil` 创建证书文件包。
-
+用  `elasticsearch-certutil` 创建证书文件包。
 
 ```
 sudo /usr/share/elasticsearch/bin/elasticsearch-certutil cert --ca --pem --in /vagrant/certs/instance.yml  --out /vagrant/certs/certs.zip
 ```
+
 将得到的 zip 文件解压缩在适当的目录里备用。
 
 重要步骤：在 Elasticsearch 的配置文件目录中放置必要的数字证书文件。
@@ -162,6 +160,7 @@ sudo cp /vagrant/certs/ca/ca.crt  /etc/elasticsearch/certs
 sudo cp /vagrant/certs/es1/* /etc/elasticsearch/certs
 sudo ls /etc/elasticsearch/certs
 ```
+
 在 certs 目录中有三个文件：
 
 1. ca.crt CA 根证书
@@ -211,8 +210,8 @@ xpack.monitoring.collection.enabled: true
 #  ------------------------------- App Search ---------------------------------
 action.auto_create_index: ".app-search-*-logs-*,-.app-search-*,+*"
 ```
-使用以上配置文件覆盖Elasticsearch 默认的配置文件，首次启动第一个 ES 节点的服务。
 
+使用以上配置文件覆盖Elasticsearch 默认的配置文件，首次启动第一个 ES 节点的服务。
 
 ```
 sudo cp /vagrant/elasticsearch.yml /etc/elasticsearch/elasticsearch.yml
@@ -227,7 +226,6 @@ sudo tail -f /var/log/elasticsearch/elk4devops.log
 ```
 
 用下面的命令初始化 Elasticsearch 系统内置账号为随机复杂密码。
-
 
 ```
 sudo /usr/share/elasticsearch/bin/elasticsearch-setup-passwords auto -u "https://es1.zenlab.local:9200" -b
@@ -257,22 +255,20 @@ PASSWORD elastic = ZSzN2idoU6hFa4f0ulPP
 
 将上面随机生成的密码保存在安全的地方备用，这些内置的超级用户权限大，一旦遗失了密码，可能会造成重大的数据泄露。
 
-
 用上面创建的账户测试第一个 ES 节点是否可以通过 https 正常访问，这里也测试 ca 公钥的可用性。
 
 ```
 curl --cacert /vagrant/certs/ca/ca.crt -u elastic 'https://es1.zenlab.local:9200/_cat/nodes?v'
 
 ```
+
 在 es1 服务器的命令行运行以上命令，输入 elastic 的密码。应该可以看到正常的输出。`/vagrant/certs/ca/ca.crt` 这个路径替换成你的环境中的相关 ca 证书文件路径。
-
-
 
 ### 配置第二个和第三个 ES 服务器节点
 
 剩下的两个节点在加入集群之前都已经通过初始化脚本安装完了 rpm 安装包。剩下的就是逐个节点的部署之前生产的证书文件和修改后的 elasticsearc.yml 主配置文件。在本文档参考的环境中使用如下命令。
 
-登录 es 2 ` vagrant ssh es2`
+登录 es 2 `vagrant ssh es2`
 
 配置 es2 的证书和秘钥文件，下面的复制原路径需要替换成你所使用的实际路径。
 
@@ -290,8 +286,8 @@ sudo cp /vagrant/elasticsearch2.yml /etc/elasticsearch/elasticsearch.yml
 sudo systemctl daemon-reload
 sudo systemctl start elasticsearch
 ```
-`elasticsearch2.yml ` 文件的内容如下。
 
+`elasticsearch2.yml` 文件的内容如下。
 
 ```yml
 # ---------------------------------- Cluster -----------------------------------
@@ -331,7 +327,6 @@ action.auto_create_index: ".app-search-*-logs-*,-.app-search-*,+*"
 ```
 
 在 es2 的命令用下面的命令查看是否该节点正常加入了集群。
-
 
 ```sh
 curl --cacert /vagrant/certs/ca/ca.crt -u elastic 'https://es1.zenlab.local:9200/_cat/nodes?v'
@@ -382,8 +377,8 @@ xpack.monitoring.collection.enabled: true
 action.auto_create_index: ".app-search-*-logs-*,-.app-search-*,+*"
 
 ```
-最终集群的测试状态如下：
 
+最终集群的测试状态如下：
 
 ```sh
 [vagrant@es1 ~]$ curl --cacert /vagrant/certs/ca/ca.crt -u elastic 'https://es1.zenlab.local:9200/_cat/nodes?v'
@@ -402,7 +397,6 @@ Kibana 的 rpm 安装这里省略。下面直接进入相关的主要配置步�
 
 复制用于链接 ES 集群的证书
 
-
 ```
 sudo mkdir /etc/kibana/certs
 sudo cp /vagrant/certs/ca/ca.crt  /etc/kibana/certs
@@ -412,7 +406,6 @@ sudo ls /etc/kibana/certs
 
 修改默认的 kibana.yml 配置文件，然后覆盖默认的配置文件后启动 kibana 服务。
 
-
 ```
 sudo cp /vagrant/kibna.yml /etc/kibana/kibana.yml
 sudo cat /etc/kibana/kibana.yml
@@ -421,12 +414,11 @@ sudo systemctl start kibana
 
 监控 kibana 的启动日志，直到它正常启动。
 
-
 ```
 sudo tail -f /var/log/messages
 ```
 
-启动后，使用浏览器访问  `https://lk.zenlab.lcoal:5601 ` Kibana 服务，使用 elastic 用户的密码登录，确保 Kibana 正常启动。
+启动后，使用浏览器访问  `https://lk.zenlab.lcoal:5601` Kibana 服务，使用 elastic 用户的密码登录，确保 Kibana 正常启动。
 
 ## 配置权限 Beats 账号
 
@@ -440,11 +432,9 @@ sudo tail -f /var/log/messages
 
 然后创建名为 `beats-writer` 的用户，设置一个密码，将它赋予 `beats-writer` 的角色（上面创建的）。
 
-
 ![](/images/beats-writer-user.jpeg)
 
 这样它就可以用于所有 Beats 节点的配置了。
-
 
 ## 初始化首个 Beats 节点
 
@@ -468,6 +458,7 @@ sudo systemctl enable  metricbeat.service
 sudo rpm -ivh /vagrant/rpm/auditbeat-$elastic_version-x86_64.rpm
 sudo systemctl enable  auditbeat.service
 ```
+
 登录该节点进行 Beats 的初始化配置。目前 Elasticsearch 集群还是空白的，还没有初始化任何 Beats 相关的索引、可视化和仪表板。这个初始化工作是通过，每种 Beats 的 setup 命令完成的。这个 setup 命令只需要在一个节点上成功执行一次即可，其它节点的配置文件中，连 setup 命令相关的配置都不需要。
 
 这里使用的 filebeat.yml 参考文件如下：
@@ -524,7 +515,6 @@ processors:
 
 在执行 filebeat setup 命令之前，还需要在 Beats 节点上部署上面生成的 ca 公钥文件。参考命令如下。
 
-
 ```
 sudo update-ca-trust enable
 sudo cp /vagrant/certs/ca/ca.crt /etc/pki/ca-trust/source/anchors/
@@ -535,8 +525,6 @@ sudo update-ca-trust extract
 
 经过以上的配置之后，用之前的 curl 命令测试一下是否这个证书生效了。
 
-
-
 ```sh
 [vagrant@es1 ~]$ curl -u elastic 'https://es1.zenlab.local:9200/_cat/nodes?v'
 Enter host password for user 'elastic':
@@ -546,12 +534,9 @@ ip            heap.percent ram.percent cpu load_1m load_5m load_15m node.role ma
 192.168.50.12           25          96   1    0.00    0.02     0.00 dilmrt    -      es2
 ```
 
-
 这次在参数中故意省略了 ca 证书文件路径，如果 curl 可以正常访问，那么 Beats 程序也可以，而且不需要在 Beats 配置文件中生命公钥的路径，更有利于在以后切换到另外一套 CA 秘钥后，配置文件的更新工作。
 
-
 这里省略 Beats 配置文件的展示，参考一下命令做初始化前的准备。
-
 
 ```
 sudo cp -f /vagrant/filebeat.yml /etc/filebeat/filebeat.yml
@@ -567,6 +552,7 @@ sudo filebeat modules enable system
 filebeat setup
 metricbeat setup
 ```
+
 这两个命令正常运行后，在 Kibana 里会增加增加相关的索引、pipeline、可视化和仪表板等对象。
 
 使用下面的命令测试 filebeat 和 metricbeat 是否能正常的采集数据并传输到后台。
@@ -575,18 +561,17 @@ metricbeat setup
 filebeat -e
 metricbeat -e
 ```
+
 如果报错的话，将 level 在配置文件中设置为 debug，方便调试。调试成功之后，应该在 Kibana 的界面中，可以看到 node1 节点，点击后能看到实时更新过来的日志和监控指标。
 
 ![](/images/metric-node1.jpeg)
-
-
-
 
 ## 在新的节点上部署 Beats
 
 在新的需要部署 Beats 的节点上，可以使用下面的脚本配置和部署。
 
 add-agent.sh
+
 ```
 #!/bin/bash
 # author: Martin Liu
@@ -683,7 +668,6 @@ setup.ilm.check_exists: false
 logging.level: error
 queue.spool: ~
 ```
-
 
 metricbeat.yml
 

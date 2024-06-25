@@ -30,7 +30,7 @@ Cisco 3560 的初始化是非常容易和方便的，这是一台非常新的设
 
 #### 清除VLAN数据文件
 
-参考文章：https://www.networkstraining.com/deleting-the-vlan-database-from-a-cisco-switch/
+参考文章：<https://www.networkstraining.com/deleting-the-vlan-database-from-a-cisco-switch/>
 
 首先查看flash上有哪些文件，使用命令 `show flash`
 
@@ -87,6 +87,7 @@ myswitch(config)# crypto key generate rsa
 How many bits in the modulus [512]: 1024
  % Generating 1024 bit RSA keys, keys will be non-exportable...[OK]
 ```
+
 4. 配置一些 Line VTY 和 console 的参数
 
 ```

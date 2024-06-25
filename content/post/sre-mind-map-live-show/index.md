@@ -16,12 +16,9 @@ tags:
 
 > 直播预告。在 10 月 19 日晚上，我会在社区里再次为大家梳理一下 SRE 的知识体系模型，还是用脑图的方式，向大家讲解 SRE 都有相关部分组成。
 
-![活动报名海报](poster.jpg)
-
 本次直播活动的录播视频。
 
 {{< bilibili BV1XD4y1r7dS >}}
-
 
 下面这幅脑图是在我翻译完了《SRE Workbook》之后编写的，用了我好几天的时间，并且前后改了好几版。
 
@@ -42,7 +39,7 @@ tags:
   * 支持导入导出标准格式的脑图文件
   * 支持导入导出 pdf，png，jpg ，html 等方便人们引用的文档
 
-欢迎范围和参考 Google 官方 SRE 独立站点。https://sre.google/
+欢迎范围和参考 Google 官方 SRE 独立站点。<https://sre.google/>
 
 网站中的相关出版书籍如下。
 
@@ -66,7 +63,3 @@ tags:
 
 * 中文书名：[《Google系统架构解密》](https://book.douban.com/subject/35585206/)
 * [英文版 PDF 版 官方免费下载](https://sre.google/static/pdf/building_secure_and_reliable_systems.pdf)
-
-![可观测性简史](/img/O11y-infograph.jpg)
-> [欢迎直接开通观测云商业版，即可获得 500 元无限制代金券，](https://auth.guance.com/businessRegister?source=martinLiu)
-> [也可以选择开通个人体验版，每天有2000的免费额度畅快使用，可点此处参考费用表。](https://www.guance.com/billing#business#China?source=martinLiu)

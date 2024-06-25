@@ -26,14 +26,14 @@ title: "使用 Elastic Stack 监控 Covid-19 疫情发展"
 
 ## 分析和展示丁香园数据
 
-本文的目标分析数据源是 https://ncov.dxy.cn/ncovh5/view/pneumonia 这个也是我们最近一直在关注的关于中国的疫情公布平台。
+本文的目标分析数据源是 <https://ncov.dxy.cn/ncovh5/view/pneumonia> 这个也是我们最近一直在关注的关于中国的疫情公布平台。
 
 丁香园网页的数据被香港大学的 Isaac Lin 同学，通过他所开发的网络爬虫抓取加工后，用 API 的形式和 csv 数据文件的形式提供了出来，他的爬虫程序和结果数据给很多目前分析疫情的人带来了很大的帮助，有不少人去他的 blog 和 github 上点赞和评论的。
 
-- https://github.com/BlankerL/DXY-COVID-19-Data/tree/master/csv
-- https://lab.isaaclin.cn/nCoV/
+- <https://github.com/BlankerL/DXY-COVID-19-Data/tree/master/csv>
+- <https://lab.isaaclin.cn/nCoV/>
 
-你可以用 Python 程序调用 Lin 同学的 API 然后在将处理后的结果写入 ES，这样的脚本可以参考 Rockybean 的这个 https://www.yuque.com/elastictalk/blog/et25?from=timeline。也可以用下面的命令将Github 的 csv 文件下载到本地，在做手工的数据分析，这样也等于是对林同学的数据内容和定义进行一次深入的探索，这也将更有益于你理解数据，方面后面使用 Kibana 做数据分析。
+你可以用 Python 程序调用 Lin 同学的 API 然后在将处理后的结果写入 ES，这样的脚本可以参考 Rockybean 的这个 <https://www.yuque.com/elastictalk/blog/et25?from=timeline。也可以用下面的命令将Github> 的 csv 文件下载到本地，在做手工的数据分析，这样也等于是对林同学的数据内容和定义进行一次深入的探索，这也将更有益于你理解数据，方面后面使用 Kibana 做数据分析。
 
 在本机使用 git 做数据下载和同步的命令如下。
 
@@ -164,7 +164,7 @@ git pull
 
 为了后面使用省的名称做地图分析，这里需要查看数据中各个省英文名称，以广西为例，设置查询条件：provinceEnglishName Guangxi
 
-现在来浏览 Elastic Map 地图服务所引用的中国各省的中英文名称和代码，查看 https://maps.elastic.co/#file/china_provinces ；
+现在来浏览 Elastic Map 地图服务所引用的中国各省的中英文名称和代码，查看 <https://maps.elastic.co/#file/china_provinces> ；
 
 可以发现现所导入的数据和 Elastic 地图服务的官方数据不一致。
 
@@ -252,7 +252,7 @@ POST dxy-area-m5/_update_by_query
 }
 ```
 
-注意：以上的三个 POST 方法调用的对象是 `dxy-area-m5 ` ，这个索引的名字需要和你上面导入数据创建的索引一致。由于是手工初次处理这些数据，建议再次运行以上的一系列搜索过滤条件，确认这些目标字段和数据得到了正确的处理。
+注意：以上的三个 POST 方法调用的对象是 `dxy-area-m5` ，这个索引的名字需要和你上面导入数据创建的索引一致。由于是手工初次处理这些数据，建议再次运行以上的一系列搜索过滤条件，确认这些目标字段和数据得到了正确的处理。
 
 ### 可视化和展示数据
 
@@ -326,15 +326,15 @@ POST dxy-area-m5/_update_by_query
 
 ## 世卫组织数据的处理和展示
 
-浏览世卫组织的数据 https://github.com/CSSEGISandData/COVID-19
+浏览世卫组织的数据 <https://github.com/CSSEGISandData/COVID-19>
 
 基于以上数据可以制作一个如下的仪表板：
 
 ![](/images/2020-04-08_13-44-40.jpeg)
 
-这个仪表板中的地图是亮点，建议仔细学习研究一下。 这个仪表板的来源是一篇国外的文章： https://www.siscale.com/importing-covid-19-data-into-elasticsearch/
+这个仪表板中的地图是亮点，建议仔细学习研究一下。 这个仪表板的来源是一篇国外的文章： <https://www.siscale.com/importing-covid-19-data-into-elasticsearch/>
 
-我在一个小时左右，根据经验顺利的在我的实验环境里顺利生成了这个成果。下面是根据这篇文章怎么样使用 logstash 导入 Github 中世卫组织发布的数据，并持续与之保持同步。这里是他们的代码：https://github.com/siscale/covid-19-elk
+我在一个小时左右，根据经验顺利的在我的实验环境里顺利生成了这个成果。下面是根据这篇文章怎么样使用 logstash 导入 Github 中世卫组织发布的数据，并持续与之保持同步。这里是他们的代码：<https://github.com/siscale/covid-19-elk>
 
 下面描述如何使用这份代码。首先你需要有一个安装好的切正常运行的 Elasticsearch 7.6.1 服务器，一个可以正常使用的 Kibana 7.6.1 服务器。在此基础之上，安装 logstash 服务器，修改并放好 logstash 的配置文件。 在 Kibana 的 Dev Tool 中导入索引的 Mapping。启动 logstash 服务器，等待和确认数据的传入。导入 Kibana 的相关对象。浏览查看和确认 siscale （国外一家 Elastic 的合作伙伴公司） 的作品。理解每个可视化展示控件的设计细节。
 
@@ -388,13 +388,13 @@ Elastic Stack 在本案例中得到了充分而综合的运用。从 E 到 L 到
 
 本文参考的网址如下：
 
-- https://gisanddata.maps.arcgis.com/apps/opsdashboard/index.html#/bda7594740fd40299423467b48e9ecf6
-- http://covid.surge.sh/
-- https://informationisbeautiful.net/visualizations/covid-19-coronavirus-infographic-datapack/
-- https://ncov.dxy.cn/ncovh5/view/pneumonia
-- https://github.com/CSSEGISandData/COVID-19
-- https://lab.isaaclin.cn/nCoV/
-- https://github.com/siscale/covid-19-elk
-- https://www.mapbox.cn/coronavirusmap/#3.35/28.47/109.74
-- https://ncov.deepeye.tech/
-- https://www.siscale.com/importing-covid-19-data-into-elasticsearch/
+- <https://gisanddata.maps.arcgis.com/apps/opsdashboard/index.html#/bda7594740fd40299423467b48e9ecf6>
+- <http://covid.surge.sh/>
+- <https://informationisbeautiful.net/visualizations/covid-19-coronavirus-infographic-datapack/>
+- <https://ncov.dxy.cn/ncovh5/view/pneumonia>
+- <https://github.com/CSSEGISandData/COVID-19>
+- <https://lab.isaaclin.cn/nCoV/>
+- <https://github.com/siscale/covid-19-elk>
+- <https://www.mapbox.cn/coronavirusmap/#3.35/28.47/109.74>
+- <https://ncov.deepeye.tech/>
+- <https://www.siscale.com/importing-covid-19-data-into-elasticsearch/>
