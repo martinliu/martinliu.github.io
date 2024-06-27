@@ -1,5 +1,5 @@
 ---
-title: "Google 白皮书 《事故管理剖析》第一章 概述"
+title: "Google SRE 白皮书 《事故管理剖析》第一章 概述"
 date: 2024-06-25T22:46:48+08:00
 description:  Google 的生产服务事故管理方法，Google 编写这份报告（白皮书）是为了分享&总结一份：技术事故响应实践的指南。
 slug: anatomy-of-an-incident-ch1
@@ -114,7 +114,7 @@ toc: true
 
 一旦恢复阶段结束，你将重新进入准备阶段。根据系统的复杂性，所有这些阶段可能同时进行——但可以确定的是，至少总有一个阶段在进行中。
 
-> 来源： <https://sre.google> ；本白皮书一共有 7 章，后续章节将陆续发布。完整中文版白皮即将发布，敬请期待。
+> 来源： <https://sre.google> ；本白皮书一共有 7 章，后续章节将陆续发布。完整中文版白皮书即将发布，敬请期待。
 
 ![cover](/img/anatomy-of-an-incident.png)
 
