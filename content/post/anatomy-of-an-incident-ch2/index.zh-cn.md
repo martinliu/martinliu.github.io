@@ -1,5 +1,5 @@
 ---
-title: "Google SRE 白皮书 《事故管理剖析》第二章 实战演习事故响应准备"
+title: "Google SRE 白皮书： 《事故管理剖析》第二章 实战演习事故响应准备"
 date: 2024-06-25T22:46:48+08:00
 description:  Google 的生产服务事故管理方法，Google 编写这份报告（白皮书）是为了分享&总结一份：技术事故响应实践的指南。
 slug: anatomy-of-an-incident-ch2

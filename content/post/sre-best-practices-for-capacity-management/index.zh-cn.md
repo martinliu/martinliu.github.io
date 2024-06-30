@@ -1,5 +1,5 @@
 ---
-title: "SRE 容量管理最佳实践"
+title: "Google 白皮书：SRE 容量管理最佳实践"
 date: 2024-06-17T13:23:28+08:00
 description: 来自 Google 两位 SRE 专家的深度总结文章，帮助您更好地理解容量管理的原则和最佳实践。
 slug: sre-best-practices-for-capacity-management
@@ -9,6 +9,7 @@ categories:
 tags:
     - Google
     - 容量管理
+    - 白皮书
 comments: true
 toc: true
 
