@@ -1,0 +1,562 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>O11y on Martin Liu's Blog</title><link>https://martinliu.cn/tags/o11y/</link><description>Recent content in O11y on Martin Liu's Blog</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><lastBuildDate>Tue, 05 Dec 2023 13:10:43 +0800</lastBuildDate><atom:link href="https://martinliu.cn/tags/o11y/index.xml" rel="self" type="application/rss+xml"/><item><title>先睹为快 Azure OpenAI 驱动的 Elastic 可观测性 ‘AI 助理’</title><link>https://martinliu.cn/blog/elastic-elastic-obs-ai-assistant-aoai/</link><pubDate>Tue, 05 Dec 2023 13:10:43 +0800</pubDate><guid>https://martinliu.cn/blog/elastic-elastic-obs-ai-assistant-aoai/</guid><description>&lt;img src="https://martinliu.cn/blog/elastic-elastic-obs-ai-assistant-aoai/pexels-cottonbro-studio-6153354.jpg" alt="Featured image of post 先睹为快 Azure OpenAI 驱动的 Elastic 可观测性 ‘AI 助理’" />&lt;p>在最近的 ElasticON 大会上，Elastic 可观测性的 AI Assistant 得到了充分曝光。在 Keynote 中，还专门做了一个演示，展示了 AI Assistant 的功能，以及如何使用 AI Assistant 来解决问题。&lt;/p>
+&lt;p>我最近好在学习微软的 Azure OpenAI 服务，在我的 Azure 环境中，已经创建了一个 OpenAI 服务，可以用于AI Assistant 的测试。因此，我就想看看 Elastic 的 AI Assistant 和 Azure 的 OpenAI 服务结合起来的效果如何。&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/blog/elastic-elastic-obs-ai-assistant-aoai/AIOps_blog-720x420.png"
+width="720"
+height="420"
+srcset="https://martinliu.cn/blog/elastic-elastic-obs-ai-assistant-aoai/AIOps_blog-720x420_hu520d359d44fde727923ba6cf0bddaf1f_20182_480x0_resize_box_3.png 480w, https://martinliu.cn/blog/elastic-elastic-obs-ai-assistant-aoai/AIOps_blog-720x420_hu520d359d44fde727923ba6cf0bddaf1f_20182_1024x0_resize_box_3.png 1024w"
+loading="lazy"
+class="gallery-image"
+data-flex-grow="171"
+data-flex-basis="411px"
+>
+&lt;/p>
+&lt;h2 id="elastic-可观测性的-ai-assistant">Elastic 可观测性的 AI Assistant&lt;/h2>
+&lt;p>它有两个使用方式：&lt;/p>
+&lt;ol>
+&lt;li>Contextual insights ： 在可观测性 APP 的界面中，在很多特定的位置，都可以点击右上角的 AI Assistant 链接，然后进入当前界面的上下文分析，在日志和 APM 中都已经做了集成。此功能的目标是：帮你理解错误日志和指标信息，并尽可能的给你一定的解释和建议。
+&lt;ol>
+&lt;li>Universal Profiling - 解释了运行的应用里最昂贵的库和函数，并提供优化建议。&lt;/li>
+&lt;li>应用性能监控（APM） - 解释了APM错误并提供纠正建议。&lt;/li>
+&lt;li>基础设施可观测性 （Infrastructure observability）- 解释了在主机上运行的进程。&lt;/li>
+&lt;li>日志 （log）- 解释了日志消息并生成搜索模式以查找类似问题。&lt;/li>
+&lt;li>告警 （alerting） - 为日志速率变化提供可能的原因和纠正建议。&lt;/li>
+&lt;/ol>
+&lt;/li>
+&lt;li>Chat 聊天会话 ： 以可观测性数据为基础，你可以请求机器人为你汇总、分析、和可视化数据。从而得到你想要的结果，可能是为了制作某个报表，也可以能是开始探索分析某个性能问题。&lt;/li>
+&lt;/ol>
+&lt;p>运行这个功能的前提条件：&lt;/p>
+&lt;ul>
+&lt;li>Elastic Stack version 8.9 或者更高&lt;/li>
+&lt;li>拥有 Elastic Enterprise 订阅&lt;/li>
+&lt;li>一个 AI 服务方的账号，比如 Azure OpenAI gpt-4(0613) 或 gpt-4-32k(0613) 服务， 或者 OpenAI gpt-4 服务&lt;/li>
+&lt;li>为了使用私域文档作为知识库，还需要一个至少 4GB 的机器学习节点。&lt;/li>
+&lt;/ul>
+&lt;h2 id="准备-azure-openai-服务">准备 Azure OpenAI 服务&lt;/h2>
+&lt;p>首先，你需要在 Azure 的 Portal 中创建一个 OpenAI 服务，这个服务提供 OpenAI GPT-4 模型，我创建的服务名称是 &lt;code>ai4elasticstack&lt;/code>。&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/blog/elastic-elastic-obs-ai-assistant-aoai/2023-12-05_13-44-47.jpg"
+width="1175"
+height="789"
+srcset="https://martinliu.cn/blog/elastic-elastic-obs-ai-assistant-aoai/2023-12-05_13-44-47_hu2c5d69d210ca39a2e7451e9e2d991afa_62881_480x0_resize_q75_box.jpg 480w, https://martinliu.cn/blog/elastic-elastic-obs-ai-assistant-aoai/2023-12-05_13-44-47_hu2c5d69d210ca39a2e7451e9e2d991afa_62881_1024x0_resize_q75_box.jpg 1024w"
+loading="lazy"
+class="gallery-image"
+data-flex-grow="148"
+data-flex-basis="357px"
+>
+&lt;/p>
+&lt;p>这里确保选择 Azure OpenAI 的服务所在区域里能提供 gpt-4 模型，比如我选择的是瑞士中部。&lt;/p>
+&lt;p>然后，是在这个区域中部署所需要的模型。&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/blog/elastic-elastic-obs-ai-assistant-aoai/2023-12-05_13-52-26.jpg"
+width="1087"
+height="956"
+srcset="https://martinliu.cn/blog/elastic-elastic-obs-ai-assistant-aoai/2023-12-05_13-52-26_hu29a4e955ef64bc52e9f49df924e0bdb9_39558_480x0_resize_q75_box.jpg 480w, https://martinliu.cn/blog/elastic-elastic-obs-ai-assistant-aoai/2023-12-05_13-52-26_hu29a4e955ef64bc52e9f49df924e0bdb9_39558_1024x0_resize_q75_box.jpg 1024w"
+loading="lazy"
+class="gallery-image"
+data-flex-grow="113"
+data-flex-basis="272px"
+>
+&lt;/p>
+&lt;p>这里我部署了 gpt-4-32k 模型，需要注意的是：token 的限速需要调整到最大，这样才能保证 AI Assistant 的正常使用。&lt;/p>
+&lt;h2 id="创建-ai-assistant-的连接器">创建 AI Assistant 的连接器&lt;/h2>
+&lt;p>在 Elastic Cloud 中，创建一个 AI Assistant 所需要使用到的连接器，这个连接器的类型是 Azure OpenAI，然后，填写 Azure OpenAI 服务的相关信息，如下图所示。&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/blog/elastic-elastic-obs-ai-assistant-aoai/2023-12-05_13-56-18.jpg"
+width="1257"
+height="1109"
+srcset="https://martinliu.cn/blog/elastic-elastic-obs-ai-assistant-aoai/2023-12-05_13-56-18_hu5b3ebe5c619f09330289e4cec9287fe4_60490_480x0_resize_q75_box.jpg 480w, https://martinliu.cn/blog/elastic-elastic-obs-ai-assistant-aoai/2023-12-05_13-56-18_hu5b3ebe5c619f09330289e4cec9287fe4_60490_1024x0_resize_q75_box.jpg 1024w"
+loading="lazy"
+class="gallery-image"
+data-flex-grow="113"
+data-flex-basis="272px"
+>
+&lt;/p>
+&lt;p>URL 是一个重要的参数，它的格式如下：&lt;/p>
+&lt;div class="codeblock">
+&lt;header>
+&lt;span class="codeblock-lang">&lt;/span>
+&lt;button
+class="codeblock-copy"
+data-id="codeblock-id-0"
+data-copied-text=""
+>
+&lt;/button>
+&lt;/header>
+&lt;code id="codeblock-id-0" style="display:none;">https://{your-resource-name}.openai.azure.com/openai/deployments/{deployment-id}/completions?api-version={api-version}&lt;/code>&lt;pre>&lt;code class="">https://{your-resource-name}.openai.azure.com/openai/deployments/{deployment-id}/completions?api-version={api-version}&lt;/code>&lt;/pre>&lt;/div>
+&lt;p>其中，&lt;code>{your-resource-name}&lt;/code> 是你创建的 Azure OpenAI 服务的名称，&lt;code>{deployment-id}&lt;/code> 是你创建的 Azure OpenAI 服务的部署 ID（即名称），&lt;code>{api-version}&lt;/code> 是你创建的 Azure OpenAI 服务的 API 版本。这里的 &lt;code>{deployment-id}&lt;/code> 与 &lt;code>{api-version}&lt;/code> 有一定的排列组合，某些组合是不工作的，我当前的选择是可以工作：&lt;code>gpt4（32k 0613 版本） 和 2023-07-01-preview&lt;/code>&lt;/p>
+&lt;div class="codeblock">
+&lt;header>
+&lt;span class="codeblock-lang">&lt;/span>
+&lt;button
+class="codeblock-copy"
+data-id="codeblock-id-1"
+data-copied-text=""
+>
+&lt;/button>
+&lt;/header>
+&lt;code id="codeblock-id-1" style="display:none;">https://ai4elasticstack.openai.azure.com/openai/deployments/gpt432k0613/chat/completions?api-version=2023-07-01-preview&lt;/code>&lt;pre>&lt;code class="">https://ai4elasticstack.openai.azure.com/openai/deployments/gpt432k0613/chat/completions?api-version=2023-07-01-preview&lt;/code>&lt;/pre>&lt;/div>
+&lt;p>这里配置完 URL 和 API 秘钥之后，点击“测试”页面，如果一切正常，你会看到一个绿色的正常调用 OpenAI 的返回。这样你的 AI Assistant 就可以正常工作了。&lt;/p>
+&lt;h2 id="理解日志中的错误">理解日志中的错误&lt;/h2>
+&lt;p>进入可观测性 app，点击 Stream，在这里选中一条报错的日志，内容如下：&lt;/p>
+&lt;div class="codeblock">
+&lt;header>
+&lt;span class="codeblock-lang">&lt;/span>
+&lt;button
+class="codeblock-copy"
+data-id="codeblock-id-2"
+data-copied-text=""
+>
+&lt;/button>
+&lt;/header>
+&lt;code id="codeblock-id-2" style="display:none;">16:23:13.729
+elastic_agent.metricbeat
+[elastic_agent.metricbeat][error] Error fetching data for metricset docker.memory: No memory stats data available&lt;/code>&lt;pre>&lt;code class="">16:23:13.729
+elastic_agent.metricbeat
+[elastic_agent.metricbeat][error] Error fetching data for metricset docker.memory: No memory stats data available&lt;/code>&lt;/pre>&lt;/div>
+&lt;p>点击 &lt;code>view detail&lt;/code>，查看这条日志的详细信息。&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/blog/elastic-elastic-obs-ai-assistant-aoai/2023-12-05_09-59-13.png"
+width="1781"
+height="1173"
+srcset="https://martinliu.cn/blog/elastic-elastic-obs-ai-assistant-aoai/2023-12-05_09-59-13_hu9941d3be6db86a0fc0e671a0cff7d994_174560_480x0_resize_box_3.png 480w, https://martinliu.cn/blog/elastic-elastic-obs-ai-assistant-aoai/2023-12-05_09-59-13_hu9941d3be6db86a0fc0e671a0cff7d994_174560_1024x0_resize_box_3.png 1024w"
+loading="lazy"
+class="gallery-image"
+data-flex-grow="151"
+data-flex-basis="364px"
+>
+&lt;/p>
+&lt;p>AI Assistant 会自动分析这条日志，然后给出两个选项。&lt;/p>
+&lt;ol>
+&lt;li>点击“What&amp;rsquo;s this message?”, AI Assistant 会给出这条日志的解释，以及可能的原因。这个 host 上由于 Docker 服务没有启动，导致 Metricbeat 无法获取到 Docker 的内存信息。AI Assistant 首先对这条日志，做了解释，解释内容里包含了你可能会关注的元数据信息，包括：版本号、操作系统、日志级别等。然后推测出是 Docker 服务没有启动的原因。最后，说明这是不正常的情况，应该尽快排查 Docker 服务。同一条错误信息，也可能会出现不同的解释。下面是整个 AI Assistant 的解释内容：&lt;/li>
+&lt;/ol>
+&lt;blockquote>
+&lt;p>The log entry you provided is from an Elastic Agent running on a host named &amp;ldquo;linux-dev-02&amp;rdquo; with the IP address &amp;ldquo;10.1.0.4&amp;rdquo;. The host is running Ubuntu 22.04.3 LTS (Jammy Jellyfish) with kernel version 6.2.0-1017-azure. The Elastic Agent version is 8.10.4 and it&amp;rsquo;s not a snapshot version. The agent is running on a cloud instance in the &amp;ldquo;eastasia&amp;rdquo; region of Azure.&lt;/p>
+&lt;/blockquote>
+&lt;blockquote>
+&lt;p>The component that generated this log entry is Metricbeat, which is a lightweight shipper that you can install on your servers to periodically collect metrics from the operating system and from services running on the server. The specific Metricbeat module in use here is the Docker module, which collects metrics and logs from Docker containers.&lt;/p>
+&lt;/blockquote>
+&lt;blockquote>
+&lt;p>The log level of the message is &amp;ldquo;error&amp;rdquo;, which indicates that an error or problem has occurred. The specific error message is &amp;ldquo;Error fetching data for metricset docker.memory: No memory stats data available&amp;rdquo;. This suggests that Metricbeat was unable to fetch memory statistics for a Docker container. This could be due to a number of reasons, such as the Docker container not being active, the Docker daemon not being accessible, or the Docker API not returning memory statistics.&lt;/p>
+&lt;/blockquote>
+&lt;blockquote>
+&lt;p>Whether this is expected or an issue depends on your specific setup and expectations. If you expect to be collecting memory statistics from Docker containers and this error is preventing that, then it would be an issue. If you&amp;rsquo;re not using Docker or not interested in collecting memory statistics from Docker containers, then it might not be an issue. However, it&amp;rsquo;s generally not expected for errors to be occurring, so it might be worth investigating further to understand why this error is happening.&lt;/p>
+&lt;/blockquote>
+&lt;ol start="2">
+&lt;li>如果点击“How do i find similar log messages?” , AI Assistant 会给出一个 KQL 查询语句，使用这个查询语句会返回与这条日志相似的日志。这个查询语句的结果，可以帮助你更好的理解这条日志的上下文。&lt;/li>
+&lt;li>链接器选择：你可以在 Elastic Stack 中，配置多个 AI Assistant 的连接器，可能对应到不同的 OpenAI 服务+版本的组合。&lt;/li>
+&lt;/ol>
+&lt;p>这个功能的好处：&lt;/p>
+&lt;ul>
+&lt;li>通过 AI Assistant 的解释，它可以帮助你更全面的理解日志的内容本身，由于每个人并不是熟悉所有的技术领域，AI 在这里可以很好的补充你的知识短板。&lt;/li>
+&lt;li>在高压力的排错环境中，从模糊的日志事件内容中，很快的得出下一步排查的方向是比较有意义的。人脑很有可能在疲惫状态下，很难准确地得出下一个排查的动作。&lt;/li>
+&lt;li>AI 对错误原因的推理，看着并不一定高明，但是作为排错的起点，还是比较有用的。你可以在这个基础上，点击界面上的 “Start Chat” 按钮，进入到 Chat 聊天会话功能模式，然后，继续与 AI 机器人对话，追问：“其他潜在的故障原因是那些？”；这样 AI 给我了另外不同的 4 种故障可能，涉及 Docker 服务器、配置、Metricbeat 的配置等等。可见 AI 在细分领域里的知识的深度还是一些的。&lt;/li>
+&lt;/ul>
+&lt;p>下面是我的追问和 AI 的回答，这里是支持中文：&lt;/p>
+&lt;p>“
+You：还有什么可能的原因会导致这个问题？&lt;/p>
+&lt;p>Elastic Assistant ：这个错误信息表示 Metricbeat 无法获取 Docker 容器的内存统计信息。可能的原因包括：&lt;/p>
+&lt;ol>
+&lt;li>
+&lt;p>Docker 容器未运行：如果你试图获取一个未运行或不存在的 Docker 容器的内存统计信息，将会出现这个错误。&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Docker 守护进程无法访问：Metricbeat 需要能够访问 Docker 守护进程来获取容器的统计信息。如果由于某种原因（例如权限问题或网络问题）无法访问 Docker 守护进程，将会出现这个错误。&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Docker API 未返回内存统计信息：Metricbeat 通过 Docker API 获取容器的统计信息。如果 Docker API 未返回内存统计信息，将会出现这个错误。这可能是因为 Docker API 的问题，或者是因为容器本身没有生成内存统计信息。&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Metricbeat 配置问题：如果 Metricbeat 的 Docker 模块没有正确配置，可能也会导致这个问题。例如，如果 Metricbeat 没有正确配置 Docker 守护进程的地址，或者没有提供正确的证书来访问需要 TLS 的 Docker 守护进程，将会出现这个错误。&lt;/p>
+&lt;/li>
+&lt;/ol>
+&lt;p>你可以根据这些可能的原因进行排查，看看哪一项可能是问题所在。
+”&lt;/p>
+&lt;p>这个功能还在可观测性的其它功能模块中也做了深度的集成，例如在 APM 等模块中，也可以调用到 AI Assistant 的 “上下文洞见”；基本上，就是 Elastic Stack 在多个场景中，人类可用将自己分析错误信息的工作一定程度的交给 AI 去做；这样，我们就可以更加专注于问题的解决，而不是在监控数据、时序信息的分析上浪费更多的时间。从长远来看，这个上下文洞见的辅助排查功能，确实是有辅助驾驶和导航的意义，还是比较有用的。&lt;/p>
+&lt;h2 id="chat-聊天会话功能">Chat 聊天会话功能&lt;/h2>
+&lt;p>我测试了一个开放式的问题，希望 AI 能帮我分析出：我的服务器是否即将有磁盘空间用尽的情况发生。如下图所示：&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/blog/elastic-elastic-obs-ai-assistant-aoai/2023-12-05_17-13-51.png"
+width="1546"
+height="1336"
+srcset="https://martinliu.cn/blog/elastic-elastic-obs-ai-assistant-aoai/2023-12-05_17-13-51_hu91e24a9e7af7fb1e1cee97294248f803_145339_480x0_resize_box_3.png 480w, https://martinliu.cn/blog/elastic-elastic-obs-ai-assistant-aoai/2023-12-05_17-13-51_hu91e24a9e7af7fb1e1cee97294248f803_145339_1024x0_resize_box_3.png 1024w"
+loading="lazy"
+class="gallery-image"
+data-flex-grow="115"
+data-flex-basis="277px"
+>
+&lt;/p>
+&lt;p>下面解释一下 AI Assistant 的回答：&lt;/p>
+&lt;ol>
+&lt;li>我使用英语提问，其实你可以用任何语言提问，OpenAI 都可以正确理解。&lt;/li>
+&lt;li>点击这里折叠隐藏的 7 个步骤，这些步骤是 AI Assistant 为了回答我的问题，所做的推理思考和处理过程。这里使用了多个方法调用，包括在 Elasticsearch 数据库中查找任何它想要的信息。 AI Assistant 的知识库【你可以将知识库配置在 Elasticsearch 中，AI 的分析流水线，读取并理解知识条目内容，并调用这些知识】，以及我的问题的上下文信息，AI Assistant 会根据这些信息，做出推理，然后给出回答。&lt;/li>
+&lt;li>最终 AI 用绘图的方式给出主机的磁盘空间利用率的汇总情况，很可惜的是，它几乎就做对了；这个图形没有显示出来的原因是：在最后还应该调用一个 max 或者 avg 的运算函数。&lt;/li>
+&lt;li>最后一句话，再次解释并总结了我的提问。&lt;/li>
+&lt;/ol>
+&lt;p>我并没有继续这个会话，如果继续问答下去的话，如果 AI Assistant 的聊天内容总是我所期望的正确的结果内容；那么，很可能我们就不需要去各种界面里到处点击、查看和分析各种数据图表和原始数据了。假如以后接入了自然语音的输入界面，那么，未来这种排错和分析场景还确实是一种比较科幻的感觉。&lt;/p>
+&lt;p>AI助手使用函数通过文本、数据和可视化组件在聊天对话中包含相关上下文。您和AI助手都可以提出函数建议。您还可以编辑AI助手的函数建议并检查函数响应。&lt;/p>
+&lt;p>以下表格列出了可用的函数：&lt;/p>
+&lt;ul>
+&lt;li>
+&lt;p>summarize ：总结对话的部分。&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>recall ：回顾先前的学习。&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>lens ：使用Lens创建自定义可视化，可以添加到仪表板中。&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>elasticsearch ：代表您调用Elasticsearch API。&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>kibana ：代表您调用Kibana API。&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>alerts ：获取可观测性的警报。&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>get_apm_timeseries ：显示任何服务或所有服务及其任何或所有依赖项的不同APM指标（如吞吐量、故障率或延迟）。既显示为时间序列，也显示为单一统计数据。此外，该函数返回任何更改，如峰值、步进和趋势更改或下降。您还可以使用它通过请求两个不同的时间范围，或者例如两个不同的服务版本来比较数据。&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>get_apm_error_document ：根据分组名称获取示例错误文档。这还包括错误的堆栈跟踪，这可能提示错误的原因。&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>get_apm_correlations ：获取在前景集中比背景集更突出的字段值。这对于确定哪些属性（例如error.message、service.node.name或transaction.name）对高延迟的贡献是有用的。另一个选项是基于时间的比较，您可以在更改点之前和之后进行比较。&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>get_apm_downstream_dependencies ：获取服务的下游依赖项（服务或未被检测的后端）。通过返回span.destination.service.resource和service.name两者将下游依赖项名称映射到服务。如果需要，可以使用此功能进一步深入挖掘。&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>get_apm_service_summary ： 获取单个服务的摘要，包括语言、服务版本、部署、环境以及它运行的基础设施。例如，pod的数量和它们的下游依赖项列表。它还返回活动警报和异常。&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>get_apm_services_list ：获取受监控服务的列表，它们的健康状态和警报。&lt;/p>
+&lt;/li>
+&lt;/ul>
+&lt;h2 id="总结">总结&lt;/h2>
+&lt;p>由于时间有限，我并没有做知识库的导入，从文档中看到，知识库私域信息的注入基本上是这样的过程：首先将知识库文档整理后导入到 Elasticsearch 的一个索引中，然后使用结合 Elasticsearch 本身的 ELSER 自然语音处理能力和 OpenAI 的理解推理能力，来支撑 AI 辅助分析排查问题的过程。&lt;/p>
+&lt;p>以上功能测试的配置非常简单，在 Elastic Cloud 的环境中，参考本文，你应该在 10 分钟内就可以完成所有配置。从上下文分析和聊天的两个场景中，我们可以很快的找到 AI 辅助运维的感觉。&lt;/p>
+&lt;blockquote>
+&lt;p>参考文章 ：&lt;/p>
+&lt;ul>
+&lt;li>&lt;a class="link" href="https://www.elastic.co/guide/en/observability/current/obs-ai-assistant.html" target="_blank" rel="noopener"
+>https://www.elastic.co/guide/en/observability/current/obs-ai-assistant.html&lt;/a>&lt;/li>
+&lt;li>&lt;a class="link" href="https://www.youtube.com/watch?v=AQ4sPC_O2Ck&amp;amp;ab_channel=Elastic" target="_blank" rel="noopener"
+>https://www.youtube.com/watch?v=AQ4sPC_O2Ck&amp;ab_channel=Elastic&lt;/a>&lt;/li>
+&lt;li>&lt;a class="link" href="https://www.elastic.co/blog/context-aware-insights-elastic-ai-assistant-observability" target="_blank" rel="noopener"
+>https://www.elastic.co/blog/context-aware-insights-elastic-ai-assistant-observability&lt;/a>&lt;/li>
+&lt;li>&lt;a class="link" href="https://www.elastic.co/blog/whats-new-elastic-observability-8-9-0" target="_blank" rel="noopener"
+>https://www.elastic.co/blog/whats-new-elastic-observability-8-9-0&lt;/a>&lt;/li>
+&lt;li>&lt;a class="link" href="https://www.elastic.co/blog/whats-new-elastic-observability-8-10-0" target="_blank" rel="noopener"
+>https://www.elastic.co/blog/whats-new-elastic-observability-8-10-0&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/blockquote>
+&lt;p>Feature picture ❤️ cottonbro studio : &lt;a class="link" href="https://www.pexels.com/zh-cn/photo/6153354/" target="_blank" rel="noopener"
+>https://www.pexels.com/zh-cn/photo/6153354/&lt;/a>&lt;/p></description></item><item><title>可观测性的定义和真实含义是什么？</title><link>https://martinliu.cn/blog/what-is-o11y/</link><pubDate>Tue, 29 Aug 2023 15:04:00 +0800</pubDate><guid>https://martinliu.cn/blog/what-is-o11y/</guid><description>&lt;img src="https://martinliu.cn/blog/what-is-o11y/pexels-joshua-woroniecki-3832684.jpg" alt="Featured image of post 可观测性的定义和真实含义是什么？" />&lt;p>“可观测性”英文 observability ，缩写 o11y 。&lt;/p>
+&lt;h2 id="常见定义">常见定义&lt;/h2>
+&lt;p>最常见的引用来自机械工程领域中关于“控制论”的研究，1960 年鲁道夫·E.卡尔曼首次提出了“可观测性”这个词。&lt;/p>
+&lt;p>在控制论中，这个概念涉及：物理机械系统和与之对偶关系的数学模型。然而，这个机械工程师用来研究物理系统的术语，并一定能完全的适用于我们所研究软件应用系统。&lt;/p>
+&lt;p>大多数人将“可以根据系统的外部输出信息推断出系统内部状态的好坏（源自于《控制论》）”全盘接受，并套用在了软件行业相关讨论的上下文中。&lt;/p>
+&lt;h2 id="常见误解">常见误解&lt;/h2>
+&lt;p>降维误读：“可观测性”就是“遥测-telemetry”和“监控-monitor”的同义词。它与监控并没啥区别。就是通常所说的三大支柱（日志、指标和 Trace）。&lt;/p>
+&lt;p>厂商的市场宣传：由于市场宣传的需要，目前几乎所有传统做指标、日志和 APM - Trace 的厂商都直接宣称他们都是做可观测性的厂商，提供可观测性产品、解决方案或者 SaaS 服务。常见做法：可观测性是他们扩展出来的，用旧产品改名。&lt;/p>
+&lt;p>有些公司会直接的进行概念替换：“我们就是可观测性”。&lt;/p>
+&lt;p>以上现实情况，给所有人对可观测性的理解带来了一定的障碍。&lt;/p>
+&lt;h2 id="应有的定义">应有的定义&lt;/h2>
+&lt;p>在我们排除以上学术上的认祖归宗，以及市场宣传的张冠李戴以后。&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/blog/what-is-o11y/o11y-def.jpg"
+width="1264"
+height="557"
+srcset="https://martinliu.cn/blog/what-is-o11y/o11y-def_hu308442a76ca90a9e46c8a88e76728246_70321_480x0_resize_q75_box.jpg 480w, https://martinliu.cn/blog/what-is-o11y/o11y-def_hu308442a76ca90a9e46c8a88e76728246_70321_1024x0_resize_q75_box.jpg 1024w"
+loading="lazy"
+alt="可观测性定义"
+class="gallery-image"
+data-flex-grow="226"
+data-flex-basis="544px"
+>
+&lt;/p>
+&lt;p>我们应该可以给出一个关于可观测性更加严谨的定义：&lt;/p>
+&lt;ol>
+&lt;li>可观测性是应用系统的一种内在属性，我们可以通过可观测性管理工具将其显性的展现出来，用于探索分析。&lt;/li>
+&lt;li>度量能力：无论系统中发生着多么费解的现象，它的度量数据能帮助你更好地理解和解释系统当前的状态。可以解答：系统处于什么状态？&lt;/li>
+&lt;li>探索能力：我们能够在各类系统状态数据的所有维度和组合之间进行关联分析，并无需遵循某种预定的调试&amp;amp;排查模式和路径，用于解答：系统中发生了什么变化？为什么会发生这样的变化？&lt;/li>
+&lt;li>可按需调整能力：最好是不需要改变原有软件系统的代码，如有需要，也能随心所欲的按需埋点覆盖新的洞察认知。&lt;/li>
+&lt;/ol>
+&lt;p>以上是关于可观测性定义应该具备的描述信息。适用于我们在对软件系统进行运行和维护的上下文中，这个概念应该具有的含义和外延还有很多。&lt;/p>
+&lt;h2 id="为何现在o11y很重要">为何现在o11y很重要？&lt;/h2>
+&lt;p>特别是在云原生的运维场景中，传统监控并非唯一的最佳方法；而且，传统的指标和日志监控已经捉襟见肘；产品团队和运维人员始终处于很被动的状态，传统监控数据仅限于让我们了解有限的历史状态，很难推理和预测未知故障。在创建了大量告警规则后，告警事件的数量和信噪比都居高不下，运维值守人员终日忙于关闭噪音事件，很难聚焦在有意义的事件上。&lt;/p>
+&lt;h2 id="调试排查应用系统">调试&amp;amp;排查应用系统&lt;/h2>
+&lt;p>在生产环境中，调试和排查应用系统的故障和性能问题充满着各种挑战。任意一个人是无法完全的理解复杂的软件系统，大部分人都是习惯于使用分解法思考系统故障；先脑补系统的整体架构，然后怀疑某个系统组件，再考虑组件之间的关联关系。在云原生系统中，我们很难准确的在大脑中勾勒出系统架构的全貌，甚至都不能准确的定位出某个组件（子服务）是运行在什么地方（AZ，Host，Pods）。而且，现代分布式系统所发生的故障，是一系列持续的不同的新问题，发生故障的代码有可能是自己开发的，也很可能是第三方依赖组件&amp;amp;外部服务。人的诊断故障的直觉和经验只能对已知的错误模式有效，传统监控就是面向已知问题的，先假设每一个监控点都是确定的未来的故障点。而使用可观测性进行故障诊断，是面向未知问题的，是用来解释未知问题是如何发生的。&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/blog/what-is-o11y/know-unknow.jpg"
+width="793"
+height="715"
+srcset="https://martinliu.cn/blog/what-is-o11y/know-unknow_hu3f8a1a31f09a4bc9898480e71b01d1bc_19270_480x0_resize_q75_box.jpg 480w, https://martinliu.cn/blog/what-is-o11y/know-unknow_hu3f8a1a31f09a4bc9898480e71b01d1bc_19270_1024x0_resize_q75_box.jpg 1024w"
+loading="lazy"
+alt="已知的未知"
+class="gallery-image"
+data-flex-grow="110"
+data-flex-basis="266px"
+>
+&lt;/p>
+&lt;p>用可观测数据度量和感知应用系统的状态，以及状态的变化，就需要认识到数据的两个维度“基数”和“维度”。&lt;/p>
+&lt;h3 id="基数">基数&lt;/h3>
+&lt;p>基数的定义：关注于一条可观测性数据的某个字段，如果每个字段都是一个 Key - value 对，维度指的是这个组合中 value 的唯一性，也就是值的唯一数量。&lt;/p>
+&lt;ul>
+&lt;li>高基数字段的例子：用户 ID、UUID、购物车 ID、请求 ID、容器 ID、主机名（弹性、不可变架构）、Pod ID等等。&lt;/li>
+&lt;li>低基数字段的例子：性别、种族、国家、婚姻状态等等&lt;/li>
+&lt;/ul>
+&lt;p>基数对于可观测性的作用是：通过聚合采集到的高基数数据集合，得到低基数的分析结果；可观测性管理拥抱高基数数据，也就拥抱更多未知的可能性，因此它具备感知未知故障模式的先天优势。&lt;/p>
+&lt;p>而传统监控（日志、指标）数据的基数一般处于一个合理的规模，默认规避高基数，希望用尽可能少的指标分析定位问题，从工具上反映出来的是枚举法；在日常实践中：监控工具的使用者，倾向于关闭大量的认为没什么用的，或者不会出问题的故障采集点。即使是指标全开，日志尽采，而后续的数据分析和洞察手段往往是低效且滞后的，数据后期处理的高价值工作不是没有能力做，就是没有人力和成本做。&lt;/p>
+&lt;p>工具厂商（指标、日志、APM）可能会按照所能覆盖到的监控指标的数量，而增加工具使用的费用。&lt;/p>
+&lt;h3 id="维度">维度&lt;/h3>
+&lt;p>维度的定义：关注于一条可观测性数据的所有字段的数量，如果每个字段都是一个 Key - value 对，维度指的是这个组合中 key 的数量，也就各种 key 键的多寡。&lt;/p>
+&lt;p>高维度可观测性数据是一条结构化数据，代表这一次事件，亦或是一个状态，它的“宽度”可以高达上千个键值对（字段），事件越宽所携带的上线文信息就越丰富。高维度数据的作用是用来回答：到底发生了什么？&lt;/p>
+&lt;p>用一组可观测性数据，在多个维度上进行排列组合分析，就是剖析现代软件系统中的所有故障模式的可能性。&lt;/p>
+&lt;p>最常见维度组合包括：&lt;/p>
+&lt;ol>
+&lt;li>用户&lt;/li>
+&lt;li>代码&lt;/li>
+&lt;li>系统-运行环境&lt;/li>
+&lt;/ol>
+&lt;p>&lt;img src="https://martinliu.cn/blog/what-is-o11y/3d.jpg"
+width="957"
+height="875"
+srcset="https://martinliu.cn/blog/what-is-o11y/3d_hu5bd4d7d06ddc824fdc7e5dde19d7c3ca_28626_480x0_resize_q75_box.jpg 480w, https://martinliu.cn/blog/what-is-o11y/3d_hu5bd4d7d06ddc824fdc7e5dde19d7c3ca_28626_1024x0_resize_q75_box.jpg 1024w"
+loading="lazy"
+alt="排错维度"
+class="gallery-image"
+data-flex-grow="109"
+data-flex-basis="262px"
+>
+&lt;/p>
+&lt;h2 id="使用可观测性调试">使用可观测性调试&lt;/h2>
+&lt;p>基于充足的应用系统的可观测性数据，进行开放式的探索数据分析，你就能理解系统所进入的任何状态，而且通过多维度的关联分析，还能知道为什么会形成这个状态。&lt;/p>
+&lt;p>可观测性管理工具是鼓励开发人员主动的收集应用运行时可能发生的任何事件，包括携带丰富的上下文，充足的遥测数据是日后探索分析的基础。&lt;/p>
+&lt;p>可观测性管理工具平台应该是专门为高基数、高维度的遥测数据而设计的，它鼓励应用系统的所有参与方都参与：主动建立有利于故障调试的可观测性数据的活动中来。包括分工完成下面的各种工作：&lt;/p>
+&lt;ul>
+&lt;li>开发者在可观测性驱动开发思想的指导下，有意识的在代码中引用埋点框架（如 OpenTelemetry），对代码进行必要&amp;amp;足够的埋点。&lt;/li>
+&lt;li>运维人员确保不同语言的应用程序在运行前都携带了自动化埋点的探针（Agent）程序，如果是容器化程序，还可以在打镜像的时候设置这个检查点。确保在任何运行环境（开发、测试、准生产、生产）里APM 或者 RUM 的埋点数据都可以在正确的配置下发送回后台的可观测性管理平台，完成数据的采集。操作系统及以下系统环境的指标和日志是基础工作，是参考数据，这里不赘述。&lt;/li>
+&lt;li>测试人员和其他，都有使用可观测性数据的习惯，利用可观测性数据回答：bug 修复了么？性能回顾解决了么？错误率和延迟是否都很低了？&lt;/li>
+&lt;li>产品经理和服务交付经理通过可观测性数据整理出每一套应用系统的 SLO 管理报告，指导下个迭代的工作方向，安排 bug 修复和特性交付的优先级，评估生产的运行风险。&lt;/li>
+&lt;/ul>
+&lt;p>分析调试现代化应用系统的难度包括两个层面：&lt;/p>
+&lt;ol>
+&lt;li>相对简单：系统的硬件和基础设施、云平台等方面，也就是代码以下的所有。&lt;/li>
+&lt;li>相对困难：代码、真实用户的问题，也就是代码本身及以上的所有。&lt;/li>
+&lt;/ol>
+&lt;h2 id="适用于现代应用系统">适用于现代应用系统&lt;/h2>
+&lt;p>现代化应用系统指的是运行在云上的，并经过适配改造的，与云平台的各种服务有很多集成的应用系统。它也可能是一个单体的运行在云主机中的应用，但更多的是容器化、微服务化、分布式的应用系统。前者用传统的监控方法也可以有效管理；后者使用可观测性管理方式更加适合。&lt;/p>
+&lt;p>具备可观测性的软件的各种运行状态天然能被理解，我们无须猜测其内部状态，无须提前预判可能的故障模式，无须更新程序代码来暴露盲区。&lt;/p>
+&lt;p>现代应用系统的故障模式的特点是：以新的、罕见、没发生过的故障模式为主；通常不可预测；需要使用支持高基数、高维度、可自由探索分析的可观测性管理平台进行配套管理。&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/blog/what-is-o11y/what-is-o11y.png"
+width="3774"
+height="5622"
+srcset="https://martinliu.cn/blog/what-is-o11y/what-is-o11y_hub09f6a28ce3c59001f342c258df7b912_366746_480x0_resize_box_3.png 480w, https://martinliu.cn/blog/what-is-o11y/what-is-o11y_hub09f6a28ce3c59001f342c258df7b912_366746_1024x0_resize_box_3.png 1024w"
+loading="lazy"
+alt="脑图"
+class="gallery-image"
+data-flex-grow="67"
+data-flex-basis="161px"
+>
+&lt;/p>
+&lt;p>点击以上图片查看或者下载高清大图。&lt;/p>
+&lt;blockquote>
+&lt;p>本文参考《可观测性工程》第一章内容。&lt;/p>
+&lt;/blockquote>
+&lt;p>❤️ Feature Photo by Joshua Woroniecki: &lt;a class="link" href="https://www.pexels.com/photo/person-holding-a-compass-3832684/" target="_blank" rel="noopener"
+>https://www.pexels.com/photo/person-holding-a-compass-3832684/&lt;/a>&lt;/p></description></item><item><title>《可观测性工程》为软件系统开启第三只眼👁</title><link>https://martinliu.cn/blog/observability-engineering-book/</link><pubDate>Tue, 22 Aug 2023 11:10:46 +0800</pubDate><guid>https://martinliu.cn/blog/observability-engineering-book/</guid><description>&lt;img src="https://martinliu.cn/blog/observability-engineering-book/pexels-skitterphoto-63901.jpg" alt="Featured image of post 《可观测性工程》为软件系统开启第三只眼👁" />&lt;p>“可观测性工程”(Observability Engineering) 是一个近年来在软件工程和系统管理领域中逐渐受到关注的概念。它主要关注的是：如何更好地理解、监控和调试复杂的分布式系统。&lt;/p>
+&lt;p>DevOps浪潮已经给“软件工程”相关的实践带来了极大的影响。首先表现在各个职能团队已经越来越更加紧密的协作和沟通，部门墙正在逐渐消失，有更多的产品团队转型为“Two pizza team”风格的全功能团队，开发、测试、运维、数据库专家、云计算专家都融合在一起，自给自足的独立发布产品。其次软件流水线的工艺也更加的自动化，有朋友曾这样告诉我：他们的 CI/CD 已经可以实现每日多次自动化发布，产品团队每周持续交付到了手发麻的程度。&lt;/p>
+&lt;p>然而，不管我们如何娴熟的使用云平台、容器平台和微服务所带来的高可靠性、自愈能力和稳定性等等优势。当我们在生产环境中 debug 故障的时候，我们依然是云里雾里的凭经和灵感验猜测，还是不得不在多种监控工具之间解读着七长八段的数据， MTTR 故障修复时间仍然长的忍无可忍。我们应该能逐渐意识能到：应用系统的现代化所带来的也不都是好处，还有更多的是“复杂度”。软件应用系统本身和其运行环境的复杂度都在逐渐攀升，四分五裂的运维管理的工具集正在迅速蔓延。&lt;/p>
+&lt;p>在最近的三年多以来，我逐渐开始对曾经经典的“可观测性 == 三根支柱”的理解有所动摇；简单的信号量数据的叠加和关联就足够了么？监控工具手段的更新换代是否就可以实现可观测性。在持续没有找到答案的时候，《observability engineering》这本书出版了。&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/blog/observability-engineering-book/learning.oreilly.jpg"
+width="250"
+height="328"
+srcset="https://martinliu.cn/blog/observability-engineering-book/learning.oreilly_hu8aa3ced3df5c9b35352f98e9e4c40777_11475_480x0_resize_q75_box.jpg 480w, https://martinliu.cn/blog/observability-engineering-book/learning.oreilly_hu8aa3ced3df5c9b35352f98e9e4c40777_11475_1024x0_resize_q75_box.jpg 1024w"
+loading="lazy"
+alt="Observability Engineering"
+class="gallery-image"
+data-flex-grow="76"
+data-flex-basis="182px"
+>
+&lt;/p>
+&lt;ul>
+&lt;li>作者： Charity Majors, Liz Fong-Jones, George Miranda&lt;/li>
+&lt;li>出版日期： 2022 年 5 月&lt;/li>
+&lt;li>出版社： O&amp;rsquo;Reilly Media, Inc.&lt;/li>
+&lt;li>URL：&lt;a class="link" href="https://www.oreilly.com/library/view/observability-engineering/" target="_blank" rel="noopener"
+>https://www.oreilly.com/library/view/observability-engineering/&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;p>Liz Fong-Jones 曾经是 Google 资深的 SRE 工程师和布道师。我几乎看过她的所有相关视频，也转发了一些在我的 B 站里。她离开了 Google 之后，与 Charity 一起创立了 Honeycomb 公司。 George Miranda 是后加入 Honeycomb 公司的员工，他加入这本书的写作时，这本书已经基本是个半成品。&lt;/p>
+&lt;p>本书是第一本只讨论“可观测性”这一主题的书籍，围绕这个主题做了相当深度和广度的讨论。这本书的完整目录在网上都可以找到，下面是关于核心内的脑图。&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/blog/observability-engineering-book/o11y-book.png"
+width="2340"
+height="2002"
+srcset="https://martinliu.cn/blog/observability-engineering-book/o11y-book_hu8fc39d98934a734320e6ed6fcae8b819_120854_480x0_resize_box_3.png 480w, https://martinliu.cn/blog/observability-engineering-book/o11y-book_hu8fc39d98934a734320e6ed6fcae8b819_120854_1024x0_resize_box_3.png 1024w"
+loading="lazy"
+class="gallery-image"
+data-flex-grow="116"
+data-flex-basis="280px"
+>
+&lt;/p>
+&lt;blockquote>
+&lt;p>“可观测性” - 应该成为软件在交付生命周期中的不容忽视的一个重要属性。不只是一个技术问题，在软件系统中实现和提升可观测性同样需要 DevOps 风格的多团队协作。&lt;/p>
+&lt;/blockquote>
+&lt;blockquote>
+&lt;p>&amp;ldquo;可观测性工程&amp;quot;的价值 - 增强可观测性的主要好处是提高系统的可靠性、性能和安全性。当系统出现问题时，拥有良好的可观测性意味着可以更快地发现、定位和解决问题。&lt;/p>
+&lt;/blockquote>
+&lt;blockquote>
+&lt;p>“可观测性工程”的文化和实践：可观测性不仅仅是一组工具或技术，它也是一种文化和实践。这意味着，开发者和运维人员需要紧密合作，共同关心系统的健康和性能。&lt;/p>
+&lt;/blockquote>
+&lt;p>随着现代软件系统变得越来越复杂，可观测性工程成为了确保高可用性、性能和用户满意度的关键要素。&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/blog/observability-engineering-book/s34584939.jpg"
+width="391"
+height="500"
+srcset="https://martinliu.cn/blog/observability-engineering-book/s34584939_hu14181081883a547c2fe4350ad5160d2d_20840_480x0_resize_q75_box.jpg 480w, https://martinliu.cn/blog/observability-engineering-book/s34584939_hu14181081883a547c2fe4350ad5160d2d_20840_1024x0_resize_q75_box.jpg 1024w"
+loading="lazy"
+alt="中文版"
+class="gallery-image"
+data-flex-grow="78"
+data-flex-basis="187px"
+>
+&lt;/p>
+&lt;p>《可观测性工程》这本书分为五个部分，从历史到未来，从理论到落地，从团队到组织，从商业到文化，内容非常全面。对不同角色和职位的人都有不同的意义：&lt;/p>
+&lt;ul>
+&lt;li>运维：学习掌握本书的内容，可以提升你的眼界和实践能力；你会更好的识别和反思当前所处的困局，你会从分门别类的监控工具集应用，转向“聚焦生产环境问题的快速识别和解决”。&lt;/li>
+&lt;li>SRE：使你对基于 SLO 的监控更加有信心，特别是升级你对遥测数据采集、数据结构、后台存储和在团队中推广等方面的认知。你将会更有效的和产品团队合作。&lt;/li>
+&lt;li>开发：希望这是你学习可观测性的第一本书，本书的前三个部分就是你需要学习掌握的部分。掌握了可观测性驱动开发的概念，你以后就会对应用系统的运行状态了如指掌，它是你 DevOps 和 SRE 技能组合中不可缺少的一个部分。&lt;/li>
+&lt;li>经理和管理者：建议完整的阅读本书的所有内容，重点理解第一、四和五这三个部分。如果您已经熟知可观测性这个概念，可以直接重点阅读第四和第五部分。这是你在产品团队中，在整个组织里大范围落地可观测性左移的必备常识。分布在各个章节里的真实案例分析是不可错过的内容。&lt;/li>
+&lt;li>CxO：建议至少阅读中的案例研究，然后重点了掌握第四和第五部分。从这些内容中，你可以轻易的了解到投资可管的测性的技术要点，用于前期的投资和收益的评判，用于中后期管理的成熟度模型（PS：适用于产品团队自身的成长和进度评估，不建议用于产品团队间/部门间的横向比较和绩效考核）。&lt;/li>
+&lt;/ul>
+&lt;p>《可观测性工程》书籍中的亮点和创新之处在于：将可观测性的基础知识部分，用开发一种全新的可观测性程序的方式进行描述。首先解释：这个程序最底层的构建要素的角度是什么？分析可观测性的最底层数据结构是什么？然后，我们可以很容易的将这些数据应用到用它们来描述：应用系统在生产环境中的状态的变化过程。同时还提到了如何对接开源的 OpenTelemetry 数据；希望开发的同学能对此种描述方法倍感亲切，同时让运维和 SRE 同学也能拥有一个全新的视角。&lt;/p>
+&lt;p>《可观测性工程》一书的另外一个独特之处，是在第八章中引入的“用第一性原理调试应用故障”。虽然可观测性管理的基本流程也是收集、存储和分析使用数据的过程，这看起来和其它单点的监控功能相似。但是，有没有一个统一的思路可以贯穿这个过程始终，并且推动这个过程不断的循环起来。我总是听说马斯克怎样运用第一性原理指导他在造车和火箭过程中的各种创新，并没有想到和监控运维管理会有什么关系。但是本书中所描述的“核心分析循环”还是令我耳目一新。在生产环境排错的过程中，所有人都将关注点和焦虑点都放在“谁？什么时候？可以在系统中定位到哪个最准确的唯一（假想中的）的根因（root cause）”。这种过分关注的结果想法，让我们已经忽略了，在 Debug 过程中，我们应该使用什么思路，去探索未知现象中隐藏的未知的应用运行的多重故障原因。&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/blog/observability-engineering-book/core-analysis-loop.png"
+width="513"
+height="514"
+srcset="https://martinliu.cn/blog/observability-engineering-book/core-analysis-loop_hu674d4e8bdab2260cdc16db80c14e272e_13715_480x0_resize_box_3.png 480w, https://martinliu.cn/blog/observability-engineering-book/core-analysis-loop_hu674d4e8bdab2260cdc16db80c14e272e_13715_1024x0_resize_box_3.png 1024w"
+loading="lazy"
+alt="本图源于 Honeycomb 文档网站"
+class="gallery-image"
+data-flex-grow="99"
+data-flex-basis="239px"
+>
+&lt;/p>
+&lt;p>“核心分析循环”并不是系统宕机后的救命稻草，而是一种理性冷静的思考方法，你可以在事故的前中后的任何时刻想到它。它能指导我们进行更加深度的分析思考，在一个理智的探索过程中，你会更加有条理的得出一连串假设，并逐个求证，在评判各种已知数据的时候，你同样需要不停的怀疑一切，推翻一切结论的勇气。切勿让单点工具的片面观察角度、对历史经验数据的依懒性，限制了我们 debug 生产系统的想象力，限制了人脑更适合做网状的复杂关联分析的能力。&lt;/p>
+&lt;p>下面是本书中的一些精彩片段。&lt;/p>
+&lt;blockquote>
+&lt;p>【序言 - Cindy Sridharan】：本书没有关注协议或标准，甚至各种遥测信号的低级表示，而是将可观测性的三大支柱
+设想为结构化事件、假设的迭代验证以及“核心分析循环”的三位一体。根据第一性原理对可观测性的构建要素进行整体重构，有助于强调仅通过遥测信号（或简单使用获取这些信号的工具）并不能最大限度地践行观测系统的所有行为。&lt;/p>
+&lt;/blockquote>
+&lt;blockquote>
+&lt;p>【11.6 章 &amp;ndash; 可观测性左移】：可观测性驱动开发允许工程团队将他们的玻璃城堡变成可以互动的游乐场。生产环境不是一成不变的，而是充满了活力。工程师应该有能力和自信来应对任何异常并且取得胜利。&lt;/p>
+&lt;/blockquote>
+&lt;blockquote>
+&lt;p>【14.4 章 - Slack 案例研究结论】：我分享了Slack 如何探测CI 流水线以及如何调试分布式系统的示例。开发人员了解生产环境中的代码情况，首先要考虑的应该是调试分布式系统的复杂性。但是，在发布到生产环境之前，如何正确理解和调试分布式系统同样具有挑战性。&lt;/p>
+&lt;/blockquote>
+&lt;p>我个人认为：本书完整的回答了大量的问题，可观测性是什么？如何构建？如何左移？实现可观测性管理平台中的重要技术要点？如何在团队和组织中落地和规模化可观测性？怎样构建可观测性文化？等等。即使作者在序言和文中郑重提出，作者团队尽量避免持有任何立场，避免推广其公司产品和技术的意图。但是从文章中所引用的工具界面上看，从对核心数据结构“事件”的论述过程中看，从所引用的他们与 Slack 公司的合作案例上看；都难免脱离所在公司产品的身影。而公正的看，我们无法称之为瑕疵和片面。读者需要在理解此背景的前提下，批判性吸收书里的内容，从而避免在理解上以偏概全的可能性。本书的行文内容上看，那些高调的、上得了厅堂的内容可以用来与 CxO 对话；那些深入的、下得了厨房的代码可以用来与开发工程师沟通。本书使用了大量的篇幅在讨论“可观测性”的来龙去脉，讨论与传统监控的区别和关系，论述落地实现的细节；总的来说：这是一本在“可观测性”主题上用心良苦的作品。意在苦口婆心的引导大家走上构建应用系统可观测性的正确道路。&lt;/p>
+&lt;p>下面是在 Amazon 上关于本书的评论总结：&lt;/p>
+&lt;ol>
+&lt;li>本书深入介绍了可观测性的实际含义，强调它能够解决新问题，构建可观测系统不一定需要添加新遥测数据。&lt;/li>
+&lt;li>书中讨论了可观测性的基本概念，指出它是社会技术系统，能够促进开发人员和业务人员之间的沟通。&lt;/li>
+&lt;li>可观测性在大型公司内部的推广是社会问题，需要说服管理层，书中提供了这方面的指导。&lt;/li>
+&lt;li>书籍中有关构建可观测性堆栈的高级方法的简要说明。&lt;/li>
+&lt;li>可观测性不仅仅是监控，它强调了从&amp;quot;为什么&amp;quot;出发，涉及实现细节和相关技术。&lt;/li>
+&lt;li>评论者强调可观测性是在分布式系统中获取有用信息的关键，提到了跟踪数据流和高基数跟踪的重要性。&lt;/li>
+&lt;li>书中包含了一些行业领导者的案例研究，介绍了他们如何应用可观测性方法监控生产环境。&lt;/li>
+&lt;li>书中涉及了日志、度量、span、追踪、警报等概念，强调了原则胜过具体代码。&lt;/li>
+&lt;li>评论者强烈推荐本书，认为它适用于任何希望为客户构建系统的人，并具有实际应用价值。&lt;/li>
+&lt;li>评论者认为本书是向可观测性转变的人的必读之作，介绍了关键概念和工具的应用。&lt;/li>
+&lt;/ol>
+&lt;p>中文版书籍在各大电商平台有出售。感兴趣的朋友可以入手学习。&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/blog/observability-engineering-book/f11f3a292df5e0fe61162f18516034a85edf7299.jpg"
+width="600"
+height="392"
+srcset="https://martinliu.cn/blog/observability-engineering-book/f11f3a292df5e0fe61162f18516034a85edf7299_hu6607d4d946805be9a2fe7efaad3f6ecc_16282_480x0_resize_q75_box.jpg 480w, https://martinliu.cn/blog/observability-engineering-book/f11f3a292df5e0fe61162f18516034a85edf7299_hu6607d4d946805be9a2fe7efaad3f6ecc_16282_1024x0_resize_q75_box.jpg 1024w"
+loading="lazy"
+alt="第三只眼"
+class="gallery-image"
+data-flex-grow="153"
+data-flex-basis="367px"
+>
+&lt;/p>
+&lt;p>最后，我认为一个软件系统应该拥有三只眼：&lt;/p>
+&lt;ol>
+&lt;li>👁 稳定之眼：从 SRE 站点稳定性工程的角度讲，系统的稳定性是最重要的feature，没有之一。我深度认同这个观点。稳定性包含了服务必须具备的可用性和足够的性能。只有运行在生产环境中，被用户能正常访问和使用的代码才能发挥出它应有的价值。在运行的过程中，应用系统会宕机，运行环境可能会出问题，这都会导致应用系统的无法访问和使用；或者系统的 Bug 导致的高错误率，让系统处于半死不活的状态，用户也能从界面上看到千奇百怪的错误。系统是否进入了非正常的不可用状态？系统是否正在经历着性能抖动的过程？错误率是否高涨到即将溃坝？这些现象本质是产品的稳定性不足导致的，而这些现象是否可见，故障根源是否能快速定位？我们就需要用到第三只眼。&lt;/li>
+&lt;li>👁 混沌之眼：这是一只作死之眼，它是混沌工程。混沌工程旨在对生产环境中注入人为的故障，在云环境中可以使用的手段很多：随机的关闭虚拟机、随机的杀死正在运行的进程、在网络中注入导致网络拥塞的数据包等等。在错误注入的过程中，我们关注于应用系统还是否能正常使用？应用系统如果宕机了的话，它的故障模式是怎样的？然而，可视化这个过程，可视化应用宕机现场的细节，都需要用到第三只眼。对于混沌工程的复盘和数据分析能帮助应用系统提高稳定性，消除单点故障，提升故障容忍度和自动化迁移等等。&lt;/li>
+&lt;li>👁 可观测之眼：可观测性是应用系统本身的一种属性，可观测性的呈现不仅需要在应用程序代码中进行埋点增强（充分条件），还需要方便的采集遥测数据，这些都需要用到可观测性管理平台：可观测信号量的收集、上报、存储和展现分析等功能。可观测性管理平台是‘可观测性’显现（外显）/表现出来的必要条件。&lt;/li>
+&lt;/ol>
+&lt;p>以上是我对《可观测性工程》这本书的简介，希望对大家学习可观测性知识有所帮助。在结尾我用比喻的方式引出了应用系统应该拥有的三只眼的观点，它们是相辅相成且相互成就的关系。&lt;/p>
+&lt;p>❤️ Feature Photo by RealToughCandy.com: &lt;a class="link" href="https://www.pexels.com/photo/person-holding-a-sticker-11035393/" target="_blank" rel="noopener"
+>https://www.pexels.com/photo/person-holding-a-sticker-11035393/&lt;/a>&lt;/p></description></item><item><title>究竟可观测性能给我们带来什么？</title><link>https://martinliu.cn/blog/what-observability-give-us/</link><pubDate>Tue, 15 Aug 2023 16:17:43 +0800</pubDate><guid>https://martinliu.cn/blog/what-observability-give-us/</guid><description>&lt;img src="https://martinliu.cn/blog/what-observability-give-us/pexels-pixabay-237258.jpg" alt="Featured image of post 究竟可观测性能给我们带来什么？" />&lt;p>可观测性并不是空穴来风，也非关键词炒作。大家不妨回顾一下我们所熟知的运维管理的演化历程，抛开运维管理中关于流程和人的那些繁文缛节。让我们只关注于：基础设施和应用架构的变迁，关注于这些层出不穷的技术工具侧面。&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/blog/what-observability-give-us/o11y-infographic.jpg"
+width="840"
+height="1858"
+srcset="https://martinliu.cn/blog/what-observability-give-us/o11y-infographic_hu3edc89169e636f454d180eada2d51f26_279109_480x0_resize_q75_box.jpg 480w, https://martinliu.cn/blog/what-observability-give-us/o11y-infographic_hu3edc89169e636f454d180eada2d51f26_279109_1024x0_resize_q75_box.jpg 1024w"
+loading="lazy"
+alt="可观测性简史"
+class="gallery-image"
+data-flex-grow="45"
+data-flex-basis="108px"
+>
+&lt;/p>
+&lt;h2 id="兼容全域信号量">兼容全域信号量&lt;/h2>
+&lt;p>从遥测方式的角度看来：任何类型的信号都有各自的用途和道理。武断地选取其一作为可观测性的代名词是一种比较偏激的想法，在Debug生产环境的道路上，我们难以依靠单一方法，一招鲜吃遍天的情况是不可能存在的。我们要根据不同应用系统的特点和服务类型，选择合理的SLI组合，用恰当的信号量来覆盖目标应用系统，目标是打造应用系统本身的可观测性“属性”。这样，你就必须要明智地选择、添加或变化信号类型，要能做到按需求，对症下药。这里不是监控数据源越多越好，盲目的全面覆盖亦是事倍功半的做法；在应对高维度、高基数的运维大数据的场景中，我们很容易走向存储成本飙升的局面，无效杂音数据还能严重稀释有价值的信息点。&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/blog/what-observability-give-us/o11y-sig.png"
+width="1002"
+height="1102"
+srcset="https://martinliu.cn/blog/what-observability-give-us/o11y-sig_huf9aafa5ca7050d35df2935773a2532a1_30803_480x0_resize_box_3.png 480w, https://martinliu.cn/blog/what-observability-give-us/o11y-sig_huf9aafa5ca7050d35df2935773a2532a1_30803_1024x0_resize_box_3.png 1024w"
+loading="lazy"
+alt="可观测性信号量类型"
+class="gallery-image"
+data-flex-grow="90"
+data-flex-basis="218px"
+>
+&lt;/p>
+&lt;p>所谓全域信号量究竟都有那些：&lt;/p>
+&lt;ol>
+&lt;li>&lt;strong>日志 Log&lt;/strong>：文本记录系统和应用的活动、事件和错误，提供详细上下文。&lt;/li>
+&lt;li>&lt;strong>指标 Metric&lt;/strong>：定量的性能度量，如CPU使用率、请求速率，帮助监控系统状态。&lt;/li>
+&lt;li>&lt;strong>分布式追踪 Trace&lt;/strong>：跟踪请求在分布式系统中的路径和性能瓶颈。&lt;/li>
+&lt;li>&lt;strong>流数据 Stream&lt;/strong>：实时产生的数据，如用户行为，用于即时监测和分析。&lt;/li>
+&lt;li>&lt;strong>用户体验数据 RUM&lt;/strong>：记录用户在应用中的交互、操作和反应，评估体验质量。&lt;/li>
+&lt;li>&lt;strong>eBPF&lt;/strong>：扩展 Berkeley Packet Filter，收集内核级别的数据，用于分析和监控。&lt;/li>
+&lt;li>&lt;strong>网络性能管理 NPM&lt;/strong>：监测网络带宽、延迟和连接状况，优化网络性能。&lt;/li>
+&lt;li>&lt;strong>Profiling&lt;/strong>：分析代码运行时的性能特征，帮助优化应用程序。&lt;/li>
+&lt;li>&lt;strong>云服务 Cloud&lt;/strong>：从云提供商获取的监测数据，跟踪资源使用和性能。&lt;/li>
+&lt;li>&lt;strong>拨测数据 Uptime/synthetics&lt;/strong>：定期对系统进行外部测试，监测系统在不同地点和条件下的可用性和性能。&lt;/li>
+&lt;li>未来新技术：未知类型数据。&lt;/li>
+&lt;/ol>
+&lt;p>“可观测性管理平台”应当以兼容并蓄全方位的信号量为初始设计目标。这意味着：在观测数据的采集、上传、存储、展示以及关联分析的整个过程中，各类数据都需要能被正确的处理，要能更能合理、有效地进行跨类型的数据关联；在数据下钻的过程中，可以自由地在各种时间线之间跳转和探索。&lt;/p>
+&lt;p>当然，监控已知的“未知”是一项基本的管理需求，你应当能使用某一种信号量即可实现。而可观测性更多的是要讨论：对“未知”对象，在“未知”状态间进行变化的管理；这就需要“可观测性平台”能处理多层级、高依赖、多云环境、分布式系统下的高“复杂度”，信号量的全面准备和按需取用往往也只是一个必要条件。&lt;/p>
+&lt;p>目前市场上已经有许多运维管理平台都自称为“可观测性”管理平台。但他们中的大多数都是从某个特定监控类型开始，并逐渐扩展覆盖其他更多信号类型的。通常，只有能够涵盖3种以上信号类型的平台，才可能具有出色的实用效果；对于那些已经是有3至5年历史的‘可观测性’产品而言，他们不太可能在短期内实现华丽的转身，也不可能会从头重构一遍自己的产品。&lt;/p>
+&lt;h2 id="统一采集和上传工具">统一采集和上传工具&lt;/h2>
+&lt;p>在物理机大行其道的时代中，对于一台主机（虚拟机或者物理机）而言，由于它很可能承担着多重角色。而且根据不同团队的管理需求，在其操作系统中会安装多种管理监控代理程序Agent，例如：操作系统指标、日志、数据库、中间件、安全巡检等等；这种叠罗汉的形式不仅给操作系统的资源带来了严重的消耗，甚至还给服务器的管理带来了大量的琐事，例如：数据库监控 Agent 还需要创建专用的用户账号等。为了解决这个问题，很多公司希望使用尽可能少的单一采集代理的模式，例如：BMC 公司的 Patrol 监控产品，拥有多种采集模块 KM（数据库、中间、web 服务器等等），用户可以按需要进行配置，而不需要部署多个采集代理程序。然而，BMC 公司会逐渐收购很多新产品，后来的产品有动态性能基线管理、自动化配置管理等等。从工具厂商的角度看， 他们无法进行快速的产品整合，很难维持单一采集代理的局面。&lt;/p>
+&lt;p>在甲方企业的环境中，不同部门会根据自己的需求采购不同的管理工具，部门间的差异导致了工具的重复建设，数据的重复采集，而且数据并不会很轻易的在部门间共享。这样不仅带来了采集工具在同一个主机上的叠加部署，还会导致：独立的运行着大量具有重复数据的孤岛运维数据数据库。这种局面进一步导致了其他问题，例如：同一个主机的同一个故障会在各种工具中都触发多条告警事件；事件风暴来临了。这种混沌的局面，给 AIOps 的工具带来了生存的空间，即使可以产生一些事件收敛和压缩的收益，但这里存在着一个很明显的“治标不治本”的错误。&lt;/p>
+&lt;p>时光穿梭到了虚拟化&amp;amp;云原生时代，以上局面并没有发生根本性的改变。反而带来了套娃式深层依赖关系的困境。我们不会把 web、中间件、数据库、消息队列等功能跑在一个 POD 中，但是将其各自独立部署在可横向扩容的子服务（容器服务）中后，这就带来了管理对象的数量呈现指数级飙升的现状。&lt;/p>
+&lt;p>容器时代带来了新鲜的监控工具，包括：Prometheus、Grafana、FluntD、Graphite、cAdvisor、Loki、EFK等等。我们可以观察到，新生的工具并不会完全改变：多种采集功能代理并存&amp;amp;叠加的局面。Elastic 看到了部署多种相似代理程序的问题后，最近几年很快的将之前的多种 Beats 程序（多次收购的项目）整合成到了一个统一代理 Elastic Agent中，而这个程序目前还只是多个 Beats 程序的马甲（包装壳）程序。Zabbix 是一个依然长期存在的常见采集代理，我个人推测：在当今容器环境居多的情况下，容器内用云原生监控工具集，容器外依然使用老牌监控工具的组合做法，依然是一个普遍存在的现状。&lt;/p>
+&lt;p>多种采集工具集不仅在端点上会造成大量部署和配置的琐事，而且，它们的后台都对应着各自的独立的数据库部署。同一个管理对象在不同的数据库中的字段描述基本上都不同，这导致了：工具集的使用者很难在各类数据库中实现关联分析，用人脑携带着排错的上下文，在一堆控制台之间跳转是相当消耗体力的工作，对齐时间线和监控对象会很快耗尽人的认知上限。CMDB 可能是一个解决方法，而 CMDB 的设计和建设的难度并不亚于构建任何一个监控系统项目本身， 用CMDB解决这个问题的实现难度大，成本高。数据治理也会是一个常见做法，而在这些运维数据库集合之间做 ELT，做数据治理工作，最终实现异类运维信息的归一化的解决方式，也只是一个顺坡下驴的无奈之举，相关实施人员在项目中必将饱尝：将计就计的辛酸。&lt;/p>
+&lt;p>貌似最早由 Elastic 推出的统一数据模型（ECS）&lt;a class="link" href="https://www.elastic.co/cn/elasticsearch/common-schema" target="_blank" rel="noopener"
+>https://www.elastic.co/cn/elasticsearch/common-schema&lt;/a> 是一个让数据走向标准化定义的可行之道。我们也看到了：OpenTelemetry 项目很快就采纳了 Elastic ECS。CNCF 在随后也推出了相似的观测数据定义模型。我相信 CNCF 一定是看到了，在它的技术蓝图中，可观测性和分析分类中相似&amp;amp;同类工具的快速繁荣。而这些标准也只能让我们望梅止渴，由于目前还没有看到多数厂商、大量开源项目都快速跟随实现和兼容落地的局面。&lt;/p>
+&lt;p>观测云的 DataKit 是一款多功能的采集代理程序，它具备解决上述问题的设计，它已经在兼容和对接更广泛的技术生态系统。任何采集代理程序在采集或者对接到了目标数据之后，它其实还需要处理一些列的细节，否则就仍然无法实现“源头治理”，无法避免“garbage in gargage out”的窘境。首先，DataKit 在组织封装数据的时候，所有字段的定义都遵从着一个观测云定义的数据字典（等同于 Elastic ECS ）；其次，上报数据包在封包前，还能做数据的 Pipline 处理，实现了数据字段的丢弃、质量控制、治理和脱敏等问题。最后，DataKit 的采集还可实现对接开源&amp;amp;闭源生态系统，例如接收 DataDog 的 APM 探针数据，对接 OpenTelemetry 的数据等等。它还能实现观测数据在网际、网络间的转发等。&lt;/p>
+&lt;h2 id="统一的存储后台">统一的存储后台&lt;/h2>
+&lt;p>在构建可观测性平台的过程中，每种类型的信号量都理应得到它最佳的容身之处：&lt;/p>
+&lt;ul>
+&lt;li>Elasticsearch ：在 Elastic 的 ECS 的加持之下，貌似它是一个很恰当的一库存所有的方案，但前提是你需要能 hold 住性价比。&lt;/li>
+&lt;li>时序数据库：不一一列举，适合指标类时序数据。&lt;/li>
+&lt;li>列数据库：以 ClickHouse 为代表的实时数据分析的列数据库，可兼容多种信号。&lt;/li>
+&lt;li>关系型数据库：WHY NOT。&lt;/li>
+&lt;/ul>
+&lt;p>从数据入库的角度看，给每种信号量配置其最佳的数据库类型，貌似是一个皆大欢喜的局面。这也不辜负，目前各种开源数据库百花齐放的形势。&lt;/p>
+&lt;p>略过上面已经提到的数据孤岛和治理问题不谈。从查询的角度看，用户将不得不学会多种查询语言，前方有 n 种 SQL 语法需要你学习，否则你不得不开发维护一个一对多的查询界面。这里我们暂且不论述：你会如何实现可观测性数据的跨库数据关联分析。&lt;/p>
+&lt;p>问题：是否存在一种多模态的统一数据库，将多种类型的信号量数据融入一个统一的数据仓库中？&lt;/p>
+&lt;p>实际上，目前的可观测性 SaaS 提供商们，已经给他们的用户提供了这样一种统一融合的数据后端，起码从查询探索可观测性数据的使用体感的角度上，确实是已经做到了。而观测云也正在推出这样一款解决以上统一融合多态并存管理需求的数据库。观测云用户很快将在 SaaS服务中，在私有部署的产品上使用到这种技术。&lt;/p>
+&lt;h2 id="自由探索和综合使用数据">自由探索和综合使用数据&lt;/h2>
+&lt;p>可观测性数据的价值体现在使用上，能自由的探索和综合的使用各种数据，才能放大数据的价值。在考虑到可观测性数据使用场景的时候，我强烈建议大家运用“第一性原理”来进行思考。这样才能避免对经验的依赖，排除对新可观测性技术能平替所有旧技术的单纯幻想，才能回到可观测性技术的概念本源。&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/blog/what-observability-give-us/o11y-define.jpg"
+width="1358"
+height="669"
+srcset="https://martinliu.cn/blog/what-observability-give-us/o11y-define_hu4ccfd6057bea568db184389b860e01e6_70831_480x0_resize_q75_box.jpg 480w, https://martinliu.cn/blog/what-observability-give-us/o11y-define_hu4ccfd6057bea568db184389b860e01e6_70831_1024x0_resize_q75_box.jpg 1024w"
+loading="lazy"
+alt="可观测性定义"
+class="gallery-image"
+data-flex-grow="202"
+data-flex-basis="487px"
+>
+&lt;/p>
+&lt;p>此处省略 n 百字，仅以上图与读者们一起随时随刻的校准自己对“可观测性”定义的理解。&lt;/p>
+&lt;h2 id="总结">总结&lt;/h2>
+&lt;p>本文从四个层面对可观测性平台实现的技术要点，做出了一定深度和时间跨度上的探讨。希望：在您的工作环境中，统一融合的可观测性平台可以很快的落地。穿上两只靴子的你，可以脱离以前赤足上阵，光脚救火的困境。希望可观测性平台能够帮助到软件交付流水线中的所有人，运用可观测性来补Ops的锅，助SRE的威，壮Dev胆。&lt;/p></description></item></channel></rss>
