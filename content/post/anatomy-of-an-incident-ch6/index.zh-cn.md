@@ -15,6 +15,11 @@ comments: true
 toc: true
 ---
 
+* [下载中文版 PDF 文件](/wp/anatomy-of-an-incident-cn.pdf)
+* [下载英文版 PDF 文件](/wp/anatomy-of-an-incident.pdf)
+* [从 Google 下载白皮书](https://sre.google/resources/practices-and-processes/anatomy-of-an-incident/)
+
+
 为了看到前文所讨论的一些原则在实践中的应用，我们将深入探讨一个谷歌重大宕机事故的现实例子。我们将回顾事件的经过，了解规模化组织结构的运作方式，并展示如何解决这个问题以及我们从中学习到的经验。
 
 对于谷歌来说，玛雅末日并不是2012年的新纪元现象。相反，玛雅末日发生在2019年6月2日，与一个名为Maya的网络自动化工具有关。Maya负责标记管理和网络流量调度，一个微小的代码改动导致了实体类型持续被错误标记。

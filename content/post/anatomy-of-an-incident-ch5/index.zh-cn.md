@@ -15,6 +15,11 @@ comments: true
 toc: true
 ---
 
+* [下载中文版 PDF 文件](/wp/anatomy-of-an-incident-cn.pdf)
+* [下载英文版 PDF 文件](/wp/anatomy-of-an-incident.pdf)
+* [从 Google 下载白皮书](https://sre.google/resources/practices-and-processes/anatomy-of-an-incident/)
+
+
 在前一章中，我们介绍了几种减小客户影响的方法，包括技术和人员方面，因为两者都会影响检测时间、缓解/恢复时间和故障间隔时间。在本节中，我们将讨论事故结束后的工作：撰写事后复盘分析，并将其作为强大的工具来分析问题并从错误中学习。
 
 在事故结束后，应该确保集中精力在如何减少未来的事故上？为了解决这个问题，我们建议采用数据驱动的方法（图 5-1）。这些数据可以来自风险分析过程，或者是我们之前提到的度量数据。依靠从事后复盘分析中收集的数据，以及对之前影响客户的事故的学习非常重要。
