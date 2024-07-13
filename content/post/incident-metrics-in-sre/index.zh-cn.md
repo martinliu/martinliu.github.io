@@ -439,30 +439,30 @@ MTTx 的挑战在于它是一个错误的观察指标。这个指标的行为特
 
 Štěpán Davidovič 是 Google 的一名站点稳定性工程师，目前致力于内部自动监控基础设施的开发。在之前的 Google SRE 职位中，他开发了金丝雀分析服务，并参与了许多共享基础设施项目和 AdSense 可靠性工作。他于 2010 年毕业于布拉格捷克技术大学，获得学士学位。
 
-[^1]: 请参阅，例如，《A List of Post-mortems!》<https://github.com/danluu/post-mortems> 和《Postmortem Index》<https://postmortems.app/。>
+[^1]: 请参阅，例如，《A List of Post-mortems!》<https://github.com/danluu/post-mortems> 和《Postmortem Index》<https://postmortems.app/>。
 [^2]: John Allspaw，《Moving Past Shallow Incident Data》，Adaptive Capacity Labs，2018 年 3 月 23 日。
-[^3]: 《Mean time to recovery》，Wikipedia。
-[^4]:  Laura Nolan，《What Breaks Our Systems: A Taxonomy of Black Swans》（视频），SREcon19 Americas，2019 年 3 月 25 日。
-[^5]: 《Normal probability plot》，Wikipedia。
+[^3]: 《Mean time to recovery》，Wikipedia。https://en.wikipedia.org/wiki/Mean_time_to_recovery
+[^4]:  Laura Nolan，《What Breaks Our Systems: A Taxonomy of Black Swans》（视频），SREcon19 Americas，2019 年 3 月 25 日。https://www.usenix.org/conference/srecon19americas/presentation/nolan-taxonomy
+[^5]: 《Normal probability plot》，Wikipedia。https://en.wikipedia.org/wiki/Normal_probability_plot
 [^6]: 请参阅，例如，《A List of Post-mortems!》<https://github.com/danluu/post-mortems> 和《Postmortem Index》<https://postmortems.app/。>
 [^7]: 请注意，例如，公司 C 的事故持续时间通常对齐到整小时，这在图表上表现为一些峰值。
 [^8]: 通过重复抽样来模拟行为的过程——在这种情况下，是模拟事故解决时间的行为。
 [^9]: 截至 2020 年夏末，我认为仅使用过去 12 个月的数据可能会受到世界事件的影响，从而导致数据集不寻常。
 [^10]: 针对这种特定情况，事故被缩短了 10%。
-[^11]: 参见《在线统计教育》中的“均值的抽样分布”，“均值差异的抽样分布”，“均值的检验”等章节，项目负责人 David M. Lane，莱斯大学。
+[^11]: 参见《在线统计教育》中的“均值的抽样分布”，“均值差异的抽样分布”，“均值的检验”等章节，项目负责人 David M. Lane，莱斯大学。https://onlinestatbook.com/
 [^12]: 根据你的业务，这种推理可能存在缺陷。考虑到每月一次一小时的事故对用户和业务的影响，与 60 次一分钟的事故非常不同。这同样适用于常用的服务质量目标（SLO）语言。
 [^13]: Rick Branson, "Stop Counting Production Incidents", Medium, 2020 年 1 月 31 日。
-[^14]: “Normal probability plot”，Wikipedia。
+[^14]: “Normal probability plot”，Wikipedia。https://rbranson.medium.com/why-you-shouldnt-count-production-incidents-38616d8e6329
 [^15]: 参见《在线统计教育：多媒体学习课程》中的“均值的抽样分布”，“均值差异的抽样分布”，“均值检验”等章节，项目负责人 David M. Lane，莱斯大学。
-[^16]: 参见《在线统计教育》中的相关章节，以及 Wikipedia 上的“样本均值分布”。
-[^17]: Eric W. Weisstein，《正态差异分布》，来源于 MathWorld—A Wolfram Web Resource，更新于 2021 年 3 月 5 日。
-[^18]: Jennifer Mace, "Generic Mitigations: A Philosophy of Duct-Tape Outage Resolutions", O'Reilly, 2020 年 12 月 15 日。
-[^19]: Alex Hidalgo, Implementing Service Level Objectives, O'Reilly, 2020。
-[^20]: “Hard Drive Data and Stats”，Backblaze。
+[^16]: 参见《在线统计教育》中的相关章节，以及 Wikipedia 上的“样本均值分布”。https://en.wikipedia.org/wiki/Mean#Distribution_of_the_sample_mean
+[^17]: Eric W. Weisstein，《正态差异分布》，来源于 MathWorld—A Wolfram Web Resource，更新于 2021 年 3 月 5 日。https://mathworld.wolfram.com/NormalDifferenceDistribution.html
+[^18]: Jennifer Mace, "Generic Mitigations: A Philosophy of Duct-Tape Outage Resolutions", O'Reilly, 2020 年 12 月 15 日。https://www.oreilly.com/content/generic-mitigations/
+[^19]: Alex Hidalgo, Implementing Service Level Objectives, O'Reilly, 2020。https://www.oreilly.com/library/view/implementing-service-level/9781492076803/
+[^20]: “Hard Drive Data and Stats”，Backblaze。 https://www.backblaze.com/cloud-storage/resources/hard-drive-test-data
 [^21]: 尽管其他统计数据（例如更高的百分位数）通常是衡量服务系统延迟的更好指标。
 [^22]: Douglas W. Hubbard，《How to Measure Anything》第三版（新泽西州霍博肯：John Wiley & Sons，2014 年）。
-[^23]: Andrew Stribblehill，“Managing Incidents”，载于《Site Reliability Engineering》（O'Reilly，2016）。
-[^24]: John Allspaw，“Moving Past Shallow Incident Data”；Charisma Chan 和 Beth Cooper，“Debugging Incidents in Google’s Distributed Systems: How Experts Debug Production Issues in Complex Distributed Systems”，Queue 第 18 卷第 2 期（2020 年 3 月-4 月）。
+[^23]: Andrew Stribblehill，“Managing Incidents”，载于 《SRE Google 运维解密》（O'Reilly，2016）。
+[^24]: John Allspaw，“Moving Past Shallow Incident Data”；Charisma Chan 和 Beth Cooper，“Debugging Incidents in Google’s Distributed Systems: How Experts Debug Production Issues in Complex Distributed Systems”，Queue 第 18 卷第 2 期（2020 年 3 月-4 月）。https://queue.acm.org/detail.cfm?id=3404974
 [^25]: Steve Krug，《Rocket Surgery Made Easy》（加利福尼亚州伯克利：New Riders，2010）。
 
 ❤️ Photo by Kevin Bidwell: <https://www.pexels.com/photo/firefighter-holding-hose-with-water-flowing-3013676/>
