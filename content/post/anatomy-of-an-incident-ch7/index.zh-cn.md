@@ -15,7 +15,6 @@ comments: true
 toc: true
 ---
 
-
 * [下载中文版 PDF 文件](/wp/anatomy-of-an-incident-cn.pdf)
 * [下载英文版 PDF 文件](/wp/anatomy-of-an-incident.pdf)
 * [从 Google 下载白皮书](https://sre.google/resources/practices-and-processes/anatomy-of-an-incident/)
