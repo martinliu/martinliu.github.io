@@ -58,7 +58,7 @@ toc: true
 2. **提升软件交付工作流的效率**：AI 优化的例子包括：测试影响分析（缩短构建时间）、自动化代码审查和变更影响分析（辅助人工监督）、以及事件关联（缩短事故解决时间）。
 3. **优化软件交付基础设施**：AI 技术的例子包括：自主工作负载优化和增强的 FinOps，从而优化可靠性、成本和环境可持续性。
 
-![图 1: 三种使用 AI 增强 DevOps 的方法](Augmenting-DevOps-with-AI-involves-prework,-wherein-we-identify-and-prioritize-constraints--Three-approaches-to-augment-DevOps-with-AI-tools-and-techniques-include-improving-developer-experience,-enhancing-software-delivery-efficiency-and-o.png)
+![图 1: 三种使用 AI 增强 DevOps 的方法](1.png)
 
 ## 分析
 
@@ -81,7 +81,7 @@ toc: true
 
 某些瓶颈可能被认为是“必要的”，但无论如何，这些延迟对客户来说并没有增加价值（见图 2）。
 
-![图 2: 识别工作项在软件交付生命周期中移动时的瓶颈](Teams-looking-to-augment-DevOps-workflows-with-AI-should-first-identify-and-prioritize-constraints-that-obstruct-workflow-in-the-software-development-life-cycle-(SDLC)--Some-examples-of-such-constraints-include-necessary-and-unnecessary-non.png)
+![图 2: 识别工作项在软件交付生命周期中移动时的瓶颈](2.png)
 
 第二类限制更容易发现，因为它们出现在“单一工作线程”中。这些逻辑上的工作线程的例子如下：
 
@@ -95,7 +95,7 @@ toc: true
 
 图 3 重点分析了在每个工作线程中的具体活动，并展示了 AI 如何解决这些限制和瓶颈。无法一次解决所有问题—— 因此，应识别并迭代地解决此时此刻的最大的限制约束点（见注释 1）。
 
-![图 3: 在软件交付生命周期的每个阶段中迭代地解决最大的限制](To-resolve-constraints,-plan,-create,-verify,-release,-configure,-and-operate-within-each-software-development-life-cycle-(SDLC)-phase--As-all-constraints-can't-be-resolved-at-once,-identify-and-resolve-the-greatest-constraint-within-each-S.png)
+![图 3: 在软件交付生命周期的每个阶段中迭代地解决最大的限制](3.png)
 
 ### 改善开发者体验
 
@@ -103,7 +103,7 @@ toc: true
 
 图 4 展示了在软件开发、交付和运营过程中，通过 AI 增强改善开发者体验的使用案例。
 
-![图 4: 使用 AI 增强改善 DevOps 中的开发者体验](AI-augmented-use-cases-that-can-help-improve-developer-experience-during-software-development,-delivery,-and-operations-include-early-detection-of-failures-and-analyzing-operational-data-using-natural-language,-among-others--Improving-devel.png)
+![图 4: 使用 AI 增强改善 DevOps 中的开发者体验](4.png)
 
 通过 AI 使能开发者的使用案例改善的开发者体验涵盖整个 SDLC，从开发、交付到运营。以下是 AI 在各阶段提升开发者体验的方式：
 
@@ -148,11 +148,11 @@ toc: true
 
 单靠自动代码生成来提升软件交付性能，在超过一定阈值后会，所产生收益会递减——因为最大的价值交付瓶颈可能在其他地方（见注释 1）。图 5 显示了帮助克服 SDLC 限制（约束点）的 AI 使能案例（如第一部分所述）。
 
-![图 5: AI 增强的 DevOps 使用案例以优化 SDLC](AI-enabled-use-cases-that-help-overcome-constraints-in-the-software-development-life-cycle-(SDLC)-include-planning,-creating,-verifying,-reproducing,-releasing,-configuring-and-monitoring--Focusing-solely-on-automated-code-generation-to-enh.png)
+![图 5: AI 增强的 DevOps 使用案例以优化 SDLC](5.png)
 
 图 6 展示了用于实现上述使用案例的一些工具，并不限于所展示的示例。供应商正在迅速扩展其功能，因此一个供应商可能支持比这里描述的更多使用案例。
 
-![图 6: AI 增强的 DevOps 工具在 SDLC 中的应用](A-representative-list-of-AI-augmented-DevOps-tools-across-the-software-development-life-cycle-(SDLC)-includes-test-optimization,-vulnerability-remediation,-incident-response,-AIOps,-cost-optimization,-automating-configuration-toil-and-other.png)
+![图 6: AI 增强的 DevOps 工具在 SDLC 中的应用](6.png)
 
 >**AI 增强开发的下游影响**
 >
@@ -170,7 +170,7 @@ toc: true
 
 产品团队越来越期望自助工具能够在成本、可靠性和可持续性之间实现优化（见图 7）。
 
-![图 7: 在可靠性、成本优化和可持续性目标之间实现权衡](Product-teams-increasingly-expect-self-service-tools-that-can-optimize-across-divergent-needs--Since-software-delivery-infrastructure-is-not-limited-to-production-alone,-Gartner-recommends-achieving-trade-offs-between-reliability,-cost-opti.png)
+![图 7: 在可靠性、成本优化和可持续性目标之间实现权衡](7.png)
 
 **通过自助内部开发平台优化云原生软件交付基础设施**
 
@@ -180,7 +180,7 @@ toc: true
 
 平台工程团队应将这些技术整合到内部开发平台中，以优化计算基础设施。这使开发人员和站点可靠性工程师能够可靠且经济地管理和运行应用程序（见 2023 年 IT 管理智能炒作周期）。
 
-![图 8: 平台工程团队支持的 AI 增强基础设施成本、可靠性和可持续性优化工具](As-optimizing-public-cloud-infrastructure-becomes-increasingly-important,-Gartner-gives-examples-of-AI-augmented-use-cases-supported-by-emerging-technologies--Use-cases-include-rightsizing-recommendations-to-save-costs,-optimizing-latency-a.png)
+![图 8: 平台工程团队支持的 AI 增强基础设施成本、可靠性和可持续性优化工具](8.png)
 
 ### 快速回答
 
