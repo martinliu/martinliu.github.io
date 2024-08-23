@@ -549,4 +549,6 @@ IT 运营同样受到了 AI 技术的深刻影响，尤其是在本次魔力象�
 - **创新**：供应商在新技术、整合和协同创新方面的能力和投资力度。
 - **地理战略**：评估供应商是否具备全球扩展的战略，能够根据不同地区的需求调整资源和产品策略。
 
+原文：<https://www.gartner.com/doc/reprints?id=1-2HXS17MG&ct=240627&st=sb>
+
 ❤️ Feature Photo by Pavel Danilyuk: <https://www.pexels.com/photo/a-bearded-man-with-a-hat-using-binoculars-9143804/>
