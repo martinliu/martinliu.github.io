@@ -3,7 +3,7 @@ title: "2024 年 Gartner DevOps平台魔力象限"
 date: 2024-09-20T09:49:13+08:00
 description:  基于市场中 11 个主要供应商的能力和表现，Gartner 对 DevOps 平台进行了评估，以帮助组织选择适合其需求的解决方案。
 slug: 2024-magic-quadrant-for-devops-platforms
-image: pexels-realtoughcandy-11035388.jpg
+image: 66da11103b54e7739f860dd8_blog-gartner-mq.png
 categories:
     - DevOps
 tags:
@@ -362,5 +362,3 @@ DevOps 平台需要具备以下功能：
 - **CodeNOW**：CodeNOW 通过开源组件提供云原生持续交付 (CD) 平台。CodeNOW 未达到本魔力象限的最低收入和增长要求。
 - **华为**：华为 CodeArts 是一个 DevSecOps 平台，覆盖整个软件开发生命周期，具备需求管理、源代码管理、自动化测试等功能。尽管 CodeArts 在中国市场表现突出，但其未能满足全球化扩展要求。
 - **Opsera**：Opsera 提供一个统一的 DevOps 平台，覆盖整个 SDLC，集成了开源工具和预配置工作流，提供软件交付指标的可视化。Opsera 未达到最低收入和增长要求，因此未入选本魔力象限。
-
-❤️ Photo by RealToughCandy.com from Pexels: <https://www.pexels.com/photo/a-person-holding-red-and-white-card-11035388/>
