@@ -491,9 +491,7 @@ If you want to remove the stack completely, run `pulumi stack rm dev`.
 
 在本指南中，您了解了如何使用 Pulumi CLI 和 Azure CLI 在本地 macOS 环境中，部署 Azure 资源。您还了解了如何使用 Pulumi Cloud 服务，用于存储 Pulumi 项目的状态信息，以及提供一些其他的服务。
 
-
 参考文档：
 
 - [Pulumi 官方文档](https://www.pulumi.com/docs/)
 - [Get started with Pulumi & Azure](https://www.pulumi.com/docs/iac/get-started/azure/)
-
