@@ -2,8 +2,8 @@ name: CI - build and test on gh-pages
 
 # 在任何非 master 分支 push 时触发
 on:  
-   push:
-       branches-ignore:    
+  push:
+      branches-ignore:
         - 'master'
 
 jobs:
@@ -38,7 +38,7 @@ jobs:
             - name: Setup Hugo ✨  # 使用最新版本的扩展版 Hugo 构建
               uses: peaceiris/actions-hugo@v2
               with:
-                  hugo-version: "latest"
+                  hugo-version: "0.126.0"
                   extended: true
 
             - name: Hugo Build 🛠️
