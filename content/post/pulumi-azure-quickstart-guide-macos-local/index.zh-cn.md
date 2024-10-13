@@ -45,7 +45,7 @@ Pulumi CLI 在本地环境中，可以使用 ‘pulumi login’ 默认的交互�
 在命令行中，将 Access Token 设置为环境变量，用于后续的登录认证。
 
 ```bash
-export PULUMI_ACCESS_TOKEN=pul-60cae7b28a7947f414d8ef1e9d39c50000000000
+export PULUMI_ACCESS_TOKEN=pul-ACT+++++++++++++++++++++++++++++++++++++++++++++++
 pulumi whoami
 martinliu
 ```
@@ -296,7 +296,7 @@ View in Browser (Ctrl+O): https://app.pulumi.com/martinliu/first-project/dev/upd
  +   └─ azure-native:storage:StorageAccount   sa                 created (29s)
 
 Outputs:
-    primary_storage_key: "kcXDdlhpHdijuxVfOuDgekl6qHsqVGHo5dNgESwNHjlNvCkf3ENyg1933rc6gW10QN9HXLe1NlrI+ASt4QRIEw=="
+    primary_storage_key: "key++++++++++++++++++++++++++++++++++++++++++++++++++++++"
 
 Resources:
     + 3 created
@@ -401,7 +401,7 @@ View in Browser (Ctrl+O): https://app.pulumi.com/martinliu/first-project/dev/upd
  +   └─ azure-native:storage:Blob                         index.html         created (3s)
 
 Outputs:
-    primary_storage_key: "kcXDdlhpHdijuxVfOuDgekl6qHsqVGHo5dNgESwNHjlNvCkf3ENyg1933rc6gW10QN9HXLe1NlrI+ASt4QRIEw=="
+    primary_storage_key: "key++++++++++++++++++++++++++++++++++++++++++++++++++++++"
   + staticEndpoint     : "https://sa4ecf74cb.z7.web.core.windows.net/"
 
 Resources:
@@ -446,7 +446,7 @@ View in Browser (Ctrl+O): https://app.pulumi.com/martinliu/first-project/dev/pre
  -   └─ azure-native:resources:ResourceGroup              resource_group     delete
 
 Outputs:
-  - primary_storage_key: "kcXDdlhpHdijuxVfOuDgekl6qHsqVGHo5dNgESwNHjlNvCkf3ENyg1933rc6gW10QN9HXLe1NlrI+ASt4QRIEw=="
+  - primary_storage_key: "key++++++++++++++++++++++++++++++++++++++++++++++++++++++"
   - staticEndpoint     : "https://sa4ecf74cb.z7.web.core.windows.net/"
 
 Resources:
@@ -465,7 +465,7 @@ View in Browser (Ctrl+O): https://app.pulumi.com/martinliu/first-project/dev/upd
  -   └─ azure-native:resources:ResourceGroup              resource_group     deleted (83s)
 
 Outputs:
-  - primary_storage_key: "kcXDdlhpHdijuxVfOuDgekl6qHsqVGHo5dNgESwNHjlNvCkf3ENyg1933rc6gW10QN9HXLe1NlrI+ASt4QRIEw=="
+  - primary_storage_key: "key++++++++++++++++++++++++++++++++++++++++++++++++++++++"
   - staticEndpoint     : "https://sa4ecf74cb.z7.web.core.windows.net/"
 
 Resources:
