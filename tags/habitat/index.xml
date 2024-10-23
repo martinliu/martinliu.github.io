@@ -1,0 +1,1115 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Habitat on Martin Liu's Blog</title><link>https://martinliu.cn/tags/habitat/</link><description>Recent content in Habitat on Martin Liu's Blog</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><lastBuildDate>Fri, 01 Jul 2016 03:11:10 +0000</lastBuildDate><atom:link href="https://martinliu.cn/tags/habitat/index.xml" rel="self" type="application/rss+xml"/><item><title>DevOps 的起点-入手微型数据中心</title><link>https://martinliu.cn/2016/07/01/devops-in-a-box/</link><pubDate>Fri, 01 Jul 2016 03:11:10 +0000</pubDate><guid>https://martinliu.cn/2016/07/01/devops-in-a-box/</guid><description>&lt;h2 id="测试环境说明">测试环境说明&lt;/h2>
+&lt;p>我的笔记本电脑的环境描述如下。&lt;/p>
+&lt;h3 id="os">OS&lt;/h3>
+&lt;p>MacBook Pro 2011 版， 2.3 GHz Intel Core i5， 8GB DDR3， 256 GB SSD。 OS X EI Capitan version 10.11.5&lt;/p>
+&lt;h3 id="docker">Docker&lt;/h3>
+&lt;p>Docker for Mac Version 1.12.0-rc2-beta17 (build: 9779)&lt;/p>
+&lt;div class="codeblock">
+&lt;header>
+&lt;span class="codeblock-lang">&lt;/span>
+&lt;button
+class="codeblock-copy"
+data-id="codeblock-id-0"
+data-copied-text=""
+>
+&lt;/button>
+&lt;/header>
+&lt;code id="codeblock-id-0" style="display:none;">$ docker version
+Client:
+Version: 1.12.0-rc2
+API version: 1.24
+Go version: go1.6.2
+Git commit: 906eacd
+Built: Fri Jun 17 20:35:33 2016
+OS/Arch: darwin/amd64
+Experimental: true
+Server:
+Version: 1.12.0-rc2
+API version: 1.24
+Go version: go1.6.2
+Git commit: a7119de
+Built: Wed Jun 29 10:03:33 2016
+OS/Arch: linux/amd64
+Experimental: true
+$ docker-machine version
+docker-machine version 0.8.0-rc1, build fffa6c9
+martin@localhost ~/Documents [9:38:31]
+$ docker-compose version
+docker-compose version 1.8.0-rc1, build 9bf6bc6
+docker-py version: 1.8.1
+CPython version: 2.7.9
+OpenSSL version: OpenSSL 1.0.2h 3 May 2016&lt;/code>&lt;pre>&lt;code class="">$ docker version
+Client:
+Version: 1.12.0-rc2
+API version: 1.24
+Go version: go1.6.2
+Git commit: 906eacd
+Built: Fri Jun 17 20:35:33 2016
+OS/Arch: darwin/amd64
+Experimental: true
+Server:
+Version: 1.12.0-rc2
+API version: 1.24
+Go version: go1.6.2
+Git commit: a7119de
+Built: Wed Jun 29 10:03:33 2016
+OS/Arch: linux/amd64
+Experimental: true
+$ docker-machine version
+docker-machine version 0.8.0-rc1, build fffa6c9
+martin@localhost ~/Documents [9:38:31]
+$ docker-compose version
+docker-compose version 1.8.0-rc1, build 9bf6bc6
+docker-py version: 1.8.1
+CPython version: 2.7.9
+OpenSSL version: OpenSSL 1.0.2h 3 May 2016&lt;/code>&lt;/pre>&lt;/div>
+&lt;p>VirtualBox version 5.0.22r108108&lt;/p>
+&lt;h3 id="本机下载的-docker-镜像">本机下载的 Docker 镜像&lt;/h3>
+&lt;p>/Users/martin/Downloads/1.12.0-rc2/boot2docker.iso&lt;/p>
+&lt;p>~/Downloads/rancher-all/rancher-agent-v1.0.1.tar&lt;/p>
+&lt;p>~/Downloads/rancher-all/rancher-agent-instance-v0.8.1.tar&lt;/p>
+&lt;p>~/Downloads/habitat-docker-registry.bintray.io-studio.tar&lt;/p>
+&lt;p>~/Downloads/rancher-all/rancher-server-stable.tar&lt;/p>
+&lt;p>我本机还有一个 Docker Registry 的 vm，这里面提供了我需要积累以后用的镜像存储，想象一下你在飞机上的时候去哪里拉取镜像 ：）&lt;/p>
+&lt;h3 id="本机下载的代码">本机下载的代码&lt;/h3>
+&lt;p>&lt;a class="link" href="https://github.com/habitat-sh/habitat-example-plans" target="_blank" rel="noopener"
+>https://github.com/habitat-sh/habitat-example-plans&lt;/a> &lt;a class="link" href="https://github.com/janeczku/habitat-plans" target="_blank" rel="noopener"
+>https://github.com/janeczku/habitat-plans&lt;/a> &lt;a class="link" href="https://github.com/chrisurwin/may2016-demo" target="_blank" rel="noopener"
+>https://github.com/chrisurwin/may2016-demo&lt;/a> &lt;a class="link" href="https://github.com/docker/example-voting-app" target="_blank" rel="noopener"
+>https://github.com/docker/example-voting-app&lt;/a>&lt;/p>
+&lt;p>注意以上代码可能需要修改才能在本机调试成功。&lt;/p>
+&lt;h2 id="创建-rancher-服务器">创建 Rancher 服务器&lt;/h2>
+&lt;h3 id="生成虚拟机">生成虚拟机&lt;/h3>
+&lt;p>用 docker-machine 创建 rancher 服务器。&lt;/p>
+&lt;div class="codeblock">
+&lt;header>
+&lt;span class="codeblock-lang">&lt;/span>
+&lt;button
+class="codeblock-copy"
+data-id="codeblock-id-1"
+data-copied-text=""
+>
+&lt;/button>
+&lt;/header>
+&lt;code id="codeblock-id-1" style="display:none;">docker-machine create rancher --driver virtualbox --virtualbox-cpu-count &amp;#34;1&amp;#34; --virtualbox-disk-size &amp;#34;8000&amp;#34; --virtualbox-memory &amp;#34;1024&amp;#34; --virtualbox-boot2docker-url=https://martinliu.cn/Users/martin/Downloads/1.12.0-rc2/boot2docker.iso &amp;amp;&amp;amp; eval $(docker-machine env rancher)&lt;/code>&lt;pre>&lt;code class="">docker-machine create rancher --driver virtualbox --virtualbox-cpu-count &amp;#34;1&amp;#34; --virtualbox-disk-size &amp;#34;8000&amp;#34; --virtualbox-memory &amp;#34;1024&amp;#34; --virtualbox-boot2docker-url=https://martinliu.cn/Users/martin/Downloads/1.12.0-rc2/boot2docker.iso &amp;amp;&amp;amp; eval $(docker-machine env rancher)&lt;/code>&lt;/pre>&lt;/div>
+&lt;h3 id="导入-rancher-服务器镜像">导入 Rancher 服务器镜像&lt;/h3>
+&lt;p>用 docker-machine ls 应该看到 rancher 这个节点打了星号。否则 docker 命令会执行失败或者错误。&lt;/p>
+&lt;div class="codeblock">
+&lt;header>
+&lt;span class="codeblock-lang">&lt;/span>
+&lt;button
+class="codeblock-copy"
+data-id="codeblock-id-2"
+data-copied-text=""
+>
+&lt;/button>
+&lt;/header>
+&lt;code id="codeblock-id-2" style="display:none;">docker load &amp;lt; ~/Downloads/rancher-all/rancher-server-stable.tar
+docker run -d --restart=always --name rancher-srv -p 8080:8080 rancher/server:stable
+docker logs -f rancher-srv&lt;/code>&lt;pre>&lt;code class="">docker load &amp;lt; ~/Downloads/rancher-all/rancher-server-stable.tar
+docker run -d --restart=always --name rancher-srv -p 8080:8080 rancher/server:stable
+docker logs -f rancher-srv&lt;/code>&lt;/pre>&lt;/div>
+&lt;p>查看 rancher 服务器的 ip 地址。 docker-machine ip rancher&lt;/p>
+&lt;p>用浏览器打开 Rancher 服务器的登录页面。 open http://Rancher_Server_IP:8080&lt;/p>
+&lt;p>下面是一些如何让虚拟机保持固定 IP 和 rancher 容器存储的数据持久存在的代码，我没有测试成功，留下大家一起搞，成功了，给我一个回复。另外还有关于稿 jekins 和 mirror 的代码。&lt;/p>
+&lt;div class="codeblock">
+&lt;header>
+&lt;span class="codeblock-lang">&lt;/span>
+&lt;button
+class="codeblock-copy"
+data-id="codeblock-id-3"
+data-copied-text=""
+>
+&lt;/button>
+&lt;/header>
+&lt;code id="codeblock-id-3" style="display:none;">echo &amp;#34;ifconfig eth1 192.168.99.60 netmask 255.255.255.0 broadcast 192.168.99.255 up&amp;#34; | docker-machine ssh node1 sudo tee /var/lib/boot2docker/bootsync.sh &amp;gt; /dev/null
+docker-machine regenerate-certs node1 -f
+docker-machine ssh ndoe1
+sudo mkdir /mnt/sda1/var/lib/rancher
+docker@node1:/mnt/sda1/var/lib/boot2docker$ cat bootsync.sh
+ifconfig eth1 192.168.99.60 netmask 255.255.255.0 broadcast 192.168.99.255 up
+sudo mkdir /mnt/sda1/var/lib/rancher/
+sudo ln -s /mnt/sda1/var/lib/rancher/ /var/lib/
+docker load &amp;lt; ~/Downloads/rancher-all/jenkins.tar
+docker run -d --name jekins --privileged -p 9001:8080 -v /var/lib/docker/:/var/lib/docker/ -v /var/run/docker.sock:/var/run/docker.sock -v /usr/bin/docker:/usr/bin/docker -v /lib64/libdevmapper.so.1.02:/usr/lib/libdevmapper.so.1.02 --label io.rancher.container.network=true jenkins
+docker-machine create mirror --driver virtualbox --virtualbox-cpu-count &amp;#34;1&amp;#34; --virtualbox-disk-size &amp;#34;8000&amp;#34; --virtualbox-memory &amp;#34;512&amp;#34; --virtualbox-boot2docker-url=https://martinliu.cn/Users/martin/Downloads/boot2docker.iso
+docker load &amp;lt; ~/Downloads/rancher-all/registry.tar
+docker run -d -p 80:5000 --restart=always --name registry registry:2&lt;/code>&lt;pre>&lt;code class="">echo &amp;#34;ifconfig eth1 192.168.99.60 netmask 255.255.255.0 broadcast 192.168.99.255 up&amp;#34; | docker-machine ssh node1 sudo tee /var/lib/boot2docker/bootsync.sh &amp;gt; /dev/null
+docker-machine regenerate-certs node1 -f
+docker-machine ssh ndoe1
+sudo mkdir /mnt/sda1/var/lib/rancher
+docker@node1:/mnt/sda1/var/lib/boot2docker$ cat bootsync.sh
+ifconfig eth1 192.168.99.60 netmask 255.255.255.0 broadcast 192.168.99.255 up
+sudo mkdir /mnt/sda1/var/lib/rancher/
+sudo ln -s /mnt/sda1/var/lib/rancher/ /var/lib/
+docker load &amp;lt; ~/Downloads/rancher-all/jenkins.tar
+docker run -d --name jekins --privileged -p 9001:8080 -v /var/lib/docker/:/var/lib/docker/ -v /var/run/docker.sock:/var/run/docker.sock -v /usr/bin/docker:/usr/bin/docker -v /lib64/libdevmapper.so.1.02:/usr/lib/libdevmapper.so.1.02 --label io.rancher.container.network=true jenkins
+docker-machine create mirror --driver virtualbox --virtualbox-cpu-count &amp;#34;1&amp;#34; --virtualbox-disk-size &amp;#34;8000&amp;#34; --virtualbox-memory &amp;#34;512&amp;#34; --virtualbox-boot2docker-url=https://martinliu.cn/Users/martin/Downloads/boot2docker.iso
+docker load &amp;lt; ~/Downloads/rancher-all/registry.tar
+docker run -d -p 80:5000 --restart=always --name registry registry:2&lt;/code>&lt;/pre>&lt;/div>
+&lt;h2 id="容器运行节点-rancher-agent-节点">容器运行节点 Rancher Agent 节点&lt;/h2>
+&lt;h3 id="创建-node1-虚拟机">创建 node1 虚拟机&lt;/h3>
+&lt;p>使用 docker-machine 命令创建容器运行节点。&lt;/p>
+&lt;div class="codeblock">
+&lt;header>
+&lt;span class="codeblock-lang">&lt;/span>
+&lt;button
+class="codeblock-copy"
+data-id="codeblock-id-4"
+data-copied-text=""
+>
+&lt;/button>
+&lt;/header>
+&lt;code id="codeblock-id-4" style="display:none;">docker-machine create node1 --driver virtualbox --engine-insecure-registry 192.168.99.20:5000 --virtualbox-cpu-count &amp;#34;1&amp;#34; --virtualbox-disk-size &amp;#34;80000&amp;#34; --virtualbox-memory &amp;#34;1024&amp;#34; --virtualbox-boot2docker-url=https://martinliu.cn/Users/martin/Downloads/1.12.0-rc2/boot2docker.iso
+docker-machine create node2 --driver virtualbox --engine-insecure-registry 192.168.99.20:5000 --virtualbox-cpu-count &amp;#34;1&amp;#34; --virtualbox-disk-size &amp;#34;80000&amp;#34; --virtualbox-memory &amp;#34;1024&amp;#34; --virtualbox-boot2docker-url=https://martinliu.cn/Users/martin/Downloads/1.12.0-rc2/boot2docker.iso&lt;/code>&lt;pre>&lt;code class="">docker-machine create node1 --driver virtualbox --engine-insecure-registry 192.168.99.20:5000 --virtualbox-cpu-count &amp;#34;1&amp;#34; --virtualbox-disk-size &amp;#34;80000&amp;#34; --virtualbox-memory &amp;#34;1024&amp;#34; --virtualbox-boot2docker-url=https://martinliu.cn/Users/martin/Downloads/1.12.0-rc2/boot2docker.iso
+docker-machine create node2 --driver virtualbox --engine-insecure-registry 192.168.99.20:5000 --virtualbox-cpu-count &amp;#34;1&amp;#34; --virtualbox-disk-size &amp;#34;80000&amp;#34; --virtualbox-memory &amp;#34;1024&amp;#34; --virtualbox-boot2docker-url=https://martinliu.cn/Users/martin/Downloads/1.12.0-rc2/boot2docker.iso&lt;/code>&lt;/pre>&lt;/div>
+&lt;p>在 node1 或者 node2 测试运行一个容器，使用 mirror 中的 busybox 镜像。如果你的笔记本内存小于 8GB 的话，node2 就别搞了。一个 node 也够用了。&lt;/p>
+&lt;div class="codeblock">
+&lt;header>
+&lt;span class="codeblock-lang">&lt;/span>
+&lt;button
+class="codeblock-copy"
+data-id="codeblock-id-5"
+data-copied-text=""
+>
+&lt;/button>
+&lt;/header>
+&lt;code id="codeblock-id-5" style="display:none;">docker pull 192.168.99.20:5000/busybox:latest&lt;/code>&lt;pre>&lt;code class="">docker pull 192.168.99.20:5000/busybox:latest&lt;/code>&lt;/pre>&lt;/div>
+&lt;p>docker run 一下这个镜像，验证 node1 工作正常。&lt;/p>
+&lt;h3 id="加载-rancher-agent-的镜像">加载 Rancher Agent 的镜像&lt;/h3>
+&lt;p>确保 node1 是 docker-machine ls 中打星号的。&lt;/p>
+&lt;div class="codeblock">
+&lt;header>
+&lt;span class="codeblock-lang">&lt;/span>
+&lt;button
+class="codeblock-copy"
+data-id="codeblock-id-6"
+data-copied-text=""
+>
+&lt;/button>
+&lt;/header>
+&lt;code id="codeblock-id-6" style="display:none;">docker load &amp;lt; ~/Downloads/rancher-all/rancher-agent-v1.0.1.tar
+docker load &amp;lt; ~/Downloads/rancher-all/rancher-agent-instance-v0.8.1.tar
+docker load &amp;lt; ~/Downloads/habitat-docker-registry.bintray.io-studio.tar&lt;/code>&lt;pre>&lt;code class="">docker load &amp;lt; ~/Downloads/rancher-all/rancher-agent-v1.0.1.tar
+docker load &amp;lt; ~/Downloads/rancher-all/rancher-agent-instance-v0.8.1.tar
+docker load &amp;lt; ~/Downloads/habitat-docker-registry.bintray.io-studio.tar&lt;/code>&lt;/pre>&lt;/div>
+&lt;p>你翻墙下载回来的 habitat-docker-registry.bintray.io/studio 镜像可能需要打标签，否则回头 hab 命令执行失败。 先用 docer images 看下是否所有 image 的标签信息正确。&lt;/p>
+&lt;div class="codeblock">
+&lt;header>
+&lt;span class="codeblock-lang">&lt;/span>
+&lt;button
+class="codeblock-copy"
+data-id="codeblock-id-7"
+data-copied-text=""
+>
+&lt;/button>
+&lt;/header>
+&lt;code id="codeblock-id-7" style="display:none;">docker tag fc27342e5e0e habitat-docker-registry.bintray.io/studio:latest&lt;/code>&lt;pre>&lt;code class="">docker tag fc27342e5e0e habitat-docker-registry.bintray.io/studio:latest&lt;/code>&lt;/pre>&lt;/div>
+&lt;h3 id="添加-node1-节点到-rancher-server">添加 node1 节点到 Rancher Server。&lt;/h3>
+&lt;div class="codeblock">
+&lt;header>
+&lt;span class="codeblock-lang">&lt;/span>
+&lt;button
+class="codeblock-copy"
+data-id="codeblock-id-8"
+data-copied-text=""
+>
+&lt;/button>
+&lt;/header>
+&lt;code id="codeblock-id-8" style="display:none;">docker run -d --privileged -v /var/run/docker.sock:/var/run/docker.sock -v /var/lib/rancher:/var/lib/rancher rancher/agent:v1.0.1 http://192.168.99.100:8080/v1/scripts/33B68ED65CEF18F6D7BD:1466694000000:lug2KswoXOOQV4d09ZNMGTphVs0&lt;/code>&lt;pre>&lt;code class="">docker run -d --privileged -v /var/run/docker.sock:/var/run/docker.sock -v /var/lib/rancher:/var/lib/rancher rancher/agent:v1.0.1 http://192.168.99.100:8080/v1/scripts/33B68ED65CEF18F6D7BD:1466694000000:lug2KswoXOOQV4d09ZNMGTphVs0&lt;/code>&lt;/pre>&lt;/div>
+&lt;!-- raw HTML omitted -->
+&lt;p>现在在 Hosts 页面上应该能看到该刚创建的节点。在页面上创建一个最小化的容器（如 busybox），来拉起 Network Agent 容器。&lt;/p>
+&lt;h2 id="调试-habitat-的测试程序">调试 habitat 的测试程序&lt;/h2>
+&lt;p>参考的文档 &lt;a class="link" href="https://www.habitat.sh/tutorials/" target="_blank" rel="noopener"
+>https://www.habitat.sh/tutorials/&lt;/a> 记得一定要把这一组文章先看完，在去调试它的代码，不懂这些基本概念的话，后面对了错了都不知道该怎么搞。&lt;/p>
+&lt;p>前置条件，翻墙下载 habitat studio 的 docker image 镜像，load 到 node1 上，下面的所有测试都是在 node1 上完成的。&lt;/p>
+&lt;h3 id="安装-hab">安装 hab&lt;/h3>
+&lt;p>habitat 的程序只有一个可执行程序， 目前支持 mac 和 linux 版本。下载地址： &lt;a class="link" href="https://www.habitat.sh/docs/get-habitat" target="_blank" rel="noopener"
+>https://www.habitat.sh/docs/get-habitat&lt;/a> 就是一个 tag 包，解压缩后放到 shell 的 PATH 里面就安装完了。&lt;/p>
+&lt;h3 id="配置-hab-cli">配置 hab cli&lt;/h3>
+&lt;p>运行 hab setup&lt;/p>
+&lt;div class="codeblock">
+&lt;header>
+&lt;span class="codeblock-lang">&lt;/span>
+&lt;button
+class="codeblock-copy"
+data-id="codeblock-id-9"
+data-copied-text=""
+>
+&lt;/button>
+&lt;/header>
+&lt;code id="codeblock-id-9" style="display:none;">martin@localhost ~/Documents $ hab setup
+Habitat CLI Setup
+=================
+Welcome to hab setup. Let&amp;#39;s get started.
+Set up a default origin
+Every package in Habitat belongs to an origin, which indicates the
+person or organization responsible for maintaining that package. Each
+origin also has a key used to cryptographically sign packages in that
+origin.
+Selecting a default origin tells package building operations such as
+&amp;#39;hab pkg build&amp;#39; what key should be used to sign the packages produced.
+If you do not set a default origin now, you will have to tell package
+building commands each time what origin to use.
+For more information on origins and how they are used in building
+packages, please consult the docs at
+https://www.habitat.sh/docs/build-packages-overview/
+Set up a default origin? [Yes/no/quit] yes 这里输入 yes
+Enter the name of your origin. If you plan to publish your packages
+publicly, we recommend that you select one that is not already in use on
+the Habitat build service found at https://app.habitat.sh/.
+You already have a default origin set up as `martin&amp;#39;, but feel free to
+change it if you wish.
+Default origin name: [default: martin] 这是用来做 Habitat 包签名和加密用的标识，在代码里面会用到。
+You already have an origin key for martin created and installed. Great
+work!
+GitHub Access Token
+While you can build and run Habitat packages without sharing them on the
+public depot, doing so allows you to collaborate with the Habitat
+community. In addition, it is how you can perform continuous deployment
+with Habitat.
+The depot uses GitHub authentication with an access token
+(https://help.github.com/articles/creating-an-access-token-for-command-line-use/).
+If you would like to share your packages on the depot, please enter your
+GitHub access token. Otherwise, just enter No.
+For more information on sharing packages on the depot, please read the
+documentation at https://www.habitat.sh/docs/share-packages-overview/
+Set up a default GitHub access token? [Yes/no/quit] yes 这里选择yes
+Enter your GitHub access token.
+You already have a default auth token set up, but feel free to change it
+if you wish.
+GitHub access token: [default: martin-github-token] 这个 token 需要自己去 github 里面生成
+Analytics
+The `hab` command-line tool will optionally send anonymous usage data to
+Habitat&amp;#39;s Google Analytics account. This is a strictly opt-in activity
+and no tracking will occur unless you respond affirmatively to the
+question below.
+We collect this data to help improve Habitat&amp;#39;s user experience. For
+example, we would like to know the category of tasks users are
+performing, and which ones they are having trouble with (e.g. mistyping
+command line arguments).
+To see what kinds of data are sent and how they are anonymized, please
+read more about our analytics here:
+https://www.habitat.sh/docs/about-analytics/
+Enable analytics? [yes/No/quit] no 这里选择 no
+» Opting out of analytics
+☑ Creating /Users/martin/.hab/cache/analytics/OPTED_OUT
+★ Analytics opted out, we salute you just the same!
+CLI Setup Complete
+That&amp;#39;s all for now. Thanks for using Habitat!
+martin@localhost ~/Documents $&lt;/code>&lt;pre>&lt;code class="">martin@localhost ~/Documents $ hab setup
+Habitat CLI Setup
+=================
+Welcome to hab setup. Let&amp;#39;s get started.
+Set up a default origin
+Every package in Habitat belongs to an origin, which indicates the
+person or organization responsible for maintaining that package. Each
+origin also has a key used to cryptographically sign packages in that
+origin.
+Selecting a default origin tells package building operations such as
+&amp;#39;hab pkg build&amp;#39; what key should be used to sign the packages produced.
+If you do not set a default origin now, you will have to tell package
+building commands each time what origin to use.
+For more information on origins and how they are used in building
+packages, please consult the docs at
+https://www.habitat.sh/docs/build-packages-overview/
+Set up a default origin? [Yes/no/quit] yes 这里输入 yes
+Enter the name of your origin. If you plan to publish your packages
+publicly, we recommend that you select one that is not already in use on
+the Habitat build service found at https://app.habitat.sh/.
+You already have a default origin set up as `martin&amp;#39;, but feel free to
+change it if you wish.
+Default origin name: [default: martin] 这是用来做 Habitat 包签名和加密用的标识，在代码里面会用到。
+You already have an origin key for martin created and installed. Great
+work!
+GitHub Access Token
+While you can build and run Habitat packages without sharing them on the
+public depot, doing so allows you to collaborate with the Habitat
+community. In addition, it is how you can perform continuous deployment
+with Habitat.
+The depot uses GitHub authentication with an access token
+(https://help.github.com/articles/creating-an-access-token-for-command-line-use/).
+If you would like to share your packages on the depot, please enter your
+GitHub access token. Otherwise, just enter No.
+For more information on sharing packages on the depot, please read the
+documentation at https://www.habitat.sh/docs/share-packages-overview/
+Set up a default GitHub access token? [Yes/no/quit] yes 这里选择yes
+Enter your GitHub access token.
+You already have a default auth token set up, but feel free to change it
+if you wish.
+GitHub access token: [default: martin-github-token] 这个 token 需要自己去 github 里面生成
+Analytics
+The `hab` command-line tool will optionally send anonymous usage data to
+Habitat&amp;#39;s Google Analytics account. This is a strictly opt-in activity
+and no tracking will occur unless you respond affirmatively to the
+question below.
+We collect this data to help improve Habitat&amp;#39;s user experience. For
+example, we would like to know the category of tasks users are
+performing, and which ones they are having trouble with (e.g. mistyping
+command line arguments).
+To see what kinds of data are sent and how they are anonymized, please
+read more about our analytics here:
+https://www.habitat.sh/docs/about-analytics/
+Enable analytics? [yes/No/quit] no 这里选择 no
+» Opting out of analytics
+☑ Creating /Users/martin/.hab/cache/analytics/OPTED_OUT
+★ Analytics opted out, we salute you just the same!
+CLI Setup Complete
+That&amp;#39;s all for now. Thanks for using Habitat!
+martin@localhost ~/Documents $&lt;/code>&lt;/pre>&lt;/div>
+&lt;p>该注意的都写到上面的代码里面了。这个配置的结果在这里&lt;/p>
+&lt;div class="codeblock">
+&lt;header>
+&lt;span class="codeblock-lang">&lt;/span>
+&lt;button
+class="codeblock-copy"
+data-id="codeblock-id-10"
+data-copied-text=""
+>
+&lt;/button>
+&lt;/header>
+&lt;code id="codeblock-id-10" style="display:none;">$ cat ~/.hab/etc/cli.toml
+auth_token = &amp;#34;martin-github-token&amp;#34;
+origin = &amp;#34;martin&amp;#34;&lt;/code>&lt;pre>&lt;code class="">$ cat ~/.hab/etc/cli.toml
+auth_token = &amp;#34;martin-github-token&amp;#34;
+origin = &amp;#34;martin&amp;#34;&lt;/code>&lt;/pre>&lt;/div>
+&lt;h3 id="调试-habitat-demo-应用">调试 Habitat demo 应用&lt;/h3>
+&lt;div class="codeblock">
+&lt;header>
+&lt;span class="codeblock-lang">&lt;/span>
+&lt;button
+class="codeblock-copy"
+data-id="codeblock-id-11"
+data-copied-text=""
+>
+&lt;/button>
+&lt;/header>
+&lt;code id="codeblock-id-11" style="display:none;">git clone https://github.com/habitat-sh/habitat-example-plans&lt;/code>&lt;pre>&lt;code class="">git clone https://github.com/habitat-sh/habitat-example-plans&lt;/code>&lt;/pre>&lt;/div>
+&lt;p>进入到 mytutorialapp 目录，修改 plan.sh 的 第二行代码，我改后的代码是&lt;/p>
+&lt;div class="codeblock">
+&lt;header>
+&lt;span class="codeblock-lang">&lt;/span>
+&lt;button
+class="codeblock-copy"
+data-id="codeblock-id-12"
+data-copied-text=""
+>
+&lt;/button>
+&lt;/header>
+&lt;code id="codeblock-id-12" style="display:none;">pkg_origin=martin&lt;/code>&lt;pre>&lt;code class="">pkg_origin=martin&lt;/code>&lt;/pre>&lt;/div>
+&lt;p>martin 是我在 hab cli 里面配置的 origin。&lt;/p>
+&lt;p>其实下面的测试就执行了两个 hab 的命令，都是在 hab studi 的 shell 里面执行的，这个 shell 其实就是一个 studio 容器的 shell。&lt;/p>
+&lt;p>在运行下面的命令，确保你是和 node1 正常通讯的，下面我用 default 节点做演示。做完的演示环境我已经删除了。&lt;/p>
+&lt;div class="codeblock">
+&lt;header>
+&lt;span class="codeblock-lang">&lt;/span>
+&lt;button
+class="codeblock-copy"
+data-id="codeblock-id-13"
+data-copied-text=""
+>
+&lt;/button>
+&lt;/header>
+&lt;code id="codeblock-id-13" style="display:none;">$ docker-machine ls NAME ACTIVE DRIVER STATE URL SWARM DOCKER ERRORS
+default - virtualbox Running tcp://192.168.99.100:2376 v1.11.1
+$ docker ps CONTAINER ID IMAGE COMMAND CREATED STATUS PORTS NAMES&lt;/code>&lt;pre>&lt;code class="">$ docker-machine ls NAME ACTIVE DRIVER STATE URL SWARM DOCKER ERRORS
+default - virtualbox Running tcp://192.168.99.100:2376 v1.11.1
+$ docker ps CONTAINER ID IMAGE COMMAND CREATED STATUS PORTS NAMES&lt;/code>&lt;/pre>&lt;/div>
+&lt;p>正常的意思是执行所有 docker 命令不报错。&lt;/p>
+&lt;h3 id="build-habitat-demo-代码">build habitat demo 代码&lt;/h3>
+&lt;p>进入到代码的 plan.sh 的目录 执行 hab studio enter 命令。&lt;/p>
+&lt;div class="codeblock">
+&lt;header>
+&lt;span class="codeblock-lang">&lt;/span>
+&lt;button
+class="codeblock-copy"
+data-id="codeblock-id-14"
+data-copied-text=""
+>
+&lt;/button>
+&lt;/header>
+&lt;code id="codeblock-id-14" style="display:none;">martin@localhost ~/Documents/GitHub/habitat-example-plans/mytutorialapp
+$ hab studio enter [±master ●●]
+hab-studio: Creating Studio at /hab/studios/src (default)
+hab-studio: Importing martin secret origin key
+» Importing origin key from standard input
+★ Imported secret origin key martin-20160630040241.
+hab-studio: Entering Studio at /hab/studios/src (default)
+hab-studio: Exported: HAB_ORIGIN=martin
+[1][default:/src:0]# build
+: Loading /src/plan.sh
+mytutorialapp: Plan loaded
+mytutorialapp: hab-plan-build setup
+mytutorialapp: Using HAB_BIN=/hab/pkgs/core/hab/0.7.0/20160614230104/bin/hab for installs, signing, and hashing
+mytutorialapp: Resolving dependencies
+» Installing core/node
+→ Using core/gcc-libs/5.2.0/20160612075020
+→ Using core/glibc/2.22/20160612063629
+→ Using core/linux-headers/4.3/20160612063537
+↓ Downloading core/node/4.2.6/20160612143531
+6.44 MB / 6.44 MB \ [=======================================================================] 100.00 % 457.82 KB/s ↓ Downloading core-20160612031944 public origin key
+75 B / 75 B | [=============================================================================] 100.00 % 575.13 KB/s ☑ Cached core-20160612031944 public origin key
+✓ Installed core/node/4.2.6/20160612143531
+★ Install of core/node complete with 4 packages installed.
+mytutorialapp: Resolved dependency &amp;#39;core/node&amp;#39; to /hab/pkgs/core/node/4.2.6/20160612143531
+mytutorialapp: Setting PATH=/hab/pkgs/core/node/4.2.6/20160612143531/bin:/hab/pkgs/core/hab-plan-build/0.7.0/20160614232259/bin:/hab/pkgs/core/bash/4.3.42/20160612075613/bin:/hab/pkgs/core/binutils/2.25.1/20160612064534/bin:/hab/pkgs/core/bzip2/1.0.6/20160612075040/bin:/hab/pkgs/core/coreutils/8.24/20160612075329/bin:/hab/pkgs/core/file/5.24/20160612064523/bin:/hab/pkgs/core/findutils/4.4.2/20160612080341/bin:/hab/pkgs/core/gawk/4.1.3/20160612075739/bin:/hab/pkgs/core/grep/2.22/20160612075540/bin:/hab/pkgs/core/gzip/1.6/20160612080637/bin:/hab/pkgs/core/hab/0.7.0/20160614230104/bin:/hab/pkgs/core/sed/4.2.2/20160612075228/bin:/hab/pkgs/core/tar/1.28/20160612075701/bin:/hab/pkgs/core/unzip/6.0/20160612081414/bin:/hab/pkgs/core/wget/1.16.3/20160612081342/bin:/hab/pkgs/core/xz/5.2.2/20160612080402/bin:/hab/pkgs/core/acl/2.2.52/20160612075215/bin:/hab/pkgs/core/attr/2.4.47/20160612075207/bin:/hab/pkgs/core/glibc/2.22/20160612063629/bin:/hab/pkgs/core/less/481/20160612080021/bin:/hab/pkgs/core/libcap/2.24/20160612075226/bin:/hab/pkgs/core/libidn/1.32/20160612081104/bin:/hab/pkgs/core/ncurses/6.0/20160612075116/bin:/hab/pkgs/core/openssl/1.0.2h/20160612081127/bin:/hab/pkgs/core/pcre/8.38/20160612075520/bin
+mkdir: created directory &amp;#39;/hab/cache/src&amp;#39;
+mytutorialapp: Downloading &amp;#39;https://s3-us-west-2.amazonaws.com/mytutorialapp/mytutorialapp-0.1.0.tar.gz&amp;#39; to &amp;#39;mytutorialapp-0.1.0.tar.gz&amp;#39;
+--2016-07-01 02:27:51-- https://s3-us-west-2.amazonaws.com/mytutorialapp/mytutorialapp-0.1.0.tar.gz
+Resolving s3-us-west-2.amazonaws.com (s3-us-west-2.amazonaws.com)... 54.231.184.216
+Connecting to s3-us-west-2.amazonaws.com (s3-us-west-2.amazonaws.com)|54.231.184.216|:443... connected.
+HTTP request sent, awaiting response... 200 OK
+Length: 1041 (1.0K) [application/x-gzip]
+Saving to: &amp;#39;mytutorialapp-0.1.0.tar.gz&amp;#39;
+mytutorialapp-0.1.0.tar.gz 100%[===================================================&amp;gt;] 1.02K --.-KB/s in 0.03s
+2016-07-01 02:28:08 (32.1 KB/s) - &amp;#39;mytutorialapp-0.1.0.tar.gz&amp;#39; saved [1041/1041]
+mytutorialapp: Downloaded &amp;#39;mytutorialapp-0.1.0.tar.gz&amp;#39;
+mytutorialapp: Verifying mytutorialapp-0.1.0.tar.gz
+mytutorialapp: Checksum verified for mytutorialapp-0.1.0.tar.gz
+mytutorialapp: Clean the cache
+mytutorialapp: Unpacking mytutorialapp-0.1.0.tar.gz
+mytutorialapp: Setting build environment
+mytutorialapp: Setting PREFIX=/hab/pkgs/martin/mytutorialapp/0.1.0/20160701022725
+mytutorialapp: Setting LD_RUN_PATH=/hab/pkgs/core/node/4.2.6/20160612143531/lib
+mytutorialapp: Setting CFLAGS=-I/hab/pkgs/core/node/4.2.6/20160612143531/include
+mytutorialapp: Setting LDFLAGS=-L/hab/pkgs/core/node/4.2.6/20160612143531/lib
+mytutorialapp: Preparing to build
+mytutorialapp: Building
+npm WARN package.json mytutorialapp@0.1.0 No repository field.
+npm WARN package.json mytutorialapp@0.1.0 No README data
+nconf@0.8.4 node_modules/nconf
+├── ini@1.3.4
+├── secure-keys@1.0.0
+├── async@1.5.2
+└── yargs@3.32.0 (decamelize@1.2.0, camelcase@2.1.1, window-size@0.1.4, y18n@3.2.1, os-locale@1.4.0, cliui@3.2.0, string-width@1.0.1)
+mytutorialapp: Installing
+&amp;#39;node_modules/nconf&amp;#39; -&amp;gt; &amp;#39;/hab/pkgs/martin/mytutorialapp/0.1.0/20160701022725/node_modules/nconf&amp;#39;
+忽略了好几百行输出
+&amp;#39;node_modules/nconf/node_modules/secure-keys/test/simple-test.js&amp;#39; -&amp;gt; &amp;#39;/hab/pkgs/martin/mytutorialapp/0.1.0/20160701022725/node_modules/nconf/node_modules/secure-keys/test/simple-test.js&amp;#39;
+&amp;#39;node_modules/nconf/node_modules/secure-keys/test/test.secret.key&amp;#39; -&amp;gt; &amp;#39;/hab/pkgs/martin/mytutorialapp/0.1.0/20160701022725/node_modules/nconf/node_modules/secure-keys/test/test.secret.key&amp;#39;
+&amp;#39;node_modules/nconf/node_modules/secure-keys/package.json&amp;#39; -&amp;gt; &amp;#39;/hab/pkgs/martin/mytutorialapp/0.1.0/20160701022725/node_modules/nconf/node_modules/secure-keys/package.json&amp;#39;
+mytutorialapp: Writing configuration
+mytutorialapp: Writing service management scripts
+mytutorialapp: Stripping unneeded symbols from binaries and libraries
+mytutorialapp: Creating manifest
+mytutorialapp: Building package metadata
+mytutorialapp: Generating blake2b hashes of all files in the package
+mytutorialapp: Generating signed metadata FILES
+» Signing mytutorialapp_blake2bsums
+☛ Signing mytutorialapp_blake2bsums with martin-20160630040241 to create /hab/pkgs/martin/mytutorialapp/0.1.0/20160701022725/FILES
+★ Signed artifact /hab/pkgs/martin/mytutorialapp/0.1.0/20160701022725/FILES.
+mytutorialapp: Generating package artifact
+/hab/pkgs/core/tar/1.28/20160612075701/bin/tar: Removing leading `/&amp;#39; from member names
+/hab/cache/artifacts/.martin-mytutorialapp-0.1.0-20160701022725-x86_64-linux.tar (1/1)
+100 % 121.4 KiB / 900.0 KiB = 0.135
+» Signing /hab/cache/artifacts/.martin-mytutorialapp-0.1.0-20160701022725-x86_64-linux.tar.xz
+☛ Signing /hab/cache/artifacts/.martin-mytutorialapp-0.1.0-20160701022725-x86_64-linux.tar.xz with martin-20160630040241 to create /hab/cache/artifacts/martin-mytutorialapp-0.1.0-20160701022725-x86_64-linux.hart
+★ Signed artifact /hab/cache/artifacts/martin-mytutorialapp-0.1.0-20160701022725-x86_64-linux.hart.
+&amp;#39;/hab/cache/artifacts/martin-mytutorialapp-0.1.0-20160701022725-x86_64-linux.hart&amp;#39; -&amp;gt; &amp;#39;/src/results/martin-mytutorialapp-0.1.0-20160701022725-x86_64-linux.hart&amp;#39;
+mytutorialapp: hab-plan-build cleanup
+mytutorialapp:
+mytutorialapp: Source Cache: /hab/cache/src/mytutorialapp-0.1.0
+mytutorialapp: Installed Path: /hab/pkgs/martin/mytutorialapp/0.1.0/20160701022725
+mytutorialapp: Artifact: /src/results/martin-mytutorialapp-0.1.0-20160701022725-x86_64-linux.hart
+mytutorialapp: Build Report: /src/results/last_build.env
+mytutorialapp: SHA256 Checksum: d4bfb3a44989b8a5b1295eac2600d75f42dd2be6f537344312c8917cba47d05d
+mytutorialapp: Blake2b Checksum: fbff257eb36fffa61e6cbf5ec89fa3f507095f80f5cca610c2bb72685d758706
+mytutorialapp:
+mytutorialapp: I love it when a plan.sh comes together.
+mytutorialapp:
+mytutorialapp: Build time: 1m3s
+[2][default:/src:0]#&lt;/code>&lt;pre>&lt;code class="">martin@localhost ~/Documents/GitHub/habitat-example-plans/mytutorialapp
+$ hab studio enter [±master ●●]
+hab-studio: Creating Studio at /hab/studios/src (default)
+hab-studio: Importing martin secret origin key
+» Importing origin key from standard input
+★ Imported secret origin key martin-20160630040241.
+hab-studio: Entering Studio at /hab/studios/src (default)
+hab-studio: Exported: HAB_ORIGIN=martin
+[1][default:/src:0]# build
+: Loading /src/plan.sh
+mytutorialapp: Plan loaded
+mytutorialapp: hab-plan-build setup
+mytutorialapp: Using HAB_BIN=/hab/pkgs/core/hab/0.7.0/20160614230104/bin/hab for installs, signing, and hashing
+mytutorialapp: Resolving dependencies
+» Installing core/node
+→ Using core/gcc-libs/5.2.0/20160612075020
+→ Using core/glibc/2.22/20160612063629
+→ Using core/linux-headers/4.3/20160612063537
+↓ Downloading core/node/4.2.6/20160612143531
+6.44 MB / 6.44 MB \ [=======================================================================] 100.00 % 457.82 KB/s ↓ Downloading core-20160612031944 public origin key
+75 B / 75 B | [=============================================================================] 100.00 % 575.13 KB/s ☑ Cached core-20160612031944 public origin key
+✓ Installed core/node/4.2.6/20160612143531
+★ Install of core/node complete with 4 packages installed.
+mytutorialapp: Resolved dependency &amp;#39;core/node&amp;#39; to /hab/pkgs/core/node/4.2.6/20160612143531
+mytutorialapp: Setting PATH=/hab/pkgs/core/node/4.2.6/20160612143531/bin:/hab/pkgs/core/hab-plan-build/0.7.0/20160614232259/bin:/hab/pkgs/core/bash/4.3.42/20160612075613/bin:/hab/pkgs/core/binutils/2.25.1/20160612064534/bin:/hab/pkgs/core/bzip2/1.0.6/20160612075040/bin:/hab/pkgs/core/coreutils/8.24/20160612075329/bin:/hab/pkgs/core/file/5.24/20160612064523/bin:/hab/pkgs/core/findutils/4.4.2/20160612080341/bin:/hab/pkgs/core/gawk/4.1.3/20160612075739/bin:/hab/pkgs/core/grep/2.22/20160612075540/bin:/hab/pkgs/core/gzip/1.6/20160612080637/bin:/hab/pkgs/core/hab/0.7.0/20160614230104/bin:/hab/pkgs/core/sed/4.2.2/20160612075228/bin:/hab/pkgs/core/tar/1.28/20160612075701/bin:/hab/pkgs/core/unzip/6.0/20160612081414/bin:/hab/pkgs/core/wget/1.16.3/20160612081342/bin:/hab/pkgs/core/xz/5.2.2/20160612080402/bin:/hab/pkgs/core/acl/2.2.52/20160612075215/bin:/hab/pkgs/core/attr/2.4.47/20160612075207/bin:/hab/pkgs/core/glibc/2.22/20160612063629/bin:/hab/pkgs/core/less/481/20160612080021/bin:/hab/pkgs/core/libcap/2.24/20160612075226/bin:/hab/pkgs/core/libidn/1.32/20160612081104/bin:/hab/pkgs/core/ncurses/6.0/20160612075116/bin:/hab/pkgs/core/openssl/1.0.2h/20160612081127/bin:/hab/pkgs/core/pcre/8.38/20160612075520/bin
+mkdir: created directory &amp;#39;/hab/cache/src&amp;#39;
+mytutorialapp: Downloading &amp;#39;https://s3-us-west-2.amazonaws.com/mytutorialapp/mytutorialapp-0.1.0.tar.gz&amp;#39; to &amp;#39;mytutorialapp-0.1.0.tar.gz&amp;#39;
+--2016-07-01 02:27:51-- https://s3-us-west-2.amazonaws.com/mytutorialapp/mytutorialapp-0.1.0.tar.gz
+Resolving s3-us-west-2.amazonaws.com (s3-us-west-2.amazonaws.com)... 54.231.184.216
+Connecting to s3-us-west-2.amazonaws.com (s3-us-west-2.amazonaws.com)|54.231.184.216|:443... connected.
+HTTP request sent, awaiting response... 200 OK
+Length: 1041 (1.0K) [application/x-gzip]
+Saving to: &amp;#39;mytutorialapp-0.1.0.tar.gz&amp;#39;
+mytutorialapp-0.1.0.tar.gz 100%[===================================================&amp;gt;] 1.02K --.-KB/s in 0.03s
+2016-07-01 02:28:08 (32.1 KB/s) - &amp;#39;mytutorialapp-0.1.0.tar.gz&amp;#39; saved [1041/1041]
+mytutorialapp: Downloaded &amp;#39;mytutorialapp-0.1.0.tar.gz&amp;#39;
+mytutorialapp: Verifying mytutorialapp-0.1.0.tar.gz
+mytutorialapp: Checksum verified for mytutorialapp-0.1.0.tar.gz
+mytutorialapp: Clean the cache
+mytutorialapp: Unpacking mytutorialapp-0.1.0.tar.gz
+mytutorialapp: Setting build environment
+mytutorialapp: Setting PREFIX=/hab/pkgs/martin/mytutorialapp/0.1.0/20160701022725
+mytutorialapp: Setting LD_RUN_PATH=/hab/pkgs/core/node/4.2.6/20160612143531/lib
+mytutorialapp: Setting CFLAGS=-I/hab/pkgs/core/node/4.2.6/20160612143531/include
+mytutorialapp: Setting LDFLAGS=-L/hab/pkgs/core/node/4.2.6/20160612143531/lib
+mytutorialapp: Preparing to build
+mytutorialapp: Building
+npm WARN package.json mytutorialapp@0.1.0 No repository field.
+npm WARN package.json mytutorialapp@0.1.0 No README data
+nconf@0.8.4 node_modules/nconf
+├── ini@1.3.4
+├── secure-keys@1.0.0
+├── async@1.5.2
+└── yargs@3.32.0 (decamelize@1.2.0, camelcase@2.1.1, window-size@0.1.4, y18n@3.2.1, os-locale@1.4.0, cliui@3.2.0, string-width@1.0.1)
+mytutorialapp: Installing
+&amp;#39;node_modules/nconf&amp;#39; -&amp;gt; &amp;#39;/hab/pkgs/martin/mytutorialapp/0.1.0/20160701022725/node_modules/nconf&amp;#39;
+忽略了好几百行输出
+&amp;#39;node_modules/nconf/node_modules/secure-keys/test/simple-test.js&amp;#39; -&amp;gt; &amp;#39;/hab/pkgs/martin/mytutorialapp/0.1.0/20160701022725/node_modules/nconf/node_modules/secure-keys/test/simple-test.js&amp;#39;
+&amp;#39;node_modules/nconf/node_modules/secure-keys/test/test.secret.key&amp;#39; -&amp;gt; &amp;#39;/hab/pkgs/martin/mytutorialapp/0.1.0/20160701022725/node_modules/nconf/node_modules/secure-keys/test/test.secret.key&amp;#39;
+&amp;#39;node_modules/nconf/node_modules/secure-keys/package.json&amp;#39; -&amp;gt; &amp;#39;/hab/pkgs/martin/mytutorialapp/0.1.0/20160701022725/node_modules/nconf/node_modules/secure-keys/package.json&amp;#39;
+mytutorialapp: Writing configuration
+mytutorialapp: Writing service management scripts
+mytutorialapp: Stripping unneeded symbols from binaries and libraries
+mytutorialapp: Creating manifest
+mytutorialapp: Building package metadata
+mytutorialapp: Generating blake2b hashes of all files in the package
+mytutorialapp: Generating signed metadata FILES
+» Signing mytutorialapp_blake2bsums
+☛ Signing mytutorialapp_blake2bsums with martin-20160630040241 to create /hab/pkgs/martin/mytutorialapp/0.1.0/20160701022725/FILES
+★ Signed artifact /hab/pkgs/martin/mytutorialapp/0.1.0/20160701022725/FILES.
+mytutorialapp: Generating package artifact
+/hab/pkgs/core/tar/1.28/20160612075701/bin/tar: Removing leading `/&amp;#39; from member names
+/hab/cache/artifacts/.martin-mytutorialapp-0.1.0-20160701022725-x86_64-linux.tar (1/1)
+100 % 121.4 KiB / 900.0 KiB = 0.135
+» Signing /hab/cache/artifacts/.martin-mytutorialapp-0.1.0-20160701022725-x86_64-linux.tar.xz
+☛ Signing /hab/cache/artifacts/.martin-mytutorialapp-0.1.0-20160701022725-x86_64-linux.tar.xz with martin-20160630040241 to create /hab/cache/artifacts/martin-mytutorialapp-0.1.0-20160701022725-x86_64-linux.hart
+★ Signed artifact /hab/cache/artifacts/martin-mytutorialapp-0.1.0-20160701022725-x86_64-linux.hart.
+&amp;#39;/hab/cache/artifacts/martin-mytutorialapp-0.1.0-20160701022725-x86_64-linux.hart&amp;#39; -&amp;gt; &amp;#39;/src/results/martin-mytutorialapp-0.1.0-20160701022725-x86_64-linux.hart&amp;#39;
+mytutorialapp: hab-plan-build cleanup
+mytutorialapp:
+mytutorialapp: Source Cache: /hab/cache/src/mytutorialapp-0.1.0
+mytutorialapp: Installed Path: /hab/pkgs/martin/mytutorialapp/0.1.0/20160701022725
+mytutorialapp: Artifact: /src/results/martin-mytutorialapp-0.1.0-20160701022725-x86_64-linux.hart
+mytutorialapp: Build Report: /src/results/last_build.env
+mytutorialapp: SHA256 Checksum: d4bfb3a44989b8a5b1295eac2600d75f42dd2be6f537344312c8917cba47d05d
+mytutorialapp: Blake2b Checksum: fbff257eb36fffa61e6cbf5ec89fa3f507095f80f5cca610c2bb72685d758706
+mytutorialapp:
+mytutorialapp: I love it when a plan.sh comes together.
+mytutorialapp:
+mytutorialapp: Build time: 1m3s
+[2][default:/src:0]#&lt;/code>&lt;/pre>&lt;/div>
+&lt;p>检查结果，在代码的目录中可以看的 result 目录，关注一下这个目录，关键看 build 命令的最后一段。&lt;/p>
+&lt;div class="codeblock">
+&lt;header>
+&lt;span class="codeblock-lang">&lt;/span>
+&lt;button
+class="codeblock-copy"
+data-id="codeblock-id-15"
+data-copied-text=""
+>
+&lt;/button>
+&lt;/header>
+&lt;code id="codeblock-id-15" style="display:none;">
+mytutorialapp: hab-plan-build cleanup mytutorialapp: mytutorialapp: Source Cache: /hab/cache/src/mytutorialapp-0.1.0 mytutorialapp: Installed Path: /hab/pkgs/martin/mytutorialapp/0.1.0/20160701022725 mytutorialapp: Artifact: /src/results/martin-mytutorialapp-0.1.0-20160701022725-x86_64-linux.hart mytutorialapp: Build Report: /src/results/last_build.env mytutorialapp: SHA256 Checksum: d4bfb3a44989b8a5b1295eac2600d75f42dd2be6f537344312c8917cba47d05d mytutorialapp: Blake2b Checksum: fbff257eb36fffa61e6cbf5ec89fa3f507095f80f5cca610c2bb72685d758706 mytutorialapp: mytutorialapp: I love it when a plan.sh comes together. mytutorialapp: mytutorialapp: Build time: 1m3s&lt;/code>&lt;pre>&lt;code class="">
+mytutorialapp: hab-plan-build cleanup mytutorialapp: mytutorialapp: Source Cache: /hab/cache/src/mytutorialapp-0.1.0 mytutorialapp: Installed Path: /hab/pkgs/martin/mytutorialapp/0.1.0/20160701022725 mytutorialapp: Artifact: /src/results/martin-mytutorialapp-0.1.0-20160701022725-x86_64-linux.hart mytutorialapp: Build Report: /src/results/last_build.env mytutorialapp: SHA256 Checksum: d4bfb3a44989b8a5b1295eac2600d75f42dd2be6f537344312c8917cba47d05d mytutorialapp: Blake2b Checksum: fbff257eb36fffa61e6cbf5ec89fa3f507095f80f5cca610c2bb72685d758706 mytutorialapp: mytutorialapp: I love it when a plan.sh comes together. mytutorialapp: mytutorialapp: Build time: 1m3s&lt;/code>&lt;/pre>&lt;/div>
+&lt;h3 id="昨晚分享的高潮部分-habitat-导出-docker-image">昨晚分享的高潮部分, habitat 导出 docker image&lt;/h3>
+&lt;p>其实就是一条命令，在 habitat Studio 中执行 导出命令 hab pkg export docker martin/mytutorialapp&lt;/p>
+&lt;p>导出 docker 镜像的过程和 build 的过程一样，都可能会失败；由于它需要到网上下载所需要的代码，下载所需要的 habitat 模块，core/ 开头的都是 habitat 出品的核心的模块，他们的想法基本也是说把所有的可能用到的模块都做封装，成为自己的 pkg 格式的内容。然后在用他们的 Habitat 服务来解析、部署和运行。&lt;/p>
+&lt;div class="codeblock">
+&lt;header>
+&lt;span class="codeblock-lang">&lt;/span>
+&lt;button
+class="codeblock-copy"
+data-id="codeblock-id-16"
+data-copied-text=""
+>
+&lt;/button>
+&lt;/header>
+&lt;code id="codeblock-id-16" style="display:none;">[4][default:/src:0]# hab pkg export docker martin/mytutorialapp
+hab-studio: Creating Studio at /tmp/hab-pkg-dockerize-XxsS/rootfs (baseimage)
+Using local package for martin/mytutorialapp
+Using local package for core/gcc-libs/5.2.0/20160612075020 via martin/mytutorialapp
+Using local package for core/glibc/2.22/20160612063629 via martin/mytutorialapp
+Using local package for core/linux-headers/4.3/20160612063537 via martin/mytutorialapp
+Using local package for core/node/4.2.6/20160612143531 via martin/mytutorialapp
+» Installing core/hab
+↓ Downloading core/hab/0.7.0/20160614230104
+2.23 MB / 2.23 MB / [=======================================================================] 100.00 % 500.60 KB/s ↓ Downloading core-20160612031944 public origin key
+75 B / 75 B | [=============================================================================] 100.00 % 378.76 KB/s ☑ Cached core-20160612031944 public origin key
+✓ Installed core/hab/0.7.0/20160614230104
+★ Install of core/hab complete with 1 packages installed.
+» Installing core/hab-sup
+↓ Downloading core/busybox-static/1.24.2/20160612081725
+510.89 KB / 510.89 KB | [====================================================================] 100.00 % 89.61 KB/s ✓ Installed core/busybox-static/1.24.2/20160612081725
+↓ Downloading core/bzip2/1.0.6/20160612075040
+141.05 KB / 141.05 KB - [===================================================================] 100.00 % 349.94 KB/s ✓ Installed core/bzip2/1.0.6/20160612075040
+↓ Downloading core/cacerts/2016.04.20/20160612081125
+132.32 KB / 132.32 KB | [===================================================================] 100.00 % 370.21 KB/s ✓ Installed core/cacerts/2016.04.20/20160612081125
+→ Using core/gcc-libs/5.2.0/20160612075020
+→ Using core/glibc/2.22/20160612063629
+↓ Downloading core/libarchive/3.2.0/20160612140528
+584.98 KB / 584.98 KB | [===================================================================] 100.00 % 340.75 KB/s ✓ Installed core/libarchive/3.2.0/20160612140528
+↓ Downloading core/libsodium/1.0.8/20160612140317
+187.96 KB / 187.96 KB \ [===================================================================] 100.00 % 200.27 KB/s ✓ Installed core/libsodium/1.0.8/20160612140317
+→ Using core/linux-headers/4.3/20160612063537
+↓ Downloading core/openssl/1.0.2h/20160612081127
+2.10 MB / 2.10 MB | [=======================================================================] 100.00 % 518.78 KB/s ✓ Installed core/openssl/1.0.2h/20160612081127
+↓ Downloading core/xz/5.2.2/20160612080402
+247.38 KB / 247.38 KB \ [===================================================================] 100.00 % 468.42 KB/s ✓ Installed core/xz/5.2.2/20160612080402
+↓ Downloading core/zlib/1.2.8/20160612064520
+73.06 KB / 73.06 KB / [=====================================================================] 100.00 % 315.44 KB/s ✓ Installed core/zlib/1.2.8/20160612064520
+↓ Downloading core/hab-sup/0.7.0/20160614232939
+1.54 MB / 1.54 MB | [=======================================================================] 100.00 % 563.90 KB/s ✓ Installed core/hab-sup/0.7.0/20160614232939
+★ Install of core/hab-sup complete with 12 packages installed.
+» Symlinking hab from core/hab into /tmp/hab-pkg-dockerize-XxsS/rootfs/hab/bin
+★ Binary hab from core/hab/0.7.0/20160614230104 symlinked to /tmp/hab-pkg-dockerize-XxsS/rootfs/hab/bin/hab
+» Symlinking bash from core/busybox-static into /tmp/hab-pkg-dockerize-XxsS/rootfs/bin
+★ Binary bash from core/busybox-static/1.24.2/20160612081725 symlinked to /tmp/hab-pkg-dockerize-XxsS/rootfs/bin/bash
+» Symlinking sh from core/busybox-static into /tmp/hab-pkg-dockerize-XxsS/rootfs/bin
+★ Binary sh from core/busybox-static/1.24.2/20160612081725 symlinked to /tmp/hab-pkg-dockerize-XxsS/rootfs/bin/sh
+Sending build context to Docker daemon 194.3 MB
+Step 1 : FROM scratch
+---&amp;gt;
+Step 2 : ENV export PATH=:/hab/pkgs/core/glibc/2.22/20160612063629/bin:/hab/pkgs/core/node/4.2.6/20160612143531/bin:/hab/pkgs/core/hab-sup/0.7.0/20160614232939/bin:/hab/pkgs/core/busybox-static/1.24.2/20160612081725/bin:/hab/pkgs/core/bzip2/1.0.6/20160612075040/bin:/hab/pkgs/core/glibc/2.22/20160612063629/bin:/hab/pkgs/core/openssl/1.0.2h/20160612081127/bin:/hab/pkgs/core/xz/5.2.2/20160612080402/bin:/hab/pkgs/core/busybox-static/1.24.2/20160612081725/bin:/hab/bin
+---&amp;gt; Running in 117e90c151e7
+---&amp;gt; 7f33585a25ae
+Removing intermediate container 117e90c151e7
+Step 3 : WORKDIR /
+---&amp;gt; Running in 952257966d96
+---&amp;gt; c0cf3715cbcf
+Removing intermediate container 952257966d96
+Step 4 : ADD rootfs /
+---&amp;gt; d2691da93ccf
+Removing intermediate container 4aa80e97ea57
+Step 5 : VOLUME /hab/svc/mytutorialapp/data /hab/svc/mytutorialapp/config
+---&amp;gt; Running in f1edcb653432
+---&amp;gt; bd8888453939
+Removing intermediate container f1edcb653432
+Step 6 : EXPOSE 9631 8080
+---&amp;gt; Running in 9ca7725ed13e
+---&amp;gt; 256a04cd0fe2
+Removing intermediate container 9ca7725ed13e
+Step 7 : ENTRYPOINT /init.sh
+---&amp;gt; Running in 81930dff8f4e
+---&amp;gt; d7bdec08530e
+Removing intermediate container 81930dff8f4e
+Step 8 : CMD start martin/mytutorialapp
+---&amp;gt; Running in c8cc53d92bc8
+---&amp;gt; 8d5e0fe85395
+Removing intermediate container c8cc53d92bc8
+Successfully built 8d5e0fe85395
+[5][default:/src:0]#&lt;/code>&lt;pre>&lt;code class="">[4][default:/src:0]# hab pkg export docker martin/mytutorialapp
+hab-studio: Creating Studio at /tmp/hab-pkg-dockerize-XxsS/rootfs (baseimage)
+Using local package for martin/mytutorialapp
+Using local package for core/gcc-libs/5.2.0/20160612075020 via martin/mytutorialapp
+Using local package for core/glibc/2.22/20160612063629 via martin/mytutorialapp
+Using local package for core/linux-headers/4.3/20160612063537 via martin/mytutorialapp
+Using local package for core/node/4.2.6/20160612143531 via martin/mytutorialapp
+» Installing core/hab
+↓ Downloading core/hab/0.7.0/20160614230104
+2.23 MB / 2.23 MB / [=======================================================================] 100.00 % 500.60 KB/s ↓ Downloading core-20160612031944 public origin key
+75 B / 75 B | [=============================================================================] 100.00 % 378.76 KB/s ☑ Cached core-20160612031944 public origin key
+✓ Installed core/hab/0.7.0/20160614230104
+★ Install of core/hab complete with 1 packages installed.
+» Installing core/hab-sup
+↓ Downloading core/busybox-static/1.24.2/20160612081725
+510.89 KB / 510.89 KB | [====================================================================] 100.00 % 89.61 KB/s ✓ Installed core/busybox-static/1.24.2/20160612081725
+↓ Downloading core/bzip2/1.0.6/20160612075040
+141.05 KB / 141.05 KB - [===================================================================] 100.00 % 349.94 KB/s ✓ Installed core/bzip2/1.0.6/20160612075040
+↓ Downloading core/cacerts/2016.04.20/20160612081125
+132.32 KB / 132.32 KB | [===================================================================] 100.00 % 370.21 KB/s ✓ Installed core/cacerts/2016.04.20/20160612081125
+→ Using core/gcc-libs/5.2.0/20160612075020
+→ Using core/glibc/2.22/20160612063629
+↓ Downloading core/libarchive/3.2.0/20160612140528
+584.98 KB / 584.98 KB | [===================================================================] 100.00 % 340.75 KB/s ✓ Installed core/libarchive/3.2.0/20160612140528
+↓ Downloading core/libsodium/1.0.8/20160612140317
+187.96 KB / 187.96 KB \ [===================================================================] 100.00 % 200.27 KB/s ✓ Installed core/libsodium/1.0.8/20160612140317
+→ Using core/linux-headers/4.3/20160612063537
+↓ Downloading core/openssl/1.0.2h/20160612081127
+2.10 MB / 2.10 MB | [=======================================================================] 100.00 % 518.78 KB/s ✓ Installed core/openssl/1.0.2h/20160612081127
+↓ Downloading core/xz/5.2.2/20160612080402
+247.38 KB / 247.38 KB \ [===================================================================] 100.00 % 468.42 KB/s ✓ Installed core/xz/5.2.2/20160612080402
+↓ Downloading core/zlib/1.2.8/20160612064520
+73.06 KB / 73.06 KB / [=====================================================================] 100.00 % 315.44 KB/s ✓ Installed core/zlib/1.2.8/20160612064520
+↓ Downloading core/hab-sup/0.7.0/20160614232939
+1.54 MB / 1.54 MB | [=======================================================================] 100.00 % 563.90 KB/s ✓ Installed core/hab-sup/0.7.0/20160614232939
+★ Install of core/hab-sup complete with 12 packages installed.
+» Symlinking hab from core/hab into /tmp/hab-pkg-dockerize-XxsS/rootfs/hab/bin
+★ Binary hab from core/hab/0.7.0/20160614230104 symlinked to /tmp/hab-pkg-dockerize-XxsS/rootfs/hab/bin/hab
+» Symlinking bash from core/busybox-static into /tmp/hab-pkg-dockerize-XxsS/rootfs/bin
+★ Binary bash from core/busybox-static/1.24.2/20160612081725 symlinked to /tmp/hab-pkg-dockerize-XxsS/rootfs/bin/bash
+» Symlinking sh from core/busybox-static into /tmp/hab-pkg-dockerize-XxsS/rootfs/bin
+★ Binary sh from core/busybox-static/1.24.2/20160612081725 symlinked to /tmp/hab-pkg-dockerize-XxsS/rootfs/bin/sh
+Sending build context to Docker daemon 194.3 MB
+Step 1 : FROM scratch
+---&amp;gt;
+Step 2 : ENV export PATH=:/hab/pkgs/core/glibc/2.22/20160612063629/bin:/hab/pkgs/core/node/4.2.6/20160612143531/bin:/hab/pkgs/core/hab-sup/0.7.0/20160614232939/bin:/hab/pkgs/core/busybox-static/1.24.2/20160612081725/bin:/hab/pkgs/core/bzip2/1.0.6/20160612075040/bin:/hab/pkgs/core/glibc/2.22/20160612063629/bin:/hab/pkgs/core/openssl/1.0.2h/20160612081127/bin:/hab/pkgs/core/xz/5.2.2/20160612080402/bin:/hab/pkgs/core/busybox-static/1.24.2/20160612081725/bin:/hab/bin
+---&amp;gt; Running in 117e90c151e7
+---&amp;gt; 7f33585a25ae
+Removing intermediate container 117e90c151e7
+Step 3 : WORKDIR /
+---&amp;gt; Running in 952257966d96
+---&amp;gt; c0cf3715cbcf
+Removing intermediate container 952257966d96
+Step 4 : ADD rootfs /
+---&amp;gt; d2691da93ccf
+Removing intermediate container 4aa80e97ea57
+Step 5 : VOLUME /hab/svc/mytutorialapp/data /hab/svc/mytutorialapp/config
+---&amp;gt; Running in f1edcb653432
+---&amp;gt; bd8888453939
+Removing intermediate container f1edcb653432
+Step 6 : EXPOSE 9631 8080
+---&amp;gt; Running in 9ca7725ed13e
+---&amp;gt; 256a04cd0fe2
+Removing intermediate container 9ca7725ed13e
+Step 7 : ENTRYPOINT /init.sh
+---&amp;gt; Running in 81930dff8f4e
+---&amp;gt; d7bdec08530e
+Removing intermediate container 81930dff8f4e
+Step 8 : CMD start martin/mytutorialapp
+---&amp;gt; Running in c8cc53d92bc8
+---&amp;gt; 8d5e0fe85395
+Removing intermediate container c8cc53d92bc8
+Successfully built 8d5e0fe85395
+[5][default:/src:0]#&lt;/code>&lt;/pre>&lt;/div>
+&lt;p>查看 docker 镜像是否存在。推出 studio 容器，运行 docker images&lt;/p>
+&lt;div class="codeblock">
+&lt;header>
+&lt;span class="codeblock-lang">&lt;/span>
+&lt;button
+class="codeblock-copy"
+data-id="codeblock-id-17"
+data-copied-text=""
+>
+&lt;/button>
+&lt;/header>
+&lt;code id="codeblock-id-17" style="display:none;">[5][default:/src:0]# exit
+logout
+martin@localhost ~/Documents/GitHub/habitat-example-plans/mytutorialapp $ docker images [±master ●●]
+REPOSITORY TAG IMAGE ID CREATED SIZE
+martin/mytutorialapp 0.1.0-20160701024401 8d5e0fe85395 3 minutes ago 187.7 MB
+martin/mytutorialapp latest 8d5e0fe85395 3 minutes ago 187.7 MB&lt;/code>&lt;pre>&lt;code class="">[5][default:/src:0]# exit
+logout
+martin@localhost ~/Documents/GitHub/habitat-example-plans/mytutorialapp $ docker images [±master ●●]
+REPOSITORY TAG IMAGE ID CREATED SIZE
+martin/mytutorialapp 0.1.0-20160701024401 8d5e0fe85395 3 minutes ago 187.7 MB
+martin/mytutorialapp latest 8d5e0fe85395 3 minutes ago 187.7 MB&lt;/code>&lt;/pre>&lt;/div>
+&lt;h3 id="运行这个-demo">运行这个 demo&lt;/h3>
+&lt;p>在命令行运行&lt;/p>
+&lt;p>$ docker run -it -p 8080:8080 martin/mytutorialapp&lt;/p>
+&lt;p>用浏览器打开 node1 的 ip 8080 端口，应该可以看到 hello world 页面。&lt;/p>
+&lt;p>在 rancher web 页面添加测试&lt;/p>
+&lt;h3 id="在-rancher-中上架这个-demo">在 rancher 中上架这个 demo&lt;/h3>
+&lt;p>&lt;a class="link" href="https://github.com/martinliu/hab-catalog" target="_blank" rel="noopener"
+>https://github.com/martinliu/hab-catalog&lt;/a> 以上代码是半成品，欢迎协助完成。&lt;/p>
+&lt;h3 id="测试-rancher-官方的-redis-demo">测试 Rancher 官方的 redis demo&lt;/h3>
+&lt;p>参考文章 &lt;a class="link" href="http://rancher.com/using-habitat-to-create-rancher-catalog-templates/" target="_blank" rel="noopener"
+>http://rancher.com/using-habitat-to-create-rancher-catalog-templates/&lt;/a> 它的 demo 和上架的目录都可以正常测试通过，但是服务运行不起来，报主机名错误，redis 节点的群集建立不起来。&lt;/p>
+&lt;p>如果您修复了，请回复贴出代码位置。&lt;/p>
+&lt;h2 id="福利调试-docker-官方投票应用">福利：调试 docker 官方投票应用&lt;/h2>
+&lt;p>下载投票实例程序。&lt;/p>
+&lt;div class="codeblock">
+&lt;header>
+&lt;span class="codeblock-lang">&lt;/span>
+&lt;button
+class="codeblock-copy"
+data-id="codeblock-id-18"
+data-copied-text=""
+>
+&lt;/button>
+&lt;/header>
+&lt;code id="codeblock-id-18" style="display:none;">git clone https://github.com/martinliu/example-voting-app.git&lt;/code>&lt;pre>&lt;code class="">git clone https://github.com/martinliu/example-voting-app.git&lt;/code>&lt;/pre>&lt;/div>
+&lt;p>进入该程序的目录，修改所有 image 的来源镜像库，修改为指向本地的 mirror 服务器。 1. result/tests/Dcokerfile -&amp;gt; FROM 192.168.99.20:5000/node 2. result/Dockerfile -&amp;gt; FROM 192.168.99.20:5000/node:5.11.0-slim 3. vote/Dockerfile -&amp;gt; FROM 192.168.99.20:5000/python:2.7-alpine 4. worker/Dockerfile -&amp;gt; FROM 192.168.99.20:5000/microsoft/dotnet:1.0.0-preview1 5. docker-compose.yml -&amp;gt; image: 192.168.99.20:5000/redis:alpine 6. docker-compose.yml -&amp;gt; image: 192.168.99.20:5000/postgres:9.4&lt;/p>
+&lt;p>由于以上应用在构建的过程中需要在线安装各种软件包，最好先翻墙，确认你有足够稳定的国外的互联网访问，建议翻墙到美国，然后在执行项目的构建命令。&lt;/p>
+&lt;div class="codeblock">
+&lt;header>
+&lt;span class="codeblock-lang">&lt;/span>
+&lt;button
+class="codeblock-copy"
+data-id="codeblock-id-19"
+data-copied-text=""
+>
+&lt;/button>
+&lt;/header>
+&lt;code id="codeblock-id-19" style="display:none;">ping facebook.com
+64 bytes from 173.252.90.132: icmp_seq=0 ttl=79 time=4187.066 ms
+64 bytes from 173.252.90.132: icmp_seq=1 ttl=79 time=3186.904 ms
+64 bytes from 173.252.90.132: icmp_seq=2 ttl=79 time=2515.415 ms
+64 bytes from 173.252.90.132: icmp_seq=6 ttl=79 time=296.457 ms
+64 bytes from 173.252.90.132: icmp_seq=7 ttl=79 time=410.215 ms
+^C
+--- facebook.com ping statistics ---
+8 packets transmitted, 5 packets received, 37.5% packet loss
+round-trip min/avg/max/stddev = 296.457/2119.211/4187.066/1537.275 ms
+docker-compose build&lt;/code>&lt;pre>&lt;code class="">ping facebook.com
+64 bytes from 173.252.90.132: icmp_seq=0 ttl=79 time=4187.066 ms
+64 bytes from 173.252.90.132: icmp_seq=1 ttl=79 time=3186.904 ms
+64 bytes from 173.252.90.132: icmp_seq=2 ttl=79 time=2515.415 ms
+64 bytes from 173.252.90.132: icmp_seq=6 ttl=79 time=296.457 ms
+64 bytes from 173.252.90.132: icmp_seq=7 ttl=79 time=410.215 ms
+^C
+--- facebook.com ping statistics ---
+8 packets transmitted, 5 packets received, 37.5% packet loss
+round-trip min/avg/max/stddev = 296.457/2119.211/4187.066/1537.275 ms
+docker-compose build&lt;/code>&lt;/pre>&lt;/div>
+&lt;p>以上结果表明，翻墙成功，以上结果显示翻墙的效果比较差，延迟和丢包都比较严重，可能到只构建的时候下载软件包失败。&lt;/p>
+&lt;p>构建完毕之后，可以检查一下是否生产了目标镜像文件，如果输出如下所示，则表明本次本地的项目集成构建成功。&lt;/p>
+&lt;div class="codeblock">
+&lt;header>
+&lt;span class="codeblock-lang">&lt;/span>
+&lt;button
+class="codeblock-copy"
+data-id="codeblock-id-20"
+data-copied-text=""
+>
+&lt;/button>
+&lt;/header>
+&lt;code id="codeblock-id-20" style="display:none;">$ docker images
+REPOSITORY TAG IMAGE ID CREATED SIZE
+examplevotingapp_result latest 9bb4126b0905 5 minutes ago 225.8 MB
+examplevotingapp_worker latest 292396a5aba4 6 minutes ago 644.1 MB
+examplevotingapp_vote latest 28052191beea 10 minutes ago 68.31 MB&lt;/code>&lt;pre>&lt;code class="">$ docker images
+REPOSITORY TAG IMAGE ID CREATED SIZE
+examplevotingapp_result latest 9bb4126b0905 5 minutes ago 225.8 MB
+examplevotingapp_worker latest 292396a5aba4 6 minutes ago 644.1 MB
+examplevotingapp_vote latest 28052191beea 10 minutes ago 68.31 MB&lt;/code>&lt;/pre>&lt;/div>
+&lt;p>在当前 node1 节点上做本地的集成结果的功能测试，用 docker-compose 启动这个项目。先检查 compose 文件，然后运行 up。&lt;/p>
+&lt;div class="codeblock">
+&lt;header>
+&lt;span class="codeblock-lang">&lt;/span>
+&lt;button
+class="codeblock-copy"
+data-id="codeblock-id-21"
+data-copied-text=""
+>
+&lt;/button>
+&lt;/header>
+&lt;code id="codeblock-id-21" style="display:none;">$ docker-compose config
+networks: {}
+services:
+db:
+image: 192.168.99.20:5000/postgres:9.4
+redis:
+image: 192.168.99.20:5000/redis:alpine
+ports:
+- &amp;#39;6379&amp;#39;
+result:
+build:
+context: /Users/martin/Documents/GitHub/example-voting-app/result
+command: nodemon --debug server.js
+ports:
+- 5001:80
+- 5858:5858
+volumes:
+- /Users/martin/Documents/GitHub/example-voting-app/result:/app:rw
+vote:
+build:
+context: /Users/martin/Documents/GitHub/example-voting-app/vote
+command: python app.py
+ports:
+- 5000:80
+volumes:
+- /Users/martin/Documents/GitHub/example-voting-app/vote:/app:rw
+worker:
+build:
+context: /Users/martin/Documents/GitHub/example-voting-app/worker
+version: &amp;#39;2.0&amp;#39;
+volumes: {}
+$ docker-compose up
+Recreating examplevotingapp_vote_1
+Recreating examplevotingapp_worker_1
+Starting examplevotingapp_db_1
+Starting examplevotingapp_redis_1
+Recreating examplevotingapp_result_1
+Attaching to examplevotingapp_db_1, examplevotingapp_redis_1, examplevotingapp_worker_1, examplevotingapp_result_1, examplevotingapp_vote_1
+redis_1 | _._
+redis_1 | _.-``__ &amp;#39;&amp;#39;-._
+redis_1 | _.-`` `. `_. &amp;#39;&amp;#39;-._ Redis 3.2.1 (00000000/0) 64 bit
+redis_1 | .-`` .-```. ```\/ _.,_ &amp;#39;&amp;#39;-._
+db_1 | LOG: database system was shut down at 2016-06-20 09:58:19 UTC
+redis_1 | ( &amp;#39; , .-` | `, ) Running in standalone mode
+redis_1 | |`-._`-...-` __...-.``-._|&amp;#39;` _.-&amp;#39;| Port: 6379
+redis_1 | | `-._ `._ / _.-&amp;#39; | PID: 1
+redis_1 | `-._ `-._ `-./ _.-&amp;#39; _.-&amp;#39;
+redis_1 | |`-._`-._ `-.__.-&amp;#39; _.-&amp;#39;_.-&amp;#39;|
+redis_1 | | `-._`-._ _.-&amp;#39;_.-&amp;#39; | http://redis.io
+redis_1 | `-._ `-._`-.__.-&amp;#39;_.-&amp;#39; _.-&amp;#39;
+redis_1 | |`-._`-._ `-.__.-&amp;#39; _.-&amp;#39;_.-&amp;#39;|
+db_1 | LOG: MultiXact member wraparound protections are now enabled
+redis_1 | | `-._`-._ _.-&amp;#39;_.-&amp;#39; |
+redis_1 | `-._ `-._`-.__.-&amp;#39;_.-&amp;#39; _.-&amp;#39;
+db_1 | LOG: database system is ready to accept connections
+redis_1 | `-._ `-.__.-&amp;#39; _.-&amp;#39;
+redis_1 | `-._ _.-&amp;#39;
+redis_1 | `-.__.-&amp;#39;
+redis_1 |
+redis_1 | 1:M 20 Jun 10:13:36.216 # WARNING: The TCP backlog setting of 511 cannot be enforced because /proc/sys/net/core/somaxconn is set to the lower value of 128.
+redis_1 | 1:M 20 Jun 10:13:36.216 # Server started, Redis version 3.2.1
+redis_1 | 1:M 20 Jun 10:13:36.216 # WARNING overcommit_memory is set to 0! Background save may fail under low memory condition. To fix this issue add &amp;#39;vm.overcommit_memory = 1&amp;#39; to /etc/sysctl.conf and then reboot or run the command &amp;#39;sysctl vm.overcommit_memory=1&amp;#39; for this to take effect.
+db_1 | LOG: autovacuum launcher started
+redis_1 | 1:M 20 Jun 10:13:36.216 # WARNING you have Transparent Huge Pages (THP) support enabled in your kernel. This will create latency and memory usage issues with Redis. To fix this issue run the command &amp;#39;echo never &amp;gt; /sys/kernel/mm/transparent_hugepage/enabled&amp;#39; as root, and add it to your /etc/rc.local in order to retain the setting after a reboot. Redis must be restarted after THP is disabled.
+redis_1 | 1:M 20 Jun 10:13:36.216 * The server is now ready to accept connections on port 6379
+vote_1 | * Running on http://0.0.0.0:80/ (Press CTRL&amp;#43;C to quit)
+vote_1 | * Restarting with stat
+result_1 | [nodemon] 1.9.2
+result_1 | [nodemon] to restart at any time, enter `rs`
+result_1 | [nodemon] watching: *.*
+result_1 | [nodemon] starting `node --debug server.js`
+result_1 | Debugger listening on port 5858
+vote_1 | * Debugger is active!
+vote_1 | * Debugger pin code: 139-254-286
+worker_1 | Found redis at 172.19.0.2
+result_1 | Mon, 20 Jun 2016 10:13:40 GMT body-parser deprecated bodyParser: use individual json/urlencoded middlewares at server.js:67:9
+result_1 | Mon, 20 Jun 2016 10:13:40 GMT body-parser deprecated undefined extended: provide extended option at ../node_modules/body-parser/index.js:105:29
+result_1 | App running on port 80
+result_1 | Connected to db&lt;/code>&lt;pre>&lt;code class="">$ docker-compose config
+networks: {}
+services:
+db:
+image: 192.168.99.20:5000/postgres:9.4
+redis:
+image: 192.168.99.20:5000/redis:alpine
+ports:
+- &amp;#39;6379&amp;#39;
+result:
+build:
+context: /Users/martin/Documents/GitHub/example-voting-app/result
+command: nodemon --debug server.js
+ports:
+- 5001:80
+- 5858:5858
+volumes:
+- /Users/martin/Documents/GitHub/example-voting-app/result:/app:rw
+vote:
+build:
+context: /Users/martin/Documents/GitHub/example-voting-app/vote
+command: python app.py
+ports:
+- 5000:80
+volumes:
+- /Users/martin/Documents/GitHub/example-voting-app/vote:/app:rw
+worker:
+build:
+context: /Users/martin/Documents/GitHub/example-voting-app/worker
+version: &amp;#39;2.0&amp;#39;
+volumes: {}
+$ docker-compose up
+Recreating examplevotingapp_vote_1
+Recreating examplevotingapp_worker_1
+Starting examplevotingapp_db_1
+Starting examplevotingapp_redis_1
+Recreating examplevotingapp_result_1
+Attaching to examplevotingapp_db_1, examplevotingapp_redis_1, examplevotingapp_worker_1, examplevotingapp_result_1, examplevotingapp_vote_1
+redis_1 | _._
+redis_1 | _.-``__ &amp;#39;&amp;#39;-._
+redis_1 | _.-`` `. `_. &amp;#39;&amp;#39;-._ Redis 3.2.1 (00000000/0) 64 bit
+redis_1 | .-`` .-```. ```\/ _.,_ &amp;#39;&amp;#39;-._
+db_1 | LOG: database system was shut down at 2016-06-20 09:58:19 UTC
+redis_1 | ( &amp;#39; , .-` | `, ) Running in standalone mode
+redis_1 | |`-._`-...-` __...-.``-._|&amp;#39;` _.-&amp;#39;| Port: 6379
+redis_1 | | `-._ `._ / _.-&amp;#39; | PID: 1
+redis_1 | `-._ `-._ `-./ _.-&amp;#39; _.-&amp;#39;
+redis_1 | |`-._`-._ `-.__.-&amp;#39; _.-&amp;#39;_.-&amp;#39;|
+redis_1 | | `-._`-._ _.-&amp;#39;_.-&amp;#39; | http://redis.io
+redis_1 | `-._ `-._`-.__.-&amp;#39;_.-&amp;#39; _.-&amp;#39;
+redis_1 | |`-._`-._ `-.__.-&amp;#39; _.-&amp;#39;_.-&amp;#39;|
+db_1 | LOG: MultiXact member wraparound protections are now enabled
+redis_1 | | `-._`-._ _.-&amp;#39;_.-&amp;#39; |
+redis_1 | `-._ `-._`-.__.-&amp;#39;_.-&amp;#39; _.-&amp;#39;
+db_1 | LOG: database system is ready to accept connections
+redis_1 | `-._ `-.__.-&amp;#39; _.-&amp;#39;
+redis_1 | `-._ _.-&amp;#39;
+redis_1 | `-.__.-&amp;#39;
+redis_1 |
+redis_1 | 1:M 20 Jun 10:13:36.216 # WARNING: The TCP backlog setting of 511 cannot be enforced because /proc/sys/net/core/somaxconn is set to the lower value of 128.
+redis_1 | 1:M 20 Jun 10:13:36.216 # Server started, Redis version 3.2.1
+redis_1 | 1:M 20 Jun 10:13:36.216 # WARNING overcommit_memory is set to 0! Background save may fail under low memory condition. To fix this issue add &amp;#39;vm.overcommit_memory = 1&amp;#39; to /etc/sysctl.conf and then reboot or run the command &amp;#39;sysctl vm.overcommit_memory=1&amp;#39; for this to take effect.
+db_1 | LOG: autovacuum launcher started
+redis_1 | 1:M 20 Jun 10:13:36.216 # WARNING you have Transparent Huge Pages (THP) support enabled in your kernel. This will create latency and memory usage issues with Redis. To fix this issue run the command &amp;#39;echo never &amp;gt; /sys/kernel/mm/transparent_hugepage/enabled&amp;#39; as root, and add it to your /etc/rc.local in order to retain the setting after a reboot. Redis must be restarted after THP is disabled.
+redis_1 | 1:M 20 Jun 10:13:36.216 * The server is now ready to accept connections on port 6379
+vote_1 | * Running on http://0.0.0.0:80/ (Press CTRL&amp;#43;C to quit)
+vote_1 | * Restarting with stat
+result_1 | [nodemon] 1.9.2
+result_1 | [nodemon] to restart at any time, enter `rs`
+result_1 | [nodemon] watching: *.*
+result_1 | [nodemon] starting `node --debug server.js`
+result_1 | Debugger listening on port 5858
+vote_1 | * Debugger is active!
+vote_1 | * Debugger pin code: 139-254-286
+worker_1 | Found redis at 172.19.0.2
+result_1 | Mon, 20 Jun 2016 10:13:40 GMT body-parser deprecated bodyParser: use individual json/urlencoded middlewares at server.js:67:9
+result_1 | Mon, 20 Jun 2016 10:13:40 GMT body-parser deprecated undefined extended: provide extended option at ../node_modules/body-parser/index.js:105:29
+result_1 | App running on port 80
+result_1 | Connected to db&lt;/code>&lt;/pre>&lt;/div>
+&lt;p>打开浏览器测试 vote 应用。&lt;/p>
+&lt;div class="codeblock">
+&lt;header>
+&lt;span class="codeblock-lang">&lt;/span>
+&lt;button
+class="codeblock-copy"
+data-id="codeblock-id-22"
+data-copied-text=""
+>
+&lt;/button>
+&lt;/header>
+&lt;code id="codeblock-id-22" style="display:none;">open http://192.168.99.114:5000&lt;/code>&lt;pre>&lt;code class="">open http://192.168.99.114:5000&lt;/code>&lt;/pre>&lt;/div>
+&lt;p>正常显示结果如下图所示： &lt;img src="http://yzd.io/images/voting-1.jpg"
+loading="lazy"
+alt="voting"
+>
+&lt;/p>
+&lt;p>打开浏览器测试 result 应用。&lt;/p>
+&lt;div class="codeblock">
+&lt;header>
+&lt;span class="codeblock-lang">&lt;/span>
+&lt;button
+class="codeblock-copy"
+data-id="codeblock-id-23"
+data-copied-text=""
+>
+&lt;/button>
+&lt;/header>
+&lt;code id="codeblock-id-23" style="display:none;">open http://192.168.99.114:5001&lt;/code>&lt;pre>&lt;code class="">open http://192.168.99.114:5001&lt;/code>&lt;/pre>&lt;/div>
+&lt;p>正常显示结果如下图所示： &lt;img src="http://yzd.io/images/result-1.jpg"
+loading="lazy"
+alt="result"
+>
+&lt;/p>
+&lt;p>在 Rancher 的 hosts 界面中应该看到这些运行的容器。 &lt;img src="http://yzd.io/images/voting-in-rancher-1.jpg"
+loading="lazy"
+alt="voting-in-ranche"
+>
+&lt;/p>
+&lt;p>至此所有关于应用构建和功能测试的过程完成，按 ctl + c 结束 docker-compose up 的运行。&lt;/p>
+&lt;div class="codeblock">
+&lt;header>
+&lt;span class="codeblock-lang">&lt;/span>
+&lt;button
+class="codeblock-copy"
+data-id="codeblock-id-24"
+data-copied-text=""
+>
+&lt;/button>
+&lt;/header>
+&lt;code id="codeblock-id-24" style="display:none;">^CGracefully stopping... (press Ctrl&amp;#43;C again to force)
+Stopping examplevotingapp_worker_1 ... done
+Stopping examplevotingapp_result_1 ... done
+Stopping examplevotingapp_vote_1 ... done
+Stopping examplevotingapp_db_1 ... done
+Stopping examplevotingapp_redis_1 ... done&lt;/code>&lt;pre>&lt;code class="">^CGracefully stopping... (press Ctrl&amp;#43;C again to force)
+Stopping examplevotingapp_worker_1 ... done
+Stopping examplevotingapp_result_1 ... done
+Stopping examplevotingapp_vote_1 ... done
+Stopping examplevotingapp_db_1 ... done
+Stopping examplevotingapp_redis_1 ... done&lt;/code>&lt;/pre>&lt;/div></description></item></channel></rss>

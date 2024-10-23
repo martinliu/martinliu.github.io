@@ -1,0 +1,286 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Smokeping on Martin Liu's Blog</title><link>https://martinliu.cn/en/tags/smokeping/</link><description>Recent content in Smokeping on Martin Liu's Blog</description><generator>Hugo -- gohugo.io</generator><language>en</language><lastBuildDate>Fri, 16 Feb 2007 16:38:00 +0000</lastBuildDate><atom:link href="https://martinliu.cn/en/tags/smokeping/index.xml" rel="self" type="application/rss+xml"/><item><title>Install Smokeping via yum</title><link>https://martinliu.cn/2007/02/16/install-smokeping-via-yum/</link><pubDate>Fri, 16 Feb 2007 16:38:00 +0000</pubDate><guid>https://martinliu.cn/2007/02/16/install-smokeping-via-yum/</guid><description>&lt;p>From :&lt;a class="link" href="http://www2.blogger.com/img/gl.link.gif" target="_blank" rel="noopener"
+> http://ai.net.nz/horde/wicked/display.php?page=SmokePing&lt;/a>&lt;!-- raw HTML omitted -->&lt;/p>
+&lt;h2 id="install-needed-packages">Install needed packages&lt;/h2>
+&lt;p>&lt;!-- raw HTML omitted -->&lt;strong>rrdtool&lt;/strong>&lt;!-- raw HTML omitted -->&lt;/p>
+&lt;div class="codeblock">
+&lt;header>
+&lt;span class="codeblock-lang">&lt;/span>
+&lt;button
+class="codeblock-copy"
+data-id="codeblock-id-0"
+data-copied-text="Copied!"
+>
+Copy
+&lt;/button>
+&lt;/header>
+&lt;code id="codeblock-id-0" style="display:none;">`yum install rrdtool&lt;/code>&lt;pre>&lt;code class="">`yum install rrdtool&lt;/code>&lt;/pre>&lt;/div>
+&lt;div class="codeblock">
+&lt;header>
+&lt;span class="codeblock-lang">&lt;/span>
+&lt;button
+class="codeblock-copy"
+data-id="codeblock-id-1"
+data-copied-text="Copied!"
+>
+Copy
+&lt;/button>
+&lt;/header>
+&lt;code id="codeblock-id-1" style="display:none;">&amp;lt;br /&amp;gt;**perl-CGI-SpeedyCGI**&amp;lt;br /&amp;gt;&lt;/code>&lt;pre>&lt;code class="">&amp;lt;br /&amp;gt;**perl-CGI-SpeedyCGI**&amp;lt;br /&amp;gt;&lt;/code>&lt;/pre>&lt;/div>
+&lt;p>`yum install perl-CGI-SpeedyCGI&lt;/p>
+&lt;div class="codeblock">
+&lt;header>
+&lt;span class="codeblock-lang">&lt;/span>
+&lt;button
+class="codeblock-copy"
+data-id="codeblock-id-2"
+data-copied-text="Copied!"
+>
+Copy
+&lt;/button>
+&lt;/header>
+&lt;code id="codeblock-id-2" style="display:none;">&lt;/code>&lt;pre>&lt;code class="">&lt;/code>&lt;/pre>&lt;/div>
+&lt;p>&lt;!-- raw HTML omitted -->&lt;strong>fping&lt;/strong>&lt;!-- raw HTML omitted -->&lt;/p>
+&lt;div class="codeblock">
+&lt;header>
+&lt;span class="codeblock-lang">&lt;/span>
+&lt;button
+class="codeblock-copy"
+data-id="codeblock-id-3"
+data-copied-text="Copied!"
+>
+Copy
+&lt;/button>
+&lt;/header>
+&lt;code id="codeblock-id-3" style="display:none;">`yum install fping&lt;/code>&lt;pre>&lt;code class="">`yum install fping&lt;/code>&lt;/pre>&lt;/div>
+&lt;div class="codeblock">
+&lt;header>
+&lt;span class="codeblock-lang">&lt;/span>
+&lt;button
+class="codeblock-copy"
+data-id="codeblock-id-4"
+data-copied-text="Copied!"
+>
+Copy
+&lt;/button>
+&lt;/header>
+&lt;code id="codeblock-id-4" style="display:none;">&amp;lt;br /&amp;gt;** Or do them all together:**&amp;lt;br /&amp;gt;&lt;/code>&lt;pre>&lt;code class="">&amp;lt;br /&amp;gt;** Or do them all together:**&amp;lt;br /&amp;gt;&lt;/code>&lt;/pre>&lt;/div>
+&lt;p>`yum install rrdtool perl-CGI-SpeedyCGI fping&lt;/p>
+&lt;div class="codeblock">
+&lt;header>
+&lt;span class="codeblock-lang">&lt;/span>
+&lt;button
+class="codeblock-copy"
+data-id="codeblock-id-5"
+data-copied-text="Copied!"
+>
+Copy
+&lt;/button>
+&lt;/header>
+&lt;code id="codeblock-id-5" style="display:none;">&lt;/code>&lt;pre>&lt;code class="">&lt;/code>&lt;/pre>&lt;/div>
+&lt;p>&lt;!-- raw HTML omitted -->&lt;strong>Smokeping&lt;/strong>&lt;!-- raw HTML omitted -->&lt;/p>
+&lt;div class="codeblock">
+&lt;header>
+&lt;span class="codeblock-lang">&lt;/span>
+&lt;button
+class="codeblock-copy"
+data-id="codeblock-id-6"
+data-copied-text="Copied!"
+>
+Copy
+&lt;/button>
+&lt;/header>
+&lt;code id="codeblock-id-6" style="display:none;">`wget http://people.ee.ethz.ch/~oetiker/webtools/smokeping/pub/smokeping-2.0.9.tar.gztar xvzf smokeping-2.0.9.tar.gzmv smokeping-2.0.9 /usr/local/smokepingchown -R root:root /usr/local/smokeping&amp;lt;br /&amp;gt;&amp;lt;br /&amp;gt;cd /usr/local/smokeping/binfor foo in *.dist; do cp $foo `basename $foo .dist`; done&amp;lt;br /&amp;gt;&amp;lt;br /&amp;gt;cd /usr/local/smokeping/etc/for foo in *.dist; do cp $foo `basename $foo .dist`; done&amp;lt;br /&amp;gt;&amp;lt;br /&amp;gt;cd /usr/local/smokeping/htdocsfor foo in *.dist; do cp $foo `basename $foo .dist`; done&lt;/code>&lt;pre>&lt;code class="">`wget http://people.ee.ethz.ch/~oetiker/webtools/smokeping/pub/smokeping-2.0.9.tar.gztar xvzf smokeping-2.0.9.tar.gzmv smokeping-2.0.9 /usr/local/smokepingchown -R root:root /usr/local/smokeping&amp;lt;br /&amp;gt;&amp;lt;br /&amp;gt;cd /usr/local/smokeping/binfor foo in *.dist; do cp $foo `basename $foo .dist`; done&amp;lt;br /&amp;gt;&amp;lt;br /&amp;gt;cd /usr/local/smokeping/etc/for foo in *.dist; do cp $foo `basename $foo .dist`; done&amp;lt;br /&amp;gt;&amp;lt;br /&amp;gt;cd /usr/local/smokeping/htdocsfor foo in *.dist; do cp $foo `basename $foo .dist`; done&lt;/code>&lt;/pre>&lt;/div>
+&lt;div class="codeblock">
+&lt;header>
+&lt;span class="codeblock-lang">&lt;/span>
+&lt;button
+class="codeblock-copy"
+data-id="codeblock-id-7"
+data-copied-text="Copied!"
+>
+Copy
+&lt;/button>
+&lt;/header>
+&lt;code id="codeblock-id-7" style="display:none;">&amp;lt;br /&amp;gt;**pico /usr/local/smokeping/bin/smokeping**&amp;lt;br /&amp;gt;&amp;lt;table class=&amp;#34;table&amp;#34; &amp;gt;&amp;lt;br /&amp;gt;&amp;lt;tr &amp;gt;&amp;lt;br /&amp;gt;
+&amp;lt;td class=&amp;#34;table-cell&amp;#34; &amp;gt;_**Default**_
+&amp;lt;/td&amp;gt;&amp;lt;br /&amp;gt;
+&amp;lt;td class=&amp;#34;table-cell&amp;#34; &amp;gt;_**New**_
+&amp;lt;/td&amp;gt;&amp;lt;br /&amp;gt;&amp;lt;/tr&amp;gt;&amp;lt;br /&amp;gt;&amp;lt;tr &amp;gt;&amp;lt;br /&amp;gt;
+&amp;lt;td class=&amp;#34;table-cell&amp;#34; &amp;gt; #!/usr/sepp/bin/perl-5.8.4 -w
+&amp;lt;/td&amp;gt;&amp;lt;br /&amp;gt;
+&amp;lt;td class=&amp;#34;table-cell&amp;#34; &amp;gt; #!/usr/bin/perl -w
+&amp;lt;/td&amp;gt;&amp;lt;br /&amp;gt;&amp;lt;/tr&amp;gt;&amp;lt;br /&amp;gt;&amp;lt;tr &amp;gt;&amp;lt;br /&amp;gt;
+&amp;lt;td colspan=&amp;#34;2&amp;#34; class=&amp;#34;table-cell&amp;#34; &amp;gt;_ _
+&amp;lt;/td&amp;gt;&amp;lt;br /&amp;gt;&amp;lt;/tr&amp;gt;&amp;lt;br /&amp;gt;&amp;lt;tr &amp;gt;&amp;lt;br /&amp;gt;
+&amp;lt;td class=&amp;#34;table-cell&amp;#34; &amp;gt;use lib qw(/usr/pack/rrdtool-1.0.49-to/lib/perl);
+&amp;lt;/td&amp;gt;&amp;lt;br /&amp;gt;
+&amp;lt;td class=&amp;#34;table-cell&amp;#34; &amp;gt;use lib qw(/usr/lib64/perl5/vendor_perl/5.8.5/x86_64-linux-thread-multi/auto/RRDs);
+&amp;lt;/td&amp;gt;&amp;lt;br /&amp;gt;&amp;lt;/tr&amp;gt;&amp;lt;br /&amp;gt;&amp;lt;tr &amp;gt;&amp;lt;br /&amp;gt;
+&amp;lt;td colspan=&amp;#34;2&amp;#34; class=&amp;#34;table-cell&amp;#34; &amp;gt;** or if a i386 system use**
+&amp;lt;/td&amp;gt;&amp;lt;br /&amp;gt;&amp;lt;/tr&amp;gt;&amp;lt;br /&amp;gt;&amp;lt;tr &amp;gt;&amp;lt;br /&amp;gt;
+&amp;lt;td class=&amp;#34;table-cell&amp;#34; &amp;gt;use lib qw(/usr/pack/rrdtool-1.0.49-to/lib/perl);
+&amp;lt;/td&amp;gt;&amp;lt;br /&amp;gt;
+&amp;lt;td class=&amp;#34;table-cell&amp;#34; &amp;gt;use lib qw(/usr/lib/perl5/vendor_perl/5.8.5/i386-linux-thread-multi/auto/RRDs);
+&amp;lt;/td&amp;gt;&amp;lt;br /&amp;gt;&amp;lt;/tr&amp;gt;&amp;lt;br /&amp;gt;&amp;lt;tr &amp;gt;&amp;lt;br /&amp;gt;
+&amp;lt;td class=&amp;#34;table-cell&amp;#34; &amp;gt;use lib qw(lib);
+&amp;lt;/td&amp;gt;&amp;lt;br /&amp;gt;
+&amp;lt;td class=&amp;#34;table-cell&amp;#34; &amp;gt;use lib qw(/usr/local/smokeping/lib);
+&amp;lt;/td&amp;gt;&amp;lt;br /&amp;gt;&amp;lt;/tr&amp;gt;&amp;lt;br /&amp;gt;&amp;lt;tr &amp;gt;&amp;lt;br /&amp;gt;
+&amp;lt;td colspan=&amp;#34;2&amp;#34; class=&amp;#34;table-cell&amp;#34; &amp;gt;_ _
+&amp;lt;/td&amp;gt;&amp;lt;br /&amp;gt;&amp;lt;/tr&amp;gt;&amp;lt;br /&amp;gt;&amp;lt;tr &amp;gt;&amp;lt;br /&amp;gt;
+&amp;lt;td colspan=&amp;#34;2&amp;#34; class=&amp;#34;table-cell&amp;#34; &amp;gt;use Smokeping 2.000008;
+&amp;lt;/td&amp;gt;&amp;lt;br /&amp;gt;&amp;lt;/tr&amp;gt;&amp;lt;br /&amp;gt;&amp;lt;tr &amp;gt;&amp;lt;br /&amp;gt;
+&amp;lt;td colspan=&amp;#34;2&amp;#34; class=&amp;#34;table-cell&amp;#34; &amp;gt;_ _
+&amp;lt;/td&amp;gt;&amp;lt;br /&amp;gt;&amp;lt;/tr&amp;gt;&amp;lt;br /&amp;gt;&amp;lt;tr &amp;gt;&amp;lt;br /&amp;gt;
+&amp;lt;td class=&amp;#34;table-cell&amp;#34; &amp;gt;Smokeping::main(&amp;#34;etc/config.dist&amp;#34;);
+&amp;lt;/td&amp;gt;&amp;lt;br /&amp;gt;
+&amp;lt;td class=&amp;#34;table-cell&amp;#34; &amp;gt;Smokeping::main(&amp;#34;/usr/local/smokeping/etc/config&amp;#34;);
+&amp;lt;/td&amp;gt;&amp;lt;br /&amp;gt;&amp;lt;/tr&amp;gt;&amp;lt;br /&amp;gt;&amp;lt;/table&amp;gt;&amp;lt;br /&amp;gt;**pico /usr/local/smokeping/htdocs/smokeping.cgi**&amp;lt;br /&amp;gt;&amp;lt;table class=&amp;#34;table&amp;#34; &amp;gt;&amp;lt;br /&amp;gt;&amp;lt;tr &amp;gt;&amp;lt;br /&amp;gt;
+&amp;lt;td class=&amp;#34;table-cell&amp;#34; &amp;gt;_**Default**_
+&amp;lt;/td&amp;gt;&amp;lt;br /&amp;gt;
+&amp;lt;td class=&amp;#34;table-cell&amp;#34; &amp;gt;_**New**_
+&amp;lt;/td&amp;gt;&amp;lt;br /&amp;gt;&amp;lt;/tr&amp;gt;&amp;lt;br /&amp;gt;&amp;lt;tr &amp;gt;&amp;lt;br /&amp;gt;
+&amp;lt;td class=&amp;#34;table-cell&amp;#34; &amp;gt;#!/usr/sepp/bin/speedy -w
+&amp;lt;/td&amp;gt;&amp;lt;br /&amp;gt;
+&amp;lt;td class=&amp;#34;table-cell&amp;#34; &amp;gt;#!/usr/bin/speedy -w
+&amp;lt;/td&amp;gt;&amp;lt;br /&amp;gt;&amp;lt;/tr&amp;gt;&amp;lt;br /&amp;gt;&amp;lt;tr &amp;gt;&amp;lt;br /&amp;gt;
+&amp;lt;td colspan=&amp;#34;2&amp;#34; class=&amp;#34;table-cell&amp;#34; &amp;gt;_ _
+&amp;lt;/td&amp;gt;&amp;lt;br /&amp;gt;&amp;lt;/tr&amp;gt;&amp;lt;br /&amp;gt;&amp;lt;tr &amp;gt;&amp;lt;br /&amp;gt;
+&amp;lt;td class=&amp;#34;table-cell&amp;#34; &amp;gt;use lib qw(/usr/pack/rrdtool-1.0.33-to/lib/perl);
+&amp;lt;/td&amp;gt;&amp;lt;br /&amp;gt;
+&amp;lt;td class=&amp;#34;table-cell&amp;#34; &amp;gt;use lib qw(/usr/lib64/perl5/vendor_perl/5.8.5/x86_64-linux-thread-multi/auto/RRDs);
+&amp;lt;/td&amp;gt;&amp;lt;br /&amp;gt;&amp;lt;/tr&amp;gt;&amp;lt;br /&amp;gt;&amp;lt;tr &amp;gt;&amp;lt;br /&amp;gt;
+&amp;lt;td colspan=&amp;#34;2&amp;#34; class=&amp;#34;table-cell&amp;#34; &amp;gt;** or if a i386 system use**
+&amp;lt;/td&amp;gt;&amp;lt;br /&amp;gt;&amp;lt;/tr&amp;gt;&amp;lt;br /&amp;gt;&amp;lt;tr &amp;gt;&amp;lt;br /&amp;gt;
+&amp;lt;td class=&amp;#34;table-cell&amp;#34; &amp;gt;use lib qw(/usr/pack/rrdtool-1.0.49-to/lib/perl);
+&amp;lt;/td&amp;gt;&amp;lt;br /&amp;gt;
+&amp;lt;td class=&amp;#34;table-cell&amp;#34; &amp;gt;use lib qw(/usr/lib/perl5/vendor_perl/5.8.5/i386-linux-thread-multi/auto/RRDs);
+&amp;lt;/td&amp;gt;&amp;lt;br /&amp;gt;&amp;lt;/tr&amp;gt;&amp;lt;br /&amp;gt;&amp;lt;tr &amp;gt;&amp;lt;br /&amp;gt;
+&amp;lt;td class=&amp;#34;table-cell&amp;#34; &amp;gt;use lib qw(/home/oetiker/data/projects/AADJ-smokeping/dist/lib);
+&amp;lt;/td&amp;gt;&amp;lt;br /&amp;gt;
+&amp;lt;td class=&amp;#34;table-cell&amp;#34; &amp;gt;use lib qw(/usr/local/smokeping/lib);
+&amp;lt;/td&amp;gt;&amp;lt;br /&amp;gt;&amp;lt;/tr&amp;gt;&amp;lt;br /&amp;gt;&amp;lt;tr &amp;gt;&amp;lt;br /&amp;gt;
+&amp;lt;td colspan=&amp;#34;2&amp;#34; class=&amp;#34;table-cell&amp;#34; &amp;gt;use CGI::Carp qw(fatalsToBrowser);
+&amp;lt;/td&amp;gt;&amp;lt;br /&amp;gt;&amp;lt;/tr&amp;gt;&amp;lt;br /&amp;gt;&amp;lt;tr &amp;gt;&amp;lt;br /&amp;gt;
+&amp;lt;td colspan=&amp;#34;2&amp;#34; class=&amp;#34;table-cell&amp;#34; &amp;gt;_ _
+&amp;lt;/td&amp;gt;&amp;lt;br /&amp;gt;&amp;lt;/tr&amp;gt;&amp;lt;br /&amp;gt;&amp;lt;tr &amp;gt;&amp;lt;br /&amp;gt;
+&amp;lt;td colspan=&amp;#34;2&amp;#34; class=&amp;#34;table-cell&amp;#34; &amp;gt;use Smokeping 2.000008;
+&amp;lt;/td&amp;gt;&amp;lt;br /&amp;gt;&amp;lt;/tr&amp;gt;&amp;lt;br /&amp;gt;&amp;lt;tr &amp;gt;&amp;lt;br /&amp;gt;
+&amp;lt;td colspan=&amp;#34;2&amp;#34; class=&amp;#34;table-cell&amp;#34; &amp;gt;_ _
+&amp;lt;/td&amp;gt;&amp;lt;br /&amp;gt;&amp;lt;/tr&amp;gt;&amp;lt;br /&amp;gt;&amp;lt;tr &amp;gt;&amp;lt;br /&amp;gt;
+&amp;lt;td class=&amp;#34;table-cell&amp;#34; &amp;gt;Smokeping::cgi(&amp;#34;/home/oetiker/data/projects/AADJ-smokeping/dist/etc/config&amp;#34;);
+&amp;lt;/td&amp;gt;&amp;lt;br /&amp;gt;
+&amp;lt;td class=&amp;#34;table-cell&amp;#34; &amp;gt;Smokeping::cgi(&amp;#34;/usr/local/smokeping/etc/config&amp;#34;);
+&amp;lt;/td&amp;gt;&amp;lt;br /&amp;gt;&amp;lt;/tr&amp;gt;&amp;lt;br /&amp;gt;&amp;lt;/table&amp;gt;&amp;lt;br /&amp;gt;&lt;/code>&lt;pre>&lt;code class="">&amp;lt;br /&amp;gt;**pico /usr/local/smokeping/bin/smokeping**&amp;lt;br /&amp;gt;&amp;lt;table class=&amp;#34;table&amp;#34; &amp;gt;&amp;lt;br /&amp;gt;&amp;lt;tr &amp;gt;&amp;lt;br /&amp;gt;
+&amp;lt;td class=&amp;#34;table-cell&amp;#34; &amp;gt;_**Default**_
+&amp;lt;/td&amp;gt;&amp;lt;br /&amp;gt;
+&amp;lt;td class=&amp;#34;table-cell&amp;#34; &amp;gt;_**New**_
+&amp;lt;/td&amp;gt;&amp;lt;br /&amp;gt;&amp;lt;/tr&amp;gt;&amp;lt;br /&amp;gt;&amp;lt;tr &amp;gt;&amp;lt;br /&amp;gt;
+&amp;lt;td class=&amp;#34;table-cell&amp;#34; &amp;gt; #!/usr/sepp/bin/perl-5.8.4 -w
+&amp;lt;/td&amp;gt;&amp;lt;br /&amp;gt;
+&amp;lt;td class=&amp;#34;table-cell&amp;#34; &amp;gt; #!/usr/bin/perl -w
+&amp;lt;/td&amp;gt;&amp;lt;br /&amp;gt;&amp;lt;/tr&amp;gt;&amp;lt;br /&amp;gt;&amp;lt;tr &amp;gt;&amp;lt;br /&amp;gt;
+&amp;lt;td colspan=&amp;#34;2&amp;#34; class=&amp;#34;table-cell&amp;#34; &amp;gt;_ _
+&amp;lt;/td&amp;gt;&amp;lt;br /&amp;gt;&amp;lt;/tr&amp;gt;&amp;lt;br /&amp;gt;&amp;lt;tr &amp;gt;&amp;lt;br /&amp;gt;
+&amp;lt;td class=&amp;#34;table-cell&amp;#34; &amp;gt;use lib qw(/usr/pack/rrdtool-1.0.49-to/lib/perl);
+&amp;lt;/td&amp;gt;&amp;lt;br /&amp;gt;
+&amp;lt;td class=&amp;#34;table-cell&amp;#34; &amp;gt;use lib qw(/usr/lib64/perl5/vendor_perl/5.8.5/x86_64-linux-thread-multi/auto/RRDs);
+&amp;lt;/td&amp;gt;&amp;lt;br /&amp;gt;&amp;lt;/tr&amp;gt;&amp;lt;br /&amp;gt;&amp;lt;tr &amp;gt;&amp;lt;br /&amp;gt;
+&amp;lt;td colspan=&amp;#34;2&amp;#34; class=&amp;#34;table-cell&amp;#34; &amp;gt;** or if a i386 system use**
+&amp;lt;/td&amp;gt;&amp;lt;br /&amp;gt;&amp;lt;/tr&amp;gt;&amp;lt;br /&amp;gt;&amp;lt;tr &amp;gt;&amp;lt;br /&amp;gt;
+&amp;lt;td class=&amp;#34;table-cell&amp;#34; &amp;gt;use lib qw(/usr/pack/rrdtool-1.0.49-to/lib/perl);
+&amp;lt;/td&amp;gt;&amp;lt;br /&amp;gt;
+&amp;lt;td class=&amp;#34;table-cell&amp;#34; &amp;gt;use lib qw(/usr/lib/perl5/vendor_perl/5.8.5/i386-linux-thread-multi/auto/RRDs);
+&amp;lt;/td&amp;gt;&amp;lt;br /&amp;gt;&amp;lt;/tr&amp;gt;&amp;lt;br /&amp;gt;&amp;lt;tr &amp;gt;&amp;lt;br /&amp;gt;
+&amp;lt;td class=&amp;#34;table-cell&amp;#34; &amp;gt;use lib qw(lib);
+&amp;lt;/td&amp;gt;&amp;lt;br /&amp;gt;
+&amp;lt;td class=&amp;#34;table-cell&amp;#34; &amp;gt;use lib qw(/usr/local/smokeping/lib);
+&amp;lt;/td&amp;gt;&amp;lt;br /&amp;gt;&amp;lt;/tr&amp;gt;&amp;lt;br /&amp;gt;&amp;lt;tr &amp;gt;&amp;lt;br /&amp;gt;
+&amp;lt;td colspan=&amp;#34;2&amp;#34; class=&amp;#34;table-cell&amp;#34; &amp;gt;_ _
+&amp;lt;/td&amp;gt;&amp;lt;br /&amp;gt;&amp;lt;/tr&amp;gt;&amp;lt;br /&amp;gt;&amp;lt;tr &amp;gt;&amp;lt;br /&amp;gt;
+&amp;lt;td colspan=&amp;#34;2&amp;#34; class=&amp;#34;table-cell&amp;#34; &amp;gt;use Smokeping 2.000008;
+&amp;lt;/td&amp;gt;&amp;lt;br /&amp;gt;&amp;lt;/tr&amp;gt;&amp;lt;br /&amp;gt;&amp;lt;tr &amp;gt;&amp;lt;br /&amp;gt;
+&amp;lt;td colspan=&amp;#34;2&amp;#34; class=&amp;#34;table-cell&amp;#34; &amp;gt;_ _
+&amp;lt;/td&amp;gt;&amp;lt;br /&amp;gt;&amp;lt;/tr&amp;gt;&amp;lt;br /&amp;gt;&amp;lt;tr &amp;gt;&amp;lt;br /&amp;gt;
+&amp;lt;td class=&amp;#34;table-cell&amp;#34; &amp;gt;Smokeping::main(&amp;#34;etc/config.dist&amp;#34;);
+&amp;lt;/td&amp;gt;&amp;lt;br /&amp;gt;
+&amp;lt;td class=&amp;#34;table-cell&amp;#34; &amp;gt;Smokeping::main(&amp;#34;/usr/local/smokeping/etc/config&amp;#34;);
+&amp;lt;/td&amp;gt;&amp;lt;br /&amp;gt;&amp;lt;/tr&amp;gt;&amp;lt;br /&amp;gt;&amp;lt;/table&amp;gt;&amp;lt;br /&amp;gt;**pico /usr/local/smokeping/htdocs/smokeping.cgi**&amp;lt;br /&amp;gt;&amp;lt;table class=&amp;#34;table&amp;#34; &amp;gt;&amp;lt;br /&amp;gt;&amp;lt;tr &amp;gt;&amp;lt;br /&amp;gt;
+&amp;lt;td class=&amp;#34;table-cell&amp;#34; &amp;gt;_**Default**_
+&amp;lt;/td&amp;gt;&amp;lt;br /&amp;gt;
+&amp;lt;td class=&amp;#34;table-cell&amp;#34; &amp;gt;_**New**_
+&amp;lt;/td&amp;gt;&amp;lt;br /&amp;gt;&amp;lt;/tr&amp;gt;&amp;lt;br /&amp;gt;&amp;lt;tr &amp;gt;&amp;lt;br /&amp;gt;
+&amp;lt;td class=&amp;#34;table-cell&amp;#34; &amp;gt;#!/usr/sepp/bin/speedy -w
+&amp;lt;/td&amp;gt;&amp;lt;br /&amp;gt;
+&amp;lt;td class=&amp;#34;table-cell&amp;#34; &amp;gt;#!/usr/bin/speedy -w
+&amp;lt;/td&amp;gt;&amp;lt;br /&amp;gt;&amp;lt;/tr&amp;gt;&amp;lt;br /&amp;gt;&amp;lt;tr &amp;gt;&amp;lt;br /&amp;gt;
+&amp;lt;td colspan=&amp;#34;2&amp;#34; class=&amp;#34;table-cell&amp;#34; &amp;gt;_ _
+&amp;lt;/td&amp;gt;&amp;lt;br /&amp;gt;&amp;lt;/tr&amp;gt;&amp;lt;br /&amp;gt;&amp;lt;tr &amp;gt;&amp;lt;br /&amp;gt;
+&amp;lt;td class=&amp;#34;table-cell&amp;#34; &amp;gt;use lib qw(/usr/pack/rrdtool-1.0.33-to/lib/perl);
+&amp;lt;/td&amp;gt;&amp;lt;br /&amp;gt;
+&amp;lt;td class=&amp;#34;table-cell&amp;#34; &amp;gt;use lib qw(/usr/lib64/perl5/vendor_perl/5.8.5/x86_64-linux-thread-multi/auto/RRDs);
+&amp;lt;/td&amp;gt;&amp;lt;br /&amp;gt;&amp;lt;/tr&amp;gt;&amp;lt;br /&amp;gt;&amp;lt;tr &amp;gt;&amp;lt;br /&amp;gt;
+&amp;lt;td colspan=&amp;#34;2&amp;#34; class=&amp;#34;table-cell&amp;#34; &amp;gt;** or if a i386 system use**
+&amp;lt;/td&amp;gt;&amp;lt;br /&amp;gt;&amp;lt;/tr&amp;gt;&amp;lt;br /&amp;gt;&amp;lt;tr &amp;gt;&amp;lt;br /&amp;gt;
+&amp;lt;td class=&amp;#34;table-cell&amp;#34; &amp;gt;use lib qw(/usr/pack/rrdtool-1.0.49-to/lib/perl);
+&amp;lt;/td&amp;gt;&amp;lt;br /&amp;gt;
+&amp;lt;td class=&amp;#34;table-cell&amp;#34; &amp;gt;use lib qw(/usr/lib/perl5/vendor_perl/5.8.5/i386-linux-thread-multi/auto/RRDs);
+&amp;lt;/td&amp;gt;&amp;lt;br /&amp;gt;&amp;lt;/tr&amp;gt;&amp;lt;br /&amp;gt;&amp;lt;tr &amp;gt;&amp;lt;br /&amp;gt;
+&amp;lt;td class=&amp;#34;table-cell&amp;#34; &amp;gt;use lib qw(/home/oetiker/data/projects/AADJ-smokeping/dist/lib);
+&amp;lt;/td&amp;gt;&amp;lt;br /&amp;gt;
+&amp;lt;td class=&amp;#34;table-cell&amp;#34; &amp;gt;use lib qw(/usr/local/smokeping/lib);
+&amp;lt;/td&amp;gt;&amp;lt;br /&amp;gt;&amp;lt;/tr&amp;gt;&amp;lt;br /&amp;gt;&amp;lt;tr &amp;gt;&amp;lt;br /&amp;gt;
+&amp;lt;td colspan=&amp;#34;2&amp;#34; class=&amp;#34;table-cell&amp;#34; &amp;gt;use CGI::Carp qw(fatalsToBrowser);
+&amp;lt;/td&amp;gt;&amp;lt;br /&amp;gt;&amp;lt;/tr&amp;gt;&amp;lt;br /&amp;gt;&amp;lt;tr &amp;gt;&amp;lt;br /&amp;gt;
+&amp;lt;td colspan=&amp;#34;2&amp;#34; class=&amp;#34;table-cell&amp;#34; &amp;gt;_ _
+&amp;lt;/td&amp;gt;&amp;lt;br /&amp;gt;&amp;lt;/tr&amp;gt;&amp;lt;br /&amp;gt;&amp;lt;tr &amp;gt;&amp;lt;br /&amp;gt;
+&amp;lt;td colspan=&amp;#34;2&amp;#34; class=&amp;#34;table-cell&amp;#34; &amp;gt;use Smokeping 2.000008;
+&amp;lt;/td&amp;gt;&amp;lt;br /&amp;gt;&amp;lt;/tr&amp;gt;&amp;lt;br /&amp;gt;&amp;lt;tr &amp;gt;&amp;lt;br /&amp;gt;
+&amp;lt;td colspan=&amp;#34;2&amp;#34; class=&amp;#34;table-cell&amp;#34; &amp;gt;_ _
+&amp;lt;/td&amp;gt;&amp;lt;br /&amp;gt;&amp;lt;/tr&amp;gt;&amp;lt;br /&amp;gt;&amp;lt;tr &amp;gt;&amp;lt;br /&amp;gt;
+&amp;lt;td class=&amp;#34;table-cell&amp;#34; &amp;gt;Smokeping::cgi(&amp;#34;/home/oetiker/data/projects/AADJ-smokeping/dist/etc/config&amp;#34;);
+&amp;lt;/td&amp;gt;&amp;lt;br /&amp;gt;
+&amp;lt;td class=&amp;#34;table-cell&amp;#34; &amp;gt;Smokeping::cgi(&amp;#34;/usr/local/smokeping/etc/config&amp;#34;);
+&amp;lt;/td&amp;gt;&amp;lt;br /&amp;gt;&amp;lt;/tr&amp;gt;&amp;lt;br /&amp;gt;&amp;lt;/table&amp;gt;&amp;lt;br /&amp;gt;&lt;/code>&lt;/pre>&lt;/div>
+&lt;p>`cp /usr/local/smokeping/htdocs/smokeping.cgi /var/www/cgi-bin&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->pico /usr/local/smokeping/etc/config&lt;/p>
+&lt;div class="codeblock">
+&lt;header>
+&lt;span class="codeblock-lang">&lt;/span>
+&lt;button
+class="codeblock-copy"
+data-id="codeblock-id-8"
+data-copied-text="Copied!"
+>
+Copy
+&lt;/button>
+&lt;/header>
+&lt;code id="codeblock-id-8" style="display:none;">&lt;/code>&lt;pre>&lt;code class="">&lt;/code>&lt;/pre>&lt;/div>
+&lt;p>&lt;!-- raw HTML omitted -->&lt;strong>etc/config&lt;/strong>&lt;!-- raw HTML omitted -->&lt;strong>_ General _&lt;/strong>&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->&lt;/p>
+&lt;!-- raw HTML omitted -->
+&lt;div class="codeblock">
+&lt;header>
+&lt;span class="codeblock-lang">&lt;/span>
+&lt;button
+class="codeblock-copy"
+data-id="codeblock-id-9"
+data-copied-text="Copied!"
+>
+Copy
+&lt;/button>
+&lt;/header>
+&lt;code id="codeblock-id-9" style="display:none;">&amp;lt;br /&amp;gt;&lt;/code>&lt;pre>&lt;code class="">&amp;lt;br /&amp;gt;&lt;/code>&lt;/pre>&lt;/div>
+&lt;p>`vi /etc/rc.d/rc.local/usr/local/smokeping/bin/smokeping &amp;amp;&lt;/p>
+&lt;div class="codeblock">
+&lt;header>
+&lt;span class="codeblock-lang">&lt;/span>
+&lt;button
+class="codeblock-copy"
+data-id="codeblock-id-10"
+data-copied-text="Copied!"
+>
+Copy
+&lt;/button>
+&lt;/header>
+&lt;code id="codeblock-id-10" style="display:none;">&lt;/code>&lt;pre>&lt;code class="">&lt;/code>&lt;/pre>&lt;/div>
+&lt;!-- raw HTML omitted -->
+&lt;hr></description></item></channel></rss>
