@@ -9,7 +9,6 @@ config = pulumi.Config()
 resource_group_name = config.require("resourceGroupName")
 location = config.require("location")
 storage_account_name = config.require("storageAccountName")
-container_name = config.require("containerName")
 
 
 # 创建资源组
@@ -23,9 +22,7 @@ resource_group = resources.ResourceGroup(
 account = storage.StorageAccount(
     storage_account_name,
     resource_group_name=resource_group.name,
-    sku={
-        "name": storage.SkuName.STANDARD_LRS,
-    },
+    sku={"name": storage.SkuName.STANDARD_LRS,},
     kind=storage.Kind.STORAGE_V2,
     location=resource_group.location,
     enable_https_traffic_only=True,
@@ -56,7 +53,6 @@ static_website = storage.StorageAccountStaticWebsite(
 )
 
 # 上传静态网站文件
-
 def upload_directory_to_blob(directory_path, container_name):
     for root, _, files in os.walk(directory_path):
         for file in files:
@@ -88,3 +84,7 @@ primary_key = (
 pulumi.export("primary_storage_key", primary_key)
 
 pulumi.export("staticEndpoint", account.primary_endpoints.web)
+
+# 打开 readme 文件，并且将内容读入 stack 的输出中
+with open('./Pulumi.README.md') as f:
+    pulumi.export('readme', f.read())
