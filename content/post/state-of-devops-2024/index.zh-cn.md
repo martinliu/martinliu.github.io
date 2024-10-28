@@ -13,7 +13,7 @@ toc: true
 
 ---
 
-[【中文试读版 PDF 文件】- 即将完成](2024-dora-accelerate-state-of-devops-report-zh-cn-martinliu.pdf) | [【英文版全文 PDF 文件】](2024_final_dora_report.pdf)
+[【中文试读版 PDF 文件】- 即将完成](2024-dora-accelerate-state-of-devops-report-zh-cn-martinliu.pdf) | [【英文版全文 PDF 文件】](https://dora.dev)
 
 ## 内容提要
 
