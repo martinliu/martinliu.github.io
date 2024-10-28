@@ -15,7 +15,7 @@ toc: true
 
 > 作者 Nathen Harvey （DORA Lead），Derek DeBellis （DORA 研究项目负责人）
 
-**[下载中文版 PDF](/blog/state-of-devops-2024-zh-cn/)**
+**[下载中文版报告 PDF 文件](/blog/state-of-devops-2024-zh-cn/)**
 
 DORA 研究项目已经对高绩效技术团队和组织的能力、实践和度量标准进行了长达十多年的研究。该项目基于每年对技术人员（包括软件开发人员、管理者和高管）的调查数据发布报告。
 
