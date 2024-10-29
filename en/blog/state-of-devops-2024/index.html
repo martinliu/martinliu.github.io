@@ -1,0 +1,1058 @@
+<!doctype html><html lang=en dir=ltr><head><meta charset=utf-8><meta name=viewport content='width=device-width,initial-scale=1'><meta name=description content="副标题"><title>State of Devops 2024 | SRE,SRE培训,SRE认证,SRE考试,SRE课程,SRE标准,可观测性培训,AIOps培训</title>
+<link rel=canonical href=https://martinliu.cn/en/blog/state-of-devops-2024/><link rel=stylesheet href=/scss/style.min.d2452ad0c173a3dab60994107f0f193d8687c7e1ed5fa67e0d7c4787cdd8de64.css><meta property='og:title' content='State of Devops 2024'><meta property='og:description' content='副标题'><meta property='og:url' content='https://martinliu.cn/en/blog/state-of-devops-2024/'><meta property='og:site_name' content="Martin Liu's Blog"><meta property='og:type' content='article'><meta property='article:section' content='Post'><meta property='article:tag' content='DORA'><meta property='article:published_time' content='2024-10-28T15:17:39+08:00'><meta property='article:modified_time' content='2024-10-28T15:17:39+08:00'><meta property='og:image' content='https://martinliu.cn/blog/state-of-devops-2024/state_of_dora_2024.max-2500x2500.jpg'><meta name=twitter:title content="State of Devops 2024"><meta name=twitter:description content="副标题"><meta name=twitter:card content="summary_large_image"><meta name=twitter:image content='https://martinliu.cn/blog/state-of-devops-2024/state_of_dora_2024.max-2500x2500.jpg'><script async src="https://www.googletagmanager.com/gtag/js?id=G-30EQ6H78E5"></script><script>var dnt,doNotTrack=!1;if(!1&&(dnt=navigator.doNotTrack||window.doNotTrack||navigator.msDoNotTrack,doNotTrack=dnt=="1"||dnt=="yes"),!doNotTrack){window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","G-30EQ6H78E5")}</script><meta name=keywords content=SRE,SRE培训,SRE认证,SRE考试,SRE课程,SRE标准,SRE培训课程,SRE认证课程,SRE认证考试,SRE实战手册,运维,稳定性,数字化转型,SRE全栈系列课,SRE运维体系,技能宝典,DevOps课程,DevOps培训,DevOps标准,可观测性培训,AIOps培训,ITIL4培训,敏捷精益,价值流管理,数字化转型><meta name=baidu-site-verification content="codeva-4m4BtXAhY1"><script type=text/javascript>(function(e,t,n,s,o,i,a){e[n]=e[n]||function(){(e[n].q=e[n].q||[]).push(arguments)},i=t.createElement(s),i.async=1,i.src="https://www.clarity.ms/tag/"+o,a=t.getElementsByTagName(s)[0],a.parentNode.insertBefore(i,a)})(window,document,"clarity","script","m0m9x28bll")</script></head><body class=article-page><script>(function(){const e="StackColorScheme";localStorage.getItem(e)||localStorage.setItem(e,"auto")})()</script><script>(function(){const t="StackColorScheme",e=localStorage.getItem(t),n=window.matchMedia("(prefers-color-scheme: dark)").matches===!0;e=="dark"||e==="auto"&&n?document.documentElement.dataset.scheme="dark":document.documentElement.dataset.scheme="light"})()</script><div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky"><button class="hamburger hamburger--spin" type=button id=toggle-menu aria-label="Toggle Menu">
+<span class=hamburger-box><span class=hamburger-inner></span></span></button><header><figure class=site-avatar><a href=/en><img src=/img/avatar_hu1c7d893ce8aa46fc819d9e2ee56dab62_7023_300x0_resize_box_3.png width=300 height=300 class=site-logo loading=lazy alt=Avatar></a></figure><div class=site-meta><h1 class=site-name><a href=/en>Martin Liu's Blog</a></h1><h2 class=site-description>Founder of DevOps China, Microsoft MVP</h2></div></header><ol class=social-menu><li><a href=https://github.com/martinliu/ target=_blank title=GitHub rel=me><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M9 19c-4.3 1.4-4.3-2.5-6-3m12 5v-3.5c0-1 .1-1.4-.5-2 2.8-.3 5.5-1.4 5.5-6a4.6 4.6.0 00-1.3-3.2 4.2 4.2.0 00-.1-3.2s-1.1-.3-3.5 1.3a12.3 12.3.0 00-6.2.0C6.5 2.8 5.4 3.1 5.4 3.1a4.2 4.2.0 00-.1 3.2A4.6 4.6.0 004 9.5c0 4.6 2.7 5.7 5.5 6-.6.6-.6 1.2-.5 2V21"/></svg></a></li><li><a href=https://www.linkedin.com/in/liuzheng/ target=_blank title=LinkedIn rel=me><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32"><path d="M7.5 5C6.132813 5 5 6.132813 5 7.5v17C5 25.867188 6.132813 27 7.5 27h17c1.367188.0 2.5-1.132812 2.5-2.5V7.5C27 6.132813 25.867188 5 24.5 5zm0 2h17C24.785156 7 25 7.214844 25 7.5v17C25 24.785156 24.785156 25 24.5 25H7.5C7.214844 25 7 24.785156 7 24.5V7.5c0-.285156.214844-.5.5-.5zm2.9375 1.71875C9.488281 8.71875 8.71875 9.488281 8.71875 10.4375S9.488281 12.15625 10.4375 12.15625 12.15625 11.386719 12.15625 10.4375 11.386719 8.71875 10.4375 8.71875zm9.03125 4.5625c-1.433594.0-2.386719.785156000000001-2.78125 1.53125H16.625V13.5H13.8125V23H16.75V18.3125C16.75 17.074219 16.996094 15.875 18.53125 15.875c1.511719.0 1.53125 1.398438 1.53125 2.5V23H23V17.78125c0-2.554687-.542968999999999-4.5-3.53125-4.5zM9 13.5V23h2.96875V13.5z"/></svg></a></li><li><a href=https://twitter.com/martinliu target=_blank title=Twitter rel=me><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-twitter" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M22 4.01c-1 .49-1.98.689-3 .99-1.121-1.265-2.783-1.335-4.38-.737S11.977 6.323 12 8v1c-3.245.083-6.135-1.395-8-4 0 0-4.182 7.433 4 11-1.872 1.247-3.739 2.088-6 2 3.308 1.803 6.913 2.423 10.034 1.517 3.58-1.04 6.522-3.723 7.651-7.742a13.84 13.84.0 00.497-3.753C20.18 7.773 21.692 5.25 22 4.009z"/></svg></a></li></ol><ol class=menu id=main-menu><li><a href=/en/><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><polyline points="5 12 3 12 12 3 21 12 19 12"/><path d="M5 12v7a2 2 0 002 2h10a2 2 0 002-2v-7"/><path d="M9 21v-6a2 2 0 012-2h2a2 2 0 012 2v6"/></svg>
+<span>Home</span></a></li><li><a href=/en/about/><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-messages" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><path d="M21 14l-3-3h-7a1 1 0 01-1-1V4a1 1 0 011-1h9a1 1 0 011 1v10"/><path d="M14 15v2a1 1 0 01-1 1H6l-3 3V11a1 1 0 011-1h2"/></svg>
+<span>About</span></a></li><li><a href=/en/course/><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><rect x="3" y="4" width="18" height="4" rx="2"/><path d="M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8"/><line x1="10" y1="12" x2="14" y2="12"/></svg>
+<span>Course</span></a></li><li><a href=/en/search/><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="10" cy="10" r="7"/><line x1="21" y1="21" x2="15" y2="15"/></svg>
+<span>Search</span></a></li><li><a href=/en/archives/><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><rect x="3" y="4" width="18" height="4" rx="2"/><path d="M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8"/><line x1="10" y1="12" x2="14" y2="12"/></svg>
+<span>Archives</span></a></li><li><a href=/en/links/><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><path d="M10 14a3.5 3.5.0 005 0l4-4a3.5 3.5.0 00-5-5l-.5.5"/><path d="M14 10a3.5 3.5.0 00-5 0l-4 4a3.5 3.5.0 005 5l.5-.5"/></svg>
+<span>Links</span></a></li><div class=menu-bottom-section><li id=i18n-switch><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-language" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M4 5h7"/><path d="M9 3v2c0 4.418-2.239 8-5 8"/><path d="M5 9c-.003 2.144 2.952 3.908 6.7 4"/><path d="M12 20l4-9 4 9"/><path d="M19.1 18h-6.2"/></svg>
+<select name=language onchange="window.location.href=this.selectedOptions[0].value"><option value=https://martinliu.cn/>中文</option><option value=https://martinliu.cn/en/ selected>English</option></select></li><li id=dark-mode-toggle><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="8" cy="12" r="2"/><rect x="2" y="6" width="20" height="12" rx="6"/></svg>
+<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="16" cy="12" r="2"/><rect x="2" y="6" width="20" height="12" rx="6"/></svg>
+<span>Dark Mode</span></li></div></ol></aside><aside class="sidebar right-sidebar sticky"><section class="widget archives"><div class=widget-icon><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><line x1="5" y1="9" x2="19" y2="9"/><line x1="5" y1="15" x2="19" y2="15"/><line x1="11" y1="4" x2="7" y2="20"/><line x1="17" y1="4" x2="13" y2="20"/></svg></div><h2 class="widget-title section-title">Table of contents</h2><div class=widget--toc><nav id=TableOfContents><ol><li><a href=#executive-summary>Executive Summary</a><ol><li><a href=#key-findings>Key findings</a></li><li><a href=#ai-adoption-increases-as-trust-in-ai-increases>AI adoption increases as trust in AI increases</a></li><li><a href=#user-centricity-drives-performance>User-centricity drives performance</a></li><li><a href=#transformational-leadership-matters>Transformational leadership matters</a></li><li><a href=#stable-priorities-boost-productivity-and-well-being>Stable priorities boost productivity and well-being</a></li><li><a href=#platform-engineering-can-boost-productivity>Platform engineering can boost productivity</a></li><li><a href=#cloud-enables-infrastructure-flexibility>Cloud enables infrastructure flexibility</a></li><li><a href=#high-levels-of-software-delivery-performance-are-achievable>High levels of software delivery performance are achievable</a></li><li><a href=#applying-insights-from-dora>Applying insights from DORA</a></li></ol></li><li><a href=#software-delivery-performance>Software delivery performance</a><ol><li><a href=#the-four-keys>The four keys</a></li><li><a href=#evolving-the-measures-of-software-delivery-performance>Evolving the measures of software delivery performance</a></li><li><a href=#performance-levels>Performance levels</a></li><li><a href=#throughput-or-stability>Throughput or stability?</a></li><li><a href=#how-to-use-the-performance-clusters>How to use the performance clusters</a></li><li><a href=#industry-does-not-meaningfully-affect-performance-levels>Industry does not meaningfully affect performance levels</a></li><li><a href=#using-the-software-delivery-performance-metrics>Using the software delivery performance metrics</a></li></ol></li><li><a href=#artificial-intelligence-adoption-and-attitudes>Artificial intelligence: adoption and attitudes</a><ol><li><a href=#findings>Findings</a></li><li><a href=#perceptions-of-artificial-intelligence>Perceptions of Artificial Intelligence</a></li><li><a href=#expectations-for-ais-future>Expectations for AI’s Future</a></li></ol></li><li><a href=#exploring-the-downstream-impact-of-ai>Exploring the downstream impact of AI</a><ol><li><a href=#the-ai-moment--dora>The AI moment & DORA</a></li><li><a href=#measuring-ai-adoption>Measuring AI adoption</a></li><li><a href=#ais-impact-on-individuals-is-a-story-of-clear-benefits-and-some-potential-tradeoffs>AI’s impact on individuals is a story of clear benefits (and some potential tradeoffs)</a></li><li><a href=#the-promising-impact-of-ai-on-development-workflows>The promising impact of AI on development workflows</a></li><li><a href=#ai-is-hurting-delivery-performance>AI is hurting delivery performance</a></li><li><a href=#high-performing-teams-and-organizations-use-ai-but-products-dont-seem-to-benefit>High-performing teams and organizations use AI, but products don’t seem to benefit.</a></li><li><a href=#so-now-what>So now what?</a></li></ol></li></ol></nav></div></section></aside><main class="main full-width"><article class="has-image main-article"><header class=article-header><div class=article-image><a href=/en/blog/state-of-devops-2024/><img src=/blog/state-of-devops-2024/state_of_dora_2024.max-2500x2500_hu3bd2c6572d59ccd212491ba0e7d88fdd_78571_800x0_resize_q75_box.jpg srcset="/blog/state-of-devops-2024/state_of_dora_2024.max-2500x2500_hu3bd2c6572d59ccd212491ba0e7d88fdd_78571_800x0_resize_q75_box.jpg 800w, /blog/state-of-devops-2024/state_of_dora_2024.max-2500x2500_hu3bd2c6572d59ccd212491ba0e7d88fdd_78571_1600x0_resize_q75_box.jpg 1600w" width=800 height=394 loading=lazy alt="Featured image of post State of Devops 2024"></a></div><div class=article-details><header class=article-category><a href=/en/categories/devops/>DevOps</a></header><div class=article-title-wrapper><h2 class=article-title><a href=/en/blog/state-of-devops-2024/>State of Devops 2024</a></h2><h3 class=article-subtitle>副标题</h3></div><footer class=article-time><div><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><path d="M11.795 21H5a2 2 0 01-2-2V7a2 2 0 012-2h12a2 2 0 012 2v4"/><circle cx="18" cy="18" r="4"/><path d="M15 3v4"/><path d="M7 3v4"/><path d="M3 11h16"/><path d="M18 16.496V18l1 1"/></svg>
+<time class=article-time--published>2024-10-28, Monday</time></div><div><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15 15"/></svg>
+<time class=article-time--reading>18 minute read</time></div></footer><footer class=article-translations><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-language" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M4 5h7"/><path d="M9 3v2c0 4.418-2.239 8-5 8"/><path d="M5 9c-.003 2.144 2.952 3.908 6.7 4"/><path d="M12 20l4-9 4 9"/><path d="M19.1 18h-6.2"/></svg><div><a href=https://martinliu.cn/blog/state-of-devops-2024/ class=link>中文</a></div></footer></div></header><section class=article-content><h2 id=executive-summary>Executive Summary</h2><p>DORA has been investigating the capabilities, practices, and measures of high-performing technology-driven teams and organizations for over a decade. This is our tenth DORA report. We have heard from more than 39,000 professionals working at organizations of every size and across many different industries globally. Thank you for joining us along this journey and being an important part of the research!</p><p>DORA collects data through an annual, worldwide survey of professionals working in technical and adjacent roles. The survey includes questions related to ways of working and accomplishments that are relevant across an organization and to the people working in that organization.</p><p>DORA uses rigorous statistical evaluation methodology to understand the relationships between these factors and how they each contribute to the success of teams and organizations.</p><p>This year, we augmented our survey with in-depth interviews of professionals as a way to get deeper insights, triangulate, and provide additional context for our findings. See the Methodology chapter for more details.</p><p>The key accomplishments and outcomes we investigated this year are:</p><ul><li><p><strong>Reducing burnout</strong>: Burnout is a state of emotional, physical, and mental exhaustion caused by prolonged or excessive stress, often characterized by feelings of cynicism, detachment, and a lack of accomplishment.</p></li><li><p><strong>Organizational performance</strong>: This measures an organization&rsquo;s performance in areas including profitability, market share, total customers, operating efficiency, customer satisfaction, quality of products and services, and its ability to achieve goals.</p></li><li><p><strong>Flow</strong>: Flow measures how much focus a person tends to achieve during development tasks.</p></li><li><p><strong>Job satisfaction</strong>: Job satisfaction measures someone’s overall feeling about their job.</p></li><li><p><strong>Product performance</strong>: This measures the usability, functionality, value, availability, performance (for example, latency), and security of a product.</p></li><li><p><strong>Productivity</strong>: Productivity measures the extent to which an individual feels effective and efficient in their work, creating value and achieving tasks.</p></li><li><p><strong>Team performance</strong>: This measures a team&rsquo;s ability to collaborate, innovate, work efficiently, rely on each other, and adapt.</p></li></ul><h3 id=key-findings>Key findings</h3><p><strong>AI is having broad impact</strong></p><p>AI is producing a paradigm shift in the field of software development. Early adoption is showing some promising results, tempered by caution.</p><p>AI adoption benefits:</p><ul><li>Flow</li><li>Productivity</li><li>Job satisfaction</li><li>Code quality</li><li>Internal documentation</li><li>Review processes</li><li>Team performance</li><li>Organizational performance</li></ul><p>However, AI adoption also brings some detrimental effects. We have observed reductions to software delivery performance, and the effect on product performance is uncertain. Additionally, individuals are reporting a decrease in the amount of time they spend doing valuable work as AI adoption increases, a curious finding that is explored more later in this report.</p><p>Teams should continue experimenting and learning more about the impact of increasing reliance on AI.</p><h3 id=ai-adoption-increases-as-trust-in-ai-increases>AI adoption increases as trust in AI increases</h3><p>Using generative artificial intelligence (gen AI) makes developers feel more productive, and developers who trust gen AI use it more. There is room for improvement in this area: 39.2% of respondents reported having little or no trust in AI.</p><h3 id=user-centricity-drives-performance>User-centricity drives performance</h3><p>Organizations that prioritize the end user experience produce higher quality products, with developers who are more productive, satisfied, and less likely to experience burnout.</p><h3 id=transformational-leadership-matters>Transformational leadership matters</h3><p>Transformational leadership improves employee productivity, job satisfaction, team performance, product performance, and organizational performance while also helping decrease employee burnout.</p><h3 id=stable-priorities-boost-productivity-and-well-being>Stable priorities boost productivity and well-being</h3><p>Unstable organizational priorities lead to meaningful decreases in productivity and substantial increases in burnout, even when organizations have strong leaders, good internal documents, and a user-centric approach to software development.</p><h3 id=platform-engineering-can-boost-productivity>Platform engineering can boost productivity</h3><p>Platform engineering has a positive impact on productivity and organizational performance, but there are some cautionary signals for software delivery performance.</p><h3 id=cloud-enables-infrastructure-flexibility>Cloud enables infrastructure flexibility</h3><p>Flexible infrastructure can increase organizational performance. However, moving to the cloud without adopting the flexibility that cloud has to offer may be more harmful than remaining in the data center. Transforming approaches, processes, and technologies is required for a successful migration.</p><h3 id=high-levels-of-software-delivery-performance-are-achievable>High levels of software delivery performance are achievable</h3><p>The highest performing teams excel across all four software delivery metrics (change lead time, deployment frequency, change fail percentage, and failed deployment recovery time) while the lowest performers perform poorly across all four. We see teams from every industry vertical in each of the performance clusters.</p><h3 id=applying-insights-from-dora>Applying insights from DORA</h3><p>Driving team and organizational improvements with DORA requires that you assess how you&rsquo;re doing today, identify areas to invest and make improvements, and have feedback loops to tell you how you&rsquo;re progressing. Teams that adopt a mindset and practice of continuous improvement are likely to see the most benefits. Invest in building the organizational muscles required to repeat this over time.</p><p>Findings from our research can help inform your own experiments and hypotheses. It&rsquo;s important to experiment and measure the impact of your changes to see what works best for your team and organization. Doing so will help you validate our findings. Expect your results to differ and please share your progress so that we all may learn from your experience.</p><p>We recommend taking an experimental approach to improvement.</p><ol><li>Identify an area or outcome you would like to improve.</li><li>Measure your baseline or current state.</li><li>Develop a set of hypotheses about what might get you closer to your desired state.</li><li>Agree and commit to a plan for improvement.</li><li>Do the work.</li><li>Measure the progress you’ve made.</li><li>Repeat the process.</li></ol><p>Improvement work is achieved iteratively and incrementally.</p><h2 id=software-delivery-performance>Software delivery performance</h2><p>Technology-driven teams need ways to
+measure performance so that they can
+assess how they’re doing today, prioritize
+improvements, and validate their
+progress. DORA has repeatedly validated
+four software delivery metrics — the four
+keys — that provide an effective way of
+measuring the outcomes of the software
+delivery process.</p><h3 id=the-four-keys>The four keys</h3><p>DORA’s four keys have been used to
+measure the throughput and stability
+of software changes. This includes
+changes of any kind, including changes
+to configuration and changes to code.</p><p>Change lead time: the time it takes for a code
+commit or change to be successfully
+deployed to production.</p><p>Deployment frequency: how often application changes are
+deployed to production.</p><p>Change fail rate: the percentage of deployments
+that cause failures in production,
+requiring hotfixes or rollbacks.</p><p>Failed deployment recovery time: the time it takes to recover from a
+failed deployment.</p><p>We&rsquo;ve observed that these metrics
+typically move together, the best
+performers do well on all four while the
+lowest performers do poorly.</p><h3 id=evolving-the-measures-of-software-delivery-performance>Evolving the measures of software delivery performance</h3><p>The analysis of the four key metrics
+has long had an outlier: change failure
+rate. Change failure rate is strongly
+correlated with the other three metrics
+but statistical tests and methods
+prevent us from combining all four
+into one factor. A change to the way
+respondents answered the change
+failure rate question improved the
+connection but we felt there might
+be something else happening.</p><p>We have a longstanding hypothesis
+that the change failure rate metric works
+as a proxy for the amount of rework a
+team is asked to do. When a delivery fails,
+this requires the team to fix the change,
+likely by introducing another change.</p><p>To test this theory, we added another
+question this year about the rework
+rate for an application: &ldquo;For the primary
+application or service you work on,
+approximately how many deployments
+in the last six months were not planned
+but were performed to address a userfacing
+bug in the application?&rdquo;</p><p>Our data analysis confirmed our
+hypothesis that rework rate and change
+failure rate are related. Together, these
+two metrics create a reliable factor of
+software delivery stability.</p><p>This appears in the analysis of software
+performance levels, too. More than
+half of the teams in our study this
+year show differences in software
+throughput and software stability.
+These differences have led us to
+consider software delivery performance
+through two different factors:</p><ul><li><p>Concept</p><ul><li>Software delivery performance</li></ul></li><li><p>Factor</p><ul><li>Software delivery throughput</li><li>Software delivery stability</li></ul></li><li><p>Metrics used</p><ul><li>Change lead time</li><li>Deployment frequency</li><li>Failed deployment recovery time</li><li>Change failure rate</li><li>Rework rate</li></ul></li></ul><p>Our analysis throughout this report
+utilizes the software delivery
+performance concept and both factors
+at various times. All five metrics are
+considered for describing software
+delivery performance.</p><p>Change lead time, deployment
+frequency, and failed deployment
+recovery time are used when we
+describe software delivery throughput.
+This factor measures the speed of
+making updates of any kind, normal
+changes and changes in response
+to a failure.</p><p>Change failure rate and rework rate are
+used when we describe software delivery
+stability. This factor measures the
+likelihood deployments unintentionally
+lead to immediate, additional work.</p><h3 id=performance-levels>Performance levels</h3><p>Each year we ask survey respondents
+about the software delivery performance
+of the primary application or service they
+work on. We analyze their answers using
+cluster analysis, which is a statistical
+method that identifies responses that are
+similar to one another but distinct from
+other groups of responses.</p><p>We performed the cluster analysis on the
+original four software delivery metrics to
+remain consistent with previous years'
+cluster analyses.</p><p>In our analysis of software delivery
+performance, four clusters of responses
+emerged. We do not set these levels in
+advance, rather we let them emerge
+from the survey responses. This gives
+us a way to see a snapshot of software
+delivery performance across all
+respondents each year.</p><p>Four distinct clusters emerged from the
+data this year, as shown below.</p><p>Performance level
+Change lead time
+Deployment frequency
+Change fail rate
+Failed deployment recovery time
+Percentage of respondents*
+Elite
+Less than one day
+On demand(multiple deploys per day)
+5%
+Less than one hour
+19%(18-20%)
+High
+Between one day and one week
+Between once per day and once per week
+20%
+Less than one day
+22%(21-23%)
+Medium
+Between one week and one month
+Between once per week and once per month
+10%
+Less than one day
+35%(33-36%)
+Low
+Between one month and six months
+Between once per month and once every six months
+40%
+Between one week and one month
+25%(23-26%)</p><p>*89% uncertainty interval</p><h3 id=throughput-or-stability>Throughput or stability?</h3><p>Within all four clusters, throughput
+and stability are correlated. This
+correlation persists even in the medium
+performance cluster (orange), where
+throughput is lower and stability is
+higher than in the high performance
+cluster (yellow). This suggests that
+factors besides throughput and stability
+influence cluster performance. The
+medium performance cluster, for
+example, may benefit from shipping
+changes more frequently.</p><p>Which is better, more frequent
+deployments or fewer failures
+when deploying?</p><p>There may not be a universal answer
+to this question. It depends on the
+application or service being considered,
+the goals of the team working on that
+application, and, most importantly, the
+expectations of the application’s users.
+We made a decision to call the faster
+teams “high performers,” and the
+slower but more stable teams “medium
+performers.” This decision highlights
+one of the potential pitfalls of using
+these performance levels: Improving
+should be more important to a team
+than reaching a particular performance
+level. The best teams are those that
+achieve elite improvement, not
+necessarily elite performance.</p><p>Figure 1: Software Delivery Performance Levels</p><p>When compared to low performers, elite performers realize.</p><h3 id=how-to-use-the-performance-clusters>How to use the performance clusters</h3><p>The performance clusters provide
+benchmark data that show the
+software delivery performance of
+this year&rsquo;s survey respondents. The
+clusters are intended to help inspire all
+that elite performance is achievable.
+More important than reaching a
+particular performance level, we
+believe that teams should focus
+on improving performance overall.
+The best teams are those that
+achieve elite improvement, not
+necessarily elite performance.</p><h3 id=industry-does-not-meaningfully-affect-performance-levels>Industry does not meaningfully affect performance levels</h3><p>Our research rarely3 finds that industry
+is a predictor of software delivery
+performance; we see high-performing
+teams in every industry vertical. This
+isn’t to suggest that there are no unique
+challenges across industries, but no
+one industry appears to be uniquely
+encumbered or uniquely capable when it
+comes to software delivery performance.</p><h3 id=using-the-software-delivery-performance-metrics>Using the software delivery performance metrics</h3><p>Each application or service has its own,
+unique context. This complexity makes it
+difficult to predict how any one change
+may affect the overall performance of
+the system. Beyond that, it is nearly
+impossible to change only one thing
+at a time in an organization. With this
+complexity in mind, how can we use the
+software delivery performance metrics
+to help guide our improvement efforts?</p><p>Start by identifying the primary
+application or service you would like
+to measure and improve. We then
+recommend that you gather the
+cross-functional team responsible
+for this application and measure and
+agree on its current software delivery
+performance. The DORA Quick Check
+(<a class=link href=https://dora.dev/quickcheck target=_blank rel=noopener>https://dora.dev/quickcheck</a>) can
+help guide a conversation and set this
+baseline measurement. Your team will
+need to understand what is preventing
+better performance.</p><p>One effective way to find these
+impediments is to complete a value
+stream mapping exercise4 with the team.
+Next, identify and agree on a plan for
+improvement. This plan may focus on
+improving one of the many capabilities
+that DORA has researched5 or may be
+something else that is unique to your
+application or organization.</p><p>With this plan in-hand, it&rsquo;s now time to
+do the work! Dedicate capacity to this
+improvement work and pay attention to
+the lessons learned along the way.</p><p>After the change has had a chance
+to be implemented and take hold, it&rsquo;s
+now time to re-evaluate the four keys.
+How have they changed after the team
+implemented the change? What lessons
+have you learned?</p><p>Repeating this process will help the
+team build a practice of continuous
+improvement.</p><p>Remember: change does not happen
+overnight. An iterative approach that
+enables a climate for learning, fast flow,
+and fast feedback6 is required.</p><h2 id=artificial-intelligence-adoption-and-attitudes>Artificial intelligence: adoption and attitudes</h2><p><strong>Takeaways</strong></p><p>The vast majority of organizations
+across all industries surveyed are
+shifting their priorities to more deeply
+incorporate AI into their applications
+and services. A corresponding majority
+of development professionals are
+relying on AI to help them perform
+their core role responsibilities — and
+reporting increases in productivity as
+a result. Development professionals’
+perceptions that using AI is necessary
+for remaining competitive in today’s
+market is pervasive and appears to
+be an important driver of AI adoption
+for both organizations and individual
+development professionals.</p><p><em><strong>Introduction</strong></em></p><p>It would be difficult to ignore the
+significant impact that AI has had on
+the landscape of development work
+this year, given the proliferation of
+popular news articles outlining its
+effects, from good1 to bad2 to ugly.3
+So, while AI was only discussed as one
+of many technical capabilities affecting
+performance in our 2023 Accelerate
+State of DevOps Report,4 this year we
+explore this topic more fully.</p><p>As the use of AI in professional
+development work moves rapidly from
+the fringes to ubiquity, we believe our
+2024 Accelerate State of DevOps Report
+represents an important opportunity to
+assess the adoption, use, and attitudes
+of development professionals at a critical
+inflection point for the industry.</p><h3 id=findings>Findings</h3><p><em><strong>Adopting Artificial Intelligence</strong></em></p><p>Findings on the adoption of AI suggest a
+growing awareness that AI is no longer
+“on the horizon,” but has fully arrived and
+is, quite likely, here to stay.</p><p><em><strong>Organizational Adoption of Artificial Intelligence</strong></em></p><p>The vast majority of respondents (81%)
+reported that their organizations have
+shifted their priorities to increase their
+incorporation of AI into their applications
+and services. 49.2% of respondents even
+described the magnitude of this shift as
+being either “moderate” or “significant.”</p><p>Notably, 3% of respondents reported
+that their organizations are decreasing
+focus on AI — within the margin of
+error of our survey. 78% of respondents
+reported that they trusted their
+organizations to be transparent about
+how they plan on using AI as a result
+of these priority shifts. These data are
+visualized in Figure 2.</p><p>Changes in Organizational Priorities Concerning AI</p><p>Error bar represents 89% uncertainty interval
+Figure 2: Respondents’ perceptions of their organizations’ shifts in priorities toward or away from
+incorporation of AI into their applications and services.</p><p>Participants from all surveyed industries
+reported statistically identical levels of
+reliance on AI in their daily work, which
+suggests that this rapid adoption of AI
+is unfolding uniformly across all industry
+sectors. This was somewhat surprising
+to us. Individual industries can vary
+widely with respect to their levels of
+regulatory constraints and historical pace
+of innovation, each of which can impact
+rates of technology adoption.</p><p>However, we did find that respondents
+working in larger organizations report
+less reliance on AI in their daily work
+than respondents working in smaller
+organizations, which is consistent with
+prior literature indicating larger firms
+more slowly adapt to technological
+change because of their higher
+organizational complexities and
+coordination costs.</p><p>Individual Adoption of Artificial Intelligence</p><p>At the individual level, we found that
+75.9% of respondents are relying, at
+least in part, on AI in one or more of
+their daily professional responsibilities.
+Among those whose job responsibilities
+include the following tasks, a majority of
+respondents relied on AI for:</p><ol><li>Writing code</li><li>Summarizing information</li><li>Explaining unfamiliar code</li><li>Optimizing code</li><li>Documenting code</li><li>Writing tests</li><li>Debugging code</li><li>Data analysis</li></ol><p>Of all tasks included in our survey
+responses, the most common use cases
+for AI in software development work
+were writing code and summarizing
+information, with 74.9% and 71.2% of
+respondents whose job responsibilities
+include these tasks relying on AI to
+perform them — at least in part. These
+data are visualized in Figure 3.</p><p>Task Reliance on AI</p><p>Error bar represents 89% credibility interval
+Figure 3: Percentage of respondents relying on AI, at least in part, to perform twelve common development tasks</p><p>Chatbots were the most common
+interface through which respondents
+interacted with AI in their daily work
+(78.2%), followed by external web
+interfaces (73.9%), and AI tools
+embedded within their IDEs (72.9%).
+Respondents were less likely to use
+AI through internal web interfaces
+(58.1%) and as part of automated CI/CD
+pipelines (50.2%).</p><p>However, we acknowledge that
+respondents&rsquo; awareness of AI used
+in their CI/CD pipelines and internal
+platforms likely depends on the
+frequency with which they interface with
+those technologies. So, these numbers
+might be artificially low.</p><p>We found that data scientists and
+machine learning specialists were more
+likely than respondents holding all
+other job roles to rely on AI. Conversely,
+hardware engineers were less likely than
+respondents holding all other job roles
+to rely on AI, which might be explained
+by the responsibilities of hardware
+engineers differing from the above tasks
+for which AI is commonly used.</p><p>Drivers of Adoption of Artificial Intelligence</p><p>Interview participants frequently linked
+the decision to adopt AI to competitive
+pressures and a need to keep up with
+industry standards for both organizations
+and developers, which are increasingly
+recognized to include proficiency with AI.</p><p>For several participants’ organizations,
+using AI at all was seen as “a big
+marketing point” (P3)6 that could help
+differentiate their firm from competitors.
+Awareness that competitors are
+beginning to adopt AI in their own
+processes even prompted one firm to
+forgo the typical “huge bureaucracy”
+involved in adopting new technology
+because they felt an urgency to adopt
+AI, questioning “what if our competitor
+takes those actions before us?” (P11).</p><p>At the individual level, many participants
+linked their adoption of AI to the
+sentiment that proficiency with using AI
+in software development is “kind of, like,
+the new bar for entry as an engineer”
+(P9). Several participants suggested
+fellow developers should rapidly adopt
+AI in their development workflow,
+because “there’s so much happening
+in this space, you can barely keep up… I
+think, if you don’t use it, you will be left
+behind quite soon” (P4).</p><h3 id=perceptions-of-artificial-intelligence>Perceptions of Artificial Intelligence</h3><p>Performance Improvements from Artificial Intelligence</p><p>For the large number of organizations
+and developers who are adopting it, the
+benefits of using AI in development work
+appear to be quite high. Seventy-five
+percent of respondents reported positive
+productivity gains from AI in the three
+months preceding our survey, which was
+fielded in early 2024.</p><p>Notably, more than one-third
+of respondents described their
+observed productivity increases as
+either moderate (25%) or extreme
+(10%) in magnitude. Fewer than 10%
+of respondents reported negative
+impacts of even a slight degree on their
+productivity because of AI. These data
+are visualized in Figure 4.</p><p>Perceptions of Productivity Changes Due to AI</p><p>Error bar represents 89% uncertainty interval
+Figure 4: Respondents’ perceptions of AI’s impacts on their productivity.</p><p>Across roles, respondents who
+reported the largest productivity
+improvements from AI were security
+professionals, system administrators,
+and full-stack developers. Although
+they also reported positive productivity
+improvement, mobile developers,
+site reliability engineers, and project
+managers reported lower magnitudes
+of productivity benefits than all other
+named roles.</p><p>Although we suspected that the
+novelty of AI in development work,
+and corresponding learning curve,
+might inhibit developers’ ability to write
+code, our findings did not support that
+hypothesis. Only 5% of respondents
+reported that AI had inhibited their ability
+to write code to any degree. In fact, 67%
+of respondents reported at least some
+improvement to their ability to write code
+as a result of AI-assisted coding tools,
+and about 10% have observed “extreme”
+improvements to their ability to write
+code because of AI.</p><p>Trust in AI-Generated Code</p><p>Participants’ perceptions of the
+trustworthiness of AI-generated code
+used in development work were complex.
+While the vast majority of respondents
+(87.9%) reported some level of trust in
+the quality of AI-generated code, the
+degree to which respondents reported
+trusting the quality of AI-generated code
+was generally low, with 39.2% reporting
+little (27.3%) or no trust (11.9%) at all.
+These data are visualized in Figure 5.</p><p>Trust in Quality of AI-Generated Code</p><p>Error bar represents 89% uncertainty interval
+Figure 5: Respondents’ reported trust in the quality of AI-generated code.</p><p>Given the evidence from the survey
+that developers are rapidly adopting
+AI, relying on it, and perceiving it as
+a positive performance contributor,
+we found the overall lack of trust in AI
+surprising. It’s worth noting that during
+our interviews, many of our participants
+indicated that they were willing to, or
+expected to, tweak the outputs of the
+AI-generated code they used in their
+professional work.</p><p>One participant even likened the need
+to evaluate and modify the outputs of
+AI-generated code to “the early days
+of StackOverflow, [when] you always
+thought people on StackOverflow are
+really experienced, you know, that they
+will know exactly what to do. And then,
+you just copy and paste the stuff, and
+things explode ” (P2).</p><p>Perhaps because this is not a new
+problem, participants like P3 felt that
+their companies are not “worried
+about, like, someone just copy-andpasting
+code from Copilot or ChatGPT
+[because of] having so many layers to
+check it” with their existing code-quality
+assurance processes.</p><p>We hypothesize that developers do not
+necessarily expect absolute trust in
+the accuracy of AI-generated code,
+nor does absolute trust appear to be
+required for developers to find AIgenerated
+code useful. Rather, it seems
+that mostly-correct AI-generated code
+that can be perfected with some tweaks
+is acceptable, sufficiently valuable to
+motivate widespread adoption and use,
+and compatible with existing quality
+assurance processes.</p><h3 id=expectations-for-ais-future>Expectations for AI’s Future</h3><p>Overall, our findings indicate AI has
+already had a massive impact on
+development professionals’ work, a trend
+we expect to continue to grow. While it
+would be impossible to predict exactly
+how AI will impact development — and
+our world — in the future, we asked
+respondents to speculate and share their
+expectations about the impacts of AI in
+the next one, five, and 10 years.</p><p>Respondents reported quite positive
+impacts of AI on their development work
+in reflecting on their recent experiences,
+but their predictions for AI’s future
+impacts were not as hopeful.</p><p>Optimistically, and consistent with
+our findings that AI has positively
+impacted development professionals’
+performance, respondents reported that
+they expect the quality of their products
+to continue to improve as a result of AI
+over the next one, five, and 10 years.</p><p>However, respondents also reported
+expectations that AI will have netnegative
+impacts on their careers,
+the environment, and society, as a whole,
+and that these negative impacts will be
+fully realized in about five years time.
+These data are visualized in Figure 6.</p><p>Expected Negative Impacts of AI</p><p>Error bar represents 89% credibility interval
+Figure 6: Respondents’ expectations about AI’s future negative impacts in the next one, five, and 10 years.</p><p>Interview participants held similarly
+mixed feelings about the future impacts
+of AI as our survey respondents. Some
+wondered about future legal actions in a
+yet-to-be-decided regulatory landscape,
+worrying they might “be on the wrong
+side of it, if things get decided” (P3).</p><p>Others echoed long-held anxieties and
+asked, “Is it going to replace people?
+Who knows? Maybe.” (P2), while their
+peers dismissed their fears by drawing
+parallels to the past, when “people
+used to say ‘Oh, Y2K! Everything will be
+doomed!’ Blah, blah… because it was a
+new thing, at that time.</p><p>[But,] nothing got replaced. In fact, there
+were more jobs created. I believe the
+same thing will happen with AI” (P1).</p><p>The future effects AI will have on our
+world remain unclear. But, this year, our
+survey strongly indicates that AI has
+produced an unignorable paradigm shift
+in the field of software development. So
+far, the changes have been well-received
+by development professionals.</p><h2 id=exploring-the-downstream-impact-of-ai>Exploring the downstream impact of AI</h2><p><strong>Takeaways</strong></p><p>This chapter investigates the impact
+of AI adoption across the spectrum,
+from individual developers to entire
+organizations. The findings reveal a
+complex picture with both clear benefits
+and unexpected drawbacks. While AI
+adoption boosts individual productivity,
+flow, and job satisfaction, it may also
+decrease time spent on valuable work.</p><p>Similarly, AI positively impacts code
+quality, documentation, and review
+processes, but surprisingly, these
+gains do not translate to improved
+software delivery performance.
+In fact, AI adoption appears detrimental
+in this area, while its effect on product
+performance remains negligible.</p><p>Despite these challenges, AI adoption
+is linked to improved team and
+organizational performance. This chapter
+concludes with a call to critically evaluate
+AI&rsquo;s role in software development
+and proactively adapt its application
+to maximize benefits and mitigate
+unforeseen consequences.</p><h3 id=the-ai-moment--dora>The AI moment & DORA</h3><p>Estimates suggest that leading tech
+giants will invest approximately $1 trillion
+on the development of AI in the next five
+years.1 This aligns well with a statistic
+presented in the &ldquo;Artificial intelligence:
+adoption and attitudes&rdquo; chapter that 81%
+of respondents say their company has
+shifted resources into developing AI.</p><p>The environmental impacts of AI further
+compound the costs. Some estimates
+suggest that by 2030, AI will drive an
+increase in data center power demand
+by 160%.2 The training of an AI model can
+add up to roughly “the yearly electricity
+consumption of over 1,000 U.S.
+households”.3 It is no surprise that more
+than 30% of respondents think AI is going
+to be detrimental to the environment.</p><p>Beyond the development and
+environmental costs, we have the
+potential for adoption costs.</p><p>This could come in many forms, from
+productivity decreases to the hiring of
+specialists. These adoption costs could
+also come at a societal level. Over a
+third of respondents believe AI will harm
+society in the coming decade. Given
+these costs, it seems natural for people to
+have a deep curiosity about the returns.</p><p>This curiosity has manifested itself in a
+wealth of media, articles, and research
+whose sentiment and data are both
+mixed, at least to some extent.</p><p>Some believe that AI has dramatically
+enhanced the ability of humanity,4 others
+suggest that AI is little more than a
+benign tool for helping with homework,5
+and some fear that AI will be the downfall
+of humanity.6</p><p>Evidence for proximal outcomes, such
+as the ability to successfully complete a
+particular task, is largely positive.7 When
+the outcome becomes more distant,
+such as a team’s codebase, the results
+start becoming a little less clear and a
+little less positive. For example, some
+research has suggested that code churn
+may double from the pre-2021 baseline.8</p><p>The challenge of understanding these
+downstream effects is unsurprising.
+The further away the effect is from
+the cause, the less pronounced and
+clear the connection.</p><p>Evaluating the downstream effects of
+AI mimics quantifying the effect of a
+rock thrown into a lake. You can most
+easily attribute the ripples closest to the
+impact point of the rock in the water,
+but the farther from the entry point you
+go, the less pronounced the effect of
+the rock is and the harder it is to ascribe
+waves to its impact.</p><p>AI is essentially a rock thrown into a
+stormy sea of other processes and
+dynamics. Understanding the extent
+of the waves caused by AI (or any
+technology or practice) is a challenge.
+This may be part of the reason the
+industry has struggled to adopt a
+principled set of measurement and
+analytic frameworks for understanding
+the impact of AI.</p><p>Exploring the downstream impact of AI
+Our approach is specifically designed to
+be useful for these types of challenges.
+DORA is designed to understand the
+utility or disutility of a practice. We’ve
+explored the downstream impacts
+of myriad practices over the last 10
+years, including security practices,
+transformational leadership, generative
+cultures, documentation practices,
+continuous integration, continuous
+delivery, and user-centricity.</p><p>We believe that DORA’s approach11 can
+help us learn about AI’s impact, especially
+as we explore the effects of AI across
+many outcomes.</p><h3 id=measuring-ai-adoption>Measuring AI adoption</h3><p>The first challenge of capturing the
+impact of adopting AI is measuring
+the adoption of AI. We determined
+measuring usage frequency is likely not
+as meaningful as measuring reliance
+for understanding AI’s centrality to
+development workflows. You might only
+do code reviews or write documentation
+a few times a month or every couple
+of months, but you see these tasks as
+critically important to your work.</p><p>Conversely, just because you use AI
+frequently does not mean that you are
+using AI for work that you consider
+important or central to your role.</p><p>Given this, we asked respondents
+about their reliance on AI in general
+and for particular tasks. The previous
+chapter details the survey results
+and their interpretation.</p><p>Using factor analysis, we found our
+“general” AI reliance survey item had high
+overlap with reported AI reliance on the
+following tasks:</p><ul><li>Code Writing</li><li>Summarizing information</li><li>Code explanation</li><li>Code optimization</li><li>Documentation</li><li>Test writing</li></ul><p>The strong commonality and covariance
+among these seven items suggests
+an underlying factor that we call AI
+adoption.</p><h3 id=ais-impact-on-individuals-is-a-story-of-clear-benefits-and-some-potential-tradeoffs>AI’s impact on individuals is a story of clear benefits (and some potential tradeoffs)</h3><p>As we do every year, we measured
+a variety of constructs related to an
+individual’s success and wellbeing:</p><p>Job satisfaction
+A single item designed to capture someone’s overall feeling about their job.
+Burnout
+A factor that encapsulates the multifaceted nature of burnout, encompassing its physical, emotional, and psychological dimensions, as well as its impact on personal life.
+Flow
+A single item designed to capture how much focus a person tends to achieve during development tasks.
+Productivity
+A factor score designed to measure the extent an individual feels effective and efficient in their work, creating value and achieving tasks.
+Time doing toilsome work
+A single item measuring the percentage of an individual’s time spent on repetitive, manual tasks that offer little long-term value.
+Time doing valuable work
+A single item measuring the percentage of an individual&rsquo;s time spent on tasks that they consider valuable.</p><p>We wanted to figure out if the way
+respondents answered these questions
+changes as a function of adopting AI. The
+results suggest that is often the case.</p><p>Figure 7. is a visualization that shows
+our best estimates about the impact of
+adopting AI on an individual’s success
+and wellbeing.</p><p>If an individual increases AI adoption by 25%..</p><p>Point = estimated value
+Error bar = 89% uncertainty interval
+Figure 7: Impacts of AI adoption on individual success and wellbeing</p><p>The clear benefits</p><p>The story about the benefit of adopting
+AI for individuals is largely favorable,
+but like any good story, has some
+wrinkles. What seems clear is that
+AI has a substantial and beneficial
+impact on flow, productivity, and job
+satisfaction (see Figure 7).</p><p>Productivity, for example, is likely to
+increase by approximately 2.1% when
+an individual’s AI adoption is increased
+by 25% (see Figure 7). This might seem
+small, but this is at the individual-level.
+Imagine this pattern extended across
+tens of developers, or even tens of
+thousands of developers.</p><p>This pattern is what we expected.
+We believe it emerged in part thanks
+to AI’s ability to synthesize disparate
+sources of information and give a
+highly personalized response in a single
+location. Doing this on your own takes
+time, lots of context switching, and is less
+likely to foster flow.</p><p>Given the strong connection that
+productivity and flow have with job
+satisfaction, it shouldn’t be surprising
+that we see AI adoption leads to higher
+job satisfaction.</p><p>The potential tradeoffs</p><p>Here is where the story gets a little
+complicated. One value proposition for
+adopting AI is that it will help people
+spend more time doing valuable work.
+That is, by automating the manual,
+repetitive, toilsome tasks, we expect
+respondents will be free to use their time
+on “something better.” However, our
+data suggest that increased AI adoption
+may have the opposite effect—reducing
+reported time spent doing valuable
+work—while time spent on toilsome work
+appears to be unaffected.</p><p>Markers of respondents’ wellbeing, like
+flow, job satisfaction, and productivity
+have historically been associated with
+time spent doing valuable work. So,
+observed increases in these measures
+independently of decreases in time spent
+on valuable work are surprising.</p><p>A good explanation of these patterns
+will need to wrestle with this seeming
+incongruity. A good explanation of
+a movie cannot ignore a scene that
+contradicts the explanation. A good
+explanation of a book cannot ignore a
+chapter that doesn’t fit neatly into the
+explanation. Similarly, a good explanation
+of these patterns cannot just focus on a
+subset of the patterns that allows us to
+tell a simple story.</p><p>There are innumerable hypotheses that
+could fit the data, but we came up with a
+hypothesis that seems parsimonious with
+flow, productivity, and job satisfaction
+benefitting from AI while time spent
+doing valuable work decreases and toil
+remains unchanged.</p><p>We call our hypothesis the vacuum
+hypothesis. By increasing productivity
+and flow, AI is helping people work more
+efficiently. This efficiency is helping
+people finish up work they consider
+valuable faster.</p><p>This is where the vacuum is created;
+there is extra time. AI does not steal
+value from respondents’ work, it
+expedites its realization.</p><p><strong>Wait, what is valuable work?</strong></p><p>To make sense of these counterintuitive
+findings we explored more deeply what
+types of work respondents judge to be
+valuable or toilsome.</p><p>Traditional wisdom, our past reports,
+and qualitative data from our interviews
+suggest that respondents find
+development-related tasks, like coding,
+to be valuable work, while less-valuable,
+even toilsome, work typically includes
+tasks associated with organizational
+coordination, like attending meetings.
+Within this categorization scheme, AI
+is better poised to assist with “valuable”
+work than “toilsome” work, as
+defined by respondents.</p><p>We turned to qualitative data from
+our interviews and found that, when
+responding to the moderator’s question
+of whether or not they would consider
+their work “meaningful,” participants
+frequently measured the value of their
+work in relation to the impact of their
+work on others.</p><p>This is solidified by two years of past
+DORA evidence of the extremely
+beneficial impact of user-centricity
+on job satisfaction.</p><p>For example, when describing a recent
+role shift, P1012 indicated making the
+decision because “It helps me impact
+more people. It helps me impact more
+things.” Similarly, P11 noted “if you build
+something from scratch and see it&rsquo;s
+delivered to a consumer or customer,
+you can feel that achievement, you can
+say to yourself, ‘Yeah! I delivered this and
+people use that!’”</p><p>Understanding that the “meaningfulness”
+of development work is derived from
+the impact of the solution created—
+not directly from the writing of the
+code—helps explain why we observed
+respondents spending less time on
+valuable work, while also feeling more
+satisfied with their jobs.</p><p>While AI is making the tasks people
+consider valuable easier and faster, it
+isn’t really helping with the tasks people
+don’t enjoy. That this is happening while
+toil and burnout remain unchanged,
+obstinate in the face of AI adoption,
+highlights that AI hasn’t cracked the
+code of helping us avoid the drudgery of
+meetings, bureaucracy, and many other
+toilsome tasks (Figure 8).</p><p>The good news is that AI hasn’t made
+it worse, nor has it negatively affected
+respondents’ wellbeing.</p><p>Figure 8: Not data, but a visualization of our hypothesis: AI is
+helping with our valuable work, but not helping us with our toil.</p><h3 id=the-promising-impact-of-ai-on-development-workflows>The promising impact of AI on development workflows</h3><p>The last section explored outcomes
+focused on the individual. The next
+set of outcomes shift focus to explore
+processes, codebases, and team
+coordination. Here is a list of the
+outcomes we measured:</p><div class=table-wrapper><table><thead><tr><th>Metric</th><th>Description</th></tr></thead><tbody><tr><td>Code complexity</td><td>The degree to which code’s intricacy and sophistication hinders productivity.</td></tr><tr><td>Technical debt</td><td>The extent to which existing technical debt within the primary application or service has hindered productivity over the past six months.</td></tr><tr><td>Code review speed</td><td>The average time required to complete a code review for the primary application or service.</td></tr><tr><td>Approval speed</td><td>The typical duration from proposing a code change to receiving approval for production use in the primary application or service.</td></tr><tr><td>Cross-functional team (XFN) coordination</td><td>The level of agreement with the statement: &ldquo;Over the last three months, I have been able to effectively collaborate with cross-functional team members.”</td></tr><tr><td>Code quality</td><td>The level of satisfaction or dissatisfaction with the quality of code underlying the primary service or application in the last six months.</td></tr><tr><td>Documentation quality</td><td>The perception of internal documentation (manuals, readmes, code comments) in terms of its reliability, findability, updatedness, and ability to provide support.</td></tr></tbody></table></div><p>As before, our goal here is to understand
+if these aspects seem to vary as a
+function of adopting AI. Figure 9 is
+a visualization that shows our best
+estimates of the change in these
+outcomes in relation to a 25% increase
+in AI adoption.</p><p>Overall, the patterns here suggest a
+very compelling story for AI. Here are the
+substantial results from this section.</p><p>A 25% increase in AI adoption is
+associated with a…</p><p>7.5% increase in documentation quality
+3.4% increase in code quality
+3.1% increase in code review speed
+1.3% increase in approval speed
+1.8% decrease in code complexity</p><p>If AI adoption increases by 25%..</p><p>Point = estimated value
+Error bar = 89% uncertainty interval
+Figure 9: Impacts of AI adoption on organizations.</p><p>The data presented in the &ldquo;Artificial
+intelligence: adoption and attitudes&rdquo;
+chapter show the most common
+use of AI is for writing code. 67% of
+respondents report that AI is helping
+them improve their code. Here, we see
+further confirmation of that sentiment.
+AI seems to improve code quality and
+reduce code complexity (Figure 9).
+When combined with some potential
+refactoring of old code, the high-quality,
+AI-generated code could lead to an
+overall better codebase. This codebase
+might be additionally improved by having
+better access to quality documentation,
+which people are using AI to generate
+(see Artificial intelligence: adoption and
+attitudes).</p><p>Better code is easier to review and
+approve. Combined with AI-assisted
+code reviews, we can get faster reviews
+and approvals, a pattern that has clearly
+emerged in the data (Figure 9).</p><p>Of course, faster code reviews and
+approvals do not equate to better and
+more thorough code review processes
+and approval processes. It is possible
+that we’re gaining speed through an
+over-reliance on AI for assisting in the
+process or trusting code generated by AI
+a bit too much. This finding is not at odds
+with the patterns in Figure 9, but it also
+not the obvious conclusion.</p><p>Further, it isn’t obvious whether the
+quality of the code and the quality of the
+documentation are improving because
+AI is generating it or if AI has enhanced
+our ability to get value from what would
+have otherwise been considered lowquality
+code and documentation. What
+if the threshold for what we consider
+quality code and documentation simply
+moves down a little bit when we’re using
+AI because AI is powerful enough to help
+us make sense of it? These two ways of
+understanding these patterns are not
+mutually exclusive interpretations; both
+could be contributing to these patterns.</p><p>What seems clear in these patterns is
+that AI helps people get more from the
+documents they depend on and the
+codebases they work on. AI also helps
+reduce costly bottlenecks in the code
+review and approval process. What isn’t
+obvious is how exactly AI is doing this
+and if these benefits lead to further
+downstream benefits, such as software
+delivery improvements.</p><h3 id=ai-is-hurting-delivery-performance>AI is hurting delivery performance</h3><p>For the past few years, we have seen that software delivery
+throughput and software delivery stability indicators were
+starting to show some independence from one another.
+While the traditional association between throughput and
+stability has persisted, emerging evidence suggests these
+factors operate with sufficient independence to warrant
+separate consideration.</p><p>If AI adoption increases by 25%..</p><p>Point = estimated value
+Error bar = 89% uncertainty interval
+Figure 10: Impacts of AI adoption on delivery throughput and stability.</p><p>Contrary to our expectations, our
+findings indicate that AI adoption is
+negatively impacting software delivery
+performance. We see that the effect on
+delivery throughput is small, but likely
+negative (an estimated 1.5% reduction
+for every 25% increase in AI adoption).
+The negative impact on delivery stability
+is larger (an estimated 7.2% reduction for
+every 25% increase in AI adoption). These
+data are visualized in Figure 10.</p><p>Historically, our research has found
+that improvements to the software
+development process, including
+improved documentation quality, code
+quality, code review speed, approval
+speed, and reduced code complexity
+lead to improvements in software
+delivery. So, we were surprised to see
+AI improve these process measures,
+while seemingly hurting our performance
+measures of delivery throughput
+and stability.</p><p>Drawing from our prior years’ findings,
+we hypothesize that the fundamental
+paradigm shift that AI has produced in
+terms of respondent productivity and
+code generation speed may have caused
+the field to forget one of DORA’s most
+basic principles—the importance of
+small batch sizes. That is, since AI allows
+respondents to produce a much greater
+amount of code in the same amount
+of time, it is possible, even likely, that
+changelists are growing in size. DORA
+has consistently shown that larger
+changes are slower and more prone to
+creating instability.</p><p>Considered together, our data
+suggest that improving the
+development process does not
+automatically improve software
+delivery—at least not without proper
+adherence to the basics of successful
+software delivery, like small batch sizes
+and robust testing mechanisms.</p><p>So, it is optimistic that AI has positive
+impacts on many important individual
+and organizational factors which
+foster the conditions for high software
+delivery performance. But, AI does not
+appear to be a panacea.</p><h3 id=high-performing-teams-and-organizations-use-ai-but-products-dont-seem-to-benefit>High-performing teams and organizations use AI, but products don’t seem to benefit.</h3><p>Here we look at AI&rsquo;s relationship with
+our most downstream outcomes:</p><p>Organizational performance
+This is a factor score that accounts for an organization&rsquo;s overall performance, profitability, market share, total customers, operating efficiency, customer satisfaction, quality of products/services, ability to achieve goals.
+Team performance
+This is a factor score that accounts for a team’s ability to collaborate, innovate, work efficiently, rely on each other, and adapt.
+Product performance
+This is a factor score that accounts for the usability, functionality, value, availability, performance (for example, latency), and security of a product.</p><p>Drawing a connection from these
+outcomes to an individual adopting AI
+is difficult and noisy. Sometimes it feels
+like we’re trying to analyze the impact of
+what you had for lunch today on how well
+your organization performs this year.</p><p>There is a logic to making jumps
+between the micro-level (for example,
+an individual) to the macro-level
+(for example, an organization). We
+discuss that inferential leap in the
+Methodology chapter. For now, let’s
+just check out the associations:</p><p>If AI adoption increases by 25%..</p><p>Point = estimated value
+Error bar = 89% uncertainty interval
+Figure 11. Impacts of AI adoption on organizational, team, and product performance.</p><p>Organization-level performance (an
+estimated 2.3% increase for every 25%
+increase in AI adoption) and team-level
+performance (an estimated 1.4% increase
+for every 25% increase in AI adoption)
+seem to benefit from AI adoption (Figure
+11). Product performance, however, does
+not seem to have an obvious association
+with AI adoption. Now, we can shift to
+trying to understand what is underlying
+these effects.</p><p>We hypothesize that the factors
+contributing to strong team and
+organizational performance differ from
+those influencing product performance.</p><p>Teams and organizations rely heavily
+on communication, knowledge sharing,
+decision making, and healthy culture. AI
+could be alleviating some bottlenecks in
+those areas, beneficially impacting teams
+and the organizations.</p><p>Product success, however, might involve
+additional factors. Although good
+products surely have similar underlying
+causes as good high performing teams
+and organizations, there is likely a closer
+and more direct connection to the
+development workflow and the software
+delivery, both of which may be still
+stabilizing after the introduction of AI.</p><p>The unique importance of technical
+aspects underlying a good product
+might explain part of it, but there is
+also an art and empathy underlying a
+great product. This might be difficult to
+believe for people who think everything
+is a problem to be resolved through
+computation, but certain elements of
+product development, such as creativity
+or user experience design, may still (or
+forever) heavily rely on human intuition
+and expertise.</p><p>The fact remains that organization,
+team, and product performance are
+undeniably interconnected. When looking
+at bivariate correlations (Pearson), we
+find product performance has a medium
+positive correlation with both team
+performance (r = 0.56, 95% confidence
+interval = 0.51 to 0.60) and organizational
+performance (r = 0.47, 95% confidence
+interval = 0.41 to 0.53).</p><p>These outcomes influence each
+other reciprocally, creating clear
+interdependencies. High-performing
+teams tend to develop better products,
+but inheriting a subpar product
+can hinder their success. Similarly,
+high-performing organizations foster
+high-performing teams through
+resources and processes, but
+organizational struggles can stifle team
+performance. Therefore, if AI adoption
+significantly benefits teams and
+organizations, it&rsquo;s reasonable to expect
+benefits for products to emerge as well.</p><p>The adoption of AI is just starting.
+Some benefits and detriments may take
+time to materialize, either due to the
+inherent nature of AI&rsquo;s impact or the
+learning curve associated with
+its effective utilization.</p><p>Perhaps the story is simply that
+we&rsquo;re figuring out how AI can help
+organizations and teams before
+we’ve fully realized its potential for
+product innovation and development.
+Figure 12 tries to visualize how this
+might be unfolding.</p><p>Figure 12: Representations of different learning curves. This is an abstraction for demonstrative
+purposes. This is not derived from real data.</p><h3 id=so-now-what>So now what?</h3><p>We wanted to understand the potential
+of AI as it currently stands to help
+individuals, teams, and organizations. The
+patterns that are emerging underscore
+that it isn’t all hot air; there really is
+something happening.</p><p>There is clear evidence in favor
+of adopting AI. That said, it is also
+abundantly clear that there are plenty of
+potential roadblocks, growing pains, and
+ways AI might have deleterious effects.</p><p>Adopting AI at scale might not be as
+easy as pressing play. A measured,
+transparent, and adaptable strategy
+has the potential to lead to substantial
+benefits. This strategy is going to need
+to be co-developed by leaders, teams,
+organizations, researchers, and those
+developing AI.</p><p>Leaders and organizations need to find
+ways to prioritize adoption in the areas
+that will best support their employees.</p><p>Here are some thoughts
+about how to orient your
+AI adoption strategy:</p><p>Define a clear AI mission and
+policies to empower your
+organization and team.</p><p>Provide employees with transparent
+information about your AI mission,
+goals, and AI adoption plan. By
+articulating both the overarching
+vision and specific policies —
+addressing procedural concerns
+such as permitted code placement
+and available tools — you can
+alleviate apprehension and position
+AI as a means to help everyone focus
+on more valuable, fulfilling,
+and creative work.</p><p>Create a culture of continuous
+learning and experimentation
+with AI.</p><p>Foster an environment that
+encourages continuous exploration
+of AI tools by dedicating time for
+individuals and teams to discover
+beneficial use cases and granting
+them autonomy to chart their
+own course. Build trust with AI
+technologies through hands-on
+experience in sandbox or low-risk
+environments. Consider further
+mitigating risks by focusing on
+developing robust test automation.
+Implement a measurement
+framework that evaluates AI not by
+sheer adoption but by meaningful
+downstream impacts — how it helps
+employees thrive, benefits those who
+rely on your products, and unlocks
+team potential.</p><p>Recognize and leverage AI’s tradeoffs
+for competitive advantage.</p><p>By acknowledging potential
+drawbacks — such as reduced
+time spent on valuable work, overreliance
+on AI, the potential for
+benefits gained in one area leading
+to challenges in another, and impacts
+on software delivery stability and
+throughput — you can identify
+opportunities to avoid pitfalls and
+positively shape AI’s trajectory at
+your organization, on your team.
+Developing an understanding not
+only of how AI can be beneficial, but
+of how it can be detrimental allows
+you to expedite learning curves,
+support exploration, and translate
+your learnings into action and a real
+competitive advantage.</p><p>It is obvious that there is a lot to be excited about and even more to learn. DORA will
+stay tuned in and do our best to offer honest, accurate, and useful perspectives, just
+as it has over the past decade.</p><p>&ndash; to be continued &ndash;</p></section><footer class=article-footer><section class=article-tags><a href=/en/tags/dora/>DORA</a></section><section class=article-copyright><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="12" cy="12" r="9"/><path d="M14.5 9a3.5 4 0 100 6"/></svg>
+<span>署名-非商业性使用-禁止演绎 4.0 (CC BY-NC-ND 4.0)</span></section></footer></article><div class=disqus-container><div id=disqus_thread></div><script>window.disqus_config=function(){},function(){if(["localhost","127.0.0.1"].indexOf(window.location.hostname)!=-1){document.getElementById("disqus_thread").innerHTML="Disqus comments not available by default when the website is previewed locally.";return}var t=document,e=t.createElement("script");e.async=!0,e.src="//martinliu.disqus.com/embed.js",e.setAttribute("data-timestamp",+new Date),(t.head||t.body).appendChild(e)}()</script><noscript>Please enable JavaScript to view the <a href=https://disqus.com/?ref_noscript>comments powered by Disqus.</a></noscript><a href=https://disqus.com class=dsq-brlink>comments powered by <span class=logo-disqus>Disqus</span></a></div><style>.disqus-container{background-color:var(--card-background);border-radius:var(--card-border-radius);box-shadow:var(--shadow-l1);padding:var(--card-padding)}</style><script>window.addEventListener("onColorSchemeChange",e=>{typeof DISQUS=="object"&&DISQUS.reset({reload:!0})})</script><footer class=site-footer><section class=copyright>&copy;
+2007 -
+2024 Martin Liu's Blog</section><section class=powerby>本博客始于 2007 年<br>Built with <a href=https://gohugo.io/ target=_blank rel=noopener>Hugo</a><br>Theme <b><a href=https://github.com/CaiJimmy/hugo-theme-stack target=_blank rel=noopener data-version=4.0.0-alpha.2>Stack</a></b> designed by <a href=https://jimmycai.com target=_blank rel=noopener>Jimmy</a></section></footer><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/photoswipe@5.2.7/dist/photoswipe.css integrity="sha256-olf9rfn3AG8zR6lkPXkN3PZq63z8tElx7Ela6T4eklo=" crossorigin=anonymous><script type=module>
+    import StackGallery from '\/ts\/gallery.js';
+    import PhotoSwipeLightbox from 'https://cdn.jsdelivr.net/npm/photoswipe@5.2.7/dist/photoswipe-lightbox.esm.min.js';
+    
+    console.log(StackGallery)
+    StackGallery(document.querySelector('.article-content'));
+
+    const lightbox = new PhotoSwipeLightbox({
+        gallery: '.article-content',
+        children: '.gallery-image a',
+        pswpModule: () => import('https://cdn.jsdelivr.net/npm/photoswipe@5.2.7/dist/photoswipe.esm.min.js')
+    });
+    lightbox.init();
+</script></main></div><script type=text/javascript src=/ts/main.js defer></script><script>(function(){const e=document.createElement("link");e.href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap",e.type="text/css",e.rel="stylesheet",document.head.appendChild(e)})()</script></body></html>
