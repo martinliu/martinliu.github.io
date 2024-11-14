@@ -10,7 +10,7 @@ tags:
     - DORA
 comments: true
 toc: true
-
+draft: true
 ---
 
 
@@ -1605,6 +1605,1020 @@ competitive advantage.
 It is obvious that there is a lot to be excited about and even more to learn. DORA will
 stay tuned in and do our best to offer honest, accurate, and useful perspectives, just
 as it has over the past decade.
+
+
+## Platform engineering
+
+### Introduction
+
+Platform engineering is an emerging
+engineering discipline that has been
+gaining interest and momentum across
+the industry. Industry leaders such as
+Spotify and Netflix, and books such as
+Team Topologies1 have helped excite
+audiences.
+
+Platform engineering is a sociotechnical
+discipline where engineers focus on
+the intersection of social interactions
+between different teams and the
+technical aspects of automation, selfservice,
+and repeatability of processes.
+The concepts behind platform
+engineering have been studied for many
+years, including by DORA.
+
+Generally, our research is focused on
+how we deliver a software to external
+users, whereas the output of platform
+teams is typically an inwardly-focused
+set of APIs, tools, and services designed
+to support the software development
+and operations lifecycle.
+
+In platform engineering, a lot of energy
+and focus is spent on improving the
+developer experience by building golden
+paths, which are highly-automated,
+self-service workflows that users of
+the platform use when interacting
+with resources required to deliver and
+operate applications. Their purpose is
+to abstract away the complexities of
+building and delivering software such
+that the developer only needs to worry
+about their code.
+
+Some examples of the tasks
+automated through golden paths
+include new application provisioning,
+database provisioning, schema
+management, test execution, build and
+deployment infrastructure provisioning,
+and DNS management.
+
+Concepts in platform engineering such
+as moving a capability down (sometimes
+called “shifting down”) into a shared
+system can seem counter to approaches
+like 'you build it, you run it.' However,
+we think of platform engineering as a
+method to scale the adoption of these
+practices across an organization because
+once a capability is in the platform,
+teams essentially get it for free through
+adoption of the platform.
+
+For example, if the platform has
+the capability to execute unit tests
+and report back results directly to
+development teams, but without that
+team needing to build and manage the
+testing execution environment, then the
+continuous integration platform feature
+enables teams to focus on writing
+high-quality tests. In this example, the
+continuous integration feature can scale
+across the larger organization and make
+it easier for multiple teams to improve
+their capabilities with continuous testing
+and test.
+
+A key factor in the success is to
+approach platform engineering with
+user-centeredness (users in the context
+of an internal developer platform are
+developers), developer independence,
+and a product mindset. This isn’t too
+surprising given that user centricity was
+identified as a key factor in improved
+organizational performance this year
+and in previous years.5 Without a usercentered
+approach, the platform will be
+more a hindrance rather than an aid.
+
+In this year’s report, we sought to test
+the relationship between platforms
+and software delivery and operations
+performance. We found some positive
+results. Internal developer platform
+users had 8% higher levels of individual
+productivity and 10% higher levels of
+team performance. Additionally, an
+organization's software delivery and
+operations performance increases
+6% when using a platform. However,
+these gains do not come without
+some drawbacks. Throughput and
+change stability saw decreases of 8%
+and 14%, respectively, which was a
+surprising result.
+
+In the next sections we’ll dig deeper
+into the numbers, nuances, and some
+surprising data that this survey revealed.
+Whether your platform engineering
+initiative is just starting or has been
+underway for many years, application of
+the key findings can help your platform
+be more successful.
+
+Each dot is one of 8000 estimates of the most plausible mean productivity score
+Figure 13: Productivity factor for individuals when using or not using an internal developer platform.
+
+### The promise of platform engineering
+
+Internal developer platforms are
+garnering interest from large sections
+of the software developer and IT
+industry given the potential efficiency
+and productivity gains that could be
+achieved through the practice. For this
+year’s survey, we left the definition of an
+internal developer platform quite broad6
+and found that 89% of respondents are
+using an internal developer platform.
+The interaction models are very diverse
+across that population.
+
+These data points align with the broad
+level of industry interest in platform
+engineering and the emerging nature
+of the field.
+
+Overall, the impact of a platform is
+positive, individuals were 8% more
+productive and teams performed
+10% better when using an internal
+developer platform.
+
+Beyond productivity, we also see
+gains when a platform is used in an
+organization’s overall performance, with
+an increase of 6%. On the whole, the
+organization is able to quickly deliver
+software, meet user needs, and drive
+business value due to the platform.
+
+Figure 14: Organization performance change when using an internal developer platform vs the age of the platform.
+
+When taking into account the age of the
+platform with productivity, we see initial
+performance gains at the onset of a
+platform engineering initiative, followed
+by decrease and recovery as the
+platform ages and matures. This pattern
+is typical of transformation initiatives
+as early gains are realized, and then
+headwinds are encountered as the easier
+gains have been realized.
+
+In the long run, productivity gains
+are maintained showing the overall
+potential of an internal developer
+platform’s role in the software delivery
+and operations processes.
+
+**Key finding - impact of developer independence**
+
+Developer independence had a
+significant impact on the level of
+productivity at both the individual and
+team levels when delivering software
+using an internal developer platform.
+Developer independence is defined
+as “existing users can perform their
+tasks for the entire application lifecycle,
+without relying on an enabling team.”
+
+At both the team and individual level we
+see a 5% improvement in productivity
+when users of the platform are able to
+complete their tasks without involving an
+enabling team. This finding points back
+to one of the key principles of platform
+engineering, focusing on enabling selfservice
+workflows.
+
+For platform teams, this is key because
+it points to an important part of the
+platform engineering process, collecting
+feedback from users. Survey responses
+did not indicate which forms of feedback
+are most effective, but common
+methods are informal conversations
+and issue trackers, followed by ongoing
+co-development, surveys, telemetry,
+and interviews.
+
+All of these methods can be effective
+at understanding whether or not
+users are able to complete their tasks
+independently. The survey data also
+showed that not collecting feedback on
+the platform has a negative impact.
+
+**Secondary finding - impact of a dedicated platform team**
+
+Interestingly, the impact on productivity
+of having a dedicated platform team
+was negligible for individuals. However,
+it resulted in a 6% gain in productivity
+at the team level. This finding is
+surprising because of its uneven impact,
+suggesting that having a dedicated
+platform team is useful to individuals,
+but the dedicated platform team is more
+impactful for teams overall.
+
+Since teams have multiple developers
+with different responsibilities and skills,
+they naturally have a more diverse
+set of tasks when compared to an
+individual engineer. It is possible that
+having a dedicated platform engineering
+team allows the platform to be more
+supportive of the diversity in tasks
+represented by a team.
+
+
+Overall, the impact of having an
+internal developer platform has a
+positive impact on productivity.
+
+
+The key factors are:
+
+* A user-centered approach that
+enables developer independence
+through self-service and
+workflows that can be completed
+autonomously. Recall that in the
+context of the platform, users
+are internal engineering and
+development teams.
+* As with other transformations,
+the “j-curve” also applies to
+platform engineering, so productivity
+gains will stabilize through
+continuous improvement.
+
+**The unexpected downside**
+
+While platform engineering presents
+some definite upsides, in terms of teams
+and individuals feeling more productive
+and improvements in organizational
+performance, Platform engineering
+had an unexpected downside: We also
+found that throughput and change
+stability decreased.
+
+Unexpectedly, we discovered a very
+interesting linkage between change
+instability and burnout.
+
+**Throughput**
+
+In the case of throughput, we saw
+approximately an 8% decrease when
+compared to those who don’t use a
+platform. We have hypotheses about
+what might be the underlying cause.
+
+First, the added machinery that changes
+need to pass through before getting
+deployed to production decreases the
+overall throughput of changes. In general,
+when an internal developer platform is
+being used to build and deliver software,
+there is usually an increase in the number
+of “handoffs” between systems and
+implicitly teams.
+
+For example, when code is committed
+to source control, it is automatically
+picked up by different systems for
+testing, security checks, deployment,
+and monitoring.
+
+Each of these handoffs is an opportunity
+for time to be introduced into the
+overall process resulting in a decrease in
+throughput, but a net increase in ability
+to get work done.
+
+Second, for respondents who reported,
+they are required to “exclusively use the
+platform to perform tasks for the entire
+app lifecycle,” there was a 6% decrease
+in throughput. While not a definitive
+connection, it could also be related to
+the first hypothesis.
+
+If the systems and tools involved in
+developing and releasing software
+increases with the presence of a
+platform, being required to use the
+platform when it might not be fit for
+purpose or naturally-increasing latency
+in the process could account for the
+relationship between exclusivity and
+decrease in productivity.
+
+To counter this it is important to be
+user-centered and work toward
+user independence in your platform
+engineering initiatives.
+
+**Change instability and burnout**
+
+When considering the stability of the
+changes to applications being developed
+and operated when using an internal
+developer platform, we observed a
+surprising 14% decrease in change
+stability. This indicates that the change
+failure rate and rate of rework are
+significantly increased when a platform
+is being used.
+
+Even more interesting, in the results
+we discovered that instability in
+combination with a platform is linked
+to higher levels of burnout. That isn’t
+to say that platforms lead to burnout,
+but the combination of instability and
+platforms are particularly troublesome
+when it comes to burnout. Similar to
+the decrease in throughput, we aren’t
+entirely sure why the change in burnout
+occurs, but we have some hypotheses.
+
+First, the platform enables developers
+and teams to push changes with a higher
+degree of confidence that if the change
+is bad, it can be quickly remediated. In
+this instance the higher level of instability
+isn’t necessarily a bad thing since
+the platform is empowering teams to
+experiment and deliver changes, which
+results in an increased level of change
+failure and rework.
+
+A second idea is that the platform
+isn’t effective at ensuring the quality
+of changes and/or deployments
+to production.
+
+It could also be that the platform
+provides an automated testing
+capability that exercises whatever tests
+are included in the application. Yet
+application teams aren't fully using that
+capability by prioritizing throughput over
+quality and not improving their tests.
+In either scenario, bad changes are
+actually making it through the process,
+resulting in rework.
+
+A third possibility is that teams with
+a high level of change instability and
+burnout tend to create platforms in an
+effort to improve stability and reduce
+burnout. This makes sense because
+platform engineering is often viewed
+as a practice which reduces burnout
+and increases the ability to consistently
+ship smaller changes. With this
+hypothesis, platform engineering is
+symptomatic of an organization with
+burnout and change instability.
+
+In the first two scenarios, the rework
+allowed by the platform could be seen
+as burdensome which could also be
+increasing burnout. In particular, the
+second scenario where the platform is
+enabling bad changes would contribute
+more to burnout, but in both scenarios
+the team or individual could still feel
+productive because of their ability to
+push changes and features. In the third
+scenario, change instability and burnout
+are predictive of a platform engineering
+initiative and the platform is seen as a
+solution to those challenges.
+
+**Balancing the Trade-offs**
+
+While platform engineering is no
+panacea, it has the potential to be a
+powerful discipline when it comes
+to the overall software development
+and operations process. As with any
+discipline, platform engineering has
+benefits and drawbacks.
+
+Based on our research, there are a
+couple actions you can take to balance
+the trade-offs when embarking on a
+platform engineering initiative. Doing so
+will help your organization achieve the
+benefits of platform engineering while
+being able to monitor and manage any
+potential downsides.
+
+First, prioritize platform functionality
+that enables developer independence
+and self-service capabilities. When
+doing this, pay attention to the balance
+between exclusively requiring the
+platform to be used for all aspects of
+the application lifecycle, which could
+hinder developer independence.
+
+As good practice, a platform should
+provide methods for users of a platform
+to break out of the tools and automations
+provided in the platform, which
+contributes to independence, however,
+it comes at the cost of complexity.
+This trade-off can be mitigated with a
+dedicated platform team that actively
+collaborates with and collects feedback
+from users of the platform.
+
+
+Collaboration and feedback improve
+the user-centeredness of the platform
+initiative and will contribute to the longterm
+success of the platform. As we
+saw in the data, there are many different
+methods used to collect feedback, so
+employ more than one approach to
+maximize feedback collection.
+
+Second, carefully monitor the instability
+of your application changes and try
+to understand whether the instability
+being experienced is intentional or
+not. Platforms have the potential to
+unlock experimentation in the terms of
+instability, increase productivity, and
+improve performance at scale.
+
+However, that same instability can also
+have the potential to do this at the cost
+of instability and burnout, so it needs to
+be carefully monitored and accounted
+for throughout the platform engineering
+journey. When doing so it is important to
+understand your appetite for instability.
+Using service level objectives (SLOs)
+and error budgets from site reliability
+engineering (SRE) can help you gauge
+your risk tolerance and effectiveness
+of the platform in safely enabling
+experimentation.
+
+Internal developer platforms put a lot of
+emphasis on the developer experience,
+however, there are many other teams
+(including database administrators,
+security, and operations) who are
+required to effectively deliver and
+operate software.
+
+In your platform engineering initiatives,
+foster a culture of user-centeredness
+and continuous improvement across
+all teams and aligned with the
+organization’s goals.
+
+Doing so will align the platform’s
+features, services, and APIs to best serve
+individual and team needs as they work
+to deliver software and business value.
+
+## Developer experience
+
+Takeaways
+Software doesn’t build itself. Even
+when assisted by AI, people build
+software, and their experiences at
+work are a foundational component
+of successful organizations.
+
+In this year’s report, we again found
+that alignment between what developers
+build and what users need allows
+employees and organizations to thrive.
+Developers are more productive,
+less prone to experiencing burnout,
+and more likely to build high quality
+products when they build software
+with a user-centered mindset.
+
+Ultimately, software is built for people,
+so it’s the organization’s responsibility to
+foster environments that help developers
+focus on building software that will
+improve the user experience. We also
+find that stable environments, where
+priorities are not constantly shifting,
+lead to small but meaningful increases in
+productivity and important, meaningful
+decreases in employee burnout.
+
+Environmental factors have substantial
+consequences in the quality of the
+products developed, and the overall
+experience of developers whose job
+is to build those products.
+
+**Put the user first, and (almost) everything else falls into place**
+
+We think that the job of a developer
+is pretty cool. Developers are at the
+forefront of technological advancements
+and help shape how we live, work, and
+interact with the world.
+
+Their jobs are fundamentally tied to
+people–the users of the software and
+applications they create. Yet developers
+often work in environments that prioritize
+features and innovation. There’s less
+emphasis on figuring out whether these
+features provide value to the people who
+use the products they make.
+
+
+Here we provide compelling evidence
+showing that an approach to software
+development that prioritizes the end
+user positively impacts employees and
+organizations alike.
+
+
+This year, we asked questions focused
+on understanding whether developers:
+
+1. Incorporate user feedback to revisit
+and reprioritize features
+2. Know what users want to accomplish
+with a specific application/service
+3. Believe focusing on the user is key to
+the success of the business
+4. Believe the user experience is a top
+business priority
+
+**Our findings and what they mean**
+
+Our data strongly suggests that
+organizations that see users’ needs
+and challenges as a guiding light
+make better products.
+
+We find that focusing on the user
+increases productivity and job
+satisfaction, while reducing the
+risk of burnout.
+
+Importantly, these benefits extend
+beyond the individual employee to
+the organization. In previous years,
+we’ve highlighted that high performing
+organizations deliver software quickly
+and reliably. The implication is that
+software-delivery performance is a
+requirement for success.
+
+However, our data indicates there’s
+another path that leads to success:
+
+* Developers and their employers,
+and organizations in general, can
+create a user-centered approach to
+software development.
+* We find that when organizations know
+and understand users’ needs, stability
+and throughput of software delivery are
+not a requirement for product quality.
+Product quality will be high as long as the
+user experience is at the forefront.
+* When organizations don’t focus on
+the user, don’t incorporate user
+feedback into their development
+process, doubling down on stable
+and fast delivery is the only path to
+product quality (see Figure 15).
+
+We understand the inclination that
+some organizations might have to focus
+on creating features and innovating
+on technologies. At face value, this
+approach makes sense. After all,
+developers most certainly know the ins
+and outs of the technology much better
+than their average user.
+
+However, developing software based on
+assumptions about the user experience
+increases the likelihood of developers
+building features that are perhaps shiny
+but hardly used.
+
+When organizations and employees
+understand how their users experience
+the world, they increase the likelihood
+of building features that address the real
+needs of their users. Addressing real user
+needs increases the chances of those
+features being actually used.
+
+Focus on building for your user and
+you will create delightful products.
+
+Figure 15: Product performance and delivery throughout across 3 levels of user centricity
+
+**Why is a user centered approach to software development such a powerful philosophy and practice?**
+
+Academic research shows that deriving
+a sense of purpose from work benefits
+employees and organizations.2,3
+
+For example, a recent survey showed
+that 93% of workers reported that it’s
+important to have a job where they feel
+the work they do is meaningful.4 In a
+similar vein, another survey found that
+on average, respondents were willing
+to relinquish 23% of their entire future
+earnings if it meant they could have a
+job that was always meaningful.
+
+That’s an eye-popping trade-off
+employees are willing to make. It tells us
+something about what motivates people,
+and that people want to spend their time
+doing something that matters.
+
+“It would be grand if everybody
+could work at a company that
+affects individuals outside of
+the company, or [in] your local
+community in a positive way. That’s
+not always the case. That’s not
+always possible. A lot of the grand
+vision of autonomous driving is
+that it is going to enable people
+that can drive [to] sleep while
+they’re on a motorway. That’s not
+why I’m here. I want to help people
+that can’t drive to be able to get
+about, wherever they want, have
+the freedom to do whatever they
+want to do.” (P2)
+
+**Provides a clear sense of direction:**
+
+* A user-centered approach to software
+development can fundamentally alter
+how developers view their work. Instead
+of shipping arbitrary features and
+guessing whether users might use them,
+developers can rely on user feedback to
+help them prioritize what to build.
+* This approach gives developers
+confidence that the features they are
+working on have a reason for being.
+Suddenly, their work has meaning: to
+ensure people have a superb experience
+when using their products and services.
+There’s no longer a disconnect between
+the software that’s developed and the
+world in which it lives.
+* Developers can see the direct
+impact of their work through the
+software they create.
+
+“We are, as a company, under
+pressure to deliver. So, all of
+these, like, nice shiny things, or
+discussion points about how you
+want to improve, it’s kind of, like,
+with the recent change in how
+we’re structured, we’re focusing
+on delivery, not quality, and for
+me, personally, that’s kind of a big
+bugbear.” (P9)
+
+**Increases cross-functional collaborations:**
+
+Even the most talented developer
+doesn’t build software on their own.
+Building high-quality products takes the
+collaboration of many people often with
+different yet complementary talents.
+
+A user-centered approach to
+development allows developers
+to engage in cross-functional
+collaborations across the organization.
+In doing so, their responsibilities
+extend beyond simply shipping
+software. They are now part of a team
+driven to create incredible experiences
+for the people who use them.
+
+This approach to software development
+can help developers break out of silos,
+seek alignment, foster teamwork, and
+create opportunities to learn more from
+others. Problem solving takes a different
+shape. It’s not just about how to solve
+technical problems, but how to do so in
+ways that serve the user best.
+
+This approach can help increase
+employee engagement and create an
+even more intellectually-stimulating
+environment that can stave off
+the feelings of stagnation that are
+associated with burnout.
+
+### What can organizations do?
+
+Based on our findings, we recommend
+organizations invest time and resources
+in getting to know their users. Focus on
+understanding who you are building for,
+and the challenges they experience.
+We strongly believe this is a worthy
+investment.
+
+Resist the temptation to make
+assumptions about your users. Observe
+them in their environments, ask them
+questions, and be humble enough
+to pivot based on what they tell you.
+In doing so, developers will be more
+productive and be less prone to burnout
+while delivering higher quality products.
+
+**The combination of good docs and a user centered approach to software development is a powerful one.**
+
+Teams that focus on the user see an
+increase in product performance. When
+this focus on the user is combined
+with an environment of quality internal
+documentation, this increase in product
+performance is amplified (see Figure 16).
+This finding is similar to the behavior that
+we see where documentation amplifies
+a technical capability’s impact on
+organizational performance.
+
+Documentation helps propagate user
+signals and feedback across the team
+and into the product itself.
+
+We see that internal documentation
+doesn’t meaningfully affect predicted
+product performance without user
+signals. However, if a team has a high
+quality internal documentation then user
+signals included in it will have a higher
+impact on product performance.
+
+We started to look at documentation
+in 2021, and every year we continue
+to find extensive impact of quality
+documentation. This year’s findings
+adds internal documentation’s impact
+on predicted product performance
+to the list.
+
+*The graph is a composite of 12000 lines from simulations trying to estimate the most plausible pattern
+Figure 16: Product performance and documentation quality across 3 levels of user centricity
+
+**Culture of documentation**
+The Agile manifesto advocates for
+“working software over comprehensive
+documentation”. We continue to find,
+however, that quality documentation is
+a key component of working software.
+
+“Comprehensive documentation”
+may be a phrase standing in for
+unhealthy practices, which might
+include documentation. Problematic
+documentation includes content that
+is created only for bureaucratic
+purposes, or to paper over mistrust
+between management and employees.
+An unhealthy documentation culture
+can also include writing documentation,
+but not maintaining or consolidating
+the content.
+
+In these cases, our measure of quality
+content would likely score low. This
+type of content is written for the wrong
+audience so doesn’t perform as well
+when you try to use it while doing your
+work. And too much documentation can
+be as problematic as not enough content.
+
+Our measure of quality documentation
+includes attributes like findability and
+reliability of the content. Remember,
+for internal documentation, the primary
+audience is your colleagues or even
+your future self trying to accomplish
+specific tasks.8 Teams with a healthy
+documentation culture have a focus on
+serving these readers. This is another
+way that focusing on your users matters.
+
+You can create a healthy culture of documentation on your own teams by
+following the practices we’ve identified to create quality documentation,
+such as:
+
+* Documenting critical use cases.
+* Taking training in technical writing.
+* Defining ownership and processes to update the documentation.
+* Distributing documentation work within the team.
+* Maintaining documentation as part of the software development lifecycle.
+* Deleting out-of-date or redundant documentation.
+* Recognizing documentation work in performance reviews and promotions.
+
+### The perils of ever-shifting priorities
+
+We all know the feeling. You’ve spent
+the last few months working on a new
+feature. You know it’s the right thing to
+build for your users, you are focused and
+motivated. Suddenly, or seemingly so, the
+leadership team decides to change the
+organization’s priorities. Now it’s unclear
+whether your project will be paused,
+scrapped, Frankensteined, or mutated.
+
+This common experience can have
+profound implications for employees and
+organizations. Here we examine what
+happens when organizations constantly
+shift their priorities.
+
+**Our findings and what they mean**
+
+Overall, our findings show small
+but meaningful decreases in
+productivity and substantial increases
+in burnout when organizations have
+unstable priorities.
+
+Our data indicates it is challenging
+to mitigate this increase in burnout.
+We examined whether having strong
+leaders, good internal documents, and
+a user-centered approach to software
+development can help counteract the
+effect of shifting priorities on burnout.
+
+The answer is: They can’t. An organization
+can have all these positive traits and, if
+priorities are unstable, employees will still
+be at risk of experiencing burnout.
+
+**Why are unstable organizational priorities bad for employees’ well-being?**
+
+We hypothesize that unstable
+organizational priorities increase
+employee burnout by creating unclear
+expectations, decreasing employees'
+sense of control, and increasing the
+size of their workloads.
+
+To be clear, we believe that the
+problem is not with changing priorities
+themselves. Business goals and product
+direction shift all the time. It can be good
+for organizational priorities to
+be malleable.
+
+We believe it is the frequency with which
+priorities change that has a negative
+impact on employees' well-being.
+The uncertainty that accompanies
+unstable priorities implies something
+chronic about the frequency with which
+priorities change.
+
+Decades of academic research
+have shown the detrimental effects of
+chronic stress on health and well-being9.
+We see parallels between research on
+chronic stress and our findings.
+Chronic instability increases uncertainty
+and decreases perceived control.
+This combination is an excellent recipe
+for burnout.
+
+**What happens when priorities stabilize?**
+
+Our findings here are a little puzzling.
+We find that when priorities are
+stabilized, software delivery performance
+declines. It becomes slow and less stable
+in its delivery.
+
+We hypothesize that this might be
+because organizations with stable
+priorities might have products and
+services that are generally in good shape
+so changes are made less frequently. It
+is also possible that stability of priorities
+leads to shipping less and in larger
+batches than recommended.
+
+Nevertheless, we find this to be an
+unexpected finding. Why do you think
+stabilizing organizational priorities
+decreases the speed and stability
+of software delivery?
+
+**Building AI for end users creates stability in priorities, but not stability in delivery.**
+
+Incorporating AI-powered experiences
+for end users stabilizes organizational
+priorities. This sounds like a flashy
+endorsement for AI. However, we do
+not interpret this finding as telling us
+something meaningful about AI itself.
+
+Instead, we believe that shifting efforts
+towards building AI provides clarity and
+a northstar for organizations to follow.
+This clarity, and not AI, is what leads to a
+stabilization of organizational priorities.
+
+This is worth highlighting because it tells
+us something about what happens to
+organizations when new technologies
+emerge. New technologies bring change
+and organizations need time to adapt.
+
+This period likely leads to a
+destabilization of priorities as leaders
+try to figure the best move for the
+organization. As the dust settles, and
+organizations clarify their next steps,
+priorities begin to stabilize.
+
+Priorities stabilizing, however, doesn’t
+immediately translate into the software
+delivery process stabilizing. Our analyses
+show that a shift to adding AI-powered
+experiences into your service or
+application comes with challenges and
+growing pains.
+
+We find that teams that have shifted have
+a significant 10% decrease in software
+delivery stability relative to teams who
+have not. Here is a visualization depicting
+the challenge.
+
+*Each line is one of 4000 simulations trying to estimate the most plausible pattern
+Figure 17: Software delivery stability as a function of adding AI-powered experiences to service or application
+
+**What can organizations do?**
+
+The answer, while easy, might not be
+so simple. Based on our findings, we
+recommend organizations focus on
+stabilizing their priorities. This is one sure
+way to counteract the negative effects of
+unstable priorities on employee burnout.
+
+Our findings show the negative effects
+of unstable priorities are resistant
+to having good leaders, good
+documentation, and a user-centered
+approach to software development.
+This leads us to believe that, aside from
+creating stability, there’s not much
+organizations can do to avoid burnout
+aside from finding ways to (1) stabilize
+priorities and (2) shield employees from
+having their day-to-day be impacted by
+the constant shift in priorities.
+
 
 
 -- to be continued --

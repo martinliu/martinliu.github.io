@@ -17,7 +17,8 @@ toc: true
 
 使用 Azure CLI 创建 K8S 集群是一种非常简单易用的方式。你可以在任何操作系统中安装 Azure CLI 命令行工具； 或者启动含有 Azure CLI 的容器，然后在容器内使用 Azure CLI 。
 
-{{< bilibili BV18Q4y187ng >}}
+{{< bilibili "BV18Q4y187ng" >}}
+{{< bilibili "BV1d4411N7zD" >}}
 
 ## 准备 Azure CLI
 
