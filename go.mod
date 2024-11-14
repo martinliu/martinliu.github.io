@@ -1,7 +1,4 @@
-module github.com/CaiJimmy/hugo-theme-stack/v3
+module github.com/martinliu.github.io
 
-go 1.17
+go 1.22.5
 
-require (
-	github.com/CaiJimmy/hugo-theme-stack/v4 v4.0.0-alpha.2 // indirect
-)
