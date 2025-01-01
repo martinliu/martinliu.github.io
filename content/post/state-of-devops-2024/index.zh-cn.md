@@ -1,5 +1,5 @@
 ---
-title: "《DORA 2024年 加速：DevOps 现状报告》（持续更新中）"
+title: "《DORA 2024年 加速：DevOps 现状报告》（停更，静候官方中文版）"
 date: 2024-10-28T15:17:39+08:00
 description:  《DORA 2024年 加速：DevOps 现状报告》简体中文版，提供 PDF 下载。
 slug: state-of-devops-2024
@@ -14,6 +14,8 @@ toc: true
 ---
 
 [【中文试读版 PDF 文件】- 即将完成](2024-dora-accelerate-state-of-devops-report-zh-cn-martinliu.pdf) | [【英文版全文 PDF 文件】](2024_final_dora_report.pdf)
+
+> 官方中文版本尚未发布，请关注：https://dora.dev/research/2024/ 以获取最新信息。2023 年和之前 Google 官方发布的多语言版本报告，也可以在这里找到。
 
 ## 内容提要
 
