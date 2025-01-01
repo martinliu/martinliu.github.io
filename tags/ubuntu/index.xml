@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Ubuntu on Martin Liu's Blog</title><link>https://martinliu.cn/tags/ubuntu/</link><description>Recent content in Ubuntu on Martin Liu's Blog</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><lastBuildDate>Sun, 10 Apr 2011 11:11:27 +0000</lastBuildDate><atom:link href="https://martinliu.cn/tags/ubuntu/index.xml" rel="self" type="application/rss+xml"/><item><title>让Ubuntu飞一会儿</title><link>https://martinliu.cn/2011/04/10/let-ubuntu-fly/</link><pubDate>Sun, 10 Apr 2011 11:11:27 +0000</pubDate><guid>https://martinliu.cn/2011/04/10/let-ubuntu-fly/</guid><description>&lt;p>很久以前我一直使用的 rpm based Linux，原因很简单，我只要手握一张最新的 DVD，就可以走遍天下都不怕，特别是对 SuSE Linux 的 yast 很依赖，因为它可以帮我解决 rpm 包之间的依赖性。这样工作起来就很简单，基本上是搜索到软件包之后，点击安装既可以搞定所有的软件安装工作。&lt;/p>
+&lt;p>来到 Ubuntu 世界的我并不很满意，最近一次的 apt-get update，以失败告终，险些把家里的 PC 的一块硬盘给搞丢了，因为升级失败导致分区表失效了，Win 操作系统不认了。直接崩溃，好在那 Live Cd 模式进入还能勉强看得那个盘里的东西，恢复到移动硬盘，重新格式化该分区，才把文件恢复了。着实让我虚惊一场。&lt;/p>
+&lt;p>&lt;img src="http://img3.cache.netease.com/www/logo/logo_png.png"
+loading="lazy"
+>我比较喜欢一些小的 LAMP 堆栈式安装的 Linux，如 TurnkeyLinux。安装可以在 10 分钟内搞定系统安装。今年家里的宽度升级到 2MB 了，因此带宽上逐渐能满足 Ubuntu 这种从网上升级的需求。下面就是找国内的升级的源了，进过几个月的使用，最近觉得在北京的联通固定宽带的用户，使用 163 的镜像站点速度还是不错的。再次感谢国内的这样的无私奉献的公司，使得在国内的开源用户可以更快更方便。废话说了一堆：）哈哈下面也就是这几条命了的事情。&lt;/p>
+&lt;p>第一步，当然要选择近水楼台的 163 了，来参考http://mirrors.163.com/.help/ubuntu.html 的帮助文档，根据你操作系统的版本，更新/etc/apt/sources.list 文件即可，之后你的 Ubuntu 就是从国内的较快的站点上下载包了&lt;/p>
+&lt;p>第二步，安装多线程 apt 下载加速工具 apt-fast&lt;/p>
+&lt;p>[bash]
+root@lamp ~# apt-get install python-software-properties
+root@lamp ~# add-apt-repository ppa:tldm217/tahutek.net
+root@lamp ~# apt-get update
+root@lamp ~# apt-get install apt-fast
+root@lamp ~# apt-fast -v
+apt 0.7.25.3ubuntu9.3 for i386 compiled on Sep  9 2010 22:22:02
+Supported modules:
+*Ver: Standard .deb
+*Pkg:  Debian dpkg interface (Priority 30)
+S.L: &amp;lsquo;deb&amp;rsquo; Standard Debian binary tree
+S.L: &amp;lsquo;deb-src&amp;rsquo; Standard Debian source tree
+Idx: Debian Source Index
+Idx: Debian Package Index
+Idx: Debian Translation Index
+Idx: Debian dpkg status file
+[/bash]&lt;/p>
+&lt;p>以后你在安装软件包就是用 apt-fast install 了，而不是 apt-get install，至于 apt-get 么，不管你用还是不用，它就在哪里~~~~
+最后一步（可选），如果你还经常要以 cpan 的方式安装 perl 的包的话，那么 163 上不管你用还是不用，他就在哪里，你也可以选择 163 最为 perl 的安装源。安装步骤如下：&lt;/p>
+&lt;p>[bash]
+root@lamp perl/CPAN# pwd
+/etc/perl/CPAN
+root@lamp perl/CPAN# cp Config.pm Config.pm.bk
+root@lamp perl/CPAN# ls
+Config.pm  Config.pm.bk  Config.pm~
+root@lamp perl/CPAN# vi Config.pm
+[/bash]&lt;/p>
+&lt;p>修改 Config.pm 文件中的 urllist 值，修改成如下即可：&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">&amp;#39;urllist&amp;#39; =&amp;gt; [q[http://mirrors.163.com/cpan/]],
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>接下来就可以测试一下了：
+[bash]
+root@lamp perl/CPAN# cpan -i XML::Entities
+[/bash]&lt;/p>
+&lt;p>如果你有其他让 Ubuntu 加速的方法，请留言：）&lt;/p></description></item><item><title>既要开源，也要环保</title><link>https://martinliu.cn/2011/03/24/usb-linux/</link><pubDate>Thu, 24 Mar 2011 13:12:58 +0000</pubDate><guid>https://martinliu.cn/2011/03/24/usb-linux/</guid><description>&lt;p>今天看到了我保存的一摞 Linux 光盘，这基本上也记录了我所关注和安装过的所有 Linux 的种类。品种繁多。如下：&lt;/p>
+&lt;ol>
+&lt;li>
+&lt;p>CentOS 4.4&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Ubuntu 8.4 server&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Ubuntu 8.4 desktop&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Opensolaris&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Debian 4.0&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>SuSe Enterprise 10.1&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Redhat Enterprise Server 3&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>SuSe Linux 10&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Mandriva 2008&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>CentOS 4.2&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>SuSe 10.0 Eval DVD&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Mandrake 10.0&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Redhat 7.1&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Derbain 3.0&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>FreeBSD 5.2&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Suse 9&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>SuSe enterprise linux 9.0&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Fedora 4&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Redhat 9&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Solaris 10 x86&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Ubuntu 10.10 Desktop&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>SLES 10 sp2&lt;/p>
+&lt;/li>
+&lt;/ol>
+&lt;p>![CD fire](&lt;a class="link" href="http://martinliu.cn/wp-content/gallery/fatureimage/thumbs/thumbs_Crstal" target="_blank" rel="noopener"
+>http://martinliu.cn/wp-content/gallery/fatureimage/thumbs/thumbs_Crstal&lt;/a> (12).png)总共 50 多张碟片既有 CD 也有 DVD。Linux 这东西最大的特点是更新发展的快，之前硬盘都小，为了安装 Linux 刻盘是最方便的方式，而且多年以前机器还不支持 USB 启动。这么多光盘真的是一大堆的白色垃圾，一直在想废弃光盘该怎么处理的为题，目前好像还没有即能实现废物利用，有环保的处理方法。上周为了在家里的 PC 上安装 Ubuntu 10.10 Desktop，又刻了一张盘，希望这是最后一张 Linux CD，以后考虑 USB 启动安装 Linux 的形式。使用工具软件把 Linux ISO 文件灌注到 U 盘里，在用 U 盘来装。&lt;/p>
+&lt;p>推荐两种工具：&lt;/p>
+&lt;ul>
+&lt;li>&lt;a class="link" href="http://www.pendrivelinux.com/universal-usb-installer-easy-as-1-2-3/" target="_blank" rel="noopener"
+>Universal USB Installer&lt;/a>&lt;/li>
+&lt;li>&lt;a class="link" href="http://www.linuxliveusb.com/en/home" target="_blank" rel="noopener"
+>LinuxLive USB Creator&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;!-- raw HTML omitted -->
+&lt;p>[](&lt;a class="link" href="http://martinliu.cn/wp-content/gallery/fatureimage/Crstal" target="_blank" rel="noopener"
+>http://martinliu.cn/wp-content/gallery/fatureimage/Crstal&lt;/a> (12).png)&lt;/p></description></item><item><title>gOS looks green</title><link>https://martinliu.cn/2009/01/24/gos-looks-green/</link><pubDate>Sat, 24 Jan 2009 15:50:18 +0000</pubDate><guid>https://martinliu.cn/2009/01/24/gos-looks-green/</guid><description>&lt;p>&lt;img src="http://thinkgos.com/_images/gos31home.jpg"
+loading="lazy"
+>&lt;/p>
+&lt;p>&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->Today I installed gOS on my laptop; openSuSE did great work for me 3 years. I&amp;rsquo;d like to play some new things. So, check my new desktop out.&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->&lt;a class="link" href="http://picasaweb.google.com/liuzh66/GOS" target="_blank" rel="noopener"
+>http://picasaweb.google.com/liuzh66/GOS&lt;/a>&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->If you go its wetsite &lt;a class="link" href="http://thinkgos.com/" target="_blank" rel="noopener"
+>http://thinkgos.com/&lt;/a>, you will see it talks lots of cloud. It&amp;rsquo;s interesting, but it is not the reson i chose it. Ubuntu 8.04 is inside gOS. So, it time to learn a new linux system. I neve use a Derbin based system, I&amp;rsquo;m not sure it could run for me how long.&lt;/p></description></item></channel></rss>

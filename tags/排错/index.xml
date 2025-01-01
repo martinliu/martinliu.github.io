@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>排错 on Martin Liu's Blog</title><link>https://martinliu.cn/tags/%E6%8E%92%E9%94%99/</link><description>Recent content in 排错 on Martin Liu's Blog</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><lastBuildDate>Sat, 02 Apr 2011 13:43:21 +0000</lastBuildDate><atom:link href="https://martinliu.cn/tags/%E6%8E%92%E9%94%99/index.xml" rel="self" type="application/rss+xml"/><item><title>ARS启动故障修复案例</title><link>https://martinliu.cn/2011/04/02/ars-start-issue-on-oracle/</link><pubDate>Sat, 02 Apr 2011 13:43:21 +0000</pubDate><guid>https://martinliu.cn/2011/04/02/ars-start-issue-on-oracle/</guid><description>&lt;p>ARS 版本 7.6.04
+数据库 Oracle11G 和 ARS 在同一台服务器上&lt;/p>
+&lt;p>错误现象：
+ARS 服务不能正常启动&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;span class="lnt">4
+&lt;/span>&lt;span class="lnt">5
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">arerror.log报 390600 : SQL 数据库不可用 -- 将重试连接 (ARNOTE 590)
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Sat Apr 02 20:27:41 2011 : Action Request System(R) 服务器 x64 版本 7.6.04 Build 002 201101141059
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">(c) Copyright 1991-2010 BMC Software, Inc.
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Sat Apr 02 20:29:51 2011  390600 : SQL 数据库不可用 -- 将重试连接 (ARNOTE 590)
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Sat Apr 02 20:29:51 2011     ORA-12170: TNS:Connect timeout occurred
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>排错步骤：
+使用 sqlplus 测试登录，返回 TNS 超时错误&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;span class="lnt">4
+&lt;/span>&lt;span class="lnt">5
+&lt;/span>&lt;span class="lnt">6
+&lt;/span>&lt;span class="lnt">7
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">[powershell]
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> C:\Users\martin&amp;gt;sqlplus ARAdmin/AR#Admin#@ars
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">SQL*Plus: Release 11.2.0.1.0 Production on Sat Apr 2 20:48:35 2011
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Copyright (c) 1982, 2010, Oracle.  All rights reserved.
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">ERROR:
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">ORA-12170: TNS:Connect timeout occurred  
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">[/powershell]
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>使用 tnsping ars 测试也不成功
+ping 本机主机名&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">[powershell]
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">ping arsserver
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Pinging arsserver [fe80::c123:5921:b71b:64fd%13] with 32 bytes of data:
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Reply from fe80::c123:5921:b71b:64fd%13: time&amp;lt;1ms
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Reply from fe80::c123:5921:b71b:64fd%13: time&amp;lt;1ms
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Reply from fe80::c123:5921:b71b:64fd%13: time&amp;lt;1ms
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Reply from fe80::c123:5921:b71b:64fd%13: time&amp;lt;1ms
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Ping statistics for fe80::c123:5921:b71b:64fd%13:
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Packets: Sent = 4, Received = 4, Lost = 0 (0% loss),
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Approximate round trip times in milli-seconds:
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Minimum = 0ms, Maximum = 0ms, Average = 0ms 
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">[/powershell]
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>貌似找到原因，修改 host 文件，加入主机名到 127.0.0.1 后面，在测试 ping 主机名成功。
+重启 Oracle 监听器服务，再次测试 tnsping 和 sqlplus ，测试都获得成功。
+重新启动 ARS 服务，服务被正常启动&lt;/p></description></item></channel></rss>

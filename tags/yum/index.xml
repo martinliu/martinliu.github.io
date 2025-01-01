@@ -1,0 +1,265 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Yum on Martin Liu's Blog</title><link>https://martinliu.cn/tags/yum/</link><description>Recent content in Yum on Martin Liu's Blog</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><lastBuildDate>Tue, 16 Jun 2015 16:25:34 +0000</lastBuildDate><atom:link href="https://martinliu.cn/tags/yum/index.xml" rel="self" type="application/rss+xml"/><item><title>在 RHEL 7 上安装 Foreman 1.8</title><link>https://martinliu.cn/2015/06/16/e59ca8-rhel-7-e4b88ae5ae89e8a385-foreman-1-8/</link><pubDate>Tue, 16 Jun 2015 16:25:34 +0000</pubDate><guid>https://martinliu.cn/2015/06/16/e59ca8-rhel-7-e4b88ae5ae89e8a385-foreman-1-8/</guid><description>&lt;p>首先安装 RHEL7 使用光盘安装最小化系统，安装完成之后，关闭防火墙和 SELinux（为了测试方便），配置主机名为 FQDN 格式，如 fm1.8.xenlab.com； 加本机的主机名解析到/etc/hosts 文集中。之后注册到 RHN。&lt;/p>
+&lt;p>[bash]&lt;/p>
+&lt;p>[root@fm18 ~]# subscription-manager register
+[root@fm18 ~]# subscription-manager attach  &amp;ndash;auto
+[root@fm18 ~]# subscription-manager repos &amp;ndash;disable=&amp;quot;*&amp;quot;
+[root@fm18 ~]# subscription-manager repos &amp;ndash;enable=rhel-7-server-optional-rpms
+[root@fm18 ~]# subscription-manager repos &amp;ndash;enable=rhel-server-rhscl-7-rpms
+[root@fm18 ~]# subscription-manager repos &amp;ndash;enable=rhel-7-server-rpms
+[root@fm18 ~]# rpm -ivh &lt;a class="link" href="http://yum.puppetlabs.com/puppetlabs-release-el-7.noarch.rpm" target="_blank" rel="noopener"
+>http://yum.puppetlabs.com/puppetlabs-release-el-7.noarch.rpm&lt;/a>
+[root@fm18 ~]# yum -y install &lt;a class="link" href="http://yum.theforeman.org/releases/1.8/el7/x86_64/foreman-release.rpm" target="_blank" rel="noopener"
+>http://yum.theforeman.org/releases/1.8/el7/x86_64/foreman-release.rpm&lt;/a>
+[root@fm18 ~]# yum -y install &lt;a class="link" href="http://ftp.sjtu.edu.cn/fedora/epel/epel-release-latest-7.noarch.rpm" target="_blank" rel="noopener"
+>http://ftp.sjtu.edu.cn/fedora/epel/epel-release-latest-7.noarch.rpm&lt;/a>
+[root@fm18 ~]# yum clean all
+[root@fm18 ~]# yum makecache
+[root@fm18 ~]# yum update -y
+[root@fm18 ~]# reboot
+[root@fm18 ~]# yum install foreman-installer&lt;/p>
+&lt;p>[/bash]&lt;/p>
+&lt;p>安装 foreman-installer 可能会出现的错误是 ruby 包依赖的问题，导致这个问题的原因可能有：网速太满导致的 yum meta-data 失效，国外的 epel 源下载失败等。解决方法是：使用国内较快的 epel 源，在安装 foreman-installer 前，清除 yum 缓存，重新建立 yum 原数据缓存。&lt;/p>
+&lt;p>我的测试机的 yum 源配置如下：&lt;/p>
+&lt;p>[bash]&lt;/p>
+&lt;p>[root@fm18 yum.repos.d]# yum repolist
+Loaded plugins: fastestmirror, product-id, subscription-manager
+Loading mirror speeds from cached hostfile&lt;/p>
+&lt;ul>
+&lt;li>epel: mirrors.neusoft.edu.cn
+repo id repo name status
+epel/x86_64 Extra Packages for Enterprise Linux 7 - x86_64 8,076
+foreman/x86_64 Foreman 1.8 379
+foreman-plugins/x86_64 Foreman plugins 1.8 199
+puppetlabs-deps/x86_64 Puppet Labs Dependencies El 7 - x86_64 17
+puppetlabs-products/x86_64 Puppet Labs Products El 7 - x86_64 175
+rhel-7-server-optional-rpms/7Server/x86_64 Red Hat Enterprise Linux 7 Server - Optional (RPMs) 5,832
+rhel-7-server-rpms/7Server/x86_64 Red Hat Enterprise Linux 7 Server (RPMs) 7,036
+rhel-server-rhscl-7-rpms/7Server/x86_64 Red Hat Software Collections RPMs for Red Hat Enterprise Linux 7 Server 3,596
+repolist: 25,310
+[root@fm18 yum.repos.d]# cat /etc/yum.repos.d/epel.repo
+[epel]
+name=Extra Packages for Enterprise Linux 7 - $basearch
+baseurl=http://download.fedoraproject.org/pub/epel/7/$basearch
+#mirrorlist=https://mirrors.fedoraproject.org/metalink?repo=epel-7&amp;amp;arch=$basearch
+failovermethod=priority
+enabled=1
+gpgcheck=1
+gpgkey=https://fedoraproject.org/static/352C64E5.txt&lt;/li>
+&lt;/ul>
+&lt;p>mirrorlist=https://mirrors.fedoraproject.org/metalink?repo=epel-7&amp;amp;arch=$basearch
+[epel-debuginfo]
+name=Extra Packages for Enterprise Linux 7 - $basearch - Debug
+baseurl=http://ftp.sjtu.edu.cn/fedora/epel/7/$basearch/debug
+#mirrorlist=https://mirrors.fedoraproject.org/metalink?repo=epel-debug-7&amp;amp;arch=$basearch
+failovermethod=priority
+enabled=0
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-7
+gpgcheck=1&lt;/p>
+&lt;p>[epel-source]
+name=Extra Packages for Enterprise Linux 7 - $basearch - Source
+baseurl=http://ftp.sjtu.edu.cn/fedora/epel/7/SRPMS
+#mirrorlist=https://mirrors.fedoraproject.org/metalink?repo=epel-source-7&amp;amp;arch=$basearch
+failovermethod=priority
+enabled=0
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-7
+gpgcheck=1
+[root@fm18 yum.repos.d]#&lt;/p>
+&lt;p>[/bash]&lt;/p>
+&lt;p>以上应该是安装 foreman-installer 宝过的攻略了。接下来该安装 foreman 的各个组建和插件了。使用 foreman-installer -i 发现是个不错的方法。还可以顺便了解一下当前 foreman 版本的各个主要功能项，如下所示：&lt;/p>
+&lt;p>[bash]&lt;/p>
+&lt;p>[root@fm18 yum.repos.d]# foreman-installer -i
+Welcome to the Foreman installer!&lt;/p>
+&lt;hr>
+&lt;p>This wizard will gather all required information. You can change any parameter
+to your needs.&lt;/p>
+&lt;p>Ready to start? (y/n) y&lt;/p>
+&lt;p>Main Config Menu&lt;/p>
+&lt;ol>
+&lt;li>[✓] Configure foreman&lt;/li>
+&lt;li>[✓] Configure foreman_cli&lt;/li>
+&lt;li>[✗] Configure foreman_compute_ec2&lt;/li>
+&lt;li>[✗] Configure foreman_compute_gce&lt;/li>
+&lt;li>[✓] Configure foreman_compute_libvirt&lt;/li>
+&lt;li>[✗] Configure foreman_compute_openstack&lt;/li>
+&lt;li>[✓] Configure foreman_compute_ovirt&lt;/li>
+&lt;li>[✗] Configure foreman_compute_rackspace&lt;/li>
+&lt;li>[✗] Configure foreman_compute_vmware&lt;/li>
+&lt;li>[✓] Configure foreman_plugin_bootdisk&lt;/li>
+&lt;li>[✗] Configure foreman_plugin_chef&lt;/li>
+&lt;li>[✓] Configure foreman_plugin_default_hostgroup&lt;/li>
+&lt;li>[✗] Configure foreman_plugin_digitalocean&lt;/li>
+&lt;li>[✓] Configure foreman_plugin_discovery&lt;/li>
+&lt;li>[✗] Configure foreman_plugin_docker&lt;/li>
+&lt;li>[✗] Configure foreman_plugin_hooks&lt;/li>
+&lt;li>[✗] Configure foreman_plugin_openscap&lt;/li>
+&lt;li>[✗] Configure foreman_plugin_ovirt_provision&lt;/li>
+&lt;li>[✗] Configure foreman_plugin_puppetdb&lt;/li>
+&lt;li>[✗] Configure foreman_plugin_salt&lt;/li>
+&lt;li>[✓] Configure foreman_plugin_setup&lt;/li>
+&lt;li>[✓] Configure foreman_plugin_tasks&lt;/li>
+&lt;li>[✗] Configure foreman_plugin_templates&lt;/li>
+&lt;li>[✓] Configure foreman_proxy&lt;/li>
+&lt;li>[✗] Configure foreman_proxy_plugin_abrt&lt;/li>
+&lt;li>[✗] Configure foreman_proxy_plugin_chef&lt;/li>
+&lt;li>[✗] Configure foreman_proxy_plugin_openscap&lt;/li>
+&lt;li>[✗] Configure foreman_proxy_plugin_pulp&lt;/li>
+&lt;li>[✗] Configure foreman_proxy_plugin_salt&lt;/li>
+&lt;li>[✓] Configure puppet&lt;/li>
+&lt;li>Display current config&lt;/li>
+&lt;li>Save and run&lt;/li>
+&lt;li>Cancel run without Saving
+Choose an option from the menu&amp;hellip;&lt;/li>
+&lt;/ol>
+&lt;p>[root@fm18 yum.repos.d]# puppet agent &amp;ndash;test
+Info: Retrieving pluginfacts
+Info: Retrieving plugin
+Info: Caching catalog for fm18.xenlab.com
+Info: Applying configuration version &amp;lsquo;1434466089&amp;rsquo;
+Notice: Finished catalog run in 0.21 seconds
+[root@fm18 yum.repos.d]#&lt;/p>
+&lt;p>[/bash]&lt;/p>
+&lt;p>输入数字即可进入每个选项打开和关闭这个功能和服务，这个是对 foreman 的功能配置管理，不光是首次安装可以使用，以后的服务器功能变更也可以这么作，这个对我这样不感冒 answerfile 的人来说甚好。如果是首次安装，可以什么都不选择，来一个说装就装的默认安装也不错。安装完全成功之后，就会显示登陆网址和 管理与密码等信息。用初始的 admin 密码登陆后，修改密码，你的全新的 foreman 就安装成功了。注意在，运行 foreman-installer 过程中是需要联网的，安装过程会按照需求，下载所需要的组建包，例如数据库和 web 服务器等等其它必须的包。登陆后界面如下：&lt;/p>
+&lt;p>[gallery size=&amp;ldquo;medium&amp;rdquo; link=&amp;ldquo;file&amp;rdquo; ids=&amp;ldquo;53781,53782,53783&amp;rdquo;]&lt;/p>
+&lt;p>接下来需要作配置自动化的测试了，我做了一个录像，通过一个简单的示例来说明，如何在 foreman 中测试 pupput module。过程中我使用一个最简单的 /etc/motd 文件的配置的类。演示的内容涉及：&lt;/p>
+&lt;p>[su_list icon=&amp;ldquo;icon: check-square&amp;rdquo;]&lt;/p>
+&lt;ul>
+&lt;li>
+&lt;p>安装 puppet module 到生产环境中&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>导入并且定制 puppet 类的功能&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>测试和验证 puppet 类是否工作正常&lt;/p>
+&lt;/li>
+&lt;/ul>
+&lt;p>[/su_list]&lt;/p>
+&lt;p>视频下载：[su_button url=&amp;ldquo;http://pan.baidu.com/s/1ntpBXfN&amp;rdquo; target=&amp;ldquo;blank&amp;rdquo; style=&amp;ldquo;stroked&amp;rdquo; background=&amp;quot;#cccccc&amp;quot; size=&amp;ldquo;6&amp;rdquo; icon=&amp;ldquo;icon: cloud-download&amp;rdquo;]下载在这里[/su_button]&lt;/p>
+&lt;p>本文参考文档：&lt;/p>
+&lt;ul>
+&lt;li>
+&lt;p>&lt;a class="link" href="http://theforeman.org/manuals/1.8/index.htm" target="_blank" rel="noopener"
+>http://theforeman.org/manuals/1.8/index.htm&lt;/a>&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;a class="link" href="http://itgeeker.net/centos-7-epel-china-mirror-repository/" target="_blank" rel="noopener"
+>http://itgeeker.net/centos-7-epel-china-mirror-repository/&lt;/a>&lt;/p>
+&lt;/li>
+&lt;/ul></description></item><item><title>opennms 1.6.1-1 quick start guide</title><link>https://martinliu.cn/2009/01/11/161-1-opennms-quick-install-guide/</link><pubDate>Sun, 11 Jan 2009 02:33:12 +0000</pubDate><guid>https://martinliu.cn/2009/01/11/161-1-opennms-quick-install-guide/</guid><description>&lt;p>&lt;img src="http://www.etproductions.com/images/start.jpg"
+loading="lazy"
+>&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->本安装手册为纯命令版，如果有什么疑问清参考官方安装手册，或给本贴留言。&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->[install yum on your Linux box]&lt;!-- raw HTML omitted -->选择任意 Linux 系统，安装上 yum 工具，在命令行测试 yum -v&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->[testing internet connection with those two URL]&lt;!-- raw HTML omitted -->测试是否能上网，用浏览器分别打开这两个网址&lt;!-- raw HTML omitted -->&lt;/p>
+&lt;p>&lt;!-- raw HTML omitted -->&lt;/p>
+&lt;ol>
+&lt;li>&lt;a class="link" href="http://www.martinliu.cn/2007/12/13/opennms-yum-install/" target="_blank" rel="noopener"
+>http://www.martinliu.cn/2007/12/13/opennms-yum-install/&lt;/a>
+&lt;!-- raw HTML omitted -->&lt;/li>
+&lt;li>&lt;a class="link" href="http://http://yum.opennms.org/repofiles/" target="_blank" rel="noopener"
+>http://yum.opennms.org/repofiles/&lt;/a>
+&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->先别关闭这两个网页。&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->[Install opennms 开始安装:&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->&lt;/li>
+&lt;li>yum install yum-fastestmirror
+&lt;!-- raw HTML omitted -->&lt;/li>
+&lt;li>rpm -Uvh &lt;a class="link" href="http://yum.opennms.org/repofiles/opennms-repo-snapshot-rhel4.noarch.rpm" target="_blank" rel="noopener"
+>http://yum.opennms.org/repofiles/opennms-repo-snapshot-rhel4.noarch.rpm&lt;/a>
+&lt;!-- raw HTML omitted -->&lt;/li>
+&lt;li>yum list opennms
+&lt;!-- raw HTML omitted -->&lt;/li>
+&lt;li>yum install opennms
+&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->[ post-install and config] 开始配置：&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->&lt;/li>
+&lt;li>export OPENNMS_HOME=/opt/opennms
+&lt;!-- raw HTML omitted -->&lt;/li>
+&lt;li>vi /var/lib/pgsql/data/pg_hba.conf&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->
+1. 注释掉其中所有可用的行，加入下面三行&lt;!-- raw HTML omitted -->local all all trust&lt;!-- raw HTML omitted -->host all all 127.0.0.1/32 trust&lt;!-- raw HTML omitted -->host all all ::1/128 trust
+&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->
+&lt;!-- raw HTML omitted -->&lt;/li>
+&lt;li>/sbin/service postgresql restart
+&lt;!-- raw HTML omitted -->&lt;/li>
+&lt;li>/usr/java/jdk1.5.0_15/bin/java -version
+&lt;!-- raw HTML omitted -->&lt;/li>
+&lt;li>$OPENNMS_HOME/bin/runjava -S /usr/java/jdk1.5.0_15/bin/java
+&lt;!-- raw HTML omitted -->&lt;/li>
+&lt;li>$OPENNMS_HOME/bin/install -disU -l /usr/lib/jni:/usr/lib
+&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->[ startup opennms and login ]启动登录：&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->&lt;/li>
+&lt;li>/etc/init.d/opennms start
+&lt;!-- raw HTML omitted -->&lt;/li>
+&lt;li>http://localhost:8980/opennms
+&lt;!-- raw HTML omitted -->&lt;/li>
+&lt;li>username and password are admin/admin
+&lt;!-- raw HTML omitted -->&lt;/li>
+&lt;li>click Admin / Add Interface, input a ipaddress and press Add button
+&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->OK， I have get oepnnms 1.6.1-1 installed on my home pc, I hope you good luck and have fun.&lt;/li>
+&lt;/ol></description></item><item><title>OpenNMS的Yum的安装方式，安装简单了很多</title><link>https://martinliu.cn/2007/12/13/opennms-yum-install/</link><pubDate>Thu, 13 Dec 2007 10:14:00 +0000</pubDate><guid>https://martinliu.cn/2007/12/13/opennms-yum-install/</guid><description>&lt;p>OpenNMS 网站的安装文档：&lt;!-- raw HTML omitted -->&lt;a class="link" href="http://www.opennms.org/index.php/Installation:Yum" target="_blank" rel="noopener"
+>http://www.opennms.org/index.php/Installation:Yum&lt;/a>&lt;!-- raw HTML omitted -->&lt;/p>
+&lt;p>下面是我在一个 CentOS4 的机器上按照上面文档安装的。&lt;/p>
+&lt;p>&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->&lt;/p>
+&lt;!-- raw HTML omitted -->
+&lt;p>[root@jng-hkg-48-dyn3328831 ~]# yum list opennms&lt;/p>
+&lt;!-- raw HTML omitted -->
+&lt;p>Repository opennms-stable-common is listed more than once in the configuration&lt;/p>
+&lt;!-- raw HTML omitted -->
+&lt;p>Repository opennms-stable-rhel4 is listed more than once in the configuration&lt;/p>
+&lt;!-- raw HTML omitted -->
+&lt;p>Setting up repositories&lt;/p>
+&lt;!-- raw HTML omitted -->
+&lt;p>Reading repository metadata in from local files&lt;/p>
+&lt;!-- raw HTML omitted -->
+&lt;p>Available Packages&lt;/p>
+&lt;!-- raw HTML omitted -->
+&lt;p>opennms.noarch 1.3.10-0.8030.snapshot opennms-snapshot&lt;/p>
+&lt;!-- raw HTML omitted -->
+&lt;p>&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->&lt;/p>
+&lt;!-- raw HTML omitted -->
+&lt;p>Dependencies Resolved&lt;/p>
+&lt;!-- raw HTML omitted -->
+&lt;p>=============================================================================&lt;/p>
+&lt;!-- raw HTML omitted -->
+&lt;p>Package Arch Version Repository Size&lt;/p>
+&lt;!-- raw HTML omitted -->
+&lt;p>=============================================================================&lt;/p>
+&lt;!-- raw HTML omitted -->
+&lt;p>Installing:&lt;/p>
+&lt;!-- raw HTML omitted -->
+&lt;p>opennms noarch 1.3.10-0.8030.snapshot opennms-snapshot-common 5.0 k&lt;/p>
+&lt;!-- raw HTML omitted -->
+&lt;p>Installing for dependencies:&lt;/p>
+&lt;!-- raw HTML omitted -->
+&lt;p>iplike i386 1.0.6-1 opennms-snapshot-rhel4 10 k&lt;/p>
+&lt;!-- raw HTML omitted -->
+&lt;p>jdk i586 2000:1.5.0_13-fcs opennms-snapshot-common 46 M&lt;/p>
+&lt;!-- raw HTML omitted -->
+&lt;p>jicmp i386 1.0.4-1 opennms-snapshot-rhel4 43 k&lt;/p>
+&lt;!-- raw HTML omitted -->
+&lt;p>opennms-core noarch 1.3.10-0.8030.snapshot opennms-snapshot-common 47 M&lt;/p>
+&lt;!-- raw HTML omitted -->
+&lt;p>opennms-webapp-jetty noarch 1.3.10-0.8030.snapshot opennms-snapshot-common 27 M&lt;/p>
+&lt;!-- raw HTML omitted -->
+&lt;p>postgresql i386 7.4.17-1.RHEL4.1 update 2.0 M&lt;/p>
+&lt;!-- raw HTML omitted -->
+&lt;p>postgresql-server i386 7.4.17-1.RHEL4.1 update 3.0 M&lt;/p>
+&lt;!-- raw HTML omitted -->
+&lt;p>Transaction Summary&lt;/p>
+&lt;!-- raw HTML omitted -->
+&lt;p>=============================================================================&lt;/p>
+&lt;!-- raw HTML omitted -->
+&lt;p>Install 8 Package(s)&lt;/p>
+&lt;!-- raw HTML omitted -->
+&lt;p>Update 0 Package(s)&lt;/p>
+&lt;!-- raw HTML omitted -->
+&lt;p>Remove 0 Package(s)&lt;/p>
+&lt;!-- raw HTML omitted -->
+&lt;p>Total download size: 125 M&lt;/p>
+&lt;!-- raw HTML omitted -->
+&lt;p>Is this ok [y/N]: y&lt;/p>
+&lt;p>&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->&lt;/p>
+&lt;!-- raw HTML omitted -->
+&lt;p>local all all trust&lt;/p>
+&lt;!-- raw HTML omitted -->
+&lt;p>host all all 127.0.0.1/32 trust&lt;/p>
+&lt;!-- raw HTML omitted -->
+&lt;p>host all all ::1/128 trust&lt;/p>
+&lt;p>&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->&lt;/p>
+&lt;!-- raw HTML omitted -->
+&lt;p>tcpip_socket = true&lt;/p>
+&lt;!-- raw HTML omitted -->
+&lt;p>isten_addresses = &amp;rsquo;localhost&amp;rsquo; (这一行加入了好些数据库启动不了了，去掉就行了，不知原因)&lt;/p>
+&lt;p>&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->&lt;/p>
+&lt;!-- raw HTML omitted --></description></item></channel></rss>

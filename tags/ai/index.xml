@@ -1,0 +1,490 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>AI on Martin Liu's Blog</title><link>https://martinliu.cn/tags/ai/</link><description>Recent content in AI on Martin Liu's Blog</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><lastBuildDate>Wed, 05 Jun 2024 16:36:07 +0800</lastBuildDate><atom:link href="https://martinliu.cn/tags/ai/index.xml" rel="self" type="application/rss+xml"/><item><title>平台工程团队如何利用 AI 增强 DevOps</title><link>https://martinliu.cn/blog/pe-team-augment-devops-with-ai/</link><pubDate>Wed, 05 Jun 2024 16:36:07 +0800</pubDate><guid>https://martinliu.cn/blog/pe-team-augment-devops-with-ai/</guid><description>&lt;img src="https://martinliu.cn/blog/pe-team-augment-devops-with-ai/pexels-pavel-danilyuk-8439093.jpg" alt="Featured image of post 平台工程团队如何利用 AI 增强 DevOps" />&lt;blockquote>
+&lt;p>本文来源 Gartner ：&lt;a class="link" href="https://www.gartner.com/doc/reprints?id=1-2G9VK5IK&amp;amp;ct=240117&amp;amp;st=sb" target="_blank" rel="noopener"
+>《How Platform Engineering Teams Can Augment DevOps With AI》&lt;/a>&lt;/p>
+&lt;/blockquote>
+&lt;h2 id="概述">概述
+&lt;/h2>&lt;h3 id="主要发现">主要发现
+&lt;/h3>&lt;ul>
+&lt;li>许多组织已经在使用 AI 编码助手、AI 测试工具和 AIOps 平台来优化 DevOps 的特定活动。然而，要缩短整体交付时间，必须识别并克服软件交付各阶段的瓶颈。&lt;/li>
+&lt;li>生成式 AI 为在软件开发生命周期 (SDLC) 的多个阶段中，减少开发者摩擦，并提升开发者体验方面，带来了新机遇。这些摩擦包括：对代码库的理解不足，以及调试、代码审查和根本原因分析中花费的大量时间。&lt;/li>
+&lt;li>提升软件交付流程的效率需要优化和协调 SDLC 的所有阶段。常见的低效表现包括：长时间的构建过程、分析构建流水线错误、变更影响分析和缓慢的事件响应。&lt;/li>
+&lt;li>AI 提供了传统自动化无法比拟的优势，帮助产品团队以更可靠、可持续和成本效益高的方式，来管理其软件交付基础设施。&lt;/li>
+&lt;/ul>
+&lt;h3 id="建议">建议
+&lt;/h3>&lt;p>推动平台工程计划的软件工程领导者应：&lt;/p>
+&lt;ul>
+&lt;li>通过识别和优先解决软件交付流程中的瓶颈，确定适合的 AI 应用场景，从而系统地改进 SDLC。注意供应商的“AI 洗涤”现象，避免在传统自动化手段已经足够的情况下，还要使用 AI 技术进行过度设计。&lt;/li>
+&lt;li>通过支持 AI 增强的工作流来改善开发者体验，减少认知负担，帮助开发者在开发、交付和运营阶段实现流畅的工作状态。&lt;/li>
+&lt;li>通过将 AI 优化集成到 DevOps 流程中，提高各个 SDLC 活动的反馈效率。&lt;/li>
+&lt;li>在内部开发平台中，提供自助式 AI 基础设施管理能力，以优化软件交付基础设施。&lt;/li>
+&lt;/ul>
+&lt;h2 id="战略规划假设">战略规划假设
+&lt;/h2>&lt;p>预计到2027年，使用 AI 增强 SDLC 每个阶段的平台工程团队的比例将从 5% 增至 40%。&lt;/p>
+&lt;h2 id="介绍">介绍
+&lt;/h2>&lt;p>随着 AI 编码助手和 ChatGPT 的推出，软件开发成为生成式 AI 的主要应用领域之一。在 2023 年 Gartner 关于生成式 AI 的 IT 领导者调查中，52% 的 IT 领导者表示：他们期望团队在软件开发中使用生成式 AI。Gartner 同行社区成员的调查显示，61% 的软件工程领导者对生成式 AI 在代码生成中的潜力感到兴奋。&lt;/p>
+&lt;p>然而，开发人员并不总是花大部分时间在编写代码上。他们平均只有 10% 到 25% 的时间用于编写代码。其余的时间则用在阅读规范、写文档、做代码审查、参加会议、帮助同事、调试代码、与其他团队协作、配置环境、处理生产故障、学习技术及业务知识等方面。因此，若只关注代码编写，而忽略了 DevOps 流程的其他环节，可能就不会暴露出开发周期中的其他低效问题，而无法提升整体性能。&lt;/p>
+&lt;p>因此，我们的客户开始从更广泛的角度看待 AI 在 DevOps 中的应用，并提出诸如：“在未来三年内，AI 将如何影响 DevOps/DevSecOps？”，以及“我们如何在敏捷和 DevOps 流程中全面应用 AI？”等问题。&lt;/p>
+&lt;blockquote>
+&lt;p>集中化平台的快速发展，以及在软件开发生命周期各阶段（从构思和规划到生产部署管理）整合 AI/ML，将彻底改变软件工程。
+——JPMorgan Chase 工程师平台和体验负责人 Sandhya Sridharan&lt;/p>
+&lt;/blockquote>
+&lt;p>平台工程团队将在解决这些问题中起到关键作用，因为他们的职责是：帮助开发团队提升交付速度、软件质量和大规模的开发者体验。他们需要了解现有和潜在平台用户的需求，从多个产品开发团队的挑战中获取独特的洞见。&lt;/p>
+&lt;p>平台工程团队应采取三管齐下的方法，通过 AI 工具和技术来增强 DevOps 工作流（见图 1）：&lt;/p>
+&lt;ol>
+&lt;li>&lt;strong>改善开发者体验&lt;/strong>：在 SDLC 各阶段，AI 增强的用例包括：代码建议和代码解释、总结拉取请求的变更，解释流水线错误，以及使用自然语言查询操作数据和服务健康状态。&lt;/li>
+&lt;li>&lt;strong>提升软件交付工作流的效率&lt;/strong>：AI 优化的例子包括：测试影响分析（缩短构建时间）、自动化代码审查和变更影响分析（辅助人工监督）、以及事件关联（缩短事故解决时间）。&lt;/li>
+&lt;li>&lt;strong>优化软件交付基础设施&lt;/strong>：AI 技术的例子包括：自主工作负载优化和增强的 FinOps，从而优化可靠性、成本和环境可持续性。&lt;/li>
+&lt;/ol>
+&lt;p>&lt;img src="https://martinliu.cn/blog/pe-team-augment-devops-with-ai/1.png"
+width="1280"
+height="770"
+srcset="https://martinliu.cn/blog/pe-team-augment-devops-with-ai/1_hu9438486933767858345.png 480w, https://martinliu.cn/blog/pe-team-augment-devops-with-ai/1_hu15341975124757353657.png 1024w"
+loading="lazy"
+alt="图 1: 三种使用 AI 增强 DevOps 的方法"
+class="gallery-image"
+data-flex-grow="166"
+data-flex-basis="398px"
+>&lt;/p>
+&lt;h2 id="分析">分析
+&lt;/h2>&lt;h3 id="识别并优先解决-sdlc-中的瓶颈">识别并优先解决 SDLC 中的瓶颈
+&lt;/h3>&lt;p>想要通过 AI 增强 DevOps 工作流的平台工程团队，应该先识别并优先解决阻碍 SDLC 工作流的瓶颈。&lt;/p>
+&lt;p>这些瓶颈主要有两种：&lt;/p>
+&lt;ol>
+&lt;li>跨越 SDLC 各阶段的工作流障碍&lt;/li>
+&lt;li>SDLC 每个阶段内部的工作流障碍&lt;/li>
+&lt;/ol>
+&lt;p>第一类瓶颈可以在系统性审视整个软件交付价值流时得到显现。系统性视角让我们能够识别到，哪些存在于 SDLC 各角色和团队“交接工作”过程中的瓶颈。&lt;/p>
+&lt;p>涉及多个阶段或多个团队的瓶颈示例如下：&lt;/p>
+&lt;ul>
+&lt;li>开发人员等待设计师和产品经理的输入&lt;/li>
+&lt;li>运营团队等待分析变更的影响&lt;/li>
+&lt;li>安全团队执行部署前检查&lt;/li>
+&lt;/ul>
+&lt;p>某些瓶颈可能被认为是“必要的”，但无论如何，这些延迟对客户来说并没有增加价值（见图 2）。&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/blog/pe-team-augment-devops-with-ai/2.png"
+width="1280"
+height="571"
+srcset="https://martinliu.cn/blog/pe-team-augment-devops-with-ai/2_hu2109313664796538435.png 480w, https://martinliu.cn/blog/pe-team-augment-devops-with-ai/2_hu8865036550625900724.png 1024w"
+loading="lazy"
+alt="图 2: 识别工作项在软件交付生命周期中移动时的瓶颈"
+class="gallery-image"
+data-flex-grow="224"
+data-flex-basis="538px"
+>&lt;/p>
+&lt;p>第二类限制更容易发现，因为它们出现在“单一工作线程”中。这些逻辑上的工作线程的例子如下：&lt;/p>
+&lt;ul>
+&lt;li>开发流程内部（编码、构建、测试、调试、重构、提交）&lt;/li>
+&lt;li>代码检入过程（拉取请求、代码审查、安全检查）&lt;/li>
+&lt;li>持续集成（构建代码、运行单元测试、运行 SAST/DAST 测试、运行服务健康检查）&lt;/li>
+&lt;li>环境管理（创建虚拟机、容器编排、设置基础设施）&lt;/li>
+&lt;li>事故响应（分类警报、事件关联、分析日志、根本原因分析）&lt;/li>
+&lt;/ul>
+&lt;p>在每个阶段，不同团队可能面临着不同的限制。例如，处理遗留代码库，并进行增量更改的团队发现最大的限制不是编码效率，而是对旧代码库缺乏理解。因此，平台工程团队需要与产品工程团队合作，了解开发者的痛点，确保 AI 功能的实现是基于实际需求的。&lt;/p>
+&lt;p>图 3 重点分析了在每个工作线程中的具体活动，并展示了 AI 如何解决这些限制和瓶颈。无法一次解决所有问题—— 因此，应识别并迭代地解决此时此刻的最大的限制约束点（见注释 1）。&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/blog/pe-team-augment-devops-with-ai/3.png"
+width="1280"
+height="786"
+srcset="https://martinliu.cn/blog/pe-team-augment-devops-with-ai/3_hu16858003896634169538.png 480w, https://martinliu.cn/blog/pe-team-augment-devops-with-ai/3_hu12627387146846638009.png 1024w"
+loading="lazy"
+alt="图 3: 在软件交付生命周期的每个阶段中迭代地解决最大的限制"
+class="gallery-image"
+data-flex-grow="162"
+data-flex-basis="390px"
+>&lt;/p>
+&lt;h3 id="改善开发者体验">改善开发者体验
+&lt;/h3>&lt;p>改善开发者体验已成为软件工程领导者的关键优先事项，58% 的领导者表示，这对他们的组织高管层非常重要。提升开发者体验或生产力是开发者平台和工具类技术和实践的首要价值因素。因此，平台工程团队在使用 AI 增强 DevOps 工作流的第一步应集中在改善使用平台的人员体验上。&lt;/p>
+&lt;p>图 4 展示了在软件开发、交付和运营过程中，通过 AI 增强改善开发者体验的使用案例。&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/blog/pe-team-augment-devops-with-ai/4.png"
+width="1280"
+height="1051"
+srcset="https://martinliu.cn/blog/pe-team-augment-devops-with-ai/4_hu4142193137183226131.png 480w, https://martinliu.cn/blog/pe-team-augment-devops-with-ai/4_hu17802657272037327384.png 1024w"
+loading="lazy"
+alt="图 4: 使用 AI 增强改善 DevOps 中的开发者体验"
+class="gallery-image"
+data-flex-grow="121"
+data-flex-basis="292px"
+>&lt;/p>
+&lt;p>通过 AI 使能开发者的使用案例改善的开发者体验涵盖整个 SDLC，从开发、交付到运营。以下是 AI 在各阶段提升开发者体验的方式：&lt;/p>
+&lt;h4 id="开发">开发
+&lt;/h4>&lt;p>在开发阶段，开发者体验主要受认知负荷和上下文切换次数的影响。AI 编码助手可以在 IDE 内提供相关信息，减少开发者的上下文切换，避免他们需要离开开发环境去网上查找信息。&lt;/p>
+&lt;p>帮助开发者减少认知负荷并实现流畅工作的 AI 功能包括：&lt;/p>
+&lt;ul>
+&lt;li>代码生成&lt;/li>
+&lt;li>代码理解&lt;/li>
+&lt;li>辅助调试&lt;/li>
+&lt;li>文档生成&lt;/li>
+&lt;li>漏洞解释&lt;/li>
+&lt;li>自动修复&lt;/li>
+&lt;/ul>
+&lt;p>有关提供这些功能的代表性工具的详细分析，请参见《AI 编码助手创新指南》和《AI 增强软件测试工具市场指南》。&lt;/p>
+&lt;h4 id="交付">交付
+&lt;/h4>&lt;p>在软件交付阶段，改善开发者体验的重点是缩短反馈周期和减少重复的低价值工作。AI 使能的功能示例包括：&lt;/p>
+&lt;ul>
+&lt;li>自动建议修复构建错误&lt;/li>
+&lt;li>预防变更失败（通过变更影响分析和变更风险预测）&lt;/li>
+&lt;li>缩短构建时间（使用智能测试选择）&lt;/li>
+&lt;/ul>
+&lt;p>这些功能可以为开发者提供更快的反馈。CircleCI、Digital.ai、GitLab 和 Harness 等供应商正将 AI 增强功能集成到 DevOps 平台中（见《DevOps 平台魔力象限》）。&lt;/p>
+&lt;h4 id="运营">运营
+&lt;/h4>&lt;p>这一阶段传统上主要依靠 AIOps（预测 AI）功能，通过异常检测、事件关联和基于警报和遥测数据生成见解来加速事故响应（见《AIOps 平台市场指南》）。&lt;/p>
+&lt;p>生成式 AI 可以通过以下方式进一步消减常规任务：&lt;/p>
+&lt;ul>
+&lt;li>根据事故模式自动生成运行手册-run-book（例如 Shoreline 和 Transposit 等供应商）&lt;/li>
+&lt;li>在事故响应期间通过总结、解释、翻译、内容生成、预测和建议来减少值班工程师的认知负荷。这在值班工程师不熟悉引发事故的代码时尤为重要（例如 BMC、PagerDuty、ServiceNow、Shoreline 和 Transposit 等供应商）。&lt;/li>
+&lt;li>在故障排除或自动化 DevOps 工作流时，使用自然语言（例如“描述最近对生产环境的变更有哪些？”）（例如 Cortex、Kubiya、New Relic 和 Dynatrace 等供应商）。&lt;/li>
+&lt;/ul>
+&lt;h3 id="提升软件交付效率">提升软件交付效率
+&lt;/h3>&lt;p>除了改善软件交付工作流中的开发者体验，AI 还具有优化工作流效率的潜力。平台工程团队可以在创建“铺装道路”时集成 AI 功能，以简化从构思到生产的价值流动。在此过程中，他们可以系统地了解从客户承诺到客户看到结果的整个工作过程。系统视图通常是价值流映射的一部分（见《DevOps 流程价值流映射指南》）。&lt;/p>
+&lt;p>单靠自动代码生成来提升软件交付性能，在超过一定阈值后会，所产生收益会递减——因为最大的价值交付瓶颈可能在其他地方（见注释 1）。图 5 显示了帮助克服 SDLC 限制（约束点）的 AI 使能案例（如第一部分所述）。&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/blog/pe-team-augment-devops-with-ai/5.png"
+width="1280"
+height="1115"
+srcset="https://martinliu.cn/blog/pe-team-augment-devops-with-ai/5_hu10260369195306717375.png 480w, https://martinliu.cn/blog/pe-team-augment-devops-with-ai/5_hu7955455587840657833.png 1024w"
+loading="lazy"
+alt="图 5: AI 增强的 DevOps 使用案例以优化 SDLC"
+class="gallery-image"
+data-flex-grow="114"
+data-flex-basis="275px"
+>&lt;/p>
+&lt;p>图 6 展示了用于实现上述使用案例的一些工具，并不限于所展示的示例。供应商正在迅速扩展其功能，因此一个供应商可能支持比这里描述的更多使用案例。&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/blog/pe-team-augment-devops-with-ai/6.png"
+width="1280"
+height="1115"
+srcset="https://martinliu.cn/blog/pe-team-augment-devops-with-ai/6_hu4572401808574770832.png 480w, https://martinliu.cn/blog/pe-team-augment-devops-with-ai/6_hu150851338808180925.png 1024w"
+loading="lazy"
+alt="图 6: AI 增强的 DevOps 工具在 SDLC 中的应用"
+class="gallery-image"
+data-flex-grow="114"
+data-flex-basis="275px"
+>&lt;/p>
+&lt;blockquote>
+&lt;p>&lt;strong>AI 增强开发的下游影响&lt;/strong>&lt;/p>
+&lt;p>AI 编码助手使开发者的编写代码效率提升，但这也带来一个意外的副作用：代码审查和安全审查的工作量积压增加。缓慢的代码审查会降低整体开发效率。根据 2023 年 DORA 报告，代码审查速度快的团队其软件交付性能提高了 50%。平台工程团队可以看清这些系统性互相关系，适合推动系统性变革，而不仅仅是局部改进。&lt;/p>
+&lt;p>因此，平台工程团队在支持 AI 增强开发工具的同时，必须补充卓越的 DevSecOps 实践。否则，我们将面临开发者产生虚假的安全感、重复代码和未经审查的代码推送，进而导致质量和安全问题。&lt;/p>
+&lt;/blockquote>
+&lt;h3 id="优化软件交付基础设施">优化软件交付基础设施
+&lt;/h3>&lt;p>平台工程团队负责管理、治理并向产品团队提供软件交付基础设施。然而，规模化管理软件交付基础设施非常复杂，如下公式所示：&lt;/p>
+&lt;blockquote>
+&lt;p>软件交付基础设施 = （支持所有环境中应用及其组件的完整 SDLC 的基础设施）x（应用数量）&lt;/p>
+&lt;/blockquote>
+&lt;p>软件交付基础设施不仅限于生产环境，还包括开发、测试、压力测试和预发布环境。此外，基础设施还必须支持部署和测试应用所需的各个组件。这些组件可能包括源代码管理系统、云开发环境、持续集成服务器、数据库服务器，以及运行时基础设施堆栈（由物理主机、虚拟机容器和应用运行时组成）。&lt;/p>
+&lt;p>产品团队越来越期望自助工具能够在成本、可靠性和可持续性之间实现优化（见图 7）。&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/blog/pe-team-augment-devops-with-ai/7.png"
+width="1280"
+height="962"
+srcset="https://martinliu.cn/blog/pe-team-augment-devops-with-ai/7_hu5258319007613067984.png 480w, https://martinliu.cn/blog/pe-team-augment-devops-with-ai/7_hu6577669126085772166.png 1024w"
+loading="lazy"
+alt="图 7: 在可靠性、成本优化和可持续性目标之间实现权衡"
+class="gallery-image"
+data-flex-grow="133"
+data-flex-basis="319px"
+>&lt;/p>
+&lt;p>&lt;strong>通过自助内部开发平台优化云原生软件交付基础设施&lt;/strong>&lt;/p>
+&lt;p>优化公有云基础设施变得尤为困难，但也非常重要。这主要是由于云服务种类繁多、定价模式不一致、云原生应用的分布式特性以及流量模式的季节性变化。为了可靠、经济和可持续地管理基础设施，平台工程团队应为产品团队提供支持 AI 增强的自助平台和工具，以优化成本、可靠性和可持续性。&lt;/p>
+&lt;p>新兴技术如自主工作负载优化和增强的 FinOps，可以自动化优化价格和性能，同时实现预定义的业务目标。供应商包括 Akamas、Anodot、Apptio、Avesha、CAST AI、Densify、Google Cloud（Active Assist、Duet AI）、IBM（Turbonomic）、Sedai 和 StormForge。图 8 显示了这些工具支持的 AI 增强使用案例。&lt;/p>
+&lt;p>平台工程团队应将这些技术整合到内部开发平台中，以优化计算基础设施。这使开发人员和站点可靠性工程师能够可靠且经济地管理和运行应用程序（见 2023 年 IT 管理智能炒作周期）。&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/blog/pe-team-augment-devops-with-ai/8.png"
+width="1280"
+height="1040"
+srcset="https://martinliu.cn/blog/pe-team-augment-devops-with-ai/8_hu8708278392318014059.png 480w, https://martinliu.cn/blog/pe-team-augment-devops-with-ai/8_hu2955533111291749817.png 1024w"
+loading="lazy"
+alt="图 8: 平台工程团队支持的 AI 增强基础设施成本、可靠性和可持续性优化工具"
+class="gallery-image"
+data-flex-grow="123"
+data-flex-basis="295px"
+>&lt;/p>
+&lt;h3 id="快速回答">快速回答
+&lt;/h3>&lt;p>&lt;strong>在使用 AI 增强 DevOps 工作流时需要注意哪些陷阱？&lt;/strong>&lt;/p>
+&lt;p>软件工程领导者必须警惕潜在的陷阱和意外的副作用：&lt;/p>
+&lt;ul>
+&lt;li>注意供应商的“AI 洗涤”，避免在传统自动化选项足够时，还用 AI 技术过度再造设计。通过组建跨职能团队进行试点，创建和验证相关假设进行前后对比分析。使用结果驱动的 KPI 来定义和衡量成功。&lt;/li>
+&lt;li>将 AI 应用于 SDLC 的某个部分（局部），可能会导致工作量的转移，而不是节省，从而产生一种虚假的时间节省感。例如，在编码过程中节省了时间，可能会因为代码审查和调试时间的增加，而正负抵消（见评估生成式 AI 如何改善开发者体验）。&lt;/li>
+&lt;li>尽管 AI 旨在降低认知负荷，但它也可能无意中降低认知技能水平。是人类员工的认知技能在不使用的情况下，而随之退化，这使我们在 AI 工具达到其极限时，反而无法做出正确决策。使用 AI 作为决策引擎的另一个风险是，它会降低人类对系统运行方式的理解，并导致缺乏情境意识。&lt;/li>
+&lt;li>大多数生成式 AI 工具无法确保输出的一致性、准确性、可重复性和可预测性。“幻觉”使当前的技术难以胜任关键任务。然而，涉及检索增强生成（RAG）和模型微调的技术，可以通过访问最新的知识源和特定上下文数据来减少幻觉。使用基础模型作为控制器来构建执行狭窄任务的智能体也有前景。例如，Adept、AgentGPT、AutoGPT 和 Agents for Amazon Bedrock。Gartner 称这些为“自主智能体”（见 2023 年生成式 AI 炒作周期）。&lt;/li>
+&lt;/ul>
+&lt;h2 id="证据">证据
+&lt;/h2>&lt;ol>
+&lt;li>Gartner IT 领导者对软件工程生成式 AI 的调查：这项调查于 2023 年 5 月 2 日至 8 日在线进行，旨在收集生成式 AI 在软件工程中的当前和预期使用情况数据。共有 91 名 IT 领导者参加，他们是 Gartner 研究圈的成员，一个由 Gartner 管理的小组。参与者主要来自北美（n = 44）和 EMEA（n = 33）；其他受访者来自亚太地区（n = 12）和拉丁美洲（n = 2）。免责声明：本次调查结果仅反映受访者和其公司的观点，不代表全球情况或整个市场。&lt;/li>
+&lt;li>生成式 AI 对软件工程团队的影响&lt;/li>
+&lt;li>软件开发人员的日常工作：微软&lt;/li>
+&lt;li>软件开发中 AI 的现状，GitLab&lt;/li>
+&lt;li>全球代码时间报告，基于 25 万多名开发人员的数据，Software.com&lt;/li>
+&lt;li>2023 年 DevOps 状态报告，基于 3000 名专业人员的数据，Google Cloud&lt;/li>
+&lt;li>自动化的讽刺——Lisanne Bainbridge&lt;/li>
+&lt;li>国家人类系统集成委员会（BOHSI）小组：人类与 AI 团队合作：研究前沿，ResearchGate&lt;/li>
+&lt;/ol>
+&lt;h2 id="注释-1">注释 1
+&lt;/h2>&lt;p>在《目标》一书中，Eliyahu Goldratt 博士将约束定义为“限制系统实现更高性能的因素”。&lt;/p>
+&lt;p>缓解最关键的约束对整体系统性能有着巨大影响。因此，我们必须迭代地识别、优先处理，并解决阻碍团队交付价值的最大约束。&lt;/p>
+&lt;p>❤️ Photo by Pavel Danilyuk: &lt;a class="link" href="https://www.pexels.com/photo/a-robot-holding-a-cup-8439093/" target="_blank" rel="noopener"
+>https://www.pexels.com/photo/a-robot-holding-a-cup-8439093/&lt;/a>&lt;/p></description></item><item><title>2024年 DevOps 的10大趋势</title><link>https://martinliu.cn/blog/devops-top-trends-for-2024/</link><pubDate>Tue, 02 Jan 2024 10:03:49 +0800</pubDate><guid>https://martinliu.cn/blog/devops-top-trends-for-2024/</guid><description>&lt;img src="https://martinliu.cn/blog/devops-top-trends-for-2024/devops-trends-thumbnail.png" alt="Featured image of post 2024年 DevOps 的10大趋势" />&lt;p>我们迎接2024年的到来，很明显，DevOps正在迅速发展。这一领域正在经历重大变革，开发人员和组织需要及时了解新兴趋势，以保持竞争力和效率。在本文中，我们将探讨正在塑造DevOps未来的十大趋势。&lt;/p>
+&lt;ol>
+&lt;li>
+&lt;p>AI和ML在DevOps中的应用：AI和自动化在DevOps中的使用并非新鲜事物。然而，我们预计在未来一年内这些技术的采用将显著增加。AI和ML正在增强智能自动化，实现预测性分析，并改善DevOps过程中的异常检测。&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>DevSecOps和安全集成：网络威胁的频率和复杂性不断增加，这促使安全性集成到DevOps管道的每个阶段，从而催生了DevSecOps的崛起。这一趋势强调在软件开发生命周期的每个步骤都纳入安全措施，培养一种安全责任由所有团队成员共享的文化。&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>NoOps和高级自动化：NoOps的概念正在迅速获得推动力，操作流程被自动化到了很高的程度，甚至于感觉保持专门的运维团队都变得多余了。NoOps设想未来的系统将变得自我管理和自我修复，由AI自动化驱动。&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>无服务器计算：在2024年，无服务器计算的采用是显著影响了DevOps的趋势。无服务器计算，其中云提供商动态分配机器资源，使开发人员更专注于编写代码而不是管理基础设施。这一趋势受到了对可伸缩性、成本效益以及简化部署过程需求的推动。&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>增强的可观测性和监控：全面的可观测性和监控正在成为DevOps的关键优先事项。随着系统变得越来越复杂，对先进监控、日志记录和追踪解决方案的需求变得至关重要，以获得对应用程序性能的深入洞察。增强的可观测性使DevOps团队能够预先解决问题，提高应用程序的可靠性和性能。&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>强调多云和边缘计算策略：多云和边缘计算策略的不断普及是2024年影响DevOps的另一趋势。多云方法通过在多个云提供商之间优化工作流程来提供灵活性。这一趋势受到了组织避免供应商锁定，并确保资源高效利用的需求推动。边缘计算也因其能够在数据生成的地方附近处理数据的能力而受到青睐，这对于需要低延迟的应用程序至关重要。&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>GitOps和基础架构即代码（IaC）：GitOps和基础架构即代码（IaC）是2024年改变DevOps的两个重要趋势。这些趋势是：对管理日益复杂的基础架构，和更高效的基础设施供应方法的挑战的回应。&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>DevOps中的ChatOps：ChatOps，将聊天平台与运维工具集成在一起，是2024年影响DevOps的另一个趋势。与传统通信工具不同，ChatOps允许在聊天应用程序内直接与软件开发工具进行交互，实现即时响应和操作。通信和操作工具的直接集成表明了减少响应时间和增强团队灵活性的实际方法。&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>低代码和无代码开发：在2024年，低代码/无代码开发正因组织寻求加速开发流程和降低成本而获得动力。低代码/无代码平台正在通过实现更快速的应用程序开发和部署改变DevOps的格局。&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>不断增长的DevOps市场和云采用：根据MarketsandMarkets™的报告，DevOps市场预计将在2023年从104亿美元增长到2028年的255亿美元，年复合增长率（CAGR）为19.7%。这些趋势突显了DevOps在现代软件开发中日益重要的地位，强调了其不断增长的市场潜力和影响。&lt;/p>
+&lt;/li>
+&lt;/ol>
+&lt;h2 id="结论">结论
+&lt;/h2>&lt;p>当我们审视2024年的DevOps格局时，很明显，这一领域正在经历重大变革。采用AI和ML，将安全性整合到DevOps中，以及不断增加的自动化使用是塑造DevOps未来的一些趋势。&lt;/p>
+&lt;p>&lt;a class="link" href="https://blog.codegiant.io/the-next-wave-of-devops-top-trends-for-2024/" target="_blank" rel="noopener"
+>本文转自：https://blog.codegiant.io/the-next-wave-of-devops-top-trends-for-2024/&lt;/a>&lt;/p></description></item><item><title>先睹为快 Azure OpenAI 驱动的 Elastic 可观测性 ‘AI 助理’</title><link>https://martinliu.cn/blog/elastic-elastic-obs-ai-assistant-aoai/</link><pubDate>Tue, 05 Dec 2023 13:10:43 +0800</pubDate><guid>https://martinliu.cn/blog/elastic-elastic-obs-ai-assistant-aoai/</guid><description>&lt;img src="https://martinliu.cn/blog/elastic-elastic-obs-ai-assistant-aoai/pexels-cottonbro-studio-6153354.jpg" alt="Featured image of post 先睹为快 Azure OpenAI 驱动的 Elastic 可观测性 ‘AI 助理’" />&lt;p>在最近的 ElasticON 大会上，Elastic 可观测性的 AI Assistant 得到了充分曝光。在 Keynote 中，还专门做了一个演示，展示了 AI Assistant 的功能，以及如何使用 AI Assistant 来解决问题。&lt;/p>
+&lt;p>我最近好在学习微软的 Azure OpenAI 服务，在我的 Azure 环境中，已经创建了一个 OpenAI 服务，可以用于AI Assistant 的测试。因此，我就想看看 Elastic 的 AI Assistant 和 Azure 的 OpenAI 服务结合起来的效果如何。&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/blog/elastic-elastic-obs-ai-assistant-aoai/AIOps_blog-720x420.png"
+width="720"
+height="420"
+srcset="https://martinliu.cn/blog/elastic-elastic-obs-ai-assistant-aoai/AIOps_blog-720x420_hu14167360993391970131.png 480w, https://martinliu.cn/blog/elastic-elastic-obs-ai-assistant-aoai/AIOps_blog-720x420_hu465098212947983385.png 1024w"
+loading="lazy"
+class="gallery-image"
+data-flex-grow="171"
+data-flex-basis="411px"
+>&lt;/p>
+&lt;h2 id="elastic-可观测性的-ai-assistant">Elastic 可观测性的 AI Assistant
+&lt;/h2>&lt;p>它有两个使用方式：&lt;/p>
+&lt;ol>
+&lt;li>Contextual insights ： 在可观测性 APP 的界面中，在很多特定的位置，都可以点击右上角的 AI Assistant 链接，然后进入当前界面的上下文分析，在日志和 APM 中都已经做了集成。此功能的目标是：帮你理解错误日志和指标信息，并尽可能的给你一定的解释和建议。
+&lt;ol>
+&lt;li>Universal Profiling - 解释了运行的应用里最昂贵的库和函数，并提供优化建议。&lt;/li>
+&lt;li>应用性能监控（APM） - 解释了APM错误并提供纠正建议。&lt;/li>
+&lt;li>基础设施可观测性 （Infrastructure observability）- 解释了在主机上运行的进程。&lt;/li>
+&lt;li>日志 （log）- 解释了日志消息并生成搜索模式以查找类似问题。&lt;/li>
+&lt;li>告警 （alerting） - 为日志速率变化提供可能的原因和纠正建议。&lt;/li>
+&lt;/ol>
+&lt;/li>
+&lt;li>Chat 聊天会话 ： 以可观测性数据为基础，你可以请求机器人为你汇总、分析、和可视化数据。从而得到你想要的结果，可能是为了制作某个报表，也可以能是开始探索分析某个性能问题。&lt;/li>
+&lt;/ol>
+&lt;p>运行这个功能的前提条件：&lt;/p>
+&lt;ul>
+&lt;li>Elastic Stack version 8.9 或者更高&lt;/li>
+&lt;li>拥有 Elastic Enterprise 订阅&lt;/li>
+&lt;li>一个 AI 服务方的账号，比如 Azure OpenAI gpt-4(0613) 或 gpt-4-32k(0613) 服务， 或者 OpenAI gpt-4 服务&lt;/li>
+&lt;li>为了使用私域文档作为知识库，还需要一个至少 4GB 的机器学习节点。&lt;/li>
+&lt;/ul>
+&lt;h2 id="准备-azure-openai-服务">准备 Azure OpenAI 服务
+&lt;/h2>&lt;p>首先，你需要在 Azure 的 Portal 中创建一个 OpenAI 服务，这个服务提供 OpenAI GPT-4 模型，我创建的服务名称是 &lt;code>ai4elasticstack&lt;/code>。&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/blog/elastic-elastic-obs-ai-assistant-aoai/2023-12-05_13-44-47.jpg"
+width="1175"
+height="789"
+srcset="https://martinliu.cn/blog/elastic-elastic-obs-ai-assistant-aoai/2023-12-05_13-44-47_hu9343840012212203972.jpg 480w, https://martinliu.cn/blog/elastic-elastic-obs-ai-assistant-aoai/2023-12-05_13-44-47_hu8357403261011328574.jpg 1024w"
+loading="lazy"
+class="gallery-image"
+data-flex-grow="148"
+data-flex-basis="357px"
+>&lt;/p>
+&lt;p>这里确保选择 Azure OpenAI 的服务所在区域里能提供 gpt-4 模型，比如我选择的是瑞士中部。&lt;/p>
+&lt;p>然后，是在这个区域中部署所需要的模型。&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/blog/elastic-elastic-obs-ai-assistant-aoai/2023-12-05_13-52-26.jpg"
+width="1087"
+height="956"
+srcset="https://martinliu.cn/blog/elastic-elastic-obs-ai-assistant-aoai/2023-12-05_13-52-26_hu15599425002443314236.jpg 480w, https://martinliu.cn/blog/elastic-elastic-obs-ai-assistant-aoai/2023-12-05_13-52-26_hu3712289935585863468.jpg 1024w"
+loading="lazy"
+class="gallery-image"
+data-flex-grow="113"
+data-flex-basis="272px"
+>&lt;/p>
+&lt;p>这里我部署了 gpt-4-32k 模型，需要注意的是：token 的限速需要调整到最大，这样才能保证 AI Assistant 的正常使用。&lt;/p>
+&lt;h2 id="创建-ai-assistant-的连接器">创建 AI Assistant 的连接器
+&lt;/h2>&lt;p>在 Elastic Cloud 中，创建一个 AI Assistant 所需要使用到的连接器，这个连接器的类型是 Azure OpenAI，然后，填写 Azure OpenAI 服务的相关信息，如下图所示。&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/blog/elastic-elastic-obs-ai-assistant-aoai/2023-12-05_13-56-18.jpg"
+width="1257"
+height="1109"
+srcset="https://martinliu.cn/blog/elastic-elastic-obs-ai-assistant-aoai/2023-12-05_13-56-18_hu18008201779177639427.jpg 480w, https://martinliu.cn/blog/elastic-elastic-obs-ai-assistant-aoai/2023-12-05_13-56-18_hu167113533618460006.jpg 1024w"
+loading="lazy"
+class="gallery-image"
+data-flex-grow="113"
+data-flex-basis="272px"
+>&lt;/p>
+&lt;p>URL 是一个重要的参数，它的格式如下：&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">https://{your-resource-name}.openai.azure.com/openai/deployments/{deployment-id}/completions?api-version={api-version}
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>其中，&lt;code>{your-resource-name}&lt;/code> 是你创建的 Azure OpenAI 服务的名称，&lt;code>{deployment-id}&lt;/code> 是你创建的 Azure OpenAI 服务的部署 ID（即名称），&lt;code>{api-version}&lt;/code> 是你创建的 Azure OpenAI 服务的 API 版本。这里的 &lt;code>{deployment-id}&lt;/code> 与 &lt;code>{api-version}&lt;/code> 有一定的排列组合，某些组合是不工作的，我当前的选择是可以工作：&lt;code>gpt4（32k 0613 版本） 和 2023-07-01-preview&lt;/code>&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">https://ai4elasticstack.openai.azure.com/openai/deployments/gpt432k0613/chat/completions?api-version=2023-07-01-preview
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>这里配置完 URL 和 API 秘钥之后，点击“测试”页面，如果一切正常，你会看到一个绿色的正常调用 OpenAI 的返回。这样你的 AI Assistant 就可以正常工作了。&lt;/p>
+&lt;h2 id="理解日志中的错误">理解日志中的错误
+&lt;/h2>&lt;p>进入可观测性 app，点击 Stream，在这里选中一条报错的日志，内容如下：&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">16:23:13.729
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">elastic_agent.metricbeat
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">[elastic_agent.metricbeat][error] Error fetching data for metricset docker.memory: No memory stats data available
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>点击 &lt;code>view detail&lt;/code>，查看这条日志的详细信息。&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/blog/elastic-elastic-obs-ai-assistant-aoai/2023-12-05_09-59-13.png"
+width="1781"
+height="1173"
+srcset="https://martinliu.cn/blog/elastic-elastic-obs-ai-assistant-aoai/2023-12-05_09-59-13_hu6173151208235147522.png 480w, https://martinliu.cn/blog/elastic-elastic-obs-ai-assistant-aoai/2023-12-05_09-59-13_hu10329232982781425431.png 1024w"
+loading="lazy"
+class="gallery-image"
+data-flex-grow="151"
+data-flex-basis="364px"
+>&lt;/p>
+&lt;p>AI Assistant 会自动分析这条日志，然后给出两个选项。&lt;/p>
+&lt;ol>
+&lt;li>点击“What&amp;rsquo;s this message?”, AI Assistant 会给出这条日志的解释，以及可能的原因。这个 host 上由于 Docker 服务没有启动，导致 Metricbeat 无法获取到 Docker 的内存信息。AI Assistant 首先对这条日志，做了解释，解释内容里包含了你可能会关注的元数据信息，包括：版本号、操作系统、日志级别等。然后推测出是 Docker 服务没有启动的原因。最后，说明这是不正常的情况，应该尽快排查 Docker 服务。同一条错误信息，也可能会出现不同的解释。下面是整个 AI Assistant 的解释内容：&lt;/li>
+&lt;/ol>
+&lt;blockquote>
+&lt;p>The log entry you provided is from an Elastic Agent running on a host named &amp;ldquo;linux-dev-02&amp;rdquo; with the IP address &amp;ldquo;10.1.0.4&amp;rdquo;. The host is running Ubuntu 22.04.3 LTS (Jammy Jellyfish) with kernel version 6.2.0-1017-azure. The Elastic Agent version is 8.10.4 and it&amp;rsquo;s not a snapshot version. The agent is running on a cloud instance in the &amp;ldquo;eastasia&amp;rdquo; region of Azure.&lt;/p>
+&lt;/blockquote>
+&lt;blockquote>
+&lt;p>The component that generated this log entry is Metricbeat, which is a lightweight shipper that you can install on your servers to periodically collect metrics from the operating system and from services running on the server. The specific Metricbeat module in use here is the Docker module, which collects metrics and logs from Docker containers.&lt;/p>
+&lt;/blockquote>
+&lt;blockquote>
+&lt;p>The log level of the message is &amp;ldquo;error&amp;rdquo;, which indicates that an error or problem has occurred. The specific error message is &amp;ldquo;Error fetching data for metricset docker.memory: No memory stats data available&amp;rdquo;. This suggests that Metricbeat was unable to fetch memory statistics for a Docker container. This could be due to a number of reasons, such as the Docker container not being active, the Docker daemon not being accessible, or the Docker API not returning memory statistics.&lt;/p>
+&lt;/blockquote>
+&lt;blockquote>
+&lt;p>Whether this is expected or an issue depends on your specific setup and expectations. If you expect to be collecting memory statistics from Docker containers and this error is preventing that, then it would be an issue. If you&amp;rsquo;re not using Docker or not interested in collecting memory statistics from Docker containers, then it might not be an issue. However, it&amp;rsquo;s generally not expected for errors to be occurring, so it might be worth investigating further to understand why this error is happening.&lt;/p>
+&lt;/blockquote>
+&lt;ol start="2">
+&lt;li>如果点击“How do i find similar log messages?” , AI Assistant 会给出一个 KQL 查询语句，使用这个查询语句会返回与这条日志相似的日志。这个查询语句的结果，可以帮助你更好的理解这条日志的上下文。&lt;/li>
+&lt;li>链接器选择：你可以在 Elastic Stack 中，配置多个 AI Assistant 的连接器，可能对应到不同的 OpenAI 服务+版本的组合。&lt;/li>
+&lt;/ol>
+&lt;p>这个功能的好处：&lt;/p>
+&lt;ul>
+&lt;li>通过 AI Assistant 的解释，它可以帮助你更全面的理解日志的内容本身，由于每个人并不是熟悉所有的技术领域，AI 在这里可以很好的补充你的知识短板。&lt;/li>
+&lt;li>在高压力的排错环境中，从模糊的日志事件内容中，很快的得出下一步排查的方向是比较有意义的。人脑很有可能在疲惫状态下，很难准确地得出下一个排查的动作。&lt;/li>
+&lt;li>AI 对错误原因的推理，看着并不一定高明，但是作为排错的起点，还是比较有用的。你可以在这个基础上，点击界面上的 “Start Chat” 按钮，进入到 Chat 聊天会话功能模式，然后，继续与 AI 机器人对话，追问：“其他潜在的故障原因是那些？”；这样 AI 给我了另外不同的 4 种故障可能，涉及 Docker 服务器、配置、Metricbeat 的配置等等。可见 AI 在细分领域里的知识的深度还是一些的。&lt;/li>
+&lt;/ul>
+&lt;p>下面是我的追问和 AI 的回答，这里是支持中文：&lt;/p>
+&lt;p>“
+You：还有什么可能的原因会导致这个问题？&lt;/p>
+&lt;p>Elastic Assistant ：这个错误信息表示 Metricbeat 无法获取 Docker 容器的内存统计信息。可能的原因包括：&lt;/p>
+&lt;ol>
+&lt;li>
+&lt;p>Docker 容器未运行：如果你试图获取一个未运行或不存在的 Docker 容器的内存统计信息，将会出现这个错误。&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Docker 守护进程无法访问：Metricbeat 需要能够访问 Docker 守护进程来获取容器的统计信息。如果由于某种原因（例如权限问题或网络问题）无法访问 Docker 守护进程，将会出现这个错误。&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Docker API 未返回内存统计信息：Metricbeat 通过 Docker API 获取容器的统计信息。如果 Docker API 未返回内存统计信息，将会出现这个错误。这可能是因为 Docker API 的问题，或者是因为容器本身没有生成内存统计信息。&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Metricbeat 配置问题：如果 Metricbeat 的 Docker 模块没有正确配置，可能也会导致这个问题。例如，如果 Metricbeat 没有正确配置 Docker 守护进程的地址，或者没有提供正确的证书来访问需要 TLS 的 Docker 守护进程，将会出现这个错误。&lt;/p>
+&lt;/li>
+&lt;/ol>
+&lt;p>你可以根据这些可能的原因进行排查，看看哪一项可能是问题所在。
+”&lt;/p>
+&lt;p>这个功能还在可观测性的其它功能模块中也做了深度的集成，例如在 APM 等模块中，也可以调用到 AI Assistant 的 “上下文洞见”；基本上，就是 Elastic Stack 在多个场景中，人类可用将自己分析错误信息的工作一定程度的交给 AI 去做；这样，我们就可以更加专注于问题的解决，而不是在监控数据、时序信息的分析上浪费更多的时间。从长远来看，这个上下文洞见的辅助排查功能，确实是有辅助驾驶和导航的意义，还是比较有用的。&lt;/p>
+&lt;h2 id="chat-聊天会话功能">Chat 聊天会话功能
+&lt;/h2>&lt;p>我测试了一个开放式的问题，希望 AI 能帮我分析出：我的服务器是否即将有磁盘空间用尽的情况发生。如下图所示：&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/blog/elastic-elastic-obs-ai-assistant-aoai/2023-12-05_17-13-51.png"
+width="1546"
+height="1336"
+srcset="https://martinliu.cn/blog/elastic-elastic-obs-ai-assistant-aoai/2023-12-05_17-13-51_hu4266353834278380013.png 480w, https://martinliu.cn/blog/elastic-elastic-obs-ai-assistant-aoai/2023-12-05_17-13-51_hu7689949119043140250.png 1024w"
+loading="lazy"
+class="gallery-image"
+data-flex-grow="115"
+data-flex-basis="277px"
+>&lt;/p>
+&lt;p>下面解释一下 AI Assistant 的回答：&lt;/p>
+&lt;ol>
+&lt;li>我使用英语提问，其实你可以用任何语言提问，OpenAI 都可以正确理解。&lt;/li>
+&lt;li>点击这里折叠隐藏的 7 个步骤，这些步骤是 AI Assistant 为了回答我的问题，所做的推理思考和处理过程。这里使用了多个方法调用，包括在 Elasticsearch 数据库中查找任何它想要的信息。 AI Assistant 的知识库【你可以将知识库配置在 Elasticsearch 中，AI 的分析流水线，读取并理解知识条目内容，并调用这些知识】，以及我的问题的上下文信息，AI Assistant 会根据这些信息，做出推理，然后给出回答。&lt;/li>
+&lt;li>最终 AI 用绘图的方式给出主机的磁盘空间利用率的汇总情况，很可惜的是，它几乎就做对了；这个图形没有显示出来的原因是：在最后还应该调用一个 max 或者 avg 的运算函数。&lt;/li>
+&lt;li>最后一句话，再次解释并总结了我的提问。&lt;/li>
+&lt;/ol>
+&lt;p>我并没有继续这个会话，如果继续问答下去的话，如果 AI Assistant 的聊天内容总是我所期望的正确的结果内容；那么，很可能我们就不需要去各种界面里到处点击、查看和分析各种数据图表和原始数据了。假如以后接入了自然语音的输入界面，那么，未来这种排错和分析场景还确实是一种比较科幻的感觉。&lt;/p>
+&lt;p>AI助手使用函数通过文本、数据和可视化组件在聊天对话中包含相关上下文。您和AI助手都可以提出函数建议。您还可以编辑AI助手的函数建议并检查函数响应。&lt;/p>
+&lt;p>以下表格列出了可用的函数：&lt;/p>
+&lt;ul>
+&lt;li>
+&lt;p>summarize ：总结对话的部分。&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>recall ：回顾先前的学习。&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>lens ：使用Lens创建自定义可视化，可以添加到仪表板中。&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>elasticsearch ：代表您调用Elasticsearch API。&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>kibana ：代表您调用Kibana API。&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>alerts ：获取可观测性的警报。&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>get_apm_timeseries ：显示任何服务或所有服务及其任何或所有依赖项的不同APM指标（如吞吐量、故障率或延迟）。既显示为时间序列，也显示为单一统计数据。此外，该函数返回任何更改，如峰值、步进和趋势更改或下降。您还可以使用它通过请求两个不同的时间范围，或者例如两个不同的服务版本来比较数据。&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>get_apm_error_document ：根据分组名称获取示例错误文档。这还包括错误的堆栈跟踪，这可能提示错误的原因。&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>get_apm_correlations ：获取在前景集中比背景集更突出的字段值。这对于确定哪些属性（例如error.message、service.node.name或transaction.name）对高延迟的贡献是有用的。另一个选项是基于时间的比较，您可以在更改点之前和之后进行比较。&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>get_apm_downstream_dependencies ：获取服务的下游依赖项（服务或未被检测的后端）。通过返回span.destination.service.resource和service.name两者将下游依赖项名称映射到服务。如果需要，可以使用此功能进一步深入挖掘。&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>get_apm_service_summary ： 获取单个服务的摘要，包括语言、服务版本、部署、环境以及它运行的基础设施。例如，pod的数量和它们的下游依赖项列表。它还返回活动警报和异常。&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>get_apm_services_list ：获取受监控服务的列表，它们的健康状态和警报。&lt;/p>
+&lt;/li>
+&lt;/ul>
+&lt;h2 id="总结">总结
+&lt;/h2>&lt;p>由于时间有限，我并没有做知识库的导入，从文档中看到，知识库私域信息的注入基本上是这样的过程：首先将知识库文档整理后导入到 Elasticsearch 的一个索引中，然后使用结合 Elasticsearch 本身的 ELSER 自然语音处理能力和 OpenAI 的理解推理能力，来支撑 AI 辅助分析排查问题的过程。&lt;/p>
+&lt;p>以上功能测试的配置非常简单，在 Elastic Cloud 的环境中，参考本文，你应该在 10 分钟内就可以完成所有配置。从上下文分析和聊天的两个场景中，我们可以很快的找到 AI 辅助运维的感觉。&lt;/p>
+&lt;blockquote>
+&lt;p>参考文章 ：&lt;/p>
+&lt;ul>
+&lt;li>&lt;a class="link" href="https://www.elastic.co/guide/en/observability/current/obs-ai-assistant.html" target="_blank" rel="noopener"
+>https://www.elastic.co/guide/en/observability/current/obs-ai-assistant.html&lt;/a>&lt;/li>
+&lt;li>&lt;a class="link" href="https://www.youtube.com/watch?v=AQ4sPC_O2Ck&amp;amp;ab_channel=Elastic" target="_blank" rel="noopener"
+>https://www.youtube.com/watch?v=AQ4sPC_O2Ck&amp;ab_channel=Elastic&lt;/a>&lt;/li>
+&lt;li>&lt;a class="link" href="https://www.elastic.co/blog/context-aware-insights-elastic-ai-assistant-observability" target="_blank" rel="noopener"
+>https://www.elastic.co/blog/context-aware-insights-elastic-ai-assistant-observability&lt;/a>&lt;/li>
+&lt;li>&lt;a class="link" href="https://www.elastic.co/blog/whats-new-elastic-observability-8-9-0" target="_blank" rel="noopener"
+>https://www.elastic.co/blog/whats-new-elastic-observability-8-9-0&lt;/a>&lt;/li>
+&lt;li>&lt;a class="link" href="https://www.elastic.co/blog/whats-new-elastic-observability-8-10-0" target="_blank" rel="noopener"
+>https://www.elastic.co/blog/whats-new-elastic-observability-8-10-0&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/blockquote>
+&lt;p>Feature picture ❤️ cottonbro studio : &lt;a class="link" href="https://www.pexels.com/zh-cn/photo/6153354/" target="_blank" rel="noopener"
+>https://www.pexels.com/zh-cn/photo/6153354/&lt;/a>&lt;/p></description></item></channel></rss>
