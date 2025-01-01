@@ -11,7 +11,7 @@ tags:
     - catchpoint
 comments: true
 toc: true
-draft: false
+draft: true
 ---
 
 >英文报告 PDF 下载链接：[《2024 年 SRE 报告》](sre-report-2024.pdf)
