@@ -1,0 +1,1891 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Nutanix on Martin Liu's Blog</title><link>https://martinliu.cn/tags/nutanix/</link><description>Recent content in Nutanix on Martin Liu's Blog</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><lastBuildDate>Mon, 10 Oct 2022 00:00:39 +0800</lastBuildDate><atom:link href="https://martinliu.cn/tags/nutanix/index.xml" rel="self" type="application/rss+xml"/><item><title>亲手为自己打造一个完美的机架</title><link>https://martinliu.cn/blog/build-your-best-rack/</link><pubDate>Mon, 10 Oct 2022 00:00:39 +0800</pubDate><guid>https://martinliu.cn/blog/build-your-best-rack/</guid><description>&lt;img src="https://martinliu.cn/blog/build-your-best-rack/R-C.jpg" alt="Featured image of post 亲手为自己打造一个完美的机架" />&lt;p>下面是标准的 IDC 机架结构示意图，结构比较复杂，发挥其所有功能还需要依赖于专业机房所提供的风火水电环境的各种配套支持。&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/blog/build-your-best-rack/HTB1GD4ePFXXXXXCXVXXq6xXFXXXr.jpg"
+width="1000"
+height="772"
+srcset="https://martinliu.cn/blog/build-your-best-rack/HTB1GD4ePFXXXXXCXVXXq6xXFXXXr_hu_ecdfcac5fa465127.jpg 480w, https://martinliu.cn/blog/build-your-best-rack/HTB1GD4ePFXXXXXCXVXXq6xXFXXXr_hu_b5a3a85cb9a25513.jpg 1024w"
+loading="lazy"
+alt="标准服务器网络机架机构图"
+class="gallery-image"
+data-flex-grow="129"
+data-flex-basis="310px"
+>&lt;/p>
+&lt;p>下面这个标准规格【42u x 19 英寸】机架架结构图，这是最常见的服务器机柜，在普通的办公室里，或者公司专门的 server room 服务器机房中很常见。高低、深浅、能否墙挂都可以选择。&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/blog/build-your-best-rack/R-C.png"
+width="862"
+height="768"
+srcset="https://martinliu.cn/blog/build-your-best-rack/R-C_hu_de07a190ac777bfd.png 480w, https://martinliu.cn/blog/build-your-best-rack/R-C_hu_c6a2dd0afac2c70c.png 1024w"
+loading="lazy"
+alt="机架结构简图"
+class="gallery-image"
+data-flex-grow="112"
+data-flex-basis="269px"
+>&lt;/p>
+&lt;p>对我来说，显然以上两种的功能过于复杂，并不适合我在家庭使用；我个人比较偏爱 StarTech 公司的开放式机架。&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/blog/build-your-best-rack/1013689771.jpg"
+width="1500"
+height="1500"
+srcset="https://martinliu.cn/blog/build-your-best-rack/1013689771_hu_1ef2cccb8e0c9749.jpg 480w, https://martinliu.cn/blog/build-your-best-rack/1013689771_hu_ff2b0230ed42f780.jpg 1024w"
+loading="lazy"
+alt="12U 前后深度可调开放式"
+class="gallery-image"
+data-flex-grow="100"
+data-flex-basis="240px"
+>&lt;/p>
+&lt;p>但是，我发现 StarTech 公司的机架产品在国内没有代理商，在淘宝里也没有卖家。就算是有，价格也比较贵。不过它确实是国外 HomeLab 玩家评测的最多的。&lt;/p>
+&lt;p>总结一下我们置办家庭机架的几个所谓合理的动机：&lt;/p>
+&lt;ul>
+&lt;li>整理收纳一定数量的电脑和网络产品，包括家用 NAS，wifi 和其他可能存在的新旧电脑（包括家用 PC、笔记本、服务器、网络设备等）。&lt;/li>
+&lt;li>给这些电子产品更好的运行环境，确保供电、散热、网络连接和安全性等需求。&lt;/li>
+&lt;li>让使用更加方便，需要开机的开机，用不到的关机省电。&lt;/li>
+&lt;li>目前真在，或者已经走向 HomeLab 的人，请自觉跳这个坑。&lt;/li>
+&lt;li>希望在本地组网，并自给自足一定数量本地虚拟机的需求，同时降低或者避免使用云主机的成本。&lt;/li>
+&lt;li>其他特殊需求：一个炫酷的机架也是不错的网络软件演示环境和直播的装饰背景。&lt;/li>
+&lt;/ul>
+&lt;p>下图是我的 HomeLab 机架的第一个版本。&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/blog/build-your-best-rack/bamboo-rack.jpg"
+width="896"
+height="1626"
+srcset="https://martinliu.cn/blog/build-your-best-rack/bamboo-rack_hu_ff4d4c7b429c0253.jpg 480w, https://martinliu.cn/blog/build-your-best-rack/bamboo-rack_hu_770b4ecd3a0ef5a8.jpg 1024w"
+loading="lazy"
+alt="竹木置物架"
+class="gallery-image"
+data-flex-grow="55"
+data-flex-basis="132px"
+>&lt;/p>
+&lt;p>设备包括：&lt;/p>
+&lt;ul>
+&lt;li>CCNA lab 测试设备一套。&lt;/li>
+&lt;li>TrueNAS 服务器一台&lt;/li>
+&lt;li>四个旧树莓派&lt;/li>
+&lt;li>几个旧 MacBook Pro 电脑&lt;/li>
+&lt;/ul>
+&lt;p>这些版本基本上能满足以上列举的所有需求，成本可以忽略。缺点就是：它的承重能力有限，无法在堆放更多设备。由于疫情的原因，我需要把放在公司的四台PC服务器拿回家，方便使用。&lt;/p>
+&lt;p>由于比较了很久国内的品牌服务器机柜，他们的规格很齐全，很多人也都是买的这些成品机柜，到货开箱就可以使用，很方便。但是，成品并没有 DIY 的乐趣可言，我真的是不喜欢有全封闭式机柜，不想虑散机柜内的散热&amp;amp;热制冷问题（以及次生噪音），而且不方便触达设备的各个侧面。&lt;/p>
+&lt;p>因此我只能求助与万能的淘宝，在研究了一段时间自行搭建开放式机柜产品的可能性之后，我出手了。&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/blog/build-your-best-rack/rack-parts.jpg"
+width="1146"
+height="1575"
+srcset="https://martinliu.cn/blog/build-your-best-rack/rack-parts_hu_780cd85f41e09267.jpg 480w, https://martinliu.cn/blog/build-your-best-rack/rack-parts_hu_1e2fb38d3d06e6e7.jpg 1024w"
+loading="lazy"
+alt="配件开箱后合影"
+class="gallery-image"
+data-flex-grow="72"
+data-flex-basis="174px"
+>&lt;/p>
+&lt;p>这是第一次下单的产品，包括：&lt;/p>
+&lt;ul>
+&lt;li>四根 32U 高的立柱：机架高度的选择是 DIY 搭建机架的最重要决策，考虑到一定的扩展性，应该至少规划 130% 的高度。 其次考虑深度，我铁定不想买全尺寸深度（600+mm）的设备，因此实际上就想搭建了一个：32U x 19 寸 x 19 寸的立方体，这就是成品机柜的瓤子，就是柜体里装的金属框架的部分。&lt;/li>
+&lt;li>四个服务器托盘 ：如果设备可以上下堆叠的话，其实也不用这么多，但是考虑到分层分区，设备取出和放入的方便性，需要计算好使用的个数。&lt;/li>
+&lt;li>四块盲板：是前后上下，将四根立柱连接起来的主要部件。&lt;/li>
+&lt;li>两幅服务器导轨：安装在了顶部和底部框架的侧面，将机架的前后链接起来，安装好这四根导轨，机架就可以站立起来了。居然前后左右都不怎么摇晃，整体框架还比较的支棱的 😄&lt;/li>
+&lt;li>一个理线架：其实不需要，由于你不可能有大量线需要整理，买多了。&lt;/li>
+&lt;/ul>
+&lt;p>销售以上产品的淘宝商家是：军臣机柜 1 店；前后从他们家下了两个单（320+38），第二个单补了四根导轨，起稳定机架，更优化的分层分区，更方便的叠放设备的作用，释放了两个托盘，托盘将主要用于在实现开放平层，起到设备物品的放置功能。安装起来后的效果如下。&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/blog/build-your-best-rack/rack-bate-version.jpg"
+width="953"
+height="1706"
+srcset="https://martinliu.cn/blog/build-your-best-rack/rack-bate-version_hu_ba0eadce23cca210.jpg 480w, https://martinliu.cn/blog/build-your-best-rack/rack-bate-version_hu_7447d2eb62bd057b.jpg 1024w"
+loading="lazy"
+alt="刚刚站起来的机架"
+class="gallery-image"
+data-flex-grow="55"
+data-flex-basis="134px"
+>&lt;/p>
+&lt;p>在将设备放进去的过程中，发现了几个问题：&lt;/p>
+&lt;ul>
+&lt;li>洗衣机用移动滑轨无法胜任如此重量机架前后左右的快速移动，而且只能前后移动；还需要一个更加稳定，且更方便四向移动的底座。&lt;/li>
+&lt;li>机柜还需封顶，只有封顶后，上面才能便于放置物品。&lt;/li>
+&lt;/ul>
+&lt;p>解决方法：&lt;/p>
+&lt;ol>
+&lt;li>在淘宝里买了一块底座板，规格 2cm 厚 x 53cm x 53cm 的压缩板，到货后发现：其实坚固程度不输于实木板。够用且耐用，全面黑漆，多种颜色可选。&lt;/li>
+&lt;li>淘宝店家送了我四个万向轮和更多的机架螺丝，轮子安装在了底座板的四个角上，底座比机架大了一圈，既不占地方，也实现了稳定承载机架的目的，还可以四个方向顺滑的移动，其实用不到带锁死功能的万向轮。&lt;/li>
+&lt;li>用一块大约19 寸 x 22 寸的房间隔音装修剩下的隔音板封顶，大小相当合适。用木螺丝和机架固定在了一起。&lt;/li>
+&lt;/ol>
+&lt;p>下面是将所有设备上架，网络连通后，晚上的效果。&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/blog/build-your-best-rack/rack-night-view.jpg"
+width="1113"
+height="1392"
+srcset="https://martinliu.cn/blog/build-your-best-rack/rack-night-view_hu_6581a3dd99d34f05.jpg 480w, https://martinliu.cn/blog/build-your-best-rack/rack-night-view_hu_a9ca95cfbfc67bc9.jpg 1024w"
+loading="lazy"
+alt="夜晚效果图"
+class="gallery-image"
+data-flex-grow="79"
+data-flex-basis="191px"
+>&lt;/p>
+&lt;p>这么多年来积累下来的所有 HumeLab 设备就都在这里了，堆叠在一起之后意识到，给自己挖的这个坑，是越挖越深了。&lt;/p>
+&lt;p>最后从几个方面讲讲当前这个阶段的经验总结。&lt;/p>
+&lt;p>&lt;strong>电源供给&lt;/strong>&lt;/p>
+&lt;ol>
+&lt;li>机架专用 PDU 的好处多多，能用尽量用。&lt;/li>
+&lt;li>前置 PDU A ：是一款 1U 高度，前面板 10 位独立开关，后身走电源线的，好处是省空间，后身走电源线更隐蔽、美观。但是需要重新买 10 根美标垂直三叉的电源线（5 根 1 米 + 5 根 1.5 米，这款 PDU 只能插这种电源线），目前还富裕了 2 到 3 根供电源线。&lt;/li>
+&lt;li>后置 PDU B ：是一款 2U 高度，8 位独立开关。目前有一个空位；电源插头供电位的需求远远比你想的多得多，除非设备不会在增加了，千万别想一个插排就搞定。&lt;/li>
+&lt;li>需要首选可以安装在机架上的 PDU 优于家用的插排。整合性极佳。&lt;/li>
+&lt;li>USB 供电，安装一个 10 位的 USB 插排，有了它给树莓派、风扇、灯光设备的供电就方便且统一了，一个电源插头位置就替代了 n 个 usb 变压器插头的需求。&lt;/li>
+&lt;/ol>
+&lt;p>&lt;strong>网络拓扑&lt;/strong>&lt;/p>
+&lt;ol>
+&lt;li>入户光纤+光猫+WiFi 给所有无线设备使用，暂时没有无线访问机架内设备的需求，有的话，会首选在 pfSense 上做 NAT 的方式接入，从而最小化 WiFi 部署数量。&lt;/li>
+&lt;li>通过房间内的走线管，从入户弱电箱的光猫上拉了一根网线到机架的房间，并且接到机架上。实现了机架的外网链接。在手里云主机资源充足的情况下，我完全忽略远程访问机架中设备的鸡肋需求。&lt;/li>
+&lt;li>核心以太网交换机：一台 Cisco 48 口千兆交换机，可划分 VLAN，属于 CCNA Lab 设备的一部分。&lt;/li>
+&lt;li>万兆存储网交换机：一台 MikroTik 8 口 SPF+ 交换机，功能很强大，学习曲线陡。用于 TrueNAS 存储服务，和 Nutanix 超融合集群的组网。&lt;/li>
+&lt;li>山泽 24 口配线架：用了以后才能理解配线架的底层逻辑，将所有设备都统一终结在同一级，然后就可以在机架前面，按标签快捷的给设备分配不同的网络。&lt;/li>
+&lt;li>买了一卷网线制作跳线：配合打线钳和测线器，一盒 50 个的水晶头，做完了一些跳线后，568B 线序就成了肌肉记忆了。推荐使用，虽然费事，但是可以让网线布线&amp;amp;走线更加简洁。&lt;/li>
+&lt;/ol>
+&lt;p>&lt;strong>风冷散热和用电方式&lt;/strong>&lt;/p>
+&lt;ol>
+&lt;li>我坚守不使用大功耗&amp;amp;全尺寸服务器设备的原则。感觉只有这样才能实现通过房间环境的自然散热，注意房间的正常通风即可。&lt;/li>
+&lt;li>给设备按需增加和升级必要的风冷风扇。&lt;/li>
+&lt;li>最耗电的是联想 P720 两路工作站，它是 Nutnaix 集群的一部分，升级了 CPU 的散热器，加装了机箱前置风扇，解决旧风扇导致的无法正常开机和运行中过热机器卡死的问题。&lt;/li>
+&lt;li>最牛的是给 8 口 pfSense 防火墙工控机扇热的 USB 桌面小风扇，它顺便还给树莓派集群风冷了；这是从家里小朋友哪里征用的。风量大，几乎静音，基本上能秒掉各种尺寸和价格的 DIY 机箱用风扇，已经买过几个了，它们的噪音大到不能忍。&lt;/li>
+&lt;li>常开的设备包括：TrueNAS 服务器和 48 口核心交换机和 MikroTik 万兆交换机。其他的设备按需开机，保持最小的功耗和发热量。&lt;/li>
+&lt;li>由于家庭 WiFi 和这个机架无关，因此在需要用的时候，或者人不在家的时候整个机架关机断电。&lt;/li>
+&lt;/ol>
+&lt;p>以上就是目前的经验总结分享，欢迎交流讨论。以后可能会以本文为大纲录制一期视频，在讲的细一些。&lt;/p></description></item><item><title>HCI | 超融合平台线上训练营第二期</title><link>https://martinliu.cn/blog/hci-nutanix-ce-training-camp/</link><pubDate>Sun, 20 Feb 2022 23:05:40 +0800</pubDate><guid>https://martinliu.cn/blog/hci-nutanix-ce-training-camp/</guid><description>&lt;img src="https://martinliu.cn/img/cos/2022-02-21-hci-nutanix.jpeg" alt="Featured image of post HCI | 超融合平台线上训练营第二期" />&lt;p>本文总结了我从单机的 Home Lab 环境，发展到三节点 Nutanix 超融合混合盘集群的经验和教训。&lt;/p>
+&lt;h2 id="为什么需要超融合集群">为什么需要超融合集群
+&lt;/h2>&lt;p>我的 Home lab 的进化史&lt;/p>
+&lt;ul>
+&lt;li>长期保持一些特定功能的虚拟机&lt;/li>
+&lt;li>在本地保持丰富的虚拟机模版和快照&lt;/li>
+&lt;li>将照片和视频家庭资料放到媒体服务器中【Plex】&lt;/li>
+&lt;li>探索IoT智能家居，家庭安防等项目&lt;/li>
+&lt;li>充分利用虚拟话带来的福利，计算和存储资源超量分配&lt;/li>
+&lt;li>利用高级分布式软件定义存储都高级功能，空间的节省：压缩，去重，纠删码等；性能提升：虚拟机享受全闪存本地磁盘+精简制备；同时享用性能和空间：通过 SSD+HDD的混合容量存储池实现鱼和熊掌兼得。&lt;/li>
+&lt;li>本地实验室网速提升到万兆以太网，尝试最新的数据中心DPU（智能网卡）、边缘计算和IoT趣味设备。&lt;/li>
+&lt;li>排除家用 NAS主机（群晖）、ALL in One 主机、云和容器等选项&lt;/li>
+&lt;/ul>
+&lt;p>其他可能选项&lt;/p>
+&lt;ul>
+&lt;li>VMware 的 ESXi 平台 + VSAN ；熟悉 VMware 技术栈； 或被人带着追捧者多用。&lt;/li>
+&lt;li>Citrix 的 XenServer + 家用集中存储；少见家用的人。&lt;/li>
+&lt;li>其他的开源虚拟化选项 Proxmox ，单机版家用服务区比较常见。&lt;/li>
+&lt;/ul>
+&lt;h2 id="各种系统使用体验">各种系统使用体验
+&lt;/h2>&lt;p>不论是单机的服务器/NAS，总之使用场景的需求是越用越多的，HomeLab 用的时间越久，想要做的事情就会越多。&lt;/p>
+&lt;h3 id="intel-nuc">Intel NUC
+&lt;/h3>&lt;p>这是一台 Nutanix 售前工程师标配的测试机。我用了好几年，非常皮实耐用。&lt;/p>
+&lt;p>&lt;strong>硬件平台&lt;/strong>：&lt;/p>
+&lt;ul>
+&lt;li>集成主板，i7 8 Core + 集成 Intel 显卡&lt;/li>
+&lt;li>32GB 内存，DDR4 - 2133 MHz&lt;/li>
+&lt;li>SSD 500GB x 2 ， M.2 nvme 接口&lt;/li>
+&lt;/ul>
+&lt;p>&lt;strong>使用体验&lt;/strong>：&lt;/p>
+&lt;ol>
+&lt;li>CPU和内存资源都比较有限&lt;/li>
+&lt;li>散热不理想，风扇噪音越用越大&lt;/li>
+&lt;li>无法扩展&lt;/li>
+&lt;li>不适合长期开机&lt;/li>
+&lt;li>安装 Nutanix CE （AHV） 超级轻松，从不会遇到失败，hypervisor 安装在U盘上。安装后，调低 cvm 的资源，剩余可用资源，所剩无几。&lt;/li>
+&lt;/ol>
+&lt;h3 id="lenovo-p720">Lenovo P720
+&lt;/h3>&lt;p>公有云虽然是完全可用的，但是无法满足我企业数据中心相关技术的本地体验。还是需要搞一台配置高的，资源更多的机器，因此入手了第二台测试机，为了放置空间和电费都更容易接受，折中选择了二手的品牌机工作站。&lt;/p>
+&lt;p>硬件平台：&lt;/p>
+&lt;ul>
+&lt;li>Intel(R) Xeon(R) CPU E5-2680 v4 @ 2.40GHz 14 core x 2&lt;/li>
+&lt;li>64 GB ，还有很多空余插槽&lt;/li>
+&lt;li>SSD ：120 GB + 256GB ，一共有四个 3.5 寸的标准磁盘位。&lt;/li>
+&lt;li>安装 VMWare ESXi + vCenter
+&lt;ul>
+&lt;li>超分资源+精简存储制备&lt;/li>
+&lt;li>广泛的开源虚拟机模版下载&lt;/li>
+&lt;li>大量开源和私有企业技术支持&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;p>经过一年多的扩容，截止到现在的配置如下：&lt;/p>
+&lt;ul>
+&lt;li>56 logical core： 2 x Intel(R) Xeon(R) CPU E5-2680 v4 @ 2.40GHz -14 core 【保持】&lt;/li>
+&lt;li>128 GB DDR4 2011Mhz 【感谢上海网友】&lt;/li>
+&lt;li>HDD：西部数据WD 4Tb 5400rpm x 2 【增加了两块 HDD】&lt;/li>
+&lt;li>SSD：三星750 Evo 120GB，三星870 Evo 250 GB，三星870 Evo 1TB 【新增一块 SSD】&lt;/li>
+&lt;li>NIC：Boardcom BCM57412 NetXtreme-E 10Gb SPF+双口 【感谢panpan】&lt;/li>
+&lt;/ul>
+&lt;p>使用体验：&lt;/p>
+&lt;ol>
+&lt;li>存储空间不足，虚拟机越来越多，需要不断买新磁盘扩容&lt;/li>
+&lt;li>CPU&amp;amp;内存有限，无法做一些性能基准测试&lt;/li>
+&lt;li>想扩展为单机版 VSAN ，或者 VSAN 群集，但是它无法支持SSD+HDD的混合容量磁盘组&lt;/li>
+&lt;li>只有两张千兆网卡（主板集成），无法实现集群情况下高速的网络数据I/O&lt;/li>
+&lt;li>虚拟机开多了，导致CPU过热，机器会自动关机后，机器暂时无法启动，不得不替换了更好的散热器&lt;/li>
+&lt;/ol>
+&lt;p>单机工作站的 HomeLab 模式无法实现，我对更多集群型软件的部署使用场景，包括：&lt;/p>
+&lt;ul>
+&lt;li>Elasticsearch 冷热温多层架构 + ELK 全家桶的长期数据本地保留&lt;/li>
+&lt;li>高可用 K8S 集群搭建和长期持有
+*更多 DevOps 开源工具链的搭建，新版本更新，长期随时可用&lt;/li>
+&lt;li>还有其它，不赘述。&lt;/li>
+&lt;/ul>
+&lt;h2 id="建议平台选型">建议平台选型
+&lt;/h2>&lt;p>为了实现三节点的超融合群集，双十一出手购买了一些产品。&lt;/p>
+&lt;h3 id="国产主板套装-x-2">国产主板套装 x 2
+&lt;/h3>&lt;p>国产套版的性价比和评价其实都还是ok的，满心怀疑的开始测试起来。&lt;/p>
+&lt;ul>
+&lt;li>
+&lt;p>华南金牌 x99-AD4 - 单路&lt;/p>
+&lt;ul>
+&lt;li>12 CPUs x Intel(R) Xeon(R) CPU E5-2690 v3 @ 2.60GHz&lt;/li>
+&lt;li>64 GB - DDR4 - 2400Mhz&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>
+&lt;p>磁盘接口：&lt;/p>
+&lt;ul>
+&lt;li>nvme接口：1 x M.2 - AHV 可用，ESXi不可用&lt;/li>
+&lt;li>NGFF接口: 1 x M.2 - 同上&lt;/li>
+&lt;li>sSATA x 2：空闲&lt;/li>
+&lt;li>SATA x 6:
+&lt;ul>
+&lt;li>SSD1: KINGSTON 60GB x 2&lt;/li>
+&lt;li>SSD2: Samsung SSD 860 500GB + Samsung MZ7TE 256GB&lt;/li>
+&lt;li>HDD3/4: 西部数据WD 4Tb 5400rpm x 4&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>
+&lt;p>主板集成RTL8111/8168/8411 千兆网卡，ESXi 7/6 都不能直接兼容&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>显卡：无集成显卡，ATI Radeon HD 2GB x 2 - 买错了，最好是集成显卡。&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>万兆网卡： Boardcom BCM57412 NetXtreme-E 10Gb SPF+双口 【感谢panpan】 x 2&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>千兆网卡：&lt;/p>
+&lt;ul>
+&lt;li>Intel 82576 千兆双口 x 1 （ESX i 6/7 兼容）&lt;/li>
+&lt;li>Intel I340-T2 千兆双口 x 1 （ESX i 7 不兼容）&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>
+&lt;p>机箱：开放式亚克力透明双层机箱 x 2&lt;/p>
+&lt;/li>
+&lt;/ul>
+&lt;p>使用经验：&lt;/p>
+&lt;ol>
+&lt;li>BIOS 中的Boot模式一定要设置为Legacy模式&lt;/li>
+&lt;li>忽略主板集成网卡，除非你非常擅长将驱动注入ESXi 的iso文件，安装前兆或者万兆网卡&lt;/li>
+&lt;li>Nutanix CE安装的时候需要网卡驱动正常，ESXi 虚拟化必须能从本地web服务器下载iso安装文件&lt;/li>
+&lt;li>AHV虚拟化安装很正常，连nvme接口的M.2磁盘都可以正常使用&lt;/li>
+&lt;li>ESXi虚拟化安装的结果是失败的，但是手工可以拯救CVM，步骤可以忍受。&lt;/li>
+&lt;/ol>
+&lt;h3 id="超微豪华高仿nutanix">超微豪华高仿Nutanix
+&lt;/h3>&lt;p>新购了一块超微主板，做下对比测试，缓解一下华南主板坑多的低落心情。&lt;/p>
+&lt;ul>
+&lt;li>单路：SuperMicro X10SRL-F&lt;/li>
+&lt;li>CPU：E5-2690 v3 @2.60 GHz，12 core&lt;/li>
+&lt;li>SATA3: x 10
+&lt;ul>
+&lt;li>SSD 1/2&lt;/li>
+&lt;li>HDD x2&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>主板集成双千兆网卡 （ESXi 6/7 兼容）&lt;/li>
+&lt;/ul>
+&lt;p>用这块主板 + 以上华南金牌的全套磁盘+CPU+内存+万兆网卡，安装Nutanix CE，ESXi 6/7都可以顺利安装，连CVM都能够自动创建成功，不需要手工拯救失败的CVM，这个平台安装部署Nutanix CE 应该是毫无压力感。&lt;/p>
+&lt;p>超微主板是Nutanix原厂超融合硬件平台的供应商，这任选了一块测试版的兼容性就确实没话说。不用再测，不用在多了，关键是把上面的国产廉价平台能用起来。&lt;/p>
+&lt;h3 id="方案汇总">方案汇总
+&lt;/h3>&lt;table>
+&lt;thead>
+&lt;tr>
+&lt;th>类型&lt;/th>
+&lt;th>主板&lt;/th>
+&lt;th>内存&lt;/th>
+&lt;th>SSD&lt;/th>
+&lt;th>HDD&lt;/th>
+&lt;th>网络&lt;/th>
+&lt;th>节点&lt;/th>
+&lt;th>价格&lt;/th>
+&lt;/tr>
+&lt;/thead>
+&lt;tbody>
+&lt;tr>
+&lt;td>最小可平台&lt;/td>
+&lt;td>Intel NUC&lt;/td>
+&lt;td>32GB&lt;/td>
+&lt;td>500GB x 2&lt;/td>
+&lt;td>USB/hypervisor&lt;/td>
+&lt;td>1G1/2&lt;/td>
+&lt;td>1&lt;/td>
+&lt;td>7+千左右&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>工作站平台&lt;/td>
+&lt;td>Lenovo P710&lt;/td>
+&lt;td>128GB&lt;/td>
+&lt;td>1/2/3+&lt;/td>
+&lt;td>1/2/3/4/5+&lt;/td>
+&lt;td>1Gx2/10Gx2&lt;/td>
+&lt;td>1&lt;/td>
+&lt;td>8+千左右&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>国产套版&lt;/td>
+&lt;td>华南x99-AD4&lt;/td>
+&lt;td>64GB&lt;/td>
+&lt;td>2&lt;/td>
+&lt;td>1/2/3/4&lt;/td>
+&lt;td>1Gx2+10Gx2&lt;/td>
+&lt;td>1/3/4&lt;/td>
+&lt;td>7+千左右/2套&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>超微平台&lt;/td>
+&lt;td>SuperMicro X10SRL-F&lt;/td>
+&lt;td>/&lt;/td>
+&lt;td>/&lt;/td>
+&lt;td>/&lt;/td>
+&lt;td>/&lt;/td>
+&lt;td>1/3/4&lt;/td>
+&lt;td>随意搭配，参考市价&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>旧服务器&lt;/td>
+&lt;td>Dell/Lenvov/HP/浪潮&lt;/td>
+&lt;td>/&lt;/td>
+&lt;td>2+直通&lt;/td>
+&lt;td>2+直通&lt;/td>
+&lt;td>1Gx2+10Gx2&lt;/td>
+&lt;td>1/3/4&lt;/td>
+&lt;td>参考市价&lt;/td>
+&lt;/tr>
+&lt;/tbody>
+&lt;/table>
+&lt;h3 id="其他组件的选择">其他组件的选择
+&lt;/h3>&lt;p>下面是对于自选平台的DYI的建议：&lt;/p>
+&lt;ul>
+&lt;li>机箱：根据主板的选择，开放式主板方便使用水冷系统，热量容易散发，可以借助环境的空气散热，选择封闭机箱则需要注意CPU散热器的选择，确保CPU工作温度正常。&lt;/li>
+&lt;li>电源：CPU和显卡电耗需要提前计算，确保电源供电攻略足够。&lt;/li>
+&lt;li>显卡：主板尽量带集成显卡，保持系统最简化可用，后续如果需要GPU了，可以在加显卡，确保主板有两个PCIx16的插槽。&lt;/li>
+&lt;li>网卡：尽量选择ESXi7可以识别免驱动的，7这个版本兼容的网卡类型比6少很多，安装过程中需要IP地址，免得给自己找麻烦，我的一块千兆网卡不能被7正常驱动，因此ESXi的版本无奈降到6.7u3。&lt;/li>
+&lt;li>PCI插槽：建议16x至少2个，用于显卡和万兆网卡，其它速率的若干，用于兼容其它可能的网卡或者设备。&lt;/li>
+&lt;/ul>
+&lt;h2 id="集群搭建流程">集群搭建流程
+&lt;/h2>&lt;p>&lt;img src="https://martinliu.cn/img/cos/2022-02-21-WechatIMG1773.jpeg"
+loading="lazy"
+alt="test machine"
+>&lt;/p>
+&lt;h3 id="准备工作">准备工作
+&lt;/h3>&lt;p>注册Nutanix社区帐号，&lt;a class="link" href="https://next.nutanix.com/%ef%bc%8c%e5%bf%85%e9%a1%bb%e7%94%a8%e5%85%ac%e5%8f%b8%e9%82%ae%e7%ae%b1%e6%b3%a8%e5%86%8c%ef%bc%8c%e6%89%8d%e8%83%bd%e4%b8%8b%e8%bd%bd%e6%9c%80%e6%96%b0%e7%9a%84Nutanix" target="_blank" rel="noopener"
+>https://next.nutanix.com/，必须用公司邮箱注册，才能下载最新的Nutanix&lt;/a> CE安装镜像，和其它相关组件。在首次登陆Nutanix CE群集的时候，也需要输入这个帐号和密码验证。&lt;/p>
+&lt;p>准备安装镜像：&lt;/p>
+&lt;ol>
+&lt;li>Windows 10 + Ruft&lt;/li>
+&lt;li>下载 Nutanix-2020-9016.tar&lt;/li>
+&lt;li>Fedora 35 Live CD&lt;/li>
+&lt;li>16 GB U 盘 x2&lt;/li>
+&lt;/ol>
+&lt;p>准备网络环境&lt;/p>
+&lt;ol>
+&lt;li>千兆 + 万兆 （DAC 铜缆）&lt;/li>
+&lt;li>DHCP + DNS + Internet 网络&lt;/li>
+&lt;li>Web 服务器 + esxi702a.iso 「不安装 vsphere 虚拟化的不需要 web 服务器」&lt;/li>
+&lt;/ol>
+&lt;h3 id="安装流程">安装流程
+&lt;/h3>&lt;ol>
+&lt;li>Fedora Live CD 启动，磁盘工具删除分区&lt;/li>
+&lt;li>插好网线&lt;/li>
+&lt;li>Nutanix 安装盘启动，观察网卡 IP 地址获取&lt;/li>
+&lt;li>设置 Hypervisor 类型、磁盘布局、集群信息等，建议不要勾选创建点节点集群的选项，后期手工创建更可控。&lt;/li>
+&lt;/ol>
+&lt;p>&lt;img src="https://martinliu.cn/img/cos/2022-02-21-WechatIMG1774.jpeg"
+loading="lazy"
+alt="setup"
+>
+5. 同意软件许可
+6. 等待 Hypervisor （ahv一般较快，或者vsphere）成功安装&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/img/cos/2022-02-21-WechatIMG1775.jpeg"
+loading="lazy"
+alt="hypervisor 安装过程中"
+>&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/img/cos/2022-02-21-WechatIMG1776.jpeg"
+loading="lazy"
+alt="hypervisor 安装完毕"
+>&lt;/p>
+&lt;ol start="5">
+&lt;li>安装后重启服务器，首次 host 启动，观察 cvm 启动过程和结果，等待 CVM 就绪，确认 CVM 上硬盘的挂载情况&lt;/li>
+&lt;li>登录后确保集群处于未配置状态&lt;/li>
+&lt;li>重复以上步骤，安装其他 2 ～ 3 个节点 【CE 最多支持4个节点】&lt;/li>
+&lt;li>检查和确认集群的状态，每个节点都输出，集群未配置，准备工作就绪。&lt;/li>
+&lt;li>在其中一个 cvm 上，运行创建 Nutanix 集群的命令， cluster create&lt;/li>
+&lt;li>首次登陆集群，完成初始化配置&lt;/li>
+&lt;li>配置并确认网络配置，在存储迟管理的地方，创建过载到所有vsphere 主机的共享 NFS 统一存储空间。存储资源就绪。&lt;/li>
+&lt;li>安装部署 vcenter，在 Prism 中注册 vcenter&lt;/li>
+&lt;li>安装虚拟机模版&lt;/li>
+&lt;li>创建虚拟机测试&lt;/li>
+&lt;li>运行基本的性能验收测试&lt;/li>
+&lt;li>正式投产&lt;/li>
+&lt;li>可选：安装 PC、Fileserver、CALM、K8s&lt;/li>
+&lt;/ol>
+&lt;h3 id="问题解决">问题解决
+&lt;/h3>&lt;ul>
+&lt;li>【Hypervisor】安装过程中 screen is terminating&lt;/li>
+&lt;/ul>
+&lt;p>&lt;img src="https://martinliu.cn/img/cos/2022-02-21-WechatIMG1777.jpeg"
+loading="lazy"
+alt="terminal screen"
+>&lt;/p>
+&lt;ul>
+&lt;li>【vSphere虚拟化】虚拟化安装成功，但是重启后 cvm 创建失败&lt;/li>
+&lt;/ul>
+&lt;p>&lt;img src="https://martinliu.cn/img/cos/2022-02-21-WechatIMG1778.jpeg"
+loading="lazy"
+alt="failed-install"
+>&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/img/cos/2022-02-21-2021-11-27_22-00-44.png"
+loading="lazy"
+alt="CVM failed"
+>&lt;/p>
+&lt;ul>
+&lt;li>【vSphere虚拟化】cvm 创建成功且运行正常，但是不能正常挂载 HDD&lt;/li>
+&lt;/ul>
+&lt;p>&lt;img src="https://martinliu.cn/img/cos/2022-02-21-2022-02-21_19-17-50.png"
+loading="lazy"
+alt="CVM lost one hdd"
+>
+&lt;img src="https://martinliu.cn/img/cos/2022-02-21-2022-02-21_19-16-35.png"
+loading="lazy"
+alt="CVM lost one HDD"
+>&lt;/p>
+&lt;h3 id="esxi-安装后-cvm-创建失败hdd挂载问题">ESXi 安装后 CVM 创建失败/HDD挂载问题
+&lt;/h3>&lt;p>由于安装程序无法正常初始化所有磁盘，直通的HDD没有正常加载，初始化脚本有小bug导致。手工挂在直通HDD，修复有bug的python代码，重新初始化创建 cvm，确保 CVM 虚拟机最后能正常运行。&lt;/p>
+&lt;p>处理方法：&lt;/p>
+&lt;ol>
+&lt;li>
+&lt;p>网页访问 ESXi 的 ip 地址 ，使用默认的用户名【root】和密码【nutanix/4u】登录，查看确认如下：&lt;/p>
+&lt;ol>
+&lt;li>存储-设备下面是否所有磁盘都可见&lt;/li>
+&lt;li>网络：所有uplink，网卡，两个虚拟交换机，五个port group&lt;/li>
+&lt;/ol>
+&lt;/li>
+&lt;li>
+&lt;p>SSH 登陆 ESXi host ，查看错误日志的内容：&lt;code>/bootbank/Nutanix/firstboot/esx_first_boot_launcher.log&lt;/code>；查看是否是如下的常见错误：&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-sh" data-lang="sh">&lt;span class="line">&lt;span class="cl">FATAL Fatal exception encountered:
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Traceback &lt;span class="o">(&lt;/span>most recent call last&lt;span class="o">)&lt;/span>:
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> File &lt;span class="s2">&amp;#34;/bootbank/Nutanix/firstboot/esx_first_boot.py&amp;#34;&lt;/span>, line 2516, in &amp;lt;module&amp;gt;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> main&lt;span class="o">()&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> File &lt;span class="s2">&amp;#34;/bootbank/Nutanix/firstboot/esx_first_boot.py&amp;#34;&lt;/span>, line 2361, in main
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> create_svm_vmx_and_attach_rdm_disks_ce&lt;span class="o">()&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> File &lt;span class="s2">&amp;#34;/bootbank/Nutanix/firstboot/esx_first_boot.py&amp;#34;&lt;/span>, line 1478, in create_svm_vmx_and_attach_rdm_disks_ce
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nv">dev_paths&lt;/span> &lt;span class="o">=&lt;/span> get_disk_locations_ce&lt;span class="o">()&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> File &lt;span class="s2">&amp;#34;/bootbank/Nutanix/firstboot/esx_first_boot.py&amp;#34;&lt;/span>, line 1019, in get_disk_locations_ce
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> device_identifiers.remove&lt;span class="o">(&lt;/span>disk&lt;span class="o">[&lt;/span>:-3&lt;span class="o">])&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">ValueError: list.remove&lt;span class="o">(&lt;/span>x&lt;span class="o">)&lt;/span>: x not in list
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;/li>
+&lt;li>
+&lt;p>使用这篇文章&lt;a class="link" href="https://next.nutanix.com/discussion-forum-14/esxi-failed-install-on-hpe-dl380-gen9-ce-2020-09-16-38898" target="_blank" rel="noopener"
+>https://next.nutanix.com/discussion-forum-14/esxi-failed-install-on-hpe-dl380-gen9-ce-2020-09-16-38898&lt;/a>中的解决方案，查看这个论坛帖子需要注册论坛的账号。&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>使用上文的方案，运行修改后的 esx_first_boot.py 程序。等待程序执行完毕，在ESXi web client中观察CVM的创建过程。&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>CVM 创建成功运行起来之后，你会发现它可能只挂载了SSD，下面需要手工加载加载系统中的HDD。&lt;/p>
+&lt;ol>
+&lt;li>ssh 登陆 ESXi host&lt;/li>
+&lt;li>用命令 &lt;code>ls /vmfs/devices/disks/&lt;/code> 查看系统上的所有磁盘设备，记录未挂载上的HDD的设备路径，例如：&lt;code>/vmfs/devices/disks/t10.ATA_____WDC_WD40EFRX2D68N32N0_________________________WD2DWCC7K0ZN6E93&lt;/code>&lt;/li>
+&lt;li>进入 CVM 虚拟机的配置文件目录 【如：&lt;code>/vmfs/volumes/NTNX-local-ds-4abcf92c-A/&lt;/code>】，创建所有HDD的直通磁盘，参考命令：&lt;code>vmkfstools -z /vmfs/devices/disks/t10.ATA_____WDC_WD40EFRX2D68N32N0_________________________WD&lt;/code>
+&lt;code>2DWCC7K0ZN6E93 ./wd4t-1.vmdk&lt;/code>&lt;/li>
+&lt;li>在ESXi web client中，关机（PowerOff） CVM，修改配置&lt;/li>
+&lt;li>将上一步创建的直通HDD添加进来&lt;/li>
+&lt;li>修改虚拟机选项的操作系统，改为CentOS7&lt;/li>
+&lt;li>查看CVM虚拟机所有磁盘，确保所有SSD和HDD都已经加载，先不要修改其它任何配置，开机，观察虚拟机是否可以正常启动。&lt;/li>
+&lt;/ol>
+&lt;/li>
+&lt;li>
+&lt;p>ssh登陆CVM虚拟机的操作系统，使用默认用户名【nutanix】和密码【nutanix/4u】。用ping其它集群节点的（host和cvm）ip地址，确保网关和DNS服务器都可达。&lt;/p>
+&lt;/li>
+&lt;/ol>
+&lt;p>CVM 正常运行后，才可以作为空白节点加入群集，或者用于创建新群集。&lt;/p>
+&lt;h2 id="经验教训">经验教训
+&lt;/h2>&lt;ol>
+&lt;li>在 Nutanix 官方用户论坛的CE板块搜索问题或提问，你不是孤独的。&lt;/li>
+&lt;li>散热器买专用的，通用的套具安装费劲，适配的并会很好&lt;/li>
+&lt;li>磁盘至少使用 Fedora live cd 的磁盘工具查看状态，避免坏盘。&lt;/li>
+&lt;li>cvm 创建失败应该是可以修复的&lt;/li>
+&lt;li>安装过程需要联网&lt;/li>
+&lt;li>集成显卡更好，&lt;/li>
+&lt;li>相同的错误复发时要记得赶紧收工，明天再搞&lt;/li>
+&lt;/ol>
+&lt;h2 id="其他可用资源">其他可用资源
+&lt;/h2>&lt;p>HCI超融合技术对于了解它的人来说很火热，但是还有很多不太了解HCI的人；HCI的用户对它也有不同的使用场景和期望。请大家参与这个《中国超融合状态调查》，我们每月为参与本调查的朋友进行抽奖，抽奖结果在下次直播的时候公布。扫码参与调查。&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/img/cos/2022-01-04-dc.png"
+loading="lazy"
+alt="CVM HDD"
+>&lt;/p>
+&lt;p>我们为希望学习HCI技术的朋友们创建了一个qq群，希望可以给大家带来一定帮助。扫码加入我们的QQ群。&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/img/cos/2022-01-04-qq.png"
+loading="lazy"
+alt="CVM HDD"
+>&lt;/p>
+&lt;h2 id="下期预告">下期预告
+&lt;/h2>&lt;p>HCI系统的搭建还有很多问题值得一起探讨和学习，HCI超融合系统软件还有很多功能可以学习了解。我们为DevOps社区的朋友们新开辟了这个HCI板块，希望以后会每个月为大家输出一期新的内容。下期直播的简介如下：&lt;/p>
+&lt;ul>
+&lt;li>日期：2022 年 3 月 22 日， 下午 1点开始&lt;/li>
+&lt;li>内容：Nutanix CE 的多集群管理&lt;/li>
+&lt;li>主持人：刘征，吴孔辉&lt;/li>
+&lt;li>直播平台：B站搜/关注：中国DevOps社区&lt;/li>
+&lt;li>直播抽奖：未知神秘礼物 🎁&lt;/li>
+&lt;li>报名：互动吧搜/关注：中国DevOps社区&lt;/li>
+&lt;/ul></description></item><item><title>HCI | 超融合平台线上训练营第一期</title><link>https://martinliu.cn/blog/hci-01-nutanix-ce-ahv-setup/</link><pubDate>Mon, 03 Jan 2022 18:19:20 +0800</pubDate><guid>https://martinliu.cn/blog/hci-01-nutanix-ce-ahv-setup/</guid><description>&lt;img src="https://martinliu.cn/img/cos/2022-01-04-th1.jpg" alt="Featured image of post HCI | 超融合平台线上训练营第一期" />&lt;p>本期分享的内容是超融合的基础知识，Nutanix CE社区版AHV/KVM单节点集群的搭建。&lt;/p>
+&lt;p>在本期线上直播中，我们给大家科普了超融合的基础概念，介绍了Nutanix CE社区版【AHV/Kvm虚拟化】的单机安装和基础配置。本文为大家回顾一下其中的技术要点。&lt;/p>
+&lt;p>观看本次直播并且中奖的朋友们是：我是ZCQQQ、盔甲小子、繁硕星辰、壮星豆、flyinghourse110、YS8297和阿尔萨狮123，请联系微信 Jane-happylife 索取你的奖品。本次奖品是Nutanix提供的空气加湿器或者运动背包。备注 12月超融合直播活动 领取礼品。两种礼品（根据库存来决定随机寄出）。&lt;/p>
+&lt;p>本期的视频回放链接在这里：&lt;a class="link" href="https://www.bilibili.com/video/BV1YY411a7w2/" target="_blank" rel="noopener"
+>https://www.bilibili.com/video/BV1YY411a7w2/&lt;/a>&lt;/p>
+&lt;h2 id="认识-hci-超融合">认识 HCI 超融合
+&lt;/h2>&lt;p>来自网络的定义：超融合基础架构（Hyper Converged Infrastructure，或简称“HCI”）是指在同一套单元设备中不仅仅具备计算、 网络 、存储和服务器虚拟化等资源和技术，而且还包括备份软件、 快照技术 、重复数据删除、在线数据压缩等元素，而多套单元设备可以通过网络聚合起来，实现模块化的无缝横向扩展（scale-out），形成统一的资源池。&lt;/p>
+&lt;p>从我个人角度看，我的对基于OpenStack的私有云持有消极的态度。虽然，OpenStack 给企业数据中心基础设施的建设路线带来了不小的影响；但是，它还是无法解决传统数据中心里经典的三层架构基础设施的三大根本痛点。&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/img/cos/2022-01-04-%E5%B9%BB%E7%81%AF%E7%89%872.JPG"
+loading="lazy"
+>&lt;/p>
+&lt;p>三层架构即由x86服务器层、网络层（以太网/SAN）和存储层所搭建的规模不大数量巨多的虚拟化/物理机集群资源池。由于虚拟化技术的成熟和普及，这些虚拟化集群资源池为业务应用提供了所需要的计算、存储和网络资源。在最近十几年的企业数据中心中处于主力架构，但是它有其核心的三大问题：&lt;/p>
+&lt;ol>
+&lt;li>性能瓶颈问题比较突出：当突发大量来自于网路的业务请求时，且处理它们需要大量的读写存储操作时，后台存储系统乃至SAN网络都将发生性能耗尽的瓶颈，存储延时剧增，等待时长暴增，还可能伴随大量读写操作失败。&lt;/li>
+&lt;li>容量无法线性扩展：三层资源中的任何一层的资源容量耗尽后，都需要多个专业运维团队进行大量手工操作，才能进行物理量容量的扩容，扩容过程中很难实现业务服务的持续性，数据量大的时候甚至不得不面临很长的业务停机时间窗口。&lt;/li>
+&lt;li>复杂性令运维和开发胆寒：虽然在虚拟化系统中，虚拟化技术可以提供资源层的HA/FT等功能，但是当业务出现宕机故障时，从应用到下层的硬件，从上到下排查的时候，所有相关团队都不得不全员上线救火，业务服务故障很难在这个复杂性极其高的系统中快速定位。服务质量水平命悬一线，而且SLA很难挽救。&lt;/li>
+&lt;/ol>
+&lt;p>超融合的理想是全面消除以上三个问题。超融合系统其实为三层架构做了减法，它对传统磁盘阵列的存储设备产生了颠覆性的冲击，它利用优化的网络分布式存储服务消除了传统架构中的存储层。它还利用自动化部署工具，极大的降低了虚拟化集群的搭建、升级和维护过程。HCI超融合系统的本身及其精简，非常好扩容和维护，而且可以实现容量和性能的同步线性按需增长。从云计算的五个基础特征来考察HCI技术栈，我个人觉得它比OpenStack更像是云计算。&lt;/p>
+&lt;p>学习超融合技术栈也有很多种学习路径，动手搭建超融合系统无疑时最佳的方式。本期超融合视频中，我们选择的是免费版的Nutanix CE社区版。下面划出本期直播中的重要知识点。希望大家可以在自己的环境中开始超融合刷机之旅，当超融合成为你的一个日常工具的以后，你可能才会对HCI有更深的理解。&lt;/p>
+&lt;h2 id="硬件选择">硬件选择
+&lt;/h2>&lt;p>HCI系统是虚拟化、x86计算机、万兆以太网和超融合软件完美的组合。在你的工作环境中就存在着大量可用的机器，经过一定的挑选和准备之后，你就应该可以操练超融合技术了。&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/img/cos/2022-01-04-%E5%B9%BB%E7%81%AF%E7%89%873.JPG"
+loading="lazy"
+>&lt;/p>
+&lt;p>任何可以运行服务器虚拟化【esxi/kvm】软件的x86计算机都可以，最近10年以内采购的机器应该都可以适用。为了让其发挥应有的价值和意义，下面是一些建议选项：&lt;/p>
+&lt;ul>
+&lt;li>最低配置：cpu 桌面机 i5/i7级别起步，4个物理核，或更高配置；服务器推荐E3/E5的多核处理器起步，或者更优CPU；内存32 GB，或更多。&lt;/li>
+&lt;li>建议配置：cpu尽量选择双路E5级别，或更新的CPU；单机内存建议128GB，或更多，或者按需增加。&lt;/li>
+&lt;/ul>
+&lt;p>&lt;img src="https://martinliu.cn/img/cos/2022-01-04-%E5%B9%BB%E7%81%AF%E7%89%874.JPG"
+loading="lazy"
+>&lt;/p>
+&lt;p>磁盘选择是超融合系统的重点之一，通常包括SSD和机械磁盘，它是组成分布式存储服务的基础。对于使用RAID卡的服务器，RAID卡上需要删除所有盘的任何RAID配置，确保所有磁盘都直通给主板，SATA接口的主板，请直接按照先后顺序，先连接SSD磁盘，后连结机械盘。&lt;/p>
+&lt;ul>
+&lt;li>最低配置：单机配置1块64GB SSD用于运行虚拟化软件（U盘-8/16GB也可以，但不建议），250GB SSD 一块或两块，用于安装和运行超融合软件，这是HCI的核心，它往往是以一个虚拟机的形式存在的，该虚拟机会完全运行在SSD上，SSD上的剩余空间计算在分布式存储池的全局空间中，SSD对虚拟机起到了重要的加速功能。机械磁盘一块或者多块，用于提供廉价大量的存储空间，机械磁盘的存储容量和SSD一起计入存储池的空间中。对于纯软件测试目的机械硬盘可以不要。SSD是必须的。机械盘是可选的。推荐混合使用，从而实现性能和空间的鱼和熊掌兼得。&lt;/li>
+&lt;li>建议配置：单机配置1块64GB SSD用于运行虚拟化软件，两块1TB的SSD用于运行超融合软件，且为全局存储池提供足够的高速性能SSD存储空间。两块2TB机械硬盘起步，机械盘后续还可以按需添加。集群中所有计算机上的所有SSD和机械磁盘共同组成了统一的混合型存储层。每个虚拟机都可以访问到所有磁盘中的性能和空间。Nutanix CE版文档声称支持总共四块磁盘，但是社区中也有朋友分享6+块盘的正常工作案例。&lt;/li>
+&lt;/ul>
+&lt;p>网络的选择有以下注意事项：&lt;/p>
+&lt;ul>
+&lt;li>最低配置：单节点配置至少一个千兆网口，对于单机的超融合系统而言，Nutanix也可以利用到基本上大部分优势功能，包括：运行虚拟机、为虚拟机提供混合盘组成的存储空间、单节点上双副本的数据可靠性等等，我曾长期运行在这个配置上。&lt;/li>
+&lt;li>建议配置：一块双口万兆网卡，一个万兆网口用于集群内的存储网络流量，另外一个用于虚拟机中应用的相互网络访问，用VLAN隔离两个网段的流量。测试的目的下，可以混合在一个具备Internet访问条件的网段中。&lt;/li>
+&lt;li>建议优化配置：两块双口万兆网卡，一块双口千兆网卡，用于对网络流量、高可用性和性能的进一步优化，这里先不做展开。&lt;/li>
+&lt;/ul>
+&lt;p>网络交换机的选择，Nutanix CE免费版支持1、3、4节点的搭建模式。单节点没有特殊要求，多节点情况下，现场需要具备至少一台万兆以太网交换机和一台千兆以太网交换机。并且做相应的VLAN准备。&lt;/p>
+&lt;h2 id="准备工作">准备工作
+&lt;/h2>&lt;p>&lt;img src="https://martinliu.cn/img/cos/2022-01-04-%E5%B9%BB%E7%81%AF%E7%89%875.JPG"
+loading="lazy"
+>&lt;/p>
+&lt;p>必须在 &lt;a class="link" href="https://next.nutanix.com" target="_blank" rel="noopener"
+>https://next.nutanix.com&lt;/a> 注册社区账号，记录登录邮箱和密码备用。访问 &lt;a class="link" href="https://next.nutanix.com/discussion-forum-14/download-community-edition-38417" target="_blank" rel="noopener"
+>Download Community Edition | Nutanix Community&lt;/a> 这个帖子，下载 Installer ISO &lt;a class="link" href="https://download.nutanix.com/ce/2020.09.16/ce-2020.09.16.iso" target="_blank" rel="noopener"
+>https://download.nutanix.com/ce/2020.09.16/ce-2020.09.16.iso&lt;/a> 。将这个ISO文件刻录在启动U盘中。安装前确保网线已经连结正常，且能访问Internet。&lt;/p>
+&lt;p>Nutanix CE安装文件也可以在这个网盘中下载：链接：&lt;a class="link" href="https://pan.baidu.com/s/1DdvvfcPhcpR1jkfrXhCraA" target="_blank" rel="noopener"
+>https://pan.baidu.com/s/1DdvvfcPhcpR1jkfrXhCraA&lt;/a> 提取码：4dgc&lt;/p>
+&lt;h2 id="安装过程">安装过程
+&lt;/h2>&lt;p>Nutanix CE版的安装可能会持续1小时左右，过程中包含比较多的自动化操作流程，基本需要用户少量的输入操作，其他更多的是等待时间。&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/img/cos/2022-01-04-%E5%B9%BB%E7%81%AF%E7%89%876.JPG"
+loading="lazy"
+>&lt;/p>
+&lt;p>下面是必须要关注的注意事项，相当于checklist：&lt;/p>
+&lt;ol>
+&lt;li>在主板BIOS的启动模式选项中，设置为legacy模式，其他模式不支持。&lt;/li>
+&lt;li>在BIOS中确认能看到所有磁盘。&lt;/li>
+&lt;li>插入一个桌面版 Linux Live CD U盘（如fedora 35），或者Win PE启动U盘，先设置从这个U盘启动。&lt;/li>
+&lt;li>用Linux Live CD中的图形化磁盘分区工具，检查所有磁盘的空间，SMART信息，如果磁盘已经可见的老化或者错误，就替换掉在进行后续的装机。删除掉所有磁盘中的分区。重启。&lt;/li>
+&lt;li>插入Nutanix CE社区版安装U盘。开始正式的刷机流程。&lt;/li>
+&lt;/ol>
+&lt;p>&lt;img src="https://martinliu.cn/img/cos/2022-01-04-disk.png"
+loading="lazy"
+>&lt;/p>
+&lt;p>选项介绍：&lt;/p>
+&lt;ul>
+&lt;li>选中 AHV - 即Nutnaix版本的KVM的虚拟化软件。&lt;/li>
+&lt;li>按顺序选中：服务器虚拟化 Hpyervisor 的SSD盘，CVM的SSD盘，和做数据空间用的机械磁盘。&lt;/li>
+&lt;li>Host ip ： 物理机运行虚拟化所在网段IP&lt;/li>
+&lt;li>CVM ip：超融合软件运行的网段IP，必须通Internet。&lt;/li>
+&lt;li>不要选则创建单节点集群选项。&lt;/li>
+&lt;/ul>
+&lt;p>&lt;img src="https://martinliu.cn/img/cos/2022-01-04-license.png"
+loading="lazy"
+>&lt;/p>
+&lt;p>阅读完用户许可证全文后，选中接受，并且点击开始。Nutanix CE是一个裁剪版本有限制的软件，本文建议用于开发测试环境。&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/img/cos/2022-01-04-hypervisor.png"
+loading="lazy"
+>&lt;/p>
+&lt;p>开始了物理机的虚拟化的安装，然后自动开始CVM的安装，CVM是一个虚拟机软件，会被自动启动和部分初始化。&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/img/cos/2022-01-04-end.png"
+loading="lazy"
+>&lt;/p>
+&lt;p>最后，安装成功的话，拔出U盘，重启服务器。如果是多节点安装，每个节点都需重复这个过程，注意提前规划好Host Ip和CVM Ip的网段。&lt;/p>
+&lt;h2 id="初始化配置">初始化配置
+&lt;/h2>&lt;p>&lt;img src="https://martinliu.cn/img/cos/2022-01-04-%E5%B9%BB%E7%81%AF%E7%89%8711.JPG"
+loading="lazy"
+>&lt;/p>
+&lt;p>在安装完第一次重启的过程中，我们需要一些等待时间，逐步确认超融合系统的充分就绪，一下每个步骤必须顺序进行，不可跳跃进行：&lt;/p>
+&lt;ol>
+&lt;li>ssh 登录 host 的ip 地址，root 的默认密码是 nutanix/4u ；登录后，使用hostname 命令查看并记录主机名，运行 virsh list 命令观察 cvm虚拟机的运行状态。&lt;/li>
+&lt;li>ssh 登录 cvm 的 ip 地址，默认用户名 nutanix ， 密码 是 nutanix/4u ；登陆后，使用 hostname 命令确认是否变为了 host的主机名+ -cvm 这样的名字，如果看到的是一个 cvm 的ip 地址，什么也不要做。等cvm第一次重启后，在此登录确认主机名。&lt;/li>
+&lt;li>在cvm 中执行 ping qq.com 命令，确保和internet的互联。&lt;/li>
+&lt;li>在cvm 中执行 genesis status 命令，如果过输出是持续报错信息，就等待错信息的停止，最后正常的输出应该是若干行服务的名称和端口号。&lt;/li>
+&lt;li>执行 cluster status 命令，如果过输出是持续报错信息，就等待错信息的停止，知道最后一行显示本系统中还没有被配置，需要创建集群。&lt;/li>
+&lt;li>执行超融合集群的创建命令， cluster -s 192.168.1.20 create ； 这里是创建单节点集群，ip地址就是当前cvm的ip地址。等待这条命令初始化集群完毕后，可以看到Nutanix超融合系统的所有服务状态清单。&lt;/li>
+&lt;/ol>
+&lt;p>多节点（3/4）节点 AHV 集群的搭建说明:&lt;/p>
+&lt;ol>
+&lt;li>重复以上的安装过程三次或者四次&lt;/li>
+&lt;li>确保每个计算机上的cvm都处于 cluster status 输出信息正确一致的状态&lt;/li>
+&lt;li>在每个 cvm上ping 其它邻居cvm的ip，确保网络畅通。&lt;/li>
+&lt;li>在其中一个cvm的命令行执行多节点集群创建命令： cluster -s 192.168.1.20,192.168.1.22,192.168.1.24 create 。该命令的正确结果是，每个cvm上的集群服务状态信息。&lt;/li>
+&lt;/ol>
+&lt;p>最后，在cvm上使用 cluster status 命令，确认所有节点的所有服务都正常运行了以后，继续登录超融合系统的网页图像界面。&lt;/p>
+&lt;h2 id="集群使用基础">集群使用基础
+&lt;/h2>&lt;p>顺序只需一下基础的配置和功能操作。&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/img/cos/2022-01-04-%E5%B9%BB%E7%81%AF%E7%89%8713.JPG"
+loading="lazy"
+>&lt;/p>
+&lt;ol>
+&lt;li>在浏览器中访问任一cvm的ip地址，使用默认用户名 admin 密码 nutanix/4u登录，立刻会让你修改 admin 的默认密码，使用并记录这个新密码备用。&lt;/li>
+&lt;li>用新密码登录。&lt;/li>
+&lt;li>在要求输入Next 账号的地方，输入前面注册好的 Nutanix 论坛的邮箱和密码。&lt;/li>
+&lt;li>成功登录后，你可以看到超融合的初始化界面，观察第一个关键信息点，观察左上方的第二个信息块，这里的显示的是存储池的物理和逻辑容量。如果这个数据没有立刻显示出来，那么表明该节点存在的某种问题，但是这不表明它不能用于多节点集群的创建。我有三个计算机时这种情况，单节点初始化失败的计算机在多节点集群的创建中反而没有问题。&lt;/li>
+&lt;li>在右上角的配置菜单中，选中镜像访问 image service ，在哪里上传一个准备好的 iso，img 或者 qcow2 文件。等待几分钟后，每个文件应该即处于就绪使用的active 状态。&lt;/li>
+&lt;li>在网络配置中创建一个用于虚拟机运行的网络。&lt;/li>
+&lt;li>创建空白的虚拟机，挂在iso文件，并且开始虚拟机的安装。&lt;/li>
+&lt;li>创建空白虚拟机，创建基于img 或者 qcow2虚拟机模板文件的磁盘，开机后即可使用。&lt;/li>
+&lt;/ol>
+&lt;h2 id="参考成本">参考成本
+&lt;/h2>&lt;p>我个人喜欢在本地运行很多虚拟机的测试环境，属于 self-host 粉。我的虚拟机数量逐渐增加。从一个Intel NUC的单机微型测试机。 到单机联想工作站（双路E5CPU），到现在新增了两个某宝的组装兼容机，最后组成了三节点的Nutanix 超融合集群【vSphere 虚拟化】。个人实现多节点超融合集群的必要性因人而异，这里只是告诉大家，使用Nutanix CE在这些机器上是可行的。&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/img/cos/2022-01-04-%E5%B9%BB%E7%81%AF%E7%89%871.JPG"
+loading="lazy"
+>&lt;/p>
+&lt;p>下面是网购订单的统计信息，希望对于想自行攒机的朋友，或者对扩容利旧服务器的朋友有些帮助。&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/img/cos/2022-01-04-2021-12-29_12-32-49.png"
+loading="lazy"
+>&lt;/p>
+&lt;h2 id="下期预告">下期预告
+&lt;/h2>&lt;p>HCI系统的搭建还有很多问题值得一起探讨和学习，HCI超融合系统软件还有很多功能可以学习了解。我们为DevOps社区的朋友们新开辟了这个HCI板块，希望以后会每个月为大家输出一期新的内容。下期直播的简介如下：&lt;/p>
+&lt;ol>
+&lt;li>日期：2022年1月26日中午1点&lt;/li>
+&lt;li>内容1：Nutanix CE版AHV安装答疑解惑&lt;/li>
+&lt;li>内容2：VMware vSphere 集群的搭建&lt;/li>
+&lt;li>主持人：刘征，吴孔辉&lt;/li>
+&lt;li>直播平台：B站搜/关注：中国DevOps社区&lt;/li>
+&lt;li>直播抽奖：未知&lt;/li>
+&lt;li>报名：互动吧搜/关注：中国DevOps社区&lt;/li>
+&lt;/ol>
+&lt;h2 id="其他">其他
+&lt;/h2>&lt;p>HCI超融合技术对于了解它的人来说很火热，但是还有很多不太了解HCI的人；HCI的用户对它也有不同的使用场景和期望。请大家参与这个《中国超融合状态调查》，我们每月为参与本调查的朋友进行抽奖，抽奖结果在下次直播的时候公布。扫码参与调查。&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/img/cos/2022-01-04-dc.png"
+loading="lazy"
+>&lt;/p>
+&lt;p>我们为希望学习HCI技术的朋友们创建了一个qq群，希望可以给大家带来一定帮助。扫码加入我们的QQ群。&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/img/cos/2022-01-04-qq.png"
+loading="lazy"
+>&lt;/p></description></item><item><title>为Docker Swarm群集配置Nutanix持久存储</title><link>https://martinliu.cn/blog/nutanix-dvp/</link><pubDate>Thu, 02 Nov 2017 00:00:00 +0000</pubDate><guid>https://martinliu.cn/blog/nutanix-dvp/</guid><description>&lt;img src="https://martinliu.cn/images/abstract-4.jpg" alt="Featured image of post 为Docker Swarm群集配置Nutanix持久存储" />&lt;p>本文介绍如何用Docker卷插件的方式，给Docker Swarm的群集挂载Nutanix存储。&lt;a class="link" href="https://store.docker.com/plugins/nutanix-dvp-docker-volume-plug-in" target="_blank" rel="noopener"
+>Nutanix Container Volume Plug-in&lt;/a>简称DVP，可以给容器提供数据持久化的功能。&lt;/p>
+&lt;p>本文使用ownCloud网盘应用做功能测试。测试的过程如下，安装部署Docker Datacenter，配置好群集，在UCP的界面里调用DVP插件建持久的数据卷，建立ownCloud服务，部署和测试该服务。&lt;/p>
+&lt;h2 id="nutanix-dvp-docker-volume-plug-in安装和配置">Nutanix DVP (Docker Volume Plug-in)安装和配置
+&lt;/h2>&lt;p>这一部分描述DVP的安装部署过程，需要连接互联网；安装调试完毕之后，作虚拟机的镜像模板使用。这样Docker Swarm的其它节点也都不需要重复这个步骤了。&lt;/p>
+&lt;p>本文使用的是Docker社区文档稳定版 17.03.1-ce ；本文使用的OS是CentOS 7.3。所Docker安装的版本如下：&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;span class="lnt">14
+&lt;/span>&lt;span class="lnt">15
+&lt;/span>&lt;span class="lnt">16
+&lt;/span>&lt;span class="lnt">17
+&lt;/span>&lt;span class="lnt">18
+&lt;/span>&lt;span class="lnt">19
+&lt;/span>&lt;span class="lnt">20
+&lt;/span>&lt;span class="lnt">21
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">[root@centos7-temp]# docker version
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Client:
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> Version: 17.03.1-ce
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> API version: 1.27
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> Go version: go1.7.5
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> Git commit: c6d412e
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> Built: Mon Mar 27 17:05:44 2017
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> OS/Arch: linux/amd64
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Server:
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> Version: 17.03.1-ce
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> API version: 1.27 (minimum version 1.12)
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> Go version: go1.7.5
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> Git commit: c6d412e
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> Built: Mon Mar 27 17:05:44 2017
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> OS/Arch: linux/amd64
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> Experimental: false
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">[root@centos7-temp]# rpm -qa|grep docker
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">docker-ce-17.03.1.ce-1.el7.centos.x86_64
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">docker-ce-selinux-17.03.1.ce-1.el7.centos.noarch
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>本文使用的Docker 安装yum源如下：&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;span class="lnt">14
+&lt;/span>&lt;span class="lnt">15
+&lt;/span>&lt;span class="lnt">16
+&lt;/span>&lt;span class="lnt">17
+&lt;/span>&lt;span class="lnt">18
+&lt;/span>&lt;span class="lnt">19
+&lt;/span>&lt;span class="lnt">20
+&lt;/span>&lt;span class="lnt">21
+&lt;/span>&lt;span class="lnt">22
+&lt;/span>&lt;span class="lnt">23
+&lt;/span>&lt;span class="lnt">24
+&lt;/span>&lt;span class="lnt">25
+&lt;/span>&lt;span class="lnt">26
+&lt;/span>&lt;span class="lnt">27
+&lt;/span>&lt;span class="lnt">28
+&lt;/span>&lt;span class="lnt">29
+&lt;/span>&lt;span class="lnt">30
+&lt;/span>&lt;span class="lnt">31
+&lt;/span>&lt;span class="lnt">32
+&lt;/span>&lt;span class="lnt">33
+&lt;/span>&lt;span class="lnt">34
+&lt;/span>&lt;span class="lnt">35
+&lt;/span>&lt;span class="lnt">36
+&lt;/span>&lt;span class="lnt">37
+&lt;/span>&lt;span class="lnt">38
+&lt;/span>&lt;span class="lnt">39
+&lt;/span>&lt;span class="lnt">40
+&lt;/span>&lt;span class="lnt">41
+&lt;/span>&lt;span class="lnt">42
+&lt;/span>&lt;span class="lnt">43
+&lt;/span>&lt;span class="lnt">44
+&lt;/span>&lt;span class="lnt">45
+&lt;/span>&lt;span class="lnt">46
+&lt;/span>&lt;span class="lnt">47
+&lt;/span>&lt;span class="lnt">48
+&lt;/span>&lt;span class="lnt">49
+&lt;/span>&lt;span class="lnt">50
+&lt;/span>&lt;span class="lnt">51
+&lt;/span>&lt;span class="lnt">52
+&lt;/span>&lt;span class="lnt">53
+&lt;/span>&lt;span class="lnt">54
+&lt;/span>&lt;span class="lnt">55
+&lt;/span>&lt;span class="lnt">56
+&lt;/span>&lt;span class="lnt">57
+&lt;/span>&lt;span class="lnt">58
+&lt;/span>&lt;span class="lnt">59
+&lt;/span>&lt;span class="lnt">60
+&lt;/span>&lt;span class="lnt">61
+&lt;/span>&lt;span class="lnt">62
+&lt;/span>&lt;span class="lnt">63
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-gdscript3" data-lang="gdscript3">&lt;span class="line">&lt;span class="cl">&lt;span class="p">[&lt;/span>&lt;span class="n">root&lt;/span>&lt;span class="err">@&lt;/span>&lt;span class="n">centos7&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">temp&lt;/span>&lt;span class="p">]&lt;/span>&lt;span class="c1"># cat /etc/yum.repos.d/docker-ce.repo&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">[&lt;/span>&lt;span class="n">docker&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">ce&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">stable&lt;/span>&lt;span class="p">]&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">name&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="n">Docker&lt;/span> &lt;span class="n">CE&lt;/span> &lt;span class="n">Stable&lt;/span> &lt;span class="o">-&lt;/span> &lt;span class="o">$&lt;/span>&lt;span class="n">basearch&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">baseurl&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="n">https&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="o">//&lt;/span>&lt;span class="n">download&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">docker&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">com&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">linux&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">centos&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="mi">7&lt;/span>&lt;span class="o">/$&lt;/span>&lt;span class="n">basearch&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">stable&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">enabled&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="mi">1&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">gpgcheck&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="mi">1&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">gpgkey&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="n">https&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="o">//&lt;/span>&lt;span class="n">download&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">docker&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">com&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">linux&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">centos&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">gpg&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">[&lt;/span>&lt;span class="n">docker&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">ce&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">stable&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">debuginfo&lt;/span>&lt;span class="p">]&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">name&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="n">Docker&lt;/span> &lt;span class="n">CE&lt;/span> &lt;span class="n">Stable&lt;/span> &lt;span class="o">-&lt;/span> &lt;span class="n">Debuginfo&lt;/span> &lt;span class="o">$&lt;/span>&lt;span class="n">basearch&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">baseurl&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="n">https&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="o">//&lt;/span>&lt;span class="n">download&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">docker&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">com&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">linux&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">centos&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="mi">7&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">debug&lt;/span>&lt;span class="o">-$&lt;/span>&lt;span class="n">basearch&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">stable&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">enabled&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="mi">0&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">gpgcheck&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="mi">1&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">gpgkey&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="n">https&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="o">//&lt;/span>&lt;span class="n">download&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">docker&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">com&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">linux&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">centos&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">gpg&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">[&lt;/span>&lt;span class="n">docker&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">ce&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">stable&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">source&lt;/span>&lt;span class="p">]&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">name&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="n">Docker&lt;/span> &lt;span class="n">CE&lt;/span> &lt;span class="n">Stable&lt;/span> &lt;span class="o">-&lt;/span> &lt;span class="n">Sources&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">baseurl&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="n">https&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="o">//&lt;/span>&lt;span class="n">download&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">docker&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">com&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">linux&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">centos&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="mi">7&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">source&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">stable&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">enabled&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="mi">0&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">gpgcheck&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="mi">1&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">gpgkey&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="n">https&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="o">//&lt;/span>&lt;span class="n">download&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">docker&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">com&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">linux&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">centos&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">gpg&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">[&lt;/span>&lt;span class="n">docker&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">ce&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">edge&lt;/span>&lt;span class="p">]&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">name&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="n">Docker&lt;/span> &lt;span class="n">CE&lt;/span> &lt;span class="n">Edge&lt;/span> &lt;span class="o">-&lt;/span> &lt;span class="o">$&lt;/span>&lt;span class="n">basearch&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">baseurl&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="n">https&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="o">//&lt;/span>&lt;span class="n">download&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">docker&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">com&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">linux&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">centos&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="mi">7&lt;/span>&lt;span class="o">/$&lt;/span>&lt;span class="n">basearch&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">edge&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">enabled&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="mi">0&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">gpgcheck&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="mi">1&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">gpgkey&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="n">https&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="o">//&lt;/span>&lt;span class="n">download&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">docker&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">com&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">linux&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">centos&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">gpg&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">[&lt;/span>&lt;span class="n">docker&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">ce&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">edge&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">debuginfo&lt;/span>&lt;span class="p">]&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">name&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="n">Docker&lt;/span> &lt;span class="n">CE&lt;/span> &lt;span class="n">Edge&lt;/span> &lt;span class="o">-&lt;/span> &lt;span class="n">Debuginfo&lt;/span> &lt;span class="o">$&lt;/span>&lt;span class="n">basearch&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">baseurl&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="n">https&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="o">//&lt;/span>&lt;span class="n">download&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">docker&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">com&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">linux&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">centos&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="mi">7&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">debug&lt;/span>&lt;span class="o">-$&lt;/span>&lt;span class="n">basearch&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">edge&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">enabled&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="mi">0&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">gpgcheck&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="mi">1&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">gpgkey&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="n">https&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="o">//&lt;/span>&lt;span class="n">download&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">docker&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">com&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">linux&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">centos&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">gpg&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">[&lt;/span>&lt;span class="n">docker&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">ce&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">edge&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">source&lt;/span>&lt;span class="p">]&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">name&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="n">Docker&lt;/span> &lt;span class="n">CE&lt;/span> &lt;span class="n">Edge&lt;/span> &lt;span class="o">-&lt;/span> &lt;span class="n">Sources&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">baseurl&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="n">https&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="o">//&lt;/span>&lt;span class="n">download&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">docker&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">com&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">linux&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">centos&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="mi">7&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">source&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">edge&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">enabled&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="mi">0&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">gpgcheck&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="mi">1&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">gpgkey&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="n">https&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="o">//&lt;/span>&lt;span class="n">download&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">docker&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">com&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">linux&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">centos&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">gpg&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">[&lt;/span>&lt;span class="n">docker&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">ce&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">test&lt;/span>&lt;span class="p">]&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">name&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="n">Docker&lt;/span> &lt;span class="n">CE&lt;/span> &lt;span class="n">Test&lt;/span> &lt;span class="o">-&lt;/span> &lt;span class="o">$&lt;/span>&lt;span class="n">basearch&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">baseurl&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="n">https&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="o">//&lt;/span>&lt;span class="n">download&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">docker&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">com&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">linux&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">centos&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="mi">7&lt;/span>&lt;span class="o">/$&lt;/span>&lt;span class="n">basearch&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">test&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">enabled&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="mi">0&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">gpgcheck&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="mi">1&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">gpgkey&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="n">https&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="o">//&lt;/span>&lt;span class="n">download&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">docker&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">com&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">linux&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">centos&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">gpg&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">[&lt;/span>&lt;span class="n">docker&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">ce&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">test&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">debuginfo&lt;/span>&lt;span class="p">]&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">name&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="n">Docker&lt;/span> &lt;span class="n">CE&lt;/span> &lt;span class="n">Test&lt;/span> &lt;span class="o">-&lt;/span> &lt;span class="n">Debuginfo&lt;/span> &lt;span class="o">$&lt;/span>&lt;span class="n">basearch&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">baseurl&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="n">https&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="o">//&lt;/span>&lt;span class="n">download&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">docker&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">com&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">linux&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">centos&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="mi">7&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">debug&lt;/span>&lt;span class="o">-$&lt;/span>&lt;span class="n">basearch&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">test&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">enabled&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="mi">0&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">gpgcheck&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="mi">1&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">gpgkey&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="n">https&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="o">//&lt;/span>&lt;span class="n">download&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">docker&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">com&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">linux&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">centos&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">gpg&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">[&lt;/span>&lt;span class="n">docker&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">ce&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">test&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">source&lt;/span>&lt;span class="p">]&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">name&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="n">Docker&lt;/span> &lt;span class="n">CE&lt;/span> &lt;span class="n">Test&lt;/span> &lt;span class="o">-&lt;/span> &lt;span class="n">Sources&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">baseurl&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="n">https&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="o">//&lt;/span>&lt;span class="n">download&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">docker&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">com&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">linux&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">centos&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="mi">7&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">source&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">test&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">enabled&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="mi">0&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">gpgcheck&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="mi">1&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">gpgkey&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="n">https&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="o">//&lt;/span>&lt;span class="n">download&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">docker&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">com&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">linux&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">centos&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">gpg&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>本机所使用的所有安装源如下：&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;span class="lnt">14
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">[root@centos7-temp]# yum repolist
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Loaded plugins: fastestmirror
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Loading mirror speeds from cached hostfile
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> * base: mirrors.aliyun.com
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> * epel: mirrors.aliyun.com
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> * extras: mirrors.aliyun.com
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> * updates: mirrors.aliyun.com
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">repo id repo name status
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">base/7/x86_64 CentOS-7 - Base - mirrors.aliyun.com 9,363
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">docker-ce-stable/x86_64 Docker CE Stable - x86_64 4
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">epel/x86_64 Extra Packages for Enterprise Linux 7 - x86_64 11,808
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">extras/7/x86_64 CentOS-7 - Extras - mirrors.aliyun.com 381
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">updates/7/x86_64 CentOS-7 - Updates - mirrors.aliyun.com 1,859
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">repolist: 23,415
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>安装docker引擎，并启动服务，并校验服务状态。安装过程参考如下：&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;span class="lnt">14
+&lt;/span>&lt;span class="lnt">15
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-gdscript3" data-lang="gdscript3">&lt;span class="line">&lt;span class="cl">&lt;span class="p">[&lt;/span>&lt;span class="n">root&lt;/span>&lt;span class="err">@&lt;/span>&lt;span class="n">centos7&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">temp&lt;/span>&lt;span class="p">]&lt;/span>&lt;span class="c1"># yum install -y docker-ce&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">[&lt;/span>&lt;span class="n">root&lt;/span>&lt;span class="err">@&lt;/span>&lt;span class="n">centos7&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">temp&lt;/span>&lt;span class="p">]&lt;/span>&lt;span class="c1"># systemctl enable docker&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">[&lt;/span>&lt;span class="n">root&lt;/span>&lt;span class="err">@&lt;/span>&lt;span class="n">centos7&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">temp&lt;/span>&lt;span class="p">]&lt;/span>&lt;span class="c1"># systemctl start docker&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">[&lt;/span>&lt;span class="n">root&lt;/span>&lt;span class="err">@&lt;/span>&lt;span class="n">centos7&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">temp&lt;/span>&lt;span class="p">]&lt;/span>&lt;span class="c1"># systemctl status docker&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">●&lt;/span> &lt;span class="n">docker&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">service&lt;/span> &lt;span class="o">-&lt;/span> &lt;span class="n">Docker&lt;/span> &lt;span class="n">Application&lt;/span> &lt;span class="ne">Container&lt;/span> &lt;span class="n">Engine&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">Loaded&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="n">loaded&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">usr&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">lib&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">systemd&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">system&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">docker&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">service&lt;/span>&lt;span class="p">;&lt;/span> &lt;span class="n">enabled&lt;/span>&lt;span class="p">;&lt;/span> &lt;span class="n">vendor&lt;/span> &lt;span class="n">preset&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="n">disabled&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">Active&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="n">active&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="n">running&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="n">since&lt;/span> &lt;span class="n">Tue&lt;/span> &lt;span class="mi">2017&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="mi">06&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="mi">20&lt;/span> &lt;span class="mi">20&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="mi">30&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="mi">49&lt;/span> &lt;span class="n">CST&lt;/span>&lt;span class="p">;&lt;/span> &lt;span class="mi">19&lt;/span>&lt;span class="nb">min&lt;/span> &lt;span class="n">ago&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">Docs&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="n">https&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="o">//&lt;/span>&lt;span class="n">docs&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">docker&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">com&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">Main&lt;/span> &lt;span class="n">PID&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="mi">875&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="n">dockerd&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">CGroup&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="o">/&lt;/span>&lt;span class="n">system&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">slice&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">docker&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">service&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="err">├─&lt;/span> &lt;span class="mi">875&lt;/span> &lt;span class="o">/&lt;/span>&lt;span class="n">usr&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">bin&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">dockerd&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="err">├─&lt;/span> &lt;span class="mi">942&lt;/span> &lt;span class="n">docker&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">containerd&lt;/span> &lt;span class="o">-&lt;/span>&lt;span class="n">l&lt;/span> &lt;span class="n">unix&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="o">///&lt;/span>&lt;span class="k">var&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">run&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">docker&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">libcontainerd&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">docker&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">containerd&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">sock&lt;/span> &lt;span class="o">--&lt;/span>&lt;span class="n">metrics&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="ow">in&lt;/span>&lt;span class="o">...&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="err">├─&lt;/span>&lt;span class="mi">2008&lt;/span> &lt;span class="n">docker&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">containerd&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">shim&lt;/span> &lt;span class="mi">0&lt;/span>&lt;span class="n">ca2346b6126de702fb4dda5f807c0a69a402eb643f15c142730277d0eb7bbcb&lt;/span> &lt;span class="o">/&lt;/span>&lt;span class="k">var&lt;/span>&lt;span class="o">/...&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="err">└─&lt;/span>&lt;span class="mi">0&lt;/span>&lt;span class="n">ca2346b6126de702fb4dda5f807c0a69a402eb643f15c142730277d0eb7bbcb&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="err">└─&lt;/span>&lt;span class="mi">2038&lt;/span> &lt;span class="o">/&lt;/span>&lt;span class="n">usr&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">bin&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">python&lt;/span> &lt;span class="o">/&lt;/span>&lt;span class="n">code&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">main&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">py&lt;/span> &lt;span class="o">--&lt;/span>&lt;span class="n">prism&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">ip&lt;/span> &lt;span class="mf">10.68&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="mf">69.22&lt;/span> &lt;span class="o">--&lt;/span>&lt;span class="n">dataservices&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">ip&lt;/span> &lt;span class="mf">10.68&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="mf">69.23&lt;/span> &lt;span class="o">--&lt;/span>&lt;span class="n">prism&lt;/span>&lt;span class="o">-...&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>到目前为止，Docker安装配置完成。&lt;/p>
+&lt;p>下面开始安装DVP，安装和配置过程参考页面。&lt;/p>
+&lt;p>&lt;a class="link" href="https://store.docker.com/plugins/nutanix-dvp-docker-volume-plug-in" target="_blank" rel="noopener"
+>https://store.docker.com/plugins/nutanix-dvp-docker-volume-plug-in&lt;/a>&lt;/p>
+&lt;p>下面是给操作系统安装iscsi initiator服务的参考步骤：&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;span class="lnt">14
+&lt;/span>&lt;span class="lnt">15
+&lt;/span>&lt;span class="lnt">16
+&lt;/span>&lt;span class="lnt">17
+&lt;/span>&lt;span class="lnt">18
+&lt;/span>&lt;span class="lnt">19
+&lt;/span>&lt;span class="lnt">20
+&lt;/span>&lt;span class="lnt">21
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-gdscript3" data-lang="gdscript3">&lt;span class="line">&lt;span class="cl">&lt;span class="n">yum&lt;/span> &lt;span class="n">install&lt;/span> &lt;span class="o">-&lt;/span>&lt;span class="n">y&lt;/span> &lt;span class="n">iscsi&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">initiator&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">utils&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">systemd&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">tmpfiles&lt;/span> &lt;span class="o">--&lt;/span>&lt;span class="n">create&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">systemctl&lt;/span> &lt;span class="n">start&lt;/span> &lt;span class="n">iscsid&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">systemctl&lt;/span> &lt;span class="n">enable&lt;/span> &lt;span class="n">iscsid&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">systemctl&lt;/span> &lt;span class="n">status&lt;/span> &lt;span class="n">iscsid&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">●&lt;/span> &lt;span class="n">iscsid&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">service&lt;/span> &lt;span class="o">-&lt;/span> &lt;span class="n">Open&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">iSCSI&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">Loaded&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="n">loaded&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">usr&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">lib&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">systemd&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">system&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">iscsid&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">service&lt;/span>&lt;span class="p">;&lt;/span> &lt;span class="n">enabled&lt;/span>&lt;span class="p">;&lt;/span> &lt;span class="n">vendor&lt;/span> &lt;span class="n">preset&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="n">disabled&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">Active&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="n">active&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="n">running&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="n">since&lt;/span> &lt;span class="n">Tue&lt;/span> &lt;span class="mi">2017&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="mi">06&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="mi">20&lt;/span> &lt;span class="mi">20&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="mi">30&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="mi">46&lt;/span> &lt;span class="n">CST&lt;/span>&lt;span class="p">;&lt;/span> &lt;span class="mi">24&lt;/span>&lt;span class="nb">min&lt;/span> &lt;span class="n">ago&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">Docs&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="n">man&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="n">iscsid&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="mi">8&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">man&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="n">iscsiadm&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="mi">8&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">Main&lt;/span> &lt;span class="n">PID&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="mi">888&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="n">iscsid&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">CGroup&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="o">/&lt;/span>&lt;span class="n">system&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">slice&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">iscsid&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">service&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="err">├─&lt;/span>&lt;span class="mi">882&lt;/span> &lt;span class="o">/&lt;/span>&lt;span class="n">usr&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">sbin&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">iscsid&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="err">└─&lt;/span>&lt;span class="mi">888&lt;/span> &lt;span class="o">/&lt;/span>&lt;span class="n">usr&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">sbin&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">iscsid&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">Jun&lt;/span> &lt;span class="mi">20&lt;/span> &lt;span class="mi">20&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="mi">30&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="mi">46&lt;/span> &lt;span class="n">centos7&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">temp&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">zenlab&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">local&lt;/span> &lt;span class="n">systemd&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="mi">1&lt;/span>&lt;span class="p">]:&lt;/span> &lt;span class="n">Starting&lt;/span> &lt;span class="n">Open&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">iSCSI&lt;/span>&lt;span class="o">...&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">Jun&lt;/span> &lt;span class="mi">20&lt;/span> &lt;span class="mi">20&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="mi">30&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="mi">46&lt;/span> &lt;span class="n">centos7&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">temp&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">zenlab&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">local&lt;/span> &lt;span class="n">iscsid&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="mi">878&lt;/span>&lt;span class="p">]:&lt;/span> &lt;span class="n">iSCSI&lt;/span> &lt;span class="n">logger&lt;/span> &lt;span class="n">with&lt;/span> &lt;span class="n">pid&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="mi">882&lt;/span> &lt;span class="n">started&lt;/span>&lt;span class="o">!&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">Jun&lt;/span> &lt;span class="mi">20&lt;/span> &lt;span class="mi">20&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="mi">30&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="mi">46&lt;/span> &lt;span class="n">centos7&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">temp&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">zenlab&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">local&lt;/span> &lt;span class="n">systemd&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="mi">1&lt;/span>&lt;span class="p">]:&lt;/span> &lt;span class="n">Failed&lt;/span> &lt;span class="n">to&lt;/span> &lt;span class="n">read&lt;/span> &lt;span class="n">PID&lt;/span> &lt;span class="n">from&lt;/span> &lt;span class="n">file&lt;/span> &lt;span class="o">/&lt;/span>&lt;span class="k">var&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">run&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">iscsid&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">pid&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="n">Inva&lt;/span>&lt;span class="o">...&lt;/span>&lt;span class="n">ent&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">Jun&lt;/span> &lt;span class="mi">20&lt;/span> &lt;span class="mi">20&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="mi">30&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="mi">46&lt;/span> &lt;span class="n">centos7&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">temp&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">zenlab&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">local&lt;/span> &lt;span class="n">systemd&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="mi">1&lt;/span>&lt;span class="p">]:&lt;/span> &lt;span class="n">Started&lt;/span> &lt;span class="n">Open&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">iSCSI&lt;/span>&lt;span class="o">.&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">Jun&lt;/span> &lt;span class="mi">20&lt;/span> &lt;span class="mi">20&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="mi">30&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="mi">47&lt;/span> &lt;span class="n">centos7&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">temp&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">zenlab&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">local&lt;/span> &lt;span class="n">iscsid&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="mi">882&lt;/span>&lt;span class="p">]:&lt;/span> &lt;span class="n">iSCSI&lt;/span> &lt;span class="n">daemon&lt;/span> &lt;span class="n">with&lt;/span> &lt;span class="n">pid&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="mi">888&lt;/span> &lt;span class="n">started&lt;/span>&lt;span class="o">!&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">Hint&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="n">Some&lt;/span> &lt;span class="n">lines&lt;/span> &lt;span class="n">were&lt;/span> &lt;span class="n">ellipsized&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">use&lt;/span> &lt;span class="o">-&lt;/span>&lt;span class="n">l&lt;/span> &lt;span class="n">to&lt;/span> &lt;span class="n">show&lt;/span> &lt;span class="ow">in&lt;/span> &lt;span class="n">full&lt;/span>&lt;span class="o">.&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;blockquote>
+&lt;p>解释一下DVP的工作原理是，它是让Docker主机通过iSCSI协议连接Nutanix的存储服务。DVP插件的配置里包含了连接存储服务和存储容器（这个容器是Nutanix的存储术语，非Docker说的容器）的相关信息。这样Docker主机上用该卷插件建立的数据卷都会指向Nutanix后台的存储容器中；数据通过iSCSI协议连接Nutanix存储服务的时候，就可以利用到Nutanix群集提供的负载均衡能力；当数据块写入Nutanix存储池的过程中和之后，就可以利用到到Nutanix存储容器所具备的其它重要特性：数据块2~3副本的高可靠性、冷热数据分成、压缩、去重、纠删码等；而且存储空间对于容器或者Docker Swarm里的服务都是透明和无限容量的。&lt;/p>&lt;/blockquote>
+&lt;p>现在做一些安装DVP的准备工作，询问Nutanix系统管理员下面信息：&lt;/p>
+&lt;ul>
+&lt;li>获得Prism 的IP&lt;/li>
+&lt;li>获得Nutanix群集数据服务的IP，这个IP是群集上的虚拟服务IP&lt;/li>
+&lt;li>获得群集的用户名和密码&lt;/li>
+&lt;li>新建一个测试存储容器，获得容器名&lt;/li>
+&lt;/ul>
+&lt;p>参考下面的DVP安装命令：&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">docker plugin install ntnx/nutanix_volume_plugin PRISM_IP=&amp;#34;10.68.69.22&amp;#34; DATASERVICES_IP=&amp;#34;10.68.69.23&amp;#34; PRISM_PASSWORD=&amp;#34;nutanix/4u&amp;#34; PRISM_USERNAME=&amp;#34;admin&amp;#34; DEFAULT_CONTAINER=&amp;#34;ddc-sc1&amp;#34; --alias nutanix
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>以上的命令执行结果如下：&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;span class="lnt">14
+&lt;/span>&lt;span class="lnt">15
+&lt;/span>&lt;span class="lnt">16
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-gdscript3" data-lang="gdscript3">&lt;span class="line">&lt;span class="cl">&lt;span class="p">[&lt;/span>&lt;span class="n">root&lt;/span>&lt;span class="err">@&lt;/span>&lt;span class="n">centos7&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">temp&lt;/span>&lt;span class="p">]&lt;/span>&lt;span class="c1"># docker plugin install ntnx/nutanix_volume_plugin PRISM_IP=&amp;#34;10.68.69.22&amp;#34; DATASERVICES_IP=&amp;#34;10.68.69.23&amp;#34; PRISM_PASSWORD=&amp;#34;nutanix/4u&amp;#34; PRISM_USERNAME=&amp;#34;admin&amp;#34; DEFAULT_CONTAINER=&amp;#34;ddc-sc1&amp;#34; --alias nutanix&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">Plugin&lt;/span> &lt;span class="s2">&amp;#34;ntnx/nutanix_volume_plugin&amp;#34;&lt;/span> &lt;span class="n">is&lt;/span> &lt;span class="n">requesting&lt;/span> &lt;span class="n">the&lt;/span> &lt;span class="n">following&lt;/span> &lt;span class="n">privileges&lt;/span>&lt;span class="p">:&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="o">-&lt;/span> &lt;span class="n">network&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="p">[&lt;/span>&lt;span class="n">host&lt;/span>&lt;span class="p">]&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="o">-&lt;/span> &lt;span class="n">mount&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="p">[&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">dev&lt;/span>&lt;span class="p">]&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="o">-&lt;/span> &lt;span class="n">mount&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="p">[&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">lib&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">modules&lt;/span>&lt;span class="p">]&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="o">-&lt;/span> &lt;span class="n">mount&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="p">[&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">etc&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">iscsi&lt;/span>&lt;span class="p">]&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="o">-&lt;/span> &lt;span class="n">mount&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="p">[&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="k">var&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">lock&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">iscsi&lt;/span>&lt;span class="p">]&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="o">-&lt;/span> &lt;span class="n">mount&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="p">[&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">proc&lt;/span>&lt;span class="p">]&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="o">-&lt;/span> &lt;span class="n">allow&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">all&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">devices&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="p">[&lt;/span>&lt;span class="bp">true&lt;/span>&lt;span class="p">]&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="o">-&lt;/span> &lt;span class="n">capabilities&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="p">[&lt;/span>&lt;span class="n">CAP_SYS_ADMIN&lt;/span> &lt;span class="n">CAP_SYS_PTRACE&lt;/span> &lt;span class="n">CAP_IPC_LOCK&lt;/span> &lt;span class="n">CAP_IPC_OWNER&lt;/span> &lt;span class="n">CAP_NET_ADMIN&lt;/span> &lt;span class="n">CAP_MKNOD&lt;/span> &lt;span class="n">CAP_SYS_MODULE&lt;/span>&lt;span class="p">]&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">Do&lt;/span> &lt;span class="n">you&lt;/span> &lt;span class="n">grant&lt;/span> &lt;span class="n">the&lt;/span> &lt;span class="n">above&lt;/span> &lt;span class="n">permissions&lt;/span>&lt;span class="err">?&lt;/span> &lt;span class="p">[&lt;/span>&lt;span class="n">y&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">N&lt;/span>&lt;span class="p">]&lt;/span> &lt;span class="n">y&lt;/span> &lt;span class="err">（输入&lt;/span>&lt;span class="n">y&lt;/span>&lt;span class="err">，按回车）&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">latest&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="n">Pulling&lt;/span> &lt;span class="n">from&lt;/span> &lt;span class="n">ntnx&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">nutanix_volume_plugin&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">be892c8cb64d&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="n">Download&lt;/span> &lt;span class="n">complete&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">Digest&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="n">sha256&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="mi">5&lt;/span>&lt;span class="n">a3730ffae077eb6ddc0c125620283d56852528b686cbe42f2f58696eab82c0d&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">Status&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="n">Downloaded&lt;/span> &lt;span class="n">newer&lt;/span> &lt;span class="n">image&lt;/span> &lt;span class="k">for&lt;/span> &lt;span class="n">ntnx&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">nutanix_volume_plugin&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="n">latest&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">Installed&lt;/span> &lt;span class="n">plugin&lt;/span> &lt;span class="n">ntnx&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">nutanix_volume_plugin&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>确认VDP安装结果，这个插件应该是最新版、启动的状态，如下：&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">[root@centos7-temp]# docker plugin ls
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">ID NAME DESCRIPTION ENABLED
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">f0e38fbc11b3 nutanix:latest Nutanix volume plugin for docker true
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>执行下面的测试，确认DVP工作正常。&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;span class="lnt">4
+&lt;/span>&lt;span class="lnt">5
+&lt;/span>&lt;span class="lnt">6
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">[root@centos7-temp]# docker volume create testvol -d nutanix:latest
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">testvol
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">[root@centos7-temp]# docker volume ls
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">DRIVER VOLUME NAME
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">nutanix:latest testvol
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">[root@centos7-temp]#
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>回到Nutanix的Prisum界面（主要的群集管理图形化界面）中查看Storage &amp;ndash;&amp;gt; table &amp;ndash;&amp;gt; Volume Group，应该能看到这个命令所创建的名为testvol的数据卷。如下图所示：&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/images/Screen%20Shot%202017-06-20%20at%209.07.13%20PM.png"
+loading="lazy"
+>&lt;/p>
+&lt;p>在命令行删除这个测试的卷。&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;span class="lnt">4
+&lt;/span>&lt;span class="lnt">5
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">[root@centos7-temp]# docker volume rm testvol
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">testvol
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">[root@centos7-temp]# docker volume ls
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">DRIVER VOLUME NAME
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">[root@centos7-temp]#
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>在回到Prisum界面中查看刚才看到的那个卷应该就消失了。到此为止所有节点的DVP部署配置工作就完毕了，并且确认docker服务和DVP功能都很正常。用 sys-unconfig 命令关机，把这个虚拟机在Prisum里面做一个快照备用，也可以在Nutanix的acli命令行里面把它做成一个基础镜像。&lt;/p>
+&lt;p>我们已经理解和熟悉了DVP的基本操作，配置和部署，下面开始安装Docker Datacenter；Docker Datacenter的架构图如下所示：
+&lt;img src="https://martinliu.cn/images/14979754711332.jpg"
+loading="lazy"
+>&lt;/p>
+&lt;p>本文安装的架构是：&lt;/p>
+&lt;ol>
+&lt;li>一个 UCP manager 节点&lt;/li>
+&lt;li>一个 DTR 节点&lt;/li>
+&lt;li>两个 worker node 节点&lt;/li>
+&lt;/ol>
+&lt;p>在Nutanix的Prisum中用刚才制作的那个快照或者镜像模板，克隆/新建4个虚拟机。虚拟机的参考配置如下：&lt;/p>
+&lt;ul>
+&lt;li>2 vCPU&lt;/li>
+&lt;li>4GB RAM&lt;/li>
+&lt;li>50GB Disk&lt;/li>
+&lt;/ul>
+&lt;h2 id="安装ucpdocker-universal-control-plane节点">安装UCP（Docker Universal Control Plane）节点
+&lt;/h2>&lt;p>在Nutanix的Prisum中从刚才新建的四个虚拟机中选择一个，Power on开机；ssh登录到操作系统内之后，设定主机名和IP地址。&lt;/p>
+&lt;p>安装配置参考文档：&lt;a class="link" href="https://docs.docker.com/datacenter/ucp/2.1/guides/admin/install/install-offline/#download-the-offline-package" target="_blank" rel="noopener"
+>https://docs.docker.com/datacenter/ucp/2.1/guides/admin/install/install-offline/#download-the-offline-package&lt;/a>&lt;/p>
+&lt;p>注意事项，提前下载好安装包，这个tar包里面包含了UCP需要的所有镜像，可以一次性导入到UCP的节点上。&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-gdscript3" data-lang="gdscript3">&lt;span class="line">&lt;span class="cl">&lt;span class="n">wget&lt;/span> &lt;span class="n">https&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="o">//&lt;/span>&lt;span class="n">packages&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">docker&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">com&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">caas&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">ucp_images_2&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="mf">1.4&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">tar&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">gz&lt;/span> &lt;span class="o">-&lt;/span>&lt;span class="n">O&lt;/span> &lt;span class="n">docker&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">datacenter&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">tar&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">gz&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">docker&lt;/span> &lt;span class="nb">load&lt;/span> &lt;span class="o">&amp;lt;&lt;/span> &lt;span class="n">docker&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">datacenter&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">tar&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">gz&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>载入完毕后，可以看到如下镜像。&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;span class="lnt">14
+&lt;/span>&lt;span class="lnt">15
+&lt;/span>&lt;span class="lnt">16
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">[root@ucp-master ~]# docker images
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">REPOSITORY TAG IMAGE ID CREATED SIZE
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">docker/ucp-metrics 2.1.4 e3e24ef156bd 3 weeks ago 92.2 MB
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">docker/ucp-swarm 2.1.4 d8b51d6801e5 3 weeks ago 21 MB
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">docker/ucp-hrm 2.1.4 38a19323327d 3 weeks ago 14.8 MB
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">docker/ucp-etcd 2.1.4 9aa382502e19 3 weeks ago 38.5 MB
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">docker/ucp-controller 2.1.4 5a852aa3039e 3 weeks ago 28 MB
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">docker/ucp-dsinfo 2.1.4 66ee9368796a 3 weeks ago 159 MB
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">docker/ucp 2.1.4 7a28dbfc44e4 3 weeks ago 19.1 MB
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">docker/ucp latest 7a28dbfc44e4 3 weeks ago 19.1 MB
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">docker/ucp-cfssl 2.1.4 acdc1f147711 3 weeks ago 15.1 MB
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">docker/ucp-compose 2.1.4 25775e989077 3 weeks ago 32.9 MB
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">docker/ucp-auth-store 2.1.4 f27ad13dee6c 3 weeks ago 58.7 MB
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">docker/ucp-agent 2.1.4 d716a096c331 3 weeks ago 22.5 MB
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">docker/ucp-auth 2.1.4 1f4739cd3c08 3 weeks ago 25.1 MB
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">[root@ucp-master ~]#
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>安装UCP的命令参考如下：&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;span class="lnt">4
+&lt;/span>&lt;span class="lnt">5
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-gdscript3" data-lang="gdscript3">&lt;span class="line">&lt;span class="cl">&lt;span class="n">docker&lt;/span> &lt;span class="n">run&lt;/span> &lt;span class="o">--&lt;/span>&lt;span class="n">rm&lt;/span> &lt;span class="o">-&lt;/span>&lt;span class="n">it&lt;/span> &lt;span class="o">--&lt;/span>&lt;span class="n">name&lt;/span> &lt;span class="n">ucp&lt;/span> \
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="o">-&lt;/span>&lt;span class="n">v&lt;/span> &lt;span class="o">/&lt;/span>&lt;span class="k">var&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">run&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">docker&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">sock&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="k">var&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">run&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">docker&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">sock&lt;/span> \
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">docker&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">ucp&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="mf">2.1&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="mi">4&lt;/span> &lt;span class="n">install&lt;/span> \
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="o">--&lt;/span>&lt;span class="n">host&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">address&lt;/span> &lt;span class="mf">10.68&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="mf">69.12&lt;/span> \
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="o">--&lt;/span>&lt;span class="n">interactive&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>以上命令中10.68.69.12是UCP主机的ip地址，建议UCP使用固定IP。以上命令完毕后用浏览器访问这个IP。&lt;/p>
+&lt;p>参考以下文档，完成UCP的安装步骤，其中需要到Docker网站获得30天的试用版许可证文件。&lt;/p>
+&lt;p>&lt;a class="link" href="https://docs.docker.com/datacenter/ucp/2.1/guides/admin/install/" target="_blank" rel="noopener"
+>https://docs.docker.com/datacenter/ucp/2.1/guides/admin/install/&lt;/a>&lt;/p>
+&lt;p>能够正常登陆访问UCP之后，在首页下方点击 【Add Node】按钮，获得加其它节点到群集里的命令，参考命令如下：&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">docker swarm join \
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> --token SWMTKN-1-1310ah7gzj9e7bk6a5yobo2qyiwf93ybrd29flkved1zqydd6i-7pir0884sag5pjofwzjq5o1um \
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> 10.68.69.12:2377
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>把以上命令记录在写字板中备用。&lt;/p>
+&lt;h2 id="加3个节点到群集里">加3个节点到群集里
+&lt;/h2>&lt;p>把剩下的三个虚拟机开机，进入操作系统后设定主机名和IP。其中的一个安装DTR（Docker镜像仓库）的节点建议使用固定IP。&lt;/p>
+&lt;p>在每个操作系统里面用docker命令确认DVP是否正常。&lt;/p>
+&lt;ul>
+&lt;li>docker plugin ls&lt;/li>
+&lt;li>docker volume ls&lt;/li>
+&lt;li>systemctl status iscsid&lt;/li>
+&lt;/ul>
+&lt;p>下面就可以把上一步所记录命令在命令行里面执行以下，完毕之后回到UCP的界面中查看是否它们已经添加成功。如下图所示：
+&lt;img src="https://martinliu.cn/images/Screen%20Shot%202017-06-20%20at%209.49.32%20PM.png"
+loading="lazy"
+alt="Screen Shot 2017-06-20 at 9.49.32 P"
+>&lt;/p>
+&lt;h2 id="安装dtr-docker镜像仓库">安装DTR-Docker镜像仓库
+&lt;/h2>&lt;p>在UCP首页的下方，找到并点击 【Install DTR】的按钮，取得安装命令（记得从清单中选择固定IP地址的DTR主机）；在登录DTR主机的控制台里面输入这个命令，命令如下：&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;span class="lnt">4
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">docker run -it --rm \
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> docker/dtr:2.2.5 install \
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> --ucp-node 10.68.69.12 \
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> --ucp-insecure-tls
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>DTR节点没有离线安装的整合包，它需要联网下载很多相关镜像，如果网络速度不是很快的话，下载和安装的过程需要至少半个小时，过程中还需要输入UCP的管理员，用户名和密码。&lt;/p>
+&lt;p>参考文档如：
+&lt;a class="link" href="https://docs.docker.com/datacenter/dtr/2.2/guides/admin/install/#step-3-install-dtr" target="_blank" rel="noopener"
+>https://docs.docker.com/datacenter/dtr/2.2/guides/admin/install/#step-3-install-dtr&lt;/a>&lt;/p>
+&lt;p>DTR正常工作了以后，登录建立一个名为owncloud的镜像库，点击【New Rrepository】输入owncloud。
+在一个节点上下载owncloud镜像，添加新的tag，上传到这个镜像到镜像库里备用。参考命令如下：&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;span class="lnt">4
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">docker login dtr.zenlab.local
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">docker pull owncloud
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">docker tag owncloud:latest dtr.zenlab.local/admin/owncloud:latest
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">docker push dtr.zenlab.local/admin/owncloud:latest
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>&lt;img src="https://martinliu.cn/images/Screen%20Shot%202017-06-20%20at%2010.10.13%20PM.png"
+loading="lazy"
+alt="Screen Shot 2017-06-20 at 10.10.13 P"
+>&lt;/p>
+&lt;p>注意：如果你的环境中没有DNS，就把dtr.zenlab.local换成DTR的IP地址。&lt;/p>
+&lt;p>以上这个步骤主要是方便以后，反复使用和测试这个镜像的可能性，如果所有的节点都有高速的互联网链接，可以忽略以上步骤。&lt;/p>
+&lt;h2 id="docker-swarm群集中使用dvp">Docker Swarm群集中使用DVP
+&lt;/h2>&lt;p>这里使用UCP的图形化界面，在一个所有节点都配置和部署了VDP的群集上，给群集挂载外部Nutanix的数据卷。&lt;/p>
+&lt;p>登录UCP主页，点击Resource，点击Volumes，点击 【Create Volume】，输入相关参数，如下图所示。图中的sizeMb=500000这个参数是制定VolumeGroup的大小，不设定这个参数的话，默认是10GB。
+&lt;img src="https://martinliu.cn/images/Screen%20Shot%202017-06-21%20at%2012.22.24%20AM.png"
+loading="lazy"
+alt="Screen Shot 2017-06-21 at 12.22.24 A"
+>&lt;/p>
+&lt;p>在到Nutanix的Prism里面查看这个Volume Group是否存在。应该如下图所示：&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/images/Screen%20Shot%202017-06-21%20at%2012.23.32%20AM.png"
+loading="lazy"
+alt="Screen Shot 2017-06-21 at 12.23.32 A"
+>&lt;/p>
+&lt;h2 id="部署owncloud网盘服务">部署OwnCloud网盘服务
+&lt;/h2>&lt;p>登录UCP主页，点击 Service ， 点击 【Create a Service】按钮；开始建立这个服务。输入服务名，镜像名；点击 【Next】按钮。&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/images/Screen%20Shot%202017-06-20%20at%2010.49.10%20PM.png"
+loading="lazy"
+alt="Screen Shot 2017-06-20 at 10.49.10 P"
+>&lt;/p>
+&lt;p>点击 【Next】按钮。进入 Resource页面，这里需要配置端口和数据卷。
+&lt;img src="https://martinliu.cn/images/Screen%20Shot%202017-06-20%20at%2010.49.35%20PM.png"
+loading="lazy"
+alt="Screen Shot 2017-06-20 at 10.49.35 P"
+>&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/images/Screen%20Shot%202017-06-20%20at%2010.49.58%20PM.png"
+loading="lazy"
+alt="Screen Shot 2017-06-20 at 10.49.58 P"
+>&lt;/p>
+&lt;p>最后点击【Deploy Now】按钮。 部署完毕之后，显示这个服务的状态为正常。
+&lt;img src="https://martinliu.cn/images/Screen%20Shot%202017-06-21%20at%2012.25.51%20AM.png"
+loading="lazy"
+alt="Screen Shot 2017-06-21 at 12.25.51 A"
+>&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/images/Screen%20Shot%202017-06-20%20at%2010.52.28%20PM.png"
+loading="lazy"
+alt="Screen Shot 2017-06-20 at 10.52.28 P"
+>&lt;/p>
+&lt;p>点击这个服务，到这个页面的最下方，找到右下角的发布端口的链接，点击后，就可以看到ownCloud的初始化配置页面了。
+&lt;img src="https://martinliu.cn/images/Screen%20Shot%202017-06-20%20at%2010.53.24%20PM.png"
+loading="lazy"
+alt="Screen Shot 2017-06-20 at 10.53.24 P"
+>&lt;/p>
+&lt;p>输入管理员的用户名和密码，进入之后，上传一些图片，测试一下功能是否正常。&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/images/Screen%20Shot%202017-06-20%20at%2010.54.06%20PM.png"
+loading="lazy"
+alt="Screen Shot 2017-06-20 at 10.54.06 P"
+>&lt;/p>
+&lt;p>尝试一些Docker Datacenter的高级功能，如服务的高可用性；同时Nutanix的DVP在底层保障了数据的持久性和完全性。测试步骤如下：&lt;/p>
+&lt;ol>
+&lt;li>找到运行owncloud的容器，删除这个容器&lt;/li>
+&lt;li>在服务页面查看owncloud服务的状态变化&lt;/li>
+&lt;li>等ownCloud的状态恢复正常之后&lt;/li>
+&lt;li>再次登录ownCloud页面&lt;/li>
+&lt;li>查看和确认刚才上传的文件是否还在&lt;/li>
+&lt;/ol>
+&lt;h2 id="总结">总结
+&lt;/h2>&lt;p>Nutanix是一种融合和了计算、存储和虚拟化（内置KVM）的超融合平台。Nutanix DVP (Docker Volume Plug-in)可以让平台里的容器用上持久化存储服务。DVP不仅可以给单独虚拟机里的容器提供持久卷服务，还能给类似于Docker Swarm的其它容器编排平台提供持久化数据服务功能。我后续的文章还会分享路测试Kubernetes等其它平台。&lt;/p></description></item><item><title>互联网规模的超融合平台</title><link>https://martinliu.cn/blog/nu-school-converged-platform/</link><pubDate>Mon, 20 Feb 2017 00:00:00 +0000</pubDate><guid>https://martinliu.cn/blog/nu-school-converged-platform/</guid><description>&lt;img src="https://martinliu.cn/images/abstract-3.jpg" alt="Featured image of post 互联网规模的超融合平台" />&lt;p>nu.shool 牛学院系列以视频加文字的形式，向您展示Nutanix云平台的技术特性和细节。&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/images/Tech_TopX-_Converged_Platform_mp4.png"
+loading="lazy"
+alt="Converged_Platform"
+>&lt;/p>
+&lt;p>本期视频是由《Nutanix圣经》的作者Steven Poitras，向您介绍Nutanix超融合系统架构。&lt;/p>
+&lt;!-- raw HTML omitted -->
+&lt;p>&lt;img src="https://martinliu.cn/images/bible-top.png"
+loading="lazy"
+alt="bible"
+>&lt;/p>
+&lt;p>《Nutanix圣经》章节推荐。&lt;/p></description></item><item><title>Nutanix AHV（KVM）Windows虚拟机安装全攻略</title><link>https://martinliu.cn/blog/install-vms-on-nutanix/</link><pubDate>Sun, 29 Jan 2017 00:00:00 +0000</pubDate><guid>https://martinliu.cn/blog/install-vms-on-nutanix/</guid><description>&lt;img src="https://martinliu.cn/images/abstract-5.jpg" alt="Featured image of post Nutanix AHV（KVM）Windows虚拟机安装全攻略" />&lt;h1 id="nutanix-ahvkvmwindows虚拟机安装全攻略">Nutanix AHV（KVM）Windows虚拟机安装全攻略
+&lt;/h1>&lt;h2 id="windows-虚拟机安装">Windows 虚拟机安装
+&lt;/h2>&lt;p>Nutanix的AHV虚拟机是基于KVM的。本文件假设您使用和安装的是Nutanix社区版本的群集。在上面安装Windows虚拟机的步骤如下：&lt;/p>
+&lt;ol>
+&lt;li>下载操作系统安装光盘&lt;/li>
+&lt;li>上传操作系统安装光盘到Nutanix群集 （安装Windows虚拟机需要 Fedora virtio 驱动）&lt;/li>
+&lt;li>新建和配置虚拟机&lt;/li>
+&lt;li>安装OS&lt;/li>
+&lt;li>安装Nutanix Guest Tools （NGT）&lt;/li>
+&lt;/ol>
+&lt;p>下面用安装Windows 10举例，说明详细的安装步骤。&lt;/p>
+&lt;h2 id="第一步下载操作系统-iso">第一步：下载操作系统 ISO
+&lt;/h2>&lt;p>如果你需要下载 Ubuntu Desktop &lt;a class="link" href="https://www.ubuntu.com/desktop" target="_blank" rel="noopener"
+>点这里&lt;/a>。&lt;/p>
+&lt;p>从微软的TechNet Evaluation Center下载 &lt;a class="link" href="https://www.microsoft.com/en-us/evalcenter/" target="_blank" rel="noopener"
+>Microsoft ISO&lt;/a> 注意，评估的服务器版只能使用180天，桌面版能使用90天。&lt;/p>
+&lt;h2 id="第二步上传iso文件到nutanix群集">第二步：上传ISO文件到Nutanix群集
+&lt;/h2>&lt;p>Nutanix群集上提供了镜像服务，可以存储几种格式的镜像：ISO格式的操作系统安装镜像，虚拟机的磁盘(如KVM格式等)。这些镜像文件可以被虚拟机通过挂载CD-ROM设备使用，或者直接克隆出虚拟机的磁盘。操作步骤如下。&lt;/p>
+&lt;p>点击右上角的齿轮图标，选择image configuration
+&lt;img src="https://martinliu.cn/images/14857476024029.jpg"
+loading="lazy"
+>&lt;/p>
+&lt;p>点击 upload image按钮&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/images/14857476555578.jpg"
+loading="lazy"
+>&lt;/p>
+&lt;p>界面字段解释：&lt;/p>
+&lt;ul>
+&lt;li>Name: 镜像文件的名字（用ISO来与磁盘镜像区分一下）&lt;/li>
+&lt;li>Image Type: 选择 ISO&lt;/li>
+&lt;li>Container: 选择用来存储ISO文件的容器&lt;/li>
+&lt;li>Image Source: 选择上传文件作为镜像来源&lt;/li>
+&lt;li>Save: 点击Save按钮可以看到上传的进度条。&lt;/li>
+&lt;/ul>
+&lt;p>&lt;img src="https://martinliu.cn/images/14857477053373.jpg"
+loading="lazy"
+>&lt;/p>
+&lt;p>在上传成功之后，镜像清单中显示刚才的镜像为 Active 状态。&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/images/14857479049693.jpg"
+loading="lazy"
+>&lt;/p>
+&lt;p>由于Nutanix的hypervisor是基于Linux KVM技术，它需要附加的Windows驱动，需要下载 Fedora Windows virtio 驱动。 下载地址如下：&lt;/p>
+&lt;p>&lt;a class="link" href="https://fedoraproject.org/wiki/Windows_Virtio_Drivers" target="_blank" rel="noopener"
+>https://fedoraproject.org/wiki/Windows_Virtio_Drivers&lt;/a>&lt;/p>
+&lt;p>点击第三条 Direct download&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/images/14857480805485.jpg"
+loading="lazy"
+>&lt;/p>
+&lt;p>点击 “Stable virtio-win iso” 下载最新的驱动 ISO 文件。&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/images/14857481167991.jpg"
+loading="lazy"
+>&lt;/p>
+&lt;p>下载到的文件名如：virtio-win-0.1.126.iso；重复上述Windows IOS文件上传的步骤，把这个文件上传到镜像服务中。&lt;/p>
+&lt;p>Fedora 的开源版 VirtIO驱动和Nutanix的版本稍微有些不同。Nutanix的 VirtioIO驱动是经过数字签名的，能从Nutanix客户门户下载。由于Nutanix CE社区版是提供给所有人做体验测试的，因此这里使用的是开源版本的VirtioIO驱动，而不是Nutanix的官方版本的驱动。&lt;/p>
+&lt;h2 id="第三步创建和配置虚拟机">第三步：创建和配置虚拟机
+&lt;/h2>&lt;p>我们已经准备好了Windows 10 ISO文件和 Fedora VirtIO驱动IOS文件，现在可以安装虚拟机了。步骤如下：&lt;/p>
+&lt;p>点击 Home&amp;ndash;VM&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/images/14857485236059.jpg"
+loading="lazy"
+>&lt;/p>
+&lt;p>点击右侧的 Create VM 按钮。&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/images/14857485706681.jpg"
+loading="lazy"
+>&lt;/p>
+&lt;p>在下面的页面中输入虚拟机的配置。&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/images/14857486182975.jpg"
+loading="lazy"
+>
+&lt;img src="https://martinliu.cn/images/14857486277811.jpg"
+loading="lazy"
+>&lt;/p>
+&lt;p>主要配置介绍如下：
+&lt;img src="https://martinliu.cn/images/14857486605678.jpg"
+loading="lazy"
+>&lt;/p>
+&lt;ul>
+&lt;li>Name: Win10Desktop 虚拟机的名称&lt;/li>
+&lt;li>vCPUs: 2 两颗虚拟CPU&lt;/li>
+&lt;li>Number of Cores per vCPU: 1&lt;/li>
+&lt;li>Memory: 2GB (只是做测试的话，2GB可以了)&lt;/li>
+&lt;/ul>
+&lt;p>下面添加用于虚拟机挂载Windows 10 安装盘的 CDROM设备。删除默认的CDROM设备。
+&lt;img src="https://martinliu.cn/images/14857489095951.jpg"
+loading="lazy"
+>&lt;/p>
+&lt;p>由于偶尔安装Windows 10的时候默认的CDROM驱动器中Fedora Virtio驱动会显示不出来，因此删除默认的CDROM设备。&lt;/p>
+&lt;p>添加vm系统安装的磁盘。点击添加磁盘，输入如下实例信息，得到一块40GB的SCSI磁盘用来安装Window 10操作系统。&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/images/14857490738212.jpg"
+loading="lazy"
+>&lt;/p>
+&lt;p>添加一个新的CDROM驱动盘，用来挂载 Windows 10 的ISO镜像文件，如下图所示。&lt;/p>
+&lt;ul>
+&lt;li>Type: CDROM 类型&lt;/li>
+&lt;li>Operation: Clone from Image Service&lt;/li>
+&lt;li>Bus Type: IDE 类型的应该是默认类型&lt;/li>
+&lt;li>Image: 选择刚才上传的 Win10ISO&lt;/li>
+&lt;/ul>
+&lt;p>&lt;img src="https://martinliu.cn/images/14857492195172.jpg"
+loading="lazy"
+>&lt;/p>
+&lt;p>添加一个新的CDROM设备，用来挂载 Fedora Virtio驱动IOS文件，如下图所示。&lt;/p>
+&lt;ul>
+&lt;li>Type: CDROM 类型&lt;/li>
+&lt;li>Operation: Clone from Image Service&lt;/li>
+&lt;li>Bus Type: IDE&lt;/li>
+&lt;li>Image: 选择 FedoraVirtISO&lt;/li>
+&lt;/ul>
+&lt;p>配置完成之后的磁盘配置布局如下。&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/images/14857493954380.jpg"
+loading="lazy"
+>&lt;/p>
+&lt;p>现在来添加网卡，点击下面的按钮。&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/images/14857494220235.jpg"
+loading="lazy"
+>&lt;/p>
+&lt;p>使用默认的ID为0的网络，如下图所示。（此VLAN时之前建立好的）&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/images/14857494722709.jpg"
+loading="lazy"
+>&lt;/p>
+&lt;p>现在所有配置都已经完成，点击 Save 保存按钮。&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/images/14857495029831.jpg"
+loading="lazy"
+>&lt;/p>
+&lt;p>页面的状态栏会出现一个绿色的执行的提示，表示后天虚拟机正在创建中。&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/images/14857495959115.jpg"
+loading="lazy"
+>&lt;/p>
+&lt;h2 id="第四步运行并安装虚拟机">第四步：运行并安装虚拟机
+&lt;/h2>&lt;p>做如下操作来开启并运行虚拟机，进入Windows操作系统的安装过程。&lt;/p>
+&lt;ol>
+&lt;li>点击到 VM 视图&lt;/li>
+&lt;li>点击 Table&lt;/li>
+&lt;li>点击 Win10Desktop VM 刚才创建的虚拟机&lt;/li>
+&lt;li>点击 Power on&lt;/li>
+&lt;li>当 VM 启动了, 点击 Launch Console 进入控制台页面。&lt;/li>
+&lt;/ol>
+&lt;p>&lt;img src="https://martinliu.cn/images/14857496408859.jpg"
+loading="lazy"
+>&lt;/p>
+&lt;p>在Windows安装的界面，选择Custom ：高级安装选项。&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/images/14857499695677.jpg"
+loading="lazy"
+>&lt;/p>
+&lt;p>由于我们使用的 AHV 是KVM虚拟化，所以需要加载Virtio驱动。点击 Load Driver 按钮。&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/images/14857502423986.jpg"
+loading="lazy"
+>&lt;/p>
+&lt;p>点击 Browse 浏览。&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/images/14857502795932.jpg"
+loading="lazy"
+>&lt;/p>
+&lt;p>点击并浏览驱动器 E： （这是之前我们挂载 Fedora Virtio ISO文件的CDROM）&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/images/14857503335113.jpg"
+loading="lazy"
+>&lt;/p>
+&lt;p>浏览驱动盘到目录 vioscsi&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/images/14857504369501.jpg"
+loading="lazy"
+>&lt;/p>
+&lt;p>选择 w10 目录&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/images/14857504579467.jpg"
+loading="lazy"
+>&lt;/p>
+&lt;p>选择 amd64 目录，点击 ok&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/images/14857504816806.jpg"
+loading="lazy"
+>&lt;/p>
+&lt;p>选择所显示出来的 Red Hat VirtIO SCSI 驱动，点击 Next&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/images/14857505411190.jpg"
+loading="lazy"
+>&lt;/p>
+&lt;p>这样刚才创建的 40GB的磁盘就可以看到了，选择 Next&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/images/14857506028586.jpg"
+loading="lazy"
+>&lt;/p>
+&lt;p>点击了 Next 按钮之后， Windows 10 开始安装，这个过程大约是3~10分钟不等。最后就到了Windows的账户创建的环节。虽然现在Windows已经安装完成了，还需要进入Windows的设备管理器中查看一下，设备的状态。&lt;/p>
+&lt;ul>
+&lt;li>右击Windows的图标&lt;/li>
+&lt;li>选择 Device Manager&lt;/li>
+&lt;/ul>
+&lt;p>&lt;img src="https://martinliu.cn/images/14858815713785.jpg"
+loading="lazy"
+>&lt;/p>
+&lt;p>在设备官开启中，我们需要更新一下网卡设备的驱动。&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/images/14858816384447.jpg"
+loading="lazy"
+>&lt;/p>
+&lt;p>右击网卡设备，选择 Update Driver Software&amp;hellip;&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/images/14858816757065.jpg"
+loading="lazy"
+>&lt;/p>
+&lt;p>点击 Browse，选择当前的 virtio-win-0.11 ，也就是 Fedora VirtIO 驱动的光驱设备，点击 Next&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/images/14858817470182.jpg"
+loading="lazy"
+>&lt;/p>
+&lt;p>选中了合适的目录后，网卡设备的驱动安装正常了显示如下：&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/images/14858818602337.jpg"
+loading="lazy"
+>&lt;/p>
+&lt;p>到目前为止，我们的Windows 10 虚拟机安装完毕了。&lt;/p>
+&lt;h2 id="第五步-安装nutanix-guest-tools-ngt">第五步： 安装Nutanix Guest Tools （NGT）
+&lt;/h2>&lt;p>Nutanix Guest Tools 可以实现自服务恢复和应用一致性快照功能，它需要Microsoft Volume Shadow Copy Services (VSS)服务的配合。下面来安装它。&lt;/p>
+&lt;ol>
+&lt;li>进入虚拟机的清单视图&lt;/li>
+&lt;li>点击 Table&lt;/li>
+&lt;li>点击选中刚才安装的Windows 10 虚拟机&lt;/li>
+&lt;li>点击 Enable NGT （这个操作需要有一个空闲的CDROM设备，可以点击虚拟机的编辑，把之前的两个光驱中挂载的ISO盘退出一个）&lt;/li>
+&lt;li>在后续的窗口中点击 Yes&lt;/li>
+&lt;/ol>
+&lt;p>&lt;img src="https://martinliu.cn/images/14858821642374.jpg"
+loading="lazy"
+>&lt;/p>
+&lt;p>在网页上成功启用了NGT之后，进入Windows 10桌面的控制台页面。打开Windows的资源管理器，双击带有Nutanix图标的CDROM设备，进入该设备安装NGT软件。&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/images/14858823586478.jpg"
+loading="lazy"
+>&lt;/p>
+&lt;p>点击 Install 按钮。&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/images/14858823893756.jpg"
+loading="lazy"
+>&lt;/p>
+&lt;p>跟随安装向导完成NGT的安装。安装完成之后，在Windows10中关机，在网页上编辑这个虚拟机的配置，删除多余的CDROM设备，之后在开机。至此Windows10虚拟机的安装过程全部完毕。&lt;/p>
+&lt;p>扩展阅读：&lt;a class="link" href="http://martinliu.cn/2017/01/10/clone-ahv-vm-template/" target="_blank" rel="noopener"
+>Nutanix AHV 虚拟机模板制作&lt;/a>&lt;/p></description></item><item><title>Nutanix AHV 虚拟机模板制作</title><link>https://martinliu.cn/blog/clone-ahv-vm-template/</link><pubDate>Tue, 10 Jan 2017 00:00:00 +0000</pubDate><guid>https://martinliu.cn/blog/clone-ahv-vm-template/</guid><description>&lt;img src="https://martinliu.cn/images/abstract-10.jpg" alt="Featured image of post Nutanix AHV 虚拟机模板制作" />&lt;p>本文描述了AHV虚拟化的虚拟机模板的制作过程。首先使用ssh登录cvm，进入acropolis命令行。&lt;/p>
+&lt;h2 id="找出模板对应的虚拟机">找出模板对应的虚拟机
+&lt;/h2>&lt;p>使用 vm.disk_get 命令，按多次tab，显示虚拟机清单，复制模板机名称&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;span class="lnt">14
+&lt;/span>&lt;span class="lnt">15
+&lt;/span>&lt;span class="lnt">16
+&lt;/span>&lt;span class="lnt">17
+&lt;/span>&lt;span class="lnt">18
+&lt;/span>&lt;span class="lnt">19
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">&amp;lt;acropolis&amp;gt; vm.disk_get vm-fedora25
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">ide.0 {
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> addr {
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> bus: &amp;#34;ide&amp;#34;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> index: 0
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> }
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> cdrom: True
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> empty: True
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">}
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">scsi.0 {
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> addr {
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> bus: &amp;#34;scsi&amp;#34;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> index: 0
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> }
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> container_id: 4427
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> container_uuid: &amp;#34;9279ba2c-8e8d-4aea-b00f-410df5a18a23&amp;#34;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> vmdisk_size: 10737418240
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> vmdisk_uuid: &amp;#34;7476458e-7917-4df8-b830-a0df5a95dae9&amp;#34;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">}
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;h2 id="创建模板镜像">创建模板镜像
+&lt;/h2>&lt;p>使用从虚拟机磁盘克隆出镜像的命令。&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&amp;lt;acropolis&amp;gt; image.create fedora25-Template clone_from_vmdisk=7476458e-7917-4df8-b830-a0df5a95dae9 image_type=kDiskImage annotation=&amp;#39;Fedora 25 Server Template&amp;#39;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">fedora25-Template: complete
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;h2 id="模板测试">模板测试
+&lt;/h2>&lt;p>登录Prism界面，点击镜像服务，确认清单中刚才创建的虚拟机模板镜像；进入vm页面，创建虚拟机，使用 fedora25-Template 镜像做磁盘&lt;/p></description></item><item><title>Nutanix资源站点清单</title><link>https://martinliu.cn/blog/nutanix-resource-sites/</link><pubDate>Sat, 07 Jan 2017 00:00:00 +0000</pubDate><guid>https://martinliu.cn/blog/nutanix-resource-sites/</guid><description>&lt;img src="https://martinliu.cn/images/google-earth-view-6043.jpg" alt="Featured image of post Nutanix资源站点清单" />&lt;p>做Nutanix的那些不可不知道的资源网站，这里列出了常用的官方和非官方网站。&lt;/p>
+&lt;h2 id="nutanix-官方站点">Nutanix 官方站点
+&lt;/h2>&lt;h3 id="httpportalnutanixcom">&lt;a class="link" href="http://portal.nutanix.com/" target="_blank" rel="noopener"
+>http://portal.nutanix.com/&lt;/a>
+&lt;/h3>&lt;p>&lt;a class="link" href="http://portal.nutanix.com/" target="_blank" rel="noopener"
+>http://portal.nutanix.com/&lt;/a>&lt;/p>
+&lt;ul>
+&lt;li>在线文档&lt;/li>
+&lt;li>在线技术支持，case查看和操作&lt;/li>
+&lt;li>产品和补丁下载&lt;/li>
+&lt;/ul>
+&lt;h3 id="httpsnextnutanixcom">&lt;a class="link" href="https://next.nutanix.com/" target="_blank" rel="noopener"
+>https://next.nutanix.com/&lt;/a>
+&lt;/h3>&lt;p>&lt;a class="link" href="https://next.nutanix.com/" target="_blank" rel="noopener"
+>https://next.nutanix.com/&lt;/a>&lt;/p>
+&lt;ul>
+&lt;li>产品网上论坛和社区&lt;/li>
+&lt;li>社区版论坛&lt;/li>
+&lt;li>博客， Nutanix Connect Blog&lt;/li>
+&lt;/ul>
+&lt;h2 id="技术达人网站和博客">技术达人网站和博客
+&lt;/h2>&lt;h3 id="myvirtualcloudnet-by-andre-leibovici">myvirtualcloud.net by Andre Leibovici
+&lt;/h3>&lt;p>&lt;a class="link" href="http://myvirtualcloud.net/nutanix/" target="_blank" rel="noopener"
+>http://myvirtualcloud.net/nutanix/&lt;/a>&lt;/p>
+&lt;h3 id="virtual-life-style-by-joep-piscaer">Virtual life style by Joep Piscaer
+&lt;/h3>&lt;p>&lt;a class="link" href="https://www.virtuallifestyle.nl/" target="_blank" rel="noopener"
+>https://www.virtuallifestyle.nl/&lt;/a>&lt;/p>
+&lt;h3 id="the-nutanix-bible-by-steven-poitras">The Nutanix Bible by Steven Poitras
+&lt;/h3>&lt;p>&lt;a class="link" href="http://nutanixbible.com/" target="_blank" rel="noopener"
+>http://nutanixbible.com/&lt;/a>&lt;/p>
+&lt;h3 id="marks-blog-by-mark-lavi">Mark&amp;rsquo;s Blog by Mark Lavi
+&lt;/h3>&lt;p>&lt;a class="link" href="http://mlavi.github.io/" target="_blank" rel="noopener"
+>http://mlavi.github.io/&lt;/a>&lt;/p>
+&lt;h3 id="jeremy-sallee----nutanix-uifrontend-设计师">Jeremy Sallee - Nutanix UI/Frontend 设计师
+&lt;/h3>&lt;p>&lt;a class="link" href="http://salleedesign.com/stuff/sdwip/home/" target="_blank" rel="noopener"
+>http://salleedesign.com/stuff/sdwip/home/&lt;/a>&lt;/p>
+&lt;p>想知道Prism是怎么设计出来的：&lt;a class="link" href="http://salleedesign.com/stuff/sdwip/blog/nutanix-case-study/" target="_blank" rel="noopener"
+>点这里&lt;/a>&lt;/p>
+&lt;h3 id="virtual-dennis-by-dennis-laube">Virtual Dennis by Dennis Laube
+&lt;/h3>&lt;p>&lt;a class="link" href="http://www.virtualdennis.com/category/nutanix/" target="_blank" rel="noopener"
+>http://www.virtualdennis.com/category/nutanix/&lt;/a>&lt;/p>
+&lt;ul>
+&lt;li>&lt;a class="link" href="http://www.virtualdennis.com/importing-an-ovf-ova-into-nutanix-ahv-using-prism/" target="_blank" rel="noopener"
+>如何ova格式的虚拟机导入Nutanix AHV&lt;/a> 镜像服务能够支持Web界面上传导入的格式包括：raw, vhd, vmdk, vdi, iso 和 qcow2 磁盘，导入为Disk后，即可用做模板&lt;/li>
+&lt;li>&lt;a class="link" href="http://www.virtualdennis.com/nutanix-acropolis-hypervisor-ahv-create-an-image-service-template-from-an-existing-vm/" target="_blank" rel="noopener"
+>如何在Nutanix中制作AHV虚拟机模板&lt;/a> 使用acli命令：vm.disk_get；image.create W2K12R2-Template clone_from_vmdisk=69df5abd-6570-4ce1-ba77-2d117c3df7e5 image_type=kDiskImage&lt;/li>
+&lt;li>&lt;/li>
+&lt;/ul>
+&lt;h2 id="其他资源">其他资源
+&lt;/h2>&lt;h3 id="nutanix-viso-图标下载">Nutanix viso 图标下载
+&lt;/h3>&lt;p>&lt;a class="link" href="http://www.visiocafe.com/nutanix.htm" target="_blank" rel="noopener"
+>http://www.visiocafe.com/nutanix.htm&lt;/a>&lt;/p></description></item><item><title>云计算时代的终结</title><link>https://martinliu.cn/2017/01/05/The-End-of-Cloud-Computing/</link><pubDate>Thu, 05 Jan 2017 00:00:00 +0000</pubDate><guid>https://martinliu.cn/2017/01/05/The-End-of-Cloud-Computing/</guid><description>&lt;img src="https://martinliu.cn/images/MacawFlight_ROW10435257143_1920x1080.jpg" alt="Featured image of post 云计算时代的终结" />&lt;p>天下事分久必合，合久必分，移动互联网代表了现在的云计算时代，很多企业还正在朝这个方向发展呢！革命还没有成功，怎么这个时代就要结束了。来听听XenSource前CEO怎么给你解读边缘计算时代的到来。&lt;/p>
+&lt;p>“I’m going to take you out to the edge to show you what the future looks like.” So begins a16z partner Peter Levine as he takes us on a “crazy” tour of the history and future of cloud computing — from the constant turns between centralized to distributed computing, and even to his “Forrest Gump rule” of investing in these shifts.&lt;/p>
+&lt;p>But… how can we say cloud computing is coming to an “end” when it hasn’t even really started yet?? Because the edge — where self-driving cars and drones are really data centers with wheels or wings — is where it’s at. So where does machine learning in the enterprise come in? How does this change IT? As software programs the world, these are some of the shifts to look at…&lt;/p>
+&lt;h2 id="视频在这里">视频在这里
+&lt;/h2>&lt;p>在线观看。&lt;/p>
+&lt;!-- raw HTML omitted --></description></item><item><title>Nutanix AOS 5.0 新版本新特性</title><link>https://martinliu.cn/2017/01/04/Nutanix-AOS-5.0/</link><pubDate>Wed, 04 Jan 2017 00:00:00 +0000</pubDate><guid>https://martinliu.cn/2017/01/04/Nutanix-AOS-5.0/</guid><description>&lt;img src="https://martinliu.cn/images/RoyalBarge_ROW9071716647_1920x1080.jpg" alt="Featured image of post Nutanix AOS 5.0 新版本新特性" />&lt;p>Nutanix AOS 5.0 是一个很重要的功能更新大版本，它一气儿带来了46项之多的新功能；在您安装或者测试这个版本&amp;gt; 之前，先通过本文快速了解一下这些更新，可能是更加节省时间的方法。&lt;/p>
+&lt;h2 id="主要功能清单">主要功能清单
+&lt;/h2>&lt;p>myvirtualcloud.net网站用了4个blog，讲了下面的36项新特性：&lt;/p>
+&lt;ol>
+&lt;li>Cisco UCS B-Series Blade Servers Support&lt;/li>
+&lt;li>Acropolis Affinity and Anti-affinity&lt;/li>
+&lt;li>Acropolis Dynamic Scheduling (DRS++)&lt;/li>
+&lt;li>REST API 2.0 and 3.0&lt;/li>
+&lt;li>Support for XenServer TechPreview&lt;/li>
+&lt;li>Network Visualization&lt;/li>
+&lt;li>What-if analysis for New workloads and Allocation-based forecasting&lt;/li>
+&lt;li>Native Self-Service Portal&lt;/li>
+&lt;li>Snapshots – Self Service Restore UI&lt;/li>
+&lt;li>Network Partner Integration Framework&lt;/li>
+&lt;li>Metro Availability Witness&lt;/li>
+&lt;li>VM Flash Mode Improvements&lt;/li>
+&lt;li>Acropolis File Services GA (ESXi and AHV)&lt;/li>
+&lt;li>Acropolis Block Services (CHAP authentication)&lt;/li>
+&lt;li>Oracle VM and Oracle Linux Certified for AHV&lt;/li>
+&lt;li>SAP Netweaver stack Certified for AHV&lt;/li>
+&lt;li>Prism Search Improvements (support for Boolean expressions)&lt;/li>
+&lt;li>I/O Metrics Visualization&lt;/li>
+&lt;li>1-Click Licensing&lt;/li>
+&lt;li>LCM – Lifecycle Manager&lt;/li>
+&lt;li>Additional Prism Improvements&lt;/li>
+&lt;li>AHV Scale Improvements&lt;/li>
+&lt;li>AHV CPU and Memory Hot Add (Tech Preview)&lt;/li>
+&lt;li>Advanced Compression for Cold Data&lt;/li>
+&lt;li>Acropolis Change Block Tracking (CBT) for Backup Vendors&lt;/li>
+&lt;li>Predictable Performance with Autonomic QoS&lt;/li>
+&lt;li>NCC 3.0 with Prism Integration&lt;/li>
+&lt;li>1-Node Replication Target&lt;/li>
+&lt;li>Improved Mixed Workload Support with QoS&lt;/li>
+&lt;li>Simplified SATADOM Replacement Workflow&lt;/li>
+&lt;li>Mixed Node Support with Adaptive Replica Selection&lt;/li>
+&lt;li>Dynamically Decreased Erasure Coding Stripes – Node Removals&lt;/li>
+&lt;li>Multi Metadata Disk Support for use available SSDs on the node for metadata&lt;/li>
+&lt;li>Erasure Coding(EC) support for changing the Replication Factor (RF) on containers&lt;/li>
+&lt;li>Inline Compression for OpLog&lt;/li>
+&lt;li>Linux Kernel Upgrade&lt;/li>
+&lt;/ol>
+&lt;ul>
+&lt;li>&lt;a class="link" href="http://myvirtualcloud.net/nutanix-5-0-features-overview-beyond-marketing-part-1/" target="_blank" rel="noopener"
+>Nutanix 5.0 Features Overview (Beyond Marketing) – Part 1&lt;/a>&lt;/li>
+&lt;li>&lt;a class="link" href="http://myvirtualcloud.net/nutanix-5-0-features-overview-beyond-marketing-part-2/" target="_blank" rel="noopener"
+>Nutanix 5.0 Features Overview (Beyond Marketing) – Part 2&lt;/a>&lt;/li>
+&lt;li>&lt;a class="link" href="http://myvirtualcloud.net/nutanix-5-0-features-overview-beyond-marketing-part-3/" target="_blank" rel="noopener"
+>Nutanix 5.0 Features Overview (Beyond Marketing) – Part 3&lt;/a>&lt;/li>
+&lt;li>&lt;a class="link" href="http://myvirtualcloud.net/nutanix-5-0-features-overview-beyond-marketing-part-4/" target="_blank" rel="noopener"
+>Nutanix 5.0 Features Overview (Beyond Marketing) – Part 4&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;h2 id="nutanix官方blog新版本介绍">Nutanix官方Blog新版本介绍
+&lt;/h2>&lt;p>Nutanix 官方Blog的新版本发布帖 &lt;a class="link" href="https://www.nutanix.com/2017/01/03/5-0-release/" target="_blank" rel="noopener"
+>The 5.0 Release is Here&lt;/a>&lt;/p>
+&lt;p>Nutanix AOS 5.0 is available now for you to download and will carry a huge payload of innovation across Acropolis – the data plane, Prism – the management plane and AHV – built-in hypervisor. Over the last couple of months we have spoken about different capabilities that will be part of this release. Before we get into details of the release, it is important to take a step back and understand how the core platform is evolving.&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/images/14835396530706.png"
+loading="lazy"
+>&lt;/p>
+&lt;ul>
+&lt;li>These services are announced but will be generally available in a subsequent product release&lt;/li>
+&lt;/ul>
+&lt;p>To deliver on the vision of Enterprise Cloud and offer public cloud-like services within the datacenter, it is important for us to provide infrastructure services similar to what the public cloud offers. Different workloads have different infrastructure needs and it is important to provide services that can be “turned-on” and “turned-off” based on applications needs – all without having to touch the underlying physical infrastructure. This is exactly what AWS does and that is what we are working towards with our Enterprise Cloud Platform as well.&lt;/p>
+&lt;p>Here is a comparison of some of these infrastructure services offered by AWS and Nutanix. The core tenets of the public cloud and the pay-as-you-grow economics are as applicable to Nutanix as it is to the public cloud.&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/images/14835397395341.png"
+loading="lazy"
+>&lt;/p>
+&lt;p>The 5.0 release adds new infrastructure services to the platform and enhances the ones that already exist; delivering greater flexibility and potential cost savings for IT organizations of all sizes. With over 45 new capabilities in the software and hundreds of feature enhancements, this release is definitely a huge milestone for us.&lt;/p>
+&lt;p>While it is impossible for us to cover all the capabilities in detail in one single blog, let me attempt to do a quick walk through of the ones we think you will love!&lt;/p>
+&lt;h3 id="acropolis--data-plane-enhancements">Acropolis – Data Plane Enhancements
+&lt;/h3>&lt;p>&lt;strong>Acropolis File Services (AFS)Generally Available:&lt;/strong> AFS is a natively built file storage service that eliminates the need for standalone NAS solutions. This capability was in Tech Preview for the past several months and is generally available with the 5.0 release. With AFS, customers can consolidate their virtual machines and the file data they rely on within the same cluster. AFS will work on ESXi and AHV hypervisors for a wide variety of use cases such as user-profiles, home directories, archives and more. You can learn more about this capability in this blog. Here is a quick summary &lt;a class="link" href="https://next.nutanix.com/t5/Nutanix-Connect-Blog/Ten-Things-you-need-to-know-about-Nutanix-Acropolis-File/ba-p/14524" target="_blank" rel="noopener"
+>blog on AFS.&lt;/a>&lt;/p>
+&lt;p>&lt;strong>Acropolis Block Services (ABS) Enhancements:&lt;/strong> ABS, like AFS, is natively built to expose storage to non-virtualized workloads. This capability was introduced in the 4.7 release. We have significantly enhanced ABS in 5.0 with support for dynamic load balancing and flash pinning for better performance, improved security through CHAP for safer client-server conversations and online resizing for higher availability. Additionally, Oracle joins the list of certified workloads on ABS. Here is a quick summary &lt;a class="link" href="http://next.nutanix.com/t5/Nutanix-Connect-Blog/Ten-Things-you-need-to-know-about-Nutanix-Acropolis-Block/ba-p/14969" target="_blank" rel="noopener"
+>blog on ABS.&lt;/a>&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/images/14835399454618.png"
+loading="lazy"
+>&lt;/p>
+&lt;p>&lt;strong>Metro Availability Witness:&lt;/strong> Metro Availability is Nutanix’s synchronous replication solution for DR. Metro Availability Witness is a light-weight service that will be able to run anywhere to enable automatic failover from one site to another without service disruption by monitoring the status of both sites.&lt;/p>
+&lt;p>&lt;strong>Compression Enhancements:&lt;/strong> The compression algorithm used for capacity optimization has significantly improved in the 5.0 release resulting in more efficient data compression. Additionally, on All-flash systems, compression will be turned on by default. With compression, deduplication, erasure coding and other native capacity optimization capabilities, customers can achieve up to 4:1 savings (depending on data type).&lt;/p>
+&lt;p>&lt;strong>Single-node Replication Target:&lt;/strong> One of the common asks from Remote and Branch office/SMB customers was to have a single-node backup/replication target for smaller deployments of Nutanix. This enables customers to use native backup capabilities and replicate data to a storage heavy node of Nutanix that can be on the same site or a different remote site. With 5.0, this is possible with the single Nutanix node having ~40TB of raw capacity and act as a destination for backup/snapshot data.&lt;/p>
+&lt;h3 id="ahv--hypervisor-enhancements">AHV – Hypervisor Enhancements
+&lt;/h3>&lt;p>AHV, the native hypervisor solution from Nutanix, continues to grow leaps and bounds with several customers standardizing on AHV for all workloads. We have continued to add newer capabilities with every release of the product. 5.0 is no different and adds a couple of very important capabilities.&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/images/14835400613035.png"
+loading="lazy"
+alt="New AHV capabilities over the last few releases"
+>&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/images/14835400780807.png"
+loading="lazy"
+alt="AHV Adoption over the last several quarters"
+>&lt;/p>
+&lt;p>&lt;strong>AHV Affinity Rules:&lt;/strong> Workloads such as Microsoft SQL or Oracle are often attached to a specific node for licensing, security or HW configuration related reasons. With affinity rules, virtual machines can now be “pinned” to a specific host or a set of hosts. Additionally AHV will also support VM VM anti-affinity rules to try ensure that specific VMs are never on the same host together.&lt;/p>
+&lt;p>&lt;strong>Acropolis Dynamic Scheduling (ADS):&lt;/strong> AHV has supported intelligent initial placement for a while now to make sure VMs are placed on the most optimal hosts when they are initially deployed. With ADS, the hypervisor can detect CPU, memory and storage controller hotspots and can move deployed VMs to a host that is ideal suited. Legacy hypervisor solutions factor in CPU and memory alone while making similar decisions. But with AHV, the VM placement algorithms will also factor in storage resources as well as storage controller bottlenecks before making a decision.&lt;/p>
+&lt;p>&lt;strong>CPU/Memory Hot Add:&lt;/strong> With this capability, administrators can add vCPU and memory to a running VM without any service impact. As applications evolve, it is important to dynamically adjust resources assigned to them so that there is no performance impact for the end user. This is what the hot add feature will enable. In the 5.0 release, this feature will be available in Tech preview and is expected to be generally available in a subsequent release.&lt;/p>
+&lt;p>With these capabilities, AHV is ready for all your production workloads and there is very little reason as to why any virtualized workload cannot be run on Nutanix and on AHV. Nutanix customers are already standardizing on AHV and are seeing significant savings in the overall cost of ownership across their entire infrastructure stack.&lt;/p>
+&lt;h3 id="prism--management-plane-enhancements">Prism – Management Plane Enhancements
+&lt;/h3>&lt;p>Over the last year Prism has evolved into a product suite of its own – with Prism Starter and Prism Pro, customers now have an option of choosing a one-click infrastructure management solution or a one-click infra management and operations management solution based on their needs.&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/img/14835402328470.png"
+loading="lazy"
+alt="5.0 brings enhancements to both Prism Starter and Prism Pro."
+>&lt;/p>
+&lt;p>&lt;strong>Prism Self-Service:&lt;/strong> Self-service will bring the goodness of AWS to enterprise datacenters. With this new capability, end-users can login to Prism with their own AD credentials and deploy and monitor applications whenever they want, based on Admin set policies. This removes common friction around developers and end users having to rely on IT admins for common tasks. Instead, administrators just assign resources for specific users or AD groups and end users have complete independence to perform actions that he/she is allowed to do. Here is a quick blog that summarizes this capability.&lt;/p>
+&lt;p>&lt;strong>Network Visualization:&lt;/strong> This is another key capability that is part of Prism. With Network Visualization, administrators will be able to get an end-to-end operational view of the infrastructure all the way down to the networking layer. With views that provide insight into how virtual machines are connected to the host, NICs, the top of rack switches, the VLANs they are part of as well as the health of these connections, administrators will be able to get all the information they want about their infrastructure in a single screen, without having to rely on separate tools. This will help isolating and fixing common networking issues that result in application downtimes.&lt;/p>
+&lt;p>&lt;strong>ESXi Management:&lt;/strong> The simplicity of VM management with Prism will extend to ESXi as well with this release – common VM operations that customers relied on vCenter for will be performed from within Prism. One of the common asks from customers was to not go back and forth to vCenter and instead consolidate all operations on Prism. In the first release as part of 5.0, Prism will enable administrators to perform common VM operations such as VM create, update, delete, clone etc. from within Prism. Combining VM operations and the rich monitoring and analytics, vCenter is only needed for less common maintenance and configuration tasks. With the hypervisor becoming commodity, end users get greater simplicity at the management layer.&lt;/p>
+&lt;p>&lt;strong>Just-in-time Capacity Forecasting (available in Prism Pro):&lt;/strong> This is probably one of the most important additions to Prism. Just-in-time forecasting will enable IT to stay ahead of the game by modeling and understanding infrastructure needs based on application requirements even before applications are deployed. This way, IT not only understands application-centric capacity usage patterns and what can be done to optimize existing capacity, they can also plan their infrastructure needs for the future and deploy infrastructure if and only when they need them at “byte” sized granularity all based on recommendations from Prism.&lt;/p>
+&lt;p>&lt;strong>Search Enhancements (Available in Prism Pro):&lt;/strong> One of the core aspects to delivering a personalized and consumer-grade management experience is to enable administrators to perform actions the same way they would do it in their personal lives. Prism Search, a Google like search engine, was introduced earlier this year so that administrators can perform all administrative actions through a simple search query. With support for Boolean expressions, saved searches, auto correct, synonyms based search and more, the 5.0 release will take Prism Search to a whole new level. As an example, administrators can type in “vm iops &amp;lt;1500” and quickly see all the VMs across all the sites that have IOPS less than 1500.&lt;/p>
+&lt;p>有用链接：&lt;/p>
+&lt;ul>
+&lt;li>西瓜哥的微信文章介绍了部分上面的更新 &lt;a class="link" href="https://mp.weixin.qq.com/s?__biz=MjM5NDQyNDQ0Mw==&amp;amp;mid=2652388531&amp;amp;idx=1&amp;amp;sn=44f49e138cbebe8f1a70cb36e7ebaf89&amp;amp;chksm=bd6b6fa78a1ce6b1a38eac1e4c308fe884c002dec40c7af0c73b6b274302af02f99fa9b5f613&amp;amp;mpshare=1&amp;amp;scene=1&amp;amp;srcid=0104VgmkmVpxE0kSlIgn7V89&amp;amp;key=b43a3af60b96e11efa7e8bf122519516151d18bab4ca2fa3f7cf1902edfb954a06c0633b1df245e14db446d84260e066f2d9ec85061191375b314c56d2d7b962c9727f37051f72a5010ca075676292b8&amp;amp;ascene=0&amp;amp;uin=ODYyMzEyOTQw&amp;amp;devicetype=iMac&amp;#43;MacBookPro13%2C1&amp;#43;OSX&amp;#43;OSX&amp;#43;10.12.2&amp;#43;build%2816C67%29&amp;amp;version=12010210&amp;amp;nettype=WIFI&amp;amp;fontScale=100&amp;amp;pass_ticket=V632gZ8yDTJQ9PL42foZMyhmNQ%2BjF8QFSkTj2plVSn7%2FT1HC452ubIAxwDppYh%2BA" target="_blank" rel="noopener"
+>点这里。&lt;/a>&lt;/li>
+&lt;li>&lt;a class="link" href="https://portal.nutanix.com/#/page/docs/details?targetId=Release-Notes-Acr-v50:Release-Notes-Acr-v50" target="_blank" rel="noopener"
+>Acropolis 5.0 release notes&lt;/a>&lt;/li>
+&lt;li>&lt;a class="link" href="https://portal.nutanix.com/#/page/docs/details?targetId=Release-Notes-NCC-v3:rel-Release-Notes-NCC-v30.html" target="_blank" rel="noopener"
+>Nutanix Cluster Check 3.0 release notes&lt;/a>&lt;/li>
+&lt;li>&lt;a class="link" href="https://portal.nutanix.com/#/page/static/supportTools" target="_blank" rel="noopener"
+>Nutanix Cluster Check 3.0 download&lt;/a>&lt;/li>
+&lt;li>&lt;a class="link" href="https://portal.nutanix.com/#/page/docs/details?targetId=Release-Notes-Prism-Central-v50:rel-Release-Notes-Prism-Central-v50.html" target="_blank" rel="noopener"
+>PRISM Central 5.0 release notes&lt;/a>&lt;/li>
+&lt;/ul></description></item><item><title>HPE 分兵两路进军超融合市场</title><link>https://martinliu.cn/2017/01/03/HPE%20%E5%88%86%E5%85%B5%E4%B8%A4%E8%B7%AF%E8%BF%9B%E5%86%9B%E8%B6%85%E8%9E%8D%E5%90%88%E5%B8%82%E5%9C%BA/</link><pubDate>Tue, 03 Jan 2017 00:00:00 +0000</pubDate><guid>https://martinliu.cn/2017/01/03/HPE%20%E5%88%86%E5%85%B5%E4%B8%A4%E8%B7%AF%E8%BF%9B%E5%86%9B%E8%B6%85%E8%9E%8D%E5%90%88%E5%B8%82%E5%9C%BA/</guid><description>&lt;img src="https://martinliu.cn/images/WinterOwls_Hokkaido_shutterstock_7934020_FF_768_HD_ZH-CN898513788.jpg" alt="Featured image of post HPE 分兵两路进军超融合市场" />&lt;p>关于HP超融合产品家族的变迁简史和相关评论，本文转自 HC 250? HC 380? What are they actually for?。&lt;/p>
+&lt;p>转帖：《HC 250? HC 380? What are they actually for?》
+&lt;a class="link" href="http://www.theregister.co.uk/2016/12/05/the_state_of_hpes_hyperconverged_play/" target="_blank" rel="noopener"
+>http://www.theregister.co.uk/2016/12/05/the_state_of_hpes_hyperconverged_play/
+&lt;/a>&lt;/p>
+&lt;p>HP/HPE 超融合产品线发展如下图所示
+&lt;img src="https://martinliu.cn/img/hpe_hyperconverged_product_progression.jpg"
+loading="lazy"
+alt="HP/HPE hyper-converged product lines progression"
+>&lt;/p>
+&lt;h3 id="comment">+Comment
+&lt;/h3>&lt;p>The positioning of these two hyper-converged systems is confusing. We observe that the physically larger and vSphere-only HC 380, with its brand number larger than the HC 250, is for use by operators requiring operational simplicity, whereas the physically smaller and denser HC 250 is for more complicated operations in both vSphere and Hyper-V environments, yet it covers ROBO needs where customers don&amp;rsquo;t have skilled IT staff.&lt;/p>
+&lt;p>Getting some ProLiant DL380 brand goodness in the HC 380 name, Apollo supercomputer brand messages in the HC 250 name, and not yet providing HCOE v2 to the HC 250, has provided confusing brand positioning.&lt;/p>
+&lt;p>It also seems that both systems should support Hyper-V and HCOE v2. That would make customers&amp;rsquo; lives simpler. The HC 380 should have its scale-out limit go past 16 nodes. Thirty-two would be good and then it would match the non-standard and non-recommended 32-node limit of the HC 250. ®&lt;/p>
+&lt;h2 id="nutanix-exec-cisco-hpe-vmware-cant-provide-aws-like-experience-for-hyper-converged-market">Nutanix Exec: Cisco, HPE, VMware Can&amp;rsquo;t Provide AWS-Like Experience For Hyper-Converged Market
+&lt;/h2>&lt;p>&lt;a class="link" href="http://www.crn.com/news/data-center/300083025/nutanix-exec-cisco-hpe-vmware-cant-provide-aws-like-experience-for-hyper-converged-market.htm" target="_blank" rel="noopener"
+>http://www.crn.com/news/data-center/300083025/nutanix-exec-cisco-hpe-vmware-cant-provide-aws-like-experience-for-hyper-converged-market.htm&lt;/a>&lt;/p>
+&lt;p>One of Nutanix&amp;rsquo;s top executives said Cisco, Hewlett Packard Enterprise and VMware cannot provide a best-in-class experience for their hyper-converged products since they don&amp;rsquo;t own the entire software stack.&lt;/p>
+&lt;p>&amp;ldquo;Everybody and their dog is in this space right now,&amp;rdquo; said Sunil Potti, Nutanix&amp;rsquo;s chief product and development officer. &amp;ldquo;But unless you are owning most of the stack, you can&amp;rsquo;t provide that full experience with a single click.&amp;rdquo;&lt;/p>
+&lt;p>Potti told attendees of the Raymond James Technology Investors Conference on Monday that up until 18 months ago, much of the market felt that hyper-converged infrastructure – which combines compute, storage, networking and virtualization on server hardware - could be a good product, but questioned whether it would support all use cases.&lt;/p>
+&lt;p>But as end users became more adamant about having hyper-converged architectures deployed for their new workloads, Potti said the space has gone from being the exclusive domain of smaller IT vendors to attracting some of the biggest names in IT.&lt;/p>
+&lt;p>And while Potti said the big guys bring a lot of go-to-market muscle to the table, some of them don&amp;rsquo;t seem to grasp the importance of providing totally seamless functionality.&lt;/p>
+&lt;p>&amp;ldquo;Some of them are very formidable, but some of them are also sleeping giants because they are growing old,&amp;rdquo; Potti said at the conference at the Westin New York Grand Central. &amp;ldquo;You can&amp;rsquo;t just take a Nokia phone, slap on Windows and say &amp;lsquo;I won the smartphone war.&amp;rsquo; There&amp;rsquo;s a reason why those things didn&amp;rsquo;t work.&amp;rdquo;&lt;/p>
+&lt;p>Potti pointed to the example of Cisco&amp;rsquo;s hyper-converged offering, which he said competes with VMware&amp;rsquo;s products, but is also dependent on VMware to properly function.&lt;/p>
+&lt;p>&amp;ldquo;None of them have their own virtualization experience,&amp;rdquo; Potti said. &amp;ldquo;When you go to Amazon, you don&amp;rsquo;t go buy VMWare for Amazon. It&amp;rsquo;s built in.&amp;rdquo;&lt;/p>
+&lt;p>A Cisco spokesman said its customers prefer having a hyperconverged product that integrates with existing converged infrastructure and traditional storage rather than having to create another infrastructure silo. More than 600 organizations have adopted Cisco&amp;rsquo;s HyperFlex since it was launched a few months ago, the spokesman said.&lt;/p>
+&lt;p>Paul Miller, VP of marketing for HPE&amp;rsquo;s converged data center infrastructure group, said HPE&amp;rsquo;s new hyperconverged offering is as easy as public cloud, allowing users adjust VMs from their cell phones with just a few clicks. And unlike the hyperconverged-only vendors, Miller said HPE&amp;rsquo;s hyperconverged offering won&amp;rsquo;t become and IT island since it can be managed across a large footprint of infrastructure.&lt;/p>
+&lt;p>VMware did not respond to a request for comment.&lt;/p>
+&lt;p>Potti said Nutanix, in contrast, evolved beyond simply being a storage technology company four years ago when it started building its own hypervisor and virtualization tools. As a result, Potti said, Nutanix has completely re-imagined how the software stack is built from the ground up.&lt;/p>
+&lt;p>&amp;ldquo;Nutanix is a platform player,&amp;rdquo; Potti said. &amp;ldquo;It&amp;rsquo;s not a product player … If you don&amp;rsquo;t provide the full stack, you can&amp;rsquo;t provide that Amazon-like experience.&amp;rdquo;&lt;/p>
+&lt;p>Nutanix&amp;rsquo;s prime objective is providing an AWS-like experience in the data center, Potti said, and the company isn&amp;rsquo;t trying to replicate the hyper-converged offerings Cisco and VMware are bringing to market.&lt;/p>
+&lt;p>The rising adoption of AWS and other public cloud services over the past five or six years has been tremendously helpful for Nutanix since many end users have already worked through departmental feuds and have grown accustomed to consuming a one-click service across the entire company, Potti said.&lt;/p>
+&lt;p>&amp;ldquo;It has emotionally built a cognitive bias toward an architecture like this,&amp;rdquo; Potti said. &amp;ldquo;We are looking to provide an Amazon-like experience for the global enterprise.&amp;rdquo;&lt;/p></description></item><item><title>Nutanix CE All In One</title><link>https://martinliu.cn/2017/01/02/Nutanix-CE-all-in-one/</link><pubDate>Mon, 02 Jan 2017 00:00:00 +0000</pubDate><guid>https://martinliu.cn/2017/01/02/Nutanix-CE-all-in-one/</guid><description>&lt;img src="https://martinliu.cn/images/HongKongEye_ZH-CN12285832688_1920x1080.jpg" alt="Featured image of post Nutanix CE All In One" />&lt;p>Nutanix CE是Nutanix社区版软件的简称，它是Nutanix企业版产品的功能精简集合，是体验和测试Nutanix技术的很方便的途径。&lt;/p>
+&lt;h2 id="nutanix-community-edition-社区版简介">Nutanix Community Edition 社区版简介
+&lt;/h2>&lt;p>&lt;img src="https://martinliu.cn/img/Community_Edition_-_Nutanix.png"
+loading="lazy"
+alt="Nutanix CE"
+>&lt;/p>
+&lt;p>这个产品目前的位置在 &lt;a class="link" href="https://www.nutanix.com/products/community-edition/" target="_blank" rel="noopener"
+>https://www.nutanix.com/products/community-edition/&lt;/a>；目前这个页面还没有中文化，下面简单介绍以下。&lt;/p>
+&lt;ul>
+&lt;li>Feature Rich Software 它是一个功能丰富的软件&lt;/li>
+&lt;li>Broad Hardware Support &amp;amp; Available On-demand 很丰富的硬件支持，在网上可以按需体验&lt;/li>
+&lt;li>Zero Cost 零成本&lt;/li>
+&lt;/ul>
+&lt;p>用Nutanix CE社区版体验，体验超融合技术的三个步骤。&lt;/p>
+&lt;ol>
+&lt;li>注册 ： 这次Nutanix社区，下载安装镜像&lt;/li>
+&lt;li>部署 ： 在你的服务器上部署，或者在Ravello上在线开启体验；&lt;a class="link" href="https://www.youtube.com/watch?v=xKtQRp6dcAc" target="_blank" rel="noopener"
+>官方安装部署视频点这里&lt;/a>&lt;/li>
+&lt;li>玩耍 ： 安装完之后就可以开心地玩耍了，有问题请移步 &lt;a class="link" href="http://next.nutanix.com/t5/Discussion-Forum/bd-p/Discussion" target="_blank" rel="noopener"
+>社区版论坛&lt;/a>&lt;/li>
+&lt;/ol>
+&lt;p>用物理机安装和体验的几点注意事项如下：&lt;/p>
+&lt;ul>
+&lt;li>物理机安装支持1，3，4个节点的部署；推荐内存在32GB以上；由于版本CE 2016.12.22的CVM的内存需求是24GB，由于加入了自服务门户功能；建议使用SSD硬盘，最好能混搭一些普通硬盘。&lt;/li>
+&lt;li>安装后的首次启动需要系统能链接互联网，否则CVM会启动不了，首次启动成功之后就不用再联网了&lt;/li>
+&lt;li>用虚拟机安装，请注意本机的内存，和给虚拟机分配的内存，网上也有修改对内存和CPU限制修改的脚本&lt;/li>
+&lt;/ul>
+&lt;p>产品在社区里的文档页面： &lt;a class="link" href="http://next.nutanix.com/t5/Discussion-Forum/Download-Nutanix-CE-Docs-and-Guides/m-p/16442#U16442" target="_blank" rel="noopener"
+>点这里&lt;/a>&lt;/p>
+&lt;h2 id="参考配置">参考配置
+&lt;/h2>&lt;p>Intel NUC 最新版一台，i7处理器，两条16GB内存，两条512GB硬盘。它的好处是便携；然而内存还是有限，不能跑多少个虚拟机。&lt;/p>
+&lt;h2 id="相关文档">相关文档
+&lt;/h2>&lt;ul>
+&lt;li>&lt;a class="link" href="http://huanwenli.blog.51cto.com/2848240/1749083" target="_blank" rel="noopener"
+>在VMware Workstation上安装Nutanix CE&lt;/a>&lt;/li>
+&lt;li>&lt;a class="link" href="http://www.nextech.space/nextech/2016/06/nutanix-community-edition%E5%AE%89%E8%A3%85%E5%9C%A8vsphere%E7%8E%AF%E5%A2%83%E4%B8%AD/" target="_blank" rel="noopener"
+>Nutanix Community Edition安装在vSphere环境中&lt;/a>&lt;/li>
+&lt;li>&lt;a class="link" href="http://www.onlyeric.com/2016/05/13/%E6%B5%85%E5%B0%9D%E8%B6%85%E8%9E%8D%E5%90%88%E4%B9%8BNutanix-%E4%B8%8A-%E4%BB%8B%E7%BB%8D%E7%AF%87/" target="_blank" rel="noopener"
+>浅尝超融合之Nutanix(上)介绍篇&lt;/a>&lt;/li>
+&lt;li>&lt;a class="link" href="http://www.onlyeric.com/2016/05/15/%E6%B5%85%E5%B0%9D%E8%B6%85%E8%9E%8D%E5%90%88%E4%B9%8BNutanix-%E4%B8%8B-%E5%AE%89%E8%A3%85%E9%83%A8%E7%BD%B2%E7%AF%87/" target="_blank" rel="noopener"
+>浅尝超融合之Nutanix(下)安装篇&lt;/a>&lt;/li>
+&lt;li>&lt;a class="link" href="http://www.dockerinfo.net/1865.html" target="_blank" rel="noopener"
+>Nutanix超”容”合之ACS Acropolis Container Service(下)实战篇01&lt;/a>&lt;/li>
+&lt;li>&lt;a class="link" href="http://www.dockerinfo.net/1867.html" target="_blank" rel="noopener"
+>Nutanix超”容”合之ACS Docker Volume Plugin的使用和数据持久化测试&lt;/a>&lt;/li>
+&lt;li>&lt;a class="link" href="http://nutanix.club/" target="_blank" rel="noopener"
+>http://nutanix.club/&lt;/a>&lt;/li>
+&lt;li>&lt;a class="link" href="http://nutanixbible.com/" target="_blank" rel="noopener"
+>Nutanix圣经&lt;/a>&lt;/li>
+&lt;/ul></description></item></channel></rss>

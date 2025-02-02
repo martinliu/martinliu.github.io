@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Atrium on Martin Liu's Blog</title><link>https://martinliu.cn/tags/atrium/</link><description>Recent content in Atrium on Martin Liu's Blog</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><lastBuildDate>Wed, 12 Jan 2011 05:08:23 +0000</lastBuildDate><atom:link href="https://martinliu.cn/tags/atrium/index.xml" rel="self" type="application/rss+xml"/><item><title>BMC Atrium CMDB CI数据迁移</title><link>https://martinliu.cn/2011/01/12/bmc-atrium-cmdb-ci/</link><pubDate>Wed, 12 Jan 2011 05:08:23 +0000</pubDate><guid>https://martinliu.cn/2011/01/12/bmc-atrium-cmdb-ci/</guid><description>&lt;p>在不同的 CMDB 服务器之间做数据迁移之前一定要注意两点：1）保持两边的 CDM 相同；2）先导入 CI 数据在导入 CI 相关的关系数据。另外就是每个类导入完毕之后要做数据完整性和正确性的抽检。以下使用的工具是 cmdbdriver，该命令初始化和一般性的参数介绍请参考相关文档。&lt;/p>
+&lt;p>&lt;em>&lt;strong>CI 数据导出示例&lt;/strong>&lt;/em>&lt;/p>
+&lt;p>Command: xexpdt
+XEXPORT DATA
+Export instance data from all classes? (F):
+Classes to export data from:
+Class and its subclasses, From namespace (1,2) (1):
+Namespace (): BMC.CORE
+Class name (): BMC_ComputerSystem
+Dataset ID (): BMC.ASSET
+Filename for exported data: C:\DEMO\cs-ci
+Exporting Class BMC_ComputerSystem
+i=0: namespaceName = BMC.CORE, className = BMC_ComputerSystemExported without errorsExporting Class BMC_MainframeExporti
+ng Class BMC_PrinterExporting Class BMC_StorageSubsystem
+CMDBExportData  results
+ReturnCode:  OK
+Status List : 0 items&lt;/p>
+&lt;p>到相应目录下面找到导出的文件，导出的结果至少是两个文件一个是 META_FILE 其他的才是 CI 数据文件。&lt;/p>
+&lt;p>&lt;em>&lt;strong>关系数据导出示例&lt;/strong>&lt;/em>&lt;/p>
+&lt;p>Command: xexpdt
+XEXPORT DATA
+Export instance data from all classes? (F):
+Classes to export data from:
+Class and its subclasses, From namespace (1,2) (1):
+Namespace (): BMC.CORE
+Class name (): BMC_Dependency
+Dataset ID (): BMC.ASSET
+Filename for exported data: C:\DEMO\REL-DEP.XML
+Exporting Class BMC_Dependency
+i=0: namespaceName = BMC.CORE, className = BMC_DependencyExported without errorsExporting Class BMC_AccountOnSystemExpor
+ting Class BMC_HostedAccessPointExporting Class BMC_HostedServiceExporting Class BMC_InventoryBulkItemsExporting Class B
+MC_InventoryComputerSystemsExporting Class BMC_InventoryEquipmentExporting Class BMC_InventorySystemComponents
+CMDBExportData  results
+ReturnCode:  OK
+Status List : 0 items&lt;/p>
+&lt;p>到相应目录下面找到导出的文件，导出的结果至少是两个文件一个是 META_FILE 其他的才是 CI 数据文件。&lt;/p>
+&lt;p>&lt;em>&lt;strong>导入数据示例&lt;/strong>&lt;/em>&lt;/p>
+&lt;p>Command: impdt
+IMPORT INSTANCE DATA
+Handle duplicate Instance Ids:
+(Error/New ID for Dup/Merge/New ID for All) (1-4) (1): 3
+Filename containing import data: c:\demo\cs-ci_0_0  (导入包含 CI 数据的文件)&lt;/p>
+&lt;p>CMDBImportData  results
+ReturnCode:  OK
+Status List : 0 items
+Total items Processed             :  2
+Items Imported successfully       :  2
+Items for which Import failed     :  0&lt;/p>
+&lt;p>Command: impdt
+IMPORT INSTANCE DATA
+Handle duplicate Instance Ids:
+(Error/New ID for Dup/Merge/New ID for All) (1-4) (1): 3
+Filename containing import data: c:\demo\REL-DEP.XML_0_0 (导入包含关系数据的文件)&lt;/p>
+&lt;p>CMDBImportData  results
+ReturnCode:  OK
+Status List : 0 items
+Total items Processed             :  1
+Items Imported successfully       :  1
+Items for which Import failed     :  0&lt;/p>
+&lt;p>导入完毕之后使用 Remedy User 到相应的表格中查找，确认导入的数据是否正确。&lt;/p></description></item><item><title>BMC Atrium CMDB 类定义迁移</title><link>https://martinliu.cn/2011/01/12/bmc-atrium-cmdb-sync-cdm-class/</link><pubDate>Wed, 12 Jan 2011 04:22:44 +0000</pubDate><guid>https://martinliu.cn/2011/01/12/bmc-atrium-cmdb-sync-cdm-class/</guid><description>&lt;p>当对 CDM 做了定制，并且要在不同的服务器直接做类的迁移的时候，需要把定制过的类都导出，然后在目标机上导入。可以使用的 CMDB 自带的命令行 cmdbdriver 工具。&lt;/p>
+&lt;p>&lt;em>&lt;strong>cmdbdriver.exe 能支持的参数&lt;/strong>&lt;/em>&lt;/p>
+&lt;p>Options:
+-u&lt;!-- raw HTML omitted -->
+-a&lt;!-- raw HTML omitted -->
+-p&lt;!-- raw HTML omitted -->
+-l&lt;!-- raw HTML omitted -->
+-s&lt;!-- raw HTML omitted -->
+-x&amp;lt;INPUTFILE_FULLPATH&amp;gt;
+-t&amp;lt;PORT_NUMBER&amp;gt;
+-q&amp;lt;QUIET_MODE_NUMBER&amp;gt;&lt;/p>
+&lt;p>登录 CMDBdriver 实例：   cmdbdriver -u Demo -p bmc@XXX -s atriumcmdb -t 9988&lt;/p>
+&lt;p>登录之后在运行另外用于初始化的两个命令 init 和 log&lt;/p>
+&lt;p>Command: init
+INITIALIZATION&lt;/p>
+&lt;p>CMDBInitialization  results
+ReturnCode:  OK
+Status List : 0 items&lt;/p>
+&lt;p>Command: log
+Control record:
+Authentication string () :
+User name () : Demo
+Password () : &lt;strong>&lt;strong>**&lt;/strong>&lt;/strong>
+Locale[.charSet] () :
+TimeZone () :
+Server () : atriumcmdb&lt;/p>
+&lt;p>&lt;em>&lt;strong>导出类定义的方法实例&lt;/strong>&lt;/em>
+Command: xexpdf
+XEXPORT DEFINITION
+Export all classes? (F):
+Classes to export:
+Class and its subclasses, From namespace (1,2) (1):
+Namespace (): BMC.CORE
+Class name (): BMC_ComputerSystem
+Export all attributes with classes? (T):
+Filename for exported data: c:\demo\BMC_ComputerSystem.xml&lt;/p>
+&lt;p>CMDBXExportDef  results
+ReturnCode:  OK
+Status List : 0 items&lt;/p>
+&lt;p>使用文本编辑器查看 c:\demo\BMC_ComputerSystem.xml 的导出结果&lt;/p>
+&lt;p>&lt;em>&lt;strong>导入类定义的方法：&lt;/strong>&lt;/em>
+Command: impdf
+DEFINITION IMPORT
+Import Item List:
+Number of import items (0):
+Import option : Create/Overwrite (1-2) (1): 2
+Filename containing import data: c:\demo\cs.xml&lt;/p>
+&lt;p>CMDBImportDef  results
+ReturnCode:  OK
+Status List : 0 items&lt;/p>
+&lt;p>使用 Remedy User，用 Demo 登录，把语言切换到英文，然后在查 BMC_ComputerSystem 表达，在 custom 2 ～ n 的 tab 页面里面查看哪些导入的属性。或者使用 class manager 查看确认导入是否成功。&lt;/p></description></item><item><title>规划CMDB数据填充-003</title><link>https://martinliu.cn/2010/07/20/cmdb003/</link><pubDate>Tue, 20 Jul 2010 11:35:44 +0000</pubDate><guid>https://martinliu.cn/2010/07/20/cmdb003/</guid><description>&lt;p>From 《Step by step to build a CMDB》步骤 17-规划 CMDB 数据填充&lt;/p>
+&lt;p>本文描述填充过程的任务 3 到任务 4：&lt;/p>
+&lt;p>&lt;img src="http://martinliu.cn/wp-content/gallery/cmdb/ci-data-mapping.png"
+loading="lazy"
+alt="ci-data-mapping"
+>&lt;/p>
+&lt;p>&lt;strong>任务 3 映射 CI 和数据源&lt;/strong>
+现在拿出您的 CI 清单，并把每一类 CI 与具有相关信息的数据源映射起来。一个简单的电子数据表格，像图 17.2 一样的就足够了。有更复杂数据需求的大一点的企业可能需要多个数据页或者通过 CI 分类来连接到不同的数据页。&lt;/p>
+&lt;p>这项工作的最终目标不仅是识别用以填充 CMDB 数据源，而且还识别了流程和平台的接触点，有些平台对数据填充是有影响的。这项工作也是至关重要，用来定义数据调和规则，定义数据优先度，这些会在下面的步骤，任务 7“建立调和规则”中用的。
+工具映射如下图 17.2 所示，包括了每一个 CI 类，相关的属性，相关的关系数据，和数据源。
+图 17.2 Ci 和数据源之间的对照关系图样例
+您可能会发现一些 s 数据源之间的重叠，特别是 CI 库存清单的属性数据。这些数据通常包括唯一物理特性和 CI 的地点的说明 ，例如：型号、序列号、地点和所有者。此信息可能被存储在其他多个地方，它们也可用于 CI 数据填充的来源和日常维护的来源。
+多种的资产和库存清单数据来源可能包括如下：&lt;/p>
+&lt;ul>
+&lt;li>审计（资产清单或者配置发现数据库；无代理和有代理方式）&lt;/li>
+&lt;li>资产管理系统&lt;/li>
+&lt;li>采购系统和许可证管理&lt;/li>
+&lt;li>财会系统（采购或者收货）&lt;/li>
+&lt;li>合同管理系统&lt;/li>
+&lt;li>变更管理系统&lt;/li>
+&lt;li>其他财务应用和系统&lt;/li>
+&lt;/ul>
+&lt;p>&lt;strong>任务 4 访问数据源环境&lt;/strong>
+为了确保数据质量，你应该访问所有的数据源环境，而不仅仅只是 CMDB，还包括连接工具和相关技术，要逐一访问查看每一个数据源。在这里，“进来的是垃圾，出去的就是垃圾”这个俗语是适用的。CMDB 项目的成功可能依赖于对系统或者基础架构的更新，以适应网络流量和数据量，还依赖于确保每一个数据源的数据质量。&lt;/p>
+&lt;p>当你规划 CMDB 数据填充的时候，要自问这样几个问题，是有关外部映射数据源质量的：&lt;/p>
+&lt;ul>
+&lt;li>现在那些信息在那里、怎样被存储的？ &amp;ndash;数据库、电子表格、Word 文档？&lt;/li>
+&lt;li>当前环境中有没有审计（发现）工具、软件分发、配置管理或者采购系统，用来自动的跟踪和存储这些信息？ 或者数据时被手工地收集和更新的？&lt;/li>
+&lt;li>这些系统是基于开放标准还是私有技术的？&lt;/li>
+&lt;li>这些系统的厂商有没有标准化的工具？或者 CMDB 厂商？&lt;/li>
+&lt;li>需要被继承的数据源的物理位置在那里？&lt;/li>
+&lt;li>在 CMDB 和数据源之间，通讯的方式是双向的还是单向的？&lt;/li>
+&lt;/ul>
+&lt;p>还要考虑有关映射数据源性能相关的问题：&lt;/p>
+&lt;ul>
+&lt;li>就当前的数据源来说，现实的性能、容量和可靠性是怎样的？&lt;/li>
+&lt;li>系统上当前的活动状况怎样？&lt;/li>
+&lt;li>活动用户数&lt;/li>
+&lt;li>其他并发继承此数据源的工具&lt;/li>
+&lt;li>备份、病毒扫描、报表或者数据挖掘的日程&lt;/li>
+&lt;li>审计工具（配置发现或者库存清单）扫描或者排队日程&lt;/li>
+&lt;li>其他任何将影响性能的事情&lt;/li>
+&lt;li>硬件和当前环境是不是能完全满足今后数据迁移所需要的附加工作量和空间需求？以及满足对于以后的日常数据同步？有没有对今后几年里增长率有做过计算？&lt;/li>
+&lt;li>是不是需要考虑要满足什么约束或者特殊权限？&lt;/li>
+&lt;li>厂商是否在与他们数据库集成方面有建议的最佳实践？（使用热备的生产机来降低作业压力）&lt;/li>
+&lt;li>CMDB 周边的数据集和连接技术是什么？&lt;/li>
+&lt;li>网络环境中物理的限制（带宽、距离等）是否会有影响？&lt;/li>
+&lt;li>当前的版本是多少？在以后的六个月或者一年里是否有升级的计划？有哪些好处？&lt;/li>
+&lt;li>为当前的解决方案是否得到了足够的资料来负责架构、排错以及连接系统的维护？&lt;/li>
+&lt;/ul>
+&lt;p>通过尽早的回答这些问题，就可以避免后续可能出现的性能问题，那些问题会影响项目的成功。如果数据源不太可靠，而且数据质量和性能方面是有问题的，这个时候，可以回到这些数据的关键利益相关者那里，与他们讨论，并确定这是否会影响到使用方面的关键需求。如果没有，需要把这部分数据需求从 CMDB 项目计划的第一阶段中展示放弃。这里最重要的是第一阶段的合理部署，实施结果能够获得用户全面的适应。然而，如果这些数据依然是比较关键的需求，那么需要与数据所有者，和收益者各方进行沟通，并引起各方的高度重视，共同确定一个解决方案。&lt;/p></description></item><item><title>规划CMDB数据填充-002</title><link>https://martinliu.cn/2010/07/20/plan-cmdb-population-002/</link><pubDate>Tue, 20 Jul 2010 11:25:18 +0000</pubDate><guid>https://martinliu.cn/2010/07/20/plan-cmdb-population-002/</guid><description>&lt;p>From 《Step by step to build a CMDB》步骤 17-规划 CMDB 数据填充&lt;/p>
+&lt;p>本文描述填充过程的任务 1 到任务 2：&lt;/p>
+&lt;p>&lt;img src="http://martinliu.cn/wp-content/gallery/cmdb/cmdb-data-sources-re.png"
+loading="lazy"
+alt="cmdb-data-sources-re"
+>&lt;/p>
+&lt;p>&lt;strong>任务 1  再次回顾 CMDB 范围&lt;/strong>
+现在进行现实检验。你能否确实交付在第 2 阶段即“定义需求和创建 IT 服务模型蓝图”中定义的 CI 范围涉及的相关数据？你在 CI 数据一旦交付以后，能否有足够的资源来维护整个系统和所有数据？这些都是重要的问题，因为您所选择的 CMDB 解决方案，可能很容易地就超越了您需要的范围，超出了你可以能容易维护的程度。&lt;/p>
+&lt;p>在规划 CMDB 数据填充时，您的思想应该是“少即是多“。先学会走再跑。让 CMDB 的首次推广得到充分验证后在考虑扩大范围。您需要帮助保持 CMDB 的团队和 CMDB 数据用户的积极性。同时避免项目范围的蔓延，否则可能破坏的实施的效果，以及用户对新的解决方案的接受度。&lt;/p>
+&lt;p>请谨记这样几个考虑因素，从而来帮助您始终专注于那些核心需求上，并能对关键的限制作出反应：&lt;/p>
+&lt;ul>
+&lt;li>成本 – 每个人都必须面对业务现实，包括预算和费用的现实。因此，在您的 CMDB 项目预算范围里，对主要需求排列优先级。如果出现新的想法，那么也只是在新的预算来下了以后才考虑。&lt;/li>
+&lt;li>时间 &amp;ndash; 您可能需要在给定的时间内实施 CMDB，来使您企业在此方面的业务需求得到满足，如 Sarbanes-Oxley 法规，或支持一个非常关键的新流程。当您计划了 CI 数据填充的顺序后（后面介绍的这一步），不仅要对 CI 数据排优先级，而且还要明确时间的限制。&lt;/li>
+&lt;li>实用性 – 如果没有足够的资源用来实施和维持 CMDB，以满足 CMDB 要求，那么您可能需要缩小实施范围，以便您可以在您实际有限的资源里运作项目。你还可以考虑分两个阶段进行实施，把非关键的要求放到第二个阶段中。&lt;/li>
+&lt;li>外部强加的优先事项 – 有些业务的运作，例如企业治理、数据保护和信息自由，可能会影响您既定的优先次序。您可以通过分阶段实施 CMDB 数据填充来减少外部因素的影响。如果你没有从一开始就计划足够的时间来达成最后期限，那么你可以尝试投入更多的资源来克服时间上的限制。然而，还要意识到，以后你要申请更多的资源，没有资源的保证，你可能无法充分管理好项目。&lt;/li>
+&lt;li>所有权 – 有时 IT 资产的负责人并不属于 IT 组织。如果资产所有者决定不参与的 CMDB，这会严重限制了 CI 数据内容的提供。您可以提供 CMDB 部分功能的有限的访问给他们，用来消除他们顾虑，并参与进来。&lt;/li>
+&lt;li>地区 – 地理区域上的边界，可能会限制建立企业范围的 CMDB。由于地理或行政上可能的边界，我们可能听过“最好再也不要从总部传来这样神经质数据库方案”。最好预防这种情况的办法是，尽可能早的让所有地区的相关人员参与到 CMDB 项目里来。&lt;/li>
+&lt;li>组织架构 – 很多企业把 IT 划分成为清晰地、各自为政的独立部门，通过这种方式来对 CMDB 里的不同范围负责。例如：通信部门的人可能是一个单独的组织结构，他们可能拒绝参与到项目中来，因为他们觉得这超出了他们的控制范围。这时候就要让其他的 IT 组织参与其中，让每个人都知道谁是项目负责人。&lt;/li>
+&lt;/ul>
+&lt;p>当你计划你的 CMDB 数据填充的时候，越能专注于关键受益人的需求，就越能够达成项目的业务目标，就越能让您的项目顺利。您需要就已经确定的 CMDB 范围，与所有的利益方沟通它可能的影响和效果。收集他们的反馈，并对有必要方面做进一步讨论。&lt;/p>
+&lt;p>&lt;strong>任务 2 识别 CI&lt;/strong>
+使用在第 15 步即“设计 IT 服务模型蓝图”中设计的 IT 服务模型蓝图为基础，来生成用于 CMDB 数据填充的 CI 以及相关属性和关系数据的清单。这个清单的细节应该到数据字段级别，以便，你能够识别并且映射一个或者多个数据源到特定的 CI 数据。
+例如，如果你把一个实际的服务器 CI 的属性和关系数据都列出清单，你就可以找出一些现有的能提供属性数据的数据源，可能包括库存管理的数据库和发现或者网络管理工具。但是另外一些数据字段可能没有现成的数据源。你将在第 18 步“选择自动化 CMDB 数据填充工具”中用到以上差距分析。或者您可能决定使用手工的方式来填充和更新这个字段，这里还需要仔细的考虑到数据的负责人，和在 21 步“建立 CI 生命周期管理流程”中需要支持的流程。
+至此，你需要专注于用来满足项目目标的要求。在步骤 11 到 14，你定义了与其他流程的结合点，明确的 CI 需求。专注于那些能直接对流程收益人产生直接影响的 CI 数据。&lt;/p></description></item><item><title>联邦的CMDB–神话/现实/需求/还是策略？</title><link>https://martinliu.cn/2010/05/31/federation-cmdb/</link><pubDate>Mon, 31 May 2010 03:53:06 +0000</pubDate><guid>https://martinliu.cn/2010/05/31/federation-cmdb/</guid><description>&lt;p>来自：Jonathan Markworth（CompuCom Systems 有限公司管理顾问，探讨联邦数据库的优点）&lt;/p>
+&lt;p>使用一个具有单一的、全知的、万能的和自维护功能的工具，来管理 IT 基础架的方方面面信息，是否是最好的方案呢？使用一个能做所有工作的全集成平台，来替换您积累下来的所有管理工具是否是最佳方式？现实情况是，大多数组织都已经实施了几十种应用程序、工具、实用程序、数据存储、硬件平台和管理框架，它们一起运行着一个或更多的 IT 服务管理功能。它们中的每一个应用都有自己的数据库，对当前环境中的一些关键管理功能提供信息支持。在 CMDB 应用场景中，这些工具相关的数据库中，其实也包含了大量关键的 CI 属性，这些属性可以用于识别 CI 之间的关系。重要的问题是，如何利用现有的投资和资源来建立一个底层共享的数据库，比如一个 CMDB。&lt;/p>
+&lt;p>&lt;img src="http://www.jevotrust.com/Site/graphics/cmdb_config_management.jpg"
+loading="lazy"
+>&lt;/p>
+&lt;p>一种方法是“集中存储和管理”，从这些数据源中导出 CI 的唯一标识、属性、以及关系，然后都整合到一个数据库中。但在经过了一段很长的时间后，这种方案所产生的数据将很难维护，因为伴随着数据源数量的增长，整套系统的维护会变的愈来愈复杂。&lt;/p>
+&lt;p>另一种方法是“建立联邦的 CMDB”，建立一个核心 CMDB，用来整合所有配置项的唯一标识、核心属性和关系数据，为所有需要它的 IT 流程随时提供配置数据，而不需要对所有数据进行集中式地复制。用联邦的模式，让 CMDB 持有所有 CI 及其核心属性数据，然后再连接到其他相关的数据源；如服务台事件单、服务水平协议、甚至其他监控的管理控制台界面。通过正确地部署，联邦模式可以使得企业的 CMDB 能横跨所有的个 IT 组织，如果需要的话可以对既有的相关系统进行分阶段的实施，这样不仅可以让 IT 组织能够继续日常业务，还不会带来什么干扰。&lt;/p>
+&lt;p>&lt;img src="http://farm1.static.flickr.com/131/398876934_548e99f7e0.jpg"
+loading="lazy"
+>&lt;/p>
+&lt;p>摘自 BMC 软件公司公布的 VIEWPOINT “CMDB 的潜力—驾驭新的 IT 现实”，CMDB 为主题的文章。&lt;/p></description></item><item><title>掀起CMDB的盖头来</title><link>https://martinliu.cn/2010/03/30/phase-roll-out-cmdb-implement/</link><pubDate>Tue, 30 Mar 2010 14:00:01 +0000</pubDate><guid>https://martinliu.cn/2010/03/30/phase-roll-out-cmdb-implement/</guid><description>&lt;p>今天是项目计划提交后的第二天，客户方项目经理对项目的推迟表示感到非常吃惊，期望能让我们给出一个合理的解释。其实这也同样的超出了我的预料，难道软件项目管理和运作都是所谓的人月神话么？&lt;/p>
+&lt;p>[singlepic id=22 w=320 h=240 mode=watermark float=left]在我看来 CMDB 项目的实施和运作有是有可能分阶段、逐步地交付项目成果的。简单的来说首先交付的当然是 CMDB 和配套发现工具系统本身，丑媳妇不要怕见公婆，把这个不加粉饰的原型系统拿出来，让项目各方包括最终用户来试用和评估。接着按照 CMDB 配置数据的来源的不同，把数据顺序的导入 CMDB，并且开展数据的调和工作，完成基础数据的初始化。在基础数据的基础上，需要对 CMDB 服务模型加以验证，选取重点的系统来验证，让系统经理和 CMDB 相关用户也参与进来，用事实和数据讲话，对模型和工具做最终的确认。这个其实是一个小范围内的推广，它的经验可以直接应用于下一个阶段。接下来是对其他所有被采集对象的普遍扫描和 CI 数据同步，在这个阶段里还需要实现 CMDB 和所有 ITIL 流程的集成，ITIL 流程是 CMDB 的主要消费者 ，这个集成往往是两家不同的产品，这种情况下，如果集成的效果欠佳，CMDB 的实施成果也会打折扣。最后结尾的交付物可以是 CMDB 的审核和报表等产品。&lt;/p>
+&lt;p>正如 ITIL 的实施一样，没有两个国内公司的 ITSM 实施是相似的，就像国内不存在两片相同的树叶一样。那么国外的树叶又如何呢？从 ITSM 实施方面来看，相同的树叶在国外还是非常多的。相同的原因在于，往往用户选择了相同的产品如 Remedy ITSM 套件，往往由于定制化的人力成本很多用户也在尽量避免对产品的定制，如果通过配置可以实现的需求，绝不定制或者开发。我们也应该多走工业化标准生产的道路，少以中国特色为借口来实施个性化二次开发。&lt;/p></description></item></channel></rss>

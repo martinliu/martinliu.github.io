@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Ganglia on Martin Liu's Blog</title><link>https://martinliu.cn/tags/ganglia/</link><description>Recent content in Ganglia on Martin Liu's Blog</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><lastBuildDate>Sun, 15 Jun 2008 15:50:31 +0000</lastBuildDate><atom:link href="https://martinliu.cn/tags/ganglia/index.xml" rel="self" type="application/rss+xml"/><item><title>盛夏严防服务器中暑</title><link>https://martinliu.cn/2008/06/15/monitoring-temperature-and-fan-speed-using-ganglia/</link><pubDate>Sun, 15 Jun 2008 15:50:31 +0000</pubDate><guid>https://martinliu.cn/2008/06/15/monitoring-temperature-and-fan-speed-using-ganglia/</guid><description>&lt;p>&lt;img src="http://www.hlj.xinhuanet.com/xw/2007-03/24/xin_190304241641921962117.jpg"
+loading="lazy"
+>哦不是中暑:-)而是发烧；夏天就要到了，监控服务器的主板温度和风扇是否工作正常有变的比较重要起来了。&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->今天发现一个文档 &lt;a class="link" href="http://www.slac.stanford.edu/gen/edu/suli2006/finaltalks_thurs/caitie.ppt" target="_blank" rel="noopener"
+>Monitoring Temperature and Fan Speed Using Ganglia and Winbond Chips&lt;/a> 这个是一个不错的文档，值得参考一下。&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->文章是写如何在 Ganglia 中实现对主板温度和风扇的监控。以前也有人问过我这个问题“Ganglia 的监控图上为什么没有温度也风扇的图”；相信您看后就知道怎么回事了。&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->下面是我对关于温度和风扇监控的一点想法：&lt;!-- raw HTML omitted -->&lt;/p>
+&lt;p>&lt;!-- raw HTML omitted -->&lt;/p>
+&lt;ul>
+&lt;li>主板的芯片能提供这些数据的访问给操作系统
+&lt;!-- raw HTML omitted -->&lt;/li>
+&lt;li>操作系统上有sensors这个命令工具用来采集这些数据
+&lt;!-- raw HTML omitted -->&lt;/li>
+&lt;li>有合适的脚本分析上面命令的输出数据转换成能被监控工具（ganglia， cacti，nagios， opennms）采集的格式等
+&lt;!-- raw HTML omitted -->&lt;/li>
+&lt;li>往往这两个参数并不是监控工具的默认采集数据，所以需要扩展采集工具的采集集合，收集并保存这些数据。
+&lt;!-- raw HTML omitted -->&lt;/li>
+&lt;li>在监控工具如Ganglia中显示这些数据，当然如果有自动报警功能就好了，可以及时通知管理员给服务器消暑：）
+&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->Ganglia是最好的网格或者群集的监控软件，不过当你用它的使用也要注意到下面这个问题：&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->What does Ganglia not provide?&lt;!-- raw HTML omitted -->Ganglia does not attempt to address service monitoring or reporting (unlike Nagios). So far, we have not come across a single monitoring solution that addresses all of our needs effectively.&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->上面所说的服务监控是说，它的特点不是想Nagios和OpenNMS那样对服务器系统做非常全面细致的监控，它默认的监控指标比较少不过对于监控网格或者群集这种数量巨大的对象来说这些比较经典的指标也够用了，特别是对服务器的可用性，CUP、RAM，网络资源利用率和工作负载等数据的采集也比较够用了。如果你使用它来监控数量不是很多服务器的话，你可以使用它的可扩展性加入任何想监控的KPI。我最喜欢的还是它能把服务做分组，而且垂直的方向上可以加N层的嵌套；这种组织方式能比较好的适用于业务系统众多而复杂的数据中心。&lt;/li>
+&lt;/ul></description></item><item><title>Ganglia install and configure</title><link>https://martinliu.cn/2008/05/24/ganglia-install-and-configure/</link><pubDate>Sat, 24 May 2008 02:15:27 +0000</pubDate><guid>https://martinliu.cn/2008/05/24/ganglia-install-and-configure/</guid><description>&lt;p>我准备安装的版本是 ganglia-3.0.7 ， 参考的安装文档是&lt;a class="link" href="http://www.linuxsir.org/bbs/thread309837.html" target="_blank" rel="noopener"
+>http://www.linuxsir.org/bbs/thread309837.html&lt;/a>&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->rpm 的安装会比较省事。rpm 安装都会很正常，不过在 Suse 下面需要注意一下两点：&lt;!-- raw HTML omitted -->&lt;/p>
+&lt;p>&lt;!-- raw HTML omitted -->&lt;/p>
+&lt;ul>
+&lt;li>gmond和gmated的启动脚本不是rpm包中默认装上的那个，那个脚本适用于redhat linux；下载源码编译之后在gmond/ gmated/的文件夹里有后缀为 .SuSE的哪两个文件才对。
+&lt;!-- raw HTML omitted -->&lt;/li>
+&lt;li>rpm吧gmated的web界面默认安装路径是/var/www/http/ ，SuSE下的apache的路径是 /srv/www/htdoc/；安装完后copy或者连接过来
+&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->配置：&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->&lt;/li>
+&lt;li>gmond.conf 更具我参考的安装文档产生这个文件的命令是 gmond -t &amp;gt; /etc/gmond.conf；rpm安装包中有这个文件，如果需要恢复到默认状态可以使用这个命令。
+&lt;!-- raw HTML omitted -->&lt;/li>
+&lt;li>gmated.conf 是服务器端的主要配置文件，详细阅读一下源码包中的那个html文件对这个文件的配置会有帮助
+&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->安装过程中出现的问题如下：在启动gmond的时候启动失败，debug一下可以看到下面的错误。&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->sles:~ # gmond &amp;ndash;debug=9&lt;!-- raw HTML omitted -->slurpfile() open() error on file /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq: No such file or directory&lt;!-- raw HTML omitted -->udp_recv_channel mcast_join=239.2.11.71 mcast_if=NULL port=8649 bind=239.2.11.71&lt;!-- raw HTML omitted -->Error creating multicast server mcast_join=239.2.11.71 port=8649 mcast_if=NULL family=&amp;lsquo;inet4&amp;rsquo;. Exiting.&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->在所有虚拟机（host-only 网络设置）上都遇到这个错误。一次一个NAT网络的虚机上正常&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->至今觉得这是一个网络的问题，还没有想出正确的配置和解决方法。如果您有什么好建议请留言。&lt;/li>
+&lt;/ul></description></item></channel></rss>
