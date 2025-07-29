@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Pulp on Martin Liu's Blog</title><link>https://martinliu.cn/tags/pulp/</link><description>Recent content in Pulp on Martin Liu's Blog</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><lastBuildDate>Sun, 07 Jun 2015 16:35:05 +0000</lastBuildDate><atom:link href="https://martinliu.cn/tags/pulp/index.xml" rel="self" type="application/rss+xml"/><item><title>在CentOS 7上安装部署Katello2.2</title><link>https://martinliu.cn/2015/06/07/e59ca8centos-7e4b88ae5ae89e8a385e983a8e7bdb2katello2-2/</link><pubDate>Sun, 07 Jun 2015 16:35:05 +0000</pubDate><guid>https://martinliu.cn/2015/06/07/e59ca8centos-7e4b88ae5ae89e8a385e983a8e7bdb2katello2-2/</guid><description>&lt;p>Katello 的系统架构如下图：&lt;/p>
+&lt;p>&lt;img src="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2015/06/katello-arch-diagram.png"
+loading="lazy"
+alt="katello-arch-diagram"
+>&lt;/p>
+&lt;p>Katell 系统是一个复合型开源项目，是 Pulp, Candlepin 和 Foreman 的组合。Foreman 默认使用 Puppet 作配置管理。&lt;/p>
+&lt;p>它的安装文档见官方手册：&lt;a class="link" href="http://www.katello.org/docs/2.2/installation/index.html" target="_blank" rel="noopener"
+>http://www.katello.org/docs/2.2/installation/index.html&lt;/a>&lt;/p>
+&lt;p>为了简化安装，请下在本站提供的 CentOS7 完美安装模板。使用它来创建一个虚拟机，6GB 内存，2VCPU；网络上为了方便，请在 virt-manger 中新建如下所示的网络。&lt;/p>
+&lt;p>&lt;img src="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2015/06/QEMU-KVM-Connection-Details_006.png"
+loading="lazy"
+alt="QEMU-KVM Connection Details_006"
+>&lt;/p>
+&lt;p>虚拟机启动之后，确保 host 能正常联网。启动刚才创建的虚拟机，配置好 IP，ping 外网网站，确保它能正常联网即可。其它安装命令如下：&lt;/p>
+&lt;p>[bash]&lt;/p>
+&lt;p>yum -y localinstall &lt;a class="link" href="http://fedorapeople.org/groups/katello/releases/yum/2.2/katello/RHEL/7Server/x86_64/katello-repos-latest.rpm" target="_blank" rel="noopener"
+>http://fedorapeople.org/groups/katello/releases/yum/2.2/katello/RHEL/7Server/x86_64/katello-repos-latest.rpm&lt;/a>
+yum -y localinstall &lt;a class="link" href="http://yum.theforeman.org/releases/1.8/el7/x86_64/foreman-release.rpm" target="_blank" rel="noopener"
+>http://yum.theforeman.org/releases/1.8/el7/x86_64/foreman-release.rpm&lt;/a>
+yum -y localinstall &lt;a class="link" href="http://yum.puppetlabs.com/puppetlabs-release-el-7.noarch.rpm" target="_blank" rel="noopener"
+>http://yum.puppetlabs.com/puppetlabs-release-el-7.noarch.rpm&lt;/a>
+yum -y localinstall &lt;a class="link" href="http://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm" target="_blank" rel="noopener"
+>http://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm&lt;/a>
+yum -y install foreman-release-scl&lt;/p>
+&lt;p>yum -y install katello&lt;/p>
+&lt;p>katello-installer -v &lt;br>
+&amp;ndash;foreman-admin-username admin &lt;br>
+&amp;ndash;foreman-admin-password smartvm &lt;br>
+&amp;ndash;capsule-dns true &lt;br>
+&amp;ndash;capsule-dns-interface eth0 &lt;br>
+&amp;ndash;capsule-dns-zone xenlab.com &lt;br>
+&amp;ndash;capsule-dns-forwarders 192.168.10.1 &lt;br>
+&amp;ndash;capsule-dns-reverse 10.168.192.in-addr.arpa &lt;br>
+&amp;ndash;capsule-dhcp true &lt;br>
+&amp;ndash;capsule-dhcp-interface eth0 &lt;br>
+&amp;ndash;capsule-dhcp-range &amp;ldquo;192.168.10.100 192.168.10.240&amp;rdquo; &lt;br>
+&amp;ndash;capsule-dhcp-gateway 192.168.10.1 &lt;br>
+&amp;ndash;capsule-dhcp-nameservers 192.168.10.10 &lt;br>
+&amp;ndash;capsule-tftp true &lt;br>
+&amp;ndash;capsule-tftp-servername $(hostname) &lt;br>
+&amp;ndash;capsule-puppet true &lt;br>
+&amp;ndash;capsule-puppetca true&lt;/p>
+&lt;p>[/bash]&lt;/p>
+&lt;p>以上的安装命令如果成功，katello 服务器将具有一下功能：&lt;/p>
+&lt;ol>
+&lt;li>
+&lt;p>Foreman 服务器：用于自动化网络安装 linux 系统&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Puppet Master 服务器&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Repos 管理服务器&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>DNS，DHCP，PXE 服务器&lt;/p>
+&lt;/li>
+&lt;/ol>
+&lt;p>安装成功之后，使用默认的用户名和密码就可以登陆了。&lt;/p></description></item></channel></rss>
