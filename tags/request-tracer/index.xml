@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Request Tracer on Martin Liu's Blog</title><link>https://martinliu.cn/tags/request-tracer/</link><description>Recent content in Request Tracer on Martin Liu's Blog</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><lastBuildDate>Mon, 21 Apr 2008 02:16:20 +0000</lastBuildDate><atom:link href="https://martinliu.cn/tags/request-tracer/index.xml" rel="self" type="application/rss+xml"/><item><title>Open Source Ticket Request System - OTRS 2.2.6</title><link>https://martinliu.cn/2008/04/21/open-source-ticket-request-system-otrs-226/</link><pubDate>Mon, 21 Apr 2008 02:16:20 +0000</pubDate><guid>https://martinliu.cn/2008/04/21/open-source-ticket-request-system-otrs-226/</guid><description>&lt;p>I made a OTRS 2.2.6 virtual machine for anyone who wants to test both OTRS and OTRS::ITSM. It was built on OpenSUSE 10.2, including OTRS 2.2.6 and OTRS::ITSM 1.0.94. OTRS::ITSM implements ITIL (R) focused IT service management. OTRS::ITSM 1.0.94 is still on Beta, you might have some bugs when using this virtual machine. Please download from my box.net, if you have an comment please just let me know. I&amp;rsquo;d like to invite you to improve this virtual machine if you have any good ideal.&lt;/p>
+&lt;p>&lt;a class="link" href="http://demo.wholog.net/OSS.rar" target="_blank" rel="noopener"
+>Download it from here&lt;/a> &lt;a class="link" href="http://demo.wholog.net/OSS.rar" target="_blank" rel="noopener"
+>点此下载。 &lt;/a>&lt;a class="link" href="http://demo.wholog.net/OSS.rar" target="_blank" rel="noopener"
+>This source is not available any longer. I will offer it by DVD. 这个地址已经无法下载，请关注我即将推出的 DVD 版虚机。&lt;/a>&lt;/p>
+&lt;p>&lt;strong>Thanks &lt;a class="link" href="http://www.bigyue.com" target="_blank" rel="noopener"
+>BigYue.com&lt;/a> for donated upload space. 感谢**&lt;/strong>&lt;a class="link" href="http://www.bigyue.com" target="_blank" rel="noopener"
+>BigYue.com&lt;/a>*&lt;strong>*的空间捐助。&lt;/strong>&lt;/p>
+&lt;p>&lt;strong>Credentials 登录密码如下&lt;/strong>&lt;/p>
+&lt;ul>
+&lt;li>OpenSuSE 10.2 : username / password is &amp;ldquo;root/ca1234&amp;rdquo;&lt;/li>
+&lt;li>MySQL : username / password is &amp;ldquo;root/ &amp;quot;&lt;/li>
+&lt;li>OTRS : admin username and password is &lt;a class="link" href="mailto:root@localhost/root" >root@localhost/root&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;p>&lt;strong>Run 运行压缩文件中的虚拟机&lt;/strong>&lt;/p>
+&lt;ol>
+&lt;li>
+&lt;p>Download and install VM Player, the machine should have 1GB RAM at least.&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Un-zip OSS.rar in a partition, freespace must be 2.5+ GB.&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Double MartinLiu.cn.vmx and power on this machine.&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Click &amp;ldquo;keep&amp;rdquo; and OK button when you get a popup box。&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>The network connection of virtual machine is &amp;lsquo;bridged&amp;rsquo;. You will see the ip address of this virtual machine at 5th line one the top of boot screen. NOTE: you should have DHCP server on your network.&lt;/p>
+&lt;/li>
+&lt;/ol>
+&lt;p>&lt;strong>Access 访问虚拟机&lt;/strong>&lt;/p>
+&lt;ul>
+&lt;li>SSH to it.&lt;/li>
+&lt;li>Agent login page: &lt;a class="link" href="http://ip_address/otrs/index.pl" target="_blank" rel="noopener"
+>http://ip_address/otrs/index.pl&lt;/a>&lt;/li>
+&lt;li>Customer login page: &lt;a class="link" href="http://ip_address/otrs/customer.pl" target="_blank" rel="noopener"
+>http://ip_address/otrs/customer.pl&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;p>&lt;strong>Tips of OTRS installation 安装经验&lt;/strong>&lt;/p>
+&lt;ul>
+&lt;li>Apache should have perl mod, configure perl for apache before you install OTRS. 这是一个 Perl 写的程序，所以在安装之前最好吧 apache 上的 perl 配置好，确认 apache 能运行 perl 的东西&lt;/li>
+&lt;li>Make sure your database accepts packages over 5 MB in size. Increase max_allowed_packet in my.cnf to 20MB. 修改 my.cnf 中的 max_allowed_packet 参数到 20MB，否则 ITSM 的包安装有问题。&lt;/li>
+&lt;li>OTRS 需要一写附件的 perl 包的支持，手头最好有操作系统的安装 dvd 或者直接从网上安装。&lt;/li>
+&lt;/ul>
+&lt;p>&lt;strong>Usage 用途&lt;/strong>&lt;/p>
+&lt;ul>
+&lt;li>You can use it for any purpose, if you need any support you will contact OTRS。你可以用于任何用途，本博客不提供技术支持，请联系 OTRS 的邮件列表。&lt;/li>
+&lt;li>ITIL training, OTRS::ITSM implements ITIL (R) focused IT service management. 可以用于 ITIL 的培训，它能演示：incident management, problem management, configuration management 等。&lt;/li>
+&lt;li>This virtual machine comes with ABSOLUTELY NO WARRANTY. DO NOT USE it for production. 仅供测试使用，切勿用于生产环境。&lt;/li>
+&lt;/ul>
+&lt;p>If you like OTRS, you may try &lt;a class="link" href="http://www.bestpractical.com/rt/" target="_blank" rel="noopener"
+>Request Tracer&lt;/a>&lt;/p>
+&lt;p>今天一个网友告诉我另外一个开源的类似系统&lt;a class="link" href="http://www.bestpractical.com/rt/" target="_blank" rel="noopener"
+>Request Tracer&lt;/a> ，有空的话回头也试试。&lt;/p></description></item></channel></rss>
