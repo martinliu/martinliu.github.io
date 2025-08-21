@@ -19,6 +19,8 @@ jobs:
       contents: read
       pages: write
       id-token: write
+      issues: write
+      pull-requests: write
     
     concurrency:
       group: "pages-${{ github.ref }}"
@@ -99,6 +101,7 @@ jobs:
               📝 **Pull Request**: #${number}
               🌐 **Preview URL**: https://${owner}.github.io/${repo}/
               ⏱️ **Built at**: ${new Date().toISOString()}
+              🔧 **Branch**: ${context.payload.pull_request.head.ref}
               
               The preview has been deployed and is ready for review!`
             });
