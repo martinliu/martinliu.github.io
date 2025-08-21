@@ -11,7 +11,6 @@ tags:
     - AWS
     - Python
     - Serverless
-    - Data Pipeline
     - DynamoDB
     - DataBrew
     - S3

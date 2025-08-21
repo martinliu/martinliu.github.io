@@ -1,6 +1,6 @@
 ---
 title: "Grafana Cloud 推出多项更新：AI 驱动工具、秘钥管理强化安全性，以及更多功能"
-description: 
+description: 如果你之前没有关注，本文是每月一次的 Grafana Cloud 最新功能汇总。你也可以在 Grafana Cloud 更新日志中查看所有新增功能。
 date: 2025-08-21T16:55:49+08:00
 image: cloud-updates-aug-2025.png
 math: 
@@ -16,8 +16,6 @@ tags: ["Grafana", "AI", "Secrets Management", "Synthetic Monitoring", "Jenkins"]
 >From: [Grafana Labs Blog](https://grafana.com/blog/2025/08/20/grafana-cloud-updates-onboard-teams-with-new-ai-powered-tooling-secrets-management-for-enhanced-security-and-more/)
 
 我们持续为 Grafana Cloud 推出实用更新和新特性。Grafana Cloud 是一款由开源的 Grafana LGTM Stack 提供支持的全托管可观测性平台，其中包括 [Loki](https://grafana.com/oss/loki/?pg=blog&plcmt=body-txt)（日志）、[Grafana](https://grafana.com/oss/grafana/?pg=blog&plcmt=body-txt)（可视化）、[Tempo](https://grafana.com/oss/tempo/?pg=blog&plcmt=body-txt)（链路追踪）和 [Mimir](https://grafana.com/oss/mimir/?pg=blog&plcmt=body-txt)（指标监控）。
-
-如果你之前没有关注，本文是每月一次的 Grafana Cloud 最新功能汇总。你也可以在 [Grafana Cloud 更新日志](https://grafana.com/docs/grafana-cloud/whats-new/?pg=blog&plcmt=body-txt) 中查看所有新增功能。
 
 还不是 Grafana Cloud 用户？[立即注册](https://grafana.com/auth/sign-up/create-user/?pg=blog&plcmt=body-txt) 账户，使用我们的 Cloud Free 免费计划即可试用所有功能。
 
