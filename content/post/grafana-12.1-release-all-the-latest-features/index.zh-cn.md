@@ -9,7 +9,7 @@ hidden: false
 comments: true
 draft: false
 slug: grafana-12-1-release-all-the-latest-features
-categories: ["DevOps"]
+categories: ["SRE"]
 tags: ["Grafana", "DevOps", "监控", "告警", "数据可视化"]
 ---
 
