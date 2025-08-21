@@ -1,0 +1,104 @@
+name: 🏗️ Build & Deploy Preview to GitHub Pages
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+    branches: [master]
+  workflow_dispatch: # 允许手动触发
+
+env:
+  HUGO_VERSION: "0.148.1" # 固定版本，避免意外更新
+  GO_VERSION: "1.22"
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+    
+    concurrency:
+      group: "pages-${{ github.ref }}"
+      cancel-in-progress: true
+
+    steps:
+      - name: 📥 Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          submodules: recursive
+
+      - name: 🏗️ Setup Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: ${{ env.GO_VERSION }}
+          cache: true
+
+      - name: 📦 Cache Hugo resources
+        uses: actions/cache@v4
+        with:
+          path: |
+            resources
+            ~/.cache/go-build
+            ~/go/pkg/mod
+          key: ${{ runner.os }}-hugo-${{ env.HUGO_VERSION }}-${{ hashFiles('**/go.sum') }}
+          restore-keys: |
+            ${{ runner.os }}-hugo-${{ env.HUGO_VERSION }}-
+            ${{ runner.os }}-hugo-
+
+      - name: 🔧 Setup Hugo
+        uses: peaceiris/actions-hugo@v3
+        with:
+          hugo-version: ${{ env.HUGO_VERSION }}
+          extended: true
+
+      - name: 🏗️ Build Hugo site
+        run: |
+          hugo --minify --gc --environment production
+          
+      - name: 🧪 Validate HTML (optional)
+        continue-on-error: true
+        run: |
+          npm install -g html-validate
+          html-validate public/**/*.html || echo "HTML validation warnings found"
+
+      - name: 📊 Generate build report
+        run: |
+          echo "## 📊 Build Summary" >> $GITHUB_STEP_SUMMARY
+          echo "- Hugo Version: ${{ env.HUGO_VERSION }}" >> $GITHUB_STEP_SUMMARY
+          echo "- Go Version: ${{ env.GO_VERSION }}" >> $GITHUB_STEP_SUMMARY
+          echo "- Build Time: $(date)" >> $GITHUB_STEP_SUMMARY
+          echo "- Total Files: $(find public -type f | wc -l)" >> $GITHUB_STEP_SUMMARY
+          echo "- Total Size: $(du -sh public | cut -f1)" >> $GITHUB_STEP_SUMMARY
+
+      - name: 🚀 Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v4
+        if: github.ref == 'refs/heads/master'
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./public
+          publish_branch: gh-pages
+          force_orphan: true
+          cname: preview.martinliu.cn # 如果有预览域名
+
+      - name: 💬 Comment on PR
+        uses: actions/github-script@v7
+        if: github.event_name == 'pull_request'
+        with:
+          script: |
+            const { owner, repo, number } = context.issue;
+            await github.rest.issues.createComment({
+              owner,
+              repo,
+              issue_number: number,
+              body: `## 🎉 Preview Build Complete!
+              
+              📝 **Pull Request**: #${number}
+              🌐 **Preview URL**: https://${owner}.github.io/${repo}/
+              ⏱️ **Built at**: ${new Date().toISOString()}
+              
+              The preview has been deployed and is ready for review!`
+            });

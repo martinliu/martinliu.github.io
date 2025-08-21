@@ -1,19 +1,41 @@
-# 触发 CloudFlare 生产环境部署 
-name: CD - Push to PRD*CloudFlare
+# DISABLED - 2025-08-21
+# This workflow has been replaced by page-deploy-improved.yml
+# Keeping this file for reference
 
-# 仅在 pr 合并到主干成功以后
-on:
-  push:
-    branches:
-      - master
+# Original workflow name: CD - Push to PRD*CloudFlare
+# Original purpose: Trigger CloudFlare production environment deployment
+
+# To re-enable, uncomment the following lines and comment out the above
+
+name: DISABLED-page-deploy
+
+# Disable all triggers
+on: []
 
 jobs:
-  
-  triger-CloudFlare-hook-after-merge-success:
-    # 将后续的所有工作步骤都运行在最新版的 ubuntu 操作系统容器中
+  disabled:
     runs-on: ubuntu-latest
-
     steps:
-      # Step 1 - CloudFlare发布到 Pages CDN 的生产环境，CloudFlare 将 gh-pages 作为部署目标
-      - name: Triger CloudFlare hook
-        run: curl -X POST "https://api.cloudflare.com/client/v4/pages/webhooks/deploy_hooks/b1b6b15d-b582-4304-bb0a-238b32bc3eb7"
+      - name: This workflow is disabled
+        run: echo "This workflow has been disabled. Use page-deploy-improved.yml instead."
+
+# Original workflow content:
+# 触发 CloudFlare 生产环境部署 
+# name: CD - Push to PRD*CloudFlare
+
+# 仅在 pr 合并到主干成功以后
+# on:
+#   push:
+#     branches:
+#       - master
+
+# jobs:
+  
+#   triger-CloudFlare-hook-after-merge-success:
+#     # 将后续的所有工作步骤都运行在最新版的 ubuntu 操作系统容器中
+#     runs-on: ubuntu-latest
+
+#     steps:
+#       # Step 1 - CloudFlare发布到 Pages CDN 的生产环境，CloudFlare 将 gh-pages 作为部署目标
+#       - name: Triger CloudFlare hook
+#         run: curl -X POST "https://api.cloudflare.com/client/v4/pages/webhooks/deploy_hooks/b1b6b15d-b582-4304-bb0a-238b32bc3eb7"
