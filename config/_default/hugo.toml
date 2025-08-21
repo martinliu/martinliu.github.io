@@ -1,0 +1,51 @@
+# Hugo 性能优化配置
+[imaging]
+  # 启用图片优化
+  resampleFilter = "Lanczos"
+  quality = 85
+  anchor = "Smart"
+
+[minify]
+  disableCSS = false
+  disableHTML = false
+  disableJS = false
+  disableJSON = false
+  disableSVG = false
+  disableXML = false
+  minifyOutput = true
+
+  [minify.tdewolff]
+    [minify.tdewolff.css]
+      keepCSS2 = false
+      precision = 1
+    [minify.tdewolff.html]
+      keepComments = false
+      keepWhitespace = false
+    [minify.tdewolff.js]
+      precision = 1
+
+[caches]
+  [caches.getjson]
+    dir = ":cacheDir/:project"
+    maxAge = "10m"
+  [caches.getcsv]
+    dir = ":cacheDir/:project"
+    maxAge = "10m"
+  [caches.images]
+    dir = ":cacheDir/:project"
+    maxAge = "720h"
+  [caches.assets]
+    dir = ":cacheDir/:project"
+    maxAge = "12h"
+
+# 启用缓存控制
+[server]
+  [[server.headers]]
+    for = "/**"
+    [server.headers.values]
+      Cache-Control = "public, max-age=31536000"
+      
+  [[server.headers]]
+    for = "/*.{js,css}"
+    [server.headers.values]
+      Cache-Control = "public, max-age=31536000, immutable"
