@@ -62,7 +62,7 @@ jobs:
                   HUGO_CACHEDIR: /tmp/hugo_cache
               run: |
                   mkdir -p /tmp/hugo_cache
-                  hugo --minify --gc --enableGitInfo --cleanDestinationDir --timeout 10m --verbose
+                  hugo --minify --gc --enableGitInfo --cleanDestinationDir --logLevel info
 
             - name: Deploy 🚀
               uses: JamesIves/github-pages-deploy-action@v4.6.8
