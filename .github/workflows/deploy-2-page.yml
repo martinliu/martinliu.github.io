@@ -5,6 +5,13 @@ on:
         branches: [master]
     pull_request:
         branches: [master]
+    workflow_dispatch:
+        inputs:
+            enable_optimization:
+                description: '启用完整优化'
+                required: false
+                default: 'true'
+                type: boolean
 
 env:
     HUGO_VERSION: '0.148.2'
@@ -55,6 +62,23 @@ jobs:
                   hugo-version: ${{ env.HUGO_VERSION }}
                   extended: true
 
+            - name: Cache optimization tools
+              if: github.ref == 'refs/heads/master' || github.event.inputs.enable_optimization == 'true'
+              uses: actions/cache@v4
+              with:
+                  path: |
+                      /usr/bin/cwebp
+                      /usr/bin/optipng
+                      /usr/bin/jpegoptim
+                      /usr/bin/brotli
+                  key: optimization-tools-${{ runner.os }}
+
+            - name: Install optimization tools
+              if: github.ref == 'refs/heads/master' || github.event.inputs.enable_optimization == 'true'
+              run: |
+                  sudo apt-get update
+                  sudo apt-get install -y webp optipng jpegoptim brotli
+
             - name: Build
               env:
                   HUGO_ENV: production
@@ -63,6 +87,59 @@ jobs:
               run: |
                   mkdir -p /tmp/hugo_cache
                   hugo --minify --gc --enableGitInfo --cleanDestinationDir --logLevel info
+
+            - name: Optimize images
+              if: github.ref == 'refs/heads/master' || github.event.inputs.enable_optimization == 'true'
+              run: |
+                  echo "🖼️ 开始图片优化..."
+                  
+                  # 转换为 WebP 格式
+                  find public -name "*.jpg" -o -name "*.jpeg" -o -name "*.png" | while read img; do
+                      webp_name="${img%.*}.webp"
+                      if [ ! -f "$webp_name" ]; then
+                          cwebp -q 85 "$img" -o "$webp_name"
+                          echo "转换: $img -> $webp_name"
+                      fi
+                  done
+                  
+                  # 压缩 PNG
+                  find public -name "*.png" -exec optipng -o2 {} \;
+                  
+                  # 压缩 JPEG  
+                  find public -name "*.jpg" -o -name "*.jpeg" -exec jpegoptim --size=85% {} \;
+
+            - name: Generate compressed files
+              if: github.ref == 'refs/heads/master' || github.event.inputs.enable_optimization == 'true'
+              run: |
+                  echo "🗜️ 生成压缩文件..."
+                  
+                  # 生成 Gzip 文件
+                  find public -type f \( -name "*.html" -o -name "*.css" -o -name "*.js" -o -name "*.xml" -o -name "*.json" \) | while read file; do
+                      gzip -9 -c "$file" > "$file.gz"
+                  done
+                  
+                  # 生成 Brotli 文件
+                  find public -type f \( -name "*.html" -o -name "*.css" -o -name "*.js" -o -name "*.xml" -o -name "*.json" \) | while read file; do
+                      brotli -9 -c "$file" > "$file.br"
+                  done
+
+            - name: Build statistics
+              if: github.ref == 'refs/heads/master' || github.event.inputs.enable_optimization == 'true'
+              run: |
+                  echo "📊 构建统计..."
+                  echo "总文件数: $(find public -type f | wc -l)"
+                  echo "总大小: $(du -sh public | cut -f1)"
+                  echo ""
+                  echo "大于 1MB 的文件:"
+                  find public -type f -size +1M -exec ls -lh {} \; | head -5 || echo "无"
+                  echo ""
+                  echo "压缩效果统计:"
+                  original_size=$(find public -name "*.html" -o -name "*.css" -o -name "*.js" | xargs du -c | tail -1 | cut -f1)
+                  gzip_files=$(find public -name "*.gz" | wc -l)
+                  brotli_files=$(find public -name "*.br" | wc -l)
+                  echo "原始文件总大小: ${original_size}KB"
+                  echo "Gzip 文件数: $gzip_files"
+                  echo "Brotli 文件数: $brotli_files"
 
             - name: Deploy 🚀
               uses: JamesIves/github-pages-deploy-action@v4.6.8
