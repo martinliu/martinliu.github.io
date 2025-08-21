@@ -6,27 +6,32 @@ on:
     pull_request:
         branches: [master]
 
+env:
+    HUGO_VERSION: '0.148.2'
+
 jobs:
     build:
         runs-on: ubuntu-24.04
 
         steps:
-            - uses: actions/checkout@v2
+            - name: Checkout
+              uses: actions/checkout@v4
+              with:
+                  submodules: recursive
+                  fetch-depth: 0
 
-            - name: Cache Hugo resources
+            - name: Setup Go
+              uses: actions/setup-go@v5
+              with:
+                  go-version: '1.21'
+                  
+            - name: Cache Hugo binary
               uses: actions/cache@v4
-              env:
-                  cache-name: cache-hugo-resources
               with:
-                  path: resources
-                  key: ${{ env.cache-name }}
-
-            - uses: actions/setup-go@v2
-              with:
-                  go-version: "^1.17.0"
-            - run: go version
-
-            - name: Cache Go Modules
+                  path: ~/hugo
+                  key: ${{ runner.os }}-hugo-${{ env.HUGO_VERSION }}
+                  
+            - name: Cache Go modules
               uses: actions/cache@v4
               with:
                   path: |
@@ -36,17 +41,31 @@ jobs:
                   restore-keys: |
                       ${{ runner.os }}-go-
 
-            - name: Setup Hugo
-              uses: peaceiris/actions-hugo@v2
+            - name: Cache Hugo resources
+              uses: actions/cache@v4
               with:
-                  hugo-version: "latest"
+                  path: resources
+                  key: hugo-resources-${{ hashFiles('assets/**') }}
+                  restore-keys: |
+                      hugo-resources-
+
+            - name: Setup Hugo
+              uses: peaceiris/actions-hugo@v3
+              with:
+                  hugo-version: ${{ env.HUGO_VERSION }}
                   extended: true
 
             - name: Build
-              run: hugo --minify --gc --enableGitInfo --cleanDestinationDir
+              env:
+                  HUGO_ENV: production
+                  NODE_ENV: production
+                  HUGO_CACHEDIR: /tmp/hugo_cache
+              run: |
+                  mkdir -p /tmp/hugo_cache
+                  hugo --minify --gc --enableGitInfo --cleanDestinationDir --timeout 10m --verbose
 
             - name: Deploy 🚀
-              uses: JamesIves/github-pages-deploy-action@4.1.4
+              uses: JamesIves/github-pages-deploy-action@v4.6.8
               with:
                   branch: gh-pages
                   folder: public
