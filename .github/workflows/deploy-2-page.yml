@@ -113,14 +113,20 @@ jobs:
               run: |
                   echo "🗜️ 生成压缩文件..."
                   
-                  # 生成 Gzip 文件
+                  # 生成 Gzip 文件（增量处理）
                   find public -type f \( -name "*.html" -o -name "*.css" -o -name "*.js" -o -name "*.xml" -o -name "*.json" \) | while read file; do
-                      gzip -9 -c "$file" > "$file.gz"
+                      if [ ! -f "$file.gz" ] || [ "$file" -nt "$file.gz" ]; then
+                          gzip -9 -c "$file" > "$file.gz"
+                          echo "Gzip: $file"
+                      fi
                   done
                   
-                  # 生成 Brotli 文件
+                  # 生成 Brotli 文件（增量处理）
                   find public -type f \( -name "*.html" -o -name "*.css" -o -name "*.js" -o -name "*.xml" -o -name "*.json" \) | while read file; do
-                      brotli -9 -c "$file" > "$file.br"
+                      if [ ! -f "$file.br" ] || [ "$file" -nt "$file.br" ]; then
+                          brotli -9 -c "$file" > "$file.br"
+                          echo "Brotli: $file"
+                      fi
                   done
 
             - name: Build statistics
