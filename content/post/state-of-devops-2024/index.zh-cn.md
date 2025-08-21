@@ -9,6 +9,7 @@ categories:
 tags:
     - DORA
 comments: true
+draft: true
 toc: true
 
 ---

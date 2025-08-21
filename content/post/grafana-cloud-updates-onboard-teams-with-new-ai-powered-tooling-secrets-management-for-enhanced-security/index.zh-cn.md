@@ -1,5 +1,5 @@
 ---
-title: "Grafana Cloud 推出多项更新：AI 驱动工具、机密管理强化安全性，以及更多功能"
+title: "Grafana Cloud 推出多项更新：AI 驱动工具、秘钥管理强化安全性，以及更多功能"
 description: 
 date: 2025-08-21T16:55:49+08:00
 image: cloud-updates-aug-2025.png

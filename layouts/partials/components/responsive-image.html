@@ -1,0 +1,65 @@
+{{/*
+  优化的图片组件
+  支持 WebP、懒加载、响应式图片
+*/}}
+
+{{ $src := .src }}
+{{ $alt := .alt | default "图片" }}
+{{ $class := .class | default "" }}
+{{ $width := .width | default 800 }}
+{{ $height := .height | default 600 }}
+
+{{ $image := resources.Get $src }}
+{{ if $image }}
+  {{ $webp := $image.Resize (printf "%dx%d webp" $width $height) }}
+  {{ $jpeg := $image.Resize (printf "%dx%d jpeg" $width $height) }}
+  {{ $small := $image.Resize "400x300 jpeg" }}
+  
+  <picture class="responsive-image {{ $class }}">
+    {{/* WebP 格式 */}}
+    <source 
+      srcset="{{ $webp.RelPermalink }}" 
+      type="image/webp"
+      media="(min-width: 768px)">
+    
+    {{/* 小屏幕 WebP */}}
+    <source 
+      srcset="{{ ($image.Resize "400x300 webp").RelPermalink }}" 
+      type="image/webp"
+      media="(max-width: 767px)">
+    
+    {{/* 备用 JPEG */}}
+    <source 
+      srcset="{{ $jpeg.RelPermalink }}" 
+      type="image/jpeg"
+      media="(min-width: 768px)">
+    
+    {{/* 小屏幕 JPEG */}}
+    <source 
+      srcset="{{ $small.RelPermalink }}" 
+      type="image/jpeg"
+      media="(max-width: 767px)">
+    
+    {{/* 默认图片 */}}
+    <img 
+      src="{{ $small.RelPermalink }}"
+      data-src="{{ $jpeg.RelPermalink }}"
+      alt="{{ $alt }}"
+      width="{{ $width }}"
+      height="{{ $height }}"
+      loading="lazy"
+      decoding="async"
+      class="lazyload {{ $class }}"
+      style="background-color: #f5f5f5;">
+  </picture>
+{{ else }}
+  {{/* 备用方案 */}}
+  <img 
+    src="{{ $src | relURL }}"
+    alt="{{ $alt }}"
+    width="{{ $width }}"
+    height="{{ $height }}"
+    loading="lazy"
+    decoding="async"
+    class="lazyload {{ $class }}">
+{{ end }}
