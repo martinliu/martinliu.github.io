@@ -131,13 +131,17 @@ jobs:
                   echo "总大小: $(du -sh public | cut -f1)"
                   echo ""
                   echo "大于 1MB 的文件:"
-                  find public -type f -size +1M -exec ls -lh {} \; | head -5 || echo "无"
+                  find public -type f -size +1M -exec ls -lh {} \; 2>/dev/null | head -5 || echo "无"
                   echo ""
                   echo "压缩效果统计:"
-                  original_size=$(find public -name "*.html" -o -name "*.css" -o -name "*.js" | xargs du -c | tail -1 | cut -f1)
+                  if find public -name "*.html" -o -name "*.css" -o -name "*.js" | xargs -I {} du -k {} 2>/dev/null | awk '{sum+=$1} END {print sum}' > /tmp/size.txt; then
+                      original_size=$(cat /tmp/size.txt)
+                      echo "原始文件总大小: ${original_size}KB"
+                  else
+                      echo "原始文件总大小: 计算中遇到路径问题，跳过"
+                  fi
                   gzip_files=$(find public -name "*.gz" | wc -l)
                   brotli_files=$(find public -name "*.br" | wc -l)
-                  echo "原始文件总大小: ${original_size}KB"
                   echo "Gzip 文件数: $gzip_files"
                   echo "Brotli 文件数: $brotli_files"
 
