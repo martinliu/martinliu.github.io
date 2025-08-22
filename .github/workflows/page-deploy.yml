@@ -1,19 +1,107 @@
 # 触发 CloudFlare 生产环境部署 
 name: CD - Push to PRD*CloudFlare
 
-# 仅在 pr 合并到主干成功以后
+# 在 GitHub Pages 部署成功后自动触发
 on:
-  push:
+  workflow_run:
+    workflows: ["Deploy to Github Pages (Debug Mode)"]
+    types:
+      - completed
     branches:
       - master
+#      - update-grafana  # 调试模式支持
+  # 保留手动触发选项
+  workflow_dispatch:
+    inputs:
+      force_deploy:
+        description: '强制部署到生产环境'
+        required: false
+        default: false
+        type: boolean
 
 jobs:
   
-  triger-CloudFlare-hook-after-merge-success:
-    # 将后续的所有工作步骤都运行在最新版的 ubuntu 操作系统容器中
+  check-deployment-success:
     runs-on: ubuntu-latest
+    # 只有当前置工作流成功完成时才执行
+    if: ${{ github.event.workflow_run.conclusion == 'success' || github.event_name == 'workflow_dispatch' }}
+    
+    outputs:
+      should_deploy: ${{ steps.check.outputs.should_deploy }}
+      source_branch: ${{ steps.check.outputs.source_branch }}
+    
+    steps:
+      - name: 检查部署条件
+        id: check
+        run: |
+          echo "🔍 检查部署条件..."
+          
+          if [[ "${{ github.event_name }}" == "workflow_dispatch" ]]; then
+            echo "should_deploy=true" >> $GITHUB_OUTPUT
+            echo "source_branch=${{ github.ref_name }}" >> $GITHUB_OUTPUT
+            echo "✅ 手动触发部署"
+          elif [[ "${{ github.event.workflow_run.conclusion }}" == "success" ]]; then
+            branch="${{ github.event.workflow_run.head_branch }}"
+            echo "should_deploy=true" >> $GITHUB_OUTPUT
+            echo "source_branch=$branch" >> $GITHUB_OUTPUT
+            echo "✅ GitHub Pages 部署成功，触发 CloudFlare 部署"
+            echo "📋 源分支: $branch"
+            echo "📋 源提交: ${{ github.event.workflow_run.head_sha }}"
+          else
+            echo "should_deploy=false" >> $GITHUB_OUTPUT
+            echo "❌ 前置工作流未成功，跳过部署"
+          fi
+
+  trigger-cloudflare-deploy:
+    needs: check-deployment-success
+    runs-on: ubuntu-latest
+    if: needs.check-deployment-success.outputs.should_deploy == 'true'
 
     steps:
-      # Step 1 - CloudFlare发布到 Pages CDN 的生产环境，CloudFlare 将 gh-pages 作为部署目标
-      - name: Triger CloudFlare hook
-        run: curl -X POST "https://api.cloudflare.com/client/v4/pages/webhooks/deploy_hooks/b1b6b15d-b582-4304-bb0a-238b32bc3eb7"
+      - name: 🚀 触发 CloudFlare Pages 部署
+        id: deploy
+        run: |
+          echo "🚀 开始触发 CloudFlare Pages 部署..."
+          echo "📋 源分支: ${{ needs.check-deployment-success.outputs.source_branch }}"
+          echo "📋 触发时间: $(date -u '+%Y-%m-%d %H:%M:%S UTC')"
+          
+          # 触发 CloudFlare 部署
+          http_code=$(curl -s -o /dev/null -w "%{http_code}" -X POST \
+            "https://api.cloudflare.com/client/v4/pages/webhooks/deploy_hooks/b1b6b15d-b582-4304-bb0a-238b32bc3eb7")
+          
+          if [[ $http_code -ge 200 && $http_code -lt 300 ]]; then
+            echo "✅ CloudFlare 部署触发成功 (HTTP $http_code)"
+            echo "deploy_status=success" >> $GITHUB_OUTPUT
+          else
+            echo "❌ CloudFlare 部署触发失败 (HTTP $http_code)"
+            echo "deploy_status=failed" >> $GITHUB_OUTPUT
+            exit 1
+          fi
+
+      - name: 📊 部署摘要
+        if: always()
+        run: |
+          echo "## 🚀 CloudFlare 生产环境部署" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "| 项目 | 状态 |" >> $GITHUB_STEP_SUMMARY
+          echo "|------|------|" >> $GITHUB_STEP_SUMMARY
+          echo "| 触发状态 | ${{ steps.deploy.outputs.deploy_status == 'success' && '✅ 成功' || '❌ 失败' }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| 源分支 | ${{ needs.check-deployment-success.outputs.source_branch }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| 部署时间 | $(date -u '+%Y-%m-%d %H:%M:%S UTC') |" >> $GITHUB_STEP_SUMMARY
+          echo "| CloudFlare URL | https://martinliu.cn |" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### 📋 部署说明" >> $GITHUB_STEP_SUMMARY
+          echo "- CloudFlare Pages 将从 \`gh-pages\` 分支自动构建和部署" >> $GITHUB_STEP_SUMMARY
+          echo "- 部署完成时间通常需要 2-5 分钟" >> $GITHUB_STEP_SUMMARY
+          echo "- 全球 CDN 缓存更新可能需要额外 5-10 分钟" >> $GITHUB_STEP_SUMMARY
+
+      - name: 🔔 通知部署状态
+        if: always()
+        run: |
+          if [[ "${{ steps.deploy.outputs.deploy_status }}" == "success" ]]; then
+            echo "🎉 CloudFlare 生产环境部署已触发！"
+            echo "🌐 网站将在几分钟内更新: https://martinliu.cn"
+            echo "⏳ 请等待 CloudFlare 完成构建和全球 CDN 分发"
+          else
+            echo "💥 CloudFlare 部署触发失败，请检查配置或手动重试"
+          fi

@@ -340,6 +340,28 @@ jobs:
                       Source commit: ${{ github.sha }}
                       Workflow: ${{ github.workflow }}
                       
+            - name: Trigger CloudFlare Production Deploy
+              # 只在 master 分支或手动启用时触发生产部署
+              if: github.ref == 'refs/heads/master' || github.event.inputs.enable_optimization == 'true'
+              run: |
+                  echo "🚀 触发 CloudFlare 生产环境部署..."
+                  
+                  # 等待 GitHub Pages 部署完全生效
+                  echo "⏳ 等待 GitHub Pages 部署生效..."
+                  sleep 30
+                  
+                  # 触发 CloudFlare 部署
+                  http_code=$(curl -s -o /dev/null -w "%{http_code}" -X POST \
+                    "https://api.cloudflare.com/client/v4/pages/webhooks/deploy_hooks/b1b6b15d-b582-4304-bb0a-238b32bc3eb7")
+                  
+                  if [[ $http_code -ge 200 && $http_code -lt 300 ]]; then
+                      echo "✅ CloudFlare 生产部署触发成功 (HTTP $http_code)"
+                      echo "🌐 生产环境将在 2-5 分钟内更新: https://martinliu.cn"
+                  else
+                      echo "⚠️ CloudFlare 部署触发失败 (HTTP $http_code)"
+                      echo "💡 请手动触发或检查 webhook 配置"
+                  fi
+
             - name: Debug Info
               run: |
                   echo "🔍 调试信息："
