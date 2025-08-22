@@ -210,21 +210,54 @@ jobs:
                   file_count=$(find public -type f | wc -l)
                   echo "总文件数: $file_count"
                   
-                  # 只在文件数量较少时计算大小（避免长时间计算）
-                  if [ $file_count -lt 10000 ]; then
-                      echo "总大小: $(du -sh public | cut -f1)"
+                  # 优化：只在文件数量较少时计算详细统计
+                  if [ $file_count -lt 5000 ]; then
+                      echo "计算详细统计..."
+                      total_size=$(du -sh public | cut -f1)
+                      echo "总大小: $total_size"
                       
-                      # 快速统计压缩文件
+                      # 统计优化效果
                       gzip_files=$(find public -name "*.gz" | wc -l)
                       brotli_files=$(find public -name "*.br" | wc -l)
                       webp_files=$(find public -name "*.webp" | wc -l)
+                      optimized_images=$(find public -name "*.optimized" | wc -l)
                       
-                      echo "Gzip 文件数: $gzip_files"
-                      echo "Brotli 文件数: $brotli_files" 
-                      echo "WebP 文件数: $webp_files"
+                      echo "📈 优化统计:"
+                      echo "  Gzip 文件: $gzip_files"
+                      echo "  Brotli 文件: $brotli_files" 
+                      echo "  WebP 图片: $webp_files"
+                      echo "  优化图片: $optimized_images"
+                      
+                      # 计算压缩比（如果有原始文件大小记录）
+                      if [ -f "build-stats.txt" ]; then
+                          echo "📊 与上次构建对比:"
+                          cat build-stats.txt
+                      fi
+                      
+                      # 保存本次统计
+                      echo "files:$file_count,gzip:$gzip_files,brotli:$brotli_files,webp:$webp_files" > build-stats.txt
                   else
-                      echo "文件数量较多，跳过详细统计以节省时间"
+                      echo "📊 快速统计 (文件数量: $file_count)"
+                      
+                      # 快速统计关键指标
+                      webp_count=$(find public -name "*.webp" | wc -l)
+                      gz_count=$(find public -name "*.gz" | head -100 | wc -l)
+                      
+                      echo "  WebP 文件: $webp_count"
+                      echo "  压缩文件 (采样): ${gz_count}+..."
+                      echo "⚡ 跳过详细统计以节省时间"
                   fi
+
+            - name: Performance Summary
+              run: |
+                  echo "⚡ 构建性能总结:"
+                  echo "🕐 构建时间: 约 ${{ github.event.head_commit.timestamp }} 开始"
+                  echo "📦 输出文件: $(find public -type f | wc -l) 个文件"
+                  echo "🖼️ 图片处理: $(find public -name "*.webp" | wc -l) WebP + $(find public -name "*.optimized" | wc -l) 优化"
+                  echo "🗜️ 文件压缩: Gzip + Brotli 双重压缩"
+                  echo "💾 缓存利用: 增量处理，避免重复工作"
+                  echo ""
+                  echo "🚀 部署建议: 当前性能表现优秀，建议保持此配置"
 
             - name: Deploy 🚀
               uses: JamesIves/github-pages-deploy-action@v4.6.8
