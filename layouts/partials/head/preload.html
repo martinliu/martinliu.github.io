@@ -1,0 +1,45 @@
+{{/*
+  关键资源预加载 - 提升 FCP 和 LCP
+  在 <head> 中调用此组件
+*/}}
+
+{{/* 预连接到关键域名 */}}
+<link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preconnect" href="https://static.cloudflareinsights.com" crossorigin>
+
+{{/* DNS 预解析 */}}
+<link rel="dns-prefetch" href="//martinliu.cn">
+<link rel="dns-prefetch" href="//fonts.googleapis.com">
+<link rel="dns-prefetch" href="//fonts.gstatic.com">
+
+{{/* 关键CSS预加载 */}}
+{{ $mainCSS := resources.Get "css/main.css" }}
+{{ if $mainCSS }}
+  {{ $minCSS := $mainCSS | minify }}
+  <link rel="preload" href="{{ $minCSS.RelPermalink }}" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript><link rel="stylesheet" href="{{ $minCSS.RelPermalink }}"></noscript>
+{{ end }}
+
+{{/* 关键字体预加载 */}}
+{{ range site.Params.critical_fonts }}
+  <link rel="preload" href="{{ . }}" as="font" type="font/woff2" crossorigin>
+{{ end }}
+
+{{/* 首屏关键图片预加载 */}}
+{{ if .IsHome }}
+  {{ $heroImage := resources.Get "images/hero.jpg" }}
+  {{ if $heroImage }}
+    {{ $heroAVIF := $heroImage.Resize "1200x630 avif q90" }}
+    {{ $heroWebP := $heroImage.Resize "1200x630 webp q90" }}
+    <link rel="preload" href="{{ $heroAVIF.RelPermalink }}" as="image" type="image/avif">
+    <link rel="preload" href="{{ $heroWebP.RelPermalink }}" as="image" type="image/webp">
+  {{ end }}
+{{ end }}
+
+{{/* 关键脚本预加载 */}}
+{{ $mainJS := resources.Get "js/main.js" }}
+{{ if $mainJS }}
+  {{ $minJS := $mainJS | minify }}
+  <link rel="preload" href="{{ $minJS.RelPermalink }}" as="script">
+{{ end }}
