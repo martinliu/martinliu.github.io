@@ -1,19 +1,130 @@
 # 触发 CloudFlare 生产环境部署 
 name: CD - Push to PRD*CloudFlare
 
-# 仅在 pr 合并到主干成功以后
+# 完全手动触发，不依赖其他工作流
 on:
-  push:
-    branches:
-      - master
+  workflow_dispatch:
+    inputs:
+      deployment_reason:
+        description: '部署原因说明'
+        required: true
+        default: '手动部署到生产环境'
+        type: string
+      confirm_production:
+        description: '确认部署到生产环境'
+        required: true
+        default: false
+        type: boolean
 
 jobs:
   
-  triger-CloudFlare-hook-after-merge-success:
-    # 将后续的所有工作步骤都运行在最新版的 ubuntu 操作系统容器中
+  manual-cloudflare-deploy:
     runs-on: ubuntu-latest
-
+    # 只有确认部署时才执行
+    if: ${{ inputs.confirm_production == true }}
+    
     steps:
-      # Step 1 - CloudFlare发布到 Pages CDN 的生产环境，CloudFlare 将 gh-pages 作为部署目标
-      - name: Triger CloudFlare hook
-        run: curl -X POST "https://api.cloudflare.com/client/v4/pages/webhooks/deploy_hooks/b1b6b15d-b582-4304-bb0a-238b32bc3eb7"
+      - name: 📋 部署前检查
+        run: |
+          echo "🔍 部署前检查..."
+          echo "📝 部署原因: ${{ inputs.deployment_reason }}"
+          echo "✅ 已确认部署到生产环境"
+          echo "🕐 部署时间: $(date -u '+%Y-%m-%d %H:%M:%S UTC')"
+          echo "👤 触发人员: ${{ github.actor }}"
+          echo "🌿 当前分支: ${{ github.ref_name }}"
+          echo ""
+          echo "⚠️  注意：即将部署到生产环境 CloudFlare Pages"
+          echo "🌐 生产地址: https://martinliu.cn"
+
+      - name: 🚀 触发 CloudFlare Pages 部署
+        id: deploy
+        run: |
+          echo "🚀 开始触发 CloudFlare Pages 部署..."
+          
+          # 触发 CloudFlare 部署
+          http_code=$(curl -s -o /dev/null -w "%{http_code}" -X POST \
+            "https://api.cloudflare.com/client/v4/pages/webhooks/deploy_hooks/b1b6b15d-b582-4304-bb0a-238b32bc3eb7")
+          
+          if [[ $http_code -ge 200 && $http_code -lt 300 ]]; then
+            echo "✅ CloudFlare 部署触发成功 (HTTP $http_code)"
+            echo "deploy_status=success" >> $GITHUB_OUTPUT
+          else
+            echo "❌ CloudFlare 部署触发失败 (HTTP $http_code)"
+            echo "deploy_status=failed" >> $GITHUB_OUTPUT
+            exit 1
+          fi
+
+      - name: 📊 部署摘要
+        if: always()
+        run: |
+          echo "## 🚀 CloudFlare 生产环境部署" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "| 项目 | 详情 |" >> $GITHUB_STEP_SUMMARY
+          echo "|------|------|" >> $GITHUB_STEP_SUMMARY
+          echo "| 🎯 部署状态 | ${{ steps.deploy.outputs.deploy_status == 'success' && '✅ 成功触发' || '❌ 触发失败' }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| 👤 操作人员 | ${{ github.actor }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| 📝 部署原因 | ${{ inputs.deployment_reason }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| 🕐 触发时间 | $(date -u '+%Y-%m-%d %H:%M:%S UTC') |" >> $GITHUB_STEP_SUMMARY
+          echo "| 🌿 源分支 | ${{ github.ref_name }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| 🌐 生产地址 | https://martinliu.cn |" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### 📋 部署说明" >> $GITHUB_STEP_SUMMARY
+          echo "- ✨ 手动触发的生产环境部署" >> $GITHUB_STEP_SUMMARY
+          echo "- 📦 CloudFlare Pages 将从 \`gh-pages\` 分支构建部署" >> $GITHUB_STEP_SUMMARY
+          echo "- ⏱️ 部署完成预计需要 2-5 分钟" >> $GITHUB_STEP_SUMMARY
+          echo "- 🌍 全球 CDN 缓存更新可能需要额外 5-10 分钟" >> $GITHUB_STEP_SUMMARY
+          echo "- 🔄 如需回滚，请联系管理员或重新部署" >> $GITHUB_STEP_SUMMARY
+
+      - name: 🔔 部署结果通知
+        if: always()
+        run: |
+          if [[ "${{ steps.deploy.outputs.deploy_status }}" == "success" ]]; then
+            echo "🎉 CloudFlare 生产环境部署已成功触发！"
+            echo ""
+            echo "📋 部署详情:"
+            echo "  👤 操作人员: ${{ github.actor }}"
+            echo "  📝 部署原因: ${{ inputs.deployment_reason }}"
+            echo "  🕐 触发时间: $(date -u '+%Y-%m-%d %H:%M:%S UTC')"
+            echo ""
+            echo "⏳ 部署进度:"
+            echo "  1. ✅ CloudFlare webhook 已触发"
+            echo "  2. ⏳ CloudFlare 正在从 gh-pages 分支构建..."
+            echo "  3. ⏳ 构建完成后将自动部署到生产环境"
+            echo "  4. ⏳ 全球 CDN 缓存将在 5-10 分钟内更新"
+            echo ""
+            echo "🌐 访问地址: https://martinliu.cn"
+            echo "💡 提示: 请等待几分钟后验证部署结果"
+          else
+            echo "💥 CloudFlare 部署触发失败！"
+            echo ""
+            echo "🔧 故障排查建议:"
+            echo "  1. 检查 CloudFlare webhook URL 是否正确"
+            echo "  2. 验证 CloudFlare Pages 项目配置"
+            echo "  3. 确认 gh-pages 分支是否最新"
+            echo "  4. 联系管理员检查 CloudFlare 服务状态"
+            echo ""
+            echo "🔄 可以尝试重新手动触发此工作流"
+          fi
+
+  deployment-guard:
+    runs-on: ubuntu-latest
+    # 当用户未确认时执行，提供警告信息
+    if: ${{ inputs.confirm_production != true }}
+    
+    steps:
+      - name: ⚠️ 部署确认失败
+        run: |
+          echo "⚠️ 部署已取消 - 未确认生产环境部署"
+          echo ""
+          echo "📋 提交的信息:"
+          echo "  📝 部署原因: ${{ inputs.deployment_reason }}"
+          echo "  ✅ 确认部署: ${{ inputs.confirm_production }}"
+          echo "  👤 操作人员: ${{ github.actor }}"
+          echo ""
+          echo "🔒 安全提示:"
+          echo "  为了安全起见，必须明确确认才能部署到生产环境"
+          echo "  请重新运行工作流并勾选 '确认部署到生产环境' 选项"
+          echo ""
+          echo "## ⚠️ 部署确认失败" >> $GITHUB_STEP_SUMMARY
+          echo "部署已取消，因为未确认生产环境部署。" >> $GITHUB_STEP_SUMMARY
+          echo "请重新运行工作流并勾选确认选项。" >> $GITHUB_STEP_SUMMARY
