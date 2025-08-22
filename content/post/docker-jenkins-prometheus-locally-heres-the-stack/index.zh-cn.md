@@ -1,6 +1,6 @@
 ---
 title: "Docker、Jenkins、Prometheus，本地能跑？！这套技术栈你需要搞定"
-description: 你花了几周时间在本地测试 Jenkins、Prometheus 和 Docker；下面👇就是最终跑通的方案。
+description: 只需要不长的时间在本地测试 Jenkins、Prometheus 和 Docker；下面👇就是最终跑通的方案。
 date: 2025-07-28T17:58:33+08:00
 image: 1_izxF5LhLRecc_epDuvJmhg.png
 slug: docker-jenkins-prometheus-locally-heres-the-stack
