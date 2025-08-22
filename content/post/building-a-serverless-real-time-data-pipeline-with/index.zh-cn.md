@@ -9,7 +9,6 @@ categories:
 tags:
     - Terraform
     - AWS
-    - Python
     - Serverless
     - DynamoDB
     - S3
