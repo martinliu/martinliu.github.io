@@ -1,0 +1,55 @@
+{{/*
+  首屏 Hero 图片组件 - 专门针对 LCP 优化
+  不使用懒加载，立即加载并预加载
+*/}}
+
+{{ $src := .src }}
+{{ $alt := .alt | default "Hero 图片" }}
+{{ $class := .class | default "" }}
+{{ $width := .width | default 1200 }}
+{{ $height := .height | default 630 }}
+
+{{ $image := resources.Get $src }}
+{{ if $image }}
+  {{ $avif := $image.Resize (printf "%dx%d avif q90" $width $height) }}
+  {{ $webp := $image.Resize (printf "%dx%d webp q90" $width $height) }}
+  {{ $jpeg := $image.Resize (printf "%dx%d jpeg q90" $width $height) }}
+  
+  {{/* 预加载最关键的 AVIF 格式 */}}
+  <link rel="preload" as="image" href="{{ $avif.RelPermalink }}" type="image/avif">
+  <link rel="preload" as="image" href="{{ $webp.RelPermalink }}" type="image/webp">
+  
+  <picture class="hero-image {{ $class }}">
+    {{/* AVIF 格式 - 最优压缩 */}}
+    <source 
+      srcset="{{ $avif.RelPermalink }}" 
+      type="image/avif">
+    
+    {{/* WebP 格式 */}}
+    <source 
+      srcset="{{ $webp.RelPermalink }}" 
+      type="image/webp">
+    
+    {{/* 默认 JPEG */}}
+    <img 
+      src="{{ $jpeg.RelPermalink }}"
+      alt="{{ $alt }}"
+      width="{{ $width }}"
+      height="{{ $height }}"
+      fetchpriority="high"
+      decoding="async"
+      class="hero-img {{ $class }}"
+      style="width: 100%; height: auto; display: block;">
+  </picture>
+{{ else }}
+  {{/* 备用方案 */}}
+  <img 
+    src="{{ $src | relURL }}"
+    alt="{{ $alt }}"
+    width="{{ $width }}"
+    height="{{ $height }}"
+    fetchpriority="high"
+    decoding="async"
+    class="hero-img {{ $class }}"
+    style="width: 100%; height: auto; display: block;">
+{{ end }}

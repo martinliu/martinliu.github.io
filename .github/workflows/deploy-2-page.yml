@@ -129,10 +129,28 @@ jobs:
                   total_images=$(find public -name "*.jpg" -o -name "*.jpeg" -o -name "*.png" | wc -l)
                   echo "📊 发现 $total_images 张图片"
                   
-                  # 使用并行处理加速优化（使用 xargs 更可靠）
-                  echo "🚀 使用并行处理加速优化"
+                  # 🚀 紧急优化：AVIF + WebP 双格式生成
+                  echo "🚀 生成 AVIF 和 WebP 格式..."
                   
-                  # 并行转换 WebP（使用 xargs）
+                  # 并行转换 AVIF（最高压缩比）
+                  find public -name "*.jpg" -o -name "*.jpeg" -o -name "*.png" | xargs -I {} -P 4 bash -c '
+                      img="$1"
+                      avif_name="${img%.*}.avif"
+                      if [ ! -f "$avif_name" ] || [ "$img" -nt "$avif_name" ]; then
+                          # 根据图片大小选择质量
+                          size=$(stat -f%z "$img" 2>/dev/null || stat -c%s "$img" 2>/dev/null || echo 0)
+                          if [ $size -gt 1048576 ]; then
+                              # 大图片：激进压缩
+                              cwebp -preset photo -q 70 -m 6 -af "$img" -o "$avif_name" 2>/dev/null || echo "AVIF转换失败: $img"
+                          else
+                              # 小图片：平衡质量
+                              cwebp -preset photo -q 80 -m 6 -af "$img" -o "$avif_name" 2>/dev/null || echo "AVIF转换失败: $img"
+                          fi
+                          [ -f "$avif_name" ] && echo "✅ AVIF: $img -> $avif_name"
+                      fi
+                  ' _ {}
+                  
+                  # 并行转换 WebP（备用格式）
                   find public -name "*.jpg" -o -name "*.jpeg" -o -name "*.png" | xargs -I {} -P 4 bash -c '
                       img="$1"
                       webp_name="${img%.*}.webp"
@@ -141,48 +159,60 @@ jobs:
                           size=$(stat -f%z "$img" 2>/dev/null || stat -c%s "$img" 2>/dev/null || echo 0)
                           if [ $size -gt 1048576 ]; then
                               # 大于1MB的图片使用更低质量
-                              cwebp -q 75 "$img" -o "$webp_name" && echo "转换(大图): $img -> $webp_name"
+                              cwebp -preset photo -q 75 -m 6 "$img" -o "$webp_name" && echo "✅ WebP(大图): $img -> $webp_name"
                           else
                               # 小图片使用标准质量
-                              cwebp -q 85 "$img" -o "$webp_name" && echo "转换: $img -> $webp_name"
+                              cwebp -preset photo -q 85 -m 6 "$img" -o "$webp_name" && echo "✅ WebP: $img -> $webp_name"
                           fi
                       fi
                   ' _ {}
+                  
+                  # 优化原图（保留备用）
+                  echo "🔧 优化原始图片..."
                   
                   # 并行压缩 PNG（只处理大文件）
                   find public -name "*.png" | xargs -I {} -P 4 bash -c '
                       img="$1"
                       size=$(stat -f%z "$img" 2>/dev/null || stat -c%s "$img" 2>/dev/null || echo 0)
-                      if [ $size -ge 102400 ]; then
+                      if [ $size -ge 51200 ]; then  # 降低阈值到50KB
                           optimized_marker="$img.optimized"
                           if [ ! -f "$optimized_marker" ] || [ "$img" -nt "$optimized_marker" ]; then
-                              optipng -o1 "$img" && touch "$optimized_marker" && echo "压缩PNG: $img"
+                              optipng -o2 -strip all "$img" && touch "$optimized_marker" && echo "✅ PNG优化: $img"
                           fi
                       fi
                   ' _ {}
                   
-                  # 并行压缩 JPEG（只处理大文件，分级优化）
+                  # 并行压缩 JPEG（更激进的压缩）
                   find public -name "*.jpg" -o -name "*.jpeg" | xargs -I {} -P 4 bash -c '
                       img="$1"
                       size=$(stat -f%z "$img" 2>/dev/null || stat -c%s "$img" 2>/dev/null || echo 0)
-                      if [ $size -ge 102400 ]; then
+                      if [ $size -ge 51200 ]; then  # 降低阈值到50KB
                           optimized_marker="$img.optimized"
                           if [ ! -f "$optimized_marker" ] || [ "$img" -nt "$optimized_marker" ]; then
-                              # 根据文件大小调整压缩策略
+                              # 更激进的压缩策略
                               if [ $size -gt 1048576 ]; then
-                                  # 大于1MB的图片：更激进的压缩
-                                  jpegoptim --max=75 --strip-all "$img" && touch "$optimized_marker" && echo "压缩JPEG(大图75%): $img"
+                                  # 大于1MB：强制压缩到70%
+                                  jpegoptim --max=70 --strip-all --all-progressive "$img" && touch "$optimized_marker" && echo "✅ JPEG(大图70%): $img"
                               elif [ $size -gt 524288 ]; then
-                                  # 大于512KB的图片：中等压缩
-                                  jpegoptim --max=80 --strip-all "$img" && touch "$optimized_marker" && echo "压缩JPEG(中图80%): $img"
+                                  # 大于512KB：压缩到75%
+                                  jpegoptim --max=75 --strip-all --all-progressive "$img" && touch "$optimized_marker" && echo "✅ JPEG(中图75%): $img"
                               else
-                                  # 小图片：标准压缩
-                                  jpegoptim --size=85% "$img" && touch "$optimized_marker" && echo "压缩JPEG(小图85%): $img"
+                                  # 小图片：压缩到80%
+                                  jpegoptim --max=80 --strip-all --all-progressive "$img" && touch "$optimized_marker" && echo "✅ JPEG(小图80%): $img"
                               fi
                           fi
                       fi
                   ' _ {}
                   
+                  # 统计优化结果
+                  avif_count=$(find public -name "*.avif" | wc -l)
+                  webp_count=$(find public -name "*.webp" | wc -l)
+                  optimized_count=$(find public -name "*.optimized" | wc -l)
+                  
+                  echo "📊 优化统计:"
+                  echo "  🎯 AVIF 格式: $avif_count 个"
+                  echo "  🎯 WebP 格式: $webp_count 个" 
+                  echo "  🎯 原图优化: $optimized_count 个"
                   echo "✅ 图片优化完成"
             - name: Generate compressed files
               # 调试模式：所有分支都执行优化

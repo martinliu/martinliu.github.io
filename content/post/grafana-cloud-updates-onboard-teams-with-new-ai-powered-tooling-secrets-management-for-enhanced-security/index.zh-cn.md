@@ -25,6 +25,8 @@ tags: ["Grafana", "AI", "Synthetic Monitoring", "Jenkins"]
 
 这一理念也持续推动我们构建新的工具。例如，本月我们很高兴宣布：Grafana Assistant——一款嵌入于 Grafana Cloud 的 AI 助手，现已进入公开预览阶段。它支持自然语言操作，帮助你更高效地进行查询、构建和故障排查。
 
+![alt text](maxresdefault-2.jpg)
+
 Grafana Assistant 可简化常见的工作流程，比如编写 PromQL、LogQL 或 TraceQL 查询，以及创建仪表盘等，同时始终让你掌控操作过程。它能帮助你减少重复性工作，提升整体效率，包括：
 
 - 更快速地编写和调试查询语句  
@@ -82,7 +84,7 @@ Synthetic Monitoring 用户界面截图，左侧显示“创建密钥”对话�
 
 为此，我们推出了全新的 [Tailscale](https://tailscale.com/) 与 Grafana Cloud 集成方案。该集成现已开启私密预览，允许你通过 [Private Data Source Connect](https://grafana.com/docs/grafana-cloud/connect-externally-hosted/private-data-source-connect/?pg=blog&plcmt=body-txt)，从 Grafana Cloud 直接安全访问位于 Tailscale 网络（称为 [tailnet](https://tailscale.com/kb/1136/tailnet)）中的数据源。
 
-![YouTube 视频](maxresdefault.jpg)
+![YouTube 视频](maxresdefault-1.jpg)
 
 该集成带来的关键优势包括：
 
@@ -164,6 +166,8 @@ Grafana Cloud IRM 的外发 Webhook 现已支持事件相关触发器，为自�
 全新发布的 [Anthropic 集成](https://grafana.com/blog/2025/08/19/how-to-monitor-claude-usage-and-costs-introducing-the-anthropic-integration-for-grafana-cloud/) 允许你直接在 Grafana Cloud 中连接 [Anthropic Usage and Cost API](https://docs.anthropic.com/en/api/admin-api/usage-cost)，实时监控 Claude 系列大语言模型（Large Language Models, LLM）的使用情况与开销。
 
 通过这一集成，你可以在统一平台中查看 Claude 模型的调用频率、响应时间和累计费用，配套的预设仪表盘与告警机制可帮助你迅速启动监控并及时采取优化措施。
+
+![Claude](anthropic-usage-dashboard_1.png)
 
 详细信息请参阅[官方文档](https://grafana.com/docs/grafana-cloud/monitor-infrastructure/integrations/integration-reference/integration-anthropic/?pg=blog&plcmt=body-txt)。
 

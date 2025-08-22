@@ -1,6 +1,6 @@
 {{/*
-  优化的图片组件
-  支持 WebP、懒加载、响应式图片
+  优化的图片组件 - 支持 AVIF/WebP/JPEG 三格式
+  支持懒加载、响应式图片，针对 LCP 优化
 */}}
 
 {{ $src := .src }}
@@ -8,49 +8,71 @@
 {{ $class := .class | default "" }}
 {{ $width := .width | default 800 }}
 {{ $height := .height | default 600 }}
+{{ $lazy := .lazy | default true }}
+{{ $priority := .priority | default false }}
 
 {{ $image := resources.Get $src }}
 {{ if $image }}
-  {{ $webp := $image.Resize (printf "%dx%d webp" $width $height) }}
-  {{ $jpeg := $image.Resize (printf "%dx%d jpeg" $width $height) }}
-  {{ $small := $image.Resize "400x300 jpeg" }}
+  {{ $avif := $image.Resize (printf "%dx%d avif q85" $width $height) }}
+  {{ $webp := $image.Resize (printf "%dx%d webp q85" $width $height) }}
+  {{ $jpeg := $image.Resize (printf "%dx%d jpeg q85" $width $height) }}
+  {{ $small_avif := $image.Resize "400x300 avif q80" }}
+  {{ $small_webp := $image.Resize "400x300 webp q80" }}
+  {{ $small_jpeg := $image.Resize "400x300 jpeg q80" }}
   
   <picture class="responsive-image {{ $class }}">
-    {{/* WebP 格式 */}}
+    {{/* AVIF 格式 - 桌面 */}}
+    <source 
+      srcset="{{ $avif.RelPermalink }}" 
+      type="image/avif"
+      media="(min-width: 768px)">
+    
+    {{/* AVIF 格式 - 移动端 */}}
+    <source 
+      srcset="{{ $small_avif.RelPermalink }}" 
+      type="image/avif"
+      media="(max-width: 767px)">
+    
+    {{/* WebP 格式 - 桌面 */}}
     <source 
       srcset="{{ $webp.RelPermalink }}" 
       type="image/webp"
       media="(min-width: 768px)">
     
-    {{/* 小屏幕 WebP */}}
+    {{/* WebP 格式 - 移动端 */}}
     <source 
-      srcset="{{ ($image.Resize "400x300 webp").RelPermalink }}" 
+      srcset="{{ $small_webp.RelPermalink }}" 
       type="image/webp"
       media="(max-width: 767px)">
     
-    {{/* 备用 JPEG */}}
+    {{/* JPEG 格式 - 桌面 */}}
     <source 
       srcset="{{ $jpeg.RelPermalink }}" 
       type="image/jpeg"
       media="(min-width: 768px)">
     
-    {{/* 小屏幕 JPEG */}}
+    {{/* JPEG 格式 - 移动端 */}}
     <source 
-      srcset="{{ $small.RelPermalink }}" 
+      srcset="{{ $small_jpeg.RelPermalink }}" 
       type="image/jpeg"
       media="(max-width: 767px)">
     
     {{/* 默认图片 */}}
     <img 
-      src="{{ $small.RelPermalink }}"
+      src="{{ $small_jpeg.RelPermalink }}"
       data-src="{{ $jpeg.RelPermalink }}"
       alt="{{ $alt }}"
       width="{{ $width }}"
       height="{{ $height }}"
-      loading="lazy"
+      {{ if $priority }}
+        fetchpriority="high"
+        loading="eager"
+      {{ else if $lazy }}
+        loading="lazy"
+      {{ end }}
       decoding="async"
       class="lazyload {{ $class }}"
-      style="background-color: #f5f5f5;">
+      style="background-color: #f8f9fa; width: 100%; height: auto;">
   </picture>
 {{ else }}
   {{/* 备用方案 */}}
@@ -59,7 +81,13 @@
     alt="{{ $alt }}"
     width="{{ $width }}"
     height="{{ $height }}"
-    loading="lazy"
+    {{ if $priority }}
+      fetchpriority="high"
+      loading="eager"
+    {{ else if $lazy }}
+      loading="lazy"
+    {{ end }}
     decoding="async"
-    class="lazyload {{ $class }}">
+    class="lazyload {{ $class }}"
+    style="background-color: #f8f9fa; width: 100%; height: auto;">
 {{ end }}
