@@ -1,0 +1,554 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Serverless on Martin Liu's Blog</title><link>https://martinliu.cn/tags/serverless/</link><description>Recent content in Serverless on Martin Liu's Blog</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><lastBuildDate>Fri, 22 Aug 2025 07:45:06 +0800</lastBuildDate><atom:link href="https://martinliu.cn/tags/serverless/index.xml" rel="self" type="application/rss+xml"/><item><title>使用 Terraform、AWS 和 Python 构建无服务器实时数据管道</title><link>https://martinliu.cn/blog/building-a-serverless-real-time-data-pipeline-with-terraform-aws-and-python/</link><pubDate>Sat, 02 Aug 2025 15:42:33 +0800</pubDate><guid>https://martinliu.cn/blog/building-a-serverless-real-time-data-pipeline-with-terraform-aws-and-python/</guid><description>&lt;img src="https://martinliu.cn/blog/building-a-serverless-real-time-data-pipeline-with-terraform-aws-and-python/serverless-data-pipeline.png" alt="Featured image of post 使用 Terraform、AWS 和 Python 构建无服务器实时数据管道" />&lt;p>最近，我一直在利用业余时间学习和试验 AWS 的数据服务，发现它们非常引人入胜。&lt;/p>
+&lt;p>在本文中，我们将探讨我是如何利用 AWS 服务（如 Data Catalog、DataBrew 和 DynamoDB）构建一个实时无服务器数据管道的，以及如何借助 Terraform 将其无缝部署到 AWS。&lt;/p>
+&lt;p>无论您是数据工程领域的新手还是经验丰富的专家，本指南都将为您提供帮助！&lt;/p>
+&lt;h2 id="前提条件">前提条件
+&lt;/h2>&lt;ul>
+&lt;li>&lt;a class="link" href="https://aws.amazon.com/" target="_blank" rel="noopener"
+>AWS&lt;/a> 账户&lt;/li>
+&lt;li>&lt;a class="link" href="https://www.python.org/downloads/" target="_blank" rel="noopener"
+>Python&lt;/a> 3&lt;/li>
+&lt;li>&lt;a class="link" href="https://developer.hashicorp.com/terraform/install" target="_blank" rel="noopener"
+>Terraform&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;h2 id="为什么选择-terraform">为什么选择 Terraform
+&lt;/h2>&lt;ul>
+&lt;li>开源&lt;/li>
+&lt;li>庞大的开发者社区&lt;/li>
+&lt;li>不可变基础设施 (Immutable Infrastructure)&lt;/li>
+&lt;li>IaC (Infrastructure as Code)&lt;/li>
+&lt;li>云无关性 (Cloud agnostic)&lt;/li>
+&lt;li>旨在提升我对新技术的了解&lt;/li>
+&lt;/ul>
+&lt;h2 id="项目结构">项目结构
+&lt;/h2>&lt;p>&lt;img src="https://miro.medium.com/v2/resize:fit:640/format:webp/1*eEvDjru5qOJc73wpcie1Hw.png"
+loading="lazy"
+alt="项目结构"
+>&lt;/p>
+&lt;h2 id="概述">概述
+&lt;/h2>&lt;p>我即不是数据工程师，也没有在构建数据管道项目中；但是，我最近接触了一些数据服务。结合我对 AWS 的普遍了解，我决定亲手探索一些新服务。&lt;/p>
+&lt;p>本文源于我将构建数据管道作为一个有趣的项目来实践的经验，我发现整个过程非常有趣且富有成效。&lt;/p>
+&lt;h2 id="使用到的关键服务">使用到的关键服务
+&lt;/h2>&lt;h3 id="1-amazon-s3">1. Amazon S3
+&lt;/h3>&lt;ul>
+&lt;li>作为数据存储层。&lt;/li>
+&lt;li>存储了项目中使用的 JSON 文件&lt;/li>
+&lt;/ul>
+&lt;h3 id="2-amazon-dynamodb">2. Amazon DynamoDB
+&lt;/h3>&lt;ul>
+&lt;li>作为数据库层。&lt;/li>
+&lt;li>使用 DynamoDB 流 (DynamoDB streams) 和 AWS Lambda 将 JSON 数据从 DynamoDB 导出到 S3&lt;/li>
+&lt;/ul>
+&lt;h3 id="3-aws-glue">3. AWS Glue
+&lt;/h3>&lt;ul>
+&lt;li>负责数据提取、转换和加载 (ETL - Extraction, Transformation, and Loading)。&lt;/li>
+&lt;li>使用 Glue Data Catalog 管理数据集的元数据 (metadata)。&lt;/li>
+&lt;li>它还支持使用爬网程序 (crawler) 进行爬网，该程序自动发现架构 (schema) 并创建表；然而，在这个项目中，我们手动定义了架构，因此不需要此功能。&lt;/li>
+&lt;/ul>
+&lt;h3 id="4-amazon-databrew">4. Amazon DataBrew
+&lt;/h3>&lt;ul>
+&lt;li>用于转换 S3 中存储的数据，方法是删除重复条目。&lt;/li>
+&lt;li>一旦项目放置在 S3 存储桶的路径 &lt;code>/data&lt;/code> 中，它就会作为触发作业（来自 Lambda）运行。&lt;/li>
+&lt;li>指向 Glue Data Catalog 作为输入数据集。&lt;/li>
+&lt;/ul>
+&lt;h3 id="5-amazon-athena">5. Amazon Athena
+&lt;/h3>&lt;ul>
+&lt;li>使用标准 SQL 查询存储在 Glue Catalog 中的转换数据。&lt;/li>
+&lt;li>完全无服务器，并与 Glue Data Catalog 集成。&lt;/li>
+&lt;/ul>
+&lt;h2 id="最终架构">最终架构
+&lt;/h2>&lt;p>&lt;img src="https://miro.medium.com/v2/resize:fit:640/format:webp/1*0v_rLNRcapex3MRovi_luA.png"
+loading="lazy"
+alt="数据管道架构"
+>&lt;/p>
+&lt;h2 id="架构解释">架构解释
+&lt;/h2>&lt;h3 id="第一流程">第一流程
+&lt;/h3>&lt;ul>
+&lt;li>一个 &lt;em>.json&lt;/em> 文件被添加到 S3 上的路径 &lt;code>/data&lt;/code>&lt;/li>
+&lt;li>第一个 Glue 数据目录表 (Glue Catalog Table) 从 S3 的 &lt;code>/data&lt;/code> 路径读取数据&lt;/li>
+&lt;li>上传到 &lt;code>/data&lt;/code> 会触发一个 Lambda 函数，该函数启动 DataBrew 转换作业，通过移除 &lt;code>email&lt;/code> 列中的任何重复行来清理第一个 Glue 数据目录表（输入数据集）中的数据&lt;/li>
+&lt;li>DataBrew 作业将转换后的数据输出到 S3 中的新路径 &lt;code>/cleaned&lt;/code> 下，覆盖该路径中的其他项目以避免输出路径中出现重复&lt;/li>
+&lt;li>第二个 Glue 数据目录表从 S3 的 &lt;code>/cleaned&lt;/code> 路径读取数据&lt;/li>
+&lt;li>Athena 工作组 (workgroup) 从第二个 Glue 数据目录表读取数据并对其运行查询。这反过来又将查询结果存储在 S3 中的新输出位置 &lt;code>/athena-results/&lt;/code>&lt;/li>
+&lt;/ul>
+&lt;h3 id="第二流程">第二流程
+&lt;/h3>&lt;ul>
+&lt;li>一条数据被添加到 DynamoDB。&lt;/li>
+&lt;li>随着新数据的增加，DynamoDB 流 (stream) 被触发&lt;/li>
+&lt;li>连接到 DynamoDB 流的 Lambda 函数（用 Python 编写）被调用，它将新项目转换为 &lt;em>.json&lt;/em> 文件&lt;/li>
+&lt;li>执行第一个流程中的所有步骤&lt;/li>
+&lt;/ul>
+&lt;p>总而言之，实时数据处理的目标是通过 DynamoDB Streams 和 S3 存储桶通知 (S3 Bucket Notification) 与 Lambda 的集成来实现的。&lt;/p>
+&lt;h2 id="代码定义">代码定义
+&lt;/h2>&lt;h2 id="maintf">main.tf
+&lt;/h2>&lt;p>提供商 (Provider)：第一步通常是定义提供商。这里我们将云提供商定义为 &lt;em>aws&lt;/em>。&lt;/p>
+&lt;p>此外，我们还包含了将在项目中使用的各种模块 (module)，并传入所有必需的变量。&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;span class="lnt">4
+&lt;/span>&lt;span class="lnt">5
+&lt;/span>&lt;span class="lnt">6
+&lt;/span>&lt;span class="lnt">7
+&lt;/span>&lt;span class="lnt">8
+&lt;/span>&lt;span class="lnt">9
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-terraform" data-lang="terraform">&lt;span class="line">&lt;span class="cl">&lt;span class="nx">terraform&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nx">required_providers&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nx">aws&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nx">source&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="s2">&amp;#34;hashicorp/aws&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nx">version&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="s2">&amp;#34;~&amp;gt; 5.0&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nx">required_version&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="s2">&amp;#34;&amp;gt;= 1.3.0&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;span class="lnt">14
+&lt;/span>&lt;span class="lnt">15
+&lt;/span>&lt;span class="lnt">16
+&lt;/span>&lt;span class="lnt">17
+&lt;/span>&lt;span class="lnt">18
+&lt;/span>&lt;span class="lnt">19
+&lt;/span>&lt;span class="lnt">20
+&lt;/span>&lt;span class="lnt">21
+&lt;/span>&lt;span class="lnt">22
+&lt;/span>&lt;span class="lnt">23
+&lt;/span>&lt;span class="lnt">24
+&lt;/span>&lt;span class="lnt">25
+&lt;/span>&lt;span class="lnt">26
+&lt;/span>&lt;span class="lnt">27
+&lt;/span>&lt;span class="lnt">28
+&lt;/span>&lt;span class="lnt">29
+&lt;/span>&lt;span class="lnt">30
+&lt;/span>&lt;span class="lnt">31
+&lt;/span>&lt;span class="lnt">32
+&lt;/span>&lt;span class="lnt">33
+&lt;/span>&lt;span class="lnt">34
+&lt;/span>&lt;span class="lnt">35
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-terraform" data-lang="terraform">&lt;span class="line">&lt;span class="cl">&lt;span class="kr">provider&lt;/span> &lt;span class="s2">&amp;#34;aws&amp;#34;&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nx">region&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="s2">&amp;#34;us-east-1&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">}&lt;/span>&lt;span class="nb">module&lt;/span> &lt;span class="s2">&amp;#34;s3_bucket&amp;#34;&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nx">source&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="s2">&amp;#34;./modules/s3&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nx">bucket_name&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="s2">&amp;#34;upload-bucket-data-pipeline-234&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">}&lt;/span>&lt;span class="nb">module&lt;/span> &lt;span class="s2">&amp;#34;dynamodb_table&amp;#34;&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nx">source&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="s2">&amp;#34;./modules/dynamodb&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nx">table_name&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="s2">&amp;#34;dynamodb-table&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">}&lt;/span>&lt;span class="nb">module&lt;/span> &lt;span class="s2">&amp;#34;lambda_function&amp;#34;&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nx">source&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="s2">&amp;#34;./modules/lambda&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nx">lambda_name&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="s2">&amp;#34;dynamodb_to_s3&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nx">handler_trigger&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="s2">&amp;#34;dynamodb_to_s3_trigger.lambda_handler&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nx">s3_bucket&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="nb">module&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">s3_bucket&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">bucket_name&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nx">table_name&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="nb">module&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">dynamodb_table&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">table_name&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nx">dynamodb_stream_arn&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="nb">module&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">dynamodb_table&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">stream_arn&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">}&lt;/span>&lt;span class="nb">module&lt;/span> &lt;span class="s2">&amp;#34;glue_catalog&amp;#34;&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nx">source&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="s2">&amp;#34;./modules/glue/glue_raw&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nx">database_name&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="s2">&amp;#34;catalog_db&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nx">table_name&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="s2">&amp;#34;catalog_json_table&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nx">s3_location&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="s2">&amp;#34;s3://&lt;/span>&lt;span class="si">${&lt;/span>&lt;span class="nb">module&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">s3_bucket&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">bucket_name&lt;/span>&lt;span class="si">}&lt;/span>&lt;span class="s2">/data/&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">}&lt;/span>&lt;span class="nb">module&lt;/span> &lt;span class="s2">&amp;#34;databrew&amp;#34;&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nx">source&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="s2">&amp;#34;./modules/databrew&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nx">glue_table&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="nb">module&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">glue_catalog&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">table_name&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nx">glue_db&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="nb">module&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">glue_catalog&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">database_name&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nx">s3_bucket_name&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="nb">module&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">s3_bucket&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">bucket_name&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nx">data_zip&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="nb">module&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">lambda_function&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">data_zip&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">}&lt;/span>&lt;span class="nb">module&lt;/span> &lt;span class="s2">&amp;#34;glue_catalog_cleaned&amp;#34;&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nx">source&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="s2">&amp;#34;./modules/glue/glue_cleaned&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nx">database_name&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="s2">&amp;#34;catalog_cleaned_db&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nx">table_name&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="s2">&amp;#34;catalog_cleaned_json_table&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nx">s3_location&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="s2">&amp;#34;s3://&lt;/span>&lt;span class="si">${&lt;/span>&lt;span class="nb">module&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">s3_bucket&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">bucket_name&lt;/span>&lt;span class="si">}&lt;/span>&lt;span class="s2">/cleaned/&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">}&lt;/span>&lt;span class="nb">module&lt;/span> &lt;span class="s2">&amp;#34;athena&amp;#34;&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nx">source&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="s2">&amp;#34;./modules/athena&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nx">result_output_location&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="s2">&amp;#34;s3://&lt;/span>&lt;span class="si">${&lt;/span>&lt;span class="nb">module&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">s3_bucket&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">bucket_name&lt;/span>&lt;span class="si">}&lt;/span>&lt;span class="s2">/athena-results/&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;h2 id="backendtf">backend.tf
+&lt;/h2>&lt;p>首先，创建 S3 存储桶用于远程存储 Terraform 状态文件 (state file)，这有助于促进协作。&lt;/p>
+&lt;p>&lt;img src="https://miro.medium.com/v2/resize:fit:640/format:webp/1*wNoK6qiZ3af-6HkhCDH48A.png"
+loading="lazy"
+alt="Terraform 状态文件所在的 S3 存储桶"
+>&lt;/p>
+&lt;p>创建后，将以下内容添加到 &lt;code>backend.tf&lt;/code> 文件中：&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;span class="lnt">4
+&lt;/span>&lt;span class="lnt">5
+&lt;/span>&lt;span class="lnt">6
+&lt;/span>&lt;span class="lnt">7
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-terraform" data-lang="terraform">&lt;span class="line">&lt;span class="cl">&lt;span class="nx">terraform&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nx">backend&lt;/span> &lt;span class="s2">&amp;#34;s3&amp;#34;&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nx">bucket&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="s2">&amp;#34;serverless-data-pipeline-backend-bucket&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nx">key&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="s2">&amp;#34;serverless-pipeline/dev/terraform.tfstate&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nx">region&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="s2">&amp;#34;us-east-1&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>一旦我们运行 &lt;code>terraform init&lt;/code> 和 &lt;code>terraform apply&lt;/code> 来部署项目，我们就应该看到状态存储在存储桶中，如下所示：&lt;/p>
+&lt;p>&lt;img src="https://miro.medium.com/v2/resize:fit:640/format:webp/1*bJ3LTvt6vayJgGsRZsQc5A.png"
+loading="lazy"
+alt="S3 中的 Terraform 状态文件"
+>&lt;/p>
+&lt;ul>
+&lt;li>module/main.tf : 每个服务的基础设施和配置都放置在各自的 &lt;code>main.tf&lt;/code> 文件中&lt;/li>
+&lt;li>module/output.tf : 每个服务的输出详情 (output detail) 都放置在各自的 &lt;code>output.tf&lt;/code> 文件中&lt;/li>
+&lt;li>module/variable.tf : 每个服务期望的输入变量 (input variables) 都放置在各自的 &lt;code>variable.tf&lt;/code> 文件中&lt;/li>
+&lt;/ul>
+&lt;h2 id="部署应用程序">部署应用程序
+&lt;/h2>&lt;p>现在我们已准备好部署应用程序。运行以下命令进行部署。&lt;/p>
+&lt;p>&lt;strong>Terraform init&lt;/strong>：这会初始化项目，拉取部署所需的所有必要软件包。&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">terraform init
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>&lt;strong>Terraform plan&lt;/strong>：这会显示提议的更改，在部署前发现任何意外更改时非常有用。&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">terraform plan
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>&lt;strong>Terraform apply&lt;/strong>：这会将项目部署到 AWS。&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">terraform apply
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;h2 id="测试应用程序">测试应用程序
+&lt;/h2>&lt;p>S3 存储桶 (S3 bucket) 最初加载了一个 &lt;code>sample.json&lt;/code> 文件，其内容如下：&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;span class="lnt">14
+&lt;/span>&lt;span class="lnt">15
+&lt;/span>&lt;span class="lnt">16
+&lt;/span>&lt;span class="lnt">17
+&lt;/span>&lt;span class="lnt">18
+&lt;/span>&lt;span class="lnt">19
+&lt;/span>&lt;span class="lnt">20
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-json" data-lang="json">&lt;span class="line">&lt;span class="cl">&lt;span class="p">[&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nt">&amp;#34;id&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="s2">&amp;#34;1&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nt">&amp;#34;name&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="s2">&amp;#34;John Doe&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nt">&amp;#34;email&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="s2">&amp;#34;john@example.com&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nt">&amp;#34;timestamp&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="s2">&amp;#34;2025-04-19T12:00:00Z&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">},&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nt">&amp;#34;id&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="s2">&amp;#34;2&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nt">&amp;#34;name&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="s2">&amp;#34;Mary Doe&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nt">&amp;#34;email&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="s2">&amp;#34;mary@example.com&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nt">&amp;#34;timestamp&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="s2">&amp;#34;2025-06-20T12:00:00Z&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">},&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nt">&amp;#34;id&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="s2">&amp;#34;3&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nt">&amp;#34;name&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="s2">&amp;#34;Jane Doe&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nt">&amp;#34;email&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="s2">&amp;#34;john@example.com&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nt">&amp;#34;timestamp&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="s2">&amp;#34;2025-06-22T12:00:00Z&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">]&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>&lt;em>注：&lt;/em> 如您所见，我们有一个重复的电子邮件地址 &lt;code>*john@example.com*&lt;/code>，理想的结果是移除这个重复条目。&lt;/p>
+&lt;p>这个文件是在使用 Terraform 创建存储桶后立即上传的，因此它不会触发 DataBrew 作业，因为该触发器设置是在项目的后期才进行的。&lt;/p>
+&lt;p>为了测试实时功能 (Real-time feature) 和项目的完整流程，我们可以向 S3 上传新对象，或向 DynamoDB 添加新条目。我们将向 DynamoDB 添加一个新条目来测试完整流程：&lt;/p>
+&lt;p>通过 AWS 控制台 (console) 进入 DynamoDB，并添加一条新数据：&lt;/p>
+&lt;p>&lt;img src="https://miro.medium.com/v2/resize:fit:640/format:webp/1*Wq6-HKR3_Itogo9ncr3C-Q.png"
+loading="lazy"
+>&lt;/p>
+&lt;p>添加此条目将触发 DynamoDB 流 (stream)，它会使用关联的 Lambda 函数 (lambda function) 将新对象插入 S3。&lt;/p>
+&lt;p>&lt;img src="https://miro.medium.com/v2/resize:fit:640/format:webp/1*HEIxp2piYd2b9y5pxqV2xA.png"
+loading="lazy"
+>&lt;/p>
+&lt;p>&lt;img src="https://miro.medium.com/v2/resize:fit:640/format:webp/1*MGNKOjFIP0mJQ4DDgG8Agw.png"
+loading="lazy"
+>&lt;/p>
+&lt;p>前往 S3，我们看到新条目 &lt;code>7.json&lt;/code> 已添加：&lt;/p>
+&lt;p>&lt;img src="https://miro.medium.com/v2/resize:fit:640/format:webp/1*dhhBJ1oL-3OSa9JHP832oA.png"
+loading="lazy"
+>&lt;/p>
+&lt;p>接下来，前往数据目录 (Data Catalog)，我们看到数据库 (Databases) 和表 (Tables)。&lt;/p>
+&lt;p>&lt;img src="https://miro.medium.com/v2/resize:fit:640/format:webp/1*XFt97o-Egelq4T-PdDUQmA.png"
+loading="lazy"
+>&lt;/p>
+&lt;p>数据目录数据库&lt;/p>
+&lt;p>&lt;img src="https://miro.medium.com/v2/resize:fit:640/format:webp/1*V1EV7KY8iSVvMgeGIX4Fsw.png"
+loading="lazy"
+>&lt;/p>
+&lt;p>数据目录表&lt;/p>
+&lt;p>前往 DataBrew，我们看到该项目。&lt;/p>
+&lt;p>一旦 Lambda 函数被添加到 &lt;code>/data&lt;/code> 路径的新内容触发，它就会启动 DataBrew 转换作业 (transformation job)：&lt;/p>
+&lt;p>&lt;img src="https://miro.medium.com/v2/resize:fit:640/format:webp/1*YeJ5a_JzUjWoD8vD9-4n-A.png"
+loading="lazy"
+>&lt;/p>
+&lt;p>完成后，它看起来像这样：&lt;/p>
+&lt;p>&lt;img src="https://miro.medium.com/v2/resize:fit:640/format:webp/1*GZNvEGrYWP4Wom1VKMAwBQ.png"
+loading="lazy"
+>&lt;/p>
+&lt;p>已完成的 DataBrew 作业&lt;/p>
+&lt;p>DataBrew 数据血缘 (Data lineage) 允许我们查看使用 DataBrew 的流程的图形化表示。&lt;/p>
+&lt;p>&lt;strong>空闲作业&lt;/strong>：&lt;/p>
+&lt;p>&lt;img src="https://miro.medium.com/v2/resize:fit:640/format:webp/1*arMXfxrhANbnvXymY8ejBg.png"
+loading="lazy"
+alt="空闲作业的数据血缘"
+>&lt;/p>
+&lt;p>&lt;strong>运行中作业&lt;/strong>：&lt;/p>
+&lt;p>&lt;img src="https://miro.medium.com/v2/resize:fit:640/format:webp/1*CgVAhqi82C2tZcIRpCtz6A.png"
+loading="lazy"
+alt="数据血缘的作业运行中"
+>&lt;/p>
+&lt;p>最后，前往 Athena，并选择 &lt;code>my-athena-workgroup&lt;/code> 工作组 (workgroup) 来运行查询。&lt;/p>
+&lt;p>在 DataBrew 作业运行之前，如果我们使用 Athena 运行查询，将不会有任何结果，因为 &lt;code>/cleaned&lt;/code> 路径中还没有任何项目：&lt;/p>
+&lt;p>&lt;img src="https://miro.medium.com/v2/resize:fit:640/format:webp/1*8K6f2X_uNLtstmSxZu1q9g.png"
+loading="lazy"
+>&lt;/p>
+&lt;p>然而，在 DataBrew 作业成功运行后，我们点击 &lt;em>&lt;strong>Run again&lt;/strong>&lt;/em> 按钮以在 Athena 中重新运行查询：&lt;/p>
+&lt;p>&lt;img src="https://miro.medium.com/v2/resize:fit:640/format:webp/1*NDVMRuZ4Kh5GdTGIIkcHnQ.png"
+loading="lazy"
+>&lt;/p>
+&lt;p>结果如下：&lt;/p>
+&lt;p>&lt;img src="https://miro.medium.com/v2/resize:fit:640/format:webp/1*kjeCuYwKZMO-2RJJgpd0Dw.png"
+loading="lazy"
+>&lt;/p>
+&lt;p>如果你仔细观察，会发现它移除了在项目创建时上传到 S3 的 &lt;code>sample.json&lt;/code> 文件中发现的邮箱为 &lt;code>john@example.com&lt;/code> 的重复条目。&lt;/p>
+&lt;p>它还添加了邮箱为 &lt;code>mathew@gmail.com&lt;/code> 的新的 DynamoDB 条目。&lt;/p>
+&lt;p>这意味着我们的管道按预期工作！！&lt;/p>
+&lt;h2 id="通过-dynamodb-添加重复条目">通过 DynamoDB 添加重复条目
+&lt;/h2>&lt;p>让我们通过向 DynamoDB 添加一个新条目来进一步测试，但这次它的邮箱将与我们现有的记录匹配。&lt;/p>
+&lt;p>&lt;img src="https://miro.medium.com/v2/resize:fit:640/format:webp/1*bWxYzQotL_N0JyVhsCzpTA.png"
+loading="lazy"
+>&lt;/p>
+&lt;p>我们添加了一个邮箱为 &lt;code>mathew@gmail.com&lt;/code> 的新冲突条目&lt;/p>
+&lt;p>&lt;img src="https://miro.medium.com/v2/resize:fit:640/format:webp/1*C0iTx5McyVuu5836kCQ2-Q.png"
+loading="lazy"
+>&lt;/p>
+&lt;p>这将触发一个新的 DataBrew 作业 (Job)：&lt;/p>
+&lt;p>&lt;img src="https://miro.medium.com/v2/resize:fit:640/format:webp/1*Rz50Z-SHv_PHcq1UUcKIgg.png"
+loading="lazy"
+>&lt;/p>
+&lt;p>一旦成功了，我们会看到下图：&lt;/p>
+&lt;p>&lt;img src="https://miro.medium.com/v2/resize:fit:640/format:webp/1*iKPaL44m6-cWhAfAW1gTJg.png"
+loading="lazy"
+>&lt;/p>
+&lt;p>接下来，前往 Athena 再次运行查询，这次它不再包含重复记录了！&lt;/p>
+&lt;p>&lt;img src="https://miro.medium.com/v2/resize:fit:640/format:webp/1*Er8Fx7_rGw4IFALgSGq6ag.png"
+loading="lazy"
+>&lt;/p>
+&lt;h2 id="结论">结论
+&lt;/h2>&lt;p>我创建这个项目和文章是为了提高我在 Terraform 方面的技能，并亲自动手实践数据工程领域，同时磨练我的 Python 技能。&lt;/p>
+&lt;p>你可以在 &lt;a class="link" href="https://github.com/chyke007/serverless-data-pipeline" target="_blank" rel="noopener"
+>这里&lt;/a> 找到完整的源代码。&lt;/p>
+&lt;p>我希望这篇文章能帮助你对在 AWS 中构建数据工程项目更有信心。我很高兴看到你将创造出什么！&lt;/p>
+&lt;p>全栈开发人员、技术作家和 Jamstack 爱好者。热爱终身学习。&lt;/p></description></item><item><title>DevOps 在 2023 年的趋势和预测</title><link>https://martinliu.cn/blog/deveops-trands-in-2023/</link><pubDate>Wed, 04 Jan 2023 10:19:53 +0800</pubDate><guid>https://martinliu.cn/blog/deveops-trands-in-2023/</guid><description>&lt;img src="https://martinliu.cn/blog/deveops-trands-in-2023/pexels-samar-mourya-13378403.jpg" alt="Featured image of post DevOps 在 2023 年的趋势和预测" />&lt;p>随着技术的发展，与之相关的趋势也在不断变化。DevOps也不例外。现在，企业比以往任何时候，都更加认识到DevOps的价值，及其优化开发和运营的能力。随着我们走过2022年，进入2023年，重要的是要保持领先，了解未来几年推动DevOps的趋势。&lt;/p>
+&lt;p>2022年对于DevOps技术来说是令人兴奋的一年，因为企业越来越认识到自动化和协作对于实现业务成功的重要性。采取敏捷的DevOps方法的公司在效率和生产力方面有了相当大的改善。这是由云计算的持续采用和容器化的崛起所做出的支撑。此外，随着 DevOps-as-a-Service（DaaS）解决方案的日益普及，意味着所有规模的组织都能够从DevOps实践中受益，而不需要专门的DevOps团队。&lt;/p>
+&lt;p>云原生架构、无服务器计算和容器被广泛的采用，更多的组织将它们作为未来的方向。这使团队能够以敏捷和高效的方式快速部署、扩展和管理应用程序。人工智能/ML工具成为DevOps工具箱中的一部分，使团队能够更快速、高效地提供软件更新和功能，并检测代码中的异常情况，从而更容易在潜在问题变成严重问题之前发现它们。安全性仍然是一个重要的优先事项，企业在最新的技术和最佳实践方面进行了大量投资，以确保他们的系统是安全可靠的。&lt;/p>
+&lt;p>同时，DevOps团队也开始专注于改善他们的协作和沟通，使团队能够更快地行动，并对客户的需求和反馈做出更多响应。&lt;/p>
+&lt;p>在过去的一年里，我们在DevOps领域看到了很多令人兴奋的发展，但2023年的趋势是什么？让我们来看看今年我们在DevOps领域可以看到的主要趋势。&lt;/p>
+&lt;h2 id="kubernetes-的采用和部署的增加">Kubernetes 的采用和部署的增加
+&lt;/h2>&lt;p>2022年，Kubernetes的采用显著增加，使其成为事实上的容器编排平台。这是由于它的灵活性和可扩展性，使企业能够在云中快速旋转和拆解应用程序。此外，DevOps的兴起使该平台成为云基础设施的一个关键组成部分。&lt;/p>
+&lt;p>Kubernetes的流行因其与云原生堆栈的整合而得到进一步支持。它支持各种应用，包括微服务、无服务器和数据库，使其成为希望利用云的组织的首选。因此，Kubernetes的部署数量在2022年急剧增加。这一趋势预计将持续到2023年，更多的公司将采用Kubernetes作为其云原生解决方案。&lt;/p>
+&lt;p>预计Kubernetes将很快主导市场，每个组织都会转向这个平台进行部署。社区的支持水平和该平台令人印象深刻的增长速度没有放缓的迹象，使Kubernetes仍然是满足部署需求的首选。&lt;/p>
+&lt;h2 id="无服务器计算将得到广泛的应用">无服务器计算将得到广泛的应用
+&lt;/h2>&lt;p>无服务器计算已经成为科技行业的一个主要趋势，预计在2023年将变得更加流行。这种计算方法允许企业在不需要管理服务器的情况下，开发和运行服务和应用程序，使其成为一种高度创新和高效的软件部署方法。据Gartner称，到2025年，超过85%的组织将使用云计算策略，95%的新数字工作负载将在云平台上进行。这意味着，任何不采用无服务器计算的组织都可能难以跟上竞争的脚步。&lt;/p>
+&lt;p>预计到2030年，无服务器市场将达到300亿美元。目前，已经有超过50%的基于云计算进程的企业将无服务器计算整合到他们的系统中。DevOps流程尤其受益于这一趋势，因为它有助于缩小开发和运营之间的隔阂，简化DevOps流水线的代码。成功实施无服务器计算的一个例子是 Autodesk，一家专门为建筑、工程、施工和制造设计软件的公司。通过扩大其在AWS的业务范围并实施AWS Dynamodb和AWS Lambda，Autodesk能够将创建账户所需的时间从两周大幅减少到十分钟。&lt;/p>
+&lt;p>无服务器计算为工程师提供了许多好处，包括通过消除服务器管理来减少工作量，通过只在需要时支付服务器空间来降低成本，以及在减少延迟的同时轻松扩展和部署。因此，这是一个值得在2023年关注的趋势。&lt;/p>
+&lt;h2 id="微服务架构的采用将继续增长">微服务架构的采用将继续增长
+&lt;/h2>&lt;p>微服务架构是一种越来越流行的设计、构建和管理应用程序的结构。这种方法有助于DevOps专业人员开发出更加模块化、与其他组件解耦、更易于维护和扩展的应用程序。通过将一个复杂的应用程序分离成更小、更容易管理的服务，DevOps专业人士对应用程序的各个部分有更多的控制。这使得更新和排除错误更加容易。此外，微服务允许DevOps专业人员通过创建新的服务或更新现有服务来快速响应客户需求。&lt;/p>
+&lt;p>以提供可扩展性、灵活性和敏捷性的方式开发和部署服务的能力是DevOps专业人士开始接受微服务的主要原因。在一个不断发展的IT环境中，公司需要能够快速、轻松地适应行业的变化。微服务是实现这一目标的好方法，因为它们允许在小的、易于管理的部分中开发和部署服务。因此，DevOps专业人员应该关注微服务在未来几年的持续发展。&lt;/p>
+&lt;h2 id="安全自动化将获得发展势头">安全自动化将获得发展势头
+&lt;/h2>&lt;p>安全自动化涉及自动化安全流程和任务，以确保应用程序和系统的安全和保护，使其免受潜在威胁。在2023年，DevOps专业人士应密切关注安全自动化的增长和安全即代码方法的采用。&lt;/p>
+&lt;p>企业实施安全自动化的一种方式是使用Harness安全测试自动化（STO）等工具，该工具允许在CI/CD管道内进行单元、集成和负载测试的自动化。这可以节省宝贵的工程时间，并降低整体云计算成本。集成到CI/CD流水线中的安全自动化保证了代码在部署到生产之前接受严格的安全测试。这确保了只有被验证为安全的代码才被允许进行。此外，在软件开发生命周期（SDLC）中使用人工智能和机器学习正变得越来越普遍，因为这些技术可以被训练来识别代码中的违规行为并提供改进建议。&lt;/p>
+&lt;p>另一方面，安全即代码解决方案将安全测试整合到CI/CD流水线中，使企业能够在整个开发过程中执行安全策略。这有助于确保安全在开发过程的每个阶段都得到考虑，而不是事后才想到。安全自动化和安全即代码解决方案都可以节省宝贵的工程时间，降低整体云计算成本，同时保持高水平的安全性。&lt;/p>
+&lt;p>2023年，随着企业寻求简化和自动化其安全流程，安全自动化将获得更大的发展势头。安全自动化工具将变得越来越复杂，具有自动安全测试、漏洞扫描和持续安全监控等功能。这将使企业能够在安全风险成为重大问题之前快速有效地识别和解决这些风险。&lt;/p>
+&lt;h2 id="混沌工程实验的增加">混沌工程实验的增加
+&lt;/h2>&lt;p>混沌工程是一个相对较新的领域，近年来得到了普及，预计在未来几年将继续增长。&lt;/p>
+&lt;p>混沌工程是一种战略方法，涉及到通过将产品、服务和系统置于极端条件下测试其复原力和可靠性。这有助于组织了解其系统和应用在这种条件下的行为，并确保它们能够承受这些条件。混沌工程的目标是识别部署过程中的 &amp;ldquo;不完美&amp;rdquo;，如漫长的周期时间，并防止故障发生。混沌工程师的目标不是要消除故障，而是要减轻故障，具体方法是找出不完善的地方并自动修复。&lt;/p>
+&lt;p>我们相信，随着企业认识到确保其产品和服务的高可用性和弹性的重要性，混沌工程和混沌原则的使用将在2023年变得更加广泛。随着混沌工程的采用越来越多，也可能会开发出新的工具和最佳实践，以帮助组织更好地理解和管理其系统的复杂性。&lt;/p>
+&lt;h2 id="docker将继续提升开发者的体验">Docker将继续提升开发者的体验
+&lt;/h2>&lt;p>Docker是一个深受开发者欢迎的工具，它通过允许开发者在云中快速构建、打包和部署应用程序，简化了开发生命周期。Docker的吸引力在于它的简单性，以及它将容器化应用快速带入生产环境的方式。&lt;/p>
+&lt;p>Docker是一个深受开发者欢迎的工具，它通过允许开发者在云中快速构建、打包和部署应用程序，简化了开发生命周期。Docker的吸引力在于它的简单性，以及它将容器化应用快速带入生产环境的方式。&lt;/p>
+&lt;p>尽管最初的假设是，当Kubernetes取消支持时，Docker将被淘汰，但事实并非如此。值得注意的是，Docker的设计从一开始就没有考虑到Kubernetes。Docker之所以能够保持其受欢迎程度，是因为有大量的开发者社区在使用它，而且它提供了易用性。&lt;/p>
+&lt;p>围绕Docker的社区令人印象深刻，无与伦比，它的广泛采用和强大的社区支持使它成为寻求简化工作流程和提高生产力的开发者的可靠选择。因此，Docker预计在未来几年仍将是DevOps领域的一个关键角色，为更多协作开发工作流程的趋势推波助澜。&lt;/p>
+&lt;p>2023年值得关注的一个DevOps趋势是Docker继续增强开发者的体验。该公司已经在开发新的工具和功能，使部署过程更简单、更快、更有效。它的重点是简化操作，同时也提供直观的用户体验。因此，采用Docker的公司可望体验到更大程度的灵活性和可扩展性。&lt;/p>
+&lt;h2 id="gitops将获得更多的信任">GitOps将获得更多的信任
+&lt;/h2>&lt;p>在GitOps中，开发人员将他们的代码存储在Git仓库中，然后将其部署到Kubernetes集群中。这种方法的好处是，开发人员可以将他们的代码保存在源码控制中，而不必担心管理Kubernetes集群的问题。&lt;/p>
+&lt;p>在过去的几年里，GitOps作为一种提高软件交付速度、可靠性和安全性的方法，在DevOps专业人士中获得了巨大的吸引力。在2023年，我们希望看到GitOps在希望改善其软件交付流程的组织中获得更多的信任和采用。&lt;/p>
+&lt;p>我们相信GitOps在2023年将继续流行，有几个原因。首先，GitOps使企业能够采用更加声明性的方法来管理其应用程序和基础设施。这意味着，开发人员不必手动配置和部署资源，只需将他们想要的状态提交给Git，剩下的就交给自动化工具处理。这可以帮助减少错误的风险，提高软件交付的速度和可靠性。&lt;/p>
+&lt;p>GitOps促进了开发团队内部的协作和透明度。通过使用Git作为真理的中心来源，团队中的每个人都可以看到正在进行的更改和系统的当前状态。这可以帮助减少冲突，改善团队成员之间的沟通。&lt;/p>
+&lt;p>GitOps可以帮助企业提高其软件交付过程的安全性。通过使用Git作为唯一的真理源，并使部署过程自动化，企业可以减少未经授权的更改的风险，并确保只有经过批准的更改被部署到生产中。&lt;/p>
+&lt;p>随着GitOps继续在DevOps领域获得关注，预计它在未来几年只会继续增长。这是因为它能够简化DevOps流程，使开发者更容易部署他们的代码。因此，GitOps肯定会成为2023年值得关注的领先DevOps趋势之一。具体来说，随着开发者越来越了解GitOps的好处，对GitOps的信任将继续增加。随着越来越多的组织采用GitOps，并成为DevOps流程的标准部分，GitOps将获得更多信任。&lt;/p>
+&lt;h2 id="aiops将变得突出">AIOps将变得突出
+&lt;/h2>&lt;p>MLOps和AIOps是两个最突出的DevOps工具，预计将成为该行业的主要参与者，到2026年预计价值为409.1亿美元。这些工具对于优化DevOps操作和实现高质量的快速发布至关重要。MLOps有助于加强机器学习的开发系统，而AIOps则使IT流程和操作自动化。&lt;/p>
+&lt;p>AIOps是一个强大的工具，可以使复杂的DevOps流程自动化，使团队能够快速检测和解决任何潜在的问题。它还可以提供对DevOps流程性能的洞察力，并在造成任何破坏之前确定任何潜在的问题。AIOps通常被用作DevOps工具链的一部分，实时监控和管理这些系统，为集成工具和DevOps工程师提供自动反馈。AIOps也可用于自动化某些任务，如应用测试和部署，这可以大大减少完成DevOps任务所需的时间和精力。&lt;/p>
+&lt;p>2023年，随着企业寻求提高IT效能，减少管理复杂数字系统的人工劳动，预计AIOps将继续流行。&lt;/p>
+&lt;h2 id="内部开发者平台将变得更加重要">内部开发者平台将变得更加重要
+&lt;/h2>&lt;p>到2022年，颠覆公司构建软件方式的DevOps趋势已经发展成为一种软件交付方式，通过打破孤岛将开发和运营联系起来。&lt;/p>
+&lt;p>内部开发者平台是一套专门为企业的开发者设计的工具和服务，通常托管在企业自己的基础设施内。&lt;/p>
+&lt;p>内部开发者平台为工程团队提供了一个集中的中心，以进行合作和共享资源。这可以帮助内部开发人员的学习和发展，使他们能够增加技术知识，并使他们能够轻松地与其他工程团队一起进行项目工作。这种平台还可以帮助减少错误，提高代码质量，因为资源共享和审查更容易。在2023年，我们预计会看到企业内部越来越多地采用内部开发者平台的趋势。&lt;/p>
+&lt;h2 id="devops协作将成为主流">DevOps协作将成为主流
+&lt;/h2>&lt;p>DevOps的理念包括打破软件开发人员和开发运营团队之间的围墙，允许他们在构建、测试和部署软件方面进行协作。随着越来越多的组织追求敏捷开发，他们也在提高开发人员和系统之间的障碍。亚马逊、谷歌和Stripe等组织都依靠DevOps协作来促进速度和创新。&lt;/p>
+&lt;p>协作工作正在改变，高管们正在使用新的软件工具来帮助他们监控工作流程。使用Slack、Microsoft Teams、GitHub和Atlassian的工具的DevOps团队对他们的工作流程有更大的可见性。在未来两年，DevOps领导层将继续看到DevOps协作成为主流，新的管理方式将出现。&lt;/p>
+&lt;h2 id="低代码平台">低代码平台
+&lt;/h2>&lt;p>低代码平台的确是扩展敏捷和DevOps优势的有用工具。它们允许开发人员快速、轻松地构建和部署应用程序，而不需要编写大量的代码。这对于需要快速开发和部署应用程序的组织来说特别有利，因为这可以让他们更有效地应对不断变化的业务需求和市场条件。&lt;/p>
+&lt;p>低代码平台也可以很好地适用于想要采用DevOps方法的组织，因为它们可以促进开发人员和IT运营团队之间的合作。通过使用低代码平台，开发人员可以专注于构建和测试应用程序，而IT运营团队可以专注于部署和监控。这些平台通常与所有主要的DevOps工具集成，从而有助于成为管理CI/CD的单一界面。&lt;/p>
+&lt;p>总的来说，对于希望采用敏捷和DevOps实践的组织来说，低代码平台可以成为一个有价值的工具，因为它们可以帮助加速开发过程，提高应用程序的质量和可靠性。&lt;/p>
+&lt;h2 id="向标准化部署和真正的自动化转变">向标准化部署和真正的自动化转变
+&lt;/h2>&lt;p>现在出现了许多端到端的DevOps平台，它们都是以低代码的方式构建的。此外，他们专注于为部署引入标准化；这一直是阻碍团队扩展和控制其部署的主要障碍。使用标准化的CI/CD管道使团队能够重新使用特定的管道来部署性质相似的微服务，只需在需要时调整一些参数。这有助于解决管道臃肿的问题，简化管道管理。&lt;/p>
+&lt;p>这些低代码平台还有助于实现真正意义上的自动化，这一直是DevOps的一个关键原则，但由于各团队的工具和工作流程分散，其实施一直是孤立和不统一的。这种趋势在未来可能会继续，重点是通过DevOps平台实现真正的端到端自动化。自动化可以帮助减少构建、测试和部署软件所需的时间和精力，这可以提高效率并加快开发过程。部署后的自动化在帮助检测故障和启动即时回滚以确保更高的应用可用性方面也有很大的作用。&lt;/p>
+&lt;h2 id="混合云环境的兴起">混合云环境的兴起
+&lt;/h2>&lt;p>许多组织正朝着混合云模式发展，其中一些工作负载在企业内部运行，另一些在云中运行。要求也决定了需要让应用程序在多个云区域运行，并有许多共享资源。这种趋势在未来几年可能会继续下去，DevOps实践将需要适应，不仅要支持混合云的部署，还要支持简化的跨集群监控、备份等。&lt;/p>
+&lt;h2 id="基础设施即代码">基础设施即代码
+&lt;/h2>&lt;p>基础设施即代码（IAC）将成为DevOps的领先趋势之一。这一趋势有利于通过自动化而不是人工的方式来管理和配置基础设施。这是一个基本的DevOps最佳实践，将持续监控、虚拟化测试和版本控制应用于指导基础设施开发和管理的基础代码。&lt;/p>
+&lt;p>基础设施即代码使采用DevOps技术以及基础设施团队和软件开发团队之间更紧密的合作成为可能。当基础设施是代码并被纳入你公司的软件生命周期时，有一个共同的词汇和一套共同的标准，利益相关者已经理解。团队之间的沟通因这种共享的知识而得到促进，这对DevOps至关重要。&lt;/p>
+&lt;h2 id="devsecops">DevSecOps
+&lt;/h2>&lt;p>DevSecOps是指开发、安全和运营。它是一种软件开发实践，在每个阶段都集成了安全元素，直到开发的解决方案不能成功交付。DevSecOps是从DevOps演变而来的，因此，实施DevSecOps而不是DevOps将在未来获得更大的发展。DevSecOps将安全整合到CI/CD管道中，使开发团队能够以DevOps的速度解决目前最紧迫的一些安全问题。&lt;/p>
+&lt;h2 id="sre-网站可靠性工程">SRE (网站可靠性工程)
+&lt;/h2>&lt;p>DevOps部署的下一个层次是站点可靠性工程。在DevOps的未来趋势中，似乎采用SRE作为战略，以实现高可用性、可靠性和增强的数字消费者体验。SRE技术对于完成内部服务水平目标和服务水平协议（SLA）（SLO）也是必要的。&lt;/p>
+&lt;h2 id="可观测性">可观测性
+&lt;/h2>&lt;p>可观察性将是DevOps的关键趋势之一。它提到了协助开发和运营团队记录、收集、关联和分析来自分布式应用的大量性能数据的方法和软件工具，以获得当下的洞察力。&lt;/p>
+&lt;h2 id="多云环境">多云环境
+&lt;/h2>&lt;p>DevOps和多云环境相辅相成，具有同义关系。他们的结合提供了好处，在提高生产力的同时，也为彼此增加了价值数。尽管如此，DevOps和多云在一起仍然是不寻常的。大多数拥有完善的DevOps管道的企业离将多云安排到位还有一段距离。&lt;/p>
+&lt;h2 id="结论">结论
+&lt;/h2>&lt;p>随着IT组织实施DevOps计划，他们无疑将面临一些挑战，这些挑战将考验他们在不断的压力下管理变化、跨团队协作和有效工作的能力。大多数IT组织将意识到，有必要让所有利益相关者参与到DevOps中来，包括业务部门，这样他们都能理解正在实施的方法背后的原因。&lt;/p>
+&lt;p>2023年，DevOps团队将继续推进他们的采用率，因为他们从企业高管那里得到的支持越来越多。DevOps团队将继续关注自动化，将应用程序迁移到云平台，推出Docker容器，建立容器协调工具，以及将他们的关注点扩展到安全方面。更多的公司将把DevOps嵌入到他们的运营结构中。这一发展将使企业开发、部署和运行应用程序的方式以及支持其团队的方式发生重大变化。除了采用DevOps实践外，企业还将调整数字化实践，从他们开发和部署的软件中获得更大的价值和质量，并管理企业的数字化转型。&lt;/p>
+&lt;h2 id="参考">参考
+&lt;/h2>&lt;p>本文参考的文章资料如下：&lt;/p>
+&lt;ul>
+&lt;li>&lt;a class="link" href="https://alltechmagazine.com/devops-trends-to-watch-for-in-2023/" target="_blank" rel="noopener"
+>https://alltechmagazine.com/devops-trends-to-watch-for-in-2023/&lt;/a>&lt;/li>
+&lt;li>&lt;a class="link" href="https://ozone.one/top-6-devops-trends-to-look-for-in-2023/" target="_blank" rel="noopener"
+>https://ozone.one/top-6-devops-trends-to-look-for-in-2023/&lt;/a>&lt;/li>
+&lt;li>&lt;a class="link" href="https://www.solutionanalysts.com/blog/top-10-trends-of-devops-in-2023/" target="_blank" rel="noopener"
+>https://www.solutionanalysts.com/blog/top-10-trends-of-devops-in-2023/&lt;/a>&lt;/li>
+&lt;li>&lt;a class="link" href="https://www.analyticsinsight.net/top-10-devops-trends-and-predictions-to-follow-up-in-2023/" target="_blank" rel="noopener"
+>https://www.analyticsinsight.net/top-10-devops-trends-and-predictions-to-follow-up-in-2023/&lt;/a>&lt;/li>
+&lt;/ul></description></item><item><title>可汗学院如何在一周内成功处理2.5倍的流量？</title><link>https://martinliu.cn/blog/how-khan-academy-successfully-handled-2-5x-traffic-in-a-week-cn/</link><pubDate>Thu, 25 Mar 2021 00:21:05 +0800</pubDate><guid>https://martinliu.cn/blog/how-khan-academy-successfully-handled-2-5x-traffic-in-a-week-cn/</guid><description>&lt;img src="https://martinliu.cn/img/cos/2021-03-24-sunrise-5863751_1920.png" alt="Featured image of post 可汗学院如何在一周内成功处理2.5倍的流量？" />&lt;p>可汗学员处理流量突然暴增的过程离不开 SRE 的设计和工作。他们的应对策略包括使用云和CDN。&lt;/p>
+&lt;p>可汗学院是一家非营利性机构，其使命是为任何人、任何地方提供免费的世界级教育。&lt;/p>
+&lt;p>本文原文出处：&lt;a class="link" href="https://blog.khanacademy.org/how-khan-academy-successfully-handled-2-5x-traffic-in-a-week/" target="_blank" rel="noopener"
+>https://blog.khanacademy.org/how-khan-academy-successfully-handled-2-5x-traffic-in-a-week/&lt;/a>&lt;/p>
+&lt;p>这篇文章的发布时间在去年（2020 年 5 月），大约是全球疫情最严重的时候。以下是正文。&lt;/p>
+&lt;p>说到快速扩展&amp;hellip;&lt;/p>
+&lt;p>几个月前，我发布了一些关于扩展的想法，并承诺很快会发布更多的内容。好吧，说到快速扩展&amp;ndash;在3月份的短短两周内，可汗学院网站的使用量就增长到了去年同期的2.5倍，并且一直维持到现在。由于冠状病毒大流行，世界各地的学校都关闭了，学生、家长和老师都转向了远程教育，可汗学院能够做出反应，提供高质量的内容和课堂体验&amp;ndash;而且是免费的。在4月份，我们在平台上为3000万学习者提供了服务。最近一项针对家长的全国性调查发现，可汗学院是 &lt;a class="link" href="https://tytonpartners.com/library/2177-2/" target="_blank" rel="noopener"
+>&amp;ldquo;使用最多的在线资源&amp;rdquo;&lt;/a>。&lt;/p>
+&lt;p>我很自豪，我们吸纳了这种快速增长，同时并没有干扰到我们的用户。除了在几天内迅速做出反应以缓解压力点之外，我们还提前做好了准备，而这种准备也得到了回报。我们之所以能够轻松地进行扩展，很大程度上是因为我们的架构以及谨慎选择外部服务并正确使用它们的严谨做法。&lt;/p>
+&lt;p>因此，在这篇文章中，我将讨论对我们网站的可扩展性起关键作用的架构方面。&lt;/p>
+&lt;p>我们架构的两个基本组件在这里为我们提供了特别好的服务。我们使用谷歌云，包括AppEngine、Datastore和Memcache，以及Fastly CDN，它们是无服务器和缓存策略的支柱，这是我们扩展性的关键。&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/img/cos/2021-03-24-scaling-traffic-in-a-week.png"
+loading="lazy"
+>&lt;/p>
+&lt;h2 id="无服务器基础设施">无服务器基础设施
+&lt;/h2>&lt;p>使用 GCP 的 AppEngine，这种完全管理的环境，意味着我们可以非常容易地扩展，几乎不费吹灰之力。即使在流量大幅增加的情况下，我们的网站也能保持良好的性能，而且干预最少。我们自己不需要担心负载平衡，因为服务器实例会根据需要启动，也不需要任何干预。我们同样使用 Datastore，它可以自动扩展存储和访问容量，与 App Engine 扩展 Web服务器实例的方式非常相似。&lt;/p>
+&lt;h2 id="缓存">缓存
+&lt;/h2>&lt;p>Fastly CDN使我们能够缓存所有静态数据，并最大限度地减少服务器跳转。巨大的可扩展性，它还能帮助我们优化托管资源，在我们的App Engine无服务器模式中，托管资源的成本随着使用量的增加而线性增长。如架构图所示，所有的客户端请求都会经过Fastly，这样我们可以防止不必要的服务器流量，提高性能。我们主要从YouTube加载视频，其次从Fastly加载。这样也可以降低成本，以及保证视频的快速加载。&lt;/p>
+&lt;p>除了在Fastly中缓存静态数据外，我们还广泛缓存常见的查询、用户偏好和会话数据，并利用这些来加快数据获取性能。我们除了围绕 Datastore 行使其他关键的最佳实践外，还大量使用Memcache，以确保快速响应时间。&lt;/p>
+&lt;p>我们的网站可靠性(SRE)团队当然需要做好扎实的监控准备&amp;ndash;我们也是做到了。我们注意到头几天出现了一些降速，并发现是部署导致了这些衰减。在我们的要求下，Google 增加了我们的 Memcache 的容量，一周内我们就可以轻松恢复到正常的连续部署模式。这个速度是至关重要的，因为我们的团队正在快速的开发资源，以指导新网站用户尽可能轻松地上手使用我们的服务。&lt;/p>
+&lt;p>总的来说，我们努力工作，谨慎选择服务，遵循最佳实践，并根据需要开发自己的服务。有了正确的技术、精心的准备，以及我们了不起的工程团队的现场调整，我们已经能够不间断地为现在比以往任何时候都更依赖我们的学生、家长和教师提供服务。&lt;/p></description></item><item><title>用 Docker 构建 Serverless 应用</title><link>https://martinliu.cn/2016/06/22/building-serverless-apps-docker/</link><pubDate>Wed, 22 Jun 2016 16:22:51 +0000</pubDate><guid>https://martinliu.cn/2016/06/22/building-serverless-apps-docker/</guid><description>&lt;h2 id="martin-解读-serverless">Martin 解读 Serverless
+&lt;/h2>&lt;p>Serverless 不意味着没有服务器，而是从应用可以在一个抽象层上忽略它的存在，而只关注在功能实现上和自身的请求处理上；每一个功能实现在不是单纯的业务逻辑处理的代码，相反每个功能调用具有了 server 的特质，进化成为了一个具有自省、自知和自治的工作负载单元；他们更像是能够衍生出其它新功能单元的生物体。这样整个 Serverless 应用架构之内，每个生命可以衍生下去，子子孙孙无穷匮也。&lt;/p>
+&lt;p>本文编译了：&lt;a class="link" href="https://blog.docker.com/2016/06/building-serverless-apps-with-docker/" target="_blank" rel="noopener"
+>https://blog.docker.com/2016/06/building-serverless-apps-with-docker/&lt;/a>  一下是正文内容。&lt;/p>
+&lt;p>处在这技术日新月异的时代里，新的技术浪潮经常对当前的技术产生着威胁和颠覆。在编写应用的时候我们目前经常谈论到“Serverless”技术。它的核心思想是把应用作为一系列的功能/function 来部署，这些功能在需要的时候被按需部署。服务器管理应该是不需要去操心的事情，所有功能被按需调用，被运行在群集之上。&lt;/p>
+&lt;p>但是 Serverless 里不意味着没有 Docker，事实上 ”Docker 就是 Serverless”。你可以用 Docker 来容器化这些功能，然后按需地运行在 Swarm 群集上。Serverless 是一种构建分布式计算的应用的方法，而 Docker 是完美的构建和运行他们的平台。&lt;/p>
+&lt;h2 id="从-server-到-serverless">从 Server 到 Serverless
+&lt;/h2>&lt;p>那么我们如何来编写 Serverless 的应用？让我们先看下这个例子：&lt;a class="link" href="https://github.com/docker/example-voting-app" target="_blank" rel="noopener"
+>“一个有 5 个子服务组成的投票应用”&lt;/a>：&lt;/p>
+&lt;p>&lt;img src="https://media.licdn.com/mpr/mpr/shrinknp_800_800/AAEAAQAAAAAAAAlaAAAAJGI5NTZjMjRkLTRkNmYtNDEyOC04OTNiLTBmY2I5M2QyOTZiMQ.png"
+loading="lazy"
+>&lt;/p>
+&lt;p>它的结构如下：&lt;/p>
+&lt;ul>
+&lt;li>两个 web 前端&lt;/li>
+&lt;li>一个后台的处理投票的 worker 服务&lt;/li>
+&lt;li>一个处理投票的消息队列&lt;/li>
+&lt;li>一个数据库&lt;/li>
+&lt;/ul>
+&lt;p>那个后台处理投票的进程是非常容易成为转换为 Serverless 架构的目标。在投票应用内，我们可以运行一点类似于下面的代码，来执行后台任务：&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;span class="lnt">4
+&lt;/span>&lt;span class="lnt">5
+&lt;/span>&lt;span class="lnt">6
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">import dockerrun
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">client = dockerrun.from_env()
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">client.run(&amp;#34;bfirsh/serverless-record-vote-task&amp;#34;, [voter_id, vote], detach=True)
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>Worker 和消息队列能用按需在 Swarm 上运行的容器来替换，并自动地按需扩容。&lt;/p>
+&lt;p>我们甚至可以消除掉 web 前端。我们可以这么做：用 Docker 容器来相应每一个 HTTP 请求，每个 HTTP 请求都用一个自生长的跑着轻量 HTTP 服务器的容器来处理。之前使用的是长时间持续运行的 HTTP 服务器，现在变成了具有 HTTP 相应和处理能力的按需跑起来的容器，而且他们能自动地扩容来支持所有访问请求。&lt;/p>
+&lt;p>我们新的架构大概如下图所示：&lt;/p>
+&lt;p>&lt;img src="https://media.licdn.com/mpr/mpr/shrinknp_800_800/AAEAAQAAAAAAAAjOAAAAJGQyYTVhZTFiLTRkZWQtNDE0Yi1iMzRkLWU4OWU5NjExZDc2OQ.png"
+loading="lazy"
+>&lt;/p>
+&lt;p>其中红色的方块是需持续长期运行的服务，而绿色方块成了按需被调用的 Docker 容器。这样这个应用变成了只有少数几个需要被管理的 long-running 服务，在相应请求的时候使用原生的 Swarm 扩容能力，处理能力的上限是 Swarm 群集的上限。&lt;/p>
+&lt;h2 id="具体如何实现">具体如何实现
+&lt;/h2>&lt;p>这里有三个有用的技巧，可以在你的程序中使用：&lt;/p>
+&lt;ol>
+&lt;li>把你代码中的 function 作为按需拉起的 Docker 容器&lt;/li>
+&lt;li>使用 Swarm 在群集上运行这些容器&lt;/li>
+&lt;li>从容器里面运行这些功能容器，绕过了一个 Docker API socket&lt;/li>
+&lt;/ol>
+&lt;p>使用以上技术的组合，程序执行负载发生的可能性将和您如何架构你的应用相关。运行后台任务就是一个非常适合的例子，但是整个应用中的其它工作负载也是有可能的，例如：&lt;/p>
+&lt;ul>
+&lt;li>考虑到延迟，用启动一个容器来服务所有用户的 HTTP 请求可能是不现实的。可是你可以写一个内置的负载均衡逻辑，让它知道何时需要主动地自动扩容 Web 前端自身，通过在 Swarm 群集上运行更多 web 处理容器。&lt;/li>
+&lt;li>一个 MongoDB 容器可以在 Swarm 上成为一个具有自省能力的架构，它能自动地运行出正确数量的 shard 和 replica 容器。&lt;/li>
+&lt;/ul>
+&lt;h2 id="接下来">接下来
+&lt;/h2>&lt;p>我们已经得到了这些激进的新工具，用做构建应用的抽象层，我们隐约看到了如何深入下去的可能性。我们依然像长时间以来在一堆服务器上构建应用一样，而以后可以来利用 Swarm 能按需地在基础架构里的任何地方执行功能代码的能力。&lt;/p>
+&lt;p>希望这些能够给您一些如何构建应用的新思路，但是我们还需要你们的帮助。我们已经有的是一些构建 Serverless 应用的基础功能，然而他们依然不是很完备，我们需要更好的工具、库、样例程序，文档等等。&lt;/p>
+&lt;p>&lt;a class="link" href="https://github.com/bfirsh/serverless-docker" target="_blank" rel="noopener"
+>这个 Github 库有一些工具、库、代码和文章的链接。&lt;/a>基于此，如果您想学习更多的话，请共享任何相关的链接，这样我们可以开始协作在一起。&lt;/p>
+&lt;p>大家一起来搞，并祝 hacking 愉快！&lt;/p></description></item></channel></rss>

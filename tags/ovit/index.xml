@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Ovit on Martin Liu's Blog</title><link>https://martinliu.cn/tags/ovit/</link><description>Recent content in Ovit on Martin Liu's Blog</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><lastBuildDate>Sun, 09 Oct 2022 21:44:15 +0800</lastBuildDate><atom:link href="https://martinliu.cn/tags/ovit/index.xml" rel="self" type="application/rss+xml"/><item><title>服务器虚拟化 RHEV</title><link>https://martinliu.cn/2015/03/27/e69c8de58aa1e599a8e8999ae68b9fe58c96-rhev/</link><pubDate>Fri, 27 Mar 2015 02:11:40 +0000</pubDate><guid>https://martinliu.cn/2015/03/27/e69c8de58aa1e599a8e8999ae68b9fe58c96-rhev/</guid><description>&lt;p>服务器虚拟在我的 lab 中是必选项，管理控制器端 RHEVM 安装在主服务的一个虚拟机里面。在主服务器上使用 targetcli 做了一个 iscsi 的共享存储。使用这个命令可以方便的实现 iscsi 设备。把最终的存储文件放在了 SSD 盘上的一个 100GB 的瘦制备文件上。
+[bash]
+╭─root@w540 ~
+╰─$ targetcli
+targetcli shell version 2.1.fb37
+Copyright 2011-2013 by Datera, Inc and others.
+For help on commands, type &amp;lsquo;help&amp;rsquo;.&lt;/p>
+&lt;p>/&amp;gt; ls
+o- / &amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;. [&amp;hellip;]
+o- backstores &amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;.. [&amp;hellip;]
+| o- block &amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;.. [Storage Objects: 0]
+| o- fileio &amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;. [Storage Objects: 1]
+| | o- iscsi1 &amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;. [/root/iscsi01.img (100.0GiB) write-back activated]
+| o- pscsi &amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;.. [Storage Objects: 0]
+| o- ramdisk &amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip; [Storage Objects: 0]
+o- iscsi &amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip; [Targets: 1]
+| o- iqn.2003-01.org.linux-iscsi.w540.x8664:sn.82939fa1cd49 &amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip; [TPGs: 1]
+| o- tpg1 &amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;.. [no-gen-acls, no-auth]
+| o- acls &amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;. [ACLs: 0]
+| o- luns &amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;. [LUNs: 1]
+| | o- lun0 &amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip; [fileio/iscsi1 (/root/iscsi01.img)]
+| o- portals &amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;. [Portals: 1]
+| o- 0.0.0.0:3260 &amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;.. [OK]
+o- loopback &amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip; [Targets: 0]
+/&amp;gt;
+[/bash]&lt;/p>
+&lt;p>以上 iscsi 的存储配置参考：&lt;a class="link" href="https://access.redhat.com/solutions/894163" target="_blank" rel="noopener"
+>https://access.redhat.com/solutions/894163&lt;/a>&lt;/p>
+&lt;p>如果需要让所有的节点都能无障碍访问 iscsi 存储，就需要把 acl 设置为允许所有节点访问。使用下面这个命令&lt;/p>
+&lt;p>[bash]
+/&amp;gt; iscsi/iqn.2003-01.org.setup.lun.test/tpg1/ set attribute authentication=0 demo_mode_write_protect=0 generate_node_acls=1 cache_dynamic_acls=1&lt;/p>
+&lt;p>Parameter demo_mode_write_protect is now &amp;lsquo;0&amp;rsquo;.&lt;/p>
+&lt;p>Parameter authentication is now &amp;lsquo;0&amp;rsquo;.&lt;/p>
+&lt;p>Parameter generate_node_acls is now &amp;lsquo;1&amp;rsquo;.&lt;/p>
+&lt;p>Parameter cache_dynamic_acls is now &amp;lsquo;1&amp;rsquo;.&lt;/p>
+&lt;p>/&amp;gt; ls&lt;/p>
+&lt;p>o- / &amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip; [&amp;hellip;]&lt;/p>
+&lt;p>o- backstores &amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;. [&amp;hellip;]&lt;/p>
+&lt;p>| o- block &amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;. [Storage Objects: 0]&lt;/p>
+&lt;p>| o- fileio &amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip; [Storage Objects: 0]&lt;/p>
+&lt;p>| o- pscsi &amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;. [Storage Objects: 0]&lt;/p>
+&lt;p>| o- ramdisk &amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;.. [Storage Objects: 1]&lt;/p>
+&lt;p>| o- test1 &amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;.. [nullio (100.0MiB) activated]&lt;/p>
+&lt;p>o- iscsi &amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;.. [Targets: 1]&lt;/p>
+&lt;p>| o- iqn.2003-01.org.setup.lun.test &amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;.. [TPGs: 1]&lt;/p>
+&lt;p>| o- tpg1 &amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;. [gen-acls, no-auth]&lt;/p>
+&lt;p>| o- acls &amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip; [ACLs: 0]&lt;/p>
+&lt;p>| o- luns &amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip; [LUNs: 1]&lt;/p>
+&lt;p>| | o- lun0 &amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;. [ramdisk/test1]&lt;/p>
+&lt;p>| o- portals &amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip; [Portals: 1]&lt;/p>
+&lt;p>| o- 12.12.12.1:3260 &amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;.. [iser]&lt;/p>
+&lt;p>o- loopback &amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;.. [Targets: 0]&lt;/p>
+&lt;p>o- srpt &amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip; [Targets: 0]&lt;/p>
+&lt;p>/&amp;gt; saveconfig&lt;/p>
+&lt;p>Last 10 configs saved in /etc/target/backup.&lt;/p>
+&lt;p>Configuration saved to /etc/target/saveconfig.json&lt;/p>
+&lt;p>/&amp;gt; exit&lt;/p>
+&lt;p>Global pref auto_save_on_exit=true&lt;/p>
+&lt;p>Last 10 configs saved in /etc/target/backup.&lt;/p>
+&lt;p>Configuration saved to /etc/target/saveconfig.json
+[/bash]&lt;/p>
+&lt;p>RHEVM 的安装过程非常简洁，基本用 Satellite 配置了一下它所需要的 repos，做好视图，然后就推送给了一个 kvm 虚拟机，使用 pxe 安装好之后就行了。&lt;/p>
+&lt;p>RHEVM 需要的 repos 和基本的安装命令：
+[bash]&lt;/p>
+&lt;h1 id="subscription-manager-repos-enablerhel-6-server-rpms">subscription-manager repos &amp;ndash;enable=rhel-6-server-rpms
+&lt;/h1>&lt;h1 id="subscription-manager-repos-enablerhel-6-server-supplementary-rpms">subscription-manager repos &amp;ndash;enable=rhel-6-server-supplementary-rpms
+&lt;/h1>&lt;h1 id="subscription-manager-repos-enablerhel-6-server-rhevm-35-rpms">subscription-manager repos &amp;ndash;enable=rhel-6-server-rhevm-3.5-rpms
+&lt;/h1>&lt;h1 id="subscription-manager-repos-enablejb-eap-6-for-rhel-6-server-rpms">subscription-manager repos &amp;ndash;enable=jb-eap-6-for-rhel-6-server-rpms
+&lt;/h1>&lt;h1 id="subscription-manager-repos-enablerhel-6-server-rhevh-rpms">subscription-manager repos &amp;ndash;enable=rhel-6-server-rhevh-rpms
+&lt;/h1>&lt;h1 id="yum-install-rhevm-rhevm-dwh-rhevm-reports">yum install rhevm rhevm-dwh rhevm-reports
+&lt;/h1>&lt;h1 id="engine-setup">engine-setup
+&lt;/h1>&lt;p>[/bash]&lt;/p>
+&lt;p>回答完 engine-setup 的所有问题就可以登录风格统一的黑底色的 RHEM 界面了。实际上有三个登录界面：用户的，管理员，和报表的。&lt;/p>
+&lt;p>&lt;a class="link" href="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2015/03/rhevm-web-admin.jpg" target="_blank" rel="noopener"
+>&lt;img src="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2015/03/rhevm-web-admin-520x293.jpg"
+loading="lazy"
+alt="rhevm-web-admin"
+>&lt;/a>&lt;/p>
+&lt;p>下面需要安装跑虚拟机的 Hypervisor 了，RHEV 的 Hypervisor 有两种，一种是精简话的裁剪 rhel 版本叫做 RHEVH（偏向 vshpere 的做法），还有一种就是 rhel 的标准版，然后安装 Hypervisor 相关的包（偏向 OpenStack 的做法）。下面我会安装第二种做法。目的是：我有两台相同配置的计算节点，我希望把动态的变更他们的功能；一会做 RHEV 虚拟机的演示，一会做 OpenStack nova 的演示。&lt;/p>
+&lt;p>用了一个组合视图安装了这两个服务器虚拟化节点。组合视图里如下所示：
+&lt;a class="link" href="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2015/03/rhev-view-compose.jpg" target="_blank" rel="noopener"
+>&lt;img src="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2015/03/rhev-view-compose-520x286.jpg"
+loading="lazy"
+alt="rhev-view-compose"
+>&lt;/a>
+如上图所示：1）视图 1 是基础的 RHEL 操作系统 repo；2）视图 2 是 RHEV 相关的 repos 视图，其中包括了安装 RHEVM 和 host 的所有需要的 repo。考激活秘钥控制每个 repo 的默认是否开启，它们对安装后的 os 可见，但是默认并不是开启的，因此，我设置 rhevm 和 jboss 为默认关闭的，由于安装 rhev host 的情况比较多，需要安装 rhevm 的话，可以手动 enable 这需要的 repos 即可。&lt;/p>
+&lt;p>安装和配置完存储之后的 RHEVM 控制台：
+&lt;a class="link" href="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2015/03/rhevm-hosts.jpg" target="_blank" rel="noopener"
+>&lt;img src="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2015/03/rhevm-hosts-520x286.jpg"
+loading="lazy"
+alt="rhevm-hosts"
+>&lt;/a>&lt;/p>
+&lt;p>目前由于没有安装 OpenStack 环境，所以没有 Glance 服务，因此 iso 镜像只能暂时放在了 dis06 的一个服务器虚拟化 Hypervisor 节点上，目前是临时的方案，回头一定把 iso 放到 Glance 服务上 host。&lt;/p>
+&lt;p>下面上传一个 iso 之后就可以创建虚拟机了。
+[bash]
+[root@rhevm03 ~]# engine-iso-uploader &amp;ndash;iso-domain=iso-dis06 upload /tmp/turnkey-jenkins-13.0-wheezy-amd64.iso
+Please provide the REST API password for the admin@internal oVirt Engine user (CTRL+D to abort):
+Uploading, please wait&amp;hellip;
+ERROR: mount.nfs: Connection timed out&lt;/p>
+&lt;p>[/bash]&lt;/p>
+&lt;p>由于这个命令上传不成功，也不想排错了；到目前这个状态其实就可以在 Satellite 里面使用 RHEV 的资源提供者的方式来安装虚拟机了，如下图所示：&lt;/p>
+&lt;p>&lt;a class="link" href="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2015/03/sat6-built-vm-via-rhev-1.jpg" target="_blank" rel="noopener"
+>&lt;img src="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2015/03/sat6-built-vm-via-rhev-1-520x286.jpg"
+loading="lazy"
+alt="sat6-built-vm-via-rhev-1"
+>&lt;/a>&lt;/p>
+&lt;p>手动创建 RHEV 虚拟机 1：通过 New Host 设置相关参数。选择 Deploy on 为 rhevm03（rhevm），这个配置让 sat6 去联系 RHEVM，rhevm 的配置信息必须提前输入到 sat6 中。然后还要在 sat6 中设置虚拟机的三种规格，就是 Computer profile 中的选项，这个选项确定了 cpu，ram，磁盘和网络等信息。剩下的就是最重要的 Lifecycle Evn 和 Puppet Env 了，这两个选项确定把系统安装为标准的 rhel6 的核心最小化安装。当然可以一次性完成某种应用的全套安装和配置。&lt;/p>
+&lt;p>&lt;a class="link" href="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2015/03/sat6-built-vm-via-rhev-2.jpg" target="_blank" rel="noopener"
+>&lt;img src="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2015/03/sat6-built-vm-via-rhev-2-520x286.jpg"
+loading="lazy"
+alt="sat6-built-vm-via-rhev-2"
+>&lt;/a>&lt;/p>
+&lt;p>手动创建 RHEV 虚拟机 2：通过 Virtual Machine 参数可以看到 1，2，3 都来自标准的规格配置，如果需要手动修改的话，可以在这里修改，这里可以看到默认的存储是 w540-iscsi-lun0 这个之前在 RHEVM 里面配置好的 iscsi 存储。&lt;/p>
+&lt;p>&lt;a class="link" href="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2015/03/sat6-built-vm-via-rhev-3.jpg" target="_blank" rel="noopener"
+>&lt;img src="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2015/03/sat6-built-vm-via-rhev-3-520x286.jpg"
+loading="lazy"
+alt="sat6-built-vm-via-rhev-3"
+>&lt;/a>&lt;/p>
+&lt;p>手动创建 RHEV 虚拟机 3：点击提交之后，sat6 就开始了实时创建 rhev 虚拟机的过程，sat6 使用 REST API 告诉 RHEVM 这些信息，然后 RHEVM 再确定使用哪个 Hypervisor 来建立并运行虚拟机。&lt;/p>
+&lt;p>问题来了：如果需要在 RHEV 资源池里建立 n 个相同配置的虚拟机，管理员该如何操作？&lt;/p>
+&lt;p>在 sat6 里面，管理员重复以上操作，当然需要手动操作 n 次。这样是不是很麻烦，确实很麻烦！！如何解决？这就需要一种能够实现 Orchestration 功能的工具来做，也就是自动化编排工具。这种工具最好是统一的能够跨异构资源池的，能够满足如下需求：今天企业可能是纯的 vshpere 的虚拟化环境，接下来企业有可能引入其他服务器虚拟化资源池技术，如：RHEV，Hyper-V；在以后还可能引入 OpenStack 资源池。那么这种自动化编排工具和底层的类似 satellite6 的（标准化部署工具）必须形成一个统一的平台来操作所有异构的资源池。也就是说：在 Orchestration 工具中统一管理异构资源池，并配合标准化部署工具，实现 workload 的标准化自动化部署。红帽的 Orchestration 工具是 CloudForms。它能够对接业内所有流行的资源池，如下图所示：&lt;/p>
+&lt;p>&lt;a class="link" href="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2015/03/cfme-cloud-provides.jpg" target="_blank" rel="noopener"
+>&lt;img src="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2015/03/cfme-cloud-provides-520x292.jpg"
+loading="lazy"
+alt="cfme-cloud-provides"
+>&lt;/a> &lt;a class="link" href="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2015/03/cfme-infra-provides.jpg" target="_blank" rel="noopener"
+>&lt;img src="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2015/03/cfme-infra-provides-520x293.jpg"
+loading="lazy"
+alt="cfme-infra-provides"
+>&lt;/a>&lt;/p>
+&lt;p>上图是 Satellite 的上层 Orchestration 的能力，底层必须还有标准化的部署工具支持，也就是 Satellite6，它对以上基础架构类型的支持情况，如下图所示：&lt;/p>
+&lt;p>&lt;a class="link" href="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2015/03/satellite6-provider.jpg" target="_blank" rel="noopener"
+>&lt;img src="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2015/03/satellite6-provider-520x286.jpg"
+loading="lazy"
+alt="satellite6-provider"
+>&lt;/a>&lt;/p>
+&lt;p>使用 CloudForms 做上层 Orchestration 的调度，必须依赖于底层的 workload 的标准化，标准化到什么程度，从虚拟机供给的角度可以参考 Amazon AWS 的 EC2 的实际案例。如下图所示：&lt;/p>
+&lt;p>&lt;a class="link" href="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2015/03/ec2-types.jpg" target="_blank" rel="noopener"
+>&lt;img src="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2015/03/ec2-types-520x258.jpg"
+loading="lazy"
+alt="ec2-types"
+>&lt;/a>&lt;/p>
+&lt;p>AWS 服务的我曾研究过一点，上图的全图下载点这里 &amp;ndash;&amp;gt; &lt;a class="link" href="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2015/03/aws-%e6%9c%8d%e5%8a%a1-%e8%84%91%e5%9b%be.pdf" target="_blank" rel="noopener"
+>aws-服务-脑图&lt;/a>&lt;/p>
+&lt;p>以上所有是 Martin&amp;rsquo;s Lab 的搭建的一部分，下周可能去一个银行客户演示。需要做的优化还很多，请关注后续更新。&lt;/p></description></item></channel></rss>

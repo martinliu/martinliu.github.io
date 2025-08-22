@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Icinga2 on Martin Liu's Blog</title><link>https://martinliu.cn/tags/icinga2/</link><description>Recent content in Icinga2 on Martin Liu's Blog</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><lastBuildDate>Sun, 09 Oct 2022 21:44:15 +0800</lastBuildDate><atom:link href="https://martinliu.cn/tags/icinga2/index.xml" rel="self" type="application/rss+xml"/><item><title>icinga2 企业级功能评测1</title><link>https://martinliu.cn/2015/07/09/icinga2-e4bc81e4b89ae7baa7e58a9fe883bde8af84e6b58b1/</link><pubDate>Thu, 09 Jul 2015 08:44:43 +0000</pubDate><guid>https://martinliu.cn/2015/07/09/icinga2-e4bc81e4b89ae7baa7e58a9fe883bde8af84e6b58b1/</guid><description>&lt;h2 id="icingaweb-2-用户权限管理">Icingaweb 2 用户权限管理
+&lt;/h2>&lt;p>icingaweb 2 是诸多 GUI 中最新的一种，也有替代其它之前所有 GUI 的趋势，目前看还比较新，只有最基本的功能。登陆 Web 界面的用户，用户和组的信息可以使用自己的数据库存储或者配置文件存储，也可以使用外部的 LDAP 集成，使用 php-ldap 模块集成外部的 LDAP/MS AD 服务器。
+具有完整的 RBAC 模式; User -&amp;gt; Group -&amp;gt; Role = Permission Set（操作 action） + monitoring/filter/objects(范围 scope)&lt;/p>
+&lt;p>&lt;a class="link" href="http://martinliu.cn/icinga2-%e4%bc%81%e4%b8%9a%e7%ba%a7%e5%8a%9f%e8%83%bd%e8%af%84%e6%b5%8b1/icinga-web-create-group/" target="_blank" rel="noopener"
+>&lt;img src="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2015/07/Icinga-Web-create-group-1024x659.png"
+loading="lazy"
+alt="Icinga Web - create group"
+>&lt;/a> &lt;a class="link" href="http://martinliu.cn/icinga2-%e4%bc%81%e4%b8%9a%e7%ba%a7%e5%8a%9f%e8%83%bd%e8%af%84%e6%b5%8b1/icinga-web-create-role/" target="_blank" rel="noopener"
+>&lt;img src="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2015/07/Icinga-Web-create-role-1024x659.png"
+loading="lazy"
+alt="Icinga Web - create role"
+>&lt;/a> &lt;a class="link" href="http://martinliu.cn/icinga2-%e4%bc%81%e4%b8%9a%e7%ba%a7%e5%8a%9f%e8%83%bd%e8%af%84%e6%b5%8b1/icinga-web-create-user/" target="_blank" rel="noopener"
+>&lt;img src="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2015/07/Icinga-Web-create-user-1024x659.png"
+loading="lazy"
+alt="Icinga Web - create user"
+>&lt;/a> &lt;a class="link" href="http://martinliu.cn/icinga2-%e4%bc%81%e4%b8%9a%e7%ba%a7%e5%8a%9f%e8%83%bd%e8%af%84%e6%b5%8b1/icinga-web-assign-user-to-group/" target="_blank" rel="noopener"
+>&lt;img src="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2015/07/Icinga-Web-assign-user-to-group-1024x659.png"
+loading="lazy"
+alt="Icinga Web - assign user to group"
+>&lt;/a>&lt;/p>
+&lt;h2 id="icinga2-的联系人和联系人组">Icinga2 的联系人和联系人组
+&lt;/h2>&lt;p>在 icinga2 服务器端，在配置文件中定义了组和用户，他们在 Web GUI 界面上叫做 Contacts / Contactgroups 。&lt;/p>
+&lt;p>[bash]
+[root@icinga2-test conf.d]# cat users.conf
+/**&lt;/p>
+&lt;ul>
+&lt;li>The example user &amp;lsquo;icingaadmin&amp;rsquo; and the example&lt;/li>
+&lt;li>group &amp;lsquo;icingaadmins&amp;rsquo;.
+*/&lt;/li>
+&lt;/ul>
+&lt;p>object User &amp;ldquo;icingaadmin&amp;rdquo; {
+import &amp;ldquo;generic-user&amp;rdquo;&lt;/p>
+&lt;p>display_name = &amp;ldquo;Icinga 2 Admin&amp;rdquo;
+groups = [ &amp;ldquo;icingaadmins&amp;rdquo; ]&lt;/p>
+&lt;p>email = &amp;ldquo;&lt;a class="link" href="mailto:martin@aws-faq.com" >martin@aws-faq.com&lt;/a>&amp;rdquo;
+}&lt;/p>
+&lt;p>object UserGroup &amp;ldquo;icingaadmins&amp;rdquo; {
+display_name = &amp;ldquo;Icinga 2 Admin Group&amp;rdquo;
+}
+[/bash]&lt;/p>
+&lt;p>User / UserGruop 是 Icinga 出发通知的对象，定义在这个配置文件中，使用规则把他们和监控对象（host/service/等）关联起来，在通知规则中实现不同的通知策略。如发邮件等。&lt;/p>
+&lt;h2 id="icinga2-的-ha-和分布式架构">Icinga2 的 HA 和分布式架构
+&lt;/h2>&lt;p>&lt;a class="link" href="http://martinliu.cn/icinga2-%e4%bc%81%e4%b8%9a%e7%ba%a7%e5%8a%9f%e8%83%bd%e8%af%84%e6%b5%8b1/icinga-cluster/" target="_blank" rel="noopener"
+>&lt;img src="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2015/07/icinga-cluster-1024x288.png"
+loading="lazy"
+alt="icinga-cluster"
+>&lt;/a>&lt;/p>
+&lt;p>icinga2 的 Cluster 是通过多个运行的实例配置在一起的，有这样几个特性：实例之间使用 SSL 的加密通信；彼此之间是双向连接；用 Zone 来分隔不同租户的配置域；基于 Hash 的负载分配；系统的各种功能组件由 Cluster 来管理其分布。它可以实现某个节点宕机后的自动分布监控数据采集命令在其它节点上的执行。&lt;/p>
+&lt;p>&lt;a class="link" href="http://martinliu.cn/icinga2-%e4%bc%81%e4%b8%9a%e7%ba%a7%e5%8a%9f%e8%83%bd%e8%af%84%e6%b5%8b1/icinga-zone/" target="_blank" rel="noopener"
+>&lt;img src="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2015/07/icinga-zone-1024x712.png"
+loading="lazy"
+alt="icinga-zone"
+>&lt;/a>&lt;/p>
+&lt;p>icinga2 Client 是远程执行的一种节点，它和 Cluster 中的所有节点形成群集，在数据中心的其它网段或者地点采集本地的监控状态数据，然后把结果传送回上级的 Cluster 群集节点。icinga2 可以通过配置向导完成远程 client/Satellite 卫星节点的配置。它们之间的通行是基于证书的 TLS 加密，这个证书可以借用 puppet 的证书。远程 Client/Satellite 节点可以运行在三种模式下：具有本地监控配置，没有本地监控配置，靠上级群集发送监控配置。&lt;/p>
+&lt;p>其它企业级功能在后续文章中继续评测，您可以通过下面的评论，来提出您所关注的待评测功能。&lt;/p></description></item><item><title>icinga2 监控工具评测</title><link>https://martinliu.cn/2015/06/18/icinga2-e79b91e68ea7e5b7a5e585b7e8af84e6b58b/</link><pubDate>Thu, 18 Jun 2015 14:14:51 +0000</pubDate><guid>https://martinliu.cn/2015/06/18/icinga2-e79b91e68ea7e5b7a5e585b7e8af84e6b58b/</guid><description>&lt;p>本来想写一个安装手册，可是安装完成之后发现其实非常简单，最后就把题目改为评测了。本文也不是全面的评测文章，关于它的能力和功能，待后续了解的深入了在继续更新本文。&lt;/p>
+&lt;h2 id="icinga2-架构分析">icinga2 架构分析
+&lt;/h2>&lt;p>请下载和查看这个 icinga2 官方的文档：[su_button url=&amp;ldquo;http://pan.baidu.com/s/1qW3JkJE&amp;rdquo; target=&amp;ldquo;blank&amp;rdquo; style=&amp;ldquo;stroked&amp;rdquo; background=&amp;quot;#cccc00&amp;quot; size=&amp;ldquo;6&amp;rdquo; icon=&amp;ldquo;icon: cubes&amp;rdquo;]下载点这里[/su_button]&lt;/p>
+&lt;p>&lt;a class="link" href="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2015/06/Selection_001.png" target="_blank" rel="noopener"
+>&lt;img src="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2015/06/Selection_001-1024x542.png"
+loading="lazy"
+alt="Selection_001"
+>&lt;/a>&lt;/p>
+&lt;p>为什么用 icinga，原因如下：&lt;/p>
+&lt;p>[su_list icon=&amp;ldquo;icon: eye&amp;rdquo;]&lt;/p>
+&lt;ul>
+&lt;li>Nagios 的架构不能扩展&lt;/li>
+&lt;li>增加模块是比较困难的&lt;/li>
+&lt;li>不是群集和分布式监控架构&lt;/li>
+&lt;li>安全性相对糟糕&lt;/li>
+&lt;li>配置功能有限&lt;/li>
+&lt;/ul>
+&lt;p>[/su_list]&lt;/p>
+&lt;h2 id="安装配置">安装配置
+&lt;/h2>&lt;p>icinga2 的安装可以说非常简洁，基本上配置好 yum 源，几条命令就装万了，而且就可以用了。只是在 web 界面选择和配置上稍微有点麻烦，它目前有三个可以安装配置的界面：classic, icinga-web, icinga-web2； classic 太老了，不具有极其强烈的怀旧情节，就别碰了。建议生产环境中还是使用 icinga-web；web2 太新了，很多集成的项目的都还没有做好，还比较初级，功能不完善。&lt;/p>
+&lt;p>~~待续~~~~&lt;/p></description></item></channel></rss>

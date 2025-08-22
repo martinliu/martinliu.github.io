@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Macmini on Martin Liu's Blog</title><link>https://martinliu.cn/tags/macmini/</link><description>Recent content in Macmini on Martin Liu's Blog</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><lastBuildDate>Sun, 02 Feb 2025 22:04:03 +0800</lastBuildDate><atom:link href="https://martinliu.cn/tags/macmini/index.xml" rel="self" type="application/rss+xml"/><item><title>用 Mac Mini M4 重构 HomeLab 结构</title><link>https://martinliu.cn/blog/macmini-m4-homelab-redesign/</link><pubDate>Fri, 31 Jan 2025 10:03:16 +0800</pubDate><guid>https://martinliu.cn/blog/macmini-m4-homelab-redesign/</guid><description>&lt;img src="https://martinliu.cn/blog/macmini-m4-homelab-redesign/mac-mini-with-ext-nvme-drive.jpg" alt="Featured image of post 用 Mac Mini M4 重构 HomeLab 结构" />&lt;h2 id="背景">背景
+&lt;/h2>&lt;p>自 MacMini M4 上市来，其丐版在京东上一直很抢手，定时抢了几次，未果。然除夕大清早，见有货，遂下单，初二终于到货。所谓丐版 Mac Mini M4 有 10 核 10 线程，16GB 内存，256GB SSD，订单价格 3581.21 元，国补 + 京东 Plus 会员优惠后的价格，性价比颇高。我将抛弃之前的 HomeLab 设备，用 Mac Mini M4 来重构 HomeLab 的结构。&lt;/p>
+&lt;h2 id="运行-deepseek-r1-大模型7b14b">运行 Deepseek-r1 大模型（7b&amp;amp;14b）
+&lt;/h2>&lt;p>被 Deepseek 新闻轰炸了数日，必将其在 Mac Mini M4 上测一下。首先需要下载并安装 ollama 应用，然后下载并运行该模型，并于命令行问一个问题 “macmini m4 适合使用什么参数规模的 Deepseek 模型?”。&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">martinliu@Mac-mini ~ % ollama pull deepseek-r1:7b
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">pulling manifest
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">pulling 96c415656d37... 100% ▕███████████████████████████████████████████████████████████████████▏ 4.7 GB
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">pulling 369ca498f347... 100% ▕███████████████████████████████████████████████████████████████████▏ &lt;span class="m">387&lt;/span> B
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">pulling 6e4c38e1172f... 100% ▕███████████████████████████████████████████████████████████████████▏ 1.1 KB
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">pulling f4d24e9138dd... 100% ▕███████████████████████████████████████████████████████████████████▏ &lt;span class="m">148&lt;/span> B
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">pulling 40fb844194b2... 100% ▕███████████████████████████████████████████████████████████████████▏ &lt;span class="m">487&lt;/span> B
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">verifying sha256 digest
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">writing manifest
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">success
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">martinliu@Mac-mini ~ % ollama run deepseek-r1:7b
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&amp;gt;&amp;gt;&amp;gt; macmini m4 适合使用什么参数规模的 Deepseek 模型?
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>ollama 下载和运行任何模型都很简单，用下面两条命令即可：&lt;/p>
+&lt;ul>
+&lt;li>&lt;code>ollama pull deepseek-r1:7b&lt;/code>：下载 Deepseek-r1 7b 模型。&lt;/li>
+&lt;li>&lt;code>ollama run deepseek-r1:7b&lt;/code>：运行 Deepseek-r1 7b 模型。&lt;/li>
+&lt;/ul>
+&lt;p>我的第一个问题，并未说 Mac Mini 是何配置，而且问的比较模糊，&lt;a class="link" href="q1.txt" >点这里查看答案全文&lt;/a>。&lt;/p>
+&lt;blockquote>
+&lt;p>答案的结论：Mac mini M4 在适合运行 DeepSeek 的 7B 和 13B 参数规模的模型上表现良好。虽然没有独立显卡，但其强大的计算能力和 macOS 系统的支持使其能够处理这些较大的模型。然而，需考虑系统的资源和应用兼容性，并根据个人需求评估是否值得投资。&lt;/p>&lt;/blockquote>
+&lt;p>测试失败，居然这个模型不知道：自己有 7b ，但没有 13b 这个规格的模型。此回复过程在 10 秒钟左右，并不慢。&lt;/p>
+&lt;p>顺便推荐一个命令行性能监控工具 “btop” （在 macos 上安装命令 ‘brew install btop’），可以实时监控 CPU 和内存的使用情况，貌似在这 10 多秒的过程中，CPU 使用率没有丝毫的波动，内存使用率在 70%左右。&lt;/p>
+&lt;p>因首个问答即失败，所以下载 14b 的模型，希望能有足够回答问题的能力。为了在 7b 和 14b 之间做对比，所以在下载 14b 模型前，先对 7b 提出这个相同的问题 “SRE 和 DevOps 的区别和相同之处是什么?一个企业应该先做哪个?”。&lt;/p>
+&lt;ul>
+&lt;li>&lt;a class="link" href="q2.txt" >7b 模型的答案点这里&lt;/a>。很遗憾，7b 模型一开口就把 SRE 名词解释错误了“SRE（Service-Providing Software Engineering）”&lt;/li>
+&lt;li>&lt;a class="link" href="q3.txt" >14b 模型的答案点这里&lt;/a>，不得不说 14b 模型的答案令我满意了。&lt;/li>
+&lt;/ul>
+&lt;h2 id="为家庭局域网提供大模型服务">为家庭局域网提供大模型服务
+&lt;/h2>&lt;p>Open WebUI 是个不错的选项。在 Mac Mini M4 上安装 Open WebUI 也很简单，只需运行下面的命令即可：&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">docker run -d -p 9005:8080 -e &lt;span class="nv">WEBUI_AUTH&lt;/span>&lt;span class="o">=&lt;/span>False --add-host&lt;span class="o">=&lt;/span>host.docker.internal:host-gateway -v ./open-webui-data:/app/backend/data --name open-webui --restart always ghcr.io/open-webui/open-webui:main
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>参数解释：&lt;/p>
+&lt;ul>
+&lt;li>&lt;code>-d&lt;/code>：后台运行。&lt;/li>
+&lt;li>&lt;code>-p 9005:8080&lt;/code>：将容器的 8080 端口映射到主机的 9005 端口。&lt;/li>
+&lt;li>&lt;code>-e WEBUI_AUTH=False&lt;/code>：关闭 WebUI 的认证。&lt;/li>
+&lt;li>&lt;code>--add-host=host.docker.internal:host-gateway&lt;/code>：解决容器内无法访问主机的问题。&lt;/li>
+&lt;li>&lt;code>-v ./open-webui-data:/app/backend/data&lt;/code>：将容器内的数据目录映射到主机的 &lt;code>./open-webui-data&lt;/code> 目录。&lt;/li>
+&lt;li>&lt;code>--name open-webui&lt;/code>：指定容器的名称为 &lt;code>open-webui&lt;/code>。&lt;/li>
+&lt;li>&lt;code>--restart always&lt;/code>：容器退出时自动重启。&lt;/li>
+&lt;li>&lt;code>ghcr.io/open-webui/open-webui:main&lt;/code>：指定容器的镜像。&lt;/li>
+&lt;/ul>
+&lt;p>然后就可以在浏览器中访问 &lt;code>http://192.168.31.6:9005&lt;/code> 来使用 Open WebUI 了。&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/blog/macmini-m4-homelab-redesign/open-webui.png"
+width="1251"
+height="498"
+srcset="https://martinliu.cn/blog/macmini-m4-homelab-redesign/open-webui_hu_bfa478e53752adac.png 480w, https://martinliu.cn/blog/macmini-m4-homelab-redesign/open-webui_hu_a96e88d7e8f21674.png 1024w"
+loading="lazy"
+alt="Open WebUI"
+class="gallery-image"
+data-flex-grow="251"
+data-flex-basis="602px"
+>&lt;/p>
+&lt;p>Open WebUI 可以识别出我在后台容器中运行的 Deepseek-r1 14b 模型，它提供了基于网页的问答互动界面，而且对具有政治倾向的问题，回答的不置可否，体现出非常谨慎的态度。&lt;/p>
+&lt;p>下面是在手机端问的另外一个问题，回答是令我满意的。&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/blog/macmini-m4-homelab-redesign/iphone-webUI.png"
+width="573"
+height="1241"
+srcset="https://martinliu.cn/blog/macmini-m4-homelab-redesign/iphone-webUI_hu_77061135dc1e41d4.png 480w, https://martinliu.cn/blog/macmini-m4-homelab-redesign/iphone-webUI_hu_bbd7e3c03f0ebd9f.png 1024w"
+loading="lazy"
+alt="Open WebUI Mobile"
+class="gallery-image"
+data-flex-grow="46"
+data-flex-basis="110px"
+>&lt;/p>
+&lt;p>也就是说：局域网中的任何移动设备和电脑，都可以通过浏览器访问 Open WebUI，来使用 Deepseek-r1 14b 模型。&lt;/p>
+&lt;h2 id="用-orbstack-运行容器服务">用 OrbStack 运行容器服务
+&lt;/h2>&lt;p>OrbStack 在我的 MacBook Pro 上已经使用了一段时间了，已经平替了 Docker Desktop。而且和一众其它的 K8s 管理工具，包括 MiniKube、Kind 等。个人的一些使用经验总结：&lt;/p>
+&lt;ul>
+&lt;li>OrbStack 项目的编程语言有： Go Swift C Rust，它本身启动速度快，轻量。是苹果原生应用。比 Docker Desktop 占用的资源少非常多。&lt;/li>
+&lt;li>创建虚拟机的创建速度飞快，通过预下载的虚拟机镜像文件，结合 cloud-init.yaml 文件，可以在几秒钟内创建一个任意配置的新的虚拟机。&lt;/li>
+&lt;li>虚拟机和容器里的文件系统，都可以通过 Finder 直接访问，非常方便。而且在虚拟机内的 /mnt/ 目录下也能访问到主机的文件系统。&lt;/li>
+&lt;li>可以用 SSH 直接无密码登录虚拟机。&lt;/li>
+&lt;li>容器和虚拟机都无缝衔接 Host 上的网络，并共享科学上网的功能。在也不会下载不到容器镜像了。&lt;/li>
+&lt;li>自动识别 Docker 和 K8s 中的服务定义，并提供本机可信的 HTTPS 证书，实现 HTTPS 访问。可以很方便的进行开发和测试。&lt;/li>
+&lt;/ul>
+&lt;p>基于此，我决定在 Mac Mini M4 上安装 OrbStack，用它来管理所有需要长运行的服务。不过我做了一些定制化的配置：&lt;/p>
+&lt;ul>
+&lt;li>如果用它运行各种 HomeLab 的网络服务，那么存储空间是需要扩展的。我在 Mac Mini M4 上用雷电4 接口连了普通的硬盘盒，内置 2TB 的 NVME 硬盘，实践表明性价比足够用了。&lt;/li>
+&lt;li>将 OrbStack 的默认存储空间设置为外置硬盘，这样可以避免内置硬盘的频繁读写，延长其寿命。而且外置硬盘的容量更大，可以存储更多的数据。&lt;/li>
+&lt;li>在 K8s 和 Docker 之间，我做了一个选择，决定在 Mac Mini M4 上只运行 Docker 容器，而不运行 K8s 集群。因为我觉得 Docker 容器更加轻量，更加简单，后续软件的升级和数据迁移也都更加方便。用 Docker Compose 的方式运行服务，尽量将持久化数据和配置文件放在外置硬盘上，这样即使机器挂了，数据也不会丢失，而且更方便做升级和迁移。&lt;/li>
+&lt;/ul>
+&lt;h2 id="娱乐功能">娱乐功能
+&lt;/h2>&lt;p>首先，我将使用率较低的两只立体声音箱，通过 Mac Mini M4 的耳机接口，用音频线链接起来了。这样它就变成了一个 AirPlay 推流的目标。在 MacBook Pro 或者 iPhone 上，我可以通过 AirPlay 将音乐推送到 Mac Mini M4 上，然后通过音箱播放出来。这样，房间里就可以很方便的播放各种背景音乐了。音量可音箱上，在 MacBook 上，或者在 iPhone 上都可以调节。&lt;/p>
+&lt;blockquote>
+&lt;p>从 Macbook 上推流音乐的方式是：打开苹果自家的 Music 软件，导入喜欢听的音乐文件，然后在播放界面，点击右上角的 AirPlay 图标，选择 Mac Mini M4，然后就可以听到音乐了。&lt;/p>&lt;/blockquote>
+&lt;p>&lt;img src="https://martinliu.cn/blog/macmini-m4-homelab-redesign/mac-music.png"
+width="1476"
+height="692"
+srcset="https://martinliu.cn/blog/macmini-m4-homelab-redesign/mac-music_hu_7a2d1c5cdbad0e44.png 480w, https://martinliu.cn/blog/macmini-m4-homelab-redesign/mac-music_hu_658c70d08924fc5f.png 1024w"
+loading="lazy"
+alt="Mac Music AirPlay"
+class="gallery-image"
+data-flex-grow="213"
+data-flex-basis="511px"
+>&lt;/p>
+&lt;blockquote>
+&lt;p>从 iPhone 上可以通过屏幕镜像的功能，将任何视频或者音频 App 的声音推送到 Mac Mini M4 上。这样就可以在 Mac Mini M4 上播放 iPhone 上的任何音乐或者视频的声音了。&lt;/p>&lt;/blockquote>
+&lt;h2 id="总结">总结
+&lt;/h2>&lt;p>Mac Mini M4 作为 HomeLab 的核心设备，性价比很高。在增加了外置磁盘空间后，它的性能和容量都可以作为长期运行的低功耗服务器使用。另外，我从即将淘汰的服务器中，拼装了一台开放机箱的 PVE 服务器，它有一颗 12 core 的 Xeon E5 CPU ，有 128GB 内存，有 1 块 520GB 的 NVME 硬盘，还有 4 块总容量为 3TB 的 SSD 硬盘。这台 PVE 上的所有虚拟机和 LXC 都可以访问到 Mac Mini M4 上的所有服务，这样就可以实现资源的共享和互通。PVE 服务器在需要使用的时候，可以开机，不需要的时候，可以关机。未来，我可能只会保留 Mac Mini M4 和这台 PVE 服务器，其它的设备都会被淘汰到海鲜市场。&lt;/p></description></item></channel></rss>

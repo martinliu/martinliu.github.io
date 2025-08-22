@@ -1,0 +1,253 @@
+<!doctype html><html lang=zh-cn dir=ltr><head><meta charset=utf-8><meta name=viewport content='width=device-width,initial-scale=1'><meta name=description content="在本地构建可以重复创建、版本控制、持续更新、无缝迁移，且容器化的 Drupal 开发环境。"><title>在本地搭建容器化的 Drupal 开发环境</title><link rel=canonical href=https://martinliu.cn/blog/setup-drupal-dev-env-macos/><link rel=stylesheet href=/scss/style.min.6cdf49b1ce11fdcb5b101472ec608dcfd7395a19af16339a150cd1a4536b6113.css><meta property='og:title' content="在本地搭建容器化的 Drupal 开发环境"><meta property='og:description' content="在本地构建可以重复创建、版本控制、持续更新、无缝迁移，且容器化的 Drupal 开发环境。"><meta property='og:url' content='https://martinliu.cn/blog/setup-drupal-dev-env-macos/'><meta property='og:site_name' content="Martin Liu's Blog"><meta property='og:type' content='article'><meta property='article:section' content='Post'><meta property='article:tag' content='php'><meta property='article:tag' content='drupal'><meta property='article:tag' content='github'><meta property='article:tag' content='docker'><meta property='article:published_time' content='2022-02-05T11:11:55+08:00'><meta property='article:modified_time' content='2024-06-24T20:37:11+08:00'><meta property='og:image' content='https://martinliu.cn/img/989197bbd274de342caf84c3642d8c6bc7b980ea-1920x700.png'><meta name=twitter:title content="在本地搭建容器化的 Drupal 开发环境"><meta name=twitter:description content="在本地构建可以重复创建、版本控制、持续更新、无缝迁移，且容器化的 Drupal 开发环境。"><meta name=twitter:card content="summary_large_image"><meta name=twitter:image content='https://martinliu.cn/img/989197bbd274de342caf84c3642d8c6bc7b980ea-1920x700.png'><script async src="https://www.googletagmanager.com/gtag/js?id=G-30EQ6H78E5"></script><script>var dnt,doNotTrack=!1;if(!1&&(dnt=navigator.doNotTrack||window.doNotTrack||navigator.msDoNotTrack,doNotTrack=dnt=="1"||dnt=="yes"),!doNotTrack){window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","G-30EQ6H78E5")}</script></head><body class=article-page><script>(function(){const e="StackColorScheme";localStorage.getItem(e)||localStorage.setItem(e,"auto")})()</script><script>(function(){const t="StackColorScheme",e=localStorage.getItem(t),n=window.matchMedia("(prefers-color-scheme: dark)").matches===!0;e=="dark"||e==="auto"&&n?document.documentElement.dataset.scheme="dark":document.documentElement.dataset.scheme="light"})()</script><div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky"><button class="hamburger hamburger--spin" type=button id=toggle-menu aria-label=切换菜单>
+<span class=hamburger-box><span class=hamburger-inner></span></span></button><header><figure class=site-avatar><a href=/><img src=/img/avatar_hu_288ed5026836b766.png width=300 height=300 class=site-logo loading=lazy alt=Avatar></a></figure><div class=site-meta><h1 class=site-name><a href=/>Martin Liu's Blog</a></h1><h2 class=site-description>Founder of DevOps China</h2></div></header><ol class=menu-social><li><a href=https://github.com/martinliu/ target=_blank title=GitHub rel=me><svg class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M9 19c-4.3 1.4-4.3-2.5-6-3m12 5v-3.5c0-1 .1-1.4-.5-2 2.8-.3 5.5-1.4 5.5-6a4.6 4.6.0 00-1.3-3.2 4.2 4.2.0 00-.1-3.2s-1.1-.3-3.5 1.3a12.3 12.3.0 00-6.2.0C6.5 2.8 5.4 3.1 5.4 3.1a4.2 4.2.0 00-.1 3.2A4.6 4.6.0 004 9.5c0 4.6 2.7 5.7 5.5 6-.6.6-.6 1.2-.5 2V21"/></svg></a></li><li><a href=https://www.linkedin.com/in/liuzheng/ target=_blank title=LinkedIn rel=me><svg viewBox="0 0 32 32" width="32" height="32"><path d="M7.5 5C6.132813 5 5 6.132813 5 7.5v17C5 25.867188 6.132813 27 7.5 27h17c1.367188.0 2.5-1.132812 2.5-2.5V7.5C27 6.132813 25.867188 5 24.5 5zm0 2h17C24.785156 7 25 7.214844 25 7.5v17C25 24.785156 24.785156 25 24.5 25H7.5C7.214844 25 7 24.785156 7 24.5V7.5c0-.285156.214844-.5.5-.5zm2.9375 1.71875C9.488281 8.71875 8.71875 9.488281 8.71875 10.4375S9.488281 12.15625 10.4375 12.15625 12.15625 11.386719 12.15625 10.4375 11.386719 8.71875 10.4375 8.71875zm9.03125 4.5625c-1.433594.0-2.386719.785156000000001-2.78125 1.53125H16.625V13.5H13.8125V23H16.75V18.3125C16.75 17.074219 16.996094 15.875 18.53125 15.875c1.511719.0 1.53125 1.398438 1.53125 2.5V23H23V17.78125c0-2.554687-.542968999999999-4.5-3.53125-4.5zM9 13.5V23h2.96875V13.5z"/></svg></a></li><li><a href=https://twitter.com/martinliu target=_blank title=Twitter rel=me><svg class="icon icon-tabler icon-tabler-brand-twitter" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M22 4.01c-1 .49-1.98.689-3 .99-1.121-1.265-2.783-1.335-4.38-.737S11.977 6.323 12 8v1c-3.245.083-6.135-1.395-8-4 0 0-4.182 7.433 4 11-1.872 1.247-3.739 2.088-6 2 3.308 1.803 6.913 2.423 10.034 1.517 3.58-1.04 6.522-3.723 7.651-7.742a13.84 13.84.0 00.497-3.753C20.18 7.773 21.692 5.25 22 4.009z"/></svg></a></li></ol><ol class=menu id=main-menu><li><a href=/><svg class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><polyline points="5 12 3 12 12 3 21 12 19 12"/><path d="M5 12v7a2 2 0 002 2h10a2 2 0 002-2v-7"/><path d="M9 21v-6a2 2 0 012-2h2a2 2 0 012 2v6"/></svg>
+<span>首页</span></a></li><li><a href=/about/><svg class="icon icon-tabler icon-tabler-messages" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><path d="M21 14l-3-3h-7a1 1 0 01-1-1V4a1 1 0 011-1h9a1 1 0 011 1v10"/><path d="M14 15v2a1 1 0 01-1 1H6l-3 3V11a1 1 0 011-1h2"/></svg>
+<span>关于</span></a></li><li><a href=/course/><svg class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><rect x="3" y="4" width="18" height="4" rx="2"/><path d="M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8"/><line x1="10" y1="12" x2="14" y2="12"/></svg>
+<span>课程</span></a></li><li><a href=/search/><svg class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="10" cy="10" r="7"/><line x1="21" y1="21" x2="15" y2="15"/></svg>
+<span>搜索</span></a></li><li><a href=/archives/><svg class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><rect x="3" y="4" width="18" height="4" rx="2"/><path d="M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8"/><line x1="10" y1="12" x2="14" y2="12"/></svg>
+<span>归档</span></a></li><li><a href=/links/><svg class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><path d="M10 14a3.5 3.5.0 005 0l4-4a3.5 3.5.0 00-5-5l-.5.5"/><path d="M14 10a3.5 3.5.0 00-5 0l-4 4a3.5 3.5.0 005 5l.5-.5"/></svg>
+<span>链接</span></a></li><li class=menu-bottom-section><ol class=menu><li id=i18n-switch><svg class="icon icon-tabler icon-tabler-language" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M4 5h7"/><path d="M9 3v2c0 4.418-2.239 8-5 8"/><path d="M5 9c-.003 2.144 2.952 3.908 6.7 4"/><path d="M12 20l4-9 4 9"/><path d="M19.1 18h-6.2"/></svg>
+<select name=language title=language onchange="window.location.href=this.selectedOptions[0].value"><option value=https://martinliu.cn/ selected>中文</option><option value=https://martinliu.cn/en/>English</option></select></li><li id=dark-mode-toggle><svg class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="8" cy="12" r="2"/><rect x="2" y="6" width="20" height="12" rx="6"/></svg>
+<svg class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="16" cy="12" r="2"/><rect x="2" y="6" width="20" height="12" rx="6"/></svg>
+<span>暗色模式</span></li></ol></li></ol></aside><aside class="sidebar right-sidebar sticky"><section class="widget archives"><div class=widget-icon><svg class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><line x1="5" y1="9" x2="19" y2="9"/><line x1="5" y1="15" x2="19" y2="15"/><line x1="11" y1="4" x2="7" y2="20"/><line x1="17" y1="4" x2="13" y2="20"/></svg></div><h2 class="widget-title section-title">目录</h2><div class=widget--toc><nav id=TableOfContents><ol><li><a href=#drupal-是个内容管理系统>Drupal 是个内容管理系统</a></li><li><a href=#一键安装-drupal-系统>一键安装 Drupal 系统</a></li><li><a href=#进入-drupal-开发流程>进入 Drupal 开发流程</a></li><li><a href=#版本化开发环境>版本化开发环境</a></li><li><a href=#容器化-drupal-系统>容器化 Drupal 系统</a><ol><li><a href=#1---确认当前系统状态>1 - 确认当前系统状态</a></li><li><a href=#2---参数化-drupal-主配置文件>2 - 参数化 Drupal 主配置文件</a></li><li><a href=#3---创建-drupal-主应用镜像>3 - 创建 Drupal 主应用镜像</a></li><li><a href=#4---创建服务定义文件>4 - 创建服务定义文件</a></li><li><a href=#5---本地集成测试>5 - 本地集成测试</a></li></ol></li><li><a href=#在云平台部署社区官网>在云平台部署社区官网</a></li></ol></nav></div></section></aside><main class="main full-width"><article class="has-image main-article"><header class=article-header><div class=article-image><a href=/blog/setup-drupal-dev-env-macos/><img src=/img/989197bbd274de342caf84c3642d8c6bc7b980ea-1920x700.png loading=lazy alt="Featured image of post 在本地搭建容器化的 Drupal 开发环境"></a></div><div class=article-details><header class=article-category><a href=/categories/devops/ style=background-color:#2a9d8f;color:#fff>DevOps</a></header><div class=article-title-wrapper><h2 class=article-title><a href=/blog/setup-drupal-dev-env-macos/>在本地搭建容器化的 Drupal 开发环境</a></h2><h3 class=article-subtitle>在本地构建可以重复创建、版本控制、持续更新、无缝迁移，且容器化的 Drupal 开发环境。</h3></div><footer class=article-time><div><svg class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><path d="M11.795 21H5a2 2 0 01-2-2V7a2 2 0 012-2h12a2 2 0 012 2v4"/><circle cx="18" cy="18" r="4"/><path d="M15 3v4"/><path d="M7 3v4"/><path d="M3 11h16"/><path d="M18 16.496V18l1 1"/></svg>
+<time class=article-time--published>2022-02-05, Saturday</time></div><div><svg class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15 15"/></svg>
+<time class=article-time--reading>阅读时长: 10 分钟</time></div></footer></div></header><section class=article-content><p>过年前给自己挖了一个 Drupal 的坑，经过一些时间的研究之后，感觉这个系统和 Remedy 非常神似。说到底它们其实都是表单系统。每个表单表达一种分类的信息而已。Drupal 注重的是表单上的信息点的记录、管理和展示，Remedy 注重的则是每种表单（工作类型）上“工单流程状态”字段变化的记录和管理。</p><p><a class=link href=https://DevOpsChina.org target=_blank rel=noopener>DevOps China</a> 网站的选型之旅，最初使用的是 hugo，但是由于内容更新人员们对 github 系统掌握程度参差不齐，导致对于参与者不友好的问题，这为所有社区内容创建的朋友们设置了一个不必要的门槛。最初设计的是：以官网的内容为最源头参考点，然后同步到其它平台，包括：微信和互动吧等社区对外到入口。最后，微信公众号后台文案编辑的易用性超越了 GitHub 上 Hugo 站点的更新。社区网站维护志愿者也很难投入足够的精力，手工的从微信上同步回社区官网。就这样社区官网的及时更新问题居然持续了两年。</p><p>2022年是解决这个问题的时候了。在对 Drupal 经过一定的研究之后，希望这次选型的 Drupal 能不负众望，完美的实现这个艰巨的使命。<a class=link href=https://stackoverflow.blog/2020/06/23/is-it-time-to-give-drupal-another-look/ target=_blank rel=noopener>【 why drupal ？ 参考文章】</a></p><h2 id=drupal-是个内容管理系统>Drupal 是个内容管理系统</h2><p>在 macOS 上搭建 PHP + MySQL 的开发环境的工具有很多。我选择使用的是已经绝版的 Acquia Dev Desktop 2 ，它包括了：php 7.3.15 的 php 语言运行环境， MySQL 5.7.29 数据库， Apache/2.4.29 的网页运行服务器， phpMyAdmin 4.9.0.1 数据库管理工具。</p><p><img src=/img/cos/2022-02-05-2022-02-05_11-08-30.png loading=lazy alt="Acquia Dev Desktop 2"></p><p>这种集成的 PHP 运行/开发/管理环境，还有很多其它选择，这里不展开。我的目标是：保持最简化和易用，与其它社区伙伴的协作，紧跟 Drupal 版本发布和补丁更新，用容器化实现云上的按需扩展。</p><p>首先，我使用 Acquia Dev Desktop 2 创建了一个本地的测试站点，用于学习 Drupal 的使用、定制和开发。它不仅是一个友好的 GUI 工具，其实还附带了 php 开发环境的命令行工具：composer 和 drush 。 使用这两个命令行工具可以完成 Drupal 系统的一键式搭建。在开发一个真实的内容管理系统网站以前，最基础的铺垫工作可能差不多了。</p><h2 id=一键安装-drupal-系统>一键安装 Drupal 系统</h2><p>首先，打开 Acquia Dev Desktop 2 ，在界面上点击进入命令行按钮（more -> Open Console）。macOS 系统默认的 termenal 就会被打开，它会在默认环境中增加如下环境变量参数</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-sh data-lang=sh><span class=line><span class=cl>Last login: Sat Feb  <span class=m>5</span> 10:25:58 on ttys005
+</span></span><span class=line><span class=cl><span class=nb>export</span> <span class=nv>PHP_ID</span><span class=o>=</span>php7_3<span class=p>;</span> <span class=nb>export</span> <span class=nv>PATH</span><span class=o>=</span><span class=s2>&#34;/Applications/DevDesktop/php7_3_x64/bin:/Applications/DevDesktop/mysql/bin:/Applications/DevDesktop/tools:</span><span class=nv>$PATH</span><span class=s2>&#34;</span> <span class=o>&amp;&amp;</span> <span class=nb>cd</span> <span class=s2>&#34;/Users/martin/learning-drupal&#34;</span>
+</span></span></code></pre></td></tr></table></div></div><p>这样就可以在你的目标目录中，执行下面的一键安装脚本了：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-sh data-lang=sh><span class=line><span class=cl><span class=c1># 下载Drupal特定版本的代码库</span>
+</span></span><span class=line><span class=cl>composer create-project drupal/recommended-project:9.3.5 drupal-dev --no-interaction
+</span></span><span class=line><span class=cl><span class=nb>cd</span> drupal-dev
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 配置以下可以让我们静默安装 drush 的参数</span>
+</span></span><span class=line><span class=cl>composer config --no-plugins allow-plugins.composer/installers <span class=nb>true</span>
+</span></span><span class=line><span class=cl>composer config --no-plugins  allow-plugins.drupal/core-composer-scaffold  <span class=nb>true</span>
+</span></span><span class=line><span class=cl>composer config --no-plugins  allow-plugins.drupal/core-project-message <span class=nb>true</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 安装 Drupal 站点维护工具 drush</span>
+</span></span><span class=line><span class=cl>composer require drush/drush  --no-interaction
+</span></span><span class=line><span class=cl>ln -s vendor/drush/drush/drush ./
+</span></span><span class=line><span class=cl>./drush version
+</span></span><span class=line><span class=cl>composer require drush/config-extra  --no-interaction
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 创建目标 MySQL 数据库和用户名/密码</span>
+</span></span><span class=line><span class=cl>mysqladmin -u root drop local_devopschina -f
+</span></span><span class=line><span class=cl>mysql -u root -e <span class=s1>&#39;create database local_devopschina&#39;</span>
+</span></span><span class=line><span class=cl>mysql -u root -e <span class=s2>&#34;grant all privileges on local_devopschina.* to ddoc@localhost identified by &#39;ddoc123&#39;&#34;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 上面的一切都是为了这个命令可以静默安装，它替代了很多 php 开发的系统在网页上用安装程序进行的初始化工作，下面的数据库 root 密码为空</span>
+</span></span><span class=line><span class=cl>./drush si standard --locale<span class=o>=</span>zh-hans  --db-url<span class=o>=</span>mysql://ddoc:ddoc123@127.0.0.1:33067/local_devopschina --db-su<span class=o>=</span>root  --site-name<span class=o>=</span><span class=s2>&#34;DevOps China&#34;</span> --account-name<span class=o>=</span>admin --account-pass<span class=o>=</span>admin -y
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 安装和启用 Drupal 系统必要的模块和皮肤 【ToDo】</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 生产环境数据迁移，数据库备份的导入，相关文件下载 【ToDo】</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 启动 Drupal 系统</span>
+</span></span><span class=line><span class=cl>./drush runserver localhost:8090
+</span></span></code></pre></td></tr></table></div></div><p>以上是一个写死了的 shell 脚本，还可以对其中的关键参数进行变量替换，使之最终成为一个可以传入参数的可用脚本。</p><h2 id=进入-drupal-开发流程>进入 Drupal 开发流程</h2><p>下图展示了 Drupal 网站开发的工作流程。</p><p><img src=/img/cos/2022-02-05-Drupal-Site-Building-Workflow.png loading=lazy alt="Drupal Site Building workflow"></p><p>用下面的表格梳理一下：</p><div class=table-wrapper><table><thead><tr><th>序号</th><th>工作内容</th><th>概述</th><th>所需要技能</th><th>备注</th></tr></thead><tbody><tr><td>1.0</td><td>Content Type</td><td>既是任何一条内容对象的完整定义，也是任何一个可管理实体。系统默认自带了‘文章’和‘基本页面’两个内容类型，隐含的具备了简单的 ‘用户’ 管理系统。在此基础上还需扩展出‘社区合作伙伴’、‘社区活动’等实地。</td><td>数据库ER设计、数据结构</td><td>并不需要在 MySQL 中建表，都是在 Drupal 界面完成</td></tr><tr><td>2.0</td><td>Fields</td><td>是组成任何内容和实体数据结构的信息点，包含PHP编程语言的数据类型和Drupal 社区里的各种模块，例如‘电话号码’这样的数据结构的引用就是先启用对应的模块</td><td>php开发</td><td>Drupal 社区已有模块不满足才做开发</td></tr><tr><td>2.1</td><td>Taxonomy</td><td>就像是一个二位数组，在每一个分类里有一堆确切的词汇表。例如社区网站的文章、活动和论坛里的帖子都可以引用“话题”这样一个字段，用于单选或者多选，“话题”这个字段里包含了很多DevOps术语“ci”、“敏捷”、“SRE”等。</td><td>领域知识、数据机构</td><td>随着网站内容建设的过程而演进</td></tr><tr><td>2.2</td><td>Media</td><td>文档、音频、图片和视频的统一管理，这样方便任意媒体文件的使用；Drupal 9 自带的 Media Libary 模块能够满足需求</td><td>数字媒体管理、CDN加速</td><td>所有用户生成媒体都在这个范畴，会严重影响网站速度，依赖与网站 CDN 加速的实施</td></tr><tr><td>2.3</td><td>Modules</td><td>Drupal 模块非常丰富，从电话号码这样的数据结构，到文本地址到百度地图的转化，到整个知识库结构的定义；社区参与者积分和排名这样的功能将会使用自开发的模块实现</td><td>php开发、数据库</td><td>需要懂 php 开发语言，可独立开发</td></tr><tr><td>3.0</td><td>Path</td><td>每一个内容实体在 Drupal 中被称之为 node，它们都有默认的访问路径，例如：/node/12/；需要整体规划网站的访问路径，不但让网站变得更加有条理，而且还会提高人和搜索引擎的友好程度，Drupal 的相关模块可以实现</td><td>内容系统梳理</td><td>尽量保持简单、清晰和持久</td></tr><tr><td>4.0</td><td>Permessions</td><td>用户权限需要提前设计，Drupal 除了具有内置的权限机制外，它对任何一个功能模块（内容分类）都可以实施给予角色的矩阵式权限设置，需要提前设计好用户角色类型，权限体系</td><td>权限设计、信息安全</td><td>这是实施文章内容上传、论坛和社区活动管理的基础。</td></tr><tr><td>4.1</td><td>Workflows</td><td>工作流是 Drupal 系统中默认的功能模块，经过定制以后可以实现社区贡献文章的审核功能。例如开放所有注册用户的投稿权限，投稿文章必须经过审核人员确认后才能发不出来。还可以用于知识库或者编辑的多重审核功能</td><td>流程定制</td><td>需要掌握 Drupal 相关模块的使用，确保流程简单易用</td></tr><tr><td>5.0</td><td>Layout</td><td>网页布局结构设计，manage display of nodes 这是基础工作 -> blocks -> layout builder -> views -> image styles ，不同的 theme 自带一套 block 的布局</td><td></td><td></td></tr><tr><td>5.1</td><td>Blocks</td><td>实施页面中的每个模块，模块是一个实体可以容纳视频、文字、图片和其他更多，搜索栏，菜单等；他不是内容，是一个 placeholder</td><td></td><td></td></tr><tr><td>5.2</td><td>Layout Builder</td><td>一个核心模块，拖拽式可视化页面设计实施工具，可以为不同的内容类型、实体和其它创建定制的布局。</td><td></td><td></td></tr><tr><td>5.3</td><td>Views</td><td>创建数据库查询，过滤和筛选内容，静态的操作或者根据上下文的 。Display【page、block】，format，lields,filter,sort,</td><td></td><td></td></tr><tr><td>6.0</td><td>Add Content</td><td>在以上工作基本完成之后，就可以进入网站内容的填充阶段</td><td>SQL查询</td><td></td></tr><tr><td>6.1</td><td>Menus</td><td>菜单包括网站的主导航菜单，页脚导航和各个页面上可能使用到的分类选项</td><td></td><td></td></tr><tr><td>6.2</td><td>Site Management</td><td>开发、测试和生产环境之间的迁移和更新流程</td><td>CI、CD、Cloud、DNS、CDN</td><td>用 GitHub 、Docker 和 Azure 等技术实施必要的工作流程</td></tr><tr><td>7.0</td><td>Theme</td><td>网站展示风格的开发贯穿于以上所有工作内容的过程中。需要基于某种Drupal网站皮肤作为底板，开发自己的定制皮肤，在需要改进的时候随时调整和更新</td><td>前端开发、CSS</td><td>图片等美工设计需要交付给社区的设计同学</td></tr></tbody></table></div><p>为了多人、开放式、实现社区网站开发和内容建设的工作，我们还需要一个项目管理工具。这里可以选用 GitHub ：<a class=link href=https://github.com/orgs/DevopsChina/projects/1/ target=_blank rel=noopener>https://github.com/orgs/DevopsChina/projects/1/</a> 用它可以实现以下功能。</p><ul><li>任务记录、跟踪和分配</li><li>统一管理多个代码仓库的任务</li><li>任务可以和代码库工作相关，也可以无关</li><li>通过内置的工作流，可以实现代码库 issue & pr 任务的自动关联，状态同步</li><li>可以创建自定义字段的视图，用于不同目的的跟踪，支持任务清单，ToDoList 等视图。</li></ul><p>下一步邀请社区网站工作组召开项目启动会。</p><h2 id=版本化开发环境>版本化开发环境</h2><p>初始化上面所创建的项目文件夹。将其推送到 <a class=link href=https://github.com/DevopsChina/drupal-dev.git target=_blank rel=noopener>https://github.com/DevopsChina/drupal-dev.git</a></p><p>先参考 Drupal 代码库 web 目录下的样例文件，在项目目录中创建 .gitignore 文件。应该在这两个文件中排出以下文件，处于演示目的，本项目并没有将其排除在外。</p><ul><li>.env</li><li>sites/<em>/settings</em>.php</li><li>sites/<em>/services</em>.yml</li></ul><p>执行下面的代码推送动作。</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-sh data-lang=sh><span class=line><span class=cl>git init
+</span></span><span class=line><span class=cl>git add .
+</span></span><span class=line><span class=cl>git commit -m <span class=s2>&#34;first commit&#34;</span>
+</span></span><span class=line><span class=cl>git branch -M main
+</span></span><span class=line><span class=cl>git remote add origin https://github.com/DevopsChina/drupal-dev.git
+</span></span><span class=line><span class=cl>git push -u origin main
+</span></span></code></pre></td></tr></table></div></div><p>在完成了代码库初始化工作后，会设置一下 main 主干保护策略。防止直接对 main 的变更。</p><h2 id=容器化-drupal-系统>容器化 Drupal 系统</h2><p>容器化当前的项目需要经过这些操作步骤：</p><ol><li>确认当前 Drupal 系统中的配置和内容，这个状态会打包到容器环境中。用 sqldump 导出数据库。</li><li>参数化 <code>web/sites/settings.php</code> 文件，将变量和密码变成参数。</li><li>创建 Drupal 主应用镜像的 <code>Dockerfile</code> 。</li><li>创建包含数据库服务和开发工具服务的 <code>docker-compose.yml</code> 服务定义文件。</li><li>在本机测试和确认容器服务中 Drupal 网站的可用性和内容。</li></ol><h3 id=1---确认当前系统状态>1 - 确认当前系统状态</h3><p>在经过初始化的配置后，几乎所有系统级别配置信息都保存在了 MySQL 数据库中，用 sqldump 导出 MySQL 数据库，dump 文件会用于 MySQL 容器服务的初始化文件。字段定义、文章编辑、初始化内容的填充也会产生一些数据文件（图片、文件、视频、音频），这些文件就位于 <code>web/sites/default/files/</code> 目录中。</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-sh data-lang=sh><span class=line><span class=cl>mkdir sql
+</span></span><span class=line><span class=cl>mysqldump -u root local_devopschina &gt; sql/dump.sql
+</span></span></code></pre></td></tr></table></div></div><p>在项目文件夹中，执行以上命令，就可以得到的到一个大约十几兆的 MySQL 数据库备份文件。</p><h3 id=2---参数化-drupal-主配置文件>2 - 参数化 Drupal 主配置文件</h3><p>Drupal 的数据库链接字符串和账号信息都位于 <code>web/sites/settings.php</code> 文件中。为了确保 Drupal 镜像启动后可以链接到正确的 MySQL 数据库服务。需要改此文件。</p><p>原始配置参数：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-php data-lang=php><span class=line><span class=cl><span class=nv>$databases</span><span class=p>[</span><span class=s1>&#39;default&#39;</span><span class=p>][</span><span class=s1>&#39;default&#39;</span><span class=p>]</span> <span class=o>=</span> <span class=k>array</span> <span class=p>(</span>
+</span></span><span class=line><span class=cl>  <span class=s1>&#39;database&#39;</span> <span class=o>=&gt;</span> <span class=s1>&#39;local_devopschina&#39;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>  <span class=s1>&#39;username&#39;</span> <span class=o>=&gt;</span> <span class=s1>&#39;ddoc&#39;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>  <span class=s1>&#39;password&#39;</span> <span class=o>=&gt;</span> <span class=s1>&#39;ddoc123&#39;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>  <span class=s1>&#39;prefix&#39;</span> <span class=o>=&gt;</span> <span class=s1>&#39;&#39;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>  <span class=s1>&#39;host&#39;</span> <span class=o>=&gt;</span> <span class=s1>&#39;127.0.0.1&#39;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>  <span class=s1>&#39;port&#39;</span> <span class=o>=&gt;</span> <span class=s1>&#39;33067&#39;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>  <span class=s1>&#39;namespace&#39;</span> <span class=o>=&gt;</span> <span class=s1>&#39;Drupal\\Core\\Database\\Driver\\mysql&#39;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>  <span class=s1>&#39;driver&#39;</span> <span class=o>=&gt;</span> <span class=s1>&#39;mysql&#39;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl><span class=p>);</span>
+</span></span></code></pre></td></tr></table></div></div><p>备份原始配置文件。由于修改以后在本机用 drush 运行的本地测试 Drupal 应用就中断了。后续可以优化一下：保持原始配置文件不变，参数化一个配置文件的副本，在 Drupal 打包过程中加一个参数化配置文件的覆盖替换动作。</p><p>修改为如下内容：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-php data-lang=php><span class=line><span class=cl><span class=nv>$databases</span><span class=p>[</span><span class=s1>&#39;default&#39;</span><span class=p>][</span><span class=s1>&#39;default&#39;</span><span class=p>]</span> <span class=o>=</span> <span class=k>array</span> <span class=p>(</span>
+</span></span><span class=line><span class=cl>  <span class=s1>&#39;database&#39;</span> <span class=o>=&gt;</span> <span class=nv>$_ENV</span><span class=p>[</span><span class=s1>&#39;DBASE&#39;</span><span class=p>],</span>
+</span></span><span class=line><span class=cl>  <span class=s1>&#39;username&#39;</span> <span class=o>=&gt;</span> <span class=nv>$_ENV</span><span class=p>[</span><span class=s1>&#39;USER&#39;</span><span class=p>],</span>
+</span></span><span class=line><span class=cl>  <span class=s1>&#39;password&#39;</span> <span class=o>=&gt;</span> <span class=nv>$_ENV</span><span class=p>[</span><span class=s1>&#39;PASS&#39;</span><span class=p>],</span>
+</span></span><span class=line><span class=cl>  <span class=s1>&#39;prefix&#39;</span> <span class=o>=&gt;</span> <span class=s1>&#39;&#39;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>  <span class=s1>&#39;host&#39;</span> <span class=o>=&gt;</span> <span class=nv>$_ENV</span><span class=p>[</span><span class=s1>&#39;HOST&#39;</span><span class=p>],</span>
+</span></span><span class=line><span class=cl>  <span class=s1>&#39;port&#39;</span> <span class=o>=&gt;</span> <span class=nv>$_ENV</span><span class=p>[</span><span class=s1>&#39;DPORT&#39;</span><span class=p>],</span>
+</span></span><span class=line><span class=cl>  <span class=s1>&#39;namespace&#39;</span> <span class=o>=&gt;</span> <span class=s1>&#39;Drupal\\Core\\Database\\Driver\\mysql&#39;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>  <span class=s1>&#39;driver&#39;</span> <span class=o>=&gt;</span> <span class=s1>&#39;mysql&#39;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl><span class=p>);</span>
+</span></span></code></pre></td></tr></table></div></div><p>以上参数化非必要的最佳操作，本文目标在与记录，后续会优化这个步骤。</p><h3 id=3---创建-drupal-主应用镜像>3 - 创建 Drupal 主应用镜像</h3><p>基于 Drupal 官方的镜像文件创建适合自己项目的 <code>Dockerfile</code>。</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-dockerfile data-lang=dockerfile><span class=line><span class=cl><span class=k>FROM</span><span class=s> drupal:9-php7.4-apache</span><span class=err>
+</span></span></span><span class=line><span class=cl><span class=err></span><span class=k>RUN</span> <span class=nb>set</span> -eux<span class=p>;</span> <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span> apt-get update<span class=p>;</span> <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span> apt-get install -y --no-install-recommends git<span class=err>
+</span></span></span></code></pre></td></tr></table></div></div><p>然后运行 docker build 命令，确认本地可以成功构建这个自定义镜像。</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-sh data-lang=sh><span class=line><span class=cl>docker build -t devopschina/drupal-dev .
+</span></span><span class=line><span class=cl>docker image
+</span></span></code></pre></td></tr></table></div></div><p>本测试镜像创建成功后，没有镜像上传的动作，镜像上传到特定的镜像仓库后，就可以实现在云容器服务中的部署。这里省略此 push 步骤。</p><h3 id=4---创建服务定义文件>4 - 创建服务定义文件</h3><p>为了简化本地测试，这里使用 docker-compose 工具。创建包含数据库服务和开发工具服务的 <code>docker-compose.yml</code> 服务定义文件。</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span><span class=lnt>32
+</span><span class=lnt>33
+</span><span class=lnt>34
+</span><span class=lnt>35
+</span><span class=lnt>36
+</span><span class=lnt>37
+</span><span class=lnt>38
+</span><span class=lnt>39
+</span><span class=lnt>40
+</span><span class=lnt>41
+</span><span class=lnt>42
+</span><span class=lnt>43
+</span><span class=lnt>44
+</span><span class=lnt>45
+</span><span class=lnt>46
+</span><span class=lnt>47
+</span><span class=lnt>48
+</span><span class=lnt>49
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-yml data-lang=yml><span class=line><span class=cl><span class=nt>version</span><span class=p>:</span><span class=w> </span><span class=s1>&#39;3.1&#39;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>services</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=c># 使用 mysql 作为后端数据库</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>db</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>image</span><span class=p>:</span><span class=w> </span><span class=l>mysql:5.7</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>container_name</span><span class=p>:</span><span class=w> </span><span class=l>devopschina_db</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>restart</span><span class=p>:</span><span class=w> </span><span class=l>always</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>volumes</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=c># 用本地当前路径 sql 目录中的 sql dump文件初始化 MySQL 数据库</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span>- <span class=l>./sql:/docker-entrypoint-initdb.d/</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>environment</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=c># 用这些环境变量初始化 mysql 数据库，创建目标数据库，创建用户和密码，为 root 用户初始化随机密码</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>MYSQL_DATABASE</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;${DB}&#34;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>MYSQL_USER</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;${DBU}&#34;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>MYSQL_PASSWORD</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;${DBP}&#34;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>MYSQL_RANDOM_ROOT_PASSWORD</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;1&#34;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=c># PHPMyAdmin 数据库管理工具，只用于开发或者测试环境</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>phpmyadmin</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>image</span><span class=p>:</span><span class=w> </span><span class=l>phpmyadmin/phpmyadmin</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>container_name</span><span class=p>:</span><span class=w> </span><span class=l>devopschina_myphpadmin</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>restart</span><span class=p>:</span><span class=w> </span><span class=l>always</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>environment</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>PMA_HOST</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;${DBH}&#34;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>PMA_USER</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;${DBU}&#34;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>PMA_PASSWORD</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;${DBP}&#34;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>PMA_ARBITRARY</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;1&#34;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>ports</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span>- <span class=m>9999</span><span class=p>:</span><span class=m>80</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=c># 使用 drupal 官方镜像 v9 ，指定 php 版本为 7.4</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>drupal</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=c>#image: drupal:9-php7.4-apache 这里以后需要优化为私有镜像名称，而不需要在服务启动的时候做任何构建</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>build</span><span class=p>:</span><span class=w> </span><span class=l>.</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>container_name</span><span class=p>:</span><span class=w> </span><span class=l>devopschina_drupal</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>restart</span><span class=p>:</span><span class=w> </span><span class=l>always</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>ports</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span>- <span class=m>9998</span><span class=p>:</span><span class=m>80</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>working_dir</span><span class=p>:</span><span class=w> </span><span class=l>/opt</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>volumes</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=c># 将当前项目目录加载到容器中，这里产生了一个和本机的依赖，后续优化：通过 Dockerfile 的复制当前开发目录中的成功到容器中</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=c># The &#39;z&#39; option tells Docker that the volume content will be shared between containers. Docker will label the content with a shared content label. Shared volumes labels allow all containers to read/write content. The &#39;Z&#39; option tells Docker to label the content with a private unshared label.</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span>- <span class=l>.:/opt:z</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>environment</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>HOST</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;${DBH}&#34;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>DBASE</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;${DB}&#34;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>USER</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;${DBU}&#34;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>PASS</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;${DBP}&#34;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=c># composer update 操作确保容器中的 Drupal 服务运行与当前的最新状态，这个操作也应该后续移植到Dockerfile 文件中</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>command</span><span class=p>:</span><span class=w> </span><span class=l>bash -c &#34;composer update &amp;&amp; rm /var/www/html &amp;&amp; ln -s /opt/web /var/www/html &amp;&amp; /usr/local/bin/apache2-foreground&#34;</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><p>相关测试命令：</p><ul><li><code>docker-compose config</code> 测试所有参数是否被完整且正确的填充，有错误的话，需要修改 .env 文件。</li><li><code>docker-compose build</code> 构建必要的镜像。</li></ul><h3 id=5---本地集成测试>5 - 本地集成测试</h3><p>在本机测试和确认容器服务中 Drupal 网站的可用性和内容。</p><p>在项目目录中，执行 <code>docker-compose up</code> 命令观察整个启动过程，待启动停止后，在浏览器中访问：<a class=link href=http://localhost:9998 target=_blank rel=noopener>http://localhost:9998</a> ，应该能够看到如下的网页。</p><p><img src=/img/cos/2022-02-05-2022-02-05_23-04-12.png loading=lazy alt="Test Env home page"></p><h2 id=在云平台部署社区官网>在云平台部署社区官网</h2><p>下面是关于后续工作的一些规划：</p><ul><li>组件新的网站开发团队，召开项目启动会</li><li>优化以上代码库</li><li>用一台云主机搭建一个公共的测试环境</li><li>确认和实施相关基础设施：镜像仓库、用于Drupal迁移的对象存储桶、优化容器化过程、启用一个用于开发评审的容器测试环境、确定生产环境的运行状态【LAMP单机 vs. 容器环境+其它云服务】</li></ul></section><footer class=article-footer><section class=article-tags><a href=/tags/php/>Php</a>
+<a href=/tags/drupal/>Drupal</a>
+<a href=/tags/github/>Github</a>
+<a href=/tags/docker/>Docker</a></section><section class=article-copyright><svg class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="12" cy="12" r="9"/><path d="M14.5 9a3.5 4 0 100 6"/></svg>
+<span>署名-非商业性使用-禁止演绎 4.0 (CC BY-NC-ND 4.0)</span></section><section class=article-lastmod><svg class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15 15"/></svg>
+<span>最后更新于 2024-06-24 20:37 CST</span></section></footer></article><aside class=related-content--wrapper><h2 class=section-title>相关文章</h2><div class=related-content><div class="flex article-list--tile"><article class=has-image><a href=/blog/identify-clean-up-large-docker-containers-volumes/><div class=article-image><img src=/blog/identify-clean-up-large-docker-containers-volumes/91625BFA-9860-451D-B947-558D4B63D207.50f3b92f513f884119305df345b763aa_hu_b2cf361df87011e0.jpg width=250 height=150 loading=lazy alt="Featured image of post 如何寻找占用空间最大的容器，并删除它所使用的卷，释放占用的空间？" data-key=identify-clean-up-large-docker-containers-volumes data-hash="md5-UPO5L1E/iEEZMF3zRbdjqg=="></div><div class=article-details><h2 class=article-title>如何寻找占用空间最大的容器，并删除它所使用的卷，释放占用的空间？</h2></div></a></article><article class=has-image><a href=/blog/github-certifications-ga/><div class=article-image><img src=/blog/github-certifications-ga/Collaboration-DarkMode-2.fa9f2c0bba56d58db7118d7fd05c618c_hu_adb4c000f431f0f7.webp width=250 height=150 loading=lazy alt="Featured image of post 推荐尝试 Github 系列认证考试" data-key=github-certifications-ga data-hash="md5-+p8sC7pW1Y23EY1/0FxhjA=="></div><div class=article-details><h2 class=article-title>推荐尝试 Github 系列认证考试</h2></div></a></article><article class=has-image><a href=/blog/deveops-trands-in-2023/><div class=article-image><img src=/blog/deveops-trands-in-2023/pexels-samar-mourya-13378403.c510b5ed575a77a30bd51584a0c7476d_hu_2bc6ecba584c657b.jpg width=250 height=150 loading=lazy alt="Featured image of post DevOps 在 2023 年的趋势和预测" data-key=deveops-trands-in-2023 data-hash="md5-xRC17Vdad6ML1RWEoMdHbQ=="></div><div class=article-details><h2 class=article-title>DevOps 在 2023 年的趋势和预测</h2></div></a></article><article class=has-image><a href=/blog/10-minute-read-to-understanding-devops-tools/><div class=article-image><img src=/img/cos/2021-04-03-eggs-3216877_1920.jpeg loading=lazy data-key=10-minute-read-to-understanding-devops-tools data-hash=/img/cos/2021-04-03-eggs-3216877_1920.jpeg></div><div class=article-details><h2 class=article-title>10 分钟读懂 DevOps 工具链</h2></div></a></article><article class=has-image><a href=/blog/building-a-serverless-real-time-data-pipeline-with-terraform-aws-and-python/><div class=article-image><img src=/blog/building-a-serverless-real-time-data-pipeline-with-terraform-aws-and-python/serverless-data-pipeline.a4a0b7054ebf1a8b5ef484d300f2b3f5_hu_935e0ea9129a1ae7.png width=250 height=150 loading=lazy alt="Featured image of post 使用 Terraform、AWS 和 Python 构建无服务器实时数据管道" data-key=building-a-serverless-real-time-data-pipeline-with-terraform-aws-and-python data-hash="md5-pKC3BU6/Gote9ITTAPKz9Q=="></div><div class=article-details><h2 class=article-title>使用 Terraform、AWS 和 Python 构建无服务器实时数据管道</h2></div></a></article></div></div></aside><div class=disqus-container><div id=disqus_thread></div><script>window.disqus_config=function(){},function(){if(["localhost","127.0.0.1"].indexOf(window.location.hostname)!=-1){document.getElementById("disqus_thread").innerHTML="Disqus comments not available by default when the website is previewed locally.";return}var t=document,e=t.createElement("script");e.async=!0,e.src="//martinliu.disqus.com/embed.js",e.setAttribute("data-timestamp",+new Date),(t.head||t.body).appendChild(e)}()</script><noscript>Please enable JavaScript to view the <a href=https://disqus.com/?ref_noscript>comments powered by Disqus.</a></noscript><a href=https://disqus.com class=dsq-brlink>comments powered by <span class=logo-disqus>Disqus</span></a></div><style>.disqus-container{background-color:var(--card-background);border-radius:var(--card-border-radius);box-shadow:var(--shadow-l1);padding:var(--card-padding)}</style><script>window.addEventListener("onColorSchemeChange",e=>{typeof DISQUS=="object"&&DISQUS.reset({reload:!0})})</script><footer class=site-footer><section class=copyright>&copy;
+2007 -
+2025 Martin Liu's Blog</section><section class=powerby>本博客始于 2007 年<br>使用 <a href=https://gohugo.io/ target=_blank rel=noopener>Hugo</a> 构建<br>主题 <b><a href=https://github.com/CaiJimmy/hugo-theme-stack target=_blank rel=noopener data-version=3.29.0>Stack</a></b> 由 <a href=https://jimmycai.com target=_blank rel=noopener>Jimmy</a> 设计</section></footer><div class=pswp tabindex=-1 role=dialog aria-hidden=true><div class=pswp__bg></div><div class=pswp__scroll-wrap><div class=pswp__container><div class=pswp__item></div><div class=pswp__item></div><div class=pswp__item></div></div><div class="pswp__ui pswp__ui--hidden"><div class=pswp__top-bar><div class=pswp__counter></div><button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+<button class="pswp__button pswp__button--share" title=Share></button>
+<button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+<button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button><div class=pswp__preloader><div class=pswp__preloader__icn><div class=pswp__preloader__cut><div class=pswp__preloader__donut></div></div></div></div></div><div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap"><div class=pswp__share-tooltip></div></div><button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+</button>
+<button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)"></button><div class=pswp__caption><div class=pswp__caption__center></div></div></div></div></div><script src=https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo=" crossorigin=anonymous defer></script><script src=https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU=" crossorigin=anonymous defer></script><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css crossorigin=anonymous><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css crossorigin=anonymous></main></div><script src=https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z+KMkF24hUW8WePSA9HM=" crossorigin=anonymous></script><script type=text/javascript src=/ts/main.1e9a3bafd846ced4c345d084b355fb8c7bae75701c338f8a1f8a82c780137826.js defer></script><script>(function(){const e=document.createElement("link");e.href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap",e.type="text/css",e.rel="stylesheet",document.head.appendChild(e)})()</script></body></html>

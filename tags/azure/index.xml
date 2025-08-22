@@ -1,0 +1,2015 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Azure on Martin Liu's Blog</title><link>https://martinliu.cn/tags/azure/</link><description>Recent content in Azure on Martin Liu's Blog</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><lastBuildDate>Thu, 14 Nov 2024 11:06:25 +0800</lastBuildDate><atom:link href="https://martinliu.cn/tags/azure/index.xml" rel="self" type="application/rss+xml"/><item><title>Pulumi IaC 之 Azure 快速入门指南（MacOS &amp; Python 本地）</title><link>https://martinliu.cn/blog/pulumi-azure-quickstart-guide-macos-local/</link><pubDate>Sat, 12 Oct 2024 11:49:22 +0800</pubDate><guid>https://martinliu.cn/blog/pulumi-azure-quickstart-guide-macos-local/</guid><description>&lt;img src="https://martinliu.cn/blog/pulumi-azure-quickstart-guide-macos-local/azure-nextgen.png" alt="Featured image of post Pulumi IaC 之 Azure 快速入门指南（MacOS &amp; Python 本地）" />&lt;p>本快速上手指南包含的内容：&lt;/p>
+&lt;ul>
+&lt;li>安装和准备 Pulumi CLI 工具&lt;/li>
+&lt;li>准备 Pulumi Cloud 账号，并创建个人的 Access Token&lt;/li>
+&lt;li>准备 Azure 的账号，用交互的方式登录 Azure CLI&lt;/li>
+&lt;li>创建一个简单的 Pulumi 项目，用于 Python 语言的主程序部署 Azure 资源&lt;/li>
+&lt;li>删除环境中的所有资源&lt;/li>
+&lt;/ul>
+&lt;h2 id="准备工作">准备工作
+&lt;/h2>&lt;p>在 MacOS 环境中安装 Pulumi CLI 可以通过 Homebrew 安装，也可以通过下载二进制文件安装。Pulumi CLI 在本地环境中用于创建、部署和管理 Pulumi 项目。它需要依赖于 Pulumi Cloud 服务，作为命令行工具交互的后端。&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">brew install pulumi/tap/pulumi
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>安装完成后，可以通过 &lt;code>pulumi version&lt;/code> 命令查看 Pulumi CLI 的版本信息。&lt;/p>
+&lt;p>Pulumi Cloud 是 Pulumi 的后端服务，用于存储 Pulumi 项目的状态信息，以及提供一些其他的服务。在使用 Pulumi CLI 之前，需要先登录 Pulumi Cloud 服务。&lt;/p>
+&lt;p>Pulumi CLI 在本地环境中，可以使用 ‘pulumi login’ 默认的交互方式，完成在命令行中的用户认证；我推荐使用Pulumi 的 Access Token 来在本地 完成命令行的登录认证过程。这种非交付方式，可以在后续的 CI/CD 环境中使用。&lt;/p>
+&lt;p>参考下图，登录 Pulumi Cloud 服务，获取 Access Token。&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/blog/pulumi-azure-quickstart-guide-macos-local/pulumi-login-access-token.png"
+width="1146"
+height="574"
+srcset="https://martinliu.cn/blog/pulumi-azure-quickstart-guide-macos-local/pulumi-login-access-token_hu_e40192f235869d8.png 480w, https://martinliu.cn/blog/pulumi-azure-quickstart-guide-macos-local/pulumi-login-access-token_hu_f798e86b2bd3d35c.png 1024w"
+loading="lazy"
+alt="个人 Access Token"
+class="gallery-image"
+data-flex-grow="199"
+data-flex-basis="479px"
+>&lt;/p>
+&lt;p>在命令行中，将 Access Token 设置为环境变量，用于后续的登录认证。&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">&lt;span class="nb">export&lt;/span> &lt;span class="nv">PULUMI_ACCESS_TOKEN&lt;/span>&lt;span class="o">=&lt;/span>pul-ACT+++++++++++++++++++++++++++++++++++++++++++++++
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">pulumi whoami
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">martinliu
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>实际上，Pulumi CLI 会先在环境变量中查找 &lt;code>PULUMI_ACCESS_TOKEN&lt;/code>，如果找到了就直接使用 Token 完成登录认证的过程，可以使用 ‘pulumi whoami’ 命令确认是否登录成功，以及当前所使用的 Pulumi Cloud 的用户名。&lt;/p>
+&lt;p>当然，也可以使用 &lt;code>pulumi login&lt;/code> 命令，通过交互的方式登录 Pulumi Cloud 服务。&lt;/p>
+&lt;p>Azure CLI 是 Azure 的命令行工具，用于在本地环境中与 Azure 云服务进行交互。本文省略了 Azure CLI 的登录认证过程，为了方便期间，可以使用 &lt;code>az login&lt;/code> 命令，用网页交互的方式，完成命令行中本地 Azure CLI 的登录认证。&lt;/p>
+&lt;p>可以校验一下 Azure CLI 的登录认证是否成功。&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">az account show
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>在上面的信息输出中，你可以看到当前的 Azure 账号订阅等信息。Pulumi CLI 会使用 Azure CLI 的登录认证信息，来完成 Azure 云服务的资源部署。&lt;/p>
+&lt;p>在完成了上述的 Pulumi CLI 和 Azure CLI 的准备工作后，我们可以开始创建一个简单的 Pulumi 项目，用于部署 Azure 资源。&lt;/p>
+&lt;h2 id="创建-pulumi-项目">创建 Pulumi 项目
+&lt;/h2>&lt;p>在本地环境中，使用 Pulumi 命令 ‘pulumi new azure-python’ 创建一个新的 Pulumi 项目，用于部署 Azure 资源。&lt;/p>
+&lt;p>‘pulumi new&amp;rsquo; 命令会在一个空目录中初始化一个 Pulumi 项目。在初始化的过程中，Pulumi CLI 会询问一些问题，用于生成一个简单的 Python 代码文件。在下面的示例中，我只是制定了 Azure 的区域为 &amp;lsquo;East Asia&amp;rsquo;，其他的都使用默认值。&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;span class="lnt">14
+&lt;/span>&lt;span class="lnt">15
+&lt;/span>&lt;span class="lnt">16
+&lt;/span>&lt;span class="lnt">17
+&lt;/span>&lt;span class="lnt">18
+&lt;/span>&lt;span class="lnt">19
+&lt;/span>&lt;span class="lnt">20
+&lt;/span>&lt;span class="lnt">21
+&lt;/span>&lt;span class="lnt">22
+&lt;/span>&lt;span class="lnt">23
+&lt;/span>&lt;span class="lnt">24
+&lt;/span>&lt;span class="lnt">25
+&lt;/span>&lt;span class="lnt">26
+&lt;/span>&lt;span class="lnt">27
+&lt;/span>&lt;span class="lnt">28
+&lt;/span>&lt;span class="lnt">29
+&lt;/span>&lt;span class="lnt">30
+&lt;/span>&lt;span class="lnt">31
+&lt;/span>&lt;span class="lnt">32
+&lt;/span>&lt;span class="lnt">33
+&lt;/span>&lt;span class="lnt">34
+&lt;/span>&lt;span class="lnt">35
+&lt;/span>&lt;span class="lnt">36
+&lt;/span>&lt;span class="lnt">37
+&lt;/span>&lt;span class="lnt">38
+&lt;/span>&lt;span class="lnt">39
+&lt;/span>&lt;span class="lnt">40
+&lt;/span>&lt;span class="lnt">41
+&lt;/span>&lt;span class="lnt">42
+&lt;/span>&lt;span class="lnt">43
+&lt;/span>&lt;span class="lnt">44
+&lt;/span>&lt;span class="lnt">45
+&lt;/span>&lt;span class="lnt">46
+&lt;/span>&lt;span class="lnt">47
+&lt;/span>&lt;span class="lnt">48
+&lt;/span>&lt;span class="lnt">49
+&lt;/span>&lt;span class="lnt">50
+&lt;/span>&lt;span class="lnt">51
+&lt;/span>&lt;span class="lnt">52
+&lt;/span>&lt;span class="lnt">53
+&lt;/span>&lt;span class="lnt">54
+&lt;/span>&lt;span class="lnt">55
+&lt;/span>&lt;span class="lnt">56
+&lt;/span>&lt;span class="lnt">57
+&lt;/span>&lt;span class="lnt">58
+&lt;/span>&lt;span class="lnt">59
+&lt;/span>&lt;span class="lnt">60
+&lt;/span>&lt;span class="lnt">61
+&lt;/span>&lt;span class="lnt">62
+&lt;/span>&lt;span class="lnt">63
+&lt;/span>&lt;span class="lnt">64
+&lt;/span>&lt;span class="lnt">65
+&lt;/span>&lt;span class="lnt">66
+&lt;/span>&lt;span class="lnt">67
+&lt;/span>&lt;span class="lnt">68
+&lt;/span>&lt;span class="lnt">69
+&lt;/span>&lt;span class="lnt">70
+&lt;/span>&lt;span class="lnt">71
+&lt;/span>&lt;span class="lnt">72
+&lt;/span>&lt;span class="lnt">73
+&lt;/span>&lt;span class="lnt">74
+&lt;/span>&lt;span class="lnt">75
+&lt;/span>&lt;span class="lnt">76
+&lt;/span>&lt;span class="lnt">77
+&lt;/span>&lt;span class="lnt">78
+&lt;/span>&lt;span class="lnt">79
+&lt;/span>&lt;span class="lnt">80
+&lt;/span>&lt;span class="lnt">81
+&lt;/span>&lt;span class="lnt">82
+&lt;/span>&lt;span class="lnt">83
+&lt;/span>&lt;span class="lnt">84
+&lt;/span>&lt;span class="lnt">85
+&lt;/span>&lt;span class="lnt">86
+&lt;/span>&lt;span class="lnt">87
+&lt;/span>&lt;span class="lnt">88
+&lt;/span>&lt;span class="lnt">89
+&lt;/span>&lt;span class="lnt">90
+&lt;/span>&lt;span class="lnt">91
+&lt;/span>&lt;span class="lnt">92
+&lt;/span>&lt;span class="lnt">93
+&lt;/span>&lt;span class="lnt">94
+&lt;/span>&lt;span class="lnt">95
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">&lt;span class="o">(&lt;/span>base&lt;span class="o">)&lt;/span> ➜ first-project pulumi new azure-python
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Logging in using access token from PULUMI_ACCESS_TOKEN
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">This &lt;span class="nb">command&lt;/span> will walk you through creating a new Pulumi project.
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Enter a value or leave blank to accept the &lt;span class="o">(&lt;/span>default&lt;span class="o">)&lt;/span>, and press &amp;lt;ENTER&amp;gt;.
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Press ^C at any &lt;span class="nb">time&lt;/span> to quit.
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Project name &lt;span class="o">(&lt;/span>first-project&lt;span class="o">)&lt;/span>:
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Project description &lt;span class="o">(&lt;/span>A minimal Azure Native Python Pulumi program&lt;span class="o">)&lt;/span>:
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Created project &lt;span class="s1">&amp;#39;first-project&amp;#39;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Please enter your desired stack name.
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">To create a stack in an organization, use the format &amp;lt;org-name&amp;gt;/&amp;lt;stack-name&amp;gt; &lt;span class="o">(&lt;/span>e.g. &lt;span class="sb">`&lt;/span>acmecorp/dev&lt;span class="sb">`&lt;/span>&lt;span class="o">)&lt;/span>.
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Stack name &lt;span class="o">(&lt;/span>dev&lt;span class="o">)&lt;/span>:
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Created stack &lt;span class="s1">&amp;#39;dev&amp;#39;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">The toolchain to use &lt;span class="k">for&lt;/span> installing dependencies and running the program pip
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">The Azure location to use &lt;span class="o">(&lt;/span>azure-native:location&lt;span class="o">)&lt;/span> &lt;span class="o">(&lt;/span>WestUS2&lt;span class="o">)&lt;/span>: eastasia
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Saved config
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Installing dependencies...
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Creating virtual environment...
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Finished creating virtual environment
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Updating pip, setuptools, and wheel in virtual environment...
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Requirement already satisfied: pip in ./venv/lib/python3.10/site-packages &lt;span class="o">(&lt;/span>22.3.1&lt;span class="o">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Collecting pip
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> Using cached pip-24.2-py3-none-any.whl &lt;span class="o">(&lt;/span>1.8 MB&lt;span class="o">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Requirement already satisfied: setuptools in ./venv/lib/python3.10/site-packages &lt;span class="o">(&lt;/span>65.5.0&lt;span class="o">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Collecting setuptools
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> Using cached setuptools-75.1.0-py3-none-any.whl &lt;span class="o">(&lt;/span>1.2 MB&lt;span class="o">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Collecting wheel
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> Using cached wheel-0.44.0-py3-none-any.whl &lt;span class="o">(&lt;/span>&lt;span class="m">67&lt;/span> kB&lt;span class="o">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Installing collected packages: wheel, setuptools, pip
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> Attempting uninstall: setuptools
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> Found existing installation: setuptools 65.5.0
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> Uninstalling setuptools-65.5.0:
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> Successfully uninstalled setuptools-65.5.0
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> Attempting uninstall: pip
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> Found existing installation: pip 22.3.1
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> Uninstalling pip-22.3.1:
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> Successfully uninstalled pip-22.3.1
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Successfully installed pip-24.2 setuptools-75.1.0 wheel-0.44.0
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Finished updating
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Installing dependencies in virtual environment...
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Collecting pulumi&amp;lt;4.0.0,&amp;gt;&lt;span class="o">=&lt;/span>3.0.0 &lt;span class="o">(&lt;/span>from -r requirements.txt &lt;span class="o">(&lt;/span>line 1&lt;span class="o">))&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> Using cached pulumi-3.136.1-py3-none-any.whl.metadata &lt;span class="o">(&lt;/span>&lt;span class="m">11&lt;/span> kB&lt;span class="o">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Collecting pulumi-azure-native&amp;lt;3.0.0,&amp;gt;&lt;span class="o">=&lt;/span>2.0.0 &lt;span class="o">(&lt;/span>from -r requirements.txt &lt;span class="o">(&lt;/span>line 2&lt;span class="o">))&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> Using cached pulumi_azure_native-2.66.0-py3-none-any.whl.metadata &lt;span class="o">(&lt;/span>4.2 kB&lt;span class="o">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Collecting protobuf~&lt;span class="o">=&lt;/span>4.21 &lt;span class="o">(&lt;/span>from pulumi&amp;lt;4.0.0,&amp;gt;&lt;span class="o">=&lt;/span>3.0.0-&amp;gt;-r requirements.txt &lt;span class="o">(&lt;/span>line 1&lt;span class="o">))&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> Using cached protobuf-4.25.5-cp37-abi3-macosx_10_9_universal2.whl.metadata &lt;span class="o">(&lt;/span>&lt;span class="m">541&lt;/span> bytes&lt;span class="o">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Collecting grpcio~&lt;span class="o">=&lt;/span>1.66.2 &lt;span class="o">(&lt;/span>from pulumi&amp;lt;4.0.0,&amp;gt;&lt;span class="o">=&lt;/span>3.0.0-&amp;gt;-r requirements.txt &lt;span class="o">(&lt;/span>line 1&lt;span class="o">))&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> Using cached grpcio-1.66.2-cp310-cp310-macosx_12_0_universal2.whl.metadata &lt;span class="o">(&lt;/span>3.9 kB&lt;span class="o">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Collecting dill~&lt;span class="o">=&lt;/span>0.3 &lt;span class="o">(&lt;/span>from pulumi&amp;lt;4.0.0,&amp;gt;&lt;span class="o">=&lt;/span>3.0.0-&amp;gt;-r requirements.txt &lt;span class="o">(&lt;/span>line 1&lt;span class="o">))&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> Using cached dill-0.3.9-py3-none-any.whl.metadata &lt;span class="o">(&lt;/span>&lt;span class="m">10&lt;/span> kB&lt;span class="o">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Collecting six~&lt;span class="o">=&lt;/span>1.12 &lt;span class="o">(&lt;/span>from pulumi&amp;lt;4.0.0,&amp;gt;&lt;span class="o">=&lt;/span>3.0.0-&amp;gt;-r requirements.txt &lt;span class="o">(&lt;/span>line 1&lt;span class="o">))&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> Using cached six-1.16.0-py2.py3-none-any.whl.metadata &lt;span class="o">(&lt;/span>1.8 kB&lt;span class="o">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Collecting semver~&lt;span class="o">=&lt;/span>2.13 &lt;span class="o">(&lt;/span>from pulumi&amp;lt;4.0.0,&amp;gt;&lt;span class="o">=&lt;/span>3.0.0-&amp;gt;-r requirements.txt &lt;span class="o">(&lt;/span>line 1&lt;span class="o">))&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> Using cached semver-2.13.0-py2.py3-none-any.whl.metadata &lt;span class="o">(&lt;/span>5.0 kB&lt;span class="o">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Collecting pyyaml~&lt;span class="o">=&lt;/span>6.0 &lt;span class="o">(&lt;/span>from pulumi&amp;lt;4.0.0,&amp;gt;&lt;span class="o">=&lt;/span>3.0.0-&amp;gt;-r requirements.txt &lt;span class="o">(&lt;/span>line 1&lt;span class="o">))&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> Using cached PyYAML-6.0.2-cp310-cp310-macosx_11_0_arm64.whl.metadata &lt;span class="o">(&lt;/span>2.1 kB&lt;span class="o">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Collecting debugpy~&lt;span class="o">=&lt;/span>1.8.5 &lt;span class="o">(&lt;/span>from pulumi&amp;lt;4.0.0,&amp;gt;&lt;span class="o">=&lt;/span>3.0.0-&amp;gt;-r requirements.txt &lt;span class="o">(&lt;/span>line 1&lt;span class="o">))&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> Using cached debugpy-1.8.7-py2.py3-none-any.whl.metadata &lt;span class="o">(&lt;/span>1.1 kB&lt;span class="o">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Collecting parver&amp;gt;&lt;span class="o">=&lt;/span>0.2.1 &lt;span class="o">(&lt;/span>from pulumi-azure-native&amp;lt;3.0.0,&amp;gt;&lt;span class="o">=&lt;/span>2.0.0-&amp;gt;-r requirements.txt &lt;span class="o">(&lt;/span>line 2&lt;span class="o">))&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> Using cached parver-0.5-py3-none-any.whl.metadata &lt;span class="o">(&lt;/span>2.7 kB&lt;span class="o">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Collecting typing-extensions&amp;gt;&lt;span class="o">=&lt;/span>4.11 &lt;span class="o">(&lt;/span>from pulumi-azure-native&amp;lt;3.0.0,&amp;gt;&lt;span class="o">=&lt;/span>2.0.0-&amp;gt;-r requirements.txt &lt;span class="o">(&lt;/span>line 2&lt;span class="o">))&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> Using cached typing_extensions-4.12.2-py3-none-any.whl.metadata &lt;span class="o">(&lt;/span>3.0 kB&lt;span class="o">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Collecting arpeggio&amp;gt;&lt;span class="o">=&lt;/span>1.7 &lt;span class="o">(&lt;/span>from parver&amp;gt;&lt;span class="o">=&lt;/span>0.2.1-&amp;gt;pulumi-azure-native&amp;lt;3.0.0,&amp;gt;&lt;span class="o">=&lt;/span>2.0.0-&amp;gt;-r requirements.txt &lt;span class="o">(&lt;/span>line 2&lt;span class="o">))&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> Using cached Arpeggio-2.0.2-py2.py3-none-any.whl.metadata &lt;span class="o">(&lt;/span>2.4 kB&lt;span class="o">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Collecting attrs&amp;gt;&lt;span class="o">=&lt;/span>19.2 &lt;span class="o">(&lt;/span>from parver&amp;gt;&lt;span class="o">=&lt;/span>0.2.1-&amp;gt;pulumi-azure-native&amp;lt;3.0.0,&amp;gt;&lt;span class="o">=&lt;/span>2.0.0-&amp;gt;-r requirements.txt &lt;span class="o">(&lt;/span>line 2&lt;span class="o">))&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> Using cached attrs-24.2.0-py3-none-any.whl.metadata &lt;span class="o">(&lt;/span>&lt;span class="m">11&lt;/span> kB&lt;span class="o">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Using cached pulumi-3.136.1-py3-none-any.whl &lt;span class="o">(&lt;/span>&lt;span class="m">274&lt;/span> kB&lt;span class="o">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Using cached pulumi_azure_native-2.66.0-py3-none-any.whl &lt;span class="o">(&lt;/span>89.7 MB&lt;span class="o">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Using cached debugpy-1.8.7-py2.py3-none-any.whl &lt;span class="o">(&lt;/span>5.2 MB&lt;span class="o">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Using cached dill-0.3.9-py3-none-any.whl &lt;span class="o">(&lt;/span>&lt;span class="m">119&lt;/span> kB&lt;span class="o">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Using cached grpcio-1.66.2-cp310-cp310-macosx_12_0_universal2.whl &lt;span class="o">(&lt;/span>10.7 MB&lt;span class="o">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Using cached parver-0.5-py3-none-any.whl &lt;span class="o">(&lt;/span>&lt;span class="m">15&lt;/span> kB&lt;span class="o">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Using cached protobuf-4.25.5-cp37-abi3-macosx_10_9_universal2.whl &lt;span class="o">(&lt;/span>&lt;span class="m">394&lt;/span> kB&lt;span class="o">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Using cached PyYAML-6.0.2-cp310-cp310-macosx_11_0_arm64.whl &lt;span class="o">(&lt;/span>&lt;span class="m">171&lt;/span> kB&lt;span class="o">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Using cached semver-2.13.0-py2.py3-none-any.whl &lt;span class="o">(&lt;/span>&lt;span class="m">12&lt;/span> kB&lt;span class="o">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Using cached six-1.16.0-py2.py3-none-any.whl &lt;span class="o">(&lt;/span>&lt;span class="m">11&lt;/span> kB&lt;span class="o">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Using cached typing_extensions-4.12.2-py3-none-any.whl &lt;span class="o">(&lt;/span>&lt;span class="m">37&lt;/span> kB&lt;span class="o">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Using cached Arpeggio-2.0.2-py2.py3-none-any.whl &lt;span class="o">(&lt;/span>&lt;span class="m">55&lt;/span> kB&lt;span class="o">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Using cached attrs-24.2.0-py3-none-any.whl &lt;span class="o">(&lt;/span>&lt;span class="m">63&lt;/span> kB&lt;span class="o">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Installing collected packages: arpeggio, typing-extensions, six, semver, pyyaml, protobuf, grpcio, dill, debugpy, attrs, pulumi, parver, pulumi-azure-native
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Successfully installed arpeggio-2.0.2 attrs-24.2.0 debugpy-1.8.7 dill-0.3.9 grpcio-1.66.2 parver-0.5 protobuf-4.25.5 pulumi-3.136.1 pulumi-azure-native-2.66.0 pyyaml-6.0.2 semver-2.13.0 six-1.16.0 typing-extensions-4.12.2
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Finished installing dependencies
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Finished installing dependencies
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Your new project is ready to go! ✨
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">To perform an initial deployment, run &lt;span class="sb">`&lt;/span>pulumi up&lt;span class="sb">`&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="o">(&lt;/span>base&lt;span class="o">)&lt;/span> ➜ first-project
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>下图是初始化后的项目目录结构。&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/blog/pulumi-azure-quickstart-guide-macos-local/pulumi-project-structure.png"
+width="585"
+height="271"
+srcset="https://martinliu.cn/blog/pulumi-azure-quickstart-guide-macos-local/pulumi-project-structure_hu_ef53897d466d038d.png 480w, https://martinliu.cn/blog/pulumi-azure-quickstart-guide-macos-local/pulumi-project-structure_hu_f03844db8f3251d8.png 1024w"
+loading="lazy"
+alt="Pulumi 项目目录结构"
+class="gallery-image"
+data-flex-grow="215"
+data-flex-basis="518px"
+>&lt;/p>
+&lt;p>在项目目录中，有一个 &lt;code>Pulumi.yaml&lt;/code> 文件，用于描述项目的基本信息，如项目名称、描述、编程语言等。&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-yaml" data-lang="yaml">&lt;span class="line">&lt;span class="cl">&lt;span class="nt">name&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">first-project&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="nt">description&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">A minimal Azure Native Python Pulumi program&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="nt">runtime&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">name&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">python&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">options&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">toolchain&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">pip&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">virtualenv&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">venv&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="nt">config&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">pulumi:tags&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">value&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">pulumi:template&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">azure-python&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>在项目目录中，有一个 &lt;code>Pulumi.dev.yaml&lt;/code> 文件，用于描述项目的配置信息，如 Azure 的订阅 ID、资源组名称、区域等。&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-yaml" data-lang="yaml">&lt;span class="line">&lt;span class="cl">&lt;span class="nt">config&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">azure-native:location&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">eastasia&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>在项目目录中，有一个 &lt;code>__main__.py&lt;/code> 文件，用于描述项目的主程序，用于部署 Azure 资源。&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;span class="lnt">14
+&lt;/span>&lt;span class="lnt">15
+&lt;/span>&lt;span class="lnt">16
+&lt;/span>&lt;span class="lnt">17
+&lt;/span>&lt;span class="lnt">18
+&lt;/span>&lt;span class="lnt">19
+&lt;/span>&lt;span class="lnt">20
+&lt;/span>&lt;span class="lnt">21
+&lt;/span>&lt;span class="lnt">22
+&lt;/span>&lt;span class="lnt">23
+&lt;/span>&lt;span class="lnt">24
+&lt;/span>&lt;span class="lnt">25
+&lt;/span>&lt;span class="lnt">26
+&lt;/span>&lt;span class="lnt">27
+&lt;/span>&lt;span class="lnt">28
+&lt;/span>&lt;span class="lnt">29
+&lt;/span>&lt;span class="lnt">30
+&lt;/span>&lt;span class="lnt">31
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-python" data-lang="python">&lt;span class="line">&lt;span class="cl">&lt;span class="s2">&amp;#34;&amp;#34;&amp;#34;An Azure RM Python Pulumi program&amp;#34;&amp;#34;&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="kn">import&lt;/span> &lt;span class="nn">pulumi&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="kn">from&lt;/span> &lt;span class="nn">pulumi_azure_native&lt;/span> &lt;span class="kn">import&lt;/span> &lt;span class="n">storage&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="kn">from&lt;/span> &lt;span class="nn">pulumi_azure_native&lt;/span> &lt;span class="kn">import&lt;/span> &lt;span class="n">resources&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># Create an Azure Resource Group 创建一个 Azure 资源组&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">resource_group&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">resources&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">ResourceGroup&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s2">&amp;#34;resource_group&amp;#34;&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># Create an Azure resource (Storage Account) 创建一个 Azure 资源（存储账户）&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">account&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">storage&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">StorageAccount&lt;/span>&lt;span class="p">(&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="s2">&amp;#34;sa&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">resource_group_name&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="n">resource_group&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">name&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">sku&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="s2">&amp;#34;name&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="n">storage&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">SkuName&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">STANDARD_LRS&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">},&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">kind&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="n">storage&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">Kind&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">STORAGE_V2&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># Export the primary key of the Storage Account 导出存储账户的主键&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">primary_key&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="p">(&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">pulumi&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">Output&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">all&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">resource_group&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">name&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">account&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">name&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="o">.&lt;/span>&lt;span class="n">apply&lt;/span>&lt;span class="p">(&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">lambda&lt;/span> &lt;span class="n">args&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="n">storage&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">list_storage_account_keys&lt;/span>&lt;span class="p">(&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">resource_group_name&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="n">args&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="mi">0&lt;/span>&lt;span class="p">],&lt;/span> &lt;span class="n">account_name&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="n">args&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="mi">1&lt;/span>&lt;span class="p">]&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="o">.&lt;/span>&lt;span class="n">apply&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="k">lambda&lt;/span> &lt;span class="n">accountKeys&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="n">accountKeys&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">keys&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="mi">0&lt;/span>&lt;span class="p">]&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">value&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">pulumi&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">export&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s2">&amp;#34;primary_storage_key&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">primary_key&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>在项目目录中，有一个 &lt;code>requirements.txt&lt;/code> 文件，用于描述项目的依赖信息，如 Pulumi 和 Azure Native SDK 的版本信息。&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-txt" data-lang="txt">&lt;span class="line">&lt;span class="cl">pulumi&amp;gt;=3.0.0,&amp;lt;4.0.0
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">pulumi-azure-native&amp;gt;=2.0.0,&amp;lt;3.0.0
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>在使用 &lt;code>pulumi new&lt;/code> 创建新项目时，可以通过指定 &lt;code>--language&lt;/code> 参数来选择所需的语言。例如，默认语言确实是 Python，但你可以根据需求选择其他支持的语言，如 TypeScript、JavaScript、Go 或 C#。以下是示例用法：&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">pulumi new &amp;lt;template-name&amp;gt; --language &amp;lt;language&amp;gt;
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>其中 &lt;code>&amp;lt;language&amp;gt;&lt;/code> 可以是以下几种：&lt;/p>
+&lt;ul>
+&lt;li>&lt;code>typescript&lt;/code>（TypeScript）&lt;/li>
+&lt;li>&lt;code>javascript&lt;/code>（JavaScript）&lt;/li>
+&lt;li>&lt;code>python&lt;/code>（Python）&lt;/li>
+&lt;li>&lt;code>go&lt;/code>（Go）&lt;/li>
+&lt;li>&lt;code>csharp&lt;/code>（C#）&lt;/li>
+&lt;/ul>
+&lt;p>如果想创建一个 TypeScript 项目，命令可以如下：&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">pulumi new &amp;lt;template-name&amp;gt; --language typescript
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>如果没有指定语言，则会默认使用 Python。&lt;/p>
+&lt;p>当前生成了一个默认的 Python 主程序模板，Pulumi CLI 会启动本地的语言服务器，执行此 Python 程序，完成和 Azure Cloud 的交互工作，实现 Python 程序中资源部署的意图，开发人员可以在此基础上，根据自己的需求，修改和扩展 Python 代码，实现对 Azure 资源的部署和更新。模板 Python 代码中，创建了一个 Azure 资源组和一个 Azure 存储账，在最后将 ‘primary_key’导出显示在命令中，实现了 Python 程序对外的输出。&lt;/p>
+&lt;h2 id="部署-pulumi-项目">部署 Pulumi 项目
+&lt;/h2>&lt;p>在项目目录中，使用 &lt;code>pulumi up&lt;/code> 命令，完成 Azure 资源的部署。&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;span class="lnt">14
+&lt;/span>&lt;span class="lnt">15
+&lt;/span>&lt;span class="lnt">16
+&lt;/span>&lt;span class="lnt">17
+&lt;/span>&lt;span class="lnt">18
+&lt;/span>&lt;span class="lnt">19
+&lt;/span>&lt;span class="lnt">20
+&lt;/span>&lt;span class="lnt">21
+&lt;/span>&lt;span class="lnt">22
+&lt;/span>&lt;span class="lnt">23
+&lt;/span>&lt;span class="lnt">24
+&lt;/span>&lt;span class="lnt">25
+&lt;/span>&lt;span class="lnt">26
+&lt;/span>&lt;span class="lnt">27
+&lt;/span>&lt;span class="lnt">28
+&lt;/span>&lt;span class="lnt">29
+&lt;/span>&lt;span class="lnt">30
+&lt;/span>&lt;span class="lnt">31
+&lt;/span>&lt;span class="lnt">32
+&lt;/span>&lt;span class="lnt">33
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">&lt;span class="o">(&lt;/span>base&lt;span class="o">)&lt;/span> ➜ first-project pulumi up
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Previewing update &lt;span class="o">(&lt;/span>dev&lt;span class="o">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">View in Browser &lt;span class="o">(&lt;/span>Ctrl+O&lt;span class="o">)&lt;/span>: https://app.pulumi.com/martinliu/first-project/dev/previews/539d74d9-64ec-4fb8-aa69-eb08ddbe4eea
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> Type Name Plan
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> + pulumi:pulumi:Stack first-project-dev create
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> + ├─ azure-native:resources:ResourceGroup resource_group create
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> + └─ azure-native:storage:StorageAccount sa create
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Outputs:
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> primary_storage_key: output&amp;lt;string&amp;gt;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Resources:
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> + &lt;span class="m">3&lt;/span> to create
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Do you want to perform this update? yes
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Updating &lt;span class="o">(&lt;/span>dev&lt;span class="o">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">View in Browser &lt;span class="o">(&lt;/span>Ctrl+O&lt;span class="o">)&lt;/span>: https://app.pulumi.com/martinliu/first-project/dev/updates/1
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> Type Name Status
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> + pulumi:pulumi:Stack first-project-dev created &lt;span class="o">(&lt;/span>36s&lt;span class="o">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> + ├─ azure-native:resources:ResourceGroup resource_group created &lt;span class="o">(&lt;/span>3s&lt;span class="o">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> + └─ azure-native:storage:StorageAccount sa created &lt;span class="o">(&lt;/span>29s&lt;span class="o">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Outputs:
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> primary_storage_key: &lt;span class="s2">&amp;#34;key++++++++++++++++++++++++++++++++++++++++++++++++++++++&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Resources:
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> + &lt;span class="m">3&lt;/span> created
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Duration: 38s
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>以上 &lt;code>pulumi up&lt;/code> 命令是一个交互式的执行过程，可以在命令行中输入 &lt;code>yes&lt;/code>，确认是否执行资源的创建。在执行过程中，Pulumi CLI 会生成一个更新信息，用于展示资源的创建状态，以及资源的状态。在更新信息中，可以看到已经创建的资源类型、名称、状态等信息。在更新信息中，还会显示一个 URL，用于在浏览器中查看更新信息。&lt;/p>
+&lt;p>在部署完毕之后，我们可以在 Pulumi Cloud 网页中看到此项目的部署过程，以及资源的状态信息。如下图所示。&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/blog/pulumi-azure-quickstart-guide-macos-local/pulumi-cloud-project-deploy.png"
+width="1465"
+height="969"
+srcset="https://martinliu.cn/blog/pulumi-azure-quickstart-guide-macos-local/pulumi-cloud-project-deploy_hu_a7a6761c51f02879.png 480w, https://martinliu.cn/blog/pulumi-azure-quickstart-guide-macos-local/pulumi-cloud-project-deploy_hu_e054975ab8cb3607.png 1024w"
+loading="lazy"
+alt="Pulumi Cloud 项目部署"
+class="gallery-image"
+data-flex-grow="151"
+data-flex-basis="362px"
+>&lt;/p>
+&lt;p>下面在 Azure 门户中，可以看到创建的资源组和存储账户。我们可以看到，资源组的名称是 &lt;code>resource_group&lt;/code>，存储账户的名称是 &lt;code>sa&lt;/code>开头的资源，后面跟随着一些随机字符。&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/blog/pulumi-azure-quickstart-guide-macos-local/azure-portal-resources.png"
+width="1463"
+height="868"
+srcset="https://martinliu.cn/blog/pulumi-azure-quickstart-guide-macos-local/azure-portal-resources_hu_c4f12cfd7046983a.png 480w, https://martinliu.cn/blog/pulumi-azure-quickstart-guide-macos-local/azure-portal-resources_hu_d7501f21cd171985.png 1024w"
+loading="lazy"
+alt="Azure 门户中的资源"
+class="gallery-image"
+data-flex-grow="168"
+data-flex-basis="404px"
+>&lt;/p>
+&lt;p>根据以上的操作体验，我们可以参考下图，理解 Pulumi CLI 和 Azure 云服务之间的交互过程。&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/blog/pulumi-azure-quickstart-guide-macos-local/engine-block-diagram.png"
+width="1686"
+height="1186"
+srcset="https://martinliu.cn/blog/pulumi-azure-quickstart-guide-macos-local/engine-block-diagram_hu_7dc16a67ee9fd208.png 480w, https://martinliu.cn/blog/pulumi-azure-quickstart-guide-macos-local/engine-block-diagram_hu_f530593df85b8bbd.png 1024w"
+loading="lazy"
+alt="Pulumi CLI 和 Azure 云服务交互"
+class="gallery-image"
+data-flex-grow="142"
+data-flex-basis="341px"
+>&lt;/p>
+&lt;p>pulumi 命令行工具本身是一个部署引擎，它会启动一个本地的语言服务器，用于执行 Python 程序，完成对 Azure 云服务的资源部署。&lt;/p>
+&lt;p>本 Python 测试项目是一个典型的 Pulumi 项目模板，它使用 IaC 的方式，将 Azure 资源的部署和更新，通过 Python 代码的方式，实现了对 Azure 资源的管理。这个 Pulumi 项目的部署结果称为 ‘Stack’，是一个 Azure 基础设施的技术栈，本项目模板目录可以在你的业务应用项目的根目录中，作为一个子目录，用于管理 Azure 资源的部署和更新。随着业务项目的开发和迭代，可以通过 Pulumi CLI 工具，完成 Azure 多个环境资源的部署和更新，例如开发环境、测试环境、生产环境等。&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/blog/pulumi-azure-quickstart-guide-macos-local/infra-project.jpg"
+width="743"
+height="454"
+srcset="https://martinliu.cn/blog/pulumi-azure-quickstart-guide-macos-local/infra-project_hu_6748a356f5f2cb50.jpg 480w, https://martinliu.cn/blog/pulumi-azure-quickstart-guide-macos-local/infra-project_hu_9076751d71dda2d0.jpg 1024w"
+loading="lazy"
+alt="Pulumi 项目模板"
+class="gallery-image"
+data-flex-grow="163"
+data-flex-basis="392px"
+>&lt;/p>
+&lt;h2 id="更新-pulumi-项目">更新 Pulumi 项目
+&lt;/h2>&lt;p>在准备好以上的环境后，假设我们收到了一个新的业务需求，需要在 Azure 存储账户中部署一个 &lt;code>index.html&lt;/code> 文件，用于展示一个简单的静态网页。我们可以通过修改 &lt;code>__main__.py&lt;/code> 文件，增加一个 Azure Blob 存储的资源，用于部署 &lt;code>index.html&lt;/code> 文件。&lt;/p>
+&lt;p>为了演示这个过程，我们现在命令，在当前的项目目录中，创建一个 &lt;code>index.html&lt;/code> 文件。&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;span class="lnt">4
+&lt;/span>&lt;span class="lnt">5
+&lt;/span>&lt;span class="lnt">6
+&lt;/span>&lt;span class="lnt">7
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">cat &lt;span class="s">&amp;lt;&amp;lt;EOT &amp;gt; index.html
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="s">&amp;lt;html&amp;gt;
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="s"> &amp;lt;body&amp;gt;
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="s"> &amp;lt;h1&amp;gt;Hello, Pulumi!&amp;lt;/h1&amp;gt;
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="s"> &amp;lt;/body&amp;gt;
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="s">&amp;lt;/html&amp;gt;
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="s">EOT&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>当然，这个 &lt;code>index.html&lt;/code> 文件是业务需求成果，是不应该放在 IaC 程序代码的目录中的。&lt;/p>
+&lt;p>下面需要在 &lt;code>__main__.py&lt;/code> 文件中，修改 Azure Blob 存储的资源属性，用于部署 &lt;code>index.html&lt;/code> 文件。&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;span class="lnt">14
+&lt;/span>&lt;span class="lnt">15
+&lt;/span>&lt;span class="lnt">16
+&lt;/span>&lt;span class="lnt">17
+&lt;/span>&lt;span class="lnt">18
+&lt;/span>&lt;span class="lnt">19
+&lt;/span>&lt;span class="lnt">20
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-python" data-lang="python">&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># Enable static website support 启用静态网站支持&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">static_website&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">storage&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">StorageAccountStaticWebsite&lt;/span>&lt;span class="p">(&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="s2">&amp;#34;staticWebsite&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">account_name&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="n">account&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">name&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">resource_group_name&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="n">resource_group&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">name&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">index_document&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s2">&amp;#34;index.html&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># Upload the file 将文件上传到存储账户&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">index_html&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">storage&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">Blob&lt;/span>&lt;span class="p">(&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="s2">&amp;#34;index.html&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">resource_group_name&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="n">resource_group&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">name&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">account_name&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="n">account&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">name&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">container_name&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="n">static_website&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">container_name&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">source&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="n">pulumi&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">FileAsset&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s2">&amp;#34;index.html&amp;#34;&lt;/span>&lt;span class="p">),&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">content_type&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s2">&amp;#34;text/html&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># Web endpoint to the website 在命令行中导出网站的 Web 端点&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">pulumi&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">export&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s2">&amp;#34;staticEndpoint&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">account&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">primary_endpoints&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">web&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>在完成了以上的修改后，我们可以使用 &lt;code>pulumi up&lt;/code> 命令，完成 Azure 资源的更新。&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;span class="lnt">14
+&lt;/span>&lt;span class="lnt">15
+&lt;/span>&lt;span class="lnt">16
+&lt;/span>&lt;span class="lnt">17
+&lt;/span>&lt;span class="lnt">18
+&lt;/span>&lt;span class="lnt">19
+&lt;/span>&lt;span class="lnt">20
+&lt;/span>&lt;span class="lnt">21
+&lt;/span>&lt;span class="lnt">22
+&lt;/span>&lt;span class="lnt">23
+&lt;/span>&lt;span class="lnt">24
+&lt;/span>&lt;span class="lnt">25
+&lt;/span>&lt;span class="lnt">26
+&lt;/span>&lt;span class="lnt">27
+&lt;/span>&lt;span class="lnt">28
+&lt;/span>&lt;span class="lnt">29
+&lt;/span>&lt;span class="lnt">30
+&lt;/span>&lt;span class="lnt">31
+&lt;/span>&lt;span class="lnt">32
+&lt;/span>&lt;span class="lnt">33
+&lt;/span>&lt;span class="lnt">34
+&lt;/span>&lt;span class="lnt">35
+&lt;/span>&lt;span class="lnt">36
+&lt;/span>&lt;span class="lnt">37
+&lt;/span>&lt;span class="lnt">38
+&lt;/span>&lt;span class="lnt">39
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">&lt;span class="o">(&lt;/span>base&lt;span class="o">)&lt;/span> ➜ first-project ls
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Pulumi.dev.yaml __main__.py index.html venv
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Pulumi.yaml __pycache__ requirements.txt
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="o">(&lt;/span>base&lt;span class="o">)&lt;/span> ➜ first-project pulumi up
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Previewing update &lt;span class="o">(&lt;/span>dev&lt;span class="o">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">View in Browser &lt;span class="o">(&lt;/span>Ctrl+O&lt;span class="o">)&lt;/span>: https://app.pulumi.com/martinliu/first-project/dev/previews/613fd4dc-ce8b-4a32-a8f6-713c2e4dc839
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> Type Name Plan
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> pulumi:pulumi:Stack first-project-dev
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> + ├─ azure-native:storage:StorageAccountStaticWebsite staticWebsite create
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> + └─ azure-native:storage:Blob index.html create
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Outputs:
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> + staticEndpoint : &lt;span class="s2">&amp;#34;https://sa4ecf74cb.z7.web.core.windows.net/&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Resources:
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> + &lt;span class="m">2&lt;/span> to create
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="m">3&lt;/span> unchanged
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Do you want to perform this update? yes
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Updating &lt;span class="o">(&lt;/span>dev&lt;span class="o">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">View in Browser &lt;span class="o">(&lt;/span>Ctrl+O&lt;span class="o">)&lt;/span>: https://app.pulumi.com/martinliu/first-project/dev/updates/2
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> Type Name Status
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> pulumi:pulumi:Stack first-project-dev
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> + ├─ azure-native:storage:StorageAccountStaticWebsite staticWebsite created &lt;span class="o">(&lt;/span>5s&lt;span class="o">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> + └─ azure-native:storage:Blob index.html created &lt;span class="o">(&lt;/span>3s&lt;span class="o">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Outputs:
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> primary_storage_key: &lt;span class="s2">&amp;#34;key++++++++++++++++++++++++++++++++++++++++++++++++++++++&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> + staticEndpoint : &lt;span class="s2">&amp;#34;https://sa4ecf74cb.z7.web.core.windows.net/&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Resources:
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> + &lt;span class="m">2&lt;/span> created
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="m">3&lt;/span> unchanged
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Duration: 13s
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>在以上命令执行的过程中，我们也可以在 Pulumi Cloud 网页中看到此项目的部署过程，以及资源的状态信息。还可以在 Azure 门户中，看到更新后的资源组和存储账户。&lt;/p>
+&lt;p>现在，让我们在命令行中，查看导出的 &lt;code>staticEndpoint&lt;/code> 输出，用于验证所部署的静态网站。&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;span class="lnt">4
+&lt;/span>&lt;span class="lnt">5
+&lt;/span>&lt;span class="lnt">6
+&lt;/span>&lt;span class="lnt">7
+&lt;/span>&lt;span class="lnt">8
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">curl &lt;span class="k">$(&lt;/span>pulumi stack output staticEndpoint&lt;span class="k">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="o">(&lt;/span>base&lt;span class="o">)&lt;/span> ➜ first-project curl &lt;span class="k">$(&lt;/span>pulumi stack output staticEndpoint&lt;span class="k">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&amp;lt;html&amp;gt;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &amp;lt;body&amp;gt;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &amp;lt;h1&amp;gt;Hello, Pulumi!&amp;lt;/h1&amp;gt;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &amp;lt;/body&amp;gt;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&amp;lt;/html&amp;gt;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="o">(&lt;/span>base&lt;span class="o">)&lt;/span> ➜ first-project
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>在浏览器中，访问 &lt;code>staticEndpoint&lt;/code> 输出的 URL，可以看到部署的静态网站。&lt;/p>
+&lt;h2 id="删除-pulumi-项目">删除 Pulumi 项目
+&lt;/h2>&lt;p>假设我们完成了今天的开发和测试工作，我们可以使用 &lt;code>pulumi destroy&lt;/code> 命令，删除所有当前在 Azure 上所部署的资源。&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;span class="lnt">14
+&lt;/span>&lt;span class="lnt">15
+&lt;/span>&lt;span class="lnt">16
+&lt;/span>&lt;span class="lnt">17
+&lt;/span>&lt;span class="lnt">18
+&lt;/span>&lt;span class="lnt">19
+&lt;/span>&lt;span class="lnt">20
+&lt;/span>&lt;span class="lnt">21
+&lt;/span>&lt;span class="lnt">22
+&lt;/span>&lt;span class="lnt">23
+&lt;/span>&lt;span class="lnt">24
+&lt;/span>&lt;span class="lnt">25
+&lt;/span>&lt;span class="lnt">26
+&lt;/span>&lt;span class="lnt">27
+&lt;/span>&lt;span class="lnt">28
+&lt;/span>&lt;span class="lnt">29
+&lt;/span>&lt;span class="lnt">30
+&lt;/span>&lt;span class="lnt">31
+&lt;/span>&lt;span class="lnt">32
+&lt;/span>&lt;span class="lnt">33
+&lt;/span>&lt;span class="lnt">34
+&lt;/span>&lt;span class="lnt">35
+&lt;/span>&lt;span class="lnt">36
+&lt;/span>&lt;span class="lnt">37
+&lt;/span>&lt;span class="lnt">38
+&lt;/span>&lt;span class="lnt">39
+&lt;/span>&lt;span class="lnt">40
+&lt;/span>&lt;span class="lnt">41
+&lt;/span>&lt;span class="lnt">42
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">&lt;span class="o">(&lt;/span>base&lt;span class="o">)&lt;/span> ➜ first-project pulumi destroy
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Previewing destroy &lt;span class="o">(&lt;/span>dev&lt;span class="o">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">View in Browser &lt;span class="o">(&lt;/span>Ctrl+O&lt;span class="o">)&lt;/span>: https://app.pulumi.com/martinliu/first-project/dev/previews/3d3257e7-c853-4d89-bfc0-461a37bf94ee
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> Type Name Plan
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> - pulumi:pulumi:Stack first-project-dev delete
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> - ├─ azure-native:storage:Blob index.html delete
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> - ├─ azure-native:storage:StorageAccountStaticWebsite staticWebsite delete
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> - ├─ azure-native:storage:StorageAccount sa delete
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> - └─ azure-native:resources:ResourceGroup resource_group delete
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Outputs:
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> - primary_storage_key: &lt;span class="s2">&amp;#34;key++++++++++++++++++++++++++++++++++++++++++++++++++++++&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> - staticEndpoint : &lt;span class="s2">&amp;#34;https://sa4ecf74cb.z7.web.core.windows.net/&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Resources:
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> - &lt;span class="m">5&lt;/span> to delete
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Do you want to perform this destroy? yes
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Destroying &lt;span class="o">(&lt;/span>dev&lt;span class="o">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">View in Browser &lt;span class="o">(&lt;/span>Ctrl+O&lt;span class="o">)&lt;/span>: https://app.pulumi.com/martinliu/first-project/dev/updates/3
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> Type Name Status
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> - pulumi:pulumi:Stack first-project-dev deleted &lt;span class="o">(&lt;/span>0.69s&lt;span class="o">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> - ├─ azure-native:storage:Blob index.html deleted &lt;span class="o">(&lt;/span>5s&lt;span class="o">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> - ├─ azure-native:storage:StorageAccountStaticWebsite staticWebsite deleted &lt;span class="o">(&lt;/span>1s&lt;span class="o">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> - ├─ azure-native:storage:StorageAccount sa deleted &lt;span class="o">(&lt;/span>7s&lt;span class="o">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> - └─ azure-native:resources:ResourceGroup resource_group deleted &lt;span class="o">(&lt;/span>83s&lt;span class="o">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Outputs:
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> - primary_storage_key: &lt;span class="s2">&amp;#34;key++++++++++++++++++++++++++++++++++++++++++++++++++++++&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> - staticEndpoint : &lt;span class="s2">&amp;#34;https://sa4ecf74cb.z7.web.core.windows.net/&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Resources:
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> - &lt;span class="m">5&lt;/span> deleted
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Duration: 1m42s
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">The resources in the stack have been deleted, but the &lt;span class="nb">history&lt;/span> and configuration associated with the stack are still maintained.
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">If you want to remove the stack completely, run &lt;span class="sb">`&lt;/span>pulumi stack rm dev&lt;span class="sb">`&lt;/span>.
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>在以上命令执行的过程中，我们也可以在 Pulumi Cloud 网页中看到此项目的部署过程，以及资源的状态信息。还可以在 Azure 门户中，看到删除后的资源组和存储账户。&lt;/p>
+&lt;h2 id="总结">总结
+&lt;/h2>&lt;p>您已成功使用 Pulumi 部署了一些云资源。在本指南中，您完成了以下操作：&lt;/p>
+&lt;ul>
+&lt;li>创建了一个新的 Pulumi 项目。&lt;/li>
+&lt;li>在 Azure 上部署了一个新的存储账户和容器。&lt;/li>
+&lt;li>将一个 index.html 文件添加到容器中。&lt;/li>
+&lt;li>将 index.html 文件托管为静态网站。&lt;/li>
+&lt;li>销毁了已部署的资源。&lt;/li>
+&lt;/ul>
+&lt;p>在本指南中，您了解了如何使用 Pulumi CLI 和 Azure CLI 在本地 macOS 环境中，部署 Azure 资源。您还了解了如何使用 Pulumi Cloud 服务，用于存储 Pulumi 项目的状态信息，以及提供一些其他的服务。&lt;/p>
+&lt;p>参考文档：&lt;/p>
+&lt;ul>
+&lt;li>&lt;a class="link" href="https://www.pulumi.com/docs/" target="_blank" rel="noopener"
+>Pulumi 官方文档&lt;/a>&lt;/li>
+&lt;li>&lt;a class="link" href="https://www.pulumi.com/docs/iac/get-started/azure/" target="_blank" rel="noopener"
+>Get started with Pulumi &amp;amp; Azure&lt;/a>&lt;/li>
+&lt;/ul></description></item><item><title>嵌套虚拟化：在 Azure Ubuntu VM 中运行 VirtualBox 虚拟机</title><link>https://martinliu.cn/blog/nested-virtualization-ubuntu-run-virutalbox-azure-vm/</link><pubDate>Fri, 02 Aug 2024 16:28:51 +0800</pubDate><guid>https://martinliu.cn/blog/nested-virtualization-ubuntu-run-virutalbox-azure-vm/</guid><description>&lt;img src="https://martinliu.cn/blog/nested-virtualization-ubuntu-run-virutalbox-azure-vm/pexels-cottonbro-4966171.jpg" alt="Featured image of post 嵌套虚拟化：在 Azure Ubuntu VM 中运行 VirtualBox 虚拟机" />&lt;h2 id="azure-支持嵌套虚拟化">Azure 支持嵌套虚拟化
+&lt;/h2>&lt;p>嵌套虚拟化是一种经常在物理服务器实验环境中所使用到的场景。例如，你可以在 VMware ESXi 或者 Hyper-V 虚拟机中运行 ESXi，KVM，Hyper-V 等一种或者多种虚拟机管理服务器，然后最内层的 Hypervisor 上运行虚拟机。在 Azure 的虚拟机中，运行 VirtualBox ，重建 VirtualBox 的虚拟机测试环境，就这种情况。&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/blog/nested-virtualization-ubuntu-run-virutalbox-azure-vm/a085cd14-acfe-42ba-aec9-470a149cb855.webp"
+width="168"
+height="107"
+srcset="https://martinliu.cn/blog/nested-virtualization-ubuntu-run-virutalbox-azure-vm/a085cd14-acfe-42ba-aec9-470a149cb855_hu_e705d849fa7f0e97.webp 480w, https://martinliu.cn/blog/nested-virtualization-ubuntu-run-virutalbox-azure-vm/a085cd14-acfe-42ba-aec9-470a149cb855_hu_3573348e99c6c600.webp 1024w"
+loading="lazy"
+alt="Azure 嵌套虚拟化"
+class="gallery-image"
+data-flex-grow="157"
+data-flex-basis="376px"
+>&lt;/p>
+&lt;p>Azure 是在 2017 年 1 月，宣布支持两个新的可支持嵌套虚拟化的机型 Dv3 和 Ev3。「参见：&lt;a class="link" href="https://azure.microsoft.com/en-us/blog/nested-virtualization-in-azure/%e3%80%8d%ef%bc%9b%e5%9c%a8%e5%88%9b%e5%bb%ba%e8%99%9a%e6%8b%9f%e6%9c%ba%e6%97%b6%ef%bc%8c%e4%bd%a0%e9%9c%80%e8%a6%81%e5%9c%a8" target="_blank" rel="noopener"
+>https://azure.microsoft.com/en-us/blog/nested-virtualization-in-azure/」；在创建虚拟机时，你需要在&lt;/a> Azure CLI 或者 Azure PowerShell 中设置 &lt;code>--nested-virtualization&lt;/code> 参数。或者在 Azure 门户中，需要在创建虚拟机时选择 &lt;code>Dv3 或者 Ev3&lt;/code> 系列的虚拟机。&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/blog/nested-virtualization-ubuntu-run-virutalbox-azure-vm/88616c64-c513-44ac-8259-c201e1798106.webp"
+width="750"
+height="413"
+srcset="https://martinliu.cn/blog/nested-virtualization-ubuntu-run-virutalbox-azure-vm/88616c64-c513-44ac-8259-c201e1798106_hu_8d1282bcea2c290.webp 480w, https://martinliu.cn/blog/nested-virtualization-ubuntu-run-virutalbox-azure-vm/88616c64-c513-44ac-8259-c201e1798106_hu_c1c4805fe05b8b77.webp 1024w"
+loading="lazy"
+alt="嵌套虚拟化"
+class="gallery-image"
+data-flex-grow="181"
+data-flex-basis="435px"
+>&lt;/p>
+&lt;p>注意：如果没有选择合适于嵌套虚拟化的机型，你依然可以在虚拟机中安装 VirtualBox，可以创建虚拟机，但是无法正常启动运行嵌套的虚拟机。&lt;/p>
+&lt;h2 id="创建-azure-虚拟机">创建 Azure 虚拟机
+&lt;/h2>&lt;p>在 Azure 门户中，选择 &lt;code>虚拟机&lt;/code>，然后选择 &lt;code>创建&lt;/code>，选择 &lt;code>Dv3 或者 Ev3&lt;/code> 系列的虚拟机，其它相关选项如下图所示。&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/blog/nested-virtualization-ubuntu-run-virutalbox-azure-vm/2024-07-27_23-01-57.png"
+width="950"
+height="1312"
+srcset="https://martinliu.cn/blog/nested-virtualization-ubuntu-run-virutalbox-azure-vm/2024-07-27_23-01-57_hu_b8adcbb3da35f7a6.png 480w, https://martinliu.cn/blog/nested-virtualization-ubuntu-run-virutalbox-azure-vm/2024-07-27_23-01-57_hu_23245222a5c8abec.png 1024w"
+loading="lazy"
+alt="创建虚拟机"
+class="gallery-image"
+data-flex-grow="72"
+data-flex-basis="173px"
+>&lt;/p>
+&lt;ol>
+&lt;li>安全类型：这里选择 “Standard” ，这里默认的是 “Trusted launch virtual machines” , 如果选择了默认选项，嵌套虚拟机的虚拟机是无法正常启动的。&lt;/li>
+&lt;li>在选择机型的时候，选择 &lt;code>D&lt;/code> 或者 &lt;code>E&lt;/code> 开头的，并且是 &lt;code>v3&lt;/code> 结尾的系列。&lt;/li>
+&lt;li>这里操作系统的选择的是 &lt;code>Ubuntu Server 22.04 LTS&lt;/code>，Ubuntu 操作系统可以使用 VirtualBox 或者 Kvm 等虚拟化技术。&lt;/li>
+&lt;/ol>
+&lt;p>在使用了上面的选项之后，你就可以在 Azure 虚拟机中正常安装和使用虚拟化软件了。就可以使用你所选择的虚拟机管理软件，在 Ubuntu 操作系统中运行虚拟机测试环境。当然你也可以使用 Windows Server 系列操作系统中的 Hyper-V 虚拟化技术。&lt;/p>
+&lt;h2 id="用-vagrant-管理虚拟机环境">用 Vagrant 管理虚拟机环境
+&lt;/h2>&lt;p>Vagrant 是一个用于构建和管理虚拟机环境的工具，它可以用于在虚拟机中自动化的安装软件，配置网络等操作。Vagrant 使用 Ruby 语言编写，使用 Ruby 的 DSL 语言来描述虚拟机的配置。&lt;/p>
+&lt;p>请参考 Vagrant 的官方文档，学习如何安装和 Vagrant 来管理虚拟机环境。&lt;/p>
+&lt;p>在 Ubuntu 系统中，可以通过以下命令安装 VirtualBox 和 Vagrant。&lt;/p>
+&lt;h3 id="安装-virtualbox-和-ansible">安装 VirtualBox 和 Ansible
+&lt;/h3>&lt;ol>
+&lt;li>更新系统软件包列表：&lt;/li>
+&lt;/ol>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">sudo apt-get update
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;ol start="2">
+&lt;li>安装 VirtualBox：&lt;/li>
+&lt;/ol>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">sudo apt-get install virtualbox ansible
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;h3 id="安装-vagrant">安装 Vagrant
+&lt;/h3>&lt;ol>
+&lt;li>下载 Vagrant 的 Debian 安装包。请访问 &lt;a class="link" href="https://www.vagrantup.com/downloads" target="_blank" rel="noopener"
+>Vagrant 官方下载页面&lt;/a> 获取最新版本的链接。例如：&lt;/li>
+&lt;/ol>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">wget https://releases.hashicorp.com/vagrant/2.3.4/vagrant_2.3.4_x86_64.deb
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;ol start="2">
+&lt;li>使用 &lt;code>dpkg&lt;/code> 安装 Vagrant：&lt;/li>
+&lt;/ol>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">sudo dpkg -i vagrant_2.3.4_x86_64.deb
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;ol start="3">
+&lt;li>如果安装过程中出现依赖问题，可以使用以下命令解决：&lt;/li>
+&lt;/ol>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">sudo apt-get install -f
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;h3 id="验证安装">验证安装
+&lt;/h3>&lt;p>安装完成后，可以通过以下命令验证安装是否成功：&lt;/p>
+&lt;ol>
+&lt;li>检查 VirtualBox 版本：&lt;/li>
+&lt;/ol>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">virtualbox --help
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;ol start="2">
+&lt;li>检查 Vagrant 版本：&lt;/li>
+&lt;/ol>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">vagrant --version
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;ol start="3">
+&lt;li>检查 Ansible 版本：&lt;/li>
+&lt;/ol>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">ansible --version
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>通过这些步骤，你可以在 Ubuntu 系统中安装并配置好 VirtualBox、ansible 和 Vagrant。&lt;/p>
+&lt;h3 id="创建-vagrantfile">创建 Vagrantfile
+&lt;/h3>&lt;p>Vagrantfile 是 Vagrant 的配置文件，用于描述虚拟机的配置。你可以使用 Vagrantfile 来定义虚拟机的操作系统、网络、共享文件夹等配置。&lt;/p>
+&lt;p>以下是一个简单的 Vagrantfile 示例：&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-ruby" data-lang="ruby">&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># -*- mode: ruby -*-&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># vi: set ft=ruby :&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="no">Vagrant&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">configure&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s2">&amp;#34;2&amp;#34;&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="k">do&lt;/span> &lt;span class="o">|&lt;/span>&lt;span class="n">config&lt;/span>&lt;span class="o">|&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">config&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">vm&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">box&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="s2">&amp;#34;geerlingguy/rockylinux8&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="c1"># Provisioning configuration for Ansible.&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">config&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">vm&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">provision&lt;/span> &lt;span class="s2">&amp;#34;ansible&amp;#34;&lt;/span> &lt;span class="k">do&lt;/span> &lt;span class="o">|&lt;/span>&lt;span class="n">ansible&lt;/span>&lt;span class="o">|&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">ansible&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">playbook&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="s2">&amp;#34;playbook.yml&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">end&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">end&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>z这个 Vagrantfile 使用 &lt;code>geerlingguy/rockylinux8&lt;/code> 作为基础镜像，并使用 Ansible 来配置虚拟机。你可以根据自己的需求修改 Vagrantfile。&lt;/p>
+&lt;p>下面创建一个简单的 Ansible playbook 文件 &lt;code>playbook.yml&lt;/code>：&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;span class="lnt">14
+&lt;/span>&lt;span class="lnt">15
+&lt;/span>&lt;span class="lnt">16
+&lt;/span>&lt;span class="lnt">17
+&lt;/span>&lt;span class="lnt">18
+&lt;/span>&lt;span class="lnt">19
+&lt;/span>&lt;span class="lnt">20
+&lt;/span>&lt;span class="lnt">21
+&lt;/span>&lt;span class="lnt">22
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-yaml" data-lang="yaml">&lt;span class="line">&lt;span class="cl">&lt;span class="nn">---&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>- &lt;span class="nt">hosts&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">all&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">become&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="kc">yes&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">tasks&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>- &lt;span class="nt">name&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">Ensure chrony (for time synchronization) is installed.&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">dnf&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">name&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">chrony&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">state&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">present&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>- &lt;span class="nt">name&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">Ensure chrony is running.&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">service&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">name&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">chronyd&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">state&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">started&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">enabled&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="kc">yes&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="c"># The same as the above play, but in super-compact form!&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>- &lt;span class="nt">hosts&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">all&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">become&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="kc">yes&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">tasks&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>- &lt;span class="nt">dnf&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">name=chrony state=present&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>- &lt;span class="nt">service&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">name=chronyd state=started enabled=yes&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>这个 playbook 会安装 &lt;code>chrony&lt;/code> 时间同步服务，并启动该服务。&lt;/p>
+&lt;p>这个测试示例的目的是：在 Ubuntu 虚拟机中运行 Vagrant，使用 Vagrantfile 来配置虚拟机，使用 Ansible playbook 来配置虚拟机。&lt;/p>
+&lt;h3 id="启动-vagrant">启动 Vagrant
+&lt;/h3>&lt;p>在包含 Vagrantfile 的目录中，运行以下命令启动 Vagrant：&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">vagrant up
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>Vagrant 会根据 Vagrantfile 的配置创建虚拟机，并使用 Ansible playbook 配置虚拟机。&lt;/p>
+&lt;h3 id="连接到虚拟机">连接到虚拟机
+&lt;/h3>&lt;p>使用以下命令连接到虚拟机：&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">vagrant ssh
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>登录到虚拟机后，你可以验证 &lt;code>chrony&lt;/code> 服务是否已经安装并运行：&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">systemctl status chronyd
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>如果一切正常，你应该看到 &lt;code>chronyd&lt;/code> 服务已经启动。&lt;/p>
+&lt;p>使用 vagrant 查看虚拟机的状态。&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">vagrant status
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>使用 virtualbox 查看虚拟机的状态。&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">vboxmanage list vms
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>使用 virtualbox 查看虚拟机的详细信息。&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">vboxmanage showvminfo &amp;lt;vm-name&amp;gt;
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>到目前为止，我们成功的完成了 Azure Ubuntu 虚拟机 + virtualBox 虚拟化 + vagrant + Ansible 的环境搭建。这是一个非常好的学习和开发环境，你可以在这个环境中学习DevOps技术，Ansible 自动化运维管理的知识。&lt;/p>
+&lt;h2 id="推荐学习资源">推荐学习资源
+&lt;/h2>&lt;p>强烈推荐这本书《&lt;a class="link" href="https://www.ansiblefordevops.com/" target="_blank" rel="noopener"
+>Ansible for DevOps&lt;/a>》，这是一本非常好的 Ansible 入门书籍，作者 Jeff Geerling 是一位非常有经验的 DevOps 工程师，他在这本书中详细介绍了 Ansible 的基本概念和高级用法，非常适合初学者学习。&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/blog/nested-virtualization-ubuntu-run-virutalbox-azure-vm/ansible-for-devops-cover-2x.jpg"
+width="593"
+height="782"
+srcset="https://martinliu.cn/blog/nested-virtualization-ubuntu-run-virutalbox-azure-vm/ansible-for-devops-cover-2x_hu_9aa35c87e19a5b1a.jpg 480w, https://martinliu.cn/blog/nested-virtualization-ubuntu-run-virutalbox-azure-vm/ansible-for-devops-cover-2x_hu_f8fb8ca490333be3.jpg 1024w"
+loading="lazy"
+alt="Ansible for DevOps"
+class="gallery-image"
+data-flex-grow="75"
+data-flex-basis="181px"
+>&lt;/p>
+&lt;ul>
+&lt;li>书的代码库：&lt;a class="link" href="https://github.com/geerlingguy/ansible-for-devops.git" target="_blank" rel="noopener"
+>https://github.com/geerlingguy/ansible-for-devops.git&lt;/a>&lt;/li>
+&lt;li>书的全文：&lt;a class="link" href="https://github.com/geerlingguy/ansible-for-devops-manuscript.git" target="_blank" rel="noopener"
+>https://github.com/geerlingguy/ansible-for-devops-manuscript.git&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;p>经过我的测试，Azure 的 Ubuntu 虚拟机中运行的 VirtualBox 虚拟机，可以正常运行，但是性能会有所下降。请选择具有足够内存和 CPU 的机型，加快 Ansible playbook 的执行速度。在有些时候也发现：嵌套虚拟机的网络下载速度非常慢，这可能是 Azure 的网络问题，或者是虚拟机的网络配置问题。在网络速度上应该还有优化的空间。&lt;/p>
+&lt;p>❤️ Photo by cottonbro studio: &lt;a class="link" href="https://www.pexels.com/photo/2-blue-and-yellow-ceramic-owl-figurines-4966171/" target="_blank" rel="noopener"
+>https://www.pexels.com/photo/2-blue-and-yellow-ceramic-owl-figurines-4966171/&lt;/a>&lt;/p></description></item><item><title>通过统计数据看 2024 年的 DevOps 趋势</title><link>https://martinliu.cn/blog/devops-statistics/</link><pubDate>Tue, 02 Jan 2024 10:32:21 +0800</pubDate><guid>https://martinliu.cn/blog/devops-statistics/</guid><description>&lt;img src="https://martinliu.cn/blog/devops-statistics/download.jpg" alt="Featured image of post 通过统计数据看 2024 年的 DevOps 趋势" />&lt;h2 id="2024年devops-的采用统计">2024年DevOps 的采用统计
+&lt;/h2>&lt;p>DevOps 市场庞大，相应的，它离停滞不前还差得远，仍在不断演变，最重要的是，DevOps已经证明了自己的重要性，以往任何时候都更为重要。您将惊讶地了解，在DevOps中发生了一些非凡的事情。您想知道这些事情是什么吗？继续阅读以了解它们。&lt;/p>
+&lt;p>根据Gartner的研究，到2025年，超过85%的组织将采纳云为先的原则。这不是很有趣吗？当然，是的，对吧？现在让我们带您了解一下2024年的DevOps采用统计数据。&lt;/p>
+&lt;ol>
+&lt;li>DevOps有助于企业将处理支持工单所花费的时间减少60% - 对于寻求在2024年采用DevOps的组织而言，这是一个很好的前景。&lt;/li>
+&lt;li>组织通过DevOps能够将33%的时间投资于基础设施改进。&lt;/li>
+&lt;li>94%的组织认为平台工程有助于他们充分实现DevOps的好处 - 这对于那些想在2024年在企业中取得规模化成功的人来说是一个很好的统计数据。&lt;/li>
+&lt;/ol>
+&lt;p>这些统计数据令人兴奋，不是吗？这些统计数据描绘了：DevOps已经改变了企业的工作方式，并产生了成果。&lt;/p>
+&lt;h2 id="devops-的增长统计">DevOps 的增长统计
+&lt;/h2>&lt;p>全球DevOps市场规模预计将从2023年的104亿美元增至2028年的255亿美元，增长率为18.95%。根据Global Newswire的研究，到2026年，预计将达到12215.54百万美元，复合年增长率为18.95%。&lt;/p>
+&lt;ol>
+&lt;li>86%的企业表示，他们的公司必须迅速开发和投产新软件，因此他们认为DevOps具有价值。不容忽视的是，能够迅速向消费者交付数字产品的企业具有竞争优势。&lt;/li>
+&lt;li>Google收集的数据和研究也表明，77%的组织目前依赖DevOps部署软件，或计划不久将会这样做。&lt;/li>
+&lt;/ol>
+&lt;h2 id="2024年devops的容器化统计">2024年DevOps的容器化统计
+&lt;/h2>&lt;p>灵活性和快速发布是孕育容器理念的最重要基石，它已经成为当今IT世界的主流。现在让我们介绍一下DevOps容器化服务的一些统计数据，这些数据最终会让您感到惊讶。&lt;/p>
+&lt;ol>
+&lt;li>根据Gartner的新预测，全球容器管理收入预计将从2020年的465.8百万美元小幅增长到2024年的944百万美元。&lt;/li>
+&lt;li>Gartner还预测，到2024年，15%的企业应用将在容器生态系统中运行。这一估计较2020年的不到5%有所增加，受技术债务、应用积压和预算约束的限制。&lt;/li>
+&lt;li>46%的软件开发人员的首要任务是容器化，43%是质量和安全性，32%是CI/CD实施。&lt;/li>
+&lt;li>应用容器市场规模在2021年估值为27.6亿美元，预计将在2030年达到338.6亿美元，复合年增长率为32.12%。&lt;/li>
+&lt;/ol>
+&lt;h2 id="devops-cicd-的统计">DevOps CI/CD 的统计
+&lt;/h2>&lt;p>CI/CD流水线是一组在公司技术引入变更时运行的自动化流程。现在让我们看一下DevOps CI/CD的统计数据。&lt;/p>
+&lt;ol>
+&lt;li>全球CI工具市场规模在2022年估值为970.52百万美元，预计在2031年达到4377.77百万美元，在预测期间（2023-2031年）以18.22%的复合年增长率增长。&lt;/li>
+&lt;li>随着企业对DevOps团队提出更高效率的需求，CI工具市场继续扩大，2021年估值为802.2百万美元。预计到2030年将达到37.6亿美元，代表18.74%的复合年增长率。&lt;/li>
+&lt;/ol>
+&lt;h2 id="aws-devops-的统计">AWS DevOps 的统计
+&lt;/h2>&lt;p>首要的事情是，AWS DevOps有着令人印象深刻的声誉。2010年从物理服务器过渡到Amazon Web Services（AWS）云使应用程序和服务能够以更高的速度交付。&lt;/p>
+&lt;ol>
+&lt;li>它开始使用由内部Apollo系统管理的持续部署过程。该系统允许开发人员随时在任何服务器上开发代码，在任何需要的地方部署。&lt;/li>
+&lt;li>截至2011年5月底，亚马逊平均每11.6秒向生产服务器部署新软件。在最繁忙的时候，每小时向生产环境发送1000多个新的版本。&lt;/li>
+&lt;/ol>
+&lt;h2 id="2024年azure-devops-的统计">2024年Azure DevOps 的统计
+&lt;/h2>&lt;p>截至2023年，全球超过10695家公司已经开始使用Microsoft Azure DevOps Server作为版本控制工具。使用Azure DevOps服务器进行版本控制的企业主要来自美国，约5073家客户，占Microsoft Azure DevOps服务器客户总数的60.76%。&lt;/p>
+&lt;ol>
+&lt;li>Azure DevOps的市场份额为8.81%。它在版本控制类别中与三个竞争工具竞争。&lt;/li>
+&lt;li>Azure DevOps用户数量接近10亿。根据Azure Active Directory的数据，Azure用户有7.222亿。&lt;/li>
+&lt;li>在2023财年第一季度，Microsoft Azure的收入增长率为31%。&lt;/li>
+&lt;/ol>
+&lt;h2 id="2024年devops工程师统计分析">2024年DevOps工程师统计分析
+&lt;/h2>&lt;p>DevOps已经进入了多个组织，引发了对多个DevOps人才的竞价战。因此，让我们看看一些揭示或描绘DevOps工作蓬勃发展的统计数据。&lt;/p>
+&lt;ol>
+&lt;li>DevOps工程师的平均薪水是133,133美元，美国的DevOps工程师的额外现金补偿为16,860美元。&lt;/li>
+&lt;li>美国目前有超过6,881名DevOps工程师。&lt;/li>
+&lt;li>所有DevOps工程师中，13.8%是女性，86.2%是男性。&lt;/li>
+&lt;li>就业DevOps工程师的平均年龄为39岁。&lt;/li>
+&lt;/ol>
+&lt;h2 id="2024年devops市场统计">2024年DevOps市场统计
+&lt;/h2>&lt;p>DevOps市场规模在2023年超过104亿美元，并预计从2024年到2028年将以19.7%的复合年增长率增长。此外，它受到缩短软件开发周期和加速交付的需求的推动。&lt;/p>
+&lt;ol>
+&lt;li>来自本地部分的DevOps市场规模预计将在2032年达到450亿美元，原因是人们对云环境中数据隐私的担忧增强。&lt;/li>
+&lt;li>全球DevOps市场规模预计将在预测期间以19.7%的复合年增长率增长，从2023年的估计值104亿美元增至2028年的255亿美元。&lt;/li>
+&lt;/ol>
+&lt;h2 id="devops使用统计">DevOps使用统计
+&lt;/h2>&lt;p>Atlassian调查了一些激动人心的DevOps趋势，揭示了一些有趣的统计数据；大多数人可能想知道结果描绘了什么，对吧？&lt;/p>
+&lt;ol>
+&lt;li>99%的受访者表示DevOps对他们的组织产生了积极影响。此外，78%的人说，由于DevOps，他们不得不学习新的技能，而48%的人说，这帮助他们得到了加薪。&lt;/li>
+&lt;li>61%的受访者表示，DevOps有助于生产更高质量的可交付成果。&lt;/li>
+&lt;li>49%的受访者表示，DevOps改善了他们的发布实验。&lt;/li>
+&lt;li>99%的受访者表示，DevOps对他们的组织产生了积极影响。&lt;/li>
+&lt;/ol>
+&lt;h2 id="2024年devsecops统计">2024年DevSecOps统计
+&lt;/h2>&lt;p>DevSecOps确保在整个开发过程中都有安全控制。它通过将安全性集成到CI/CD管道中所需的地方来实现这一目标。现在让我们带您了解DevSecOps的统计数据。&lt;/p>
+&lt;ol>
+&lt;li>34%的组织拥有经验丰富的DevSecOps文化，对于那些寻求在2024年采用DevSecOps的人来说，这是一个好兆头。&lt;/li>
+&lt;li>到2024年，组织在DevSecOps自动化方面的年度投资将约增加35%。&lt;/li>
+&lt;li>将DevSecOps文化扩展到组织中的更多团队和应用程序是数字转型和更快、更安全软件发布的关键驱动因素，占94%的CIO。&lt;/li>
+&lt;li>根据90%的IT领导者的说法，通过在DevOps和安全项目中增加AIOps的使用，可以在2024年及以后扩大DevSecOps。&lt;/li>
+&lt;li>96%的受访者表示，自动化安全和合规性操作，这是DevOps的核心原则，对他们的业务产生了好处。&lt;/li>
+&lt;li>60%的工程师能够以两倍的速度发布代码，这归功于DevSecOps的原则。&lt;/li>
+&lt;/ol>
+&lt;h2 id="2024年devops收益统计">2024年DevOps收益统计
+&lt;/h2>&lt;p>在实施DevOps之后，组织必须了解，这需要组织变革和转变。这不仅仅是关于实施新技术，更是关于以人和流程为重心的方法。让我们看一些DevOps收益的统计数据。&lt;/p>
+&lt;ol>
+&lt;li>操作在最高安全级别运行的22%的企业已经达到了DevOps的高级阶段，根据Puppet的报告。&lt;/li>
+&lt;li>根据Forrester收集的数据，51%的DevOps用户将DevOps应用于新的和现有的应用程序，其中只有13%表示他们的DevOps方法仅限于概念验证实施。&lt;/li>
+&lt;li>Forrester的另一项研究表明，71%的DevOps采用者使用微服务和容器。&lt;/li>
+&lt;/ol>
+&lt;p>这是关于2024年DevOps采用和增长的一些统计数据，让我们深入了解了DevOps的影响和趋势。&lt;/p>
+&lt;p>&lt;a class="link" href="https://radixweb.com/blog/devops-statistics" target="_blank" rel="noopener"
+>来源：https://radixweb.com/blog/devops-statistics&lt;/a>&lt;/p></description></item><item><title>创建用于命令行登录认证 Azure 的 Service Principal 必读</title><link>https://martinliu.cn/blog/create-azure-sp-for-cli/</link><pubDate>Tue, 14 Nov 2023 11:03:55 +0800</pubDate><guid>https://martinliu.cn/blog/create-azure-sp-for-cli/</guid><description>&lt;img src="https://martinliu.cn/blog/create-azure-sp-for-cli/pexels-miguel-2882566.jpg" alt="Featured image of post 创建用于命令行登录认证 Azure 的 Service Principal 必读" />&lt;p>DevOps的工作流程中所需要到各种各样的命令行工具，在 Azure 的环境中，不同的 DevOps 工具在运行之前，都必须先完成 Azuore 账号的登录认证。而且，最好是在非用户干预和交互的方式下，完成登录认证。在这种情况下就可以使用 Service Principal 的方式，来完成 Azure 账号的登录认证。本文介绍如何创建一个用于在命令行登录认证 Azure 的 Service Principal。&lt;/p>
+&lt;h2 id="创建-service-principal">创建 Service Principal
+&lt;/h2>&lt;p>首先你需要安装或者准备好 Azure CLI，然后使用 Azure CLI 命令行工具，创建一个 Service Principal 的命令如下：&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">az ad sp create-for-rbac --name azure-sp-4-devops &lt;span class="se">\
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="se">&lt;/span>--role Contributor &lt;span class="se">\
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="se">&lt;/span>--scopes /subscriptions/&lt;span class="si">${&lt;/span>&lt;span class="nv">SUBSCRIPTION&lt;/span>&lt;span class="si">}&lt;/span>/resourceGroups/&lt;span class="si">${&lt;/span>&lt;span class="nv">RESOURCE_GROUP&lt;/span>&lt;span class="si">}&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>参数说明：&lt;/p>
+&lt;ul>
+&lt;li>&lt;code>--name&lt;/code>：Service Principal 的名称，这个名称可以随意指定，但是最好是有意义的名称，方便后续的管理。&lt;/li>
+&lt;li>&lt;code>--role&lt;/code>：Service Principal 的角色，这里指定为 &lt;code>Contributor&lt;/code>，表示这个 Service Principal 在 Azure 中的权限是 &lt;code>Contributor&lt;/code>。&lt;/li>
+&lt;li>&lt;code>--scopes&lt;/code>：Service Principal 的作用域，这里指定为 &lt;code>/subscriptions/${SUBSCRIPTION}/resourceGroups/${RESOURCE_GROUP}&lt;/code>，表示这个 Service Principal 的作用域是 &lt;code>${RESOURCE_GROUP}&lt;/code> 资源组。
+&lt;ul>
+&lt;li>&lt;code>${SUBSCRIPTION}&lt;/code>：是一个环境变量，用于指定 Azure 订阅 ID。&lt;/li>
+&lt;li>&lt;code>${RESOURCE_GROUP}&lt;/code>：是一个环境变量，用于指定 Azure 资源组名称。&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;p>在上面的命令中，应该注意的是 &lt;code>--role&lt;/code> 需要是权限合理的值。应该保持最小可用权限的原则，不要使用 &lt;code>Owner&lt;/code> 这样的权限。如果你不知道应该使用什么权限，可以先使用 &lt;code>Contributor&lt;/code> 权限，然后在后续的使用中，逐步降低权限。&lt;/p>
+&lt;p>在我最近的测试中，由于我需要在多个教程项目间切换不同的资源组，而且资源组都是短期的，用完了就用删除的资源组，删除整个资源组是彻底清除已用资源的一个好方法。因此我在 &lt;code>--scopes&lt;/code> 这个参数中，最经常使用的 SP 作用范围是 &amp;ndash;scopes /subscriptions/${SUBSCRIPTION} ，这样就可以在任何一个资源组中使用这个 SP 了。假如你需要在多个不同订阅之间工作，可以灵活的使用 ${SUBSCRIPTION} 这个环境变量，来指定不同的订阅 ID。&lt;/p>
+&lt;p>以上命令行的输出结果类似如下：&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;span class="lnt">4
+&lt;/span>&lt;span class="lnt">5
+&lt;/span>&lt;span class="lnt">6
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-json" data-lang="json">&lt;span class="line">&lt;span class="cl">&lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nt">&amp;#34;appId&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="s2">&amp;#34;3930xxxx-xxxx-xxxx-xxxx-xxxxd0e2xxxx&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nt">&amp;#34;displayName&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="s2">&amp;#34;azure-sp-4-devops&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nt">&amp;#34;password&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="s2">&amp;#34;eKxxxxxxxxxxxxxxxxxxxxxxxxxxxxX&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nt">&amp;#34;tenant&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="s2">&amp;#34;21d7xx-xxxxxx-xxxxxxx-xxxxxxx-xxxxxx55&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;h2 id="将-sp-的细节信息用于命令行变量">将 SP 的细节信息用于命令行变量
+&lt;/h2>&lt;p>以上输出结果默认是 JSON 格式的，如果你需要将它直接用于命令行变量，可以使用 &lt;code>--query&lt;/code> 参数，来指定输出的格式。例如，如果你需要将 &lt;code>appId&lt;/code> 等的值，用于命令行变量，参考使用如下的命令：&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;span class="lnt">4
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">&lt;span class="nv">SERVICE_PRINCIPAL_JSON&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="k">$(&lt;/span>az ad sp create-for-rbac --name aks-getting-started-sp --role Contributor --scopes /subscriptions/&lt;span class="si">${&lt;/span>&lt;span class="nv">SUBSCRIPTION&lt;/span>&lt;span class="si">}&lt;/span> -o json&lt;span class="k">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nv">SERVICE_PRINCIPAL&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="k">$(&lt;/span>&lt;span class="nb">echo&lt;/span> &lt;span class="nv">$SERVICE_PRINCIPAL_JSON&lt;/span> &lt;span class="p">|&lt;/span> jq -r &lt;span class="s1">&amp;#39;.appId&amp;#39;&lt;/span>&lt;span class="k">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nv">SERVICE_PRINCIPAL_SECRET&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="k">$(&lt;/span>&lt;span class="nb">echo&lt;/span> &lt;span class="nv">$SERVICE_PRINCIPAL_JSON&lt;/span> &lt;span class="p">|&lt;/span> jq -r &lt;span class="s1">&amp;#39;.password&amp;#39;&lt;/span>&lt;span class="k">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nv">TENANT_ID&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="k">$(&lt;/span>&lt;span class="nb">echo&lt;/span> &lt;span class="nv">$SERVICE_PRINCIPAL_JSON&lt;/span> &lt;span class="p">|&lt;/span> jq -r &lt;span class="s1">&amp;#39;.tenant&amp;#39;&lt;/span>&lt;span class="k">)&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>以上命令中，使用了 &lt;code>jq&lt;/code> 命令，来从 JSON 格式的输出中，提取出 &lt;code>appId&lt;/code> 和 &lt;code>password&lt;/code> 的值，并且分别用于命令行变量 &lt;code>SERVICE_PRINCIPAL&lt;/code> 和 &lt;code>SERVICE_PRINCIPAL_SECRET&lt;/code>。这样的好处是，避免了手工的复制和粘贴，也避免了数据在命令行的泄露。但是，如果是用于测试目的的 SP，也可以将这三个变量的值，直接复制保持到一个安全的地方，方便后续的反复使用。&lt;/p>
+&lt;h2 id="登录-azure">登录 Azure
+&lt;/h2>&lt;p>使用以上准备好的 Service Principal 登录 Azure 的命令如下：&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;span class="lnt">4
+&lt;/span>&lt;span class="lnt">5
+&lt;/span>&lt;span class="lnt">6
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">az login &lt;span class="se">\
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="se">&lt;/span>--service-principal &lt;span class="se">\
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="se">&lt;/span>--tenant &lt;span class="nv">$TENANT_ID&lt;/span> &lt;span class="se">\
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="se">&lt;/span>--username &lt;span class="nv">$SERVICE_PRINCIPAL&lt;/span> &lt;span class="se">\
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="se">&lt;/span>--password &lt;span class="nv">$SERVICE_PRINCIPAL_SECRET&lt;/span> &lt;span class="se">\
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="se">&lt;/span>--output table
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>在以上三个变量都正确的情况下，运行完以上命令后，会输出当前登录的 Azure 账号的相关信息，类似如下：&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">Environment Name Tenant Id Subscription Id State Is Default
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">------------- ------------------- ------------------------------------ ------------------------------------ ------- -----------
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">AzureCloud azure-sp-4-devops 21d7xx-xxxxxx-xxxxxxx-xxxxxxx-xxxxxx55 3930xxxx-xxxx-xxxx-xxxx-xxxxd0e2xxxx Enabled True
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>这样，就完成了 Azure 账号的登录认证。&lt;/p>
+&lt;h2 id="查看当前登录的-azure-账号">查看当前登录的 Azure 账号
+&lt;/h2>&lt;p>如果不确定，当前是否已经登录，或者不确定在什么 Azure 的账号下，可使用以下命令，可以查看当前登录的 Azure 账号：&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">az account show
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;h2 id="参考">参考
+&lt;/h2>&lt;ul>
+&lt;li>&lt;a class="link" href="https://docs.microsoft.com/en-us/cli/azure/ad/sp?view=azure-cli-latest#az-ad-sp-create-for-rbac" target="_blank" rel="noopener"
+>az ad sp create-for-rbac&lt;/a>&lt;/li>
+&lt;li>&lt;a class="link" href="https://docs.microsoft.com/en-us/cli/azure/reference-index?view=azure-cli-latest#az-login" target="_blank" rel="noopener"
+>az login&lt;/a>&lt;/li>
+&lt;li>&lt;a class="link" href="https://docs.microsoft.com/en-us/cli/azure/reference-index?view=azure-cli-latest#az-account-show" target="_blank" rel="noopener"
+>az account show&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;p>❤️ Feature Photo by Miguel Á. Padriñán: &lt;a class="link" href="https://www.pexels.com/photo/close-up-shot-of-keyboard-buttons-2882566/" target="_blank" rel="noopener"
+>https://www.pexels.com/photo/close-up-shot-of-keyboard-buttons-2882566/&lt;/a>&lt;/p></description></item><item><title>使用 Terraform 创建 Aks 集群</title><link>https://martinliu.cn/blog/terraform-create-aks-cluster/</link><pubDate>Mon, 13 Nov 2023 09:49:03 +0800</pubDate><guid>https://martinliu.cn/blog/terraform-create-aks-cluster/</guid><description>&lt;img src="https://martinliu.cn/blog/terraform-create-aks-cluster/154.png" alt="Featured image of post 使用 Terraform 创建 Aks 集群" />&lt;p>本文介绍如何使用 Terraform 创建一个基础配置的 Azure Kubernetes Service (AKS) 集群，可以用于快速的启动一个开发测试环境，基础特性如下。&lt;/p>
+&lt;ul>
+&lt;li>使用尽可能多的默认值&lt;/li>
+&lt;li>node pool 使用了自动扩展，最小节点数为 1，最大节点数为 10&lt;/li>
+&lt;li>AKS将使用由Azure自动创建和管理的托管身份&lt;/li>
+&lt;/ul>
+&lt;h2 id="登录-azure">登录 Azure
+&lt;/h2>&lt;p>参考这篇文章《&lt;a class="link" href="https://martinliu.cn/blog/create-azure-sp-for-cli/" target="_blank" rel="noopener"
+>创建用于命令行登录认证 Azure 的 Service Principal 必读&lt;/a>》，创建一个用于在命令行登录认证 Azure 的 Service Principal。&lt;/p>
+&lt;p>为了将创建的 Service Principal 的细节信息，用于命令行变量，方便 Azure CLI 命令的参数化，还为了将所有必要的变量带入 &lt;code>.tf&lt;/code> 文件的变量中。可以参考下面的命令：&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">&lt;span class="nb">export&lt;/span> &lt;span class="nv">TF_VAR_subscription_id&lt;/span>&lt;span class="o">=&lt;/span>XXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXXXX
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nv">SERVICE_PRINCIPAL_JSON&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="k">$(&lt;/span>az ad sp create-for-rbac --name aks-getting-started-sp --role Contributor --scopes /subscriptions/&lt;span class="si">${&lt;/span>&lt;span class="nv">TF_VAR_subscription_id&lt;/span>&lt;span class="si">}&lt;/span> -o json&lt;span class="k">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nv">TF_VAR_client_id&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="k">$(&lt;/span>&lt;span class="nb">echo&lt;/span> &lt;span class="nv">$SERVICE_PRINCIPAL_JSON&lt;/span> &lt;span class="p">|&lt;/span> jq -r &lt;span class="s1">&amp;#39;.appId&amp;#39;&lt;/span>&lt;span class="k">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nv">TF_VAR_client_secret&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="k">$(&lt;/span>&lt;span class="nb">echo&lt;/span> &lt;span class="nv">$SERVICE_PRINCIPAL_JSON&lt;/span> &lt;span class="p">|&lt;/span> jq -r &lt;span class="s1">&amp;#39;.password&amp;#39;&lt;/span>&lt;span class="k">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nv">TF_VAR_tenant_id&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="k">$(&lt;/span>&lt;span class="nb">echo&lt;/span> &lt;span class="nv">$SERVICE_PRINCIPAL_JSON&lt;/span> &lt;span class="p">|&lt;/span> jq -r &lt;span class="s1">&amp;#39;.tenant&amp;#39;&lt;/span>&lt;span class="k">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">az login &lt;span class="se">\
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="se">&lt;/span>--service-principal &lt;span class="se">\
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="se">&lt;/span>--tenant &lt;span class="nv">$TF_VAR_tenant_id&lt;/span> &lt;span class="se">\
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="se">&lt;/span>--username &lt;span class="nv">$TF_VAR_client_id&lt;/span> &lt;span class="se">\
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="se">&lt;/span>--password &lt;span class="nv">$TF_VAR_client_secret&lt;/span> &lt;span class="se">\
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="se">&lt;/span>--output table
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>以上在创建 Service Principal 的时候，使用了 &lt;code>--scopes /subscriptions/${TF_VAR_subscription_id}&lt;/code>，这样就可以在任何一个资源组中使用这个 SP 了。假如你需要在多个不同订阅之间工作，可以灵活的使用 &lt;code>${TF_VAR_subscription_id}&lt;/code> 这个环境变量，来指定不同的订阅 ID。&lt;/p>
+&lt;p>这段命令中一共设置了四个命令行的环境变量，由于需要在 .tf 文件中作为变量使用，因此需要使用 &lt;code>TF_VAR_&lt;/code> 前缀，这样 Terraform 才能识别到这些变量。&lt;/p>
+&lt;h2 id="登录-terraform-cloud">登录 Terraform Cloud
+&lt;/h2>&lt;p>Terrafrom 命令行工具的安装本文忽略，详见官方文档 &lt;a class="link" href="https://www.terraform.io/docs/cli/index.html" target="_blank" rel="noopener"
+>Terraform CLI&lt;/a> 。&lt;/p>
+&lt;p>Terraform Cloud 是 Terraform 官方提供的一种 SaaS 服务，可以用于管理 Terraform 的状态文件，以及执行 Terraform 的计划和应用。本文中使用 Terraform Cloud 来管理状态文件，以及执行计划和应用。&lt;/p>
+&lt;p>首先，你需要在 Terraform Cloud 中创建一个组织，然后创建一个工作区，用于存放状态文件。然后，你需要在本地安装 Terraform CLI 命令行工具，然后使用 Terraform CLI 命令行工具，登录 Terraform Cloud。&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">terraform login
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;h2 id="创建-aks-集群">创建 AKS 集群
+&lt;/h2>&lt;p>本文使用的样例代码在 &lt;a class="link" href="https://github.com/martinliu/azure-labs/tree/main/lab02" target="_blank" rel="noopener"
+>GitHub&lt;/a> 上，你可以直接使用这个样例代码，也可以参考这个样例代码，自己创建一个 AKS 集群。&lt;/p>
+&lt;p>下面是样例代码中的 &lt;code>main.tf&lt;/code> 文件，这个文件中包含了创建 AKS 集群的所有必要的配置。&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;span class="lnt">14
+&lt;/span>&lt;span class="lnt">15
+&lt;/span>&lt;span class="lnt">16
+&lt;/span>&lt;span class="lnt">17
+&lt;/span>&lt;span class="lnt">18
+&lt;/span>&lt;span class="lnt">19
+&lt;/span>&lt;span class="lnt">20
+&lt;/span>&lt;span class="lnt">21
+&lt;/span>&lt;span class="lnt">22
+&lt;/span>&lt;span class="lnt">23
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-hcl" data-lang="hcl">&lt;span class="line">&lt;span class="cl">&lt;span class="k">terraform&lt;/span> {&lt;span class="c1">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"> # 使用远程 Cloud 后端
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="k">cloud&lt;/span> {
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n"> organization&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="s2">&amp;#34;DevOpsCoach&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">workspaces&lt;/span> {
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n"> name&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="s2">&amp;#34;aks-labs&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> }
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> }
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">}
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">provider&lt;/span> &lt;span class="s2">&amp;#34;azurerm&amp;#34;&lt;/span> {
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">features&lt;/span> {}&lt;span class="c1">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"> # 下面的配置允许 Terraform 以您的身份与 Azure API 进行交互，从而管理您的资源。
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"> # 从 CLI 的环境变量中取得这些实际的数值
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span>&lt;span class="n"> tenant_id&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="k">var&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="k">tenant_id&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n"> subscription_id&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="k">var&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="k">subscription_id&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n"> client_id&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="k">var&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="k">client_id&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n"> client_secret&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="k">var&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="k">client_secret&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">}
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">resource&lt;/span> &lt;span class="s2">&amp;#34;azurerm_resource_group&amp;#34; &amp;#34;example&amp;#34;&lt;/span> {
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n"> name&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="s2">&amp;#34;${local.prefix}-rg&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n"> location&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="k">local&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="k">location&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">}
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>以上文件中引用了两种变量，一种是从 locals.tf 文件中引用的本地变量，另一种是从命令行的环境变量中读取到的&lt;code>TF_VAR&lt;/code> 开头的变量。这样从 Terraform 命令行执行之前，就可以将这些变量设置好，然后 Terraform 就可以使用这些变量了。&lt;/p>
+&lt;p>下面是样例代码中的 &lt;code>locals.tf&lt;/code> 文件，这个文件中包含了创建 AKS 集群的所有必要的本地变量。&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;span class="lnt">14
+&lt;/span>&lt;span class="lnt">15
+&lt;/span>&lt;span class="lnt">16
+&lt;/span>&lt;span class="lnt">17
+&lt;/span>&lt;span class="lnt">18
+&lt;/span>&lt;span class="lnt">19
+&lt;/span>&lt;span class="lnt">20
+&lt;/span>&lt;span class="lnt">21
+&lt;/span>&lt;span class="lnt">22
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-hcl" data-lang="hcl">&lt;span class="line">&lt;span class="cl">&lt;span class="k">locals&lt;/span> {
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n"> prefix&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="s2">&amp;#34;aks4devops&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n"> location&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="s2">&amp;#34;eastasia&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">}
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">variable&lt;/span> &lt;span class="s2">&amp;#34;client_id&amp;#34;&lt;/span> {
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n"> description&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="s2">&amp;#34;Client ID for the Azure provider&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n"> type&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="k">string&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">}
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">variable&lt;/span> &lt;span class="s2">&amp;#34;client_secret&amp;#34;&lt;/span> {
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n"> description&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="s2">&amp;#34;Client Secret for the Azure provider&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n"> type&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="k">string&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">}
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">variable&lt;/span> &lt;span class="s2">&amp;#34;subscription_id&amp;#34;&lt;/span> {
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n"> description&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="s2">&amp;#34;Subscription ID for the Azure provider&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n"> type&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="k">string&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">}
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">variable&lt;/span> &lt;span class="s2">&amp;#34;tenant_id&amp;#34;&lt;/span> {
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n"> description&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="s2">&amp;#34;Tenant ID for the Azure provider&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n"> type&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="k">string&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">}
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>这里文件中设定了两个变量参数，另外还声明了四个命令带入的变量，它们是从命令行的环境变量中读取到的&lt;code>TF_VAR&lt;/code> 开头的变量。&lt;/p>
+&lt;p>下面是样例代码中的 &lt;code>aks.tf&lt;/code> 文件，这个文件中包含了创建 AKS 集群的所有必要的配置。&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;span class="lnt">14
+&lt;/span>&lt;span class="lnt">15
+&lt;/span>&lt;span class="lnt">16
+&lt;/span>&lt;span class="lnt">17
+&lt;/span>&lt;span class="lnt">18
+&lt;/span>&lt;span class="lnt">19
+&lt;/span>&lt;span class="lnt">20
+&lt;/span>&lt;span class="lnt">21
+&lt;/span>&lt;span class="lnt">22
+&lt;/span>&lt;span class="lnt">23
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-hcl" data-lang="hcl">&lt;span class="line">&lt;span class="cl">&lt;span class="k">resource&lt;/span> &lt;span class="s2">&amp;#34;azurerm_kubernetes_cluster&amp;#34; &amp;#34;example&amp;#34;&lt;/span> {&lt;span class="c1">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"> # AKS cluster basic information
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span>&lt;span class="n"> name&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="s2">&amp;#34;${local.prefix}-k8s&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n"> location&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="k">azurerm_resource_group&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="k">example&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="k">location&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n"> resource_group_name&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="k">azurerm_resource_group&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="k">example&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="k">name&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n"> dns_prefix&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="s2">&amp;#34;${local.prefix}-k8s&amp;#34;&lt;/span>&lt;span class="c1">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"> # node pool settings
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="k">default_node_pool&lt;/span> {
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n"> name&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="s2">&amp;#34;default&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n"> node_count&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="m">2&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n"> min_count&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="m">1&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n"> max_count&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="m">10&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n"> vm_size&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="s2">&amp;#34;Standard_DS2_v2&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n"> enable_auto_scaling&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="kt">true&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> }&lt;span class="c1">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"> # AKS use system auto created identity
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="k">identity&lt;/span> {
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n"> type&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="s2">&amp;#34;SystemAssigned&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> }
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">}
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>以上集群基本上使用了所有的系统默认配置，除了设定了一个 node pool，这个 node pool 使用了自动扩展，最小节点数为 1，最大节点数为 10。&lt;/p>
+&lt;p>在阅读了这些文件之后，就可以在本地执行 Terraform 的计划和应用了。&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">terraform init
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">terraform plan
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">terraform apply
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>在执行以上命令的过程中，我们可以在 Terraform Cloud 的 Web 界面中，看到 Terraform 的执行过程。&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/blog/terraform-create-aks-cluster/2023-11-14_23-14-28.jpg"
+width="1578"
+height="1044"
+srcset="https://martinliu.cn/blog/terraform-create-aks-cluster/2023-11-14_23-14-28_hu_b9a1a10951828eed.jpg 480w, https://martinliu.cn/blog/terraform-create-aks-cluster/2023-11-14_23-14-28_hu_57df00e07b6e7f70.jpg 1024w"
+loading="lazy"
+alt="terraform runs"
+class="gallery-image"
+data-flex-grow="151"
+data-flex-basis="362px"
+>&lt;/p>
+&lt;p>在测试完成了之后，可以使用下面的命令，删除 AKS 集群。&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">terraform destroy
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;h2 id="参考">参考
+&lt;/h2>&lt;ul>
+&lt;li>&lt;a class="link" href="https://www.terraform.io/docs/cloud/index.html" target="_blank" rel="noopener"
+>Terraform Cloud&lt;/a>&lt;/li>
+&lt;li>&lt;a class="link" href="https://www.terraform.io/docs/cloud/cli/install-bash.html" target="_blank" rel="noopener"
+>Terraform Cloud - CLI&lt;/a>&lt;/li>
+&lt;li>&lt;a class="link" href="https://www.terraform.io/docs/cloud/cli/login.html" target="_blank" rel="noopener"
+>Terraform Cloud - CLI - Login&lt;/a>&lt;/li>
+&lt;li>&lt;a class="link" href="https://docs.microsoft.com/en-us/cli/azure/reference-index?view=azure-cli-latest#az-login" target="_blank" rel="noopener"
+>Azure CLI Login&lt;/a>&lt;/li>
+&lt;li>&lt;a class="link" href="https://docs.microsoft.com/en-us/azure/aks/" target="_blank" rel="noopener"
+>Azure AKS documentation&lt;/a>&lt;/li>
+&lt;li>&lt;a class="link" href="https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/kubernetes_cluster" target="_blank" rel="noopener"
+>Azure AKS Terraform documentation&lt;/a>&lt;/li>
+&lt;/ul></description></item><item><title>使用 Azure CLI 创建 K8S 集群</title><link>https://martinliu.cn/blog/az-cli-create-aks-cluster/</link><pubDate>Fri, 10 Nov 2023 22:52:40 +0800</pubDate><guid>https://martinliu.cn/blog/az-cli-create-aks-cluster/</guid><description>&lt;img src="https://martinliu.cn/blog/az-cli-create-aks-cluster/hb9riivbne1jpgrnh77w.png" alt="Featured image of post 使用 Azure CLI 创建 K8S 集群" />&lt;p>使用 Azure CLI 创建 K8S 集群是一种非常简单易用的方式。你可以在任何操作系统中安装 Azure CLI 命令行工具； 或者启动含有 Azure CLI 的容器，然后在容器内使用 Azure CLI 。&lt;/p>
+&lt;p>
+&lt;div class="video-wrapper">
+&lt;iframe src="https://player.bilibili.com/player.html?as_wide=1&amp;amp;high_quality=1&amp;amp;page=1&amp;bvid=BV18Q4y187ng"
+scrolling="no"
+frameborder="no"
+framespacing="0"
+allowfullscreen="true"
+>
+&lt;/iframe>
+&lt;/div>
+&lt;div class="video-wrapper">
+&lt;iframe src="https://player.bilibili.com/player.html?as_wide=1&amp;amp;high_quality=1&amp;amp;page=1&amp;bvid=BV1d4411N7zD"
+scrolling="no"
+frameborder="no"
+framespacing="0"
+allowfullscreen="true"
+>
+&lt;/iframe>
+&lt;/div>
+&lt;/p>
+&lt;h2 id="准备-azure-cli">准备 Azure CLI
+&lt;/h2>&lt;p>本文的演示命令都是在 macOS 上操作的，Azure CLI 在任何 OS 上安装的文档见 &lt;a class="link" href="https://docs.microsoft.com/en-us/cli/azure/install-azure-cli" target="_blank" rel="noopener"
+>Install Azure CLI&lt;/a> 。&lt;/p>
+&lt;p>如果你不想在本机安装 Azure CLI 命令行工具，可以使用 Docker 容器的方式，启动一个含有 Azure CLI 的容器，然后在容器内使用 Azure CLI 命令行工具。下面这个参考命令，是在此容器中带入当前路径做为容器内工作目录，并且指定运行特定 Azure CLI 版本的例子：&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">docker run -it --rm -v &lt;span class="k">$(&lt;/span>&lt;span class="nb">pwd&lt;/span>&lt;span class="k">)&lt;/span>:/work -w /work mcr.microsoft.com/azure-cli:2.0.80
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;h2 id="登录-azure">登录 Azure
+&lt;/h2>&lt;p>参考命令如下：&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">az login
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>假设你是使用本机安装的 Azure CLI 做 Azure CLI 的命令行登录认证，那么在运行了以上命令后，会弹出一个浏览器窗口，让你输入 Azure 的账号和密码，然后完成登录认证。&lt;/p>
+&lt;p>然后，你可以查看当前账号中的订阅；确保随后使用中一个正确的订阅，用于创建 K8S 集群。&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">az account list -o table
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>为了确保后续的命令行操作使用正确的订阅，可以用下面的命令设定订阅 ID；并且使用命令行变量的方式，设置当前使用的订阅。&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">az account &lt;span class="nb">set&lt;/span> --subscription &amp;lt;subscription-id&amp;gt;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nb">export&lt;/span> &lt;span class="nv">SUBSCRIPTION&lt;/span>&lt;span class="o">=&lt;/span>XXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXXXX
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;h2 id="创建资源组">创建资源组
+&lt;/h2>&lt;p>为了让本次操作的过程产物，都放在一个资源组中，我们先创建一个资源组。这样方便在测试完的时候，可以一次性删除所有曾经用到过的资源。&lt;/p>
+&lt;p>使用命令行变量设定资源组的名称和所在的区域，以及其他的参数：&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;span class="lnt">4
+&lt;/span>&lt;span class="lnt">5
+&lt;/span>&lt;span class="lnt">6
+&lt;/span>&lt;span class="lnt">7
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">&lt;span class="nb">export&lt;/span> &lt;span class="nv">RESOURCE_GROUP_NAME&lt;/span>&lt;span class="o">=&lt;/span>aks-getting-started
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nb">export&lt;/span> &lt;span class="nv">LOCATION&lt;/span>&lt;span class="o">=&lt;/span>eastasia
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nb">export&lt;/span> &lt;span class="nv">AKS_CLUSTER_NAME&lt;/span>&lt;span class="o">=&lt;/span>aks-4-devops
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nb">export&lt;/span> &lt;span class="nv">AKS_CLUSTER_VERSION&lt;/span>&lt;span class="o">=&lt;/span>1.28.3
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nb">export&lt;/span> &lt;span class="nv">AKS_NODE_COUNT&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="m">2&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nb">export&lt;/span> &lt;span class="nv">AKS_NODE_VM_SIZE&lt;/span>&lt;span class="o">=&lt;/span>Standard_B2s
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nb">export&lt;/span> &lt;span class="nv">AKS_NODE_DISK_SIZE&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="m">50&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>创建资源组：&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">az group create --name &lt;span class="nv">$RESOURCE_GROUP_NAME&lt;/span> --location &lt;span class="nv">$LOCATION&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;h2 id="创建-service-principal">创建 Service Principal
+&lt;/h2>&lt;p>为了让 K8S 可以使用到 Azure 账号中的各种必要的资源服务（disk，负载均衡，存储等等），需要创建一个 Service Principal，用于 K8S 访问 Azure 资源。下面用新的命令行变量携带 Service Principal 的相关信息：&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;span class="lnt">4
+&lt;/span>&lt;span class="lnt">5
+&lt;/span>&lt;span class="lnt">6
+&lt;/span>&lt;span class="lnt">7
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">&lt;span class="nv">SERVICE_PRINCIPAL_JSON&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="k">$(&lt;/span>az ad sp create-for-rbac --skip-assignment --name aks-getting-started-sp -o json&lt;span class="k">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nv">SERVICE_PRINCIPAL&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="k">$(&lt;/span>&lt;span class="nb">echo&lt;/span> &lt;span class="nv">$SERVICE_PRINCIPAL_JSON&lt;/span> &lt;span class="p">|&lt;/span> jq -r &lt;span class="s1">&amp;#39;.appId&amp;#39;&lt;/span>&lt;span class="k">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nv">SERVICE_PRINCIPAL_SECRET&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="k">$(&lt;/span>&lt;span class="nb">echo&lt;/span> &lt;span class="nv">$SERVICE_PRINCIPAL_JSON&lt;/span> &lt;span class="p">|&lt;/span> jq -r &lt;span class="s1">&amp;#39;.password&amp;#39;&lt;/span>&lt;span class="k">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">az role assignment create --assignee &lt;span class="nv">$SERVICE_PRINCIPAL&lt;/span> &lt;span class="se">\
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="se">&lt;/span>--scope &lt;span class="s2">&amp;#34;/subscriptions/&lt;/span>&lt;span class="nv">$SUBSCRIPTION&lt;/span>&lt;span class="s2">/resourceGroups/&lt;/span>&lt;span class="nv">$RESOURCE_GROUP_NAME&lt;/span>&lt;span class="s2">&amp;#34;&lt;/span> &lt;span class="se">\
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="se">&lt;/span>--role Contributor
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>关于 Service Principal 的更多信息，可以参考 &lt;a class="link" href="https://docs.microsoft.com/en-us/azure/active-directory/develop/app-objects-and-service-principals" target="_blank" rel="noopener"
+>Azure AD Service Principal&lt;/a> 。&lt;/p>
+&lt;h2 id="创建-k8s-集群">创建 K8S 集群
+&lt;/h2>&lt;p>可以先使用下面的命令获取创建 aks 集群详细的帮助信息，以及丰富的可用选项；&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">az aks create -h
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>查看当前可用区中的 AKS 服务中的 Kubernetes 版本：&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">az aks get-versions --location &lt;span class="nv">$LOCATION&lt;/span> -o table
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>运行创建 AKS 集群的命令：&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">az aks create -n &lt;span class="nv">$AKS_CLUSTER_NAME&lt;/span> &lt;span class="se">\
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="se">&lt;/span>--resource-group &lt;span class="nv">$RESOURCE_GROUP_NAME&lt;/span> &lt;span class="se">\
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="se">&lt;/span>--location &lt;span class="nv">$LOCATION&lt;/span> &lt;span class="se">\
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="se">&lt;/span>--kubernetes-version &lt;span class="nv">$AKS_CLUSTER_VERSION&lt;/span> &lt;span class="se">\
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="se">&lt;/span>--load-balancer-sku standard &lt;span class="se">\
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="se">&lt;/span>--nodepool-name default &lt;span class="se">\
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="se">&lt;/span>--node-count &lt;span class="nv">$AKS_NODE_COUNT&lt;/span> &lt;span class="se">\
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="se">&lt;/span>--node-vm-size &lt;span class="nv">$AKS_NODE_VM_SIZE&lt;/span> &lt;span class="se">\
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="se">&lt;/span>--node-osdisk-size &lt;span class="nv">$AKS_NODE_DISK_SIZE&lt;/span> &lt;span class="se">\
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="se">&lt;/span>--network-plugin kubenet &lt;span class="se">\
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="se">&lt;/span>--service-principal &lt;span class="nv">$SERVICE_PRINCIPAL&lt;/span> &lt;span class="se">\
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="se">&lt;/span>--client-secret &lt;span class="s2">&amp;#34;&lt;/span>&lt;span class="nv">$SERVICE_PRINCIPAL_SECRET&lt;/span>&lt;span class="s2">&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;h2 id="连接到-k8s-集群">连接到 K8S 集群
+&lt;/h2>&lt;p>使用下面的命令，获取 AKS 集群的连接信息：&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">az aks get-credentials --resource-group &lt;span class="nv">$RESOURCE_GROUP_NAME&lt;/span> --name &lt;span class="nv">$AKS_CLUSTER_NAME&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>这条命令会将 AKS 集群的连接信息，写入到 &lt;code>~/.kube/config&lt;/code> 文件中，然后你就可以使用 &lt;code>kubectl&lt;/code> 命令行工具，连接到 AKS 集群了。&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">kubectl get nodes
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>以上忽略命令行 kubectl 的安装方式，详见 &lt;a class="link" href="https://kubernetes.io/docs/tasks/tools/install-kubectl/" target="_blank" rel="noopener"
+>Install and Set Up kubectl&lt;/a> 。&lt;/p>
+&lt;h2 id="部署应用">部署应用
+&lt;/h2>&lt;p>下面参考 &lt;a class="link" href="https://learn.microsoft.com/zh-cn/azure/aks/learn/quick-kubernetes-deploy-cli" target="_blank" rel="noopener"
+>https://learn.microsoft.com/zh-cn/azure/aks/learn/quick-kubernetes-deploy-cli&lt;/a> 文档中的操作步骤，部署
+&lt;a class="link" href="https://github.com/Azure-Samples/aks-store-demo" target="_blank" rel="noopener"
+>AKS 应用商店应用程序&lt;/a> 。该应用系统的示意图如下：&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/blog/az-cli-create-aks-cluster/aks-store-architecture.png"
+width="1424"
+height="525"
+srcset="https://martinliu.cn/blog/az-cli-create-aks-cluster/aks-store-architecture_hu_ab95812a457cdf8c.png 480w, https://martinliu.cn/blog/az-cli-create-aks-cluster/aks-store-architecture_hu_6543d1dbf0837e3e.png 1024w"
+loading="lazy"
+class="gallery-image"
+data-flex-grow="271"
+data-flex-basis="650px"
+>&lt;/p>
+&lt;p>创建名为 &lt;a class="link" href="aks-store-quickstart.yaml" >aks-store-quickstart.yaml ，清单文件点此下载&lt;/a> ，并将以下清单复制到其中：&lt;/p>
+&lt;p>使用 kubectl apply 命令部署上面的应用：&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">kubectl apply -f aks-store-quickstart.yaml
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>使用 kubectl get pods 命令，查看应用程序的所有 Pod 都处于 Running 状态：&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">kubectl get pods
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>使用下面的命令获取 store-front 服务的外网 IP 地址：&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">kubectl get service store-front --watch
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>最后，打开 Web 浏览器并转到服务的外网 IP 地址，以查看 Azure 应用商店应用的实际效果。&lt;/p>
+&lt;h2 id="清理资源">清理资源
+&lt;/h2>&lt;p>使用下面的命令，删除整个测试的资源组、Service Principal 和 AKS 集群，以及当前命令行中 kubctl 的配置文件中的 K8S 集群的上下文。&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">az aks delete --resource-group &lt;span class="nv">$RESOURCE_GROUP_NAME&lt;/span> --name &lt;span class="nv">$RESOURCE_GROUP_NAME&lt;/span> --yes
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">az ad sp delete --id aks-getting-started-sp
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">kubectl config delete-content &lt;span class="nv">$AKS_CLUSTER_NAME&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;h2 id="总结">总结
+&lt;/h2>&lt;p>本文主要讲解了使用 Azure CLI 创建 K8S 集群所使用到的一般性流程和选项，目标是为你更复杂的使用场景打下基础。&lt;/p>
+&lt;p>Azure CLI、Terraform 和 Pulumi 都是创建和管理云资源的工具，但它们各有优势：&lt;/p>
+&lt;p>Azure CLI：&lt;/p>
+&lt;ul>
+&lt;li>简单易用：Azure CLI 的命令结构简洁明了，易于理解和使用。&lt;/li>
+&lt;li>Azure 专用：Azure CLI 是专为 Azure 设计的，对 Azure 的各种服务和资源有深度集成。&lt;/li>
+&lt;/ul>
+&lt;p>Terraform：&lt;/p>
+&lt;ul>
+&lt;li>提供声明式语法：Terraform 使用声明式语法，用户只需描述他们希望达到的最终状态，Terraform 将处理如何达到这个状态。
+提供状态管理：Terraform 能够跟踪和管理每个部署的状态，这对于管理复杂的系统非常有用。&lt;/li>
+&lt;li>跨平台：Terraform 支持多个云服务提供商，不仅限于 Azure。&lt;/li>
+&lt;/ul>
+&lt;p>Pulumi：&lt;/p>
+&lt;ul>
+&lt;li>使用常规编程语言：Pulumi 允许使用常规编程语言（如 Python、JavaScript、TypeScript、Go 等）来描述和管理云资源，这使得开发者可以利用他们已有的编程知识和技能。&lt;/li>
+&lt;li>提供状态管理：与 Terraform 类似，Pulumi 也提供状态管理功能。
+跨平台：Pulumi 同样支持多个云服务提供商。&lt;/li>
+&lt;/ul>
+&lt;p>选择哪种工具取决于你的具体需求和偏好。后续我们演示使用 Terraform 和 Pulumi 创建 K8S 集群的方式。&lt;/p>
+&lt;h2 id="参考">参考
+&lt;/h2>&lt;ul>
+&lt;li>&lt;a class="link" href="https://docs.microsoft.com/en-us/azure/aks/kubernetes-walkthrough" target="_blank" rel="noopener"
+>Quickstart: Deploy an Azure Kubernetes Service (AKS) cluster using the Azure CLI&lt;/a>&lt;/li>
+&lt;li>&lt;a class="link" href="https://github.com/marcel-dempers/docker-development-youtube-series" target="_blank" rel="noopener"
+>https://github.com/marcel-dempers/docker-development-youtube-series&lt;/a>&lt;/li>
+&lt;/ul></description></item><item><title>如何在 Azure 中使用 Red Hat 的开发者订阅</title><link>https://martinliu.cn/blog/use-rhel-dev-sub-in-azure/</link><pubDate>Sun, 21 May 2023 10:21:15 +0800</pubDate><guid>https://martinliu.cn/blog/use-rhel-dev-sub-in-azure/</guid><description>&lt;img src="https://martinliu.cn/blog/use-rhel-dev-sub-in-azure/virtual-machine.png" alt="Featured image of post 如何在 Azure 中使用 Red Hat 的开发者订阅" />&lt;p>如果你是红帽开源软件的个人开发者（用户），你可以通过“红帽开发者计划”实现访问、下载和使用红帽全系列产品的福利。&lt;/p>
+&lt;p>红帽开发者会员的好处是可以免费获得广泛的资料库，包括：&lt;/p>
+&lt;ul>
+&lt;li>所有红帽软件 （含所有产品及时的更新）&lt;/li>
+&lt;li>开发者资源 (technical articles, e-books, cheat sheets, and more)&lt;/li>
+&lt;li>Interactive tutorials on the latest technology and Red Hat products&lt;/li>
+&lt;li>Free in-person and virtual events with Developer experts&lt;/li>
+&lt;li>Free Developer Sandbox to build your apps&lt;/li>
+&lt;/ul>
+&lt;p>会员资格包括访问：&lt;/p>
+&lt;ul>
+&lt;li>Red Hat 所有和刹那品，包括 Red Hat Enterprise Linux, OpenShift 和 Ansible 等等&lt;/li>
+&lt;li>Red Hat Customer Portal 客户门户的访问权限&lt;/li>
+&lt;/ul>
+&lt;p>重要资源：&lt;/p>
+&lt;ul>
+&lt;li>开发者计划介绍：&lt;a class="link" href="https://developers.redhat.com/about" target="_blank" rel="noopener"
+>https://developers.redhat.com/about&lt;/a>&lt;/li>
+&lt;li>无费用的 Red Hat Enterprise Linux 个人开发者订阅的常见问题：&lt;a class="link" href="https://developers.redhat.com/articles/faqs-no-cost-red-hat-enterprise-linux#" target="_blank" rel="noopener"
+>https://developers.redhat.com/articles/faqs-no-cost-red-hat-enterprise-linux#&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;h2 id="red-hat-提供开发者订阅">Red Hat 提供开发者订阅
+&lt;/h2>&lt;ul>
+&lt;li>Red Hat Enterprise Linux 个人开发者订阅的数量为16个RHEL操作系统实例。&lt;/li>
+&lt;li>需要在使用开发者订阅的操作系统上联网激活订阅&lt;/li>
+&lt;li>激活的账号和密码与开发者门户的账号相同。&lt;/li>
+&lt;li>在 Red Hat 客户门户网站上，你可以管理和续订开发者订阅。&lt;/li>
+&lt;/ul>
+&lt;p>下图是在客户门户网站上查看当前订阅使用状况的界面。&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/blog/use-rhel-dev-sub-in-azure/red-hat-dev-sub.jpg"
+width="1133"
+height="829"
+srcset="https://martinliu.cn/blog/use-rhel-dev-sub-in-azure/red-hat-dev-sub_hu_a0d39d0a12a748da.jpg 480w, https://martinliu.cn/blog/use-rhel-dev-sub-in-azure/red-hat-dev-sub_hu_58b243382a2f099c.jpg 1024w"
+loading="lazy"
+alt=" Red Hat 客户门户网站"
+class="gallery-image"
+data-flex-grow="136"
+data-flex-basis="328px"
+>&lt;/p>
+&lt;p>如果你所使用的公有云里有Red Hat官方支持的 RHEL 镜像，你可以将你的开发者订阅使用在公有云的虚拟机上。在Cloud Access这个页面上，可以看到我将微软的Azure账户和红帽开发者订阅做了关联。&lt;/p>
+&lt;p>这样就可以实现：有限数量的 Azure 虚拟机可以运行最新版的 RHEL 操作系统，这些操作系统的 License 计费到了 Red Hat 开发者订阅上；而开发者订阅又是有限免费的，因此实现了这些虚拟机的免费使用 RHEL 订阅。由于我在 Azure 中的长运行虚拟机并不多，因此这些虚拟机目前都是使用的 Red Hat Enterprise Linux。&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/blog/use-rhel-dev-sub-in-azure/red-hat-dev-sub-cloud-access.jpg"
+width="1123"
+height="847"
+srcset="https://martinliu.cn/blog/use-rhel-dev-sub-in-azure/red-hat-dev-sub-cloud-access_hu_fe865dd3c84c1085.jpg 480w, https://martinliu.cn/blog/use-rhel-dev-sub-in-azure/red-hat-dev-sub-cloud-access_hu_399df3bac136307f.jpg 1024w"
+loading="lazy"
+alt="Red Hat 客户门户中的 Cloud Access 管理"
+class="gallery-image"
+data-flex-grow="132"
+data-flex-basis="318px"
+>&lt;/p>
+&lt;h2 id="azure-支持-ahb-的混合权益">Azure 支持 AHB 的混合权益
+&lt;/h2>&lt;p>参考这篇 Azure 的官方文档&lt;a class="link" href="https://learn.microsoft.com/zh-cn/azure/virtual-machines/linux/azure-hybrid-benefit-linux?tabs=rhelpayg%2Crhelbyos%2CrhelEnablebyos%2Crhelcompliance" target="_blank" rel="noopener"
+>《Red Hat Enterprise Linux (RHEL) 和 SUSE Linux Enterprise Server (SLES) 虚拟机的Azure 混合权益》&lt;/a>&lt;/p>
+&lt;p>Azure 提供的 AHB（Azure Hybrid Benefit）使用中携带你自己的订阅到公有云里使用的方式。如下图所示。&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/blog/use-rhel-dev-sub-in-azure/azure-hybrid-benefit-compare.png"
+width="1228"
+height="761"
+srcset="https://martinliu.cn/blog/use-rhel-dev-sub-in-azure/azure-hybrid-benefit-compare_hu_51f13af6087501e1.png 480w, https://martinliu.cn/blog/use-rhel-dev-sub-in-azure/azure-hybrid-benefit-compare_hu_1076af50b7f97ce4.png 1024w"
+loading="lazy"
+alt="即用即付”(PAYG) 和“自带订阅”(BYOS)"
+class="gallery-image"
+data-flex-grow="161"
+data-flex-basis="387px"
+>&lt;/p>
+&lt;p>右侧的这个框的说明了 Azure 虚拟机的成本结构。除了计算资源这部分需要计费意外。如果你在 Azure 中开启了 RHEL 虚拟机实例，默认情况下 RHEL 的许可证费用是有 Azure 代收的，Azure 的账单里包含了这部分。&lt;/p>
+&lt;p>对于我在 Azrue 中的长运行虚拟机来说，经过我的配置之后，Azure 的账号和 RedHat 开发者订阅关联在了一起。所以这些 RHEL 虚拟机实例上的 RHEL 许可证费用就是在 RedHat 客户门户账号（来自于红帽开发者计划福利）中计费，最多支持 16 个虚拟机的免费使用。&lt;/p>
+&lt;h2 id="如何在-azure-中配置个人公司的-rhel-订阅">如何在 Azure 中配置个人（公司）的 RHEL 订阅
+&lt;/h2>&lt;p>如下图所示，在创建 Azure 的虚拟机的时候，选择 Red Hat Enterprise Linux 模板。&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/blog/use-rhel-dev-sub-in-azure/azure-rhel-sub.jpg"
+width="926"
+height="1326"
+srcset="https://martinliu.cn/blog/use-rhel-dev-sub-in-azure/azure-rhel-sub_hu_30ea1a66c12ea39.jpg 480w, https://martinliu.cn/blog/use-rhel-dev-sub-in-azure/azure-rhel-sub_hu_15fabdb6d0b2ae4e.jpg 1024w"
+loading="lazy"
+alt="配置 RHEL 订阅授权"
+class="gallery-image"
+data-flex-grow="69"
+data-flex-basis="167px"
+>&lt;/p>
+&lt;p>在授权这个部分，点击第二个“了解更多信息”链接。这时候，浏览器会跳转到红帽客户门户中，在输入了用户名和密码登录了以后，你就完成了红帽开发者订阅和当前 Azure 账户的关联。&lt;/p>
+&lt;p>在虚拟机创建完成以后，你可以用 RHEL 的订阅管理命令将当前的 RHEL Linux 操作系统注册到红帽客户门户的订阅上。参考命令如下：&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">subscription-manager register --org=1234567 --activationkey=DevOps
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;ul>
+&lt;li>&amp;mdash;org ：是你在红帽门户中的组织 ID。&lt;/li>
+&lt;li>&amp;ndash;activationkey ： 是自己定义的激活秘钥；一个组织可以定义多个激活秘钥，用户部门和用途的区分。&lt;/li>
+&lt;/ul>
+&lt;p>这条命令中虽然 ID 是不适合明文暴露的；但是，这样避免了将红帽客户门户账户的用户名和密码都以明文的形式写入配置文件，或者在命令中出现：&lt;code>subscription-manager register --username &amp;lt;username&amp;gt; --password &amp;lt;password&amp;gt; --auto-attach&lt;/code>&lt;/p>
+&lt;p>在当前操作系统注册成功以后，你可以在&lt;code>/etc/yum.repos.d&lt;/code>下能找到一个&lt;code>redhat.repo&lt;/code>文件。这个文件里包含了当前操作系统所有能使用的红帽产品的订阅。&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;span class="lnt">4
+&lt;/span>&lt;span class="lnt">5
+&lt;/span>&lt;span class="lnt">6
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">[root@mysql yum.repos.d]# dnf repolist
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Updating Subscription Management repositories.
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">repo id repo name
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">packages-microsoft-com-prod packages-microsoft-com-prod
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">rhel-8-for-x86_64-appstream-rpms Red Hat Enterprise Linux 8 for x86_64 - AppStream (RPMs)
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">rhel-8-for-x86_64-baseos-rpms Red Hat Enterprise Linux 8 for x86_64 - BaseOS (RPMs)
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>参考这篇文章《&lt;a class="link" href="https://access.redhat.com/solutions/253273%e3%80%8b" target="_blank" rel="noopener"
+>https://access.redhat.com/solutions/253273》&lt;/a>》；就可以启用或者禁用所需要的产品。&lt;/p>
+&lt;h2 id="在其他环境中的使用">在其他环境中的使用
+&lt;/h2>&lt;p>红帽开发者订阅可以让你在客户门户中下载 RHEL 安装 DVD。可以用 DVD 在私有云或者个人电脑（Home Lab）中安装 RHEL 操作系统。&lt;/p>
+&lt;p>使用上面相同的方法，既可以实现 RHEL Linux 操作系统的注册，然后完全合理合法的使用全套红帽产品线。&lt;/p>
+&lt;p>红帽开发者订阅的有效期是一年；在到期之后，在还需要在客户门户中免费续签。如果当前的开发者订阅过期了，所有 RHEL 操作系统实例就都不能正常更新和安装新的软件包了。在网站上完成了开发者订阅的免费续签之后，所有系统就可以恢复正常使用，无需做其他任何操作。&lt;/p>
+&lt;p>开发者订阅的数量是 16 个，更具我最近一年的使用体验看来，这个数量是足够用的。假如你的虚拟机模板激活了订阅，根据这个虚拟机克隆出来的虚拟机是不需要使用注册命令就可以正常更新和安装软件包的。如果订阅数量真的被用完了，可以暂时从红帽客户门户中暂时删除几个不常用的系统，这样就释放出来几个可用的 RHEL 订阅。&lt;/p>
+&lt;h2 id="排错">排错
+&lt;/h2>&lt;p>新创建的 RHEL 8 的虚拟机，在激活红帽 RHEL 订阅之后，在更新系统软件安装包的时候，报 SSL 证书过期错误，可以参考下面的命令进行解决。&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;span class="lnt">4
+&lt;/span>&lt;span class="lnt">5
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">yum --disablerepo=&amp;#39;*&amp;#39; remove &amp;#39;rhui-azure-rhel8&amp;#39;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">wget https://rhelimage.blob.core.windows.net/repositories/rhui-microsoft-azure-rhel8.config
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">yum --config=rhui-microsoft-azure-rhel8.config install rhui-azure-rhel8
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">yum update ca-certificates
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">yum clean all
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div></description></item></channel></rss>

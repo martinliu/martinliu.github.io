@@ -1,0 +1,767 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>SRE on Martin Liu's Blog</title><link>https://martinliu.cn/tags/sre/</link><description>Recent content in SRE on Martin Liu's Blog</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><lastBuildDate>Sun, 27 Jul 2025 23:02:45 +0800</lastBuildDate><atom:link href="https://martinliu.cn/tags/sre/index.xml" rel="self" type="application/rss+xml"/><item><title>欢迎进入 SRE 的第三纪元 - AI 可靠性工程</title><link>https://martinliu.cn/blog/ai-reliability-engineering-welcome-to-the-third-age-of-sre/</link><pubDate>Sun, 27 Jul 2025 09:44:13 +0800</pubDate><guid>https://martinliu.cn/blog/ai-reliability-engineering-welcome-to-the-third-age-of-sre/</guid><description>&lt;img src="https://martinliu.cn/blog/ai-reliability-engineering-welcome-to-the-third-age-of-sre/afadfd03-nasik-lababan-auk3gkpv6u-unsplash-1024x683.jpg" alt="Featured image of post 欢迎进入 SRE 的第三纪元 - AI 可靠性工程" />&lt;p>Source: &lt;a class="link" href="https://thenewstack.io/ai-reliability-engineering-welcome-to-the-third-age-of-sre/" target="_blank" rel="noopener"
+>Denys Vasyliev @ The New Stack&lt;/a>&lt;/p>
+&lt;blockquote>
+&lt;p>SRE 必须构建值得信赖的 AI 系统，充分利用不断涌现的工具与标准化生态。&lt;/p>&lt;/blockquote>
+&lt;p>当 &lt;a class="link" href="https://events.linuxfoundation.org/kubecon-cloudnativecon-europe/?p=clayton-coleman" target="_blank" rel="noopener"
+>Clayton Coleman&lt;/a> 的这句话在 KubeCon 北美大会上被引用时，引发了强烈共鸣。仅仅五年前，问一位站点可靠性工程师（Site Reliability Engineer，SRE）他们的职责，回答通常围绕着让 Web 应用保持高性能、具备可扩展性和高可用性。而如今，整个技术格局已然发生深刻变化。AI 推理（Inference）工作负载——即训练完成的模型基于所学知识对新数据做出预测的过程——正逐渐成为像 Web 应用一样关键的核心系统。&lt;/p>
+&lt;p>“&lt;em>Inference&lt;/em>——是指模型在推理阶段将其学到的模式应用于此前未见的数据，以生成预测或决策。在这个过程中，模型会利用其已有的知识，对来自真实世界的输入进行响应。”&lt;/p>
+&lt;p>这种演变催生了一个全新的工程领域：AI 可靠性工程（AI Reliability Engineering，AIRe）。我们面临的挑战早已不再是 HTTP 请求的延迟，而是如何减少大语言模型（LLM）在生成标记（token）时的卡顿。优化数据库查询显得有些传统，如今我们更需要关注如何提升模型的检查点（checkpoint）恢复效率和张量（tensor）处理性能。AI 模型，正如曾经的 Web 应用那样，也需要卓越的可扩展性、可靠性和可观测性——而这些能力的架构工作仍在持续进行中。&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/blog/ai-reliability-engineering-welcome-to-the-third-age-of-sre/bb3cd678-image5.png"
+width="468"
+height="166"
+srcset="https://martinliu.cn/blog/ai-reliability-engineering-welcome-to-the-third-age-of-sre/bb3cd678-image5_hu_4af95aeeb5897f4a.png 480w, https://martinliu.cn/blog/ai-reliability-engineering-welcome-to-the-third-age-of-sre/bb3cd678-image5_hu_71cd87ce85d26400.png 1024w"
+loading="lazy"
+alt="The new stack of AI"
+class="gallery-image"
+data-flex-grow="281"
+data-flex-basis="676px"
+>&lt;/p>
+&lt;p>我已经深入从事 AI 可靠性工程近两年，专注于研究、原型设计，并构建实际的推理系统。从 DevOps 各类大会到 SRE Days，再到纽伦堡和伦敦的社区聚会，我不断与行业同行交流实践经验。现在，我希望在这里将这些珍贵的洞察与你分享。&lt;/p>
+&lt;p>&lt;strong>不可靠的 AI，甚至比没有 AI 更危险。&lt;/strong>&lt;/p>
+&lt;ul>
+&lt;li>&lt;strong>推理（Inference）&lt;/strong> 不仅仅是模型的运行过程，它是一门独立的运维工程学科，具备独特的架构抉择与工程范式。与训练阶段可以容忍时间与成本不同，推理处于生产的关键链路上，每一毫秒都可能影响最终体验。&lt;/li>
+&lt;li>&lt;strong>实时 vs 批量&lt;/strong>：推理运行方式主要分为实时（也称在线）和批量（离线）两种。实时推理支撑着聊天机器人、欺诈检测和自动驾驶等对低延迟有严苛要求的应用；而批量推理则周期性地处理大规模数据集，用于图像识别、日志分析或趋势预测等场景。&lt;/li>
+&lt;li>&lt;strong>资源特征&lt;/strong>：尽管相较训练更轻量，推理依然对性能要求极高。尤其在实时场景下，既需要快速计算，也要求基础设施具备高可用性。尽管 CPU 仍有用武之地，但现代推理系统越来越依赖 GPU、TPU，或专用芯片（如 AWS Inferentia、NVIDIA TensorRT）以实现极低延迟。&lt;/li>
+&lt;li>&lt;strong>部署环境&lt;/strong>：推理部署可以无处不在，从边缘设备到云端超大规模集群。你可以在 Serverless 端点、Kubernetes 集群，甚至微型 IoT 模块中找到它的身影。SageMaker、Vertex AI、Hugging Face 和 Together.ai 等平台让部署变得更轻松，但最终选择仍需在成本、控制力和延迟之间权衡。&lt;/li>
+&lt;li>&lt;strong>性能优化手册(Playbook)&lt;/strong>：性能与效率的挑战从未止步。团队广泛应用量化（例如将 FP32 精度转为 INT8）、模型蒸馏和神经架构搜索（Neural Architecture Search，NAS）等技术，以尽可能在不牺牲结果质量的前提下，打造更小、更快、更高效的推理引擎。&lt;/li>
+&lt;li>&lt;strong>&lt;a class="link" href="https://thenewstack.io/monitoring-vs-observability-whats-the-difference/" title="Observability and Monitoring"
+target="_blank" rel="noopener"
+>可观测性与监控&lt;/a>&lt;/strong>：传统遥测系统难以满足需求。推理系统需要更精细的可观测性，涵盖预测延迟、token（标记）吞吐量、数据漂移，甚至模型幻觉（即生成虚假信息）的比率。OpenTelemetry、Prometheus 和专为 AI 打造的追踪工具如今已成为基础设施标配。&lt;/li>
+&lt;li>&lt;strong>可扩展性&lt;/strong>：推理流量不可预期，经常随着用户行为剧烈波动。因此需要通过 Kubernetes HPA、Cloud Run 实现高效自动扩容，并结合 Envoy、Istio、KServe 等实现智能流量调度，以确保系统始终从容应对。&lt;/li>
+&lt;li>&lt;strong>安全防线&lt;/strong>：AI 推理引入了新的安全挑战，包括对抗性输入攻击与潜在的数据泄露。工程师必须将模型端点像保护 API 端点一样严格防御，实施身份验证、访问频率限制、数据加密以及运行时完整性验证。&lt;/li>
+&lt;/ul>
+&lt;p>&lt;em>&lt;strong>推理已不再是机器学习的附属过程。它就是核心应用。它就是生产环境。而它也正在重塑整套运维架构体系。&lt;/strong>&lt;/em>&lt;/p>
+&lt;p>&lt;strong>传统的 SRE 原则虽为 AI 提供了基础，但已难以满足它的独特需求。&lt;/strong>&lt;/p>
+&lt;ul>
+&lt;li>&lt;strong>模型的不确定性本质&lt;/strong>：与典型的 Web 应用不同，AI 模型不是确定性的。同一个输入可能会产生不同结果。一个模型即便系统运行稳定、没有宕机，也可能输出错误、有偏差甚至荒谬的内容——这彻底颠覆了我们对“可靠性”的传统认知。&lt;/li>
+&lt;li>&lt;strong>评估标准正在变化&lt;/strong>：光靠“可用性 SLA”已远远不够。我们需要引入 &lt;em>准确性 SLA&lt;/em> 的新范式，通过精确率、召回率、公平性以及模型漂移等维度，来衡量模型在实际环境下的表现。&lt;/li>
+&lt;/ul>
+&lt;p>&lt;img src="https://martinliu.cn/blog/ai-reliability-engineering-welcome-to-the-third-age-of-sre/e116da6b-image2.png"
+width="468"
+height="259"
+srcset="https://martinliu.cn/blog/ai-reliability-engineering-welcome-to-the-third-age-of-sre/e116da6b-image2_hu_fa6e039316647ee7.png 480w, https://martinliu.cn/blog/ai-reliability-engineering-welcome-to-the-third-age-of-sre/e116da6b-image2_hu_50716b6fa25a4711.png 1024w"
+loading="lazy"
+alt="Emerging AI Challenges – SRE Day – AIRe 2025"
+class="gallery-image"
+data-flex-grow="180"
+data-flex-basis="433px"
+>&lt;/p>
+&lt;ul>
+&lt;li>&lt;strong>基础设施变革&lt;/strong>：随着 AI 工作负载的出现，传统的架构设计也在演进。像 Ingress、水平 Pod 自动扩缩（HPA）这些概念，正逐步被模型网格（Model Mesh）、LoRa 负载均衡、AI 网关等新技术所取代，尤其是在 GPU 资源密集的场景下尤为关键。Kubernetes 社区也在持续演进，推动包括“Serving 工作组”、动态资源分配（DRA）以及 Gateway API 等机制，以支持 AI 推理的特殊需求。&lt;/li>
+&lt;li>&lt;strong>可观测性的盲区&lt;/strong>：传统监控工具擅长监测 CPU、内存和响应延迟，但面对 AI 模型中的置信度、漂移情况，甚至幻觉（即模型生成虚假内容的倾向）等问题，常常无能为力。我们亟需构建 AI 专用的可观测性体系。&lt;/li>
+&lt;li>&lt;strong>新型故障模式&lt;/strong>：现在的问题已不再是“系统崩溃”，而是更隐蔽的“模型静默退化”。这种退化通常不会立刻显现故障，但模型的准确性、公平性会在不知不觉中下降，输出越来越偏离预期。将这种变化当作严重生产事故来看待，需要全新的监测机制和响应工具。&lt;/li>
+&lt;/ul>
+&lt;p>&lt;strong>模型衰减（Model Decay）&lt;/strong>——也称为 &lt;em>模型静默退化（Silent model degradation）&lt;/em>，不同于传统软件的崩溃报错，它表现为模型持续运行但输出质量悄然下降，可能变得不准确、带偏见或逻辑不一致。这种无声的“故障”，往往更难察觉也更难解决。&lt;/p>
+&lt;blockquote>
+&lt;p>我们为何将模型静默退化当作生产级事故来看待？&lt;/p>&lt;/blockquote>
+&lt;p>因为它本质上就是&amp;quot;silent failure&amp;quot;。与崩溃的 Pod 或无法响应的 API 不同，模型静默退化是悄无声息的——系统仍能正常响应请求，但返回的答案可能越来越模糊、偏颇甚至完全错误。用户不会看到直观的 500 错误页面，而是遇到“幻觉式”输出、有害内容，或基于错误数据做出的决策。这不只是代码 bug，更是对用户信任的严重破坏。在 AI 世界里，“正确性”本身就等同于可用性（uptime）。当“可靠性”意味着输出质量时，模型退化——就是宕机。&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/blog/ai-reliability-engineering-welcome-to-the-third-age-of-sre/f6df7415-image1.png"
+width="452"
+height="231"
+srcset="https://martinliu.cn/blog/ai-reliability-engineering-welcome-to-the-third-age-of-sre/f6df7415-image1_hu_3eae5c49d28998b7.png 480w, https://martinliu.cn/blog/ai-reliability-engineering-welcome-to-the-third-age-of-sre/f6df7415-image1_hu_3527fb19fe1336e1.png 1024w"
+loading="lazy"
+alt="Gateway API Inference Extension, OpenInference and AI Gateways"
+class="gallery-image"
+data-flex-grow="195"
+data-flex-basis="469px"
+>&lt;/p>
+&lt;blockquote>
+&lt;p>我们或许不仅要为 AI 扩展 Kubernetes —— 甚至终有一天，我们不得不为它另起炉灶（fork）。&lt;/p>&lt;/blockquote>
+&lt;p>大语言模型（Large Language Models，LLMs）对流量路由、速率限制和安全防护提出了前所未有的要求，而这些功能并非 Kubernetes Ingress 机制的设计初衷。Kubernetes 架构自诞生以来就是围绕无状态 Web 应用打造的，推理场景从未被列为核心用例。尽管 Kubernetes 社区正积极适配，但关键差距依然存在。&lt;/p>
+&lt;p>推理工作负载需要更紧密集成的架构支持：既包括对 GPU/TPU 等硬件加速器的原生支持，也涵盖资源编排与高并发流控能力。为此，Kubernetes 正在推进多个项目，如 WG-Serving（针对 AI/ML 推理优化）、设备管理（通过 DRA 动态资源分配集成加速器），以及 Gateway API 推理扩展，这些都在为 LLM 的规模化、可靠路由打下基础。与此同时，新一代 AI 网关也应运而生，提供专为推理定制的流量控制、可观测性和权限管理能力。&lt;/p>
+&lt;p>但归根结底，我们仍是在一个“原本不是为 AI 而生”的编排平台上进行集成工作。Google 最近宣布，将 Kubernetes 的 etcd 存储引擎替换为基于 Spanner 的架构后，成功实现了单集群支持 65,000 节点的能力，这或许预示着未来我们不仅需要对 Kubernetes 进行功能扩展，甚至可能要彻底分叉（fork）一个属于 AI 推理的基础平台。&lt;/p>
+&lt;blockquote>
+&lt;p>那么，面对全新的 AI 现实，我们应如何实践 SRE 理念？&lt;/p>&lt;/blockquote>
+&lt;ul>
+&lt;li>&lt;strong>制定面向 AI 的服务目标与承诺（SLO/SLA）：&lt;/strong> 传统的可用性指标已不足以衡量 AI 系统的可靠性。我们需要将准确性、公平性、延迟和模型漂移纳入考量，制定清晰的服务等级协议（SLA）。例如 TTFT（生成首个 token 的响应时间）、TPOT（每个输出 token 的平均生成时间）、准确率或偏差范围等，都是需要量化承诺的核心指标。&lt;/li>
+&lt;li>&lt;strong>打造 AI 专属的可观测体系：&lt;/strong> 在使用 OpenTelemetry、Grafana 等常规监控工具的基础上，结合 OpenInference 等 AI 专用追踪与评估平台，实现对模型响应分布、置信度评分和错误类型（如幻觉）的深入监测。&lt;/li>
+&lt;li>&lt;strong>建立 AI 故障应急机制：&lt;/strong> AI 系统可能出现特有问题，如突发的预测漂移或偏差上升。因此，我们需要制定专门的应急预案（playbook），包括模型自动回滚至稳定版本，或启用 AI 熔断机制，以保障系统稳定性。&lt;/li>
+&lt;li>&lt;strong>兼顾扩展性与安全性进行架构设计：&lt;/strong> 可通过模型副本负载均衡、缓存机制、GPU 调度优化（Kubernetes 仍在演进中）及 AI 网关等技术，管理推理流量并加强安全性。安全机制可涵盖基于 token 的限速、语义缓存与访问权限控制。同时，还需通过模型来源追踪、安全交付与运行时监控，确保模型始终可信、稳定。&lt;/li>
+&lt;li>&lt;strong>构建持续评估机制：&lt;/strong> 模型评估不应只在部署前完成。它应覆盖部署前的离线测试、上线前的影子测试与 A/B 测试，以及部署后的实时监控，持续检测模型是否出现性能漂移或精度退化。&lt;/li>
+&lt;/ul>
+&lt;p>&lt;img src="https://martinliu.cn/blog/ai-reliability-engineering-welcome-to-the-third-age-of-sre/1ef2c34a-image3.png"
+width="392"
+height="213"
+srcset="https://martinliu.cn/blog/ai-reliability-engineering-welcome-to-the-third-age-of-sre/1ef2c34a-image3_hu_ff056c405ea27eb3.png 480w, https://martinliu.cn/blog/ai-reliability-engineering-welcome-to-the-third-age-of-sre/1ef2c34a-image3_hu_c7417e8be103b2ad.png 1024w"
+loading="lazy"
+alt="Example Model Evaluation SLA in Production"
+class="gallery-image"
+data-flex-grow="184"
+data-flex-basis="441px"
+>&lt;/p>
+&lt;h2 id="ai-网关sre-在-ai-时代的核心工具">AI 网关：SRE 在 AI 时代的核心工具
+&lt;/h2>&lt;p>在 SRE 发展的初期阶段，我们依靠负载均衡器、服务网格和 API 网关来管理流量、执行安全策略，并实现系统可观测性。而如今，AI 推理带来的工作负载同样需要这些能力——但复杂度更高，规模更大，且容不得半点延迟或错误。这就是 AI 网关登场的时刻。&lt;/p>
+&lt;p>你可以把它理解为现代 SRE 面对 AI 系统的一站式解决方案：它能将请求精准路由到正确的模型、在多个副本间实现高效负载均衡、实施速率限制与安全策略，并集成深度可观测性机制。像 Gloo AI Gateway 这样的项目正是这一领域的先锋，专注解决企业在 AI 落地中遇到的关键难题，如模型成本控制、基于 token 的权限机制、以及对 LLM 响应的实时追踪分析——这些都是传统服务网格难以胜任的。&lt;/p>
+&lt;p>这就是当代 SRE 的新定位：不仅要调节自动扩缩容机制，还要掌控 AI 系统的控制平面（control plane），成为智能系统运行的核心操盘手。&lt;/p>
+&lt;p>&lt;em>AI 网关不仅是 SRE 新工具箱中的一员——它或许是最关键的那一个。&lt;/em>&lt;/p>
+&lt;h2 id="sre-的第三个时代ai-可靠性工程">SRE 的第三个时代：AI 可靠性工程
+&lt;/h2>&lt;p>SRE 的角色正在发生深刻转变。我们需要的是《97 条 SRE 必知法则》书中所强调的那种探索精神——对整个系统的深入理解，从芯片层的硬件架构到模型输出背后的微妙机制。我们要构建值得信赖的 AI 系统，并借助不断成熟的工具链与标准体系来实现这一目标。&lt;/p>
+&lt;p>Björn Rabenstein 曾提到 SRE 正步入“第三个时代”，一个其原则将全面融入系统建设的阶段。确实如此，但推动这个新时代到来的，不再是传统系统的演进，而是 AI 的崛起。AI 可靠性工程（AI Reliability Engineering）不仅仅是传统 SRE 的延伸，它代表了一次根本性的范式转移：从关注“基础设施是否可靠”，走向“智能系统本身是否可信”。&lt;/p></description></item><item><title>Dynatrace 出品 2023 年 SRE 状态报告</title><link>https://martinliu.cn/blog/state-of-sre-in-2023/</link><pubDate>Mon, 10 Jun 2024 09:29:28 +0800</pubDate><guid>https://martinliu.cn/blog/state-of-sre-in-2023/</guid><description>&lt;img src="https://martinliu.cn/blog/state-of-sre-in-2023/pexels-pavel-danilyuk-9143840.jpg" alt="Featured image of post Dynatrace 出品 2023 年 SRE 状态报告" />&lt;blockquote>
+&lt;p>本文来源 Dynatrace：&lt;a class="link" href="https://www.dynatrace.com/news/blog/state-of-sre-in-2023/" target="_blank" rel="noopener"
+>《State of SRE in 2023》&lt;/a>&lt;/p>&lt;/blockquote>
+&lt;p>站点可靠性工程（SRE）在组织中变得越来越重要，因为它们希望跟上快速数字化转型的步伐。现在比以往的任何时候，客户更期望高质量、可靠的数字服务，提供无缝的用户体验。SRE 确保了整个数字环境的可靠性和一致性，为组织提供了框架，使其能够持续为客户交付这些理想的体验。&lt;/p>
+&lt;p>Dynatrace 产品营销总监 Saif Gunja 主持了 2023 年 SRE 状态网络研讨会。参加研讨会的专家成员包括 Kyndryl 的 Danne Aguiar、Red Hat 的 Hilliary Lipsig 和 SquaredUp 的 Stephen Townshend。他们讨论了最佳实践、新兴趋势、建立服务质量目标（SLO）的有效思维方式等。主持人和小组成员共同分享了他们的见解，探讨了组织如何增强其 SRE 努力。&lt;/p>
+&lt;h2 id="有效的站点可靠性工程需要企业范围的转型">有效的站点可靠性工程需要企业范围的转型
+&lt;/h2>&lt;p>如果没有对 SRE 实践的统一理解，部门之间很快会形成孤岛。缺乏协作会导致观测数据的分散，使团队在交付价值时几乎没有信息可依赖。没有成熟的 SRE 应用实践，生产力会因此受到影响。&lt;/p>
+&lt;p>接受 SRE 的文化转变是打破这些孤岛的关键。研讨会专家成员强调了：整个组织向 SRE 采用的文化转变的必要性。他们还强调了高层支持对于文化转变的重要性。Townshend 说：“没有高层支持，你会遇到瓶颈，由于优先事项的竞争，你根本无法取得任何 SRE 的进展。”&lt;/p>
+&lt;p>Gunja 表示同意。他说：“如果这不是一种文化变革，如果不是自上而下的变革，那么很可能会失败。即使是自上而下的变革，仍然会有很多障碍需要克服。”&lt;/p>
+&lt;p>Lipsig 从另一个角度看到了这种现象。在她的组织中，自上而下的 SRE 采用显著改善了孤岛的文化。她说：“我看到很多以前不存在或者有些紧张的关系在过去 12 个月里有了很大的改善。”显然，高层的支持简化了各团队对 SRE 的理解，增加了组织内的协作和教育。&lt;/p>
+&lt;p>然而，尽管这种转型对于实现业务目标是必要的，许多高层管理人员仍然犹豫是否采用 SRE 实践。这往往是由于缺乏对 SRE 在实现关键绩效目标（服务质量目标，SLO）中的作用的理解。&lt;/p>
+&lt;p>为克服这一障碍，研讨会专家成员建议：工程师通过业务数据向高层管理人员传达 SRE 的价值。在收集这些指标后，工程师可以展示：在企业内大范围的应用 SRE 实践，如何有助于减少琐事、员工倦怠（各种卷）、运营费用和未达标的服务质量目标（SLO）数量。&lt;/p>
+&lt;h2 id="服务质量目标slo应聚焦并由高阶业务目标驱动">服务质量目标（SLO）应聚焦，并由高阶业务目标驱动
+&lt;/h2>&lt;p>在创建 SLO 以度量 SRE 成功时，重要的是要考虑这些目标将如何为组织带来益处。有时，工程团队可能会专注于技术细节，而忽视了整体业务目标。团队应确保即使是最小的 SLO ，也能使之与业务增长相关。&lt;/p>
+&lt;p>然而，想要理解技术 SLO 如何影响业务结果，其实并不总是那么直观。例如，减少平均修复时间（MTTR）对收入的影响有多大？要回答这些问题，跨职能合作对于组织的成功至关重要。不同技能团队之间的沟通可以帮助澄清 SLO 与业务结果之间的联系。&lt;/p>
+&lt;p>需要注意的是，创建以业务为中心的 SLO 并不意味着仅关注高阶目标。实际上，研讨会专家成员强调了创建更小的 SLO 以更好地度量进展的重要性。通过识别小的胜利，团队可以避免被实现更大目标的压力所压垮。这些小的胜利，如实施无责根本原因分析过程，可以采取多种形式，不一定涉及数字指标。&lt;/p>
+&lt;p>对于构建以业务为中心的 SLO 的组织，Aguiar 提出了一些建议。他说：“如果你的公司有服务质量协议（SLA），就从那里开始。你可以用这个由 SLA 设置的特定 SLO 进行实践，然后再定义其他的。”&lt;/p>
+&lt;p>Lipsig 也提供了一些建议。她说：“选择一项衡量客户在使用你的产品时是否成功的指标，然后研究如何度量它。” 以业务为中心的 SLO 是由客户成功驱动的：当客户成功时，业务也会成功。因此，仔细考虑客户需求是创建有效 SLO 的关键。&lt;/p>
+&lt;h2 id="客户同理心是优化站点可靠性工程sre实践的关键">客户同理心是优化站点可靠性工程（SRE）实践的关键
+&lt;/h2>&lt;p>软件工程往往是一门缺乏人情味的学科。SRE 通常不直接面对客户，因此容易误解客户的痛点。这种缺乏了解会导致缓慢的故障解决时间和无效的方案。此外，客户可能会因组织内协作不佳而感到沮丧，导致客户留存率下降。&lt;/p>
+&lt;p>在 SRE 中，跨部门合作对于建立客户关系至关重要。研讨会专家成员鼓励工程师与客户成功团队协作，以更好地了解客户的情况，并满足关键需求。Lipsig 分享道：“我与我们的客户成功工程师建立了非常好的合作关系。” 但她也强调了内部合作的重要性：“与客户建立信任并不是我一个人可以完成的。”&lt;/p>
+&lt;p>了解客户需求有助于在组织与客户之间建立信任，从而让客户更愿意接受 SRE 团队的建议，这也赋予工程师更多的主动权。&lt;/p>
+&lt;p>小组成员还强调了在处理客户互动时“软技能”的重要性。尊重和耐心地与客户沟通是建立信任的关键。他们还指出，这种做法不仅适用于客户，也适用于组织内部的同事。&lt;/p>
+&lt;h2 id="生成式-ai-与站点可靠性工程的未来">生成式 AI 与站点可靠性工程的未来
+&lt;/h2>&lt;p>“AI 在应用性能管理（APM）领域并不新鲜，”Aguiar 提醒道。最近在生成式 AI 方面的突破可能为各种组织中的 SRE 团队提供优势。例如，生成式 AI 具有提供更直观的数据查询方法的潜力。通过其自然语言处理能力，这样的能力使得在不使用格式化查询语言的情况下，获取数据分析洞见。成为可能。减少了数据访问的障碍和孤立。&lt;/p>
+&lt;p>生成式 AI 还可以通过允许用户提出有关架构和数字环境的具体问题来优化根本原因分析。快速、可靠的答案获取，促进了团队之间的快速学习。这将减少平均修复时间（MTTR）并提高生产力。&lt;/p>
+&lt;p>研讨会专家成员推测，AI 将通过高效执行任务改善 SRE 团队的生活质量。Aguiar 预测，生成式 AI 的一个关键功能是基于过去的经验创建操作手册（Playbook）。这将有可能在很大程度上消除手动干预和冗长的流程，以解决常规发生的事故。然而，Lipsig 提醒小组成员，SRE 在各个组织中的表现 有所不同。她说：“我们会看到很多不同类型的影响，而不是生成式 AI 带来的一个确定性的影响。”&lt;/p>
+&lt;p>生成式 AI 是 SRE 团队可以独特应用于其实践中的一种有前途的新手段。它可以实现更高的效率，但它并不能完全替代某些现有的可靠性措施。&lt;/p>
+&lt;h2 id="成功的站点可靠性工程重在预防而非被动响应">成功的站点可靠性工程重在预防而非被动响应
+&lt;/h2>&lt;p>意外的系统中断、服务器过载和其他不可预见的事件，不仅会严重影响 SRE 的生产力，还会对组织的盈利能力造成潜在的灾难性影响。这些问题可能导致大量计划外的工作，使 SRE 处于被动状态，效率和进展受到阻碍。在这种被动模式下进行根本原因分析，通常时间漫长且代价昂贵，使 SRE 资源紧张。为了改变这种情况，SRE 团队必须启动计划内的工作，开始采取主动的防范措施。&lt;/p>
+&lt;p>主动 SRE 模型的一个关键组成部分是实施端到端监控，包括不直接由 SRE 团队管理的系统。通过保持对客户和供应商系统的强大可观测性，团队可以在软件问题扩散之前识别出潜在问题。强大的黑盒监控、负载均衡分析和定期系统检查，都是有效的主动措施，可以显著提高生产力和预防事故。&lt;/p>
+&lt;p>随着组织在数据收集和存储上投入大量资源，SRE 团队更有动力从被动工作模式转变。宝贵的数据在被动模式下未被充分利用，仅用于应急响应而非预防。组织应通过创建强调预防的工作流程，充分发挥数据驱动见解的潜力，而不是仅仅依赖于应急处理。&lt;/p>
+&lt;p>“我们开始在服务质量指标（SLI）违反时响应警报，以便始终保持我们的服务质量目标（SLO），”Lipsig 说道，谈到 Red Hat 的 SRE 如何处理事故时。“我们从不会超出我们的错误预算。” 一旦团队开始主动使用数据，“他们可以用这些数据做有意义的工作，而不仅仅是用于应急响应。”&lt;/p>
+&lt;h2 id="提升协作是达成-slo-的关键">提升协作是达成 SLO 的关键
+&lt;/h2>&lt;p>在当今的技术环境中，对于云原生架构下的软件工程方法存在显著争论。无论是 SRE、DevOps 还是平台工程，研讨会专家成员都认为部门分类远不如实际工作重要。团队应专注于有效和高效地达成 SLO，而不是纠结于职位头衔。要打破 DevOps、SRE 和平台工程是对立的思维定式，是缓解孤岛效应和确保 SLO 满足的关键一步。&lt;/p>
+&lt;p>“SRE 是关于设计、构建和大规模运营可靠服务，” Townshend 说道。“只要我在做这些事情，我认为我就是成功的。”&lt;/p>
+&lt;p>❤️ Photo by Pavel Danilyuk from Pexels: &lt;a class="link" href="https://www.pexels.com/photo/a-person-using-a-laptop-outside-at-night-9143840/" target="_blank" rel="noopener"
+>https://www.pexels.com/photo/a-person-using-a-laptop-outside-at-night-9143840/&lt;/a>&lt;/p></description></item><item><title>平台工程团队如何利用 AI 增强 DevOps</title><link>https://martinliu.cn/blog/pe-team-augment-devops-with-ai/</link><pubDate>Wed, 05 Jun 2024 16:36:07 +0800</pubDate><guid>https://martinliu.cn/blog/pe-team-augment-devops-with-ai/</guid><description>&lt;img src="https://martinliu.cn/blog/pe-team-augment-devops-with-ai/pexels-pavel-danilyuk-8439093.jpg" alt="Featured image of post 平台工程团队如何利用 AI 增强 DevOps" />&lt;blockquote>
+&lt;p>本文来源 Gartner ：&lt;a class="link" href="https://www.gartner.com/doc/reprints?id=1-2G9VK5IK&amp;amp;ct=240117&amp;amp;st=sb" target="_blank" rel="noopener"
+>《How Platform Engineering Teams Can Augment DevOps With AI》&lt;/a>&lt;/p>&lt;/blockquote>
+&lt;h2 id="概述">概述
+&lt;/h2>&lt;h3 id="主要发现">主要发现
+&lt;/h3>&lt;ul>
+&lt;li>许多组织已经在使用 AI 编码助手、AI 测试工具和 AIOps 平台来优化 DevOps 的特定活动。然而，要缩短整体交付时间，必须识别并克服软件交付各阶段的瓶颈。&lt;/li>
+&lt;li>生成式 AI 为在软件开发生命周期 (SDLC) 的多个阶段中，减少开发者摩擦，并提升开发者体验方面，带来了新机遇。这些摩擦包括：对代码库的理解不足，以及调试、代码审查和根本原因分析中花费的大量时间。&lt;/li>
+&lt;li>提升软件交付流程的效率需要优化和协调 SDLC 的所有阶段。常见的低效表现包括：长时间的构建过程、分析构建流水线错误、变更影响分析和缓慢的事件响应。&lt;/li>
+&lt;li>AI 提供了传统自动化无法比拟的优势，帮助产品团队以更可靠、可持续和成本效益高的方式，来管理其软件交付基础设施。&lt;/li>
+&lt;/ul>
+&lt;h3 id="建议">建议
+&lt;/h3>&lt;p>推动平台工程计划的软件工程领导者应：&lt;/p>
+&lt;ul>
+&lt;li>通过识别和优先解决软件交付流程中的瓶颈，确定适合的 AI 应用场景，从而系统地改进 SDLC。注意供应商的“AI 洗涤”现象，避免在传统自动化手段已经足够的情况下，还要使用 AI 技术进行过度设计。&lt;/li>
+&lt;li>通过支持 AI 增强的工作流来改善开发者体验，减少认知负担，帮助开发者在开发、交付和运营阶段实现流畅的工作状态。&lt;/li>
+&lt;li>通过将 AI 优化集成到 DevOps 流程中，提高各个 SDLC 活动的反馈效率。&lt;/li>
+&lt;li>在内部开发平台中，提供自助式 AI 基础设施管理能力，以优化软件交付基础设施。&lt;/li>
+&lt;/ul>
+&lt;h2 id="战略规划假设">战略规划假设
+&lt;/h2>&lt;p>预计到2027年，使用 AI 增强 SDLC 每个阶段的平台工程团队的比例将从 5% 增至 40%。&lt;/p>
+&lt;h2 id="介绍">介绍
+&lt;/h2>&lt;p>随着 AI 编码助手和 ChatGPT 的推出，软件开发成为生成式 AI 的主要应用领域之一。在 2023 年 Gartner 关于生成式 AI 的 IT 领导者调查中，52% 的 IT 领导者表示：他们期望团队在软件开发中使用生成式 AI。Gartner 同行社区成员的调查显示，61% 的软件工程领导者对生成式 AI 在代码生成中的潜力感到兴奋。&lt;/p>
+&lt;p>然而，开发人员并不总是花大部分时间在编写代码上。他们平均只有 10% 到 25% 的时间用于编写代码。其余的时间则用在阅读规范、写文档、做代码审查、参加会议、帮助同事、调试代码、与其他团队协作、配置环境、处理生产故障、学习技术及业务知识等方面。因此，若只关注代码编写，而忽略了 DevOps 流程的其他环节，可能就不会暴露出开发周期中的其他低效问题，而无法提升整体性能。&lt;/p>
+&lt;p>因此，我们的客户开始从更广泛的角度看待 AI 在 DevOps 中的应用，并提出诸如：“在未来三年内，AI 将如何影响 DevOps/DevSecOps？”，以及“我们如何在敏捷和 DevOps 流程中全面应用 AI？”等问题。&lt;/p>
+&lt;blockquote>
+&lt;p>集中化平台的快速发展，以及在软件开发生命周期各阶段（从构思和规划到生产部署管理）整合 AI/ML，将彻底改变软件工程。
+——JPMorgan Chase 工程师平台和体验负责人 Sandhya Sridharan&lt;/p>&lt;/blockquote>
+&lt;p>平台工程团队将在解决这些问题中起到关键作用，因为他们的职责是：帮助开发团队提升交付速度、软件质量和大规模的开发者体验。他们需要了解现有和潜在平台用户的需求，从多个产品开发团队的挑战中获取独特的洞见。&lt;/p>
+&lt;p>平台工程团队应采取三管齐下的方法，通过 AI 工具和技术来增强 DevOps 工作流（见图 1）：&lt;/p>
+&lt;ol>
+&lt;li>&lt;strong>改善开发者体验&lt;/strong>：在 SDLC 各阶段，AI 增强的用例包括：代码建议和代码解释、总结拉取请求的变更，解释流水线错误，以及使用自然语言查询操作数据和服务健康状态。&lt;/li>
+&lt;li>&lt;strong>提升软件交付工作流的效率&lt;/strong>：AI 优化的例子包括：测试影响分析（缩短构建时间）、自动化代码审查和变更影响分析（辅助人工监督）、以及事件关联（缩短事故解决时间）。&lt;/li>
+&lt;li>&lt;strong>优化软件交付基础设施&lt;/strong>：AI 技术的例子包括：自主工作负载优化和增强的 FinOps，从而优化可靠性、成本和环境可持续性。&lt;/li>
+&lt;/ol>
+&lt;p>&lt;img src="https://martinliu.cn/blog/pe-team-augment-devops-with-ai/1.png"
+width="1280"
+height="770"
+srcset="https://martinliu.cn/blog/pe-team-augment-devops-with-ai/1_hu_bb959d5e2b8f0100.png 480w, https://martinliu.cn/blog/pe-team-augment-devops-with-ai/1_hu_376aa5e1ff189aee.png 1024w"
+loading="lazy"
+alt="图 1: 三种使用 AI 增强 DevOps 的方法"
+class="gallery-image"
+data-flex-grow="166"
+data-flex-basis="398px"
+>&lt;/p>
+&lt;h2 id="分析">分析
+&lt;/h2>&lt;h3 id="识别并优先解决-sdlc-中的瓶颈">识别并优先解决 SDLC 中的瓶颈
+&lt;/h3>&lt;p>想要通过 AI 增强 DevOps 工作流的平台工程团队，应该先识别并优先解决阻碍 SDLC 工作流的瓶颈。&lt;/p>
+&lt;p>这些瓶颈主要有两种：&lt;/p>
+&lt;ol>
+&lt;li>跨越 SDLC 各阶段的工作流障碍&lt;/li>
+&lt;li>SDLC 每个阶段内部的工作流障碍&lt;/li>
+&lt;/ol>
+&lt;p>第一类瓶颈可以在系统性审视整个软件交付价值流时得到显现。系统性视角让我们能够识别到，哪些存在于 SDLC 各角色和团队“交接工作”过程中的瓶颈。&lt;/p>
+&lt;p>涉及多个阶段或多个团队的瓶颈示例如下：&lt;/p>
+&lt;ul>
+&lt;li>开发人员等待设计师和产品经理的输入&lt;/li>
+&lt;li>运营团队等待分析变更的影响&lt;/li>
+&lt;li>安全团队执行部署前检查&lt;/li>
+&lt;/ul>
+&lt;p>某些瓶颈可能被认为是“必要的”，但无论如何，这些延迟对客户来说并没有增加价值（见图 2）。&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/blog/pe-team-augment-devops-with-ai/2.png"
+width="1280"
+height="571"
+srcset="https://martinliu.cn/blog/pe-team-augment-devops-with-ai/2_hu_bc7af2c37ca238da.png 480w, https://martinliu.cn/blog/pe-team-augment-devops-with-ai/2_hu_610b46e68e1b755e.png 1024w"
+loading="lazy"
+alt="图 2: 识别工作项在软件交付生命周期中移动时的瓶颈"
+class="gallery-image"
+data-flex-grow="224"
+data-flex-basis="538px"
+>&lt;/p>
+&lt;p>第二类限制更容易发现，因为它们出现在“单一工作线程”中。这些逻辑上的工作线程的例子如下：&lt;/p>
+&lt;ul>
+&lt;li>开发流程内部（编码、构建、测试、调试、重构、提交）&lt;/li>
+&lt;li>代码检入过程（拉取请求、代码审查、安全检查）&lt;/li>
+&lt;li>持续集成（构建代码、运行单元测试、运行 SAST/DAST 测试、运行服务健康检查）&lt;/li>
+&lt;li>环境管理（创建虚拟机、容器编排、设置基础设施）&lt;/li>
+&lt;li>事故响应（分类警报、事件关联、分析日志、根本原因分析）&lt;/li>
+&lt;/ul>
+&lt;p>在每个阶段，不同团队可能面临着不同的限制。例如，处理遗留代码库，并进行增量更改的团队发现最大的限制不是编码效率，而是对旧代码库缺乏理解。因此，平台工程团队需要与产品工程团队合作，了解开发者的痛点，确保 AI 功能的实现是基于实际需求的。&lt;/p>
+&lt;p>图 3 重点分析了在每个工作线程中的具体活动，并展示了 AI 如何解决这些限制和瓶颈。无法一次解决所有问题—— 因此，应识别并迭代地解决此时此刻的最大的限制约束点（见注释 1）。&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/blog/pe-team-augment-devops-with-ai/3.png"
+width="1280"
+height="786"
+srcset="https://martinliu.cn/blog/pe-team-augment-devops-with-ai/3_hu_f754eb1998bce6e6.png 480w, https://martinliu.cn/blog/pe-team-augment-devops-with-ai/3_hu_ed5a183605fb2de5.png 1024w"
+loading="lazy"
+alt="图 3: 在软件交付生命周期的每个阶段中迭代地解决最大的限制"
+class="gallery-image"
+data-flex-grow="162"
+data-flex-basis="390px"
+>&lt;/p>
+&lt;h3 id="改善开发者体验">改善开发者体验
+&lt;/h3>&lt;p>改善开发者体验已成为软件工程领导者的关键优先事项，58% 的领导者表示，这对他们的组织高管层非常重要。提升开发者体验或生产力是开发者平台和工具类技术和实践的首要价值因素。因此，平台工程团队在使用 AI 增强 DevOps 工作流的第一步应集中在改善使用平台的人员体验上。&lt;/p>
+&lt;p>图 4 展示了在软件开发、交付和运营过程中，通过 AI 增强改善开发者体验的使用案例。&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/blog/pe-team-augment-devops-with-ai/4.png"
+width="1280"
+height="1051"
+srcset="https://martinliu.cn/blog/pe-team-augment-devops-with-ai/4_hu_29e5025b8c040920.png 480w, https://martinliu.cn/blog/pe-team-augment-devops-with-ai/4_hu_680fdfd5a3f66bdd.png 1024w"
+loading="lazy"
+alt="图 4: 使用 AI 增强改善 DevOps 中的开发者体验"
+class="gallery-image"
+data-flex-grow="121"
+data-flex-basis="292px"
+>&lt;/p>
+&lt;p>通过 AI 使能开发者的使用案例改善的开发者体验涵盖整个 SDLC，从开发、交付到运营。以下是 AI 在各阶段提升开发者体验的方式：&lt;/p>
+&lt;h4 id="开发">开发
+&lt;/h4>&lt;p>在开发阶段，开发者体验主要受认知负荷和上下文切换次数的影响。AI 编码助手可以在 IDE 内提供相关信息，减少开发者的上下文切换，避免他们需要离开开发环境去网上查找信息。&lt;/p>
+&lt;p>帮助开发者减少认知负荷并实现流畅工作的 AI 功能包括：&lt;/p>
+&lt;ul>
+&lt;li>代码生成&lt;/li>
+&lt;li>代码理解&lt;/li>
+&lt;li>辅助调试&lt;/li>
+&lt;li>文档生成&lt;/li>
+&lt;li>漏洞解释&lt;/li>
+&lt;li>自动修复&lt;/li>
+&lt;/ul>
+&lt;p>有关提供这些功能的代表性工具的详细分析，请参见《AI 编码助手创新指南》和《AI 增强软件测试工具市场指南》。&lt;/p>
+&lt;h4 id="交付">交付
+&lt;/h4>&lt;p>在软件交付阶段，改善开发者体验的重点是缩短反馈周期和减少重复的低价值工作。AI 使能的功能示例包括：&lt;/p>
+&lt;ul>
+&lt;li>自动建议修复构建错误&lt;/li>
+&lt;li>预防变更失败（通过变更影响分析和变更风险预测）&lt;/li>
+&lt;li>缩短构建时间（使用智能测试选择）&lt;/li>
+&lt;/ul>
+&lt;p>这些功能可以为开发者提供更快的反馈。CircleCI、Digital.ai、GitLab 和 Harness 等供应商正将 AI 增强功能集成到 DevOps 平台中（见《DevOps 平台魔力象限》）。&lt;/p>
+&lt;h4 id="运营">运营
+&lt;/h4>&lt;p>这一阶段传统上主要依靠 AIOps（预测 AI）功能，通过异常检测、事件关联和基于警报和遥测数据生成见解来加速事故响应（见《AIOps 平台市场指南》）。&lt;/p>
+&lt;p>生成式 AI 可以通过以下方式进一步消减常规任务：&lt;/p>
+&lt;ul>
+&lt;li>根据事故模式自动生成运行手册-run-book（例如 Shoreline 和 Transposit 等供应商）&lt;/li>
+&lt;li>在事故响应期间通过总结、解释、翻译、内容生成、预测和建议来减少值班工程师的认知负荷。这在值班工程师不熟悉引发事故的代码时尤为重要（例如 BMC、PagerDuty、ServiceNow、Shoreline 和 Transposit 等供应商）。&lt;/li>
+&lt;li>在故障排除或自动化 DevOps 工作流时，使用自然语言（例如“描述最近对生产环境的变更有哪些？”）（例如 Cortex、Kubiya、New Relic 和 Dynatrace 等供应商）。&lt;/li>
+&lt;/ul>
+&lt;h3 id="提升软件交付效率">提升软件交付效率
+&lt;/h3>&lt;p>除了改善软件交付工作流中的开发者体验，AI 还具有优化工作流效率的潜力。平台工程团队可以在创建“铺装道路”时集成 AI 功能，以简化从构思到生产的价值流动。在此过程中，他们可以系统地了解从客户承诺到客户看到结果的整个工作过程。系统视图通常是价值流映射的一部分（见《DevOps 流程价值流映射指南》）。&lt;/p>
+&lt;p>单靠自动代码生成来提升软件交付性能，在超过一定阈值后会，所产生收益会递减——因为最大的价值交付瓶颈可能在其他地方（见注释 1）。图 5 显示了帮助克服 SDLC 限制（约束点）的 AI 使能案例（如第一部分所述）。&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/blog/pe-team-augment-devops-with-ai/5.png"
+width="1280"
+height="1115"
+srcset="https://martinliu.cn/blog/pe-team-augment-devops-with-ai/5_hu_3633085950aa7371.png 480w, https://martinliu.cn/blog/pe-team-augment-devops-with-ai/5_hu_ce1612b9a4788516.png 1024w"
+loading="lazy"
+alt="图 5: AI 增强的 DevOps 使用案例以优化 SDLC"
+class="gallery-image"
+data-flex-grow="114"
+data-flex-basis="275px"
+>&lt;/p>
+&lt;p>图 6 展示了用于实现上述使用案例的一些工具，并不限于所展示的示例。供应商正在迅速扩展其功能，因此一个供应商可能支持比这里描述的更多使用案例。&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/blog/pe-team-augment-devops-with-ai/6.png"
+width="1280"
+height="1115"
+srcset="https://martinliu.cn/blog/pe-team-augment-devops-with-ai/6_hu_b6bac3ccaffca187.png 480w, https://martinliu.cn/blog/pe-team-augment-devops-with-ai/6_hu_7c9d8b394641d203.png 1024w"
+loading="lazy"
+alt="图 6: AI 增强的 DevOps 工具在 SDLC 中的应用"
+class="gallery-image"
+data-flex-grow="114"
+data-flex-basis="275px"
+>&lt;/p>
+&lt;blockquote>
+&lt;p>&lt;strong>AI 增强开发的下游影响&lt;/strong>&lt;/p>
+&lt;p>AI 编码助手使开发者的编写代码效率提升，但这也带来一个意外的副作用：代码审查和安全审查的工作量积压增加。缓慢的代码审查会降低整体开发效率。根据 2023 年 DORA 报告，代码审查速度快的团队其软件交付性能提高了 50%。平台工程团队可以看清这些系统性互相关系，适合推动系统性变革，而不仅仅是局部改进。&lt;/p>
+&lt;p>因此，平台工程团队在支持 AI 增强开发工具的同时，必须补充卓越的 DevSecOps 实践。否则，我们将面临开发者产生虚假的安全感、重复代码和未经审查的代码推送，进而导致质量和安全问题。&lt;/p>&lt;/blockquote>
+&lt;h3 id="优化软件交付基础设施">优化软件交付基础设施
+&lt;/h3>&lt;p>平台工程团队负责管理、治理并向产品团队提供软件交付基础设施。然而，规模化管理软件交付基础设施非常复杂，如下公式所示：&lt;/p>
+&lt;blockquote>
+&lt;p>软件交付基础设施 = （支持所有环境中应用及其组件的完整 SDLC 的基础设施）x（应用数量）&lt;/p>&lt;/blockquote>
+&lt;p>软件交付基础设施不仅限于生产环境，还包括开发、测试、压力测试和预发布环境。此外，基础设施还必须支持部署和测试应用所需的各个组件。这些组件可能包括源代码管理系统、云开发环境、持续集成服务器、数据库服务器，以及运行时基础设施堆栈（由物理主机、虚拟机容器和应用运行时组成）。&lt;/p>
+&lt;p>产品团队越来越期望自助工具能够在成本、可靠性和可持续性之间实现优化（见图 7）。&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/blog/pe-team-augment-devops-with-ai/7.png"
+width="1280"
+height="962"
+srcset="https://martinliu.cn/blog/pe-team-augment-devops-with-ai/7_hu_2dbf8a2c798113f.png 480w, https://martinliu.cn/blog/pe-team-augment-devops-with-ai/7_hu_c15237b16458bd41.png 1024w"
+loading="lazy"
+alt="图 7: 在可靠性、成本优化和可持续性目标之间实现权衡"
+class="gallery-image"
+data-flex-grow="133"
+data-flex-basis="319px"
+>&lt;/p>
+&lt;p>&lt;strong>通过自助内部开发平台优化云原生软件交付基础设施&lt;/strong>&lt;/p>
+&lt;p>优化公有云基础设施变得尤为困难，但也非常重要。这主要是由于云服务种类繁多、定价模式不一致、云原生应用的分布式特性以及流量模式的季节性变化。为了可靠、经济和可持续地管理基础设施，平台工程团队应为产品团队提供支持 AI 增强的自助平台和工具，以优化成本、可靠性和可持续性。&lt;/p>
+&lt;p>新兴技术如自主工作负载优化和增强的 FinOps，可以自动化优化价格和性能，同时实现预定义的业务目标。供应商包括 Akamas、Anodot、Apptio、Avesha、CAST AI、Densify、Google Cloud（Active Assist、Duet AI）、IBM（Turbonomic）、Sedai 和 StormForge。图 8 显示了这些工具支持的 AI 增强使用案例。&lt;/p>
+&lt;p>平台工程团队应将这些技术整合到内部开发平台中，以优化计算基础设施。这使开发人员和站点可靠性工程师能够可靠且经济地管理和运行应用程序（见 2023 年 IT 管理智能炒作周期）。&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/blog/pe-team-augment-devops-with-ai/8.png"
+width="1280"
+height="1040"
+srcset="https://martinliu.cn/blog/pe-team-augment-devops-with-ai/8_hu_72fda4bb93a25642.png 480w, https://martinliu.cn/blog/pe-team-augment-devops-with-ai/8_hu_5b78ac726674607f.png 1024w"
+loading="lazy"
+alt="图 8: 平台工程团队支持的 AI 增强基础设施成本、可靠性和可持续性优化工具"
+class="gallery-image"
+data-flex-grow="123"
+data-flex-basis="295px"
+>&lt;/p>
+&lt;h3 id="快速回答">快速回答
+&lt;/h3>&lt;p>&lt;strong>在使用 AI 增强 DevOps 工作流时需要注意哪些陷阱？&lt;/strong>&lt;/p>
+&lt;p>软件工程领导者必须警惕潜在的陷阱和意外的副作用：&lt;/p>
+&lt;ul>
+&lt;li>注意供应商的“AI 洗涤”，避免在传统自动化选项足够时，还用 AI 技术过度再造设计。通过组建跨职能团队进行试点，创建和验证相关假设进行前后对比分析。使用结果驱动的 KPI 来定义和衡量成功。&lt;/li>
+&lt;li>将 AI 应用于 SDLC 的某个部分（局部），可能会导致工作量的转移，而不是节省，从而产生一种虚假的时间节省感。例如，在编码过程中节省了时间，可能会因为代码审查和调试时间的增加，而正负抵消（见评估生成式 AI 如何改善开发者体验）。&lt;/li>
+&lt;li>尽管 AI 旨在降低认知负荷，但它也可能无意中降低认知技能水平。是人类员工的认知技能在不使用的情况下，而随之退化，这使我们在 AI 工具达到其极限时，反而无法做出正确决策。使用 AI 作为决策引擎的另一个风险是，它会降低人类对系统运行方式的理解，并导致缺乏情境意识。&lt;/li>
+&lt;li>大多数生成式 AI 工具无法确保输出的一致性、准确性、可重复性和可预测性。“幻觉”使当前的技术难以胜任关键任务。然而，涉及检索增强生成（RAG）和模型微调的技术，可以通过访问最新的知识源和特定上下文数据来减少幻觉。使用基础模型作为控制器来构建执行狭窄任务的智能体也有前景。例如，Adept、AgentGPT、AutoGPT 和 Agents for Amazon Bedrock。Gartner 称这些为“自主智能体”（见 2023 年生成式 AI 炒作周期）。&lt;/li>
+&lt;/ul>
+&lt;h2 id="证据">证据
+&lt;/h2>&lt;ol>
+&lt;li>Gartner IT 领导者对软件工程生成式 AI 的调查：这项调查于 2023 年 5 月 2 日至 8 日在线进行，旨在收集生成式 AI 在软件工程中的当前和预期使用情况数据。共有 91 名 IT 领导者参加，他们是 Gartner 研究圈的成员，一个由 Gartner 管理的小组。参与者主要来自北美（n = 44）和 EMEA（n = 33）；其他受访者来自亚太地区（n = 12）和拉丁美洲（n = 2）。免责声明：本次调查结果仅反映受访者和其公司的观点，不代表全球情况或整个市场。&lt;/li>
+&lt;li>生成式 AI 对软件工程团队的影响&lt;/li>
+&lt;li>软件开发人员的日常工作：微软&lt;/li>
+&lt;li>软件开发中 AI 的现状，GitLab&lt;/li>
+&lt;li>全球代码时间报告，基于 25 万多名开发人员的数据，Software.com&lt;/li>
+&lt;li>2023 年 DevOps 状态报告，基于 3000 名专业人员的数据，Google Cloud&lt;/li>
+&lt;li>自动化的讽刺——Lisanne Bainbridge&lt;/li>
+&lt;li>国家人类系统集成委员会（BOHSI）小组：人类与 AI 团队合作：研究前沿，ResearchGate&lt;/li>
+&lt;/ol>
+&lt;h2 id="注释-1">注释 1
+&lt;/h2>&lt;p>在《目标》一书中，Eliyahu Goldratt 博士将约束定义为“限制系统实现更高性能的因素”。&lt;/p>
+&lt;p>缓解最关键的约束对整体系统性能有着巨大影响。因此，我们必须迭代地识别、优先处理，并解决阻碍团队交付价值的最大约束。&lt;/p>
+&lt;p>❤️ Photo by Pavel Danilyuk: &lt;a class="link" href="https://www.pexels.com/photo/a-robot-holding-a-cup-8439093/" target="_blank" rel="noopener"
+>https://www.pexels.com/photo/a-robot-holding-a-cup-8439093/&lt;/a>&lt;/p></description></item><item><title>SRE实战引擎：构建高效稳定的生产环境 | SRE培训 | SRE认证 | SRE课程</title><link>https://martinliu.cn/course/sre-foundation/</link><pubDate>Wed, 10 Jan 2024 16:19:04 +0800</pubDate><guid>https://martinliu.cn/course/sre-foundation/</guid><description>&lt;img src="https://martinliu.cn/course/sre-foundation/sref.png" alt="Featured image of post SRE实战引擎：构建高效稳定的生产环境 | SRE培训 | SRE认证 | SRE课程" />&lt;h2 id="课程简介">课程简介
+&lt;/h2>&lt;ul>
+&lt;li>课程名称：《SRE实战引擎：构建高效稳定的生产环境》&lt;/li>
+&lt;li>交付形式：线上或线下&lt;/li>
+&lt;li>时长：2天&lt;/li>
+&lt;/ul>
+&lt;p>探索SRE核心理念和实践，瞭解如何成为顶尖的SRE/DevOps专业人才。通过深度学习SRE核心基础，剖析SLO实际运用，领悟业务系统稳定性的真谛。参与实战演练，提升问题解决能力，深度理解SRE实践流程。成为SRE领域的专业人才，推动业务系统更安全、更高效运行。挑战自我，成就卓越生产环境。&lt;/p>
+&lt;h2 id="课程对象">课程对象
+&lt;/h2>&lt;ul>
+&lt;li>DevOps工程师、运维工程师、软件工程师&lt;/li>
+&lt;li>想成为SRE/DevOps工程师的人员&lt;/li>
+&lt;li>服务交付经理、项目经理、产品经理&lt;/li>
+&lt;li>已经有ITIL/DevOps或敏捷相关认证的人员&lt;/li>
+&lt;/ul>
+&lt;h2 id="课程目标">课程目标
+&lt;/h2>&lt;ul>
+&lt;li>在组织中对SRE相关的基础理念、核心实践达成高度一致和认同&lt;/li>
+&lt;li>彻底梳理SRE的知识体系的五大核心基础和相互之间的关系&lt;/li>
+&lt;li>对SRE的实施过程和相关案例做针对性的研讨&lt;/li>
+&lt;li>详细理解在组织中制定SLO的流程和实施方式&lt;/li>
+&lt;/ul>
+&lt;h2 id="课程大纲">课程大纲
+&lt;/h2>&lt;h3 id="第一天">第一天
+&lt;/h3>&lt;blockquote>
+&lt;p>模块 1: SRE 概述&lt;/p>&lt;/blockquote>
+&lt;ul>
+&lt;li>SRE 的定义和来历&lt;/li>
+&lt;li>探究SRE的发展历程和其在IT领域的演变。&lt;/li>
+&lt;li>分析SRE与DevOps之间的密切关系。&lt;/li>
+&lt;li>介绍SRE管理的核心体系。&lt;/li>
+&lt;/ul>
+&lt;blockquote>
+&lt;p>模块 2: SRE 的核心基础&lt;/p>&lt;/blockquote>
+&lt;ul>
+&lt;li>SRE的五大核心基础&lt;/li>
+&lt;li>深入理解SRE的核心概念，重点关注SLO的实际应用。&lt;/li>
+&lt;li>实践中探讨SRE在监控告警方面的应用，突破与传统运维管理的区别。&lt;/li>
+&lt;li>探讨如何通过消除琐事和简化系统，摆脱繁琐的人工运维。&lt;/li>
+&lt;/ul>
+&lt;blockquote>
+&lt;p>模块 3: SRE 的实践和流程&lt;/p>&lt;/blockquote>
+&lt;ul>
+&lt;li>SRE的实践和流程详解&lt;/li>
+&lt;li>深度解析SRE的九大实践，包括具体操作和案例研究。&lt;/li>
+&lt;li>探讨SRE的五大特征，并对比其与ITIL流程的不同之处。&lt;/li>
+&lt;li>分析实际的SRE参考案例，提供深入的研讨和实际应用的机会。&lt;/li>
+&lt;/ul>
+&lt;h3 id="第二天">第二天
+&lt;/h3>&lt;blockquote>
+&lt;p>模块 4: 工作坊 -《SLO兵法》实施 SRE 艺术&lt;/p>&lt;/blockquote>
+&lt;ul>
+&lt;li>引入SLO的实际工作坊，加深对运用核心概念的理解。&lt;/li>
+&lt;li>回顾SRE的核心概念，为深入的SLO实践打下基础。&lt;/li>
+&lt;li>定制SLO和SLI流程，包括用户旅程和系统边界的法则。&lt;/li>
+&lt;li>分组进行实际的SLO实战演练，加强团队合作和实际应用的能力。&lt;/li>
+&lt;/ul>
+&lt;blockquote>
+&lt;p>模块 5: 云原生环境下的非抽象大系统设计&lt;/p>&lt;/blockquote>
+&lt;ul>
+&lt;li>合理运用云基础设施的特性对业务系统进行设计与规划&lt;/li>
+&lt;li>深入探讨抽象系统设计和非抽象设计的概念。&lt;/li>
+&lt;li>讨论大规模业务系统的规划，强调设计决策对系统稳定性的影响。&lt;/li>
+&lt;li>探讨分布式架构和可恢复系统的设计原则。&lt;/li>
+&lt;li>结合课堂练习对设计概念进行实际运用，并进行综合总结。&lt;/li>
+&lt;/ul>
+&lt;blockquote>
+&lt;p>模块 6: 综合答疑&amp;amp;总结&lt;/p>&lt;/blockquote>
+&lt;ul>
+&lt;li>回答学员提出的问题，深化对课程内容的理解，并进行全面总结，确保学员能够充分领会并应用所学的关键概念。&lt;/li>
+&lt;/ul>
+&lt;h2 id="课程收获">课程收获
+&lt;/h2>&lt;ol>
+&lt;li>提升系统稳定性与降低宕机风险：通过学习SRE的核心理念，你将具备优化系统稳定性的实际技能。这意味着你能够更有效地防范和减少系统宕机事故，提高系统整体的可靠性，为组织创造更加稳健的运行环境。&lt;/li>
+&lt;li>提升问题定位与解决能力：通过深入学习SRE实践和理念，你将获得强大的问题解决技能，能够更快速、精准地应对系统运行中的各种挑战，从而提升业务服务可用性和安全性。&lt;/li>
+&lt;li>深度理解SLO制定流程：本课程详细解析SLO的制定流程和实施方式，使你能够更具深度和系统性地实施监控、度量和告警，从而更好地保障服务稳定性。&lt;/li>
+&lt;li>应对系统性知识体系挑战：通过深入梳理SRE的知识体系，你将建立起更为系统和全面的知识结构，帮助你更从容地面对系统运维中的各类挑战。这不仅仅是技术层面的提升，更是对问题综合性思考的能力的锻炼。&lt;/li>
+&lt;li>实施过程和案例研讨：课程注重实际应用，通过深入研讨实施过程和解析相关案例，你将培养解决实际问题的实践经验。这将使你更加熟悉实际工作中的情境，并能够灵活运用所学知识解决具体问题。&lt;/li>
+&lt;li>专业认证和技能提升：本课程为已持有相关IT认证的专业人员提供更深层次的专业学习。增强解决问题的综合能力，提升在解决实际问题时的信心和熟练度。&lt;/li>
+&lt;/ol></description></item><item><title>精通可观测性：系统运维实践的跃迁</title><link>https://martinliu.cn/course/o11y-foundation/</link><pubDate>Wed, 10 Jan 2024 16:19:04 +0800</pubDate><guid>https://martinliu.cn/course/o11y-foundation/</guid><description>&lt;img src="https://martinliu.cn/course/o11y-foundation/o11yf.png" alt="Featured image of post 精通可观测性：系统运维实践的跃迁" />&lt;h2 id="概述">概述
+&lt;/h2>&lt;ul>
+&lt;li>课程名称：《精通可观测性：系统运维实践的跃迁》&lt;/li>
+&lt;li>交付形式：线上或线下&lt;/li>
+&lt;li>时长：2天&lt;/li>
+&lt;/ul>
+&lt;p>探索可观测性工程的理念和实战，打破传统，挑战未知。适合运维、DevOps、产品与项目管理者，聚焦可观测性的核心理论与实践。洞悉独特的软件工程方法，深入结构化事件与链路追踪，掌握OpenTelemetry探针标准。从调试到管理层决策，全方位提升。领悟SLO与告警处理的实际应用，推动团队协作与文化建设。通过参考案例与成熟度模型，助力未来发展。勇攀高峰，塑造全新视角。&lt;/p>
+&lt;h2 id="课程对象">课程对象
+&lt;/h2>&lt;ul>
+&lt;li>运维工程师、运维经理、DevOps工程师&lt;/li>
+&lt;li>想成为SRE/DevOps工程师的人员&lt;/li>
+&lt;li>产品经理、项目经理、运维交付经理&lt;/li>
+&lt;li>已经有ITIL/DevOps或敏捷相关认证的人员&lt;/li>
+&lt;/ul>
+&lt;h2 id="课程目标">课程目标
+&lt;/h2>&lt;ol>
+&lt;li>基础理论与实践： 掌握可观测性的核心理论，将其应用于实际的软件系统调试与优化。&lt;/li>
+&lt;li>监控数据与调试： 学习如何利用监控数据进行高效调试，提升系统故障排查的能力。&lt;/li>
+&lt;li>技术工具应用： 使用结构化事件和链路追踪等工具，深入了解OpenTelemetry探针标准。&lt;/li>
+&lt;li>大规模可观测性管理： 分析投资回报率，制定有效的数据存储策略，优化采样方法降低成本。&lt;/li>
+&lt;li>团队可观测性实践： 推广可观测性实践，促进团队内外的协作，建立可观测性联盟。&lt;/li>
+&lt;li>SLO与告警处理： 利用SLO提高系统可靠性，并处理基于SLO的告警，提升预测和响应能力。&lt;/li>
+&lt;li>可观测性文化与合作： 培养可观测性文化，通过商业案例了解投资回报，创建可观测性联盟，应用成熟度模型指导未来发展。&lt;/li>
+&lt;/ol>
+&lt;h2 id="课程大纲">课程大纲
+&lt;/h2>&lt;h3 id="第一天">第一天
+&lt;/h3>&lt;blockquote>
+&lt;p>模块 1: 可观测性概述&lt;/p>&lt;/blockquote>
+&lt;ul>
+&lt;li>可观测性的学术定义&lt;/li>
+&lt;li>软件系统中的可观测性应用&lt;/li>
+&lt;li>软件可观测性错误描述&lt;/li>
+&lt;/ul>
+&lt;blockquote>
+&lt;p>模块 2: 可观测性与调试实践&lt;/p>&lt;/blockquote>
+&lt;ul>
+&lt;li>监控数据与调试的关系&lt;/li>
+&lt;li>可观测性实现更好调试的方法&lt;/li>
+&lt;li>Parse公司转型实践经验&lt;/li>
+&lt;li>可观测性与DevOps、SRE、云原生的关联&lt;/li>
+&lt;/ul>
+&lt;blockquote>
+&lt;p>模块 3: 结构化事件与链路追踪&lt;/p>&lt;/blockquote>
+&lt;ul>
+&lt;li>结构化事件在调试中的应用&lt;/li>
+&lt;li>链路追踪的重要性与实践&lt;/li>
+&lt;/ul>
+&lt;blockquote>
+&lt;p>模块 4: 使用 OpenTelemetry 的探针&lt;/p>&lt;/blockquote>
+&lt;ul>
+&lt;li>探针的简介与作用&lt;/li>
+&lt;li>开源探针标准及其使用示例&lt;/li>
+&lt;/ul>
+&lt;h3 id="第二天">第二天
+&lt;/h3>&lt;blockquote>
+&lt;p>模块 5: 通过事件分析实现可观测性&lt;/p>&lt;/blockquote>
+&lt;ul>
+&lt;li>从现有数据出发的调试&lt;/li>
+&lt;li>第一性原理调试&lt;/li>
+&lt;li>AIOps的误导性承诺&lt;/li>
+&lt;/ul>
+&lt;blockquote>
+&lt;p>模块 6: SLO 与告警处理&lt;/p>&lt;/blockquote>
+&lt;ul>
+&lt;li>使用SLO提高可靠性&lt;/li>
+&lt;li>处理基于SLO的告警&lt;/li>
+&lt;li>可观测性与软件供应链的关系&lt;/li>
+&lt;/ul>
+&lt;blockquote>
+&lt;p>模块 7: 大规模可观测性的实践与管理&lt;/p>&lt;/blockquote>
+&lt;ul>
+&lt;li>可观测性投资回报率分析&lt;/li>
+&lt;li>高效数据存储策略&lt;/li>
+&lt;li>精准且经济的采样方法&lt;/li>
+&lt;li>遥测管理流水线的建立与挑战&lt;/li>
+&lt;/ul>
+&lt;blockquote>
+&lt;p>模块 8: 传播可观测性文化&lt;/p>&lt;/blockquote>
+&lt;ul>
+&lt;li>可观测性的商业案例&lt;/li>
+&lt;li>创造可观测性联盟与商业智能工具结合&lt;/li>
+&lt;li>可观测性成熟度模型与未来趋势预测&lt;/li>
+&lt;/ul>
+&lt;h2 id="课程收获">课程收获
+&lt;/h2>&lt;ol>
+&lt;li>深化可观测性理解： 学员将深入理解可观测性的核心概念与实践，解决在复杂软件系统中的调试与排查难题，提升系统稳定性。&lt;/li>
+&lt;li>提升技术应用水平： 通过掌握结构化事件、链路追踪和OpenTelemetry探针等技术工具，学员能够更高效地应用于实际场景，优化软件质量与性能。&lt;/li>
+&lt;li>优化管理决策： 学员将能够分析可观测性的投资回报率，制定高效的数据存储策略，为大规模系统的管理决策提供数据支持，降低运维成本。&lt;/li>
+&lt;li>促进团队协作与文化建设： 学员通过推广可观测性实践，促进团队内外的协作，建立可观测性联盟，推动团队在系统优化方面取得更大的成就。&lt;/li>
+&lt;li>提高预测与响应能力： 学员将能够利用SLO提高系统可靠性，处理基于SLO的告警，提升对系统行为的预测和响应能力，减少潜在的系统宕机风险。&lt;/li>
+&lt;/ol></description></item><item><title>‘SLO兵法’实施 SRE 的艺术 | SRE培训 | SRE认证 | SRE课程</title><link>https://martinliu.cn/course/slo-art-of-implement-sre/</link><pubDate>Wed, 10 Jan 2024 15:19:04 +0800</pubDate><guid>https://martinliu.cn/course/slo-art-of-implement-sre/</guid><description>&lt;img src="https://martinliu.cn/course/slo-art-of-implement-sre/art-slo.png" alt="Featured image of post ‘SLO兵法’实施 SRE 的艺术 | SRE培训 | SRE认证 | SRE课程" />&lt;h2 id="课程简介">课程简介
+&lt;/h2>&lt;ul>
+&lt;li>课程名称：‘SLO兵法’实施 SRE 的艺术&lt;/li>
+&lt;li>交付形式：线上或线下&lt;/li>
+&lt;li>时长：一天&lt;/li>
+&lt;/ul>
+&lt;p>欢迎踏上《SLO兵法》的探索之旅，一场引领你进入Site Reliability Engineering（SRE）精髓的深度学习之旅。这门课程将为你揭示系统稳定性的奥秘，为构建可靠、稳定、安全的服务打开全新的思维之门。&lt;/p>
+&lt;p>&lt;strong>为何选择《SLO兵法》？&lt;/strong>&lt;/p>
+&lt;p>这不仅仅是一门课程，更是通往业务系统可靠性和可观测性的钥匙。对于所有希望在生产环境领域取得卓越业务战绩的你，《SLO兵法》将成为你事业道路上的重要里程碑。&lt;/p>
+&lt;h2 id="课程对象">课程对象
+&lt;/h2>&lt;ul>
+&lt;li>DevOps工程师、SRE工程师&lt;/li>
+&lt;li>开发人员、应用架构师、服务交付经理&lt;/li>
+&lt;li>产品经理、项目经理、一线运维经理&lt;/li>
+&lt;li>敏捷教练，DevOps教练&lt;/li>
+&lt;/ul>
+&lt;h2 id="课程目标">课程目标
+&lt;/h2>&lt;ul>
+&lt;li>在组织中对SRE相关的核心理念基础、SLO实践流程达成高度一致和认同&lt;/li>
+&lt;li>详细了解在组织中为业务系统制定 SLO的详细实施的方式&lt;/li>
+&lt;li>彻底梳理SRE知识体系结构和最相关的重要技术实践&lt;/li>
+&lt;li>对SLO的实施过程和相关案例做针对性的研讨&lt;/li>
+&lt;/ul>
+&lt;h2 id="课程大纲">课程大纲
+&lt;/h2>&lt;blockquote>
+&lt;p>第一模块: 对齐 SRE 中与 SLO 相关的术语概念&lt;/p>&lt;/blockquote>
+&lt;ol>
+&lt;li>SLI、SLO 概念解析：深入剖析 SLI（Service Level Indicator）和 SLO（Service Level Objective）的核心概念，确保学员对这两个关键术语有清晰准确的理解。&lt;/li>
+&lt;li>SLO 与客户体验之间的关系：探讨 SLO 与客户体验之间的紧密联系，帮助学员建立起对服务质量目标与最终用户体验之间的敏感性。&lt;/li>
+&lt;/ol>
+&lt;blockquote>
+&lt;p>第二模块: 业务系统为何需要 SLO ？&lt;/p>&lt;/blockquote>
+&lt;ol>
+&lt;li>可靠性是应用系统的最重要特性：强调应用系统可靠性的至关重要地位，为学员树立系统稳定性管理的核心价值观。&lt;/li>
+&lt;li>深入理解 SLO 目标数值的设定原则：深入研究 SLO 目标数值的设定流程，引导学员理解背后的原则与方法，以确保系统的运行水平符合组织的期望。&lt;/li>
+&lt;/ol>
+&lt;blockquote>
+&lt;p>第三模块: 使用错误预算&lt;/p>&lt;/blockquote>
+&lt;ol>
+&lt;li>理解错误预算的概念和应用：解读错误预算的概念，着重探究其与 SLO 密切的逻辑关系，帮助学员理解如何通过错误预算合理管理业务系统风险。&lt;/li>
+&lt;li>错误预算与运维操作和监控告警的关系：深入研究如何运用错误预算进行运维操作的优化，以及如何构建有效的 SLO 监控告警规则，确保在业务系统发生关键异常时能够准确、迅速的响应。&lt;/li>
+&lt;/ol>
+&lt;blockquote>
+&lt;p>第四模块: 实战演练 - 实施SLO案例实战&lt;/p>&lt;/blockquote>
+&lt;ol>
+&lt;li>阅读学员手册：引导学员仔细阅读学员手册，以建立对实操案例的基本理解。&lt;/li>
+&lt;li>讲解小组工作流程：解释小组工作流程，确保学员能够理解并分组准确执行实际操作。&lt;/li>
+&lt;li>小组工作成果展示：学员展示他们在演练案例中所完成的成果，促进知识分享与团队协作。&lt;/li>
+&lt;/ol>
+&lt;blockquote>
+&lt;p>第五模块：综合答疑&amp;amp;总结&lt;/p>&lt;/blockquote>
+&lt;ol>
+&lt;li>回答学员提出的问题，深化对课程内容的理解，并进行全面总结，确保学员能够充分领会并应用所学的关键概念。&lt;/li>
+&lt;/ol>
+&lt;h2 id="课程收获">课程收获
+&lt;/h2>&lt;p>通过参与本课程，您将在SRE领域获得深刻的收获：&lt;/p>
+&lt;ol>
+&lt;li>&lt;strong>深度理解SLI和SLO的核心概念：&lt;/strong> 您将建立清晰准确的理解，为准确设定和管理 SLO 提供坚实基础。&lt;/li>
+&lt;li>&lt;strong>系统可靠性为大的核心价值观：&lt;/strong> 通过强调其重要性，帮助您确立 SRE 的核心价值观。使您能够全面了解如何优化系统稳定性，提升服务质量和安全性。&lt;/li>
+&lt;li>&lt;strong>精通错误预算和运维操作的关系：&lt;/strong> 使您能够合理控制运维操作风险，并灵活正确运用错误预算。这将大幅提升您对系统健康状况的实时了解，降低潜在问题对业务的风险。&lt;/li>
+&lt;li>&lt;strong>实战演练加深理解：&lt;/strong> 这种实战演练环节将帮助您将所学知识灵活应用于实际案例，提高课后在生产上推行的能力。&lt;/li>
+&lt;/ol></description></item><item><title>《可观测性工程》为软件系统开启第三只眼👁</title><link>https://martinliu.cn/blog/observability-engineering-book/</link><pubDate>Tue, 22 Aug 2023 11:10:46 +0800</pubDate><guid>https://martinliu.cn/blog/observability-engineering-book/</guid><description>&lt;img src="https://martinliu.cn/blog/observability-engineering-book/pexels-skitterphoto-63901.jpg" alt="Featured image of post 《可观测性工程》为软件系统开启第三只眼👁" />&lt;p>“可观测性工程”(Observability Engineering) 是一个近年来在软件工程和系统管理领域中逐渐受到关注的概念。它主要关注的是：如何更好地理解、监控和调试复杂的分布式系统。&lt;/p>
+&lt;p>DevOps浪潮已经给“软件工程”相关的实践带来了极大的影响。首先表现在各个职能团队已经越来越更加紧密的协作和沟通，部门墙正在逐渐消失，有更多的产品团队转型为“Two pizza team”风格的全功能团队，开发、测试、运维、数据库专家、云计算专家都融合在一起，自给自足的独立发布产品。其次软件流水线的工艺也更加的自动化，有朋友曾这样告诉我：他们的 CI/CD 已经可以实现每日多次自动化发布，产品团队每周持续交付到了手发麻的程度。&lt;/p>
+&lt;p>然而，不管我们如何娴熟的使用云平台、容器平台和微服务所带来的高可靠性、自愈能力和稳定性等等优势。当我们在生产环境中 debug 故障的时候，我们依然是云里雾里的凭经和灵感验猜测，还是不得不在多种监控工具之间解读着七长八段的数据， MTTR 故障修复时间仍然长的忍无可忍。我们应该能逐渐意识能到：应用系统的现代化所带来的也不都是好处，还有更多的是“复杂度”。软件应用系统本身和其运行环境的复杂度都在逐渐攀升，四分五裂的运维管理的工具集正在迅速蔓延。&lt;/p>
+&lt;p>在最近的三年多以来，我逐渐开始对曾经经典的“可观测性 == 三根支柱”的理解有所动摇；简单的信号量数据的叠加和关联就足够了么？监控工具手段的更新换代是否就可以实现可观测性。在持续没有找到答案的时候，《observability engineering》这本书出版了。&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/blog/observability-engineering-book/learning.oreilly.jpg"
+width="250"
+height="328"
+srcset="https://martinliu.cn/blog/observability-engineering-book/learning.oreilly_hu_ecaa9a5fb03df4a6.jpg 480w, https://martinliu.cn/blog/observability-engineering-book/learning.oreilly_hu_dc64651dbd02a1ad.jpg 1024w"
+loading="lazy"
+alt="Observability Engineering"
+class="gallery-image"
+data-flex-grow="76"
+data-flex-basis="182px"
+>&lt;/p>
+&lt;ul>
+&lt;li>作者： Charity Majors, Liz Fong-Jones, George Miranda&lt;/li>
+&lt;li>出版日期： 2022 年 5 月&lt;/li>
+&lt;li>出版社： O&amp;rsquo;Reilly Media, Inc.&lt;/li>
+&lt;li>URL：&lt;a class="link" href="https://www.oreilly.com/library/view/observability-engineering/" target="_blank" rel="noopener"
+>https://www.oreilly.com/library/view/observability-engineering/&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;p>Liz Fong-Jones 曾经是 Google 资深的 SRE 工程师和布道师。我几乎看过她的所有相关视频，也转发了一些在我的 B 站里。她离开了 Google 之后，与 Charity 一起创立了 Honeycomb 公司。 George Miranda 是后加入 Honeycomb 公司的员工，他加入这本书的写作时，这本书已经基本是个半成品。&lt;/p>
+&lt;p>本书是第一本只讨论“可观测性”这一主题的书籍，围绕这个主题做了相当深度和广度的讨论。这本书的完整目录在网上都可以找到，下面是关于核心内的脑图。&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/blog/observability-engineering-book/o11y-book.png"
+width="2340"
+height="2002"
+srcset="https://martinliu.cn/blog/observability-engineering-book/o11y-book_hu_7b734a6b307931d3.png 480w, https://martinliu.cn/blog/observability-engineering-book/o11y-book_hu_1e2fe2796d20eca.png 1024w"
+loading="lazy"
+class="gallery-image"
+data-flex-grow="116"
+data-flex-basis="280px"
+>&lt;/p>
+&lt;blockquote>
+&lt;p>“可观测性” - 应该成为软件在交付生命周期中的不容忽视的一个重要属性。不只是一个技术问题，在软件系统中实现和提升可观测性同样需要 DevOps 风格的多团队协作。&lt;/p>&lt;/blockquote>
+&lt;blockquote>
+&lt;p>&amp;ldquo;可观测性工程&amp;quot;的价值 - 增强可观测性的主要好处是提高系统的可靠性、性能和安全性。当系统出现问题时，拥有良好的可观测性意味着可以更快地发现、定位和解决问题。&lt;/p>&lt;/blockquote>
+&lt;blockquote>
+&lt;p>“可观测性工程”的文化和实践：可观测性不仅仅是一组工具或技术，它也是一种文化和实践。这意味着，开发者和运维人员需要紧密合作，共同关心系统的健康和性能。&lt;/p>&lt;/blockquote>
+&lt;p>随着现代软件系统变得越来越复杂，可观测性工程成为了确保高可用性、性能和用户满意度的关键要素。&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/blog/observability-engineering-book/s34584939.jpg"
+width="391"
+height="500"
+srcset="https://martinliu.cn/blog/observability-engineering-book/s34584939_hu_b176f7e42bc19666.jpg 480w, https://martinliu.cn/blog/observability-engineering-book/s34584939_hu_376a7f9c1fb05531.jpg 1024w"
+loading="lazy"
+alt="中文版"
+class="gallery-image"
+data-flex-grow="78"
+data-flex-basis="187px"
+>&lt;/p>
+&lt;p>《可观测性工程》这本书分为五个部分，从历史到未来，从理论到落地，从团队到组织，从商业到文化，内容非常全面。对不同角色和职位的人都有不同的意义：&lt;/p>
+&lt;ul>
+&lt;li>运维：学习掌握本书的内容，可以提升你的眼界和实践能力；你会更好的识别和反思当前所处的困局，你会从分门别类的监控工具集应用，转向“聚焦生产环境问题的快速识别和解决”。&lt;/li>
+&lt;li>SRE：使你对基于 SLO 的监控更加有信心，特别是升级你对遥测数据采集、数据结构、后台存储和在团队中推广等方面的认知。你将会更有效的和产品团队合作。&lt;/li>
+&lt;li>开发：希望这是你学习可观测性的第一本书，本书的前三个部分就是你需要学习掌握的部分。掌握了可观测性驱动开发的概念，你以后就会对应用系统的运行状态了如指掌，它是你 DevOps 和 SRE 技能组合中不可缺少的一个部分。&lt;/li>
+&lt;li>经理和管理者：建议完整的阅读本书的所有内容，重点理解第一、四和五这三个部分。如果您已经熟知可观测性这个概念，可以直接重点阅读第四和第五部分。这是你在产品团队中，在整个组织里大范围落地可观测性左移的必备常识。分布在各个章节里的真实案例分析是不可错过的内容。&lt;/li>
+&lt;li>CxO：建议至少阅读中的案例研究，然后重点了掌握第四和第五部分。从这些内容中，你可以轻易的了解到投资可管的测性的技术要点，用于前期的投资和收益的评判，用于中后期管理的成熟度模型（PS：适用于产品团队自身的成长和进度评估，不建议用于产品团队间/部门间的横向比较和绩效考核）。&lt;/li>
+&lt;/ul>
+&lt;p>《可观测性工程》书籍中的亮点和创新之处在于：将可观测性的基础知识部分，用开发一种全新的可观测性程序的方式进行描述。首先解释：这个程序最底层的构建要素的角度是什么？分析可观测性的最底层数据结构是什么？然后，我们可以很容易的将这些数据应用到用它们来描述：应用系统在生产环境中的状态的变化过程。同时还提到了如何对接开源的 OpenTelemetry 数据；希望开发的同学能对此种描述方法倍感亲切，同时让运维和 SRE 同学也能拥有一个全新的视角。&lt;/p>
+&lt;p>《可观测性工程》一书的另外一个独特之处，是在第八章中引入的“用第一性原理调试应用故障”。虽然可观测性管理的基本流程也是收集、存储和分析使用数据的过程，这看起来和其它单点的监控功能相似。但是，有没有一个统一的思路可以贯穿这个过程始终，并且推动这个过程不断的循环起来。我总是听说马斯克怎样运用第一性原理指导他在造车和火箭过程中的各种创新，并没有想到和监控运维管理会有什么关系。但是本书中所描述的“核心分析循环”还是令我耳目一新。在生产环境排错的过程中，所有人都将关注点和焦虑点都放在“谁？什么时候？可以在系统中定位到哪个最准确的唯一（假想中的）的根因（root cause）”。这种过分关注的结果想法，让我们已经忽略了，在 Debug 过程中，我们应该使用什么思路，去探索未知现象中隐藏的未知的应用运行的多重故障原因。&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/blog/observability-engineering-book/core-analysis-loop.png"
+width="513"
+height="514"
+srcset="https://martinliu.cn/blog/observability-engineering-book/core-analysis-loop_hu_c560b589e283561a.png 480w, https://martinliu.cn/blog/observability-engineering-book/core-analysis-loop_hu_1984bcc16080e9cd.png 1024w"
+loading="lazy"
+alt="本图源于 Honeycomb 文档网站"
+class="gallery-image"
+data-flex-grow="99"
+data-flex-basis="239px"
+>&lt;/p>
+&lt;p>“核心分析循环”并不是系统宕机后的救命稻草，而是一种理性冷静的思考方法，你可以在事故的前中后的任何时刻想到它。它能指导我们进行更加深度的分析思考，在一个理智的探索过程中，你会更加有条理的得出一连串假设，并逐个求证，在评判各种已知数据的时候，你同样需要不停的怀疑一切，推翻一切结论的勇气。切勿让单点工具的片面观察角度、对历史经验数据的依懒性，限制了我们 debug 生产系统的想象力，限制了人脑更适合做网状的复杂关联分析的能力。&lt;/p>
+&lt;p>下面是本书中的一些精彩片段。&lt;/p>
+&lt;blockquote>
+&lt;p>【序言 - Cindy Sridharan】：本书没有关注协议或标准，甚至各种遥测信号的低级表示，而是将可观测性的三大支柱
+设想为结构化事件、假设的迭代验证以及“核心分析循环”的三位一体。根据第一性原理对可观测性的构建要素进行整体重构，有助于强调仅通过遥测信号（或简单使用获取这些信号的工具）并不能最大限度地践行观测系统的所有行为。&lt;/p>&lt;/blockquote>
+&lt;blockquote>
+&lt;p>【11.6 章 &amp;ndash; 可观测性左移】：可观测性驱动开发允许工程团队将他们的玻璃城堡变成可以互动的游乐场。生产环境不是一成不变的，而是充满了活力。工程师应该有能力和自信来应对任何异常并且取得胜利。&lt;/p>&lt;/blockquote>
+&lt;blockquote>
+&lt;p>【14.4 章 - Slack 案例研究结论】：我分享了Slack 如何探测CI 流水线以及如何调试分布式系统的示例。开发人员了解生产环境中的代码情况，首先要考虑的应该是调试分布式系统的复杂性。但是，在发布到生产环境之前，如何正确理解和调试分布式系统同样具有挑战性。&lt;/p>&lt;/blockquote>
+&lt;p>我个人认为：本书完整的回答了大量的问题，可观测性是什么？如何构建？如何左移？实现可观测性管理平台中的重要技术要点？如何在团队和组织中落地和规模化可观测性？怎样构建可观测性文化？等等。即使作者在序言和文中郑重提出，作者团队尽量避免持有任何立场，避免推广其公司产品和技术的意图。但是从文章中所引用的工具界面上看，从对核心数据结构“事件”的论述过程中看，从所引用的他们与 Slack 公司的合作案例上看；都难免脱离所在公司产品的身影。而公正的看，我们无法称之为瑕疵和片面。读者需要在理解此背景的前提下，批判性吸收书里的内容，从而避免在理解上以偏概全的可能性。本书的行文内容上看，那些高调的、上得了厅堂的内容可以用来与 CxO 对话；那些深入的、下得了厨房的代码可以用来与开发工程师沟通。本书使用了大量的篇幅在讨论“可观测性”的来龙去脉，讨论与传统监控的区别和关系，论述落地实现的细节；总的来说：这是一本在“可观测性”主题上用心良苦的作品。意在苦口婆心的引导大家走上构建应用系统可观测性的正确道路。&lt;/p>
+&lt;p>下面是在 Amazon 上关于本书的评论总结：&lt;/p>
+&lt;ol>
+&lt;li>本书深入介绍了可观测性的实际含义，强调它能够解决新问题，构建可观测系统不一定需要添加新遥测数据。&lt;/li>
+&lt;li>书中讨论了可观测性的基本概念，指出它是社会技术系统，能够促进开发人员和业务人员之间的沟通。&lt;/li>
+&lt;li>可观测性在大型公司内部的推广是社会问题，需要说服管理层，书中提供了这方面的指导。&lt;/li>
+&lt;li>书籍中有关构建可观测性堆栈的高级方法的简要说明。&lt;/li>
+&lt;li>可观测性不仅仅是监控，它强调了从&amp;quot;为什么&amp;quot;出发，涉及实现细节和相关技术。&lt;/li>
+&lt;li>评论者强调可观测性是在分布式系统中获取有用信息的关键，提到了跟踪数据流和高基数跟踪的重要性。&lt;/li>
+&lt;li>书中包含了一些行业领导者的案例研究，介绍了他们如何应用可观测性方法监控生产环境。&lt;/li>
+&lt;li>书中涉及了日志、度量、span、追踪、警报等概念，强调了原则胜过具体代码。&lt;/li>
+&lt;li>评论者强烈推荐本书，认为它适用于任何希望为客户构建系统的人，并具有实际应用价值。&lt;/li>
+&lt;li>评论者认为本书是向可观测性转变的人的必读之作，介绍了关键概念和工具的应用。&lt;/li>
+&lt;/ol>
+&lt;p>中文版书籍在各大电商平台有出售。感兴趣的朋友可以入手学习。&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/blog/observability-engineering-book/f11f3a292df5e0fe61162f18516034a85edf7299.jpg"
+width="600"
+height="392"
+srcset="https://martinliu.cn/blog/observability-engineering-book/f11f3a292df5e0fe61162f18516034a85edf7299_hu_a574bb5c11289ec7.jpg 480w, https://martinliu.cn/blog/observability-engineering-book/f11f3a292df5e0fe61162f18516034a85edf7299_hu_8783ced4781a377c.jpg 1024w"
+loading="lazy"
+alt="第三只眼"
+class="gallery-image"
+data-flex-grow="153"
+data-flex-basis="367px"
+>&lt;/p>
+&lt;p>最后，我认为一个软件系统应该拥有三只眼：&lt;/p>
+&lt;ol>
+&lt;li>👁 稳定之眼：从 SRE 站点稳定性工程的角度讲，系统的稳定性是最重要的feature，没有之一。我深度认同这个观点。稳定性包含了服务必须具备的可用性和足够的性能。只有运行在生产环境中，被用户能正常访问和使用的代码才能发挥出它应有的价值。在运行的过程中，应用系统会宕机，运行环境可能会出问题，这都会导致应用系统的无法访问和使用；或者系统的 Bug 导致的高错误率，让系统处于半死不活的状态，用户也能从界面上看到千奇百怪的错误。系统是否进入了非正常的不可用状态？系统是否正在经历着性能抖动的过程？错误率是否高涨到即将溃坝？这些现象本质是产品的稳定性不足导致的，而这些现象是否可见，故障根源是否能快速定位？我们就需要用到第三只眼。&lt;/li>
+&lt;li>👁 混沌之眼：这是一只作死之眼，它是混沌工程。混沌工程旨在对生产环境中注入人为的故障，在云环境中可以使用的手段很多：随机的关闭虚拟机、随机的杀死正在运行的进程、在网络中注入导致网络拥塞的数据包等等。在错误注入的过程中，我们关注于应用系统还是否能正常使用？应用系统如果宕机了的话，它的故障模式是怎样的？然而，可视化这个过程，可视化应用宕机现场的细节，都需要用到第三只眼。对于混沌工程的复盘和数据分析能帮助应用系统提高稳定性，消除单点故障，提升故障容忍度和自动化迁移等等。&lt;/li>
+&lt;li>👁 可观测之眼：可观测性是应用系统本身的一种属性，可观测性的呈现不仅需要在应用程序代码中进行埋点增强（充分条件），还需要方便的采集遥测数据，这些都需要用到可观测性管理平台：可观测信号量的收集、上报、存储和展现分析等功能。可观测性管理平台是‘可观测性’显现（外显）/表现出来的必要条件。&lt;/li>
+&lt;/ol>
+&lt;p>以上是我对《可观测性工程》这本书的简介，希望对大家学习可观测性知识有所帮助。在结尾我用比喻的方式引出了应用系统应该拥有的三只眼的观点，它们是相辅相成且相互成就的关系。&lt;/p>
+&lt;p>❤️ Feature Photo by RealToughCandy.com: &lt;a class="link" href="https://www.pexels.com/photo/person-holding-a-sticker-11035393/" target="_blank" rel="noopener"
+>https://www.pexels.com/photo/person-holding-a-sticker-11035393/&lt;/a>&lt;/p></description></item><item><title>可汗学院如何在一周内成功处理2.5倍的流量？</title><link>https://martinliu.cn/blog/how-khan-academy-successfully-handled-2-5x-traffic-in-a-week-cn/</link><pubDate>Thu, 25 Mar 2021 00:21:05 +0800</pubDate><guid>https://martinliu.cn/blog/how-khan-academy-successfully-handled-2-5x-traffic-in-a-week-cn/</guid><description>&lt;img src="https://martinliu.cn/img/cos/2021-03-24-sunrise-5863751_1920.png" alt="Featured image of post 可汗学院如何在一周内成功处理2.5倍的流量？" />&lt;p>可汗学员处理流量突然暴增的过程离不开 SRE 的设计和工作。他们的应对策略包括使用云和CDN。&lt;/p>
+&lt;p>可汗学院是一家非营利性机构，其使命是为任何人、任何地方提供免费的世界级教育。&lt;/p>
+&lt;p>本文原文出处：&lt;a class="link" href="https://blog.khanacademy.org/how-khan-academy-successfully-handled-2-5x-traffic-in-a-week/" target="_blank" rel="noopener"
+>https://blog.khanacademy.org/how-khan-academy-successfully-handled-2-5x-traffic-in-a-week/&lt;/a>&lt;/p>
+&lt;p>这篇文章的发布时间在去年（2020 年 5 月），大约是全球疫情最严重的时候。以下是正文。&lt;/p>
+&lt;p>说到快速扩展&amp;hellip;&lt;/p>
+&lt;p>几个月前，我发布了一些关于扩展的想法，并承诺很快会发布更多的内容。好吧，说到快速扩展&amp;ndash;在3月份的短短两周内，可汗学院网站的使用量就增长到了去年同期的2.5倍，并且一直维持到现在。由于冠状病毒大流行，世界各地的学校都关闭了，学生、家长和老师都转向了远程教育，可汗学院能够做出反应，提供高质量的内容和课堂体验&amp;ndash;而且是免费的。在4月份，我们在平台上为3000万学习者提供了服务。最近一项针对家长的全国性调查发现，可汗学院是 &lt;a class="link" href="https://tytonpartners.com/library/2177-2/" target="_blank" rel="noopener"
+>&amp;ldquo;使用最多的在线资源&amp;rdquo;&lt;/a>。&lt;/p>
+&lt;p>我很自豪，我们吸纳了这种快速增长，同时并没有干扰到我们的用户。除了在几天内迅速做出反应以缓解压力点之外，我们还提前做好了准备，而这种准备也得到了回报。我们之所以能够轻松地进行扩展，很大程度上是因为我们的架构以及谨慎选择外部服务并正确使用它们的严谨做法。&lt;/p>
+&lt;p>因此，在这篇文章中，我将讨论对我们网站的可扩展性起关键作用的架构方面。&lt;/p>
+&lt;p>我们架构的两个基本组件在这里为我们提供了特别好的服务。我们使用谷歌云，包括AppEngine、Datastore和Memcache，以及Fastly CDN，它们是无服务器和缓存策略的支柱，这是我们扩展性的关键。&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/img/cos/2021-03-24-scaling-traffic-in-a-week.png"
+loading="lazy"
+>&lt;/p>
+&lt;h2 id="无服务器基础设施">无服务器基础设施
+&lt;/h2>&lt;p>使用 GCP 的 AppEngine，这种完全管理的环境，意味着我们可以非常容易地扩展，几乎不费吹灰之力。即使在流量大幅增加的情况下，我们的网站也能保持良好的性能，而且干预最少。我们自己不需要担心负载平衡，因为服务器实例会根据需要启动，也不需要任何干预。我们同样使用 Datastore，它可以自动扩展存储和访问容量，与 App Engine 扩展 Web服务器实例的方式非常相似。&lt;/p>
+&lt;h2 id="缓存">缓存
+&lt;/h2>&lt;p>Fastly CDN使我们能够缓存所有静态数据，并最大限度地减少服务器跳转。巨大的可扩展性，它还能帮助我们优化托管资源，在我们的App Engine无服务器模式中，托管资源的成本随着使用量的增加而线性增长。如架构图所示，所有的客户端请求都会经过Fastly，这样我们可以防止不必要的服务器流量，提高性能。我们主要从YouTube加载视频，其次从Fastly加载。这样也可以降低成本，以及保证视频的快速加载。&lt;/p>
+&lt;p>除了在Fastly中缓存静态数据外，我们还广泛缓存常见的查询、用户偏好和会话数据，并利用这些来加快数据获取性能。我们除了围绕 Datastore 行使其他关键的最佳实践外，还大量使用Memcache，以确保快速响应时间。&lt;/p>
+&lt;p>我们的网站可靠性(SRE)团队当然需要做好扎实的监控准备&amp;ndash;我们也是做到了。我们注意到头几天出现了一些降速，并发现是部署导致了这些衰减。在我们的要求下，Google 增加了我们的 Memcache 的容量，一周内我们就可以轻松恢复到正常的连续部署模式。这个速度是至关重要的，因为我们的团队正在快速的开发资源，以指导新网站用户尽可能轻松地上手使用我们的服务。&lt;/p>
+&lt;p>总的来说，我们努力工作，谨慎选择服务，遵循最佳实践，并根据需要开发自己的服务。有了正确的技术、精心的准备，以及我们了不起的工程团队的现场调整，我们已经能够不间断地为现在比以往任何时候都更依赖我们的学生、家长和教师提供服务。&lt;/p></description></item><item><title>战斗机飞行员如何进行事故管理（译文）</title><link>https://martinliu.cn/blog/fighter-pilots-and-incident-management-cn/</link><pubDate>Tue, 23 Mar 2021 19:45:57 +0800</pubDate><guid>https://martinliu.cn/blog/fighter-pilots-and-incident-management-cn/</guid><description>&lt;img src="https://martinliu.cn/img/cos/2021-03-23-f-16-fighter-pilot-1-scaled.jpg" alt="Featured image of post 战斗机飞行员如何进行事故管理（译文）" />&lt;p>你的事故管理与战斗机飞行员的有什么共同点？经验丰富的战斗机飞行员，Transposit 的 Anthony &amp;ldquo;AB &amp;quot; Bourke 说，他最近在DevOps企业峰会的快乐时光上做了这个演讲。&lt;/p>
+&lt;blockquote>
+&lt;p>教练观点：incident management 在目前的所有出版物中，甚至大部分翻译软件中，都被翻译为 “事件管理”。在 IT 行业中，这个词汇的首次出现大约是在 20 年前，从 ITIL 引入运维管理的时候，从第一波 ITIL 在国内传播布道的时候，它就一直被翻译为 “事件管理”，“事件” 其实是一个没有好坏之分，好恶差异的中性词，不带有严重后果的含义。但是如果你在美剧中，在美国 NBC 新闻频道仔细的听；incident 往往和某人遭遇交通事故受伤亡相关；和就在今天美国科罗拉多的一个商场里发生的 10 人死亡的枪击案件相关。大部分企业的 ITIL/ITSM 软件中事件管理流程里所管理的其实都是 Event Management，而不是事故。希望本文能引起大家的注意。本文中将其翻译为“事故管理”，事故应该是 Incident 这个单词在 IT 服务管理这个语境里应该有的，精确的含义。&lt;/p>&lt;/blockquote>
+&lt;p>&lt;img src="https://martinliu.cn/img/cos/2021-03-23-2021.10.20a.jpg"
+loading="lazy"
+>&lt;/p>
+&lt;p>本文出处：&lt;a class="link" href="https://www.transposit.com/blog/fighter-pilots-and-incident-management/" target="_blank" rel="noopener"
+>https://www.transposit.com/blog/fighter-pilots-and-incident-management/&lt;/a>&lt;/p>
+&lt;p>想象一下。在你所从事的工作中，你是最棒的，你被招募为蓝天上的飞翔天使。&amp;ldquo;所以，现在我们希望你驾驶着你的喷气式飞机，在很低的高度上高速飞过大量的人群，并发出巨大的噪音。然后我们要做编队飞行，你和你领导机翼间隙只有18英寸。还有一件事我得提一下，有一半的时间里，我们希望你们是倒立的，倒过来的；&lt;strong>所以就像你的IT业务服务遭受了灾难一般，后果非常严重&amp;rdquo;&lt;/strong>&lt;/p>
+&lt;p>他说的没错。事实上，作为一名值守的工程师，在新冠疫情期间，应付的是应用系统发生的各种状况，值守工程师承受的压力比以往任何时候都大，有多少时候会有 &amp;ldquo;倒飞&amp;quot;的感觉？这可能是一种令人头晕目眩的体验。而失败的后果往往很严重，同时大家对 &amp;ldquo;完美任务 &amp;ldquo;的期望也从未如此的高。&lt;/p>
+&lt;p>在事故管理的坚实基础上，我们可以从战斗机飞行员那里学到什么？能否帮助我们运行和保障业务关键任务服务的安全？&lt;/p>
+&lt;h2 id="如实汇报不可打折">如实汇报不可打折
+&lt;/h2>&lt;p>虽然我们认为：飞行员所完成的史诗般的飞行，是他们工作中最重要的部分，但伯克强调，其实汇报与任务本身同等重要。&lt;/p>
+&lt;p>每次任务结束后，无一例外的，战斗机飞行员在汇报上所花费的时间，几乎是他们飞行时间的两倍。事实上：&amp;ldquo;无论我们认为自己已经有多好了，无论我们的计划有多优秀，无论我们的技术有多完美，无论我们的人员素质多么无敌，其实战斗机飞行员并没有执行过所谓的完美任务。&amp;rdquo; 我们的大部分学习，并不是发生在任务或事故本身，而是发生在事后，是在我们恢复之后，在和同事讨论的过程中，用清醒的头脑看待所发生的事情。&lt;/p>
+&lt;p>我们能，也应该将这种纪律性带入自己的事故管理实践中。&amp;ldquo;不要将这种汇报的概念，看作是只能在军队中发挥作用的东西，&amp;rdquo; 伯克说。&amp;ldquo;想一想，你是如何提高你在给予和接受反馈方面的标准的。&amp;rdquo; 你不仅会加速新员工的成长体验，而且你还会发现，你团队中经验丰富的人也能够突破他们自己的玻璃天花板，同时避免他们无法提升，无法适应不可避免的变化。&lt;/p>
+&lt;h2 id="透明度是汇报的关键">透明度是汇报的关键
+&lt;/h2>&lt;p>跟我们一起飞上一段旅程吧！假设你就是一名中级军官，你刚刚和一群军官一起执行训练任务归来，还有一名二星将军还在回家的路上。当你汇报任务时，你在视频中观察到，将军现在已经在目标之外的100英里了，而且他应该在离开目标50英里的时候，就将“主臂”置于保险状态，可是他现在的&amp;quot;主臂 &amp;ldquo;开关放了在手臂的位置上（这意味着武器仍然是发射就绪状态）。你会指出这个将军的操作失误么&amp;ndash;他可是负责着你的涨薪、晋升和降级？&lt;/p>
+&lt;p>当伯克提出这个问题时，我们中的许多人都觉得，对一个权威人物，指出他们犯了一个错误的想法是非常恐怖的。但随后，他介绍了闭口不言的潜在后果。你们中队所驾驶的F16战机的载弹量是2000磅，它可以每分钟发射6000发子弹。在你返航接近基地时，错误的按下一个按钮，可能就是一个致命的错误，这会将自己部队的基地给摧毁掉。有了这些补充说明后，答案就很明显了。透明度不能是可有可无的。&lt;/p>
+&lt;p>汇报的做法会让团队在下一次任务（或事故）来临时变得更强大，适应性更强。但汇报成功的奥秘并不神秘，但往往却求之不得：完全透明。&lt;/p>
+&lt;p>在汇报过程中，官衔等级应该被抛弃，自我要放在一边。&amp;ldquo;当汇报室的门关上时，一些神奇的事情就会发生，&amp;ldquo;伯克说。&amp;ldquo;军衔铭牌从我们的胸前脱落了，我们举行的汇报并没有等级制度，唯一的目的就是学习和改善。&amp;rdquo; 伯克敦促队友成为 &amp;ldquo;自己最大的敌人&amp;rdquo;，暴露自己的错误，并承诺今后要做出改变。队友们不是将责任推给他人，而是从同伴那里获得信心。&lt;/p>
+&lt;p>创造这种环境需要领导层有意识地付出努力，为各种等级的队友提供一个安全的空间，让他们坦诚相待。&amp;ldquo;我们的IT领导者必须找到一种方法，来创造这样的环境，让他们的员工能够给他们提供所需的诚实、实时的反馈，以帮助他们做出正确的决策，使他们领先于威胁，领先于竞争者，领先于不可避免的变化。&amp;rdquo;&lt;/p>
+&lt;h2 id="通过事后回顾总结提升事故管理">通过事后回顾总结提升事故管理
+&lt;/h2>&lt;p>接受伯克的说法：&amp;ldquo;汇报是世界上最强大的工具，组织中人员的经验可以得到加速度成长，帮助你团队中的每个人都成为奇才，并推动产生更好的成果。&amp;rdquo; 如果我们真正想实践持续改进，事后总结应该是一致的、彻底的、广泛分享的。&lt;/p>
+&lt;ul>
+&lt;li>第一步是确保你的团队在每一个事件发生后都要进行事后分析。&lt;/li>
+&lt;li>其次，事后总结需要检查事故解决过程中实际发生的细节，而不仅仅是产生问题的原因。在一个安全的环境中，团队成员会很自在地分享他们可以做得更好的地方，并确定需要改进的地方。&lt;/li>
+&lt;li>最后，还要在整个组织内分享学习成果，这样经验就不会被忽略，否则就无法积累组织的知识。你永远也不知道，谁可能需要在下一次事故中实施这些经验，这些学习将帮助他们更好地准备起来，应对各种状况。&lt;/li>
+&lt;/ul>
+&lt;p>我们的任务可能在飞行高度上有所不同，但在原则上非常相似。承受极端的压力。高风险。以及永无止境的学习空间。借鉴战斗机飞行员的实战经验，我们可以成为自己组织中的特立独行者，将我们的流程提升到新的高度。透明度、诚实，以及对学习和改进的承诺，将会使我们的事故管理飞速发展。&lt;/p></description></item><item><title>SLA、SLO 和 SLI 还是傻傻分不清么？</title><link>https://martinliu.cn/blog/sre-sla-slo-sli/</link><pubDate>Thu, 05 Mar 2020 17:37:29 +1100</pubDate><guid>https://martinliu.cn/blog/sre-sla-slo-sli/</guid><description>&lt;img src="https://martinliu.cn/images/abstract-6.jpg" alt="Featured image of post SLA、SLO 和 SLI 还是傻傻分不清么？" />&lt;p>SLA、SLI 和 SLO 是 SRE 工程实践里非常核心的概念，但是大家在同时提到这些概念的时候，经常容易混淆。&lt;/p>
+&lt;p>长篇大论的文章反而容易使人更加疑惑，还不如画一张示意图说明一下，帮助大家一次性彻底梳理清楚这些不可以含糊不清的核心概念。说明一下，下图假设所讨论的 SLA 个数为 1，使用了软件工程中 ER 图的表达方式，但也有所变化。&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/images/sla-sli-slo.jpeg"
+loading="lazy"
+alt="SLA、SLO、SLI"
+>&lt;/p>
+&lt;p>一图讲清 SLA、SLO、SLI&lt;/p>
+&lt;p>本文不讲 why，只是帮助大家梳理清楚这些概念在以上人机系统中的相互关系。虽然不想做名词解释。但是为了方便起见，整理一个术语清单。&lt;/p>
+&lt;ul>
+&lt;li>SLA = Service Level Agreement = 服务质量/水平协议&lt;/li>
+&lt;li>SLO = Service Level Objective = 服务质量/水平目标&lt;/li>
+&lt;li>SLI = Services Level Indicator = 服务质量/水平指标&lt;/li>
+&lt;/ul>
+&lt;p>下面用人、事、物的逻辑进行阐释。&lt;/p>
+&lt;h2 id="人和事">人和事
+&lt;/h2>&lt;p>用从上到下，从左到右的顺序。&lt;/p>
+&lt;p>客户 - 每 1 个客户在使用产品服务时，都显性或隐性的基于某 1 个 SLA，SLA 和客户之间是一种 1 对 1 的文档关系，这份协议文档就显性或者隐性的存在于系统中。客户使用 1 种，或者 n 种连接方式访问产品服务的 1 个或者 n 个应用系统。&lt;/p>
+&lt;p>销售 - SLA 本身是所销售产品服务的一部分，它规定了承诺给客户的产品功用和质量。基于 SLA，客户可以选择用付费或者免费的方式使用产品。1 个/份 SLA 的销售工作可以由 1 到 n 位销售完成。销售和客户都幻想着几乎完美的 SLA，这样代表企业利益的销售，以及产品的客户就都可以达到双赢的局面，皆大欢喜。&lt;/p>
+&lt;p>产品 - 通过与销售的间接互动，或者直接的客户调研，产品经理能够确定应用系统所应该具有的功能和发展方向。&lt;/p>
+&lt;p>SRE - SRE 和产品共同制定了每个 SLA 相关应用系统的 SLO，SLO 定量的定义了每 1 个应用系统所应该具备的服务质量，1 个应用系统的 SLO 被该产品服务的 SLO 文档定义，在该文档中 SLO 被映射到 1 个或者 n 个 SLI，每个 SLI 都需要用监控工具持续采集数据，通常它们的数值单位各不相同。所有 SLO 都是用百分比数值形式表达的，例如：99.99% 的成功率，90％ 的请求延迟 &amp;lt; 400 毫秒等。SRE 和产品经理/专家还应该共同关注运行应用系统的基础设施层，确保基础设施的可用性和容量足以满足目标数量的用户访问，而且还要考虑和设计底层资源的容灾和跨区多活等复杂场景。&lt;/p>
+&lt;p>开发/运维 - 重要但暂不做讨论。&lt;/p>
+&lt;h2 id="事">事
+&lt;/h2>&lt;p>用从下往上的顺序。&lt;/p>
+&lt;p>IaaS 云服务 - 也可以是其它类型的可以供应用系统运行的环境。这里存在着 1 到 n 种子服务。它和上层的 n 个应用系统通常是 n 对 n 的关系。&lt;/p>
+&lt;p>应用系统 - 1 个到 n 个应用系统构成了 1 个产品服务（内含SLA），在和客户的互动中实现着产品服务的业务价值。&lt;/p>
+&lt;p>文档 - 以网页或者纸张的形式向用户描述了某个应用服务所提供的服务内容和质量信息。向用户提供这个文档并不是强制、显性和必须的。&lt;/p>
+&lt;h2 id="结束">结束
+&lt;/h2>&lt;p>请根据以上解释，结合你的实际工作场景，想象并描绘一下 SLA 、SLO 和 SLI 在你周围的人事物中关系网。在SRE 的工作实践中，定义 SLO，并梳理 SLI，将量化以后的目标和说明文档化，并让各个干系人认同并签署，是一项基础的起步工作。&lt;/p>
+&lt;p>本文参考了 Google 出品的两本SRE 书籍，这两本书的英文版在 Google 的官网可以免费在线阅读。SRE Workbook 的简体中文版会在2020 年中出版。&lt;/p></description></item></channel></rss>

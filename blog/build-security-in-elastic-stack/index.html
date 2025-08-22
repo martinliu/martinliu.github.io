@@ -1,0 +1,921 @@
+<!doctype html><html lang=zh-cn dir=ltr><head><meta charset=utf-8><meta name=viewport content='width=device-width,initial-scale=1'><meta name=description content="使 Elastic Stack 安全、能适应和可扩展的实战配置"><meta name=keywords content="Metricbeat,Elastic Stack,Filebeat"><title>Beats 摄入数据的最佳实践</title><link rel=canonical href=https://martinliu.cn/blog/build-security-in-elastic-stack/><link rel=stylesheet href=/scss/style.min.6cdf49b1ce11fdcb5b101472ec608dcfd7395a19af16339a150cd1a4536b6113.css><meta property='og:title' content="Beats 摄入数据的最佳实践"><meta property='og:description' content="使 Elastic Stack 安全、能适应和可扩展的实战配置"><meta property='og:url' content='https://martinliu.cn/blog/build-security-in-elastic-stack/'><meta property='og:site_name' content="Martin Liu's Blog"><meta property='og:type' content='article'><meta property='article:section' content='Post'><meta property='article:tag' content='Elastic'><meta property='article:tag' content='Beats'><meta property='article:published_time' content='2020-06-21T18:42:56+08:00'><meta property='article:modified_time' content='2024-06-25T21:44:26+08:00'><meta property='og:image' content='https://martinliu.cn/images/locked-up.jpg'><meta name=twitter:title content="Beats 摄入数据的最佳实践"><meta name=twitter:description content="使 Elastic Stack 安全、能适应和可扩展的实战配置"><meta name=twitter:card content="summary_large_image"><meta name=twitter:image content='https://martinliu.cn/images/locked-up.jpg'><script async src="https://www.googletagmanager.com/gtag/js?id=G-30EQ6H78E5"></script><script>var dnt,doNotTrack=!1;if(!1&&(dnt=navigator.doNotTrack||window.doNotTrack||navigator.msDoNotTrack,doNotTrack=dnt=="1"||dnt=="yes"),!doNotTrack){window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","G-30EQ6H78E5")}</script></head><body class=article-page><script>(function(){const e="StackColorScheme";localStorage.getItem(e)||localStorage.setItem(e,"auto")})()</script><script>(function(){const t="StackColorScheme",e=localStorage.getItem(t),n=window.matchMedia("(prefers-color-scheme: dark)").matches===!0;e=="dark"||e==="auto"&&n?document.documentElement.dataset.scheme="dark":document.documentElement.dataset.scheme="light"})()</script><div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky"><button class="hamburger hamburger--spin" type=button id=toggle-menu aria-label=切换菜单>
+<span class=hamburger-box><span class=hamburger-inner></span></span></button><header><figure class=site-avatar><a href=/><img src=/img/avatar_hu_288ed5026836b766.png width=300 height=300 class=site-logo loading=lazy alt=Avatar></a></figure><div class=site-meta><h1 class=site-name><a href=/>Martin Liu's Blog</a></h1><h2 class=site-description>Founder of DevOps China</h2></div></header><ol class=menu-social><li><a href=https://github.com/martinliu/ target=_blank title=GitHub rel=me><svg class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M9 19c-4.3 1.4-4.3-2.5-6-3m12 5v-3.5c0-1 .1-1.4-.5-2 2.8-.3 5.5-1.4 5.5-6a4.6 4.6.0 00-1.3-3.2 4.2 4.2.0 00-.1-3.2s-1.1-.3-3.5 1.3a12.3 12.3.0 00-6.2.0C6.5 2.8 5.4 3.1 5.4 3.1a4.2 4.2.0 00-.1 3.2A4.6 4.6.0 004 9.5c0 4.6 2.7 5.7 5.5 6-.6.6-.6 1.2-.5 2V21"/></svg></a></li><li><a href=https://www.linkedin.com/in/liuzheng/ target=_blank title=LinkedIn rel=me><svg viewBox="0 0 32 32" width="32" height="32"><path d="M7.5 5C6.132813 5 5 6.132813 5 7.5v17C5 25.867188 6.132813 27 7.5 27h17c1.367188.0 2.5-1.132812 2.5-2.5V7.5C27 6.132813 25.867188 5 24.5 5zm0 2h17C24.785156 7 25 7.214844 25 7.5v17C25 24.785156 24.785156 25 24.5 25H7.5C7.214844 25 7 24.785156 7 24.5V7.5c0-.285156.214844-.5.5-.5zm2.9375 1.71875C9.488281 8.71875 8.71875 9.488281 8.71875 10.4375S9.488281 12.15625 10.4375 12.15625 12.15625 11.386719 12.15625 10.4375 11.386719 8.71875 10.4375 8.71875zm9.03125 4.5625c-1.433594.0-2.386719.785156000000001-2.78125 1.53125H16.625V13.5H13.8125V23H16.75V18.3125C16.75 17.074219 16.996094 15.875 18.53125 15.875c1.511719.0 1.53125 1.398438 1.53125 2.5V23H23V17.78125c0-2.554687-.542968999999999-4.5-3.53125-4.5zM9 13.5V23h2.96875V13.5z"/></svg></a></li><li><a href=https://twitter.com/martinliu target=_blank title=Twitter rel=me><svg class="icon icon-tabler icon-tabler-brand-twitter" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M22 4.01c-1 .49-1.98.689-3 .99-1.121-1.265-2.783-1.335-4.38-.737S11.977 6.323 12 8v1c-3.245.083-6.135-1.395-8-4 0 0-4.182 7.433 4 11-1.872 1.247-3.739 2.088-6 2 3.308 1.803 6.913 2.423 10.034 1.517 3.58-1.04 6.522-3.723 7.651-7.742a13.84 13.84.0 00.497-3.753C20.18 7.773 21.692 5.25 22 4.009z"/></svg></a></li></ol><ol class=menu id=main-menu><li><a href=/><svg class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><polyline points="5 12 3 12 12 3 21 12 19 12"/><path d="M5 12v7a2 2 0 002 2h10a2 2 0 002-2v-7"/><path d="M9 21v-6a2 2 0 012-2h2a2 2 0 012 2v6"/></svg>
+<span>首页</span></a></li><li><a href=/about/><svg class="icon icon-tabler icon-tabler-messages" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><path d="M21 14l-3-3h-7a1 1 0 01-1-1V4a1 1 0 011-1h9a1 1 0 011 1v10"/><path d="M14 15v2a1 1 0 01-1 1H6l-3 3V11a1 1 0 011-1h2"/></svg>
+<span>关于</span></a></li><li><a href=/course/><svg class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><rect x="3" y="4" width="18" height="4" rx="2"/><path d="M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8"/><line x1="10" y1="12" x2="14" y2="12"/></svg>
+<span>课程</span></a></li><li><a href=/search/><svg class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="10" cy="10" r="7"/><line x1="21" y1="21" x2="15" y2="15"/></svg>
+<span>搜索</span></a></li><li><a href=/archives/><svg class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><rect x="3" y="4" width="18" height="4" rx="2"/><path d="M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8"/><line x1="10" y1="12" x2="14" y2="12"/></svg>
+<span>归档</span></a></li><li><a href=/links/><svg class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><path d="M10 14a3.5 3.5.0 005 0l4-4a3.5 3.5.0 00-5-5l-.5.5"/><path d="M14 10a3.5 3.5.0 00-5 0l-4 4a3.5 3.5.0 005 5l.5-.5"/></svg>
+<span>链接</span></a></li><li class=menu-bottom-section><ol class=menu><li id=i18n-switch><svg class="icon icon-tabler icon-tabler-language" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M4 5h7"/><path d="M9 3v2c0 4.418-2.239 8-5 8"/><path d="M5 9c-.003 2.144 2.952 3.908 6.7 4"/><path d="M12 20l4-9 4 9"/><path d="M19.1 18h-6.2"/></svg>
+<select name=language title=language onchange="window.location.href=this.selectedOptions[0].value"><option value=https://martinliu.cn/ selected>中文</option><option value=https://martinliu.cn/en/>English</option></select></li><li id=dark-mode-toggle><svg class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="8" cy="12" r="2"/><rect x="2" y="6" width="20" height="12" rx="6"/></svg>
+<svg class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="16" cy="12" r="2"/><rect x="2" y="6" width="20" height="12" rx="6"/></svg>
+<span>暗色模式</span></li></ol></li></ol></aside><aside class="sidebar right-sidebar sticky"><section class="widget archives"><div class=widget-icon><svg class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><line x1="5" y1="9" x2="19" y2="9"/><line x1="5" y1="15" x2="19" y2="15"/><line x1="11" y1="4" x2="7" y2="20"/><line x1="17" y1="4" x2="13" y2="20"/></svg></div><h2 class="widget-title section-title">目录</h2><div class=widget--toc><nav id=TableOfContents><ol><li><a href=#前言>前言</a></li><li><a href=#三节点-elasticsearch-服务器集群>三节点 Elasticsearch 服务器集群</a><ol><li><a href=#配置首个-es-服务器节点>配置首个 ES 服务器节点</a></li><li><a href=#配置第二个和第三个-es-服务器节点>配置第二个和第三个 ES 服务器节点</a></li></ol></li><li><a href=#配置-kibana-服务器>配置 Kibana 服务器</a></li><li><a href=#配置权限-beats-账号>配置权限 Beats 账号</a></li><li><a href=#初始化首个-beats-节点>初始化首个 Beats 节点</a></li><li><a href=#在新的节点上部署-beats>在新的节点上部署 Beats</a></li><li><a href=#总结>总结</a></li></ol></nav></div></section></aside><main class="main full-width"><article class="has-image main-article"><header class=article-header><div class=article-image><a href=/blog/build-security-in-elastic-stack/><img src=/images/locked-up.jpg loading=lazy alt="Featured image of post Beats 摄入数据的最佳实践"></a></div><div class=article-details><header class=article-category><a href=/categories/devops/ style=background-color:#2a9d8f;color:#fff>DevOps</a></header><div class=article-title-wrapper><h2 class=article-title><a href=/blog/build-security-in-elastic-stack/>Beats 摄入数据的最佳实践</a></h2><h3 class=article-subtitle>使 Elastic Stack 安全、能适应和可扩展的实战配置</h3></div><footer class=article-time><div><svg class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><path d="M11.795 21H5a2 2 0 01-2-2V7a2 2 0 012-2h12a2 2 0 012 2v4"/><circle cx="18" cy="18" r="4"/><path d="M15 3v4"/><path d="M7 3v4"/><path d="M3 11h16"/><path d="M18 16.496V18l1 1"/></svg>
+<time class=article-time--published>2020-06-21, Sunday</time></div><div><svg class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15 15"/></svg>
+<time class=article-time--reading>阅读时长: 10 分钟</time></div></footer></div></header><section class=article-content><p>本文概要：配置 ES 3 节点全加密，Kibana 的 SSL 加密配置，Beats 的高可靠性加密传输，用 RBAC 怎样把权限控制到最小，在配置文件中消除明文密码，这些你都做到了么？如何保证安全、能适应和可扩展的配置 Elastic Stack 技术栈，让我们从 Bests 的角度开始讲解。</p><h2 id=前言>前言</h2><p>本文使用的软版本：</p><ul><li>Elastic Stack 7.8.0</li><li>macOS 10.15.5</li><li>Vagrant 2.2.9</li><li>VirtualBox 6.0</li><li>CentOS 8.0</li></ul><p>下面的配置和测试过程基于以下 Vagrantfile ，你可以在其它任何同等的环境中测试下面的所有配置。</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span><span class=lnt>32
+</span><span class=lnt>33
+</span><span class=lnt>34
+</span><span class=lnt>35
+</span><span class=lnt>36
+</span><span class=lnt>37
+</span><span class=lnt>38
+</span><span class=lnt>39
+</span><span class=lnt>40
+</span><span class=lnt>41
+</span><span class=lnt>42
+</span><span class=lnt>43
+</span><span class=lnt>44
+</span><span class=lnt>45
+</span><span class=lnt>46
+</span><span class=lnt>47
+</span><span class=lnt>48
+</span><span class=lnt>49
+</span><span class=lnt>50
+</span><span class=lnt>51
+</span><span class=lnt>52
+</span><span class=lnt>53
+</span><span class=lnt>54
+</span><span class=lnt>55
+</span><span class=lnt>56
+</span><span class=lnt>57
+</span><span class=lnt>58
+</span><span class=lnt>59
+</span><span class=lnt>60
+</span><span class=lnt>61
+</span><span class=lnt>62
+</span><span class=lnt>63
+</span><span class=lnt>64
+</span><span class=lnt>65
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl># -*- mode: ruby -*-
+</span></span><span class=line><span class=cl># vi: set ft=ruby :
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl># Every Vagrant development environment requires a box. You can search for
+</span></span><span class=line><span class=cl># boxes at https://atlas.hashicorp.com/search.
+</span></span><span class=line><span class=cl>BOX_IMAGE = &#34;bento/centos-8&#34;
+</span></span><span class=line><span class=cl>ES_COUNT = 3
+</span></span><span class=line><span class=cl>NODE_COUNT = 4
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>Vagrant.configure(&#34;2&#34;) do |config|
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>  #设置所有 guest 使用相同的静态 dns 解析 /etc/hosts
+</span></span><span class=line><span class=cl>  config.vm.provision :hosts, :sync_hosts =&gt; true
+</span></span><span class=line><span class=cl>  #用 vagrant 默认密钥对 ssh 登录
+</span></span><span class=line><span class=cl>  config.ssh.insert_key = false
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>  # 用于部署 Elasticsearch 服务器的集群
+</span></span><span class=line><span class=cl>  (1..ES_COUNT).each do |i|
+</span></span><span class=line><span class=cl>    config.vm.define &#34;es#{i}&#34; do |es_config|
+</span></span><span class=line><span class=cl>      es_config.vm.box = BOX_IMAGE
+</span></span><span class=line><span class=cl>      es_config.vm.hostname = &#34;es#{i}.zenlab.local&#34;
+</span></span><span class=line><span class=cl>      es_config.vm.network :private_network, ip: &#34;192.168.50.#{i + 10}&#34;
+</span></span><span class=line><span class=cl>      es_config.vm.provision :hosts, :sync_hosts =&gt; true
+</span></span><span class=line><span class=cl>      es_config.vm.provider :virtualbox do |vb|
+</span></span><span class=line><span class=cl>        vb.memory = 2048
+</span></span><span class=line><span class=cl>        vb.cpus = 1
+</span></span><span class=line><span class=cl>      end
+</span></span><span class=line><span class=cl>      es_config.vm.provision :shell, path: &#39;pre-install-ES.sh&#39;
+</span></span><span class=line><span class=cl>    end
+</span></span><span class=line><span class=cl>  end
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>  # 用于部署 Kibana、Logstash 、APM Server、Heatbeat 和 Packetbeat
+</span></span><span class=line><span class=cl>  config.vm.define &#34;lk&#34; do |lk_config|
+</span></span><span class=line><span class=cl>    lk_config.vm.box = BOX_IMAGE
+</span></span><span class=line><span class=cl>    lk_config.vm.hostname = &#34;lk.zenlab.local&#34;
+</span></span><span class=line><span class=cl>    lk_config.vm.network :private_network, ip: &#34;192.168.50.20&#34;
+</span></span><span class=line><span class=cl>    lk_config.vm.network &#39;forwarded_port&#39;, guest: 5601, host: 5601
+</span></span><span class=line><span class=cl>    lk_config.vm.provision :hosts, :sync_hosts =&gt; true
+</span></span><span class=line><span class=cl>    lk_config.vm.provider :virtualbox do |vb|
+</span></span><span class=line><span class=cl>      vb.memory = 1024
+</span></span><span class=line><span class=cl>      vb.cpus = 1
+</span></span><span class=line><span class=cl>    end
+</span></span><span class=line><span class=cl>    #logstash_config.vm.provision :shell, path: &#39;pre-install-ES.sh&#39;
+</span></span><span class=line><span class=cl>  end
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>  # 两个被管理节点，用于部署监控应用和各种 Beats 代理
+</span></span><span class=line><span class=cl>  (1..NODE_COUNT).each do |i|
+</span></span><span class=line><span class=cl>    config.vm.define &#34;node#{i}&#34; do |node_config|
+</span></span><span class=line><span class=cl>      node_config.vm.box = BOX_IMAGE
+</span></span><span class=line><span class=cl>      node_config.vm.hostname = &#34;node#{i}.zenlab.local&#34;
+</span></span><span class=line><span class=cl>      node_config.vm.network :private_network, ip: &#34;192.168.50.#{i + 20}&#34;
+</span></span><span class=line><span class=cl>      node_config.vm.provider :virtualbox do |vb|
+</span></span><span class=line><span class=cl>        vb.memory = 1024
+</span></span><span class=line><span class=cl>        vb.cpus = 1
+</span></span><span class=line><span class=cl>      end
+</span></span><span class=line><span class=cl>      node_config.vm.provision :shell, path: &#39;pre-install-beats.sh&#39;
+</span></span><span class=line><span class=cl>    end
+</span></span><span class=line><span class=cl>  end
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl># Install avahi on all machines  
+</span></span><span class=line><span class=cl>  config.vm.provision &#34;shell&#34;, inline: &lt;&lt;-SHELL
+</span></span><span class=line><span class=cl>    sh -c &#34;echo &#39;Welcome to Elastic Stack!&#39;&#34;
+</span></span><span class=line><span class=cl>  SHELL
+</span></span><span class=line><span class=cl>end
+</span></span></code></pre></td></tr></table></div></div><p>注：下文中所有路径中的 <code>/vagrant/</code> 目录是本 vagrant 测试环境中，所有虚拟机的共享目录，是所有节点上配置文件的原路径。如果你使用的不是 vagrant 环境，你需要在下面的测试中适当的替换。</p><h2 id=三节点-elasticsearch-服务器集群>三节点 Elasticsearch 服务器集群</h2><p>在每个节点上使用下面的初始化脚本，部署 Elasticsearch 服务器。</p><p>使用<code>vagrant up es1 es2 es3</code>命令创建并启动 ES 服务器三个节点。</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl># pre-install-ES.sh
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>elastic_version=&#39;7.8.0&#39;
+</span></span><span class=line><span class=cl>echo &#34;Provisioning a Elasticsearch &#34;$elastic_version&#34; Server...&#34;
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>sudo date &gt; /etc/vagrant_provisioned_at
+</span></span><span class=line><span class=cl>sudo swapoff -a
+</span></span><span class=line><span class=cl>sudo sysctl -w vm.max_map_count=262144
+</span></span><span class=line><span class=cl>sudo sysctl -p
+</span></span><span class=line><span class=cl>sudo sh -c &#34;echo &#39;elasticsearch  -  nofile  65535&#39; &gt;&gt; /etc/security/limits.conf&#34;
+</span></span><span class=line><span class=cl>sudo sh -c &#34;echo &#39;**** --  --  --  --  --  --  --  -- ****&#39; &gt; /etc/motd&#34;
+</span></span><span class=line><span class=cl>sudo sh -c &#34;echo &#39;**** Welcome to Elastic Stack Labs&#39; &gt;&gt; /etc/motd&#34;
+</span></span><span class=line><span class=cl>sudo sh -c &#34;echo &#39;**** --  --  --  --  --  --  --  -- ****&#39; &gt;&gt; /etc/motd&#34;
+</span></span><span class=line><span class=cl>sudo sh -c &#34;echo &#39;*&#39; &gt;&gt; /etc/motd&#34;
+</span></span><span class=line><span class=cl>sudo rpm -ivh /vagrant/rpm/elasticsearch-$elastic_version-x86_64.rpm
+</span></span></code></pre></td></tr></table></div></div><p>上面的脚本简单的初始化了几个操作系统参数，然后完成了 rpm 包的安装。非vagrant 环境的需要手工上传 rpm 安装文件，和运行以上的命令。</p><h3 id=配置首个-es-服务器节点>配置首个 ES 服务器节点</h3><p>登录 es1 节点<code>vagrant ssh es1</code> ；</p><p>创建用于节点间传输所需要的数字证书和秘钥文件，下面是所使用的种子文件。</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl># instance.yml
+</span></span><span class=line><span class=cl>instances:
+</span></span><span class=line><span class=cl>  - name: &#39;es1&#39;
+</span></span><span class=line><span class=cl>    ip: [&#39;192.168.50.11&#39;]
+</span></span><span class=line><span class=cl>    dns: [ &#39;es1.zenlab.local&#39; ]
+</span></span><span class=line><span class=cl>  - name: &#34;es2&#34;
+</span></span><span class=line><span class=cl>    ip: [&#39;192.168.50.12&#39;]
+</span></span><span class=line><span class=cl>    dns: [ &#39;es2.zenlab.local&#39; ]
+</span></span><span class=line><span class=cl>  - name: &#39;es3&#39;
+</span></span><span class=line><span class=cl>    ip: [&#39;192.168.50.13&#39;]
+</span></span><span class=line><span class=cl>    dns: [ &#39;es3.zenlab.local&#39; ]
+</span></span><span class=line><span class=cl>  - name: &#39;lk&#39;
+</span></span><span class=line><span class=cl>    ip: [&#39;192.168.50.20&#39;]
+</span></span><span class=line><span class=cl>    dns: [ &#39;lk.zenlab.local&#39; ]
+</span></span></code></pre></td></tr></table></div></div><p>用 <code>elasticsearch-certutil</code> 创建证书文件包。</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl>sudo /usr/share/elasticsearch/bin/elasticsearch-certutil cert --ca --pem --in /vagrant/certs/instance.yml  --out /vagrant/certs/certs.zip
+</span></span></code></pre></td></tr></table></div></div><p>将得到的 zip 文件解压缩在适当的目录里备用。</p><p>重要步骤：在 Elasticsearch 的配置文件目录中放置必要的数字证书文件。</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl>sudo mkdir /etc/elasticsearch/certs
+</span></span><span class=line><span class=cl>sudo cp /vagrant/certs/ca/ca.crt  /etc/elasticsearch/certs
+</span></span><span class=line><span class=cl>sudo cp /vagrant/certs/es1/* /etc/elasticsearch/certs
+</span></span><span class=line><span class=cl>sudo ls /etc/elasticsearch/certs
+</span></span></code></pre></td></tr></table></div></div><p>在 certs 目录中有三个文件：</p><ol><li>ca.crt CA 根证书</li><li>es1.crt 服务器证书</li><li>es1.key 私钥文件</li></ol><p>CA 根证书是在所有节点上发起对 ES 服务的 HTTPS 服务所需要的客户端证书。 es1.crt 和 es1.key 这样的必要对需要在所有 ES 节点上部署，用于 ES 节点间的 transport 协议加密传输，每个 ES 节点都是用自己的密钥对文件。</p><p>在 ES1 的主配置文件中打开安全选项和其它必要配置，示例配置文件如下。</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span><span class=lnt>32
+</span><span class=lnt>33
+</span><span class=lnt>34
+</span><span class=lnt>35
+</span><span class=lnt>36
+</span><span class=lnt>37
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-gdscript3 data-lang=gdscript3><span class=line><span class=cl><span class=c1># elasticsearch.yml</span>
+</span></span><span class=line><span class=cl><span class=c1># ---------------------------------- Cluster -----------------------------------</span>
+</span></span><span class=line><span class=cl><span class=n>cluster</span><span class=o>.</span><span class=n>name</span><span class=p>:</span> <span class=n>elk4devops</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># ------------------------------------ Node ------------------------------------</span>
+</span></span><span class=line><span class=cl><span class=n>node</span><span class=o>.</span><span class=n>name</span><span class=p>:</span> <span class=n>es1</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># ----------------------------------- Paths ------------------------------------</span>
+</span></span><span class=line><span class=cl><span class=n>path</span><span class=o>.</span><span class=n>data</span><span class=p>:</span> <span class=o>/</span><span class=k>var</span><span class=o>/</span><span class=n>lib</span><span class=o>/</span><span class=n>elasticsearch</span>
+</span></span><span class=line><span class=cl><span class=n>path</span><span class=o>.</span><span class=n>logs</span><span class=p>:</span> <span class=o>/</span><span class=k>var</span><span class=o>/</span><span class=nb>log</span><span class=o>/</span><span class=n>elasticsearch</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># ---------------------------------- Network -----------------------------------</span>
+</span></span><span class=line><span class=cl><span class=n>network</span><span class=o>.</span><span class=n>host</span><span class=p>:</span> <span class=n>es1</span><span class=o>.</span><span class=n>zenlab</span><span class=o>.</span><span class=n>local</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># --------------------------------- Discovery ----------------------------------</span>
+</span></span><span class=line><span class=cl><span class=n>cluster</span><span class=o>.</span><span class=n>initial_master_nodes</span><span class=p>:</span> <span class=p>[</span><span class=s2>&#34;es1&#34;</span><span class=p>]</span>
+</span></span><span class=line><span class=cl><span class=n>discovery</span><span class=o>.</span><span class=n>seed_hosts</span><span class=p>:</span> <span class=p>[</span> <span class=s2>&#34;es1.zenlab.local&#34;</span> <span class=p>]</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># ------------------------------- TLS and Cert ---------------------------------</span>
+</span></span><span class=line><span class=cl><span class=n>xpack</span><span class=o>.</span><span class=n>security</span><span class=o>.</span><span class=n>enabled</span><span class=p>:</span> <span class=bp>true</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1>#外部服务加密配置</span>
+</span></span><span class=line><span class=cl><span class=n>xpack</span><span class=o>.</span><span class=n>security</span><span class=o>.</span><span class=n>http</span><span class=o>.</span><span class=n>ssl</span><span class=o>.</span><span class=n>enabled</span><span class=p>:</span> <span class=bp>true</span>
+</span></span><span class=line><span class=cl><span class=n>xpack</span><span class=o>.</span><span class=n>security</span><span class=o>.</span><span class=n>http</span><span class=o>.</span><span class=n>ssl</span><span class=o>.</span><span class=n>key</span><span class=p>:</span> <span class=n>certs</span><span class=o>/</span><span class=n>es1</span><span class=o>.</span><span class=n>key</span>
+</span></span><span class=line><span class=cl><span class=n>xpack</span><span class=o>.</span><span class=n>security</span><span class=o>.</span><span class=n>http</span><span class=o>.</span><span class=n>ssl</span><span class=o>.</span><span class=n>certificate</span><span class=p>:</span> <span class=n>certs</span><span class=o>/</span><span class=n>es1</span><span class=o>.</span><span class=n>crt</span>
+</span></span><span class=line><span class=cl><span class=n>xpack</span><span class=o>.</span><span class=n>security</span><span class=o>.</span><span class=n>http</span><span class=o>.</span><span class=n>ssl</span><span class=o>.</span><span class=n>certificate_authorities</span><span class=p>:</span> <span class=n>certs</span><span class=o>/</span><span class=n>ca</span><span class=o>.</span><span class=n>crt</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1>#集群内通讯加密配置</span>
+</span></span><span class=line><span class=cl><span class=n>xpack</span><span class=o>.</span><span class=n>security</span><span class=o>.</span><span class=n>transport</span><span class=o>.</span><span class=n>ssl</span><span class=o>.</span><span class=n>enabled</span><span class=p>:</span> <span class=bp>true</span>
+</span></span><span class=line><span class=cl><span class=n>xpack</span><span class=o>.</span><span class=n>security</span><span class=o>.</span><span class=n>transport</span><span class=o>.</span><span class=n>ssl</span><span class=o>.</span><span class=n>key</span><span class=p>:</span> <span class=n>certs</span><span class=o>/</span><span class=n>es1</span><span class=o>.</span><span class=n>key</span>
+</span></span><span class=line><span class=cl><span class=n>xpack</span><span class=o>.</span><span class=n>security</span><span class=o>.</span><span class=n>transport</span><span class=o>.</span><span class=n>ssl</span><span class=o>.</span><span class=n>certificate</span><span class=p>:</span> <span class=n>certs</span><span class=o>/</span><span class=n>es1</span><span class=o>.</span><span class=n>crt</span>
+</span></span><span class=line><span class=cl><span class=n>xpack</span><span class=o>.</span><span class=n>security</span><span class=o>.</span><span class=n>transport</span><span class=o>.</span><span class=n>ssl</span><span class=o>.</span><span class=n>certificate_authorities</span><span class=p>:</span> <span class=n>certs</span><span class=o>/</span><span class=n>ca</span><span class=o>.</span><span class=n>crt</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>xpack</span><span class=o>.</span><span class=n>monitoring</span><span class=o>.</span><span class=n>collection</span><span class=o>.</span><span class=n>enabled</span><span class=p>:</span> <span class=bp>true</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1>#  ------------------------------- App Search ---------------------------------</span>
+</span></span><span class=line><span class=cl><span class=n>action</span><span class=o>.</span><span class=n>auto_create_index</span><span class=p>:</span> <span class=s2>&#34;.app-search-*-logs-*,-.app-search-*,+*&#34;</span>
+</span></span></code></pre></td></tr></table></div></div><p>使用以上配置文件覆盖Elasticsearch 默认的配置文件，首次启动第一个 ES 节点的服务。</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-gdscript3 data-lang=gdscript3><span class=line><span class=cl><span class=n>sudo</span> <span class=n>cp</span> <span class=o>/</span><span class=n>vagrant</span><span class=o>/</span><span class=n>elasticsearch</span><span class=o>.</span><span class=n>yml</span> <span class=o>/</span><span class=n>etc</span><span class=o>/</span><span class=n>elasticsearch</span><span class=o>/</span><span class=n>elasticsearch</span><span class=o>.</span><span class=n>yml</span>
+</span></span><span class=line><span class=cl><span class=n>sudo</span> <span class=n>systemctl</span> <span class=n>daemon</span><span class=o>-</span><span class=n>reload</span>
+</span></span><span class=line><span class=cl><span class=n>sudo</span> <span class=n>systemctl</span> <span class=n>start</span> <span class=n>elasticsearch</span>
+</span></span></code></pre></td></tr></table></div></div><p>用下面的命令查看启动日志，直到 elasticsearch 服务正常启动。</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-gdscript3 data-lang=gdscript3><span class=line><span class=cl><span class=n>sudo</span> <span class=n>tail</span> <span class=o>-</span><span class=n>f</span> <span class=o>/</span><span class=k>var</span><span class=o>/</span><span class=nb>log</span><span class=o>/</span><span class=n>elasticsearch</span><span class=o>/</span><span class=n>elk4devops</span><span class=o>.</span><span class=n>log</span>
+</span></span></code></pre></td></tr></table></div></div><p>用下面的命令初始化 Elasticsearch 系统内置账号为随机复杂密码。</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl>sudo /usr/share/elasticsearch/bin/elasticsearch-setup-passwords auto -u &#34;https://es1.zenlab.local:9200&#34; -b
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>Changed password for user apm_system
+</span></span><span class=line><span class=cl>PASSWORD apm_system = irpVThXpbFDrdq2rBQUC
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>Changed password for user kibana_system
+</span></span><span class=line><span class=cl>PASSWORD kibana_system = CxGNlkqQMbcp6u6XuCbk
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>Changed password for user kibana
+</span></span><span class=line><span class=cl>PASSWORD kibana = CxGNlkqQMbcp6u6XuCbk
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>Changed password for user logstash_system
+</span></span><span class=line><span class=cl>PASSWORD logstash_system = EOUiCyQQ97IHwUJs8Eum
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>Changed password for user beats_system
+</span></span><span class=line><span class=cl>PASSWORD beats_system = EF8OdPmcpy1bUCgFVQ90
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>Changed password for user remote_monitoring_user
+</span></span><span class=line><span class=cl>PASSWORD remote_monitoring_user = 3ZRBVo5Omu33McoOKgwE
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>Changed password for user elastic
+</span></span><span class=line><span class=cl>PASSWORD elastic = ZSzN2idoU6hFa4f0ulPP
+</span></span></code></pre></td></tr></table></div></div><p>将上面随机生成的密码保存在安全的地方备用，这些内置的超级用户权限大，一旦遗失了密码，可能会造成重大的数据泄露。</p><p>用上面创建的账户测试第一个 ES 节点是否可以通过 https 正常访问，这里也测试 ca 公钥的可用性。</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl>curl --cacert /vagrant/certs/ca/ca.crt -u elastic &#39;https://es1.zenlab.local:9200/_cat/nodes?v&#39;
+</span></span></code></pre></td></tr></table></div></div><p>在 es1 服务器的命令行运行以上命令，输入 elastic 的密码。应该可以看到正常的输出。<code>/vagrant/certs/ca/ca.crt</code> 这个路径替换成你的环境中的相关 ca 证书文件路径。</p><h3 id=配置第二个和第三个-es-服务器节点>配置第二个和第三个 ES 服务器节点</h3><p>剩下的两个节点在加入集群之前都已经通过初始化脚本安装完了 rpm 安装包。剩下的就是逐个节点的部署之前生产的证书文件和修改后的 elasticsearc.yml 主配置文件。在本文档参考的环境中使用如下命令。</p><p>登录 es 2 <code>vagrant ssh es2</code></p><p>配置 es2 的证书和秘钥文件，下面的复制原路径需要替换成你所使用的实际路径。</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-sh data-lang=sh><span class=line><span class=cl>sudo mkdir /etc/elasticsearch/certs
+</span></span><span class=line><span class=cl>sudo cp /vagrant/certs/ca/ca.crt  /etc/elasticsearch/certs
+</span></span><span class=line><span class=cl>sudo cp /vagrant/certs/es2/* /etc/elasticsearch/certs
+</span></span><span class=line><span class=cl>sudo ls /etc/elasticsearch/certs
+</span></span></code></pre></td></tr></table></div></div><p>部署 es2 的配置文件，然后启动这个节点的 Elasticsearch 服务。</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-sh data-lang=sh><span class=line><span class=cl>sudo cp /vagrant/elasticsearch2.yml /etc/elasticsearch/elasticsearch.yml
+</span></span><span class=line><span class=cl>sudo systemctl daemon-reload
+</span></span><span class=line><span class=cl>sudo systemctl start elasticsearch
+</span></span></code></pre></td></tr></table></div></div><p><code>elasticsearch2.yml</code> 文件的内容如下。</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span><span class=lnt>32
+</span><span class=lnt>33
+</span><span class=lnt>34
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-yml data-lang=yml><span class=line><span class=cl><span class=c># ---------------------------------- Cluster -----------------------------------</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>cluster.name</span><span class=p>:</span><span class=w> </span><span class=l>elk4devops</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=c># ------------------------------------ Node ------------------------------------</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>node.name</span><span class=p>:</span><span class=w> </span><span class=l>es2</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=c># ----------------------------------- Paths ------------------------------------</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>path.data</span><span class=p>:</span><span class=w> </span><span class=l>/var/lib/elasticsearch</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>path.logs</span><span class=p>:</span><span class=w> </span><span class=l>/var/log/elasticsearch</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=c># ---------------------------------- Network -----------------------------------</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>network.host</span><span class=p>:</span><span class=w> </span><span class=l>es2.zenlab.local</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=c># --------------------------------- Discovery ----------------------------------</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>cluster.initial_master_nodes</span><span class=p>:</span><span class=w> </span><span class=p>[</span><span class=s2>&#34;es1&#34;</span><span class=p>]</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>discovery.seed_hosts</span><span class=p>:</span><span class=w> </span><span class=p>[</span><span class=w> </span><span class=s2>&#34;es1.zenlab.local&#34;</span><span class=w> </span><span class=p>]</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=c># ------------------------------- TLS and Cert ---------------------------------</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>xpack.security.enabled</span><span class=p>:</span><span class=w> </span><span class=kc>true</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>xpack.security.http.ssl.enabled</span><span class=p>:</span><span class=w> </span><span class=kc>true</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>xpack.security.http.ssl.key</span><span class=p>:</span><span class=w> </span><span class=l>certs/es2.key</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>xpack.security.http.ssl.certificate</span><span class=p>:</span><span class=w> </span><span class=l>certs/es2.crt</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>xpack.security.http.ssl.certificate_authorities</span><span class=p>:</span><span class=w> </span><span class=l>certs/ca.crt</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>xpack.security.transport.ssl.enabled</span><span class=p>:</span><span class=w> </span><span class=kc>true</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>xpack.security.transport.ssl.key</span><span class=p>:</span><span class=w> </span><span class=l>certs/es2.key</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>xpack.security.transport.ssl.certificate</span><span class=p>:</span><span class=w> </span><span class=l>certs/es2.crt</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>xpack.security.transport.ssl.certificate_authorities</span><span class=p>:</span><span class=w> </span><span class=l>certs/ca.crt</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>xpack.monitoring.collection.enabled</span><span class=p>:</span><span class=w> </span><span class=kc>true</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=c>#  ------------------------------- App Search ---------------------------------</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>action.auto_create_index</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;.app-search-*-logs-*,-.app-search-*,+*&#34;</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><p>在 es2 的命令用下面的命令查看是否该节点正常加入了集群。</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-sh data-lang=sh><span class=line><span class=cl>curl --cacert /vagrant/certs/ca/ca.crt -u elastic <span class=s1>&#39;https://es1.zenlab.local:9200/_cat/nodes?v&#39;</span>
+</span></span><span class=line><span class=cl>Enter host password <span class=k>for</span> user <span class=s1>&#39;elastic&#39;</span>:
+</span></span><span class=line><span class=cl>ip            heap.percent ram.percent cpu load_1m load_5m load_15m node.role master name
+</span></span><span class=line><span class=cl>192.168.50.11           <span class=m>37</span>          <span class=m>94</span>   <span class=m>0</span>    0.00    0.05     0.06 dilmrt    *      es1
+</span></span><span class=line><span class=cl>192.168.50.12           <span class=m>17</span>          <span class=m>96</span>   <span class=m>9</span>    0.49    0.20     0.07 dilmrt    -      es2
+</span></span></code></pre></td></tr></table></div></div><p>注意上面 ca.crt 文件的路径，要输入的是 elasstic 用户的密码。 正常情况下两个节点都会出现在结果清单中。</p><p>用相似的命令初始化和启动 es3 节点的服务。es3 的主配置文件样例如下。</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span><span class=lnt>32
+</span><span class=lnt>33
+</span><span class=lnt>34
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-sh data-lang=sh><span class=line><span class=cl><span class=c1># ---------------------------------- Cluster -----------------------------------</span>
+</span></span><span class=line><span class=cl>cluster.name: elk4devops
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># ------------------------------------ Node ------------------------------------</span>
+</span></span><span class=line><span class=cl>node.name: es3
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># ----------------------------------- Paths ------------------------------------</span>
+</span></span><span class=line><span class=cl>path.data: /var/lib/elasticsearch
+</span></span><span class=line><span class=cl>path.logs: /var/log/elasticsearch
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># ---------------------------------- Network -----------------------------------</span>
+</span></span><span class=line><span class=cl>network.host: es3.zenlab.local
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># --------------------------------- Discovery ----------------------------------</span>
+</span></span><span class=line><span class=cl>cluster.initial_master_nodes: <span class=o>[</span><span class=s2>&#34;es1&#34;</span><span class=o>]</span>
+</span></span><span class=line><span class=cl>discovery.seed_hosts: <span class=o>[</span> <span class=s2>&#34;es1.zenlab.local&#34;</span> <span class=o>]</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># ------------------------------- TLS and Cert ---------------------------------</span>
+</span></span><span class=line><span class=cl>xpack.security.enabled: <span class=nb>true</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>xpack.security.http.ssl.enabled: <span class=nb>true</span>
+</span></span><span class=line><span class=cl>xpack.security.http.ssl.key: certs/es3.key
+</span></span><span class=line><span class=cl>xpack.security.http.ssl.certificate: certs/es3.crt
+</span></span><span class=line><span class=cl>xpack.security.http.ssl.certificate_authorities: certs/ca.crt
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>xpack.security.transport.ssl.enabled: <span class=nb>true</span>
+</span></span><span class=line><span class=cl>xpack.security.transport.ssl.key: certs/es3.key
+</span></span><span class=line><span class=cl>xpack.security.transport.ssl.certificate: certs/es3.crt
+</span></span><span class=line><span class=cl>xpack.security.transport.ssl.certificate_authorities: certs/ca.crt
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>xpack.monitoring.collection.enabled: <span class=nb>true</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1>#  ------------------------------- App Search ---------------------------------</span>
+</span></span><span class=line><span class=cl>action.auto_create_index: <span class=s2>&#34;.app-search-*-logs-*,-.app-search-*,+*&#34;</span>
+</span></span></code></pre></td></tr></table></div></div><p>最终集群的测试状态如下：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-sh data-lang=sh><span class=line><span class=cl><span class=o>[</span>vagrant@es1 ~<span class=o>]</span>$ curl --cacert /vagrant/certs/ca/ca.crt -u elastic <span class=s1>&#39;https://es1.zenlab.local:9200/_cat/nodes?v&#39;</span>
+</span></span><span class=line><span class=cl>Enter host password <span class=k>for</span> user <span class=s1>&#39;elastic&#39;</span>:
+</span></span><span class=line><span class=cl>ip            heap.percent ram.percent cpu load_1m load_5m load_15m node.role master name
+</span></span><span class=line><span class=cl>192.168.50.11           <span class=m>20</span>          <span class=m>96</span>   <span class=m>6</span>    0.18    0.09     0.03 dilmrt    *      es1
+</span></span><span class=line><span class=cl>192.168.50.13           <span class=m>50</span>          <span class=m>96</span>   <span class=m>2</span>    0.02    0.07     0.03 dilmrt    -      es3
+</span></span><span class=line><span class=cl>192.168.50.12           <span class=m>25</span>          <span class=m>96</span>   <span class=m>1</span>    0.00    0.02     0.00 dilmrt    -      es2
+</span></span></code></pre></td></tr></table></div></div><h2 id=配置-kibana-服务器>配置 Kibana 服务器</h2><p>服务是必要的的管理界面，是数据搜索、可视化的重要工具。在 Elasticsearch 服务打开了外部 https 加密访问的情况下，Kibana 服务器的安装和配置也需要做如下调整。</p><p>Kibana 的 rpm 安装这里省略。下面直接进入相关的主要配置步骤。</p><p>复制用于链接 ES 集群的证书</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl>sudo mkdir /etc/kibana/certs
+</span></span><span class=line><span class=cl>sudo cp /vagrant/certs/ca/ca.crt  /etc/kibana/certs
+</span></span><span class=line><span class=cl>sudo cp /vagrant/certs/lk/* /etc/kibana/certs
+</span></span><span class=line><span class=cl>sudo ls /etc/kibana/certs
+</span></span></code></pre></td></tr></table></div></div><p>修改默认的 kibana.yml 配置文件，然后覆盖默认的配置文件后启动 kibana 服务。</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl>sudo cp /vagrant/kibna.yml /etc/kibana/kibana.yml
+</span></span><span class=line><span class=cl>sudo cat /etc/kibana/kibana.yml
+</span></span><span class=line><span class=cl>sudo systemctl start kibana
+</span></span></code></pre></td></tr></table></div></div><p>监控 kibana 的启动日志，直到它正常启动。</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-gdscript3 data-lang=gdscript3><span class=line><span class=cl><span class=n>sudo</span> <span class=n>tail</span> <span class=o>-</span><span class=n>f</span> <span class=o>/</span><span class=k>var</span><span class=o>/</span><span class=nb>log</span><span class=o>/</span><span class=n>messages</span>
+</span></span></code></pre></td></tr></table></div></div><p>启动后，使用浏览器访问 <code>https://lk.zenlab.lcoal:5601</code> Kibana 服务，使用 elastic 用户的密码登录，确保 Kibana 正常启动。</p><h2 id=配置权限-beats-账号>配置权限 Beats 账号</h2><p>在使用 Beats 采集监控数据的时候，Beats 的配置文件中需要配置一个后台 Elasticsearch 服务访问账号，安全起见需求需要将这个账号配置为只写权限。配置步骤如下。</p><p>在 Kibana 的用户管理中创建名为 <code>beats-writer</code> 的角色，如下图所示。</p><p><img src=/images/writer-role.jpeg loading=lazy></p><p>以上这个角色拥有 filebeat 和 Metricbeat 两个索引的访问权限，这里是为了评估用户角色管理的工作量，否则可以每个索引单独设置一套必要权限的角色和用户，从而实现更安全的防护。</p><p>然后创建名为 <code>beats-writer</code> 的用户，设置一个密码，将它赋予 <code>beats-writer</code> 的角色（上面创建的）。</p><p><img src=/images/beats-writer-user.jpeg loading=lazy></p><p>这样它就可以用于所有 Beats 节点的配置了。</p><h2 id=初始化首个-beats-节点>初始化首个 Beats 节点</h2><p>在 vagrant 测试环境中启动第一个用于测试 Beats 的节点。</p><p><code>vagrant up node1</code></p><p>这里使用了初始脚本安装相关的 rpm 安装包。</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=cp>#!/bin/bash
+</span></span></span><span class=line><span class=cl><span class=cp></span><span class=c1># author: Martin Liu</span>
+</span></span><span class=line><span class=cl><span class=c1># url:martinliu.cn</span>
+</span></span><span class=line><span class=cl><span class=nv>elastic_version</span><span class=o>=</span><span class=s1>&#39;7.8.0&#39;</span>
+</span></span><span class=line><span class=cl><span class=nb>echo</span> <span class=s2>&#34;Installing a Filebeat &#34;</span><span class=nv>$elastic_version</span><span class=s2>&#34; agent...&#34;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>sudo rpm -ivh /vagrant/rpm/filebeat-<span class=nv>$elastic_version</span>-x86_64.rpm
+</span></span><span class=line><span class=cl>sudo systemctl <span class=nb>enable</span>  filebeat.service
+</span></span><span class=line><span class=cl>sudo rpm -ivh /vagrant/rpm/metricbeat-<span class=nv>$elastic_version</span>-x86_64.rpm
+</span></span><span class=line><span class=cl>sudo systemctl <span class=nb>enable</span>  metricbeat.service
+</span></span><span class=line><span class=cl>sudo rpm -ivh /vagrant/rpm/auditbeat-<span class=nv>$elastic_version</span>-x86_64.rpm
+</span></span><span class=line><span class=cl>sudo systemctl <span class=nb>enable</span>  auditbeat.service
+</span></span></code></pre></td></tr></table></div></div><p>登录该节点进行 Beats 的初始化配置。目前 Elasticsearch 集群还是空白的，还没有初始化任何 Beats 相关的索引、可视化和仪表板。这个初始化工作是通过，每种 Beats 的 setup 命令完成的。这个 setup 命令只需要在一个节点上成功执行一次即可，其它节点的配置文件中，连 setup 命令相关的配置都不需要。</p><p>这里使用的 filebeat.yml 参考文件如下：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span><span class=lnt>32
+</span><span class=lnt>33
+</span><span class=lnt>34
+</span><span class=lnt>35
+</span><span class=lnt>36
+</span><span class=lnt>37
+</span><span class=lnt>38
+</span><span class=lnt>39
+</span><span class=lnt>40
+</span><span class=lnt>41
+</span><span class=lnt>42
+</span><span class=lnt>43
+</span><span class=lnt>44
+</span><span class=lnt>45
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-gdscript3 data-lang=gdscript3><span class=line><span class=cl><span class=c1>#=========================== Filebeat inputs =============================</span>
+</span></span><span class=line><span class=cl><span class=n>filebeat</span><span class=o>.</span><span class=n>inputs</span><span class=p>:</span>
+</span></span><span class=line><span class=cl><span class=o>-</span> <span class=n>type</span><span class=p>:</span> <span class=nb>log</span>
+</span></span><span class=line><span class=cl>  <span class=n>enabled</span><span class=p>:</span> <span class=bp>false</span>
+</span></span><span class=line><span class=cl>  <span class=n>paths</span><span class=p>:</span>
+</span></span><span class=line><span class=cl>    <span class=o>-</span> <span class=o>/</span><span class=k>var</span><span class=o>/</span><span class=nb>log</span><span class=o>/*.</span><span class=n>log</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1>#============================= Filebeat modules ===============================</span>
+</span></span><span class=line><span class=cl><span class=n>filebeat</span><span class=o>.</span><span class=n>config</span><span class=o>.</span><span class=n>modules</span><span class=p>:</span>
+</span></span><span class=line><span class=cl>  <span class=n>path</span><span class=p>:</span> <span class=o>$</span><span class=p>{</span><span class=n>path</span><span class=o>.</span><span class=n>config</span><span class=p>}</span><span class=o>/</span><span class=n>modules</span><span class=o>.</span><span class=n>d</span><span class=o>/*.</span><span class=n>yml</span>
+</span></span><span class=line><span class=cl>  <span class=n>reload</span><span class=o>.</span><span class=n>enabled</span><span class=p>:</span> <span class=bp>true</span>
+</span></span><span class=line><span class=cl>  <span class=n>reload</span><span class=o>.</span><span class=n>period</span><span class=p>:</span> <span class=mi>5</span><span class=n>s</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1>#==================== Elasticsearch template setting ==========================</span>
+</span></span><span class=line><span class=cl><span class=n>setup</span><span class=o>.</span><span class=n>template</span><span class=o>.</span><span class=n>settings</span><span class=p>:</span>
+</span></span><span class=line><span class=cl>  <span class=n>index</span><span class=o>.</span><span class=n>number_of_shards</span><span class=p>:</span> <span class=mi>1</span>
+</span></span><span class=line><span class=cl>  <span class=n>index</span><span class=o>.</span><span class=n>codec</span><span class=p>:</span> <span class=n>best_compression</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1>#============================== Kibana =====================================</span>
+</span></span><span class=line><span class=cl><span class=n>setup</span><span class=o>.</span><span class=n>kibana</span><span class=p>:</span>
+</span></span><span class=line><span class=cl>  <span class=n>host</span><span class=p>:</span> <span class=s2>&#34;https://lk.zenlab.local:5601&#34;</span>  
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1>#-------------------------- Elasticsearch output ------------------------------</span>
+</span></span><span class=line><span class=cl><span class=n>output</span><span class=o>.</span><span class=n>elasticsearch</span><span class=p>:</span>
+</span></span><span class=line><span class=cl>  <span class=n>hosts</span><span class=p>:</span> <span class=p>[</span><span class=s2>&#34;es1.zenlab.local:9200&#34;</span><span class=p>]</span>
+</span></span><span class=line><span class=cl>  <span class=n>username</span><span class=p>:</span> <span class=s2>&#34;elastic&#34;</span>
+</span></span><span class=line><span class=cl>  <span class=n>password</span><span class=p>:</span> <span class=s2>&#34;1l1lqVMMWMbLI6DCH0dQ&#34;</span>
+</span></span><span class=line><span class=cl>  <span class=n>protocol</span><span class=p>:</span> <span class=n>https</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1>#================================ Processors =====================================</span>
+</span></span><span class=line><span class=cl><span class=n>processors</span><span class=p>:</span>
+</span></span><span class=line><span class=cl>  <span class=o>-</span> <span class=n>add_host_metadata</span><span class=p>:</span>
+</span></span><span class=line><span class=cl>      <span class=n>netinfo</span><span class=o>.</span><span class=n>enabled</span><span class=p>:</span> <span class=bp>true</span>
+</span></span><span class=line><span class=cl>      <span class=n>cache</span><span class=o>.</span><span class=n>ttl</span><span class=p>:</span> <span class=mi>5</span><span class=n>m</span>
+</span></span><span class=line><span class=cl>      <span class=n>geo</span><span class=p>:</span>
+</span></span><span class=line><span class=cl>        <span class=n>name</span><span class=p>:</span> <span class=n>bj</span><span class=o>-</span><span class=n>dc</span><span class=o>-</span><span class=mi>01</span>
+</span></span><span class=line><span class=cl>        <span class=n>location</span><span class=p>:</span> <span class=mf>35.5528</span><span class=p>,</span> <span class=mf>116.2360</span>
+</span></span><span class=line><span class=cl>        <span class=n>continent_name</span><span class=p>:</span> <span class=n>Asia</span>
+</span></span><span class=line><span class=cl>        <span class=n>country_iso_code</span><span class=p>:</span> <span class=n>CN</span>
+</span></span><span class=line><span class=cl>        <span class=n>region_name</span><span class=p>:</span> <span class=n>Beijing</span>
+</span></span><span class=line><span class=cl>        <span class=n>region_iso_code</span><span class=p>:</span> <span class=n>CN</span><span class=o>-</span><span class=n>BJ</span>
+</span></span><span class=line><span class=cl>        <span class=n>city_name</span><span class=p>:</span> <span class=n>Beijing</span>
+</span></span><span class=line><span class=cl>  <span class=o>-</span> <span class=n>add_cloud_metadata</span><span class=p>:</span> <span class=o>~</span>
+</span></span><span class=line><span class=cl>  <span class=o>-</span> <span class=n>add_docker_metadata</span><span class=p>:</span> <span class=o>~</span>
+</span></span><span class=line><span class=cl>  <span class=o>-</span> <span class=n>add_kubernetes_metadata</span><span class=p>:</span> <span class=o>~</span>
+</span></span></code></pre></td></tr></table></div></div><p>目前的计划是配置 Beats 直接访问 Elasticsearch 后台服务，不通过 Logstash 中转。以后增加这个参考配置。</p><p>在执行 filebeat setup 命令之前，还需要在 Beats 节点上部署上面生成的 ca 公钥文件。参考命令如下。</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl>sudo update-ca-trust enable
+</span></span><span class=line><span class=cl>sudo cp /vagrant/certs/ca/ca.crt /etc/pki/ca-trust/source/anchors/
+</span></span><span class=line><span class=cl>sudo update-ca-trust extract
+</span></span></code></pre></td></tr></table></div></div><p>这里把 ca.crt 公钥文件部署到了 CentOS 操作系统的的可信 CA 发放机构的目录中，其它操作系统中的这个证书路径可能不同，需要做替换，包括以上的证书更新命令也可能需要调整。</p><p>经过以上的配置之后，用之前的 curl 命令测试一下是否这个证书生效了。</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-sh data-lang=sh><span class=line><span class=cl><span class=o>[</span>vagrant@es1 ~<span class=o>]</span>$ curl -u elastic <span class=s1>&#39;https://es1.zenlab.local:9200/_cat/nodes?v&#39;</span>
+</span></span><span class=line><span class=cl>Enter host password <span class=k>for</span> user <span class=s1>&#39;elastic&#39;</span>:
+</span></span><span class=line><span class=cl>ip            heap.percent ram.percent cpu load_1m load_5m load_15m node.role master name
+</span></span><span class=line><span class=cl>192.168.50.11           <span class=m>20</span>          <span class=m>96</span>   <span class=m>6</span>    0.18    0.09     0.03 dilmrt    *      es1
+</span></span><span class=line><span class=cl>192.168.50.13           <span class=m>50</span>          <span class=m>96</span>   <span class=m>2</span>    0.02    0.07     0.03 dilmrt    -      es3
+</span></span><span class=line><span class=cl>192.168.50.12           <span class=m>25</span>          <span class=m>96</span>   <span class=m>1</span>    0.00    0.02     0.00 dilmrt    -      es2
+</span></span></code></pre></td></tr></table></div></div><p>这次在参数中故意省略了 ca 证书文件路径，如果 curl 可以正常访问，那么 Beats 程序也可以，而且不需要在 Beats 配置文件中生命公钥的路径，更有利于在以后切换到另外一套 CA 秘钥后，配置文件的更新工作。</p><p>这里省略 Beats 配置文件的展示，参考一下命令做初始化前的准备。</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl>sudo cp -f /vagrant/filebeat.yml /etc/filebeat/filebeat.yml
+</span></span><span class=line><span class=cl>sudo cp -f /vagrant/metricbeat.yml /etc/metricbeat/metricbeat.yml
+</span></span><span class=line><span class=cl>sudo filebeat modules enable system
+</span></span></code></pre></td></tr></table></div></div><p>为了测试的方便起见，在 filebeat.yml 和 metricbeat.yml 文件中使用了超级用户 elastic ，如果这个动作伴随着 Elastic Stack 的版本升级需要经常发生，此处需要配置一个 Beats setup 用的专用角色和账户，从而避免多次使用超级用户。</p><p>下面运行 setup 命令：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl>filebeat setup
+</span></span><span class=line><span class=cl>metricbeat setup
+</span></span></code></pre></td></tr></table></div></div><p>这两个命令正常运行后，在 Kibana 里会增加增加相关的索引、pipeline、可视化和仪表板等对象。</p><p>使用下面的命令测试 filebeat 和 metricbeat 是否能正常的采集数据并传输到后台。</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl>filebeat -e
+</span></span><span class=line><span class=cl>metricbeat -e
+</span></span></code></pre></td></tr></table></div></div><p>如果报错的话，将 level 在配置文件中设置为 debug，方便调试。调试成功之后，应该在 Kibana 的界面中，可以看到 node1 节点，点击后能看到实时更新过来的日志和监控指标。</p><p><img src=/images/metric-node1.jpeg loading=lazy></p><h2 id=在新的节点上部署-beats>在新的节点上部署 Beats</h2><p>在新的需要部署 Beats 的节点上，可以使用下面的脚本配置和部署。</p><p>add-agent.sh</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span><span class=lnt>32
+</span><span class=lnt>33
+</span><span class=lnt>34
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=cp>#!/bin/bash
+</span></span></span><span class=line><span class=cl><span class=cp></span><span class=c1># author: Martin Liu</span>
+</span></span><span class=line><span class=cl><span class=c1># url:martinliu.cn</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=nv>elastic_version</span><span class=o>=</span><span class=s1>&#39;7.8.0&#39;</span>
+</span></span><span class=line><span class=cl><span class=nv>b_user</span><span class=o>=</span><span class=s1>&#39;beats-writer&#39;</span>
+</span></span><span class=line><span class=cl><span class=nv>b_pwd</span><span class=o>=</span><span class=s1>&#39;DevOps1234&#39;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=nb>echo</span> <span class=s2>&#34;############## Installing a Beats &#34;</span><span class=nv>$elastic_version</span><span class=s2>&#34; agent...&#34;</span>
+</span></span><span class=line><span class=cl>sudo rpm -ivh /vagrant/rpm/filebeat-<span class=nv>$elastic_version</span>-x86_64.rpm
+</span></span><span class=line><span class=cl>sudo systemctl <span class=nb>enable</span>  filebeat.service
+</span></span><span class=line><span class=cl>sudo filebeat modules <span class=nb>enable</span> system
+</span></span><span class=line><span class=cl>sudo rpm -ivh /vagrant/rpm/metricbeat-<span class=nv>$elastic_version</span>-x86_64.rpm
+</span></span><span class=line><span class=cl>sudo systemctl <span class=nb>enable</span>  metricbeat.service
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=nb>echo</span> <span class=s2>&#34;################### Setup Public CA...&#34;</span>
+</span></span><span class=line><span class=cl>sudo update-ca-trust <span class=nb>enable</span>
+</span></span><span class=line><span class=cl>sudo cp /vagrant/certs/ca/ca.crt /etc/pki/ca-trust/source/anchors/
+</span></span><span class=line><span class=cl>sudo update-ca-trust extract
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=nb>echo</span> <span class=s2>&#34;################### Update Beats configuration files ...&#34;</span>
+</span></span><span class=line><span class=cl>sudo cp -f /vagrant/filebeat-v1.yml /etc/filebeat/filebeat.yml
+</span></span><span class=line><span class=cl>sudo cp -f /vagrant/metricbeat-v1.yml /etc/metricbeat/metricbeat.yml
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=nb>echo</span> <span class=s2>&#34;################### Setup Keystor for Beats ...&#34;</span>
+</span></span><span class=line><span class=cl><span class=nb>echo</span> <span class=nv>$b_user</span>  <span class=p>|</span> sudo filebeat keystore add BEATS_WRITER_USERNAME --stdin --force
+</span></span><span class=line><span class=cl><span class=nb>echo</span> <span class=nv>$b_pwd</span>   <span class=p>|</span> sudo filebeat keystore add BEATS_WRITER_PW --stdin --force
+</span></span><span class=line><span class=cl><span class=nb>echo</span> <span class=nv>$b_user</span>  <span class=p>|</span> sudo metricbeat keystore add BEATS_WRITER_USERNAME --stdin --force
+</span></span><span class=line><span class=cl><span class=nb>echo</span> <span class=nv>$b_pwd</span>   <span class=p>|</span> sudo metricbeat keystore add BEATS_WRITER_PW --stdin --force
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=nb>echo</span> <span class=s2>&#34;################### Start Beats services ...&#34;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>sudo systemctl start  metricbeat.service
+</span></span><span class=line><span class=cl>sudo systemctl start  filebeat.service
+</span></span></code></pre></td></tr></table></div></div><p>简单说明以上脚本的功能：</p><ul><li>用 rpm 安装包安装所需要的 Beats，filebeat 开启 system 模块。</li><li>在目标操作系统里部署必须的 ca 证书到默认路径中，并启用。从而省略在所有 beats 文件中生命公钥文件的路径。</li><li>覆盖更新默认的 Beats 配置文件。</li><li>创建并初始化 Beats 配置文件中所需要的 beats-writer 用户名和密码。从而消除消除所有明文密码。以上脚本只需要在节点上更新的时候才允许，允许后删除，从而不会留下任何明文密码和账户信息。Beats 的任何模块配置中，如果需要配置任何密码账户也需要如法炮制，从而保证基本的安全性。</li><li>启动 Beats 服务</li></ul><p>以上脚本所使用的配置文件文件如下。</p><p>filebeat-v1.yml</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span><span class=lnt>32
+</span><span class=lnt>33
+</span><span class=lnt>34
+</span><span class=lnt>35
+</span><span class=lnt>36
+</span><span class=lnt>37
+</span><span class=lnt>38
+</span><span class=lnt>39
+</span><span class=lnt>40
+</span><span class=lnt>41
+</span><span class=lnt>42
+</span><span class=lnt>43
+</span><span class=lnt>44
+</span><span class=lnt>45
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-gdscript3 data-lang=gdscript3><span class=line><span class=cl><span class=n>filebeat</span><span class=o>.</span><span class=n>inputs</span><span class=p>:</span>
+</span></span><span class=line><span class=cl><span class=o>-</span> <span class=n>type</span><span class=p>:</span> <span class=nb>log</span>
+</span></span><span class=line><span class=cl>  <span class=n>enabled</span><span class=p>:</span> <span class=bp>false</span>
+</span></span><span class=line><span class=cl>  <span class=n>paths</span><span class=p>:</span>
+</span></span><span class=line><span class=cl>    <span class=o>-</span> <span class=o>/</span><span class=k>var</span><span class=o>/</span><span class=nb>log</span><span class=o>/*.</span><span class=n>log</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1>#============================= Filebeat modules ===============================</span>
+</span></span><span class=line><span class=cl><span class=n>filebeat</span><span class=o>.</span><span class=n>config</span><span class=o>.</span><span class=n>modules</span><span class=p>:</span>
+</span></span><span class=line><span class=cl>  <span class=n>path</span><span class=p>:</span> <span class=o>$</span><span class=p>{</span><span class=n>path</span><span class=o>.</span><span class=n>config</span><span class=p>}</span><span class=o>/</span><span class=n>modules</span><span class=o>.</span><span class=n>d</span><span class=o>/*.</span><span class=n>yml</span>
+</span></span><span class=line><span class=cl>  <span class=n>reload</span><span class=o>.</span><span class=n>enabled</span><span class=p>:</span> <span class=bp>true</span>
+</span></span><span class=line><span class=cl>  <span class=n>reload</span><span class=o>.</span><span class=n>period</span><span class=p>:</span> <span class=mi>60</span><span class=n>s</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1>#-------------------------- Elasticsearch output ------------------------------</span>
+</span></span><span class=line><span class=cl><span class=n>output</span><span class=o>.</span><span class=n>elasticsearch</span><span class=p>:</span>
+</span></span><span class=line><span class=cl>  <span class=n>hosts</span><span class=p>:</span> <span class=p>[</span><span class=s2>&#34;es1.zenlab.local:9200&#34;</span><span class=p>,</span><span class=s2>&#34;es2.zenlab.local:9200&#34;</span><span class=p>,</span><span class=s2>&#34;es3.zenlab.local:9200&#34;</span><span class=p>]</span>
+</span></span><span class=line><span class=cl>  <span class=n>password</span><span class=p>:</span> <span class=o>$</span><span class=p>{</span><span class=n>BEATS_WRITER_PW</span><span class=p>}</span>
+</span></span><span class=line><span class=cl>  <span class=n>username</span><span class=p>:</span> <span class=o>$</span><span class=p>{</span><span class=n>BEATS_WRITER_USERNAME</span><span class=p>}</span>
+</span></span><span class=line><span class=cl>  <span class=n>protocol</span><span class=p>:</span> <span class=n>https</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1>#================================ Processors =====================================</span>
+</span></span><span class=line><span class=cl><span class=n>processors</span><span class=p>:</span>
+</span></span><span class=line><span class=cl>  <span class=o>-</span> <span class=n>add_host_metadata</span><span class=p>:</span>
+</span></span><span class=line><span class=cl>      <span class=n>netinfo</span><span class=o>.</span><span class=n>enabled</span><span class=p>:</span> <span class=bp>true</span>
+</span></span><span class=line><span class=cl>      <span class=n>cache</span><span class=o>.</span><span class=n>ttl</span><span class=p>:</span> <span class=mi>5</span><span class=n>m</span>
+</span></span><span class=line><span class=cl>      <span class=n>geo</span><span class=p>:</span>
+</span></span><span class=line><span class=cl>        <span class=n>name</span><span class=p>:</span> <span class=n>bj</span><span class=o>-</span><span class=n>dc</span><span class=o>-</span><span class=mi>01</span>
+</span></span><span class=line><span class=cl>        <span class=n>location</span><span class=p>:</span> <span class=mf>35.5528</span><span class=p>,</span> <span class=mf>116.2360</span>
+</span></span><span class=line><span class=cl>        <span class=n>continent_name</span><span class=p>:</span> <span class=n>Asia</span>
+</span></span><span class=line><span class=cl>        <span class=n>country_iso_code</span><span class=p>:</span> <span class=n>CN</span>
+</span></span><span class=line><span class=cl>        <span class=n>region_name</span><span class=p>:</span> <span class=n>Beijing</span>
+</span></span><span class=line><span class=cl>        <span class=n>region_iso_code</span><span class=p>:</span> <span class=n>CN</span><span class=o>-</span><span class=n>BJ</span>
+</span></span><span class=line><span class=cl>        <span class=n>city_name</span><span class=p>:</span> <span class=n>Beijing</span>
+</span></span><span class=line><span class=cl>  <span class=o>-</span> <span class=n>add_cloud_metadata</span><span class=p>:</span> <span class=o>~</span>
+</span></span><span class=line><span class=cl>  <span class=o>-</span> <span class=n>add_docker_metadata</span><span class=p>:</span> <span class=o>~</span>
+</span></span><span class=line><span class=cl>  <span class=o>-</span> <span class=n>add_kubernetes_metadata</span><span class=p>:</span> <span class=o>~</span>
+</span></span><span class=line><span class=cl>  <span class=o>-</span> <span class=n>add_fields</span><span class=p>:</span>
+</span></span><span class=line><span class=cl>      <span class=n>target</span><span class=p>:</span> <span class=s1>&#39;&#39;</span>
+</span></span><span class=line><span class=cl>      <span class=n>fields</span><span class=p>:</span>
+</span></span><span class=line><span class=cl>        <span class=n>service</span><span class=o>.</span><span class=n>name</span><span class=p>:</span> <span class=s1>&#39;Elastic Cloud&#39;</span>
+</span></span><span class=line><span class=cl>        <span class=n>service</span><span class=o>.</span><span class=n>id</span><span class=p>:</span> <span class=s1>&#39;ec-ww&#39;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1>#==================== Best Practice Configuration ==========================</span>
+</span></span><span class=line><span class=cl><span class=n>setup</span><span class=o>.</span><span class=n>ilm</span><span class=o>.</span><span class=n>check_exists</span><span class=p>:</span> <span class=bp>false</span>
+</span></span><span class=line><span class=cl><span class=n>logging</span><span class=o>.</span><span class=n>level</span><span class=p>:</span> <span class=n>error</span>
+</span></span><span class=line><span class=cl><span class=n>queue</span><span class=o>.</span><span class=n>spool</span><span class=p>:</span> <span class=o>~</span>
+</span></span></code></pre></td></tr></table></div></div><p>metricbeat.yml</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span><span class=lnt>32
+</span><span class=lnt>33
+</span><span class=lnt>34
+</span><span class=lnt>35
+</span><span class=lnt>36
+</span><span class=lnt>37
+</span><span class=lnt>38
+</span><span class=lnt>39
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-gdscript3 data-lang=gdscript3><span class=line><span class=cl><span class=c1># =========================== Modules configuration ============================</span>
+</span></span><span class=line><span class=cl><span class=n>metricbeat</span><span class=o>.</span><span class=n>config</span><span class=o>.</span><span class=n>modules</span><span class=p>:</span>
+</span></span><span class=line><span class=cl>  <span class=n>path</span><span class=p>:</span> <span class=o>$</span><span class=p>{</span><span class=n>path</span><span class=o>.</span><span class=n>config</span><span class=p>}</span><span class=o>/</span><span class=n>modules</span><span class=o>.</span><span class=n>d</span><span class=o>/*.</span><span class=n>yml</span>
+</span></span><span class=line><span class=cl>  <span class=n>reload</span><span class=o>.</span><span class=n>enabled</span><span class=p>:</span> <span class=bp>true</span>
+</span></span><span class=line><span class=cl>  <span class=n>reload</span><span class=o>.</span><span class=n>period</span><span class=p>:</span> <span class=mi>120</span><span class=n>s</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1>#-------------------------- Elasticsearch output ------------------------------</span>
+</span></span><span class=line><span class=cl><span class=n>output</span><span class=o>.</span><span class=n>elasticsearch</span><span class=p>:</span>
+</span></span><span class=line><span class=cl>  <span class=n>hosts</span><span class=p>:</span> <span class=p>[</span><span class=s2>&#34;es1.zenlab.local:9200&#34;</span><span class=p>,</span><span class=s2>&#34;es2.zenlab.local:9200&#34;</span><span class=p>,</span><span class=s2>&#34;es3.zenlab.local:9200&#34;</span><span class=p>]</span>
+</span></span><span class=line><span class=cl>  <span class=n>password</span><span class=p>:</span> <span class=o>$</span><span class=p>{</span><span class=n>BEATS_WRITER_PW</span><span class=p>}</span>
+</span></span><span class=line><span class=cl>  <span class=n>username</span><span class=p>:</span> <span class=o>$</span><span class=p>{</span><span class=n>BEATS_WRITER_USERNAME</span><span class=p>}</span>
+</span></span><span class=line><span class=cl>  <span class=n>protocol</span><span class=p>:</span> <span class=n>https</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1>#================================ Processors =====================================</span>
+</span></span><span class=line><span class=cl><span class=n>processors</span><span class=p>:</span>
+</span></span><span class=line><span class=cl>  <span class=o>-</span> <span class=n>add_host_metadata</span><span class=p>:</span>
+</span></span><span class=line><span class=cl>      <span class=n>netinfo</span><span class=o>.</span><span class=n>enabled</span><span class=p>:</span> <span class=bp>true</span>
+</span></span><span class=line><span class=cl>      <span class=n>cache</span><span class=o>.</span><span class=n>ttl</span><span class=p>:</span> <span class=mi>5</span><span class=n>m</span>
+</span></span><span class=line><span class=cl>      <span class=n>geo</span><span class=p>:</span>
+</span></span><span class=line><span class=cl>        <span class=n>name</span><span class=p>:</span> <span class=n>bj</span><span class=o>-</span><span class=n>dc</span><span class=o>-</span><span class=mi>01</span>
+</span></span><span class=line><span class=cl>        <span class=n>location</span><span class=p>:</span> <span class=mf>35.5528</span><span class=p>,</span> <span class=mf>116.2360</span>
+</span></span><span class=line><span class=cl>        <span class=n>continent_name</span><span class=p>:</span> <span class=n>Asia</span>
+</span></span><span class=line><span class=cl>        <span class=n>country_iso_code</span><span class=p>:</span> <span class=n>CN</span>
+</span></span><span class=line><span class=cl>        <span class=n>region_name</span><span class=p>:</span> <span class=n>Beijing</span>
+</span></span><span class=line><span class=cl>        <span class=n>region_iso_code</span><span class=p>:</span> <span class=n>CN</span><span class=o>-</span><span class=n>BJ</span>
+</span></span><span class=line><span class=cl>        <span class=n>city_name</span><span class=p>:</span> <span class=n>Beijing</span>
+</span></span><span class=line><span class=cl>  <span class=o>-</span> <span class=n>add_cloud_metadata</span><span class=p>:</span> <span class=o>~</span>
+</span></span><span class=line><span class=cl>  <span class=o>-</span> <span class=n>add_docker_metadata</span><span class=p>:</span> <span class=o>~</span>
+</span></span><span class=line><span class=cl>  <span class=o>-</span> <span class=n>add_kubernetes_metadata</span><span class=p>:</span> <span class=o>~</span>
+</span></span><span class=line><span class=cl>  <span class=o>-</span> <span class=n>add_fields</span><span class=p>:</span>
+</span></span><span class=line><span class=cl>      <span class=n>target</span><span class=p>:</span> <span class=s1>&#39;&#39;</span>
+</span></span><span class=line><span class=cl>      <span class=n>fields</span><span class=p>:</span>
+</span></span><span class=line><span class=cl>        <span class=n>service</span><span class=o>.</span><span class=n>name</span><span class=p>:</span> <span class=s1>&#39;Elastic Cloud&#39;</span>
+</span></span><span class=line><span class=cl>        <span class=n>service</span><span class=o>.</span><span class=n>id</span><span class=p>:</span> <span class=s1>&#39;ec-ww&#39;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1>#==================== Best Practice Configuration ==========================</span>
+</span></span><span class=line><span class=cl><span class=n>setup</span><span class=o>.</span><span class=n>ilm</span><span class=o>.</span><span class=n>check_exists</span><span class=p>:</span> <span class=bp>false</span>
+</span></span><span class=line><span class=cl><span class=n>logging</span><span class=o>.</span><span class=n>level</span><span class=p>:</span> <span class=n>error</span>
+</span></span><span class=line><span class=cl><span class=n>queue</span><span class=o>.</span><span class=n>spool</span><span class=p>:</span> <span class=o>~</span>
+</span></span></code></pre></td></tr></table></div></div><p>解释一下相关的重要配置。</p><ul><li>netinfo.enabled: true 收集所有网卡的配置信息，覆盖多块网卡的情况</li><li>geo: 地理位置信息对以后基于位置的查询打下基础，这对于监控和信息安全都非常重要。为以后基于 host 的上下文关联打下基础，方便在 apm、log、metric、heartbeat 和机器学习的界面中相互跳转。</li><li>add_fields: 在 fields 下面维护 ECS 数据定义中的必要的有意义的数据，在网上查询 ECS 的数据定义，这些字段可以优化以后的搜索逻辑。</li><li>最后一段是其它必要的最佳实践设置</li><li>output.elasticsearch : 这里使用了三个 ES 节点的链接地址，这里应该使用至少 2 个 Elasticsearch 集群中的 ingest 节点。</li></ul><h2 id=总结>总结</h2><p>本文没有展开说明和配置的地方包括：对 Best 节点的工作状态的监控；对索引生命周期规则的调优（用尽磁盘），冷热数据的自动化迁移规则。</p><p>完成的配置包括：</p><ul><li>配置 ES 3 节点集群内部的 TLS 加密传输，对外的 HTTPS 加密协议服务</li><li>Kibana 基于证书的 SSL 加密配置</li><li>Beats 的高可靠性后台传输数据，TLS加密传输数据</li><li>用基于角色的访问控制，创建了只写权限的 beats-writer 角色和用户。</li><li>用 beats 的 keystore 将配置文件中的明文密码消除。</li></ul></section><footer class=article-footer><section class=article-tags><a href=/tags/elastic/>Elastic</a>
+<a href=/tags/beats/>Beats</a></section><section class=article-copyright><svg class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="12" cy="12" r="9"/><path d="M14.5 9a3.5 4 0 100 6"/></svg>
+<span>署名-非商业性使用-禁止演绎 4.0 (CC BY-NC-ND 4.0)</span></section><section class=article-lastmod><svg class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15 15"/></svg>
+<span>最后更新于 2024-06-25 21:44 CST</span></section></footer></article><aside class=related-content--wrapper><h2 class=section-title>相关文章</h2><div class=related-content><div class="flex article-list--tile"><article class=has-image><a href=/blog/building-a-serverless-real-time-data-pipeline-with-terraform-aws-and-python/><div class=article-image><img src=/blog/building-a-serverless-real-time-data-pipeline-with-terraform-aws-and-python/serverless-data-pipeline.a4a0b7054ebf1a8b5ef484d300f2b3f5_hu_935e0ea9129a1ae7.png width=250 height=150 loading=lazy alt="Featured image of post 使用 Terraform、AWS 和 Python 构建无服务器实时数据管道" data-key=building-a-serverless-real-time-data-pipeline-with-terraform-aws-and-python data-hash="md5-pKC3BU6/Gote9ITTAPKz9Q=="></div><div class=article-details><h2 class=article-title>使用 Terraform、AWS 和 Python 构建无服务器实时数据管道</h2></div></a></article><article class=has-image><a href=/blog/docker-jenkins-prometheus-locally-heres-the-stack/><div class=article-image><img src=/blog/docker-jenkins-prometheus-locally-heres-the-stack/1_izxF5LhLRecc_epDuvJmhg.6822f432f9b46bd2cfaad5639c0a19cc_hu_d5da2918fdd31e57.png width=250 height=150 loading=lazy alt="Featured image of post Docker、Jenkins、Prometheus，本地能跑？！这套技术栈你需要搞定" data-key=docker-jenkins-prometheus-locally-heres-the-stack data-hash="md5-aCL0Mvm0a9LPqtVjnAoZzA=="></div><div class=article-details><h2 class=article-title>Docker、Jenkins、Prometheus，本地能跑？！这套技术栈你需要搞定</h2></div></a></article><article class=has-image><a href=/blog/identify-clean-up-large-docker-containers-volumes/><div class=article-image><img src=/blog/identify-clean-up-large-docker-containers-volumes/91625BFA-9860-451D-B947-558D4B63D207.50f3b92f513f884119305df345b763aa_hu_b2cf361df87011e0.jpg width=250 height=150 loading=lazy alt="Featured image of post 如何寻找占用空间最大的容器，并删除它所使用的卷，释放占用的空间？" data-key=identify-clean-up-large-docker-containers-volumes data-hash="md5-UPO5L1E/iEEZMF3zRbdjqg=="></div><div class=article-details><h2 class=article-title>如何寻找占用空间最大的容器，并删除它所使用的卷，释放占用的空间？</h2></div></a></article><article class=has-image><a href=/blog/state-of-devops-2024-summary/><div class=article-image><img src=/blog/state-of-devops-2024-summary/state_of_dora_2024.max-2500x2500.0a7d527e683811a1bc28107408c5510e_hu_6c93c28fb0b480a3.jpg width=250 height=150 loading=lazy alt="Featured image of post 《DORA 2024年 加速：DevOps 现状报告》概述" data-key=state-of-devops-2024-summary data-hash="md5-Cn1Sfmg4EaG8KBB0CMVRDg=="></div><div class=article-details><h2 class=article-title>《DORA 2024年 加速：DevOps 现状报告》概述</h2></div></a></article><article class=has-image><a href=/blog/pulumi-azure-quickstart-guide-macos-local/><div class=article-image><img src=/blog/pulumi-azure-quickstart-guide-macos-local/azure-nextgen.50430037a105fe508dee219392d7de95_hu_2cac299af362e456.png width=250 height=150 loading=lazy alt="Featured image of post Pulumi IaC 之 Azure 快速入门指南（MacOS & Python 本地）" data-key=pulumi-azure-quickstart-guide-macos-local data-hash="md5-UEMAN6EF/lCN7iGTktfelQ=="></div><div class=article-details><h2 class=article-title>Pulumi IaC 之 Azure 快速入门指南（MacOS & Python 本地）</h2></div></a></article></div></div></aside><div class=disqus-container><div id=disqus_thread></div><script>window.disqus_config=function(){},function(){if(["localhost","127.0.0.1"].indexOf(window.location.hostname)!=-1){document.getElementById("disqus_thread").innerHTML="Disqus comments not available by default when the website is previewed locally.";return}var t=document,e=t.createElement("script");e.async=!0,e.src="//martinliu.disqus.com/embed.js",e.setAttribute("data-timestamp",+new Date),(t.head||t.body).appendChild(e)}()</script><noscript>Please enable JavaScript to view the <a href=https://disqus.com/?ref_noscript>comments powered by Disqus.</a></noscript><a href=https://disqus.com class=dsq-brlink>comments powered by <span class=logo-disqus>Disqus</span></a></div><style>.disqus-container{background-color:var(--card-background);border-radius:var(--card-border-radius);box-shadow:var(--shadow-l1);padding:var(--card-padding)}</style><script>window.addEventListener("onColorSchemeChange",e=>{typeof DISQUS=="object"&&DISQUS.reset({reload:!0})})</script><footer class=site-footer><section class=copyright>&copy;
+2007 -
+2025 Martin Liu's Blog</section><section class=powerby>本博客始于 2007 年<br>使用 <a href=https://gohugo.io/ target=_blank rel=noopener>Hugo</a> 构建<br>主题 <b><a href=https://github.com/CaiJimmy/hugo-theme-stack target=_blank rel=noopener data-version=3.29.0>Stack</a></b> 由 <a href=https://jimmycai.com target=_blank rel=noopener>Jimmy</a> 设计</section></footer><div class=pswp tabindex=-1 role=dialog aria-hidden=true><div class=pswp__bg></div><div class=pswp__scroll-wrap><div class=pswp__container><div class=pswp__item></div><div class=pswp__item></div><div class=pswp__item></div></div><div class="pswp__ui pswp__ui--hidden"><div class=pswp__top-bar><div class=pswp__counter></div><button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+<button class="pswp__button pswp__button--share" title=Share></button>
+<button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+<button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button><div class=pswp__preloader><div class=pswp__preloader__icn><div class=pswp__preloader__cut><div class=pswp__preloader__donut></div></div></div></div></div><div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap"><div class=pswp__share-tooltip></div></div><button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+</button>
+<button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)"></button><div class=pswp__caption><div class=pswp__caption__center></div></div></div></div></div><script src=https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo=" crossorigin=anonymous defer></script><script src=https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU=" crossorigin=anonymous defer></script><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css crossorigin=anonymous><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css crossorigin=anonymous></main></div><script src=https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z+KMkF24hUW8WePSA9HM=" crossorigin=anonymous></script><script type=text/javascript src=/ts/main.1e9a3bafd846ced4c345d084b355fb8c7bae75701c338f8a1f8a82c780137826.js defer></script><script>(function(){const e=document.createElement("link");e.href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap",e.type="text/css",e.rel="stylesheet",document.head.appendChild(e)})()</script></body></html>

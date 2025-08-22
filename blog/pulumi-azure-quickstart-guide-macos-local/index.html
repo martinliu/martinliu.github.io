@@ -1,0 +1,619 @@
+<!doctype html><html lang=zh-cn dir=ltr><head><meta charset=utf-8><meta name=viewport content='width=device-width,initial-scale=1'><meta name=description content="在本地 macOS 环境中使用 Pulumi 部署 Azure 资源的快速入门指南，本示例的编程语言使用 Python。"><title>Pulumi IaC 之 Azure 快速入门指南（MacOS & Python 本地）</title><link rel=canonical href=https://martinliu.cn/blog/pulumi-azure-quickstart-guide-macos-local/><link rel=stylesheet href=/scss/style.min.6cdf49b1ce11fdcb5b101472ec608dcfd7395a19af16339a150cd1a4536b6113.css><meta property='og:title' content="Pulumi IaC 之 Azure 快速入门指南（MacOS & Python 本地）"><meta property='og:description' content="在本地 macOS 环境中使用 Pulumi 部署 Azure 资源的快速入门指南，本示例的编程语言使用 Python。"><meta property='og:url' content='https://martinliu.cn/blog/pulumi-azure-quickstart-guide-macos-local/'><meta property='og:site_name' content="Martin Liu's Blog"><meta property='og:type' content='article'><meta property='article:section' content='Post'><meta property='article:tag' content='Pulumi'><meta property='article:tag' content='Azure'><meta property='article:tag' content='IaC'><meta property='article:tag' content='Python'><meta property='article:published_time' content='2024-10-12T11:49:22+08:00'><meta property='article:modified_time' content='2024-10-13T09:49:04+08:00'><meta property='og:image' content='https://martinliu.cn/blog/pulumi-azure-quickstart-guide-macos-local/azure-nextgen.png'><meta name=twitter:title content="Pulumi IaC 之 Azure 快速入门指南（MacOS & Python 本地）"><meta name=twitter:description content="在本地 macOS 环境中使用 Pulumi 部署 Azure 资源的快速入门指南，本示例的编程语言使用 Python。"><meta name=twitter:card content="summary_large_image"><meta name=twitter:image content='https://martinliu.cn/blog/pulumi-azure-quickstart-guide-macos-local/azure-nextgen.png'><script async src="https://www.googletagmanager.com/gtag/js?id=G-30EQ6H78E5"></script><script>var dnt,doNotTrack=!1;if(!1&&(dnt=navigator.doNotTrack||window.doNotTrack||navigator.msDoNotTrack,doNotTrack=dnt=="1"||dnt=="yes"),!doNotTrack){window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","G-30EQ6H78E5")}</script></head><body class=article-page><script>(function(){const e="StackColorScheme";localStorage.getItem(e)||localStorage.setItem(e,"auto")})()</script><script>(function(){const t="StackColorScheme",e=localStorage.getItem(t),n=window.matchMedia("(prefers-color-scheme: dark)").matches===!0;e=="dark"||e==="auto"&&n?document.documentElement.dataset.scheme="dark":document.documentElement.dataset.scheme="light"})()</script><div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky"><button class="hamburger hamburger--spin" type=button id=toggle-menu aria-label=切换菜单>
+<span class=hamburger-box><span class=hamburger-inner></span></span></button><header><figure class=site-avatar><a href=/><img src=/img/avatar_hu_288ed5026836b766.png width=300 height=300 class=site-logo loading=lazy alt=Avatar></a></figure><div class=site-meta><h1 class=site-name><a href=/>Martin Liu's Blog</a></h1><h2 class=site-description>Founder of DevOps China</h2></div></header><ol class=menu-social><li><a href=https://github.com/martinliu/ target=_blank title=GitHub rel=me><svg class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M9 19c-4.3 1.4-4.3-2.5-6-3m12 5v-3.5c0-1 .1-1.4-.5-2 2.8-.3 5.5-1.4 5.5-6a4.6 4.6.0 00-1.3-3.2 4.2 4.2.0 00-.1-3.2s-1.1-.3-3.5 1.3a12.3 12.3.0 00-6.2.0C6.5 2.8 5.4 3.1 5.4 3.1a4.2 4.2.0 00-.1 3.2A4.6 4.6.0 004 9.5c0 4.6 2.7 5.7 5.5 6-.6.6-.6 1.2-.5 2V21"/></svg></a></li><li><a href=https://www.linkedin.com/in/liuzheng/ target=_blank title=LinkedIn rel=me><svg viewBox="0 0 32 32" width="32" height="32"><path d="M7.5 5C6.132813 5 5 6.132813 5 7.5v17C5 25.867188 6.132813 27 7.5 27h17c1.367188.0 2.5-1.132812 2.5-2.5V7.5C27 6.132813 25.867188 5 24.5 5zm0 2h17C24.785156 7 25 7.214844 25 7.5v17C25 24.785156 24.785156 25 24.5 25H7.5C7.214844 25 7 24.785156 7 24.5V7.5c0-.285156.214844-.5.5-.5zm2.9375 1.71875C9.488281 8.71875 8.71875 9.488281 8.71875 10.4375S9.488281 12.15625 10.4375 12.15625 12.15625 11.386719 12.15625 10.4375 11.386719 8.71875 10.4375 8.71875zm9.03125 4.5625c-1.433594.0-2.386719.785156000000001-2.78125 1.53125H16.625V13.5H13.8125V23H16.75V18.3125C16.75 17.074219 16.996094 15.875 18.53125 15.875c1.511719.0 1.53125 1.398438 1.53125 2.5V23H23V17.78125c0-2.554687-.542968999999999-4.5-3.53125-4.5zM9 13.5V23h2.96875V13.5z"/></svg></a></li><li><a href=https://twitter.com/martinliu target=_blank title=Twitter rel=me><svg class="icon icon-tabler icon-tabler-brand-twitter" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M22 4.01c-1 .49-1.98.689-3 .99-1.121-1.265-2.783-1.335-4.38-.737S11.977 6.323 12 8v1c-3.245.083-6.135-1.395-8-4 0 0-4.182 7.433 4 11-1.872 1.247-3.739 2.088-6 2 3.308 1.803 6.913 2.423 10.034 1.517 3.58-1.04 6.522-3.723 7.651-7.742a13.84 13.84.0 00.497-3.753C20.18 7.773 21.692 5.25 22 4.009z"/></svg></a></li></ol><ol class=menu id=main-menu><li><a href=/><svg class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><polyline points="5 12 3 12 12 3 21 12 19 12"/><path d="M5 12v7a2 2 0 002 2h10a2 2 0 002-2v-7"/><path d="M9 21v-6a2 2 0 012-2h2a2 2 0 012 2v6"/></svg>
+<span>首页</span></a></li><li><a href=/about/><svg class="icon icon-tabler icon-tabler-messages" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><path d="M21 14l-3-3h-7a1 1 0 01-1-1V4a1 1 0 011-1h9a1 1 0 011 1v10"/><path d="M14 15v2a1 1 0 01-1 1H6l-3 3V11a1 1 0 011-1h2"/></svg>
+<span>关于</span></a></li><li><a href=/course/><svg class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><rect x="3" y="4" width="18" height="4" rx="2"/><path d="M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8"/><line x1="10" y1="12" x2="14" y2="12"/></svg>
+<span>课程</span></a></li><li><a href=/search/><svg class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="10" cy="10" r="7"/><line x1="21" y1="21" x2="15" y2="15"/></svg>
+<span>搜索</span></a></li><li><a href=/archives/><svg class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><rect x="3" y="4" width="18" height="4" rx="2"/><path d="M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8"/><line x1="10" y1="12" x2="14" y2="12"/></svg>
+<span>归档</span></a></li><li><a href=/links/><svg class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><path d="M10 14a3.5 3.5.0 005 0l4-4a3.5 3.5.0 00-5-5l-.5.5"/><path d="M14 10a3.5 3.5.0 00-5 0l-4 4a3.5 3.5.0 005 5l.5-.5"/></svg>
+<span>链接</span></a></li><li class=menu-bottom-section><ol class=menu><li id=i18n-switch><svg class="icon icon-tabler icon-tabler-language" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M4 5h7"/><path d="M9 3v2c0 4.418-2.239 8-5 8"/><path d="M5 9c-.003 2.144 2.952 3.908 6.7 4"/><path d="M12 20l4-9 4 9"/><path d="M19.1 18h-6.2"/></svg>
+<select name=language title=language onchange="window.location.href=this.selectedOptions[0].value"><option value=https://martinliu.cn/ selected>中文</option><option value=https://martinliu.cn/en/>English</option></select></li><li id=dark-mode-toggle><svg class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="8" cy="12" r="2"/><rect x="2" y="6" width="20" height="12" rx="6"/></svg>
+<svg class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="16" cy="12" r="2"/><rect x="2" y="6" width="20" height="12" rx="6"/></svg>
+<span>暗色模式</span></li></ol></li></ol></aside><aside class="sidebar right-sidebar sticky"><section class="widget archives"><div class=widget-icon><svg class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><line x1="5" y1="9" x2="19" y2="9"/><line x1="5" y1="15" x2="19" y2="15"/><line x1="11" y1="4" x2="7" y2="20"/><line x1="17" y1="4" x2="13" y2="20"/></svg></div><h2 class="widget-title section-title">目录</h2><div class=widget--toc><nav id=TableOfContents><ol><li><a href=#准备工作>准备工作</a></li><li><a href=#创建-pulumi-项目>创建 Pulumi 项目</a></li><li><a href=#部署-pulumi-项目>部署 Pulumi 项目</a></li><li><a href=#更新-pulumi-项目>更新 Pulumi 项目</a></li><li><a href=#删除-pulumi-项目>删除 Pulumi 项目</a></li><li><a href=#总结>总结</a></li></ol></nav></div></section></aside><main class="main full-width"><article class="has-image main-article"><header class=article-header><div class=article-image><a href=/blog/pulumi-azure-quickstart-guide-macos-local/><img src=/blog/pulumi-azure-quickstart-guide-macos-local/azure-nextgen_hu_f8438ffe59550b38.png srcset="/blog/pulumi-azure-quickstart-guide-macos-local/azure-nextgen_hu_f8438ffe59550b38.png 800w, /blog/pulumi-azure-quickstart-guide-macos-local/azure-nextgen_hu_df13eff6cdd79689.png 1600w" width=800 height=420 loading=lazy alt="Featured image of post Pulumi IaC 之 Azure 快速入门指南（MacOS & Python 本地）"></a></div><div class=article-details><header class=article-category><a href=/categories/devops/ style=background-color:#2a9d8f;color:#fff>DevOps</a></header><div class=article-title-wrapper><h2 class=article-title><a href=/blog/pulumi-azure-quickstart-guide-macos-local/>Pulumi IaC 之 Azure 快速入门指南（MacOS & Python 本地）</a></h2><h3 class=article-subtitle>在本地 macOS 环境中使用 Pulumi 部署 Azure 资源的快速入门指南，本示例的编程语言使用 Python。</h3></div><footer class=article-time><div><svg class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><path d="M11.795 21H5a2 2 0 01-2-2V7a2 2 0 012-2h12a2 2 0 012 2v4"/><circle cx="18" cy="18" r="4"/><path d="M15 3v4"/><path d="M7 3v4"/><path d="M3 11h16"/><path d="M18 16.496V18l1 1"/></svg>
+<time class=article-time--published>2024-10-12, Saturday</time></div><div><svg class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15 15"/></svg>
+<time class=article-time--reading>阅读时长: 9 分钟</time></div></footer></div></header><section class=article-content><p>本快速上手指南包含的内容：</p><ul><li>安装和准备 Pulumi CLI 工具</li><li>准备 Pulumi Cloud 账号，并创建个人的 Access Token</li><li>准备 Azure 的账号，用交互的方式登录 Azure CLI</li><li>创建一个简单的 Pulumi 项目，用于 Python 语言的主程序部署 Azure 资源</li><li>删除环境中的所有资源</li></ul><h2 id=准备工作>准备工作</h2><p>在 MacOS 环境中安装 Pulumi CLI 可以通过 Homebrew 安装，也可以通过下载二进制文件安装。Pulumi CLI 在本地环境中用于创建、部署和管理 Pulumi 项目。它需要依赖于 Pulumi Cloud 服务，作为命令行工具交互的后端。</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>brew install pulumi/tap/pulumi
+</span></span></code></pre></td></tr></table></div></div><p>安装完成后，可以通过 <code>pulumi version</code> 命令查看 Pulumi CLI 的版本信息。</p><p>Pulumi Cloud 是 Pulumi 的后端服务，用于存储 Pulumi 项目的状态信息，以及提供一些其他的服务。在使用 Pulumi CLI 之前，需要先登录 Pulumi Cloud 服务。</p><p>Pulumi CLI 在本地环境中，可以使用 ‘pulumi login’ 默认的交互方式，完成在命令行中的用户认证；我推荐使用Pulumi 的 Access Token 来在本地 完成命令行的登录认证过程。这种非交付方式，可以在后续的 CI/CD 环境中使用。</p><p>参考下图，登录 Pulumi Cloud 服务，获取 Access Token。</p><p><img src=/blog/pulumi-azure-quickstart-guide-macos-local/pulumi-login-access-token.png width=1146 height=574 srcset="/blog/pulumi-azure-quickstart-guide-macos-local/pulumi-login-access-token_hu_e40192f235869d8.png 480w, /blog/pulumi-azure-quickstart-guide-macos-local/pulumi-login-access-token_hu_f798e86b2bd3d35c.png 1024w" loading=lazy alt="个人 Access Token" class=gallery-image data-flex-grow=199 data-flex-basis=479px></p><p>在命令行中，将 Access Token 设置为环境变量，用于后续的登录认证。</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=nb>export</span> <span class=nv>PULUMI_ACCESS_TOKEN</span><span class=o>=</span>pul-ACT+++++++++++++++++++++++++++++++++++++++++++++++
+</span></span><span class=line><span class=cl>pulumi whoami
+</span></span><span class=line><span class=cl>martinliu
+</span></span></code></pre></td></tr></table></div></div><p>实际上，Pulumi CLI 会先在环境变量中查找 <code>PULUMI_ACCESS_TOKEN</code>，如果找到了就直接使用 Token 完成登录认证的过程，可以使用 ‘pulumi whoami’ 命令确认是否登录成功，以及当前所使用的 Pulumi Cloud 的用户名。</p><p>当然，也可以使用 <code>pulumi login</code> 命令，通过交互的方式登录 Pulumi Cloud 服务。</p><p>Azure CLI 是 Azure 的命令行工具，用于在本地环境中与 Azure 云服务进行交互。本文省略了 Azure CLI 的登录认证过程，为了方便期间，可以使用 <code>az login</code> 命令，用网页交互的方式，完成命令行中本地 Azure CLI 的登录认证。</p><p>可以校验一下 Azure CLI 的登录认证是否成功。</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>az account show
+</span></span></code></pre></td></tr></table></div></div><p>在上面的信息输出中，你可以看到当前的 Azure 账号订阅等信息。Pulumi CLI 会使用 Azure CLI 的登录认证信息，来完成 Azure 云服务的资源部署。</p><p>在完成了上述的 Pulumi CLI 和 Azure CLI 的准备工作后，我们可以开始创建一个简单的 Pulumi 项目，用于部署 Azure 资源。</p><h2 id=创建-pulumi-项目>创建 Pulumi 项目</h2><p>在本地环境中，使用 Pulumi 命令 ‘pulumi new azure-python’ 创建一个新的 Pulumi 项目，用于部署 Azure 资源。</p><p>‘pulumi new&rsquo; 命令会在一个空目录中初始化一个 Pulumi 项目。在初始化的过程中，Pulumi CLI 会询问一些问题，用于生成一个简单的 Python 代码文件。在下面的示例中，我只是制定了 Azure 的区域为 &lsquo;East Asia&rsquo;，其他的都使用默认值。</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span><span class=lnt>32
+</span><span class=lnt>33
+</span><span class=lnt>34
+</span><span class=lnt>35
+</span><span class=lnt>36
+</span><span class=lnt>37
+</span><span class=lnt>38
+</span><span class=lnt>39
+</span><span class=lnt>40
+</span><span class=lnt>41
+</span><span class=lnt>42
+</span><span class=lnt>43
+</span><span class=lnt>44
+</span><span class=lnt>45
+</span><span class=lnt>46
+</span><span class=lnt>47
+</span><span class=lnt>48
+</span><span class=lnt>49
+</span><span class=lnt>50
+</span><span class=lnt>51
+</span><span class=lnt>52
+</span><span class=lnt>53
+</span><span class=lnt>54
+</span><span class=lnt>55
+</span><span class=lnt>56
+</span><span class=lnt>57
+</span><span class=lnt>58
+</span><span class=lnt>59
+</span><span class=lnt>60
+</span><span class=lnt>61
+</span><span class=lnt>62
+</span><span class=lnt>63
+</span><span class=lnt>64
+</span><span class=lnt>65
+</span><span class=lnt>66
+</span><span class=lnt>67
+</span><span class=lnt>68
+</span><span class=lnt>69
+</span><span class=lnt>70
+</span><span class=lnt>71
+</span><span class=lnt>72
+</span><span class=lnt>73
+</span><span class=lnt>74
+</span><span class=lnt>75
+</span><span class=lnt>76
+</span><span class=lnt>77
+</span><span class=lnt>78
+</span><span class=lnt>79
+</span><span class=lnt>80
+</span><span class=lnt>81
+</span><span class=lnt>82
+</span><span class=lnt>83
+</span><span class=lnt>84
+</span><span class=lnt>85
+</span><span class=lnt>86
+</span><span class=lnt>87
+</span><span class=lnt>88
+</span><span class=lnt>89
+</span><span class=lnt>90
+</span><span class=lnt>91
+</span><span class=lnt>92
+</span><span class=lnt>93
+</span><span class=lnt>94
+</span><span class=lnt>95
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=o>(</span>base<span class=o>)</span> ➜  first-project pulumi new azure-python
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>Logging in using access token from PULUMI_ACCESS_TOKEN
+</span></span><span class=line><span class=cl>This <span class=nb>command</span> will walk you through creating a new Pulumi project.
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>Enter a value or leave blank to accept the <span class=o>(</span>default<span class=o>)</span>, and press &lt;ENTER&gt;.
+</span></span><span class=line><span class=cl>Press ^C at any <span class=nb>time</span> to quit.
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>Project name <span class=o>(</span>first-project<span class=o>)</span>:
+</span></span><span class=line><span class=cl>Project description <span class=o>(</span>A minimal Azure Native Python Pulumi program<span class=o>)</span>:
+</span></span><span class=line><span class=cl>Created project <span class=s1>&#39;first-project&#39;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>Please enter your desired stack name.
+</span></span><span class=line><span class=cl>To create a stack in an organization, use the format &lt;org-name&gt;/&lt;stack-name&gt; <span class=o>(</span>e.g. <span class=sb>`</span>acmecorp/dev<span class=sb>`</span><span class=o>)</span>.
+</span></span><span class=line><span class=cl>Stack name <span class=o>(</span>dev<span class=o>)</span>:
+</span></span><span class=line><span class=cl>Created stack <span class=s1>&#39;dev&#39;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>The toolchain to use <span class=k>for</span> installing dependencies and running the program pip
+</span></span><span class=line><span class=cl>The Azure location to use <span class=o>(</span>azure-native:location<span class=o>)</span> <span class=o>(</span>WestUS2<span class=o>)</span>: eastasia
+</span></span><span class=line><span class=cl>Saved config
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>Installing dependencies...
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>Creating virtual environment...
+</span></span><span class=line><span class=cl>Finished creating virtual environment
+</span></span><span class=line><span class=cl>Updating pip, setuptools, and wheel in virtual environment...
+</span></span><span class=line><span class=cl>Requirement already satisfied: pip in ./venv/lib/python3.10/site-packages <span class=o>(</span>22.3.1<span class=o>)</span>
+</span></span><span class=line><span class=cl>Collecting pip
+</span></span><span class=line><span class=cl>  Using cached pip-24.2-py3-none-any.whl <span class=o>(</span>1.8 MB<span class=o>)</span>
+</span></span><span class=line><span class=cl>Requirement already satisfied: setuptools in ./venv/lib/python3.10/site-packages <span class=o>(</span>65.5.0<span class=o>)</span>
+</span></span><span class=line><span class=cl>Collecting setuptools
+</span></span><span class=line><span class=cl>  Using cached setuptools-75.1.0-py3-none-any.whl <span class=o>(</span>1.2 MB<span class=o>)</span>
+</span></span><span class=line><span class=cl>Collecting wheel
+</span></span><span class=line><span class=cl>  Using cached wheel-0.44.0-py3-none-any.whl <span class=o>(</span><span class=m>67</span> kB<span class=o>)</span>
+</span></span><span class=line><span class=cl>Installing collected packages: wheel, setuptools, pip
+</span></span><span class=line><span class=cl>  Attempting uninstall: setuptools
+</span></span><span class=line><span class=cl>    Found existing installation: setuptools 65.5.0
+</span></span><span class=line><span class=cl>    Uninstalling setuptools-65.5.0:
+</span></span><span class=line><span class=cl>      Successfully uninstalled setuptools-65.5.0
+</span></span><span class=line><span class=cl>  Attempting uninstall: pip
+</span></span><span class=line><span class=cl>    Found existing installation: pip 22.3.1
+</span></span><span class=line><span class=cl>    Uninstalling pip-22.3.1:
+</span></span><span class=line><span class=cl>      Successfully uninstalled pip-22.3.1
+</span></span><span class=line><span class=cl>Successfully installed pip-24.2 setuptools-75.1.0 wheel-0.44.0
+</span></span><span class=line><span class=cl>Finished updating
+</span></span><span class=line><span class=cl>Installing dependencies in virtual environment...
+</span></span><span class=line><span class=cl>Collecting pulumi&lt;4.0.0,&gt;<span class=o>=</span>3.0.0 <span class=o>(</span>from -r requirements.txt <span class=o>(</span>line 1<span class=o>))</span>
+</span></span><span class=line><span class=cl>  Using cached pulumi-3.136.1-py3-none-any.whl.metadata <span class=o>(</span><span class=m>11</span> kB<span class=o>)</span>
+</span></span><span class=line><span class=cl>Collecting pulumi-azure-native&lt;3.0.0,&gt;<span class=o>=</span>2.0.0 <span class=o>(</span>from -r requirements.txt <span class=o>(</span>line 2<span class=o>))</span>
+</span></span><span class=line><span class=cl>  Using cached pulumi_azure_native-2.66.0-py3-none-any.whl.metadata <span class=o>(</span>4.2 kB<span class=o>)</span>
+</span></span><span class=line><span class=cl>Collecting protobuf~<span class=o>=</span>4.21 <span class=o>(</span>from pulumi&lt;4.0.0,&gt;<span class=o>=</span>3.0.0-&gt;-r requirements.txt <span class=o>(</span>line 1<span class=o>))</span>
+</span></span><span class=line><span class=cl>  Using cached protobuf-4.25.5-cp37-abi3-macosx_10_9_universal2.whl.metadata <span class=o>(</span><span class=m>541</span> bytes<span class=o>)</span>
+</span></span><span class=line><span class=cl>Collecting grpcio~<span class=o>=</span>1.66.2 <span class=o>(</span>from pulumi&lt;4.0.0,&gt;<span class=o>=</span>3.0.0-&gt;-r requirements.txt <span class=o>(</span>line 1<span class=o>))</span>
+</span></span><span class=line><span class=cl>  Using cached grpcio-1.66.2-cp310-cp310-macosx_12_0_universal2.whl.metadata <span class=o>(</span>3.9 kB<span class=o>)</span>
+</span></span><span class=line><span class=cl>Collecting dill~<span class=o>=</span>0.3 <span class=o>(</span>from pulumi&lt;4.0.0,&gt;<span class=o>=</span>3.0.0-&gt;-r requirements.txt <span class=o>(</span>line 1<span class=o>))</span>
+</span></span><span class=line><span class=cl>  Using cached dill-0.3.9-py3-none-any.whl.metadata <span class=o>(</span><span class=m>10</span> kB<span class=o>)</span>
+</span></span><span class=line><span class=cl>Collecting six~<span class=o>=</span>1.12 <span class=o>(</span>from pulumi&lt;4.0.0,&gt;<span class=o>=</span>3.0.0-&gt;-r requirements.txt <span class=o>(</span>line 1<span class=o>))</span>
+</span></span><span class=line><span class=cl>  Using cached six-1.16.0-py2.py3-none-any.whl.metadata <span class=o>(</span>1.8 kB<span class=o>)</span>
+</span></span><span class=line><span class=cl>Collecting semver~<span class=o>=</span>2.13 <span class=o>(</span>from pulumi&lt;4.0.0,&gt;<span class=o>=</span>3.0.0-&gt;-r requirements.txt <span class=o>(</span>line 1<span class=o>))</span>
+</span></span><span class=line><span class=cl>  Using cached semver-2.13.0-py2.py3-none-any.whl.metadata <span class=o>(</span>5.0 kB<span class=o>)</span>
+</span></span><span class=line><span class=cl>Collecting pyyaml~<span class=o>=</span>6.0 <span class=o>(</span>from pulumi&lt;4.0.0,&gt;<span class=o>=</span>3.0.0-&gt;-r requirements.txt <span class=o>(</span>line 1<span class=o>))</span>
+</span></span><span class=line><span class=cl>  Using cached PyYAML-6.0.2-cp310-cp310-macosx_11_0_arm64.whl.metadata <span class=o>(</span>2.1 kB<span class=o>)</span>
+</span></span><span class=line><span class=cl>Collecting debugpy~<span class=o>=</span>1.8.5 <span class=o>(</span>from pulumi&lt;4.0.0,&gt;<span class=o>=</span>3.0.0-&gt;-r requirements.txt <span class=o>(</span>line 1<span class=o>))</span>
+</span></span><span class=line><span class=cl>  Using cached debugpy-1.8.7-py2.py3-none-any.whl.metadata <span class=o>(</span>1.1 kB<span class=o>)</span>
+</span></span><span class=line><span class=cl>Collecting parver&gt;<span class=o>=</span>0.2.1 <span class=o>(</span>from pulumi-azure-native&lt;3.0.0,&gt;<span class=o>=</span>2.0.0-&gt;-r requirements.txt <span class=o>(</span>line 2<span class=o>))</span>
+</span></span><span class=line><span class=cl>  Using cached parver-0.5-py3-none-any.whl.metadata <span class=o>(</span>2.7 kB<span class=o>)</span>
+</span></span><span class=line><span class=cl>Collecting typing-extensions&gt;<span class=o>=</span>4.11 <span class=o>(</span>from pulumi-azure-native&lt;3.0.0,&gt;<span class=o>=</span>2.0.0-&gt;-r requirements.txt <span class=o>(</span>line 2<span class=o>))</span>
+</span></span><span class=line><span class=cl>  Using cached typing_extensions-4.12.2-py3-none-any.whl.metadata <span class=o>(</span>3.0 kB<span class=o>)</span>
+</span></span><span class=line><span class=cl>Collecting arpeggio&gt;<span class=o>=</span>1.7 <span class=o>(</span>from parver&gt;<span class=o>=</span>0.2.1-&gt;pulumi-azure-native&lt;3.0.0,&gt;<span class=o>=</span>2.0.0-&gt;-r requirements.txt <span class=o>(</span>line 2<span class=o>))</span>
+</span></span><span class=line><span class=cl>  Using cached Arpeggio-2.0.2-py2.py3-none-any.whl.metadata <span class=o>(</span>2.4 kB<span class=o>)</span>
+</span></span><span class=line><span class=cl>Collecting attrs&gt;<span class=o>=</span>19.2 <span class=o>(</span>from parver&gt;<span class=o>=</span>0.2.1-&gt;pulumi-azure-native&lt;3.0.0,&gt;<span class=o>=</span>2.0.0-&gt;-r requirements.txt <span class=o>(</span>line 2<span class=o>))</span>
+</span></span><span class=line><span class=cl>  Using cached attrs-24.2.0-py3-none-any.whl.metadata <span class=o>(</span><span class=m>11</span> kB<span class=o>)</span>
+</span></span><span class=line><span class=cl>Using cached pulumi-3.136.1-py3-none-any.whl <span class=o>(</span><span class=m>274</span> kB<span class=o>)</span>
+</span></span><span class=line><span class=cl>Using cached pulumi_azure_native-2.66.0-py3-none-any.whl <span class=o>(</span>89.7 MB<span class=o>)</span>
+</span></span><span class=line><span class=cl>Using cached debugpy-1.8.7-py2.py3-none-any.whl <span class=o>(</span>5.2 MB<span class=o>)</span>
+</span></span><span class=line><span class=cl>Using cached dill-0.3.9-py3-none-any.whl <span class=o>(</span><span class=m>119</span> kB<span class=o>)</span>
+</span></span><span class=line><span class=cl>Using cached grpcio-1.66.2-cp310-cp310-macosx_12_0_universal2.whl <span class=o>(</span>10.7 MB<span class=o>)</span>
+</span></span><span class=line><span class=cl>Using cached parver-0.5-py3-none-any.whl <span class=o>(</span><span class=m>15</span> kB<span class=o>)</span>
+</span></span><span class=line><span class=cl>Using cached protobuf-4.25.5-cp37-abi3-macosx_10_9_universal2.whl <span class=o>(</span><span class=m>394</span> kB<span class=o>)</span>
+</span></span><span class=line><span class=cl>Using cached PyYAML-6.0.2-cp310-cp310-macosx_11_0_arm64.whl <span class=o>(</span><span class=m>171</span> kB<span class=o>)</span>
+</span></span><span class=line><span class=cl>Using cached semver-2.13.0-py2.py3-none-any.whl <span class=o>(</span><span class=m>12</span> kB<span class=o>)</span>
+</span></span><span class=line><span class=cl>Using cached six-1.16.0-py2.py3-none-any.whl <span class=o>(</span><span class=m>11</span> kB<span class=o>)</span>
+</span></span><span class=line><span class=cl>Using cached typing_extensions-4.12.2-py3-none-any.whl <span class=o>(</span><span class=m>37</span> kB<span class=o>)</span>
+</span></span><span class=line><span class=cl>Using cached Arpeggio-2.0.2-py2.py3-none-any.whl <span class=o>(</span><span class=m>55</span> kB<span class=o>)</span>
+</span></span><span class=line><span class=cl>Using cached attrs-24.2.0-py3-none-any.whl <span class=o>(</span><span class=m>63</span> kB<span class=o>)</span>
+</span></span><span class=line><span class=cl>Installing collected packages: arpeggio, typing-extensions, six, semver, pyyaml, protobuf, grpcio, dill, debugpy, attrs, pulumi, parver, pulumi-azure-native
+</span></span><span class=line><span class=cl>Successfully installed arpeggio-2.0.2 attrs-24.2.0 debugpy-1.8.7 dill-0.3.9 grpcio-1.66.2 parver-0.5 protobuf-4.25.5 pulumi-3.136.1 pulumi-azure-native-2.66.0 pyyaml-6.0.2 semver-2.13.0 six-1.16.0 typing-extensions-4.12.2
+</span></span><span class=line><span class=cl>Finished installing dependencies
+</span></span><span class=line><span class=cl>Finished installing dependencies
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>Your new project is ready to go! ✨
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>To perform an initial deployment, run <span class=sb>`</span>pulumi up<span class=sb>`</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=o>(</span>base<span class=o>)</span> ➜  first-project
+</span></span></code></pre></td></tr></table></div></div><p>下图是初始化后的项目目录结构。</p><p><img src=/blog/pulumi-azure-quickstart-guide-macos-local/pulumi-project-structure.png width=585 height=271 srcset="/blog/pulumi-azure-quickstart-guide-macos-local/pulumi-project-structure_hu_ef53897d466d038d.png 480w, /blog/pulumi-azure-quickstart-guide-macos-local/pulumi-project-structure_hu_f03844db8f3251d8.png 1024w" loading=lazy alt="Pulumi 项目目录结构" class=gallery-image data-flex-grow=215 data-flex-basis=518px></p><p>在项目目录中，有一个 <code>Pulumi.yaml</code> 文件，用于描述项目的基本信息，如项目名称、描述、编程语言等。</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-yaml data-lang=yaml><span class=line><span class=cl><span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=l>first-project</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>description</span><span class=p>:</span><span class=w> </span><span class=l>A minimal Azure Native Python Pulumi program</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>runtime</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=l>python</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>options</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>toolchain</span><span class=p>:</span><span class=w> </span><span class=l>pip</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>virtualenv</span><span class=p>:</span><span class=w> </span><span class=l>venv</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>config</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>pulumi:tags</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>value</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>pulumi:template</span><span class=p>:</span><span class=w> </span><span class=l>azure-python</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><p>在项目目录中，有一个 <code>Pulumi.dev.yaml</code> 文件，用于描述项目的配置信息，如 Azure 的订阅 ID、资源组名称、区域等。</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-yaml data-lang=yaml><span class=line><span class=cl><span class=nt>config</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>azure-native:location</span><span class=p>:</span><span class=w> </span><span class=l>eastasia</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><p>在项目目录中，有一个 <code>__main__.py</code> 文件，用于描述项目的主程序，用于部署 Azure 资源。</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-python data-lang=python><span class=line><span class=cl><span class=s2>&#34;&#34;&#34;An Azure RM Python Pulumi program&#34;&#34;&#34;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=kn>import</span> <span class=nn>pulumi</span>
+</span></span><span class=line><span class=cl><span class=kn>from</span> <span class=nn>pulumi_azure_native</span> <span class=kn>import</span> <span class=n>storage</span>
+</span></span><span class=line><span class=cl><span class=kn>from</span> <span class=nn>pulumi_azure_native</span> <span class=kn>import</span> <span class=n>resources</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># Create an Azure Resource Group 创建一个 Azure 资源组</span>
+</span></span><span class=line><span class=cl><span class=n>resource_group</span> <span class=o>=</span> <span class=n>resources</span><span class=o>.</span><span class=n>ResourceGroup</span><span class=p>(</span><span class=s2>&#34;resource_group&#34;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># Create an Azure resource (Storage Account) 创建一个 Azure 资源（存储账户）</span>
+</span></span><span class=line><span class=cl><span class=n>account</span> <span class=o>=</span> <span class=n>storage</span><span class=o>.</span><span class=n>StorageAccount</span><span class=p>(</span>
+</span></span><span class=line><span class=cl>    <span class=s2>&#34;sa&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=n>resource_group_name</span><span class=o>=</span><span class=n>resource_group</span><span class=o>.</span><span class=n>name</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=n>sku</span><span class=o>=</span><span class=p>{</span>
+</span></span><span class=line><span class=cl>        <span class=s2>&#34;name&#34;</span><span class=p>:</span> <span class=n>storage</span><span class=o>.</span><span class=n>SkuName</span><span class=o>.</span><span class=n>STANDARD_LRS</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=p>},</span>
+</span></span><span class=line><span class=cl>    <span class=n>kind</span><span class=o>=</span><span class=n>storage</span><span class=o>.</span><span class=n>Kind</span><span class=o>.</span><span class=n>STORAGE_V2</span><span class=p>,</span>
+</span></span><span class=line><span class=cl><span class=p>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># Export the primary key of the Storage Account 导出存储账户的主键</span>
+</span></span><span class=line><span class=cl><span class=n>primary_key</span> <span class=o>=</span> <span class=p>(</span>
+</span></span><span class=line><span class=cl>    <span class=n>pulumi</span><span class=o>.</span><span class=n>Output</span><span class=o>.</span><span class=n>all</span><span class=p>(</span><span class=n>resource_group</span><span class=o>.</span><span class=n>name</span><span class=p>,</span> <span class=n>account</span><span class=o>.</span><span class=n>name</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=o>.</span><span class=n>apply</span><span class=p>(</span>
+</span></span><span class=line><span class=cl>        <span class=k>lambda</span> <span class=n>args</span><span class=p>:</span> <span class=n>storage</span><span class=o>.</span><span class=n>list_storage_account_keys</span><span class=p>(</span>
+</span></span><span class=line><span class=cl>            <span class=n>resource_group_name</span><span class=o>=</span><span class=n>args</span><span class=p>[</span><span class=mi>0</span><span class=p>],</span> <span class=n>account_name</span><span class=o>=</span><span class=n>args</span><span class=p>[</span><span class=mi>1</span><span class=p>]</span>
+</span></span><span class=line><span class=cl>        <span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=o>.</span><span class=n>apply</span><span class=p>(</span><span class=k>lambda</span> <span class=n>accountKeys</span><span class=p>:</span> <span class=n>accountKeys</span><span class=o>.</span><span class=n>keys</span><span class=p>[</span><span class=mi>0</span><span class=p>]</span><span class=o>.</span><span class=n>value</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=p>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>pulumi</span><span class=o>.</span><span class=n>export</span><span class=p>(</span><span class=s2>&#34;primary_storage_key&#34;</span><span class=p>,</span> <span class=n>primary_key</span><span class=p>)</span>
+</span></span></code></pre></td></tr></table></div></div><p>在项目目录中，有一个 <code>requirements.txt</code> 文件，用于描述项目的依赖信息，如 Pulumi 和 Azure Native SDK 的版本信息。</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-txt data-lang=txt><span class=line><span class=cl>pulumi&gt;=3.0.0,&lt;4.0.0
+</span></span><span class=line><span class=cl>pulumi-azure-native&gt;=2.0.0,&lt;3.0.0
+</span></span></code></pre></td></tr></table></div></div><p>在使用 <code>pulumi new</code> 创建新项目时，可以通过指定 <code>--language</code> 参数来选择所需的语言。例如，默认语言确实是 Python，但你可以根据需求选择其他支持的语言，如 TypeScript、JavaScript、Go 或 C#。以下是示例用法：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>pulumi new &lt;template-name&gt; --language &lt;language&gt;
+</span></span></code></pre></td></tr></table></div></div><p>其中 <code>&lt;language></code> 可以是以下几种：</p><ul><li><code>typescript</code>（TypeScript）</li><li><code>javascript</code>（JavaScript）</li><li><code>python</code>（Python）</li><li><code>go</code>（Go）</li><li><code>csharp</code>（C#）</li></ul><p>如果想创建一个 TypeScript 项目，命令可以如下：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>pulumi new &lt;template-name&gt; --language typescript
+</span></span></code></pre></td></tr></table></div></div><p>如果没有指定语言，则会默认使用 Python。</p><p>当前生成了一个默认的 Python 主程序模板，Pulumi CLI 会启动本地的语言服务器，执行此 Python 程序，完成和 Azure Cloud 的交互工作，实现 Python 程序中资源部署的意图，开发人员可以在此基础上，根据自己的需求，修改和扩展 Python 代码，实现对 Azure 资源的部署和更新。模板 Python 代码中，创建了一个 Azure 资源组和一个 Azure 存储账，在最后将 ‘primary_key’导出显示在命令中，实现了 Python 程序对外的输出。</p><h2 id=部署-pulumi-项目>部署 Pulumi 项目</h2><p>在项目目录中，使用 <code>pulumi up</code> 命令，完成 Azure 资源的部署。</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span><span class=lnt>32
+</span><span class=lnt>33
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=o>(</span>base<span class=o>)</span> ➜  first-project pulumi up
+</span></span><span class=line><span class=cl>Previewing update <span class=o>(</span>dev<span class=o>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>View in Browser <span class=o>(</span>Ctrl+O<span class=o>)</span>: https://app.pulumi.com/martinliu/first-project/dev/previews/539d74d9-64ec-4fb8-aa69-eb08ddbe4eea
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>     Type                                     Name               Plan
+</span></span><span class=line><span class=cl> +   pulumi:pulumi:Stack                      first-project-dev  create
+</span></span><span class=line><span class=cl> +   ├─ azure-native:resources:ResourceGroup  resource_group     create
+</span></span><span class=line><span class=cl> +   └─ azure-native:storage:StorageAccount   sa                 create
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>Outputs:
+</span></span><span class=line><span class=cl>    primary_storage_key: output&lt;string&gt;
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>Resources:
+</span></span><span class=line><span class=cl>    + <span class=m>3</span> to create
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>Do you want to perform this update? yes
+</span></span><span class=line><span class=cl>Updating <span class=o>(</span>dev<span class=o>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>View in Browser <span class=o>(</span>Ctrl+O<span class=o>)</span>: https://app.pulumi.com/martinliu/first-project/dev/updates/1
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>     Type                                     Name               Status
+</span></span><span class=line><span class=cl> +   pulumi:pulumi:Stack                      first-project-dev  created <span class=o>(</span>36s<span class=o>)</span>
+</span></span><span class=line><span class=cl> +   ├─ azure-native:resources:ResourceGroup  resource_group     created <span class=o>(</span>3s<span class=o>)</span>
+</span></span><span class=line><span class=cl> +   └─ azure-native:storage:StorageAccount   sa                 created <span class=o>(</span>29s<span class=o>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>Outputs:
+</span></span><span class=line><span class=cl>    primary_storage_key: <span class=s2>&#34;key++++++++++++++++++++++++++++++++++++++++++++++++++++++&#34;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>Resources:
+</span></span><span class=line><span class=cl>    + <span class=m>3</span> created
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>Duration: 38s
+</span></span></code></pre></td></tr></table></div></div><p>以上 <code>pulumi up</code> 命令是一个交互式的执行过程，可以在命令行中输入 <code>yes</code>，确认是否执行资源的创建。在执行过程中，Pulumi CLI 会生成一个更新信息，用于展示资源的创建状态，以及资源的状态。在更新信息中，可以看到已经创建的资源类型、名称、状态等信息。在更新信息中，还会显示一个 URL，用于在浏览器中查看更新信息。</p><p>在部署完毕之后，我们可以在 Pulumi Cloud 网页中看到此项目的部署过程，以及资源的状态信息。如下图所示。</p><p><img src=/blog/pulumi-azure-quickstart-guide-macos-local/pulumi-cloud-project-deploy.png width=1465 height=969 srcset="/blog/pulumi-azure-quickstart-guide-macos-local/pulumi-cloud-project-deploy_hu_a7a6761c51f02879.png 480w, /blog/pulumi-azure-quickstart-guide-macos-local/pulumi-cloud-project-deploy_hu_e054975ab8cb3607.png 1024w" loading=lazy alt="Pulumi Cloud 项目部署" class=gallery-image data-flex-grow=151 data-flex-basis=362px></p><p>下面在 Azure 门户中，可以看到创建的资源组和存储账户。我们可以看到，资源组的名称是 <code>resource_group</code>，存储账户的名称是 <code>sa</code>开头的资源，后面跟随着一些随机字符。</p><p><img src=/blog/pulumi-azure-quickstart-guide-macos-local/azure-portal-resources.png width=1463 height=868 srcset="/blog/pulumi-azure-quickstart-guide-macos-local/azure-portal-resources_hu_c4f12cfd7046983a.png 480w, /blog/pulumi-azure-quickstart-guide-macos-local/azure-portal-resources_hu_d7501f21cd171985.png 1024w" loading=lazy alt="Azure 门户中的资源" class=gallery-image data-flex-grow=168 data-flex-basis=404px></p><p>根据以上的操作体验，我们可以参考下图，理解 Pulumi CLI 和 Azure 云服务之间的交互过程。</p><p><img src=/blog/pulumi-azure-quickstart-guide-macos-local/engine-block-diagram.png width=1686 height=1186 srcset="/blog/pulumi-azure-quickstart-guide-macos-local/engine-block-diagram_hu_7dc16a67ee9fd208.png 480w, /blog/pulumi-azure-quickstart-guide-macos-local/engine-block-diagram_hu_f530593df85b8bbd.png 1024w" loading=lazy alt="Pulumi CLI 和 Azure 云服务交互" class=gallery-image data-flex-grow=142 data-flex-basis=341px></p><p>pulumi 命令行工具本身是一个部署引擎，它会启动一个本地的语言服务器，用于执行 Python 程序，完成对 Azure 云服务的资源部署。</p><p>本 Python 测试项目是一个典型的 Pulumi 项目模板，它使用 IaC 的方式，将 Azure 资源的部署和更新，通过 Python 代码的方式，实现了对 Azure 资源的管理。这个 Pulumi 项目的部署结果称为 ‘Stack’，是一个 Azure 基础设施的技术栈，本项目模板目录可以在你的业务应用项目的根目录中，作为一个子目录，用于管理 Azure 资源的部署和更新。随着业务项目的开发和迭代，可以通过 Pulumi CLI 工具，完成 Azure 多个环境资源的部署和更新，例如开发环境、测试环境、生产环境等。</p><p><img src=/blog/pulumi-azure-quickstart-guide-macos-local/infra-project.jpg width=743 height=454 srcset="/blog/pulumi-azure-quickstart-guide-macos-local/infra-project_hu_6748a356f5f2cb50.jpg 480w, /blog/pulumi-azure-quickstart-guide-macos-local/infra-project_hu_9076751d71dda2d0.jpg 1024w" loading=lazy alt="Pulumi 项目模板" class=gallery-image data-flex-grow=163 data-flex-basis=392px></p><h2 id=更新-pulumi-项目>更新 Pulumi 项目</h2><p>在准备好以上的环境后，假设我们收到了一个新的业务需求，需要在 Azure 存储账户中部署一个 <code>index.html</code> 文件，用于展示一个简单的静态网页。我们可以通过修改 <code>__main__.py</code> 文件，增加一个 Azure Blob 存储的资源，用于部署 <code>index.html</code> 文件。</p><p>为了演示这个过程，我们现在命令，在当前的项目目录中，创建一个 <code>index.html</code> 文件。</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span><span class=lnt>7
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>cat <span class=s>&lt;&lt;EOT &gt; index.html
+</span></span></span><span class=line><span class=cl><span class=s>&lt;html&gt;
+</span></span></span><span class=line><span class=cl><span class=s>    &lt;body&gt;
+</span></span></span><span class=line><span class=cl><span class=s>        &lt;h1&gt;Hello, Pulumi!&lt;/h1&gt;
+</span></span></span><span class=line><span class=cl><span class=s>    &lt;/body&gt;
+</span></span></span><span class=line><span class=cl><span class=s>&lt;/html&gt;
+</span></span></span><span class=line><span class=cl><span class=s>EOT</span>
+</span></span></code></pre></td></tr></table></div></div><p>当然，这个 <code>index.html</code> 文件是业务需求成果，是不应该放在 IaC 程序代码的目录中的。</p><p>下面需要在 <code>__main__.py</code> 文件中，修改 Azure Blob 存储的资源属性，用于部署 <code>index.html</code> 文件。</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-python data-lang=python><span class=line><span class=cl><span class=c1># Enable static website support 启用静态网站支持</span>
+</span></span><span class=line><span class=cl><span class=n>static_website</span> <span class=o>=</span> <span class=n>storage</span><span class=o>.</span><span class=n>StorageAccountStaticWebsite</span><span class=p>(</span>
+</span></span><span class=line><span class=cl>    <span class=s2>&#34;staticWebsite&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=n>account_name</span><span class=o>=</span><span class=n>account</span><span class=o>.</span><span class=n>name</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=n>resource_group_name</span><span class=o>=</span><span class=n>resource_group</span><span class=o>.</span><span class=n>name</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=n>index_document</span><span class=o>=</span><span class=s2>&#34;index.html&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl><span class=p>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># Upload the file 将文件上传到存储账户</span>
+</span></span><span class=line><span class=cl><span class=n>index_html</span> <span class=o>=</span> <span class=n>storage</span><span class=o>.</span><span class=n>Blob</span><span class=p>(</span>
+</span></span><span class=line><span class=cl>    <span class=s2>&#34;index.html&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=n>resource_group_name</span><span class=o>=</span><span class=n>resource_group</span><span class=o>.</span><span class=n>name</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=n>account_name</span><span class=o>=</span><span class=n>account</span><span class=o>.</span><span class=n>name</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=n>container_name</span><span class=o>=</span><span class=n>static_website</span><span class=o>.</span><span class=n>container_name</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=n>source</span><span class=o>=</span><span class=n>pulumi</span><span class=o>.</span><span class=n>FileAsset</span><span class=p>(</span><span class=s2>&#34;index.html&#34;</span><span class=p>),</span>
+</span></span><span class=line><span class=cl>    <span class=n>content_type</span><span class=o>=</span><span class=s2>&#34;text/html&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl><span class=p>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># Web endpoint to the website 在命令行中导出网站的 Web 端点</span>
+</span></span><span class=line><span class=cl><span class=n>pulumi</span><span class=o>.</span><span class=n>export</span><span class=p>(</span><span class=s2>&#34;staticEndpoint&#34;</span><span class=p>,</span> <span class=n>account</span><span class=o>.</span><span class=n>primary_endpoints</span><span class=o>.</span><span class=n>web</span><span class=p>)</span>
+</span></span></code></pre></td></tr></table></div></div><p>在完成了以上的修改后，我们可以使用 <code>pulumi up</code> 命令，完成 Azure 资源的更新。</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span><span class=lnt>32
+</span><span class=lnt>33
+</span><span class=lnt>34
+</span><span class=lnt>35
+</span><span class=lnt>36
+</span><span class=lnt>37
+</span><span class=lnt>38
+</span><span class=lnt>39
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=o>(</span>base<span class=o>)</span> ➜  first-project ls
+</span></span><span class=line><span class=cl>Pulumi.dev.yaml  __main__.py      index.html       venv
+</span></span><span class=line><span class=cl>Pulumi.yaml      __pycache__      requirements.txt
+</span></span><span class=line><span class=cl><span class=o>(</span>base<span class=o>)</span> ➜  first-project pulumi up
+</span></span><span class=line><span class=cl>Previewing update <span class=o>(</span>dev<span class=o>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>View in Browser <span class=o>(</span>Ctrl+O<span class=o>)</span>: https://app.pulumi.com/martinliu/first-project/dev/previews/613fd4dc-ce8b-4a32-a8f6-713c2e4dc839
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>     Type                                                 Name               Plan
+</span></span><span class=line><span class=cl>     pulumi:pulumi:Stack                                  first-project-dev
+</span></span><span class=line><span class=cl> +   ├─ azure-native:storage:StorageAccountStaticWebsite  staticWebsite      create
+</span></span><span class=line><span class=cl> +   └─ azure-native:storage:Blob                         index.html         create
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>Outputs:
+</span></span><span class=line><span class=cl>  + staticEndpoint     : <span class=s2>&#34;https://sa4ecf74cb.z7.web.core.windows.net/&#34;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>Resources:
+</span></span><span class=line><span class=cl>    + <span class=m>2</span> to create
+</span></span><span class=line><span class=cl>    <span class=m>3</span> unchanged
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>Do you want to perform this update? yes
+</span></span><span class=line><span class=cl>Updating <span class=o>(</span>dev<span class=o>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>View in Browser <span class=o>(</span>Ctrl+O<span class=o>)</span>: https://app.pulumi.com/martinliu/first-project/dev/updates/2
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>     Type                                                 Name               Status
+</span></span><span class=line><span class=cl>     pulumi:pulumi:Stack                                  first-project-dev
+</span></span><span class=line><span class=cl> +   ├─ azure-native:storage:StorageAccountStaticWebsite  staticWebsite      created <span class=o>(</span>5s<span class=o>)</span>
+</span></span><span class=line><span class=cl> +   └─ azure-native:storage:Blob                         index.html         created <span class=o>(</span>3s<span class=o>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>Outputs:
+</span></span><span class=line><span class=cl>    primary_storage_key: <span class=s2>&#34;key++++++++++++++++++++++++++++++++++++++++++++++++++++++&#34;</span>
+</span></span><span class=line><span class=cl>  + staticEndpoint     : <span class=s2>&#34;https://sa4ecf74cb.z7.web.core.windows.net/&#34;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>Resources:
+</span></span><span class=line><span class=cl>    + <span class=m>2</span> created
+</span></span><span class=line><span class=cl>    <span class=m>3</span> unchanged
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>Duration: 13s
+</span></span></code></pre></td></tr></table></div></div><p>在以上命令执行的过程中，我们也可以在 Pulumi Cloud 网页中看到此项目的部署过程，以及资源的状态信息。还可以在 Azure 门户中，看到更新后的资源组和存储账户。</p><p>现在，让我们在命令行中，查看导出的 <code>staticEndpoint</code> 输出，用于验证所部署的静态网站。</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span><span class=lnt>7
+</span><span class=lnt>8
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>curl <span class=k>$(</span>pulumi stack output staticEndpoint<span class=k>)</span>
+</span></span><span class=line><span class=cl><span class=o>(</span>base<span class=o>)</span> ➜  first-project curl <span class=k>$(</span>pulumi stack output staticEndpoint<span class=k>)</span>
+</span></span><span class=line><span class=cl>&lt;html&gt;
+</span></span><span class=line><span class=cl>    &lt;body&gt;
+</span></span><span class=line><span class=cl>        &lt;h1&gt;Hello, Pulumi!&lt;/h1&gt;
+</span></span><span class=line><span class=cl>    &lt;/body&gt;
+</span></span><span class=line><span class=cl>&lt;/html&gt;
+</span></span><span class=line><span class=cl><span class=o>(</span>base<span class=o>)</span> ➜  first-project
+</span></span></code></pre></td></tr></table></div></div><p>在浏览器中，访问 <code>staticEndpoint</code> 输出的 URL，可以看到部署的静态网站。</p><h2 id=删除-pulumi-项目>删除 Pulumi 项目</h2><p>假设我们完成了今天的开发和测试工作，我们可以使用 <code>pulumi destroy</code> 命令，删除所有当前在 Azure 上所部署的资源。</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span><span class=lnt>32
+</span><span class=lnt>33
+</span><span class=lnt>34
+</span><span class=lnt>35
+</span><span class=lnt>36
+</span><span class=lnt>37
+</span><span class=lnt>38
+</span><span class=lnt>39
+</span><span class=lnt>40
+</span><span class=lnt>41
+</span><span class=lnt>42
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=o>(</span>base<span class=o>)</span> ➜  first-project pulumi destroy
+</span></span><span class=line><span class=cl>Previewing destroy <span class=o>(</span>dev<span class=o>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>View in Browser <span class=o>(</span>Ctrl+O<span class=o>)</span>: https://app.pulumi.com/martinliu/first-project/dev/previews/3d3257e7-c853-4d89-bfc0-461a37bf94ee
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>     Type                                                 Name               Plan
+</span></span><span class=line><span class=cl> -   pulumi:pulumi:Stack                                  first-project-dev  delete
+</span></span><span class=line><span class=cl> -   ├─ azure-native:storage:Blob                         index.html         delete
+</span></span><span class=line><span class=cl> -   ├─ azure-native:storage:StorageAccountStaticWebsite  staticWebsite      delete
+</span></span><span class=line><span class=cl> -   ├─ azure-native:storage:StorageAccount               sa                 delete
+</span></span><span class=line><span class=cl> -   └─ azure-native:resources:ResourceGroup              resource_group     delete
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>Outputs:
+</span></span><span class=line><span class=cl>  - primary_storage_key: <span class=s2>&#34;key++++++++++++++++++++++++++++++++++++++++++++++++++++++&#34;</span>
+</span></span><span class=line><span class=cl>  - staticEndpoint     : <span class=s2>&#34;https://sa4ecf74cb.z7.web.core.windows.net/&#34;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>Resources:
+</span></span><span class=line><span class=cl>    - <span class=m>5</span> to delete
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>Do you want to perform this destroy? yes
+</span></span><span class=line><span class=cl>Destroying <span class=o>(</span>dev<span class=o>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>View in Browser <span class=o>(</span>Ctrl+O<span class=o>)</span>: https://app.pulumi.com/martinliu/first-project/dev/updates/3
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>     Type                                                 Name               Status
+</span></span><span class=line><span class=cl> -   pulumi:pulumi:Stack                                  first-project-dev  deleted <span class=o>(</span>0.69s<span class=o>)</span>
+</span></span><span class=line><span class=cl> -   ├─ azure-native:storage:Blob                         index.html         deleted <span class=o>(</span>5s<span class=o>)</span>
+</span></span><span class=line><span class=cl> -   ├─ azure-native:storage:StorageAccountStaticWebsite  staticWebsite      deleted <span class=o>(</span>1s<span class=o>)</span>
+</span></span><span class=line><span class=cl> -   ├─ azure-native:storage:StorageAccount               sa                 deleted <span class=o>(</span>7s<span class=o>)</span>
+</span></span><span class=line><span class=cl> -   └─ azure-native:resources:ResourceGroup              resource_group     deleted <span class=o>(</span>83s<span class=o>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>Outputs:
+</span></span><span class=line><span class=cl>  - primary_storage_key: <span class=s2>&#34;key++++++++++++++++++++++++++++++++++++++++++++++++++++++&#34;</span>
+</span></span><span class=line><span class=cl>  - staticEndpoint     : <span class=s2>&#34;https://sa4ecf74cb.z7.web.core.windows.net/&#34;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>Resources:
+</span></span><span class=line><span class=cl>    - <span class=m>5</span> deleted
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>Duration: 1m42s
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>The resources in the stack have been deleted, but the <span class=nb>history</span> and configuration associated with the stack are still maintained.
+</span></span><span class=line><span class=cl>If you want to remove the stack completely, run <span class=sb>`</span>pulumi stack rm dev<span class=sb>`</span>.
+</span></span></code></pre></td></tr></table></div></div><p>在以上命令执行的过程中，我们也可以在 Pulumi Cloud 网页中看到此项目的部署过程，以及资源的状态信息。还可以在 Azure 门户中，看到删除后的资源组和存储账户。</p><h2 id=总结>总结</h2><p>您已成功使用 Pulumi 部署了一些云资源。在本指南中，您完成了以下操作：</p><ul><li>创建了一个新的 Pulumi 项目。</li><li>在 Azure 上部署了一个新的存储账户和容器。</li><li>将一个 index.html 文件添加到容器中。</li><li>将 index.html 文件托管为静态网站。</li><li>销毁了已部署的资源。</li></ul><p>在本指南中，您了解了如何使用 Pulumi CLI 和 Azure CLI 在本地 macOS 环境中，部署 Azure 资源。您还了解了如何使用 Pulumi Cloud 服务，用于存储 Pulumi 项目的状态信息，以及提供一些其他的服务。</p><p>参考文档：</p><ul><li><a class=link href=https://www.pulumi.com/docs/ target=_blank rel=noopener>Pulumi 官方文档</a></li><li><a class=link href=https://www.pulumi.com/docs/iac/get-started/azure/ target=_blank rel=noopener>Get started with Pulumi & Azure</a></li></ul></section><footer class=article-footer><section class=article-tags><a href=/tags/pulumi/>Pulumi</a>
+<a href=/tags/azure/>Azure</a>
+<a href=/tags/iac/>IaC</a>
+<a href=/tags/python/>Python</a></section><section class=article-copyright><svg class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="12" cy="12" r="9"/><path d="M14.5 9a3.5 4 0 100 6"/></svg>
+<span>署名-非商业性使用-禁止演绎 4.0 (CC BY-NC-ND 4.0)</span></section><section class=article-lastmod><svg class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15 15"/></svg>
+<span>最后更新于 2024-10-13 09:49 CST</span></section></footer></article><aside class=related-content--wrapper><h2 class=section-title>相关文章</h2><div class=related-content><div class="flex article-list--tile"><article class=has-image><a href=/blog/building-a-serverless-real-time-data-pipeline-with-terraform-aws-and-python/><div class=article-image><img src=/blog/building-a-serverless-real-time-data-pipeline-with-terraform-aws-and-python/serverless-data-pipeline.a4a0b7054ebf1a8b5ef484d300f2b3f5_hu_935e0ea9129a1ae7.png width=250 height=150 loading=lazy alt="Featured image of post 使用 Terraform、AWS 和 Python 构建无服务器实时数据管道" data-key=building-a-serverless-real-time-data-pipeline-with-terraform-aws-and-python data-hash="md5-pKC3BU6/Gote9ITTAPKz9Q=="></div><div class=article-details><h2 class=article-title>使用 Terraform、AWS 和 Python 构建无服务器实时数据管道</h2></div></a></article><article class=has-image><a href=/blog/nested-virtualization-ubuntu-run-virutalbox-azure-vm/><div class=article-image><img src=/blog/nested-virtualization-ubuntu-run-virutalbox-azure-vm/pexels-cottonbro-4966171.ce6f7ab75a6563eb49d72b64a6dc6c61_hu_6657196ccb8b9b1a.jpg width=250 height=150 loading=lazy alt="Featured image of post 嵌套虚拟化：在 Azure Ubuntu VM 中运行 VirtualBox 虚拟机" data-key=nested-virtualization-ubuntu-run-virutalbox-azure-vm data-hash="md5-zm96t1plY+tJ1ytkptxsYQ=="></div><div class=article-details><h2 class=article-title>嵌套虚拟化：在 Azure Ubuntu VM 中运行 VirtualBox 虚拟机</h2></div></a></article><article class=has-image><a href=/blog/devops-statistics/><div class=article-image><img src=/blog/devops-statistics/download.eed34a55a8655be58e27dbe0444d721f_hu_1d24e87e525bc8a6.jpg width=250 height=150 loading=lazy alt="Featured image of post 通过统计数据看 2024 年的 DevOps 趋势" data-key=devops-statistics data-hash="md5-7tNKVahlW+WOJ9vgRE1yHw=="></div><div class=article-details><h2 class=article-title>通过统计数据看 2024 年的 DevOps 趋势</h2></div></a></article><article class=has-image><a href=/blog/az-cli-create-aks-cluster/><div class=article-image><img src=/blog/az-cli-create-aks-cluster/hb9riivbne1jpgrnh77w.02261252d26a1091c8b8089b7477d1c7_hu_5915a6ae53e1581d.png width=250 height=150 loading=lazy alt="Featured image of post 使用 Azure CLI 创建 K8S 集群" data-key=az-cli-create-aks-cluster data-hash="md5-AiYSUtJqEJHIuAibdHfRxw=="></div><div class=article-details><h2 class=article-title>使用 Azure CLI 创建 K8S 集群</h2></div></a></article><article class=has-image><a href=/blog/use-rhel-dev-sub-in-azure/><div class=article-image><img src=/blog/use-rhel-dev-sub-in-azure/virtual-machine.b0bad6d252d255b31afa3cd38d202874_hu_98724580b2176443.png width=250 height=150 loading=lazy alt="Featured image of post 如何在 Azure 中使用 Red Hat 的开发者订阅" data-key=use-rhel-dev-sub-in-azure data-hash="md5-sLrW0lLSVbMa+jzTjSAodA=="></div><div class=article-details><h2 class=article-title>如何在 Azure 中使用 Red Hat 的开发者订阅</h2></div></a></article></div></div></aside><div class=disqus-container><div id=disqus_thread></div><script>window.disqus_config=function(){},function(){if(["localhost","127.0.0.1"].indexOf(window.location.hostname)!=-1){document.getElementById("disqus_thread").innerHTML="Disqus comments not available by default when the website is previewed locally.";return}var t=document,e=t.createElement("script");e.async=!0,e.src="//martinliu.disqus.com/embed.js",e.setAttribute("data-timestamp",+new Date),(t.head||t.body).appendChild(e)}()</script><noscript>Please enable JavaScript to view the <a href=https://disqus.com/?ref_noscript>comments powered by Disqus.</a></noscript><a href=https://disqus.com class=dsq-brlink>comments powered by <span class=logo-disqus>Disqus</span></a></div><style>.disqus-container{background-color:var(--card-background);border-radius:var(--card-border-radius);box-shadow:var(--shadow-l1);padding:var(--card-padding)}</style><script>window.addEventListener("onColorSchemeChange",e=>{typeof DISQUS=="object"&&DISQUS.reset({reload:!0})})</script><footer class=site-footer><section class=copyright>&copy;
+2007 -
+2025 Martin Liu's Blog</section><section class=powerby>本博客始于 2007 年<br>使用 <a href=https://gohugo.io/ target=_blank rel=noopener>Hugo</a> 构建<br>主题 <b><a href=https://github.com/CaiJimmy/hugo-theme-stack target=_blank rel=noopener data-version=3.29.0>Stack</a></b> 由 <a href=https://jimmycai.com target=_blank rel=noopener>Jimmy</a> 设计</section></footer><div class=pswp tabindex=-1 role=dialog aria-hidden=true><div class=pswp__bg></div><div class=pswp__scroll-wrap><div class=pswp__container><div class=pswp__item></div><div class=pswp__item></div><div class=pswp__item></div></div><div class="pswp__ui pswp__ui--hidden"><div class=pswp__top-bar><div class=pswp__counter></div><button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+<button class="pswp__button pswp__button--share" title=Share></button>
+<button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+<button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button><div class=pswp__preloader><div class=pswp__preloader__icn><div class=pswp__preloader__cut><div class=pswp__preloader__donut></div></div></div></div></div><div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap"><div class=pswp__share-tooltip></div></div><button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+</button>
+<button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)"></button><div class=pswp__caption><div class=pswp__caption__center></div></div></div></div></div><script src=https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo=" crossorigin=anonymous defer></script><script src=https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU=" crossorigin=anonymous defer></script><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css crossorigin=anonymous><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css crossorigin=anonymous></main></div><script src=https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z+KMkF24hUW8WePSA9HM=" crossorigin=anonymous></script><script type=text/javascript src=/ts/main.1e9a3bafd846ced4c345d084b355fb8c7bae75701c338f8a1f8a82c780137826.js defer></script><script>(function(){const e=document.createElement("link");e.href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap",e.type="text/css",e.rel="stylesheet",document.head.appendChild(e)})()</script></body></html>

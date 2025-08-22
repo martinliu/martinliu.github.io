@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>RHEL 5 on Martin Liu's Blog</title><link>https://martinliu.cn/tags/rhel-5/</link><description>Recent content in RHEL 5 on Martin Liu's Blog</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><lastBuildDate>Sun, 09 Oct 2022 21:44:15 +0800</lastBuildDate><atom:link href="https://martinliu.cn/tags/rhel-5/index.xml" rel="self" type="application/rss+xml"/><item><title>Build Zenoss 2.1.2 on Redhat Enterprise Linux 5</title><link>https://martinliu.cn/2008/01/30/build-zenoss-212-on-redhat-enterprise-linux-5/</link><pubDate>Wed, 30 Jan 2008 13:22:00 +0000</pubDate><guid>https://martinliu.cn/2008/01/30/build-zenoss-212-on-redhat-enterprise-linux-5/</guid><description>&lt;p>&lt;img src="http://www.zenoss.com/images/logo.gif"
+loading="lazy"
+> Well, it is the first time to running a RHEL 5 for me, at same time got zenoss built successfully on it. zenoss-2.1.2 was build from source, the whole process went a while since RHEL is in one of my VMware session; CPU %sy was pretty high during building source code.&lt;!-- raw HTML omitted -->&lt;/p>
+&lt;h1 id="build-zenoss-212">Build zenoss-2.1.2
+&lt;/h1>&lt;p>&lt;!-- raw HTML omitted -->The INSTALL.txt file is good enough, my installation how-to can be really sample:&lt;!-- raw HTML omitted -->&lt;/p>
+&lt;p>&lt;!-- raw HTML omitted -->&lt;/p>
+&lt;ul>
+&lt;li>Read INSTALL.txt
+&lt;!-- raw HTML omitted -->&lt;/li>
+&lt;li>add zenoss user
+&lt;!-- raw HTML omitted -->&lt;/li>
+&lt;li>start mysql
+&lt;!-- raw HTML omitted -->&lt;/li>
+&lt;li>upload zenoss tarball to zenoss home directory
+&lt;!-- raw HTML omitted -->&lt;/li>
+&lt;li>login as zenoss
+&lt;!-- raw HTML omitted -->&lt;/li>
+&lt;li>untar zenoss tarball then run the following, good luck!
+&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->&lt;/li>
+&lt;/ul>
+&lt;!-- raw HTML omitted -->
+&lt;!-- raw HTML omitted -->
+&lt;h3 id="start-daemons">Start Daemons:
+&lt;/h3>&lt;p>&lt;!-- raw HTML omitted -->bash$ $ZENHOME/bin/zenoss start&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->bash$ $ZENHOME/bin/zenoss status&lt;!-- raw HTML omitted -->&lt;/p>
+&lt;p>&lt;!-- raw HTML omitted -->&lt;/p>
+&lt;ul>
+&lt;li>Then I access to Zenoss portal, got this error.
+&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->&lt;/li>
+&lt;/ul>
+&lt;h3 id="http-status-404---zportdmd">HTTP Status 404 - /zport/dmd
+&lt;/h3>&lt;!-- raw HTML omitted -->
+&lt;!-- raw HTML omitted -->
+&lt;p>&lt;!-- raw HTML omitted -->I reboot the RHEL server, then start mysql and zenoss. Finally, everything goes smoothly. Let&amp;rsquo;s take this nice zenoss portal.&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->&lt;a class="link" href="http://lh4.google.com/liuzh66/R6B8iX2WoeI/AAAAAAAAAdY/HOxPPiOhDZ0/image5.png" target="_blank" rel="noopener"
+>&lt;img src="http://lh4.google.com/liuzh66/R6B8iX2WoeI/AAAAAAAAAdY/HOxPPiOhDZ0/image5.png"
+loading="lazy"
+alt="image"
+>&lt;/a>&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->On my RHEL, mysql, snmp and python were installed with OS; other packages might installed from zenoss source tarball. I am not sure about this, you could check above to see my install log.&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->&lt;strong>Install tips:&lt;/strong>&lt;!-- raw HTML omitted -->&lt;/p>
+&lt;p>&lt;!-- raw HTML omitted -->&lt;/p>
+&lt;ul>
+&lt;li>Package dependence should be consider before you build Zenoss source code. A full RHEL install is a lazy idea to solve this problem; but it is still the best practice if you are new to both Linux and Zenoss.
+&lt;!-- raw HTML omitted -->&lt;/li>
+&lt;li>Start zenoss daemons might take one minute or more. If you access to zenoss portal immediately, you could get a HTTP Status 404 error. Before you see balance stone, please be patience.
+&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->&lt;/li>
+&lt;/ul>
+&lt;h1 id="auto-discovery-of-devices">Auto-Discovery of Devices
+&lt;/h1>&lt;p>&lt;!-- raw HTML omitted -->It&amp;rsquo;s time to read ZenossAdminGuide211.pdf; BTW that&amp;rsquo;s a good document. I will go ahead to note down what I did in my testing evn. Please turn to P47, I will go from there. For sure you have something discovered, please read the following tips:&lt;!-- raw HTML omitted -->&lt;/p>
+&lt;p>&lt;!-- raw HTML omitted -->&lt;/p>
+&lt;ul>
+&lt;li>&lt;strong>The Zenoss machine should have snmp installed&lt;/strong>, including the following packages:
+&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->&lt;/li>
+&lt;/ul>
+&lt;!-- raw HTML omitted -->
+&lt;p>&lt;!-- raw HTML omitted -->As far as I know net-snmp-utils-5.3.1-19.el5 is a necessary. Without this package, you do not have ability to snmpwalk any device via SNMP protocol; in other word you can not get enough information about that remote device.&lt;!-- raw HTML omitted -->&lt;/p>
+&lt;p>&lt;!-- raw HTML omitted -->&lt;/p>
+&lt;ul>
+&lt;li>&lt;strong>Add a right network ID&lt;/strong>, here is a example:
+&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->&lt;/li>
+&lt;/ul>
+&lt;!-- raw HTML omitted -->
+&lt;!-- raw HTML omitted -->
+&lt;p>&lt;!-- raw HTML omitted -->&lt;/p>
+&lt;ul>
+&lt;li>&lt;strong>snmpwalk at least one snmp-enable device&lt;/strong>, here is a example:
+&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->&lt;/li>
+&lt;/ul>
+&lt;!-- raw HTML omitted -->
+&lt;p>&lt;!-- raw HTML omitted -->Let&amp;rsquo;s see what I got after done all of above.&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->&lt;a class="link" href="http://lh6.google.com/liuzh66/R6B8p32WogI/AAAAAAAAAds/L_RLc73gmeQ/image8.png" target="_blank" rel="noopener"
+>&lt;img src="http://lh6.google.com/liuzh66/R6B8p32WogI/AAAAAAAAAds/L_RLc73gmeQ/image8.png"
+loading="lazy"
+alt="image"
+>&lt;/a>&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->&lt;a class="link" href="http://lh3.google.com/liuzh66/R6B8wH2WoiI/AAAAAAAAAd8/lzmTaSebDdw/image4.png" target="_blank" rel="noopener"
+>&lt;img src="http://lh3.google.com/liuzh66/R6B8wH2WoiI/AAAAAAAAAd8/lzmTaSebDdw/image4.png"
+loading="lazy"
+alt="image"
+>&lt;/a>&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->Zenoss has a pretty good network map, it is a flash map; you can drag things on this map. Before I end this blog, I&amp;rsquo;d like to summary my questions blow:&lt;!-- raw HTML omitted -->&lt;/p>
+&lt;p>&lt;!-- raw HTML omitted -->&lt;/p>
+&lt;ol>
+&lt;li>Because my RHEL installation is big enough, I don&amp;rsquo;t know what are dependence packages for Zenoss; no time to list all of them. Does have this list?
+&lt;!-- raw HTML omitted -->&lt;/li>
+&lt;li>I&amp;rsquo;ve no idea how to configure snmpd on Solaris. What I did was just modified /etc/snmp/conf/snmpd.conf
+&lt;!-- raw HTML omitted -->&lt;/li>
+&lt;li>How to restart snmp daemon for Solaris?
+&lt;!-- raw HTML omitted -->&lt;/li>
+&lt;li>Do you have any good blog about zenoss?
+&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->I will write a Chinese blog after this one to conclusion zenoss installation. Please give a hint if you have any comment.&lt;/li>
+&lt;/ol></description></item></channel></rss>

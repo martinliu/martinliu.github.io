@@ -1,0 +1,1558 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Incident on Martin Liu's Blog</title><link>https://martinliu.cn/tags/incident/</link><description>Recent content in Incident on Martin Liu's Blog</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><lastBuildDate>Sat, 13 Jul 2024 20:36:22 +0800</lastBuildDate><atom:link href="https://martinliu.cn/tags/incident/index.xml" rel="self" type="application/rss+xml"/><item><title>停止统计生产事故</title><link>https://martinliu.cn/blog/stop-counting-prod-incidents/</link><pubDate>Sat, 13 Jul 2024 20:11:14 +0800</pubDate><guid>https://martinliu.cn/blog/stop-counting-prod-incidents/</guid><description>&lt;img src="https://martinliu.cn/blog/stop-counting-prod-incidents/pexels-freestockpro-12955678.jpg" alt="Featured image of post 停止统计生产事故" />&lt;blockquote>
+&lt;p>原作者：Rick Branson；&lt;a class="link" href="https://rbranson.medium.com/why-you-shouldnt-count-production-incidents-38616d8e6329" target="_blank" rel="noopener"
+>原文链接&lt;/a>&lt;/p>&lt;/blockquote>
+&lt;p>&lt;img src="https://martinliu.cn/blog/stop-counting-prod-incidents/1_h2CrvUkRwuO_X01IpDYT6Q.webp"
+width="791"
+height="489"
+srcset="https://martinliu.cn/blog/stop-counting-prod-incidents/1_h2CrvUkRwuO_X01IpDYT6Q_hu_c65b7bb058f55f3.webp 480w, https://martinliu.cn/blog/stop-counting-prod-incidents/1_h2CrvUkRwuO_X01IpDYT6Q_hu_bd1be5886d7b6223.webp 1024w"
+loading="lazy"
+alt="出处: US NTSB 航空事故数据库"
+class="gallery-image"
+data-flex-grow="161"
+data-flex-basis="388px"
+>&lt;/p>
+&lt;p>航空事故和死亡人数随着时间推移而减少。上图告诉了我们这一点。它还揭示了另一点：每次事故的死亡人数差异很大！&lt;strong>仅仅统计事故报告数量会掩盖这一非常重要的事实。&lt;/strong>&lt;/p>
+&lt;p>高效的互联网服务团队都有一个共同点：有效的事故管理和无责后期分析流程。然而，这样的流程往往会导致一个不幸的结果——有人会提出一个看似合理的建议：将事故报告数量作为衡量产品质量的标准。&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/blog/stop-counting-prod-incidents/0_OICO-8FSc-QxpptN.webp"
+width="967"
+height="544"
+srcset="https://martinliu.cn/blog/stop-counting-prod-incidents/0_OICO-8FSc-QxpptN_hu_653f53cec1ff8698.webp 480w, https://martinliu.cn/blog/stop-counting-prod-incidents/0_OICO-8FSc-QxpptN_hu_17e8177b48e28ac5.webp 1024w"
+loading="lazy"
+alt="这是个陷阱"
+class="gallery-image"
+data-flex-grow="177"
+data-flex-basis="426px"
+>&lt;/p>
+&lt;p>Facebook 坚决反对统计事故报告——至少在我在那里的时候是这样。似乎基础设施团队的负责人 Jay Parikh 的一项重要任务就是不断提醒大家不要统计事故报告。当有这样的仪表板或报告出现时，他会在极短的时间内发现。&lt;/p>
+&lt;p>如果你是始作俑者，你的手机会很快响起 Messenger 标志性的“PING！”声。你会低头看通知。“哦，糟了。” 是 Jay Parikh 本人，他礼貌但坚定地请求“请将其撤下。” 自然地，你会感受到潜在的“否则后果自负”的威胁。&lt;/p>
+&lt;p>为什么如此激进呢？有三个主要原因说明这个看似不错的想法为何如此危险。&lt;/p>
+&lt;h2 id="1-这是一个借口">1. 这是一个借口
+&lt;/h2>&lt;p>有有效的方法来衡量服务质量，但绝对不是通过事故的数量。因为数据已经存在，所以很容易让人产生更多事故不好，少事故好的想法。&lt;/p>
+&lt;p>问题在于，这成为了衡量实际客户体验的借口。推导出这些指标需要大量精力，所以人们容易选择走捷径。选择正确的客户体验指标完全取决于特定产品或服务的细节，需要对产品有深刻的理解以及对客户重视内容的敏锐洞察。&lt;/p>
+&lt;p>对于 web 应用程序的后端服务，一个与客户体验直接相关的质量指标可能是客户端观察到的不可恢复请求错误的频率。客户不应该遇到这种错误，如果遇到了，就表明存在实际的体验问题。这种指标特别强大，因为它综合了各种潜在原因。&lt;/p>
+&lt;p>高层通常希望将质量汇总成每个产品领域的总分。这可能看起来有点偷懒，但他们的工作是确保改进集中在最需要的地方。我已经写了一个简要的草图来实现这一点。&lt;/p>
+&lt;h2 id="2-反向激励">2. 反向激励
+&lt;/h2>&lt;blockquote>
+&lt;p>摘自《哈佛商业评论》：你可能会争辩说，这不可能这么简单——但心理学家和经济学家会告诉你，事实就是如此。人类会根据被评估的指标调整行为。你衡量什么，人们就会努力优化该指标的得分。你测量什么，就会得到什么。就是这样。&lt;/p>&lt;/blockquote>
+&lt;p>行为必然会符合测量的证据是压倒性的。测量事故报告的数量会导致提交的事故报告减少。&lt;/p>
+&lt;p>我已经听到有人说：“但是，我们公司的价值观是诚实和合作，所以情况不同。” 尽管有类似的压倒性证据，相信化学尾迹阴谋论的人还是很多。&lt;/p>
+&lt;p>一个精心安排的事故管理和事后分析流程的根本目标是学习和改进。事故报告正是实现这一目标的工具。通常，报告越少，流程的效用就越低。实际上，应该鼓励人们尽早为任何可验证的严重事故提交报告。&lt;/p>
+&lt;p>虽然事故确实需要分配严重等级，但其目的是为了明确传达在事故期间适当的响应措施。如果一个团队根据提交的事故报告数量来评估，他们不可避免地会在提交或升级时犹豫不决。测量带来的寒蝉效应不应该在生产事故的压力环境中发生。&lt;/p>
+&lt;h2 id="3-实际上并无用处">3. 实际上并无用处
+&lt;/h2>&lt;p>事故报告的频率与组织的成功或失败并没有什么有意义的相关性。因为严重等级通常表示事故期间的最高影响值，所以它并不能准确反映总影响。因此，十小时的 SEV2 不一定比十分钟的 SEV2 更好或更差——这是模糊的。&lt;/p>
+&lt;p>然而，有一些非常有用的指标可以在事故报告过程中收集。以下是每个事故报告中应包含的四个通用数据点：&lt;/p>
+&lt;ol>
+&lt;li>影响开始的时间&lt;/li>
+&lt;li>团队意识到问题的时间&lt;/li>
+&lt;li>事故影响被缓解的时间&lt;/li>
+&lt;li>团队如何意识到问题（例如，通过机器警报、员工报告、客户报告或《纽约时报》头版）&lt;/li>
+&lt;/ol>
+&lt;p>这些数据点可以用来推导出以下指标：&lt;/p>
+&lt;ol>
+&lt;li>从影响开始到意识到问题的延迟&lt;/li>
+&lt;li>从意识到问题到解决问题的延迟（即 MTTR）&lt;/li>
+&lt;li>响应的主动性&lt;/li>
+&lt;/ol>
+&lt;p>这些指标对于推动改进非常有用。任何改善这些指标的服务团队都将提供更高的质量……这是可以保证的。尽管每份报告都需要准确的损害评估，但这些数据通常无法在不同的事故之间进行普遍比较。&lt;/p>
+&lt;p>“但是 Rick，你不是刚刚提到测量带来的反向激励吗？这不会激励人们篡改这些数据吗？” 首先，尽量避免与撒谎者共事。考虑提交事故报告是否合适与篡改客观事实之间有很大的道德差异。&lt;/p>
+&lt;p>其次，事后审查的一个重要部分是将报告中的数据点与现有数据进行验证。这不是某种“信任但验证”的偏执行为。这是关于过程的完整性。人们会犯错误，他们可能因为事故而疲惫不堪，并希望尽快恢复正常生活。即使在最极端的情况下，事故报告也是相对罕见的，因此，确保每一份报告的准确性是必不可少的，如果改进是真正的目标。&lt;/p>
+&lt;h2 id="但需注意">但需注意
+&lt;/h2>&lt;p>最高的事故严重等级应保留给“所有东西都出问题了”的情况。在这种影响水平下，没有人会犹豫提交报告。&lt;/p>
+&lt;p>你可能会想到一些可靠地表明这种情况的警报。Facebook 最具行动力的警报之一是可怕的出口流量下降。我从未遇到过出口流量下降警报是误报的情况。&lt;/p>
+&lt;p>网络团队会跟踪每个边缘路由器的全球总吞吐量。如果这个数字突然大幅下降，比如 50%，那么“所有东西都出问题了”的阈值已经达到。虽然仍需要人类提交报告，但这主要是形式上的。每次这种情况都是 SEV1，最糟糕的情况——所有人都得参与。&lt;/p>
+&lt;p>如果你的流程中的最高严重等级并不等同于“所有东西都出问题了”，那么可能是时候调整等级以达到这种程度了。&lt;/p>
+&lt;p>这些事故是绝对不应该发生的。没有地方可以隐藏，所以没有任何测量会对报告机制产生寒蝉效应。甚至 Jay Parikh 也曾引用 SEV1 的频率来证明公司优先事项的调整。&lt;/p>
+&lt;h2 id="最后的忠告">最后的忠告
+&lt;/h2>&lt;p>事故报告的价值在于收集到的数据。&lt;/p>
+&lt;p>回到衡量质量的问题，记住事故报告最终是在最糟糕的情况下捕获的数据是很有帮助的。我们可以承认事故的不可避免性和从中学习的价值，同时也要认识到绝大多数的质量改进不会来自这个过程。改进质量不应该依赖于事故的发生。&lt;/p>
+&lt;p>事故应当被视为神圣的，所以不要破坏这个神圣的过程。不要为了统计而降低其价值。停止统计生产事故！&lt;/p>
+&lt;p>❤️ Photo by Oleksandr P: &lt;a class="link" href="https://www.pexels.com/photo/hand-stopping-domino-effect-12955678/" target="_blank" rel="noopener"
+>https://www.pexels.com/photo/hand-stopping-domino-effect-12955678/&lt;/a>&lt;/p></description></item><item><title>Google SRE 白皮书：《SRE 视角的事故管理指标》</title><link>https://martinliu.cn/blog/incident-metrics-in-sre/</link><pubDate>Fri, 12 Jul 2024 17:03:39 +0800</pubDate><guid>https://martinliu.cn/blog/incident-metrics-in-sre/</guid><description>&lt;img src="https://martinliu.cn/blog/incident-metrics-in-sre/pexels-kevinbidwell-3013676.jpg" alt="Featured image of post Google SRE 白皮书：《SRE 视角的事故管理指标》" />&lt;h2 id="前言">前言
+&lt;/h2>&lt;h3 id="摘要">摘要
+&lt;/h3>&lt;p>评估由于&lt;strong>流程变化、产品采购或技术变革&lt;/strong>所产生的提升改进是一种常见的工作。在可靠性工程中，通常会测量平均恢复时间（MTTR）或平均缓解时间（MTTM）等指标。这些指标有时用于评估上述变化所带来的改进效果或跟踪其发展趋势。&lt;/p>
+&lt;p>在本报告中，我通过一个简单的蒙特卡洛模拟过程（可应用于许多其他情况）和统计分析，展示了这些指标在生产事故管理的背景下，并不适用于决策或趋势分析的方面。为此，我提出了一些：在特定情况下会更有效的替代方法。&lt;/p>
+&lt;h3 id="介绍">介绍
+&lt;/h3>&lt;p>站点可靠性工程师（SRE）的主要职责之一是管理其负责的生产系统所发生的事故。在事故发生时，SRE 负责调试系统，选择合适且即时的缓解措施，并在需要时组织更大范围的事故响应。&lt;/p>
+&lt;p>然而，SRE 的职责不仅限于事故管理，还包括预防工作，例如：制定在生产环境中执行变更的稳健策略，或自动响应问题，并将系统恢复到已知的安全正常运行状态。这些工作还包括改进沟通流程、提升监控能力，或开发有助于事故调试的工具。实际上，有一些产品都是专门用于改进事故响应流程。&lt;/p>
+&lt;p>希望事故（如果必须发生的话）对业务的影响尽可能小。这通常意味着事故的持续时间要短，这是我将在这里重点讨论的内容。了解流程变化或产品采购会怎样缩短事故持续时间是重要的，尤其当事故涉及实际成本时。然而，我们不能仅凭一次事故就得出结论，需要对多个事故进行综合分析。&lt;/p>
+&lt;p>用搜索引擎搜索一下，你可能会发现：许多文章声称的 MTTx 指标（包括平均恢复时间和平均缓解时间）应被视为服务可靠性的关键性能指标。这些文章有时由：拥有良好服务口碑或提供可靠性相关工具的知名公司撰写的。但这些指标真的是良好的可靠性管理指标吗？实际上，它们能否作为有效的指标来使用？该如何判断？&lt;/p>
+&lt;p>应用 MTTx 指标的目的是了解系统可靠性的演变。但实际情况是，应用这些指标比看起来要复杂得多，而且在大多数情况下，这些流行指标往往具有误导性。&lt;/p>
+&lt;p>本报告将展示 MTTx 在大多数典型 SRE 环境中无效的原因，这些原因适用于许多总结性统计数据，与公司规模或生产实践的严格程度无关。不论选择何种指标，重要的是测试它在不同的事件持续时间分布下是否能够提供可靠的见解。尽管可能没有一种通用的“银弹”指标能替代 MTTx，但通过根据具体问题定制指标，您可能会在度量方面取得更好的效果。在本报告的最后，我将探讨一些替代方法来实现这些测量。&lt;/p>
+&lt;h2 id="事故生命周期和时间节点">事故生命周期和时间节点
+&lt;/h2>&lt;p>在分析事故的总体情况前，我想先介绍一些相关术语。这些术语可能因公司而异，但基本原则是一致的。&lt;/p>
+&lt;p>图 1 展示了一个简单的事故时间线模型，我将在后续内容中使用这个模型。在这个模型中，事故经历以下关键阶段：&lt;/p>
+&lt;ol>
+&lt;li>&lt;strong>首次产品影响&lt;/strong>：对产品产生严重影响的第一个时刻。&lt;/li>
+&lt;li>&lt;strong>检测&lt;/strong>：系统操作员意识到正在发生的问题。&lt;/li>
+&lt;li>&lt;strong>缓解&lt;/strong>：产品不再受到严重影响，但系统可能仍存在着部分的功能退化。&lt;/li>
+&lt;li>&lt;strong>恢复&lt;/strong>：系统完全恢复正常运行；有时缓解和恢复是同一时间点，但有时恢复时间之后，具体会有所不同。&lt;/li>
+&lt;/ol>
+&lt;p>&lt;img src="https://martinliu.cn/blog/incident-metrics-in-sre/2024-07-12_18-43-32.png"
+width="1295"
+height="551"
+srcset="https://martinliu.cn/blog/incident-metrics-in-sre/2024-07-12_18-43-32_hu_b4f4dc49e0bda1d8.png 480w, https://martinliu.cn/blog/incident-metrics-in-sre/2024-07-12_18-43-32_hu_848f3c429ba5fe62.png 1024w"
+loading="lazy"
+alt="图 1. 事故的简化时间线，突出显示了关键节点"
+class="gallery-image"
+data-flex-grow="235"
+data-flex-basis="564px"
+>&lt;/p>
+&lt;p>我将分析事故的持续时间周期，并探讨应用统计数据的有效性。有几个公开的资源库汇集了事故复盘回顾，展示了时间线和关键事件&lt;sup id="fnref:1">&lt;a href="#fn:1" class="footnote-ref" role="doc-noteref">1&lt;/a>&lt;/sup>。在这次分析中，我特别关注事故对用户影响的时间窗口。&lt;/p>
+&lt;p>图 1 的事故时间线模型简化了现实，就像所有模型一样。“浅层事故数据”存在一些问题。例如，在这次分析中，一个问题是：“如果你已经消除了 90% 用户的影响，但还有 10% 仍然受影响，你会认为事故已经缓解了吗？” 如果还有 5% 或 20% 呢？使用这个模型，你需要做出一个二元决策。这种分类方式常常因为主观性和不一致的原则而受到批评。&lt;/p>
+&lt;p>你可能不会太在意事故数据中&lt;sup id="fnref:2">&lt;a href="#fn:2" class="footnote-ref" role="doc-noteref">2&lt;/a>&lt;/sup>的这些不准确之处。对于许多实际应用——包括我将重点关注的总体分析——更高的精确度并不是必须的，而实现这种精确度的成本可能超过提高数据质量的潜在好处。著名统计学家 George Box 说过：“所有模型都是错的，但有些是有用的”，我认为这个模型可以用来理解 MTTR 和类似指标的可行性。&lt;/p>
+&lt;h3 id="mttr-和-mttm-指标探讨与应用">MTTR 和 MTTM 指标，探讨与应用
+&lt;/h3>&lt;p>一次事故可能会提供其相关数据，但你需要分析整体情况&lt;sup id="fnref:3">&lt;a href="#fn:3" class="footnote-ref" role="doc-noteref">3&lt;/a>&lt;/sup>。平均恢复时间 (MTTR) 是行业中常用的术语。类似于平均故障间隔时间 (MTBF) 的术语也很常见，特别是在分析硬件组件的可靠性时。&lt;/p>
+&lt;p>在这里，MTTR 被定义为所有适合分析的事故中，从首次产品影响到恢复的平均时间。同样，平均缓解时间 (MTTM) 被定义为从首次产品影响到缓解的平均时间。&lt;/p>
+&lt;h3 id="事故持续时间的分布">事故持续时间的分布
+&lt;/h3>&lt;p>要分析事故持续时间的统计数据，需要多样化的数据来源，以避免仅依据一个公司或产品得出结论。我收集了三家知名互联网公司的公共事故状态仪表板数据（员工数量在一千到两千之间）。图 2 展示了事故持续时间的分布。&lt;/p>
+&lt;p>我没有区分事故类型：如果公司认为事故值得向用户公布，我就将其纳入分析。这些事故的持续时间代表了从首次影响到最后影响的用户沟通时间。我简化称之为恢复时间，虽然这种叫法并不完全精确。因为恢复时间和缓解时间通常相同，我发现它们遵循类似的分布，这种不精确性不会影响分析结果。&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/blog/incident-metrics-in-sre/2024-07-12_18-43-56.png"
+width="1297"
+height="760"
+srcset="https://martinliu.cn/blog/incident-metrics-in-sre/2024-07-12_18-43-56_hu_a0bd422e6dcc309f.png 480w, https://martinliu.cn/blog/incident-metrics-in-sre/2024-07-12_18-43-56_hu_e37e2d563ddc80df.png 1024w"
+loading="lazy"
+alt="图 2. 事故持续时间的分布及事故次数"
+class="gallery-image"
+data-flex-grow="170"
+data-flex-basis="409px"
+>&lt;/p>
+&lt;p>行的顺序依次为公司 A (N = 798；2019 年 173 起)，公司 B (N = 350；2019 年 103 起)，和公司 C (N = 2,186；2019 年 609 起)。列显示了每家公司在短期和长期内分布的尾部。&lt;/p>
+&lt;p>我还收集了 Google 的事故数据（见图 3），在我的分析中，Google 的数据集代表了一家专注于互联网服务的巨型公司。这个数据集是在一年的时间内收集的，时间比图 2 中的任何数据集都短，但它还包括内部事故（例如，仅影响开发人员生产力的事故）。虽然我不能分享具体的数字，但可以预见，Google 的事故数据集比三个公共数据集中任何一个都大好几倍。&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/blog/incident-metrics-in-sre/2024-07-12_18-44-14.png"
+width="1295"
+height="275"
+srcset="https://martinliu.cn/blog/incident-metrics-in-sre/2024-07-12_18-44-14_hu_f3382533a2fa7cea.png 480w, https://martinliu.cn/blog/incident-metrics-in-sre/2024-07-12_18-44-14_hu_111067729f07e998.png 1024w"
+loading="lazy"
+alt="图 3. 2019 年 Google 的事故持续时间分布，数据经过模糊处理"
+class="gallery-image"
+data-flex-grow="470"
+data-flex-basis="1130px"
+>&lt;/p>
+&lt;p>得出的关键观察是：在每种情况下，事故都呈现出正偏分布，大多数事故能迅速解决。图 4 显示，这些分布大致接近对数正态（或伽玛）分布，但我没有对经验数据进行概率分布拟合。所有数据集都显示了事故持续时间的巨大差异。这与我的经验相符：大多数事故能相对较快解决，但一些更复杂且持续时间较长，还会有少数灾难性的“黑天鹅事件”发生。&lt;sup id="fnref:4">&lt;a href="#fn:4" class="footnote-ref" role="doc-noteref">4&lt;/a>&lt;/sup>&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/blog/incident-metrics-in-sre/2024-07-12_18-44-30.png"
+width="1295"
+height="389"
+srcset="https://martinliu.cn/blog/incident-metrics-in-sre/2024-07-12_18-44-30_hu_71e0547a7b3e709d.png 480w, https://martinliu.cn/blog/incident-metrics-in-sre/2024-07-12_18-44-30_hu_383a101294fe6ef3.png 1024w"
+loading="lazy"
+alt="图 4. 事故持续时间的对数正态 Q-Q 图"
+class="gallery-image"
+data-flex-grow="332"
+data-flex-basis="798px"
+>&lt;/p>
+&lt;p>显示它们如何接近对数正态分布&lt;sup id="fnref:5">&lt;a href="#fn:5" class="footnote-ref" role="doc-noteref">5&lt;/a>&lt;/sup>。请注意，这不能用来得出对数正态分布是最佳拟合的结论，仅供参考。&lt;/p>
+&lt;p>我排除了公共数据集中持续时间少于三分钟和超过三天的事故，这些事故占每个数据集的约 1-2%。对数据集中随机选择的事故进行手动检查，确认这些异常值是有效的，并且我也知道，从事故回顾中可以得知确实存在影响重大的多天事故，甚至更长时间的事故&lt;sup id="fnref:6">&lt;a href="#fn:6" class="footnote-ref" role="doc-noteref">6&lt;/a>&lt;/sup>。但是，我认为包括这些异常长的事故，即使它们在实际中发生，可能会对分析带来不必要的质疑。&lt;/p>
+&lt;p>从这些经验数据中，可以看到事故持续时间的分布，但仅根据事故数量或持续时间来判断公司的可靠性实践是错误的。这些数据集来自不同业务模式、可靠性需求和事故沟通方式各有差异的公司。&lt;sup id="fnref:7">&lt;a href="#fn:7" class="footnote-ref" role="doc-noteref">7&lt;/a>&lt;/sup>&lt;/p>
+&lt;h2 id="分析改进">分析改进
+&lt;/h2>&lt;p>现在你已经清楚了解了事故持续时间的情况，是时候缩短事故时间了！&lt;/p>
+&lt;p>假设你获得了一款可以提高可靠性的产品，能够将事故的缓解和解决时间缩短 10%。例如，一个持续一天的事故可以缩短到约 21.5 小时。你有机会进行试用来评估该产品的效果。如何确认产品能兑现其承诺呢？这份报告将探讨使用 MTTR 和类似指标，因此我们将使用这个指标。&lt;/p>
+&lt;p>我故意选择了这个模拟场景，因为它适用于许多现实中的情况。无论是更改策略、开发软件，还是引入新的事故管理流程，目标往往是缩短事故时间，并评估这些改变所带来的效果。&lt;/p>
+&lt;h3 id="判定-mttr-的改进">判定 MTTR 的改进
+&lt;/h3>&lt;p>那么，你如何测试该产品是否真正兑现了承诺呢？一个简单直观的测试方法是：“如果每次事故的持续时间，都能按产品所述的减少了，我们就能看到 MTTR 指标的改进。”&lt;/p>
+&lt;p>然而，这仍然相当不精确。“我们能够看出改进”具体意味着什么？最终，你需要做出一个明确的判定。在这种情况下，你需要判断产品是否取得了成功，并选择是否购买。&lt;/p>
+&lt;p>为了评估产品是否实现了缩短事故持续时间 10% 的承诺，你可以设置一个阈值，即 MTTR 与使用产品前相比减少 10%。一个更宽松的标准是：只要有任何改进就算成功。如果你看到任何事故时间的缩短，无论幅度大小，你就会认为产品成功了。&lt;/p>
+&lt;p>你需要明确了解你期望指标的表现，并确信所选指标（如 MTTR）能够准确衡量你想要的内容。如果依赖于一个不佳的指标，可能会带来实际且严重的风险和成本。这些风险可能是直接的，例如因为错误的原因购买产品，但也可能非常微妙。例如，员工意识到：他们的事故管理工作是通过未经验证，或有问题的指标进行评估时，士气可能会受挫。&lt;/p>
+&lt;h3 id="在平行宇宙中模拟-mttr">在平行宇宙中模拟 MTTR
+&lt;/h3>&lt;p>你只能在一个宇宙中生活，因此在这个场景中你只有一次机会评估产品。但直觉告诉你，事故是多变的，你希望确保能看到改进，且不是随机巧合。&lt;/p>
+&lt;p>为了更确定这一点，你可以进行蒙特卡洛模拟&lt;sup id="fnref:8">&lt;a href="#fn:8" class="footnote-ref" role="doc-noteref">8&lt;/a>&lt;/sup>。假设事故遵循获得的数据集的经验分布，并评估在一定数量的事故后你会看到哪些改进及其置信水平。&lt;/p>
+&lt;p>模拟过程如下：&lt;/p>
+&lt;ol>
+&lt;li>从事故持续时间的经验分布中随机抽取两个样本，样本量为 N1 和 N2（N1 = N2 以实现完美的 50/50 分割）。&lt;/li>
+&lt;li>修改其中一个样本的事故持续时间，缩短 10%。&lt;/li>
+&lt;li>计算每组的 MTTR，即 MTTR&lt;!-- raw HTML omitted -->modified&lt;!-- raw HTML omitted --> 和 MTTR&lt;!-- raw HTML omitted -->unmodified&lt;!-- raw HTML omitted -->。&lt;/li>
+&lt;li>计算差值，观察到的改进 = MTTR&lt;!-- raw HTML omitted -->unmodified&lt;!-- raw HTML omitted --> − MTTR&lt;!-- raw HTML omitted -->modified&lt;!-- raw HTML omitted -->（负差异意味着 MTTR 恶化）。&lt;/li>
+&lt;li>重复这个过程 100,000 次。&lt;/li>
+&lt;/ol>
+&lt;p>你正在进行两个样本的实验，样本大小为 N1 和 N2，其中 N1 = N2。50/50 的分割能提供最强的分析；在第 18 页的“分析方法”中，我将简要讨论原因。&lt;/p>
+&lt;p>简单来说，你访问成千上万个平行宇宙，模拟产品兑现其承诺，并将结果的 MTTR 与未处理的事故进行比较。从操作上讲，这可以使用 Python 脚本和包含数据的 CSV 文件或足够强大的 SQL 引擎来完成，不需要任何专业工具或额外知识。&lt;/p>
+&lt;p>现在你在操作概率，所以需要为测试添加一个条件：对随机巧合的某种容忍度。假设你容忍最多 10% 的平行宇宙误导你。更正式地说，这意味着你需要统计显著性 α = 0.10。这个值可以说是比较宽松的。&lt;/p>
+&lt;p>&lt;strong>场景模拟与评估&lt;/strong>&lt;/p>
+&lt;p>在这个场景中，我选择了两个等量的事故样本（N1 和 N2，其中 N1 = N2）。我选择的 N1 + N2 等于 2019 年的事故数量（见表 1）&lt;sup id="fnref:9">&lt;a href="#fn:9" class="footnote-ref" role="doc-noteref">9&lt;/a>&lt;/sup>。具体来说，公司 A、B 和 C 的事故数量分别为 173、103 和 609 起。&lt;/p>
+&lt;p>表 1. 三个数据集的事故数量、均值和方差。&lt;/p>
+&lt;table>
+&lt;thead>
+&lt;tr>
+&lt;th>&lt;/th>
+&lt;th>公司A&lt;/th>
+&lt;th>公司B&lt;/th>
+&lt;th>公司C&lt;/th>
+&lt;/tr>
+&lt;/thead>
+&lt;tbody>
+&lt;tr>
+&lt;td>事故(所有)&lt;/td>
+&lt;td>779&lt;/td>
+&lt;td>348&lt;/td>
+&lt;td>2157&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>事故（2019）&lt;/td>
+&lt;td>173&lt;/td>
+&lt;td>103&lt;/td>
+&lt;td>609&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>均值&lt;/td>
+&lt;td>2h26m&lt;/td>
+&lt;td>2h31m&lt;/td>
+&lt;td>4h31m&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>方差&lt;/td>
+&lt;td>5h16m&lt;/td>
+&lt;td>5h1m&lt;/td>
+&lt;td>6h53m&lt;/td>
+&lt;/tr>
+&lt;/tbody>
+&lt;/table>
+&lt;p>进行模拟后，我绘制了图表来观察结果（见图 5）。&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/blog/incident-metrics-in-sre/2024-07-13_11-33-23.png"
+width="1301"
+height="521"
+srcset="https://martinliu.cn/blog/incident-metrics-in-sre/2024-07-13_11-33-23_hu_163bd50835da2fb1.png 480w, https://martinliu.cn/blog/incident-metrics-in-sre/2024-07-13_11-33-23_hu_a2c4b8c728790911.png 1024w"
+loading="lazy"
+alt="图 5."
+class="gallery-image"
+data-flex-grow="249"
+data-flex-basis="599px"
+>&lt;/p>
+&lt;p>如果改进实际发生，模拟的 MTTR 变化分布，作为相对改进。&lt;/p>
+&lt;p>即使在模拟中改进总是有效，38% 的模拟中公司 A 的 MTTR 差异低于零，40% 的公司 B 和 20% 的公司 C 也是如此。观察 MTTR 的绝对变化，看到至少 15 分钟改进的概率分别只有 49%、50% 和 64%。即使场景中的产品有效并缩短了事故，检测到任何改进的几率也远超出 10% 随机误差的容忍度。&lt;/p>
+&lt;p>&lt;strong>不改变事故情况下统计数据的变化&lt;/strong>&lt;/p>
+&lt;p>更糟糕的是，你可能会看到 MTTR 的显著减少，甚至超过产品的承诺。这可以通过运行与之前相同的模拟更清楚地证明，但在这种情况下，产品对事故没有任何影响。将步骤 2 替换为 new_duration = old_duration。&lt;/p>
+&lt;p>果然，图 6 显示公司 A 有 19% 的几率 MTTR 改进半小时（或更好），公司 B 有 23%，公司 C 有 10%……即使在这个模拟中，你没有对事故做任何改变&lt;sup id="fnref:10">&lt;a href="#fn:10" class="footnote-ref" role="doc-noteref">10&lt;/a>&lt;/sup>。换句话说，即使假设的产品对你没有任何作用，你也会认为它有效并决定购买产品。&lt;/p>
+&lt;blockquote>
+&lt;p>注意：对此发现，一个愤世嫉俗的回应是开始销售虚假的缩短事故时间的产品。这种商业行为会设定价格，使得部分客户仅凭运气看到宣传的改进并购买产品，从而盈利。我绝不支持这种商业计划。然而，这确实突出了使用低质量指标可能带来的问题。&lt;/p>&lt;/blockquote>
+&lt;p>&lt;img src="https://martinliu.cn/blog/incident-metrics-in-sre/2024-07-13_11-33-46.png"
+width="1302"
+height="515"
+srcset="https://martinliu.cn/blog/incident-metrics-in-sre/2024-07-13_11-33-46_hu_9df9400a06a6748e.png 480w, https://martinliu.cn/blog/incident-metrics-in-sre/2024-07-13_11-33-46_hu_2393da53654cf46b.png 1024w"
+loading="lazy"
+alt="图 6."
+class="gallery-image"
+data-flex-grow="252"
+data-flex-basis="606px"
+>&lt;/p>
+&lt;p>在事故没有变化的情况下，模拟的 MTTR 变化分布。&lt;/p>
+&lt;p>我们了解到，即使没有对事故持续时间进行任何有意的改变，许多模拟的场景仍然会让你认为 MTTR 大大缩短或延长，而实际上没有任何结构性的变化。如果你无法辨别出事故没有变化的情况，那么当它们真的发生变化时，你也会难以判断。&lt;/p>
+&lt;h3 id="改变思维实验">改变思维实验
+&lt;/h3>&lt;p>之前的场景假设有一个产品可以缩短事故持续时间，你想了解这种变化如何反映在 MTTR 中。但实际上，预测和建模潜在的改进非常困难。&lt;/p>
+&lt;p>可以通过换个角度来解决这个问题。与其寻找特定的改进，不如观察在事故没有结构性变化的情况下 MTTR（或其他统计数据）的变化。换句话说，你的事故持续时间依旧来自相同的分布（未受任何事故处理改进的影响），你评估的是统计数据的典型变化。&lt;/p>
+&lt;p>接下来，我将简化讨论，只关注在事故没有变化的情况下 MTTR 变化的场景，不再分析改进。因此，最有趣的是结果分布的形状：简单来说，我们想知道它有多平坦。&lt;/p>
+&lt;h3 id="通过更多事故进行更好的分析">通过更多事故进行更好的分析
+&lt;/h3>&lt;p>你可能会直觉上理解为什么观察到的 MTTR 会有如此广泛的变化：事故的方差太大。这种直觉有统计学依据。&lt;/p>
+&lt;p>中心极限定理告诉我们，随着样本数量的增加，样本和的分布趋向于正态分布&lt;sup id="fnref:11">&lt;a href="#fn:11" class="footnote-ref" role="doc-noteref">11&lt;/a>&lt;/sup>。你可以在之前的分析中看到一些证据（例如图 6），这些分布看起来有些正态。虽然不能自动假设结果分布总是正态的（稍后会详细说明），但这也意味着在极限情况下方差会趋于收敛。&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/blog/incident-metrics-in-sre/2024-07-13_11-35-41.png"
+width="1268"
+height="237"
+srcset="https://martinliu.cn/blog/incident-metrics-in-sre/2024-07-13_11-35-41_hu_abe99c9ea4b5ba18.png 480w, https://martinliu.cn/blog/incident-metrics-in-sre/2024-07-13_11-35-41_hu_38e1ff63e9e3276b.png 1024w"
+loading="lazy"
+alt="公式"
+class="gallery-image"
+data-flex-grow="535"
+data-flex-basis="1284px"
+>&lt;/p>
+&lt;p>这与直觉一致，表明随着样本大小（即事故数量）的增加，观察到的 MTTR 值的方差会减少。这很容易证明。表 2 显示了多个事故数量下 MTTR 的 90% 置信区间。&lt;/p>
+&lt;p>回想一下，你是从事故持续时间分布中抽取两个样本。因此，如果你想知道用 N 个事故总数进行分析的效果，你需要抽取两个样本，样本大小为 N1 和 N2，其中 N1 = N2。&lt;/p>
+&lt;p>表 2. 基于 100,000 次模拟，从两个随机抽样的事故集合（N1 = N2）中计算出的两个 MTTR 差异的 90% 置信区间。&lt;/p>
+&lt;table>
+&lt;thead>
+&lt;tr>
+&lt;th>&lt;/th>
+&lt;th>Company A&lt;/th>
+&lt;th>Company B&lt;/th>
+&lt;th>Company C&lt;/th>
+&lt;/tr>
+&lt;/thead>
+&lt;tbody>
+&lt;tr>
+&lt;td>原始数据TTR的均值&lt;/td>
+&lt;td>2h 26m&lt;/td>
+&lt;td>2h 31m&lt;/td>
+&lt;td>4h 31m&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>2019的事故数据&lt;/td>
+&lt;td>173&lt;/td>
+&lt;td>103&lt;/td>
+&lt;td>609&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>N1 + N2 = 10&lt;/td>
+&lt;td>mean difference ≅ 0 &lt;!-- raw HTML omitted --> 90% CI [−5h41m; +5h42m]&lt;/td>
+&lt;td>mean difference ≅ 0 &lt;!-- raw HTML omitted --> 90% CI [−5h25m; +5h18m]&lt;/td>
+&lt;td>mean difference ≅ 0 &lt;!-- raw HTML omitted --> 90% CI [−7h4m; +7h15m]&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>N1 + N2 = 100&lt;/td>
+&lt;td>mean difference ≅ 0 &lt;!-- raw HTML omitted --> 90% CI [−1h44m; +1h44m]&lt;/td>
+&lt;td>mean difference ≅ 0 &lt;!-- raw HTML omitted --> 90% CI [−1h39m; +1h39m]&lt;/td>
+&lt;td>mean difference ≅ 0 &lt;!-- raw HTML omitted --> 90% CI [−2h16m; +2h16m]&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>N1 + N2 = 1,000&lt;/td>
+&lt;td>mean difference ≅ 0 &lt;!-- raw HTML omitted --> 90% CI [−33m; +33m]&lt;/td>
+&lt;td>mean difference ≅ 0 &lt;!-- raw HTML omitted --> 90% CI [−31m; +31m]&lt;/td>
+&lt;td>mean difference ≅ 0 &lt;!-- raw HTML omitted --> 90% CI [−43m; +43m]&lt;/td>
+&lt;/tr>
+&lt;/tbody>
+&lt;/table>
+&lt;p>随着样本数量的增加，标准差会下降，从而提高检测较小显著变化的能力。在原始场景中，你评估的产品承诺将事故持续时间减少 10%；即使有一千起事故，这仍然会落入 90% 置信区间。即便有一年的数据，你也无法得到一个有信心的结论。&lt;/p>
+&lt;p>公司 A 和公司 B 的相似结果是巧合。这两家公司提供的服务非常不同，但它们的平均事故持续时间和标准差却相似。如果只考虑一年的事故数据，差异会很大：公司 A 的平均事故持续时间是 4 小时 35 分钟，而公司 B 是 2 小时 38 分钟。它们的其他统计数据，如中位数，也比平均值差异更大。&lt;/p>
+&lt;p>即使事故数量很多（超过每年的总数），方差仍然太高。图 7 显示，即使 MTTR 观察到的变化很大，仍然在 90% 置信区间内。虽然增加事故数量有助于获得更好的信号，但这与可靠性工程的整体目标相违背。&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/blog/incident-metrics-in-sre/2024-07-13_11-34-27.png"
+width="1302"
+height="504"
+srcset="https://martinliu.cn/blog/incident-metrics-in-sre/2024-07-13_11-34-27_hu_d342d43b04137232.png 480w, https://martinliu.cn/blog/incident-metrics-in-sre/2024-07-13_11-34-27_hu_dd8680af6cee4764.png 1024w"
+loading="lazy"
+alt="图 7."
+class="gallery-image"
+data-flex-grow="258"
+data-flex-basis="620px"
+>&lt;/p>
+&lt;p>随着样本数量增加，90% 置信区间的宽度减少。&lt;/p>
+&lt;h3 id="超越平均值">超越平均值
+&lt;/h3>&lt;p>对算术平均值的一个常见且合理的批评是它对异常值过于敏感。尽管已经排除了最严重的异常值事故（如少于三分钟或超过三天的事故），这一点依然成立。我们可能需要考虑其他统计方法，让我们来探讨一下。&lt;/p>
+&lt;p>&lt;strong>中位数和百分位数&lt;/strong>&lt;/p>
+&lt;p>中位数常用于避免少数极端异常值过度影响结果，这里也可以使用——大多数事故不会持续几天。&lt;/p>
+&lt;p>需要注意的是，如果要分析中位数，你也需要调整你的分析方式。如果你在寻找任何类型的相对差异，它应该是相对于中位数的。例如，用 MTTR 的一部分进行测试可能会非常误导。&lt;/p>
+&lt;p>如表 3 所示，即使在 N = 1,000 起事故的情况下，90% 置信区间相对于中位数统计数据仍然很大，并且涵盖了讨论中的 10% 中位数 TTR 目标。问题不仅限于 MTTR 的“平均值”；中位数 TTR 也无法解决。&lt;/p>
+&lt;p>表 3. 基于 100,000 次模拟，从两个随机抽样的事故集合（N1 = N2）中计算出的两个中位数 TTR 差异的 90% 置信区间。&lt;/p>
+&lt;table>
+&lt;thead>
+&lt;tr>
+&lt;th>&lt;/th>
+&lt;th>Company A&lt;/th>
+&lt;th>Company B&lt;/th>
+&lt;th>Company C&lt;/th>
+&lt;/tr>
+&lt;/thead>
+&lt;tbody>
+&lt;tr>
+&lt;td>Median TTR of original data&lt;/td>
+&lt;td>42m&lt;/td>
+&lt;td>1h 7m&lt;/td>
+&lt;td>2h 50m&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>Incidents in 2019&lt;/td>
+&lt;td>173&lt;/td>
+&lt;td>103&lt;/td>
+&lt;td>609&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>N1 + N2 = 10&lt;/td>
+&lt;td>mean difference ≅ 0 &lt;!-- raw HTML omitted --> 90% CI [−1h46m; +1h46m]&lt;/td>
+&lt;td>mean difference ≅ 0 &lt;!-- raw HTML omitted --> 90% CI [−2h13m; +2h12m]&lt;/td>
+&lt;td>mean difference ≅ 0 &lt;!-- raw HTML omitted --> 90% CI [−4h8m; +4h7m]&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>N1 + N2 = 100&lt;/td>
+&lt;td>mean difference ≅ 0 &lt;!-- raw HTML omitted --> 90% CI [−29m; +29m]&lt;/td>
+&lt;td>mean difference ≅ 0 &lt;!-- raw HTML omitted --> 90% CI [−29m; +29m]&lt;/td>
+&lt;td>mean difference ≅ 0 &lt;!-- raw HTML omitted --> 90% CI [−1h20m; +1h19m]&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>N1 + N2 = 1,000&lt;/td>
+&lt;td>mean difference ≅ 0 &lt;!-- raw HTML omitted --> 90% CI [−11m; +11m]&lt;/td>
+&lt;td>mean difference ≅ 0 &lt;!-- raw HTML omitted --> 90% CI [−9m; +9m]&lt;/td>
+&lt;td>mean difference ≅ 0 &lt;!-- raw HTML omitted --> 90% CI [−29m; +29m]&lt;/td>
+&lt;/tr>
+&lt;/tbody>
+&lt;/table>
+&lt;p>较高的百分位数，如第 95 百分位，表现更差。直观上，这是合理的。较高百分位数的事故持续时间会受到最严重事故的影响，而这些事故又非常罕见。因此，它们的方差非常高。表 4 列出了一些具体数值。&lt;/p>
+&lt;p>表 4. 基于 100,000 次模拟，从两个随机抽样的事故集合（N1 = N2）中计算出的第 95 百分位 TTR 差异的 90% 置信区间。&lt;/p>
+&lt;table>
+&lt;thead>
+&lt;tr>
+&lt;th>&lt;/th>
+&lt;th>Company A&lt;/th>
+&lt;th>Company B&lt;/th>
+&lt;th>Company C&lt;/th>
+&lt;/tr>
+&lt;/thead>
+&lt;tbody>
+&lt;tr>
+&lt;td>95th percentile TTR of original data&lt;/td>
+&lt;td>10h 45m&lt;/td>
+&lt;td>8h 48m&lt;/td>
+&lt;td>12h 59m&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>N1 + N2 = 100&lt;/td>
+&lt;td>mean difference ≅ 0 &lt;!-- raw HTML omitted --> 90% CI [−12h19m; +12h22m]&lt;/td>
+&lt;td>mean difference ≅ 0 &lt;!-- raw HTML omitted --> 90% CI [−8h34m; +8h36m]&lt;/td>
+&lt;td>mean difference ≅ 0 &lt;!-- raw HTML omitted --> 90% CI [−12h29m; +12h30m]&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>N1 + N2 = 1,000&lt;/td>
+&lt;td>mean difference ≅ 0 &lt;!-- raw HTML omitted --> 90% CI [−5h23m; +5h25m]&lt;/td>
+&lt;td>mean difference ≅ 0 &lt;!-- raw HTML omitted --> 90% CI [−3h18m; +3h17m]&lt;/td>
+&lt;td>mean difference ≅ 0 &lt;!-- raw HTML omitted --> 90% CI [−3h33m; +3h32m]&lt;/td>
+&lt;/tr>
+&lt;/tbody>
+&lt;/table>
+&lt;p>虽然公司 A 和公司 B 的 MTTR 在这些百分位数测量中的结果相似，但你可以看到事故持续时间差异的影响。&lt;/p>
+&lt;p>几何平均数&lt;/p>
+&lt;p>你可能感兴趣的另一个汇总统计量是几何平均数，其计算公式为。&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/blog/incident-metrics-in-sre/2024-07-13_17-23-25.png"
+width="1542"
+height="156"
+srcset="https://martinliu.cn/blog/incident-metrics-in-sre/2024-07-13_17-23-25_hu_97567cc6a8113a0d.png 480w, https://martinliu.cn/blog/incident-metrics-in-sre/2024-07-13_17-23-25_hu_a74eb704e0f564dc.png 1024w"
+loading="lazy"
+alt="公式"
+class="gallery-image"
+data-flex-grow="988"
+data-flex-basis="2372px"
+>&lt;/p>
+&lt;p>鉴于事故持续时间分布与对数正态分布相差不远，几何平均数在这里特别有吸引力。几何平均数对于对数正态分布而言，就像算术平均数对于正态分布一样。同样，这可以快速模拟（见表 5）。&lt;/p>
+&lt;p>表 5. 基于 100,000 次模拟，从两个随机抽样的事故集合（N1 = N2）中计算出的两个几何平均数差异的 90% 置信区间。&lt;/p>
+&lt;table>
+&lt;thead>
+&lt;tr>
+&lt;th>&lt;/th>
+&lt;th>Company A&lt;/th>
+&lt;th>Company B&lt;/th>
+&lt;th>Company C&lt;/th>
+&lt;/tr>
+&lt;/thead>
+&lt;tbody>
+&lt;tr>
+&lt;td>Geometric mean TTR of original data&lt;/td>
+&lt;td>54m&lt;/td>
+&lt;td>1h 9m&lt;/td>
+&lt;td>2h 24m&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>N1 + N2 = 100&lt;/td>
+&lt;td>mean difference ≅ 0 &lt;!-- raw HTML omitted --> 90% CI [−24m; +25m]&lt;/td>
+&lt;td>mean difference ≅ 0 &lt;!-- raw HTML omitted --> 90% CI [−27m; +27m]&lt;/td>
+&lt;td>mean difference ≅ 0 &lt;!-- raw HTML omitted --> 90% CI [−56m; +56m]&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>N1 + N2 = 1,000&lt;/td>
+&lt;td>mean difference ≅ 0 &lt;!-- raw HTML omitted --> 90% CI [−7.2m; +7.2m]&lt;/td>
+&lt;td>mean difference ≅ 0 &lt;!-- raw HTML omitted --> 90% CI [−8.5m; +8.7m]&lt;/td>
+&lt;td>mean difference ≅ 0 &lt;!-- raw HTML omitted --> 90% CI [−18m; +17m]&lt;/td>
+&lt;/tr>
+&lt;/tbody>
+&lt;/table>
+&lt;p>到目前为止，我们在实际数量的事故中还没有得到足够好的结果。在有一千起事故的情况下，90% 置信区间仅刚好超过指标变化的 10%。&lt;/p>
+&lt;p>&lt;strong>事故持续时间总和&lt;/strong>&lt;/p>
+&lt;p>你可能更感兴趣的是减少事故持续时间总和，而不是单个事故的持续时间。这是直观的：你想提供可靠的服务，但服务的可靠性更多取决于总的不可用时间，而不是平均事故持续时间。&lt;sup id="fnref:12">&lt;a href="#fn:12" class="footnote-ref" role="doc-noteref">12&lt;/a>&lt;/sup>&lt;/p>
+&lt;p>我们已经进行过这样的分析！算术平均数是事故持续时间总和除以事故数量，因此你可以简单地将 MTTR 模拟结果乘以 N/2（即两个样本中任意一个的元素数量），就能得到总和的模拟结果。为了确认这一点，我生成了一些总和模拟，显示置信区间等于 MTTR 置信区间乘以相应的 N（见表 6）。&lt;/p>
+&lt;p>表 6. 基于 100,000 次模拟，从两个随机抽样的事故集合（N1 = N2）中计算出的两个事故持续时间总和差异的 90% 置信区间。&lt;/p>
+&lt;table>
+&lt;thead>
+&lt;tr>
+&lt;th>&lt;/th>
+&lt;th>Company A&lt;/th>
+&lt;th>Company B&lt;/th>
+&lt;th>Company C&lt;/th>
+&lt;/tr>
+&lt;/thead>
+&lt;tbody>
+&lt;tr>
+&lt;td>N1 + N2 = 100&lt;/td>
+&lt;td>mean difference ≅ 0 &lt;!-- raw HTML omitted --> 90% CI [−87h; +87h]&lt;/td>
+&lt;td>mean difference ≅ 0 &lt;!-- raw HTML omitted --> 90% CI [−82h; +82h]&lt;/td>
+&lt;td>mean difference ≅ 0 &lt;!-- raw HTML omitted --> 90% CI [−113h; +113h]&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>N1 + N2 = 1,000&lt;/td>
+&lt;td>mean difference ≅ 0 &lt;!-- raw HTML omitted --> 90% CI [−275h; +274h]&lt;/td>
+&lt;td>mean difference ≅ 0 &lt;!-- raw HTML omitted --> 90% CI [−260h; +259h]&lt;/td>
+&lt;td>mean difference ≅ 0 &lt;!-- raw HTML omitted --> 90% CI [−359h; +357h]&lt;/td>
+&lt;/tr>
+&lt;/tbody>
+&lt;/table>
+&lt;p>事故数量对总和的观察值有很大影响。让我们简要看一下事故数量。&lt;/p>
+&lt;p>&lt;strong>统计事故&lt;/strong>&lt;/p>
+&lt;p>本报告讨论了你是否能够检测到事故处理的改进，重点分析事故的解决过程。从发生事故到完全没有事故超出了本文的讨论范围。&lt;/p>
+&lt;p>然而，既然我已经收集了所有这些数据，至少可以简要查看这些数据集，以了解事故数量随时间的变化。我不会在这里进行更深入的分析。&lt;/p>
+&lt;p>事故数量和事故持续时间一样不稳定。即使按全年汇总，如图 8 所示，数值也会大幅波动。在月度或季度的分辨率下，这种波动更为严重。最多可以从这个图表中看到一些明显的趋势：公司 C 的事故数量在 2019 年急剧增加（这一趋势在 2020 年继续，但图中未显示），与之前的年份相比。这一趋势只有在多年时间尺度上才明显，尤其是与公司 A 和公司 B 的不稳定趋势相比时更为明显。&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/blog/incident-metrics-in-sre/2024-07-13_11-35-06.png"
+width="1302"
+height="452"
+srcset="https://martinliu.cn/blog/incident-metrics-in-sre/2024-07-13_11-35-06_hu_d09ae860180aca4.png 480w, https://martinliu.cn/blog/incident-metrics-in-sre/2024-07-13_11-35-06_hu_cc632137829c7e32.png 1024w"
+loading="lazy"
+alt="图 8."
+class="gallery-image"
+data-flex-grow="288"
+data-flex-basis="691px"
+>&lt;/p>
+&lt;p>每年每个公司的事故数量，占总事故数量的比例。排除了数据不完整的年份（2020 年和每个数据集的第一年）。&lt;/p>
+&lt;p>但这种趋势可能根本无法反映系统可靠性。可能是由于外部世界事件导致的使用模式变化？还是产品组合的变化？或者是相同生产事件的事故报告方式变化，例如法规要求的变化？我只能猜测，但这些通常无法避免的因素可能会影响甚至使你自己公司的分析无效。&lt;/p>
+&lt;p>过去也提出了其他反对统计事故数量的观点&lt;sup id="fnref:13">&lt;a href="#fn:13" class="footnote-ref" role="doc-noteref">13&lt;/a>&lt;/sup>。我不会再花时间进一步分析这些数据，但我期待未来更多关于这一主题的研究。现在我们快速浏览了事故数量，让我们利用这些知识回到分析事故缩短的主题。&lt;/p>
+&lt;h2 id="分析方法">分析方法
+&lt;/h2>&lt;p>到目前为止，我一直在使用蒙特卡洛模拟。然而，你也可以采取分析方法。能否依靠中心极限定理来计算置信区间，而不是通过模拟来实现呢？答案是，有时候可以。&lt;/p>
+&lt;p>中心极限定理指出，样本均值的分布在极限情况下会趋向于正态分布。然而，由于事故发生频率低，数量可能不足以使中心极限定理适用。&lt;/p>
+&lt;p>你的团队或公司可能没有足够的事故数量来使样本均值的分布趋向于正态分布。&lt;/p>
+&lt;p>一种测试方法是运行模拟以生成样本均值分布的正态概率图（Q-Q 图）。&lt;sup id="fnref:14">&lt;a href="#fn:14" class="footnote-ref" role="doc-noteref">14&lt;/a>&lt;/sup>
+在图 9 中，我对公司 A 的数据进行了这样的模拟。随着样本量的增加（例如一年的事故数量），图表趋向于正态分布。但对于仅三个月的事故数量，图表明显偏离正态分布。
+假设持续时间是正态分布的可能会误导并影响后续的计算。&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/blog/incident-metrics-in-sre/2024-07-13_11-35-23.png"
+width="1301"
+height="568"
+srcset="https://martinliu.cn/blog/incident-metrics-in-sre/2024-07-13_11-35-23_hu_4e7d40bce0133d9c.png 480w, https://martinliu.cn/blog/incident-metrics-in-sre/2024-07-13_11-35-23_hu_1f152c7d1302ec88.png 1024w"
+loading="lazy"
+alt="图 9."
+class="gallery-image"
+data-flex-grow="229"
+data-flex-basis="549px"
+>&lt;/p>
+&lt;p>公司 A 样本均值事故持续时间的正态概率图，由 1,000 次模拟生成，模拟事故数量为 2019 年的全年事故数和大约一个季度的事故数。&lt;/p>
+&lt;p>一旦确定样本均值分布是正态的，你可以使用标准工具，例如 z 检验或 t 检验来建立置信区间&lt;sup id="fnref:15">&lt;a href="#fn:15" class="footnote-ref" role="doc-noteref">15&lt;/a>&lt;/sup>。我们特别关注的是两个分布之间的差异。既然它们来自同一总体，均值差异（以及样本总体差异的正态分布的众数）将趋于零，正如我们在模拟中所见。更有趣的是标准差，它决定了置信区间。&lt;/p>
+&lt;p>样本均值的方差收敛到：&lt;sup id="fnref:16">&lt;a href="#fn:16" class="footnote-ref" role="doc-noteref">16&lt;/a>&lt;/sup>&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/blog/incident-metrics-in-sre/2024-07-13_11-35-41.png"
+width="1268"
+height="237"
+srcset="https://martinliu.cn/blog/incident-metrics-in-sre/2024-07-13_11-35-41_hu_abe99c9ea4b5ba18.png 480w, https://martinliu.cn/blog/incident-metrics-in-sre/2024-07-13_11-35-41_hu_38e1ff63e9e3276b.png 1024w"
+loading="lazy"
+alt="公式"
+class="gallery-image"
+data-flex-grow="535"
+data-flex-basis="1284px"
+>&lt;/p>
+&lt;p>两个正态分布差异的方差是：&lt;sup id="fnref:17">&lt;a href="#fn:17" class="footnote-ref" role="doc-noteref">17&lt;/a>&lt;/sup>&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/blog/incident-metrics-in-sre/2024-07-13_11-35-54.png"
+width="1273"
+height="197"
+srcset="https://martinliu.cn/blog/incident-metrics-in-sre/2024-07-13_11-35-54_hu_3fd69768b9e7b015.png 480w, https://martinliu.cn/blog/incident-metrics-in-sre/2024-07-13_11-35-54_hu_22689f84114d8411.png 1024w"
+loading="lazy"
+alt="公式"
+class="gallery-image"
+data-flex-grow="646"
+data-flex-basis="1550px"
+>&lt;/p>
+&lt;p>在这种情况下，两个样本均值正态分布的方差和样本量相同，结果是：&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/blog/incident-metrics-in-sre/2024-07-13_11-36-09.png"
+width="1309"
+height="190"
+srcset="https://martinliu.cn/blog/incident-metrics-in-sre/2024-07-13_11-36-09_hu_55296908eae6bcc9.png 480w, https://martinliu.cn/blog/incident-metrics-in-sre/2024-07-13_11-36-09_hu_ef48a26b9f964b79.png 1024w"
+loading="lazy"
+alt="公式"
+class="gallery-image"
+data-flex-grow="688"
+data-flex-basis="1653px"
+>&lt;/p>
+&lt;p>这也解释了为什么 50/50 分割是最佳选择，因为不同的样本比例会导致更大的方差，从而得到更差的结果。&lt;/p>
+&lt;p>然后你可以应用双尾 z 检验。你可以扩展 z 检验公式；知道分布均值是 0，你可以寻找 MTTR 的特定变化，同时扩展方差计算：&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/blog/incident-metrics-in-sre/2024-07-13_11-36-22.png"
+width="1298"
+height="248"
+srcset="https://martinliu.cn/blog/incident-metrics-in-sre/2024-07-13_11-36-22_hu_fae958b636c4b20c.png 480w, https://martinliu.cn/blog/incident-metrics-in-sre/2024-07-13_11-36-22_hu_fd9fbea88451d6cb.png 1024w"
+loading="lazy"
+alt="公式"
+class="gallery-image"
+data-flex-grow="523"
+data-flex-basis="1256px"
+>&lt;/p>
+&lt;p>你也可以反过来：查找相应的 z 分数（双尾检验在 α = 0.10 时的 z 分数约为 1.644），找到 MTTR 变化的置信区间：&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/blog/incident-metrics-in-sre/2024-07-13_11-36-46.png"
+width="1302"
+height="205"
+srcset="https://martinliu.cn/blog/incident-metrics-in-sre/2024-07-13_11-36-46_hu_e1cdff349d2167a8.png 480w, https://martinliu.cn/blog/incident-metrics-in-sre/2024-07-13_11-36-46_hu_1f6db09133d63699.png 1024w"
+loading="lazy"
+alt="公式"
+class="gallery-image"
+data-flex-grow="635"
+data-flex-basis="1524px"
+>&lt;/p>
+&lt;p>对于公司 A，事故持续时间的标准差为 5 小时 16 分钟，使用 N1 = N2 = 100/2 = 50 的样本来计算 90% 置信区间：&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/blog/incident-metrics-in-sre/2024-07-13_11-37-05.png"
+width="1303"
+height="209"
+srcset="https://martinliu.cn/blog/incident-metrics-in-sre/2024-07-13_11-37-05_hu_267542227376eee6.png 480w, https://martinliu.cn/blog/incident-metrics-in-sre/2024-07-13_11-37-05_hu_45ba01f4f833a7bf.png 1024w"
+loading="lazy"
+alt="公式"
+class="gallery-image"
+data-flex-grow="623"
+data-flex-basis="1496px"
+>&lt;/p>
+&lt;p>这个结果与模拟结果中看到的 90% 置信区间相对应。&lt;/p>
+&lt;p>虽然有时你可以使用公式来进行事故统计分析，但我更喜欢模拟方法。我发现用模拟来讨论这个话题比用公式更容易理解。它还提供了更多的灵活性，可以进行建模和分析。计算 95 百分位恢复时间的解析解决方案可能非常具有挑战性，但在模拟中，这只需要一行代码的改变。&lt;/p>
+&lt;p>你可能也对模拟不同的变化和情况感兴趣。如果提议的事故缩短比简单的 10% 减少更复杂怎么办？也许你期望根据事故类别有不同的减少？如果 SRE 团队由狼人组成，他们只在满月后开始处理事故怎么办？你的场景可能没有那么奇幻，但模拟可以让它们更容易实现。&lt;/p>
+&lt;h2 id="大型公司事故数据集">大型公司事故数据集
+&lt;/h2>&lt;p>之前的分析显示，随着样本数量的增加，方差会下降。Google 拥有的员工数量约是三家匿名公司总和的一百倍，事故数量也显著多于这些公司。这是否有助于获得更可靠的事故指标？&lt;/p>
+&lt;p>我们将以相同的方法分析 Google 的事故数据，并利用更丰富的数据集（包括内部元数据）进一步细分数据。&lt;/p>
+&lt;p>图 10 显示了所有重大事故和最严重事故的持续时间分布。这两个数据集中还包括内部事故，例如仅影响 Google 员工及其生产力的事故，甚至是对任何用户（内部或外部）完全不可见的事件。最严重事故的数据集中包含了更高比例的面向用户的事故（例如，会在服务状态仪表板上列出）。&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/blog/incident-metrics-in-sre/2024-07-13_11-37-31.png"
+width="1302"
+height="472"
+srcset="https://martinliu.cn/blog/incident-metrics-in-sre/2024-07-13_11-37-31_hu_3b96c1d4dc874101.png 480w, https://martinliu.cn/blog/incident-metrics-in-sre/2024-07-13_11-37-31_hu_aaca04e739d1e0a0.png 1024w"
+loading="lazy"
+alt="图 10."
+class="gallery-image"
+data-flex-grow="275"
+data-flex-basis="662px"
+>&lt;/p>
+&lt;p>2019 年 Google 所有事故的持续时间分布。&lt;/p>
+&lt;p>除了更广泛的事故集中有更多非常短的事故外，图表显示这两个分布大致相似。所有 Google 事故的数据集大约是所选的面向用户的 Google 服务事故数据集的 15 倍，这也是公司范围内的分布图显得更平滑的原因。&lt;/p>
+&lt;p>在三个公共数据集中，排除超过三天的事故去除了约 1% 的事故，但两个 Google 数据集中都有相当多的事故持续时间超过三天。与之前的公共数据集一样，由于事故跟踪方式不同，得出关于可靠性的结论是不正确的。我尝试了两种方法：在三天处截断和排除长度排名前 5% 的事故。结果显示，相对 MTTR 的置信区间仅有略微差异，结论相同。表 7 显示了以三天为截断点的模拟数据，与其他模拟一致。&lt;/p>
+&lt;p>表 7. 基于 100,000 次模拟，从 Google 事故数据集中两个随机抽样的事故集合（N1 = N2）中计算出的两个平均 TTR 和中位数 TTR 差异的 90% 置信区间。事故数量对应每个数据集中一年中的一部分。&lt;/p>
+&lt;table>
+&lt;thead>
+&lt;tr>
+&lt;th>&lt;/th>
+&lt;th>2019 年 Google 最严重的事故（通常但不总是面向用户）&lt;/th>
+&lt;th>所有重大事故（通常不面向用户）&lt;/th>
+&lt;/tr>
+&lt;/thead>
+&lt;tbody>
+&lt;tr>
+&lt;td>Incidents in 2019 (approximate relative size)&lt;/td>
+&lt;td>1 * X&lt;/td>
+&lt;td>15 * X&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>Mean TTR N1 + N2 = ¼ year&lt;/td>
+&lt;td>mean difference ≅ 0 &lt;!-- raw HTML omitted --> 90% CI [−35%; +35% of MTTR]&lt;/td>
+&lt;td>mean difference ≅ 0 &lt;!-- raw HTML omitted --> 90% CI [−11%; +11% of MTTR]&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>Mean TTR N1 + N2 = ½ year&lt;/td>
+&lt;td>mean difference ≅ 0 &lt;!-- raw HTML omitted --> 90% CI [−25%; +25% of MTTR]&lt;/td>
+&lt;td>mean difference ≅ 0 &lt;!-- raw HTML omitted --> 90% CI [−7.6%; +7.6% of MTTR]&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>Mean TTR N1 + N2 = 1 year&lt;/td>
+&lt;td>mean difference ≅ 0 &lt;!-- raw HTML omitted --> 90% CI [−18%; +18% of MTTR]&lt;/td>
+&lt;td>mean difference ≅ 0 &lt;!-- raw HTML omitted --> 90% CI [−5.3%; +5.4% of MTTR]&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>Median TTR N1 + N2 = ¼ year&lt;/td>
+&lt;td>mean difference ≅ 0 &lt;!-- raw HTML omitted --> 90% CI [−53%; +52% of median TTR]&lt;/td>
+&lt;td>mean difference ≅ 0 &lt;!-- raw HTML omitted --> 90% CI [−20%; +20% of median TTR]&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>Median TTR N1 + N2 = ½ year&lt;/td>
+&lt;td>mean difference ≅ 0 &lt;!-- raw HTML omitted --> 90% CI [−35%; +35% of median TTR]&lt;/td>
+&lt;td>mean difference ≅ 0 &lt;!-- raw HTML omitted --> 90% CI [−14%; +14% of median TTR]&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>Median TTR N1 + N2 = 1 year&lt;/td>
+&lt;td>mean difference ≅ 0 &lt;!-- raw HTML omitted --> 90% CI [−25%; +25% of median TTR]&lt;/td>
+&lt;td>mean difference ≅ 0 &lt;!-- raw HTML omitted --> 90% CI [−10%; +10% of median TTR]&lt;/td>
+&lt;/tr>
+&lt;/tbody>
+&lt;/table>
+&lt;p>从数学上讲，在所有重大事故的一年数据中事故数量（虽然具体数字无法分享，但比我们之前测试的 1,000 起更多）有助于获得更可信的结果，这与之前的发现一致。然而，你需要注意你所看的数据和所应用的测试。事实证明，虽然在数学上成立，但这一发现实际上并没有特别实用。&lt;/p>
+&lt;p>所有事故的数据集包含各种类型的事故，从面向用户的服务系统故障到长期存在的处理管道问题、网络配置和公司设备软件安装——这些通常对终端用户是不可见的。对于一些事故，解决时间也可能相当长（例如，事故本身就很长或可以等到周末之后），这会推高 MTTR 值。&lt;/p>
+&lt;p>在如此广泛的事故中，我没有任何实际的开发工作可以保证实现这种程度的事故持续时间减少。在一年事故数据中，能够自信地检测到 5.3% 的均值变化，并没有使 MTTR 成为一个实际有用的事故统计数据。&lt;/p>
+&lt;h2 id="这与数据质量有关吗">这与数据质量有关吗？
+&lt;/h2>&lt;p>汇总事故分析的挑战似乎并不在于事故元数据的质量。提高元数据收集准确性的努力不太可能引起显著变化。在检查 Google 内部事故元数据时，我发现那些有更严格事故报告要求的团队（例如，直接由 SRE 支持或运行高可用性、对收入至关重要服务的团队），在事故持续时间分析上并没有显著改进。所有三个公共事故数据集也显示出类似的行为。&lt;/p>
+&lt;p>你也可以通过生成完全合成的事故分布来验证这个问题。如果假设事故遵循某种分布（例如伽马分布或对数正态分布），你可以选择参数，使其在主观判断中“看起来正确”，然后进行评估。&lt;/p>
+&lt;p>这种方法可以应用于任何分布，但需要谨慎。假设事故持续时间呈正态分布或均匀分布可能并不现实。从这种分布的分析中得出的结论可能会产生误导。&lt;/p>
+&lt;h2 id="这就是为什么-mttx-可能会误导你">这就是为什么 MTTx 可能会误导你
+&lt;/h2>&lt;p>像收集到的事故数据（也可能包括你公司的事故数据）这样的分布具有非常高的方差，以至于均值、中位数或总和都无法很好地汇总统计来理解事故趋势。事故问题领域固有的高方差和小样本量使得进行稳健的事故持续时间分析变得不可取，如在三个示例数据集中所示。这里的分析是在理想条件下进行的，现实中的表现可能更差。&lt;/p>
+&lt;p>从可靠性角度来看，缓解和恢复之间确实存在差异，但在本分析范围内，这并不重要&lt;sup id="fnref:18">&lt;a href="#fn:18" class="footnote-ref" role="doc-noteref">18&lt;/a>&lt;/sup>。我称之为“MTTx”，因为只要实际测量遵循类似的分布属性和样本量（即事故数量），它对分析没有影响。许多其他事故指标，例如检测时间，也存在同样的问题。&lt;sup id="fnref:19">&lt;a href="#fn:19" class="footnote-ref" role="doc-noteref">19&lt;/a>&lt;/sup>&lt;/p>
+&lt;p>这意味着 MTTx 不适合用于评估典型变更对 TTx 的影响：&lt;/p>
+&lt;ul>
+&lt;li>它不能很好地衡量系统的整体可靠性。仅仅得出这一结论不需要这种分析，我可以总结《实施服务质量目标》中的一个论点：如果事故数量翻倍，而事故分布大致相同，系统的可靠性显然变差了，但你的指标却没有发生太大变化。&lt;/li>
+&lt;li>它无法提供任何关于事故响应实践趋势的有用见解。模拟显示，即使事故性质没有变化，你也能看到大量变化。&lt;/li>
+&lt;li>无法通过 MTTx 评估事故管理过程或工具变更的成功或失败。方差使得难以区分任何改进，并且即使承诺的改进实现了，该指标也可能会恶化。&lt;/li>
+&lt;/ul>
+&lt;p>这些结果适用于典型的可靠性工程情况，例如网络服务上的事故。默认情况下，应拒绝将 MTTx 指标用于上述目的。然而，也有例外情况。例如，如果你有大量数据可以进行汇总 MTTx 分析。一个实际例子是大规模硬盘驱动器采购，如 Backblaze 公司定期发布的每个型号的硬盘驱动器可靠性统计数据，覆盖了数万个设备&lt;sup id="fnref:20">&lt;a href="#fn:20" class="footnote-ref" role="doc-noteref">20&lt;/a>&lt;/sup>。此外，同一型号硬盘之间的相似性比事故之间更大。同样，数量和较低的方差是你能够自信地看到典型服务系统平均延迟变化的原因。&lt;sup id="fnref:21">&lt;a href="#fn:21" class="footnote-ref" role="doc-noteref">21&lt;/a>&lt;/sup>&lt;/p>
+&lt;p>另一个例外情况是剧变，例如将事故持续时间缩短到原来的 20%。如前所示，你很可能能够自信地在数据中检测到它。然而，你也可能通过其他方式检测到它，因此不需要使用仍存在问题的 MTTx 指标。&lt;/p>
+&lt;h2 id="更好的分析选项">更好的分析选项
+&lt;/h2>&lt;p>MTTx 的挑战在于它是一个错误的观察指标。这个指标的行为特性使得分析变得困难。&lt;/p>
+&lt;p>另一个挑战在于，这个指标可能根本没有测量到你真正关心的内容。当我们谈论 MTTR 改进时，通常是在问：“我们的可靠性提高了吗？”或者，“我们在应对事故方面变得更好了？”选择一个更准确地代表决策目标的指标是其他文献中也讨论的重要话题。&lt;sup id="fnref:22">&lt;a href="#fn:22" class="footnote-ref" role="doc-noteref">22&lt;/a>&lt;/sup>&lt;/p>
+&lt;p>我没有找到任何可以像 MTTx 那样被普遍应用的“银弹”指标。然而，我们可以探讨在特定背景下选择更好指标的一些方法。&lt;/p>
+&lt;h3 id="根据问题定制指标">根据问题定制指标
+&lt;/h3>&lt;p>我用模拟测试产品是否影响 MTTx。然而，现实中的产品或流程变更并不是这样运作的。相反，它们改善了事故的某些方面，可能是事故沟通过程，或是自动事故分析工具提出的假设。&lt;sup id="fnref:23">&lt;a href="#fn:23" class="footnote-ref" role="doc-noteref">23&lt;/a>&lt;/sup>&lt;/p>
+&lt;p>如前所述，事故是由不同持续时间的步骤组成的。&lt;sup id="fnref:24">&lt;a href="#fn:24" class="footnote-ref" role="doc-noteref">24&lt;/a>&lt;/sup>这些步骤在各种出版物中都有研究。如果你在改进事故过程中的某一步，将所有其他步骤包括在内会使你更难理解变更的影响。&lt;/p>
+&lt;p>尝试分析每个事故的具体行为可能并不实际。你无法依赖人类输入元数据，也难以紧密观察每个事故。相反，实际的解决方案可以是对选定的事故样本进行用户研究。这些研究可以专注于你感兴趣的事故方面，并提供比汇总统计数据更丰富的理解。正确构建这些研究并不总是容易的，如果可能，建议寻求专家意见。考虑到这一点，有些文献在建立低成本用户测试方面提供了帮助，我已经成功地将这些经验应用于构建实际系统。&lt;sup id="fnref:25">&lt;a href="#fn:25" class="footnote-ref" role="doc-noteref">25&lt;/a>&lt;/sup>&lt;/p>
+&lt;h3 id="考虑直接的可靠性指标">考虑直接的可靠性指标
+&lt;/h3>&lt;p>也许你在问：“作为公司，我们的可靠性在变好还是变坏？” 这时可用性的概念就显得尤为重要。在 SRE 实践中，服务质量指标（SLIs）和服务质量目标（SLOs）是常用的术语。理想情况下，这些指标应该反映用户感知的产品可靠性，而 SLOs 则应该设定为符合业务权衡的目标。通常，这两者并不完全准确，有时甚至与理想情况相去甚远。&lt;/p>
+&lt;p>即使你的 SLIs 和 SLOs 尽可能真实地反映业务目标，这仍不意味着它们可以用汇总统计数据来分析，例如每年消耗的错误预算总和。由于 SLI（即使是接近理想属性的 SLI）可以通过多种方式实现，这里给出的答案可能不具有普遍适用性。我在这方面没有进行过分析，但这是一个有趣的未来研究方向。你可能可以在公司内部使用前面讨论过的工具轻松完成这项工作。&lt;/p>
+&lt;p>根据你的业务，另一个衡量标准可能是已打开的支持案例总数，或因服务不可靠而导致的客户电话，或其他更高级的综合指标。&lt;/p>
+&lt;h3 id="测试你的选择指标">测试你的选择指标
+&lt;/h3>&lt;p>可能有比这里建议的更好的方法，我期待该领域未来的工作。关键在于，分析应关注你真正关心的问题；明智地选择你的指标。
+可靠性事故是多种多样的，需要回答的关于可靠性度量的问题也同样多样。关键是以批判的眼光看待你的指标。它们是否真的在测量你想要测量的内容？它们在面对随机性时是否稳健？你是否有证据支持你的答案？
+我用来研究 MTTx 的工具同样可以用于其他你正在考虑的指标。过程大致相同：确定对你有意义的变化水平（这取决于指标，也取决于你的业务），然后分析你是否可以在数据中自信地看到它。&lt;/p>
+&lt;h2 id="结论">结论
+&lt;/h2>&lt;p>我已经证明，即使在有利的分析设置中，MTTx 也不能用于许多被宣传为有用的实际用途，例如评估可靠性趋势、评估政策或产品的结果，或了解整体系统可靠性。系统运营者、DevOps 或 SRE 应该不再默认 MTTx 是有用的。除非在特定情况下已证明其适用性，否则应对其应用持怀疑态度。&lt;/p>
+&lt;p>问题并不仅限于使用算术平均数作为指标；我已经证明，中位数和其他指标也存在同样的问题。这是由于事故数量通常较少且持续时间方差较大的结果。在三家匿名公司的实际数据集中以及 Google 的混淆数据集中都观察到了这种分布。&lt;/p>
+&lt;p>与其使用 MTTx 分析整体事故统计数据，你可以专注于事故生命周期中的更具体问题，更贴近你想要评估的内容。这可能会导致选择不同的指标或完全不同的测量过程。选择更好的指标应当带来更好和更稳健的决策过程。例如，可以专门测量和研究检测时间，或在一些常见事故响应活动上花费的时间。&lt;/p>
+&lt;p>也许还有其他统计数据可以提供更多的价值。事故持续时间的方差本身可能也是有用的，因为它可以证明响应能力的一致性。无论情况如何，有一点是肯定的：你应该批判性地思考你的指标并对其进行测试（或许可以使用本报告中提到的一些工具）。超越依赖假设、直觉或行业趋势，寻找证据证明你选择的指标可以指示你希望它们指示的内容。&lt;/p>
+&lt;h2 id="致谢">致谢
+&lt;/h2>&lt;p>作者感谢 Kathy Meier-Hellstern 的审阅、建议和意见；感谢 Ben Appleton 审阅此作品以及一些初步工作的贡献，这些工作促成了本文的完成；感谢 Michael Brundage 进一步审阅并激发了额外的分析；感谢 Scott Williams 的进一步审阅；感谢 Cassie Kozyrkov 为使统计思维成为一个越来越易于理解的主题所做的努力。&lt;/p>
+&lt;h2 id="关于作者">关于作者
+&lt;/h2>&lt;p>Štěpán Davidovič 是 Google 的一名站点稳定性工程师，目前致力于内部自动监控基础设施的开发。在之前的 Google SRE 职位中，他开发了金丝雀分析服务，并参与了许多共享基础设施项目和 AdSense 可靠性工作。他于 2010 年毕业于布拉格捷克技术大学，获得学士学位。&lt;/p>
+&lt;p>❤️ Photo by Kevin Bidwell: &lt;a class="link" href="https://www.pexels.com/photo/firefighter-holding-hose-with-water-flowing-3013676/" target="_blank" rel="noopener"
+>https://www.pexels.com/photo/firefighter-holding-hose-with-water-flowing-3013676/&lt;/a>&lt;/p>
+&lt;div class="footnotes" role="doc-endnotes">
+&lt;hr>
+&lt;ol>
+&lt;li id="fn:1">
+&lt;p>请参阅，例如，《A List of Post-mortems!》&lt;a class="link" href="https://github.com/danluu/post-mortems" target="_blank" rel="noopener"
+>https://github.com/danluu/post-mortems&lt;/a> 和《Postmortem Index》&lt;a class="link" href="https://postmortems.app/" target="_blank" rel="noopener"
+>https://postmortems.app/&lt;/a>。&amp;#160;&lt;a href="#fnref:1" class="footnote-backref" role="doc-backlink">&amp;#x21a9;&amp;#xfe0e;&lt;/a>&lt;/p>
+&lt;/li>
+&lt;li id="fn:2">
+&lt;p>John Allspaw，《Moving Past Shallow Incident Data》，Adaptive Capacity Labs，2018 年 3 月 23 日。&amp;#160;&lt;a href="#fnref:2" class="footnote-backref" role="doc-backlink">&amp;#x21a9;&amp;#xfe0e;&lt;/a>&lt;/p>
+&lt;/li>
+&lt;li id="fn:3">
+&lt;p>《Mean time to recovery》，Wikipedia。&lt;a class="link" href="https://en.wikipedia.org/wiki/Mean_time_to_recovery" target="_blank" rel="noopener"
+>https://en.wikipedia.org/wiki/Mean_time_to_recovery&lt;/a>&amp;#160;&lt;a href="#fnref:3" class="footnote-backref" role="doc-backlink">&amp;#x21a9;&amp;#xfe0e;&lt;/a>&lt;/p>
+&lt;/li>
+&lt;li id="fn:4">
+&lt;p>Laura Nolan，《What Breaks Our Systems: A Taxonomy of Black Swans》（视频），SREcon19 Americas，2019 年 3 月 25 日。&lt;a class="link" href="https://www.usenix.org/conference/srecon19americas/presentation/nolan-taxonomy" target="_blank" rel="noopener"
+>https://www.usenix.org/conference/srecon19americas/presentation/nolan-taxonomy&lt;/a>&amp;#160;&lt;a href="#fnref:4" class="footnote-backref" role="doc-backlink">&amp;#x21a9;&amp;#xfe0e;&lt;/a>&lt;/p>
+&lt;/li>
+&lt;li id="fn:5">
+&lt;p>《Normal probability plot》，Wikipedia。&lt;a class="link" href="https://en.wikipedia.org/wiki/Normal_probability_plot" target="_blank" rel="noopener"
+>https://en.wikipedia.org/wiki/Normal_probability_plot&lt;/a>&amp;#160;&lt;a href="#fnref:5" class="footnote-backref" role="doc-backlink">&amp;#x21a9;&amp;#xfe0e;&lt;/a>&lt;/p>
+&lt;/li>
+&lt;li id="fn:6">
+&lt;p>请参阅，例如，《A List of Post-mortems!》&lt;a class="link" href="https://github.com/danluu/post-mortems" target="_blank" rel="noopener"
+>https://github.com/danluu/post-mortems&lt;/a> 和《Postmortem Index》&lt;a class="link" href="https://postmortems.app/%e3%80%82" target="_blank" rel="noopener"
+>https://postmortems.app/。&lt;/a>&amp;#160;&lt;a href="#fnref:6" class="footnote-backref" role="doc-backlink">&amp;#x21a9;&amp;#xfe0e;&lt;/a>&lt;/p>
+&lt;/li>
+&lt;li id="fn:7">
+&lt;p>请注意，例如，公司 C 的事故持续时间通常对齐到整小时，这在图表上表现为一些峰值。&amp;#160;&lt;a href="#fnref:7" class="footnote-backref" role="doc-backlink">&amp;#x21a9;&amp;#xfe0e;&lt;/a>&lt;/p>
+&lt;/li>
+&lt;li id="fn:8">
+&lt;p>通过重复抽样来模拟行为的过程——在这种情况下，是模拟事故解决时间的行为。&amp;#160;&lt;a href="#fnref:8" class="footnote-backref" role="doc-backlink">&amp;#x21a9;&amp;#xfe0e;&lt;/a>&lt;/p>
+&lt;/li>
+&lt;li id="fn:9">
+&lt;p>截至 2020 年夏末，我认为仅使用过去 12 个月的数据可能会受到世界事件的影响，从而导致数据集不寻常。&amp;#160;&lt;a href="#fnref:9" class="footnote-backref" role="doc-backlink">&amp;#x21a9;&amp;#xfe0e;&lt;/a>&lt;/p>
+&lt;/li>
+&lt;li id="fn:10">
+&lt;p>针对这种特定情况，事故被缩短了 10%。&amp;#160;&lt;a href="#fnref:10" class="footnote-backref" role="doc-backlink">&amp;#x21a9;&amp;#xfe0e;&lt;/a>&lt;/p>
+&lt;/li>
+&lt;li id="fn:11">
+&lt;p>参见《在线统计教育》中的“均值的抽样分布”，“均值差异的抽样分布”，“均值的检验”等章节，项目负责人 David M. Lane，莱斯大学。&lt;a class="link" href="https://onlinestatbook.com/" target="_blank" rel="noopener"
+>https://onlinestatbook.com/&lt;/a>&amp;#160;&lt;a href="#fnref:11" class="footnote-backref" role="doc-backlink">&amp;#x21a9;&amp;#xfe0e;&lt;/a>&lt;/p>
+&lt;/li>
+&lt;li id="fn:12">
+&lt;p>根据你的业务，这种推理可能存在缺陷。考虑到每月一次一小时的事故对用户和业务的影响，与 60 次一分钟的事故非常不同。这同样适用于常用的服务质量目标（SLO）语言。&amp;#160;&lt;a href="#fnref:12" class="footnote-backref" role="doc-backlink">&amp;#x21a9;&amp;#xfe0e;&lt;/a>&lt;/p>
+&lt;/li>
+&lt;li id="fn:13">
+&lt;p>Rick Branson, &amp;ldquo;Stop Counting Production Incidents&amp;rdquo;, Medium, 2020 年 1 月 31 日。&amp;#160;&lt;a href="#fnref:13" class="footnote-backref" role="doc-backlink">&amp;#x21a9;&amp;#xfe0e;&lt;/a>&lt;/p>
+&lt;/li>
+&lt;li id="fn:14">
+&lt;p>“Normal probability plot”，Wikipedia。&lt;a class="link" href="https://rbranson.medium.com/why-you-shouldnt-count-production-incidents-38616d8e6329" target="_blank" rel="noopener"
+>https://rbranson.medium.com/why-you-shouldnt-count-production-incidents-38616d8e6329&lt;/a>&amp;#160;&lt;a href="#fnref:14" class="footnote-backref" role="doc-backlink">&amp;#x21a9;&amp;#xfe0e;&lt;/a>&lt;/p>
+&lt;/li>
+&lt;li id="fn:15">
+&lt;p>参见《在线统计教育：多媒体学习课程》中的“均值的抽样分布”，“均值差异的抽样分布”，“均值检验”等章节，项目负责人 David M. Lane，莱斯大学。&amp;#160;&lt;a href="#fnref:15" class="footnote-backref" role="doc-backlink">&amp;#x21a9;&amp;#xfe0e;&lt;/a>&lt;/p>
+&lt;/li>
+&lt;li id="fn:16">
+&lt;p>参见《在线统计教育》中的相关章节，以及 Wikipedia 上的“样本均值分布”。&lt;a class="link" href="https://en.wikipedia.org/wiki/Mean#Distribution_of_the_sample_mean" target="_blank" rel="noopener"
+>https://en.wikipedia.org/wiki/Mean#Distribution_of_the_sample_mean&lt;/a>&amp;#160;&lt;a href="#fnref:16" class="footnote-backref" role="doc-backlink">&amp;#x21a9;&amp;#xfe0e;&lt;/a>&lt;/p>
+&lt;/li>
+&lt;li id="fn:17">
+&lt;p>Eric W. Weisstein，《正态差异分布》，来源于 MathWorld—A Wolfram Web Resource，更新于 2021 年 3 月 5 日。&lt;a class="link" href="https://mathworld.wolfram.com/NormalDifferenceDistribution.html" target="_blank" rel="noopener"
+>https://mathworld.wolfram.com/NormalDifferenceDistribution.html&lt;/a>&amp;#160;&lt;a href="#fnref:17" class="footnote-backref" role="doc-backlink">&amp;#x21a9;&amp;#xfe0e;&lt;/a>&lt;/p>
+&lt;/li>
+&lt;li id="fn:18">
+&lt;p>Jennifer Mace, &amp;ldquo;Generic Mitigations: A Philosophy of Duct-Tape Outage Resolutions&amp;rdquo;, O&amp;rsquo;Reilly, 2020 年 12 月 15 日。&lt;a class="link" href="https://www.oreilly.com/content/generic-mitigations/" target="_blank" rel="noopener"
+>https://www.oreilly.com/content/generic-mitigations/&lt;/a>&amp;#160;&lt;a href="#fnref:18" class="footnote-backref" role="doc-backlink">&amp;#x21a9;&amp;#xfe0e;&lt;/a>&lt;/p>
+&lt;/li>
+&lt;li id="fn:19">
+&lt;p>Alex Hidalgo, Implementing Service Level Objectives, O&amp;rsquo;Reilly, 2020。&lt;a class="link" href="https://www.oreilly.com/library/view/implementing-service-level/9781492076803/" target="_blank" rel="noopener"
+>https://www.oreilly.com/library/view/implementing-service-level/9781492076803/&lt;/a>&amp;#160;&lt;a href="#fnref:19" class="footnote-backref" role="doc-backlink">&amp;#x21a9;&amp;#xfe0e;&lt;/a>&lt;/p>
+&lt;/li>
+&lt;li id="fn:20">
+&lt;p>“Hard Drive Data and Stats”，Backblaze。 &lt;a class="link" href="https://www.backblaze.com/cloud-storage/resources/hard-drive-test-data" target="_blank" rel="noopener"
+>https://www.backblaze.com/cloud-storage/resources/hard-drive-test-data&lt;/a>&amp;#160;&lt;a href="#fnref:20" class="footnote-backref" role="doc-backlink">&amp;#x21a9;&amp;#xfe0e;&lt;/a>&lt;/p>
+&lt;/li>
+&lt;li id="fn:21">
+&lt;p>尽管其他统计数据（例如更高的百分位数）通常是衡量服务系统延迟的更好指标。&amp;#160;&lt;a href="#fnref:21" class="footnote-backref" role="doc-backlink">&amp;#x21a9;&amp;#xfe0e;&lt;/a>&lt;/p>
+&lt;/li>
+&lt;li id="fn:22">
+&lt;p>Douglas W. Hubbard，《How to Measure Anything》第三版（新泽西州霍博肯：John Wiley &amp;amp; Sons，2014 年）。&amp;#160;&lt;a href="#fnref:22" class="footnote-backref" role="doc-backlink">&amp;#x21a9;&amp;#xfe0e;&lt;/a>&lt;/p>
+&lt;/li>
+&lt;li id="fn:23">
+&lt;p>Andrew Stribblehill，“Managing Incidents”，载于 《SRE Google 运维解密》（O&amp;rsquo;Reilly，2016）。&amp;#160;&lt;a href="#fnref:23" class="footnote-backref" role="doc-backlink">&amp;#x21a9;&amp;#xfe0e;&lt;/a>&lt;/p>
+&lt;/li>
+&lt;li id="fn:24">
+&lt;p>John Allspaw，“Moving Past Shallow Incident Data”；Charisma Chan 和 Beth Cooper，“Debugging Incidents in Google’s Distributed Systems: How Experts Debug Production Issues in Complex Distributed Systems”，Queue 第 18 卷第 2 期（2020 年 3 月-4 月）。&lt;a class="link" href="https://queue.acm.org/detail.cfm?id=3404974" target="_blank" rel="noopener"
+>https://queue.acm.org/detail.cfm?id=3404974&lt;/a>&amp;#160;&lt;a href="#fnref:24" class="footnote-backref" role="doc-backlink">&amp;#x21a9;&amp;#xfe0e;&lt;/a>&lt;/p>
+&lt;/li>
+&lt;li id="fn:25">
+&lt;p>Steve Krug，《Rocket Surgery Made Easy》（加利福尼亚州伯克利：New Riders，2010）。&amp;#160;&lt;a href="#fnref:25" class="footnote-backref" role="doc-backlink">&amp;#x21a9;&amp;#xfe0e;&lt;/a>&lt;/p>
+&lt;/li>
+&lt;/ol>
+&lt;/div></description></item><item><title>Google 白皮书 《事故管理剖析》第七章 总结与展望</title><link>https://martinliu.cn/blog/anatomy-of-an-incident-ch7/</link><pubDate>Sat, 06 Jul 2024 12:46:48 +0800</pubDate><guid>https://martinliu.cn/blog/anatomy-of-an-incident-ch7/</guid><description>&lt;img src="https://martinliu.cn/blog/anatomy-of-an-incident-ch7/pexels-pixabay-69934.png" alt="Featured image of post Google 白皮书 《事故管理剖析》第七章 总结与展望" />&lt;ul>
+&lt;li>&lt;a class="link" href="https://martinliu.cn/wp/anatomy-of-an-incident-cn.pdf" >下载中文版 PDF 文件&lt;/a>&lt;/li>
+&lt;li>&lt;a class="link" href="https://martinliu.cn/wp/anatomy-of-an-incident.pdf" >下载英文版 PDF 文件&lt;/a>&lt;/li>
+&lt;li>&lt;a class="link" href="https://sre.google/resources/practices-and-processes/anatomy-of-an-incident/" target="_blank" rel="noopener"
+>从 Google 下载白皮书&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;p>我们探讨了事故的基础知识，并详细了解了事故管理生命周期的三个阶段：准备、响应和恢复。这涵盖了很多内容，但你现在可能会想，“接下来该怎么做？”&lt;/p>
+&lt;p>首先，要学会在适当的时候使用事故管理。事故响应需要大量人力资源。通常需要一个或多个人参与其中，从最初的告警，到问题解决的整个过程中。事故响应的目的是在问题发生时实施缓解措施，以争取时间来做出优先级决策。这意味着常规的产品修复可能会被推迟，长期计划和改进可能不会被优先考虑。事故响应可能导致服务质量目标 (SLO) 被违反或客户承诺无法履行，并且参与事故响应的员工都会感受到较大压力。&lt;/p>
+&lt;p>有研究表明，现实世界中的第一事故响应者更容易出现倦怠和疲劳；同样的趋势也适用于处理非现实事故的人——即那些工作与生活不平衡、活动极端或可能缺乏控制的员工。这些因素在技术事故管理工作中很常见，意味着员工可能会感受到倦怠的影响和职业后果。这里的风险包括，最好的情况下是工作表现不佳，最坏的情况下是员工流失。由于这种倦怠产生的相关风险，公司必须尽量做好事故管理，并尽可能减少事故管理的频率。&lt;/p>
+&lt;p>你的下一个行动是将&lt;strong>事故管理&lt;/strong>视为一项关键运维学科，并努力在这方面取得出色的表现。那么，什么是“擅长”事故管理呢？这意味着你的团队（而不仅仅是个别人员）需要积极改进这一循环的所有部分。虽然这听起来不像是：有几个超级英雄消防员冲了进来，他们拯救世界的场景那么戏剧化，但英雄主义心态是有害的。缓慢而仔细地改进事故准备，开发响应事故的工具、技术和通信渠道，并优先考虑可持续和可扩展的工程工作，才是强大事故管理实践的核心。&lt;/p>
+&lt;p>通过将所有内容视为一个连续且相互关联的循环，每个人都变得重要，并且可以避免将责任归咎于任何一个人或系统组件。无责文化的实践营造了一个心理安全的工作环境，让员工能够在其中蓬勃发展，并创造出色的产品。这些方法帮助谷歌度过了最近全球历史上的巨大不确定时期，也可以帮助提高贵公司的韧性。&lt;/p>
+&lt;p>总体而言，不要将事故管理应用于每一个潜在问题或类型问题。谨慎而合理地使用事故管理，以避免让团队成员感到倦怠。当你完成事故管理时，停止管理事故，开始进行解决长期问题或风险所需的工程工作。识别并使用其他可能有用的工具。&lt;/p>
+&lt;h2 id="进一步阅读">进一步阅读
+&lt;/h2>&lt;ul>
+&lt;li>来自《Google SRE 工作手册》的监控 &lt;a class="link" href="https://sre.google/workbook/monitoring/" target="_blank" rel="noopener"
+>https://sre.google/workbook/monitoring/&lt;/a>&lt;/li>
+&lt;li>来自《Google SRE 工作手册》的事故响应 &lt;a class="link" href="https://sre.google/workbook/incident-response/" target="_blank" rel="noopener"
+>https://sre.google/workbook/incident-response/&lt;/a>&lt;/li>
+&lt;li>来自《Google SRE 工作手册》的事后分析文化：从失败中学习 &lt;a class="link" href="https://sre.google/workbook/postmortem-culture/" target="_blank" rel="noopener"
+>https://sre.google/workbook/postmortem-culture/&lt;/a>&lt;/li>
+&lt;li>事后分析行动项目：计划工作并执行计划 &lt;a class="link" href="https://research.google/pubs/postmortem-action-items-plan-the-work-and-work-the-plan/" target="_blank" rel="noopener"
+>https://research.google/pubs/postmortem-action-items-plan-the-work-and-work-the-plan/&lt;/a>&lt;/li>
+&lt;li>使用 SRE 原则减少生产事故影响——CRE 实战经验 &lt;a class="link" href="https://cloud.google.com/blog/products/devops-sre/shrinking-the-impact-of-production-incidents-using-sre-principles-cre-life-lessons" target="_blank" rel="noopener"
+>https://cloud.google.com/blog/products/devops-sre/shrinking-the-impact-of-production-incidents-using-sre-principles-cre-life-lessons&lt;/a>&lt;/li>
+&lt;li>缩短生产事故缓解时间——CRE 实战经验 &lt;a class="link" href="https://cloud.google.com/blog/products/management-tools/shrinking-the-time-to-mitigate-production-incidents" target="_blank" rel="noopener"
+>https://cloud.google.com/blog/products/management-tools/shrinking-the-time-to-mitigate-production-incidents&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;h2 id="参考书目">参考书目
+&lt;/h2>&lt;ul>
+&lt;li>“Google Data Center FAQ”。《Data Center Knowledge》，2017 年 3 月 19 日。&lt;a class="link" href="https://www.datacenterknowledge.com/hyperscalers/google-data-center-faq" target="_blank" rel="noopener"
+>https://www.datacenterknowledge.com/hyperscalers/google-data-center-faq&lt;/a>&lt;/li>
+&lt;li>Aleksandra. “63 Fascinating Google Search Statistics”。《SEOtribunal》，2018 年 9 月 26 日。&lt;a class="link" href="https://seotribunal.com/blog/google-stats-and-facts/" target="_blank" rel="noopener"
+>https://seotribunal.com/blog/google-stats-and-facts/&lt;/a>&lt;/li>
+&lt;li>“Incident Command System Resources”。美国联邦紧急事务管理局，美国国土安全部，2018 年 6 月 26 日。&lt;/li>
+&lt;li>Beyer, Betsy, Chris Jones, Niall Richard Murphy 和 Jennifer Petoff 编辑。 《Site Reliability Engineering: How Google Runs Production Systems》。O’Reilly Media，2016 年。&lt;/li>
+&lt;li>“Data Access and Restrictions”。《Google Workspace Security Whitepaper》，2021 年 10 月。 &lt;a class="link" href="https://workspace.google.com/learn-more/security/security-whitepaper/page-7.html" target="_blank" rel="noopener"
+>https://workspace.google.com/learn-more/security/security-whitepaper/page-7.html&lt;/a>&lt;/li>
+&lt;li>Treynor Sloss, Benjamin. “An Update on Sunday’s Service Disruption”。《Inside Google Cloud (博客)》，Google Cloud，2019 年 6 月 3 日。 &lt;a class="link" href="https://cloud.google.com/blog/topics/inside-google-cloud/an-update-on-sundays-service-disruption" target="_blank" rel="noopener"
+>https://cloud.google.com/blog/topics/inside-google-cloud/an-update-on-sundays-service-disruption&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;h2 id="致谢">致谢
+&lt;/h2>&lt;p>作者感谢 Jennifer Mace, Hazael Sanchez, Alexander Perry, Cindy Quach 和 Myk Taylor 对本报告的贡献。&lt;/p>
+&lt;h2 id="作者简介">作者简介
+&lt;/h2>&lt;p>&lt;strong>Ayelet Sachto&lt;/strong> 是 GKE SRE 的站点可靠性工程师，曾在 Google UK 担任战略云工程师，并领导 EMEA 地区的 PSO-SRE 项目。在她 17 年的职业生涯中，她开发和设计了大规模应用程序和数据流，同时实施了 DevOps 和 SRE 方法。她是众多技术文章、演讲和培训的作者，包括 O’Reilly 课程 “SRE Fundamentals in 3 Weeks”，并在数十个会议上发言和领导了数百个工作坊。Ayelet 还是技术社区的积极成员和导师。在空闲时间，她喜欢创造各种东西，无论是厨房中的一道菜、一段代码，还是有影响力的内容。&lt;/p>
+&lt;p>&lt;strong>Adrienne Walcer&lt;/strong> 是谷歌 SRE 的技术项目经理，专注于提高弹性，减少大规模事故对谷歌服务、基础设施和运营的影响。Adrienne 曾为谷歌的 O’Reilly 出版物 《A Practical Guide to Cloud Migration》作出贡献，并在最后一次 USENIX LISA 会议 (LISA21) 上就规模化事故管理发表演讲。在加入谷歌之前，Adrienne 曾在 IBM Watson Health (前身为 Explorys Inc.) 担任数据科学家，并在 Strong Memorial Hospital 和 Cleveland Clinic 从事生物统计工作。她拥有乔治华盛顿大学的系统工程硕士学位和罗切斯特大学的学士学位。在空闲时间，Adrienne 喜欢玩龙与地下城游戏，并在 Second Harvest 食品银行做志愿者。&lt;/p>
+&lt;blockquote>
+&lt;p>来源： &lt;a class="link" href="https://sre.google" target="_blank" rel="noopener"
+>https://sre.google&lt;/a> ；本白皮书一共有 7 章，后续章节将陆续发布。完整中文版白皮书即将发布，敬请期待。&lt;/p>&lt;/blockquote>
+&lt;p>&lt;img src="https://martinliu.cn/img/anatomy-of-an-incident.png"
+loading="lazy"
+alt="cover"
+>&lt;/p>
+&lt;p>❤️ Photo by Pixabay: &lt;a class="link" href="https://www.pexels.com/photo/photo-of-a-2-fireman-killing-a-huge-fire-69934/" target="_blank" rel="noopener"
+>https://www.pexels.com/photo/photo-of-a-2-fireman-killing-a-huge-fire-69934/&lt;/a>&lt;/p></description></item><item><title>Google 白皮书 《事故管理剖析》第六章 真实事故案例：玛雅末日事件</title><link>https://martinliu.cn/blog/anatomy-of-an-incident-ch6/</link><pubDate>Fri, 05 Jul 2024 12:46:48 +0800</pubDate><guid>https://martinliu.cn/blog/anatomy-of-an-incident-ch6/</guid><description>&lt;img src="https://martinliu.cn/blog/anatomy-of-an-incident-ch6/pexels-pixabay-69934.png" alt="Featured image of post Google 白皮书 《事故管理剖析》第六章 真实事故案例：玛雅末日事件" />&lt;ul>
+&lt;li>&lt;a class="link" href="https://martinliu.cn/wp/anatomy-of-an-incident-cn.pdf" >下载中文版 PDF 文件&lt;/a>&lt;/li>
+&lt;li>&lt;a class="link" href="https://martinliu.cn/wp/anatomy-of-an-incident.pdf" >下载英文版 PDF 文件&lt;/a>&lt;/li>
+&lt;li>&lt;a class="link" href="https://sre.google/resources/practices-and-processes/anatomy-of-an-incident/" target="_blank" rel="noopener"
+>从 Google 下载白皮书&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;p>为了看到前文所讨论的一些原则在实践中的应用，我们将深入探讨一个谷歌重大宕机事故的现实例子。我们将回顾事件的经过，了解规模化组织结构的运作方式，并展示如何解决这个问题以及我们从中学习到的经验。&lt;/p>
+&lt;p>对于谷歌来说，玛雅末日并不是2012年的新纪元现象。相反，玛雅末日发生在2019年6月2日，与一个名为Maya的网络自动化工具有关。Maya负责标记管理和网络流量调度，一个微小的代码改动导致了实体类型持续被错误标记。&lt;/p>
+&lt;p>大约在中午，我们正在进行计划中的维护，确定了一系列将在多个服务器上运行的操作和配置变更（包括在Maya上）。当这个错误标记与我们的作业调度逻辑冲突时，我们“发现”了一种新的故障模式，与流量调度相关的作业被大规模取消调度。出入这些区域的网络流量试图将重新调度的任务塞入剩余的网络容量中，其中流量调度功能仍然有效，但最终未能成功。网络变得拥挤，我们的系统正确地对流量过载进行了分级，并自动排空了较大、对延迟不敏感的流量，以保留较小、对延迟敏感的流量。&lt;/p>
+&lt;p>流量拥塞开始了。结果，我们的监控系统启动了事故管理流程的第一步：告警。当组件响应者从监控系统收到告警时，这反映了其负责的系统中发生的变化。我们的监控系统注意到错误率阈值被突破了，并向负责该网络组件的值守人员发送了自动通知，值守人员开始评估情况。&lt;/p>
+&lt;p>与此同时，受影响区域的网络容量减少导致溢出，这种网络拥塞引发了我们网络和计算基础设施中的级联故障。总体来说，我们的网络优先考虑用户流量高于内部流量，包括员工的流量。这实际上是合理的，因为我们宁愿从无法解决问题的99.9%的员工那里重新分配容量，并尽最大努力为我们的用户服务。参与事故响应的0.1%的员工通常知道如何继续处理并绕过这个限制。但是，这次级联故障的一个影响是我们的内部工具出现了重大中断，扰乱导致了大量告警的发送，导致大量人收到了呼叫短信。当每个值守人员都切换到事故响应模式时，他们注意到了：由于网络问题导致的服务不可用。网络组件值守人员迅速确定了网络拥塞的原因，但同样的网络拥塞导致服务降级，也减缓了他们恢复正确配置的能力。&lt;/p>
+&lt;p>每个人都想尽最大努力支持他们的用户，并了解服务恢复的预期轨迹，因此原本负责网络组件的值守人员团队突然新加入了很多同事。&lt;/p>
+&lt;p>我们在谷歌将组件分为三类：&lt;/p>
+&lt;ul>
+&lt;li>基础设施组件，如网络管道或存储服务。&lt;/li>
+&lt;li>产品服务组件，如 YouTube 流媒体或 Google 搜索的前端。&lt;/li>
+&lt;li>内部服务组件，如监控、零信任远程访问、Maya 和算力管理。这些内部服务组件都在经历困难。&lt;/li>
+&lt;/ul>
+&lt;p>由于网络具有广泛的依赖性，所以在网络组件值守人员解决完问题之前，其他人都无法继续工作。其他值守人员开始提供帮助，并询问他们的服务何时能开始恢复。很多不同响应者预期的并行性，并没有加速问题的解决。根本原因和次生效应开始变得模糊不清；一个团队的原因是另一个团队的结果，每个人都在尝试贡献他们的知识。虽然每个人都是其系统栈的专家，但大多数人都没有对整体系统全面的大局观，不知道哪些工具路径变得不可用。&lt;/p>
+&lt;p>为什么？未触及拥堵网络的路径是正常的。如果路径在那时看起来像外部用户，则拥堵网络的路径也是正常的，因为我们优先考虑了它们。因此，我们向外部用户提供的服务是可用的——例如视频通话或编辑文档。然而，如果路径是内部服务，如作业控制或 Maya 配置，它就被降级并卡住了。&lt;/p>
+&lt;p>我们都在观看此次火山爆发，然而，在 20 分钟后，我们得出了问题的结论 “可能与熔岩有关。”&lt;/p>
+&lt;p>宕机一小时后，一位组件响应者注意到，影响我们基础设施的系统级问题过于普遍，围绕事故的协调沟通变得混乱不堪。此时，已有超过40位队友加入了事故响应通信频道，试图提供帮助。监控数据显示出：当前事故影响了半个地球。Google Cloud、Gmail、Google Calendar、Google Play等服务都受到了影响——导致企业都无法运作，大量员工无法高效工作，人们无法相互沟通。一些员工试图使用那些不依赖受损网络的零星服务，而另外的人们都已经放弃了。&lt;/p>
+&lt;p>近40人卷入了本次事故，网络英雄并没有足够的时间和精力，用来制定和协调实施适当的缓解措施，向所有利益相关者广泛沟通，并管理各方期望。因此，他们进行了升级。我们的网络组件值守人员向技术事故响应团队（Tech IRT）发出了求助请求；他们的请求触达到了许多处于合适工作时段时区里的Tech IRT成员，能够处理事故的成员表示了他们的可用性。由于事故影响如此广泛，许多人已经参与了事故。一些Tech IRT响应者没有担任事故指挥官的角色，因为他们是处理网络问题的团队成员或经理，可以帮助解决主要根本原因，所以他们选择了协助操作的工作。&lt;/p>
+&lt;p>接受事故指挥官角色的 Tech IRT 的成员，以前没有处理过受故障影响的网络组件，但他们能够评估系统状态和响应人员的情况。利用他们的训练有素，这位指挥官运用一种机制访问到了生产系统，该机制立即将他们的行动标识为“事故响应”，并绕过了“内部流量降级”的标志。一旦内部流量得到了一些空间，他们就指挥网络值守人员开始介入并解决问题。&lt;/p>
+&lt;p>在此过程中，他们迅速对正在进行的沟通，以及所有试图“提供帮忙”的人进行了组织和结构化。一旦这种混乱的工程能量被组织起来之后，每个人都开始一起取得到了进展。他们能够更清楚地跟踪不同系统的当前状态，并看到缓解措施的实施速度。随着这些繁琐的管理工作不再让网络组件响应者们不堪重负，他们和他们的团队有了实施适当缓解计划的空间，包括丢弃大量负载，为健康重启和一些紧急强行配置变更腾出系统空间。&lt;/p>
+&lt;p>一旦开始步入了缓解事故的路径，Tech IRT 成员就专注于将事故推向结束。他们设定了一些退出标准，以便我们可以关闭事故，确保其他系统在任何需要执行的恢复操作中得到支持，然后确保被卷入的响应团队都能够顺利交接并离场。&lt;/p>
+&lt;p>事故结束后，服务都恢复正常，我们进行了深入的事后分析复盘，以分析事故，并理解根本原因的细微之处，以及这些故障模式所揭示的新兴属性。自那以后，参与的网络团队已经开展了一些非常酷的工作计划，重新构建了 Maya，来防止这种故障模式，以及类似的，但以前未考虑到的故障模式，预防它们再次困扰我们的系统。&lt;/p>
+&lt;p>最后，我们用内部的个人档案徽章、荣誉性的表情包和奖金等方式奖励了相关参与的人员。对大多数人来说，这次非常严重的事故，是他们职业生涯中最艰苦的一天。也为每个参与事后分析复盘的人提供一些小奖励，是他们帮助我们从中得到学习，让我们持续的增长韧性。&lt;/p>
+&lt;blockquote>
+&lt;p>来源： &lt;a class="link" href="https://sre.google" target="_blank" rel="noopener"
+>https://sre.google&lt;/a> ；本白皮书一共有 7 章，后续章节将陆续发布。完整中文版白皮书即将发布，敬请期待。&lt;/p>&lt;/blockquote>
+&lt;p>&lt;img src="https://martinliu.cn/img/anatomy-of-an-incident.png"
+loading="lazy"
+alt="cover"
+>&lt;/p>
+&lt;p>❤️ Photo by Pixabay: &lt;a class="link" href="https://www.pexels.com/photo/photo-of-a-2-fireman-killing-a-huge-fire-69934/" target="_blank" rel="noopener"
+>https://www.pexels.com/photo/photo-of-a-2-fireman-killing-a-huge-fire-69934/&lt;/a>&lt;/p></description></item><item><title>Google 白皮书 《事故管理剖析》第五章 事后复盘分析及其应用</title><link>https://martinliu.cn/blog/anatomy-of-an-incident-ch5/</link><pubDate>Sun, 30 Jun 2024 22:46:48 +0800</pubDate><guid>https://martinliu.cn/blog/anatomy-of-an-incident-ch5/</guid><description>&lt;img src="https://martinliu.cn/blog/anatomy-of-an-incident-ch5/pexels-pixabay-69934.png" alt="Featured image of post Google 白皮书 《事故管理剖析》第五章 事后复盘分析及其应用" />&lt;ul>
+&lt;li>&lt;a class="link" href="https://martinliu.cn/wp/anatomy-of-an-incident-cn.pdf" >下载中文版 PDF 文件&lt;/a>&lt;/li>
+&lt;li>&lt;a class="link" href="https://martinliu.cn/wp/anatomy-of-an-incident.pdf" >下载英文版 PDF 文件&lt;/a>&lt;/li>
+&lt;li>&lt;a class="link" href="https://sre.google/resources/practices-and-processes/anatomy-of-an-incident/" target="_blank" rel="noopener"
+>从 Google 下载白皮书&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;p>在前一章中，我们介绍了几种减小客户影响的方法，包括技术和人员方面，因为两者都会影响检测时间、缓解/恢复时间和故障间隔时间。在本节中，我们将讨论事故结束后的工作：撰写事后复盘分析，并将其作为强大的工具来分析问题并从错误中学习。&lt;/p>
+&lt;p>在事故结束后，应该确保集中精力在如何减少未来的事故上？为了解决这个问题，我们建议采用数据驱动的方法（图 5-1）。这些数据可以来自风险分析过程，或者是我们之前提到的度量数据。依靠从事后复盘分析中收集的数据，以及对之前影响客户的事故的学习非常重要。&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/blog/anatomy-of-an-incident-ch5/2024-07-01_21-06-40.png"
+width="1245"
+height="612"
+srcset="https://martinliu.cn/blog/anatomy-of-an-incident-ch5/2024-07-01_21-06-40_hu_3c49b85213650011.png 480w, https://martinliu.cn/blog/anatomy-of-an-incident-ch5/2024-07-01_21-06-40_hu_6829a54b87444313.png 1024w"
+loading="lazy"
+alt="图 5-1. 你应集中精力的地方"
+class="gallery-image"
+data-flex-grow="203"
+data-flex-basis="488px"
+>&lt;/p>
+&lt;p>一旦你积累了足够多的事后复盘分析，就可以识别出模式。让事后复盘分析成为你的指南非常重要；在失败分析上的投资可以引导你走向成功。为此，我们建议创建一个共享库，并在内部团队中广泛分享事后复盘分析。&lt;/p>
+&lt;h2 id="心理安全">心理安全
+&lt;/h2>&lt;p>在谈论事后复盘分析时，不可避免地要讨论心理安全(Psychological Safety)。因此，在深入探讨撰写事后复盘分析的细节之前，我们先来谈谈事故管理文化中固有的心理安全，并讨论早期升级的价值。&lt;/p>
+&lt;p>如果客户受到影响，应该尽快解决问题。如果组织内的人们不觉得升级或扩大事故规模是安全的，那么问题就难以解决。如果公司环境阻止人们质疑，或因升级事故而受到惩罚，响应者可能会犹豫是否质疑。如果是这样，事故只会在改善之前变得更糟。&lt;/p>
+&lt;p>失败是正常的，需要接受这一点。这就是为什么实施 SRE 原则需要支持性和赋权文化的原因。关键在于理解，在不断通过新功能和系统改进服务的过程中，事故和中断是不可避免的。因此，如果不从事故中学习，就错失了改进的机会。正如合气道创始人植芝盛平所说：“失败是成功之钥，每一个错误都教会我们一些东西。”&lt;/p>
+&lt;p>将运维问题视为软件工程问题，当事情出错时（而且确实会出错），要寻找的是系统中导致问题的缺陷。你要改进系统，以帮助避免人为错误。&lt;/p>
+&lt;blockquote>
+&lt;p>人类永远不是事故的原因，而是“允许”事故发生的系统和流程。&lt;/p>&lt;/blockquote>
+&lt;p>如果发生了中断，那是系统的错误，而不是人类的错误，因为人为错误是不可避免的。目标不是消除人为错误。【译者注：带有缺陷的系统导致了人为错误，或者人类遭遇到了事故；这里我们要把人的原因摘除的干干净净，这一点需要依靠大家构建心理安全的企业团队文化。】&lt;/p>
+&lt;h3 id="实施事故管理实践时的心理安全">实施事故管理实践时的心理安全
+&lt;/h3>&lt;p>实施事故管理实践是一项组织变革，需要一些文化前提条件才能让团队从错误中创新和学习。拥有心理安全和无责流程是至关重要的。(Psychological Safety When Implementing Incident Management Practices)&lt;/p>
+&lt;blockquote>
+&lt;p>心理安全是一种信念，即谁不会因为提出想法、问题、质疑、担忧，或遭遇到了错误而受到惩罚或羞辱。
+——艾米·埃德蒙森，哈佛商学院诺华教授，领导力与管理学博士&lt;/p>&lt;/blockquote>
+&lt;p>心理安全促进了绩效导向型组织的一些主要特征，特别是将失败视为学习机会和接受新想法。例如，Westrum 的组织文化模型预测了基于心理安全的软件交付绩效：生机型组织比其他两种类型更有可能成为顶级绩效者。&lt;sup id="fnref:1">&lt;a href="#fn:1" class="footnote-ref" role="doc-noteref">1&lt;/a>&lt;/sup>&lt;/p>
+&lt;p>具有较高心理安全的团队更能利用成员多样化的想法，销售目标超额完成17%（相比之下，不安全的团队错失目标19%），并且被高管评为有效的概率是其两倍。&lt;sup id="fnref:2">&lt;a href="#fn:2" class="footnote-ref" role="doc-noteref">2&lt;/a>&lt;/sup>&lt;/p>
+&lt;h3 id="处理事故时的心理安全">处理事故时的心理安全
+&lt;/h3>&lt;p>在风险管理中，每个人都知道自己可以表达意见和识别问题，而不会受到惩罚或嘲笑，这是至关重要的。当发生事故时，必须报告并宣告为事故【译者注：声明发生了事故，开始进入事故应急管理流程】。在事故期间，可能需要分享以前事故的信息，如果这样做可以揭示过去的错误（这与无责原则有关）。你还可能需要将事故移交给下一位值班工程师，并提出改进内部流程、工具和功能的建议。&lt;/p>
+&lt;p>没有心理安全和无责原则，人们会避免提出可能揭示事故根本原因的正确问题。因此，团队无法学习或创新，因为他们忙于管理形象，并且害怕承担个人后果。&lt;/p>
+&lt;p>为了在团队中培养心理安全和无责原则，关注学习机会：将每次事故视为学习机会，鼓励多样化的观点，邀请每个人（尤其是那些发表不同意的人）表达意见和想法。作为领导者，你还应该承认自己的不足【译者注：没有人是全知全能和权威的，大家都要从发问，和假设开始分析故障】，通过提问来展示好奇心。&lt;/p>
+&lt;p>&lt;strong>不归咎于个人&lt;/strong>&lt;/p>
+&lt;p>无责原则和心理安全是相辅相成的，一个可能自然导致另一个。假设发生了一次中断。如果经理问的第一个问题是“是谁造成的？”，这会造成一种互相指责的文化，使团队害怕冒险，从而阻碍创新和改进。相反，你应该提倡无责原则：&lt;/p>
+&lt;blockquote>
+&lt;p>无责原则是将责任从个人转移到系统和流程上。&lt;sup id="fnref:3">&lt;a href="#fn:3" class="footnote-ref" role="doc-noteref">3&lt;/a>&lt;/sup>&lt;/p>&lt;/blockquote>
+&lt;p>指责文化会妨碍人们迅速解决事故和从错误中学习的能力，因为他们可能会隐藏信息，避免因害怕受罚而宣告事故。而无责文化允许你专注于改进。你要假设个人是出于善意行事，并根据现有的最佳信息做出决策。调查误导性信息的来源对组织比归咎于人更有益。因此，支持团队的设计和维护决策，鼓励创新和学习，当事情出错时，关注系统和流程，而不是个人。&lt;/p>
+&lt;p>&lt;strong>从错误中学习&lt;/strong>&lt;/p>
+&lt;p>错误是宝贵的学习和改进机会，但前提是正确识别错误的程序性和系统性原因。例如，在谷歌，Ben Treynor Sloss 发送季度工程报告《谷歌的成与败》，以培养一种能够从错误中学习的赋权文化。&lt;sup id="fnref:4">&lt;a href="#fn:4" class="footnote-ref" role="doc-noteref">4&lt;/a>&lt;/sup>&lt;/p>
+&lt;h3 id="促进心理安全环境的其他提示">促进心理安全环境的其他提示
+&lt;/h3>&lt;p>事故响应者需要一定的信心才能有效应对事故。尽管他们可能处于压力大的情况下，但在处理事故时，响应者必须感到心理安全。&lt;/p>
+&lt;p>这种心理安全涉及多个层面：&lt;/p>
+&lt;p>&lt;strong>来自队友&lt;/strong>&lt;/p>
+&lt;ul>
+&lt;li>响应者不应该担心他们的行为会被同伴评判，尤其是在犯错误时。&lt;/li>
+&lt;li>说“我需要帮助”应该得到奖励，而不是质疑或责备。&lt;/li>
+&lt;/ul>
+&lt;p>&lt;strong>来自合作团队&lt;/strong>&lt;/p>
+&lt;ul>
+&lt;li>有些团队可能会觉得 X 团队的成员有居高临下的坏名声，因此不愿与他们交流。更糟糕的是，有些团队接受这种文化，或者利用它来避免与其他团队互动。&lt;sup id="fnref:5">&lt;a href="#fn:5" class="footnote-ref" role="doc-noteref">5&lt;/a>&lt;/sup>这种态度不应被容忍——它会增加紧张情绪，并延缓事故响应。&lt;/li>
+&lt;/ul>
+&lt;p>&lt;strong>来自管理层 (From management)&lt;/strong>&lt;/p>
+&lt;ul>
+&lt;li>经理负责团队的心理安全。在事故期间，经理通常不做技术工作，而是专注于确保团队的福祉——观察压力和倦怠的迹象，也许在团队处理事故时订购披萨。有时经理可能只是简单地对事故响应者说，“休息五分钟，清理一下头脑。”&lt;/li>
+&lt;li>经理也可以在获取组织其他部分的额外帮助方面发挥重要作用。&lt;/li>
+&lt;li>经理为团队提供与组织其他部分之间的缓冲，并在发生冲突时介入解决。&lt;/li>
+&lt;/ul>
+&lt;p>&lt;strong>来自组织 (From the organization)&lt;/strong>&lt;/p>
+&lt;ul>
+&lt;li>心理安全只有在组织文化中得到认可时才能蓬勃发展。应该有一种无责文化，重点是修复导致事故的流程。&lt;/li>
+&lt;li>业界有诸如“三振出局”政策，这种政策要求对涉及三次影响生产的错误的个人进行解雇或严厉的训诫。虽然这种政策旨在鼓励响应者在事故期间格外小心，但它往往导致响应质量降低（“我不想成为那个做出错误决定的人”）、推卸责任（“我们没有弄坏它，是另一个团队弄坏的”）或隐藏有价值的信息（“不要透露我们已经知道这个问题的事实”）。&lt;/li>
+&lt;li>如果领导者希望他们的团队——以及整个组织——蓬勃发展，他们必须培养一种尊重、信任和协作的文化。这必须从组织的高层开始。&lt;/li>
+&lt;/ul>
+&lt;p>如前所述，心理安全环境的一个明显好处是缩短了升级时间。如果一个组织接受协作文化，事故响应者更有可能寻求额外的帮助，无论是来自自己的团队还是公司中的其他团队。&lt;/p>
+&lt;p>在审查事故时，一个反复出现的主题总是“如果我们早些升级，就可以节省 $XXX 的收入损失”，即使是在拥有健康、心理安全环境的团队/组织中。对于事故响应者来说，请求帮助很难，因为这可能被视为软弱或准备不足的表现。我们被训练去隐藏不安全感（即使是感知到的不安全感），并且通常被教导要成为英雄，全力以赴为团队贡献。这些行为在事故响应中实际上是负担，一个不堪重负或疲惫的响应者更容易犯错。因此，升级应该是廉价且快速的，不应有任何附加条件。始终假设最好的意图。如果事实证明升级是不必要的，找出为什么会发生升级，可能是因为文档不完整或缺失，并修复有缺陷的流程。&lt;/p>
+&lt;p>事故响应者应该高度警惕尝试独自完成所有工作的倾向，而是应该尽早且频繁地升级。在谷歌的一个事故响应团队中，有一句格言：“我们告诉其他团队，我们不介意被频繁呼叫，但我们仍然没有被足够频繁地呼叫。”&lt;/p>
+&lt;h2 id="撰写事后复盘分析">撰写事后复盘分析
+&lt;/h2>&lt;p>现在我们已经深入讨论了心理安全，让我们转向撰写事后复盘分析。当事情出错时，这是你从中学习并改进未来的机会。虽然“糟糕的工程师”可能会想“希望没人看到”，但优秀的工程师会注意到问题并想“太好了！告诉大家！”这就是撰写事后复盘分析的意义所在。&lt;/p>
+&lt;p>撰写事后复盘分析是一种系统分析形式：它是深入研究导致事故的故障，并识别改进工程和工程流程的过程。撰写事后复盘分析不仅仅是一种额外的实践，而是一种在服务中实践系统工程的核心方式，以推动改进。&lt;/p>
+&lt;p>在撰写事后复盘分析时，创建一个无责文化和假设事故会发生的流程是很重要的。如前所述，防止失败很重要，但要意识到日常失败是不可避免的，特别是在大规模系统中。事故为你和你的团队提供了共同学习的机会。事后复盘分析是你们集体从错误中学习的系统解决方案，并帮助分享这些知识，以及从他人的错误中学习——例如，通过阅读他人的事后复盘分析。&lt;/p>
+&lt;p>事后复盘分析提供了一种正式的从事故中学习的过程，以及一种防止和减少事故、其影响和复杂性的机制。例如，你可能会学到避免使用补丁作为永久解决方案。事后复盘分析突出趋势并优先考虑你的努力。它们应该是无责的——这可以防止关于问题、谁做了什么以及谁可能有错的侧面讨论。事后复盘分析不是为了归咎于谁，而是专注于从事故中学到了什么以及未来的改进。&lt;/p>
+&lt;p>每个事后复盘分析都应该包括一些信息。例如，好的事后复盘分析包括明确的行动项（AI action item），以及这些行动项的负责人和截止日期。记住，这不是为了归咎，而是为了增加责任感，消除模糊性，并确保行动得到跟进。此外，重要的是要有一个清晰的时间线，包括中断开始时间、问题检测时间、升级时间（如果适用）、缓解时间（如果适用）、影响和中断结束时间。如果发生了升级，说明为什么以及如何发生的。为了避免混淆，澄清事故和中断的术语，以及事故开始和事故检测的术语。我们建议在事故发生期间保持一个“实时文档”，作为调试和缓解的工作记录，稍后可以用于事后复盘分析。该文档有助于正确记录时间线，并确保不会遗漏重要的行动项。&lt;/p>
+&lt;p>在事后复盘分析中避免责备性语言，并实践心理安全。以身作则，问很多问题，但绝不要寻求归咎于谁。这是关于理解事件的现实、采取的行动以及未来如何防止重发。&lt;/p>
+&lt;p>谷歌的最佳实践是将事后复盘分析分享给可能受益于所传授教训的最大范围受众。透明的分享使他人能够找到事后复盘分析并从中学习。&lt;sup id="fnref:6">&lt;a href="#fn:6" class="footnote-ref" role="doc-noteref">6&lt;/a>&lt;/sup>&lt;/p>
+&lt;p>我们发现，建立一种无责的事后复盘分析文化会带来更可靠的系统，并且对于创建和维护一个成功的 SRE 组织至关重要。&lt;/p>
+&lt;h3 id="用于组织改进的系统分析">用于组织改进的系统分析
+&lt;/h3>&lt;p>我们已经讨论了无责的事后复盘分析，并提到事后复盘分析是一种系统分析形式。然而，你是否真正深入了解你的系统，充分理解发生了什么以及为什么？事件应该被分析以得出结论，而不仅仅是叙述。事故之后或在事后复盘分析中，分析的深度在于是否对事件和系统各方面进行了深入分析，以揭示和解释结论。这很重要，因为它增加了团队在事故之后解决正确问题的概率。&lt;/p>
+&lt;p>在撰写事后复盘分析时，你应该力求对系统有最完整和准确的了解，以确保所做的修复是正确的。在图 5-2 中，标有“你认为的问题是什么”的圆圈反映了你在事故期间对系统的理解——这是你能控制的部分。标有“实际问题是什么”的圆圈反映了事故期间系统的实际状态。在复杂技术生态系统中，理解所有细微差别是极其困难的（实际上，我们曾有一位高级工程师花了整整一个月时间来理解一个20分钟的事故！）。然而，事故之后的分析越深入，圆圈的重叠部分越大，你越接近理解根本问题（图 5-3）。&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/blog/anatomy-of-an-incident-ch5/2024-07-01_21-07-31.png"
+width="1247"
+height="699"
+srcset="https://martinliu.cn/blog/anatomy-of-an-incident-ch5/2024-07-01_21-07-31_hu_fd59938813713141.png 480w, https://martinliu.cn/blog/anatomy-of-an-incident-ch5/2024-07-01_21-07-31_hu_aa4407b3e9605c79.png 1024w"
+loading="lazy"
+alt="图 5-2. Venn 图显示理解与事实之间的差距"
+class="gallery-image"
+data-flex-grow="178"
+data-flex-basis="428px"
+>&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/blog/anatomy-of-an-incident-ch5/2024-07-01_21-07-45.png"
+width="1245"
+height="873"
+srcset="https://martinliu.cn/blog/anatomy-of-an-incident-ch5/2024-07-01_21-07-45_hu_1e7b9719c838668d.png 480w, https://martinliu.cn/blog/anatomy-of-an-incident-ch5/2024-07-01_21-07-45_hu_3e23c77c7d3f5c79.png 1024w"
+loading="lazy"
+alt="图 5-3. Venn 图显示系统分析的好处"
+class="gallery-image"
+data-flex-grow="142"
+data-flex-basis="342px"
+>&lt;/p>
+&lt;p>即使事故已经缓解，系统再次稳定，理解真正的问题仍然重要。这涉及可操作性——即你在事故之后有能力修复或更改的内容。事故后的系统增量改进有助于随着时间的推移建立恢复力。这是第三个重要的圆圈，代表你可以控制并可以实施修复的系统中的事物（图 5-4）。这个圆圈无法移动，因为总有一些你无法控制的事情会影响系统的健康（例如天气、地球的大小、光速）。&lt;/p>
+&lt;p>在中心的那个小交集（在集合理论中表示为 1 ∩ 2 ∩ 3）是你团队在事故之后可以做的最好的工作。“你认为的问题是什么”和“你能修复什么”的重叠部分 [(1 ∩ 3) – 2] 是危险的：这些是你认为在长期内会有帮助但实际上不会解决真正问题的解决方案。你可能正在解决与主要问题相关的某些事物，或者你可能正在处理另一个隐藏问题的表现症状。假设你已经解决了一个实际上没有解决的问题是一个危险的境地——因为缺乏对这一风险的认识，这种情况变得更加严重。如果特定事故再次发生，你将面临客户信任的降低和本可以更有效利用的时间的浪费。&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/blog/anatomy-of-an-incident-ch5/2024-07-01_21-08-15.png"
+width="1245"
+height="1184"
+srcset="https://martinliu.cn/blog/anatomy-of-an-incident-ch5/2024-07-01_21-08-15_hu_54577b5a79c0c585.png 480w, https://martinliu.cn/blog/anatomy-of-an-incident-ch5/2024-07-01_21-08-15_hu_c5fed87125409c56.png 1024w"
+loading="lazy"
+alt="图 5-4. Venn 图显示工程工作与系统分析的相互作用"
+class="gallery-image"
+data-flex-grow="105"
+data-flex-basis="252px"
+>&lt;/p>
+&lt;p>通过更深入的系统分析，中心的那个小片段（1 ∩ 2 ∩ 3）在两个不动的圆圈中被最大化（图 5-5）。换句话说，你正在最大化你优先考虑的修复措施的有效性。如果你想确保你正在针对正确的问题，移动圆圈是值得的。关键是要在系统分析上投入足够多的时间，以便你和你的团队能够以高概率选择最适合的工程项目来提高系统的恢复力。但要注意收益递减——例如，花一个月时间调查每一次中断并不是明智的资源使用。在以下部分中，我们提出了一些关键点，可能有助于思考如何移动圆圈。&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/blog/anatomy-of-an-incident-ch5/2024-07-01_21-08-35.png"
+width="1244"
+height="1183"
+srcset="https://martinliu.cn/blog/anatomy-of-an-incident-ch5/2024-07-01_21-08-35_hu_c000ac16ab000572.png 480w, https://martinliu.cn/blog/anatomy-of-an-incident-ch5/2024-07-01_21-08-35_hu_8439615808ec04ba.png 1024w"
+loading="lazy"
+alt="图 5-5. Venn 图突出工程工作与系统分析之间的相互作用"
+class="gallery-image"
+data-flex-grow="105"
+data-flex-basis="252px"
+>&lt;/p>
+&lt;h3 id="根本原因与触发因素">根本原因与触发因素
+&lt;/h3>&lt;p>让我们从两个关键术语开始：根本原因和触发因素。&lt;/p>
+&lt;p>&lt;strong>根本原因 (Root cause)&lt;/strong>&lt;/p>
+&lt;p>系统中的潜在危险，或者系统为什么变得脆弱。危险可能在系统中存在无限期——系统环境需要某种变化，才能将这种危险转化为中断。明确一点：在复杂系统中，事故很少只有一个根本原因。熟练的从业者认为，事故的根本原因是相互作用的一系列因果因素，导致危险状态。&lt;/p>
+&lt;p>&lt;strong>触发因素 (Trigger)&lt;/strong>&lt;/p>
+&lt;p>使根本原因转变为事故的情况。这是相关但独立的概念！为了防止中断再次发生，有时重要的是解决根本原因。有时更合理的做法是围绕这些触发因素建立预防措施。&lt;/p>
+&lt;p>根本原因和触发因素共同作用造成了事故。当然，这是一种简化的说法。借用医学术语，根本原因与触发条件相互作用，产生了结果情景（即事故）。在复杂系统中，根本原因和触发因素与事故类型之间并不存在一一对应的关系，复杂性使得各种结果都有可能发生。让我们来看一些例子：&lt;/p>
+&lt;p>房屋火灾&lt;/p>
+&lt;ul>
+&lt;li>根本原因：煤气泄漏&lt;/li>
+&lt;li>触发因素：靠近漏气炉子的电插头产生火花，引燃了泄漏的煤气并引发了房屋火灾&lt;/li>
+&lt;li>事故：房屋火灾（但这个根本原因可能导致其他事故）&lt;/li>
+&lt;/ul>
+&lt;p>蚂蚁入侵&lt;/p>
+&lt;ul>
+&lt;li>根本原因：温暖的季节适合虫子和害虫在自然环境中繁衍生息&lt;/li>
+&lt;li>触发因素：随意吃东西，留下大量的碎屑&lt;/li>
+&lt;li>事故：蚂蚁入侵&lt;/li>
+&lt;/ul>
+&lt;p>内存不足 (OOM)&lt;/p>
+&lt;ul>
+&lt;li>根本原因：配置文件更改引入了内存泄漏&lt;/li>
+&lt;li>触发因素：出人意料的大量请求&lt;/li>
+&lt;li>事故：OOM&lt;/li>
+&lt;/ul>
+&lt;p>在第三个 (OOM) 场景中，根本原因可能在触发条件存在之前的几年就已经存在了——这是技术债务最终比预期更昂贵的一种方式。而这个根本原因甚至可能不是一个错误，它可以是对系统行为的任何约束。约束本身并不是危险的，直到系统面临某种环境条件，将其转变为危险。需要澄清的是，触发因素可能不是二元的。触发条件可能存在于动态范围内，只有当系统的环境条件和根本原因相互作用时才会成为事故。这两者可以看作是创建事故生命周期的关键组成部分。&lt;/p>
+&lt;p>事后复盘分析中的根本原因部分应详细说明事故的根本原因和触发因素。为了防止中断再次发生，有时重要的是解决根本原因，有时更合理的是围绕触发因素建立预防措施。&lt;/p>
+&lt;p>然而，仅仅将根本原因和触发因素分开讨论并不会提高团队事后复盘分析的质量。所有部分都有适当的内容是最低要求，但事后复盘分析还应包括深入的分析，便于团队外的工程师理解，并且是可操作的。这是一个经常出现的问题吗？是否记录了缓解步骤，或者需要查找错误？事后复盘分析是否适当地解释或量化了系统的正常运行情况，以显示故障的对比和影响？如果你说产品 89% 的用户受到了影响，这具体意味着什么？&lt;/p>
+&lt;h3 id="孤立的系统与整体堆栈">孤立的系统与整体堆栈
+&lt;/h3>&lt;p>事故影响的系统不太可能在真空中存在（除非你来自 Hoover、Dyson 或 Roomba）。不幸的是，一个常见的反模式是将系统分析的范围限制在看似损坏的部分，而不考虑系统上下文（系统功能相关的环境部分）。以下是一些可以扩展系统分析深度的思考点：&lt;/p>
+&lt;ul>
+&lt;li>（如果适用）这个事故是作为单一事件进行审查，还是讨论了相关的/关联的/子事件？&lt;/li>
+&lt;li>你或任何主要的内部客户是否发现了以前未知的依赖关系？&lt;/li>
+&lt;li>端到端通信的效果如何？&lt;/li>
+&lt;/ul>
+&lt;p>虽然事故可能只发生在整体堆栈的一个子部分，但这并不意味着你的事故是孤立发生的。查看事故是否以及如何影响整体堆栈和公司的成员，可以揭示系统故障的见解。这可能包括你的事故是否引发了其他事故或级联故障，或者你的公司在事故期间是否能够有效沟通。&lt;/p>
+&lt;h3 id="时间点与发展轨迹">时间点与发展轨迹
+&lt;/h3>&lt;p>在研究中，元分析技术是将多个研究汇总成更大的整体结论。如果你将每个事后复盘分析视为一个展示系统在某个时间点状态的研究，那么将这些分析综合起来可以帮助识别新兴的模式和见解。我们建议利用每个事后复盘分析作为检查系统随时间变化的机会。考虑以下几点：&lt;/p>
+&lt;ul>
+&lt;li>这个事故是否从系统的长期轨迹进行审查？&lt;/li>
+&lt;li>是否存在相同类型的故障重复出现？&lt;/li>
+&lt;li>是否存在任何长期的强化或平衡循环？&lt;/li>
+&lt;/ul>
+&lt;p>整体系统思维的一部分是考虑系统随时间的变化。一般来说，避免同样的事故发生两次是件好事。&lt;/p>
+&lt;p>我们已经探讨了系统分析在组织改进中的应用及其对你和你的团队的好处。现在让我们来看一个实际的例子。&lt;/p>
+&lt;blockquote>
+&lt;p>来源： &lt;a class="link" href="https://sre.google" target="_blank" rel="noopener"
+>https://sre.google&lt;/a> ；本白皮书一共有 7 章，后续章节将陆续发布。完整中文版白皮书即将发布，敬请期待。&lt;/p>&lt;/blockquote>
+&lt;p>&lt;img src="https://martinliu.cn/img/anatomy-of-an-incident.png"
+loading="lazy"
+alt="cover"
+>&lt;/p>
+&lt;p>❤️ Photo by Pixabay: &lt;a class="link" href="https://www.pexels.com/photo/photo-of-a-2-fireman-killing-a-huge-fire-69934/" target="_blank" rel="noopener"
+>https://www.pexels.com/photo/photo-of-a-2-fireman-killing-a-huge-fire-69934/&lt;/a>&lt;/p>
+&lt;div class="footnotes" role="doc-endnotes">
+&lt;hr>
+&lt;ol>
+&lt;li id="fn:1">
+&lt;p>参见《DevOps 文化：Westrum 组织文化》。&lt;a class="link" href="https://cloud.google.com/architecture/devops?hl=zh-cn" target="_blank" rel="noopener"
+>https://cloud.google.com/architecture/devops?hl=zh-cn&lt;/a>&amp;#160;&lt;a href="#fnref:1" class="footnote-backref" role="doc-backlink">&amp;#x21a9;&amp;#xfe0e;&lt;/a>&lt;/p>
+&lt;/li>
+&lt;li id="fn:2">
+&lt;p>谷歌的 Project Aristotle 项目。&lt;a class="link" href="https://rework.withgoogle.com/" target="_blank" rel="noopener"
+>https://rework.withgoogle.com/&lt;/a>&amp;#160;&lt;a href="#fnref:2" class="footnote-backref" role="doc-backlink">&amp;#x21a9;&amp;#xfe0e;&lt;/a>&lt;/p>
+&lt;/li>
+&lt;li id="fn:3">
+&lt;p>参见 Coursera 的“Developing a Google SRE Culture”课程。 &lt;a class="link" href="https://www.coursera.org/learn/developing-a-google-sre-culture" target="_blank" rel="noopener"
+>https://www.coursera.org/learn/developing-a-google-sre-culture&lt;/a>&amp;#160;&lt;a href="#fnref:3" class="footnote-backref" role="doc-backlink">&amp;#x21a9;&amp;#xfe0e;&lt;/a>&lt;/p>
+&lt;/li>
+&lt;li id="fn:4">
+&lt;p>要了解更多关于从错误中学习的信息，请参见《Site Reliability Engineering》第 15 章，“Postmortem Culture: Learning from Failure”。&lt;a class="link" href="https://sre.google/sre-book/postmortem-culture/" target="_blank" rel="noopener"
+>https://sre.google/sre-book/postmortem-culture/&lt;/a>&amp;#160;&lt;a href="#fnref:4" class="footnote-backref" role="doc-backlink">&amp;#x21a9;&amp;#xfe0e;&lt;/a>&lt;/p>
+&lt;/li>
+&lt;li id="fn:5">
+&lt;p>同上，参见《Site Reliability Engineering》第 15 章，“Postmortem Culture: Learning from Failure”。&lt;a class="link" href="https://sre.google/sre-book/postmortem-culture/" target="_blank" rel="noopener"
+>https://sre.google/sre-book/postmortem-culture/&lt;/a>&amp;#160;&lt;a href="#fnref:5" class="footnote-backref" role="doc-backlink">&amp;#x21a9;&amp;#xfe0e;&lt;/a>&lt;/p>
+&lt;/li>
+&lt;li id="fn:6">
+&lt;p>欲了解更多信息，请参见《Site Reliability Engineering》附录 D，“Example Postmortem” &lt;a class="link" href="https://sre.google/sre-book/example-postmortem/%ef%bc%8c%e4%bb%a5%e5%8f%8a%e5%85%b3%e4%ba%8e" target="_blank" rel="noopener"
+>https://sre.google/sre-book/example-postmortem/，以及关于&lt;/a> Google Compute Engine 事故的公开通信。&lt;a class="link" href="https://status.cloud.google.com/incident/compute/16007" target="_blank" rel="noopener"
+>https://status.cloud.google.com/incident/compute/16007&lt;/a>&amp;#160;&lt;a href="#fnref:6" class="footnote-backref" role="doc-backlink">&amp;#x21a9;&amp;#xfe0e;&lt;/a>&lt;/p>
+&lt;/li>
+&lt;/ol>
+&lt;/div></description></item><item><title>Google SRE 白皮书： 《事故管理剖析》第四章 缓解和恢复</title><link>https://martinliu.cn/blog/anatomy-of-an-incident-ch4/</link><pubDate>Fri, 28 Jun 2024 22:46:48 +0800</pubDate><guid>https://martinliu.cn/blog/anatomy-of-an-incident-ch4/</guid><description>&lt;img src="https://martinliu.cn/blog/anatomy-of-an-incident-ch4/pexels-pixabay-69934.png" alt="Featured image of post Google SRE 白皮书： 《事故管理剖析》第四章 缓解和恢复" />&lt;ul>
+&lt;li>&lt;a class="link" href="https://martinliu.cn/wp/anatomy-of-an-incident-cn.pdf" >下载中文版 PDF 文件&lt;/a>&lt;/li>
+&lt;li>&lt;a class="link" href="https://martinliu.cn/wp/anatomy-of-an-incident.pdf" >下载英文版 PDF 文件&lt;/a>&lt;/li>
+&lt;li>&lt;a class="link" href="https://sre.google/resources/practices-and-processes/anatomy-of-an-incident/" target="_blank" rel="noopener"
+>从 Google 下载白皮书&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;p>我们已经讨论了如何扩展事故管理，使用组件响应者和 SoS 系统级响应者来帮助公司扩展时管理事故。我们还介绍了成功的事故响应组织的特征，并讨论了管理风险和防止值守人员倦怠。现在，我们来谈谈事故发生后的恢复工作。我们将从紧急缓解措施开始。&lt;/p>
+&lt;h2 id="紧急缓解措施">紧急缓解措施
+&lt;/h2>&lt;p>之前我们提到在服务事故期间“止血”。恢复工作中包括必要的紧急缓解措施(Urgent Mitigations)&lt;sup id="fnref:1">&lt;a href="#fn:1" class="footnote-ref" role="doc-noteref">1&lt;/a>&lt;/sup>，以避免影响或防止影响加剧。现在我们来谈谈这意味着什么，以及如何在紧急情况下，更容易的实施缓解措施。&lt;/p>
+&lt;p>假设你的服务遇到了一个严重的问题。中断已经开始，并已经被检测到了，用户正在受到着影响，而你负责解决这个问题。你的首要任务应该是：立即停止或减轻对用户的影响，而不是立即找出问题的原因。想象一下，你在家里，屋顶开始漏水。你首先会放一个桶在漏水处，以防止进一步受到水的损害，然后再去拿出需要的工具，去修补屋顶（稍后我们会发现，如果屋顶问题是根本原因，雨水就是触发因素）。桶的作用是减小影响，直到修复好屋顶。为了在服务中断期间减轻对用户影响，你需要准备好一些应急措施。我们称这些应急措施为&lt;strong>通用缓解措施&lt;/strong>。&lt;/p>
+&lt;p>&lt;strong>通用缓解措施&lt;/strong>是指在你找出具体问题之前，可以采取的减小各种中断影响的行动。&lt;/p>
+&lt;p>适用于你服务的缓解措施可能会有所不同，取决于用户受影响的方式。基本的措施包括：回滚代码、重新分配流量，以及增加服务器容量。这些临时措施旨在：为你和你的服务争取更多时间，以便找到彻底解决问题的方法。换句话说，它们修复的是中断的症状，而不是根本原因。你不需要等到完全的理解了中断的原因，就可以使用通用缓解措施。&lt;/p>
+&lt;p>考虑进行研究并投资开发一些快速“一键修复”（即比喻中的桶）。记住，尽管桶是一个简单的工具，但它仍然可能被误用。因此，为了正确使用通用缓解措施，重要的是要在定期的恢复力测试中进行演练。&lt;/p>
+&lt;h2 id="减小事故的影响">减小事故的影响
+&lt;/h2>&lt;p>除了用于应对紧急情况或事故的通用缓解措施外，还需要考虑从长远角度减小事故的影响 (Reducing the Impact of Incidents)。&lt;strong>事故&lt;/strong>是一个内部术语。实际上，客户并不真正关心事故或事故的数量，他们关心的是可靠性。为了满足用户的期望，并实现用户所需的可靠性水平，需要设计和运行可靠的系统。&lt;/p>
+&lt;p>想要实现这一点，需要在事故管理生命周期的每个阶段中协调的行动：准备、响应和恢复。考虑在事故发生前、发生期间，和发生后可以做些什么，从而改进系统。&lt;/p>
+&lt;p>虽然很难直接衡量客户信任，但可以使用一些代理指标来评估提供可靠客户体验的效果。我们称客户体验的度量为服务质量指标 (SLI)。SLI 告诉你在任何时刻服务的表现如何，是否达到预期。&lt;/p>
+&lt;p>在这个范围内，客户可以是终端用户、人类或系统（如 API），或另一个内部服务。内部服务类似于为其他内部服务提供核心功能，而这些服务最终面向终端用户。你需要确保关键依赖项的可靠性（即硬性依赖或不可缓解的依赖——如果它失败，你也会失败）。这意味着如果面向客户的服务依赖于内部服务，这些服务需要提供更高水平的可靠性。&lt;/p>
+&lt;p>SLI 的可靠性目标称为服务质量目标 (SLO)。SLO 将目标汇总到一段时间内：它表示在某个管理时间窗口中，这是你要去实现的目标，体现了你的管理水平如何（通常以百分比衡量）。&lt;sup id="fnref:2">&lt;a href="#fn:2" class="footnote-ref" role="doc-noteref">2&lt;/a>&lt;/sup>&lt;/p>
+&lt;p>可能大多数人都熟悉服务质量协议 (SLA)。SLA 定义了你向客户承诺的服务内容；即如果未能达到目标，你愿意采取的措施（如退款）。为了实现这一点，需要使 SLO（你的目标）设定的比 SLA 要更严格一些。&lt;sup id="fnref:3">&lt;a href="#fn:3" class="footnote-ref" role="doc-noteref">3&lt;/a>&lt;/sup>&lt;/p>
+&lt;p>我们用来检查和衡量用户满意度的工具称为&lt;strong>用户旅程&lt;/strong>。用户旅程是以文本形式编写的陈述，用来描述用户的视角。用户旅程探讨了：用户如何与服务互动的过程，以实现自己想要的目标。那些最重要的用户旅程被称为&lt;strong>关键用户旅程&lt;/strong> (CUJ)。&lt;sup id="fnref:4">&lt;a href="#fn:4" class="footnote-ref" role="doc-noteref">4&lt;/a>&lt;/sup>&lt;/p>
+&lt;p>一旦定义了对你和用户或客户重要的目标，就可以开始考虑：当未能达到这些目标的时候，都会发生什么。&lt;/p>
+&lt;h3 id="计算事故的影响">计算事故的影响
+&lt;/h3>&lt;p>事故会影响可靠性目标，影响的大小：取决于故障的数量、持续时间、影响范围和规模。因此，想要减小事故的影响，首先需要了解可以采取哪些措施。让我们先看看应该如何量化和衡量事故的影响。&lt;/p>
+&lt;p>图 4-1 显示了衡量影响的方法：计算不可靠的时间，包括检测到问题的时间和修复（缓解）问题的时间，然后将其乘以事故的次数，即事故的频率。&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/blog/anatomy-of-an-incident-ch4/2024-06-30_10-36-16.png"
+width="1352"
+height="612"
+srcset="https://martinliu.cn/blog/anatomy-of-an-incident-ch4/2024-06-30_10-36-16_hu_fecd7563cf02375c.png 480w, https://martinliu.cn/blog/anatomy-of-an-incident-ch4/2024-06-30_10-36-16_hu_4c3c3831c89c7e9a.png 1024w"
+loading="lazy"
+alt="图 4-1. 中断生命周期"
+class="gallery-image"
+data-flex-grow="220"
+data-flex-basis="530px"
+>&lt;/p>
+&lt;p>关键指标是检测时间、修复时间和故障间隔时间：&lt;/p>
+&lt;ul>
+&lt;li>检测时间（TTD）是从中断发生到某个人被通知或告警的时间。&lt;/li>
+&lt;li>修复时间（TTR）是从某人被告警到问题缓解的时间。关键是缓解！这指的是响应者采取措施减轻客户影响的时间，例如通过将流量转移到其他区域。&lt;/li>
+&lt;li>故障间隔时间（TBF）是从一次事故开始到，同类型事故下一开始的时间。&lt;/li>
+&lt;/ul>
+&lt;p>想要减小事故的影响，并使系统恢复到已知正常的状态，需要技术和“人”的因素的结合，例如：流程和支持。在谷歌，我们发现一旦涉及人为干预，中断至少会持续 20 到 30 分钟。通常，自动化和自愈系统是很好的策略，因为它们会有助于缩短检测时间和修复时间。&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/blog/anatomy-of-an-incident-ch4/2024-06-30_10-36-34.png"
+width="1346"
+height="303"
+srcset="https://martinliu.cn/blog/anatomy-of-an-incident-ch4/2024-06-30_10-36-34_hu_67814be9ba4845e1.png 480w, https://martinliu.cn/blog/anatomy-of-an-incident-ch4/2024-06-30_10-36-34_hu_7d26d2a6ba5e8d90.png 1024w"
+loading="lazy"
+alt="不可用性公式"
+class="gallery-image"
+data-flex-grow="444"
+data-flex-basis="1066px"
+>&lt;/p>
+&lt;p>需要注意的是，使用的方法也很重要。简单地降低告警阈值可能导致误报和噪音，过度依赖自动化快速修复可能减少修复时间，但会忽略根本问题。在下一节中，我们将分享几种策略，这些策略可以更有效地减少检测时间、修复时间和事故频率。&lt;/p>
+&lt;h3 id="缩短检测时间">缩短检测时间
+&lt;/h3>&lt;p>减小事故影响的一种方法是缩短检测事故的时间(Reducing the Time to Detect)（图 4-2）。在起草 SLO（可靠性目标）时，需要我们进行前置的风险分析，并确定出那些优先的待办事项，识别可能阻止实现 SLO 的因素，这也有助于缩短检测到事故的时间。此外，你可以采取以下措施来最小化检测时间：&lt;/p>
+&lt;ul>
+&lt;li>将 SLI（客户满意度指标）尽可能与用户的期望对齐【译者注：考虑用户体验的好坏，以及关键用户旅程的可用性】，这些用户可以是实际用户或其他服务。将告警与 SLO（你的目标）对齐，并定期回顾评审，确保它们仍然能代表用户的满意度。&lt;/li>
+&lt;li>使用最新的信号数据。选择最佳的数据获取方式：流、日志或批处理。在这方面，在&lt;strong>告警速度&lt;/strong>与&lt;strong>噪音数&lt;/strong>之间找到合适的平衡度也很重要【译者注：SLI 告警的灵敏度高情况下，考虑到所选择 SLI 信号数据源的质量，如果假性告警越少，则噪音数量越低。】。噪音告警是 Ops 团队（无论是传统的 DevOps 团队还是 SREs）最常见的一个抱怨。&lt;/li>
+&lt;li>使用有效的告警以避免告警疲劳。在需要立即采取行动时使用呼叫【译者注：短信、电话外呼等任何快速触达的通知方式】。只有正确的响应者——特定团队和所有者——才应该收到告警。另一个常见的投诉是收到不可操作的告警【译者注：与事故无关的人员也经常会在半夜被值守的人喊醒，冤】。&lt;/li>
+&lt;/ul>
+&lt;p>随之而来的问题是：“如果只对需要立即采取行动的事情进行呼叫，那其余的问题如何处理？”一个解决方案是：为不同情况使用不同的工具和平台。可能“正确的平台”是，一个工单系统或仪表板，或者仅需要根据该指标，用拉取的处理模式，进行相应的故障排除和调试。&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/blog/anatomy-of-an-incident-ch4/2024-06-30_10-36-52.png"
+width="1352"
+height="617"
+srcset="https://martinliu.cn/blog/anatomy-of-an-incident-ch4/2024-06-30_10-36-52_hu_bdb24d3b25a6bc40.png 480w, https://martinliu.cn/blog/anatomy-of-an-incident-ch4/2024-06-30_10-36-52_hu_7fc27bfd5fccea9e.png 1024w"
+loading="lazy"
+alt="图 4-2. 中断生命周期：检测时间"
+class="gallery-image"
+data-flex-grow="219"
+data-flex-basis="525px"
+>&lt;/p>
+&lt;h3 id="缩短修复时间">缩短修复时间
+&lt;/h3>&lt;p>我们已经讨论了：用缩短检测时间作为减小事故影响的一种方法。另一种方法是：缩短修复时间(Reducing the Time to Repair)（图 4-3）。缩短修复时间主要涉及“人”的方面。使用事故管理协议和组织事故管理响应可以减少事故管理的模糊性，缩短对用户影响的时间。除此之外，你还需要培训响应者，制定明确的程序和手册，并降低值守的压力。让我们详细探讨这些策略。&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/blog/anatomy-of-an-incident-ch4/2024-06-30_10-37-12.png"
+width="1354"
+height="619"
+srcset="https://martinliu.cn/blog/anatomy-of-an-incident-ch4/2024-06-30_10-37-12_hu_f17fc5a003d4bd90.png 480w, https://martinliu.cn/blog/anatomy-of-an-incident-ch4/2024-06-30_10-37-12_hu_579a5a54ea0fd124.png 1024w"
+loading="lazy"
+alt="图 4-3. 中断生命周期：修复时间"
+class="gallery-image"
+data-flex-grow="218"
+data-flex-basis="524px"
+>&lt;/p>
+&lt;p>&lt;strong>培训响应者&lt;/strong>&lt;/p>
+&lt;p>未准备好的值守人员会导致更长的修复时间。考虑对值守人员进行灾难恢复测试培训，或者进行我们之前提到的“厄运之轮”演习。另一种方法是通过导师指导进行值守准备。让值守人员成对工作（“配对值守 pair on call”），或者让新人在他们的轮班期间与有经验的值守人员一起工作（“跟班 shadowing”），有助于增强新队员的信心。记住，值守可能是有压力的。制定明确的事故管理流程可以减少这种压力，因为它消除了任何模糊性，并明确了所需的行动。&lt;sup id="fnref:5">&lt;a href="#fn:5" class="footnote-ref" role="doc-noteref">5&lt;/a>&lt;/sup>&lt;/p>
+&lt;p>&lt;strong>建立有组织的事故响应程序&lt;/strong>&lt;/p>
+&lt;p>事故管理中存在一些常见问题。例如，缺乏责任感、沟通不畅、缺乏层次结构和自由发挥/英雄主义，可能导致更长的解决时间，也会增加值守人员和响应者的额外压力，并最终影响到客户。为了解决这个问题，我们建议通过建立一个层次结构明确的结构、任务和沟通渠道来组织响应。这有助于保持清晰的指挥链，并指定明确的角色。&lt;/p>
+&lt;p>在谷歌，我们使用 IMAG（谷歌事故管理），这是一个基于消防员和医护人员使用的事故指挥系统（ICS）的灵活框架。IMAG 教你如何通过建立层次结构明确的结构、任务和沟通渠道来组织紧急响应。它建立了一种标准、一致的方式来处理紧急情况和组织有效的响应。&lt;sup id="fnref:6">&lt;a href="#fn:6" class="footnote-ref" role="doc-noteref">6&lt;/a>&lt;/sup>&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/blog/anatomy-of-an-incident-ch4/2024-06-30_10-37-33.png"
+width="1351"
+height="629"
+srcset="https://martinliu.cn/blog/anatomy-of-an-incident-ch4/2024-06-30_10-37-33_hu_5a9ff6541ea4ad04.png 480w, https://martinliu.cn/blog/anatomy-of-an-incident-ch4/2024-06-30_10-37-33_hu_b39b47db24c5d63b.png 1024w"
+loading="lazy"
+alt="图 4-4. 一个 ICS 层次结构示例"
+class="gallery-image"
+data-flex-grow="214"
+data-flex-basis="515px"
+>&lt;/p>
+&lt;p>IMAG 协议为解决事故的人提供了一个框架，使紧急响应团队能够自我组织和高效工作，通过确保响应者和相关利益相关者之间的沟通，控制事故响应，并帮助协调响应工作。它规定事故指挥官（IC）负责协调响应并分配职责，而其他人向 IC 报告。每个人都有一个具体的、明确的角色——例如，操作负责人负责解决问题，沟通负责人负责处理沟通。&lt;/p>
+&lt;p>通过使用这样的协议，你可以减少模糊性，明确团队合作，并减少修复时间。&lt;sup id="fnref:7">&lt;a href="#fn:7" class="footnote-ref" role="doc-noteref">7&lt;/a>&lt;/sup>&lt;/p>
+&lt;p>&lt;strong>建立明确的值守政策和流程&lt;/strong>&lt;/p>
+&lt;p>我们建议记录你的事故响应和值守政策，以及在中断期间和之后的应急响应流程。这包括明确的升级路径和责任分配，以减少处理中断时的模糊性和压力。&lt;/p>
+&lt;p>&lt;strong>编写有用的运行手册/操作手册&lt;/strong>&lt;/p>
+&lt;p>文档很重要，它将工作经验转化为所有队员都能访问的知识，无论工作年限。通过优先记录和安排时间编写文档，并创建记录程序的操作手册和政策，队员们可以更容易识别事故的表现形式——这是一项宝贵的优势。操作手册一开始不必完备；从简单的开始，提供一个明确的起点，然后逐步改进。一个好的经验法则是谷歌的“看到问题，立即解决 see it fix it”的方法，并让新队员在入职时就来更新这些操作手册。&lt;/p>
+&lt;p>将编写操作手册作为事后复盘分析的重要行动项目之一，并将其视为个人对团队的积极贡献，这通常需要领导的优先支持和资源分配。&lt;/p>
+&lt;p>&lt;strong>减轻响应者的疲劳&lt;/strong>&lt;/p>
+&lt;p>如第二章所述，响应者疲劳的心理成本是有据可查的。如果响应者疲惫，他们的解决问题能力会受到影响。确保班次平衡，如果不平衡，使用数据来找出原因，并减少琐事。&lt;sup id="fnref:8">&lt;a href="#fn:8" class="footnote-ref" role="doc-noteref">8&lt;/a>&lt;/sup>&lt;/p>
+&lt;p>&lt;strong>投资于数据收集和可观测性&lt;/strong>&lt;/p>
+&lt;p>做出基于数据的决策很重要，缺乏监控或可观测性是一种反模式。如果你无法看清路况，你就不知道前进方向。因此，鼓励组织内的度量文化，收集贴近客户体验的指标，并衡量你在目标和错误预算消耗率方面的表现，以便及时反应和调整优先级。还要衡量团队的琐事工作量，并定期审查你的 SLI 和 SLO。&lt;/p>
+&lt;p>尽可能收集高质量的数据，特别是更贴近客户体验的数据；这有助于排除故障和调试问题。收集应用程序和业务指标，以便拥有关注客户体验和关键用户旅程的仪表板和可视化。这意味着为特定受众和目标设计的仪表板。管理者对 SLO 的视角，将与用于在排查事故和故障过程中使用的仪表板非常不同。&lt;/p>
+&lt;p>如你所见，有许多方法可以缩短修复时间，并最大限度地减小事故的影响。现在让我们看看延长故障间隔时间来减少事故影响的另一种方法。&lt;/p>
+&lt;h3 id="延长故障间隔时间">延长故障间隔时间
+&lt;/h3>&lt;p>为了延长故障间隔时间并减少故障次数，可以重构架构，并解决在风险分析和流程改进中识别出的故障点（图 4-5）。此外，还有一些措施可以帮助延长 TBF（故障间隔时间）。&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/blog/anatomy-of-an-incident-ch4/2024-06-30_10-38-00.png"
+width="1353"
+height="618"
+srcset="https://martinliu.cn/blog/anatomy-of-an-incident-ch4/2024-06-30_10-38-00_hu_f18c3fabfe4ca059.png 480w, https://martinliu.cn/blog/anatomy-of-an-incident-ch4/2024-06-30_10-38-00_hu_103267e020d9cec8.png 1024w"
+loading="lazy"
+alt="图 4-5. 中断生命周期：故障间隔时间"
+class="gallery-image"
+data-flex-grow="218"
+data-flex-basis="525px"
+>&lt;/p>
+&lt;p>&lt;strong>避免反模式&lt;/strong>&lt;/p>
+&lt;p>我们在本报告中提到了几种反模式，包括缺乏可观测性，缺乏正反馈回路，这会导致系统发生过载，并引发级联问题，如崩溃。这些反模式需要避免。&lt;/p>
+&lt;p>&lt;strong>分散风险&lt;/strong>&lt;/p>
+&lt;p>通过冗余、解耦责任、避免单点故障，和用全局优化来分散风险，并采用高级部署策略。考虑渐进式的滚动和金丝雀发布，将更新工作分布在数小时、数天或数周内，这样可以在所有用户受到影响之前，减少风险并识别问题。同样，进行自动化测试、滚动发布和自动回滚，以便及早发现任何问题。主动发现问题，总要比让问题来骚扰你会更好；那就要通过实践混沌工程和引入故障注入，以及自动化灾难恢复测试（如 DiRT，见第二章）来实现这一点。&lt;/p>
+&lt;p>&lt;strong>采用开发实践&lt;/strong>&lt;/p>
+&lt;p>采用促进质量文化的开发实践，并创建集成代码审查和健壮测试的过程，这些过程可以集成到持续集成/持续交付（CI/CD）流水线中。CI/CD 可以节省工程时间，并减小对客户的影响，使你能够自信地部署。&lt;/p>
+&lt;p>&lt;strong>以可靠性为设计原则&lt;/strong>&lt;/p>
+&lt;p>在 SRE 中，我们有一句话：“碰运气不是一种策略。” 当谈到故障时，问题并不是会不会发生，而是什么时候发生。因此，从一开始就以遵循：可靠性为设计原则，构建能够应对故障的健壮架构。通过以下问题来了解你如何应对故障：&lt;/p>
+&lt;ul>
+&lt;li>我的系统能够应对哪种类型的故障？&lt;/li>
+&lt;li>它能容忍意外的单实例故障或重启吗？&lt;/li>
+&lt;li>它如何应对区域性AZ或地区性Region故障？&lt;/li>
+&lt;/ul>
+&lt;p>意识到风险及其潜在影响范围后，进入风险缓解阶段（如在风险分析中所做的那样）。例如，为了缓解单实例问题，使用持久磁盘和配置自动化，并且备份数据。为了缓解区域和地区故障，可以在各个地区和区域分配资源并实施负载均衡。还可以进行横向扩展。例如，将单体架构解耦为微服务，更容易独立扩展它们（“做好一件事”）。横向扩展还可以意味着地理上（Region）的扩展，例如拥有多个数据中心以利用弹性。我们建议尽可能避免手工配置和特殊硬件。&lt;/p>
+&lt;p>&lt;strong>优雅降级&lt;/strong>&lt;/p>
+&lt;p>在你的架构中实现优雅降级(Graceful degradation)方法非常重要。将降级视为一种策略，例如限流和负载分流。问自己，如果不能为所有用户提供所有功能，我能否可以最小功能为所有用户服务？能否限流用户流量并丢弃高成本的请求？当然，什么是可接受的降级程度，要依赖于服务和用户旅程。返回 x 个产品和返回未更新的账户余额之间存在差异。但作为经验法则，能提供降级的服务，总比停止服务的好。&lt;sup id="fnref:9">&lt;a href="#fn:9" class="footnote-ref" role="doc-noteref">9&lt;/a>&lt;/sup>&lt;/p>
+&lt;p>&lt;strong>深度防御&lt;/strong>&lt;/p>
+&lt;p>深度防御(Defense-in-depth)是构建系统以应对故障的一种方式，更准确地说，是容忍故障。如果依赖某个系统获取配置或其他运行时信息，确保有一个备用或缓存版本，当依赖项不可用时，而它们仍能继续工作。&lt;sup id="fnref:10">&lt;a href="#fn:10" class="footnote-ref" role="doc-noteref">10&lt;/a>&lt;/sup>&lt;/p>
+&lt;p>&lt;strong>N+2 资源&lt;/strong>&lt;/p>
+&lt;p>在分布式系统中，拥有 N+2 资源是实现可靠性的基本原则。N+2 意味着：你有 N 的容量来处理高峰期的请求，并有另外 2 的实例，其中一个可用于应对意外故障，另一个可用于计划升级。如前所述，你的可靠性取决于关键依赖项的可靠性，因此在架构中选择正确的构建块（Building block）。在云平台上构建时，确保使用服务的可靠性水平，并将它们与你的应用目标相关联。注意它们的范围（例如，在 Google Cloud Platform 中，范围可以是区域性的、区域间的或全球的[zonal, regional, global]）。记住，在设计时就主动解决可靠性问题，可以降低后期的成本。&lt;sup id="fnref:11">&lt;a href="#fn:11" class="footnote-ref" role="doc-noteref">11&lt;/a>&lt;/sup> 并不存在一刀切的解决方案，应让需求指导你来做出因地制宜的设计决策。&lt;/p>
+&lt;blockquote>
+&lt;p>非抽象大型系统设计 (NALSD)&lt;/p>
+&lt;p>在讨论可靠性和 SRE 的设计时，我们不能不提到非抽象的大型系统设计。在谷歌，我们发现，在设计阶段解决可靠性问题可以降低未来的成本。如果采用迭代式系统设计和实施风格，可以用更低的成本，开发出健壮且可扩展的系统。我们称这种方法为非抽象大型系统设计 (NALSD)，它描述了谷歌用于生产系统的迭代式设计过程。你可以在谷歌的 SRE 课堂栏目中了解更多相关内容。&lt;/p>&lt;/blockquote>
+&lt;p>&lt;strong>从失败中学习&lt;/strong>&lt;/p>
+&lt;p>最后，你可以从失败中学习，使未来更好（更多内容请参见第40页的“心理安全”）。如前所述，事后分析是实现这一目标的工具。确保你有一致的事后分复盘析流程，能够产出错误修复（bug fix）、缓解措施和文档更新的后续跟踪落地行动项。像跟踪其他错误（bug）一样跟踪事后 复盘分析的行动项（如果还没有这样做），并应该优先考虑事后复盘分析工作，而不是“常规日常”的工作。&lt;sup id="fnref:12">&lt;a href="#fn:12" class="footnote-ref" role="doc-noteref">12&lt;/a>&lt;/sup> 我们将在下一节中更详细地讨论事后复盘分析。&lt;/p>
+&lt;blockquote>
+&lt;p>来源： &lt;a class="link" href="https://sre.google" target="_blank" rel="noopener"
+>https://sre.google&lt;/a> ；本白皮书一共有 7 章，后续章节将陆续发布。完整中文版白皮书即将发布，敬请期待。&lt;/p>&lt;/blockquote>
+&lt;p>&lt;img src="https://martinliu.cn/img/anatomy-of-an-incident.png"
+loading="lazy"
+alt="cover"
+>&lt;/p>
+&lt;p>❤️ Photo by Pixabay: &lt;a class="link" href="https://www.pexels.com/photo/photo-of-a-2-fireman-killing-a-huge-fire-69934/" target="_blank" rel="noopener"
+>https://www.pexels.com/photo/photo-of-a-2-fireman-killing-a-huge-fire-69934/&lt;/a>&lt;/p>
+&lt;div class="footnotes" role="doc-endnotes">
+&lt;hr>
+&lt;ol>
+&lt;li id="fn:1">
+&lt;p>推荐阅读：Jennifer Mace 的《通用缓解措施》&lt;a class="link" href="https://www.oreilly.com/content/generic-mitigations/%e3%80%82" target="_blank" rel="noopener"
+>https://www.oreilly.com/content/generic-mitigations/。&lt;/a>&amp;#160;&lt;a href="#fnref:1" class="footnote-backref" role="doc-backlink">&amp;#x21a9;&amp;#xfe0e;&lt;/a>&lt;/p>
+&lt;/li>
+&lt;li id="fn:2">
+&lt;p>参见《SRE Google 运维解密》（O&amp;rsquo;Reilly）中的第 4 章，“服务质量目标 (SLOs)”。&lt;a class="link" href="https://sre.google/sre-book/service-level-objectives/" target="_blank" rel="noopener"
+>https://sre.google/sre-book/service-level-objectives/&lt;/a>&amp;#160;&lt;a href="#fnref:2" class="footnote-backref" role="doc-backlink">&amp;#x21a9;&amp;#xfe0e;&lt;/a>&lt;/p>
+&lt;/li>
+&lt;li id="fn:3">
+&lt;p>参见 Adrian Hilton 2021 年 5 月 7 日的文章《SRE 基础 2021：SLIs vs SLAs vs SLOs》。&lt;a class="link" href="https://cloud.google.com/blog/products/devops-sre/sre-fundamentals-sli-vs-slo-vs-sla" target="_blank" rel="noopener"
+>https://cloud.google.com/blog/products/devops-sre/sre-fundamentals-sli-vs-slo-vs-sla&lt;/a>&amp;#160;&lt;a href="#fnref:3" class="footnote-backref" role="doc-backlink">&amp;#x21a9;&amp;#xfe0e;&lt;/a>&lt;/p>
+&lt;/li>
+&lt;li id="fn:4">
+&lt;p>参见《Google SRE 工作手册》（O&amp;rsquo;Reilly）中的第 2 章，“实施 SLOs”。&lt;a class="link" href="https://sre.google/workbook/implementing-slos/" target="_blank" rel="noopener"
+>https://sre.google/workbook/implementing-slos/&lt;/a>&amp;#160;&lt;a href="#fnref:4" class="footnote-backref" role="doc-backlink">&amp;#x21a9;&amp;#xfe0e;&lt;/a>&lt;/p>
+&lt;/li>
+&lt;li id="fn:5">
+&lt;p>参见 Jesus Climent 2019 年 12 月 5 日的文章《缩短生产事故缓解时间—CRE 生活教训》。&lt;a class="link" href="https://cloud.google.com/blog/products/management-tools/shrinking-the-time-to-mitigate-production-incidents" target="_blank" rel="noopener"
+>https://cloud.google.com/blog/products/management-tools/shrinking-the-time-to-mitigate-production-incidents&lt;/a>&amp;#160;&lt;a href="#fnref:5" class="footnote-backref" role="doc-backlink">&amp;#x21a9;&amp;#xfe0e;&lt;/a>&lt;/p>
+&lt;/li>
+&lt;li id="fn:6">
+&lt;p>参见《Google SRE 工作手册》中的第 9 章，“事故响应”。&lt;a class="link" href="https://sre.google/workbook/incident-response/" target="_blank" rel="noopener"
+>https://sre.google/workbook/incident-response/&lt;/a>&amp;#160;&lt;a href="#fnref:6" class="footnote-backref" role="doc-backlink">&amp;#x21a9;&amp;#xfe0e;&lt;/a>&lt;/p>
+&lt;/li>
+&lt;li id="fn:7">
+&lt;p>参见《SRE Google 运维解密》中的第 14 章，“管理事故”。&lt;a class="link" href="https://sre.google/sre-book/managing-incidents/" target="_blank" rel="noopener"
+>https://sre.google/sre-book/managing-incidents/&lt;/a>&amp;#160;&lt;a href="#fnref:7" class="footnote-backref" role="doc-backlink">&amp;#x21a9;&amp;#xfe0e;&lt;/a>&lt;/p>
+&lt;/li>
+&lt;li id="fn:8">
+&lt;p>参见 Eric Harvieux 2020 年 1 月 31 日的文章《使用 SRE 原则识别和跟踪琐事》。&lt;a class="link" href="https://cloud.google.com/blog/products/management-tools/identifying-and-tracking-toil-using-sre-principles" target="_blank" rel="noopener"
+>https://cloud.google.com/blog/products/management-tools/identifying-and-tracking-toil-using-sre-principles&lt;/a>&amp;#160;&lt;a href="#fnref:8" class="footnote-backref" role="doc-backlink">&amp;#x21a9;&amp;#xfe0e;&lt;/a>&lt;/p>
+&lt;/li>
+&lt;li id="fn:9">
+&lt;p>关于负载分流和优雅降级的更多内容，参见《SRE Google 运维解密》中的第 22 章，“解决级联故障”。&lt;a class="link" href="https://sre.google/sre-book/addressing-cascading-failures/" target="_blank" rel="noopener"
+>https://sre.google/sre-book/addressing-cascading-failures/&lt;/a>&amp;#160;&lt;a href="#fnref:9" class="footnote-backref" role="doc-backlink">&amp;#x21a9;&amp;#xfe0e;&lt;/a>&lt;/p>
+&lt;/li>
+&lt;li id="fn:10">
+&lt;p>参见 Ines Envid 和 Emil Kiner 在 Google 博客上的文章《深入了解 Google Cloud 网络：确保环境安全的三项深度防御原则》，2019 年 6 月 20 日。&lt;a class="link" href="https://cloud.google.com/blog/products/networking/google-cloud-networking-in-depth-three-defense-in-depth-principles-for-securing-your-environment" target="_blank" rel="noopener"
+>https://cloud.google.com/blog/products/networking/google-cloud-networking-in-depth-three-defense-in-depth-principles-for-securing-your-environment&lt;/a>&amp;#160;&lt;a href="#fnref:10" class="footnote-backref" role="doc-backlink">&amp;#x21a9;&amp;#xfe0e;&lt;/a>&lt;/p>
+&lt;/li>
+&lt;li id="fn:11">
+&lt;p>参见《Google SRE 工作手册》中的第 12 章，“引入非抽象大型系统设计 (NALSD)”。&lt;a class="link" href="https://sre.google/workbook/non-abstract-design/" target="_blank" rel="noopener"
+>https://sre.google/workbook/non-abstract-design/&lt;/a>&amp;#160;&lt;a href="#fnref:11" class="footnote-backref" role="doc-backlink">&amp;#x21a9;&amp;#xfe0e;&lt;/a>&lt;/p>
+&lt;/li>
+&lt;li id="fn:12">
+&lt;p>参见 Google Research 的 Betsy Beyer、John Lunney 和 Sue Lueder 的文章《事后分析行动项：计划工作并完成计划》。&lt;a class="link" href="https://research.google/pubs/postmortem-action-items-plan-the-work-and-work-the-plan/" target="_blank" rel="noopener"
+>https://research.google/pubs/postmortem-action-items-plan-the-work-and-work-the-plan/&lt;/a>&amp;#160;&lt;a href="#fnref:12" class="footnote-backref" role="doc-backlink">&amp;#x21a9;&amp;#xfe0e;&lt;/a>&lt;/p>
+&lt;/li>
+&lt;/ol>
+&lt;/div></description></item><item><title>Google SRE 白皮书： 《事故管理剖析》第三章 扩展事故管理响应</title><link>https://martinliu.cn/blog/anatomy-of-an-incident-ch3/</link><pubDate>Wed, 26 Jun 2024 22:46:48 +0800</pubDate><guid>https://martinliu.cn/blog/anatomy-of-an-incident-ch3/</guid><description>&lt;img src="https://martinliu.cn/blog/anatomy-of-an-incident-ch3/pexels-pixabay-69934.png" alt="Featured image of post Google SRE 白皮书： 《事故管理剖析》第三章 扩展事故管理响应" />&lt;ul>
+&lt;li>&lt;a class="link" href="https://martinliu.cn/wp/anatomy-of-an-incident-cn.pdf" >下载中文版 PDF 文件&lt;/a>&lt;/li>
+&lt;li>&lt;a class="link" href="https://martinliu.cn/wp/anatomy-of-an-incident.pdf" >下载英文版 PDF 文件&lt;/a>&lt;/li>
+&lt;li>&lt;a class="link" href="https://sre.google/resources/practices-and-processes/anatomy-of-an-incident/" target="_blank" rel="noopener"
+>从 Google 下载白皮书&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;p>我们已经讨论了通过事故响应演习、角色扮演和定期测试来练习事故响应准备。这些策略能帮助你在真实事故发生时做好准备并开始管理（见第31页“建立有组织的事故响应程序”）。但是，当你的组织开始扩展时【译者注：扩展是指将事故管理的流程在更大范围的业务系统上逐步应用推广的过程。】，如何管理事故呢？在本节中，我们讨论如何在大量的系统之上扩展事故管理（流程/实践）。&lt;/p>
+&lt;p>在 Google，我们为所有系统提供了最佳的事故管理覆盖。Google 规模庞大，每年处理超过 2 万亿次搜索，需要大量的数据中心、至少一百万台计算机和超过 80000 名员工。所有这些活动都通过一个庞大且高度互联的系统系（ system-to-system 简称 SoS）进行，依赖其技术堆栈保持生产运行。支持这个技术堆栈意味着适当的人员随时待命，以便在问题出现时进行故障排除和修复。这些人员是我们站点可靠性工程团队中的响应人员，他们为系统提供事故管理覆盖，并在事故发生时进行响应。&lt;/p>
+&lt;h2 id="组件响应者">组件响应者
+&lt;/h2>&lt;p>在站点可靠性工程团队中，我们还拥有组件响应者，他们负责 Google 技术基础设施中某个组件或系统的响应（图 3-1）。&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/blog/anatomy-of-an-incident-ch3/2024-06-27_21-24-47.png"
+width="802"
+height="157"
+srcset="https://martinliu.cn/blog/anatomy-of-an-incident-ch3/2024-06-27_21-24-47_hu_249df40ed31bca56.png 480w, https://martinliu.cn/blog/anatomy-of-an-incident-ch3/2024-06-27_21-24-47_hu_a9cc14cd69cc2a48.png 1024w"
+loading="lazy"
+alt="图 3-1. 组件响应者"
+class="gallery-image"
+data-flex-grow="510"
+data-flex-basis="1225px"
+>&lt;/p>
+&lt;p>组件响应者是某个单一系统的专家，精通该问题领域，是优秀的故障排除专家，并在危机期间实践缓解策略。他们可以持续访问执行紧急响应所需的工具和系统，能够很好地应对压力，并在危机期间保持清晰的思路。&lt;/p>
+&lt;p>单个组件响应者的责任范围有限，这使他们能够深入了解其领域及相关系统。这些响应者是防止故障从一个组件蔓延到整个堆栈的第一道防线。这些单独的组件比整体的系统体系级 SoS 堆栈要小，正如我们将在下面描述的“系统体系（SoS）响应者”一节中讨论的那样，通常具有明确且独立的系统边界。因此，可以设置合理的监控和告警机制，使组件响应者始终了解其系统的故障模式。&lt;/p>
+&lt;p>当技术堆栈的范围超出一个人可理解和维护的能力时，我们将技术堆栈拆分，以便多个响应者可以分别对整个堆栈的单个组件提供覆盖。随着时间的推移，这些组件变得更加复杂，并进一步分解。通过保持有限的范围，主要响应者可以在任何给定时间解决小范围内的问题。然而，也存在风险，即忽视了跨多个组件的生产故障，或者如果问题超出其专业范围，则无法为组件响应者提供足够的支持。&lt;/p>
+&lt;p>例如，假设一个底层故障在技术堆栈的显著部分发生级联效应。这种级联效应的速度超过了人类自我组织的速度。在一次影响范围广泛的事故中，我们很快就会达到每个组件团队都被呼叫、分配了响应人员并管理自己的状态。这些组件团队并行工作，但这些响应人员可能彼此并不知情（图 3-2）。其中一个响应人员处理的事故可能是根本原因，而其他则是后果。但究竟是哪一个呢？&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/blog/anatomy-of-an-incident-ch3/2024-06-27_21-26-04.png"
+width="803"
+height="210"
+srcset="https://martinliu.cn/blog/anatomy-of-an-incident-ch3/2024-06-27_21-26-04_hu_2bb0a41188b7ef13.png 480w, https://martinliu.cn/blog/anatomy-of-an-incident-ch3/2024-06-27_21-26-04_hu_5f4d91cfcec434c7.png 1024w"
+loading="lazy"
+alt="图 3-2. 从组件到更大的场景"
+class="gallery-image"
+data-flex-grow="382"
+data-flex-basis="917px"
+>&lt;/p>
+&lt;p>在一个足够大且复杂的技术堆栈中，一个主要响应人员几乎不可能同时驱动缓解并维护所有依赖关系和被依赖关系的状态。为了缓解这种风险，除了出色的组件响应人员之外，我们还建立了一个二级响应人员的结构。我们在 Google 称这些二级响应人员为系统响应人员，接下来我们将讨论这一部分。&lt;/p>
+&lt;h2 id="系统响应人员">系统响应人员
+&lt;/h2>&lt;p>系统响应人员（SoS 响应人员）负责处理跨多个组件系统、跨系统边界或复杂情况的事故。这些 SoS 响应人员经过专业培训，具有适当的权限和地位，并有权领导有组织的协调响应。他们是第二道防线，更全面地关注问题，并在应对分布式计算故障时提供关键优势支持（图 3-3）。&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/blog/anatomy-of-an-incident-ch3/2024-06-27_21-26-33.png"
+width="802"
+height="123"
+srcset="https://martinliu.cn/blog/anatomy-of-an-incident-ch3/2024-06-27_21-26-33_hu_8c92465d5d1b5756.png 480w, https://martinliu.cn/blog/anatomy-of-an-incident-ch3/2024-06-27_21-26-33_hu_82613d359e1711ec.png 1024w"
+loading="lazy"
+alt="图 3-3. 系统响应人员"
+class="gallery-image"
+data-flex-grow="652"
+data-flex-basis="1564px"
+>&lt;/p>
+&lt;p>我们认为 SoS 响应人员是多系统事故管理者，技术全能，关注整体；他们在处理需要更广泛视角的事故方面有专业知识。通常，这些事故需要多个团队的参与；例如，一次重大系统级 SoS 故障会导致许多服务中断。这些事故可能会引发或已经引发下游故障，并可能扩展到服务边界之外。此外，这些事故可能已经持续了 30 分钟或更长的时间，且没有解决迹象，影响客户。&lt;/p>
+&lt;p>SoS 响应人员适合应对这些影响广泛的事故，因为他们知道如何组织他人并掌控复杂局面。他们还擅长诊断系统行为，找出根本原因，专注于扩展响应并广泛沟通事故情况。&lt;/p>
+&lt;p>在 Google，我们有两种类型的 SoS 响应人员。尽管每种类型都有其独特的功能，但它们经常协同工作：&lt;/p>
+&lt;ul>
+&lt;li>产品专注的事故响应团队（IRTs）：这些团队保护特定产品领域的可靠性。例如，广告 IRT 和 YouTube IRT。并不是每个产品领域都需要事故响应团队，但随着产品不断推出新功能、变得更加复杂，并积累了技术债务，这些团队将非常有帮助。这些团队的成员不一定了解产品堆栈的每一个细节，但他们了解产品的整体运营和依赖关系。&lt;/li>
+&lt;li>技术事故响应团队（Tech IRT）：这是我们最广泛关注的事故响应团队。该团队专注于跨产品的事故、责任不明的事故或根本原因不清的普遍事故。Tech IRT 是我们的最后一道防线。成员是资深的 Google 员工，他们至少在两个不同的团队中担任过组件响应者，广泛了解系统运行，最重要的是，他们具备出色的事故管理技能。&lt;/li>
+&lt;/ul>
+&lt;p>Tech IRT 的成员继续为原团队工作，同时轮流进行全球 24/7 的值守/值班。他们能够在这些重大紧急情况下继续工作，因为他们经常练习这项专门技能。&lt;/p>
+&lt;p>Tech IRT 成员每年两次接受为期两周的生产培训，深入了解系统运行和故障的细节。他们还需要每季度展示有效使用紧急工具的能力。
+图 3-4 描绘了 Google 的事故响应组织架构。随着架构级别的增加，产品日常功能的细节变得更加抽象。每个角色同样重要——金字塔的每个后续级别都承受较少的寻呼负载。如果组件响应人员无法解决问题且威胁到产品稳定性，他们可以将问题升级到产品专注的 IRT。&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/blog/anatomy-of-an-incident-ch3/2024-06-27_21-27-04.png"
+width="802"
+height="315"
+srcset="https://martinliu.cn/blog/anatomy-of-an-incident-ch3/2024-06-27_21-27-04_hu_bf7128eb9f963a2e.png 480w, https://martinliu.cn/blog/anatomy-of-an-incident-ch3/2024-06-27_21-27-04_hu_a9963007125ce2f4.png 1024w"
+loading="lazy"
+alt="图 3-4. 事故响应组织架构"
+class="gallery-image"
+data-flex-grow="254"
+data-flex-basis="611px"
+>&lt;/p>
+&lt;p>如果一个问题威胁到多个产品，或通过共享基础设施的解决方案可以更快缓解，Tech IRT 将被激活，作为所有下级问题的升级点，负责最广泛范围的操作。&lt;/p>
+&lt;p>那么，是什么使得这个组织架构能够无缝运行呢？答案是共同的协议、信任、尊重和透明度。接下来我们将详细探讨这些。&lt;/p>
+&lt;h2 id="事故响应组织架构">事故响应组织架构
+&lt;/h2>&lt;p>成功的事故响应组织有四个特征：统一协议、信任、尊重和透明（见图 3-5）。&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/blog/anatomy-of-an-incident-ch3/2024-06-27_21-27-24.png"
+width="805"
+height="609"
+srcset="https://martinliu.cn/blog/anatomy-of-an-incident-ch3/2024-06-27_21-27-24_hu_b9d62630cfea01d2.png 480w, https://martinliu.cn/blog/anatomy-of-an-incident-ch3/2024-06-27_21-27-24_hu_f56dfba79c6602f7.png 1024w"
+loading="lazy"
+alt="图 3-5. 成功事故响应组织的特征"
+class="gallery-image"
+data-flex-grow="132"
+data-flex-basis="317px"
+>&lt;/p>
+&lt;h3 id="统一协议">统一协议
+&lt;/h3>&lt;p>在 Google，我们广泛使用 FEMA 事故指挥系统（ICS）的内部变体，其中事故响应人员有明确的角色，如事故指挥官、记录员和通信员。通过使用共享且明确定义的流程，我们建立了有效的紧急响应习惯，包括保持活跃状态、明确的指挥链和减少整体压力。每个人都了解交接流程，知道应该交接给谁，以确保知识的有效传递。就像象棋不能在麻将桌上玩，在紧急情况下，所有人都必须按照同一个规则行事。&lt;/p>
+&lt;h3 id="信任">信任
+&lt;/h3>&lt;p>在事故发生期间，事故指挥官需要行使权威。他们需要指挥他人、组织混乱的能量，并判断合适的行动方案。对于许多组织来说，将权威级别与操作职责对齐是一个挑战，但我们的标准操作程序避免了只有高层业务主管才有权做出服务变更决策的惯例：我们将这种权威赋予具有背景知识和实时状态信息的主题专家（SME）。&lt;/p>
+&lt;h3 id="尊重">尊重
+&lt;/h3>&lt;p>确保所有响应人员在认为有必要时能够放心地升级情况非常重要。如果响应人员因为升级事故而受到审查、批评或被认为无能，他们可能不会在适当的时候进行升级。除了基本的礼貌，我们必须相信每个人在现有信息的基础上做出最佳决定。如果出现问题，关键不是责备某人，而是找出如何提供更准确和可操作的信息，以确保未来不再出错。这部分工作在事后分析过程中进行，Google 坚持严格的无责政策（稍后会详细介绍）【译者注：对事不对人策略】。&lt;/p>
+&lt;h3 id="透明度">透明度
+&lt;/h3>&lt;p>我们不进行信息隔离。当事故发生时，所有细节对所有人开放。如果禁止访问事故信息，就无法进行升级和互操作性——我们在事故解决后撰写的事后分析会在公司范围内的每周通讯中分享。我们鼓励通过阅读其他团队和产品领域发生的事故来进行跨团队学习。&lt;/p>
+&lt;h3 id="风险管理">风险管理
+&lt;/h3>&lt;p>除了事故响应组织结构的特征外，还需要考虑如何管理风险。从识别到解决事故的时间不应超过三天。正如之前所说，事故管理在时间和人力上都非常昂贵。长时间保持在事故管理的活跃状态会导致疲劳和倦怠，可能促使你开始考虑跳槽。事故是已经升级并需要立即有组织响应的问题。这种紧急状态并非自然状态——人类的大脑延髓不应该被长时间刺激，他们的身体也不应该长期分泌大量皮质醇。&lt;/p>
+&lt;p>如果史前人类不断狩猎或被剑齿虎追捕，无法感到安全或休息，我们的进化会截然不同。如果你预计长时间处于战斗或逃跑模式，最终会导致团队成员的持续流失。&lt;/p>
+&lt;h2 id="事故管理与风险的功能">事故管理与风险的功能
+&lt;/h2>&lt;p>为了减少事故管理的时间，重要的是认识到事故管理和风险的功能。事故管理是一项短期任务，旨在迅速纠正危险情况。事故的严重程度可以分为几个简单的类别。在 Google，我们根据组织的产品适当地量化了这些类别（见表 3-1）。&lt;/p>
+&lt;p>表 3-1. 严重性定义&lt;/p>
+&lt;table>
+&lt;thead>
+&lt;tr>
+&lt;th>严重性&lt;/th>
+&lt;th>定义&lt;/th>
+&lt;th>试金石&lt;/th>
+&lt;/tr>
+&lt;/thead>
+&lt;tbody>
+&lt;tr>
+&lt;td>重大&lt;/td>
+&lt;td>面向用户的重大故障，产生负面新闻或对 Google 或特定 Google 客户造成巨大的收入影响。内部生产力故障只有在产生可见外部后果（如负面新闻周期）时才视为重大。&lt;/td>
+&lt;td>可能或已对 Alphabet/Google 品牌和业务造成损害。&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>严重&lt;/td>
+&lt;td>对用户可见的故障，但不会对 Google 服务或特定客户造成持久损害，或对 Google 或其客户造成可观的收入损失，或 50% 或更多的 Google 员工受到显著影响。&lt;/td>
+&lt;td>此类故障如果持续发生且未得到缓解，可能或将对 Alphabet/Google 品牌和业务造成损害。&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>中等&lt;/td>
+&lt;td>从差一点到重大/严重故障。大量内部用户受到显著影响。存在已知的解决方法，减轻了影响。&lt;/td>
+&lt;td>此类故障如果持续发生且未得到缓解，可能会随着时间推移导致越来越多的不稳定性和更高的维护成本。&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>轻微&lt;/td>
+&lt;td>外部用户可能未注意到故障。内部用户受到不便。导致网络、数据中心、实例等之间的流量发生意外波动。&lt;/td>
+&lt;td>此类故障如果持续发生且未得到缓解，不太可能随着时间推移导致更多不稳定性，但代表正常操作条件。&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>微不足道&lt;/td>
+&lt;td>事故对用户没有任何可见影响，对生产几乎没有实质性影响，但从中学到了宝贵的教训，需要以低优先级跟踪一些后续行动项目。&lt;/td>
+&lt;td>此类事故如果持续发生且未得到缓解，不会被视为过程失效。&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>忽略测试&lt;/td>
+&lt;td>这甚至不是一次事故。去做其他事情吧。&lt;/td>
+&lt;td>虚惊一场。&lt;/td>
+&lt;/tr>
+&lt;/tbody>
+&lt;/table>
+&lt;p>事故的规模大致反映了情况的“风险性”（根本原因/触发/影响）。事故管理旨在缓解短期影响，为组织的决策者争取时间来决定下一步措施。事故管理并不意味着要持续到避免所有短期和长期影响。对于庞大的技术堆栈或积累的技术债务，可能需要数月甚至数年才能彻底解决根本原因/触发条件。事故应只在短期影响尚未缓解时保持“开放”状态，并进行积极的管理。&lt;/p>
+&lt;p>在医院中，这相当于评估出血患者的紧急风险，并为其止血。那么接下来呢？医院会确定出血的原因并防止其复发。可能需要为患者制定长期计划，如避免再次遇到剑齿虎，或治疗引起出血的皮肤病。无论是哪种方式，一旦立即的危险消除，就会制定长期计划，包括必要时的全天候支持，以确保患者安全并防止再次出血。同样地，在你的技术堆栈中，一旦立即的危险解除，就应转向制定长期行动计划。&lt;/p>
+&lt;p>在事故管理中，通常可以在几分钟内重现事故的时间线。如果处理的是紧急问题，每一分钟都可能影响用户或造成收入损失。因为每一分钟都很重要，事故管理对经理们造成了很大压力——正如本节前面提到的，这不是一种长期的积极体验。当处理事故的长期后果（解决根本原因或触发因素）时，理想情况下，不再有立即的用户伤害或重大利润损失。这很好。这些高优先级工作需要立即执行，但不需要像管理事故那样紧迫。这些工作的时间线可以按天或周来衡量，而不必像之前提到的事故时间线那样不超过三天。在不需要的情况下，不要保持战斗或逃跑模式。关闭事故，转向恢复。&lt;/p>
+&lt;blockquote>
+&lt;p>来源： &lt;a class="link" href="https://sre.google" target="_blank" rel="noopener"
+>https://sre.google&lt;/a> ；本白皮书一共有 7 章，后续章节将陆续发布。完整中文版白皮书即将发布，敬请期待。&lt;/p>&lt;/blockquote>
+&lt;p>&lt;img src="https://martinliu.cn/img/anatomy-of-an-incident.png"
+loading="lazy"
+alt="cover"
+>&lt;/p>
+&lt;p>❤️ Photo by Pixabay: &lt;a class="link" href="https://www.pexels.com/photo/photo-of-a-2-fireman-killing-a-huge-fire-69934/" target="_blank" rel="noopener"
+>https://www.pexels.com/photo/photo-of-a-2-fireman-killing-a-huge-fire-69934/&lt;/a>&lt;/p></description></item><item><title>Google SRE 白皮书： 《事故管理剖析》第二章 实战演习事故响应准备</title><link>https://martinliu.cn/blog/anatomy-of-an-incident-ch2/</link><pubDate>Tue, 25 Jun 2024 22:46:48 +0800</pubDate><guid>https://martinliu.cn/blog/anatomy-of-an-incident-ch2/</guid><description>&lt;img src="https://martinliu.cn/blog/anatomy-of-an-incident-ch2/pexels-pixabay-69934.png" alt="Featured image of post Google SRE 白皮书： 《事故管理剖析》第二章 实战演习事故响应准备" />&lt;ul>
+&lt;li>&lt;a class="link" href="https://martinliu.cn/wp/anatomy-of-an-incident-cn.pdf" >下载中文版 PDF 文件&lt;/a>&lt;/li>
+&lt;li>&lt;a class="link" href="https://martinliu.cn/wp/anatomy-of-an-incident.pdf" >下载英文版 PDF 文件&lt;/a>&lt;/li>
+&lt;li>&lt;a class="link" href="https://sre.google/resources/practices-and-processes/anatomy-of-an-incident/" target="_blank" rel="noopener"
+>从 Google 下载白皮书&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;p>我们已经讨论了管理事故的三个阶段和事故管理生命周期。现在，让我们讨论如何实战演习事故管理，以便在实际事故发生时，确保我们已经做好了准备。&lt;/p>
+&lt;h2 id="灾难角色扮演和事故响应演习">灾难角色扮演和事故响应演习
+&lt;/h2>&lt;p>为了增强恢复力，测试和演练事故响应准备是非常有价值的。我们建议在团队中进行灾难角色扮演来训练事故响应的全过程。在谷歌，我们通常称之为“厄运之轮 (Wheel of Misfortune)”。这是一种重现过去在生产环境中曾经遇到的真实事故场景的一种方法。&lt;/p>
+&lt;p>定期进行事故响应演习有许多现实的好处。在谷歌灾难恢复测试 (DiRT) 计划的早期，有些测试被认为风险过高而无法执行。然而，多年来，通过专注于这些由高风险测试所暴露出来的领域，许多暴露出来的风险已经得到了彻底解决，以至于这些测试现在是自动化执行的，并且被认为是无聊的测试。&lt;/p>
+&lt;p>如果想要实现这一点，效果既非立竿见影，过程也不会轻松愉快——这需要投入时间，需要多个团队付出巨大的协同努力；但我们已经能够极大的降低全球系统中的重大风险，以至于“风险只是另一个定期运行的自动化测试”。&lt;/p>
+&lt;h2 id="定期测试-regular-testing">定期测试 (Regular Testing)
+&lt;/h2>&lt;p>执行定期的测试具有很多显著的好处。多年来，谷歌一直在进行 DiRT 测试，以发现并修复生产系统中的问题。随着团队不断测试他们的服务，高风险测试的数量减少了。这实际上是个好迹象——团队已经使系统更加具有恢复力，以至于发现暴露系统的弱点，也变得越来越难。&lt;/p>
+&lt;p>测试失败——由于某种原因导致的测试失败——也变得更加罕见。即使发生，这些系统也往往能以预期的方式失败，并因此能得到迅速缓解。故障响应者现在更加自如地启动故障应急预案，能够在压力下保持头脑冷静，并且由于这些测试，撰写事后复盘报告的次数也减少了。谷歌多年的努力已经得到了回报——大家的心态已经从“灾难测试是对我个人的挑战”转变为“灾难测试是大家共同的任务”。&lt;/p>
+&lt;h2 id="细化的测试和自动化">细化的测试和自动化
+&lt;/h2>&lt;p>测试正在逐渐从解决纯粹的技术问题（例如“我们是否知道如何从完全损坏的数据库中恢复？”）转向更细化的“修复流程”的一系列挑战。&lt;/p>
+&lt;p>技术测试较易讨论和自动化：基本上就是编写一些代码来执行一系列命令，并检查预期的响应。而想要找到有问题的流程，则更加困难——例如“只有一个人有权批准这个，但他们并不回复电话/邮件”——尤其是对于那些那么不经常执行的陌生流程。&lt;/p>
+&lt;h2 id="准备响应者-preparing-responders">准备响应者 (Preparing Responders)
+&lt;/h2>&lt;p>进行事故响应测试——即使只是理论测试——也可以帮助我们识别出有问题的流程，评估其概率和风险因素，并增强响应者的信心。即使测试未按计划进行，你也能更好地发现事故响应流程中的弱点。事故响应者也将会更好地做好在技术、心理和情感上的准备，以应对未来会发生的实际事故。&lt;/p>
+&lt;p>情感上的准备并不可低估。如前所述，事故管理会给响应者带来巨大压力，导致疏忽大意、反应变慢和判断力模糊。压力还可能引起焦虑、疲劳、高血压和睡眠质量差等健康问题。&lt;/p>
+&lt;p>进行事故响应测试不仅可以减少这些不良影响，更重要的是识别暴露出这些问题，以便采取纠正措施——如请求帮助、休息，甚至完全移交事故的处理。管理人员和领导也应该：时刻关注响应者的压力、疲劳和倦怠的迹象，并尽可能的提供必要的帮助。&lt;/p>
+&lt;h2 id="编写事故响应测试">编写事故响应测试
+&lt;/h2>&lt;p>编写事故响应测试(Writing Incident Response Tests)的一个良好起点是：查看并回顾最近发生的事故。在谷歌，我们在每次事后复盘分析中都会问这些标准问题：&lt;/p>
+&lt;ul>
+&lt;li>出了什么问题？&lt;/li>
+&lt;li>哪些方面做得好？&lt;/li>
+&lt;li>我们在哪里是凭运气？&lt;/li>
+&lt;/ul>
+&lt;p>首先查看出了什么问题，因为这是需要改进的地方。这些往往是容易解决的具体问题——例如，监控发现了问题但并没有通知任何人。一旦识别并修复了问题，就需要测试这个修复结果。这一点不能忽视：仅仅修复问题是不够的；修复可能不完整，或在其他地方又引起了回归。&lt;/p>
+&lt;p>在测试正确性时，从小而简单的测试案例开始。随着对响应过程信心逐步增加，就可以开始研究更复杂的问题，包括那些不完全是技术性的（如人员流程方面）。&lt;/p>
+&lt;p>当这些小范围测试进行了一段时间后，开始查看“我们在哪里是凭运气？”的那些方面。通常，这些问题更微妙，解决它们可能也不会容易。再次，从小处着手，将问题分解成更小、更易解决的部分。&lt;/p>
+&lt;p>这些测试应保持缓慢的进行，但要保证稳定的节奏——既不想让团队淹没在测试工作中，也不想失去进度。举例来说，每四周进行一次一小时的测试，要比花费 10% 的运营预算在这些测试上更容易被接受。随着这些程序的发展和测试价值的显现，你会找到适合的测试频率和深度。&lt;/p>
+&lt;blockquote>
+&lt;p>来源： &lt;a class="link" href="https://sre.google" target="_blank" rel="noopener"
+>https://sre.google&lt;/a> ；本白皮书一共有 7 章，后续章节将陆续发布。完整中文版白皮书即将发布，敬请期待。&lt;/p>&lt;/blockquote>
+&lt;p>&lt;img src="https://martinliu.cn/img/anatomy-of-an-incident.png"
+loading="lazy"
+alt="cover"
+>&lt;/p>
+&lt;p>❤️ Photo by Pixabay: &lt;a class="link" href="https://www.pexels.com/photo/photo-of-a-2-fireman-killing-a-huge-fire-69934/" target="_blank" rel="noopener"
+>https://www.pexels.com/photo/photo-of-a-2-fireman-killing-a-huge-fire-69934/&lt;/a>&lt;/p></description></item><item><title>Google SRE 白皮书： 《事故管理剖析》第一章 概述</title><link>https://martinliu.cn/blog/anatomy-of-an-incident-ch1/</link><pubDate>Tue, 25 Jun 2024 22:46:48 +0800</pubDate><guid>https://martinliu.cn/blog/anatomy-of-an-incident-ch1/</guid><description>&lt;img src="https://martinliu.cn/blog/anatomy-of-an-incident-ch1/pexels-pixabay-69934.jpg" alt="Featured image of post Google SRE 白皮书： 《事故管理剖析》第一章 概述" />&lt;ul>
+&lt;li>&lt;a class="link" href="https://martinliu.cn/wp/anatomy-of-an-incident-cn.pdf" >下载中文版 PDF 文件&lt;/a>&lt;/li>
+&lt;li>&lt;a class="link" href="https://martinliu.cn/wp/anatomy-of-an-incident.pdf" >下载英文版 PDF 文件&lt;/a>&lt;/li>
+&lt;li>&lt;a class="link" href="https://sre.google/resources/practices-and-processes/anatomy-of-an-incident/" target="_blank" rel="noopener"
+>从 Google 下载白皮书&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;blockquote>
+&lt;p>如果没有猜错的话 ———— 在接下来的几周里，我们将会在个人和工作上面临巨大的压力，我们需要快速应对各种不断变化的状况。但我们已经为应对危机准备了十多年，并且已经做好了准备。在全球比以往任何时候都更需要信息、沟通和计算的时候，我们会确保 Google 能够提供帮助。&lt;/p>
+&lt;p>——Benjamin Treynor Sloss，Google 站点可靠性工程团队工程副总裁，2020 年 3 月 3 日&lt;/p>&lt;/blockquote>
+&lt;p>中断是不可避免的（这确实让人沮丧）。作为科学家和工程师，你们需要从长远角度看待问题，设计系统以实现最佳的可持续性、可扩展性、可靠性和安全性。但是，你们只能基于现有的知识进行设计。在实施解决方案时，你们也无法完全预知未来。你们不能总是预见到下一个零日事件、头条热搜话题、天气灾害、配置管理错误或技术变革。因此，你们需要随时准备应对这些可能影响系统的事件。&lt;/p>
+&lt;p>谷歌在过去十年中最大的技术挑战之一是 COVID-19 新冠疫情爆发所带来的。新冠疫情引发了一系列快速出现的事故，我们需要迅速应对以继续为用户服务。我们必须大幅提升服务容量，让员工在家高效工作，并在供应链受限的情况下找到新的服务器修复方法。正如 Ben Treynor Sloss 所言，谷歌能够在这一系列重大变故中持续提供服务，因为我们已经为此做好了准备。十多年来，谷歌积极投资于事故管理，这种准备是提高事故响应能力最重要的事情。准备工作能增强恢复力。恢复力和处理中断的能力是衡量技术长期成功（以数十年为单位）的关键因素。除了做好工程设计，还需要时刻准备应对业务服务的中断。&lt;/p>
+&lt;p>恢复力是公司运营的关键支柱之一。因此，事故管理是公司必不可少的流程。事故不仅对客户有影响，也对操作人员造成了负担。事故带来压力，通常需要人工干预。因此，有效的事故管理应该优先的考虑：预防性和主动性的工作，而不是被动应对。&lt;/p>
+&lt;p>我们知道管理事故压力大，找到和培训响应人员也很困难；我们也知道有些事故不可避免，中断会发生。与其问“如果发生事故你会怎么做？”，不如问“事故发生时你会怎么做？”。通过减少这种模糊性，不仅能减轻操作人员的负担和压力，还能缩短解决时间，减少对用户的影响。&lt;/p>
+&lt;p>我们写这份报告（白皮书）是为了总结一份：技术事故响应实践的指南。我们首先构建一些讨论事故的常用语言，然后深入探讨如何鼓励工程师、工程领导者和高管在组织内部思考事故管理。我们旨在涵盖从准备事故、响应事故、恢复事故，到保持健康组织的所有内容，以便大规模地应对各种突发情况。让我们开始吧。&lt;/p>
+&lt;h2 id="什么是事故">什么是事故？
+&lt;/h2>&lt;p>事故(incident)是一个含义广泛的词。其含义可能因不同群体而异。例如，在 ITIL 中，事故是指任何计划外的中断，如工单、报错或告警。无论这个词如何使用，重要的是要在其特定的定义上达成一致，以减少信息孤岛，确保每个人都在说同一种语言。&lt;/p>
+&lt;p>在谷歌，事故是指：&lt;/p>
+&lt;ul>
+&lt;li>被升级的问题（因为影响太大，而无法单独处理）&lt;/li>
+&lt;li>需要立即响应的问题&lt;/li>
+&lt;li>需要有组织的进行响应的问题&lt;/li>
+&lt;/ul>
+&lt;p>有时，事故可能由服务中断引起，即服务在一段时间内不可用。中断可以是计划内的，例如在维护窗口期间系统故意不可用以进行更新。如果中断是计划好的并且已通知用户，则就不算是事故——并不需要开展立即、有组织的响应的事情。但通常情况下，我们指的是由未预见的故障引起的意外中断。大多数的意外中断都是事故，或最终会发展成为事故。&lt;/p>
+&lt;p>事故可能对客户造成影响。它们还可能造成收入损失、数据损坏、安全漏洞等，这些都可能影响客户。当客户受到事故影响时，他们对你的信任可能会动摇。因此，你需要避免过多或过于严重的事故，以保持客户满意；否则，他们会选择离开。&lt;/p>
+&lt;p>频繁的事故也会影响事故响应人员，因为处理事故的压力很大。找到具备适当技能来处理事故的站点可靠性工程师 (SRE) 既具挑战性又昂贵，因此你不希望通过让他们只负责事故响应来使其疲惫不堪。相反，你应该通过主动预防事故来提供他们技能成长的机会。在这份报告的后面，我们将进一步讨论这一点，以及减少压力和改善值班健康的方法。&lt;/p>
+&lt;h2 id="并非所有问题都是事故">并非所有问题都是事故
+&lt;/h2>&lt;p>区分事故和中断很重要，同样重要的是区分指标、告警和事故。如何区分指标和告警，告警和事故？并不是每个指标都会成为告警，也不是每个告警都是事故。为了帮助你理解这些术语的含义，我们将首先讨论监控和告警在维护系统健康中的作用。&lt;/p>
+&lt;h3 id="监控">监控
+&lt;/h3>&lt;p>监控是保持系统健康的最常见方法。根据《SRE Google 运维解密》的定义，监控是指收集、处理、汇总和展示系统的实时定量数据，例如查询计数和类型、错误计数和类型、处理时间和服务器在线时间。监控是一种度量。&lt;/p>
+&lt;p>在度量方面，我们建议采取以客户为中心的方法来制定服务质量目标 (SLO；在第 26 页的“减少事故的影响”中有更详细的讨论) 和优化客户体验。这意味着收集能准确反映客户体验的指标，并尽可能收集多种度量，如黑盒、基础设施、客户端和应用程序指标。使用不同方法测量相同的值可以确保冗余和准确性，因为不同的测量方法各有优势。以客户为中心的仪表板也能很好地反映客户体验，对于故障排除和事故调试至关重要。&lt;/p>
+&lt;p>重要的是，要专注于度量可靠性和对用户的影响，而不是度量已确认的事故个数。如果专注于后者，员工可能会因为害怕被惩罚而犹豫声明事故。这可能导致事故声明延迟，不仅浪费时间和丢失数据，还因为事后处理效果不佳。因此，声明事故并及时关闭比事后补救要好。&lt;/p>
+&lt;p>在这方面，有时人们会将可靠性和可用性混用，但可靠性不仅仅是“服务可用性”，特别是在复杂的分布式系统中。可靠性是指在大规模下提供一致服务水平的能力，包括可用性、延迟和准确性等方面。这在不同服务中可能（也应该）有不同的体现。例如，YouTube 和 Google 搜索的可靠性是否相同？根据你的服务，不同用户的期望会有所不同，可靠性也可能有不同的定义。&lt;/p>
+&lt;p>一般来说，如果系统的中断更少、更短、更小，它就更可靠。因此，最终取决于用户能容忍的停机时间。采用以客户为中心的方法，用户定义了你的可靠性。因此，需要尽可能接近地度量用户体验。（我们在第 26 页的“减少事故的影响”中对此进行了更详细的讨论。）&lt;/p>
+&lt;h3 id="告警">告警
+&lt;/h3>&lt;p>我们已经讨论了系统健康监控。现在让我们谈谈监控的关键组成部分：告警(Alerting)。当监控发现系统行为异常时，会发送一个信号，这个信号就是告警。告警可能意味着两件事：某些东西已经损坏，需要有人修复；或者某些东西可能即将损坏，需要有人检查。紧急程度——即何时需要采取行动——应指导你选择如何响应。如果需要立即采取（人工）行动，应发送紧急通知。如果在接下来的几个小时内需要人工行动，应发送告警。如果不需要立即行动——例如信息是用于分析或故障排除——则信息保持为指标或日志的形式。&lt;/p>
+&lt;p>需要注意的是，告警的方式可能因组织偏好而异。例如，它可以在仪表板上显示，或以工单形式呈现。在谷歌，通常采用后者；监控系统在 Google 问题追踪器中创建一个具有不同优先级的“错误-bug”，这就是我们的工单形式。&lt;/p>
+&lt;p>现在你已经了解了基础知识，让我们深入探讨可操作的告警。&lt;/p>
+&lt;h3 id="可操作告警的重要性">可操作告警的重要性
+&lt;/h3>&lt;p>如前所述，当特定条件满足时，告警会触发。但你必须谨慎，只针对真正重要和可操作的事项发出告警。考虑以下场景：作为当班人员，你在凌晨 2 点被呼叫，因为过去 5 分钟内 QPS 增加了 300%。这可能是一个流量波动大的服务，有时流量稳定，但偶尔会有大客户发出大量查询。&lt;/p>
+&lt;p>这种情况下半夜叫醒你有何意义？实际上毫无意义。这个告警是不可操作的。只要服务没有崩溃的风险，就没有必要叫人起床。查看历史数据会显示服务需要应对这样的流量峰值，但这些峰值本身并不构成问题，不应生成告警。&lt;/p>
+&lt;p>再考虑一个更微妙但更常见的可操作告警问题。你的公司需要每晚备份生产数据库，因此设置了一个每四小时运行一次的 cronjob 进行备份。一次备份由于瞬时错误失败——用于备份的副本发生了硬件故障，并被负载均衡器自动移出了服务模式——但随后几次备份都成功了。结果还是创建了一个工单。&lt;/p>
+&lt;p>因为一次备份失败而创建工单是不必要的。这只会产生噪音，因为系统在无人干预的情况下自行恢复了。&lt;/p>
+&lt;p>这种情况经常发生。虽然最终只需简单地关闭工单并附上“处理时已经好了”的信息，但这种行为存在一些问题：&lt;/p>
+&lt;ul>
+&lt;li>&lt;strong>琐事 (toil)&lt;/strong> 有人不得不花时间查看工单、分析图表和报告，最终发现他们不需要采取任何行动。&lt;/li>
+&lt;li>&lt;strong>告警疲劳 (alert fatigue)&lt;/strong> 如果 95% 的“数据库备份失败”告警只是被简单关闭，实际问题被忽视的风险会显著增加。&lt;/li>
+&lt;/ul>
+&lt;p>如前所述，事故是具有特定特征的问题。告警只是一个信号，表明可能有事故正在发生。你可能会遇到很多告警但没有实际事故。虽然这种情况不理想，但并不意味着你需要启动正式的事故管理技术；也许这是计划中的维护，你预期会收到这些告警。&lt;/p>
+&lt;p>同样，你也可能有事故但没有任何告警——例如，你从安全团队得知他们怀疑生产系统被入侵，但你的团队没有触发任何相关告警。&lt;/p>
+&lt;p>实际上，人们对告警和事故的感知有所不同：&lt;/p>
+&lt;ul>
+&lt;li>正式的事故管理比简单处理告警要更有压力。&lt;/li>
+&lt;li>经验较少的响应者比经验丰富的响应者更不容易启动事故管理流程。&lt;/li>
+&lt;li>事故更可能需要额外的团队资源，因此其他团队成员可以更早判断是否需要介入。&lt;/li>
+&lt;/ul>
+&lt;p>这种情况不仅限于你的团队，事实上，它适用于整个组织。&lt;/p>
+&lt;p>告警通常比事故多。获取告警的基本指标（例如，每季度有多少告警）是有用的，但事故需要更详细的分析（例如，上季度的五个重大事故都是由于新功能在预生产环境中测试不足）。你不希望这些报告被所有收到的告警信息淹没。考虑到受众——告警指标主要对团队有用，而事故报告可能会被高层阅读，因此需要管理适用的范围。&lt;/p>
+&lt;p>希望这能澄清何时你可以更自信地说“这不是事故”。然而，这也带来了一个二分法：如果有些事情不是事故，那意味着有些事情是事故。你该如何处理这些事故？我们将在下一节探讨。&lt;/p>
+&lt;h2 id="事故管理生命周期">事故管理生命周期
+&lt;/h2>&lt;p>最佳的事故管理不仅仅意味着尽可能快速地处理事故。良好的事故管理意味着关注事故的整个生命周期。在本节中，我们讨论一种系统化的事故管理方法。将事故视为系统中持续存在的风险。处理这些风险的过程称为事故管理生命周期。事故管理生命周期涵盖了准备、响应、恢复和缓解事故所需的所有活动。这是运营服务的持续成本。&lt;/p>
+&lt;p>所谓生命周期，我们指的是事故存在的每个阶段。这些阶段如图 1-1 所示，具体如下：&lt;/p>
+&lt;ul>
+&lt;li>&lt;strong>准备 Preparedness&lt;/strong> ：包括公司或团队为应对事故发生而采取的所有措施。这可能包括工程上的安全措施（如代码审查或发布流程）、事故管理培训，以及识别错误的实验或测试演习。这还包括设置监控和告警。&lt;/li>
+&lt;li>&lt;strong>响应 Response&lt;/strong> ：当触发因素导致潜在风险变为实际问题时的应对措施。这包括响应告警、决定问题是否是事故，并与受影响的人员沟通。&lt;/li>
+&lt;li>&lt;strong>缓解和恢复 Mitigation and recovery&lt;/strong> ：使系统恢复到功能状态的一系列行动。这包括为了避免影响或防止影响扩大的紧急缓解措施。恢复阶段还包括进行事后分析和反思，撰写事后报告。事后报告是一份关于事故的书面记录，包含采取的措施、影响、根本原因和防止再次发生或减少未来影响的后续行动。&lt;/li>
+&lt;/ul>
+&lt;p>&lt;img src="https://martinliu.cn/blog/anatomy-of-an-incident-ch1/2024-06-25_23-02-44.png"
+width="932"
+height="925"
+srcset="https://martinliu.cn/blog/anatomy-of-an-incident-ch1/2024-06-25_23-02-44_hu_4591d73bfea00b32.png 480w, https://martinliu.cn/blog/anatomy-of-an-incident-ch1/2024-06-25_23-02-44_hu_29efcee5a0fb15c5.png 1024w"
+loading="lazy"
+alt="图 1-1. 事故管理生命周期"
+class="gallery-image"
+data-flex-grow="100"
+data-flex-basis="241px"
+>&lt;/p>
+&lt;p>一旦恢复阶段结束，你将重新进入准备阶段。根据系统的复杂性，所有这些阶段可能同时进行——但可以确定的是，至少总有一个阶段在进行中。&lt;/p>
+&lt;blockquote>
+&lt;p>来源： &lt;a class="link" href="https://sre.google" target="_blank" rel="noopener"
+>https://sre.google&lt;/a> ；本白皮书一共有 7 章，后续章节将陆续发布。完整中文版白皮书即将发布，敬请期待。&lt;/p>&lt;/blockquote>
+&lt;p>&lt;img src="https://martinliu.cn/img/anatomy-of-an-incident.png"
+loading="lazy"
+alt="cover"
+>&lt;/p>
+&lt;p>❤️ Photo by Pixabay: &lt;a class="link" href="https://www.pexels.com/photo/photo-of-a-2-fireman-killing-a-huge-fire-69934/" target="_blank" rel="noopener"
+>https://www.pexels.com/photo/photo-of-a-2-fireman-killing-a-huge-fire-69934/&lt;/a>&lt;/p></description></item></channel></rss>

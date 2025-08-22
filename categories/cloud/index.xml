@@ -1,0 +1,1759 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>云计算 on Martin Liu's Blog</title><link>https://martinliu.cn/categories/cloud/</link><description>Recent content in 云计算 on Martin Liu's Blog</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><atom:link href="https://martinliu.cn/categories/cloud/index.xml" rel="self" type="application/rss+xml"/><item><title>容器化应用的设计原则</title><link>https://martinliu.cn/blog/cloud-native-container-design/</link><pubDate>Sat, 24 Mar 2018 20:51:01 +0800</pubDate><guid>https://martinliu.cn/blog/cloud-native-container-design/</guid><description>&lt;img src="https://res.cloudinary.com/martinliu/image/upload/BingWallpaper-2018-03-20.jpg" alt="Featured image of post 容器化应用的设计原则" />&lt;p>本文来自于Red Hat咨询顾问Bilgin Ibryam所编写的一篇白皮书，名为《PRINCIPLES OF CONTAINER-BASED APPLICATION DESIGN》。这篇文章在作者的Blog上发表后，作者的twitter被Kubernetes官方twitter转发。白皮书在Red Hat官网的下载地址：&lt;a class="link" href="https://www.redhat.com/en/resources/cloud-native-container-design-whitepaper" target="_blank" rel="noopener"
+>https://www.redhat.com/en/resources/cloud-native-container-design-whitepaper&lt;/a> 文本是对这篇文章的学习和整理。&lt;/p>
+&lt;p>先回顾经典的软件设计原则：&lt;/p>
+&lt;ul>
+&lt;li>保持简单，愚蠢（KISS）&lt;/li>
+&lt;li>不要重复自己（DRY）&lt;/li>
+&lt;li>你不会需要它 （YAGNI）&lt;/li>
+&lt;li>关注点分离（SoC）&lt;/li>
+&lt;li>Single responsibility, Open/closed, Liskov substitution, Interface segregation, Dependency inversion （SOLID）&lt;/li>
+&lt;/ul>
+&lt;p>然后是Red Hat的云原生容器设计原则：&lt;/p>
+&lt;ul>
+&lt;li>唯一关注性原则（SCP）&lt;/li>
+&lt;li>高度可观测性原则（HOP）&lt;/li>
+&lt;li>生命周期一致性原则（LCP）&lt;/li>
+&lt;li>镜像不可变性原则（IIP）&lt;/li>
+&lt;li>进程可处置性原则（PDP）&lt;/li>
+&lt;li>自包含性原则（S-CP）&lt;/li>
+&lt;li>运行时约束性原则（RCP）&lt;/li>
+&lt;/ul>
+&lt;p>很多组织都理解云原生的重要性和必要性，但是并不知道从哪里开始。那么请确保：云原生平台和容器化应用能无缝的运行在一起，并且具备抵御故障的能力，甚至在底层的基础架构出现宕机的时候，也能通过过弹性扩展的方式表现出可靠性。本文描述了容器化应用时需要遵循的基本准则，实施这些原则有助于使之与云原生平台Kubernetes更加适配。&lt;/p>
+&lt;h2 id="唯一关注性原则-single-concern-principlescp">唯一关注性原则 SINGLE CONCERN PRINCIPLE（SCP）
+&lt;/h2>&lt;p>在许多方面，唯一关注性原则与来自SOLID的SRP是类似的，它建议一个类应该只有一个责任。SRP背后的动机是每个责任是变更的一个轴心，一个类应该有，且也只有一个需要改变的理由。SCP原则中的“关注”一词强调关注是一种更高层次的抽象的责任，而且它更好地将范围描述为一个容器而不是一个类。虽然SRP的主要动机是变化原因的唯一性，而SCP的主要动机是容器镜像重用和可替换性。如果你创建一个解决单个问题的容器，并且以功能完整的方式来实现，不同应用程序中的容器镜像重用的可能性就会更高。&lt;/p>
+&lt;p>因此，SCP原则规定每个集容器都应该解决一个问题，并做得很好。 实现这一点，通常比在面向对象的世界中实现SRP更容易，容器通常管理的一个单一的进程，大多数情况下一个进程解决一个问题。&lt;/p>
+&lt;p>&lt;img src="https://res.cloudinary.com/martinliu/image/upload/scp.png"
+loading="lazy"
+alt="scp 容器化应用的设计原则"
+>&lt;/p>
+&lt;p>如果你的容器化微服务需要解决多个问题，它可以使用这样的模式，将多个容器用sidecar和init-containers的模式合并成一个部署单元（pod），这样每个容器仍然是处理单个问题。同样，您可以替换处理同样问题的容器。 例如，将Web服务器容器或队列实现容器，更新为更具可扩展性的容器。&lt;/p>
+&lt;h2 id="高度可观测性原则-high-observability-principlehop">高度可观测性原则 HIGH OBSERVABILITY PRINCIPLE（HOP）
+&lt;/h2>&lt;p>容器提供了一种统一的方式来打包和运行应用程序，将它们视为一个黑盒子对象。 但任何旨在成为云原生公民的容器都必须提供API支持，要为运行时环境编写接口（API），以观察容器的健康状况和行为。 这是自动化容器更新和生命周期回收的基本先决条件和统一的方式，从而提高系统的弹性和用户体验。&lt;/p>
+&lt;p>&lt;img src="https://res.cloudinary.com/martinliu/image/upload/hop.png"
+loading="lazy"
+alt="hop 容器化应用的设计原则"
+>&lt;/p>
+&lt;p>实际上，您的容器化应用程序必须至少为其提供不同类型的健康检查的API&amp;ndash;活动和就绪等状态。更好的应用程序的行为则必须提供其他手段来观察容器化应用程序的状态。应用程序应该将重要事件记录到标准错误（STDERR）和标准输出（STDOUT）中，从而通过统一的日志聚合工具（诸如Fluentd和Logstash之类的工具）进行分析，并与跟踪和指标收集库相结合，例如OpenTracing，Prometheus等。&lt;/p>
+&lt;p>将您的应用程序视为黑盒子，但实施所有必要的API以帮助平台对其进行观测，并以最佳方式管理您的应用程序。&lt;/p>
+&lt;h2 id="生命周期一致性原则-life-cycle-conformance-principlelcp">生命周期一致性原则 LIFE-CYCLE CONFORMANCE PRINCIPLE（LCP）
+&lt;/h2>&lt;p>HOP规定了你的容器提供供平台观测的API。 LCP则规定：您的应用程序有办法读取来自平台的事件。 此外，除了获得事件以外，容器还应该对这些事件相应地作出反应。这就是此原则名字由来。这几乎就像在应用程序通过一个“写入API”与平台进行交互。&lt;/p>
+&lt;p>&lt;img src="https://res.cloudinary.com/martinliu/image/upload/lcp.png"
+loading="lazy"
+alt="lcp 容器化应用的设计原则"
+>&lt;/p>
+&lt;p>来自管理平台的各种事件都是为了帮助您管理您的容器的生命周期的。决定处理哪些事件取决于您的应用程序 以及是否对这些事件做出反应。&lt;/p>
+&lt;p>但有些事件比其他事件更重要。例如，任何需要一个干净的关闭进程，这就需要捕获信号：终止（SIGTERM）消息，并尽可能迅速关闭。 这是为了避免通过强制关闭信号：kill（SIGKILL），之后跟随一个SIGTERM。&lt;/p>
+&lt;p>还有其他事件，例如PostStart和PreStop，可能对您的应用程序生命周期管理也非常重要。 例如，某些应用程序需要在服务之前进行预热请求和一些需要在关闭干净之前释放资源。&lt;/p>
+&lt;h2 id="镜像不可变性原则-image-immutability-principleiip">镜像不可变性原则 IMAGE IMMUTABILITY PRINCIPLE（IIP）
+&lt;/h2>&lt;p>IMAGE IMMUTABILITY PRINCIPLE（IIP）容器化的应用程序是不可变更的，镜像一旦完成了构建，预计在不同的环境中运行都不会改变。这意味着在因外部环境的不同，在需要的时候需要使用外部手法处理所依赖的外部配置数据，而不是每个环境修改或者构建不同的容器。而容器应用程序中的任何变更，都应该因此触发构建新的容器映像，并在所有环境中重用它。相同于这个原理的，不可变服务器和不可变基础架构的概念也很受欢迎，并且对于服务器/主机管理也是如此。&lt;/p>
+&lt;p>&lt;img src="https://res.cloudinary.com/martinliu/image/upload/iip.png"
+loading="lazy"
+alt="iip 容器化应用的设计原则"
+>&lt;/p>
+&lt;p>在遵循IIP原则的情况下，应该防止为不同的环境创建相似的容器镜像，要始终坚持为所有环境只配置一个容器映像。 这个原则允许在应用程序更新期间，采用自动回滚和前滚等做法，这是云原生自动化的重要方面。&lt;/p>
+&lt;h2 id="进程可处置性原则-process-disposability-principlepdp">进程可处置性原则 PROCESS DISPOSABILITY PRINCIPLE（PDP）
+&lt;/h2>&lt;p>迁移到容器应用程序的主要动机之一是：容器需要尽可能做到临时性，并做好在任何时候被另一个容器实例替换的准备。需要更换容器的原因有很多，比如：健康检查失败、缩容、应用程序将容器迁移到不同的主机，平台资源匮乏或其它的问题。&lt;/p>
+&lt;p>&lt;img src="https://res.cloudinary.com/martinliu/image/upload/pdp.png"
+loading="lazy"
+alt="pdp 容器化应用的设计原则"
+>&lt;/p>
+&lt;p>这意味着容器化的应用程序必须保持其状态为向外扩展的或分布式和冗余的。这也意味着应用程序应该快速启动和关闭，甚至为彻底的硬件故障做好准备。 实施这一原则的另一个有用的做法是创建小容器。 容器在云原生环境可以自动调度并在不同的主机上启动。较小的容器可以实现更快启动时间，因为在重新启动之前容器镜像需要被物理地复制到主机系统。&lt;/p>
+&lt;h2 id="自包含性原则-self-containment-principles-cp">自包含性原则 SELF-CONTAINMENT PRINCIPLE（S-CP）
+&lt;/h2>&lt;p>这个原则规定一个容器应该在构建时包含所有需要的东西。容器的存在应该仅仅依赖于Linux®内核，在并添加相关额外的库，在容器构建时加入它们。除了库之外，它还应该包含语言运行时，应用程序平台（如果需要），以及运行所需的其他依赖关系，等运行容器化应用所需要的诸如此类的东西。&lt;/p>
+&lt;p>&lt;img src="https://res.cloudinary.com/martinliu/image/upload/s-cp.png"
+loading="lazy"
+alt="s-cp 容器化应用的设计原则"
+>&lt;/p>
+&lt;p>唯一的例外是：由于不同环境之间差异，并且只能在运行时提供的配置; 例如，通过Kubernetes提供的ConfigMap。&lt;/p>
+&lt;p>某些应用程序由多个容器组件组成。 例如，容器化的Web应用程序也可能需要数据库容器。 根据这个原则，并不建议合并两个容器。相反，它建议的是数据库容器只包含运行数据库所需的所有内容，Web应用程序容器只包含运行Web应用程序所需的所有内容，如Web服务器。 在运行时，Web应用程序容器将根据需要依赖于并访问数据库容器。&lt;/p>
+&lt;h2 id="运行时约束性原则-runtime-confinement-principlercp">运行时约束性原则 RUNTIME CONFINEMENT PRINCIPLE（RCP）
+&lt;/h2>&lt;p>S-CP从构建时的角度查看容器，并关注于生成的二进制文件及其内容。但是容器不仅仅是磁盘上一个只有尺寸大小的单一维度的黑盒子。 容器运行时有多个维度，例如内存使用维度，CPU使用维度等资源消耗维度。&lt;/p>
+&lt;p>&lt;img src="https://res.cloudinary.com/martinliu/image/upload/rcp.png"
+loading="lazy"
+alt="rcp 容器化应用的设计原则"
+>&lt;/p>
+&lt;p>这个RCP原则建议每个容器申报资源需求，并发送信息到平台。它应该分享容器的资源配置文件，从CPU，内存，网络，磁盘的角度声明。这影响到平台如何执行调度，自动扩展，容量 管理以及容器常规的服务级别协议（SLA）等。&lt;/p>
+&lt;p>除了向平台声明容器的资源需求之外，还有一点也很重要， 应用被约束在使用所声明的资源需求内。如果应用程序对资源的使用保持在约束的范围内，则当资源匮乏发生时，平台不太可能将其终止和迁移。&lt;/p>
+&lt;h2 id="结论">结论
+&lt;/h2>&lt;p>云原生不仅仅是一种最终状态 - 它也是一种工作方式。 本份白皮书描述了一系列容器应用的基本原则，必须遵守才能成为优秀的云原生公民。&lt;/p>
+&lt;p>除了这些原则之外，创建良好的容器应用程序还需要熟悉其他容器相关的最佳实践和技术。 尽管上述原则非常根本，适用于大多数用例，下面列出的最佳实践在应用和不应用的时候，则需要判断力。以下是一些与容器相关的更常见的最佳实践：&lt;/p>
+&lt;ul>
+&lt;li>&lt;strong>镜像要尽可能的小&lt;/strong>。 通过清理临时文件，并避免安装不必要的软件包来构建小尺寸镜像。 这减少了容器的尺寸，构建时间和复制容器镜像的网络传输时间。&lt;/li>
+&lt;li>&lt;strong>支持任意用户ID&lt;/strong>。 避免使用sudo命令或要求特定用户名运行你的容器。&lt;/li>
+&lt;li>&lt;strong>标记重要的端口&lt;/strong>。 虽然可以在运行时指定端口号，然而使用EXPOSE命令在运行的时候指定，则可以让镜像的使用者更轻松。&lt;/li>
+&lt;li>&lt;strong>为持久数据使用卷&lt;/strong>。 在容器摧毁之后还需要保存的容器数据的，必须将数据写入一个数据卷。&lt;/li>
+&lt;li>&lt;strong>设置镜像元数据&lt;/strong>。 以标签和注释形式存在的镜像元数据可以使您的容器镜像更加实用，从而为使用您的容器的开发人员提供了更好的体验。&lt;/li>
+&lt;li>&lt;strong>使主机和镜像同步&lt;/strong>。 一些容器应用需要容器在某些属性（如时间和机器ID）上与主机同步。&lt;/li>
+&lt;/ul>
+&lt;p>这里是指向各种模式和最佳实践的资源的链接，以帮助您能有效地实现上述目标：&lt;/p>
+&lt;ul>
+&lt;li>• &lt;a class="link" href="https://www.slideshare.net/luebken/container-patterns" target="_blank" rel="noopener"
+>https://www.slideshare.net/luebken/container-patterns&lt;/a>&lt;/li>
+&lt;li>• &lt;a class="link" href="https://docs.docker.com/engine/userguide/eng-image/dockerfile_best-practices" target="_blank" rel="noopener"
+>https://docs.docker.com/engine/userguide/eng-image/dockerfile_best-practices&lt;/a>&lt;/li>
+&lt;li>• &lt;a class="link" href="http://docs.projectatomic.io/container-best-practices" target="_blank" rel="noopener"
+>http://docs.projectatomic.io/container-best-practices&lt;/a>&lt;/li>
+&lt;li>• &lt;a class="link" href="https://docs.openshift.com/enterprise/3.0/creating_images/guidelines.html" target="_blank" rel="noopener"
+>https://docs.openshift.com/enterprise/3.0/creating_images/guidelines.html&lt;/a>&lt;/li>
+&lt;li>• &lt;a class="link" href="https://www.usenix.org/system/files/conference/hotcloud16/hotcloud16_burns.pdf" target="_blank" rel="noopener"
+>https://www.usenix.org/system/files/conference/hotcloud16/hotcloud16_burns.pdf&lt;/a>&lt;/li>
+&lt;li>• &lt;a class="link" href="https://leanpub.com/k8spatterns/" target="_blank" rel="noopener"
+>https://leanpub.com/k8spatterns/&lt;/a>&lt;/li>
+&lt;li>• &lt;a class="link" href="https://12factor.net" target="_blank" rel="noopener"
+>https://12factor.net&lt;/a>&lt;/li>
+&lt;/ul></description></item><item><title>为Docker Swarm群集配置Nutanix持久存储</title><link>https://martinliu.cn/blog/nutanix-dvp/</link><pubDate>Thu, 02 Nov 2017 00:00:00 +0000</pubDate><guid>https://martinliu.cn/blog/nutanix-dvp/</guid><description>&lt;img src="https://martinliu.cn/images/abstract-4.jpg" alt="Featured image of post 为Docker Swarm群集配置Nutanix持久存储" />&lt;p>本文介绍如何用Docker卷插件的方式，给Docker Swarm的群集挂载Nutanix存储。&lt;a class="link" href="https://store.docker.com/plugins/nutanix-dvp-docker-volume-plug-in" target="_blank" rel="noopener"
+>Nutanix Container Volume Plug-in&lt;/a>简称DVP，可以给容器提供数据持久化的功能。&lt;/p>
+&lt;p>本文使用ownCloud网盘应用做功能测试。测试的过程如下，安装部署Docker Datacenter，配置好群集，在UCP的界面里调用DVP插件建持久的数据卷，建立ownCloud服务，部署和测试该服务。&lt;/p>
+&lt;h2 id="nutanix-dvp-docker-volume-plug-in安装和配置">Nutanix DVP (Docker Volume Plug-in)安装和配置
+&lt;/h2>&lt;p>这一部分描述DVP的安装部署过程，需要连接互联网；安装调试完毕之后，作虚拟机的镜像模板使用。这样Docker Swarm的其它节点也都不需要重复这个步骤了。&lt;/p>
+&lt;p>本文使用的是Docker社区文档稳定版 17.03.1-ce ；本文使用的OS是CentOS 7.3。所Docker安装的版本如下：&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;span class="lnt">14
+&lt;/span>&lt;span class="lnt">15
+&lt;/span>&lt;span class="lnt">16
+&lt;/span>&lt;span class="lnt">17
+&lt;/span>&lt;span class="lnt">18
+&lt;/span>&lt;span class="lnt">19
+&lt;/span>&lt;span class="lnt">20
+&lt;/span>&lt;span class="lnt">21
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">[root@centos7-temp]# docker version
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Client:
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> Version: 17.03.1-ce
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> API version: 1.27
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> Go version: go1.7.5
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> Git commit: c6d412e
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> Built: Mon Mar 27 17:05:44 2017
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> OS/Arch: linux/amd64
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Server:
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> Version: 17.03.1-ce
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> API version: 1.27 (minimum version 1.12)
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> Go version: go1.7.5
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> Git commit: c6d412e
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> Built: Mon Mar 27 17:05:44 2017
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> OS/Arch: linux/amd64
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> Experimental: false
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">[root@centos7-temp]# rpm -qa|grep docker
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">docker-ce-17.03.1.ce-1.el7.centos.x86_64
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">docker-ce-selinux-17.03.1.ce-1.el7.centos.noarch
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>本文使用的Docker 安装yum源如下：&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;span class="lnt">14
+&lt;/span>&lt;span class="lnt">15
+&lt;/span>&lt;span class="lnt">16
+&lt;/span>&lt;span class="lnt">17
+&lt;/span>&lt;span class="lnt">18
+&lt;/span>&lt;span class="lnt">19
+&lt;/span>&lt;span class="lnt">20
+&lt;/span>&lt;span class="lnt">21
+&lt;/span>&lt;span class="lnt">22
+&lt;/span>&lt;span class="lnt">23
+&lt;/span>&lt;span class="lnt">24
+&lt;/span>&lt;span class="lnt">25
+&lt;/span>&lt;span class="lnt">26
+&lt;/span>&lt;span class="lnt">27
+&lt;/span>&lt;span class="lnt">28
+&lt;/span>&lt;span class="lnt">29
+&lt;/span>&lt;span class="lnt">30
+&lt;/span>&lt;span class="lnt">31
+&lt;/span>&lt;span class="lnt">32
+&lt;/span>&lt;span class="lnt">33
+&lt;/span>&lt;span class="lnt">34
+&lt;/span>&lt;span class="lnt">35
+&lt;/span>&lt;span class="lnt">36
+&lt;/span>&lt;span class="lnt">37
+&lt;/span>&lt;span class="lnt">38
+&lt;/span>&lt;span class="lnt">39
+&lt;/span>&lt;span class="lnt">40
+&lt;/span>&lt;span class="lnt">41
+&lt;/span>&lt;span class="lnt">42
+&lt;/span>&lt;span class="lnt">43
+&lt;/span>&lt;span class="lnt">44
+&lt;/span>&lt;span class="lnt">45
+&lt;/span>&lt;span class="lnt">46
+&lt;/span>&lt;span class="lnt">47
+&lt;/span>&lt;span class="lnt">48
+&lt;/span>&lt;span class="lnt">49
+&lt;/span>&lt;span class="lnt">50
+&lt;/span>&lt;span class="lnt">51
+&lt;/span>&lt;span class="lnt">52
+&lt;/span>&lt;span class="lnt">53
+&lt;/span>&lt;span class="lnt">54
+&lt;/span>&lt;span class="lnt">55
+&lt;/span>&lt;span class="lnt">56
+&lt;/span>&lt;span class="lnt">57
+&lt;/span>&lt;span class="lnt">58
+&lt;/span>&lt;span class="lnt">59
+&lt;/span>&lt;span class="lnt">60
+&lt;/span>&lt;span class="lnt">61
+&lt;/span>&lt;span class="lnt">62
+&lt;/span>&lt;span class="lnt">63
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-gdscript3" data-lang="gdscript3">&lt;span class="line">&lt;span class="cl">&lt;span class="p">[&lt;/span>&lt;span class="n">root&lt;/span>&lt;span class="err">@&lt;/span>&lt;span class="n">centos7&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">temp&lt;/span>&lt;span class="p">]&lt;/span>&lt;span class="c1"># cat /etc/yum.repos.d/docker-ce.repo&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">[&lt;/span>&lt;span class="n">docker&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">ce&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">stable&lt;/span>&lt;span class="p">]&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">name&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="n">Docker&lt;/span> &lt;span class="n">CE&lt;/span> &lt;span class="n">Stable&lt;/span> &lt;span class="o">-&lt;/span> &lt;span class="o">$&lt;/span>&lt;span class="n">basearch&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">baseurl&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="n">https&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="o">//&lt;/span>&lt;span class="n">download&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">docker&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">com&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">linux&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">centos&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="mi">7&lt;/span>&lt;span class="o">/$&lt;/span>&lt;span class="n">basearch&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">stable&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">enabled&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="mi">1&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">gpgcheck&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="mi">1&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">gpgkey&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="n">https&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="o">//&lt;/span>&lt;span class="n">download&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">docker&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">com&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">linux&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">centos&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">gpg&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">[&lt;/span>&lt;span class="n">docker&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">ce&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">stable&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">debuginfo&lt;/span>&lt;span class="p">]&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">name&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="n">Docker&lt;/span> &lt;span class="n">CE&lt;/span> &lt;span class="n">Stable&lt;/span> &lt;span class="o">-&lt;/span> &lt;span class="n">Debuginfo&lt;/span> &lt;span class="o">$&lt;/span>&lt;span class="n">basearch&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">baseurl&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="n">https&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="o">//&lt;/span>&lt;span class="n">download&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">docker&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">com&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">linux&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">centos&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="mi">7&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">debug&lt;/span>&lt;span class="o">-$&lt;/span>&lt;span class="n">basearch&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">stable&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">enabled&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="mi">0&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">gpgcheck&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="mi">1&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">gpgkey&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="n">https&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="o">//&lt;/span>&lt;span class="n">download&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">docker&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">com&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">linux&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">centos&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">gpg&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">[&lt;/span>&lt;span class="n">docker&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">ce&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">stable&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">source&lt;/span>&lt;span class="p">]&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">name&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="n">Docker&lt;/span> &lt;span class="n">CE&lt;/span> &lt;span class="n">Stable&lt;/span> &lt;span class="o">-&lt;/span> &lt;span class="n">Sources&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">baseurl&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="n">https&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="o">//&lt;/span>&lt;span class="n">download&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">docker&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">com&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">linux&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">centos&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="mi">7&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">source&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">stable&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">enabled&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="mi">0&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">gpgcheck&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="mi">1&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">gpgkey&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="n">https&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="o">//&lt;/span>&lt;span class="n">download&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">docker&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">com&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">linux&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">centos&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">gpg&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">[&lt;/span>&lt;span class="n">docker&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">ce&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">edge&lt;/span>&lt;span class="p">]&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">name&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="n">Docker&lt;/span> &lt;span class="n">CE&lt;/span> &lt;span class="n">Edge&lt;/span> &lt;span class="o">-&lt;/span> &lt;span class="o">$&lt;/span>&lt;span class="n">basearch&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">baseurl&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="n">https&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="o">//&lt;/span>&lt;span class="n">download&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">docker&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">com&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">linux&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">centos&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="mi">7&lt;/span>&lt;span class="o">/$&lt;/span>&lt;span class="n">basearch&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">edge&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">enabled&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="mi">0&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">gpgcheck&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="mi">1&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">gpgkey&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="n">https&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="o">//&lt;/span>&lt;span class="n">download&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">docker&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">com&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">linux&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">centos&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">gpg&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">[&lt;/span>&lt;span class="n">docker&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">ce&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">edge&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">debuginfo&lt;/span>&lt;span class="p">]&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">name&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="n">Docker&lt;/span> &lt;span class="n">CE&lt;/span> &lt;span class="n">Edge&lt;/span> &lt;span class="o">-&lt;/span> &lt;span class="n">Debuginfo&lt;/span> &lt;span class="o">$&lt;/span>&lt;span class="n">basearch&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">baseurl&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="n">https&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="o">//&lt;/span>&lt;span class="n">download&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">docker&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">com&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">linux&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">centos&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="mi">7&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">debug&lt;/span>&lt;span class="o">-$&lt;/span>&lt;span class="n">basearch&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">edge&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">enabled&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="mi">0&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">gpgcheck&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="mi">1&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">gpgkey&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="n">https&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="o">//&lt;/span>&lt;span class="n">download&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">docker&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">com&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">linux&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">centos&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">gpg&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">[&lt;/span>&lt;span class="n">docker&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">ce&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">edge&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">source&lt;/span>&lt;span class="p">]&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">name&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="n">Docker&lt;/span> &lt;span class="n">CE&lt;/span> &lt;span class="n">Edge&lt;/span> &lt;span class="o">-&lt;/span> &lt;span class="n">Sources&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">baseurl&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="n">https&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="o">//&lt;/span>&lt;span class="n">download&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">docker&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">com&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">linux&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">centos&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="mi">7&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">source&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">edge&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">enabled&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="mi">0&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">gpgcheck&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="mi">1&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">gpgkey&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="n">https&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="o">//&lt;/span>&lt;span class="n">download&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">docker&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">com&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">linux&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">centos&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">gpg&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">[&lt;/span>&lt;span class="n">docker&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">ce&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">test&lt;/span>&lt;span class="p">]&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">name&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="n">Docker&lt;/span> &lt;span class="n">CE&lt;/span> &lt;span class="n">Test&lt;/span> &lt;span class="o">-&lt;/span> &lt;span class="o">$&lt;/span>&lt;span class="n">basearch&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">baseurl&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="n">https&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="o">//&lt;/span>&lt;span class="n">download&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">docker&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">com&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">linux&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">centos&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="mi">7&lt;/span>&lt;span class="o">/$&lt;/span>&lt;span class="n">basearch&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">test&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">enabled&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="mi">0&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">gpgcheck&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="mi">1&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">gpgkey&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="n">https&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="o">//&lt;/span>&lt;span class="n">download&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">docker&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">com&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">linux&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">centos&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">gpg&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">[&lt;/span>&lt;span class="n">docker&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">ce&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">test&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">debuginfo&lt;/span>&lt;span class="p">]&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">name&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="n">Docker&lt;/span> &lt;span class="n">CE&lt;/span> &lt;span class="n">Test&lt;/span> &lt;span class="o">-&lt;/span> &lt;span class="n">Debuginfo&lt;/span> &lt;span class="o">$&lt;/span>&lt;span class="n">basearch&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">baseurl&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="n">https&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="o">//&lt;/span>&lt;span class="n">download&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">docker&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">com&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">linux&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">centos&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="mi">7&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">debug&lt;/span>&lt;span class="o">-$&lt;/span>&lt;span class="n">basearch&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">test&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">enabled&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="mi">0&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">gpgcheck&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="mi">1&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">gpgkey&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="n">https&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="o">//&lt;/span>&lt;span class="n">download&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">docker&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">com&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">linux&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">centos&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">gpg&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">[&lt;/span>&lt;span class="n">docker&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">ce&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">test&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">source&lt;/span>&lt;span class="p">]&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">name&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="n">Docker&lt;/span> &lt;span class="n">CE&lt;/span> &lt;span class="n">Test&lt;/span> &lt;span class="o">-&lt;/span> &lt;span class="n">Sources&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">baseurl&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="n">https&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="o">//&lt;/span>&lt;span class="n">download&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">docker&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">com&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">linux&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">centos&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="mi">7&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">source&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">test&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">enabled&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="mi">0&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">gpgcheck&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="mi">1&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">gpgkey&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="n">https&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="o">//&lt;/span>&lt;span class="n">download&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">docker&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">com&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">linux&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">centos&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">gpg&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>本机所使用的所有安装源如下：&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;span class="lnt">14
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">[root@centos7-temp]# yum repolist
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Loaded plugins: fastestmirror
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Loading mirror speeds from cached hostfile
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> * base: mirrors.aliyun.com
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> * epel: mirrors.aliyun.com
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> * extras: mirrors.aliyun.com
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> * updates: mirrors.aliyun.com
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">repo id repo name status
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">base/7/x86_64 CentOS-7 - Base - mirrors.aliyun.com 9,363
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">docker-ce-stable/x86_64 Docker CE Stable - x86_64 4
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">epel/x86_64 Extra Packages for Enterprise Linux 7 - x86_64 11,808
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">extras/7/x86_64 CentOS-7 - Extras - mirrors.aliyun.com 381
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">updates/7/x86_64 CentOS-7 - Updates - mirrors.aliyun.com 1,859
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">repolist: 23,415
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>安装docker引擎，并启动服务，并校验服务状态。安装过程参考如下：&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;span class="lnt">14
+&lt;/span>&lt;span class="lnt">15
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-gdscript3" data-lang="gdscript3">&lt;span class="line">&lt;span class="cl">&lt;span class="p">[&lt;/span>&lt;span class="n">root&lt;/span>&lt;span class="err">@&lt;/span>&lt;span class="n">centos7&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">temp&lt;/span>&lt;span class="p">]&lt;/span>&lt;span class="c1"># yum install -y docker-ce&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">[&lt;/span>&lt;span class="n">root&lt;/span>&lt;span class="err">@&lt;/span>&lt;span class="n">centos7&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">temp&lt;/span>&lt;span class="p">]&lt;/span>&lt;span class="c1"># systemctl enable docker&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">[&lt;/span>&lt;span class="n">root&lt;/span>&lt;span class="err">@&lt;/span>&lt;span class="n">centos7&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">temp&lt;/span>&lt;span class="p">]&lt;/span>&lt;span class="c1"># systemctl start docker&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">[&lt;/span>&lt;span class="n">root&lt;/span>&lt;span class="err">@&lt;/span>&lt;span class="n">centos7&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">temp&lt;/span>&lt;span class="p">]&lt;/span>&lt;span class="c1"># systemctl status docker&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">●&lt;/span> &lt;span class="n">docker&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">service&lt;/span> &lt;span class="o">-&lt;/span> &lt;span class="n">Docker&lt;/span> &lt;span class="n">Application&lt;/span> &lt;span class="ne">Container&lt;/span> &lt;span class="n">Engine&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">Loaded&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="n">loaded&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">usr&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">lib&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">systemd&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">system&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">docker&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">service&lt;/span>&lt;span class="p">;&lt;/span> &lt;span class="n">enabled&lt;/span>&lt;span class="p">;&lt;/span> &lt;span class="n">vendor&lt;/span> &lt;span class="n">preset&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="n">disabled&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">Active&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="n">active&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="n">running&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="n">since&lt;/span> &lt;span class="n">Tue&lt;/span> &lt;span class="mi">2017&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="mi">06&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="mi">20&lt;/span> &lt;span class="mi">20&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="mi">30&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="mi">49&lt;/span> &lt;span class="n">CST&lt;/span>&lt;span class="p">;&lt;/span> &lt;span class="mi">19&lt;/span>&lt;span class="nb">min&lt;/span> &lt;span class="n">ago&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">Docs&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="n">https&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="o">//&lt;/span>&lt;span class="n">docs&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">docker&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">com&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">Main&lt;/span> &lt;span class="n">PID&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="mi">875&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="n">dockerd&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">CGroup&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="o">/&lt;/span>&lt;span class="n">system&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">slice&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">docker&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">service&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="err">├─&lt;/span> &lt;span class="mi">875&lt;/span> &lt;span class="o">/&lt;/span>&lt;span class="n">usr&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">bin&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">dockerd&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="err">├─&lt;/span> &lt;span class="mi">942&lt;/span> &lt;span class="n">docker&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">containerd&lt;/span> &lt;span class="o">-&lt;/span>&lt;span class="n">l&lt;/span> &lt;span class="n">unix&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="o">///&lt;/span>&lt;span class="k">var&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">run&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">docker&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">libcontainerd&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">docker&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">containerd&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">sock&lt;/span> &lt;span class="o">--&lt;/span>&lt;span class="n">metrics&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="ow">in&lt;/span>&lt;span class="o">...&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="err">├─&lt;/span>&lt;span class="mi">2008&lt;/span> &lt;span class="n">docker&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">containerd&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">shim&lt;/span> &lt;span class="mi">0&lt;/span>&lt;span class="n">ca2346b6126de702fb4dda5f807c0a69a402eb643f15c142730277d0eb7bbcb&lt;/span> &lt;span class="o">/&lt;/span>&lt;span class="k">var&lt;/span>&lt;span class="o">/...&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="err">└─&lt;/span>&lt;span class="mi">0&lt;/span>&lt;span class="n">ca2346b6126de702fb4dda5f807c0a69a402eb643f15c142730277d0eb7bbcb&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="err">└─&lt;/span>&lt;span class="mi">2038&lt;/span> &lt;span class="o">/&lt;/span>&lt;span class="n">usr&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">bin&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">python&lt;/span> &lt;span class="o">/&lt;/span>&lt;span class="n">code&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">main&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">py&lt;/span> &lt;span class="o">--&lt;/span>&lt;span class="n">prism&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">ip&lt;/span> &lt;span class="mf">10.68&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="mf">69.22&lt;/span> &lt;span class="o">--&lt;/span>&lt;span class="n">dataservices&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">ip&lt;/span> &lt;span class="mf">10.68&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="mf">69.23&lt;/span> &lt;span class="o">--&lt;/span>&lt;span class="n">prism&lt;/span>&lt;span class="o">-...&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>到目前为止，Docker安装配置完成。&lt;/p>
+&lt;p>下面开始安装DVP，安装和配置过程参考页面。&lt;/p>
+&lt;p>&lt;a class="link" href="https://store.docker.com/plugins/nutanix-dvp-docker-volume-plug-in" target="_blank" rel="noopener"
+>https://store.docker.com/plugins/nutanix-dvp-docker-volume-plug-in&lt;/a>&lt;/p>
+&lt;p>下面是给操作系统安装iscsi initiator服务的参考步骤：&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;span class="lnt">14
+&lt;/span>&lt;span class="lnt">15
+&lt;/span>&lt;span class="lnt">16
+&lt;/span>&lt;span class="lnt">17
+&lt;/span>&lt;span class="lnt">18
+&lt;/span>&lt;span class="lnt">19
+&lt;/span>&lt;span class="lnt">20
+&lt;/span>&lt;span class="lnt">21
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-gdscript3" data-lang="gdscript3">&lt;span class="line">&lt;span class="cl">&lt;span class="n">yum&lt;/span> &lt;span class="n">install&lt;/span> &lt;span class="o">-&lt;/span>&lt;span class="n">y&lt;/span> &lt;span class="n">iscsi&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">initiator&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">utils&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">systemd&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">tmpfiles&lt;/span> &lt;span class="o">--&lt;/span>&lt;span class="n">create&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">systemctl&lt;/span> &lt;span class="n">start&lt;/span> &lt;span class="n">iscsid&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">systemctl&lt;/span> &lt;span class="n">enable&lt;/span> &lt;span class="n">iscsid&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">systemctl&lt;/span> &lt;span class="n">status&lt;/span> &lt;span class="n">iscsid&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">●&lt;/span> &lt;span class="n">iscsid&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">service&lt;/span> &lt;span class="o">-&lt;/span> &lt;span class="n">Open&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">iSCSI&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">Loaded&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="n">loaded&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">usr&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">lib&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">systemd&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">system&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">iscsid&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">service&lt;/span>&lt;span class="p">;&lt;/span> &lt;span class="n">enabled&lt;/span>&lt;span class="p">;&lt;/span> &lt;span class="n">vendor&lt;/span> &lt;span class="n">preset&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="n">disabled&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">Active&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="n">active&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="n">running&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="n">since&lt;/span> &lt;span class="n">Tue&lt;/span> &lt;span class="mi">2017&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="mi">06&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="mi">20&lt;/span> &lt;span class="mi">20&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="mi">30&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="mi">46&lt;/span> &lt;span class="n">CST&lt;/span>&lt;span class="p">;&lt;/span> &lt;span class="mi">24&lt;/span>&lt;span class="nb">min&lt;/span> &lt;span class="n">ago&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">Docs&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="n">man&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="n">iscsid&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="mi">8&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">man&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="n">iscsiadm&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="mi">8&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">Main&lt;/span> &lt;span class="n">PID&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="mi">888&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="n">iscsid&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">CGroup&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="o">/&lt;/span>&lt;span class="n">system&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">slice&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">iscsid&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">service&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="err">├─&lt;/span>&lt;span class="mi">882&lt;/span> &lt;span class="o">/&lt;/span>&lt;span class="n">usr&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">sbin&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">iscsid&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="err">└─&lt;/span>&lt;span class="mi">888&lt;/span> &lt;span class="o">/&lt;/span>&lt;span class="n">usr&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">sbin&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">iscsid&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">Jun&lt;/span> &lt;span class="mi">20&lt;/span> &lt;span class="mi">20&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="mi">30&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="mi">46&lt;/span> &lt;span class="n">centos7&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">temp&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">zenlab&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">local&lt;/span> &lt;span class="n">systemd&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="mi">1&lt;/span>&lt;span class="p">]:&lt;/span> &lt;span class="n">Starting&lt;/span> &lt;span class="n">Open&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">iSCSI&lt;/span>&lt;span class="o">...&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">Jun&lt;/span> &lt;span class="mi">20&lt;/span> &lt;span class="mi">20&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="mi">30&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="mi">46&lt;/span> &lt;span class="n">centos7&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">temp&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">zenlab&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">local&lt;/span> &lt;span class="n">iscsid&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="mi">878&lt;/span>&lt;span class="p">]:&lt;/span> &lt;span class="n">iSCSI&lt;/span> &lt;span class="n">logger&lt;/span> &lt;span class="n">with&lt;/span> &lt;span class="n">pid&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="mi">882&lt;/span> &lt;span class="n">started&lt;/span>&lt;span class="o">!&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">Jun&lt;/span> &lt;span class="mi">20&lt;/span> &lt;span class="mi">20&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="mi">30&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="mi">46&lt;/span> &lt;span class="n">centos7&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">temp&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">zenlab&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">local&lt;/span> &lt;span class="n">systemd&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="mi">1&lt;/span>&lt;span class="p">]:&lt;/span> &lt;span class="n">Failed&lt;/span> &lt;span class="n">to&lt;/span> &lt;span class="n">read&lt;/span> &lt;span class="n">PID&lt;/span> &lt;span class="n">from&lt;/span> &lt;span class="n">file&lt;/span> &lt;span class="o">/&lt;/span>&lt;span class="k">var&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">run&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">iscsid&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">pid&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="n">Inva&lt;/span>&lt;span class="o">...&lt;/span>&lt;span class="n">ent&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">Jun&lt;/span> &lt;span class="mi">20&lt;/span> &lt;span class="mi">20&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="mi">30&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="mi">46&lt;/span> &lt;span class="n">centos7&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">temp&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">zenlab&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">local&lt;/span> &lt;span class="n">systemd&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="mi">1&lt;/span>&lt;span class="p">]:&lt;/span> &lt;span class="n">Started&lt;/span> &lt;span class="n">Open&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">iSCSI&lt;/span>&lt;span class="o">.&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">Jun&lt;/span> &lt;span class="mi">20&lt;/span> &lt;span class="mi">20&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="mi">30&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="mi">47&lt;/span> &lt;span class="n">centos7&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">temp&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">zenlab&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">local&lt;/span> &lt;span class="n">iscsid&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="mi">882&lt;/span>&lt;span class="p">]:&lt;/span> &lt;span class="n">iSCSI&lt;/span> &lt;span class="n">daemon&lt;/span> &lt;span class="n">with&lt;/span> &lt;span class="n">pid&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="mi">888&lt;/span> &lt;span class="n">started&lt;/span>&lt;span class="o">!&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">Hint&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="n">Some&lt;/span> &lt;span class="n">lines&lt;/span> &lt;span class="n">were&lt;/span> &lt;span class="n">ellipsized&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">use&lt;/span> &lt;span class="o">-&lt;/span>&lt;span class="n">l&lt;/span> &lt;span class="n">to&lt;/span> &lt;span class="n">show&lt;/span> &lt;span class="ow">in&lt;/span> &lt;span class="n">full&lt;/span>&lt;span class="o">.&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;blockquote>
+&lt;p>解释一下DVP的工作原理是，它是让Docker主机通过iSCSI协议连接Nutanix的存储服务。DVP插件的配置里包含了连接存储服务和存储容器（这个容器是Nutanix的存储术语，非Docker说的容器）的相关信息。这样Docker主机上用该卷插件建立的数据卷都会指向Nutanix后台的存储容器中；数据通过iSCSI协议连接Nutanix存储服务的时候，就可以利用到Nutanix群集提供的负载均衡能力；当数据块写入Nutanix存储池的过程中和之后，就可以利用到到Nutanix存储容器所具备的其它重要特性：数据块2~3副本的高可靠性、冷热数据分成、压缩、去重、纠删码等；而且存储空间对于容器或者Docker Swarm里的服务都是透明和无限容量的。&lt;/p>&lt;/blockquote>
+&lt;p>现在做一些安装DVP的准备工作，询问Nutanix系统管理员下面信息：&lt;/p>
+&lt;ul>
+&lt;li>获得Prism 的IP&lt;/li>
+&lt;li>获得Nutanix群集数据服务的IP，这个IP是群集上的虚拟服务IP&lt;/li>
+&lt;li>获得群集的用户名和密码&lt;/li>
+&lt;li>新建一个测试存储容器，获得容器名&lt;/li>
+&lt;/ul>
+&lt;p>参考下面的DVP安装命令：&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">docker plugin install ntnx/nutanix_volume_plugin PRISM_IP=&amp;#34;10.68.69.22&amp;#34; DATASERVICES_IP=&amp;#34;10.68.69.23&amp;#34; PRISM_PASSWORD=&amp;#34;nutanix/4u&amp;#34; PRISM_USERNAME=&amp;#34;admin&amp;#34; DEFAULT_CONTAINER=&amp;#34;ddc-sc1&amp;#34; --alias nutanix
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>以上的命令执行结果如下：&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;span class="lnt">14
+&lt;/span>&lt;span class="lnt">15
+&lt;/span>&lt;span class="lnt">16
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-gdscript3" data-lang="gdscript3">&lt;span class="line">&lt;span class="cl">&lt;span class="p">[&lt;/span>&lt;span class="n">root&lt;/span>&lt;span class="err">@&lt;/span>&lt;span class="n">centos7&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">temp&lt;/span>&lt;span class="p">]&lt;/span>&lt;span class="c1"># docker plugin install ntnx/nutanix_volume_plugin PRISM_IP=&amp;#34;10.68.69.22&amp;#34; DATASERVICES_IP=&amp;#34;10.68.69.23&amp;#34; PRISM_PASSWORD=&amp;#34;nutanix/4u&amp;#34; PRISM_USERNAME=&amp;#34;admin&amp;#34; DEFAULT_CONTAINER=&amp;#34;ddc-sc1&amp;#34; --alias nutanix&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">Plugin&lt;/span> &lt;span class="s2">&amp;#34;ntnx/nutanix_volume_plugin&amp;#34;&lt;/span> &lt;span class="n">is&lt;/span> &lt;span class="n">requesting&lt;/span> &lt;span class="n">the&lt;/span> &lt;span class="n">following&lt;/span> &lt;span class="n">privileges&lt;/span>&lt;span class="p">:&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="o">-&lt;/span> &lt;span class="n">network&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="p">[&lt;/span>&lt;span class="n">host&lt;/span>&lt;span class="p">]&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="o">-&lt;/span> &lt;span class="n">mount&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="p">[&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">dev&lt;/span>&lt;span class="p">]&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="o">-&lt;/span> &lt;span class="n">mount&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="p">[&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">lib&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">modules&lt;/span>&lt;span class="p">]&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="o">-&lt;/span> &lt;span class="n">mount&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="p">[&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">etc&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">iscsi&lt;/span>&lt;span class="p">]&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="o">-&lt;/span> &lt;span class="n">mount&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="p">[&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="k">var&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">lock&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">iscsi&lt;/span>&lt;span class="p">]&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="o">-&lt;/span> &lt;span class="n">mount&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="p">[&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">proc&lt;/span>&lt;span class="p">]&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="o">-&lt;/span> &lt;span class="n">allow&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">all&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">devices&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="p">[&lt;/span>&lt;span class="bp">true&lt;/span>&lt;span class="p">]&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="o">-&lt;/span> &lt;span class="n">capabilities&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="p">[&lt;/span>&lt;span class="n">CAP_SYS_ADMIN&lt;/span> &lt;span class="n">CAP_SYS_PTRACE&lt;/span> &lt;span class="n">CAP_IPC_LOCK&lt;/span> &lt;span class="n">CAP_IPC_OWNER&lt;/span> &lt;span class="n">CAP_NET_ADMIN&lt;/span> &lt;span class="n">CAP_MKNOD&lt;/span> &lt;span class="n">CAP_SYS_MODULE&lt;/span>&lt;span class="p">]&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">Do&lt;/span> &lt;span class="n">you&lt;/span> &lt;span class="n">grant&lt;/span> &lt;span class="n">the&lt;/span> &lt;span class="n">above&lt;/span> &lt;span class="n">permissions&lt;/span>&lt;span class="err">?&lt;/span> &lt;span class="p">[&lt;/span>&lt;span class="n">y&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">N&lt;/span>&lt;span class="p">]&lt;/span> &lt;span class="n">y&lt;/span> &lt;span class="err">（输入&lt;/span>&lt;span class="n">y&lt;/span>&lt;span class="err">，按回车）&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">latest&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="n">Pulling&lt;/span> &lt;span class="n">from&lt;/span> &lt;span class="n">ntnx&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">nutanix_volume_plugin&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">be892c8cb64d&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="n">Download&lt;/span> &lt;span class="n">complete&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">Digest&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="n">sha256&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="mi">5&lt;/span>&lt;span class="n">a3730ffae077eb6ddc0c125620283d56852528b686cbe42f2f58696eab82c0d&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">Status&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="n">Downloaded&lt;/span> &lt;span class="n">newer&lt;/span> &lt;span class="n">image&lt;/span> &lt;span class="k">for&lt;/span> &lt;span class="n">ntnx&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">nutanix_volume_plugin&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="n">latest&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">Installed&lt;/span> &lt;span class="n">plugin&lt;/span> &lt;span class="n">ntnx&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">nutanix_volume_plugin&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>确认VDP安装结果，这个插件应该是最新版、启动的状态，如下：&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">[root@centos7-temp]# docker plugin ls
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">ID NAME DESCRIPTION ENABLED
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">f0e38fbc11b3 nutanix:latest Nutanix volume plugin for docker true
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>执行下面的测试，确认DVP工作正常。&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;span class="lnt">4
+&lt;/span>&lt;span class="lnt">5
+&lt;/span>&lt;span class="lnt">6
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">[root@centos7-temp]# docker volume create testvol -d nutanix:latest
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">testvol
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">[root@centos7-temp]# docker volume ls
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">DRIVER VOLUME NAME
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">nutanix:latest testvol
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">[root@centos7-temp]#
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>回到Nutanix的Prisum界面（主要的群集管理图形化界面）中查看Storage &amp;ndash;&amp;gt; table &amp;ndash;&amp;gt; Volume Group，应该能看到这个命令所创建的名为testvol的数据卷。如下图所示：&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/images/Screen%20Shot%202017-06-20%20at%209.07.13%20PM.png"
+loading="lazy"
+>&lt;/p>
+&lt;p>在命令行删除这个测试的卷。&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;span class="lnt">4
+&lt;/span>&lt;span class="lnt">5
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">[root@centos7-temp]# docker volume rm testvol
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">testvol
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">[root@centos7-temp]# docker volume ls
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">DRIVER VOLUME NAME
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">[root@centos7-temp]#
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>在回到Prisum界面中查看刚才看到的那个卷应该就消失了。到此为止所有节点的DVP部署配置工作就完毕了，并且确认docker服务和DVP功能都很正常。用 sys-unconfig 命令关机，把这个虚拟机在Prisum里面做一个快照备用，也可以在Nutanix的acli命令行里面把它做成一个基础镜像。&lt;/p>
+&lt;p>我们已经理解和熟悉了DVP的基本操作，配置和部署，下面开始安装Docker Datacenter；Docker Datacenter的架构图如下所示：
+&lt;img src="https://martinliu.cn/images/14979754711332.jpg"
+loading="lazy"
+>&lt;/p>
+&lt;p>本文安装的架构是：&lt;/p>
+&lt;ol>
+&lt;li>一个 UCP manager 节点&lt;/li>
+&lt;li>一个 DTR 节点&lt;/li>
+&lt;li>两个 worker node 节点&lt;/li>
+&lt;/ol>
+&lt;p>在Nutanix的Prisum中用刚才制作的那个快照或者镜像模板，克隆/新建4个虚拟机。虚拟机的参考配置如下：&lt;/p>
+&lt;ul>
+&lt;li>2 vCPU&lt;/li>
+&lt;li>4GB RAM&lt;/li>
+&lt;li>50GB Disk&lt;/li>
+&lt;/ul>
+&lt;h2 id="安装ucpdocker-universal-control-plane节点">安装UCP（Docker Universal Control Plane）节点
+&lt;/h2>&lt;p>在Nutanix的Prisum中从刚才新建的四个虚拟机中选择一个，Power on开机；ssh登录到操作系统内之后，设定主机名和IP地址。&lt;/p>
+&lt;p>安装配置参考文档：&lt;a class="link" href="https://docs.docker.com/datacenter/ucp/2.1/guides/admin/install/install-offline/#download-the-offline-package" target="_blank" rel="noopener"
+>https://docs.docker.com/datacenter/ucp/2.1/guides/admin/install/install-offline/#download-the-offline-package&lt;/a>&lt;/p>
+&lt;p>注意事项，提前下载好安装包，这个tar包里面包含了UCP需要的所有镜像，可以一次性导入到UCP的节点上。&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-gdscript3" data-lang="gdscript3">&lt;span class="line">&lt;span class="cl">&lt;span class="n">wget&lt;/span> &lt;span class="n">https&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="o">//&lt;/span>&lt;span class="n">packages&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">docker&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">com&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">caas&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">ucp_images_2&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="mf">1.4&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">tar&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">gz&lt;/span> &lt;span class="o">-&lt;/span>&lt;span class="n">O&lt;/span> &lt;span class="n">docker&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">datacenter&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">tar&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">gz&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">docker&lt;/span> &lt;span class="nb">load&lt;/span> &lt;span class="o">&amp;lt;&lt;/span> &lt;span class="n">docker&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">datacenter&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">tar&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">gz&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>载入完毕后，可以看到如下镜像。&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;span class="lnt">14
+&lt;/span>&lt;span class="lnt">15
+&lt;/span>&lt;span class="lnt">16
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">[root@ucp-master ~]# docker images
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">REPOSITORY TAG IMAGE ID CREATED SIZE
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">docker/ucp-metrics 2.1.4 e3e24ef156bd 3 weeks ago 92.2 MB
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">docker/ucp-swarm 2.1.4 d8b51d6801e5 3 weeks ago 21 MB
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">docker/ucp-hrm 2.1.4 38a19323327d 3 weeks ago 14.8 MB
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">docker/ucp-etcd 2.1.4 9aa382502e19 3 weeks ago 38.5 MB
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">docker/ucp-controller 2.1.4 5a852aa3039e 3 weeks ago 28 MB
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">docker/ucp-dsinfo 2.1.4 66ee9368796a 3 weeks ago 159 MB
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">docker/ucp 2.1.4 7a28dbfc44e4 3 weeks ago 19.1 MB
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">docker/ucp latest 7a28dbfc44e4 3 weeks ago 19.1 MB
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">docker/ucp-cfssl 2.1.4 acdc1f147711 3 weeks ago 15.1 MB
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">docker/ucp-compose 2.1.4 25775e989077 3 weeks ago 32.9 MB
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">docker/ucp-auth-store 2.1.4 f27ad13dee6c 3 weeks ago 58.7 MB
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">docker/ucp-agent 2.1.4 d716a096c331 3 weeks ago 22.5 MB
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">docker/ucp-auth 2.1.4 1f4739cd3c08 3 weeks ago 25.1 MB
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">[root@ucp-master ~]#
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>安装UCP的命令参考如下：&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;span class="lnt">4
+&lt;/span>&lt;span class="lnt">5
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-gdscript3" data-lang="gdscript3">&lt;span class="line">&lt;span class="cl">&lt;span class="n">docker&lt;/span> &lt;span class="n">run&lt;/span> &lt;span class="o">--&lt;/span>&lt;span class="n">rm&lt;/span> &lt;span class="o">-&lt;/span>&lt;span class="n">it&lt;/span> &lt;span class="o">--&lt;/span>&lt;span class="n">name&lt;/span> &lt;span class="n">ucp&lt;/span> \
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="o">-&lt;/span>&lt;span class="n">v&lt;/span> &lt;span class="o">/&lt;/span>&lt;span class="k">var&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">run&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">docker&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">sock&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="k">var&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">run&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">docker&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">sock&lt;/span> \
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">docker&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">ucp&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="mf">2.1&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="mi">4&lt;/span> &lt;span class="n">install&lt;/span> \
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="o">--&lt;/span>&lt;span class="n">host&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">address&lt;/span> &lt;span class="mf">10.68&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="mf">69.12&lt;/span> \
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="o">--&lt;/span>&lt;span class="n">interactive&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>以上命令中10.68.69.12是UCP主机的ip地址，建议UCP使用固定IP。以上命令完毕后用浏览器访问这个IP。&lt;/p>
+&lt;p>参考以下文档，完成UCP的安装步骤，其中需要到Docker网站获得30天的试用版许可证文件。&lt;/p>
+&lt;p>&lt;a class="link" href="https://docs.docker.com/datacenter/ucp/2.1/guides/admin/install/" target="_blank" rel="noopener"
+>https://docs.docker.com/datacenter/ucp/2.1/guides/admin/install/&lt;/a>&lt;/p>
+&lt;p>能够正常登陆访问UCP之后，在首页下方点击 【Add Node】按钮，获得加其它节点到群集里的命令，参考命令如下：&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">docker swarm join \
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> --token SWMTKN-1-1310ah7gzj9e7bk6a5yobo2qyiwf93ybrd29flkved1zqydd6i-7pir0884sag5pjofwzjq5o1um \
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> 10.68.69.12:2377
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>把以上命令记录在写字板中备用。&lt;/p>
+&lt;h2 id="加3个节点到群集里">加3个节点到群集里
+&lt;/h2>&lt;p>把剩下的三个虚拟机开机，进入操作系统后设定主机名和IP。其中的一个安装DTR（Docker镜像仓库）的节点建议使用固定IP。&lt;/p>
+&lt;p>在每个操作系统里面用docker命令确认DVP是否正常。&lt;/p>
+&lt;ul>
+&lt;li>docker plugin ls&lt;/li>
+&lt;li>docker volume ls&lt;/li>
+&lt;li>systemctl status iscsid&lt;/li>
+&lt;/ul>
+&lt;p>下面就可以把上一步所记录命令在命令行里面执行以下，完毕之后回到UCP的界面中查看是否它们已经添加成功。如下图所示：
+&lt;img src="https://martinliu.cn/images/Screen%20Shot%202017-06-20%20at%209.49.32%20PM.png"
+loading="lazy"
+alt="Screen Shot 2017-06-20 at 9.49.32 P"
+>&lt;/p>
+&lt;h2 id="安装dtr-docker镜像仓库">安装DTR-Docker镜像仓库
+&lt;/h2>&lt;p>在UCP首页的下方，找到并点击 【Install DTR】的按钮，取得安装命令（记得从清单中选择固定IP地址的DTR主机）；在登录DTR主机的控制台里面输入这个命令，命令如下：&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;span class="lnt">4
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">docker run -it --rm \
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> docker/dtr:2.2.5 install \
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> --ucp-node 10.68.69.12 \
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> --ucp-insecure-tls
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>DTR节点没有离线安装的整合包，它需要联网下载很多相关镜像，如果网络速度不是很快的话，下载和安装的过程需要至少半个小时，过程中还需要输入UCP的管理员，用户名和密码。&lt;/p>
+&lt;p>参考文档如：
+&lt;a class="link" href="https://docs.docker.com/datacenter/dtr/2.2/guides/admin/install/#step-3-install-dtr" target="_blank" rel="noopener"
+>https://docs.docker.com/datacenter/dtr/2.2/guides/admin/install/#step-3-install-dtr&lt;/a>&lt;/p>
+&lt;p>DTR正常工作了以后，登录建立一个名为owncloud的镜像库，点击【New Rrepository】输入owncloud。
+在一个节点上下载owncloud镜像，添加新的tag，上传到这个镜像到镜像库里备用。参考命令如下：&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;span class="lnt">4
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">docker login dtr.zenlab.local
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">docker pull owncloud
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">docker tag owncloud:latest dtr.zenlab.local/admin/owncloud:latest
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">docker push dtr.zenlab.local/admin/owncloud:latest
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>&lt;img src="https://martinliu.cn/images/Screen%20Shot%202017-06-20%20at%2010.10.13%20PM.png"
+loading="lazy"
+alt="Screen Shot 2017-06-20 at 10.10.13 P"
+>&lt;/p>
+&lt;p>注意：如果你的环境中没有DNS，就把dtr.zenlab.local换成DTR的IP地址。&lt;/p>
+&lt;p>以上这个步骤主要是方便以后，反复使用和测试这个镜像的可能性，如果所有的节点都有高速的互联网链接，可以忽略以上步骤。&lt;/p>
+&lt;h2 id="docker-swarm群集中使用dvp">Docker Swarm群集中使用DVP
+&lt;/h2>&lt;p>这里使用UCP的图形化界面，在一个所有节点都配置和部署了VDP的群集上，给群集挂载外部Nutanix的数据卷。&lt;/p>
+&lt;p>登录UCP主页，点击Resource，点击Volumes，点击 【Create Volume】，输入相关参数，如下图所示。图中的sizeMb=500000这个参数是制定VolumeGroup的大小，不设定这个参数的话，默认是10GB。
+&lt;img src="https://martinliu.cn/images/Screen%20Shot%202017-06-21%20at%2012.22.24%20AM.png"
+loading="lazy"
+alt="Screen Shot 2017-06-21 at 12.22.24 A"
+>&lt;/p>
+&lt;p>在到Nutanix的Prism里面查看这个Volume Group是否存在。应该如下图所示：&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/images/Screen%20Shot%202017-06-21%20at%2012.23.32%20AM.png"
+loading="lazy"
+alt="Screen Shot 2017-06-21 at 12.23.32 A"
+>&lt;/p>
+&lt;h2 id="部署owncloud网盘服务">部署OwnCloud网盘服务
+&lt;/h2>&lt;p>登录UCP主页，点击 Service ， 点击 【Create a Service】按钮；开始建立这个服务。输入服务名，镜像名；点击 【Next】按钮。&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/images/Screen%20Shot%202017-06-20%20at%2010.49.10%20PM.png"
+loading="lazy"
+alt="Screen Shot 2017-06-20 at 10.49.10 P"
+>&lt;/p>
+&lt;p>点击 【Next】按钮。进入 Resource页面，这里需要配置端口和数据卷。
+&lt;img src="https://martinliu.cn/images/Screen%20Shot%202017-06-20%20at%2010.49.35%20PM.png"
+loading="lazy"
+alt="Screen Shot 2017-06-20 at 10.49.35 P"
+>&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/images/Screen%20Shot%202017-06-20%20at%2010.49.58%20PM.png"
+loading="lazy"
+alt="Screen Shot 2017-06-20 at 10.49.58 P"
+>&lt;/p>
+&lt;p>最后点击【Deploy Now】按钮。 部署完毕之后，显示这个服务的状态为正常。
+&lt;img src="https://martinliu.cn/images/Screen%20Shot%202017-06-21%20at%2012.25.51%20AM.png"
+loading="lazy"
+alt="Screen Shot 2017-06-21 at 12.25.51 A"
+>&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/images/Screen%20Shot%202017-06-20%20at%2010.52.28%20PM.png"
+loading="lazy"
+alt="Screen Shot 2017-06-20 at 10.52.28 P"
+>&lt;/p>
+&lt;p>点击这个服务，到这个页面的最下方，找到右下角的发布端口的链接，点击后，就可以看到ownCloud的初始化配置页面了。
+&lt;img src="https://martinliu.cn/images/Screen%20Shot%202017-06-20%20at%2010.53.24%20PM.png"
+loading="lazy"
+alt="Screen Shot 2017-06-20 at 10.53.24 P"
+>&lt;/p>
+&lt;p>输入管理员的用户名和密码，进入之后，上传一些图片，测试一下功能是否正常。&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/images/Screen%20Shot%202017-06-20%20at%2010.54.06%20PM.png"
+loading="lazy"
+alt="Screen Shot 2017-06-20 at 10.54.06 P"
+>&lt;/p>
+&lt;p>尝试一些Docker Datacenter的高级功能，如服务的高可用性；同时Nutanix的DVP在底层保障了数据的持久性和完全性。测试步骤如下：&lt;/p>
+&lt;ol>
+&lt;li>找到运行owncloud的容器，删除这个容器&lt;/li>
+&lt;li>在服务页面查看owncloud服务的状态变化&lt;/li>
+&lt;li>等ownCloud的状态恢复正常之后&lt;/li>
+&lt;li>再次登录ownCloud页面&lt;/li>
+&lt;li>查看和确认刚才上传的文件是否还在&lt;/li>
+&lt;/ol>
+&lt;h2 id="总结">总结
+&lt;/h2>&lt;p>Nutanix是一种融合和了计算、存储和虚拟化（内置KVM）的超融合平台。Nutanix DVP (Docker Volume Plug-in)可以让平台里的容器用上持久化存储服务。DVP不仅可以给单独虚拟机里的容器提供持久卷服务，还能给类似于Docker Swarm的其它容器编排平台提供持久化数据服务功能。我后续的文章还会分享路测试Kubernetes等其它平台。&lt;/p></description></item><item><title>Game of Cloud 对比三大主流公有云厂商</title><link>https://martinliu.cn/blog/game-of-cloud/</link><pubDate>Thu, 07 Sep 2017 00:00:00 +0000</pubDate><guid>https://martinliu.cn/blog/game-of-cloud/</guid><description>&lt;img src="https://martinliu.cn/images/abstract-10.jpg" alt="Featured image of post Game of Cloud 对比三大主流公有云厂商" />&lt;p>在全球范围内，公有云发展的正如火如荼，对IT行业技术的发展产生了很大的影响，从私有云到公有云，到混合云，再到云原生应用和DevOps。这一连串的连锁，也反映出了最近10年来IT行业发展的主流趋势。&lt;/p>
+&lt;h2 id="各种味道的云计算">各种味道的云计算
+&lt;/h2>&lt;p>参考来源：&lt;a class="link" href="https://www.networkworld.com/article/3173056/cloud-computing/battle-of-the-clouds-amazon-web-services-vs-microsoft-azure-vs-google-cloud-platform.html?upd=1504859548812" target="_blank" rel="noopener"
+>Battle of the clouds: Amazon Web Services vs. Microsoft Azure vs. Google Cloud Platform&lt;/a> 作者 Brandon Butler, Senior Editor, Network World ，FEB 22, 2017 12:42 PM PT Which flavor of IaaS public cloud has what you need?&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/images/15048603211912.jpg"
+loading="lazy"
+alt="15048603211912"
+>&lt;/p>
+&lt;p>对于行业观察者而言Amazon AWS是IaaS公有云市场里，不容争辩的领导者。而Azure正在逐渐缩小与AWS之间的差距，后来者GCP正大踏步的走来。&lt;/p>
+&lt;p>根据Gartner对云厂商的深度评估，它分析了云厂商对企业工作负载的满足情况，AWS在最近的三年里，在234项功能对比中，保持着92%的满足度，Azure从75%上升到了88%。GCP也进入到了70%的程度。如下图所示：&lt;/p>
+&lt;p>Gartner对IaaS厂商的评估
+&lt;img src="https://martinliu.cn/images/15048608641706.jpg"
+loading="lazy"
+alt="15048608641706"
+>&lt;/p>
+&lt;p>重点看Required这一列的百分比。这些企业级功能被分类为三个级别：&lt;/p>
+&lt;ol>
+&lt;li>
+&lt;pre>&lt;code>Required 必须具备的；
+&lt;/code>&lt;/pre>
+&lt;/li>
+&lt;li>
+&lt;pre>&lt;code>Preferred 最好能具备的；
+&lt;/code>&lt;/pre>
+&lt;/li>
+&lt;li>
+&lt;pre>&lt;code>Optional：推荐具备的。
+&lt;/code>&lt;/pre>
+&lt;/li>
+&lt;/ol>
+&lt;h3 id="amazon-web-services">Amazon Web Services
+&lt;/h3>&lt;p>AWS是IaaS公有云市场的缔造者，它在2006年发布了第一项云服务Simple Storage Service - S3；Gartner认为它是最成熟的公有云服务提供商，它的功能从广度和深度上，都能最广泛的，能覆盖各种使用场景。它的优缺点如下图所示：&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/images/15048620083336.jpg"
+loading="lazy"
+alt="15048620083336"
+>&lt;/p>
+&lt;p>AWS的优缺点
+优点 缺点
+最大和最成熟的公有云IaaS厂商，具有最强大和多样性的功能集合，被Garter称为：最广泛使用场景里的”安全之选“ 尽管AWS的入门和上手是容易的，它还是需要专业人士的管理和驾驭。由于它的功能性的宽广，这会让用老用于也难于面对多种的实施方案，需要第三方的专业顾问帮忙。
+市场里的思想领袖和创新者，不断推出各种IaaS的新特性，例如Lambda无服务计算平台 对于用户的时间和实施能力而言，AWS有时候创新速度太快了，用户的知识很快就会过时，需要他们持续地更新AWS功能和平台的知识。
+AWS的云市场具有最广泛的第三方工具的选择。而且它的顾问和专家的人数也是最多的，他们可以帮助到AWS的用户。 AWS一直以来都不是追求高价格。用户在每次购买服务的时候都有不同折扣，有时候需要使用第三方的工具帮忙管理成本。&lt;/p>
+&lt;p>从技术的角度看，AWS持续创新的速度和动力都是非常强大的，服务更新的频率和速度非常快，在某种程度上超过了客户的适应和学习的速度，增加了客户的学习成本。它的SLA的规定有时候过于繁琐的，例如：需要客户的工作负载必须跨两个AZ部署，这会增加客户的成本。刨除以上所有对于客户的挑战，Gartner依然称之为云计算使用的“安全之选”。&lt;/p>
+&lt;h3 id="microsoft-azure">Microsoft Azure
+&lt;/h3>&lt;p>微软Azure逐渐变成了//Application development platform as a service (PaaS)的PaaS平台，其实它可以提供包括IaaS、PaaS和SaaS等广泛的服务。微软Azure最大的优势可能是他广大的企业客户基础。很多客户已经把Office系统迁移到了Office 365 SaaS服务上了，微软继续给用户提供大量的IaaS使用折扣（点卡），鼓励用户上云。&lt;/p>
+&lt;p>Azure从功能角度看不管是计算、存储，还是数据库和IoT等方面，都与AWS非常的接近和匹配。微软试图通过混合云的策略区别于AWS。因此它提供了Azure Stack私有云方案。&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/images/15048652573559.jpg"
+loading="lazy"
+alt="15048652573559"
+>&lt;/p>
+&lt;p>Microsoft Azure的优势和劣势
+优点 缺点
+微软在构建Azure全球的数据中心基础设施方面和云功能开发上已经做出了巨大的投资。Gatner说Azure在IaaS公有云方面是”足够好了” 尽管Aure具有了大多数Gartner企业工作负载所需的功能，这些产品和API在某些情况下还不像它的友商AWS那样的成熟。
+微软和几乎所有的大型企业具有长期和稳定的关系，在现有的企业协议EA里提供了非常具有吸引力的Azure的供给。 与Azure云集成的第三方公司的产品数量有限，相对于AWS，它的专家顾问社区也比较小。
+微软Azure提供集成化的IaaS、PaaS和SaaS（Office 365）。Azure是已经多年投资于微软系列产品者的理想的选择。它的混合云的方案是很有吸引力的，包括Hyper-V，Windows Server，Active Direcitory， Visual Studio 和最近的Azure Stack。 在区域的设计中，Azure和AWS不同，它的Zone的概念和AWS不同，这会让工作负载的备份相对的稍微有点难。尽管在支持开源和非微软技术方面花费了大量的精力，微软公司任然不算是一个开源的领导者，而AWS和Google的云则是开源技术工作负载的一个更中立的选择。&lt;/p>
+&lt;p>显然Azure最适合运行的是微软类型的工作负载，或者最适用于把已有的微软平台应用跑在公有云中。对于那些企业客户的EA，其中会包含一定数目的Azure点卡，不用可惜，用起来的话，Azure的使用还是比较经济的。&lt;/p>
+&lt;p>Azure没有AZ的概念可谓是技术上的硬伤，比起AWS，这会导致跨区的备份略显麻烦一点。 业内Azure的专家和顾问还是相对较少。Gartner IaaS Magic Quadrant认为Azure对于大多数企业工作负载而言，已经是 足够用了“good enough”。&lt;/p>
+&lt;h3 id="google-cloud-platform">Google Cloud Platform
+&lt;/h3>&lt;p>GCP与Azure类似，开始于PaaS，然后扩展到IaaS。分析师认为它特别适合跑某些使用场景，包括容器、大数据和机器学习。GCP在全球范围的数据中心相对较少。&lt;/p>
+&lt;p>Google也有类似于Office 365 的办公套件SaaS服务，是G Suite，它的价格策略是，用的人越多，单价越便宜。&lt;/p>
+&lt;p>GCP还是在发展中的云计算，从功能上讲，根据Gartner的年度评估，GCP仅满足70%的必选功能。技术上的优势在于：Google是开源的大数据（Hadoop、 Spark 等）技术、机器学习技术（Tensorflow）和容器编排技术（Kubernetes），它在开发者社区里从来没有缺少过粉丝，它对技术发展的影响不可小觑，这些影响最终都可以通过吸引用户使用GCP来使Google收益，并把这些技术变现。&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/images/15048666386599.jpg"
+loading="lazy"
+alt="15048666386599"
+>&lt;/p>
+&lt;p>Google Cloud Platform&lt;/p>
+&lt;p>在2016年Google招聘了VMWare的联合创始人Diane Greene，这标志着它计划向企业级能力和市场挺进。
+Game of Cloud 公有云的游戏&lt;/p>
+&lt;p>分析师认为对于大多数云的用户来说，并不是做的“零和游戏”的选择，很多人使用多云的策略。多云管理平台厂商RightScale，对1000个用户的调查分析 可以看出，用户57%的应用在AWS上，34%的应用在Azure上，15%跑在GCP上。85%的 RightScale的用户使用多云的策略，可能是：公有云+私有云；或者公有云A+公有云B+？？。&lt;/p>
+&lt;h2 id="硬碰硬功能对比">硬碰硬功能对比
+&lt;/h2>&lt;h3 id="计算">计算
+&lt;/h3>&lt;p>&lt;img src="https://martinliu.cn/images/15048779648996.png"
+loading="lazy"
+alt="15048779648996"
+>&lt;/p>
+&lt;p>AWS Azure GCP
+EC2 云中的虚拟服务器 Virtual Machines 在几秒钟内预配好 Windows 和 Linux 虚拟机 Compute Engine: Run VMs on Google&amp;rsquo;s infrastructure
+EC2 Container Service/Registry 运行和管理 Docker 容器，容器镜像仓库服务。 Service Fabric 在 Windows 或 Linux 上开发微服务和安排容器 Container Engineer: Container cluster, Workloads, Discovery&amp;amp;load balancing, Configuration, storage
+Lightsail 启动和管理虚拟专有服务器 App Service 快速创建适用于 Web 和移动的强大云应用 Cloud Launcher: Cloud Launcher lets you quickly deploy software on Google Cloud Platform
+Elastic Beanstalk 运行和管理 Web 应用 Cloud Services 创建高度可用且可无限缩放的云应用程序和 API App Engine: PaaS for apps and backends
+Lambda 运行您的代码以响应事件 Functions 使用无服务器代码处理事件 Cloud Functions : Serverless Applications on Google’s Infrastructure
+Batch 运行任意规模的批处理作业 Batch 云规模的作业计划和计算管理 无专门的服务，Google App Engine provides a Cron service. Using this service for scheduling and Google Cloud Pub/Sub for distributed messaging, you can build an application to reliably schedule tasks across a fleet of Compute Engine instances.
+Auto Scaling 自动化弹性扩展 Virtual Machine Scale Sets 管理并扩展到数千台 Linux 和 Windows 虚拟机 Instance Groups: managed instance groups can automatically scale the number of instances in the group.&lt;/p>
+&lt;p>从概念上讲，提供的虚拟机功能是没什么差别的，包括虚拟机的自动化扩容和缩容功能都是类似的。区别在于其他的相关功能上。&lt;/p>
+&lt;p>AWS在Serverlesss架构方面的Lambda是最领先的，它有最丰富的云市场，能提供最丰富的第三方应用服务，通过Lightsail和云市场都可以一键式启动特定配置的预装应用虚拟机/虚拟机集合。&lt;/p>
+&lt;p>Azure在发布Winddows客户端应用上是有优势的。在其它功能上基本上可以和AWS对齐。&lt;/p>
+&lt;p>GCP的明显优势是GEK，K8S如日中天的热度刺激人么对其GKE和GCE的关注和使用。&lt;/p>
+&lt;h3 id="全世界数据中心覆盖">全世界数据中心覆盖
+&lt;/h3>&lt;h4 id="aws-location-数据中心在全球的覆盖">AWS Location 数据中心在全球的覆盖
+&lt;/h4>&lt;p>AWS Regions and Availability Zones&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/images/15048815252579.png"
+loading="lazy"
+alt="15048815252579"
+>&lt;/p>
+&lt;p>&lt;a class="link" href="https://aws.amazon.com/about-aws/global-infrastructure/" target="_blank" rel="noopener"
+>https://aws.amazon.com/about-aws/global-infrastructure/&lt;/a>&lt;/p>
+&lt;p>已经开放的区和AZ：
+US East
+N. Virginia (6), Ohio (3)&lt;/p>
+&lt;p>US West
+N. California (3), Oregon (3)&lt;/p>
+&lt;p>Asia Pacific
+Mumbai (2), Seoul (2), Singapore (2), Sydney (3), Tokyo (3)&lt;/p>
+&lt;p>Canada
+Central (2)&lt;/p>
+&lt;p>China
+Beijing (2)&lt;/p>
+&lt;p>Europe
+Frankfurt (3), Ireland (3), London (2)&lt;/p>
+&lt;p>South America
+São Paulo (3)&lt;/p>
+&lt;p>AWS GovCloud (US-West) (2)&lt;/p>
+&lt;p>绿色的圈是要开放的区。&lt;/p>
+&lt;p>China&lt;/p>
+&lt;p>France&lt;/p>
+&lt;p>Hong Kong&lt;/p>
+&lt;p>Sweden&lt;/p>
+&lt;p>AWS GovCloud (US-East)&lt;/p>
+&lt;h4 id="azure-region">Azure Region
+&lt;/h4>&lt;p>&lt;a class="link" href="https://azure.microsoft.com/en-us/regions/" target="_blank" rel="noopener"
+>https://azure.microsoft.com/en-us/regions/&lt;/a>&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/images/15048814480576.png"
+loading="lazy"
+alt="15048814480576"
+>&lt;/p>
+&lt;p>蓝色三角的是要开放的区。&lt;/p>
+&lt;h4 id="gcp-的-cloud-locations">GCP 的 Cloud Locations
+&lt;/h4>&lt;p>&lt;a class="link" href="https://cloud.google.com/about/locations/" target="_blank" rel="noopener"
+>https://cloud.google.com/about/locations/&lt;/a>
+&lt;img src="https://martinliu.cn/images/15048816324535.png"
+loading="lazy"
+alt="15048816324535"
+>&lt;/p>
+&lt;p>蓝色的是要开放的区。&lt;/p>
+&lt;p>GCP的另外一个卖点是它的全球高速光缆链接的网络。
+&lt;img src="https://martinliu.cn/images/15048819181658.png"
+loading="lazy"
+alt="15048819181658"
+>&lt;/p>
+&lt;h3 id="存储服务">存储服务
+&lt;/h3>&lt;p>参考来源： &lt;a class="link" href="https://www.networkworld.com/article/3191520/cloud-computing/deep-dive-on-aws-vs-azure-vs-google-cloud-storage-options.html" target="_blank" rel="noopener"
+>https://www.networkworld.com/article/3191520/cloud-computing/deep-dive-on-aws-vs-azure-vs-google-cloud-storage-options.html&lt;/a>&lt;/p>
+&lt;h4 id="块存储对比">块存储对比
+&lt;/h4>&lt;p>&lt;img src="https://martinliu.cn/images/15048819776777.jpg"
+loading="lazy"
+alt="15048819776777"
+>&lt;/p>
+&lt;h4 id="对象存储">对象存储
+&lt;/h4>&lt;p>&lt;img src="https://martinliu.cn/images/15048820049019.jpg"
+loading="lazy"
+alt="15048820049019"
+>&lt;/p>
+&lt;h4 id="文件存储">文件存储
+&lt;/h4>&lt;p>&lt;img src="https://martinliu.cn/images/15048820280796.jpg"
+loading="lazy"
+alt="15048820280796"
+>&lt;/p>
+&lt;h2 id="game-of-clouds">Game of Clouds
+&lt;/h2>&lt;p>AWS 2017 云市场应用排名&lt;/p>
+&lt;p>From: &lt;a class="link" href="https://www.cloudendure.com/blog/aws-cloud-computing-map-game-of-clouds-2017" target="_blank" rel="noopener"
+>https://www.cloudendure.com/blog/aws-cloud-computing-map-game-of-clouds-2017&lt;/a>&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/images/Game-of-Clouds-12.07.17.jpg"
+loading="lazy"
+alt="Game-of-Clouds-12.07.17"
+>&lt;/p>
+&lt;p>AWS的云市场反映出它强大的第三方伙伴和生态系统。&lt;/p>
+&lt;p>&lt;strong>Azure Stack&lt;/strong>&lt;/p>
+&lt;p>这是它区别于其它云的功能点，是可以在企业数据中心里部署的私有云IaaS平台。它与Azure公有云遥相呼应，为客户提供了混合云方案。&lt;/p>
+&lt;p>本地运行 Azure 服务 根据你的需求正确组合云和本地部署来满足业务和技术要求。Azure 基础结构即服务 (IaaS) 传输远优于传统虚拟化。借助虚拟机规模集，新式工作负荷的真正自动扩展可实现快速部署。一致的 Azure 平台即服务 (PaaS) 功能将混合部署选择和可移植性引入云应用程序。因此，可在本地运行完全托管的 PaaS、无服务器计算、分布式微服务体系结构和容器管理。&lt;/p>
+&lt;p>生成跨混合云环境的新式应用程序 Azure Stack 是 Azure 的扩展，将云计算的敏捷性和快节奏创新引入到本地环境。只有 Azure Stack 才能让你从组织的数据中心提供 Azure 服务，同时适度平衡灵活性和控制程度，实现真正一致性的混合云部署。&lt;/p>
+&lt;p>利用一致的环境加速开发 无论应用是在 Azure 还是在 Azure Stack 上运行，开发人员都能以相同的方式生成和部署应用程序，从而实现工作效率最大化。一套工具 - 使用相同的应用程序模块、自助服务门户和由 Azure Resource Manager 启用的 API。常规 DevOps — 通过 Jenkins 和 Visual Studio Team Services 体验持续部署和集成，通过 Chef 和 Azure PowerShell DSC 扩展体验自动化。 开源 — 使用 Java、Python、Node.js、PHP、Docker 集成式容器、Mesosphere DC/OS 和 Cloud Foundry 等众多开源技术。&lt;/p></description></item><item><title>互联网规模的超融合平台</title><link>https://martinliu.cn/blog/nu-school-converged-platform/</link><pubDate>Mon, 20 Feb 2017 00:00:00 +0000</pubDate><guid>https://martinliu.cn/blog/nu-school-converged-platform/</guid><description>&lt;img src="https://martinliu.cn/images/abstract-3.jpg" alt="Featured image of post 互联网规模的超融合平台" />&lt;p>nu.shool 牛学院系列以视频加文字的形式，向您展示Nutanix云平台的技术特性和细节。&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/images/Tech_TopX-_Converged_Platform_mp4.png"
+loading="lazy"
+alt="Converged_Platform"
+>&lt;/p>
+&lt;p>本期视频是由《Nutanix圣经》的作者Steven Poitras，向您介绍Nutanix超融合系统架构。&lt;/p>
+&lt;!-- raw HTML omitted -->
+&lt;p>&lt;img src="https://martinliu.cn/images/bible-top.png"
+loading="lazy"
+alt="bible"
+>&lt;/p>
+&lt;p>《Nutanix圣经》章节推荐。&lt;/p></description></item><item><title>Nutanix AHV 虚拟机模板制作</title><link>https://martinliu.cn/blog/clone-ahv-vm-template/</link><pubDate>Tue, 10 Jan 2017 00:00:00 +0000</pubDate><guid>https://martinliu.cn/blog/clone-ahv-vm-template/</guid><description>&lt;img src="https://martinliu.cn/images/abstract-10.jpg" alt="Featured image of post Nutanix AHV 虚拟机模板制作" />&lt;p>本文描述了AHV虚拟化的虚拟机模板的制作过程。首先使用ssh登录cvm，进入acropolis命令行。&lt;/p>
+&lt;h2 id="找出模板对应的虚拟机">找出模板对应的虚拟机
+&lt;/h2>&lt;p>使用 vm.disk_get 命令，按多次tab，显示虚拟机清单，复制模板机名称&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;span class="lnt">14
+&lt;/span>&lt;span class="lnt">15
+&lt;/span>&lt;span class="lnt">16
+&lt;/span>&lt;span class="lnt">17
+&lt;/span>&lt;span class="lnt">18
+&lt;/span>&lt;span class="lnt">19
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">&amp;lt;acropolis&amp;gt; vm.disk_get vm-fedora25
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">ide.0 {
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> addr {
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> bus: &amp;#34;ide&amp;#34;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> index: 0
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> }
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> cdrom: True
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> empty: True
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">}
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">scsi.0 {
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> addr {
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> bus: &amp;#34;scsi&amp;#34;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> index: 0
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> }
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> container_id: 4427
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> container_uuid: &amp;#34;9279ba2c-8e8d-4aea-b00f-410df5a18a23&amp;#34;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> vmdisk_size: 10737418240
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> vmdisk_uuid: &amp;#34;7476458e-7917-4df8-b830-a0df5a95dae9&amp;#34;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">}
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;h2 id="创建模板镜像">创建模板镜像
+&lt;/h2>&lt;p>使用从虚拟机磁盘克隆出镜像的命令。&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&amp;lt;acropolis&amp;gt; image.create fedora25-Template clone_from_vmdisk=7476458e-7917-4df8-b830-a0df5a95dae9 image_type=kDiskImage annotation=&amp;#39;Fedora 25 Server Template&amp;#39;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">fedora25-Template: complete
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;h2 id="模板测试">模板测试
+&lt;/h2>&lt;p>登录Prism界面，点击镜像服务，确认清单中刚才创建的虚拟机模板镜像；进入vm页面，创建虚拟机，使用 fedora25-Template 镜像做磁盘&lt;/p></description></item><item><title>Nutanix资源站点清单</title><link>https://martinliu.cn/blog/nutanix-resource-sites/</link><pubDate>Sat, 07 Jan 2017 00:00:00 +0000</pubDate><guid>https://martinliu.cn/blog/nutanix-resource-sites/</guid><description>&lt;img src="https://martinliu.cn/images/google-earth-view-6043.jpg" alt="Featured image of post Nutanix资源站点清单" />&lt;p>做Nutanix的那些不可不知道的资源网站，这里列出了常用的官方和非官方网站。&lt;/p>
+&lt;h2 id="nutanix-官方站点">Nutanix 官方站点
+&lt;/h2>&lt;h3 id="">&lt;a class="link" href="http://portal.nutanix.com/" target="_blank" rel="noopener"
+>http://portal.nutanix.com/&lt;/a>
+&lt;/h3>&lt;p>&lt;a class="link" href="http://portal.nutanix.com/" target="_blank" rel="noopener"
+>http://portal.nutanix.com/&lt;/a>&lt;/p>
+&lt;ul>
+&lt;li>在线文档&lt;/li>
+&lt;li>在线技术支持，case查看和操作&lt;/li>
+&lt;li>产品和补丁下载&lt;/li>
+&lt;/ul>
+&lt;h3 id="">&lt;a class="link" href="https://next.nutanix.com/" target="_blank" rel="noopener"
+>https://next.nutanix.com/&lt;/a>
+&lt;/h3>&lt;p>&lt;a class="link" href="https://next.nutanix.com/" target="_blank" rel="noopener"
+>https://next.nutanix.com/&lt;/a>&lt;/p>
+&lt;ul>
+&lt;li>产品网上论坛和社区&lt;/li>
+&lt;li>社区版论坛&lt;/li>
+&lt;li>博客， Nutanix Connect Blog&lt;/li>
+&lt;/ul>
+&lt;h2 id="技术达人网站和博客">技术达人网站和博客
+&lt;/h2>&lt;h3 id="myvirtualcloudnet-by-andre-leibovici">myvirtualcloud.net by Andre Leibovici
+&lt;/h3>&lt;p>&lt;a class="link" href="http://myvirtualcloud.net/nutanix/" target="_blank" rel="noopener"
+>http://myvirtualcloud.net/nutanix/&lt;/a>&lt;/p>
+&lt;h3 id="virtual-life-style-by-joep-piscaer">Virtual life style by Joep Piscaer
+&lt;/h3>&lt;p>&lt;a class="link" href="https://www.virtuallifestyle.nl/" target="_blank" rel="noopener"
+>https://www.virtuallifestyle.nl/&lt;/a>&lt;/p>
+&lt;h3 id="the-nutanix-bible-by-steven-poitras">The Nutanix Bible by Steven Poitras
+&lt;/h3>&lt;p>&lt;a class="link" href="http://nutanixbible.com/" target="_blank" rel="noopener"
+>http://nutanixbible.com/&lt;/a>&lt;/p>
+&lt;h3 id="marks-blog-by-mark-lavi">Mark&amp;rsquo;s Blog by Mark Lavi
+&lt;/h3>&lt;p>&lt;a class="link" href="http://mlavi.github.io/" target="_blank" rel="noopener"
+>http://mlavi.github.io/&lt;/a>&lt;/p>
+&lt;h3 id="jeremy-sallee----nutanix-uifrontend-设计师">Jeremy Sallee - Nutanix UI/Frontend 设计师
+&lt;/h3>&lt;p>&lt;a class="link" href="http://salleedesign.com/stuff/sdwip/home/" target="_blank" rel="noopener"
+>http://salleedesign.com/stuff/sdwip/home/&lt;/a>&lt;/p>
+&lt;p>想知道Prism是怎么设计出来的：&lt;a class="link" href="http://salleedesign.com/stuff/sdwip/blog/nutanix-case-study/" target="_blank" rel="noopener"
+>点这里&lt;/a>&lt;/p>
+&lt;h3 id="virtual-dennis-by-dennis-laube">Virtual Dennis by Dennis Laube
+&lt;/h3>&lt;p>&lt;a class="link" href="http://www.virtualdennis.com/category/nutanix/" target="_blank" rel="noopener"
+>http://www.virtualdennis.com/category/nutanix/&lt;/a>&lt;/p>
+&lt;ul>
+&lt;li>&lt;a class="link" href="http://www.virtualdennis.com/importing-an-ovf-ova-into-nutanix-ahv-using-prism/" target="_blank" rel="noopener"
+>如何ova格式的虚拟机导入Nutanix AHV&lt;/a> 镜像服务能够支持Web界面上传导入的格式包括：raw, vhd, vmdk, vdi, iso 和 qcow2 磁盘，导入为Disk后，即可用做模板&lt;/li>
+&lt;li>&lt;a class="link" href="http://www.virtualdennis.com/nutanix-acropolis-hypervisor-ahv-create-an-image-service-template-from-an-existing-vm/" target="_blank" rel="noopener"
+>如何在Nutanix中制作AHV虚拟机模板&lt;/a> 使用acli命令：vm.disk_get；image.create W2K12R2-Template clone_from_vmdisk=69df5abd-6570-4ce1-ba77-2d117c3df7e5 image_type=kDiskImage&lt;/li>
+&lt;li>&lt;/li>
+&lt;/ul>
+&lt;h2 id="其他资源">其他资源
+&lt;/h2>&lt;h3 id="nutanix-viso-图标下载">Nutanix viso 图标下载
+&lt;/h3>&lt;p>&lt;a class="link" href="http://www.visiocafe.com/nutanix.htm" target="_blank" rel="noopener"
+>http://www.visiocafe.com/nutanix.htm&lt;/a>&lt;/p></description></item><item><title>Nutanix AOS 5.0 新版本新特性</title><link>https://martinliu.cn/2017/01/04/Nutanix-AOS-5.0/</link><pubDate>Wed, 04 Jan 2017 00:00:00 +0000</pubDate><guid>https://martinliu.cn/2017/01/04/Nutanix-AOS-5.0/</guid><description>&lt;img src="https://martinliu.cn/images/RoyalBarge_ROW9071716647_1920x1080.jpg" alt="Featured image of post Nutanix AOS 5.0 新版本新特性" />&lt;p>Nutanix AOS 5.0 是一个很重要的功能更新大版本，它一气儿带来了46项之多的新功能；在您安装或者测试这个版本&amp;gt; 之前，先通过本文快速了解一下这些更新，可能是更加节省时间的方法。&lt;/p>
+&lt;h2 id="主要功能清单">主要功能清单
+&lt;/h2>&lt;p>myvirtualcloud.net网站用了4个blog，讲了下面的36项新特性：&lt;/p>
+&lt;ol>
+&lt;li>Cisco UCS B-Series Blade Servers Support&lt;/li>
+&lt;li>Acropolis Affinity and Anti-affinity&lt;/li>
+&lt;li>Acropolis Dynamic Scheduling (DRS++)&lt;/li>
+&lt;li>REST API 2.0 and 3.0&lt;/li>
+&lt;li>Support for XenServer TechPreview&lt;/li>
+&lt;li>Network Visualization&lt;/li>
+&lt;li>What-if analysis for New workloads and Allocation-based forecasting&lt;/li>
+&lt;li>Native Self-Service Portal&lt;/li>
+&lt;li>Snapshots – Self Service Restore UI&lt;/li>
+&lt;li>Network Partner Integration Framework&lt;/li>
+&lt;li>Metro Availability Witness&lt;/li>
+&lt;li>VM Flash Mode Improvements&lt;/li>
+&lt;li>Acropolis File Services GA (ESXi and AHV)&lt;/li>
+&lt;li>Acropolis Block Services (CHAP authentication)&lt;/li>
+&lt;li>Oracle VM and Oracle Linux Certified for AHV&lt;/li>
+&lt;li>SAP Netweaver stack Certified for AHV&lt;/li>
+&lt;li>Prism Search Improvements (support for Boolean expressions)&lt;/li>
+&lt;li>I/O Metrics Visualization&lt;/li>
+&lt;li>1-Click Licensing&lt;/li>
+&lt;li>LCM – Lifecycle Manager&lt;/li>
+&lt;li>Additional Prism Improvements&lt;/li>
+&lt;li>AHV Scale Improvements&lt;/li>
+&lt;li>AHV CPU and Memory Hot Add (Tech Preview)&lt;/li>
+&lt;li>Advanced Compression for Cold Data&lt;/li>
+&lt;li>Acropolis Change Block Tracking (CBT) for Backup Vendors&lt;/li>
+&lt;li>Predictable Performance with Autonomic QoS&lt;/li>
+&lt;li>NCC 3.0 with Prism Integration&lt;/li>
+&lt;li>1-Node Replication Target&lt;/li>
+&lt;li>Improved Mixed Workload Support with QoS&lt;/li>
+&lt;li>Simplified SATADOM Replacement Workflow&lt;/li>
+&lt;li>Mixed Node Support with Adaptive Replica Selection&lt;/li>
+&lt;li>Dynamically Decreased Erasure Coding Stripes – Node Removals&lt;/li>
+&lt;li>Multi Metadata Disk Support for use available SSDs on the node for metadata&lt;/li>
+&lt;li>Erasure Coding(EC) support for changing the Replication Factor (RF) on containers&lt;/li>
+&lt;li>Inline Compression for OpLog&lt;/li>
+&lt;li>Linux Kernel Upgrade&lt;/li>
+&lt;/ol>
+&lt;ul>
+&lt;li>&lt;a class="link" href="http://myvirtualcloud.net/nutanix-5-0-features-overview-beyond-marketing-part-1/" target="_blank" rel="noopener"
+>Nutanix 5.0 Features Overview (Beyond Marketing) – Part 1&lt;/a>&lt;/li>
+&lt;li>&lt;a class="link" href="http://myvirtualcloud.net/nutanix-5-0-features-overview-beyond-marketing-part-2/" target="_blank" rel="noopener"
+>Nutanix 5.0 Features Overview (Beyond Marketing) – Part 2&lt;/a>&lt;/li>
+&lt;li>&lt;a class="link" href="http://myvirtualcloud.net/nutanix-5-0-features-overview-beyond-marketing-part-3/" target="_blank" rel="noopener"
+>Nutanix 5.0 Features Overview (Beyond Marketing) – Part 3&lt;/a>&lt;/li>
+&lt;li>&lt;a class="link" href="http://myvirtualcloud.net/nutanix-5-0-features-overview-beyond-marketing-part-4/" target="_blank" rel="noopener"
+>Nutanix 5.0 Features Overview (Beyond Marketing) – Part 4&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;h2 id="nutanix官方blog新版本介绍">Nutanix官方Blog新版本介绍
+&lt;/h2>&lt;p>Nutanix 官方Blog的新版本发布帖 &lt;a class="link" href="https://www.nutanix.com/2017/01/03/5-0-release/" target="_blank" rel="noopener"
+>The 5.0 Release is Here&lt;/a>&lt;/p>
+&lt;p>Nutanix AOS 5.0 is available now for you to download and will carry a huge payload of innovation across Acropolis – the data plane, Prism – the management plane and AHV – built-in hypervisor. Over the last couple of months we have spoken about different capabilities that will be part of this release. Before we get into details of the release, it is important to take a step back and understand how the core platform is evolving.&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/images/14835396530706.png"
+loading="lazy"
+>&lt;/p>
+&lt;ul>
+&lt;li>These services are announced but will be generally available in a subsequent product release&lt;/li>
+&lt;/ul>
+&lt;p>To deliver on the vision of Enterprise Cloud and offer public cloud-like services within the datacenter, it is important for us to provide infrastructure services similar to what the public cloud offers. Different workloads have different infrastructure needs and it is important to provide services that can be “turned-on” and “turned-off” based on applications needs – all without having to touch the underlying physical infrastructure. This is exactly what AWS does and that is what we are working towards with our Enterprise Cloud Platform as well.&lt;/p>
+&lt;p>Here is a comparison of some of these infrastructure services offered by AWS and Nutanix. The core tenets of the public cloud and the pay-as-you-grow economics are as applicable to Nutanix as it is to the public cloud.&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/images/14835397395341.png"
+loading="lazy"
+>&lt;/p>
+&lt;p>The 5.0 release adds new infrastructure services to the platform and enhances the ones that already exist; delivering greater flexibility and potential cost savings for IT organizations of all sizes. With over 45 new capabilities in the software and hundreds of feature enhancements, this release is definitely a huge milestone for us.&lt;/p>
+&lt;p>While it is impossible for us to cover all the capabilities in detail in one single blog, let me attempt to do a quick walk through of the ones we think you will love!&lt;/p>
+&lt;h3 id="acropolis--data-plane-enhancements">Acropolis – Data Plane Enhancements
+&lt;/h3>&lt;p>&lt;strong>Acropolis File Services (AFS)Generally Available:&lt;/strong> AFS is a natively built file storage service that eliminates the need for standalone NAS solutions. This capability was in Tech Preview for the past several months and is generally available with the 5.0 release. With AFS, customers can consolidate their virtual machines and the file data they rely on within the same cluster. AFS will work on ESXi and AHV hypervisors for a wide variety of use cases such as user-profiles, home directories, archives and more. You can learn more about this capability in this blog. Here is a quick summary &lt;a class="link" href="https://next.nutanix.com/t5/Nutanix-Connect-Blog/Ten-Things-you-need-to-know-about-Nutanix-Acropolis-File/ba-p/14524" target="_blank" rel="noopener"
+>blog on AFS.&lt;/a>&lt;/p>
+&lt;p>&lt;strong>Acropolis Block Services (ABS) Enhancements:&lt;/strong> ABS, like AFS, is natively built to expose storage to non-virtualized workloads. This capability was introduced in the 4.7 release. We have significantly enhanced ABS in 5.0 with support for dynamic load balancing and flash pinning for better performance, improved security through CHAP for safer client-server conversations and online resizing for higher availability. Additionally, Oracle joins the list of certified workloads on ABS. Here is a quick summary &lt;a class="link" href="http://next.nutanix.com/t5/Nutanix-Connect-Blog/Ten-Things-you-need-to-know-about-Nutanix-Acropolis-Block/ba-p/14969" target="_blank" rel="noopener"
+>blog on ABS.&lt;/a>&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/images/14835399454618.png"
+loading="lazy"
+>&lt;/p>
+&lt;p>&lt;strong>Metro Availability Witness:&lt;/strong> Metro Availability is Nutanix’s synchronous replication solution for DR. Metro Availability Witness is a light-weight service that will be able to run anywhere to enable automatic failover from one site to another without service disruption by monitoring the status of both sites.&lt;/p>
+&lt;p>&lt;strong>Compression Enhancements:&lt;/strong> The compression algorithm used for capacity optimization has significantly improved in the 5.0 release resulting in more efficient data compression. Additionally, on All-flash systems, compression will be turned on by default. With compression, deduplication, erasure coding and other native capacity optimization capabilities, customers can achieve up to 4:1 savings (depending on data type).&lt;/p>
+&lt;p>&lt;strong>Single-node Replication Target:&lt;/strong> One of the common asks from Remote and Branch office/SMB customers was to have a single-node backup/replication target for smaller deployments of Nutanix. This enables customers to use native backup capabilities and replicate data to a storage heavy node of Nutanix that can be on the same site or a different remote site. With 5.0, this is possible with the single Nutanix node having ~40TB of raw capacity and act as a destination for backup/snapshot data.&lt;/p>
+&lt;h3 id="ahv--hypervisor-enhancements">AHV – Hypervisor Enhancements
+&lt;/h3>&lt;p>AHV, the native hypervisor solution from Nutanix, continues to grow leaps and bounds with several customers standardizing on AHV for all workloads. We have continued to add newer capabilities with every release of the product. 5.0 is no different and adds a couple of very important capabilities.&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/images/14835400613035.png"
+loading="lazy"
+alt="New AHV capabilities over the last few releases"
+>&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/images/14835400780807.png"
+loading="lazy"
+alt="AHV Adoption over the last several quarters"
+>&lt;/p>
+&lt;p>&lt;strong>AHV Affinity Rules:&lt;/strong> Workloads such as Microsoft SQL or Oracle are often attached to a specific node for licensing, security or HW configuration related reasons. With affinity rules, virtual machines can now be “pinned” to a specific host or a set of hosts. Additionally AHV will also support VM VM anti-affinity rules to try ensure that specific VMs are never on the same host together.&lt;/p>
+&lt;p>&lt;strong>Acropolis Dynamic Scheduling (ADS):&lt;/strong> AHV has supported intelligent initial placement for a while now to make sure VMs are placed on the most optimal hosts when they are initially deployed. With ADS, the hypervisor can detect CPU, memory and storage controller hotspots and can move deployed VMs to a host that is ideal suited. Legacy hypervisor solutions factor in CPU and memory alone while making similar decisions. But with AHV, the VM placement algorithms will also factor in storage resources as well as storage controller bottlenecks before making a decision.&lt;/p>
+&lt;p>&lt;strong>CPU/Memory Hot Add:&lt;/strong> With this capability, administrators can add vCPU and memory to a running VM without any service impact. As applications evolve, it is important to dynamically adjust resources assigned to them so that there is no performance impact for the end user. This is what the hot add feature will enable. In the 5.0 release, this feature will be available in Tech preview and is expected to be generally available in a subsequent release.&lt;/p>
+&lt;p>With these capabilities, AHV is ready for all your production workloads and there is very little reason as to why any virtualized workload cannot be run on Nutanix and on AHV. Nutanix customers are already standardizing on AHV and are seeing significant savings in the overall cost of ownership across their entire infrastructure stack.&lt;/p>
+&lt;h3 id="prism--management-plane-enhancements">Prism – Management Plane Enhancements
+&lt;/h3>&lt;p>Over the last year Prism has evolved into a product suite of its own – with Prism Starter and Prism Pro, customers now have an option of choosing a one-click infrastructure management solution or a one-click infra management and operations management solution based on their needs.&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/img/14835402328470.png"
+loading="lazy"
+alt="5.0 brings enhancements to both Prism Starter and Prism Pro."
+>&lt;/p>
+&lt;p>&lt;strong>Prism Self-Service:&lt;/strong> Self-service will bring the goodness of AWS to enterprise datacenters. With this new capability, end-users can login to Prism with their own AD credentials and deploy and monitor applications whenever they want, based on Admin set policies. This removes common friction around developers and end users having to rely on IT admins for common tasks. Instead, administrators just assign resources for specific users or AD groups and end users have complete independence to perform actions that he/she is allowed to do. Here is a quick blog that summarizes this capability.&lt;/p>
+&lt;p>&lt;strong>Network Visualization:&lt;/strong> This is another key capability that is part of Prism. With Network Visualization, administrators will be able to get an end-to-end operational view of the infrastructure all the way down to the networking layer. With views that provide insight into how virtual machines are connected to the host, NICs, the top of rack switches, the VLANs they are part of as well as the health of these connections, administrators will be able to get all the information they want about their infrastructure in a single screen, without having to rely on separate tools. This will help isolating and fixing common networking issues that result in application downtimes.&lt;/p>
+&lt;p>&lt;strong>ESXi Management:&lt;/strong> The simplicity of VM management with Prism will extend to ESXi as well with this release – common VM operations that customers relied on vCenter for will be performed from within Prism. One of the common asks from customers was to not go back and forth to vCenter and instead consolidate all operations on Prism. In the first release as part of 5.0, Prism will enable administrators to perform common VM operations such as VM create, update, delete, clone etc. from within Prism. Combining VM operations and the rich monitoring and analytics, vCenter is only needed for less common maintenance and configuration tasks. With the hypervisor becoming commodity, end users get greater simplicity at the management layer.&lt;/p>
+&lt;p>&lt;strong>Just-in-time Capacity Forecasting (available in Prism Pro):&lt;/strong> This is probably one of the most important additions to Prism. Just-in-time forecasting will enable IT to stay ahead of the game by modeling and understanding infrastructure needs based on application requirements even before applications are deployed. This way, IT not only understands application-centric capacity usage patterns and what can be done to optimize existing capacity, they can also plan their infrastructure needs for the future and deploy infrastructure if and only when they need them at “byte” sized granularity all based on recommendations from Prism.&lt;/p>
+&lt;p>&lt;strong>Search Enhancements (Available in Prism Pro):&lt;/strong> One of the core aspects to delivering a personalized and consumer-grade management experience is to enable administrators to perform actions the same way they would do it in their personal lives. Prism Search, a Google like search engine, was introduced earlier this year so that administrators can perform all administrative actions through a simple search query. With support for Boolean expressions, saved searches, auto correct, synonyms based search and more, the 5.0 release will take Prism Search to a whole new level. As an example, administrators can type in “vm iops &amp;lt;1500” and quickly see all the VMs across all the sites that have IOPS less than 1500.&lt;/p>
+&lt;p>有用链接：&lt;/p>
+&lt;ul>
+&lt;li>西瓜哥的微信文章介绍了部分上面的更新 &lt;a class="link" href="https://mp.weixin.qq.com/s?__biz=MjM5NDQyNDQ0Mw==&amp;amp;mid=2652388531&amp;amp;idx=1&amp;amp;sn=44f49e138cbebe8f1a70cb36e7ebaf89&amp;amp;chksm=bd6b6fa78a1ce6b1a38eac1e4c308fe884c002dec40c7af0c73b6b274302af02f99fa9b5f613&amp;amp;mpshare=1&amp;amp;scene=1&amp;amp;srcid=0104VgmkmVpxE0kSlIgn7V89&amp;amp;key=b43a3af60b96e11efa7e8bf122519516151d18bab4ca2fa3f7cf1902edfb954a06c0633b1df245e14db446d84260e066f2d9ec85061191375b314c56d2d7b962c9727f37051f72a5010ca075676292b8&amp;amp;ascene=0&amp;amp;uin=ODYyMzEyOTQw&amp;amp;devicetype=iMac&amp;#43;MacBookPro13%2C1&amp;#43;OSX&amp;#43;OSX&amp;#43;10.12.2&amp;#43;build%2816C67%29&amp;amp;version=12010210&amp;amp;nettype=WIFI&amp;amp;fontScale=100&amp;amp;pass_ticket=V632gZ8yDTJQ9PL42foZMyhmNQ%2BjF8QFSkTj2plVSn7%2FT1HC452ubIAxwDppYh%2BA" target="_blank" rel="noopener"
+>点这里。&lt;/a>&lt;/li>
+&lt;li>&lt;a class="link" href="https://portal.nutanix.com/#/page/docs/details?targetId=Release-Notes-Acr-v50:Release-Notes-Acr-v50" target="_blank" rel="noopener"
+>Acropolis 5.0 release notes&lt;/a>&lt;/li>
+&lt;li>&lt;a class="link" href="https://portal.nutanix.com/#/page/docs/details?targetId=Release-Notes-NCC-v3:rel-Release-Notes-NCC-v30.html" target="_blank" rel="noopener"
+>Nutanix Cluster Check 3.0 release notes&lt;/a>&lt;/li>
+&lt;li>&lt;a class="link" href="https://portal.nutanix.com/#/page/static/supportTools" target="_blank" rel="noopener"
+>Nutanix Cluster Check 3.0 download&lt;/a>&lt;/li>
+&lt;li>&lt;a class="link" href="https://portal.nutanix.com/#/page/docs/details?targetId=Release-Notes-Prism-Central-v50:rel-Release-Notes-Prism-Central-v50.html" target="_blank" rel="noopener"
+>PRISM Central 5.0 release notes&lt;/a>&lt;/li>
+&lt;/ul></description></item><item><title>Nutanix CE All In One</title><link>https://martinliu.cn/2017/01/02/Nutanix-CE-all-in-one/</link><pubDate>Mon, 02 Jan 2017 00:00:00 +0000</pubDate><guid>https://martinliu.cn/2017/01/02/Nutanix-CE-all-in-one/</guid><description>&lt;img src="https://martinliu.cn/images/HongKongEye_ZH-CN12285832688_1920x1080.jpg" alt="Featured image of post Nutanix CE All In One" />&lt;p>Nutanix CE是Nutanix社区版软件的简称，它是Nutanix企业版产品的功能精简集合，是体验和测试Nutanix技术的很方便的途径。&lt;/p>
+&lt;h2 id="nutanix-community-edition-社区版简介">Nutanix Community Edition 社区版简介
+&lt;/h2>&lt;p>&lt;img src="https://martinliu.cn/img/Community_Edition_-_Nutanix.png"
+loading="lazy"
+alt="Nutanix CE"
+>&lt;/p>
+&lt;p>这个产品目前的位置在 &lt;a class="link" href="https://www.nutanix.com/products/community-edition/" target="_blank" rel="noopener"
+>https://www.nutanix.com/products/community-edition/&lt;/a>；目前这个页面还没有中文化，下面简单介绍以下。&lt;/p>
+&lt;ul>
+&lt;li>Feature Rich Software 它是一个功能丰富的软件&lt;/li>
+&lt;li>Broad Hardware Support &amp;amp; Available On-demand 很丰富的硬件支持，在网上可以按需体验&lt;/li>
+&lt;li>Zero Cost 零成本&lt;/li>
+&lt;/ul>
+&lt;p>用Nutanix CE社区版体验，体验超融合技术的三个步骤。&lt;/p>
+&lt;ol>
+&lt;li>注册 ： 这次Nutanix社区，下载安装镜像&lt;/li>
+&lt;li>部署 ： 在你的服务器上部署，或者在Ravello上在线开启体验；&lt;a class="link" href="https://www.youtube.com/watch?v=xKtQRp6dcAc" target="_blank" rel="noopener"
+>官方安装部署视频点这里&lt;/a>&lt;/li>
+&lt;li>玩耍 ： 安装完之后就可以开心地玩耍了，有问题请移步 &lt;a class="link" href="http://next.nutanix.com/t5/Discussion-Forum/bd-p/Discussion" target="_blank" rel="noopener"
+>社区版论坛&lt;/a>&lt;/li>
+&lt;/ol>
+&lt;p>用物理机安装和体验的几点注意事项如下：&lt;/p>
+&lt;ul>
+&lt;li>物理机安装支持1，3，4个节点的部署；推荐内存在32GB以上；由于版本CE 2016.12.22的CVM的内存需求是24GB，由于加入了自服务门户功能；建议使用SSD硬盘，最好能混搭一些普通硬盘。&lt;/li>
+&lt;li>安装后的首次启动需要系统能链接互联网，否则CVM会启动不了，首次启动成功之后就不用再联网了&lt;/li>
+&lt;li>用虚拟机安装，请注意本机的内存，和给虚拟机分配的内存，网上也有修改对内存和CPU限制修改的脚本&lt;/li>
+&lt;/ul>
+&lt;p>产品在社区里的文档页面： &lt;a class="link" href="http://next.nutanix.com/t5/Discussion-Forum/Download-Nutanix-CE-Docs-and-Guides/m-p/16442#U16442" target="_blank" rel="noopener"
+>点这里&lt;/a>&lt;/p>
+&lt;h2 id="参考配置">参考配置
+&lt;/h2>&lt;p>Intel NUC 最新版一台，i7处理器，两条16GB内存，两条512GB硬盘。它的好处是便携；然而内存还是有限，不能跑多少个虚拟机。&lt;/p>
+&lt;h2 id="相关文档">相关文档
+&lt;/h2>&lt;ul>
+&lt;li>&lt;a class="link" href="http://huanwenli.blog.51cto.com/2848240/1749083" target="_blank" rel="noopener"
+>在VMware Workstation上安装Nutanix CE&lt;/a>&lt;/li>
+&lt;li>&lt;a class="link" href="http://www.nextech.space/nextech/2016/06/nutanix-community-edition%E5%AE%89%E8%A3%85%E5%9C%A8vsphere%E7%8E%AF%E5%A2%83%E4%B8%AD/" target="_blank" rel="noopener"
+>Nutanix Community Edition安装在vSphere环境中&lt;/a>&lt;/li>
+&lt;li>&lt;a class="link" href="http://www.onlyeric.com/2016/05/13/%E6%B5%85%E5%B0%9D%E8%B6%85%E8%9E%8D%E5%90%88%E4%B9%8BNutanix-%E4%B8%8A-%E4%BB%8B%E7%BB%8D%E7%AF%87/" target="_blank" rel="noopener"
+>浅尝超融合之Nutanix(上)介绍篇&lt;/a>&lt;/li>
+&lt;li>&lt;a class="link" href="http://www.onlyeric.com/2016/05/15/%E6%B5%85%E5%B0%9D%E8%B6%85%E8%9E%8D%E5%90%88%E4%B9%8BNutanix-%E4%B8%8B-%E5%AE%89%E8%A3%85%E9%83%A8%E7%BD%B2%E7%AF%87/" target="_blank" rel="noopener"
+>浅尝超融合之Nutanix(下)安装篇&lt;/a>&lt;/li>
+&lt;li>&lt;a class="link" href="http://www.dockerinfo.net/1865.html" target="_blank" rel="noopener"
+>Nutanix超”容”合之ACS Acropolis Container Service(下)实战篇01&lt;/a>&lt;/li>
+&lt;li>&lt;a class="link" href="http://www.dockerinfo.net/1867.html" target="_blank" rel="noopener"
+>Nutanix超”容”合之ACS Docker Volume Plugin的使用和数据持久化测试&lt;/a>&lt;/li>
+&lt;li>&lt;a class="link" href="http://nutanix.club/" target="_blank" rel="noopener"
+>http://nutanix.club/&lt;/a>&lt;/li>
+&lt;li>&lt;a class="link" href="http://nutanixbible.com/" target="_blank" rel="noopener"
+>Nutanix圣经&lt;/a>&lt;/li>
+&lt;/ul></description></item><item><title>EXIN DevOps Master 认证考试</title><link>https://martinliu.cn/2016/11/07/exin-devops-master-e8aea4e8af81e88083e8af95/</link><pubDate>Mon, 07 Nov 2016 15:19:08 +0000</pubDate><guid>https://martinliu.cn/2016/11/07/exin-devops-master-e8aea4e8af81e88083e8af95/</guid><description>&lt;p>DevOps 这个词在去年参加红帽全球用户大会的时候就深深吸引了我，实际上哪个会上 Docker 容器的概念要比 DevOps 还火爆。Docker／openshift 相关的 session 都尝尝是爆满的。从那里开始我逐渐感觉到了开源容器技术的强大和吸引力。&lt;/p>
+&lt;p>从红帽开始 OpenShift 的考试就是我在完成 RHCA 红帽认证架构师之后的一个心结，至今也没有完成。不过这根草我早晚是要拔掉的。主要是由于 OpenShift 是 Docker ＋ kubernetes 的组合；是如今企业级 PaaS 容器平台的主要技术路线。总之离开红帽是如此的仓促，说实话这也是我职业生涯中的一个不小的遗憾。当时确实觉得 kubernetes 的命令行操作不是很方便，而且在 OpenShift 并没有降低这个门槛，也即是说在 OpenShift 里面还是要有一定的工作量和技能的要求在编写 kubernetes 的 yml 文件上。在这一点上，及时我熟练掌握了 Rancher 之后，同样发现编写 compose file 也是难以逃避的。在推广一步，大部分 Docker PaaS 平台也都是这样，很多产品也是在界面上提供一个文本输入框，让人输入容器服务定义文件的内容。&lt;/p>
+&lt;p>在最近的半年中，我的所有技术研究都集中在 Docker 和其服务编排技术上。与很多用户做过技术交流，PoC 测试，有些单子也落地。总结后，有些结果让我感叹。国内的所有企业不区分规模和行业，其实他们对国内原生的创业公司是欢迎的，由于这些公司提供的是国产软件和技术服务。在 Docker 这个火热的领域中，已经有 20 多家国内创业公司，我想所有的公司也都已经接受到了这一点的福利了。外国软件通常给人的感觉是：不是国产软件（不要小看国内公司对国产软件的诉求），纯英文操作界面和文档，可能的水土不服，高昂的软件价格和服务费，如果技术太新的化很可能厂商也不具备足够的技术实力和服务力量。&lt;/p>
+&lt;p>经过了一些 Docker 容器项目之后，可以断言的是容器市场的火爆和它的技术优势是直接相关的。容器化之后的应用可以通过服务编排工具快速地部署／更新、弹性地伸缩和使用资源，优化其传统应用运维的若干缺陷。容器的轻量和 just enough 的隔离技术让资源池的管理更加简单，利用率大幅度提升，这对研发部门的环境管理是不小的提升，使 CI 的过程更加高效和经济。Docker 对微服务的支持也深深地诱惑了所有开发者，做系统微服务实施开发者能想到的实施技术大多数会是容器。&lt;/p>
+&lt;p>以上容器的优势和特性使得国内的这些项目落地和实施的可能性进一步提高，甚至很多项目的速度远远超预期；按照我多年的经验看，一个软件技术型的项目，用户纠结半年到一年以上是很正常的。可能也跟国内企业包容本土化软件公司，追捧新潮技术直接相关；我观察到的一些项目，在 2 ～ 4 个月内落单的屡见不鲜。有些试点的 DevOps 咨询项目也落地很快。&lt;/p>
+&lt;p>这些项目都殊途同归地指向了 DevOps 这个关键词，这让我不得不从去年开始就关注和学习这个最佳实践。当然，我对 DevOps 的前途非常看好，因此当我听说业内出现了相关认证考试之后，我毫不犹豫地报名参加了。经过 2 个多月的缜密的准备，我终于幸运地一次通过了这个考试。考试获得了两个证书。&lt;/p>
+&lt;p>&lt;img src="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2016/11/EXIN-DevOps-Master-Cert-Martin-Liu.jpg"
+loading="lazy"
+alt="exin-devops-master-cert-martin-liu"
+> DevOps Master&lt;/p>
+&lt;p>&lt;img src="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2016/11/certificate-devops-freelance-trainer-Liu-Zheng.jpg"
+loading="lazy"
+alt="DevOps Master 认证自由讲师"
+> DevOps Master 认证自由讲师&lt;/p>
+&lt;p>我参加的是讲师认证培训 TTT，很高兴能成为 Exin 在国内的首批 5 个认证人员之一。在准备这个考试的过程中我学习了一些书籍，现在还在深度学习的书有两本。&lt;/p>
+&lt;p>&lt;img src="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2016/11/14678659256890.jpg"
+loading="lazy"
+alt="14678659256890"
+>&lt;/p>
+&lt;p>我完成了这本黑皮书的读书笔记，很遗憾的是，我发现它的最新版，把封面改成了白底的了，我不能在叫它黑皮书／黑宝书了。这本书我起码看了两遍；目前正在调试它的书中的代码，代码中的营养还是很高的，计划尽快把所有代码调试通过；从而完成我许下多次的线上分享本书的诺言。&lt;/p>
+&lt;p>&lt;img src="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2016/11/14749866044733.jpg"
+loading="lazy"
+alt="14749866044733"
+>&lt;/p>
+&lt;p>这本书被我称为 CD 红皮书／红宝书。本书早在 10 年就出版了，也就是说比 Docker 早好多年。他给我最大的印象就是，作者每一页上似乎都在介绍这做事情的原则和规矩是什么？我一点也不夸张，他对 CD 的介绍，就是通过讲解一系列在项目上的经验总结。对作者这种级别的经验，和写书的房子只能用一个词总结“服”。这本书太干，我至今还没有消化完。他让我看到了解决发布和变更风险的终极解决方案，没有一次性解决问题的部署／配置／发布工具，有的是历练和打磨了千万次的持续部署流水线；隐约地觉得没用入手的企业都会慢慢跟上的。&lt;/p>
+&lt;p>以上是我对 DevOps 的阶段性总结，跨度有半年之久。这半年中我逐渐看清了我的主要兴趣点，抛除所有其他主题，目前剩下的就是：云计算和 DevOps。一方面觉得年纪不饶人，不能可能在和年轻人拼精力、体力和创意；我的背景和经验都让我感觉，在这两个话题上，我还是有很多年的经验和技术积累和总结的。云计算是（公有云＋私有云）未来企业 IT 基础架构的走向；DevOps 是目前看比较正确的运作实践。一个便技术，一个便管理，正好完整覆盖了我的经验；在其对应的开源技术这个分支里，我想它们都还有这很多的为探索和研究的项目。&lt;/p></description></item><item><title>下一代应用为中心的平台 OpenShift</title><link>https://martinliu.cn/2016/01/12/e4b88be4b880e4bba3e5ba94e794a8e4b8bae4b8ade5bf83e79a84e5b9b3e58fb0-openshift/</link><pubDate>Tue, 12 Jan 2016 04:05:46 +0000</pubDate><guid>https://martinliu.cn/2016/01/12/e4b88be4b880e4bba3e5ba94e794a8e4b8bae4b8ade5bf83e79a84e5b9b3e58fb0-openshift/</guid><description>&lt;img src="https://martinliu.cn/images/abstract-8.jpg" alt="Featured image of post 下一代应用为中心的平台 OpenShift" />&lt;p>&lt;a class="link" href="https://vimeo.com/151465422" target="_blank" rel="noopener"
+>Amadeus uses next-generation containerized application platform with OpenShift&lt;/a> from &lt;a class="link" href="https://vimeo.com/martinliu" target="_blank" rel="noopener"
+>Martin&lt;/a> on &lt;a class="link" href="https://vimeo.com" target="_blank" rel="noopener"
+>Vimeo&lt;/a>.&lt;/p>
+&lt;p>以上视频来源于：&lt;a class="link" href="https://blog.openshift.com/openshift-3-amadeus-red-hat-summit-session-recording-recap/" target="_blank" rel="noopener"
+>https://blog.openshift.com/openshift-3-amadeus-red-hat-summit-session-recording-recap/&lt;/a>&lt;/p></description></item><item><title>OpenStack Enterprise Ready</title><link>https://martinliu.cn/2015/05/14/openstack-enterprise-ready/</link><pubDate>Thu, 14 May 2015 16:36:27 +0000</pubDate><guid>https://martinliu.cn/2015/05/14/openstack-enterprise-ready/</guid><description>&lt;h2 id="不是好不好而是用不用">不是好不好，而是用不用？
+&lt;/h2>&lt;p>要说 OpenStack 的优点，技术人员能说出一堆词汇，如开源、弹性、稳定、可扩展、迅速搭建私有云、对硬件要求不高、解耦、能快速扩展新业务等等。但实际应用的案例为何这么少。&lt;/p>
+&lt;blockquote>
+&lt;blockquote>
+&lt;blockquote>
+&lt;blockquote>
+&lt;p>国内传统企业用的少，互联网公司用了不少了，创业公司捣鼓 OpenStack 部署公有云服务的业务也不少了，总体看 OpenStack 水平高的人不在数量巨大的传统企业里，当前人员也不存在这个流向，更重要的是传统企业没有合适的在 OpenStack 上跑的 workload。因此少。&lt;/p>&lt;/blockquote>&lt;/blockquote>&lt;/blockquote>&lt;/blockquote>
+&lt;p>一个数据是，这两年计划部署 OpenStack 的企业为 84%，可见大多数企业仍观望。这问题出在哪里？&lt;/p>
+&lt;blockquote>
+&lt;blockquote>
+&lt;blockquote>
+&lt;p>原因同上。&lt;/p>&lt;/blockquote>&lt;/blockquote>&lt;/blockquote>
+&lt;p>技术仍旧是问题。OpenStack 的问题是半年快速迭代，发布新产品，速度太快，老版本跟不上。理论上，新版本向下兼容。但在一些版本较大改动，加入新的功能时，如果企业已经深度应用了旧版本，可能面临技术无法升级，或者需要重度开发的问题。&lt;/p>
+&lt;blockquote>
+&lt;blockquote>
+&lt;blockquote>
+&lt;blockquote>
+&lt;blockquote>
+&lt;p>开发改动大么？那些地方大改动了？深度开发的部分是什么组件？是遵循了向下一个版本兼容的原则了么？代码提交会社区了么？OpenStack 社区版升级了，企业就一定要升级旧的版本么？什么情况下升级版本？什么情况下打补丁知道么？OpenStack 是云操作系统，我们看到的常见的开发场景是：界面友好度的调整、虚拟机功能的增强、辅助管理功能的增加等等。如果基于某个版本把这些附加功能开发出来了，其实业务需求清晰和随后调整不大的话，其实是可以用一定时间的。升级有两个原因：修复 bug，增加新版本的功能。我见过创业公司把之前开发的东西一次一次废掉重来的情况，主要原因还是他们首先不能提交代码会社区，其次开发的东西不是外挂式和主框架松耦合的。企业面对开发是谨慎的，往往不会在投入大量功能评估后，在清晰的需求下二次开发。二次开发做的多得还是想做 OpenStack 生意的创业公司，而传统企业的这些金主客户，我感觉他们还真没有这个需求和闲工夫。因此开发重，不能平滑进入下一代新版本不是用的少和不用的原因。&lt;/p>&lt;/blockquote>&lt;/blockquote>&lt;/blockquote>&lt;/blockquote>&lt;/blockquote>
+&lt;p>另外与企业规模有关。多大企业需要使用 OpenStack，需要部署在哪些生产环境，是否是全面替代，还是迁移，包括从 VMware 迁移到 OpenStack，或者是新应用局部部署 OpenStack？这些不考虑清楚，没办法应用。&lt;/p>
+&lt;blockquote>
+&lt;blockquote>
+&lt;blockquote>
+&lt;blockquote>
+&lt;blockquote>
+&lt;p>这是一个很普遍的误区，太多人这么想了。从 VMWare 迁移到 OpenStack 真的这么重要么？真的存在这个场景了？服务器虚拟化和 OpenStack 是两种同类型的基础架构技术。服务器虚拟化跑传统的有状态应用；OpenStack 跑需要弹性扩展的无状态应用。有状态应用不适合跑在 OpenStack 上。也不太可能不做任何改变就能适应 OpenStack 环境。企业的无状态应用少，但这是一个发展过程和阶段。原因在于无状态应用和合适在 OpenStack 上跑得 workload 太少了。企业目前的应用 workload 是因，OpenStack 部署少是果。不存在 OpenStack 替代服务器虚拟化的事情，他俩会并存很长时间，不是非黑即白的替代逻辑。&lt;/p>&lt;/blockquote>&lt;/blockquote>&lt;/blockquote>&lt;/blockquote>&lt;/blockquote>
+&lt;p>当前看，对企业应用需求的评估太少，大多是 IT 产业（厂商）一头热，鼓吹 OpenStack 太好，反而令人生疑。&lt;/p>
+&lt;blockquote>
+&lt;blockquote>
+&lt;blockquote>
+&lt;blockquote>
+&lt;blockquote>
+&lt;blockquote>
+&lt;p>说的好就怀疑了？这里说的应用需求评估有两方面。或者两个理解方向。这里可能是说 OpenStack 功能性方面，客观的讲，当一个技术在风口上的时候，说好话的多，这是客观规律，多年前服务器虚拟化也这样，现在热度低了，它再发新版本大家连个搭理的功夫都没有了，也没有啥评测文章出来，这都是自然规律。OpenStack 也有失去热捧的那天，我最近看了一些基于它创业的技术型公司也都在反思和总结经验中。&lt;/p>&lt;/blockquote>&lt;/blockquote>&lt;/blockquote>&lt;/blockquote>&lt;/blockquote>&lt;/blockquote>
+&lt;h2 id="怎么用谁来带头">怎么用，谁来带头？
+&lt;/h2>&lt;p>当前案例也有，如电信运营商阿尔卡特朗讯（名字太长，以后会不会再加上西门子诺基亚）、诺基亚、西班牙电信；汽车领域宝马汽车、银行企业西班牙 BBVA、传媒领域时代华纳有线等。这些企业具有标杆意义，不具有示范效应。企业规模不一样，生产环境不同，这是最大的不同。这些案例最明显的是以信息为核心资源的企业，IT 系统建设较为完善和复杂，有意愿、有钱尝试新的 IT 技术。&lt;/p>
+&lt;blockquote>
+&lt;blockquote>
+&lt;blockquote>
+&lt;blockquote>
+&lt;blockquote>
+&lt;blockquote>
+&lt;p>规模、环境、以信息为核心资源、IT 成熟、有意愿、有钱；这些都不能说成是中外企业 IT 的差异，也完全和是否用 OpenStack 无关的因素。我朝存在大量的传统大型企业，都已经排名全球 100 强了，很多是我们的客户。它们的市值比以上公司大得多。举个例子：CCB 的市值是 2015 年 4 月 30 日 - 成交量 4.88 亿股 市值 18,151.51 亿；宝马的市值是 2012 年 12 月 宝马市值增至奔驰两倍 达 3700 亿元；这么高大上制造型企业，连 CCB 的零头都不如。&lt;/p>&lt;/blockquote>&lt;/blockquote>&lt;/blockquote>&lt;/blockquote>&lt;/blockquote>&lt;/blockquote>
+&lt;p>总体看，当前应用较多的是 IT 产公司（包括互联网公司），国内互联网公司如去哪儿、携程等公司都有应用。&lt;/p>
+&lt;blockquote>
+&lt;blockquote>
+&lt;blockquote>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;/blockquote>&lt;/blockquote>&lt;/blockquote>
+&lt;p>传统的金融部门呢，我国核心的制造企业呢？可能本人孤陋寡闻，如果多一些传统企业的案例会好一些。&lt;/p>
+&lt;blockquote>
+&lt;blockquote>
+&lt;blockquote>
+&lt;blockquote>
+&lt;blockquote>
+&lt;blockquote>
+&lt;p>做过 OpenStack 测试的，验证过功能的很多，包括我以前了解的 CloudStack 的测试和评估也很多。金融行业企业它们都懂 OpenStack，甚至有些做定制开发的也有。这些作者可能确实看不到。他们已经准备好了，时间到了，无状态的合适的 workload 出现了，OpenStack 这种东西自然就上去了，根本不用急着看案例。&lt;/p>&lt;/blockquote>&lt;/blockquote>&lt;/blockquote>&lt;/blockquote>&lt;/blockquote>&lt;/blockquote>
+&lt;h2 id="这么多企业如何选择">这么多企业如何选择？
+&lt;/h2>&lt;p>每个厂商说完 OpenStack 的好处之后，必然要说自己公司长处，这对用户来说，容易困扰：市面上一堆的 IT 企业，该如何选择？比如中国，传统 IT 企业几乎都有 OpenStack 的团队，如红帽、HP、戴尔、IBM、华为等；还有些初创企业如 AWcloud 、99cloud 等，也是不容忽视的力量。&lt;/p>
+&lt;blockquote>
+&lt;blockquote>
+&lt;blockquote>
+&lt;blockquote>
+&lt;blockquote>
+&lt;p>企业自己的 OpenStack 专业团队还真不多见，现在传统企业还没有合适 workload 就养一堆 OpenStack 工程师是罕见的。&lt;/p>&lt;/blockquote>&lt;/blockquote>&lt;/blockquote>&lt;/blockquote>&lt;/blockquote>
+&lt;p>红帽说自己的优点是，在开源方面具有优势，懂底层的代码，而像 HP 这样的公司，自己写了 Unix 代码，比较封闭等。它强调的是开源。&lt;/p>
+&lt;blockquote>
+&lt;blockquote>
+&lt;blockquote>
+&lt;blockquote>
+&lt;p>红帽就是做开源的，无需强调开源了好么？这也不是红帽的优势。红帽在 OpenStack 上做的工作和他在 RHEL 上的工作、和在 JBoss，在 Ceph，在其他任何产品上做的工作和优势没有任何差异，就是“提供企业支持”，提供长生命周期的企业支持。懂底层代码的人很多很多，红帽其中的一部分。而从公司层面，提供商业化发行版，并且对其发出的每个版本做长生命周期的企业支持和服务，是很少的公司可以做的。这是红帽的优势。作者对开源业务模式欠了解。&lt;/p>&lt;/blockquote>&lt;/blockquote>&lt;/blockquote>&lt;/blockquote>
+&lt;p>当然，像华为这种公司也可以强调是软硬件通吃，更能提供整体的解决方案。像联想这种公司，可以强调资金实力和技术实力，以及对行业的理解能力。&lt;/p>
+&lt;blockquote>
+&lt;blockquote>
+&lt;blockquote>
+&lt;blockquote>
+&lt;p>不评价。&lt;/p>&lt;/blockquote>&lt;/blockquote>&lt;/blockquote>&lt;/blockquote>
+&lt;p>都有道理，如果要选择，还是选择资金实力、历史悠久的公司可能靠谱一些。有些初创企业在技术上领先，但它们的首要问题是活下来，才能保障 3~5 年的服务期。&lt;/p>
+&lt;blockquote>
+&lt;blockquote>
+&lt;blockquote>
+&lt;blockquote>
+&lt;p>OpenStack 的全方位长期的核心级别技术服务是很重要的。&lt;/p>&lt;/blockquote>&lt;/blockquote>&lt;/blockquote>&lt;/blockquote>
+&lt;h2 id="运维之后是否被绑定-it-公司">运维之后，是否被绑定 IT 公司？
+&lt;/h2>&lt;p>企业要上 OpenStack，最缺的是技术人，而不是钱、技术等问题。&lt;/p>
+&lt;blockquote>
+&lt;blockquote>
+&lt;blockquote>
+&lt;blockquote>
+&lt;p>市场上 OpenStack 人员不少了，真的有岗位出来，肯出钱，从业者不成问题。&lt;/p>&lt;/blockquote>&lt;/blockquote>&lt;/blockquote>&lt;/blockquote>
+&lt;p>着重说明的是，OpenStack 不是产品，只是架构。所以，在开源社区开发的各类版本，只有在“封装”之后才可以使用。一般的企业不具备这种技术实力，所以需要 IT 公司帮助实施、运维、开发等工作。&lt;/p>
+&lt;blockquote>
+&lt;blockquote>
+&lt;blockquote>
+&lt;p>封装之后可用是个普遍的错误观点，纯属于界面看着难受不改就不用的想法。选择合适的发行版，附加有能力的公司来做架构设计和实施，虚拟机就可以跑起来了，就可以上线了。不做定制开发就用了的也大有人在。我也问过一个云计算创业的公司，你们用的什么版本？回答是我们选择了一个版本就是部署了，碰到 bug 我们自己的研发就看代码搞定了。它们关注的事提供虚拟机给客户，这才是业务。&lt;/p>&lt;/blockquote>&lt;/blockquote>&lt;/blockquote>
+&lt;p>极端的情况，假如企业用了 A 公司提供的某个版本的产品，A 公司忽然倒闭或者技术实力跟不上，无法后续运维，B 公司接手是否可行？理论上可以，由于代码开源，B 公司可以直接读 A 公司开发过的产品；但实际操作，要看系统规模的大小，以及复杂度。毕竟，当前是推广阶段，这种实施失败的案例极少。&lt;/p>
+&lt;blockquote>
+&lt;blockquote>
+&lt;blockquote>
+&lt;blockquote>
+&lt;p>要看开发的是什么？有代码就可以维护的。规模大小和复杂是无法接手的因素么？他俩加一起也不能就直接推出接不上手吧？在这种场景下，现实项目的操作实践是，抛弃 A 公司做的，B 公司再从头做一遍。看到的项目案例也是这样。&lt;/p>&lt;/blockquote>&lt;/blockquote>&lt;/blockquote>&lt;/blockquote>
+&lt;h2 id="中国企业的贡献有多大">中国企业的贡献有多大？
+&lt;/h2>&lt;p>如果只从基金会来看，中国企业仍旧没有进入核心层。基金会的白金会员只有 8 个名额，AT&amp;amp;T、惠普、IBM、Inetl、Rackspace、Red Hat 和 SUSE 等，每年缴纳 50 万美金的费用。除非有企业退出，否则不可能进入。在最新的 Kilo 版本中，按照贡献代码数来计算，中国企业贡献最多的几位是华为、99Cloud、Awcloud、Kylin Cloud（为啥都叫 Cloud）；尤其是华为，代码贡献是 2681，远超其他公司。有嘉宾解释这个排名时说，华为人也太多了，别家都是初创企业，比不了。这种大公司一旦下决心布局，立即显示出整体的优势，举个例子，如联想在 2015 年 1 月加入基金会，3 月就正式成为企业代码贡献者，以它的战略和技术背景来看，绝对是 2015 年黑马。当然，初创公司的专注度、贴身的服务能力、快速的反应能力，也是大公司比不了的，各有所长。中国企业在这一轮技术升级中，几乎都抓住了好机会。接下来要比战略和市场行动了，其实是一场长跑。&lt;/p>
+&lt;blockquote>
+&lt;blockquote>
+&lt;blockquote>
+&lt;blockquote>
+&lt;blockquote>
+&lt;p>国人对 OpenStack 的贡献多少？和企业是否用 OpenStack 也没有必要的联系。OpenStack 的出现，也不是给企业 IT 带来整体升级的机会。现实看 OpenStack 只是一种基础架构技术而已。它和传统的服务器虚拟化技术是同层面的东西。只是它带有更多的和网络存储技术的相关性；特别是在网络、存储相关的技术上确实颠覆传统技术的势头十足。但是这只是现象。实际变了么？&lt;/p>&lt;/blockquote>&lt;/blockquote>&lt;/blockquote>&lt;/blockquote>&lt;/blockquote>
+&lt;h2 id="后续问题是什么">后续问题是什么？
+&lt;/h2>&lt;p>总体感觉，OpenStack 已经过了市场炒作期，完胜其他三个开源架构；但处于普及期，尚未真正进入大规模的应用阶段。有技术原因，也有市场原因，还有厂商推广原因。比如技术，每一个版本的功能是否有较大提升，在新技术之间的快速迭代和平衡问题，怎么做好开源的商业化问题，又不能受控于几家核心的企业？在打包后的产品中，怎么解决各个厂商分化的问题？&lt;/p>
+&lt;blockquote>
+&lt;blockquote>
+&lt;blockquote>
+&lt;blockquote>
+&lt;p>纠结下一个版本新功能的人，属于根本不知道自己当前需要使用 OpenStack 什么功能的人。上游大厂的利益划分和最终对用户的影响并不大。各个厂商提供的功能和模块往往是不冲突的，即使是是重叠了，对用户也是好事。OpenStack 架构最大的好处就在于，它是分布式架构，任何一个用户不可能用足它的全功能场景。常规跑虚拟机的场景用到了 OpenStack 的全套功能的很小一部分。当然 OpenStack 社区虽然没把用户的利益完全放在第一位，对用户来说，用户是由自由选择其中的任何功能组件的，就是搭积木而已。&lt;/p>&lt;/blockquote>&lt;/blockquote>&lt;/blockquote>&lt;/blockquote>
+&lt;p>比如市场，对于企业来说，如何选择合适的机会应用，这考量 IT 企业对 OpenStack 的全面评估以及对自己业务的评估，而不仅仅站在 IT 的角度看技术发展。其实，最考验的是 IT 厂商的交付能力、运维能力以及服务能力，这才是最关键的。没有交付能力的 IT 厂商，你再吹捧 OpenStack 的好处，那也是别人家的，也是圈子内的，和你没有一毛钱关系。用户要的是效率，是业务的可靠性和连续性，是 IT 的扩展性和精简、敏捷、高效，不站在用户角度推广 OpenStack 的厂商就是耍流氓。&lt;/p>
+&lt;blockquote>
+&lt;blockquote>
+&lt;blockquote>
+&lt;blockquote>
+&lt;p>红帽本身来讲看的还是发布的发行版是否足够稳定，是否修复了足够的 bug，是否在安装部署方面有提升。其它交付和运维等等是周边生态系统公司的范围。红帽对 OpenStack 社区的重要价值，还在于向社区提交 bug 修复，这些 bug 很多都是红帽客户碰到的。一旦提交成功了，未来版本中基本就没有这个问题了。&lt;/p>&lt;/blockquote>&lt;/blockquote>&lt;/blockquote>&lt;/blockquote>
+&lt;p>真实情况是，云计算还没有真正普及，怎么谈 OpenStack 的应用呢？&lt;/p>
+&lt;blockquote>
+&lt;blockquote>
+&lt;blockquote>
+&lt;blockquote>
+&lt;blockquote>
+&lt;p>敢问云计算怎么才算是真正普及？OpenStack 也不是填饱肚子的最后一个馒头。云计算相关技术发展的还不够快么？君不见容器如日中天么？那天人们谈云计算，不谈 OpenStack 的可能都有，OpenStack 只是云计算发展过程中的一个场景而已。&lt;/p>&lt;/blockquote>&lt;/blockquote>&lt;/blockquote>&lt;/blockquote>&lt;/blockquote>
+&lt;p>比如推广，要接地气，要说人话，不能自说自话，一厢情愿的说自己好。&lt;/p>
+&lt;blockquote>
+&lt;blockquote>
+&lt;blockquote>
+&lt;blockquote>
+&lt;p>凡是开这种会，没人说自己不好的对么？&lt;/p>&lt;/blockquote>&lt;/blockquote>&lt;/blockquote>&lt;/blockquote>
+&lt;p>在饭桌上听来的段子。在香港 OpenStack 峰会中，某企业也学其他厂商发帽子，由于企业 LOGO 是绿色的，它发的竟然是“绿帽子”。还有一家企业，觉得要贴合中国元素，在展台挂上了灯笼。不过是“白灯笼”，不是红灯笼。可想而知，这两排慎人的白灯笼，距离用户有多远就滚多远吧。&lt;/p>
+&lt;blockquote>
+&lt;blockquote>
+&lt;blockquote>
+&lt;blockquote>
+&lt;blockquote>
+&lt;p>。。。。。！！！！&lt;/p>&lt;/blockquote>&lt;/blockquote>&lt;/blockquote>&lt;/blockquote>&lt;/blockquote>
+&lt;p>原文微信：&lt;a class="link" href="http://mp.weixin.qq.com/s?__biz=MjM5MzYwMTE5OQ==&amp;amp;mid=205642335&amp;amp;idx=1&amp;amp;sn=abc8da56bfa748c895a6f7e61ee70d7c&amp;amp;scene=1&amp;amp;key=1936e2bc22c2ceb550a9ed47d35d37ac6649fc2fd92aedfaeae9a37f83c1bc9a01d8c07369a095226703791790b8081a&amp;amp;ascene=0&amp;amp;uin=ODYyMzEyOTQw&amp;amp;devicetype=iMac&amp;#43;MacBookPro8%2C1&amp;#43;OSX&amp;#43;OSX&amp;#43;10.10.3&amp;#43;build%2814D136%29&amp;amp;version=11020012&amp;amp;pass_ticket=9113SDOfWN%2BqnP3yogS7%2FwP2x2VDHEgF3ksia4%2Bbngq1OKnK1y4ajPkfu8mgg8MO" target="_blank" rel="noopener"
+>http://mp.weixin.qq.com/s?__biz=MjM5MzYwMTE5OQ==&amp;amp;mid=205642335&amp;amp;idx=1&amp;amp;sn=abc8da56bfa748c895a6f7e61ee70d7c&amp;amp;scene=1&amp;amp;key=1936e2bc22c2ceb550a9ed47d35d37ac6649fc2fd92aedfaeae9a37f83c1bc9a01d8c07369a095226703791790b8081a&amp;amp;ascene=0&amp;amp;uin=ODYyMzEyOTQw&amp;amp;devicetype=iMac+MacBookPro8%2C1+OSX+OSX+10.10.3+build%2814D136%29&amp;amp;version=11020012&amp;amp;pass_ticket=9113SDOfWN%2BqnP3yogS7%2FwP2x2VDHEgF3ksia4%2Bbngq1OKnK1y4ajPkfu8mgg8MO&lt;/a>&lt;/p></description></item><item><title>你还在为失去服务器感到焦虑？</title><link>https://martinliu.cn/2015/02/15/e4bda0e8bf98e59ca8e4b8bae5a4b1e58ebbe69c8de58aa1e599a8e6849fe588b0e784a6e89991efbc9f/</link><pubDate>Sun, 15 Feb 2015 13:14:59 +0000</pubDate><guid>https://martinliu.cn/2015/02/15/e4bda0e8bf98e59ca8e4b8bae5a4b1e58ebbe69c8de58aa1e599a8e6849fe588b0e784a6e89991efbc9f/</guid><description>&lt;p>我耐心看了以下这篇文章&lt;a class="link" href="http://www.serverwatch.com/server-trends/aws-lambda-debuts-for-running-code-in-the-cloud.html" target="_blank" rel="noopener"
+>《AWS Lambda Debuts for Running Code in the Cloud 》&lt;/a>。我还没有来得及去测试一下这个服务，我只是对它感到新奇。有了它，业务应用可能就只需要 Dev 了，而不需要 Ops 了；更不用提什么 DevOps 了。当然这个观点稍微有点极端了。它的确实现了：程序代码可以基于事件在 AWS 的各种服务中运行。看完了那片文章我也没有察觉到它底层到底使用的是什么技术。只是说 AWS 再次走到了共有云服务的最前端。&lt;/p>
+&lt;p>传统的共有云服务里，大家还停留在虚拟机提供，网络隔离的认识阶段。数据库服务、大数据服务、配套的程序部署和管理监控服务，对于一般性的共有云提供商，也不尽完全。曾经和作共有云的人聊过，他们觉得：传统企业数据中心的拥有着和管理这依然有巨大的纠结“失去对服务器的管控，就会有事业的风险”。因此，可见对服务器的管理是多么的重要。但是，如果你拥有了服务器的控制，并坐拥巨大的私有云建设的资金，那么您能如何很快交付出靠谱的云服务呢？说实话，目前私有云的建设很缓慢，也就是作个大批量的服务器虚拟化。IaaS 的建设案例还很少，即使有人说他们建成了新一代的云平台，近看一下大多还仅仅是增强版的虚拟机提供。当然这个虚拟机的提供是基本功，做不好这一客其它的云服务也面谈。我们详细观察以下 AWS，它大量的服务，像是 RDS，LB，Auto Scaling 等等功能，无处不见 AWS EC2 的扎实功底和无限变化。&lt;/p>
+&lt;p>国内的广大用户，已经选择了私有云了；越大的企业，越有条件大赶快上云建设。只是却是道路艰辛，图省事的有钱人，可以上全套 V 公司的云计算，却是它的吸引力、炫耀力和安慰力都是无法阻挡的。底层上的技术的引用是至关重要的，越省事的套件，等同于越少的弹性和自由度，等同于更少的自由发挥的空间，和更少的创造。AWS 是基于 Xen 的服务器虚拟化技术，和一堆的其他开源技术。入手这条路解决了启动费用高的问题，带来了无限的创新和发展自由空间。他们不需要商业化软件或者产品么，例如，AWS 是重要的 Citrix netscaler 用户。&lt;/p></description></item><item><title>AWS 服务索引地图</title><link>https://martinliu.cn/2015/02/11/aws-e69c8de58aa1e7b4a2e5bc95e59cb0e59bbe/</link><pubDate>Wed, 11 Feb 2015 14:41:22 +0000</pubDate><guid>https://martinliu.cn/2015/02/11/aws-e69c8de58aa1e7b4a2e5bc95e59cb0e59bbe/</guid><description>&lt;p>以上图片用 FreeMind 软件生成，下载英文版原图点击这里：&lt;a class="link" href="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2015/02/aws-service-map.mm_.zip" target="_blank" rel="noopener"
+>aws-service-map.mm&lt;/a>&lt;/p>
+&lt;p>&lt;a class="link" href="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2015/02/aws-service-map.jpeg" target="_blank" rel="noopener"
+>&lt;img src="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2015/02/aws-service-map-1024x710.jpeg"
+loading="lazy"
+alt="aws-service-map"
+>&lt;/a>&lt;/p>
+&lt;p>下载中文版 PDF 全图点击这里：&lt;a class="link" href="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2015/02/aws-%e6%9c%8d%e5%8a%a1-%e8%84%91%e5%9b%be.pdf" target="_blank" rel="noopener"
+>aws-服务-脑图&lt;/a>&lt;/p>
+&lt;p>&lt;a class="link" href="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2015/02/aws-%e6%9c%8d%e5%8a%a1-%e8%84%91%e5%9b%be.jpeg" target="_blank" rel="noopener"
+>&lt;img src="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2015/02/aws-%e6%9c%8d%e5%8a%a1-%e8%84%91%e5%9b%be-1024x446.jpeg"
+loading="lazy"
+alt="aws-服务-脑图"
+>&lt;/a>&lt;/p></description></item><item><title>2014年AWS服务更新总结</title><link>https://martinliu.cn/2015/02/08/2014e5b9b4awse69c8de58aa1e69bb4e696b0e680bbe7bb93/</link><pubDate>Sun, 08 Feb 2015 14:24:33 +0000</pubDate><guid>https://martinliu.cn/2015/02/08/2014e5b9b4awse69c8de58aa1e69bb4e696b0e680bbe7bb93/</guid><description>&lt;p>从去年新增的服务中可以看出，其中多半是管理和基础服务类型的更新。因此，我感觉这也预示着，公有云技术的领头羊的发展也上到一定的成熟度上了。相比而言，企业私有云的建设还是纠结在几个症结上：选择私有云平台软件难，选择部署实施的落地工具和服务难，市场上相关的人才难找，大多出人连试点的经验还没还有获得，云应用-无状态应用踪影难觅。这些事实下，我看到了私有云建设的广阔服务前景，特别是企业服务这块。感觉有技术的实力派大牛们，应该趁着国产化软件的浪潮，踏踏实施做两年企业级产品，踏踏试试走下企业服务的路。别惦记着风头的那些钱，别惦记着做个公有云服务出来走出国门走向世界。我朝企业不差钱的主，土豪的企业有的事。毕竟近水楼台先得月。&lt;/p>
+&lt;p>有一段时间没有关注 AWS 了，下面是在 &lt;a class="link" href="http://aws-faq.com" target="_blank" rel="noopener"
+>aws-faq.com &lt;/a>发的新贴。顺便梳理了一下过去一年的更新情况，&lt;/p>
+&lt;p>&lt;a class="link" href="http://www.aws-faq.com/featured/aws-%e6%9c%8d%e5%8a%a12015%e5%b9%b4%e5%bc%80%e5%b9%b4%e6%9c%89%e5%95%a5%e6%9b%b4%e6%96%b0.html" target="_blank" rel="noopener"
+>http://www.aws-faq.com/featured/aws-服务 2015 年开年有啥更新.html&lt;/a>&lt;/p>
+&lt;p>AWS 在去年新增了 6 个服务，整体的更新和服务升级的频率是一周一次；也就是说他们发布新版本的频率是每周一次，当然这是有网上发布信息为依推理出来的；感觉一周很可能超过一次。他们的电商也其它业务的发布评论，很可能就更高了。&lt;/p>
+&lt;p>AWS 的公有云服务的技术成熟度和领先度我感觉是第一名的。它激发和促进了整个行业的发展。对私有云的促进和很明显。OpenStack 的更新是半年一个新版本。其参考和兼容 AWS 服务是很明显的。它可以很大的满足于企业自建云服务的需求。&lt;/p></description></item><item><title>AWS-FAQ post - AWS 一月有什么动态?</title><link>https://martinliu.cn/2015/02/07/aws-faq-post-aws-e4b880e69c88e69c89e4bb80e4b988e58aa8e68081/</link><pubDate>Sat, 07 Feb 2015 15:07:42 +0000</pubDate><guid>https://martinliu.cn/2015/02/07/aws-faq-post-aws-e4b880e69c88e69c89e4bb80e4b988e58aa8e68081/</guid><description>&lt;p>AWS-FAQ post - AWS 一月有什么动态?&lt;/p>
+&lt;p>&lt;a class="link" href="http://www.aws-faq.com/blog/aws-blog/aws-%E4%B8%8A%E5%91%A8%E5%8F%91%E7%94%9F%E4%BA%86%E4%BB%80%E4%B9%88-2015-%E5%B9%B41%E6%9C%88.html" target="_blank" rel="noopener"
+>http://www.aws-faq.com/blog/aws-blog/aws-%E4%B8%8A%E5%91%A8%E5%8F%91%E7%94%9F%E4%BA%86%E4%BB%80%E4%B9%88-2015-%E5%B9%B41%E6%9C%88.html&lt;/a>&lt;/p>
+&lt;ul>
+&lt;li>AWS 邮件服务的推出还是比较有趣，虽然很晚推出这个服务，但是还是推出了&lt;/li>
+&lt;li>__ 总之 1 月的动静不大&lt;/li>
+&lt;/ul></description></item><item><title>XenServer 添加硬盘做本地存储</title><link>https://martinliu.cn/2013/11/25/xenservere6b7bbe58aa0e7a1ace79b98e5819ae69cace59cb0e5ad98e582a8/</link><pubDate>Mon, 25 Nov 2013 10:39:00 +0000</pubDate><guid>https://martinliu.cn/2013/11/25/xenservere6b7bbe58aa0e7a1ace79b98e5819ae69cace59cb0e5ad98e582a8/</guid><description>&lt;p>当您的 XenServer 测试机需要增加硬盘的时候，你需要通过简单的几条指令把新硬盘添加为本地存储。&lt;/p>
+&lt;p>下面的实例情况是：&lt;/p>
+&lt;ul>
+&lt;li>
+&lt;p>测试机有两块硬盘&lt;/p>
+&lt;ul>
+&lt;li>
+&lt;p>OCZ  SSD 硬盘一块&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>SATA 不通硬盘一块&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>还有一个 U 盘插在系统上&lt;/p>
+&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>
+&lt;p>SATA 的硬盘是我需要加载的新硬盘&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>这个新的硬盘希望被处理成 XenServer 本地的 SR&lt;/p>
+&lt;/li>
+&lt;/ul>
+&lt;p>添加过程中主要需要使用这样几条指令：&lt;/p>
+&lt;ol>
+&lt;li>
+&lt;p>查看当前系统上的检查出来并且挂载中的分区： cat /proc/partitions&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>详细查看这些存储和设备对应的情况： ls -l /dev/disk/by-id/&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>创建新的本地 SR: xe sr-create content-type=user device-config:device=/dev/disk/by-id/scsi-SATA_ST9320325ASG_5VD7G964 host-uuid=3850317b-d23a-4ed0-87f9-2b27854319e5 name-label=&amp;ldquo;SATA320&amp;rdquo; shared=false type=lvm&lt;/p>
+&lt;/li>
+&lt;/ol>
+&lt;p>[bash]
+[root@XS62 ~]# cat /proc/partitions
+major minor #blocks name&lt;/p>
+&lt;p>7 0 52378 loop0
+8 0 250059096 sda
+8 1 4193297 sda1
+8 2 4193297 sda2
+8 3 241669447 sda3
+8 16 312571224 sdb
+8 17 204800 sdb1
+8 18 312235312 sdb2
+8 32 4137984 sdc
+8 36 4137856 sdc4
+252 0 241655808 dm-0&lt;/p>
+&lt;p>[root@XS62 ~]# ls /dev/disk/by-id/
+scsi-SATA_OCZ-AGILITY4_OCZ-DY4J9LY3615W5MF2 scsi-SATA_OCZ-AGILITY4_OCZ-DY4J9LY3615W5MF2-part3 scsi-SATA_ST9320325ASG_5VD7G964-part2
+scsi-SATA_OCZ-AGILITY4_OCZ-DY4J9LY3615W5MF2-part1 scsi-SATA_ST9320325ASG_5VD7G964 usb-Generic_Flash_Disk_4266F915
+scsi-SATA_OCZ-AGILITY4_OCZ-DY4J9LY3615W5MF2-part2 scsi-SATA_ST9320325ASG_5VD7G964-part1 usb-Generic_Flash_Disk_4266F915-part4&lt;/p>
+&lt;p>[root@XS62 ~]# ll /dev/disk/by-id/
+total 0
+lrwxrwxrwx 1 root root 9 Nov 22 19:52 scsi-SATA_OCZ-AGILITY4_OCZ-DY4J9LY3615W5MF2 -&amp;gt; ../../sda
+lrwxrwxrwx 1 root root 10 Nov 22 19:52 scsi-SATA_OCZ-AGILITY4_OCZ-DY4J9LY3615W5MF2-part1 -&amp;gt; ../../sda1
+lrwxrwxrwx 1 root root 10 Nov 22 19:52 scsi-SATA_OCZ-AGILITY4_OCZ-DY4J9LY3615W5MF2-part2 -&amp;gt; ../../sda2
+lrwxrwxrwx 1 root root 10 Nov 22 19:52 scsi-SATA_OCZ-AGILITY4_OCZ-DY4J9LY3615W5MF2-part3 -&amp;gt; ../../sda3
+lrwxrwxrwx 1 root root 9 Nov 22 19:52 scsi-SATA_ST9320325ASG_5VD7G964 -&amp;gt; ../../sdb
+lrwxrwxrwx 1 root root 10 Nov 22 19:52 scsi-SATA_ST9320325ASG_5VD7G964-part1 -&amp;gt; ../../sdb1
+lrwxrwxrwx 1 root root 10 Nov 22 19:52 scsi-SATA_ST9320325ASG_5VD7G964-part2 -&amp;gt; ../../sdb2
+lrwxrwxrwx 1 root root 9 Nov 22 19:52 usb-Generic_Flash_Disk_4266F915 -&amp;gt; ../../sdc
+lrwxrwxrwx 1 root root 10 Nov 22 19:52 usb-Generic_Flash_Disk_4266F915-part4 -&amp;gt; ../../sdc4&lt;/p>
+&lt;p>[root@XS62 ~]# xe sr-create content-type=user device-config:device=/dev/disk/by-id/scsi-SATA_ST9320325ASG_5VD7G964 host-uuid=3850317b-d23a-4ed0-87f9-2b27854319e5 name-label=&amp;ldquo;SATA320&amp;rdquo; shared=false type=lvm
+cf0893c3-9398-d802-0706-66a8699c3a59
+[/bash]&lt;/p>
+&lt;p>从上面的命令可以看到，最后一条命令完成后，系统返回了新 SR 的 ID;然后在登录 XenCenter 就可以看到这个存储了，虚拟现在就可以使用这个存储了。&lt;/p></description></item><item><title>AWS 免费套餐截止后必须终止</title><link>https://martinliu.cn/2013/09/24/aws-e5858de8b4b9e5a597e9a490e688aae6ada2e5908ee5bf85e9a1bbe7bb88e6ada2/</link><pubDate>Tue, 24 Sep 2013 05:26:22 +0000</pubDate><guid>https://martinliu.cn/2013/09/24/aws-e5858de8b4b9e5a597e9a490e688aae6ada2e5908ee5bf85e9a1bbe7bb88e6ada2/</guid><description>&lt;p>对于亚马逊 AWS 的测试用户来说，你要知道你的免费套餐的截止日期，否则预期就会收费了，会计时收费，像叫停车费一样。我今天收到了亚马逊的提醒邮件，被告知，我的免费套餐将在本月截止，然后我不得不终止了该服务器。&lt;/p>
+&lt;p>我是去年 10 月 19 日开通的这个免费实例，作为一个一年的 AWS 用户来说，深深的体会到了 AWS 的强大，它的管理控制台非常成熟，它的提供的服务非常全面，它的云市场做的相当好。对于任何一个普通人，你可以无痛，无压力的面对一个自己的数据中心，你可以假象你拥有一个世界上最高级的数据中心，你可以给你的应用任意、随时随地的附件任何一种高级的数据中心基础架构服务，你可以具有无限的资源，并且这个资源不限制类型和容量。共有云必将和私有云二分天下，共有云必将赢得所有中小企业用户。&lt;/p>
+&lt;p>[caption id=&amp;ldquo;attachment_52574&amp;rdquo; align=&amp;ldquo;aligncenter&amp;rdquo; width=&amp;ldquo;300&amp;rdquo;]&lt;img src="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2013/09/EC2_Management_Console-300x225.png"
+loading="lazy"
+alt="EC2_Management_Console"
+>](&lt;a class="link" href="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2013/09/EC2_Management_Console.png" target="_blank" rel="noopener"
+>http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2013/09/EC2_Management_Console.png&lt;/a>) EC2_Management_Console[/caption]&lt;/p>
+&lt;p>[caption id=&amp;ldquo;attachment_52575&amp;rdquo; align=&amp;ldquo;aligncenter&amp;rdquo; width=&amp;ldquo;300&amp;rdquo;]&lt;img src="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2013/09/Try_Cloud_Computing_Free_with_AWS_Free_Tier-300x106.png"
+loading="lazy"
+alt="Try_Cloud_Computing_Free_with_AWS_Free_Tier"
+>](&lt;a class="link" href="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2013/09/Try_Cloud_Computing_Free_with_AWS_Free_Tier.png" target="_blank" rel="noopener"
+>http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2013/09/Try_Cloud_Computing_Free_with_AWS_Free_Tier.png&lt;/a>) Try_Cloud_Computing_Free_with_AWS_Free_Tier[/caption]&lt;/p></description></item><item><title>CloudStack+Swift 我心中的黄金搭档</title><link>https://martinliu.cn/2013/09/03/cloudstack-swift/</link><pubDate>Tue, 03 Sep 2013 08:25:46 +0000</pubDate><guid>https://martinliu.cn/2013/09/03/cloudstack-swift/</guid><description>&lt;p>迪斯尼是一个有魔力的组织，在它的电影里冤家可以变伙伴。甚至 CloudStack 和 OpenStack 两大私有云死对头来到迪斯尼这个神奇的地方也可以“在一起”。当迪斯尼决定建设自己的云计算基础设施时，与很多企业一样面临一个艰难的抉择，从众多云计算技术方案和产品中选择一条道路。如今的云计算市场规模已 达数百亿美元，水已经很深，领头的是亚马逊这样的公共云巨头，以及亚马逊的对手们：Rackspace、Google、CloudStack、 Eucalyptus、OpenNebula 等多种私有云和公共云技术与服务，每家都有绝活和独到之处。&lt;/p>
+&lt;p>&lt;a class="link" href="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2013/09/disney-cloudstack.png" target="_blank" rel="noopener"
+>&lt;img src="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2013/09/disney-cloudstack.png"
+loading="lazy"
+alt="disney-cloudstack"
+>&lt;/a>&lt;/p>
+&lt;p>对于身价上千亿美元的娱乐和媒体巨头迪斯尼来说，业界可供选择的云计算路线太多，到底是走公共云、私有云、混合云还是多重云的路子？&lt;/p>
+&lt;p>迪斯尼的选择是走自己的路。（迪斯尼的系统架构师 Lopez 将 9 月 9 日在&lt;a class="link" href="http://cloudbeat2013-intext.eventbrite.com/" target="_blank" rel="noopener"
+>CloudBeat&lt;/a>上介绍其云计算建设经验。）&lt;/p>
+&lt;p>在概念验证阶段，迪斯尼更加青睐 CloudStack，在私有云领域 CloudStack 吸引力很多大型用户，如 Zynga 和诺基亚都选择了 CloudStack。迪斯尼的系统架构师 Lopez 表示，相比 OpenStack，CloudStack 的部署和运行速度要快得多。迪斯尼可以在数天能 部署好 CloudStack 服务，而 OpenStack 则需要数周。当然，两大私有云服务部署周期相差如此之大的部分原因也与迪斯尼的特殊要求和原有技术 投资有关。&lt;/p>
+&lt;p>不管怎样，迪斯尼目前对 CloudStack 非常满意，但迪斯尼的团队希望在私有云中增加对象存储技术。这一次迪斯尼倾向使用 OpenStack 阵 营的对象存储工具——Swift。事实上，开源的 OpenStack 之所以如此流行，与大量参与者提供的丰富功能密不可分，Swift 就是一个很好的例 子。&lt;/p>
+&lt;p>于是，迪斯尼的团队与 Citrix 合作，确保 OpenStack 的 Swift 技术能够与 CloudStack 搭建的私有云紧密集成。在迪斯尼这个神奇的地方，OpenStack 和 CloudStack 之间的深沟裂隙被弥合了。&lt;/p>
+&lt;p>在迪斯尼的案例中，CIO 能够参考的经验是：云计算的实施方案并非黑白分明，非此即彼，随着云计算服务商提供越来越多的相对独立的云计算功能，CIO 们可以不受“站队”的局限，从不同阵营选择最好的云计算工具进行整合。&lt;/p>
+&lt;!-- raw HTML omitted -->
+&lt;h2 id="how-disney-built-a-giant-cloud-by-bolting-two-together">How Disney built a giant cloud by bolting two together
+&lt;/h2>&lt;p>下面这个文章值得读一下。
+&lt;a class="link" href="http://venturebeat.com/2013/08/30/how-disney-built-a-giant-cloud-by-bolting-two-together/" target="_blank" rel="noopener"
+>http://venturebeat.com/2013/08/30/how-disney-built-a-giant-cloud-by-bolting-two-together/&lt;/a>&lt;/p>
+&lt;h2 id="转帖迪斯尼云计算之路选择-cloudstack">转帖：迪斯尼云计算之路选择 CloudStack
+&lt;/h2>&lt;p>&lt;a class="link" href="http://www.ctocio.com/ccnews/13420.html" target="_blank" rel="noopener"
+>原文链接&lt;/a>： 文章来自&lt;a class="link" href="http://www.ctocio.com" target="_blank" rel="noopener"
+>IT 经理网&lt;/a>&lt;/p></description></item><item><title>Citrix XenServer is Now Fully Open Source</title><link>https://martinliu.cn/2013/08/01/citrix-xenserver-is-now-fully-open-source/</link><pubDate>Thu, 01 Aug 2013 09:26:51 +0000</pubDate><guid>https://martinliu.cn/2013/08/01/citrix-xenserver-is-now-fully-open-source/</guid><description>&lt;p>With the release of Citrix XenServer 6.2, Citrix is pleased to announce
+that XenServer is now fully open source. In this video, Richard Sharp, Vice President
+of XenServer Product Development, explains why Citrix open sourced XenServer, what
+it means to our customers and how it will help the entire XenServer platform.&lt;/p>
+&lt;p>&lt;a class="link" href="http://brightcove.vo.llnwd.net/e1/uds/pd/13639319001/13639319001_2488040716001_XenServer-OSS-Richard-Sharp-Final.mp4" target="_blank" rel="noopener"
+>http://brightcove.vo.llnwd.net/e1/uds/pd/13639319001/13639319001_2488040716001_XenServer-OSS-Richard-Sharp-Final.mp4&lt;/a>&lt;/p>
+&lt;p>With the release of Citrix XenServer 6.2, Citrix is pleased to announce that XenServer is now fully open source. In this video, Richard Sharp, Vice President of XenServer Product Development, explains why Citrix open sourced XenServer, what it means to our customers and how it will help the entire XenServer platform.&lt;/p></description></item><item><title>A new open source strategy for Citrix XenServer</title><link>https://martinliu.cn/2013/08/01/a-new-open-source-strategy-for-citrix-xenserver/</link><pubDate>Thu, 01 Aug 2013 09:21:01 +0000</pubDate><guid>https://martinliu.cn/2013/08/01/a-new-open-source-strategy-for-citrix-xenserver/</guid><description>&lt;p>Sameer Dholakia, Vice President and General Manager of the Citrix Cloud
+Division, talks about the full open source strategy for XenServer. Learn why Citrix
+made XenServer open source and how this will benefit our customers and ecosystem
+partners.&lt;/p>
+&lt;p>&lt;a class="link" href="http://brightcove.vo.llnwd.net/e1/uds/pd/13639319001/13639319001_2503709704001_Sameer-Dholakia-v3.mp4" target="_blank" rel="noopener"
+>http://brightcove.vo.llnwd.net/e1/uds/pd/13639319001/13639319001_2503709704001_Sameer-Dholakia-v3.mp4&lt;/a>&lt;/p>
+&lt;p>Sameer Dholakia, Vice President and General Manager of the Citrix Cloud Division, talks about the full open source strategy for XenServer. Learn why Citrix made XenServer open source and how this will benefit our customers and ecosystem partners.&lt;/p></description></item><item><title>什么是真的云？</title><link>https://martinliu.cn/2013/04/15/forrester-private-clouds-what-is-cloud-computing/</link><pubDate>Mon, 15 Apr 2013 17:31:21 +0000</pubDate><guid>https://martinliu.cn/2013/04/15/forrester-private-clouds-what-is-cloud-computing/</guid><description>&lt;p>[su_box  ]
+最近有一篇比较热的文章，中文标题《Forrester：70%的“私有云”根本不是云》；你如果稍微搜索一下，你发现它几乎被转载烂了，但是我看了几篇，真心的担心读者们是否都能正确的理解。写本文，全当是给您的一个阅读帮助。
+[/su_box]&lt;/p>
+&lt;p>&lt;a class="link" href="http://www.cnw.com.cn/news-international/htm2013/20130227_264664.shtml" target="_blank" rel="noopener"
+>中文版网页点这里&lt;/a>
+&lt;a class="link" href="http://www.networkworld.com/news/2013/022613-forrester-private-clouds-267108.html" target="_blank" rel="noopener"
+>英文版网页点这里&lt;/a>&lt;/p>
+&lt;p>&lt;strong>中文翻译的质量有限，有些概念和逻辑错误，我做了一点点的修订，从而避免误解。&lt;/strong>&lt;/p>
+&lt;p>**【基于 CNW.com.cn 译稿】**如果企业数据中心拥有高度虚拟化的环境，有一个 Web 门户供商业用户申请和访问虚机，再有一种方法可以跟踪有多少资源被使用了……拥有这一切并不能叫做有了一个&lt;a class="link" href="http://search.cnw.com.cn/searchview.aspx?searchtype=Content&amp;amp;searchstr=%CB%BD%D3%D0%D4%C6" target="_blank" rel="noopener"
+>私有云&lt;/a>。&lt;/p>
+&lt;p>假如有足够大的容量可以为员工提供他们所需要的任意数量的计算资源，并能够动态地上下扩展或收缩容量，但仍然需要 IT 人员制备好系统的话，那么这仍然不能叫私有云。&lt;/p>
+&lt;p>虚拟化和私有云之间的界限是比较模糊的，根据 Forrester 的最新报告，在企业的 IT 高管们所自诩的私有云中，高达 70%的 IT 环境其实并非私有云。“这是个严重的问题。实际上是在做云洗白而已。”Forrester 的云专家 James Staten 如此说。&lt;/p>
+&lt;p>为什么说这个问题非常重要? Staten 认为，如果将一个高度虚拟化的环境称为云环境，但它又不具备私有云的一项或多项关键特征，那么 IT 部门就给了用户一个不切实际的期望。假如用户们发现这个环境不能自配置，或者没有弹性&lt;a class="link" href="http://search.cnw.com.cn/searchview.aspx?searchtype=Content&amp;amp;searchstr=%D7%CA%D4%B4%B3%D8" target="_blank" rel="noopener"
+>资源池&lt;/a>而感到不满时，他们就有可能因此而气馁。那么当下一次用户需要实时运行一个虚机时，他们会选择在哪里运行呢? 是 IT 部门给他们的伪私有云? 还是亚马逊的 AWS? 如此一来，IT 部门就无法控制事态了。&lt;/p>
+&lt;p>大多数云专家已经对云计算(公有云或私有云)的定义有了普遍的共识，这就是 NIST 提出的五个关键特征。这些特征包括：&lt;/p>
+&lt;p>● 用户可按需索取、&lt;a class="link" href="http://search.cnw.com.cn/searchview.aspx?searchtype=Content&amp;amp;searchstr=%D7%D4%B7%FE%CE%F1" target="_blank" rel="noopener"
+>自服务&lt;/a>&lt;/p>
+&lt;p>● 泛在的网络接入&lt;/p>
+&lt;p>● 共享资源池&lt;/p>
+&lt;p>● &lt;a class="link" href="http://search.cnw.com.cn/searchview.aspx?searchtype=Content&amp;amp;searchstr=%B5%AF%D0%D4%C0%A9%D5%B9" target="_blank" rel="noopener"
+>弹性扩展&lt;/a>资源的能力&lt;/p>
+&lt;p>● 拥有可计量的服务&lt;/p>
+&lt;p>如果没有这五大特征，那从技术上说就不能叫云。和某些人的想法相悖的是，虚拟化并不是私有云。它只是为云提供动力的一个基本要素，但只依靠它是创建不出一个云的。VMware 的营销经理 Mike Adams 说，私有云必须在虚拟化环境之上综合更多复杂的管理功能，方能满足 NIST 的定义要求。&lt;/p>
+&lt;p>CA 的战略解决方案副总裁兼云专家 Andi Mann 给这场讨论踩了一脚刹车。“如果你不符合所有这五大特征，那么你就陷入了语义学纠结中。”他认为真正的问题并不是说符合这五个复选标记的东西就叫做云，而是在于 IT 能否为用户提供适当的服务。“有时候，80%的云都已足够好了，”他说。“用户真正在意的是业务服务。谁会在意你的环境叫什么。你要关心的就是客户，就是业务用户是不是得到了他们需要的资源。”&lt;/p>
+&lt;p>也许企业并不需要弹性扩展，因为原本就是静态工作负载。即便不需要弹性的资源扩展能力，它仍然还可以需要云的其他特征——自服务、计费、泛在网络接入和共享资源池。但它在技术上可能并不符合 NIST 的定义。“所以，如果你要想技术上也说得过去，也可以将其称为：高效率的虚拟环境，”Mann 说。&lt;/p>
+&lt;p>那么，所有这些云洗白来自哪里? Staten 认为，IT 管理人员基本上对云都抱有恐惧心理。企业内的虚拟化专家通常都处于支配地位; 在需要资源时，他们可以去制备相应的资源容量。而云被视为一种赋予用户自服务和动态扩展资源权力的模式，对 IT 是一种威胁。如果用户可以自己开通了，那还要他们这些虚拟化专家干什么呢?&lt;/p>
+&lt;p>Staten 认为，这样想上述问题是错误的。即便有了云，IT 管理人员还是有大量的工作可做，比如需要设置和确保云服务有一个可供用户选择的服务目录，需要完成安全访问协议配置，提供资源可用性和虚拟化组件等。管理人员必须接受这样一个理念：如果他们不这么做，那么用户不论如何还是需要访问和使用他们所需要的资源，这样还是会陷入可怕的“影子 IT”的局面。(Martin 修订)&lt;/p>
+&lt;p>我想先对以上的几个关键点和名词做一些解释，从而能让我们更好的理解原文作者的意图。&lt;/p>
+&lt;ol>
+&lt;li>
+&lt;p>&amp;ldquo;cloud-washing&amp;rdquo;  &amp;ndash;  “云洗白”   这个比喻是说：本来根本什么云都不是！但是还是要狡辩和伪装为私有云。真像是：纯虚拟化环境不等于云&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>&amp;ldquo;shadow IT.&amp;rdquo;   &amp;ndash;  “影子 IT”   这个比喻是说：IT 部门是业务部门挥之不去的阴霾，他们跟没发赶上业务部门需求变化请求的脚本，业务部门的人从来不管你是用的是神马云，你们这帮人根本没有按时的交付过任何东西，甚至于每当想起需要 IT 部门来配合做什么东西，就感到没有指望，啥都需要漫长的等待。&lt;/p>
+&lt;/li>
+&lt;/ol>
+&lt;p>IT 部门真的是技术不行么？IT 部门真的是干活的人不够么？这个比喻后背后真是的故事：特别是大规模的企业，业务部门所需要的任何 IT 资源和变更都必须通过 IT 自动、半自动或者手工配置实现；小的到开通一个邮箱，重置一次密码；大到新的业务系统的升级和上线；往往 IT 或者业务用户发频繁和密集地发起种种请求时，没有任何一家传统企业的 IT 部门（亚马逊、谷歌这种公司除外，因为它们已经是云计算公司了）能够很有自信地、充分让业务部门满意地完成被要求完成的所有工作。它们为什么完成不了呢？这个就走入了 IT 管理的经典理论，这就是我之前十年工作经验中天天和用户沟通的东西：“保持 IT 系统的稳定，还是接受变化”；为了既能响应业务部门不断的变化请求和 IT 用户的日常需求，IT 部门想到了很好的流程来加以解决，这个流程是什么？它叫“变更管理流程”。举个例子，大型的商业银行一般一周或者两周有一次系统变更日；所有的对 IT 系统的配置和改变，必须提前计划安排好工作顺序，只能在变更日当晚的固定时间窗口中完成，例如晚上 11 点到凌晨 5 点；如果在这个时间段某个工作没有完成怎么办？对不起！没有完成的变更叫做失败变更，你还必须在变更窗前前就把系统回退到未变更前的状态！你现在发现了么？对生产系统是多么严肃的事情！如果你在变更前，没有万无一失的备份计划，你但失误，你就歇菜了；或者你觉得是顺利完成变更了，但是营业厅一开门，IT 的投诉热线就被打爆了，这也不行；变更一但导致生产系统的宕机，轻则 IT 部门的领导引咎辞职，重则数据中心的大领导乌纱帽不保。&lt;/p>
+&lt;p>以上讲述的故事可以说是我的亲身经历，就是中国的国情；那么这个文章的出处毕竟是国外的，这几个发话的大佬们都是何方神圣？&lt;/p>
+&lt;p>Forrester 的云专家 James Staten ：&lt;a class="link" href="http://www.forrester.com/james-staten" target="_blank" rel="noopener"
+>BIO&lt;/a>  从 Bio 上看，他好像是 Forrester 的头牌云分析师之一，有 20 年的 IT 从业经验。&lt;/p>
+&lt;p>VMware 的营销经理 Mike Adams ：网上查不到它的 Bio，在 VMWare 网站搜索，也只能看到他是http://blogs.vmware.com/vsphere/ 的负责人。网上并没有关于此人的详细介绍，但是我们从 vsphere 的 blog 上在读一下这个产品的定位“BEGIN THE JOURNEY TO A PRIVATE CLOUD WITH DATACENTER VIRTUALIZATION”；这个说法和此大师在文章中说的一样：vsphere 是数据中心虚拟化的一个技术组建，数据中心虚拟化技术是私有云建设的起点。但是它是起点，不是私有云。纯种的服务器虚拟化项目也不是那天就能进化成私有云了。&lt;/p>
+&lt;p>CA 的战略解决方案副总裁兼云专家 Andi Mann ：&lt;a class="link" href="http://www.linkedin.com/in/andimann" target="_blank" rel="noopener"
+>BIO&lt;/a>  从 Bio 上可以看出，这大叔才是练家子，人家 84 年从 IT 管理员出身干起；感觉它说的话比较在点子上，并没有去忽悠云；而是从云的本质，也就是 IT 的本质去看，去分析的。也就是“IT 是提供服务和支持的，为的是让用户能够操作和使用业务系统去完成业务工作。” 如果这句话抽象，我可以举个例子：领导需要阅读邮件，他关心的是 IT 能否让我安全的在设备上查邮箱，浏览和回复邮件；当然你能让他在任何设备、任何网络上、任何时间都能完成以上动作，那就再好不过了。银行的储蓄业务柜员需要的是完成一个存、取钱、开销户等相关操作，他关心的是 IT 系统能够正常快速的相应，让客户快速的离开柜台；她根本不关心，网线后面连接的系统是啥做的。&lt;/p>
+&lt;p>言归正传：把焦点放到“云”的概念上一点意义都没有！倒不如把心思放在云的价值上；把心思放在私/公有云的建设方案上！我试图从云计算的基础特征上来解读一下云计算对云企业的价值：&lt;/p>
+&lt;ol>
+&lt;li>
+&lt;p>用户可按需索取、自服务：让用户能够更方便的访问（请求、开通和使用）IT 资源和服务，用户无需等待，资源召之即来&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>泛在的网络接入：个人觉得这个应该翻译为高速度高带宽的网络接入，这个是外界访问到计算资源的必要条件之一；如果你资源再多，但是出口太窄也没有意义；如果翻译成这样也凑合如果能理解为，在个中网络条件下都能够正常安全的加入到云所提供的 IT 服务上也可以。&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>共享资源池： 这个可以提高 IT 资源的利用率，利用率高了，投资就减少了，浪费了低了&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>弹性扩展资源的能力：这个可以应付突发的大批量用户访问请求，并且能够自动资源回收，最重要的是这些扩展和收缩的发生都是云系统自动完成的，不需要管理员手工操作&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>拥有可计量的服务 ： 这个对于 IT 部门需要向用户收钱的实在是重要；或者对服务提供商更重要，如果国内的用户实在没有这个需求也可以不强求。&lt;/p>
+&lt;/li>
+&lt;/ol>
+&lt;p>那么，我们清楚了云的标准和价值后，我们需要判断的是什么？我认为是，我们为什么要建云？你在建云的时候，必须要有一个原因；有了这个原因了才有云的价值取向，才能谈到云的需求，才能谈到云的方案。当然，云就是以云的方案和设计理念去建设的，不存在伪云计算最终能进化或者发展成云计算这一说，就像是，猴子长的年纪在大也无法开口讲话一样。厂商也要不要故意误导，用户也不要片面理解。&lt;/p>
+&lt;p>在引申一下：云计算和虚拟化究竟有啥关系？我斗胆从云的经典分类上来说 Iaas\PaaS\SaaS；从技术上讲，只有 IaaS 和服务器虚拟化有必然联系，其它两种 PaaS 和 SaaS 可以和虚拟化一点必然关系都没有，但是如果他们需要的话，可能可以利用到虚拟化技术的某些优势，但是用非虚拟化技术的架构实现这两种云计算一点问题都没有。网上盛传的“虚拟化是云计算的基石”根本就是一种误解；不过虚拟化的确能帮你做很多事，能帮助你交付很多种的 IT 服务。如果你一定要把他们挂上钩，那么你需要回答的是，你是否要建设 IaaS 云？你的 IaaS 云管理平台是什么，要关注在 IaaS 云计算管理平台的功能和能力上来，看你的 IaaS 是否需要管理多种类型的 Hypersior？是否需要管理到分布在各地的成千上万个服务器？等等。。。从这些需求中才会细化出 IaaS 云管理平台对服务器虚拟化平台的需求。云计算建设是自顶向下的过程，从清晰的概念和建设思路出发，切勿本末倒置，切勿舍本逐末。&lt;/p></description></item><item><title>解决XenServer tools not installed</title><link>https://martinliu.cn/2013/04/07/xenserver-tools-not-installed/</link><pubDate>Sun, 07 Apr 2013 10:27:38 +0000</pubDate><guid>https://martinliu.cn/2013/04/07/xenserver-tools-not-installed/</guid><description>&lt;p>[box color=&amp;ldquo;orange&amp;rdquo; icon=&amp;ldquo;flag&amp;rdquo;]
+鸣谢：Michael Zhang 的经验分享，有需要的请收藏备用。
+[/box]&lt;/p>
+&lt;p>刚刚搞定了 POC 环境中一个很诡异的问题。把过程写出来以供大家参考。建议可以把这个设置放到 POC 的实施手册中。
+刚开始做 POC 时，我们安装了 XP 的模板，并且安装了同版本的 XenTools，此时 XenCenter 面板上显示虚机的 IP 地址没有问题。但是跑了一段时间后发现，所有的虚机的 IP 地址都显示不出来了，并且 XenCenter 面板上显示 XenServer tools not installed，虚机的内存信息，Disk IO 等信息，都没有显示：
+&lt;a class="link" href="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2013/04/xentools1.png" target="_blank" rel="noopener"
+>&lt;img src="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2013/04/xentools1.png"
+loading="lazy"
+alt="xentools1"
+>&lt;/a>&lt;/p>
+&lt;p>&lt;a class="link" href="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2013/04/xentools8.png" target="_blank" rel="noopener"
+>&lt;img src="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2013/04/xentools8.png"
+loading="lazy"
+alt="xentools8"
+>&lt;/a>&lt;/p>
+&lt;p>后来重装了模板，重新发布了虚机，一切就 OK 了，此时我认为是原先的模板有问题，所以导致了这个 issue。
+但是后来跑了几天，某台虚机又出现了类似的症状，此时我意识到应该不是模板的问题了。然后我就检查了这台虚机的 Service，发现：&lt;/p>
+&lt;p>&lt;a class="link" href="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2013/04/xentools2.png" target="_blank" rel="noopener"
+>&lt;img src="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2013/04/xentools2.png"
+loading="lazy"
+alt="xentools2"
+>&lt;/a>&lt;/p>
+&lt;p>这个 Service 就是 XenTool 的 Service，因为没有启动，所以导致了上述的问题。
+但是当我用手工试图重启该 Service 的时候，系统报改 Service 启动时停止，没有给出任何原因。Windows Event Log 里也没看到任何报错。
+后来上网查了下，原来是 Windows Event Log 的 Application 类的 log 满了以后，会导致该 Service 启动异常。
+看了下 XP 的 Windows Event Log 的 Application 类日志的属性，默认只有 64K：&lt;/p>
+&lt;p>&lt;a class="link" href="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2013/04/xentools3.png" target="_blank" rel="noopener"
+>&lt;img src="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2013/04/xentools3.png"
+loading="lazy"
+alt="xentools3"
+>&lt;/a>&lt;/p>
+&lt;p>我把上面的日志文件大小阀值改成了 1024K，清空 Application 类的 log，重启上面的 Service, 成功，问题解决。&lt;/p>
+&lt;p>&lt;a class="link" href="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2013/04/xentools5.png" target="_blank" rel="noopener"
+>&lt;img src="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2013/04/xentools5.png"
+loading="lazy"
+alt="xentools5"
+>&lt;/a>
+&lt;a class="link" href="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2013/04/xentools6.png" target="_blank" rel="noopener"
+>&lt;img src="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2013/04/xentools6.png"
+loading="lazy"
+alt="xentools6"
+>&lt;/a>&lt;/p>
+&lt;p>&lt;a class="link" href="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2013/04/xentools7.png" target="_blank" rel="noopener"
+>&lt;img src="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2013/04/xentools7.png"
+loading="lazy"
+alt="xentools7"
+>&lt;/a>&lt;/p>
+&lt;p>上述类似的问题我记得也有兄弟曾经遇到过，发邮件出来问过，当时怀疑是 XenServer 跟 VDA 的时间不同步造成，现在感觉也许跟这个原因有关。&lt;/p>
+&lt;p>[box color=&amp;ldquo;gray&amp;rdquo; icon=&amp;ldquo;order-check&amp;rdquo;]
+欢迎投稿，请发邮件到： &lt;a class="link" href="mailto:liuzh66@gmail.com" >liuzh66@gmail.com&lt;/a>
+[/box]&lt;/p></description></item><item><title>TIPS install XenServer on Mac Mini 6.1</title><link>https://martinliu.cn/2013/02/21/tips-install-xenserver-on-mac-mini-6-1/</link><pubDate>Thu, 21 Feb 2013 09:24:38 +0000</pubDate><guid>https://martinliu.cn/2013/02/21/tips-install-xenserver-on-mac-mini-6-1/</guid><description>&lt;p>[caption id=&amp;ldquo;attachment_52258&amp;rdquo; align=&amp;ldquo;aligncenter&amp;rdquo; width=&amp;ldquo;640&amp;rdquo;]&lt;img src="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2013/02/mac-mini-2012-vs-old-mac-mini.jpg"
+loading="lazy"
+alt="mac-mini-2012-with-XenServer"
+> mac-mini-2012-with-XenServer[/caption]&lt;/p>
+&lt;p>今天尝试在 Mac Mini 上安装 XenServer，下面把经验共享一下。我遇到的问题有两个：&lt;/p>
+&lt;ol>
+&lt;li>
+&lt;p>网卡无法识别：使用默认安装盘安装，提示没有检测到网卡，安装无法继续&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>网卡驱动植入失败：在按了 F9 加载驱动的时候，没有发现驱动程序，无法继续安装&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>安装完毕之后，重启，屏幕上显示一个带问号的文件夹，一闪一闪无法正常启动 XenServer&lt;/p>
+&lt;/li>
+&lt;/ol>
+&lt;p>经过一番折腾，发现这些点主意一下，应该就没有问题。&lt;/p>
+&lt;p>[caption id=&amp;ldquo;attachment_52255&amp;rdquo; align=&amp;ldquo;aligncenter&amp;rdquo; width=&amp;ldquo;300&amp;rdquo;]&lt;img src="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2013/02/boot-300x224.jpg"
+loading="lazy"
+alt="启动Macmini"
+>](&lt;a class="link" href="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2013/02/boot.jpg" target="_blank" rel="noopener"
+>http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2013/02/boot.jpg&lt;/a>) 启动 Macmini[/caption]&lt;/p>
+&lt;p>在启动 Mac Mini 的时候，在“咚”的一声之前，就按住 ALT 键，否则没法出现上面的屏幕，我用的是 USB 盘启动，所以要选择右侧的图标。&lt;/p>
+&lt;p>[caption id=&amp;ldquo;attachment_52256&amp;rdquo; align=&amp;ldquo;aligncenter&amp;rdquo; width=&amp;ldquo;300&amp;rdquo;]&lt;img src="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2013/02/boot2-300x224.jpg"
+loading="lazy"
+alt="进入menu.c32菜单"
+>](&lt;a class="link" href="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2013/02/boot2.jpg" target="_blank" rel="noopener"
+>http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2013/02/boot2.jpg&lt;/a>) 进入 menu.c32 菜单[/caption]&lt;/p>
+&lt;p>我遵循前人的经验，乖乖到此来禁止 gpt；首先在这里要迅速输入 menu.c32，输入完了就过了，就必须重新关机，重启 mac mini。&lt;/p>
+&lt;p>[caption id=&amp;ldquo;attachment_52257&amp;rdquo; align=&amp;ldquo;aligncenter&amp;rdquo; width=&amp;ldquo;300&amp;rdquo;]&lt;img src="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2013/02/boot3-300x224.jpg"
+loading="lazy"
+alt="输入disable-gpt参数"
+>](&lt;a class="link" href="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2013/02/boot3.jpg" target="_blank" rel="noopener"
+>http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2013/02/boot3.jpg&lt;/a>) 输入 disable-gpt 参数[/caption]&lt;/p>
+&lt;p>进入这个屏幕了，要快速按 TAB 键，否则启动参数无法编辑，输入 disable-gpt 参数的机会就失去了。编辑启动参数的时候，把参数加载第二个&amp;mdash;（三个短横线）前即可，上图我为了拍照在参数之前加了很多空格，其实这个参数和前后要至少一个空格就够了。&lt;/p>
+&lt;p>在进入安装的屏幕后，如果是 XenServer6.0.201 的源安装盘，还必须下载 tg3 的网卡驱动，并且用工具打入 iso 文件，这样安装的时候，就可以选择到加载网卡启动，否则 6.0.201 的安装盘即不自带此网卡驱动，也无法正常识别附加的驱动。网卡驱动下载地址为：&lt;a class="link" href="http://support.citrix.com/article/CTX135328" target="_blank" rel="noopener"
+>http://support.citrix.com/article/CTX135328&lt;/a>  要把加压后的 iso 文件，再次加压到对应的目录里才行，直接把解压后的几个文件放入目录，安装程序是无法识别到网卡驱动的。如果能正常识别的话，会出现选择框，让你选择  Broadcom tg3。如果是 XenServer6.1 的安装盘，就不需要折腾驱动了，原盘自带了 Broadcom tg3 网卡驱动。下面有两张截图，供必须要使用 XenServer 6.0.201 的人参考。&lt;/p>
+&lt;p>[caption id=&amp;ldquo;attachment_52250&amp;rdquo; align=&amp;ldquo;aligncenter&amp;rdquo; width=&amp;ldquo;300&amp;rdquo;]&lt;img src="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2013/02/xenserver6.1-300x215.jpg"
+loading="lazy"
+alt="XenServer 6.0.201 with driver"
+>](&lt;a class="link" href="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2013/02/xenserver6.1.jpg" target="_blank" rel="noopener"
+>http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2013/02/xenserver6.1.jpg&lt;/a>) XenServer 6.0.201 with driver[/caption]&lt;/p>
+&lt;p>[caption id=&amp;ldquo;attachment_52251&amp;rdquo; align=&amp;ldquo;aligncenter&amp;rdquo; width=&amp;ldquo;300&amp;rdquo;]&lt;img src="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2013/02/xs-repository-list-300x253.jpg"
+loading="lazy"
+alt="xs-repository-list 实例"
+>](&lt;a class="link" href="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2013/02/xs-repository-list.jpg" target="_blank" rel="noopener"
+>http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2013/02/xs-repository-list.jpg&lt;/a>) xs-repository-list 实例[/caption]&lt;/p>
+&lt;p>即使你不是安装 XenServer6.0.201，也推荐使用 UltraISO 来把 iso 文件写入一个 USB 盘来安装，因为 Mac Mini 没有光驱，而且这样不用刻盘，更加环保一点。&lt;/p>
+&lt;p>最后一个 Tips：这个可能是解决问题 3 的技巧，在安装的最后一个屏幕上，安装程序提示移除 Mac Mini 上的其他所有截至，然后点击回车完成安装。在这个屏幕上要识时务的把安装 U 盘从机器上拔除，然后点击回车来重启 Mac Mini。经过我的验证，拔出 U 盘后好像没有在遇到过闪烁文件夹的重启不了的问题。建议都使用自带 Broadcom tg3 网卡驱动的 6.1 来安装，否则 6.0.201 安装完成之后，一旦打了补丁，还需要下载 for 这个补丁的新版本的网卡驱动，在重新手工打上该驱动，否则网卡会起不起来。&lt;/p></description></item><item><title>2012 Hadoop与大数据技术大会PPT下载</title><link>https://martinliu.cn/2013/01/09/2012-hadoope4b88ee5a4a7e695b0e68daee68a80e69cafe5a4a7e4bc9appte4b88be8bdbd/</link><pubDate>Wed, 09 Jan 2013 06:24:06 +0000</pubDate><guid>https://martinliu.cn/2013/01/09/2012-hadoope4b88ee5a4a7e695b0e68daee68a80e69cafe5a4a7e4bc9appte4b88be8bdbd/</guid><description>&lt;p>&lt;a class="link" href="http://hbtc2012.hadooper.cn/download.html" target="_blank" rel="noopener"
+>http://hbtc2012.hadooper.cn/download.html&lt;/a>&lt;/p></description></item><item><title>2013年的云计算，您准备好了么？</title><link>https://martinliu.cn/2012/12/18/2013e5b9b4e79a84e4ba91e8aea1e7ae97e682a8e58786e5a487e5a5bde4ba86e4b988/</link><pubDate>Tue, 18 Dec 2012 16:12:30 +0000</pubDate><guid>https://martinliu.cn/2012/12/18/2013e5b9b4e79a84e4ba91e8aea1e7ae97e682a8e58786e5a487e5a5bde4ba86e4b988/</guid><description>&lt;p>&lt;a class="link" href="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2012/06/cropped-Cloud1.jpg" target="_blank" rel="noopener"
+>&lt;img src="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2012/06/cropped-Cloud1-300x60.jpg"
+loading="lazy"
+alt="cropped-Cloud1.jpg"
+>&lt;/a>&lt;/p>
+&lt;p>&lt;a class="link" href="http://www.datamation.com/cloud-computing/getting-ready-for-cloud-computing-2013.html" target="_blank" rel="noopener"
+>Getting Ready for Cloud Computing 2013&lt;/a>&lt;/p>
+&lt;p>[dc]看[/dc]到篇不错的文章，值得分享一下。在最近的三四年里面，厂商都忙着炒作概念，用似云非云的各种虚拟化来对付用户，实际上云计算并没有那么简单，我一直不敢给客户讲，也讲不好的东西就是：对于一个特定的用户，告诉它什么是云？他应该怎么怎么过渡到云？先从那里做起？大致的路径是怎么样的？一旦对应到具体的用户环境里面，以上每个用户的答案都是不同的，感觉没有十足实践经验的人，根本无法和用户达成共鸣和一致。这个和我以前做 ITSM/ITIL 完全不同，在那块领域里面，讲究的是管理的思路和理念，等你做了一些项目之后，你从项目中的总结和提炼，就成了你的炮弹，用在其它新用户身上，用不好，也用不错；管理的学问往往是殊途同归的。而云计算，目前国内真的还属于初级阶段，就像是在 2002 年左右的时候，我们给银行做 ITIL 做服务台一样，对无论是用户和厂商的人来说，还不夸张的说，都是雾里看花。&lt;/p>
+&lt;p>[tab label=&amp;ldquo;云计算七大注意事项&amp;rdquo; first=&amp;ldquo;yes&amp;rdquo;]&lt;/p>
+&lt;p>[list icon=&amp;ldquo;star&amp;rdquo;]&lt;/p>
+&lt;ul>
+&lt;li>
+&lt;ol>
+&lt;li>检查和评估您的网络 : 如果数据中心不做网络架构的巨大调整，给云平台配置足够强大的带宽资源，上云计算，基本上就是让用户和运维人员都痛苦不堪，不会有啥好结果。&lt;/li>
+&lt;/ol>
+&lt;/li>
+&lt;li>
+&lt;ol start="2">
+&lt;li>建立鼓励员工进谏的机制 : 识别、评估、选择和实施云计算方案的流程需要提前设计好。在每个阶段和过程里让最终用户、开发人员和管理层都充分的参与意见。&lt;/li>
+&lt;/ol>
+&lt;/li>
+&lt;li>
+&lt;ol start="3">
+&lt;li>聚焦在立竿见影的运维痛点和功能差距上: 瞄准那些影响最终用户生产力和新上面的应用部署项目上。让云计算的高效和灵活等优势小试牛刀一下，从而验证需求点的准确性和方案的靠谱性。&lt;/li>
+&lt;/ol>
+&lt;/li>
+&lt;li>
+&lt;ol start="4">
+&lt;li>先尝后买 : 云计算是最着急投胎的，没有必要大干快上，对于数据中心来说也是一个渐进的温和的改良的过程。选定一个足够小的范围，先尝后买，分区分配扩容，放大项目范围。&lt;/li>
+&lt;/ol>
+&lt;/li>
+&lt;li>
+&lt;ol start="5">
+&lt;li>承载应用（App hosting）和 SaaS 应用不能划等号 : 这根本就是个误解，无须多说。&lt;/li>
+&lt;/ol>
+&lt;/li>
+&lt;li>
+&lt;ol start="6">
+&lt;li>监控利用率和满意度 : 不管云做的大小，资源都要物尽其用，跟踪最终用户和领导大满意度，与同行用户横向比较数据，找出自己的所处位置和程度。实施反馈机制，让用户驱动云的需求和建设方向。&lt;/li>
+&lt;/ol>
+&lt;/li>
+&lt;li>
+&lt;ol start="7">
+&lt;li>眼观六路，站足先机 : 市场风云莫测，业务模式层出不穷，这些都不断催熟这云方案。所以广泛关注，收集跟多信息，为云计算建立多个选项，多种选择总是好事。&lt;/li>
+&lt;/ol>
+&lt;/li>
+&lt;/ul>
+&lt;p>[/list]
+[/tab]&lt;/p>
+&lt;p>[tab label=&amp;ldquo;英文原文&amp;rdquo;]&lt;/p>
+&lt;p>If you’ve been holding back about moving to the ‘Cloud’, it is time to get onboard the &lt;a class="link" href="http://www.datamation.com/cloud-computing/" target="_blank" rel="noopener"
+>Cloud Computing&lt;/a> express.&lt;/p>
+&lt;p>Not only has every major research firm published market forecasts indicating that Cloud services are growing exponentially, but we see multiplying customer success stories that clearly illustrate the immediate and measurable business benefits of moving to the Cloud.&lt;/p>
+&lt;p>Here are some simple rules you should follow to help you move ahead in the coming year and successfully leverage today’s rapidly evolving Cloud alternatives:&lt;/p>
+&lt;p>&lt;strong>1. Check your networks:&lt;/strong> Adopting Cloud solutions doesn’t make sense if you don’t have sufficient bandwidth capabilities. Without adequate connectivity, accessing Cloud services will be like stepping back in time and only frustrate your end-users and executives.&lt;/p>
+&lt;p>&lt;strong>2. Establish policies that encourage employee input:&lt;/strong> Develop straightforward procedures for identifying, evaluating, selecting and implementing Cloud solutions. Your end-users, developers and executives are being exposed to Software-as-a-Service (SaaS) applications, Platform-as-a-Service (PaaS) solutions and Infrastructure-as-a-Service (IaaS) alternatives every day. Invite them to recommend those they like.&lt;/p>
+&lt;p>&lt;strong>3. Focus on your immediate pain-points and functional gaps:&lt;/strong> Don’t rip out existing applications that work and cost little to maintain. Instead, target those cumbersome old applications that get in the way of end-user productivity and new applications to fill immediate needs.&lt;/p>
+&lt;p>&lt;strong>4. Start small and try before you buy:&lt;/strong> One of the greatest advantages of today’s Cloud solutions is that they mitigate many of the risks associated with traditional, legacy applications. Rather than paying for a perpetual license upfront without having an opportunity to test how it will meet your needs, many of today’s Cloud solutions allow you to try them out before you subscribe to them. And, you can start with a small group of users, or a single department, before you roll out the solution across your organization.&lt;/p>
+&lt;p>&lt;strong>5. Recognize that application hosting doesn’t equal Software-as-a-Service (SaaS):&lt;/strong> There is a growing number of legacy, on-premise software vendors who are offering hosted versions of their applications on a subscription pricing basis and calling them “SaaS” solutions. Although these hosted applications alleviate some of the operational hassles and reduce the upfront cost associated with traditional software deployment, they still fall short of the fundamental benefits of true ‘multitenant’ SaaS solutions, such as ongoing enhancements and aggregated benchmarks. In addition, the legacy software vendors can’t scale their hosted services if their customers are using varying versions of the hosted application.&lt;/p>
+&lt;p>&lt;strong>6. Monitor utilization and measure satisfaction:&lt;/strong> Track how your end-users and executives are using the SaaS apps and other Cloud services. Be sure the utilization levels justify the current subscription fees to prevent overspending. Investigate how your utilization levels compare with other organizations by requesting benchmark information from SaaS/Cloud vendors. Implement feedback mechanisms to ensure satisfaction and generate new ideas. Use data to determine future service requirements.&lt;/p>
+&lt;p>&lt;strong>7. Stay informed to stay ahead:&lt;/strong> The Cloud marketplace is changing rapidly from a technological perspective and maturing quickly from a business model point of view. Keeping up on the latest developments may be a challenge, but is also essential to take full advantage of the increasingly powerful solutions being delivered via the Cloud. Maintain an ‘open door’ policy and utilize social networking tools to invite your end-users, executives and others to share information about new services and best practices.
+[/tab]&lt;/p></description></item><item><title>何谓云？</title><link>https://martinliu.cn/2009/10/21/what-is-cloud-computing/</link><pubDate>Wed, 21 Oct 2009 04:36:11 +0000</pubDate><guid>https://martinliu.cn/2009/10/21/what-is-cloud-computing/</guid><description>&lt;p>下面是两个 Youtube 上的视频，短短 5 分钟的视频就把云计算的相关核心概念解释的很清楚。&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->好像国内吧 Youtube 给屏蔽了，上面的视频可能看不到，Google 真的应该和中国政府把关系搞好，哎~~&lt;/p></description></item><item><title>BMC and Cloud computing</title><link>https://martinliu.cn/2009/07/16/bmc-and-cloud-computing/</link><pubDate>Thu, 16 Jul 2009 13:34:31 +0000</pubDate><guid>https://martinliu.cn/2009/07/16/bmc-and-cloud-computing/</guid><description>&lt;p>July 15, 2009 – BMC Software has announced that it is leveraging Amazon Web Services to provide a single, unified management solution meant to give customers control over existing internal IT assets and external cloud infrastructures, according to a company release.&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->&lt;a class="link" href="http://www.information-management.com/news/amazon_bmc_software_cloud_computing-10015748-1.html" target="_blank" rel="noopener"
+>http://www.information-management.com/news/amazon_bmc_software_cloud_computing-10015748-1.html&lt;/a>&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->BTW: it seems the IT management is as important as infrastructure.&lt;/p></description></item><item><title>Cloud Computing Infrastructure and Architecture Guide-From SUN</title><link>https://martinliu.cn/2009/07/14/cloud-computing-infrastructure-and-architecture-guide-from-sun/</link><pubDate>Tue, 14 Jul 2009 05:34:26 +0000</pubDate><guid>https://martinliu.cn/2009/07/14/cloud-computing-infrastructure-and-architecture-guide-from-sun/</guid><description>&lt;p>&lt;img src="http://blogs.sun.com/staso/resource/question-cloud.jpg"
+loading="lazy"
+>&lt;!-- raw HTML omitted -->&lt;/p>
+&lt;p>&lt;a class="link" href="http://cn.sun.com/offers/docs/sun_353cloudcomputing_chinese.pdf" target="_blank" rel="noopener"
+>** » 下载本指南**&lt;/a> （中文版）&lt;!-- raw HTML omitted -->《云计算基础设施和体系架构指南》&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->&lt;a class="link" href="http://www.sun.com/featured-articles/CloudComputing.pdf" target="_blank" rel="noopener"
+>** » 下载本指南**&lt;/a> （英文版）&lt;!-- raw HTML omitted -->《Cloud Computing Infrastructure and Architecture Guide》&lt;!-- raw HTML omitted -->&lt;/p>
+&lt;p>&lt;strong>&lt;a class="link" href="http://hk.sun.com/resources" target="_blank" rel="noopener"
+> » 更多 Sun 白皮书、指南、蓝图&lt;/a>&lt;/strong> (英文版)&lt;/p></description></item><item><title>从云计算联想到第一代电脑系统</title><link>https://martinliu.cn/2009/01/19/e4bb8ee4ba91e8aea1e7ae97e88194e683b3e588b0e7acace4b880e4bba3e794b5e88491e7b3bbe7bb9f/</link><pubDate>Mon, 19 Jan 2009 07:32:50 +0000</pubDate><guid>https://martinliu.cn/2009/01/19/e4bb8ee4ba91e8aea1e7ae97e88194e683b3e588b0e7acace4b880e4bba3e794b5e88491e7b3bbe7bb9f/</guid><description>&lt;p>&lt;img src="http://www.cartoonstock.com/newscartoons/cartoonists/ato/lowres/aton964l.jpg"
+loading="lazy"
+>记得以前看过一本描写 Bill Gets 的书，他上中学的时候，在河滨中心通过一个远程终端，连接到某大学的计算机系统，输入程序代码，并且得到代码在远程电脑系统中的输出，输出好像是在屏幕上出现的，或从打印机上输出的。我基本上忘了那电脑系统的名称，不过它的特点基本上是这样的：当时电脑系统很少，可能全世界上也没有多少台功能全面的电脑；用户使用的特别像是一种计算服务，由于终端设备根本没有技术能力，当时还没有个人电脑；接入方式根本不是 tcp/ip 更不是 internet，当时还没 internet。在学习了云计算的一些概念之后，我迷惑了，这个时尚的技术，怎么越看越眼熟啊。&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->IBM 的主机系统可谓是当今电脑世界的恐龙化石级产品，他是一个活化石基本的技术，在经历了开放系统时代之后，我们即将进入云计算时代，我总感觉云计算是一种技术路线的复古。主机系统和第一代电脑系统最相似，区别是可以通过 TCP/ip 网络，和开放系统通信了。最为一种新兴起的技术，我试图 follow &lt;a class="link" href="http://www.johnmwillis.com/" target="_blank" rel="noopener"
+>http://www.johnmwillis.com/&lt;/a>来学习云计算，遗憾的是从 08 年初以来并没有仔细听他所有的 colud cafe；这个老兄在把 blog 改名为 IT Management and Cloud Blog，真可谓是一高产的 blogger，这哥们每天能发四五个 post，强啊。最近找时间&lt;a class="link" href="http://media.libsyn.com/media/botchagalupe/cafe27.mp3" target="_blank" rel="noopener"
+>听了一段 cloud cafe&lt;/a>，我发现到目前为止还没有一个能让大多数人都认同的云计算的概念，基本上对云计算的感念方面有两道三种说法。可以看看 &lt;a class="link" href="http://en.wikipedia.org/wiki/Cloud_computing" target="_blank" rel="noopener"
+>http://en.wikipedia.org/wiki/Cloud_computing&lt;/a> 参考这上面的说法也只能有一个模糊的感觉。&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->看看电脑技术打发展历程：最早的电脑系统，主机系统，开放系统，群集，网格，云计算。前一段时间看过一个非常抢眼的标题“以后世界上将只有 5 台电脑”。SaaS 是一个比较火热的和云计算相关的技术，我认为它像是在 web2.0 发展到一定阶段后 Web 应用的一个发展，这方面的强者为 salesforce 之流。Google 和 Salesforce 不同的是，Google 提供网上 office 套件的同时，还开发他的平台，并提供与之配套的 SDK。Amazon 不提供应用也没有 SDK，他只提供平台，平台上包括基本的计算和存储服务。Google 和 Amazon 说起来算是基础架构作为一种服务。抛开云计算本身不谈，用户使用和访问的方式并没有发生变化，在任何一个 web 浏览器存在的地方都能使用或者管理到云计算。客户端的计算和存储能力再次此退化到零，这不能说不是计算机技术发展的返祖现象吧！哈哈～～我也快糊涂了！&lt;/p></description></item><item><title>Open Source and Cloud Computing(开源与云计算)</title><link>https://martinliu.cn/2008/10/16/open-source-and-cloud-computinge5bc80e6ba90e4b88ee4ba91e8aea1e7ae97/</link><pubDate>Thu, 16 Oct 2008 13:09:16 +0000</pubDate><guid>https://martinliu.cn/2008/10/16/open-source-and-cloud-computinge5bc80e6ba90e4b88ee4ba91e8aea1e7ae97/</guid><description>&lt;p>Link：&lt;a class="link" href="http://radar.oreilly.com.cn/blog/tim/open-source-and-cloud-computing" target="_blank" rel="noopener"
+>Open Source and Cloud Computing(开源与云计算)&lt;/a>&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->From above post:&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->开源的成功有几个关键元素：&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->1.许可证要允许和鼓励再发布、修改乃至发展分支；&lt;!-- raw HTML omitted -->2.一个体系结构要使程序能被作为组件在任何可能的地方重用，以及可以被扩展，而不是被替换来提供新功能；&lt;!-- raw HTML omitted -->3.低门槛，让新用户轻松上手一试。&lt;!-- raw HTML omitted -->4.低门槛，让开发人员构建新的应用与大家分享。&lt;!-- raw HTML omitted -->&lt;/p>
+&lt;!-- raw HTML omitted -->
+&lt;p>&lt;!-- raw HTML omitted -->个人认为：使用云计算的用户并不一定是租用土地的佃户；佃户把自己的收成都给了地主，自己剩下的少的可怜。云计算的用户会愿意付出多少成本给地主是可以计算的，计算的原则就是‘保证自己的利益、安全等’。&lt;!-- raw HTML omitted -->&lt;/p>
+&lt;!-- raw HTML omitted --></description></item></channel></rss>

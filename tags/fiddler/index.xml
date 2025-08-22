@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Fiddler on Martin Liu's Blog</title><link>https://martinliu.cn/tags/fiddler/</link><description>Recent content in Fiddler on Martin Liu's Blog</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><lastBuildDate>Sun, 09 Oct 2022 21:44:15 +0800</lastBuildDate><atom:link href="https://martinliu.cn/tags/fiddler/index.xml" rel="self" type="application/rss+xml"/><item><title>Fiddler Timers</title><link>https://martinliu.cn/2010/12/22/fiddler-timers/</link><pubDate>Wed, 22 Dec 2010 07:28:45 +0000</pubDate><guid>https://martinliu.cn/2010/12/22/fiddler-timers/</guid><description>&lt;p>&lt;img src="http://www.fiddler2.com/Fiddler/images/FiddlerLogo.png"
+loading="lazy"
+alt="Fiddler"
+>Fiddler is a Web Debugging Proxy which logs all HTTP(S) traffic between your computer and the Internet. Fiddler allows you to inspect all HTTP(S) traffic, set breakpoints, and &amp;ldquo;fiddle&amp;rdquo; with incoming or outgoing data. Fiddler includes a powerful event-based scripting subsystem, and can be extended using any .NET language.Fiddler is freeware and can debug traffic from virtually any application, including Internet Explorer, Mozilla Firefox, Opera, and thousands more.&lt;/p>
+&lt;ul>
+&lt;li>&lt;strong>ClientConnected&lt;/strong>- Exact time that the client browser made a TCP/IP connection to Fiddler.&lt;/li>
+&lt;li>&lt;strong>ClientBeginRequest&lt;/strong>– Time at which this HTTP request began. May be much later than ClientConnected due to client connection reuse.&lt;/li>
+&lt;li>&lt;strong>ClientDoneRequest&lt;/strong> - Exact time that the client browser finished sending the HTTP request to Fiddler.&lt;/li>
+&lt;li>&lt;strong>DNSTime&lt;/strong> - # milliseconds Fiddler spent in DNS looking up the server&amp;rsquo;s IP address.&lt;/li>
+&lt;li>&lt;strong>GatewayDeterminationTime&lt;/strong> - # milliseconds Fiddler spent determining the upstream gateway proxy to use (e.g. processing autoproxy script). Mutually exclusive to DNSTime.&lt;/li>
+&lt;li>&lt;strong>TCPConnectTime&lt;/strong> - # milliseconds Fiddler spent TCP/IP connecting to that server&amp;rsquo;s IP address.&lt;/li>
+&lt;li>&lt;strong>HTTPSHandshakeTime&lt;/strong> – Amount of time spent in HTTPS handshake&lt;/li>
+&lt;li>&lt;strong>ServerConnected&lt;/strong> – Time at which this connection to the server was made. May be much earlier than ClientConnected due to server connection reuse.&lt;/li>
+&lt;li>&lt;strong>FiddlerBeginRequest&lt;/strong> – The time at which Fiddler began sending the HTTP request to the server.&lt;/li>
+&lt;li>&lt;strong>ServerGotRequest&lt;/strong> - Exact time that Fiddler finished (re)sending the HTTP request to the server.&lt;/li>
+&lt;li>&lt;strong>ServerBeginResponse&lt;/strong> - Exact time that Fiddler got the first bytes of the server&amp;rsquo;s HTTP response.&lt;/li>
+&lt;li>&lt;strong>ServerDoneResponse&lt;/strong> - Exact time that Fiddler got the last bytes of the server&amp;rsquo;s HTTP response.&lt;/li>
+&lt;li>&lt;strong>ClientBeginResponse&lt;/strong> - Exact time that Fiddler began transmitting the HTTP response to the client browser.&lt;/li>
+&lt;li>&lt;strong>ClientDoneResponse&lt;/strong>- Exact time that Fiddler finished transmitting the HTTP response to the client browser.&lt;/li>
+&lt;/ul>
+&lt;p>&lt;strong>Can i find out how long the server needs to process my request ?&lt;/strong>
+(ServerBeginResponse - ServerGotRequest) is probably what you want.&lt;/p>
+&lt;p>&lt;strong>Can i find out how long the request needs to pass through the network?&lt;/strong>
+I&amp;rsquo;m not sure that&amp;rsquo;s what you really want to know, but it would be:&lt;/p>
+&lt;p>(ServerGotRequest - ClientDoneRequest) - (DNSTime + TCPConnectTime)&lt;/p></description></item></channel></rss>

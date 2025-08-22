@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Smokeping on Martin Liu's Blog</title><link>https://martinliu.cn/tags/smokeping/</link><description>Recent content in Smokeping on Martin Liu's Blog</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><lastBuildDate>Sun, 09 Oct 2022 21:44:15 +0800</lastBuildDate><atom:link href="https://martinliu.cn/tags/smokeping/index.xml" rel="self" type="application/rss+xml"/><item><title>如何看懂Smokeping图表</title><link>https://martinliu.cn/2007/02/15/smokeping-chart/</link><pubDate>Thu, 15 Feb 2007 08:45:00 +0000</pubDate><guid>https://martinliu.cn/2007/02/15/smokeping-chart/</guid><description>&lt;p>&lt;img src="http://docs.google.com/File?id=dgt3878v_6z3dfsf"
+loading="lazy"
+>&lt;/p>
+&lt;p>&lt;strong>_RTT(Round-Trip Time) _&lt;/strong>&lt;/p>
+&lt;p>简单说它是一个数据报在网络上两点中间往返一次的时间。是影响 TCP 性能和表征网络运行状况的重要参数。在网络中实时、准确地测量大量 TCP 设备和系统的 RTT 参数是网络管的重要环节之一。Smokeping 就是这样的自动测试系统，它向目标设备和系统发送各种类型的测试数据包，测量、记录和展示 RTT。&lt;/p>
+&lt;!-- raw HTML omitted -->
+&lt;p>&lt;strong>_Median RTT _**&lt;/strong>&lt;em>中间数&lt;/em>**&lt;/p>
+&lt;!-- raw HTML omitted -->
+&lt;p>它是中间数并不是平均值。Smokeping 有多种类型的探针，探针在默认的设置下，每 300 秒向目标设备发送 20 测探测数据包。假如这 20 个数据包都返回的话，它就记录下了 20 个 RTT，那么 Median RTT 就是第十个包的 RTT；如果有 5 个包丢失的话，那么 Median RTT 就是第八个返回的包的 RTT 值。&lt;/p>
+&lt;!-- raw HTML omitted -->
+&lt;!-- raw HTML omitted -->
+&lt;p>&lt;strong>_Avg RTT _**&lt;/strong>&lt;em>评价值&lt;/em>**&lt;/p>
+&lt;!-- raw HTML omitted -->
+&lt;p>它是每一个测试回合中所有 RTT 的算术评价值。&lt;/p>
+&lt;!-- raw HTML omitted -->
+&lt;!-- raw HTML omitted -->
+&lt;p>&lt;strong>&lt;em>Avg pkt loss&lt;/em>&lt;/strong>&lt;/p>
+&lt;!-- raw HTML omitted -->
+&lt;p>它是丢包率。&lt;/p>
+&lt;!-- raw HTML omitted -->
+&lt;!-- raw HTML omitted -->
+&lt;p>上图中测试的三个服务器，是用默认的 FPing 探针探测该服务器是否在线。Smokeping 就装在 OpenNMS 上，可以看出它的 RTT 最小；奇怪的是它的丢包率却是最大。其它的，一个是美国的一个 Web 服务器，另一个是美国的 Exchange 邮件服务器。&lt;/p>
+&lt;!-- raw HTML omitted -->
+&lt;!-- raw HTML omitted -->
+&lt;p>&lt;img src="http://docs.google.com/File?id=dgt3878v_7fs5j82"
+loading="lazy"
+>&lt;/p>
+&lt;!-- raw HTML omitted -->
+&lt;p>&lt;em>Last 3 Hours&lt;/em> 最近的 3 小时&lt;/p>
+&lt;!-- raw HTML omitted -->
+&lt;p>*Median Ping RTT （__506.2 ms avg）*中间数的平均值是 5.6.2 毫秒。如果是绿色的短横线，说明一个 300 秒的周期内所有的包都返回都有 RTT 的时间记录下来；如果是蓝色的短横线则说明有 2 个包丢失。&lt;/p>
+&lt;!-- raw HTML omitted -->
+&lt;p>*Packet Loss：*丢包率。从上图中我们看出全都是绿线，所以丢包率当然是 0。&lt;/p>
+&lt;!-- raw HTML omitted -->
+&lt;p>&lt;em>Probe：__10 HTTP pings using echoping(1) every 300 seconds&lt;/em>&lt;/p>
+&lt;!-- raw HTML omitted -->
+&lt;p>这张图是 2007-1-11 12:00:05 生成的。每一个绿色的短横线都是一个测试回合 300 秒内用 echoping 测试 HTTP 协议 10 次。绿色画出的是中间数的位置，一个回合中的其它值都在它附近被以灰度的形式被刻画；灰度的范围越小越好，灰色的范围像是烟雾一样笼罩在中间数附近。在中间数附近的烟越小越好，说明网络很平稳。RTT 曲线的起伏还显示了网络的负载情况。&lt;/p>
+&lt;!-- raw HTML omitted -->
+&lt;p>点击这里看一个&lt;a class="link" href="http://oss.oetiker.ch/smokeping-demo/?target=Customers.OP" target="_blank" rel="noopener"
+>网上的 Demo&lt;/a>&lt;/p>
+&lt;!-- raw HTML omitted -->
+&lt;p>update : 2008-1-18&lt;/p>
+&lt;!-- raw HTML omitted -->
+&lt;p>现在 OpenNMS 把 smokeping 集成了，你可以在 OpenNMS 中配置使用这个功能。&lt;/p></description></item></channel></rss>

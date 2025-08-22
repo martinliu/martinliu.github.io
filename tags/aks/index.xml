@@ -1,0 +1,276 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Aks on Martin Liu's Blog</title><link>https://martinliu.cn/tags/aks/</link><description>Recent content in Aks on Martin Liu's Blog</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><lastBuildDate>Thu, 14 Nov 2024 11:06:25 +0800</lastBuildDate><atom:link href="https://martinliu.cn/tags/aks/index.xml" rel="self" type="application/rss+xml"/><item><title>使用 Azure CLI 创建 K8S 集群</title><link>https://martinliu.cn/blog/az-cli-create-aks-cluster/</link><pubDate>Fri, 10 Nov 2023 22:52:40 +0800</pubDate><guid>https://martinliu.cn/blog/az-cli-create-aks-cluster/</guid><description>&lt;img src="https://martinliu.cn/blog/az-cli-create-aks-cluster/hb9riivbne1jpgrnh77w.png" alt="Featured image of post 使用 Azure CLI 创建 K8S 集群" />&lt;p>使用 Azure CLI 创建 K8S 集群是一种非常简单易用的方式。你可以在任何操作系统中安装 Azure CLI 命令行工具； 或者启动含有 Azure CLI 的容器，然后在容器内使用 Azure CLI 。&lt;/p>
+&lt;p>
+&lt;div class="video-wrapper">
+&lt;iframe src="https://player.bilibili.com/player.html?as_wide=1&amp;amp;high_quality=1&amp;amp;page=1&amp;bvid=BV18Q4y187ng"
+scrolling="no"
+frameborder="no"
+framespacing="0"
+allowfullscreen="true"
+>
+&lt;/iframe>
+&lt;/div>
+&lt;div class="video-wrapper">
+&lt;iframe src="https://player.bilibili.com/player.html?as_wide=1&amp;amp;high_quality=1&amp;amp;page=1&amp;bvid=BV1d4411N7zD"
+scrolling="no"
+frameborder="no"
+framespacing="0"
+allowfullscreen="true"
+>
+&lt;/iframe>
+&lt;/div>
+&lt;/p>
+&lt;h2 id="准备-azure-cli">准备 Azure CLI
+&lt;/h2>&lt;p>本文的演示命令都是在 macOS 上操作的，Azure CLI 在任何 OS 上安装的文档见 &lt;a class="link" href="https://docs.microsoft.com/en-us/cli/azure/install-azure-cli" target="_blank" rel="noopener"
+>Install Azure CLI&lt;/a> 。&lt;/p>
+&lt;p>如果你不想在本机安装 Azure CLI 命令行工具，可以使用 Docker 容器的方式，启动一个含有 Azure CLI 的容器，然后在容器内使用 Azure CLI 命令行工具。下面这个参考命令，是在此容器中带入当前路径做为容器内工作目录，并且指定运行特定 Azure CLI 版本的例子：&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">docker run -it --rm -v &lt;span class="k">$(&lt;/span>&lt;span class="nb">pwd&lt;/span>&lt;span class="k">)&lt;/span>:/work -w /work mcr.microsoft.com/azure-cli:2.0.80
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;h2 id="登录-azure">登录 Azure
+&lt;/h2>&lt;p>参考命令如下：&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">az login
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>假设你是使用本机安装的 Azure CLI 做 Azure CLI 的命令行登录认证，那么在运行了以上命令后，会弹出一个浏览器窗口，让你输入 Azure 的账号和密码，然后完成登录认证。&lt;/p>
+&lt;p>然后，你可以查看当前账号中的订阅；确保随后使用中一个正确的订阅，用于创建 K8S 集群。&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">az account list -o table
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>为了确保后续的命令行操作使用正确的订阅，可以用下面的命令设定订阅 ID；并且使用命令行变量的方式，设置当前使用的订阅。&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">az account &lt;span class="nb">set&lt;/span> --subscription &amp;lt;subscription-id&amp;gt;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nb">export&lt;/span> &lt;span class="nv">SUBSCRIPTION&lt;/span>&lt;span class="o">=&lt;/span>XXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXXXX
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;h2 id="创建资源组">创建资源组
+&lt;/h2>&lt;p>为了让本次操作的过程产物，都放在一个资源组中，我们先创建一个资源组。这样方便在测试完的时候，可以一次性删除所有曾经用到过的资源。&lt;/p>
+&lt;p>使用命令行变量设定资源组的名称和所在的区域，以及其他的参数：&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;span class="lnt">4
+&lt;/span>&lt;span class="lnt">5
+&lt;/span>&lt;span class="lnt">6
+&lt;/span>&lt;span class="lnt">7
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">&lt;span class="nb">export&lt;/span> &lt;span class="nv">RESOURCE_GROUP_NAME&lt;/span>&lt;span class="o">=&lt;/span>aks-getting-started
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nb">export&lt;/span> &lt;span class="nv">LOCATION&lt;/span>&lt;span class="o">=&lt;/span>eastasia
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nb">export&lt;/span> &lt;span class="nv">AKS_CLUSTER_NAME&lt;/span>&lt;span class="o">=&lt;/span>aks-4-devops
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nb">export&lt;/span> &lt;span class="nv">AKS_CLUSTER_VERSION&lt;/span>&lt;span class="o">=&lt;/span>1.28.3
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nb">export&lt;/span> &lt;span class="nv">AKS_NODE_COUNT&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="m">2&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nb">export&lt;/span> &lt;span class="nv">AKS_NODE_VM_SIZE&lt;/span>&lt;span class="o">=&lt;/span>Standard_B2s
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nb">export&lt;/span> &lt;span class="nv">AKS_NODE_DISK_SIZE&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="m">50&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>创建资源组：&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">az group create --name &lt;span class="nv">$RESOURCE_GROUP_NAME&lt;/span> --location &lt;span class="nv">$LOCATION&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;h2 id="创建-service-principal">创建 Service Principal
+&lt;/h2>&lt;p>为了让 K8S 可以使用到 Azure 账号中的各种必要的资源服务（disk，负载均衡，存储等等），需要创建一个 Service Principal，用于 K8S 访问 Azure 资源。下面用新的命令行变量携带 Service Principal 的相关信息：&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;span class="lnt">4
+&lt;/span>&lt;span class="lnt">5
+&lt;/span>&lt;span class="lnt">6
+&lt;/span>&lt;span class="lnt">7
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">&lt;span class="nv">SERVICE_PRINCIPAL_JSON&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="k">$(&lt;/span>az ad sp create-for-rbac --skip-assignment --name aks-getting-started-sp -o json&lt;span class="k">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nv">SERVICE_PRINCIPAL&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="k">$(&lt;/span>&lt;span class="nb">echo&lt;/span> &lt;span class="nv">$SERVICE_PRINCIPAL_JSON&lt;/span> &lt;span class="p">|&lt;/span> jq -r &lt;span class="s1">&amp;#39;.appId&amp;#39;&lt;/span>&lt;span class="k">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nv">SERVICE_PRINCIPAL_SECRET&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="k">$(&lt;/span>&lt;span class="nb">echo&lt;/span> &lt;span class="nv">$SERVICE_PRINCIPAL_JSON&lt;/span> &lt;span class="p">|&lt;/span> jq -r &lt;span class="s1">&amp;#39;.password&amp;#39;&lt;/span>&lt;span class="k">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">az role assignment create --assignee &lt;span class="nv">$SERVICE_PRINCIPAL&lt;/span> &lt;span class="se">\
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="se">&lt;/span>--scope &lt;span class="s2">&amp;#34;/subscriptions/&lt;/span>&lt;span class="nv">$SUBSCRIPTION&lt;/span>&lt;span class="s2">/resourceGroups/&lt;/span>&lt;span class="nv">$RESOURCE_GROUP_NAME&lt;/span>&lt;span class="s2">&amp;#34;&lt;/span> &lt;span class="se">\
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="se">&lt;/span>--role Contributor
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>关于 Service Principal 的更多信息，可以参考 &lt;a class="link" href="https://docs.microsoft.com/en-us/azure/active-directory/develop/app-objects-and-service-principals" target="_blank" rel="noopener"
+>Azure AD Service Principal&lt;/a> 。&lt;/p>
+&lt;h2 id="创建-k8s-集群">创建 K8S 集群
+&lt;/h2>&lt;p>可以先使用下面的命令获取创建 aks 集群详细的帮助信息，以及丰富的可用选项；&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">az aks create -h
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>查看当前可用区中的 AKS 服务中的 Kubernetes 版本：&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">az aks get-versions --location &lt;span class="nv">$LOCATION&lt;/span> -o table
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>运行创建 AKS 集群的命令：&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">az aks create -n &lt;span class="nv">$AKS_CLUSTER_NAME&lt;/span> &lt;span class="se">\
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="se">&lt;/span>--resource-group &lt;span class="nv">$RESOURCE_GROUP_NAME&lt;/span> &lt;span class="se">\
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="se">&lt;/span>--location &lt;span class="nv">$LOCATION&lt;/span> &lt;span class="se">\
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="se">&lt;/span>--kubernetes-version &lt;span class="nv">$AKS_CLUSTER_VERSION&lt;/span> &lt;span class="se">\
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="se">&lt;/span>--load-balancer-sku standard &lt;span class="se">\
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="se">&lt;/span>--nodepool-name default &lt;span class="se">\
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="se">&lt;/span>--node-count &lt;span class="nv">$AKS_NODE_COUNT&lt;/span> &lt;span class="se">\
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="se">&lt;/span>--node-vm-size &lt;span class="nv">$AKS_NODE_VM_SIZE&lt;/span> &lt;span class="se">\
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="se">&lt;/span>--node-osdisk-size &lt;span class="nv">$AKS_NODE_DISK_SIZE&lt;/span> &lt;span class="se">\
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="se">&lt;/span>--network-plugin kubenet &lt;span class="se">\
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="se">&lt;/span>--service-principal &lt;span class="nv">$SERVICE_PRINCIPAL&lt;/span> &lt;span class="se">\
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="se">&lt;/span>--client-secret &lt;span class="s2">&amp;#34;&lt;/span>&lt;span class="nv">$SERVICE_PRINCIPAL_SECRET&lt;/span>&lt;span class="s2">&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;h2 id="连接到-k8s-集群">连接到 K8S 集群
+&lt;/h2>&lt;p>使用下面的命令，获取 AKS 集群的连接信息：&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">az aks get-credentials --resource-group &lt;span class="nv">$RESOURCE_GROUP_NAME&lt;/span> --name &lt;span class="nv">$AKS_CLUSTER_NAME&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>这条命令会将 AKS 集群的连接信息，写入到 &lt;code>~/.kube/config&lt;/code> 文件中，然后你就可以使用 &lt;code>kubectl&lt;/code> 命令行工具，连接到 AKS 集群了。&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">kubectl get nodes
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>以上忽略命令行 kubectl 的安装方式，详见 &lt;a class="link" href="https://kubernetes.io/docs/tasks/tools/install-kubectl/" target="_blank" rel="noopener"
+>Install and Set Up kubectl&lt;/a> 。&lt;/p>
+&lt;h2 id="部署应用">部署应用
+&lt;/h2>&lt;p>下面参考 &lt;a class="link" href="https://learn.microsoft.com/zh-cn/azure/aks/learn/quick-kubernetes-deploy-cli" target="_blank" rel="noopener"
+>https://learn.microsoft.com/zh-cn/azure/aks/learn/quick-kubernetes-deploy-cli&lt;/a> 文档中的操作步骤，部署
+&lt;a class="link" href="https://github.com/Azure-Samples/aks-store-demo" target="_blank" rel="noopener"
+>AKS 应用商店应用程序&lt;/a> 。该应用系统的示意图如下：&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/blog/az-cli-create-aks-cluster/aks-store-architecture.png"
+width="1424"
+height="525"
+srcset="https://martinliu.cn/blog/az-cli-create-aks-cluster/aks-store-architecture_hu_ab95812a457cdf8c.png 480w, https://martinliu.cn/blog/az-cli-create-aks-cluster/aks-store-architecture_hu_6543d1dbf0837e3e.png 1024w"
+loading="lazy"
+class="gallery-image"
+data-flex-grow="271"
+data-flex-basis="650px"
+>&lt;/p>
+&lt;p>创建名为 &lt;a class="link" href="aks-store-quickstart.yaml" >aks-store-quickstart.yaml ，清单文件点此下载&lt;/a> ，并将以下清单复制到其中：&lt;/p>
+&lt;p>使用 kubectl apply 命令部署上面的应用：&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">kubectl apply -f aks-store-quickstart.yaml
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>使用 kubectl get pods 命令，查看应用程序的所有 Pod 都处于 Running 状态：&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">kubectl get pods
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>使用下面的命令获取 store-front 服务的外网 IP 地址：&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">kubectl get service store-front --watch
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>最后，打开 Web 浏览器并转到服务的外网 IP 地址，以查看 Azure 应用商店应用的实际效果。&lt;/p>
+&lt;h2 id="清理资源">清理资源
+&lt;/h2>&lt;p>使用下面的命令，删除整个测试的资源组、Service Principal 和 AKS 集群，以及当前命令行中 kubctl 的配置文件中的 K8S 集群的上下文。&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">az aks delete --resource-group &lt;span class="nv">$RESOURCE_GROUP_NAME&lt;/span> --name &lt;span class="nv">$RESOURCE_GROUP_NAME&lt;/span> --yes
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">az ad sp delete --id aks-getting-started-sp
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">kubectl config delete-content &lt;span class="nv">$AKS_CLUSTER_NAME&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;h2 id="总结">总结
+&lt;/h2>&lt;p>本文主要讲解了使用 Azure CLI 创建 K8S 集群所使用到的一般性流程和选项，目标是为你更复杂的使用场景打下基础。&lt;/p>
+&lt;p>Azure CLI、Terraform 和 Pulumi 都是创建和管理云资源的工具，但它们各有优势：&lt;/p>
+&lt;p>Azure CLI：&lt;/p>
+&lt;ul>
+&lt;li>简单易用：Azure CLI 的命令结构简洁明了，易于理解和使用。&lt;/li>
+&lt;li>Azure 专用：Azure CLI 是专为 Azure 设计的，对 Azure 的各种服务和资源有深度集成。&lt;/li>
+&lt;/ul>
+&lt;p>Terraform：&lt;/p>
+&lt;ul>
+&lt;li>提供声明式语法：Terraform 使用声明式语法，用户只需描述他们希望达到的最终状态，Terraform 将处理如何达到这个状态。
+提供状态管理：Terraform 能够跟踪和管理每个部署的状态，这对于管理复杂的系统非常有用。&lt;/li>
+&lt;li>跨平台：Terraform 支持多个云服务提供商，不仅限于 Azure。&lt;/li>
+&lt;/ul>
+&lt;p>Pulumi：&lt;/p>
+&lt;ul>
+&lt;li>使用常规编程语言：Pulumi 允许使用常规编程语言（如 Python、JavaScript、TypeScript、Go 等）来描述和管理云资源，这使得开发者可以利用他们已有的编程知识和技能。&lt;/li>
+&lt;li>提供状态管理：与 Terraform 类似，Pulumi 也提供状态管理功能。
+跨平台：Pulumi 同样支持多个云服务提供商。&lt;/li>
+&lt;/ul>
+&lt;p>选择哪种工具取决于你的具体需求和偏好。后续我们演示使用 Terraform 和 Pulumi 创建 K8S 集群的方式。&lt;/p>
+&lt;h2 id="参考">参考
+&lt;/h2>&lt;ul>
+&lt;li>&lt;a class="link" href="https://docs.microsoft.com/en-us/azure/aks/kubernetes-walkthrough" target="_blank" rel="noopener"
+>Quickstart: Deploy an Azure Kubernetes Service (AKS) cluster using the Azure CLI&lt;/a>&lt;/li>
+&lt;li>&lt;a class="link" href="https://github.com/marcel-dempers/docker-development-youtube-series" target="_blank" rel="noopener"
+>https://github.com/marcel-dempers/docker-development-youtube-series&lt;/a>&lt;/li>
+&lt;/ul></description></item></channel></rss>

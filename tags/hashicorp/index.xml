@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Hashicorp on Martin Liu's Blog</title><link>https://martinliu.cn/tags/hashicorp/</link><description>Recent content in Hashicorp on Martin Liu's Blog</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><lastBuildDate>Tue, 25 Jun 2024 21:44:26 +0800</lastBuildDate><atom:link href="https://martinliu.cn/tags/hashicorp/index.xml" rel="self" type="application/rss+xml"/><item><title>为什么我们不支持 OpenTF？</title><link>https://martinliu.cn/blog/why-we-are-not-supporting-opentf/</link><pubDate>Tue, 29 Aug 2023 09:46:45 +0800</pubDate><guid>https://martinliu.cn/blog/why-we-are-not-supporting-opentf/</guid><description>&lt;img src="https://martinliu.cn/blog/why-we-are-not-supporting-opentf/0_djNEkw3EPJvERiqT.webp" alt="Featured image of post 为什么我们不支持 OpenTF？" />&lt;blockquote>
+&lt;p>作者：dragondrop.cloud
+来源：&lt;a class="link" href="https://medium.com/@hello_9187/" target="_blank" rel="noopener"
+>https://medium.com/@hello_9187/&lt;/a>&lt;/p>&lt;/blockquote>
+&lt;h2 id="背景">背景
+&lt;/h2>&lt;p>2021年8月10日，HashiCorp 将其之前的“开源”项目的许可证更改为商业源代码许可证（BSL），从而使它们成为未来所有版本的“源代码可用”。我们在这里详细讨论了此变更的原因和动机。&lt;/p>
+&lt;p>2021年8月15日，OpenTF 宣言发布。其主要观点是，他们希望HashiCorp将 Terraform 的许可证恢复为真正的开源许可证，否则承诺者联盟将支持由基金会管理的 Terraform 分支。&lt;/p>
+&lt;h2 id="我们的看法">我们的看法
+&lt;/h2>&lt;p>我们认为 OpenTF 宣言对新许可证的描述方式有失偏颇，有利于那些受到许可证变更影响最大的盈利公司，而如果发生分支，Terraform 生态系统的潜在成本太高。此外，作为受影响方，我们不介意将 Terraform 许可给嵌入到我们自己的解决方案中，因为 HashiCorp 建立和维护的庞大支持生态系统。&lt;/p>
+&lt;p>让我们详细分析这个说法*。&lt;/p>
+&lt;p>*以下内容不构成法律建议，请咨询熟悉您特定情况的律师。&lt;/p>
+&lt;h2 id="许可证偏颇和扭曲的陈述">许可证偏颇和扭曲的陈述
+&lt;/h2>&lt;p>&lt;strong>1）&lt;/strong> 在宣言的开头部分“我们的关切：BUSL 许可证是 Terraform 的毒丸”，他们声称：
+“&amp;hellip;现在，使用 Terraform 的每家公司、供应商和开发人员都必须考虑他们的行为是否可能被视为与 HashiCorp 的产品竞争。”&lt;/p>
+&lt;p>这个说法似乎相当不准确。唯一需要担心许可证变更的公司是那些将“在托管或嵌入的基础上为第三方提供 Licensed Work”的公司，这些行为与 HashiCorp 的产品竞争。&lt;/p>
+&lt;p>最初确实有一些关于某些具体问题的合理疑问，即如果 HashiCorp 发布与您先前发布的工具重叠的功能，会发生什么情况？然而，在 HashiCorp 的首席技术官回答了其中一些常见问题后，似乎很明显，这只会影响那些向其他公司销售软件，并且该软件与 HashiCorp 的 Terraform Cloud 和 Terraform Enterprise 产品竞争，或者将 Terraform（源代码或 CLI 二进制文件）托管或嵌入的公司。&lt;/p>
+&lt;p>值得注意的是，与 HashiCorp 管理的 Terraform 产品直接竞争的三家最大公司，Spacelift、Env0 和 Scalr，在支持一个 Terraform 分支的多年里，已经做出了数百万美元的承诺（这三家公司之间共有13个全职员工，为期五年）。他们的员工和创始人一直是 OpenTF 宣言的最积极的贡献者和传播者。&lt;/p>
+&lt;p>&lt;strong>2）&lt;/strong> 对于一个分支可能带来的好处的引用，这些好处在 2021 年和现在一样成立。
+OpenTF 宣言列出了分支的关键原因，包括创建一个“真正的开源”、“社区驱动”、“公正”和“分层和模块化”的 Terraform。这些都是 Terraform 核心的有效关切，实际上是任何拥有的开源项目公司的问题，但是这些与 Terraform 核心仓库的问题并不是新问题。多年来，HashiCorp 社区接受社区提交的速度一直很慢，他们从未在核心中添加某些企业风格的功能（像任何拥有开源工具的公司一样）。&lt;/p>
+&lt;p>在过去的大约14天里，唯一的实质性变化是一些公司的利润状况发生了变化。&lt;/p>
+&lt;h2 id="分支生态系统潜在的成本非常高">分支生态系统潜在的成本非常高
+&lt;/h2>&lt;p>如果发生了分支，Terraform的主干版本可能不会闲置。HashiCorp可能会感到迫切，加强其地位，并在新版本的Terraform和主干云供应商中引入不兼容的差异。在最好的情况下，这可能会导致社区为了采用新的Terraform主要版本而做很多额外的工作，在最坏的情况下，导致主干版本和分支之间的兼容性裂痕。&lt;/p>
+&lt;p>这样的裂痕对于工具的应用将是毁灭性的（我应该使用哪个版本的Terraform？有什么区别？算了，我只是去选择一个替代品）以及纯粹支持Terraform的开源项目（我为哪个分支编写？我是否支持两者并增加维护工具所需的工作？）。这还可能导致巨大的重复工作量，需要永久地并行维护镜像库、provider（提供者）和Terraform核心。&lt;/p>
+&lt;p>即使在发生分支的情况下，HashiCorp继续照常运营，对整个社区来说，这也像是一个巨大的重复劳动，因为分支的主要受益者只是不同的营利实体及其用户。&lt;/p>
+&lt;p>总之，分支对Terraform社区可能非常、非常代价高昂。&lt;/p>
+&lt;h2 id="hashicorp支持terraform社区的投入巨大">HashiCorp支持Terraform社区的投入巨大
+&lt;/h2>&lt;p>Terraform社区主要是由HashiCorp维护的，与之相关的成本非常高。&lt;/p>
+&lt;p>他们每年支持数十亿的提供者下载，免费的模块托管（我们的组织将其作为一个关键的分发机制）以及数十亿的Terraform二进制下载。&lt;/p>
+&lt;p>上述成本投入不包括主干云Terraform提供者和Terraform核心本身的维护。不用说，HashiCorp会持续的在社区大量投入，并将继续这样做。&lt;/p>
+&lt;h2 id="反论bsl的改变不就是遏制竞争吗">反论：BSL的改变不就是遏制竞争吗？
+&lt;/h2>&lt;p>许多Terraform Cloud替代品，特别是Spacelift、Env0、Scalr和Digger，都为Terraform管理开发了创新的工具和功能。与此同时，他们已经从HashiCorp所做的大型生态系统投资中取得了利益。明确地说，这种方法没有错，只要能继续以接近零成本的方式进行，这是一个聪明的商业策略。&lt;/p>
+&lt;p>许可证更改至少提高了所有Terraform Cloud/Enterprise竞争对手的运营成本。这些成本很可能以某种形式转嫁给他们自己的客户。这可能是通过更高的定价结构，因为许可费冲击了他们的利润率，或者是某些企业完全放弃了Terraform管理，从而选择较少（这种后续响应当然最能遏制竞争）。&lt;/p>
+&lt;p>还有一件事需要记住，那就是HashiCorp也是一家企业，因此期望它们继续亏损，而与此同时，不受维护和运营Terraform社区资产所需的固定成本的约束的竞争对手直接针对它们，是不现实的。虽然这个领域的产品价格几乎肯定会因为生态系统成本更加均匀地被承担而变得更加昂贵，但如果HashiCorp变成一个不存在的实体，那也不是理想情况。&lt;/p>
+&lt;h2 id="结论">结论
+&lt;/h2>&lt;p>从我们的角度看，Terraform社区主干分叉的潜在成本可能非常高昂，并可能对Terraform的未来造成严重破坏。HashiCorp继续使用BSL对&amp;gt;99%的Terraform用户没有影响；但主要的OpenTF宣言作者有明确的利润动机，并已经从不同的角度呈现了这种情况。&lt;/p>
+&lt;p>我们认为Terraform的分支对社区的维护成本，远远超过了少数那几家被改变了营利模式企业的商业价值，并因此我们不支持OpenTF项目。&lt;/p>
+&lt;h2 id="背景-1">背景
+&lt;/h2>&lt;blockquote>
+&lt;p>本文作者所在的公司：如果对我们自己的偏见感到好奇，我们的公司构建了一个嵌入了Terraform CLI的产品，并具有与Terraform Cloud重叠的一些功能，特别是漂移检测，因此受到了BSL更改对Terraform 1.5.5之后版本的影响。dragondrop.cloud的使命是在使用基础设施作为代码时自动化开发者的最佳实践。我们的旗舰开源产品cloud-concierge允许开发者将他们的云计算进行编码，检测漂移，估计云计算成本和安全风险等，更多地通过拉取请求提供结果。对于大规模运行cloud-concierge的企业，我们提供了一个自托管的管理平台。&lt;/p>&lt;/blockquote></description></item><item><title>Hashicorp 的 Terraform 1.0 正式 GA 了！</title><link>https://martinliu.cn/blog/hashicorp-terraform-1-0-general-availability-cn/</link><pubDate>Tue, 15 Jun 2021 09:15:22 +0800</pubDate><guid>https://martinliu.cn/blog/hashicorp-terraform-1-0-general-availability-cn/</guid><description>&lt;img src="https://martinliu.cn/img/2021/06/0gLZ2oH.png" alt="Featured image of post Hashicorp 的 Terraform 1.0 正式 GA 了！" />&lt;p>Terraform 1.0&amp;ndash;现在GA了&amp;ndash;标志着你的自动化工作流程的互操作性、易于升级和维护方面的一个重要里程碑。&lt;/p>
+&lt;p>Terraform 拥有数以亿计的下载量、成千上万的贡献和令人难以置信的社区，是最广泛采用的基础设施即代码工具。达到 1.0 是一个重要的里程碑。&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/img/cos/2021-06-15-terrafor-history.png"
+loading="lazy"
+alt="Terraform 的历史"
+>&lt;/p>
+&lt;p>本文来自：&lt;a class="link" href="https://www.hashicorp.com/blog/announcing-hashicorp-terraform-1-0-general-availability" target="_blank" rel="noopener"
+>https://www.hashicorp.com/blog/announcing-hashicorp-terraform-1-0-general-availability&lt;/a>&lt;/p>
+&lt;p>6 月 8 日，在 HashiConf 欧洲会议上，我们很高兴地宣布HashiCorp Terraform 1.0全面上市，这是您自动化工作流程的互操作性、易于升级和维护的一个重要里程碑。Terraform 1.0&lt;a class="link" href="https://www.terraform.io/downloads.html" target="_blank" rel="noopener"
+>立即可供下载&lt;/a>，也可在HashiCorp Terraform Cloud 中使用。HashiCorp Terraform已经被大小公司的个人和团队广泛使用，成为多云配置和自动化的标准。这篇文章介绍了新的内容，以及1.0的命名对Terraform用户的意义。&lt;/p>
+&lt;h2 id="更好的-terraform-state-互操作性">更好的 Terraform State 互操作性
+&lt;/h2>&lt;p>Terraform 在互操作性方面取得了巨大的进步。Terraform state 现在可以在0.14.x、0.15.x和1.0.x版本之间交叉兼容。远程状态数据源的兼容性现在已经回传，支持0.12.30、0.13.6、0.14.0、0.15.0和1.0.x版本。&lt;/p>
+&lt;h2 id="改进升级体验">改进升级体验
+&lt;/h2>&lt;p>从 Terraform 0.15 开始，一直到1.x的生命周期，你现在可以升级到新的 Terraform 版本，你的工作流程将继续运行，就像之前那些版本一样。使用Terraform 1.x不需要升级工具、重构或其他改变。&lt;/p>
+&lt;h2 id="延长维护期">延长维护期
+&lt;/h2>&lt;p>所有Terraform 1.x版本将有至少18个月的维护期。这意味着HashiCorp将继续调查1.0版本的错误和发布功能，至少在这段时间内。这些修复可能会在后续的1.x版本中发布，而不一定是增量的1.0.x版本。&lt;/p>
+&lt;h2 id="terraform插件sdk-v1的寿命结束">Terraform插件SDK v1的寿命结束
+&lt;/h2>&lt;p>&lt;a class="link" href="https://github.com/hashicorp/terraform-plugin-sdk/" target="_blank" rel="noopener"
+>Terraform插件SDK&lt;/a>是一个框架，可以让开发者创建和维护Terraform供应商。HashiCorp将在2021年7月31日结束对插件SDK第一版的支持。Terraform CLI和Terraform Cloud的用户不受此影响，不需要采取任何行动。我们鼓励受到影响的 Terraform Provider 的维护者使用我们的升级指南，转移到Terraform Plugin SDK的第二版本。按照我们的教程，开发您的Provider。其他信息可以在Terraform提供者社区讨论论坛中找到。Terraform插件SDK v1版的生命终结时间表。&lt;/p>
+&lt;h2 id="10版本对terraform意味着什么">1.0版本对Terraform意味着什么？
+&lt;/h2>&lt;p>1.0版本是一个巨大的成就，对于Terraform来说更是如此。对于许多为该项目做出贡献的人或参与超过100,000,000次下载的人来说，这已经是一个漫长的过程。但在HashiCorp，我们以一致的、透明的方式对待产品版本和1.0的指定，基于四个关键要求，正如2017年4月关于Packer 1.0发布的博文中所记录的那样。&lt;/p>
+&lt;p>达到1.0的第一个要求是产品已经被广泛部署，在生产中经过多年的硬化。Terraform自2014年首次发布以来，一直在配置和管理基础设施，并得到了从零售业（星巴克）到证券交易所（TMX集团、德意志交易所集团）到自动驾驶汽车（Cruise）等广泛行业的信任。&lt;/p>
+&lt;p>第二个要求是，主要的用例要被理解并得到良好的支持。Mitchell Hashimoto和Armon Dadgar早在2014年创建Terraform时，就已经想到了几个用例。从那时起，超过1500名贡献者开启了超过11000个 PR（GitHub 的贡献方式），这些请求增加了新的功能，并支持新的用例，这是我们从未想象过的。&lt;/p>
+&lt;p>第三个要求规定了一个明确的用户体验。Terraform用户从不同的角度来处理他们的工作流程，因此我们专注于创建直观的用户界面；清晰的文档；全面的、自定进度的学习平台；以及互动的、由教师指导的研讨会。&lt;/p>
+&lt;p>第四个要求是确保产品的技术架构是成熟和稳定的。&lt;/p>
+&lt;p>Terraform 1.0以更大的互操作性、更容易的升级以及重要的维护期来巩固你的自动化工作流程和Terraform功能集的稳定性的形式满足了所有四个要求。&lt;/p></description></item></channel></rss>

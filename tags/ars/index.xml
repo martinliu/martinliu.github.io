@@ -1,0 +1,315 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>ARS on Martin Liu's Blog</title><link>https://martinliu.cn/tags/ars/</link><description>Recent content in ARS on Martin Liu's Blog</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><lastBuildDate>Sun, 09 Oct 2022 21:44:15 +0800</lastBuildDate><atom:link href="https://martinliu.cn/tags/ars/index.xml" rel="self" type="application/rss+xml"/><item><title>Remedy ITSM 7.6.04 套件快速安装</title><link>https://martinliu.cn/2011/05/04/remedy-itsm-7-6-04-quick-install-guide/</link><pubDate>Wed, 04 May 2011 15:59:42 +0000</pubDate><guid>https://martinliu.cn/2011/05/04/remedy-itsm-7-6-04-quick-install-guide/</guid><description>&lt;p>&lt;img src="http://media.cms.bmc.com/images/box_services_trio_compass.png"
+loading="lazy"
+>自从 Remedy ITSM 7.6.03 版本发布以后，Remedy ITSM 套件有了一种全新的安装方式“预配置堆栈式安装”，这种安装方法简化了以前从 ARS 开始一个部件罗一个部件的安装方法，它将 ITSM 套件中的所有组件一次性的安装上去。下面讲具体该如何操作。&lt;/p>
+&lt;h2 id="什么情况下使用这个安装方式">什么情况下使用这个安装方式？
+&lt;/h2>&lt;p>A）POC 的情况下
+B）客户的生产环境满足下面的需求：
+• Microsoft Windows Server 2008 (64-bit) (Standard, Enterprise, or Datacenter) with Microsoft SQL Server 2008 (64-bit) (Standard or Enterprise)
+• Oracle Solaris 10 with Oracle 11g (64-bit) (Standard, Enterprise, or RAC)
+• Red Hat Enterprise Linux 5 (Update 5) (64-bit) with Oracle 11g (64-bit) (Standard, Enterprise, or RAC)
+• Microsoft Windows Server 2008 (64-bit) (Standard, Enterprise, or Datacenter) with Oracle 11g (64-bit) (Standard or Enterprise)
+Note: The BMC Remedy ITSM Suite Precon gured Stack installer supports only Unicode database servers&lt;/p>
+&lt;h2 id="这种方式安装了什么组件">这种方式安装了什么组件？
+&lt;/h2>&lt;p>BMC Remedy AR System server version 7.6.04
+AREA LDAP Directory Service Authentication
+ARDBC LDAP Directory Service Data Access
+Web Services Plugin
+Simple Network Management Protocol (SNMP) Configuration
+Full Text Search (FTS) Configuration
+Approval Server
+Assignment Engine
+Email Engine
+Flashboards
+Mid-Tier
+BMC Remedy AR System clients
+BMC Remedy User
+BMC Remedy Alert
+BMC Remedy Developer Studio
+BMC Remedy Data Import
+BMC Remedy Migrator
+Crystal Reports
+ODBC
+BMC Atrium Core
+BMC Atrium CMDB version 7.6.04
+Product Catalog version 7.6.04
+Atrium Impact Simulator version 7.6.04
+BMC Remedy ITSM Suite
+BMC Remedy Asset Management version 7.6.04
+BMC Remedy Change Management version 7.6.04
+BMC Remedy Incident Management version 7.6.04
+BMC Remedy Problem Management version 7.6.04
+BMC Remedy Service Desk 7.6.04
+BMC Service Level Management version 7.6.04
+BMC Remedy Knowledge Management version 7.6.0
+如果你真的不需要安装以上所有组件，请不要使用此安装方法。&lt;/p>
+&lt;h2 id="需要什么硬件">需要什么硬件？
+&lt;/h2>&lt;p>System requirements for Microsoft Windows and UNIX®:
+• Minimum 12 GB free disk space for the installation directory
+• Minimum 8 GB free space for local database and remote database
+• (For Red Hat Enterprise Linux® only) Minimum of 2.5 GB free space in the /tmp directory or /tmp file system.
+• (For Oracle® Solaris only) Minimum of 2.5 GB free space in the /var/tmp directory or the file system.
+• 3 GHz dual processor
+• Minimum 3 GB RAM during installation; 8 GB RAM during runtime; 8 GB main memory for optimal performance
+• (When 6 GB UNIX systems are used) Make sure that a minimum of 6 GB Swap Space is configured within the system.
+如果您的硬件真的低于以上需要，请不要使用此安装方法，否则安装完之后系统可能不能正常运行。&lt;/p>
+&lt;h2 id="需要什么人参与">需要什么人参与？
+&lt;/h2>&lt;p>需要操作系统管理员和数据库管理员参与
+以 Linux+Oracle 为例，可能需要如下环境变量
+[bash]
+export ORACLE_BASE=/u01/app/oracle
+export ORACLE_SID=remedy
+export ORACLE_HOME=/u01/app/oracle/product/11.2.0/dbhome_1
+export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$ORACLE_HOME/lib
+export NLS_LANG=en_US.UTF8
+export LANG=en_US.utf8
+export PATH=$PATH:$ORACLE_HOME/bin
+[/bash]&lt;/p>
+&lt;h2 id="需要什么安装文件">需要什么安装文件？
+&lt;/h2>&lt;p>以 Linux+Oracle 的安装为例，需要如下文件：&lt;/p>
+&lt;p>linux.x64_11gR2_database_1of2.zip
+linux.x64_11gR2_database_2of2.zip
+jdk-6u25-ea-bin-b03-linux-amd64-27_feb_2011.bin
+BMCRemedyITSMSuitePreconfiguredStack7.6.04.Linux.tar.gz&lt;/p>
+&lt;h2 id="需要安装多长时间">需要安装多长时间？
+&lt;/h2>&lt;p>大约 1.5 个小时左右，是的没有夸张，这个时间是在一个 DELL E6400（64 位，8GB 内存）的笔记本上测得的，如果你有更好的硬件，相信可以更快，这应该是史上最快的 Remedy ITSM 套件安装速度，如果你也成功通过此方式安装，请留下评论留下下你的安装时间和系统配置情况。&lt;/p>
+&lt;h2 id="参考以下操作步骤">参考以下操作步骤
+&lt;/h2>&lt;p>安装之前需要根据网卡的 MAC 地址先申请一个 Lic，接着基本上都是点 Next，即可完成安装
+[imagebrowser id=8]&lt;/p></description></item><item><title>ARS启动故障修复案例</title><link>https://martinliu.cn/2011/04/02/ars-start-issue-on-oracle/</link><pubDate>Sat, 02 Apr 2011 13:43:21 +0000</pubDate><guid>https://martinliu.cn/2011/04/02/ars-start-issue-on-oracle/</guid><description>&lt;p>ARS 版本 7.6.04
+数据库 Oracle11G 和 ARS 在同一台服务器上&lt;/p>
+&lt;p>错误现象：
+ARS 服务不能正常启动&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;span class="lnt">4
+&lt;/span>&lt;span class="lnt">5
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">arerror.log报 390600 : SQL 数据库不可用 -- 将重试连接 (ARNOTE 590)
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Sat Apr 02 20:27:41 2011 : Action Request System(R) 服务器 x64 版本 7.6.04 Build 002 201101141059
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">(c) Copyright 1991-2010 BMC Software, Inc.
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Sat Apr 02 20:29:51 2011  390600 : SQL 数据库不可用 -- 将重试连接 (ARNOTE 590)
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Sat Apr 02 20:29:51 2011     ORA-12170: TNS:Connect timeout occurred
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>排错步骤：
+使用 sqlplus 测试登录，返回 TNS 超时错误&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;span class="lnt">4
+&lt;/span>&lt;span class="lnt">5
+&lt;/span>&lt;span class="lnt">6
+&lt;/span>&lt;span class="lnt">7
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">[powershell]
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> C:\Users\martin&amp;gt;sqlplus ARAdmin/AR#Admin#@ars
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">SQL*Plus: Release 11.2.0.1.0 Production on Sat Apr 2 20:48:35 2011
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Copyright (c) 1982, 2010, Oracle.  All rights reserved.
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">ERROR:
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">ORA-12170: TNS:Connect timeout occurred  
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">[/powershell]
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>使用 tnsping ars 测试也不成功
+ping 本机主机名&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">[powershell]
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">ping arsserver
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Pinging arsserver [fe80::c123:5921:b71b:64fd%13] with 32 bytes of data:
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Reply from fe80::c123:5921:b71b:64fd%13: time&amp;lt;1ms
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Reply from fe80::c123:5921:b71b:64fd%13: time&amp;lt;1ms
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Reply from fe80::c123:5921:b71b:64fd%13: time&amp;lt;1ms
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Reply from fe80::c123:5921:b71b:64fd%13: time&amp;lt;1ms
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Ping statistics for fe80::c123:5921:b71b:64fd%13:
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Packets: Sent = 4, Received = 4, Lost = 0 (0% loss),
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Approximate round trip times in milli-seconds:
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Minimum = 0ms, Maximum = 0ms, Average = 0ms 
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">[/powershell]
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>貌似找到原因，修改 host 文件，加入主机名到 127.0.0.1 后面，在测试 ping 主机名成功。
+重启 Oracle 监听器服务，再次测试 tnsping 和 sqlplus ，测试都获得成功。
+重新启动 ARS 服务，服务被正常启动&lt;/p></description></item><item><title>Remedy ARS 开源工具知多少</title><link>https://martinliu.cn/2011/03/01/remedy-ars-open-source-tool/</link><pubDate>Tue, 01 Mar 2011 15:46:51 +0000</pubDate><guid>https://martinliu.cn/2011/03/01/remedy-ars-open-source-tool/</guid><description>&lt;p>Remedy ARS 是全球最大市场份额的产品，是为业内广泛接受的成熟产品套件；虽然他始终是私有的软件产品，但是围绕其周围，还是不断有新的开源工具出现。下面就介绍几种这样的软件。&lt;/p>
+&lt;p>ARInside is a free open-source utility to create a static html documentation of your AR-Server. If you need something to quickly browse through your workflow, ARInside might be worth a try.
+ARInside 3.0.2 has some new features, lots of bugfixes and other improvements.
+Just to name a few:&lt;/p>
+&lt;ul>
+&lt;li>documentation improvements&lt;/li>
+&lt;li>64-bit platform support&lt;/li>
+&lt;li>experimental support for Solaris and AIX&lt;/li>
+&lt;li>basic ARS 7.6.x support&lt;/li>
+&lt;li>huge performance plus on big installations&lt;/li>
+&lt;/ul>
+&lt;p>这是一个 ARS 服务器扫描的工具，可以形成一个静态的文档，能够作为一个状态的参考极限，这样方便你对当前的服务器上的所有对象和工作流有个全面的了解。最大的好处是能够统计和技术，而且不用登陆 Dev Studio 了。一图胜千言，下面大家看后就明白它能做什么。&lt;/p>
+&lt;p>&lt;img src="http://arinside.org/screenshots/1?format=raw"
+loading="lazy"
+alt="Front page of ARInside docs "
+>&lt;/p>
+&lt;p>看后还闲着干嘛，赶紧去下载使用吧。&lt;/p>
+&lt;p>其他的关于 Remedy ARS 开源的项目我也在 sf.net 里面大致搜索了一下，下面是个简单的参考清单。&lt;/p>
+&lt;h2 id="remedy-outlook-integration-updated-2006-09-08">&lt;a class="link" href="http://sourceforge.net/projects/roi/" target="_blank" rel="noopener"
+>Remedy Outlook Integration&lt;/a> Updated 2006-09-08
+&lt;/h2>&lt;p>The Remedy Integration for Outlook (ROI) synchronizes tickets from any Remedy AR System application to your Outlook task list or calendar.&lt;/p>
+&lt;h2 id="remedy-arapi-php-extension-updated-2009-07-19">&lt;a class="link" href="http://sourceforge.net/projects/php-arapi/" target="_blank" rel="noopener"
+>Remedy ARAPI PHP extension&lt;/a> Updated 2009-07-19
+&lt;/h2>&lt;p>Extension to PHP for integration to Remedy Action Request System. First release will be focused on reading and manipulating data. Later version will give access to arapi-application structure functions.&lt;/p>
+&lt;h2 id="jasper-reports-data-provider-for-remedy-updated-2006-08-16">&lt;a class="link" href="http://sourceforge.net/projects/jaspars/" target="_blank" rel="noopener"
+>Jasper Reports data provider for Remedy&lt;/a> Updated 2006-08-16
+&lt;/h2>&lt;p>jaspars provides a Jasper Reports custom data source (JRDataSource) compatible with the Remedy AR System. See &lt;a class="link" href="http://www.mypathworks.com/arslist/Public?id=8ae4b6940c259f32010c3707fbae01bf" target="_blank" rel="noopener"
+>http://www.mypathworks.com/arslist/Public?id=8ae4b6940c259f32010c3707fbae01bf&lt;/a> for more information and usage instructions.&lt;/p>
+&lt;h2 id="arsperl-updated-2008-05-06">&lt;a class="link" href="http://sourceforge.net/projects/arsperl/" target="_blank" rel="noopener"
+>ARSperl&lt;/a> Updated 2008-05-06
+&lt;/h2>&lt;p>ARSperl is an integration kit for Perl5 and Remedy ARSystem API. It provides a large subset of the functionality found in the ARS C API&lt;/p>
+&lt;h2 id="ar-cache-purge-updated-2009-05-27">&lt;a class="link" href="http://sourceforge.net/projects/arcachepurge/" target="_blank" rel="noopener"
+>AR Cache Purge&lt;/a> Updated 2009-05-27
+&lt;/h2>&lt;p>AR Cache Purge automates the process of clearing BMC Remedy user cache on client machines. It first checks the registry for the Home folders(s) and then removes the .arf and .arv files. It handles multiple users and home folders on a single machine.&lt;/p>
+&lt;h2 id="pyars-updated-2010-12-20">&lt;a class="link" href="http://sourceforge.net/projects/pyars/" target="_blank" rel="noopener"
+>pyARS&lt;/a> Updated 2010-12-20
+&lt;/h2>&lt;p>The pyARS python module allows developers to use BMC&amp;rsquo;s ARSystem (Remedy ARS) and Atrium CMDB functions from within Python. Using Python&amp;rsquo;s interactive shell, it is extremely easy to retrieve and modify data entries as well as workflow objects.&lt;/p>
+&lt;h2 id="com-objects-for-the-ar-system-updated-2006-01-10">&lt;a class="link" href="http://sourceforge.net/projects/coarse/" target="_blank" rel="noopener"
+>COM Objects for the AR System&lt;/a> Updated 2006-01-10
+&lt;/h2>&lt;p>Coarse (COM Objects for the AR System), provides an automation compatible COM API to the AR System (Remedy only provides a C API and a Java API). It is compatible with VB6, VBA, VBScript, and JScript. Based on the RTL Sourceforge project.&lt;/p></description></item><item><title>在Oracle上备份和恢复 Remedy ARS数据库</title><link>https://martinliu.cn/2011/02/14/backup-restore-remedy-ars-oracle-db/</link><pubDate>Mon, 14 Feb 2011 15:05:27 +0000</pubDate><guid>https://martinliu.cn/2011/02/14/backup-restore-remedy-ars-oracle-db/</guid><description>&lt;h1 id="why-ars-system-need-full-backup-and-restore">Why ARS system need full backup and restore
+&lt;/h1>&lt;p>众所周知&lt;em>Remedy ARS&lt;/em>上运行的所有程序代码都是在数据库中存储的，几乎所有的程序代码和相关数据都是存储在后端的数据库里的。基于这种特性，我们可以很方便地从数据库层面实现对 ARS 系统的备份和恢复。所谓基于数据库的备份和恢复就是指数据库的全库导入和导出。在这方面&lt;em>Oracle&lt;/em>做的很好，他所提供的 imp 和 exp 命令行工具能很好的完成此项任务。
+&lt;img src="http://img.en25.com/Web/BMCSoftwareInc/eloqua_webform_banner_868w_arch07.jpg"
+loading="lazy"
+>&lt;/p>
+&lt;h1 id="when-you-may-backup-bmc-remedy-ars-system-database">When you may backup BMC Remedy ARS system Database
+&lt;/h1>&lt;p>&lt;em>Remedy ARS&lt;/em>系统数据库全备份可能会发生在下面的几个时间点：&lt;/p>
+&lt;ol>
+&lt;li>&lt;/li>
+&lt;/ol>
+&lt;h2 id="在安装过程中remedy-itsm套件的安装都是从-ars-开始一个模块一个模块增加安装的可以在安装每个新模块之前做一个数据库备份用于安装失败情况下的现场恢复">在安装过程中，&lt;em>Remedy ITSM&lt;/em>套件的安装都是从 ARS 开始一个模块一个模块增加安装的，可以在安装每个新模块之前，做一个数据库备份，用于安装失败情况下的现场恢复
+&lt;/h2>&lt;ol start="2">
+&lt;li>&lt;/li>
+&lt;/ol>
+&lt;h2 id="在系统上线前当系统需要做升级代码更新等等大规模操作之前可以考虑做一次数据库的导出备份">在系统上线前，当系统需要做升级/代码更新等等大规模操作之前可以考虑做一次数据库的导出备份
+&lt;/h2>&lt;ol start="3">
+&lt;li>&lt;/li>
+&lt;/ol>
+&lt;h2 id="在做系统迁移的情况下我们甚至可以生产库迁移到开发机上进行问题的重现或者代码的修改或者测试完成之后再导回生产系统如果生产系统再次期间处于维护状态的话">在做系统迁移的情况下，我们甚至可以生产库迁移到开发机上进行问题的重现，或者代码的修改，或者测试，完成之后再导回生产系统（如果生产系统再次期间处于维护状态的话）
+&lt;/h2>&lt;h1 id="how-to">How-to
+&lt;/h1>&lt;p>下面是我总结的相关操作步骤参考。&lt;/p>
+&lt;h2 id="备份arsystem数据库">备份&lt;em>ARSystem&lt;/em>数据库
+&lt;/h2>&lt;p>exp aradmin/ar#admin@itil file=c:\before-patch7.dmp log=c:\exp.log compress=n statistics=none&lt;/p>
+&lt;p>参数解释：
+aradmin/ar#admin  是 ARS 系统默认的用户名和口令
+@itil 是 ARSystem 数据库所在的数据库实例名
+file=c:\before-patch7.dmp log=c:\exp.log  是导出的数据库文件和日志文件路径&lt;/p>
+&lt;h2 id="删除-aradmin-用户数据">&lt;em>删除 ARAdmin 用户数据&lt;/em>
+&lt;/h2>&lt;p>drop user aradmin cascade;&lt;/p>
+&lt;h2 id="创建和授权-aradmin-用户">&lt;em>创建和授权 ARAdmin 用户&lt;/em>
+&lt;/h2>&lt;p>CREATE USER ARADMIN
+IDENTIFIED BY ar#admin#
+DEFAULT TABLESPACE ARSYSTEM
+TEMPORARY TABLESPACE ARTMPSPC
+PROFILE DEFAULT
+ACCOUNT UNLOCK;&lt;/p>
+&lt;p>GRANT ARADMINROLE TO ARADMIN;
+ALTER USER ARADMIN DEFAULT ROLE ALL;
+ALTER USER ARADMIN QUOTA UNLIMITED ON ARSYSTEM;&lt;/p>
+&lt;h2 id="导入备份的数据文件">&lt;em>导入备份的数据文件&lt;/em>
+&lt;/h2>&lt;p>imp ARAdmin/AR#Admin@ars file=c:\CMDB2010-12-13_13.dmp log=c:\imp.log  fromuser=ARAdmin touser=ARAdmin ignore=y&lt;/p>
+&lt;p>Credit to：以上操作步骤由&lt;em>神州太岳&lt;/em>工程师&lt;em>李成旗&lt;/em>协助编写和测试.&lt;/p></description></item><item><title>在64位Windows上安装ARS7.5</title><link>https://martinliu.cn/2011/02/10/64-windows-ars-75-install-tips/</link><pubDate>Thu, 10 Feb 2011 17:12:30 +0000</pubDate><guid>https://martinliu.cn/2011/02/10/64-windows-ars-75-install-tips/</guid><description>&lt;p>&lt;img src="data:image/jpg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAkGBggGBQkIBwgKCQkKDRYODQwMDRoTFBAWHxwhIB8cHh4jJzIqIyUvJR4eKzssLzM1ODg4ISo9QTw2QTI3ODUBCQoKDQsNGQ4OGTUkHiQ1NTU1NTU1LzU1NTU1NTU1NS41NCw1NTQ0NTU1NTU1LDUpNDQ1NDUsNSwsMDQsNDU1Nf/AABEIADAAMAMBIgACEQEDEQH/xAAbAAACAwEBAQAAAAAAAAAAAAAGBwMEBQIIAf/EADUQAAEDAwMCAwUFCQAAAAAAAAECAwQFERIAITEGEyJBYQdRcYGhFBUjMkJSYpGiscHR4fD/xAAYAQADAQEAAAAAAAAAAAAAAAACAwQFAf/EACERAAICAgICAwEAAAAAAAAAAAECABEDIRJBBDEiMnET/9oADAMBAAIRAxEAPwB4k2FzofqUqoyX1NMK&amp;#43;zRySEOJBzUoevAB9RqR6rOuVtbLOK47ACXEHZRXfe3vABB&amp;#43;R11VKolKMUfl/Sm/5/U/u/RQOjAqTu93uDU6miQ6vuEynl7d5RCSo/E2G3Hy1aV09TGFpXTmhElHxNvRiEqSPOxVcAEXFjvzqjKkqdRZZUEFJCUKbuL38h/HbXPUtb&amp;#43;6KO8&amp;#43;xHvitsIB8itaWx4rb2ve39L6qxKCCT1JAd0O5pR&amp;#43;oJlEdSJTxl0/LxLdBVISCd1EiwIA8gm&amp;#43;i&amp;#43;PIalx0Px3EuNLF0qSdjpXTejSlky01upLnIR3SpTy&amp;#43;x3LXI7OVsL/pva22q/sy60WquCG9kzCllTbLAOQQ8FWunjFKrLUQByfPnSWC5LKCqlqck0xubESuJEVUmSpTxeJcBSAApZFiSRYgW92q7lWQ5buEKxIOyj&amp;#43;nn/X11BFeEOnN0&amp;#43;UC1IintuoPiAI38uefI86ru1doKxTyFWOQvz/nz/tq5sAbYMzASNGWJE9CyVqUFeQSk/8AfM839NY3UNZiSGWaWAJDk5SQ1dRDYxOdyRvYY3G25Fjtqd6tuEfhWSpJuFWO/lcj04toUkSEOV2jOhfgL7hJKhz2zz6&amp;#43;vGhCfzIXptRuL5OIWTYnWSWEsOOQDHCcG5RWoOFJ2C8cMciN7cX0DxK6ilzFqh4wpkF3JFjmnPc5DK973JsRYE7bW005akntKBBSWUG99rW0lE06TWOr5UKA33pMh/FtGQTkbe8kDR5cS4FDKPcrykkfkbntMp0uhVs1aOw8unSUDvuJUSGnSoglQtsCMAL&amp;#43;eg1uroWpZ8ON7JCj7&amp;#43;Pjf&amp;#43;bXoaVFZnRXI8ptLrLqcVoUNiNJfq/2R1anyHpPT2MmCVfhxgSXkBR4FxuBsLlV9K8fOK4tE58BvksHXarhgoqzsb2SvG/qT5W4v5cawZT2cZlpSGwEvNhKsAlQuoA29222Pu&amp;#43;OvlRYqNInriVBtceS2QVNrSLjYEfQjUNPYnVeWxBgR1SpKlhSW0DxLCPGQPkkm&amp;#43;i8g/UxOPTi4wa9Rn6dTnXk1CXgG7ttB5WKU22HPAG1tQ&amp;#43;xHo&amp;#43;RUqz9/wA9h37Kxmph5RI7joXYEftAAKHxGuq71ZCqrBpLQcTVCBGMRQGfe/L2&amp;#43;ecttNP2dUGV0z0HTqZPLf2hnuKX2ySBm4pYG4G4CgD631zzXUheJmgFv3P/2Q=="
+loading="lazy"
+alt="ARS 7.5 安装"
+>刚才终于把 ARS 装上了。费了我两天的力气终于搞定了。错误其实很简单的，现象很多人都见过，ARS 在安装完所有的文件后，在系统中建完 ARS 的服务以后，会继续启动服务，才能做最后的程序文件导入的相关操作。&lt;/p>
+&lt;p>错误的现象是：在启动服务的时，安装程序一直停止在“Starting Remedy ARS services&amp;hellip;.”的屏幕，去 arerror 日志里面可以看到无法连接到 SQL 数据库的错误。&lt;/p>
+&lt;p>我的安装错误的原因其实很简单：&lt;/p>
+&lt;ol>
+&lt;li>
+&lt;p>如果是 64 为的 Windows 操作系统，默认的安装路径是 C:\Program Files (x86)\目录&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Oracle 客户端没有正确的安装&lt;/p>
+&lt;/li>
+&lt;/ol>
+&lt;p>解决的方法如下：&lt;/p>
+&lt;ol>
+&lt;li>
+&lt;p>修改 ars 默认的安装路径，尽量把它放在一个较短的而且没有特殊字符的路径里，如 D:\bmc\&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>ARS 7.5 sp6 支持的 Oracle 客户端是 32 位的，如果你在 64 位 OS 上安装的是 64 位的 Oracle 数据+客户端（sqlplus），那么默认的这个 64 为的客户端是不能用的，需要安装一个 62 位的客户端，而且需要时 10g 的，此版本也不支持 11g 的客户端；另外在安装 32 位的 oracle 客户端的时候最好也不要在路径中有特殊字符如符号和下划线之类的&lt;/p>
+&lt;/li>
+&lt;/ol>
+&lt;p>ARS7.5 本身是 32 位的可支持程序，所以它所需要的 JDK 和 Oracle 都需要是 32 位的版本。如果你安装的是 7.6.04，就不需要考虑 32 位的问题，由于它本身就是 64 位的程序了，所以 JDK 和 Oracle 都需要使用相应的 64 为的程序。&lt;/p></description></item><item><title>Remedy Server Group及负载均衡配置参考步骤</title><link>https://martinliu.cn/2010/08/09/remedy-lb-midtier-server-group-configure/</link><pubDate>Mon, 09 Aug 2010 01:08:31 +0000</pubDate><guid>https://martinliu.cn/2010/08/09/remedy-lb-midtier-server-group-configure/</guid><description>&lt;p>&lt;a class="link" href="http://martinliu.cn/2010/08/remedy-lb-midtier-server-group-configure.html/remedyitsmarch" target="_blank" rel="noopener"
+>&lt;img src="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2010/08/RemedyITSMArch-253x300.jpg"
+loading="lazy"
+>&lt;/a>上图为大型用户环境下 Remedy ITSM 的部署架构，作为本安装步骤参考模型。所不同的是，如下配置步骤只应用了一个最上面的负载均衡器，每个 Web 对应连接一个 ARS 服务器，简化掉了中间放在 ARS 前的负载均衡器。&lt;/p>
+&lt;p>&lt;strong>第一步&lt;/strong> 安装前的准备工作。
+确定 Remedy ARS 的服务别名，例如“AtriumCMDB”。在所有的 Web 服务器（Mid-tier 所安装的服务器）的 host 文件中加入一条 Ip 地址解析，例如：&lt;/p>
+&lt;!-- raw HTML omitted -->
+&lt;p>此 ARS 服务别名指向的是该 Web 服务器所对应的 ARS 服务器，例如：Web1 中 AtriumCMDB 对应的 ip 为 ARS1，Web2 对应 ARS2，Web3 对应 ARS3，以此类推。&lt;/p>
+&lt;p>&lt;strong>第二步&lt;/strong>安装第一台 ARS 服务器
+默认所有的 ARS 都安装了数据库客户端程序，如果是 Oracle 数据库，ARS 上的客户端程序的大小版本号必须和远程数据库的大小版本号完全一致。Windows 平台的 Oracle 客户端只支持 32 位的程序。在所有 ARS 服务器的 host 文件中加入一条 Ip 地址解析，例如：&lt;/p>
+&lt;!-- raw HTML omitted -->
+&lt;p>此 IP 地址为每台 ARS 自己的对外提供 ARS 服务的 IP。ARS 上安装完 JDK 之后，开始安装 ARS，安装过程中服务器别名输入 AtriumCMDB，其他的选项都按需要配置，所有有关服务器端组件、服务端口、密码、安装路径的信息都要做详细记录，用来安装 Server Group 中其他成员使用。安装完第一台服务器的 ARS 之后，申请 Remedy License，打 License，包括其他所有 CMDB、ITSM 相关应用模块的 License，打完 License 后导出成文件备用。ARS 安装成功之后，顺序安装其他应用，顺序时 CMDB 》ITSM  其他。安装完毕后，通过 Remedy User 来确认所有应用功能是否正常。&lt;/p>
+&lt;p>**第三步 **配置第一台 ARS 服务器为 Server Group 中的管理服务器
+配置方法参照，ARS Configuration Guide 中的 Server Group 的相关章节。配置完毕之后打开 Server Group 的 Log，从启动 ARS 服务之后，查看该 Log 看 Server Group 工作是否正常。&lt;/p>
+&lt;p>&lt;strong>第四步&lt;/strong> 安装 Server Group 中的成员 ARS 服务器
+准备工作参考第一台 ARS 服务器。运行 ARS 安装程序，选择 Server Group，选择输入 AtriumCMDB 别名，选择共享的数据库，其他参数与第一台保持一致。安装完毕之后。使用 ARS 自带的 Sample 应用新增一个 city，在 ARS1 上查询 ARS2 上新增的记录。同样参考的 Server Group 的相关章节，对 ARS2 进行配置。在 ARS2 上查看 Server Group 的日志，确认该 ARS 已经加入了以第一台 ARS 为管理服务器的群集中。为第二台 ARS 服务器打 License。在确认第二台 ARS 服务器成功加入之后，安装 CMDB 应用。安装完毕之后，在第二台 ARS 服务器上，使用 Remedy User 客户端，打开 CMDB 的相关表单进行新增和查询操作；然后在 ARS1 上检查操作结果，保证两边一致。安装 ITSM：直接把第一台 ARS 服务器的 ar.cfg 文件覆盖到第二台 ARS 的 ar.cfg 上，一定要修改第一台 ARS 服务器主机名的哪一行，把它修改为第二台 ARS 的主机名。复制第一台 ARS 的 ITSM 安装目录到第二台 ARS 的相同路径中，重启 ARS 服务。查看 arerror.log 文件看看 ARS 启动的是否正常。在第二台 ARS 上使用 Remedy User 确认 ITSM 应用是否工作正常，如果一切工作正常，则第二台 ARS 服务器安装完毕。按照相同的方式安装其他的 ARS 服务器。&lt;/p>
+&lt;p>&lt;strong>第五步&lt;/strong> 配置每台 ARS 的 ranking
+按照 ARS Configuration Guide 中的 Server Group 的相关章节配置每台 ARS 服务器处理不同后台工作流的 ranking。&lt;/p>
+&lt;p>&lt;strong>第六步&lt;/strong> 安装配置所有 Web 服务器的 Remedy Mid-tier
+安装 Remedy Mid-tier 软件，都指向相同的 ARS 服务别名 AtriumCMDB，当然该别名被解析为它所对应的 ARS 服务器的 IP 地址。使用浏览器测试每台 Web 服务器，保证 Remedy Mid-tier 都能正常工作。&lt;/p>
+&lt;p>&lt;strong>第七步&lt;/strong> 配置 F5 负载均衡
+配置 F5 的分发策略，按不同 ARS 服务器的用途，来分别不同的用户请求。考虑管理和接口功能的 ARS 负担少量的用户交互。开发一个 jsp 的程序部署在 Mid-tier 的 shared 目录中，用它来判断 Web 所对应的 ARS 的可用性，以此作为唯一判断条件来分发用户请求给可用的 web 服务器。&lt;/p></description></item><item><title>BMC课程通知: BMC Remedy AR 7.5 管理员培训</title><link>https://martinliu.cn/2010/07/30/bmc-training-schedule01/</link><pubDate>Fri, 30 Jul 2010 06:28:19 +0000</pubDate><guid>https://martinliu.cn/2010/07/30/bmc-training-schedule01/</guid><description>&lt;p>&lt;a class="link" href="http://www.bmc.com/education/learning-paths/lp-itil.html" target="_blank" rel="noopener"
+>&lt;img src="http://sabacert.bmc.com/images/education_banner_Adv.ITIL.jpg"
+loading="lazy"
+>&lt;/a>&lt;/p>
+&lt;p>课程适用于 Remedy AR 管理员和开发人员，讲授 AR 系统的功能、架构、日常运维和创建应用。 学员可以选择课后参加上机考试，获得&lt;a class="link" href="http://www.bmc.com/education/certification-programs/89788539-1956.html" target="_blank" rel="noopener"
+>BMC Certified Administrator: BMC Remedy AR System 7.5&lt;/a>认证。不参加考试的学员将会获得结课证书 &lt;strong>&lt;a class="link" href="http://inter.viewcentral.com/events/cust/catalog.aspx?event_id=359&amp;amp;cid=bmc&amp;amp;pid=1" target="_blank" rel="noopener"
+>点 击查看详情&lt;/a>&lt;/strong>&lt;/p>
+&lt;p>&lt;strong>课程目标&lt;/strong>&lt;/p>
+&lt;p>认识 AR System 7.5 的用途和优势
+认识 AR System 7.5 的架构
+使用 Remedy User 和 Web 浏览器创建和查询请求
+使用 Remedy User 和 Web 浏览器创建 AR 系统报告
+使用 BMC Remedy Alert 和 Web 接收通知
+描述 BMC Remedy Administrator 工具的基本维护任务
+了解 AR 系统的访问控制概念
+了解不同的 AR System 角色
+理解 AR System 的系统架构
+了解 AR System 的开发工具
+权限管理和 AR System 许可管理
+使用 Administration Console 执行统一的管理任务.
+使用 Developer Studio 创建 AR System 对象
+创建 AR System 表单, 控件和 菜单来满足业务需求
+创建 AR System active links
+创建 AR System filters
+创建基于时间的 escalations
+定制一个 web 的应用
+使用 log 日志来评估性能和识别性能问题
+了解 AR System 最佳实践&lt;/p>
+&lt;p>参加前提：无
+授课语言: 中文
+培训价格: 7500 元/人 （BMC 合作伙伴价格 5250 元/人）
+认证考试价格：3500 元/人 （可选）&lt;/p>
+&lt;p>日程：
+北京：8 月 16 日- 20 日
+上海：8 月 23 日- 27 日&lt;/p>
+&lt;p>联系我们:
+010-85183688-1883
+&lt;a class="link" href="mailto:Yuan_yuan@bmc.com" >Yuan_yuan@bmc.com&lt;/a>
+&lt;a class="link" href="mailto:AP_education@bmc.com" >AP_education@bmc.com&lt;/a>&lt;/p></description></item></channel></rss>

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Install on Martin Liu's Blog</title><link>https://martinliu.cn/tags/install/</link><description>Recent content in Install on Martin Liu's Blog</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><lastBuildDate>Sun, 09 Oct 2022 21:44:15 +0800</lastBuildDate><atom:link href="https://martinliu.cn/tags/install/index.xml" rel="self" type="application/rss+xml"/><item><title>在Oracle上备份和恢复 Remedy ARS数据库</title><link>https://martinliu.cn/2011/02/14/backup-restore-remedy-ars-oracle-db/</link><pubDate>Mon, 14 Feb 2011 15:05:27 +0000</pubDate><guid>https://martinliu.cn/2011/02/14/backup-restore-remedy-ars-oracle-db/</guid><description>&lt;h1 id="why-ars-system-need-full-backup-and-restore">Why ARS system need full backup and restore
+&lt;/h1>&lt;p>众所周知&lt;em>Remedy ARS&lt;/em>上运行的所有程序代码都是在数据库中存储的，几乎所有的程序代码和相关数据都是存储在后端的数据库里的。基于这种特性，我们可以很方便地从数据库层面实现对 ARS 系统的备份和恢复。所谓基于数据库的备份和恢复就是指数据库的全库导入和导出。在这方面&lt;em>Oracle&lt;/em>做的很好，他所提供的 imp 和 exp 命令行工具能很好的完成此项任务。
+&lt;img src="http://img.en25.com/Web/BMCSoftwareInc/eloqua_webform_banner_868w_arch07.jpg"
+loading="lazy"
+>&lt;/p>
+&lt;h1 id="when-you-may-backup-bmc-remedy-ars-system-database">When you may backup BMC Remedy ARS system Database
+&lt;/h1>&lt;p>&lt;em>Remedy ARS&lt;/em>系统数据库全备份可能会发生在下面的几个时间点：&lt;/p>
+&lt;ol>
+&lt;li>&lt;/li>
+&lt;/ol>
+&lt;h2 id="在安装过程中remedy-itsm套件的安装都是从-ars-开始一个模块一个模块增加安装的可以在安装每个新模块之前做一个数据库备份用于安装失败情况下的现场恢复">在安装过程中，&lt;em>Remedy ITSM&lt;/em>套件的安装都是从 ARS 开始一个模块一个模块增加安装的，可以在安装每个新模块之前，做一个数据库备份，用于安装失败情况下的现场恢复
+&lt;/h2>&lt;ol start="2">
+&lt;li>&lt;/li>
+&lt;/ol>
+&lt;h2 id="在系统上线前当系统需要做升级代码更新等等大规模操作之前可以考虑做一次数据库的导出备份">在系统上线前，当系统需要做升级/代码更新等等大规模操作之前可以考虑做一次数据库的导出备份
+&lt;/h2>&lt;ol start="3">
+&lt;li>&lt;/li>
+&lt;/ol>
+&lt;h2 id="在做系统迁移的情况下我们甚至可以生产库迁移到开发机上进行问题的重现或者代码的修改或者测试完成之后再导回生产系统如果生产系统再次期间处于维护状态的话">在做系统迁移的情况下，我们甚至可以生产库迁移到开发机上进行问题的重现，或者代码的修改，或者测试，完成之后再导回生产系统（如果生产系统再次期间处于维护状态的话）
+&lt;/h2>&lt;h1 id="how-to">How-to
+&lt;/h1>&lt;p>下面是我总结的相关操作步骤参考。&lt;/p>
+&lt;h2 id="备份arsystem数据库">备份&lt;em>ARSystem&lt;/em>数据库
+&lt;/h2>&lt;p>exp aradmin/ar#admin@itil file=c:\before-patch7.dmp log=c:\exp.log compress=n statistics=none&lt;/p>
+&lt;p>参数解释：
+aradmin/ar#admin  是 ARS 系统默认的用户名和口令
+@itil 是 ARSystem 数据库所在的数据库实例名
+file=c:\before-patch7.dmp log=c:\exp.log  是导出的数据库文件和日志文件路径&lt;/p>
+&lt;h2 id="删除-aradmin-用户数据">&lt;em>删除 ARAdmin 用户数据&lt;/em>
+&lt;/h2>&lt;p>drop user aradmin cascade;&lt;/p>
+&lt;h2 id="创建和授权-aradmin-用户">&lt;em>创建和授权 ARAdmin 用户&lt;/em>
+&lt;/h2>&lt;p>CREATE USER ARADMIN
+IDENTIFIED BY ar#admin#
+DEFAULT TABLESPACE ARSYSTEM
+TEMPORARY TABLESPACE ARTMPSPC
+PROFILE DEFAULT
+ACCOUNT UNLOCK;&lt;/p>
+&lt;p>GRANT ARADMINROLE TO ARADMIN;
+ALTER USER ARADMIN DEFAULT ROLE ALL;
+ALTER USER ARADMIN QUOTA UNLIMITED ON ARSYSTEM;&lt;/p>
+&lt;h2 id="导入备份的数据文件">&lt;em>导入备份的数据文件&lt;/em>
+&lt;/h2>&lt;p>imp ARAdmin/AR#Admin@ars file=c:\CMDB2010-12-13_13.dmp log=c:\imp.log  fromuser=ARAdmin touser=ARAdmin ignore=y&lt;/p>
+&lt;p>Credit to：以上操作步骤由&lt;em>神州太岳&lt;/em>工程师&lt;em>李成旗&lt;/em>协助编写和测试.&lt;/p></description></item></channel></rss>

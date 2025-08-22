@@ -1,0 +1,908 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>AIops on Martin Liu's Blog</title><link>https://martinliu.cn/tags/aiops/</link><description>Recent content in AIops on Martin Liu's Blog</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><lastBuildDate>Tue, 25 Jun 2024 21:44:26 +0800</lastBuildDate><atom:link href="https://martinliu.cn/tags/aiops/index.xml" rel="self" type="application/rss+xml"/><item><title>先睹为快 Azure OpenAI 驱动的 Elastic 可观测性 ‘AI 助理’</title><link>https://martinliu.cn/blog/elastic-elastic-obs-ai-assistant-aoai/</link><pubDate>Tue, 05 Dec 2023 13:10:43 +0800</pubDate><guid>https://martinliu.cn/blog/elastic-elastic-obs-ai-assistant-aoai/</guid><description>&lt;img src="https://martinliu.cn/blog/elastic-elastic-obs-ai-assistant-aoai/pexels-cottonbro-studio-6153354.jpg" alt="Featured image of post 先睹为快 Azure OpenAI 驱动的 Elastic 可观测性 ‘AI 助理’" />&lt;p>在最近的 ElasticON 大会上，Elastic 可观测性的 AI Assistant 得到了充分曝光。在 Keynote 中，还专门做了一个演示，展示了 AI Assistant 的功能，以及如何使用 AI Assistant 来解决问题。&lt;/p>
+&lt;p>我最近好在学习微软的 Azure OpenAI 服务，在我的 Azure 环境中，已经创建了一个 OpenAI 服务，可以用于AI Assistant 的测试。因此，我就想看看 Elastic 的 AI Assistant 和 Azure 的 OpenAI 服务结合起来的效果如何。&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/blog/elastic-elastic-obs-ai-assistant-aoai/AIOps_blog-720x420.png"
+width="720"
+height="420"
+srcset="https://martinliu.cn/blog/elastic-elastic-obs-ai-assistant-aoai/AIOps_blog-720x420_hu_53efc26e22410885.png 480w, https://martinliu.cn/blog/elastic-elastic-obs-ai-assistant-aoai/AIOps_blog-720x420_hu_c5a4b4493b615e5e.png 1024w"
+loading="lazy"
+class="gallery-image"
+data-flex-grow="171"
+data-flex-basis="411px"
+>&lt;/p>
+&lt;h2 id="elastic-可观测性的-ai-assistant">Elastic 可观测性的 AI Assistant
+&lt;/h2>&lt;p>它有两个使用方式：&lt;/p>
+&lt;ol>
+&lt;li>Contextual insights ： 在可观测性 APP 的界面中，在很多特定的位置，都可以点击右上角的 AI Assistant 链接，然后进入当前界面的上下文分析，在日志和 APM 中都已经做了集成。此功能的目标是：帮你理解错误日志和指标信息，并尽可能的给你一定的解释和建议。
+&lt;ol>
+&lt;li>Universal Profiling - 解释了运行的应用里最昂贵的库和函数，并提供优化建议。&lt;/li>
+&lt;li>应用性能监控（APM） - 解释了APM错误并提供纠正建议。&lt;/li>
+&lt;li>基础设施可观测性 （Infrastructure observability）- 解释了在主机上运行的进程。&lt;/li>
+&lt;li>日志 （log）- 解释了日志消息并生成搜索模式以查找类似问题。&lt;/li>
+&lt;li>告警 （alerting） - 为日志速率变化提供可能的原因和纠正建议。&lt;/li>
+&lt;/ol>
+&lt;/li>
+&lt;li>Chat 聊天会话 ： 以可观测性数据为基础，你可以请求机器人为你汇总、分析、和可视化数据。从而得到你想要的结果，可能是为了制作某个报表，也可以能是开始探索分析某个性能问题。&lt;/li>
+&lt;/ol>
+&lt;p>运行这个功能的前提条件：&lt;/p>
+&lt;ul>
+&lt;li>Elastic Stack version 8.9 或者更高&lt;/li>
+&lt;li>拥有 Elastic Enterprise 订阅&lt;/li>
+&lt;li>一个 AI 服务方的账号，比如 Azure OpenAI gpt-4(0613) 或 gpt-4-32k(0613) 服务， 或者 OpenAI gpt-4 服务&lt;/li>
+&lt;li>为了使用私域文档作为知识库，还需要一个至少 4GB 的机器学习节点。&lt;/li>
+&lt;/ul>
+&lt;h2 id="准备-azure-openai-服务">准备 Azure OpenAI 服务
+&lt;/h2>&lt;p>首先，你需要在 Azure 的 Portal 中创建一个 OpenAI 服务，这个服务提供 OpenAI GPT-4 模型，我创建的服务名称是 &lt;code>ai4elasticstack&lt;/code>。&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/blog/elastic-elastic-obs-ai-assistant-aoai/2023-12-05_13-44-47.jpg"
+width="1175"
+height="789"
+srcset="https://martinliu.cn/blog/elastic-elastic-obs-ai-assistant-aoai/2023-12-05_13-44-47_hu_e2e2521eb2fceabb.jpg 480w, https://martinliu.cn/blog/elastic-elastic-obs-ai-assistant-aoai/2023-12-05_13-44-47_hu_c319481c84ce7870.jpg 1024w"
+loading="lazy"
+class="gallery-image"
+data-flex-grow="148"
+data-flex-basis="357px"
+>&lt;/p>
+&lt;p>这里确保选择 Azure OpenAI 的服务所在区域里能提供 gpt-4 模型，比如我选择的是瑞士中部。&lt;/p>
+&lt;p>然后，是在这个区域中部署所需要的模型。&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/blog/elastic-elastic-obs-ai-assistant-aoai/2023-12-05_13-52-26.jpg"
+width="1087"
+height="956"
+srcset="https://martinliu.cn/blog/elastic-elastic-obs-ai-assistant-aoai/2023-12-05_13-52-26_hu_bbbf253bfa32616f.jpg 480w, https://martinliu.cn/blog/elastic-elastic-obs-ai-assistant-aoai/2023-12-05_13-52-26_hu_18c39e63ffcaf588.jpg 1024w"
+loading="lazy"
+class="gallery-image"
+data-flex-grow="113"
+data-flex-basis="272px"
+>&lt;/p>
+&lt;p>这里我部署了 gpt-4-32k 模型，需要注意的是：token 的限速需要调整到最大，这样才能保证 AI Assistant 的正常使用。&lt;/p>
+&lt;h2 id="创建-ai-assistant-的连接器">创建 AI Assistant 的连接器
+&lt;/h2>&lt;p>在 Elastic Cloud 中，创建一个 AI Assistant 所需要使用到的连接器，这个连接器的类型是 Azure OpenAI，然后，填写 Azure OpenAI 服务的相关信息，如下图所示。&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/blog/elastic-elastic-obs-ai-assistant-aoai/2023-12-05_13-56-18.jpg"
+width="1257"
+height="1109"
+srcset="https://martinliu.cn/blog/elastic-elastic-obs-ai-assistant-aoai/2023-12-05_13-56-18_hu_3d781616711387bc.jpg 480w, https://martinliu.cn/blog/elastic-elastic-obs-ai-assistant-aoai/2023-12-05_13-56-18_hu_903f3afb3e1018a5.jpg 1024w"
+loading="lazy"
+class="gallery-image"
+data-flex-grow="113"
+data-flex-basis="272px"
+>&lt;/p>
+&lt;p>URL 是一个重要的参数，它的格式如下：&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">https://{your-resource-name}.openai.azure.com/openai/deployments/{deployment-id}/completions?api-version={api-version}
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>其中，&lt;code>{your-resource-name}&lt;/code> 是你创建的 Azure OpenAI 服务的名称，&lt;code>{deployment-id}&lt;/code> 是你创建的 Azure OpenAI 服务的部署 ID（即名称），&lt;code>{api-version}&lt;/code> 是你创建的 Azure OpenAI 服务的 API 版本。这里的 &lt;code>{deployment-id}&lt;/code> 与 &lt;code>{api-version}&lt;/code> 有一定的排列组合，某些组合是不工作的，我当前的选择是可以工作：&lt;code>gpt4（32k 0613 版本） 和 2023-07-01-preview&lt;/code>&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">https://ai4elasticstack.openai.azure.com/openai/deployments/gpt432k0613/chat/completions?api-version=2023-07-01-preview
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>这里配置完 URL 和 API 秘钥之后，点击“测试”页面，如果一切正常，你会看到一个绿色的正常调用 OpenAI 的返回。这样你的 AI Assistant 就可以正常工作了。&lt;/p>
+&lt;h2 id="理解日志中的错误">理解日志中的错误
+&lt;/h2>&lt;p>进入可观测性 app，点击 Stream，在这里选中一条报错的日志，内容如下：&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">16:23:13.729
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">elastic_agent.metricbeat
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">[elastic_agent.metricbeat][error] Error fetching data for metricset docker.memory: No memory stats data available
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>点击 &lt;code>view detail&lt;/code>，查看这条日志的详细信息。&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/blog/elastic-elastic-obs-ai-assistant-aoai/2023-12-05_09-59-13.png"
+width="1781"
+height="1173"
+srcset="https://martinliu.cn/blog/elastic-elastic-obs-ai-assistant-aoai/2023-12-05_09-59-13_hu_4294f6b98d8c7300.png 480w, https://martinliu.cn/blog/elastic-elastic-obs-ai-assistant-aoai/2023-12-05_09-59-13_hu_649c21c334c5059.png 1024w"
+loading="lazy"
+class="gallery-image"
+data-flex-grow="151"
+data-flex-basis="364px"
+>&lt;/p>
+&lt;p>AI Assistant 会自动分析这条日志，然后给出两个选项。&lt;/p>
+&lt;ol>
+&lt;li>点击“What&amp;rsquo;s this message?”, AI Assistant 会给出这条日志的解释，以及可能的原因。这个 host 上由于 Docker 服务没有启动，导致 Metricbeat 无法获取到 Docker 的内存信息。AI Assistant 首先对这条日志，做了解释，解释内容里包含了你可能会关注的元数据信息，包括：版本号、操作系统、日志级别等。然后推测出是 Docker 服务没有启动的原因。最后，说明这是不正常的情况，应该尽快排查 Docker 服务。同一条错误信息，也可能会出现不同的解释。下面是整个 AI Assistant 的解释内容：&lt;/li>
+&lt;/ol>
+&lt;blockquote>
+&lt;p>The log entry you provided is from an Elastic Agent running on a host named &amp;ldquo;linux-dev-02&amp;rdquo; with the IP address &amp;ldquo;10.1.0.4&amp;rdquo;. The host is running Ubuntu 22.04.3 LTS (Jammy Jellyfish) with kernel version 6.2.0-1017-azure. The Elastic Agent version is 8.10.4 and it&amp;rsquo;s not a snapshot version. The agent is running on a cloud instance in the &amp;ldquo;eastasia&amp;rdquo; region of Azure.&lt;/p>&lt;/blockquote>
+&lt;blockquote>
+&lt;p>The component that generated this log entry is Metricbeat, which is a lightweight shipper that you can install on your servers to periodically collect metrics from the operating system and from services running on the server. The specific Metricbeat module in use here is the Docker module, which collects metrics and logs from Docker containers.&lt;/p>&lt;/blockquote>
+&lt;blockquote>
+&lt;p>The log level of the message is &amp;ldquo;error&amp;rdquo;, which indicates that an error or problem has occurred. The specific error message is &amp;ldquo;Error fetching data for metricset docker.memory: No memory stats data available&amp;rdquo;. This suggests that Metricbeat was unable to fetch memory statistics for a Docker container. This could be due to a number of reasons, such as the Docker container not being active, the Docker daemon not being accessible, or the Docker API not returning memory statistics.&lt;/p>&lt;/blockquote>
+&lt;blockquote>
+&lt;p>Whether this is expected or an issue depends on your specific setup and expectations. If you expect to be collecting memory statistics from Docker containers and this error is preventing that, then it would be an issue. If you&amp;rsquo;re not using Docker or not interested in collecting memory statistics from Docker containers, then it might not be an issue. However, it&amp;rsquo;s generally not expected for errors to be occurring, so it might be worth investigating further to understand why this error is happening.&lt;/p>&lt;/blockquote>
+&lt;ol start="2">
+&lt;li>如果点击“How do i find similar log messages?” , AI Assistant 会给出一个 KQL 查询语句，使用这个查询语句会返回与这条日志相似的日志。这个查询语句的结果，可以帮助你更好的理解这条日志的上下文。&lt;/li>
+&lt;li>链接器选择：你可以在 Elastic Stack 中，配置多个 AI Assistant 的连接器，可能对应到不同的 OpenAI 服务+版本的组合。&lt;/li>
+&lt;/ol>
+&lt;p>这个功能的好处：&lt;/p>
+&lt;ul>
+&lt;li>通过 AI Assistant 的解释，它可以帮助你更全面的理解日志的内容本身，由于每个人并不是熟悉所有的技术领域，AI 在这里可以很好的补充你的知识短板。&lt;/li>
+&lt;li>在高压力的排错环境中，从模糊的日志事件内容中，很快的得出下一步排查的方向是比较有意义的。人脑很有可能在疲惫状态下，很难准确地得出下一个排查的动作。&lt;/li>
+&lt;li>AI 对错误原因的推理，看着并不一定高明，但是作为排错的起点，还是比较有用的。你可以在这个基础上，点击界面上的 “Start Chat” 按钮，进入到 Chat 聊天会话功能模式，然后，继续与 AI 机器人对话，追问：“其他潜在的故障原因是那些？”；这样 AI 给我了另外不同的 4 种故障可能，涉及 Docker 服务器、配置、Metricbeat 的配置等等。可见 AI 在细分领域里的知识的深度还是一些的。&lt;/li>
+&lt;/ul>
+&lt;p>下面是我的追问和 AI 的回答，这里是支持中文：&lt;/p>
+&lt;p>“
+You：还有什么可能的原因会导致这个问题？&lt;/p>
+&lt;p>Elastic Assistant ：这个错误信息表示 Metricbeat 无法获取 Docker 容器的内存统计信息。可能的原因包括：&lt;/p>
+&lt;ol>
+&lt;li>
+&lt;p>Docker 容器未运行：如果你试图获取一个未运行或不存在的 Docker 容器的内存统计信息，将会出现这个错误。&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Docker 守护进程无法访问：Metricbeat 需要能够访问 Docker 守护进程来获取容器的统计信息。如果由于某种原因（例如权限问题或网络问题）无法访问 Docker 守护进程，将会出现这个错误。&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Docker API 未返回内存统计信息：Metricbeat 通过 Docker API 获取容器的统计信息。如果 Docker API 未返回内存统计信息，将会出现这个错误。这可能是因为 Docker API 的问题，或者是因为容器本身没有生成内存统计信息。&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Metricbeat 配置问题：如果 Metricbeat 的 Docker 模块没有正确配置，可能也会导致这个问题。例如，如果 Metricbeat 没有正确配置 Docker 守护进程的地址，或者没有提供正确的证书来访问需要 TLS 的 Docker 守护进程，将会出现这个错误。&lt;/p>
+&lt;/li>
+&lt;/ol>
+&lt;p>你可以根据这些可能的原因进行排查，看看哪一项可能是问题所在。
+”&lt;/p>
+&lt;p>这个功能还在可观测性的其它功能模块中也做了深度的集成，例如在 APM 等模块中，也可以调用到 AI Assistant 的 “上下文洞见”；基本上，就是 Elastic Stack 在多个场景中，人类可用将自己分析错误信息的工作一定程度的交给 AI 去做；这样，我们就可以更加专注于问题的解决，而不是在监控数据、时序信息的分析上浪费更多的时间。从长远来看，这个上下文洞见的辅助排查功能，确实是有辅助驾驶和导航的意义，还是比较有用的。&lt;/p>
+&lt;h2 id="chat-聊天会话功能">Chat 聊天会话功能
+&lt;/h2>&lt;p>我测试了一个开放式的问题，希望 AI 能帮我分析出：我的服务器是否即将有磁盘空间用尽的情况发生。如下图所示：&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/blog/elastic-elastic-obs-ai-assistant-aoai/2023-12-05_17-13-51.png"
+width="1546"
+height="1336"
+srcset="https://martinliu.cn/blog/elastic-elastic-obs-ai-assistant-aoai/2023-12-05_17-13-51_hu_1c423de3374fa643.png 480w, https://martinliu.cn/blog/elastic-elastic-obs-ai-assistant-aoai/2023-12-05_17-13-51_hu_bfded9cbd4d9341c.png 1024w"
+loading="lazy"
+class="gallery-image"
+data-flex-grow="115"
+data-flex-basis="277px"
+>&lt;/p>
+&lt;p>下面解释一下 AI Assistant 的回答：&lt;/p>
+&lt;ol>
+&lt;li>我使用英语提问，其实你可以用任何语言提问，OpenAI 都可以正确理解。&lt;/li>
+&lt;li>点击这里折叠隐藏的 7 个步骤，这些步骤是 AI Assistant 为了回答我的问题，所做的推理思考和处理过程。这里使用了多个方法调用，包括在 Elasticsearch 数据库中查找任何它想要的信息。 AI Assistant 的知识库【你可以将知识库配置在 Elasticsearch 中，AI 的分析流水线，读取并理解知识条目内容，并调用这些知识】，以及我的问题的上下文信息，AI Assistant 会根据这些信息，做出推理，然后给出回答。&lt;/li>
+&lt;li>最终 AI 用绘图的方式给出主机的磁盘空间利用率的汇总情况，很可惜的是，它几乎就做对了；这个图形没有显示出来的原因是：在最后还应该调用一个 max 或者 avg 的运算函数。&lt;/li>
+&lt;li>最后一句话，再次解释并总结了我的提问。&lt;/li>
+&lt;/ol>
+&lt;p>我并没有继续这个会话，如果继续问答下去的话，如果 AI Assistant 的聊天内容总是我所期望的正确的结果内容；那么，很可能我们就不需要去各种界面里到处点击、查看和分析各种数据图表和原始数据了。假如以后接入了自然语音的输入界面，那么，未来这种排错和分析场景还确实是一种比较科幻的感觉。&lt;/p>
+&lt;p>AI助手使用函数通过文本、数据和可视化组件在聊天对话中包含相关上下文。您和AI助手都可以提出函数建议。您还可以编辑AI助手的函数建议并检查函数响应。&lt;/p>
+&lt;p>以下表格列出了可用的函数：&lt;/p>
+&lt;ul>
+&lt;li>
+&lt;p>summarize ：总结对话的部分。&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>recall ：回顾先前的学习。&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>lens ：使用Lens创建自定义可视化，可以添加到仪表板中。&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>elasticsearch ：代表您调用Elasticsearch API。&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>kibana ：代表您调用Kibana API。&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>alerts ：获取可观测性的警报。&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>get_apm_timeseries ：显示任何服务或所有服务及其任何或所有依赖项的不同APM指标（如吞吐量、故障率或延迟）。既显示为时间序列，也显示为单一统计数据。此外，该函数返回任何更改，如峰值、步进和趋势更改或下降。您还可以使用它通过请求两个不同的时间范围，或者例如两个不同的服务版本来比较数据。&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>get_apm_error_document ：根据分组名称获取示例错误文档。这还包括错误的堆栈跟踪，这可能提示错误的原因。&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>get_apm_correlations ：获取在前景集中比背景集更突出的字段值。这对于确定哪些属性（例如error.message、service.node.name或transaction.name）对高延迟的贡献是有用的。另一个选项是基于时间的比较，您可以在更改点之前和之后进行比较。&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>get_apm_downstream_dependencies ：获取服务的下游依赖项（服务或未被检测的后端）。通过返回span.destination.service.resource和service.name两者将下游依赖项名称映射到服务。如果需要，可以使用此功能进一步深入挖掘。&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>get_apm_service_summary ： 获取单个服务的摘要，包括语言、服务版本、部署、环境以及它运行的基础设施。例如，pod的数量和它们的下游依赖项列表。它还返回活动警报和异常。&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>get_apm_services_list ：获取受监控服务的列表，它们的健康状态和警报。&lt;/p>
+&lt;/li>
+&lt;/ul>
+&lt;h2 id="总结">总结
+&lt;/h2>&lt;p>由于时间有限，我并没有做知识库的导入，从文档中看到，知识库私域信息的注入基本上是这样的过程：首先将知识库文档整理后导入到 Elasticsearch 的一个索引中，然后使用结合 Elasticsearch 本身的 ELSER 自然语音处理能力和 OpenAI 的理解推理能力，来支撑 AI 辅助分析排查问题的过程。&lt;/p>
+&lt;p>以上功能测试的配置非常简单，在 Elastic Cloud 的环境中，参考本文，你应该在 10 分钟内就可以完成所有配置。从上下文分析和聊天的两个场景中，我们可以很快的找到 AI 辅助运维的感觉。&lt;/p>
+&lt;blockquote>
+&lt;p>参考文章 ：&lt;/p>
+&lt;ul>
+&lt;li>&lt;a class="link" href="https://www.elastic.co/guide/en/observability/current/obs-ai-assistant.html" target="_blank" rel="noopener"
+>https://www.elastic.co/guide/en/observability/current/obs-ai-assistant.html&lt;/a>&lt;/li>
+&lt;li>&lt;a class="link" href="https://www.youtube.com/watch?v=AQ4sPC_O2Ck&amp;amp;ab_channel=Elastic" target="_blank" rel="noopener"
+>https://www.youtube.com/watch?v=AQ4sPC_O2Ck&amp;ab_channel=Elastic&lt;/a>&lt;/li>
+&lt;li>&lt;a class="link" href="https://www.elastic.co/blog/context-aware-insights-elastic-ai-assistant-observability" target="_blank" rel="noopener"
+>https://www.elastic.co/blog/context-aware-insights-elastic-ai-assistant-observability&lt;/a>&lt;/li>
+&lt;li>&lt;a class="link" href="https://www.elastic.co/blog/whats-new-elastic-observability-8-9-0" target="_blank" rel="noopener"
+>https://www.elastic.co/blog/whats-new-elastic-observability-8-9-0&lt;/a>&lt;/li>
+&lt;li>&lt;a class="link" href="https://www.elastic.co/blog/whats-new-elastic-observability-8-10-0" target="_blank" rel="noopener"
+>https://www.elastic.co/blog/whats-new-elastic-observability-8-10-0&lt;/a>&lt;/li>
+&lt;/ul>&lt;/blockquote>
+&lt;p>Feature picture ❤️ cottonbro studio : &lt;a class="link" href="https://www.pexels.com/zh-cn/photo/6153354/" target="_blank" rel="noopener"
+>https://www.pexels.com/zh-cn/photo/6153354/&lt;/a>&lt;/p></description></item><item><title>DevOps 在 2023 年的趋势和预测</title><link>https://martinliu.cn/blog/deveops-trands-in-2023/</link><pubDate>Wed, 04 Jan 2023 10:19:53 +0800</pubDate><guid>https://martinliu.cn/blog/deveops-trands-in-2023/</guid><description>&lt;img src="https://martinliu.cn/blog/deveops-trands-in-2023/pexels-samar-mourya-13378403.jpg" alt="Featured image of post DevOps 在 2023 年的趋势和预测" />&lt;p>随着技术的发展，与之相关的趋势也在不断变化。DevOps也不例外。现在，企业比以往任何时候，都更加认识到DevOps的价值，及其优化开发和运营的能力。随着我们走过2022年，进入2023年，重要的是要保持领先，了解未来几年推动DevOps的趋势。&lt;/p>
+&lt;p>2022年对于DevOps技术来说是令人兴奋的一年，因为企业越来越认识到自动化和协作对于实现业务成功的重要性。采取敏捷的DevOps方法的公司在效率和生产力方面有了相当大的改善。这是由云计算的持续采用和容器化的崛起所做出的支撑。此外，随着 DevOps-as-a-Service（DaaS）解决方案的日益普及，意味着所有规模的组织都能够从DevOps实践中受益，而不需要专门的DevOps团队。&lt;/p>
+&lt;p>云原生架构、无服务器计算和容器被广泛的采用，更多的组织将它们作为未来的方向。这使团队能够以敏捷和高效的方式快速部署、扩展和管理应用程序。人工智能/ML工具成为DevOps工具箱中的一部分，使团队能够更快速、高效地提供软件更新和功能，并检测代码中的异常情况，从而更容易在潜在问题变成严重问题之前发现它们。安全性仍然是一个重要的优先事项，企业在最新的技术和最佳实践方面进行了大量投资，以确保他们的系统是安全可靠的。&lt;/p>
+&lt;p>同时，DevOps团队也开始专注于改善他们的协作和沟通，使团队能够更快地行动，并对客户的需求和反馈做出更多响应。&lt;/p>
+&lt;p>在过去的一年里，我们在DevOps领域看到了很多令人兴奋的发展，但2023年的趋势是什么？让我们来看看今年我们在DevOps领域可以看到的主要趋势。&lt;/p>
+&lt;h2 id="kubernetes-的采用和部署的增加">Kubernetes 的采用和部署的增加
+&lt;/h2>&lt;p>2022年，Kubernetes的采用显著增加，使其成为事实上的容器编排平台。这是由于它的灵活性和可扩展性，使企业能够在云中快速旋转和拆解应用程序。此外，DevOps的兴起使该平台成为云基础设施的一个关键组成部分。&lt;/p>
+&lt;p>Kubernetes的流行因其与云原生堆栈的整合而得到进一步支持。它支持各种应用，包括微服务、无服务器和数据库，使其成为希望利用云的组织的首选。因此，Kubernetes的部署数量在2022年急剧增加。这一趋势预计将持续到2023年，更多的公司将采用Kubernetes作为其云原生解决方案。&lt;/p>
+&lt;p>预计Kubernetes将很快主导市场，每个组织都会转向这个平台进行部署。社区的支持水平和该平台令人印象深刻的增长速度没有放缓的迹象，使Kubernetes仍然是满足部署需求的首选。&lt;/p>
+&lt;h2 id="无服务器计算将得到广泛的应用">无服务器计算将得到广泛的应用
+&lt;/h2>&lt;p>无服务器计算已经成为科技行业的一个主要趋势，预计在2023年将变得更加流行。这种计算方法允许企业在不需要管理服务器的情况下，开发和运行服务和应用程序，使其成为一种高度创新和高效的软件部署方法。据Gartner称，到2025年，超过85%的组织将使用云计算策略，95%的新数字工作负载将在云平台上进行。这意味着，任何不采用无服务器计算的组织都可能难以跟上竞争的脚步。&lt;/p>
+&lt;p>预计到2030年，无服务器市场将达到300亿美元。目前，已经有超过50%的基于云计算进程的企业将无服务器计算整合到他们的系统中。DevOps流程尤其受益于这一趋势，因为它有助于缩小开发和运营之间的隔阂，简化DevOps流水线的代码。成功实施无服务器计算的一个例子是 Autodesk，一家专门为建筑、工程、施工和制造设计软件的公司。通过扩大其在AWS的业务范围并实施AWS Dynamodb和AWS Lambda，Autodesk能够将创建账户所需的时间从两周大幅减少到十分钟。&lt;/p>
+&lt;p>无服务器计算为工程师提供了许多好处，包括通过消除服务器管理来减少工作量，通过只在需要时支付服务器空间来降低成本，以及在减少延迟的同时轻松扩展和部署。因此，这是一个值得在2023年关注的趋势。&lt;/p>
+&lt;h2 id="微服务架构的采用将继续增长">微服务架构的采用将继续增长
+&lt;/h2>&lt;p>微服务架构是一种越来越流行的设计、构建和管理应用程序的结构。这种方法有助于DevOps专业人员开发出更加模块化、与其他组件解耦、更易于维护和扩展的应用程序。通过将一个复杂的应用程序分离成更小、更容易管理的服务，DevOps专业人士对应用程序的各个部分有更多的控制。这使得更新和排除错误更加容易。此外，微服务允许DevOps专业人员通过创建新的服务或更新现有服务来快速响应客户需求。&lt;/p>
+&lt;p>以提供可扩展性、灵活性和敏捷性的方式开发和部署服务的能力是DevOps专业人士开始接受微服务的主要原因。在一个不断发展的IT环境中，公司需要能够快速、轻松地适应行业的变化。微服务是实现这一目标的好方法，因为它们允许在小的、易于管理的部分中开发和部署服务。因此，DevOps专业人员应该关注微服务在未来几年的持续发展。&lt;/p>
+&lt;h2 id="安全自动化将获得发展势头">安全自动化将获得发展势头
+&lt;/h2>&lt;p>安全自动化涉及自动化安全流程和任务，以确保应用程序和系统的安全和保护，使其免受潜在威胁。在2023年，DevOps专业人士应密切关注安全自动化的增长和安全即代码方法的采用。&lt;/p>
+&lt;p>企业实施安全自动化的一种方式是使用Harness安全测试自动化（STO）等工具，该工具允许在CI/CD管道内进行单元、集成和负载测试的自动化。这可以节省宝贵的工程时间，并降低整体云计算成本。集成到CI/CD流水线中的安全自动化保证了代码在部署到生产之前接受严格的安全测试。这确保了只有被验证为安全的代码才被允许进行。此外，在软件开发生命周期（SDLC）中使用人工智能和机器学习正变得越来越普遍，因为这些技术可以被训练来识别代码中的违规行为并提供改进建议。&lt;/p>
+&lt;p>另一方面，安全即代码解决方案将安全测试整合到CI/CD流水线中，使企业能够在整个开发过程中执行安全策略。这有助于确保安全在开发过程的每个阶段都得到考虑，而不是事后才想到。安全自动化和安全即代码解决方案都可以节省宝贵的工程时间，降低整体云计算成本，同时保持高水平的安全性。&lt;/p>
+&lt;p>2023年，随着企业寻求简化和自动化其安全流程，安全自动化将获得更大的发展势头。安全自动化工具将变得越来越复杂，具有自动安全测试、漏洞扫描和持续安全监控等功能。这将使企业能够在安全风险成为重大问题之前快速有效地识别和解决这些风险。&lt;/p>
+&lt;h2 id="混沌工程实验的增加">混沌工程实验的增加
+&lt;/h2>&lt;p>混沌工程是一个相对较新的领域，近年来得到了普及，预计在未来几年将继续增长。&lt;/p>
+&lt;p>混沌工程是一种战略方法，涉及到通过将产品、服务和系统置于极端条件下测试其复原力和可靠性。这有助于组织了解其系统和应用在这种条件下的行为，并确保它们能够承受这些条件。混沌工程的目标是识别部署过程中的 &amp;ldquo;不完美&amp;rdquo;，如漫长的周期时间，并防止故障发生。混沌工程师的目标不是要消除故障，而是要减轻故障，具体方法是找出不完善的地方并自动修复。&lt;/p>
+&lt;p>我们相信，随着企业认识到确保其产品和服务的高可用性和弹性的重要性，混沌工程和混沌原则的使用将在2023年变得更加广泛。随着混沌工程的采用越来越多，也可能会开发出新的工具和最佳实践，以帮助组织更好地理解和管理其系统的复杂性。&lt;/p>
+&lt;h2 id="docker将继续提升开发者的体验">Docker将继续提升开发者的体验
+&lt;/h2>&lt;p>Docker是一个深受开发者欢迎的工具，它通过允许开发者在云中快速构建、打包和部署应用程序，简化了开发生命周期。Docker的吸引力在于它的简单性，以及它将容器化应用快速带入生产环境的方式。&lt;/p>
+&lt;p>Docker是一个深受开发者欢迎的工具，它通过允许开发者在云中快速构建、打包和部署应用程序，简化了开发生命周期。Docker的吸引力在于它的简单性，以及它将容器化应用快速带入生产环境的方式。&lt;/p>
+&lt;p>尽管最初的假设是，当Kubernetes取消支持时，Docker将被淘汰，但事实并非如此。值得注意的是，Docker的设计从一开始就没有考虑到Kubernetes。Docker之所以能够保持其受欢迎程度，是因为有大量的开发者社区在使用它，而且它提供了易用性。&lt;/p>
+&lt;p>围绕Docker的社区令人印象深刻，无与伦比，它的广泛采用和强大的社区支持使它成为寻求简化工作流程和提高生产力的开发者的可靠选择。因此，Docker预计在未来几年仍将是DevOps领域的一个关键角色，为更多协作开发工作流程的趋势推波助澜。&lt;/p>
+&lt;p>2023年值得关注的一个DevOps趋势是Docker继续增强开发者的体验。该公司已经在开发新的工具和功能，使部署过程更简单、更快、更有效。它的重点是简化操作，同时也提供直观的用户体验。因此，采用Docker的公司可望体验到更大程度的灵活性和可扩展性。&lt;/p>
+&lt;h2 id="gitops将获得更多的信任">GitOps将获得更多的信任
+&lt;/h2>&lt;p>在GitOps中，开发人员将他们的代码存储在Git仓库中，然后将其部署到Kubernetes集群中。这种方法的好处是，开发人员可以将他们的代码保存在源码控制中，而不必担心管理Kubernetes集群的问题。&lt;/p>
+&lt;p>在过去的几年里，GitOps作为一种提高软件交付速度、可靠性和安全性的方法，在DevOps专业人士中获得了巨大的吸引力。在2023年，我们希望看到GitOps在希望改善其软件交付流程的组织中获得更多的信任和采用。&lt;/p>
+&lt;p>我们相信GitOps在2023年将继续流行，有几个原因。首先，GitOps使企业能够采用更加声明性的方法来管理其应用程序和基础设施。这意味着，开发人员不必手动配置和部署资源，只需将他们想要的状态提交给Git，剩下的就交给自动化工具处理。这可以帮助减少错误的风险，提高软件交付的速度和可靠性。&lt;/p>
+&lt;p>GitOps促进了开发团队内部的协作和透明度。通过使用Git作为真理的中心来源，团队中的每个人都可以看到正在进行的更改和系统的当前状态。这可以帮助减少冲突，改善团队成员之间的沟通。&lt;/p>
+&lt;p>GitOps可以帮助企业提高其软件交付过程的安全性。通过使用Git作为唯一的真理源，并使部署过程自动化，企业可以减少未经授权的更改的风险，并确保只有经过批准的更改被部署到生产中。&lt;/p>
+&lt;p>随着GitOps继续在DevOps领域获得关注，预计它在未来几年只会继续增长。这是因为它能够简化DevOps流程，使开发者更容易部署他们的代码。因此，GitOps肯定会成为2023年值得关注的领先DevOps趋势之一。具体来说，随着开发者越来越了解GitOps的好处，对GitOps的信任将继续增加。随着越来越多的组织采用GitOps，并成为DevOps流程的标准部分，GitOps将获得更多信任。&lt;/p>
+&lt;h2 id="aiops将变得突出">AIOps将变得突出
+&lt;/h2>&lt;p>MLOps和AIOps是两个最突出的DevOps工具，预计将成为该行业的主要参与者，到2026年预计价值为409.1亿美元。这些工具对于优化DevOps操作和实现高质量的快速发布至关重要。MLOps有助于加强机器学习的开发系统，而AIOps则使IT流程和操作自动化。&lt;/p>
+&lt;p>AIOps是一个强大的工具，可以使复杂的DevOps流程自动化，使团队能够快速检测和解决任何潜在的问题。它还可以提供对DevOps流程性能的洞察力，并在造成任何破坏之前确定任何潜在的问题。AIOps通常被用作DevOps工具链的一部分，实时监控和管理这些系统，为集成工具和DevOps工程师提供自动反馈。AIOps也可用于自动化某些任务，如应用测试和部署，这可以大大减少完成DevOps任务所需的时间和精力。&lt;/p>
+&lt;p>2023年，随着企业寻求提高IT效能，减少管理复杂数字系统的人工劳动，预计AIOps将继续流行。&lt;/p>
+&lt;h2 id="内部开发者平台将变得更加重要">内部开发者平台将变得更加重要
+&lt;/h2>&lt;p>到2022年，颠覆公司构建软件方式的DevOps趋势已经发展成为一种软件交付方式，通过打破孤岛将开发和运营联系起来。&lt;/p>
+&lt;p>内部开发者平台是一套专门为企业的开发者设计的工具和服务，通常托管在企业自己的基础设施内。&lt;/p>
+&lt;p>内部开发者平台为工程团队提供了一个集中的中心，以进行合作和共享资源。这可以帮助内部开发人员的学习和发展，使他们能够增加技术知识，并使他们能够轻松地与其他工程团队一起进行项目工作。这种平台还可以帮助减少错误，提高代码质量，因为资源共享和审查更容易。在2023年，我们预计会看到企业内部越来越多地采用内部开发者平台的趋势。&lt;/p>
+&lt;h2 id="devops协作将成为主流">DevOps协作将成为主流
+&lt;/h2>&lt;p>DevOps的理念包括打破软件开发人员和开发运营团队之间的围墙，允许他们在构建、测试和部署软件方面进行协作。随着越来越多的组织追求敏捷开发，他们也在提高开发人员和系统之间的障碍。亚马逊、谷歌和Stripe等组织都依靠DevOps协作来促进速度和创新。&lt;/p>
+&lt;p>协作工作正在改变，高管们正在使用新的软件工具来帮助他们监控工作流程。使用Slack、Microsoft Teams、GitHub和Atlassian的工具的DevOps团队对他们的工作流程有更大的可见性。在未来两年，DevOps领导层将继续看到DevOps协作成为主流，新的管理方式将出现。&lt;/p>
+&lt;h2 id="低代码平台">低代码平台
+&lt;/h2>&lt;p>低代码平台的确是扩展敏捷和DevOps优势的有用工具。它们允许开发人员快速、轻松地构建和部署应用程序，而不需要编写大量的代码。这对于需要快速开发和部署应用程序的组织来说特别有利，因为这可以让他们更有效地应对不断变化的业务需求和市场条件。&lt;/p>
+&lt;p>低代码平台也可以很好地适用于想要采用DevOps方法的组织，因为它们可以促进开发人员和IT运营团队之间的合作。通过使用低代码平台，开发人员可以专注于构建和测试应用程序，而IT运营团队可以专注于部署和监控。这些平台通常与所有主要的DevOps工具集成，从而有助于成为管理CI/CD的单一界面。&lt;/p>
+&lt;p>总的来说，对于希望采用敏捷和DevOps实践的组织来说，低代码平台可以成为一个有价值的工具，因为它们可以帮助加速开发过程，提高应用程序的质量和可靠性。&lt;/p>
+&lt;h2 id="向标准化部署和真正的自动化转变">向标准化部署和真正的自动化转变
+&lt;/h2>&lt;p>现在出现了许多端到端的DevOps平台，它们都是以低代码的方式构建的。此外，他们专注于为部署引入标准化；这一直是阻碍团队扩展和控制其部署的主要障碍。使用标准化的CI/CD管道使团队能够重新使用特定的管道来部署性质相似的微服务，只需在需要时调整一些参数。这有助于解决管道臃肿的问题，简化管道管理。&lt;/p>
+&lt;p>这些低代码平台还有助于实现真正意义上的自动化，这一直是DevOps的一个关键原则，但由于各团队的工具和工作流程分散，其实施一直是孤立和不统一的。这种趋势在未来可能会继续，重点是通过DevOps平台实现真正的端到端自动化。自动化可以帮助减少构建、测试和部署软件所需的时间和精力，这可以提高效率并加快开发过程。部署后的自动化在帮助检测故障和启动即时回滚以确保更高的应用可用性方面也有很大的作用。&lt;/p>
+&lt;h2 id="混合云环境的兴起">混合云环境的兴起
+&lt;/h2>&lt;p>许多组织正朝着混合云模式发展，其中一些工作负载在企业内部运行，另一些在云中运行。要求也决定了需要让应用程序在多个云区域运行，并有许多共享资源。这种趋势在未来几年可能会继续下去，DevOps实践将需要适应，不仅要支持混合云的部署，还要支持简化的跨集群监控、备份等。&lt;/p>
+&lt;h2 id="基础设施即代码">基础设施即代码
+&lt;/h2>&lt;p>基础设施即代码（IAC）将成为DevOps的领先趋势之一。这一趋势有利于通过自动化而不是人工的方式来管理和配置基础设施。这是一个基本的DevOps最佳实践，将持续监控、虚拟化测试和版本控制应用于指导基础设施开发和管理的基础代码。&lt;/p>
+&lt;p>基础设施即代码使采用DevOps技术以及基础设施团队和软件开发团队之间更紧密的合作成为可能。当基础设施是代码并被纳入你公司的软件生命周期时，有一个共同的词汇和一套共同的标准，利益相关者已经理解。团队之间的沟通因这种共享的知识而得到促进，这对DevOps至关重要。&lt;/p>
+&lt;h2 id="devsecops">DevSecOps
+&lt;/h2>&lt;p>DevSecOps是指开发、安全和运营。它是一种软件开发实践，在每个阶段都集成了安全元素，直到开发的解决方案不能成功交付。DevSecOps是从DevOps演变而来的，因此，实施DevSecOps而不是DevOps将在未来获得更大的发展。DevSecOps将安全整合到CI/CD管道中，使开发团队能够以DevOps的速度解决目前最紧迫的一些安全问题。&lt;/p>
+&lt;h2 id="sre-网站可靠性工程">SRE (网站可靠性工程)
+&lt;/h2>&lt;p>DevOps部署的下一个层次是站点可靠性工程。在DevOps的未来趋势中，似乎采用SRE作为战略，以实现高可用性、可靠性和增强的数字消费者体验。SRE技术对于完成内部服务水平目标和服务水平协议（SLA）（SLO）也是必要的。&lt;/p>
+&lt;h2 id="可观测性">可观测性
+&lt;/h2>&lt;p>可观察性将是DevOps的关键趋势之一。它提到了协助开发和运营团队记录、收集、关联和分析来自分布式应用的大量性能数据的方法和软件工具，以获得当下的洞察力。&lt;/p>
+&lt;h2 id="多云环境">多云环境
+&lt;/h2>&lt;p>DevOps和多云环境相辅相成，具有同义关系。他们的结合提供了好处，在提高生产力的同时，也为彼此增加了价值数。尽管如此，DevOps和多云在一起仍然是不寻常的。大多数拥有完善的DevOps管道的企业离将多云安排到位还有一段距离。&lt;/p>
+&lt;h2 id="结论">结论
+&lt;/h2>&lt;p>随着IT组织实施DevOps计划，他们无疑将面临一些挑战，这些挑战将考验他们在不断的压力下管理变化、跨团队协作和有效工作的能力。大多数IT组织将意识到，有必要让所有利益相关者参与到DevOps中来，包括业务部门，这样他们都能理解正在实施的方法背后的原因。&lt;/p>
+&lt;p>2023年，DevOps团队将继续推进他们的采用率，因为他们从企业高管那里得到的支持越来越多。DevOps团队将继续关注自动化，将应用程序迁移到云平台，推出Docker容器，建立容器协调工具，以及将他们的关注点扩展到安全方面。更多的公司将把DevOps嵌入到他们的运营结构中。这一发展将使企业开发、部署和运行应用程序的方式以及支持其团队的方式发生重大变化。除了采用DevOps实践外，企业还将调整数字化实践，从他们开发和部署的软件中获得更大的价值和质量，并管理企业的数字化转型。&lt;/p>
+&lt;h2 id="参考">参考
+&lt;/h2>&lt;p>本文参考的文章资料如下：&lt;/p>
+&lt;ul>
+&lt;li>&lt;a class="link" href="https://alltechmagazine.com/devops-trends-to-watch-for-in-2023/" target="_blank" rel="noopener"
+>https://alltechmagazine.com/devops-trends-to-watch-for-in-2023/&lt;/a>&lt;/li>
+&lt;li>&lt;a class="link" href="https://ozone.one/top-6-devops-trends-to-look-for-in-2023/" target="_blank" rel="noopener"
+>https://ozone.one/top-6-devops-trends-to-look-for-in-2023/&lt;/a>&lt;/li>
+&lt;li>&lt;a class="link" href="https://www.solutionanalysts.com/blog/top-10-trends-of-devops-in-2023/" target="_blank" rel="noopener"
+>https://www.solutionanalysts.com/blog/top-10-trends-of-devops-in-2023/&lt;/a>&lt;/li>
+&lt;li>&lt;a class="link" href="https://www.analyticsinsight.net/top-10-devops-trends-and-predictions-to-follow-up-in-2023/" target="_blank" rel="noopener"
+>https://www.analyticsinsight.net/top-10-devops-trends-and-predictions-to-follow-up-in-2023/&lt;/a>&lt;/li>
+&lt;/ul></description></item><item><title>2021 年 Gartner AIops 平台市场指南报告</title><link>https://martinliu.cn/blog/gartner-aiops-platform-market-guide-2021/</link><pubDate>Wed, 28 Apr 2021 17:22:22 +0800</pubDate><guid>https://martinliu.cn/blog/gartner-aiops-platform-market-guide-2021/</guid><description>&lt;img src="https://martinliu.cn/img/2021/4/AIOps-an-Industrial-Benchmark-2048x719.jpg" alt="Featured image of post 2021 年 Gartner AIops 平台市场指南报告" />&lt;p>本文是翻译整理的 Gartner 的行业调查报告，原文在：&lt;a class="link" href="https://www.gartner.com/doc/reprints?id=1-25RAD0H3&amp;amp;ct=210407&amp;amp;st=sb" target="_blank" rel="noopener"
+>https://www.gartner.com/doc/reprints?id=1-25RAD0H3&amp;ct=210407&amp;st=sb&lt;/a>&lt;/p>
+&lt;h2 id="概述">概述
+&lt;/h2>&lt;h3 id="主要发现">主要发现
+&lt;/h3>&lt;ul>
+&lt;li>AIOps平台在企业中的应用正在迅速增长。I&amp;amp;O（基础设施和运维）领导人正在为COVID-19后的环境进行规划，主要参考当前的实际成果，而非理想的目标。&lt;/li>
+&lt;li>AIOps平台的产品分为两类：领域无关的和以领域为中心的解决方案。然而，在处理高度多元化数据集的灵活性方面的需求正在逐渐提升，这正在对市场产生重大影响，并使AIOps平台向领域无关的功能性方向转变。&lt;/li>
+&lt;li>企业已经开始采用AIOps平台来对比和替换一些类别的传统监控工具。例如，监控 IaaS 和可观察性正在完全在 AIOps 平台内完成，特别是当企业的整个IT服务部署都在云里时。&lt;/li>
+&lt;li>企业正在增加将 AIOps 用于IT运维管理（ITOM）的各方面，并使其在DevOps 和 SRE 的实践中的使用应用场景更加成熟。&lt;/li>
+&lt;/ul>
+&lt;h3 id="建议">建议
+&lt;/h3>&lt;p>专注于基础设施、运维和云管理的 I&amp;amp;O 领导人应该。&lt;/p>
+&lt;ul>
+&lt;li>通过采用渐进式方法，从取代基于规则的事件分析开始，然后再扩展到以领域为中心的工作流程中，如应用程序和网络的诊断，优先考虑实际成果，而不是理想中的目标。&lt;/li>
+&lt;li>通过允许根据使用场景来选择的方法，在以领域为中心的AIOps或与领域无关的AIOps之间作出选择。在使用以领域为中心的AIOps功能点时，要将其内置于监控工具中，服务于一次性的特定用例，同时在路线图上规划部署能兼顾多种用例的，领域无关的独立解决方案。&lt;/li>
+&lt;li>通过选择一个支持与ITSM工具双向整合的AIOps平台，实现任务自动化、知识管理和变更分析。小心那些只提供基本搜索和显示功能的工具。&lt;/li>
+&lt;li>通过AIOps平台所支持的以上这三个方面，实现对整个ITOM的持续洞察：观测、干预和行动（observe, engage and act）。&lt;/li>
+&lt;/ul>
+&lt;h2 id="市场定义">市场定义
+&lt;/h2>&lt;p>本报告于2021年4月19日修订。你正在查看的文件是更正后的版本。欲了解更多信息，请参见gartner.com上的 &lt;a class="link" href="http://www.gartner.com/technology/about/policies/current_corrections.jsp" target="_blank" rel="noopener"
+>更正&lt;/a>页面。&lt;/p>
+&lt;p>AIOps 平台通过结合数据存储和分析功能，满足I&amp;amp;O领导者对运维支持的需求，根据IT部门为应对数字化转型而产生的数据，向有关团队提供相关的洞见。该能力是数据流水线的一部分，包括数据的摄人和存储，然后是数据整形和分析，然后转向可视化层。分析能力包括统计技术和人工智能技术的混合，但考虑到用户的成熟度，与人工智能层的互动界面对I&amp;amp;O来说是最小化、甚至是不存在的。&lt;/p>
+&lt;h2 id="市场描述">市场描述
+&lt;/h2>&lt;p>AIOps 平台广泛的强化了一些列 IT 实践，包括 I&amp;amp;O（基础架构/运维）、DevOps、SRE 和服务管理。然而，更集中的成果是在 I&amp;amp;O 领域，包括异常检测、诊断信息、事件关联和根本原因分析（RCA），以改善监控、服务管理和自动化任务。&lt;/p>
+&lt;p>AIOps平台的核心功能包括：&lt;/p>
+&lt;p>&lt;strong>摄入&lt;/strong>&lt;/p>
+&lt;p>AIOps 平台可以从多个领域、信息提供源进行数据摄取、索引和规范化事件或监控数据，包括基础设施、网络、应用程序、云或现有监控工具（用于跨领域分析）（见注2）。该平台必须至少在两个方面，使用机器学习的使能（enable）数据分析，包括。&lt;/p>
+&lt;ul>
+&lt;li>摄入点的实时分析（流分析）。&lt;/li>
+&lt;li>存储数据的历史分析&lt;/li>
+&lt;/ul>
+&lt;p>&lt;strong>拓扑&lt;/strong>&lt;/p>
+&lt;p>AIOps 平台发现并建立IT资产的统一拓扑结构，包括应用程序，和其它相关领域。拓扑结构可以表达物理上的连接性、逻辑上的依赖性或捕捉到IT资产和服务之间其他维度的关系。&lt;/p>
+&lt;p>&lt;strong>关联&lt;/strong>&lt;/p>
+&lt;p>AIOps 平台对多个监控领域或来源的事件进行关联和压缩（抑制），减少不必要的人工干预。关联功能结合了时间和拓扑结构来分组相关的事件。&lt;/p>
+&lt;p>&lt;strong>识别&lt;/strong>&lt;/p>
+&lt;p>AIOps 平台处理事件和监控数据，从而检测或预测重要的事件或事故。该平台不断地从操作员的输入和优化的机制中学习和强化重要事件的独特模式。&lt;/p>
+&lt;p>&lt;strong>修复&lt;/strong>&lt;/p>
+&lt;p>AIOps 平台通过操作员的调校或观察，不断的学习和改进每个重要事件和操作响应之间的关联性。AIOps 平台可能会提供一个建议，自动化响应或触发外部自动化系统。&lt;/p>
+&lt;p>AIOps 不仅仅是一个数据存储和检索系统。此外，该平台不限于趋势分析、预测和查询大量数据集的能力。&lt;/p>
+&lt;p>AIOps 的目标是通过策划和提高摄入数据的质量，以便 I&amp;amp;O 的领导者能够将多种用例推向相关的合适实践或角色。例如，模式发现可以有助于预测新出现的行为，IT 实体之间的关系，以及（IT工件、用户和代理）的基准行为，从而识别出异常情况，并给业务所有者提供相关背景。分析也促成了自动化的洞察力，简化了根本原因的定位，并使能了运用自动化解决所已发现问题的行动（见图1）。&lt;/p>
+&lt;p>图1: AIOps 跨多 IT 运维监控(ITOM)领域使能持续生成洞见 &lt;img src="https://martinliu.cn/img/cos/2021-04-28-Figure_1_AIOps_Platform_Enabling_Continuous_Insights_Across_IT_Operations_Monitoring_ITOM.png"
+loading="lazy"
+alt="Figure 1: AIOps Platform Enabling Continuous Insights Across IT Operations Monitoring (ITOM)"
+>&lt;/p>
+&lt;p>图片翻译如下：&lt;/p>
+&lt;p>Real-time and historical data : 实时和历史数据&lt;/p>
+&lt;p>Events Metrics, Traces, Topology : 事件 指标，追踪，拓扑&lt;/p>
+&lt;p>Incidents, dependencies and changes : 事故、依赖和变更&lt;/p>
+&lt;p>Observe （monitoring）：观测（监控）&lt;/p>
+&lt;ul>
+&lt;li>Historical analysis 历史分析&lt;/li>
+&lt;li>Anomaly Detection 异常检测&lt;/li>
+&lt;li>Performance analysis 性能分析&lt;/li>
+&lt;li>Correlation and contextualization 关联和上下文化&lt;/li>
+&lt;/ul>
+&lt;p>Engage （ITSM）：干预（ITSM）&lt;/p>
+&lt;ul>
+&lt;li>Task Automation 任务自动化&lt;/li>
+&lt;li>Change Risk analysis 变更风险分析&lt;/li>
+&lt;li>Performance Analysis 性能分析&lt;/li>
+&lt;li>Knowledge Management 知识管理&lt;/li>
+&lt;/ul>
+&lt;p>Act （automation） ： 行动 （自动化）&lt;/p>
+&lt;ul>
+&lt;li>Scripts 脚本&lt;/li>
+&lt;li>Runbooks 运行手册&lt;/li>
+&lt;li>ARA&lt;/li>
+&lt;/ul>
+&lt;h2 id="市场方向">市场方向
+&lt;/h2>&lt;h3 id="市场转向领域无关的-aiops">市场转向领域无关的 AIOps
+&lt;/h3>&lt;p>领域无关的平台正在作为一个独立的市场出现，与以领域为中心的AIOps平台不同（见注3）。这是因为在三到五年渐进式的路线图中，可以灵活地摄取日益多样化的数据集。这种路线图上的用例不仅仅关注异常状态识别，还包括行为分析、客户参与和识别潜在机会。未来的市场指南报告将专注于领域无关的 AIOps。&lt;/p>
+&lt;p>随着企业在应用 AIOps 方面的成熟，他们需要一个跨越 I&amp;amp;O、DevOps、SRE的统一的领域无关平台，在某些情况下还需要包括安全实践。&lt;/p>
+&lt;p>Gartner 看到 I&amp;amp;O 领导人正在与高级管理层讨论相关的KPI（关键绩效指标）和仪表盘。在所有这些情况下，以领域为中心的工具则出现了明显的差异，它更聚焦在异常检测和减少错误告警方面。AIOps 已经成为许多以领域为中心的市场中的一个决定性特性。&lt;/p>
+&lt;h3 id="aiops以领域为中心的工具中的必备功能">AIOps：以领域为中心的工具中的必备功能
+&lt;/h3>&lt;p>以领域为中心的 AIOps 已经扩展到多个 ITOM 细分市场，包括可观测性和自动化工具市场。它是一些市场的决定性特性。比如说。&lt;/p>
+&lt;ul>
+&lt;li>AIOps 能力是 APM 工具的决定性特性之一（见[应用性能监控魔力象限]报告）。&lt;/li>
+&lt;li>在 ITIM 和 NPMD 市场，分析被认为是一种核心能力，但供应商已经开始提供AIOps能力，以支持各种产出，如提升洞察和诊断力。&lt;/li>
+&lt;li>许多ITSM供应商通过投资自开发平台或与 AIOps 平台供应商合作，将AIOps能力纳入其中（见[IT服务管理工具魔力象限]）。AITSM 的概念通过在 ITSM 工具上应用人工智能的上下文、建议、行动和界面，为 I&amp;amp;O 人员带来了有效性、效率和降低错误（见[利用 AITSM的4个领域来发展ITSM工具和实践]）。&lt;/li>
+&lt;/ul>
+&lt;p>以领域为中心的 AIOps 方法对那些数据种类有限（即只有少数点状解决方案）并优先考虑少数重点用例的组织有效。这类组织对同时查看多个孤岛数据的需求或能力都比较有限。随着组织内用例的增加，他们可能会转向领域无关的工具。&lt;/p>
+&lt;p>仅仅关注以领域为中心的方法的供应商将在那些还没有准备好利用领域诊断工具的优势的客户身上获得成功。然而，随着越来越多的企业希望转向领域无关的选项，只关注以领域为中心的技术的供应商将发现自己被排除在市场的讨论之外。&lt;/p>
+&lt;h3 id="持续的关注和增长">持续的关注和增长
+&lt;/h3>&lt;p>AIOps 继续的增长和对整个 ITOM 市场的影响，估计2020年的市场规模在9亿至15亿美元之间，2020年至2025年的复合年增长率约为15%（见[市场机会图：全球IT运维管理]）。采用和方向正受到两个独立但最终相关的领域的严重影响。&lt;/p>
+&lt;ul>
+&lt;li>数字化业务转型&lt;/li>
+&lt;li>从被动应对问题过渡到主动解决问题&lt;/li>
+&lt;/ul>
+&lt;p>数字化业务转型正在推动着 AIOps 市场的发展，因为更多的业务运维被数字化，分析不断增长的数据量变得更加关键和困难。随着数据量达到或超过每分钟千兆字节，跨越十几个不同的领域，人类已经不可能手动分析数据了。&lt;/p>
+&lt;p>随着企业继续进行数字化转型，他们不再奢望在问题发生后才作出响应。相反，他们必须变得积极主动，在影响到用户的体验之前就解决掉潜在的问题。&lt;/p>
+&lt;p>AIOps 市场继续朝着更广泛和更好的解决方案发展，在这两个目标下，依然同时仍然保持着以领域为中心的方法和领域无关的方法之间的区分（见注3）。未来的状态是一个统一的 AIOps 平台试图取代问题日益增多的领域为中心的工具。Gartner 预计会看到越来越多的专业层，获奖在嵌入设备中包含分析和训练有素的模型。最终，分析技术将被嵌入到构成以领域为中心的AIOps的不同监控技术中，以至于以领域为中心的AIOps被包含在多种监控市场的定义中。&lt;/p>
+&lt;p>此外，一些供应商正在尝试将领域无关和以领域为中心的方式混合起来，在其孤立的工具之上提供领域诊断的AIOps功能。在日益动态的IT架构中，由于必须更新相关规则的速度，基于规则的事件关联已经让位于基于人工智能的关联（见[使用AIOps的数据驱动方法来提高IT运维监控工具的洞察力]）。&lt;/p>
+&lt;h3 id="低准入门槛">低准入门槛
+&lt;/h3>&lt;p>开源技术的商品化降低了该领域许多供应商的准入门槛，为数据采集、存储和可视化工具提供了许多选择。这些与领域无关的采集、存储和展示技术相对容易部署和整合，引发了许多以领域为中心的供应商，包括系统集成商和管理服务提供商的产品开发或改进。用于跨指标、追踪和日志领域的诊断数据采集的开源工具，包括 Prometheus、Elastic Beats、Jaeger 和 Fluentd。对于数据可视化，Gartner 遇到了许多利用 Grafana 实现的方案，无论数据存储在哪里。&lt;/p>
+&lt;p>尽管 AIOps 尚未成熟，但只要使用案例合适，AIOps 就会被认为是企业内部的一个有价值的工具，并能长期保持持有的状态（见图2）。&lt;/p>
+&lt;p>图 2: 组织计划持续使用 CMP 和 AIOps&lt;img src="https://martinliu.cn/img/cos/2021-04-28-Figure_2_Organizations_Plans_to_Continue_Using_CMP_and_AIOps.png"
+loading="lazy"
+alt="Of the DevOps initiatives organizations began using in response to COVID-19, CMP and AIOps are the ones organizations most intend to continue using."
+>&lt;/p>
+&lt;h2 id="市场分析">市场分析
+&lt;/h2>&lt;p>尽管 AIOp s技术已经存在多年，但成功的部署还需要时间和努力，包括终端用户的结构化路线图。实施通常会遇到一些问题，包括数据摄取、提供上下文相关的分析和较长的价值实现时间。许多 AIOps 平台工具部署的价值实现时间是以月或年计算的，这导致了对该细分市场的不满和幻灭。然而，企业应该毫不怀疑。&lt;/p>
+&lt;blockquote>
+&lt;p>IT运维的未来不可能不包括 AIOps。这是由于数据量和变化速度的快速增长（以应用交付速度和事件驱动的商业模式为例），不能依靠人类从数据中挖掘出洞见。&lt;/p>&lt;/blockquote>
+&lt;p>人类根本不可能对其IT系统每秒产生的成千上万的事件进行理解。&lt;/p>
+&lt;p>为了更清楚地了解市场是如何发展的，以及供应商彼此之间的定位，请考虑以下属性。&lt;/p>
+&lt;ul>
+&lt;li>数据摄取和处理&lt;/li>
+&lt;li>机器学习（ML）分析&lt;/li>
+&lt;li>补救措施&lt;/li>
+&lt;/ul>
+&lt;h3 id="数据摄入和处理">数据摄入和处理
+&lt;/h3>&lt;p>AIOps 平台必须能够摄取静态（历史）数据和动态（实时、流）数据。这些平台可以摄取、索引和存储日志、事件数据、指标、追踪以及图表和文档数据（见注释2）。&lt;/p>
+&lt;p>这些用于IT运维的工具必须直接在摄取点上做实时数据分析，而不需要在分析前将数据保存到数据库。它们还必须提供跨越多个实时和历史数据流的关联分析。&lt;/p>
+&lt;h3 id="机器学习分析">机器学习分析
+&lt;/h3>&lt;ul>
+&lt;li>
+&lt;p>AIOps 平台使用以下类型的分析方法。&lt;/p>
+&lt;ul>
+&lt;li>&lt;strong>统计学、概率分析&lt;/strong> 单变量和多变量分析的结合，包括使用相关、聚类、分类和跨IT实体捕获的指标进行推断。&lt;/li>
+&lt;li>&lt;strong>自动模式发现和预测&lt;/strong> 发现隐含描述历史和/或流数据中的相关性的模式、集群或群体。然后，这些模式可用于预测具有不同程度概率的事件。&lt;/li>
+&lt;li>&lt;strong>异常检测&lt;/strong> 使用前述组件发现的模式来确定正常行为，然后辨别与正常行为的偏差，包括单变量和多变量。超越了单纯的异常值检测，它们必须与业务影响和其他并发流程（如发布管理）相关联，才能充分发挥作用，而不是产生出更多的告警噪音（见[使用AI技术增强DevOps的决策能力]）。&lt;/li>
+&lt;li>&lt;strong>可能原因判定&lt;/strong> 对通过自动模式发现和摄取图数据建立的关联网络进行修剪，以确定连接因果关系的因果关系链。&lt;/li>
+&lt;li>&lt;strong>拓扑分析&lt;/strong> AIOps平台可以使用应用程序、网络、基础设施或其他拓扑结构来提供上下文分析。从拓扑结构内的数据中得出的模式将建立相关性，并说明隐藏的依赖关系。将拓扑结构作为因果关系判断的一部分，可以大大增加其准确性和有效性。&lt;/li>
+&lt;li>&lt;strong>规范性建议&lt;/strong> 建议解决一个问题的方案。这些建议可能是基于对重复出现的问题的历史解决方案（部落知识）的数据库，或通过众包确定。&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h3 id="补救措施">补救措施
+&lt;/h3>&lt;p>随着技术的成熟，用户将能够利用该平台的建议，实现行动阶段（见注4）。这方面的步骤如图3所示。&lt;/p>
+&lt;p>图3: AI 辅助自动化的未来 —问题的分类和补救&lt;img src="https://martinliu.cn/img/cos/2021-04-28-Figure_3_The_Future_of_AI-Assisted_Automation__Triage_and_Remediation_of_Problems.png"
+loading="lazy"
+alt="Graphic illustrates the problem-remediation process with AI-assisted automation."
+>&lt;/p>
+&lt;p>图片翻译：&lt;/p>
+&lt;p>1 开始于已知的&lt;/p>
+&lt;ul>
+&lt;li>在一个部落知识库中记录成功的解决方案&lt;/li>
+&lt;li>将问题进行分类&lt;/li>
+&lt;/ul>
+&lt;p>2 当前和历史的对照&lt;/p>
+&lt;ul>
+&lt;li>在数据库将一类问题与一组已知解决方案进行匹配&lt;/li>
+&lt;li>众包&lt;/li>
+&lt;/ul>
+&lt;p>3 建议&lt;/p>
+&lt;ul>
+&lt;li>建议一组可能的解决方案&lt;/li>
+&lt;/ul>
+&lt;p>4 执行和评估&lt;/p>
+&lt;ul>
+&lt;li>运行解决方案（提供）（ARA/运行手册）&lt;/li>
+&lt;li>跟踪解决方案效果&lt;/li>
+&lt;li>对效果投票&lt;/li>
+&lt;/ul>
+&lt;p>一个被称为 &amp;ldquo;自我驱动的ITOM &amp;ldquo;的自动化、闭环的流程是非常令人向往的，但这仍然是一种愿望。在商业工具中，除了那些简单的自动 &amp;ldquo;弹出服务器 &amp;ldquo;或 “创建工单 &amp;ldquo;类型的脚本外，很少看到规范性的解决方案。有可能从规范性工具中获得自动行动的候选者是那些低风险的。这些是那些如果失败或导致意外的副作用，造成的损失相对较小。根据环境的不同，手工的预定操作，如补丁更新，以及执行工作负载优化的行动，如启动一个额外的虚拟机（VM）或容器，可能是成功的。&lt;/p>
+&lt;h4 id="价值实现时间">价值实现时间
+&lt;/h4>&lt;p>Gartner 客户的一个共同抱怨是，部署、配置和从AIOps解决方案中获取价值所需的时间可能长达六个月，在极端情况下，可能长达两年。AIOps是一项新兴技术，这意味着该领域的最佳实践仍在不断发展。但是，当潜在的回报在时间跨度上如此遥远时，企业不愿意投资于一个产品。&lt;/p>
+&lt;p>为了应对这种情况，供应商正在采取举措，加快部署速度。这些措施包括。&lt;/p>
+&lt;ul>
+&lt;li>转向基于SaaS的部署&lt;/li>
+&lt;li>改进通用接口的开箱即用的集成方式&lt;/li>
+&lt;li>基于现场测试的最佳实践，在系统中建立可重复的工作流&lt;/li>
+&lt;li>减少系统产生的误报数量&lt;/li>
+&lt;/ul>
+&lt;p>在为AIOps的投资回报建立商业案例时，I&amp;amp;O 领导人必须与供应商讨论其实施的预期价值时间。在许多情况下，预计会有一个有限的概念验证，以证明集成在现实环境中如何运作。&lt;/p>
+&lt;h4 id="devops-中的-aiops">DevOps 中的 AIOps
+&lt;/h4>&lt;p>作为IT运维工具与DevOps流水线整合的 &amp;ldquo;左移 &amp;ldquo;大趋势的一部分，早期采用者正在开发流水线的早期尝试AIOps。结合越来越多的自动化使用，开发人员正在使用人工智能来更快、更安全地交付软件，在生产中更容易管理。图4显示了AIOps 存在于 DevOps 流水线中的例子。
+图4：在应用程序的生命周期中，在一系列的使用案例中应用AIOps平台&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/img/cos/2021-04-28-Figure_4_Applying_AIOps_Platforms_Across_a_Spectrum_of_Use_Cases_Over_the_Life_Cycle_of_an_Application.png"
+loading="lazy"
+alt="Graphic illustrates how to apply AIOps throughout an application’s nonexistent, from development through IT service management."
+>&lt;/p>
+&lt;p>图片翻译：&lt;/p>
+&lt;ol>
+&lt;li>识别代码中的风险&lt;/li>
+&lt;li>日志文件分析&lt;/li>
+&lt;li>时间关联、异常分析，RCA&lt;/li>
+&lt;li>数字化代理（智能客服）/自动化，变更&lt;/li>
+&lt;/ol>
+&lt;p>NLP 在 ITSM 工具中被大量采用，但一些APM供应商已经开始将NLP作为其AIOps能力的一部分。一个主要目标是为DevOps团队实现更灵活的ChatOps，并为APM数据和自动化提供更好的接口。&lt;/p>
+&lt;h2 id="代表性厂商">代表性厂商
+&lt;/h2>&lt;h3 id="市场介绍">市场介绍
+&lt;/h3>&lt;p>AIOps平台供应商拥有广泛的功能，并在继续增长。供应商在其数据摄取和开箱即用的用例方面存在差异，只需最小的配置即可使用。在表1中，我们提供了一个有代表性的供应商样本列表，提供领域无关的AIOps平台功能。该表中的一些供应商也提供以领域为中心的产品。&lt;/p>
+&lt;p>表2包括以领域为中心的AIOps供应商，在某些情况下，他们专注于一个以上的领域。随着AIOps功能开始成为APM和ITSM等不同领域的决定性特性，Gartner将在本市场指南的未来版本中关注领域无关的AIOps供应商。&lt;/p>
+&lt;p>表1: 领域无关的AIOps平台市场的代表厂商&lt;/p>
+&lt;table>
+&lt;thead>
+&lt;tr>
+&lt;th style="text-align: center">&lt;strong>厂商&lt;/strong>&lt;/th>
+&lt;th style="text-align: center">&lt;strong>产品,服务或者解决方案&lt;/strong> &lt;strong>名称&lt;/strong>&lt;/th>
+&lt;/tr>
+&lt;/thead>
+&lt;tbody>
+&lt;tr>
+&lt;td style="text-align: center">&lt;a class="link" href="https://www.bigpanda.io/" target="_blank" rel="noopener"
+>BigPanda&lt;/a>&lt;/td>
+&lt;td style="text-align: center">BigPanda&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td style="text-align: center">&lt;a class="link" href="https://www.bmc.com/" target="_blank" rel="noopener"
+>BMC&lt;/a>&lt;/td>
+&lt;td style="text-align: center">TrueSight Operations Management, Helix Platform&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td style="text-align: center">&lt;a class="link" href="https://www.broadcom.com/" target="_blank" rel="noopener"
+>Broadcom-CA Technologies&lt;/a>&lt;/td>
+&lt;td style="text-align: center">DX Operational Intelligence&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td style="text-align: center">&lt;a class="link" href="https://www.devo.com/" target="_blank" rel="noopener"
+>Devo&lt;/a> (formerly Logtrust)&lt;/td>
+&lt;td style="text-align: center">Devo&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td style="text-align: center">&lt;a class="link" href="https://digitate.com/" target="_blank" rel="noopener"
+>Digitate&lt;/a>&lt;/td>
+&lt;td style="text-align: center">ignio&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td style="text-align: center">&lt;a class="link" href="https://www.elastic.co/" target="_blank" rel="noopener"
+>Elastic&lt;/a>&lt;/td>
+&lt;td style="text-align: center">Elasticsearch&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td style="text-align: center">&lt;a class="link" href="https://www.ibm.com/" target="_blank" rel="noopener"
+>IBM&lt;/a>&lt;/td>
+&lt;td style="text-align: center">IBM Cloud Pak for Watson AIOps&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td style="text-align: center">&lt;a class="link" href="https://www.interlinksoftware.com/" target="_blank" rel="noopener"
+>Interlink Software&lt;/a>&lt;/td>
+&lt;td style="text-align: center">Interlink Software&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td style="text-align: center">&lt;a class="link" href="https://logz.io/" target="_blank" rel="noopener"
+>Logz.io&lt;/a>&lt;/td>
+&lt;td style="text-align: center">Log Management&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td style="text-align: center">&lt;a class="link" href="https://www.moogsoft.com/" target="_blank" rel="noopener"
+>Moogsoft&lt;/a>&lt;/td>
+&lt;td style="text-align: center">Moogsoft&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td style="text-align: center">&lt;a class="link" href="https://www.pagerduty.com/" target="_blank" rel="noopener"
+>PagerDuty&lt;/a>&lt;/td>
+&lt;td style="text-align: center">PagerDuty&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td style="text-align: center">&lt;a class="link" href="http://servicenow.com/" target="_blank" rel="noopener"
+>ServiceNow&lt;/a>&lt;/td>
+&lt;td style="text-align: center">IT Operations Management (ITOM)&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td style="text-align: center">&lt;a class="link" href="https://www.splunk.com/" target="_blank" rel="noopener"
+>Splunk&lt;/a>&lt;/td>
+&lt;td style="text-align: center">Splunk Enterprise, Splunk Cloud&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td style="text-align: center">&lt;a class="link" href="https://www.stackstate.com/" target="_blank" rel="noopener"
+>StackState&lt;/a>&lt;/td>
+&lt;td style="text-align: center">StackState&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td style="text-align: center">&lt;a class="link" href="https://www.sumologic.com/" target="_blank" rel="noopener"
+>Sumo Logic&lt;/a>&lt;/td>
+&lt;td style="text-align: center">Sumo Logic&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td style="text-align: center">&lt;/td>
+&lt;td style="text-align: center">&lt;/td>
+&lt;/tr>
+&lt;/tbody>
+&lt;/table>
+&lt;p>Source: Gartner (April 2021)&lt;/p>
+&lt;p>表2: 以领域为中心的AIOps平台市场的代表厂商&lt;/p>
+&lt;table>
+&lt;thead>
+&lt;tr>
+&lt;th style="text-align: center">&lt;strong>厂商&lt;/strong>&lt;/th>
+&lt;th style="text-align: center">&lt;strong>产品,服务或者解决方案&lt;/strong> &lt;strong>名称&lt;/strong>&lt;/th>
+&lt;th style="text-align: center">&lt;strong>供应商擅长的领域&lt;/strong>&lt;/th>
+&lt;/tr>
+&lt;/thead>
+&lt;tbody>
+&lt;tr>
+&lt;td style="text-align: center">&lt;a class="link" href="https://aisera.com/" target="_blank" rel="noopener"
+>Aisera&lt;/a>&lt;/td>
+&lt;td style="text-align: center">Aisera&lt;/td>
+&lt;td style="text-align: center">ITSM&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td style="text-align: center">&lt;a class="link" href="https://www.cisco.com/" target="_blank" rel="noopener"
+>Cisco&lt;/a>&lt;/td>
+&lt;td style="text-align: center">AppDynamics&lt;/td>
+&lt;td style="text-align: center">APM&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td style="text-align: center">&lt;a class="link" href="http://datadoghq.com/" target="_blank" rel="noopener"
+>Datadog&lt;/a>&lt;/td>
+&lt;td style="text-align: center">Datadog APM&lt;/td>
+&lt;td style="text-align: center">APM&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td style="text-align: center">&lt;a class="link" href="https://digital.ai/" target="_blank" rel="noopener"
+>Digital.ai&lt;/a>&lt;/td>
+&lt;td style="text-align: center">Numerify&lt;/td>
+&lt;td style="text-align: center">ITSM&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td style="text-align: center">&lt;a class="link" href="https://www.dynatrace.com/" target="_blank" rel="noopener"
+>Dynatrace&lt;/a>&lt;/td>
+&lt;td style="text-align: center">Dynatrace&lt;/td>
+&lt;td style="text-align: center">APM, ITIM&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td style="text-align: center">&lt;a class="link" href="https://www.espressive.com/" target="_blank" rel="noopener"
+>Espressive&lt;/a>&lt;/td>
+&lt;td style="text-align: center">Barista Case Management&lt;/td>
+&lt;td style="text-align: center">ITSM&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td style="text-align: center">&lt;a class="link" href="https://www.extrahop.com/" target="_blank" rel="noopener"
+>ExtraHop&lt;/a>&lt;/td>
+&lt;td style="text-align: center">ExtraHop Reveal(x) for IT Operations&lt;/td>
+&lt;td style="text-align: center">NPMD&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td style="text-align: center">&lt;a class="link" href="https://harness.io/" target="_blank" rel="noopener"
+>Harness&lt;/a>&lt;/td>
+&lt;td style="text-align: center">Continuous Integration, Continuous Delivery, Continuous Efficiency Platforms&lt;/td>
+&lt;td style="text-align: center">DevOps&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td style="text-align: center">&lt;a class="link" href="https://amelia.com/about/" target="_blank" rel="noopener"
+>IPsoft (Amelia)&lt;/a>&lt;/td>
+&lt;td style="text-align: center">DigitalWorkforce.ai Platform&lt;/td>
+&lt;td style="text-align: center">ITSM&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td style="text-align: center">&lt;a class="link" href="https://www.kentik.com/" target="_blank" rel="noopener"
+>Kentik&lt;/a>&lt;/td>
+&lt;td style="text-align: center">Kentik&lt;/td>
+&lt;td style="text-align: center">NPMD&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td style="text-align: center">&lt;a class="link" href="https://www.overops.com/" target="_blank" rel="noopener"
+>OverOps&lt;/a>&lt;/td>
+&lt;td style="text-align: center">OverOps&lt;/td>
+&lt;td style="text-align: center">Dev&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td style="text-align: center">&lt;a class="link" href="https://www.pico.net/" target="_blank" rel="noopener"
+>Pico&lt;/a>&lt;/td>
+&lt;td style="text-align: center">Corvil&lt;/td>
+&lt;td style="text-align: center">NPMD&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td style="text-align: center">&lt;a class="link" href="https://newrelic.com/" target="_blank" rel="noopener"
+>New Relic&lt;/a>&lt;/td>
+&lt;td style="text-align: center">New Relic One Platform&lt;/td>
+&lt;td style="text-align: center">APM, ITIM&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td style="text-align: center">&lt;a class="link" href="https://www.opsramp.com/" target="_blank" rel="noopener"
+>OpsRamp&lt;/a>&lt;/td>
+&lt;td style="text-align: center">OpsRamp&lt;/td>
+&lt;td style="text-align: center">ITIM&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td style="text-align: center">&lt;a class="link" href="https://sciencelogic.com/" target="_blank" rel="noopener"
+>ScienceLogic&lt;/a>&lt;/td>
+&lt;td style="text-align: center">SL1 Platform&lt;/td>
+&lt;td style="text-align: center">ITIM&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td style="text-align: center">&lt;a class="link" href="https://www.virtana.com/" target="_blank" rel="noopener"
+>Virtana&lt;/a>&lt;/td>
+&lt;td style="text-align: center">Virtana Platform&lt;/td>
+&lt;td style="text-align: center">ITIM&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td style="text-align: center">&lt;a class="link" href="https://www.gartner.com/doc/zenoss.com" target="_blank" rel="noopener"
+>Zenoss&lt;/a>&lt;/td>
+&lt;td style="text-align: center">Zenoss&lt;/td>
+&lt;td style="text-align: center">ITIM&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td style="text-align: center">&lt;/td>
+&lt;td style="text-align: center">&lt;/td>
+&lt;td style="text-align: center">&lt;/td>
+&lt;/tr>
+&lt;/tbody>
+&lt;/table>
+&lt;p>Source: Gartner (April 2021)&lt;/p>
+&lt;p>*本市场指南中所列的供应商并不意味着是一份详尽的清单。本节旨在提供对市场及其产品的更多了解。&lt;/p>
+&lt;h2 id="市场建议">市场建议
+&lt;/h2>&lt;h3 id="使用一个自上而下的-aiops-框架">使用一个自上而下的 AIOps 框架
+&lt;/h3>&lt;p>AIOps的使用案例跨越了从IT操作员到业务线所有者甚至CEO的各个层次。&lt;/p>
+&lt;p>在实践中，这些平台只具备开箱即用的异常检测和事件关联能力。这意味着对IT操作员来说，开箱即用的相关性相当高，而终端用户必须创造与人员相关的结果，如 I&amp;amp;O 领导、系统管理员、架构师和LOB所有者。&lt;/p>
+&lt;p>该平台的分析能力利用算法和模型来支持基于数据集的结果，这些数据集可能质量差、不完整且缺乏统一性。结果并不总是通用或相似的；因此，算法的价值是有限的。由于IT的复杂性和不断变化的性质，即使是AIOps平台所利用的模型，如果没有持续的反馈机制，也会失去相关性。&lt;/p>
+&lt;p>**例如，在监控策略中，确定AIOps如何将数据转化为与目标人物的相关性，以及如何帮助解决各自人物的目的（见注5）。随后，从IT运维中的可视化现状开始，描绘出通往目标的以下步骤（见[采用AIOps的解决方案路径]）。&lt;/p>
+&lt;ul>
+&lt;li>以最终目标为起点的目标路线图&lt;/li>
+&lt;li>通向目标的中间步骤&lt;/li>
+&lt;li>IT运维的现有状态（噪音事件、基于静态阈值的告警或利用动态阈值）&lt;/li>
+&lt;/ul>
+&lt;p>选择最适合为路线图上的第一步提供开箱即用功能的AIOps供应商，并提供符合组织路线图的平台（例如，帮助组织以最小的努力从事件关联推进到动态阈值到行为分析）。随着用例的成熟，请注意这些平台的可移植性挑战（见注6）。&lt;/p>
+&lt;h3 id="基于洞见的自动化">基于洞见的自动化
+&lt;/h3>&lt;p>一些企业有一个目标，导致对已发现的异常情况进行自动化补救。任何自动化举措都是基于一定程度的标准化。这是大规模部署自动化行动的一个主要抑制因素。成熟度高的IT组织更喜欢自动化的洞察力，而不是自动化的行动，这是一个切实的目标。I&amp;amp;O领导应该优先考虑那些能减少IT操作人员视觉负担的工具。例如，AIOps平台应该强调出需要人类关注的领域，而不是对多个图表进行可视化分析。&lt;/p>
+&lt;p>COVID-19疫情要求企业从根本上改变排查方式和采用AIOps用例的方式，因为向居家工作的转变暴露了现有做法的缺点。例如，在运维中心，有人会提出一个 &amp;ldquo;问题&amp;rdquo;，不同的小组会大声喊出他们对 &amp;ldquo;答案 &amp;ldquo;的看法。高管们看到了一个机会，在起草一个能够长期保持的战略时，重新审视综合运维工具、流程和人员的基本方面（见注5的图5）。&lt;/p>
+&lt;p>在2019年，Gartner的客户有一个理想的目标，即设计与LOB所有者相关的仪表盘。这个过程中，一些企业花了10个月到两年的时间。两个主要因素是透明度和用于使业务领导人推动决策的上下文信息，与旨在让业务领导人了解情况的报告相比。疫情大流行开始后，大多数企业关注基本面和减少风险，把自己限制在现有的开箱即用的用例上，如事件关联性。在COVID-19大流行之前，Gartner看到企业提出了理想的目标，而这些目标在今天的AIOps工具中可能还没有开箱即用。&lt;/p>
+&lt;h3 id="与不同角色的关联性">与不同角色的关联性
+&lt;/h3>&lt;p>AIOps平台被不同的团队采用，如DevOps、SRE、IT运维、网络安全（见[安全信息和事件管理魔力象限]），以及业务领导人。所需的用例和原始数据根据采用该平台的团队及其成熟度而不同。&lt;/p>
+&lt;p>DevOps团队主要专注于日志摄取和分析。随着DevOps实践的成熟，用例从对生产前的关注扩大到包括用户参与、质量和业务相关性等生产指标。这就产生了对新的KPI的需求，在多个版本之间进行比较，并关注产品和平台。考虑到这种情况，选择能够摄取埋点的数据（追踪、指标和日志）的平台，并减轻为DevOps提供平台和产品视图的工作。&lt;/p>
+&lt;p>IT运维团队通常需要指标和日志摄取的组合，然后是分析。这个过程从事件关联开始，随着团队的成熟，扩大到基于指标和日志分析的行为分析。这里的主要目标是异常检测和诊断信息，然后是根本原因分析。其他用例包括通过使用脚本的自动行动，其中AIOps识别与自动行动相关的触发器。选择那些能够灵活地摄取事件、日志和指标的平台，并为I&amp;amp;O的至少一个优先用例提供开箱即用的功能。&lt;/p>
+&lt;p>企业领导更关注用户参与度，而应用性能只是影响整体参与度的一个参数。在一些全球性的组织中，业务领导已经不再区分员工和客户，所以这里的 &amp;ldquo;用户 &amp;ldquo;既指员工也指客户。这个旅程通常从基于IT的用户影响的相关性开始，但扩大到包括技术、人员和现有流程的效率和生产力等定性的关键绩效指标。在成熟的组织中，更好的参与而不是减员是这种关键绩效指标背后的驱动力。对于这样的场景，选择专注于聚类和人口统计学的平台，并在不同的数据集上提供因果洞察力，包括情感和满意度。&lt;/p>
+&lt;p>SRE实践通常有与IT运维和DevOps用例重叠的目标。通常，这些都是跨越两个实践的成熟用例。例如，事件关联和日志摄取不是SRE团队的主要目标。他们的重点领域包括IT架构评估。对于SRE用例，选择为IT架构提供实时拓扑和依赖性洞见的平台作为主要用例之一。&lt;/p>
+&lt;h2 id="首字母缩写词和词汇表术语">首字母缩写词和词汇表术语
+&lt;/h2>&lt;table>
+&lt;thead>
+&lt;tr>
+&lt;th>&lt;strong>APM&lt;/strong>&lt;/th>
+&lt;th>&lt;strong>Application performance monitoring&lt;/strong> 应用性能监控&lt;/th>
+&lt;/tr>
+&lt;/thead>
+&lt;tbody>
+&lt;tr>
+&lt;td>BAM&lt;/td>
+&lt;td>Business activity monitoring 业务活动监控&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>DA&lt;/td>
+&lt;td>Domain-agnostic 领域无关&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>DC&lt;/td>
+&lt;td>Domain-centric 领域为中心&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>ITIM&lt;/td>
+&lt;td>IT infrastructure monitoring IT 基础架构监控&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>ITOM&lt;/td>
+&lt;td>IT operations management IT 运维管理&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>ITSM&lt;/td>
+&lt;td>IT service monitoring IT 服务监控&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>NLP&lt;/td>
+&lt;td>Natural language processing 自然语言处理&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>NPMD&lt;/td>
+&lt;td>Network performance monitoring and diagnostics 网络性能监控和诊断&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>SIEM&lt;/td>
+&lt;td>Security information and event management 安全信息和事件管理&lt;/td>
+&lt;/tr>
+&lt;/tbody>
+&lt;/table>
+&lt;h2 id="证据">证据
+&lt;/h2>&lt;p>&lt;strong>1&lt;/strong> &lt;strong>Gartner的2020年通过自动化、持续质量和DevOps实现业务敏捷性研究&lt;/strong>于2020年6月至8月在北美和西欧已部署或正在使用DevOps的服务提供商、云供应商和终端用户组织工作的205名受访者中进行了在线调查。符合条件的组织的年收入至少为5亿美元，并要求主要在银行和金融服务、政府、保险、医疗机构和零售业中运维。受访者必须在其组织的IT职能部门工作，其职称低于C-suite级别，并且与组织中的最高主管相差两层或更多。受访者的角色必须主要集中在应用开发、基础设施和运维，或商业智能和信息管理。在这些重点领域，他们还被要求执行相关的角色/活动。这项研究是由关注数字商业趋势的Gartner分析师和Gartner的研究数据和分析团队合作开发的。&lt;/p>
+&lt;p>这项研究的结果并不代表全球调查结果或整个市场，而是反映受访者和受访公司的情绪。&lt;/p>
+&lt;p>在过去的12个月里，AIOps构成了Gartner客户关于IT性能分析的所有咨询中的40%的谈话内容。这些咨询的主题包括。&lt;/p>
+&lt;ul>
+&lt;li>技术和市场意识&lt;/li>
+&lt;li>平台选择&lt;/li>
+&lt;li>构建与购买决策&lt;/li>
+&lt;li>现有AIOps部署的优化&lt;/li>
+&lt;li>新部署情况下的部署策略&lt;/li>
+&lt;li>在DevOps、I&amp;amp;O、安全和SRE团队之间共享一个共同平台的利与弊&lt;/li>
+&lt;li>IT内部和外部的多种AIOps使用案例，以帮助可视化、决策和诊断。&lt;/li>
+&lt;/ul>
+&lt;p>在大流行病中，大多数用例都与事件关联有关。&lt;/p>
+&lt;h2 id="注1-代表性供应商选择">注1: 代表性供应商选择
+&lt;/h2>&lt;ul>
+&lt;li>
+&lt;p>本研究中列出的供应商是根据具有以下一个或两个特征而挑选出来的样本。&lt;/p>
+&lt;ul>
+&lt;li>领域无关的解决方案，能够从多个来源摄取数据，包括历史和实时流。&lt;/li>
+&lt;li>以领域为中心的解决方案，能够从特定领域或特定框架或实践的数据中摄取数据（例如，网络、应用、IT基础设施、DevOps或ITSM领域）。&lt;/li>
+&lt;li>不同的产品，包括专有的、开源的、免费的和商业化的版本，包括跨越企业内部和基于SaaS的部署方案。&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h2 id="注2--aiops-平台的数据源">注2: AIOps 平台的数据源
+&lt;/h2>&lt;p>AIOps 的数据源包括:&lt;/p>
+&lt;ul>
+&lt;li>API&lt;/li>
+&lt;li>Application logs 应用日志&lt;/li>
+&lt;li>CRM 数据&lt;/li>
+&lt;li>客户数据&lt;/li>
+&lt;li>事件&lt;/li>
+&lt;li>图&lt;/li>
+&lt;li>ITSM&lt;/li>
+&lt;li>元数据&lt;/li>
+&lt;li>指标&lt;/li>
+&lt;li>社交媒体&lt;/li>
+&lt;li>追踪&lt;/li>
+&lt;li>布线&lt;/li>
+&lt;/ul>
+&lt;p>不幸的是，无论一个给定的数据集有多大，更新有多频繁，限制在一个单一的数据源往往会限制对系统行为的洞察力。现代IT系统&amp;ndash;具有模块化和动态性&amp;ndash;需要一个多视角的方法来理解它们在被观察时正在发生什么。&lt;/p>
+&lt;h2 id="注-3-领域无关和领域中心的aiops">注 3: 领域无关和领域中心的AIOps
+&lt;/h2>&lt;p>**领域无关的AIOps -**供应商以通用的AIOps平台进入市场。这些产品往往主要依靠监控工具来执行数据采集，并迎合最广泛的使用情况。&lt;/p>
+&lt;p>**领域中心的AIOps -**供应商拥有核心组件，但是一组有限的使用场景。以他们基本上做着与以前相同的事情，但现在他们用数学（算法）代替了规则、启发式方法和指纹。这些供应商专注于一个领域（例如，网络、端点系统或APM）。然而，以领域为中心的解决方案供应商已经做出了一些努力，将这些类别混合起来，发展到从他们自己的埋点工具以外的来源摄取数据，并将这些数据纳入他们的分析。&lt;/p>
+&lt;h2 id="注4-基于规范性建议的自动化行动所面临的挑战">注4: 基于规范性建议的自动化行动所面临的挑战
+&lt;/h2>&lt;p>自动化执行行动分为多个类别。&lt;/p>
+&lt;ul>
+&lt;li>可以提前计划的预定性质的任务（例如，补丁管理或新构建的部署）。&lt;/li>
+&lt;li>不能提前计划好的任务，但有已知的触发器，可能会或不可能经常出现。在这种情况下，程序是有据可查的（例如，虚拟化环境中的工作负载优化）。&lt;/li>
+&lt;li>具有不可预测的触发器的任务，其行动是众所周知的，但没有很好的文件记录（例如，已知的异常情况）。&lt;/li>
+&lt;/ul>
+&lt;p>I&amp;amp;O领导通常不希望将行动完全交给机器，并要求在触发自动化之前至少有一个验证步骤。这种缺乏信任是阻碍自动化行动普遍使用的主要障碍之一。&lt;/p>
+&lt;p>在这三种自动化行动中，我们看到对第三类行动的兴趣最大；然而，处理这类行动的技术困难是具有挑战性的，因此，到目前为止，它的采用是最小的。&lt;/p>
+&lt;h2 id="注5-aiops-作为-it-监控策略的一部分">注5: AIOps 作为 IT 监控策略的一部分
+&lt;/h2>&lt;p>Figure 5: AIOps as Part of an IT Monitoring Strategy&lt;img src="https://martinliu.cn/img/cos/2021-04-28-Figure_5_AIOps_as_Part_of_an_IT_Monitoring_Strategy.png"
+loading="lazy"
+alt="Where AIOps Contributes to a Sample IT Monitoring Strategy"
+>&lt;/p>
+&lt;h2 id="注-6-可移植性">注 6: 可移植性
+&lt;/h2>&lt;p>随着企业采用AIOps的功能模型和质量成果的成熟，供应商转换变得困难。切换到不同的供应商来复制现有的高质量仪表盘将需要时间，这就消除了通过直接成本节约获得的任何价值。Gartner观察到，在部署比较成熟的企业中，正是因为这个原因，才不愿意在续约时更换供应商。&lt;/p>
+&lt;p>需要可行的选择来挑战现有的供应商，这就产生了关于跨供应商的算法的可移植性问题。这种需求来自于一些成熟的企业，在这些企业中，AIOps的采用已经很成熟。市场仍处于高速增长阶段，我们至少要在几年后才能看到企业对可移植性的压力增加，以及供应商作为差异化的回应。&lt;/p>
+&lt;p>一些供应商正在提出转移学习，这仍然处于初级阶段。在其较简单的形式中，终端用户可以选择通过使用历史数据训练一个选定的模型。该算法的结果与实时结果进行比较。一旦结果显示出相当的准确性和可接受的误差范围，终端用户就可以使用相同的算法来分析实时数据。这种能力在生产前和生产环境之间或在边缘和数据中心环境之间效果最好。更复杂的用例的演变将需要供应商和最终用户方面的成熟和高级技能。&lt;/p></description></item><item><title> DevOps 的未来：2021 年的 15 个趋势</title><link>https://martinliu.cn/blog/future-devops-15-trends-2021/</link><pubDate>Sun, 21 Mar 2021 00:05:58 +0800</pubDate><guid>https://martinliu.cn/blog/future-devops-15-trends-2021/</guid><description>&lt;img src="https://martinliu.cn/img/2021/03/The-Future-Is-Bright.jpg" alt="Featured image of post DevOps 的未来：2021 年的 15 个趋势" />&lt;p>本文的原文地址：[https://thechief.io/c/editorial/future-DevOps -15-trends-2021/](&lt;a class="link" href="https://thechief.io/c/editorial/future-DevOps" target="_blank" rel="noopener"
+>https://thechief.io/c/editorial/future-DevOps&lt;/a> -15-trends-2021/ ) 本文是一篇译文，旨在学习，并分享给社区。&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/img/cos/2021-03-20-Screen%20Shot%202021-03-21%20at%201.26.38%20AM.jpg"
+loading="lazy"
+>&lt;/p>
+&lt;p>DevOps 和整个IT运维是一个不断发展的领域，本文的趋势就是证明。总是需要跟上趋势并利用其优势。&lt;/p>
+&lt;p>DevOps 正在与机器学习和人工智能等各种技术创新不断发展和融合，这些创新将在2021年占据更多的领域。&lt;/p>
+&lt;p>学习这些趋势，并在你的 DevOps 实践中实施它们，将使你在这个革命性的领域中保持活力。&lt;/p>
+&lt;p>在过去十年的引入中，DevOps 已经成长为许多IT公司不可或缺的一部分。&lt;/p>
+&lt;p>专家预测，到2025年，DevOps 市场规模将达到128.5亿美元。在软件工程中实施 DevOps 所带来的效率和众多优势，是其被大量采用的关键驱动力。&lt;/p>
+&lt;p>年复一年，软件开发领域总有一些新的实践出现，有些则被抛弃。&lt;/p>
+&lt;p>在本文中，我们将探讨 DevOps 的上升趋势和实践，以及对2021年该行业的期望。&lt;/p>
+&lt;h1 id="1-devsecops-将成为新的-devops">1-DevSecOps 将成为新的 DevOps
+&lt;/h1>&lt;p>随着企业拥抱无服务器、Docker、Kubernetes和其他现代云技术，安全将一如既往地成为高度优先级，成为 DevOps 的默认部分。&lt;/p>
+&lt;p>与 DevOps &amp;ndash;开发团队和IT团队的融合类似，DevSecOps 将是将安全融入开发和IT运维团队。&lt;/p>
+&lt;p>技术研究公司国际数据公司(IDC)预测，到2024年，DevSecOps 将推动亚太地区至少50%的新应用，这让 DevSecOps 从2021年开始有了成长的乐土。&lt;/p>
+&lt;h1 id="2-aiops-的实施率将上升">2-AIOps 的实施率将上升
+&lt;/h1>&lt;p>自2017年以来，采用人工智能和机器学习来增强、自动化和管理IT运维，是 DevOps 过程中的革命性改变。&lt;/p>
+&lt;p>Gartner 的研究指出，到2023年，40%的DevOps 团队将利用人工智能进行IT运维（AIOps）来增强应用和基础设施监控工具。&lt;/p>
+&lt;p>随着超过30%的IT组织已经利用机器学习和人工智能，越来越多的组织将采用 AIOps 来提高关键 DevOps 任务的效率和自动化程度，为IT操作人员腾出时间用于更有价值的业务活动。&lt;/p>
+&lt;h1 id="3-基础架构自动化ia将更占主导地位">3-基础架构自动化（IA）将更占主导地位
+&lt;/h1>&lt;p>基础设施管理工具将帮助 DevOps 团队将自动化引入交付、配置和IT基础设施管理。&lt;/p>
+&lt;p>IA 应用可以无缝地自动化IT基础设施的交付、配置和管理，帮助 IT 团队提高工作效率和可靠性。&lt;/p>
+&lt;p>2021年，企业将开始用企业级的 IA 工具取代自定义设置，实现部署和配置的自动化。&lt;/p>
+&lt;h1 id="4-混沌工程将成为常规的测试技术">4-混沌工程将成为常规的测试技术
+&lt;/h1>&lt;p>混沌工程&amp;ndash;在生产中对软件进行实验，以建立对系统抵御突发事故能力的信心的学科，在 DevOps 中会变得更加重要。&lt;/p>
+&lt;p>软件被要求具有高效和冗余性，混沌工程提供了这方面的测试以及更多。&lt;/p>
+&lt;p>Gartner 提出，到2023年，40%的组织将实施混沌工程作为 DevOps 的一部分，这将减少高达 20% 的意外停机时间。&lt;/p>
+&lt;h1 id="5-在-devops-流程中实现更多自动化">5-在 DevOps 流程中实现更多自动化
+&lt;/h1>&lt;p>实际上，每个IT组织都在以某种方式使用自动化。Business wire 的一份报告显示，美国61%的组织广泛使用自动化。&lt;/p>
+&lt;p>企业正在意识到自动化的力量和好处，并将其引入到 DevOps 的每一个层面，从开发，到部署和管理阶段。&lt;/p>
+&lt;p>在2021年，DevOps 将获得并使用更多先进的自动化工具来评估容易出错的人工执行任务，并更好地在 DevOps 发展中加速开发和部署。&lt;/p>
+&lt;p>事实的更广泛的大流行，很多公司正在并将继续进行大量的自动化工作，这是前所未有的。&lt;/p>
+&lt;h1 id="6-从设计到部署公司将采用混合云">6-从设计到部署，公司将采用混合云
+&lt;/h1>&lt;p>随着2020年整个行业经历的转变，远程工作成为新的常态，企业将全面拥抱混合运维。随着企业对其技术堆栈进行的现代化改造，从而利用云的优势，混合云将成为部署的新常态，以及一般的业务。&lt;/p>
+&lt;p>企业将开始同时使用内部私有云部署和公有云来进行IT运维。&lt;/p>
+&lt;h1 id="7-利用-agileops-实现更敏捷的软件交付">7-利用 AgileOps 实现更敏捷的软件交付
+&lt;/h1>&lt;p>AgileOps 结合了成熟的敏捷和 DevOps 技术，为I&amp;amp;O团队提高敏捷性、管理软件开发和快速响应需求。&lt;/p>
+&lt;p>快速实时响应用户需求的需求不断增加，将推动 AgileOps 在IT运维中的进一步发展。&lt;/p>
+&lt;h1 id="8-基础设施即代码iac将蓬勃发展">8-基础设施即代码（IaC）将蓬勃发展
+&lt;/h1>&lt;p>IaC 提供了一种通过配置文件来管理IT基础设施的手段，包括服务器、网络、存储设备（内部和云端）。&lt;/p>
+&lt;p>通过 IaC，软件工程师可以通过运行一个脚本，来构建一套完整的基础设施，提供部署相同配置的一致性、可靠性，并提高软件开发环境的效率。&lt;/p>
+&lt;p>基础设施即代码(IaC)的快速恢复、减少停机时间等优势，将推动更多公司在运维中采用它。&lt;/p>
+&lt;h1 id="9-dataops的趋势是真实的并将更加成熟">9-DataOps的趋势是真实的，并将更加成熟
+&lt;/h1>&lt;p>DataOps 将通过使用机器学习模型来预测事故或中断，从而彻底改变 DevOps。DataOps 使用预测分析，拥有彻底改变 DevOps 的潜力。&lt;/p>
+&lt;p>Itamar Ben Hemo 是 Rivery 的CEO和联合创始人，他写道。&lt;/p>
+&lt;blockquote>
+&lt;p>就像DevOps将软件开发系统化了一样，DataOps旨在加速数据的收集、处理和分析。正如CIO所指出的，&amp;ldquo;IDC在&amp;rsquo;数据到见解&amp;rsquo;的管道中定义了四个核心阶段。识别数据、收集数据、转换数据和分析数据。这些阶段也共同构成了这门新兴学科 DataOps 的核心要素。&amp;rdquo;&lt;/p>&lt;/blockquote>
+&lt;p>根据Nexla进行的一项调查，73%的公司计划投资DataOps来管理数据团队，关于他们如何使用数据，他们的团队结构和数据挑战发现，73%的公司正在投资DataOps。&lt;/p>
+&lt;h1 id="10-无服务器架构将被广泛采用">10-无服务器架构将被广泛采用
+&lt;/h1>&lt;p>无服务器(Serverless)计算为应用和软件部署提供了可扩展性，而无需物理硬件成本。&lt;/p>
+&lt;p>由于企业正在寻求减少和最大限度地利用开支，以缓解新冠疫情的影响，更多的公司将迁移到无服务器架构，消除管理基础设施的责任，允许他们 &amp;ldquo;为你使用的东西付费&amp;rdquo;。&lt;/p>
+&lt;p>将会有一个强有力无服务器的诉求，即我们将把代码推送到云端，其余的操作将由云提供商完成。&lt;/p>
+&lt;h1 id="11-devops-将更深的实施-kubernetes">11-DevOps 将更深的实施 Kubernetes
+&lt;/h1>&lt;p>越来越多的公司将开始看到Kubernetes提供的灵活性、可扩展性、自动化、高可用性和可移植性等优势，将带来直接的经济和运维效益，从而开始更深入的应用它。&lt;/p>
+&lt;h1 id="12-边缘计算将被重视">12-边缘计算将被重视
+&lt;/h1>&lt;p>组织正在需要处理收集数据的地方依靠边缘计算，以获得更好的延迟、成本优化和分析。&lt;/p>
+&lt;p>随着IT操作人员进一步研究过滤监控数据，边缘计算将为DevOps提供这方面的优势，从而在2021年得到更多的应用。&lt;/p>
+&lt;h1 id="13-迁移到微服务变得很重要">13-迁移到微服务变得很重要
+&lt;/h1>&lt;p>通过实施微服务，企业将能够控制应用程序并自动管理软件版本，而且风险更低。&lt;/p>
+&lt;p>商业企业在2021年及以后继续加速向云计算转移。他们越来越多地以灵活性为代价，尝试微服务带来的新技术栈。&lt;/p>
+&lt;h1 id="14-noops将来到运维场景再次">14-NoOps将来到运维场景（再次）
+&lt;/h1>&lt;p>NoOps 的思想是去除DevOps中所有的平台管理部分，减少开发者和基础设施之间的摩擦。&lt;/p>
+&lt;p>随着 DevOps 中各种自动化和 AI 的兴起，NoOps 将在2021年登场，之后开始经历颠覆性的增长。&lt;/p>
+&lt;h1 id="15-gitops将研究院">15-GitOps将研究院
+&lt;/h1>&lt;p>GitOps 是一种集部署、监控、管理于一体的构建云应用的运维模式。GitOps 允许 DevOps 使用开发者工具来驱动运维，在DevOps中建立了一个 &amp;ldquo;你构建，你负责&amp;rdquo; 的流程。&lt;/p>
+&lt;p>如果你想了解更多关于 GitOps的信息，请查看我们的播客集&lt;a class="link" href="https://anchor.fm/thedevopsfauncast/episodes/GitOps-This-is-What-You-Need-to-Know-12-epga8p?ref=thechiefio?ref=thechiefio" target="_blank" rel="noopener"
+>GitOps: This is What You Need to Know.&lt;/a>&lt;/p></description></item></channel></rss>

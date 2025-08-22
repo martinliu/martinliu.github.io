@@ -1,0 +1,429 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Homelab on Martin Liu's Blog</title><link>https://martinliu.cn/tags/homelab/</link><description>Recent content in Homelab on Martin Liu's Blog</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><lastBuildDate>Sun, 02 Feb 2025 22:04:03 +0800</lastBuildDate><atom:link href="https://martinliu.cn/tags/homelab/index.xml" rel="self" type="application/rss+xml"/><item><title>用 Mac Mini M4 重构 HomeLab 结构</title><link>https://martinliu.cn/blog/macmini-m4-homelab-redesign/</link><pubDate>Fri, 31 Jan 2025 10:03:16 +0800</pubDate><guid>https://martinliu.cn/blog/macmini-m4-homelab-redesign/</guid><description>&lt;img src="https://martinliu.cn/blog/macmini-m4-homelab-redesign/mac-mini-with-ext-nvme-drive.jpg" alt="Featured image of post 用 Mac Mini M4 重构 HomeLab 结构" />&lt;h2 id="背景">背景
+&lt;/h2>&lt;p>自 MacMini M4 上市来，其丐版在京东上一直很抢手，定时抢了几次，未果。然除夕大清早，见有货，遂下单，初二终于到货。所谓丐版 Mac Mini M4 有 10 核 10 线程，16GB 内存，256GB SSD，订单价格 3581.21 元，国补 + 京东 Plus 会员优惠后的价格，性价比颇高。我将抛弃之前的 HomeLab 设备，用 Mac Mini M4 来重构 HomeLab 的结构。&lt;/p>
+&lt;h2 id="运行-deepseek-r1-大模型7b14b">运行 Deepseek-r1 大模型（7b&amp;amp;14b）
+&lt;/h2>&lt;p>被 Deepseek 新闻轰炸了数日，必将其在 Mac Mini M4 上测一下。首先需要下载并安装 ollama 应用，然后下载并运行该模型，并于命令行问一个问题 “macmini m4 适合使用什么参数规模的 Deepseek 模型?”。&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">martinliu@Mac-mini ~ % ollama pull deepseek-r1:7b
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">pulling manifest
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">pulling 96c415656d37... 100% ▕███████████████████████████████████████████████████████████████████▏ 4.7 GB
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">pulling 369ca498f347... 100% ▕███████████████████████████████████████████████████████████████████▏ &lt;span class="m">387&lt;/span> B
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">pulling 6e4c38e1172f... 100% ▕███████████████████████████████████████████████████████████████████▏ 1.1 KB
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">pulling f4d24e9138dd... 100% ▕███████████████████████████████████████████████████████████████████▏ &lt;span class="m">148&lt;/span> B
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">pulling 40fb844194b2... 100% ▕███████████████████████████████████████████████████████████████████▏ &lt;span class="m">487&lt;/span> B
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">verifying sha256 digest
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">writing manifest
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">success
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">martinliu@Mac-mini ~ % ollama run deepseek-r1:7b
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&amp;gt;&amp;gt;&amp;gt; macmini m4 适合使用什么参数规模的 Deepseek 模型?
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>ollama 下载和运行任何模型都很简单，用下面两条命令即可：&lt;/p>
+&lt;ul>
+&lt;li>&lt;code>ollama pull deepseek-r1:7b&lt;/code>：下载 Deepseek-r1 7b 模型。&lt;/li>
+&lt;li>&lt;code>ollama run deepseek-r1:7b&lt;/code>：运行 Deepseek-r1 7b 模型。&lt;/li>
+&lt;/ul>
+&lt;p>我的第一个问题，并未说 Mac Mini 是何配置，而且问的比较模糊，&lt;a class="link" href="q1.txt" >点这里查看答案全文&lt;/a>。&lt;/p>
+&lt;blockquote>
+&lt;p>答案的结论：Mac mini M4 在适合运行 DeepSeek 的 7B 和 13B 参数规模的模型上表现良好。虽然没有独立显卡，但其强大的计算能力和 macOS 系统的支持使其能够处理这些较大的模型。然而，需考虑系统的资源和应用兼容性，并根据个人需求评估是否值得投资。&lt;/p>&lt;/blockquote>
+&lt;p>测试失败，居然这个模型不知道：自己有 7b ，但没有 13b 这个规格的模型。此回复过程在 10 秒钟左右，并不慢。&lt;/p>
+&lt;p>顺便推荐一个命令行性能监控工具 “btop” （在 macos 上安装命令 ‘brew install btop’），可以实时监控 CPU 和内存的使用情况，貌似在这 10 多秒的过程中，CPU 使用率没有丝毫的波动，内存使用率在 70%左右。&lt;/p>
+&lt;p>因首个问答即失败，所以下载 14b 的模型，希望能有足够回答问题的能力。为了在 7b 和 14b 之间做对比，所以在下载 14b 模型前，先对 7b 提出这个相同的问题 “SRE 和 DevOps 的区别和相同之处是什么?一个企业应该先做哪个?”。&lt;/p>
+&lt;ul>
+&lt;li>&lt;a class="link" href="q2.txt" >7b 模型的答案点这里&lt;/a>。很遗憾，7b 模型一开口就把 SRE 名词解释错误了“SRE（Service-Providing Software Engineering）”&lt;/li>
+&lt;li>&lt;a class="link" href="q3.txt" >14b 模型的答案点这里&lt;/a>，不得不说 14b 模型的答案令我满意了。&lt;/li>
+&lt;/ul>
+&lt;h2 id="为家庭局域网提供大模型服务">为家庭局域网提供大模型服务
+&lt;/h2>&lt;p>Open WebUI 是个不错的选项。在 Mac Mini M4 上安装 Open WebUI 也很简单，只需运行下面的命令即可：&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">docker run -d -p 9005:8080 -e &lt;span class="nv">WEBUI_AUTH&lt;/span>&lt;span class="o">=&lt;/span>False --add-host&lt;span class="o">=&lt;/span>host.docker.internal:host-gateway -v ./open-webui-data:/app/backend/data --name open-webui --restart always ghcr.io/open-webui/open-webui:main
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>参数解释：&lt;/p>
+&lt;ul>
+&lt;li>&lt;code>-d&lt;/code>：后台运行。&lt;/li>
+&lt;li>&lt;code>-p 9005:8080&lt;/code>：将容器的 8080 端口映射到主机的 9005 端口。&lt;/li>
+&lt;li>&lt;code>-e WEBUI_AUTH=False&lt;/code>：关闭 WebUI 的认证。&lt;/li>
+&lt;li>&lt;code>--add-host=host.docker.internal:host-gateway&lt;/code>：解决容器内无法访问主机的问题。&lt;/li>
+&lt;li>&lt;code>-v ./open-webui-data:/app/backend/data&lt;/code>：将容器内的数据目录映射到主机的 &lt;code>./open-webui-data&lt;/code> 目录。&lt;/li>
+&lt;li>&lt;code>--name open-webui&lt;/code>：指定容器的名称为 &lt;code>open-webui&lt;/code>。&lt;/li>
+&lt;li>&lt;code>--restart always&lt;/code>：容器退出时自动重启。&lt;/li>
+&lt;li>&lt;code>ghcr.io/open-webui/open-webui:main&lt;/code>：指定容器的镜像。&lt;/li>
+&lt;/ul>
+&lt;p>然后就可以在浏览器中访问 &lt;code>http://192.168.31.6:9005&lt;/code> 来使用 Open WebUI 了。&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/blog/macmini-m4-homelab-redesign/open-webui.png"
+width="1251"
+height="498"
+srcset="https://martinliu.cn/blog/macmini-m4-homelab-redesign/open-webui_hu_bfa478e53752adac.png 480w, https://martinliu.cn/blog/macmini-m4-homelab-redesign/open-webui_hu_a96e88d7e8f21674.png 1024w"
+loading="lazy"
+alt="Open WebUI"
+class="gallery-image"
+data-flex-grow="251"
+data-flex-basis="602px"
+>&lt;/p>
+&lt;p>Open WebUI 可以识别出我在后台容器中运行的 Deepseek-r1 14b 模型，它提供了基于网页的问答互动界面，而且对具有政治倾向的问题，回答的不置可否，体现出非常谨慎的态度。&lt;/p>
+&lt;p>下面是在手机端问的另外一个问题，回答是令我满意的。&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/blog/macmini-m4-homelab-redesign/iphone-webUI.png"
+width="573"
+height="1241"
+srcset="https://martinliu.cn/blog/macmini-m4-homelab-redesign/iphone-webUI_hu_77061135dc1e41d4.png 480w, https://martinliu.cn/blog/macmini-m4-homelab-redesign/iphone-webUI_hu_bbd7e3c03f0ebd9f.png 1024w"
+loading="lazy"
+alt="Open WebUI Mobile"
+class="gallery-image"
+data-flex-grow="46"
+data-flex-basis="110px"
+>&lt;/p>
+&lt;p>也就是说：局域网中的任何移动设备和电脑，都可以通过浏览器访问 Open WebUI，来使用 Deepseek-r1 14b 模型。&lt;/p>
+&lt;h2 id="用-orbstack-运行容器服务">用 OrbStack 运行容器服务
+&lt;/h2>&lt;p>OrbStack 在我的 MacBook Pro 上已经使用了一段时间了，已经平替了 Docker Desktop。而且和一众其它的 K8s 管理工具，包括 MiniKube、Kind 等。个人的一些使用经验总结：&lt;/p>
+&lt;ul>
+&lt;li>OrbStack 项目的编程语言有： Go Swift C Rust，它本身启动速度快，轻量。是苹果原生应用。比 Docker Desktop 占用的资源少非常多。&lt;/li>
+&lt;li>创建虚拟机的创建速度飞快，通过预下载的虚拟机镜像文件，结合 cloud-init.yaml 文件，可以在几秒钟内创建一个任意配置的新的虚拟机。&lt;/li>
+&lt;li>虚拟机和容器里的文件系统，都可以通过 Finder 直接访问，非常方便。而且在虚拟机内的 /mnt/ 目录下也能访问到主机的文件系统。&lt;/li>
+&lt;li>可以用 SSH 直接无密码登录虚拟机。&lt;/li>
+&lt;li>容器和虚拟机都无缝衔接 Host 上的网络，并共享科学上网的功能。在也不会下载不到容器镜像了。&lt;/li>
+&lt;li>自动识别 Docker 和 K8s 中的服务定义，并提供本机可信的 HTTPS 证书，实现 HTTPS 访问。可以很方便的进行开发和测试。&lt;/li>
+&lt;/ul>
+&lt;p>基于此，我决定在 Mac Mini M4 上安装 OrbStack，用它来管理所有需要长运行的服务。不过我做了一些定制化的配置：&lt;/p>
+&lt;ul>
+&lt;li>如果用它运行各种 HomeLab 的网络服务，那么存储空间是需要扩展的。我在 Mac Mini M4 上用雷电4 接口连了普通的硬盘盒，内置 2TB 的 NVME 硬盘，实践表明性价比足够用了。&lt;/li>
+&lt;li>将 OrbStack 的默认存储空间设置为外置硬盘，这样可以避免内置硬盘的频繁读写，延长其寿命。而且外置硬盘的容量更大，可以存储更多的数据。&lt;/li>
+&lt;li>在 K8s 和 Docker 之间，我做了一个选择，决定在 Mac Mini M4 上只运行 Docker 容器，而不运行 K8s 集群。因为我觉得 Docker 容器更加轻量，更加简单，后续软件的升级和数据迁移也都更加方便。用 Docker Compose 的方式运行服务，尽量将持久化数据和配置文件放在外置硬盘上，这样即使机器挂了，数据也不会丢失，而且更方便做升级和迁移。&lt;/li>
+&lt;/ul>
+&lt;h2 id="娱乐功能">娱乐功能
+&lt;/h2>&lt;p>首先，我将使用率较低的两只立体声音箱，通过 Mac Mini M4 的耳机接口，用音频线链接起来了。这样它就变成了一个 AirPlay 推流的目标。在 MacBook Pro 或者 iPhone 上，我可以通过 AirPlay 将音乐推送到 Mac Mini M4 上，然后通过音箱播放出来。这样，房间里就可以很方便的播放各种背景音乐了。音量可音箱上，在 MacBook 上，或者在 iPhone 上都可以调节。&lt;/p>
+&lt;blockquote>
+&lt;p>从 Macbook 上推流音乐的方式是：打开苹果自家的 Music 软件，导入喜欢听的音乐文件，然后在播放界面，点击右上角的 AirPlay 图标，选择 Mac Mini M4，然后就可以听到音乐了。&lt;/p>&lt;/blockquote>
+&lt;p>&lt;img src="https://martinliu.cn/blog/macmini-m4-homelab-redesign/mac-music.png"
+width="1476"
+height="692"
+srcset="https://martinliu.cn/blog/macmini-m4-homelab-redesign/mac-music_hu_7a2d1c5cdbad0e44.png 480w, https://martinliu.cn/blog/macmini-m4-homelab-redesign/mac-music_hu_658c70d08924fc5f.png 1024w"
+loading="lazy"
+alt="Mac Music AirPlay"
+class="gallery-image"
+data-flex-grow="213"
+data-flex-basis="511px"
+>&lt;/p>
+&lt;blockquote>
+&lt;p>从 iPhone 上可以通过屏幕镜像的功能，将任何视频或者音频 App 的声音推送到 Mac Mini M4 上。这样就可以在 Mac Mini M4 上播放 iPhone 上的任何音乐或者视频的声音了。&lt;/p>&lt;/blockquote>
+&lt;h2 id="总结">总结
+&lt;/h2>&lt;p>Mac Mini M4 作为 HomeLab 的核心设备，性价比很高。在增加了外置磁盘空间后，它的性能和容量都可以作为长期运行的低功耗服务器使用。另外，我从即将淘汰的服务器中，拼装了一台开放机箱的 PVE 服务器，它有一颗 12 core 的 Xeon E5 CPU ，有 128GB 内存，有 1 块 520GB 的 NVME 硬盘，还有 4 块总容量为 3TB 的 SSD 硬盘。这台 PVE 上的所有虚拟机和 LXC 都可以访问到 Mac Mini M4 上的所有服务，这样就可以实现资源的共享和互通。PVE 服务器在需要使用的时候，可以开机，不需要的时候，可以关机。未来，我可能只会保留 Mac Mini M4 和这台 PVE 服务器，其它的设备都会被淘汰到海鲜市场。&lt;/p></description></item><item><title>亲手为自己打造一个完美的机架</title><link>https://martinliu.cn/blog/build-your-best-rack/</link><pubDate>Mon, 10 Oct 2022 00:00:39 +0800</pubDate><guid>https://martinliu.cn/blog/build-your-best-rack/</guid><description>&lt;img src="https://martinliu.cn/blog/build-your-best-rack/R-C.jpg" alt="Featured image of post 亲手为自己打造一个完美的机架" />&lt;p>下面是标准的 IDC 机架结构示意图，结构比较复杂，发挥其所有功能还需要依赖于专业机房所提供的风火水电环境的各种配套支持。&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/blog/build-your-best-rack/HTB1GD4ePFXXXXXCXVXXq6xXFXXXr.jpg"
+width="1000"
+height="772"
+srcset="https://martinliu.cn/blog/build-your-best-rack/HTB1GD4ePFXXXXXCXVXXq6xXFXXXr_hu_790d39a9cd804637.jpg 480w, https://martinliu.cn/blog/build-your-best-rack/HTB1GD4ePFXXXXXCXVXXq6xXFXXXr_hu_e9de1fd0d94a3cbf.jpg 1024w"
+loading="lazy"
+alt="标准服务器网络机架机构图"
+class="gallery-image"
+data-flex-grow="129"
+data-flex-basis="310px"
+>&lt;/p>
+&lt;p>下面这个标准规格【42u x 19 英寸】机架架结构图，这是最常见的服务器机柜，在普通的办公室里，或者公司专门的 server room 服务器机房中很常见。高低、深浅、能否墙挂都可以选择。&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/blog/build-your-best-rack/R-C.png"
+width="862"
+height="768"
+srcset="https://martinliu.cn/blog/build-your-best-rack/R-C_hu_78036adad687070d.png 480w, https://martinliu.cn/blog/build-your-best-rack/R-C_hu_18f477c479d24bbf.png 1024w"
+loading="lazy"
+alt="机架结构简图"
+class="gallery-image"
+data-flex-grow="112"
+data-flex-basis="269px"
+>&lt;/p>
+&lt;p>对我来说，显然以上两种的功能过于复杂，并不适合我在家庭使用；我个人比较偏爱 StarTech 公司的开放式机架。&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/blog/build-your-best-rack/1013689771.jpg"
+width="1500"
+height="1500"
+srcset="https://martinliu.cn/blog/build-your-best-rack/1013689771_hu_72b7b96e5bd0b401.jpg 480w, https://martinliu.cn/blog/build-your-best-rack/1013689771_hu_eff4012c11df276c.jpg 1024w"
+loading="lazy"
+alt="12U 前后深度可调开放式"
+class="gallery-image"
+data-flex-grow="100"
+data-flex-basis="240px"
+>&lt;/p>
+&lt;p>但是，我发现 StarTech 公司的机架产品在国内没有代理商，在淘宝里也没有卖家。就算是有，价格也比较贵。不过它确实是国外 HomeLab 玩家评测的最多的。&lt;/p>
+&lt;p>总结一下我们置办家庭机架的几个所谓合理的动机：&lt;/p>
+&lt;ul>
+&lt;li>整理收纳一定数量的电脑和网络产品，包括家用 NAS，wifi 和其他可能存在的新旧电脑（包括家用 PC、笔记本、服务器、网络设备等）。&lt;/li>
+&lt;li>给这些电子产品更好的运行环境，确保供电、散热、网络连接和安全性等需求。&lt;/li>
+&lt;li>让使用更加方便，需要开机的开机，用不到的关机省电。&lt;/li>
+&lt;li>目前真在，或者已经走向 HomeLab 的人，请自觉跳这个坑。&lt;/li>
+&lt;li>希望在本地组网，并自给自足一定数量本地虚拟机的需求，同时降低或者避免使用云主机的成本。&lt;/li>
+&lt;li>其他特殊需求：一个炫酷的机架也是不错的网络软件演示环境和直播的装饰背景。&lt;/li>
+&lt;/ul>
+&lt;p>下图是我的 HomeLab 机架的第一个版本。&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/blog/build-your-best-rack/bamboo-rack.jpg"
+width="896"
+height="1626"
+srcset="https://martinliu.cn/blog/build-your-best-rack/bamboo-rack_hu_780722ddc2dbf9ff.jpg 480w, https://martinliu.cn/blog/build-your-best-rack/bamboo-rack_hu_14741c6a974056fb.jpg 1024w"
+loading="lazy"
+alt="竹木置物架"
+class="gallery-image"
+data-flex-grow="55"
+data-flex-basis="132px"
+>&lt;/p>
+&lt;p>设备包括：&lt;/p>
+&lt;ul>
+&lt;li>CCNA lab 测试设备一套。&lt;/li>
+&lt;li>TrueNAS 服务器一台&lt;/li>
+&lt;li>四个旧树莓派&lt;/li>
+&lt;li>几个旧 MacBook Pro 电脑&lt;/li>
+&lt;/ul>
+&lt;p>这些版本基本上能满足以上列举的所有需求，成本可以忽略。缺点就是：它的承重能力有限，无法在堆放更多设备。由于疫情的原因，我需要把放在公司的四台PC服务器拿回家，方便使用。&lt;/p>
+&lt;p>由于比较了很久国内的品牌服务器机柜，他们的规格很齐全，很多人也都是买的这些成品机柜，到货开箱就可以使用，很方便。但是，成品并没有 DIY 的乐趣可言，我真的是不喜欢有全封闭式机柜，不想虑散机柜内的散热&amp;amp;热制冷问题（以及次生噪音），而且不方便触达设备的各个侧面。&lt;/p>
+&lt;p>因此我只能求助与万能的淘宝，在研究了一段时间自行搭建开放式机柜产品的可能性之后，我出手了。&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/blog/build-your-best-rack/rack-parts.jpg"
+width="1146"
+height="1575"
+srcset="https://martinliu.cn/blog/build-your-best-rack/rack-parts_hu_df22a6e8e3831a3a.jpg 480w, https://martinliu.cn/blog/build-your-best-rack/rack-parts_hu_dfc362373dbea7c6.jpg 1024w"
+loading="lazy"
+alt="配件开箱后合影"
+class="gallery-image"
+data-flex-grow="72"
+data-flex-basis="174px"
+>&lt;/p>
+&lt;p>这是第一次下单的产品，包括：&lt;/p>
+&lt;ul>
+&lt;li>四根 32U 高的立柱：机架高度的选择是 DIY 搭建机架的最重要决策，考虑到一定的扩展性，应该至少规划 130% 的高度。 其次考虑深度，我铁定不想买全尺寸深度（600+mm）的设备，因此实际上就想搭建了一个：32U x 19 寸 x 19 寸的立方体，这就是成品机柜的瓤子，就是柜体里装的金属框架的部分。&lt;/li>
+&lt;li>四个服务器托盘 ：如果设备可以上下堆叠的话，其实也不用这么多，但是考虑到分层分区，设备取出和放入的方便性，需要计算好使用的个数。&lt;/li>
+&lt;li>四块盲板：是前后上下，将四根立柱连接起来的主要部件。&lt;/li>
+&lt;li>两幅服务器导轨：安装在了顶部和底部框架的侧面，将机架的前后链接起来，安装好这四根导轨，机架就可以站立起来了。居然前后左右都不怎么摇晃，整体框架还比较的支棱的 😄&lt;/li>
+&lt;li>一个理线架：其实不需要，由于你不可能有大量线需要整理，买多了。&lt;/li>
+&lt;/ul>
+&lt;p>销售以上产品的淘宝商家是：军臣机柜 1 店；前后从他们家下了两个单（320+38），第二个单补了四根导轨，起稳定机架，更优化的分层分区，更方便的叠放设备的作用，释放了两个托盘，托盘将主要用于在实现开放平层，起到设备物品的放置功能。安装起来后的效果如下。&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/blog/build-your-best-rack/rack-bate-version.jpg"
+width="953"
+height="1706"
+srcset="https://martinliu.cn/blog/build-your-best-rack/rack-bate-version_hu_494489b70fd31e2a.jpg 480w, https://martinliu.cn/blog/build-your-best-rack/rack-bate-version_hu_a283a8f93cdbac83.jpg 1024w"
+loading="lazy"
+alt="刚刚站起来的机架"
+class="gallery-image"
+data-flex-grow="55"
+data-flex-basis="134px"
+>&lt;/p>
+&lt;p>在将设备放进去的过程中，发现了几个问题：&lt;/p>
+&lt;ul>
+&lt;li>洗衣机用移动滑轨无法胜任如此重量机架前后左右的快速移动，而且只能前后移动；还需要一个更加稳定，且更方便四向移动的底座。&lt;/li>
+&lt;li>机柜还需封顶，只有封顶后，上面才能便于放置物品。&lt;/li>
+&lt;/ul>
+&lt;p>解决方法：&lt;/p>
+&lt;ol>
+&lt;li>在淘宝里买了一块底座板，规格 2cm 厚 x 53cm x 53cm 的压缩板，到货后发现：其实坚固程度不输于实木板。够用且耐用，全面黑漆，多种颜色可选。&lt;/li>
+&lt;li>淘宝店家送了我四个万向轮和更多的机架螺丝，轮子安装在了底座板的四个角上，底座比机架大了一圈，既不占地方，也实现了稳定承载机架的目的，还可以四个方向顺滑的移动，其实用不到带锁死功能的万向轮。&lt;/li>
+&lt;li>用一块大约19 寸 x 22 寸的房间隔音装修剩下的隔音板封顶，大小相当合适。用木螺丝和机架固定在了一起。&lt;/li>
+&lt;/ol>
+&lt;p>下面是将所有设备上架，网络连通后，晚上的效果。&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/blog/build-your-best-rack/rack-night-view.jpg"
+width="1113"
+height="1392"
+srcset="https://martinliu.cn/blog/build-your-best-rack/rack-night-view_hu_901daeb3042396ba.jpg 480w, https://martinliu.cn/blog/build-your-best-rack/rack-night-view_hu_824e148848bc3bc9.jpg 1024w"
+loading="lazy"
+alt="夜晚效果图"
+class="gallery-image"
+data-flex-grow="79"
+data-flex-basis="191px"
+>&lt;/p>
+&lt;p>这么多年来积累下来的所有 HumeLab 设备就都在这里了，堆叠在一起之后意识到，给自己挖的这个坑，是越挖越深了。&lt;/p>
+&lt;p>最后从几个方面讲讲当前这个阶段的经验总结。&lt;/p>
+&lt;p>&lt;strong>电源供给&lt;/strong>&lt;/p>
+&lt;ol>
+&lt;li>机架专用 PDU 的好处多多，能用尽量用。&lt;/li>
+&lt;li>前置 PDU A ：是一款 1U 高度，前面板 10 位独立开关，后身走电源线的，好处是省空间，后身走电源线更隐蔽、美观。但是需要重新买 10 根美标垂直三叉的电源线（5 根 1 米 + 5 根 1.5 米，这款 PDU 只能插这种电源线），目前还富裕了 2 到 3 根供电源线。&lt;/li>
+&lt;li>后置 PDU B ：是一款 2U 高度，8 位独立开关。目前有一个空位；电源插头供电位的需求远远比你想的多得多，除非设备不会在增加了，千万别想一个插排就搞定。&lt;/li>
+&lt;li>需要首选可以安装在机架上的 PDU 优于家用的插排。整合性极佳。&lt;/li>
+&lt;li>USB 供电，安装一个 10 位的 USB 插排，有了它给树莓派、风扇、灯光设备的供电就方便且统一了，一个电源插头位置就替代了 n 个 usb 变压器插头的需求。&lt;/li>
+&lt;/ol>
+&lt;p>&lt;strong>网络拓扑&lt;/strong>&lt;/p>
+&lt;ol>
+&lt;li>入户光纤+光猫+WiFi 给所有无线设备使用，暂时没有无线访问机架内设备的需求，有的话，会首选在 pfSense 上做 NAT 的方式接入，从而最小化 WiFi 部署数量。&lt;/li>
+&lt;li>通过房间内的走线管，从入户弱电箱的光猫上拉了一根网线到机架的房间，并且接到机架上。实现了机架的外网链接。在手里云主机资源充足的情况下，我完全忽略远程访问机架中设备的鸡肋需求。&lt;/li>
+&lt;li>核心以太网交换机：一台 Cisco 48 口千兆交换机，可划分 VLAN，属于 CCNA Lab 设备的一部分。&lt;/li>
+&lt;li>万兆存储网交换机：一台 MikroTik 8 口 SPF+ 交换机，功能很强大，学习曲线陡。用于 TrueNAS 存储服务，和 Nutanix 超融合集群的组网。&lt;/li>
+&lt;li>山泽 24 口配线架：用了以后才能理解配线架的底层逻辑，将所有设备都统一终结在同一级，然后就可以在机架前面，按标签快捷的给设备分配不同的网络。&lt;/li>
+&lt;li>买了一卷网线制作跳线：配合打线钳和测线器，一盒 50 个的水晶头，做完了一些跳线后，568B 线序就成了肌肉记忆了。推荐使用，虽然费事，但是可以让网线布线&amp;amp;走线更加简洁。&lt;/li>
+&lt;/ol>
+&lt;p>&lt;strong>风冷散热和用电方式&lt;/strong>&lt;/p>
+&lt;ol>
+&lt;li>我坚守不使用大功耗&amp;amp;全尺寸服务器设备的原则。感觉只有这样才能实现通过房间环境的自然散热，注意房间的正常通风即可。&lt;/li>
+&lt;li>给设备按需增加和升级必要的风冷风扇。&lt;/li>
+&lt;li>最耗电的是联想 P720 两路工作站，它是 Nutnaix 集群的一部分，升级了 CPU 的散热器，加装了机箱前置风扇，解决旧风扇导致的无法正常开机和运行中过热机器卡死的问题。&lt;/li>
+&lt;li>最牛的是给 8 口 pfSense 防火墙工控机扇热的 USB 桌面小风扇，它顺便还给树莓派集群风冷了；这是从家里小朋友哪里征用的。风量大，几乎静音，基本上能秒掉各种尺寸和价格的 DIY 机箱用风扇，已经买过几个了，它们的噪音大到不能忍。&lt;/li>
+&lt;li>常开的设备包括：TrueNAS 服务器和 48 口核心交换机和 MikroTik 万兆交换机。其他的设备按需开机，保持最小的功耗和发热量。&lt;/li>
+&lt;li>由于家庭 WiFi 和这个机架无关，因此在需要用的时候，或者人不在家的时候整个机架关机断电。&lt;/li>
+&lt;/ol>
+&lt;p>以上就是目前的经验总结分享，欢迎交流讨论。以后可能会以本文为大纲录制一期视频，在讲的细一些。&lt;/p></description></item><item><title>更新到 Jimmy Cai 的 Stack Hugo Theme</title><link>https://martinliu.cn/blog/change-to-jimmy-stack-theme/</link><pubDate>Sun, 09 Oct 2022 00:00:00 +0000</pubDate><guid>https://martinliu.cn/blog/change-to-jimmy-stack-theme/</guid><description>&lt;img src="https://martinliu.cn/blog/change-to-jimmy-stack-theme/2022-10-1-beijing-guomao.jpg" alt="Featured image of post 更新到 Jimmy Cai 的 Stack Hugo Theme" />&lt;p>趁着更新 Blog 皮肤的机会，也把我拖延很久的一些优化补一补。&lt;/p>
+&lt;p>最新版本的 Hugo 可以使用 Hugo modules 功能加载一个新的 Theme，我是第一次通过这种方式添加新皮肤，犯了几个错误：&lt;/p>
+&lt;ol>
+&lt;li>首先不应该用 &lt;code>git clone theme-url theme/&lt;/code> 或者其他手工下载的方式了，应该使用文档中说的 &lt;code>hugo mod get -u github.com/CaiJimmy/hugo-theme-stack/v3&lt;/code> 方法。&lt;/li>
+&lt;li>在本地测试的话，需要确保本地的 Hugo 安装的是 extended 的扩展版本，否则有些短代码用不了。用这条命令检查 &lt;code>hugo version&lt;/code> ，应该返回类似这样的信息：&lt;code>hugo v0.104.2+extended darwin/arm64 BuildDate=unknown&lt;/code>&lt;/li>
+&lt;/ol>
+&lt;p>更新了 GitHub Action 的工作流，实现了如下的想法：&lt;/p>
+&lt;ul>
+&lt;li>deploy-2-page.yml : 在所有分支的 push 操作上触发构建动作，并且把更新的网站内容发布到 GitHub Pages 的部署分支中，用这个方式实现线上的网站内容预览；当新的分支在本地预览正常后，就可以 push 到远程了，push 之后就可以先在 martinliu.github.io 的域名下实现分支合并前的线上预览，如果线上预览正常的话，在进行合并分支 pr 的操作；如果线上预览有问题，则继续在本地更新，直到线上预览正常之后在合并。&lt;/li>
+&lt;li>page-deploy.yml : 当 master 分支上收到 pr 时触发这个发布操作，我将 GitHub Pages 的免费空间当做了发布前的预览的空间；而网站的内容是通过 CloudFlare 的 Pages 功能 host 的。通过这种方式，将 GitHub 的所有功能和空间作为开发服务；而 CloudFlare 定位为 DNS 和静态内的生产环境。&lt;/li>
+&lt;/ul>
+&lt;p>目前我的 blog 的工作流程是这样的：&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;span class="lnt">14
+&lt;/span>&lt;span class="lnt">15
+&lt;/span>&lt;span class="lnt">16
+&lt;/span>&lt;span class="lnt">17
+&lt;/span>&lt;span class="lnt">18
+&lt;/span>&lt;span class="lnt">19
+&lt;/span>&lt;span class="lnt">20
+&lt;/span>&lt;span class="lnt">21
+&lt;/span>&lt;span class="lnt">22
+&lt;/span>&lt;span class="lnt">23
+&lt;/span>&lt;span class="lnt">24
+&lt;/span>&lt;span class="lnt">25
+&lt;/span>&lt;span class="lnt">26
+&lt;/span>&lt;span class="lnt">27
+&lt;/span>&lt;span class="lnt">28
+&lt;/span>&lt;span class="lnt">29
+&lt;/span>&lt;span class="lnt">30
+&lt;/span>&lt;span class="lnt">31
+&lt;/span>&lt;span class="lnt">32
+&lt;/span>&lt;span class="lnt">33
+&lt;/span>&lt;span class="lnt">34
+&lt;/span>&lt;span class="lnt">35
+&lt;/span>&lt;span class="lnt">36
+&lt;/span>&lt;span class="lnt">37
+&lt;/span>&lt;span class="lnt">38
+&lt;/span>&lt;span class="lnt">39
+&lt;/span>&lt;span class="lnt">40
+&lt;/span>&lt;span class="lnt">41
+&lt;/span>&lt;span class="lnt">42
+&lt;/span>&lt;span class="lnt">43
+&lt;/span>&lt;span class="lnt">44
+&lt;/span>&lt;span class="lnt">45
+&lt;/span>&lt;span class="lnt">46
+&lt;/span>&lt;span class="lnt">47
+&lt;/span>&lt;span class="lnt">48
+&lt;/span>&lt;span class="lnt">49
+&lt;/span>&lt;span class="lnt">50
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-sh" data-lang="sh">&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># 第一步：在本地创建新的分支，并 push 同步到远程&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">➜ martinliu.github.io git:&lt;span class="o">(&lt;/span>master&lt;span class="o">)&lt;/span> git branch build-your-best-rack
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">➜ martinliu.github.io git:&lt;span class="o">(&lt;/span>master&lt;span class="o">)&lt;/span> git checkout build-your-best-rack
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">M themes/hugo-theme-stack
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Switched to branch &lt;span class="s1">&amp;#39;build-your-best-rack&amp;#39;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">➜ martinliu.github.io git:&lt;span class="o">(&lt;/span>build-your-best-rack&lt;span class="o">)&lt;/span> git push origin build-your-best-rack
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Total &lt;span class="m">0&lt;/span> &lt;span class="o">(&lt;/span>delta 0&lt;span class="o">)&lt;/span>, reused &lt;span class="m">0&lt;/span> &lt;span class="o">(&lt;/span>delta 0&lt;span class="o">)&lt;/span>, pack-reused &lt;span class="m">0&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">remote:
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">remote: Create a pull request &lt;span class="k">for&lt;/span> &lt;span class="s1">&amp;#39;build-your-best-rack&amp;#39;&lt;/span> on GitHub by visiting:
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">remote: https://github.com/martinliu/martinliu.github.io/pull/new/build-your-best-rack
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">remote:
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">To github.com:martinliu/martinliu.github.io.git
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> * &lt;span class="o">[&lt;/span>new branch&lt;span class="o">]&lt;/span> build-your-best-rack -&amp;gt; build-your-best-rack
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># 第二步：用 hugo 命令创建新文章的文件，然后开始编写更新新文章&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">➜ martinliu.github.io git:&lt;span class="o">(&lt;/span>build-your-best-rack&lt;span class="o">)&lt;/span> hugo new content/post/build-your-best-rack/index.md
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Content &lt;span class="s2">&amp;#34;/Users/martinliu/code/martinliu.github.io/content/post/build-your-best-rack/index.md&amp;#34;&lt;/span> created
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># 第三步：本地预览正常后，push 到 GitHub Pages 空间在远程预览 https://martinliu.github.io&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">➜ martinliu.github.io git:&lt;span class="o">(&lt;/span>build-your-best-rack&lt;span class="o">)&lt;/span> ✗ git add .
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">➜ martinliu.github.io git:&lt;span class="o">(&lt;/span>build-your-best-rack&lt;span class="o">)&lt;/span> ✗ git commit -m &lt;span class="s2">&amp;#34;review new post online&amp;#34;&lt;/span>&lt;span class="o">[&lt;/span>build-your-best-rack e21fffe8f&lt;span class="o">]&lt;/span> review new post online
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="m">1&lt;/span> file changed, &lt;span class="m">6&lt;/span> insertions&lt;span class="o">(&lt;/span>+&lt;span class="o">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> create mode &lt;span class="m">100644&lt;/span> content/post/build-your-best-rack/index.md
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">➜ martinliu.github.io git:&lt;span class="o">(&lt;/span>build-your-best-rack&lt;span class="o">)&lt;/span> git push --set-upstream origin build-your-best-rack
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Enumerating objects: 9, &lt;span class="k">done&lt;/span>.
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Counting objects: 100% &lt;span class="o">(&lt;/span>9/9&lt;span class="o">)&lt;/span>, &lt;span class="k">done&lt;/span>.
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Delta compression using up to &lt;span class="m">10&lt;/span> threads
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Compressing objects: 100% &lt;span class="o">(&lt;/span>5/5&lt;span class="o">)&lt;/span>, &lt;span class="k">done&lt;/span>.
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Writing objects: 100% &lt;span class="o">(&lt;/span>6/6&lt;span class="o">)&lt;/span>, &lt;span class="m">540&lt;/span> bytes &lt;span class="p">|&lt;/span> 540.00 KiB/s, &lt;span class="k">done&lt;/span>.
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Total &lt;span class="m">6&lt;/span> &lt;span class="o">(&lt;/span>delta 3&lt;span class="o">)&lt;/span>, reused &lt;span class="m">0&lt;/span> &lt;span class="o">(&lt;/span>delta 0&lt;span class="o">)&lt;/span>, pack-reused &lt;span class="m">0&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">remote: Resolving deltas: 100% &lt;span class="o">(&lt;/span>3/3&lt;span class="o">)&lt;/span>, completed with &lt;span class="m">3&lt;/span> &lt;span class="nb">local&lt;/span> objects.
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">To github.com:martinliu/martinliu.github.io.git
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> 49d889b6e..e21fffe8f build-your-best-rack -&amp;gt; build-your-best-rack
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">branch &lt;span class="s1">&amp;#39;build-your-best-rack&amp;#39;&lt;/span> &lt;span class="nb">set&lt;/span> up to track &lt;span class="s1">&amp;#39;origin/build-your-best-rack&amp;#39;&lt;/span>.
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># 第四步：在 GitHub 上发起并合并 pr&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># 第五步：删除本地特性分支，删除远程特性分支，更新本地 master 分支。&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">➜ martinliu.github.io git:&lt;span class="o">(&lt;/span>change-to-new-theme&lt;span class="o">)&lt;/span> git checkout master
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">warning: unable to rmdir &lt;span class="s1">&amp;#39;themes/hugo-theme-stack&amp;#39;&lt;/span>: Directory not empty
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Switched to branch &lt;span class="s1">&amp;#39;master&amp;#39;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Your branch is behind &lt;span class="s1">&amp;#39;origin/master&amp;#39;&lt;/span> by &lt;span class="m">5&lt;/span> commits, and can be fast-forwarded.
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="o">(&lt;/span>use &lt;span class="s2">&amp;#34;git pull&amp;#34;&lt;/span> to update your &lt;span class="nb">local&lt;/span> branch&lt;span class="o">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">➜ martinliu.github.io git:&lt;span class="o">(&lt;/span>master&lt;span class="o">)&lt;/span> ✗ git push origin --delete origin/change-to-new-theme
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">error: unable to delete &lt;span class="s1">&amp;#39;origin/change-to-new-theme&amp;#39;&lt;/span>: remote ref does not exist
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">error: failed to push some refs to &lt;span class="s1">&amp;#39;github.com:martinliu/martinliu.github.io.git&amp;#39;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">➜ martinliu.github.io git:&lt;span class="o">(&lt;/span>master&lt;span class="o">)&lt;/span> ✗ git push origin --delete change-to-new-theme
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">To github.com:martinliu/martinliu.github.io.git
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> - &lt;span class="o">[&lt;/span>deleted&lt;span class="o">]&lt;/span> change-to-new-theme
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">➜ martinliu.github.io git:&lt;span class="o">(&lt;/span>master&lt;span class="o">)&lt;/span> ✗ git pull
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>根据这款新皮肤的提示，我查看了最新的 Hugo 的文档，为了发挥这个皮肤的图像 resize 功能，并且遵从新的编写 post 的规范。以后的所有新文章的 md 文件和图片文件都需要放到一个独立的新目录中。&lt;/p>
+&lt;p>新创建一篇 post 的时候使用这个命令：&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-sh" data-lang="sh">&lt;span class="line">&lt;span class="cl">hugo new content/post/new-blog-test/index.md
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>在站点的根目录下执行这条命令后，会帮你创建新的目录和 &lt;code>index.md&lt;/code> 文件；由于我的站点默认使用了中文语言，因此，如果我想写一篇英文的文章的话，我就需要将 md 文件的名字写成 &lt;code>index.en.md&lt;/code> ；这个皮肤支持双语的，如果这篇文章也有中英两个版本的话，md 文件就应该有两个：&lt;/p>
+&lt;ul>
+&lt;li>index.zh-cn.md&lt;/li>
+&lt;li>index.en.md&lt;/li>
+&lt;/ul>
+&lt;p>这样就有了中英文的两个独立的页面，而且两种语言各自的页面上，都会有一个语言切换的按钮，所以这个皮肤对于双语，或者多语言写作的人来说，应该是非常顺手的一个选择。我将主导航的那些页面都做出了双语的版本。&lt;/p>
+&lt;p>由于，我最后的所有静态文件和图片都发布到了 CloudFlare 的 Pages 服务里，而且它们还提供 CDN 服务，而这个功能在 GitHub Pages 空间中是不提供的。因此，以前我用 GitHub Pages host 这个 blog 的时候，每次编写和发布新文章的时候，还需要手工的将图片上传到其它第三方的图床空间中，然后在更新 md 文章中图片的网址，其实还是比较繁琐和麻烦的。&lt;/p>
+&lt;p>这个国庆节期间，我基本上也完成了 home lab 的 Rack 搭建项目，初步效果如下：&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/blog/change-to-jimmy-stack-theme/new-rack.png"
+width="1500"
+height="2000"
+srcset="https://martinliu.cn/blog/change-to-jimmy-stack-theme/new-rack_hu_9aa50c3be1172a6a.png 480w, https://martinliu.cn/blog/change-to-jimmy-stack-theme/new-rack_hu_e9ee8736487eda9d.png 1024w"
+loading="lazy"
+class="gallery-image"
+data-flex-grow="75"
+data-flex-basis="180px"
+>&lt;/p>
+&lt;p>以上这张图片放置在了和 md 文件相同的目录中，插入这张图片的代码就变得异常简单了 &lt;code>![](new-rack.png)&lt;/code> ；而且图片也被拉伸到了和文章页面宽度等宽，大小合适的情况下会充满页面宽度，而且能够自适应浏览器显示器的宽度。&lt;/p>
+&lt;p>后续会出一些关于这个 home lab 的文章。&lt;/p>
+&lt;p>关于这个皮肤的使用文档，请访问： &lt;a class="link" href="https://docs.stack.jimmycai.com/" target="_blank" rel="noopener"
+>https://docs.stack.jimmycai.com/&lt;/a>&lt;/p>
+&lt;p>如果你也喜欢这个风格的皮肤，请查看： &lt;a class="link" href="https://github.com/CaiJimmy/hugo-theme-stack-starter" target="_blank" rel="noopener"
+>hugo-theme-stack-stater&lt;/a>&lt;/p>
+&lt;p>遗留问题：&lt;/p>
+&lt;ul>
+&lt;li>左上角的头像图片无法正常显示&lt;/li>
+&lt;li>添加一种免费好用的评论互动插件&lt;/li>
+&lt;li>增加搜索功能&lt;/li>
+&lt;/ul></description></item></channel></rss>

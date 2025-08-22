@@ -1,0 +1,1117 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>周刊 on Martin Liu's Blog</title><link>https://martinliu.cn/tags/%E5%91%A8%E5%88%8A/</link><description>Recent content in 周刊 on Martin Liu's Blog</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><lastBuildDate>Mon, 24 Jun 2024 18:24:30 +0800</lastBuildDate><atom:link href="https://martinliu.cn/tags/%E5%91%A8%E5%88%8A/index.xml" rel="self" type="application/rss+xml"/><item><title>DevOps 教练周刊 7</title><link>https://martinliu.cn/blog/devopscoach-weekly-7/</link><pubDate>Tue, 16 Mar 2021 19:23:15 +0800</pubDate><guid>https://martinliu.cn/blog/devopscoach-weekly-7/</guid><description>&lt;img src="https://martinliu.cn/images/weeklyupdate.jpg" alt="Featured image of post DevOps 教练周刊 7" />&lt;p>全球 DevOps + SRE 精选资讯&lt;/p>
+&lt;p>本期有 6 个公司的服务出现了宕机事故，一如既往的为你精选了十几篇值得学习的内容。&lt;/p>
+&lt;blockquote>
+&lt;p>[EN] May your queries flow and your pagers stay silent.
+&amp;ndash;Dave, Betsy, Niall, Stephen, and Ken&lt;/p>&lt;/blockquote>
+&lt;p>【译】：愿你的咨询队列和传呼机都保持静默。&lt;/p>
+&lt;h2 id="宕机">宕机
+&lt;/h2>&lt;h2 id="fastly-3-月事故一览">Fastly 3 月事故一览
+&lt;/h2>&lt;p>Fastly是一家 CDN 服务提供商，每个月的事故披露条数大约是 20 到 30 条。本月（三月）已经可以在 &lt;a class="link" href="https://status.fastly.com/history" target="_blank" rel="noopener"
+>https://status.fastly.com/history&lt;/a> 看到 23 条事故披露通告。主要内容有三种：事故时间线记录，事故回顾和计划内活动（扩容等）。&lt;/p>
+&lt;p>回顾三月份的事故历史，事故类型组要是：&lt;/p>
+&lt;ul>
+&lt;li>区域性和全球性的性能事故。&lt;/li>
+&lt;li>网络路由和 DNS 故障&lt;/li>
+&lt;li>数据中心计划内的维护、扩容和新上线（新加坡）。&lt;/li>
+&lt;/ul>
+&lt;p>目前一共有 8 个事故回顾。浏览一下大致内容主要是对过去发生过的事故的确认。每一条事故回顾中精确的描述了事故影响起始时间点和影响范围。&lt;/p>
+&lt;blockquote>
+&lt;p>教练观点：看起来他们三月份的日子过的不咋样，不知道这个月的错误预算是否快烧完了。&lt;/p>&lt;/blockquote>
+&lt;h2 id="ovh-cloud-数据中心发生火灾">OVH Cloud 数据中心发生火灾
+&lt;/h2>&lt;p>这是一家服务器托管/云服务器提供商，数据中心主要在欧洲中西部和美国东岸。&lt;/p>
+&lt;p>3 月 10 日这次发生火灾的是位于法国Strasbourg的一个数据中心，该数据中心园区里有 4 栋大楼。从新闻图片上看到有一栋大楼几乎彻底烧毁。&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/img/cos/2021-03-21-151636.png"
+loading="lazy"
+alt="2021-03-21_23-05-14"
+>&lt;/p>
+&lt;p>该公司的创始人/CEO 第一时间在 Twitter 上发布和更新着火灾的状态。&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/img/cos/2021-03-21-151729.png"
+loading="lazy"
+alt="2021-03-21_23-06-03"
+>&lt;/p>
+&lt;p>从这可以看到，数据中心园区中的 SBG2 大楼发生火灾，因此直接关闭里其它的大楼。他每天在 Twitter 上更新一次，在公司官网上 &lt;a class="link" href="https://www.ovh.com/world/news/press/cpl1787.fire-our-strasbourg-site?124" target="_blank" rel="noopener"
+>https://www.ovh.com/world/news/press/cpl1787.fire-our-strasbourg-site?124&lt;/a> 也可以看到每天一次的更新。&lt;/p>
+&lt;p>至今火灾的原因还没有说明，从每日的更新里还可以看到，火灾的影响目前没有完全消除，其它数据中心的电池还有冒烟的情况出现。&lt;/p>
+&lt;p>火灾恢复的过程包括：&lt;/p>
+&lt;ul>
+&lt;li>对每个大楼的可用状态更新，SBG-3 大楼已经恢复到了 40%可用的状态，团队工作在重启服务器的过程中。&lt;/li>
+&lt;li>其它三个大楼在逐一恢复抢修中，主要包括这些工作：重启电源供应，重启网络服务，重启服务器。&lt;/li>
+&lt;/ul>
+&lt;p>可以看到他们的救灾工作的三个优先级：&lt;/p>
+&lt;ol>
+&lt;li>恢复各个大楼的服务。&lt;/li>
+&lt;li>在其他数据中心为客户制备新的服务器（承诺了1.5 万台新服务器）&lt;/li>
+&lt;li>与所有受到影响的客户一起实施 DRP 计划。（灾难恢复计划）&lt;/li>
+&lt;/ol>
+&lt;p>以上三项救灾工作的数据都是日更在以上的网页中。&lt;/p>
+&lt;blockquote>
+&lt;p>教练观点：这个数据中心可谓是非常罕见的大规模灾难，救灾速度和进展还是比较缓慢的，但愿受影响的公司都有自己的扩域高可用容灾方案，希望 DRP 计划执行的顺利有效。&lt;/p>&lt;/blockquote>
+&lt;h2 id="俄罗斯发生大规模域名解析故障">俄罗斯发生大规模域名解析故障
+&lt;/h2>&lt;p>在 3 月10日，由于俄罗斯的网监局（&lt;a class="link" href="https://twitter.com/roscomnadzor" target="_blank" rel="noopener"
+>roscomnadzor&lt;/a> 联邦通信、信息技术和大众媒体监督局）对Twitter 的短域名服务 t[.]co 不当屏蔽，导致了全境所有包含了 t.co 的子域名都无法访问，包括例如：Microsoft[.]com 和 Reddit[.]com 的域名，还有很多其它躺枪的域名。&lt;/p>
+&lt;p>参考Twitter 上的信息如下：&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/img/cos/2021-03-21-153938.png"
+loading="lazy"
+alt="2021-03-21_23-38-50"
+>&lt;/p>
+&lt;blockquote>
+&lt;p>教练观点：感觉这个错误犯的有点低级了。&lt;/p>&lt;/blockquote>
+&lt;h2 id="dyn-dns-服务器故障">Dyn DNS 服务器故障
+&lt;/h2>&lt;p>这是 Oracle 云的提供的 DNS 服务，本次故障导致大部分客户的 DNS 服务解析失败或者降级，影响范围是所有相关客户。&lt;/p>
+&lt;p>调查得到的主要根因：Oracle Public DNS 基础设施实施配置变更是发生了问题。&lt;/p>
+&lt;h2 id="chef-服务发生大量-5xx-错误">Chef 服务发生大量 5xx 错误
+&lt;/h2>&lt;p>Chef 的服务不经常发生故障，这次 api.chef.io 服务发生了大量 5xx 错误增多的事故，错误的对象是索引集群。目前故障已经排除，服务恢复了正常。&lt;/p>
+&lt;h2 id="github-3-月事故">GitHub 3 月事故
+&lt;/h2>&lt;p>&lt;a class="link" href="https://www.githubstatus.com/history" target="_blank" rel="noopener"
+>https://www.githubstatus.com/history&lt;/a> 在这个页面上可以看到本月已经发生了 7 次事故。在 3 个严重事故中，有 2 个的事故影响时间接近 2 小时。3-15 日的事故影响了 GitHub Actions 服务。12 日的事故中影响到了绝大多数服务的可用性，但是恢复的还比较快。&lt;/p>
+&lt;blockquote>
+&lt;p>教练观点：我本月体验到了一次 GitHub Actions 构建报错挂住僵死的问题，后来继续提交，GitHub Actions 的 pipeline 又恢复正常工作了。持续时间不太长。&lt;/p>&lt;/blockquote>
+&lt;h1 id="新闻">新闻
+&lt;/h1>&lt;ul>
+&lt;li>
+&lt;p>&lt;a class="link" href="https://puppet.com/blog/take-the-2021-state-of-devops-survey-be-part-of-our-10-year-history/" target="_blank" rel="noopener"
+>Take the 2021 State of DevOps Survey, be part of our 10-year history&lt;/a> 这是我跟踪最长时间的 DevOps 状态调查报告，以前是和 DORA 合作的，在 DORA 被 Google Cloud 收编了以后，Puppet 有开始找的其它大拿继续这个调查。对于计划做行业调查的朋友，还是可以学习一下，这套问卷的设问。&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;a class="link" href="https://kubernetes.us10.list-manage.com/track/click?u=3885586f8f1175194017967d6&amp;amp;id=5a32cff75d&amp;amp;e=7098f23071" target="_blank" rel="noopener"
+>CD Foundation Announces Industry Initiative to Standardize Events from CI/CD Systems&lt;/a> 持续交付基金会发生了，宣布行业级 CI/CD 系统的标准化事件的号召。他们搞了一个 &lt;a class="link" href="https://github.com/cdfoundation/sig-events" target="_blank" rel="noopener"
+>Events SIG&lt;/a> 厂商中立的兴趣讨论小组，这个计划对以后所有 CI/CD 流水线系统间的互操作性比较重要。&lt;/p>
+&lt;/li>
+&lt;/ul>
+&lt;h2 id="软件发布">软件发布
+&lt;/h2>&lt;ul>
+&lt;li>Java 16 发布&lt;/li>
+&lt;li>AWS EC2 发布了新的 X2gd 实例，这是一块 ARM-based Graviton2-powered 高内存实例。可达 1TB 内存和 3.8TB 的SSD 存储。&lt;/li>
+&lt;li>Git 2.31 发布&lt;/li>
+&lt;li>Ghost 4.0 开源 CMS 系统&lt;/li>
+&lt;li>Audacity 3.0.0 开源音频编辑软件&lt;/li>
+&lt;li>SQLite 3.35 发布&lt;/li>
+&lt;/ul>
+&lt;h1 id="文章">文章
+&lt;/h1>&lt;p>本周推荐如下经常文章。&lt;/p>
+&lt;ul>
+&lt;li>
+&lt;p>&lt;a class="link" href="https://www.transposit.com/blog/fighter-pilots-and-incident-management/" target="_blank" rel="noopener"
+>战斗机飞行员和事故管理有什么共同点？&lt;/a>
+我觉得战斗机飞行员对每一次任务，无论成功与否，都会有一个回顾，这真的很新鲜。总有一些东西需要学习。杰西卡-阿贝尔森&amp;ndash;Transposit&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;a class="link" href="https://blog.heroku.com/incident-response-at-heroku-2020" target="_blank" rel="noopener"
+>Heroku的事故响应&lt;/a>
+Heroku应用事故管理系统，指定一名事故指挥官，负责保持事故的正常进行，并监督外部和内部的沟通。Guillaume Winter - Heroku&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;a class="link" href="https://blog.khanacademy.org/how-khan-academy-successfully-handled-2-5x-traffic-in-a-week/" target="_blank" rel="noopener"
+>可汗学院如何在一周内成功处理2.5倍的流量？&lt;/a>
+这个故事正在变得很常见：当大范围居家办公开始时，可汗学员的流量突然暴增。他们的策略包括使用云和CDN。Marta Kosarchyn - 可汗学院&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;a class="link" href="https://engineering.squarespace.com/blog/2017/under-the-hood-ensuring-site-reliability" target="_blank" rel="noopener"
+>根基：确保站点可靠性&lt;/a>
+下面是对Squarespace如何做SRE的精彩总结。Franklin Angulo - Squarespace&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;a class="link" href="https://increment.com/reliability/reliability-at-scale/" target="_blank" rel="noopener"
+>[增量：可靠性] 大规模的可靠性。&lt;/a>
+Deliveroo、DigitalOcean、Fastly和Headspace的领导们分享了他们的组织是如何看待可靠性和弹性的，以及他们对开始可靠性之旅的工程机构的建议。每位领导都回答了一系列关于他们的组织如何处理可靠性的问题，给出了一个有趣的比较和对比的概述。&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;a class="link" href="https://increment.com/reliability/resilience-as-adaptability-freshworks/" target="_blank" rel="noopener"
+>「增量：可靠性案例分析」弹性作为Freshworks的适应性&lt;/a>
+利用在一场毁灭性的飓风之后制定的灾难计划，Freshworks在这场大流行中幸存下来，并在大流行前的最后期限前交付了一个重要的新产品。伊普西塔-阿加瓦尔&amp;ndash;增量公司&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;a class="link" href="https://launchdarkly.com/blog/what-is-a-canary-deployment/" target="_blank" rel="noopener"
+>什么是金丝雀部署？&lt;/a>
+本篇解释了什么是金丝雀部署，它如何帮助您，以及金丝雀部署与蓝/绿部署的区别。LaunchDarkly&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;a class="link" href="https://www.blameless.com/blog/how-to-build-an-sre-team-with-a-growth-mindset" target="_blank" rel="noopener"
+>如何以成长的心态打造SRE团队？&lt;/a>
+这篇文章解释了成长型思维方式的含义，并展示了它如何应用于SRE。艾米丽-阿诺特&amp;ndash;Blameless&lt;/p>
+&lt;/li>
+&lt;/ul></description></item><item><title>DevOps 教练周刊 6</title><link>https://martinliu.cn/blog/devopscoach-weekly-6/</link><pubDate>Mon, 31 Aug 2020 00:11:01 +0800</pubDate><guid>https://martinliu.cn/blog/devopscoach-weekly-6/</guid><description>&lt;img src="https://martinliu.cn/images/weeklyupdate.jpg" alt="Featured image of post DevOps 教练周刊 6" />&lt;p>全球 DevOps + SRE 精选资讯&lt;/p>
+&lt;h2 id="宕机">宕机
+&lt;/h2>&lt;ul>
+&lt;li>上一周新发的宕机事故。&lt;/li>
+&lt;li>近期全球重大宕机事故的分析总结、事后回顾。&lt;/li>
+&lt;/ul>
+&lt;blockquote>
+&lt;p>May your queries flow and your pagers stay silent.
+&amp;ndash;Dave, Betsy, Niall, Stephen, and Ken&lt;/p>&lt;/blockquote>
+&lt;h3 id="上周新发事故">上周新发事故
+&lt;/h3>&lt;ul>
+&lt;li>Zoom 无法开始和加入会议， 官方报道 &lt;a class="link" href="https://status.zoom.us/incidents/1z2lrf4nrv8p" target="_blank" rel="noopener"
+>https://status.zoom.us/incidents/1z2lrf4nrv8p&lt;/a>&lt;/li>
+&lt;li>Slack 多个功能模块服务降级，甚至无法使用，官方：&lt;a class="link" href="https://status.slack.com//2020-08/960bbb3c9d49a3cc" target="_blank" rel="noopener"
+>https://status.slack.com//2020-08/960bbb3c9d49a3cc&lt;/a>&lt;/li>
+&lt;li>Let&amp;rsquo;s Encrypt 数据中心硬件方式故障导致 API 报错，官方：&lt;a class="link" href="https://status.io/pages/incident/55957a99e800baa4470002da/5f45330250878c04bf3fb6eb" target="_blank" rel="noopener"
+>https://status.io/pages/incident/55957a99e800baa4470002da/5f45330250878c04bf3fb6eb&lt;/a>&lt;/li>
+&lt;li>NZX 新西兰证券交易所遭受重大DDoS攻击导致NZX停电，交易停止。媒体：&lt;a class="link" href="https://www.stuff.co.nz/business/122562006/major-ddos-attack-causes-nzx-power-outage-trading-halt" target="_blank" rel="noopener"
+>https://www.stuff.co.nz/business/122562006/major-ddos-attack-causes-nzx-power-outage-trading-halt&lt;/a>&lt;/li>
+&lt;li>eBay宕机。服务器状态最新，DNS故障和服务不可用的错误错误，媒体：&lt;a class="link" href="https://www.express.co.uk/life-style/science-technology/1329281/eBay-down-server-status-DNS-failure-service-unavailable-error" target="_blank" rel="noopener"
+>https://www.express.co.uk/life-style/science-technology/1329281/eBay-down-server-status-DNS-failure-service-unavailable-error&lt;/a>&lt;/li>
+&lt;li>Heroku 发生大量的 H100 报错，官方：&lt;a class="link" href="https://status.heroku.com/incidents/2101" target="_blank" rel="noopener"
+>https://status.heroku.com/incidents/2101&lt;/a>&lt;/li>
+&lt;li>Fastly CDN 服务商的服务发生多区域性能故障，官方：&lt;a class="link" href="https://status.fastly.com/incidents/p1lwmmv2j2gq" target="_blank" rel="noopener"
+>https://status.fastly.com/incidents/p1lwmmv2j2gq&lt;/a>&lt;/li>
+&lt;li>Cloudflare 上周发生的这个问题，我的个人 blog 也遇到了，Google 的搜索索引服务记录了那些 500 错误，我也感到非常诧异；第三方传输供应商问题导致HTTP 5xx错误增加； 官方：&lt;a class="link" href="https://www.cloudflarestatus.com/incidents/hptvkprkvp23" target="_blank" rel="noopener"
+>https://www.cloudflarestatus.com/incidents/hptvkprkvp23&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;h3 id="鳄鱼杯2020年第二季度最大宕机颁">鳄鱼杯：2020年第二季度最大宕机颁
+&lt;/h3>&lt;p>来源：&lt;a class="link" href="https://statusgator.com/blog/2020/08/21/5-biggest-outages-of-q2-2020/" target="_blank" rel="noopener"
+>https://statusgator.com/blog/2020/08/21/5-biggest-outages-of-q2-2020/&lt;/a>&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/images/crocodile-cup-3-1.jpg"
+loading="lazy"
+>&lt;/p>
+&lt;p>任何可能发生的坏事都会发生。这句古老的谚语100%适用于技术行业，在这个行业中，崩溃和中断远比销售和营销团队希望我们想象的要常见得多。然而，与基础设施打交道的DevOps工程师知道，要确保所有东西都能一直按预期工作是多么困难&amp;ndash;并配置监控，实际跟踪系统的健康状况，帮助防止崩溃和停机。&lt;/p>
+&lt;p>在StatusGator，我们监控800多个基于云的服务的状态页面，并向用户提供即时通知。我们拥有堆积如山的宕机和中断数据，并能看到全貌，因此我们决定每季度制定一份最高宕机时间列表。我们希望我们的发现能够激励DevOps工程师去看看其他人是如何处理服务中断的，以便他们能够提高自己的可靠性。&lt;/p>
+&lt;p>请继续阅读，了解2020年第二季度的五大故障，以及Slack、Zoom、GitHub、IBM Cloud和T-Mobile在这些危机中如何行动。我们还对这些故障的结果进行了评级，并很乐意听到您对我们评级的看法。&lt;/p>
+&lt;h4 id="第一名-slack-全球范围的服务中断-may-12-2020">第一名 Slack 全球范围的服务中断, May 12, 2020
+&lt;/h4>&lt;p>Slack是全球数千家公司的主要沟通方式，因此其稳定的正常运行时间是最重要的问题。因此，当用户在美国东部时间晚上7:30左右停止发送和接收Slack消息时，情况迅速升级为一个全面的问题。与之前的故障期间不同，这影响到了整个Slack生态系统：没有人能够登录Slack，也没有人能够收到任何通知。&amp;ldquo;Slack宕机了吗？&amp;quot;，用户们自问自答，答案是毋庸置疑的 &amp;ldquo;是！&amp;rdquo;&lt;/p>
+&lt;p>美国东部时间晚上10:26，Slack报告全面恢复了服务，并再次为造成的不便道歉。更重要的是，他们在Medium上发表了一份详细的事后报告，解释了问题背后的原因，他们为克服这个问题所采取的行动，得出的结论，以及他们正在采取的措施，以消除类似情况再次发生的机会。&lt;/p>
+&lt;p>欢迎阅读这篇事后总结，它的技术性很强，但即使是普通人也很容易理解。Slack在这里展示了他们对用户群成员&amp;ndash;包括开发者和大众用户群&amp;ndash;的关心，这篇文章所投射出的信心令人钦佩。&lt;/p>
+&lt;p>这里需要注意的是，虽然问题本身是在美国东部时间上午8:30开始的，但直到美国东部时间晚上7:30左右，多名用户报告了Slack的问题，这个问题才完全被人察觉。在Slack团队意识到这一情况之前，他们在应用内部（当时大部分已经宕机）、Twitter上、Downdetector上、Slack网站（很快就宕机了）以及其他许多渠道进行了报告。&lt;/p>
+&lt;h4 id="第二名-zoom-宕机-may-17-2020">第二名 Zoom 宕机, May 17, 2020
+&lt;/h4>&lt;p>自冠状病毒大流行以来，随着越来越多的人远程工作和学习，Zoom的使用率急剧上升。Zoom状态页面的订阅量也是如此，自4月份以来，StatusGator中的订阅量急剧上升。&lt;/p>
+&lt;p>除了企业被迫开始远程办公外，许多教会和其他公共组织也开始使用Zoom来举行周日弥撒、会议以及举办公共活动。因此，虽然周日不是工作日，但英国的许多付费账户很快就发现他们无法主持或加入Zoom会议（免费账户似乎没有受到影响）。这个问题通过多种渠道被报告，包括Twitter和监控Zoom状态的StatusGator。&lt;/p>
+&lt;p>Zoom发言人回应称，承认意识到了这一情况，并提到这只影响了一个子集的用户。然而，我们都知道子集可能是1%或99%，Zoom没有提供任何关于受影响用户量的说明。提供更透明的受影响用户的比例是一个高质量状态页面的标志，这是Zoom应该改进的地方。&lt;/p>
+&lt;h4 id="第三名-github-又无法访问了-june-29-2020">第三名 GitHub 又无法访问了. June 29, 2020
+&lt;/h4>&lt;p>自从GitHub被微软以75亿美元收购后，GitHub似乎又下降了很多。原因尚未披露，我们只能猜测原因。也许是与GitHub基础设施与微软系统的整合有关。也许是因为GitHub的发展速度更快，增加了更多的功能。无论如何，从收购到现在已经快两年了，用户发现GitHub的持续宕机时间越来越长。我们对GitHub状态页面的独立分析证实，在过去的两年里，宕机变得更加频繁。&lt;/p>
+&lt;p>微软正在努力将GitHub变成一个比以前更好的开发者场所。这家雷德蒙德巨头在今年早些时候让所有的付费计划变得更加实惠，并免费提供一些关键功能，将更多的工具放在IT专业人士的手中。微软、苹果、AWS、谷歌、Facebook和其他数千家公司使用GitHub来存储和运行他们的代码仓库，因此它的正常运行时间是最重要的。&lt;/p>
+&lt;p>然而，GitHub在2020年6月29日出现了两个小时的故障。整个网站及其服务都无法访问，因此许多开发人员甚至无法推送代码或部署他们的应用程序，因为GitHub集成的数量没有响应。自然，这引起了很大的反响，并导致GitHub除了状态页面外，还推出了每月的可用性报告，对每次中断的原因和结果进行了详细的解释。&lt;/p>
+&lt;h4 id="第四名-ibm-cloud-挂了服务状态页面有更新-june-10-2020">第四名 IBM Cloud 挂了，服务状态页面有更新, June 10, 2020
+&lt;/h4>&lt;p>任何基于云的服务都会犯的最大错误之一就是将其状态页面托管在自己的基础设施上。看来IBM云就是这么做的，所以当它的整个基础设施在6月份有几个小时无法访问的时候，它的状态页面也随之而来。我们本可以期待IBM在今年3月的达拉斯宕机事件后得出一些结论，但是，显然，他们并没有理会，或者说没有做出足够的努力。&lt;/p>
+&lt;p>于是，在2020年6月10日，IBM云基础设施在全球范围内宕机。这次宕机使得Watson AI、IBM Cloud Foundry、Kubernetes Service、云对象存储、身份访问和管理、VPS的VPN、App Connect等功能完全无法访问。幸运的是，IBM Cloud状态页面只在中断初期无法使用，后来才断断续续地可用。这也是为什么StatusGator还能向订阅了IBM Cloud状态页面的用户发送提醒的原因。&lt;/p>
+&lt;p>该公司完全没有告知中断的原因，以及为缓解影响所采取的措施。后来从一个独立的监控服务机构了解到，一个第三方网络提供商广泛使用了流量路线，导致IBM云配置带宽严重受限。IBM专家对系统进行了重新配置，并恢复了运行，但随后并没有官方的解释或公告&amp;ndash;这让用户非常失望。&lt;/p>
+&lt;p>这不是IBM第一次在公共关系上失败，我们认为，也不会是最后一次。这可能是他们尽管提供了多样化的有竞争力的云服务，却远远落后于AWS、谷歌云平台、微软Azure和其他云服务商的原因之一。&lt;/p>
+&lt;p>但IBM能做什么呢？自然是有一个独立的状态页面! 下面只是他们可以使用的一些变种。&lt;/p>
+&lt;h4 id="第五名-t-mobile冲洗其网络下水道2020年6月15日">第五名 T-Mobile冲洗其网络下水道，2020年6月15日
+&lt;/h4>&lt;p>作为美国、欧盟和英国最大的移动网络运营商之一，T-Mobile最近发现自己正处于一场完美的风暴之中，它在美国各地连续13个小时无法提供语音和短信服务。外界观察家马修-普林斯（Matthew Prince，CEO@Cloudflare）认为，&amp;ldquo;T-Mobile对他们的网络进行了一些改变，但这些改变出了问题，导致他们的用户出现了一连串的故障&amp;rdquo;。他还表示，&amp;ldquo;这场灾难几乎可以肯定完全是T-Mobile团队自己造成的&amp;rdquo;。&lt;/p>
+&lt;p>相反，T-Mobile技术总裁Neville Ray在推特上表示，虽然这确实是一个 &amp;ldquo;影响全国用户语音和文字服务的重大问题&amp;rdquo;，但它源于第三方供应商的系统故障，T-Mobile的工程师正在努力修复。随后，他在博客中详细阐述了这一话题，并对故障原因进行了解释。&lt;/p>
+&lt;p>引用雷先生的话说：&amp;ldquo;据悉，触发事件是东南部的第三方供应商的租用光纤电路故障。这是每一个移动网络都会发生的事情，所以我们与我们的供应商合作，建立冗余和弹性，以确保这种类型的电路故障不会影响客户。这种冗余让我们失败了，导致了过载的情况，然后又因为其他因素而变得更加复杂&amp;rsquo;。这导致IP池过载，美国所有地区都发生了崩溃。&lt;/p>
+&lt;p>由于无法接触到大多数服务，T-Mobile的客户开始报告Facebook、Instagram和其他平台无法使用，而实际上离线的是他们的移动运营商网络。Business Insider报道称，虽然T-mobile客户将故障归咎于AT&amp;amp;T和Verizon，但这两家运营商都是在正常的负载水平下运营的。不过，前述Neville Ray的帖子表示，T-Mobile正在采取一切必要措施，通过为所有核心系统建立双重弹性和冗余措施，确保未来不可能发生此类事件。&lt;/p>
+&lt;p>可以看到，公司无法明确表达自己的立场，从一开始就不愿意承担失败的责任，以及在故障发生后缺乏透明度，都没能让T-mobile毫无污点地走出困境。这甚至导致了他们面临大规模DDoS攻击却未能击退的传闻。&lt;/p>
+&lt;h3 id="statusgator为第二季参赛者颁奖">StatusGator为第二季参赛者颁奖
+&lt;/h3>&lt;p>让我们根据这些宕机事件的发现、相关公司的沟通以及每个事件的结果来评定。&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/images/gator-q2.png"
+loading="lazy"
+>&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/images/Group-20-2048x1474.png"
+loading="lazy"
+>&lt;/p>
+&lt;h2 id="新闻">新闻
+&lt;/h2>&lt;h2 id="软件发布">软件发布
+&lt;/h2>&lt;ul>
+&lt;li>Kubernetes 1.19 发布了， 它由34项增强功能组成。10个增强版转为稳定版，15个增强版在测试版，9个增强版在alpha版。&lt;/li>
+&lt;li>AWS 发布新的 EBS 卷类型 (io2) 提高 100x 持久性，和 10x 倍的 IOPS/GiB&lt;/li>
+&lt;li>Tekton Hub 预览版上线，随着该项目对底层流水线和构建的定义的日臻成熟，开放出一个相关的自由市场也是必然的，开源生态催生出来的上下游技术提供和消费的模式正在普及中，无周边生态的很难获利和发展，&lt;a class="link" href="https://hub-preview.tekton.dev/" target="_blank" rel="noopener"
+>https://hub-preview.tekton.dev/&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;h3 id="devops-大会峰会">DevOps 大会/峰会
+&lt;/h3>&lt;h4 id="中国-devops-社区流水线大赛--pipeline-craft-championship">中国 DevOps 社区流水线大赛 &amp;ndash; Pipeline Craft Championship
+&lt;/h4>&lt;ul>
+&lt;li>8 月 18 日开始为期两个月，免费活动&lt;/li>
+&lt;li>报名：&lt;a class="link" href="https://wj.qq.com/s2/6852880/c181" target="_blank" rel="noopener"
+>https://wj.qq.com/s2/6852880/c181&lt;/a>&lt;/li>
+&lt;li>活动官网：&lt;a class="link" href="https://Pipeline.devopsmeetup.com" target="_blank" rel="noopener"
+>https://Pipeline.devopsmeetup.com&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;h4 id="snykcon">SnykCon
+&lt;/h4>&lt;ul>
+&lt;li>将在10月21日/22日举行一个关于所有应用安全和 DevOps 的在线活动。免费注册，CFP现在开放。&lt;/li>
+&lt;li>&lt;a class="link" href="https://snyk.io/snykcon/" target="_blank" rel="noopener"
+>https://snyk.io/snykcon/&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;p>推荐和分享你感兴趣的大会和峰会给我和其它人吧？发邮件到：&lt;a class="link" href="mailto:martin@devopscoach.org" >martin@devopscoach.org&lt;/a>&lt;/p>
+&lt;h2 id="文章">文章
+&lt;/h2>&lt;p>&lt;img src="https://martinliu.cn/images/WhyAvoidAutomation.gif"
+loading="lazy"
+>&lt;/p>
+&lt;ul>
+&lt;li>
+&lt;p>这是一篇很好的文章，讲述了在整个组织中获得变革的支持时，自动化这个词所带来的问题，以及为什么观念很重要。&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;a class="link" href="https://blogs.starcio.com/2020/08/avoid-calling-it-automation.html" target="_blank" rel="noopener"
+>https://blogs.starcio.com/2020/08/avoid-calling-it-automation.html&lt;/a>&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>什么是Kubernetes Operators，为什么它对SRE很重要？&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>在Kubernetes Operators: 自动化容器编排平台》中，作者Jason Dobies和Joshua Wood将Operators描述为 &amp;ldquo;其应用的自动化站点可靠性工程师&amp;rdquo;。鉴于SRE的多方面经验和多样化的工作量，这是一个大胆的说法。那么，Operators到底能做什么呢？&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;a class="link" href="https://www.blameless.com/blog/what-is-a-kubernetes-operators-and-how-to-automate-sre" target="_blank" rel="noopener"
+>https://www.blameless.com/blog/what-is-a-kubernetes-operators-and-how-to-automate-sre&lt;/a>&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>探讨遗留IT系统的隐秘世界。探讨了一些值得注意的事件，以及我们需要更多地了解如何建立可长期运行的系统。&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;a class="link" href="https://spectrum.ieee.org/computing/it/inside-hidden-world-legacy-it-systems" target="_blank" rel="noopener"
+>https://spectrum.ieee.org/computing/it/inside-hidden-world-legacy-it-systems&lt;/a>&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>一篇文章，讲述了随着组织的发展，增加一个总括性的平台团队的风险，以及为什么向平台组件和重用发展可以更具扩展性。&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;a class="link" href="https://kislayverma.com/organizations/a-case-against-platform-teams/" target="_blank" rel="noopener"
+>https://kislayverma.com/organizations/a-case-against-platform-teams/&lt;/a>&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>NoOps Go on Cloud Run&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;a class="link" href="https://medium.com/@peter.malina/noops-go-on-cloud-run-689d92215c5c" target="_blank" rel="noopener"
+>https://medium.com/@peter.malina/noops-go-on-cloud-run-689d92215c5c&lt;/a>&lt;/p>
+&lt;/li>
+&lt;/ul>
+&lt;h2 id="工具">工具
+&lt;/h2>&lt;ul>
+&lt;li>werf/werf : GitOps 交付工具&lt;/li>
+&lt;li>ovh/cds : 企业级持续交付和 DevOps 自动化开源平台，&lt;/li>
+&lt;li>markphelps/flipt 一个现代的功能开关方案&lt;/li>
+&lt;li>fluxcd/toolkit ： 用 GitOps 的方式组装 CD 流水线的体验版工具包。&lt;/li>
+&lt;li>&lt;/li>
+&lt;/ul>
+&lt;h2 id="学习资源">学习资源
+&lt;/h2>&lt;p>本周推荐如下 B 站学习资源。&lt;/p>
+&lt;p>Jenkins+Ansible+Gitlab自动化部署（CI/CD）&lt;/p>
+&lt;ul>
+&lt;li>&lt;a class="link" href="https://www.bilibili.com/video/BV1Dp411Z7Lf" target="_blank" rel="noopener"
+>https://www.bilibili.com/video/BV1Dp411Z7Lf&lt;/a>&lt;/li>
+&lt;li>持续集成在工作中的应用。&lt;/li>
+&lt;/ul>
+&lt;p>通俗易懂ElasticSearch 项目实践课程&lt;/p>
+&lt;ul>
+&lt;li>&lt;a class="link" href="https://www.bilibili.com/video/BV1wA411n7LY" target="_blank" rel="noopener"
+>https://www.bilibili.com/video/BV1wA411n7LY&lt;/a>&lt;/li>
+&lt;li>搜房网实例项目讲解&lt;/li>
+&lt;/ul>
+&lt;p>【Python趣味教学】99%相似度！手把手教你用Python制作超级玛丽游戏&lt;/p>
+&lt;ul>
+&lt;li>&lt;a class="link" href="https://www.bilibili.com/video/BV1G54y197C2" target="_blank" rel="noopener"
+>https://www.bilibili.com/video/BV1G54y197C2&lt;/a>&lt;/li>
+&lt;li>前26集都在这了，爱编程的小伙伴们，一起来重现童年经典吧！&lt;/li>
+&lt;/ul>
+&lt;p>Kubernetes教程 k8s企业级DevOps实践&lt;/p>
+&lt;ul>
+&lt;li>&lt;a class="link" href="https://www.bilibili.com/video/BV1c64y1F7wP" target="_blank" rel="noopener"
+>https://www.bilibili.com/video/BV1c64y1F7wP&lt;/a>&lt;/li>
+&lt;li>k8s是一个开源的，用于管理云平台中多个主机上的容器化的应用，Kubernetes的目标是让部署容器化的应用简单并且高效（powerful）,Kubernetes提供了应用部署，规划，更新，维护的一种机制。&lt;/li>
+&lt;/ul></description></item><item><title>DevOps Coach 周刊 5</title><link>https://martinliu.cn/blog/devopscoach-weekly-5/</link><pubDate>Tue, 25 Aug 2020 15:20:51 +0800</pubDate><guid>https://martinliu.cn/blog/devopscoach-weekly-5/</guid><description>&lt;img src="https://martinliu.cn/images/weeklyupdate.jpg" alt="Featured image of post DevOps Coach 周刊 5" />&lt;h2 id="宕机">宕机
+&lt;/h2>&lt;ul>
+&lt;li>上一周新发的宕机事故。&lt;/li>
+&lt;li>近期全球重大宕机事故的分析总结、事后回顾。&lt;/li>
+&lt;/ul>
+&lt;blockquote>
+&lt;p>May your queries flow and your pagers stay silent.
+&amp;ndash;Dave, Betsy, Niall, Stephen, and Ken&lt;/p>&lt;/blockquote>
+&lt;h3 id="equinix-重大电力故障让数据中心客户大发雷霆">Equinix 重大电力故障让数据中心客户大发雷霆
+&lt;/h3>&lt;ul>
+&lt;li>关于 Equinix ：Equinix 是全球领先的数据运营商，目前在美洲、亚太、欧洲及中东 14 个国家（地区）的 31 个市场运营着 94 个国际业务交换。&lt;/li>
+&lt;li>消息来源 CBR &lt;a class="link" href="https://www.cbronline.com/news/equinix-outage" target="_blank" rel="noopener"
+>https://www.cbronline.com/news/equinix-outage&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;blockquote>
+&lt;p>教练点评：数据中心 UPS 的单点故障并不稀奇，但是这次 Equinix 的事故堪称史诗级事故。&lt;/p>&lt;/blockquote>
+&lt;p>&amp;ldquo;经历如此严重的停电，显然是不可接受的&amp;rdquo;&lt;/p>
+&lt;p>北京时间 8 月 19 日 8 点 10 分更新：最后的电路似乎已经在 8 月 18 日晚间约 22 点 20 分恢复；在停电开始后约 18 小时。&lt;/p>
+&lt;p>数据中心巨头 Equinix 表示，在其位于伦敦码头区的 IBX LD8 数据中心遭遇长时间停电后，它已经为所有客户恢复了机架&amp;ndash;该问题使数百名客户（包括几家 ISP）的服务从北京时间凌晨 4:30 开始离线；使许多人对缓慢的电力恢复深感沮丧。&lt;/p>
+&lt;p>&amp;ldquo;Equinix 工程师已将问题的根本原因诊断为 UPS（不间断电源）系统故障，我们正在与客户合作，以尽量减少影响。该公司在北京时间 8 月 18 日 12:04 的首次公开声明中表示：&amp;ldquo;我们对由此造成的任何不便感到遗憾。(ISP Giganet 负责人 Matthew Skipsey 早些时候将 Equinix 缺乏沟通描述为 &amp;ldquo;糟糕透顶&amp;rdquo;)。&lt;/p>
+&lt;p>多名客户指出，该问题是 Galaxy UPS 系统(由施耐德销售)中的输出静态开关出现故障。该开关将关键负载连接到 UPS 的条件电源或旁路电源的原始电源。停电时间的长短表明，LD8 的 A+B 交流电源是来自同一个 UPS。期望其直流供应商确保弹性和依赖单一数据中心的 ISP 正在吸取惨痛教训。&lt;/p>
+&lt;p>伦敦互联网交易所 LINX 同时表示，约有 150 名 LINX 会员直接受到此次事件的影响。(到 13:42，LINX 的所有设备都恢复了。该组织有 900 多个 ASN 从 80 多个不同的国家连接）。)&lt;/p>
+&lt;p>受影响的一个客户是 ISP Giganet。它告诉客户。&amp;ldquo;我们仍在等待我们的网络架恢复供电 继 Equinix 和他们的承包商在早期故障后将电源迁移到新的基础设施上之后。&lt;/p>
+&lt;p>&amp;ldquo;可悲的是，仍然没有估计的修复时间，这是最令人沮丧的。他们已向我们保证，他们将在可能的情况下提供这一信息。Equinix 不断被追问最新情况。正如您所了解的那样，这是一个 P1 问题，影响着许多 100 多家其他运营商/ISP&amp;ndash;所以它被赋予了最大的优先级。&amp;rdquo;&lt;/p>
+&lt;p>据了解，英国电信也是受影响的公司之一。数据中心的访问控制系统已经被中断，一个客户，马修-斯基普西说，&amp;ldquo;所以一切[是]通过双向无线电手动运行，然后通过其他地方打电话。疯狂的时代。这是一个 MBORC 的地狱。&amp;rdquo;&lt;/p>
+&lt;p>Equinix 表示，它允许客户 &amp;ldquo;更灵活地访问 LD8&amp;rdquo;，因为它争分夺秒地解决这个问题，&amp;ldquo;在我们的 COVID-19 限制内工作&amp;rdquo;。&lt;/p>
+&lt;p>Giganet 补充道：&amp;ldquo;我们已经在凌晨 4.23 时左右失去了我们 2 个 Equinix LD8 机架中的 1 个机架的两个 A+B 馈线。此前，根据 Equinix 的报告，UPS 出现故障，然后触发了数据中心的火警。我们失去电源的机架上安装着我们的核心 Juniper MX 路由器和 Cisco LNS。瞻博网络 MX 路由器是我们的核心设备，LD8 中的一切功能都需要它，包括终止一些专线连接以及为我们的 vDC 平台提供连接。我们所有的设备电源都是由数据中心提供的&amp;rsquo;多样化&amp;rsquo;A+B 电源双馈&amp;ndash;但是经过这次事件，我们怀疑是缺乏弹性，在事件解决后一定会提出来，因为经历如此严重的断电显然是不可接受的。&amp;rdquo;&lt;/p>
+&lt;h3 id="google-公司的云平台和-g-stuit-系列事故">Google 公司的云平台和 G Stuit 系列事故
+&lt;/h3>&lt;ul>
+&lt;li>来源官方 &lt;a class="link" href="https://status.cloud.google.com/incident/zall/20008#20008005" target="_blank" rel="noopener"
+>https://status.cloud.google.com/incident/zall/20008#20008005&lt;/a>&lt;/li>
+&lt;li>Google Cloud Infrastructure Components Incident #20008&lt;/li>
+&lt;li>GCP 多个产品发生故障：App Engine, Cloud Storage 和 Cloud Logging&lt;/li>
+&lt;li>G Suit 多个模块和功能：Gmail, Drive, Docs/Editor, Chat, Meet, Keep, Voice, Jamboard, Admin Console&lt;/li>
+&lt;li>事故时间：August 19, 2020, from 20:55 to 03:30&lt;/li>
+&lt;li>诊断：AppEngine 的部署会报错，访问 GCS 桶时的高延迟，以及 Cloud Logging 中的日志条目丢失。G Suit 多种产品报错和无法使用。&lt;/li>
+&lt;li>详细的事故总结报告&lt;a class="link" href="https://static.googleusercontent.com/media/www.google.com/zh-CN//appsstatus/ir/bd9m3vkqwpvkk4j.pdf" target="_blank" rel="noopener"
+>https://static.googleusercontent.com/media/www.google.com/zh-CN//appsstatus/ir/bd9m3vkqwpvkk4j.pdf&lt;/a>&lt;/li>
+&lt;li>根本原因
+&lt;ul>
+&lt;li>许多 Google 服务使用一个通用的、内部的、分布式的系统来存储不可变的、非结构化的数据，也就是二进制大对象，或者说 blob。这个 blob 存储系统包含一个与 Google 内部客户端服务对接的前端，一个处理元数据操作的中层，以及一个用于存储数据的后端。blobs 本身。当客户端向前端提出请求时，元数据操作被转发到元数据服务，元数据服务与存储服务进行通信。&lt;/li>
+&lt;li>来自另一个 Google 服务的流量增加开始使元数据服务超载，导致任务变得不健康，请求的延迟增加。这种延迟促使这些操作的过度重试，导致资源耗尽。自动化系统试图启动新的元数据任务。然而，其中许多任务立即被其收到的流量所淹没，而这些任务也被淹没。由于资源枯竭，分配到的资源不足。这一问题因以下原因而更加严重： 策略用于取消和重试失败的请求，这对流量造成了倍增效应。&lt;/li>
+&lt;li>与其他产品相比，谷歌云存储受到的影响较小。虽然谷歌云存储是建立在 同一个 blob 存储系统，GCS 的元数据层大多与受影响的元数据层隔离。谷歌内部元数据服务。对于 &amp;ldquo;美国&amp;rdquo;，GCS 元数据隔离的迁移正在进行中。多区域，而所有其他迁移工作已经完成。因此，对全球通信系统客户的影响是 减少，这种影响仅限于 &amp;ldquo;美国 &amp;ldquo;多区域。&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;blockquote>
+&lt;p>教练点评：从事发时刻到 Google 工程师收到告警的时刻（20：58）之间只有短短的 3 分钟，在一个小时内受影响的各个 GCP 服务就开始了并行的调查和补救措施。在 23：00 定位到 blob 存储是根因故障，并实施配置变更，消除了大多数的内部错误。这正是 SRE 中所讨论的重大事故应急流程的有效执行，能快速有效的恢复服务。可以看出 Google 团队在事故响应方面的训练有素。&lt;/p>&lt;/blockquote>
+&lt;h3 id="spotify">Spotify
+&lt;/h3>&lt;ul>
+&lt;li>来源官方 Twitter 账号： &lt;a class="link" href="https://twitter.com/SpotifyStatus/status/1296064517504409600" target="_blank" rel="noopener"
+>https://twitter.com/SpotifyStatus/status/1296064517504409600&lt;/a>&lt;/li>
+&lt;li>这好像是由于 TLS 证书过期导致的。&lt;/li>
+&lt;li>其它媒体报道： &lt;a class="link" href="https://www.teiss.co.uk/spotify-outage-expired-tls-cert/" target="_blank" rel="noopener"
+>https://www.teiss.co.uk/spotify-outage-expired-tls-cert/&lt;/a>&lt;/li>
+&lt;li>据报道，周三发生了影响音乐流媒体服务 Spotify 的长达一小时的大规模中断，原因是该公司未能在 TLS 证书到期前更新。&lt;/li>
+&lt;li>不过，Cloudflare 的网络工程师 Louis Poinsignon 提供了 Spotify 系统内部到底发生了什么事情的线索。据他介绍，该公司显然没有及时更新 TLS 证书，证书过期导致中断。在 TLS 证书更新后，Spotify 的服务很快就恢复了在线。&lt;/li>
+&lt;/ul>
+&lt;blockquote>
+&lt;p>教练点评：Spotify 的特有的团队工作开发模式一直是一种学习的榜样，很难想象他们的服务会在这样简单的问题上翻船。&lt;/p>&lt;/blockquote>
+&lt;h2 id="新闻">新闻
+&lt;/h2>&lt;h3 id="devops-大会峰会">DevOps 大会/峰会
+&lt;/h3>&lt;p>中国 DevOps 社区流水线大赛 &amp;ndash; Pipeline Craft Championship&lt;/p>
+&lt;ul>
+&lt;li>8 月 18 日开始为期两个月，免费活动&lt;/li>
+&lt;li>报名：&lt;a class="link" href="https://wj.qq.com/s2/6852880/c181" target="_blank" rel="noopener"
+>https://wj.qq.com/s2/6852880/c181&lt;/a>&lt;/li>
+&lt;li>活动官网：&lt;a class="link" href="https://Pipeline.devopsmeetup.com" target="_blank" rel="noopener"
+>https://Pipeline.devopsmeetup.com&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;p>GitLab 的大会 &amp;ndash; Commit: You belong here&lt;/p>
+&lt;ul>
+&lt;li>8 月 26 日&lt;/li>
+&lt;li>线上免费峰会&lt;/li>
+&lt;li>&lt;a class="link" href="https://about.gitlab.com/events/commit/" target="_blank" rel="noopener"
+>https://about.gitlab.com/events/commit/&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;p>推荐你感兴趣的大会和峰会，发邮件到：&lt;a class="link" href="mailto:martin@devopscoach.org" >martin@devopscoach.org&lt;/a>&lt;/p>
+&lt;h3 id="grafana-labs-喜提-b-轮-5000-万美元融资">Grafana Labs 喜提 B 轮 5000 万美元融资
+&lt;/h3>&lt;ul>
+&lt;li>来源官方：&lt;a class="link" href="https://grafana.com/about/press/2020-08-17-series-b-announcement/" target="_blank" rel="noopener"
+>https://grafana.com/about/press/2020-08-17-series-b-announcement/&lt;/a>&lt;/li>
+&lt;li>8 月 27 日宣布&lt;/li>
+&lt;li>Grafana Labs 还宣布了 Grafana 加速器计划（GAP），以培养在更广泛的 Grafana 生态系统中进行创新的早期公司和副业项目。GAP 将提供免费的 Grafana Cloud 和 Grafana Enterprise 订阅、现金补助、股权融资以及进入 Grafana Labs 核心开发者的内部通道。&lt;/li>
+&lt;/ul>
+&lt;blockquote>
+&lt;p>教练点评：这个 CNCF 的热门项目终于迈向了商业化的第一步，随着企业订阅模式的形成，且看后续的创新开发和社区经营是否也能一浪高过一浪。&lt;/p>&lt;/blockquote>
+&lt;h2 id="文章">文章
+&lt;/h2>&lt;ul>
+&lt;li>
+&lt;p>《 Ops 工作的未来 》&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>一篇关于运维角色变化的好文章。对于那些想知道现代运维是什么样子的人来说，有一些很好的提示，包括供应商管理、外包基础设施和理解社会技术系统的重要性。&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;a class="link" href="https://acloudguru.com/blog/engineering/the-future-of-ops-jobs" target="_blank" rel="noopener"
+>https://acloudguru.com/blog/engineering/the-future-of-ops-jobs&lt;/a>&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>《 NAT 是如何工作的 》&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>对于任何想要更好地了解这个网络领域的人来说，这是一本很好的 NAT 网络介绍。好的图和例子，还有很多细节。&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;a class="link" href="https://tailscale.com/blog/how-nat-traversal-works/" target="_blank" rel="noopener"
+>https://tailscale.com/blog/how-nat-traversal-works/&lt;/a>&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>《 如何打造给董事会看的软件开发 KPI 报表 》&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>度量标准有很多不同的用途，包括向组织高层报告。这篇文章探讨了用于董事会对话的工程 KPI。&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;a class="link" href="https://codeclimate.com/blog/engineering-kpis-board-deck/" target="_blank" rel="noopener"
+>https://codeclimate.com/blog/engineering-kpis-board-deck/&lt;/a>&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>《 马丁富乐老师：单链接通道 》&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>有没有想过确保服务之间的消息保持有序，并为任何丢失的消息建立重试机制？这篇文章描述了一个具体的模式，但也是一组关于分布式计算模式的文章的一部分，值得探讨。&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;a class="link" href="https://martinfowler.com/articles/patterns-of-distributed-systems/single-socket-channel.html" target="_blank" rel="noopener"
+>https://martinfowler.com/articles/patterns-of-distributed-systems/single-socket-channel.html&lt;/a>&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>《 提升事故回顾质量的套路 》&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>事故回顾越来越常见，但往往很难做好。这段视频和详细的文字记录有各种改进流程的技巧。&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;a class="link" href="https://www.blameless.com/blog/improving-postmortems-paul-osman" target="_blank" rel="noopener"
+>https://www.blameless.com/blog/improving-postmortems-paul-osman&lt;/a>&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>《 应用日志开发的最佳实践 》&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>即使你不是用 Java 编写应用程序，掌握一些关于日志工作的知识通常也是有用的，因为你可能最终会至少运行一些 Java 应用程序。这些帖子提供了一个坚实的基础。&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;a class="link" href="https://sematext.com/blog/java-logging/" target="_blank" rel="noopener"
+>https://sematext.com/blog/java-logging/&lt;/a>&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;a class="link" href="https://sematext.com/blog/java-logging-best-practices/" target="_blank" rel="noopener"
+>https://sematext.com/blog/java-logging-best-practices/&lt;/a>&lt;/p>
+&lt;/li>
+&lt;/ul>
+&lt;h2 id="工具">工具
+&lt;/h2>&lt;ul>
+&lt;li>
+&lt;p>标签对于大规模管理 AWS 资源至关重要。Awstaghelper 提供了一个命令行工具，可以轻松地在广泛的 AWS 资源中向 CSV 文件或从 CSV 文件中添加和管理标签。&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;a class="link" href="https://github.com/mpostument/awstaghelper" target="_blank" rel="noopener"
+>https://github.com/mpostument/awstaghelper&lt;/a>&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>GitOps 工具包是一套可组合的 API 和专门的工具，可用于在 Kubernetes 之上构建一个持续交付平台。它们应该可以为 Flux 的 v2 提供基础，但也可以用来构建其他有趣的高级工具，采用同样的控制循环方法。&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;a class="link" href="https://toolkit.fluxcd.io/" target="_blank" rel="noopener"
+>https://toolkit.fluxcd.io/&lt;/a>&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Kip 是一个虚拟 Kubelet 提供商，它允许 Kubernetes 集群透明地将 pods 发射到自己的云实例上。如果你需要额外的工作负载隔离，这很方便。&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;a class="link" href="https://github.com/elotl/kip" target="_blank" rel="noopener"
+>https://github.com/elotl/kip&lt;/a>&lt;/p>
+&lt;/li>
+&lt;/ul>
+&lt;h2 id="学习资源">学习资源
+&lt;/h2>&lt;p>这里推荐一些值得关注和学习的免费视频学习资料。&lt;/p>
+&lt;blockquote>
+&lt;p>教练点评：B 站里的相关视频是不可忽视的学习资源。善加利用，就可以加速获取知识的进度。&lt;/p>&lt;/blockquote>
+&lt;p>波波老师的系列课程&lt;/p>
+&lt;ul>
+&lt;li>&lt;a class="link" href="https://space.bilibili.com/518029478/video" target="_blank" rel="noopener"
+>https://space.bilibili.com/518029478/video&lt;/a>&lt;/li>
+&lt;li>包括 k8s 和微服务等 DevOps 技术&lt;/li>
+&lt;/ul>
+&lt;p>【SpringBoot 项目实战】 2020 最新在线教育 spring boot 分布式项目实战&lt;/p>
+&lt;ul>
+&lt;li>系统后端接口部分，使用目前流行的 SpringBoot+SpringCloud 进行微服务架构，使用 Feign、Gateway、Hystrix，以及阿里巴巴的 Nacos 等组件搭建了项目的基础环境。项目中还使用 MyBatisPlus 进行持久层的操作，使用了 OAuth2+JWT 实现了分布式的访问，项目中整合了 SpringSecurity 进行了权限控制。除此之外，项目中使用了阿里巴巴的 EasyExcel 实现对 Excel 的读写操作，使用了 Redis 进行首页数据的缓存，使用 Git 进行代码的版本控制&lt;/li>
+&lt;li>&lt;a class="link" href="https://www.bilibili.com/video/BV1y7411y7am" target="_blank" rel="noopener"
+>https://www.bilibili.com/video/BV1y7411y7am&lt;/a>&lt;/li>
+&lt;li>播放量： 10w+&lt;/li>
+&lt;/ul>
+&lt;p>2019 谷粒商城微服务 SpringBoot,Dubbo,MySql 高级,Redis 秒杀,ElasticSearch,ActiveMQ,SSO 单点登&lt;/p>
+&lt;ul>
+&lt;li>&lt;a class="link" href="https://www.bilibili.com/video/BV1B4411V7cA" target="_blank" rel="noopener"
+>https://www.bilibili.com/video/BV1B4411V7cA&lt;/a>&lt;/li>
+&lt;li>2019 谷粒商城微服务 SpringBoot, zookeep 注册中心, Dubbo, MySql 高级, ElasticSearch, ActiveMQ, 通用 mapper, 解决秒杀, SSO 单点登录, OAuth2 协议三方登录, 第三方支付接口对接, Redis lua 脚本, Redis 秒杀, Redis 分布式锁, 集群搭建, 分布式, sku,spu 表结构介绍, 等等技术结合使用~~~~~~~~~~~&lt;/li>
+&lt;li>播放量： 10w+&lt;/li>
+&lt;/ul>
+&lt;p>Git+GitHub 教程&lt;/p>
+&lt;ul>
+&lt;li>&lt;a class="link" href="https://www.bilibili.com/video/BV1pW411A7a5" target="_blank" rel="noopener"
+>https://www.bilibili.com/video/BV1pW411A7a5&lt;/a>&lt;/li>
+&lt;li>Git 是先进的分布式版本控制系统，而 Github 是常用的 Git 代码托管中心。
+本套教程内容丰富、详实，囊括：Git 安装过程、本地库基本操作、远程基本操作、基于分支的 Gitflow 工作流、跨团队协作的 Forking 工作流、Eclipse 中的 Git 版本控制以及 Git 对 Eclipse 特定文件忽略的配置方法。还通过展示 Git 内部版本管理机制，让你了解 到 Git 高效操作的底层逻辑。教程的最后完整演示了 Gitlab 服务器的搭建过程。&lt;/li>
+&lt;li>播放量： 21w+&lt;/li>
+&lt;/ul>
+&lt;p>GitLab 与 GitFlow 的简单使用&lt;/p>
+&lt;ul>
+&lt;li>&lt;a class="link" href="https://www.bilibili.com/video/BV1Wb411e7ec" target="_blank" rel="noopener"
+>https://www.bilibili.com/video/BV1Wb411e7ec&lt;/a>&lt;/li>
+&lt;li>播放量： 1w+&lt;/li>
+&lt;/ul></description></item><item><title>DevOps Coach 周刊 4</title><link>https://martinliu.cn/blog/devopscoach-weekly-4/</link><pubDate>Mon, 17 Aug 2020 18:43:26 +0800</pubDate><guid>https://martinliu.cn/blog/devopscoach-weekly-4/</guid><description>&lt;img src="https://martinliu.cn/images/weeklyupdate.jpg" alt="Featured image of post DevOps Coach 周刊 4" />&lt;h2 id="宕机">宕机
+&lt;/h2>&lt;ul>
+&lt;li>上一周新发的宕机事故。&lt;/li>
+&lt;li>近期全球重大宕机事故的分析总结、事后回顾。&lt;/li>
+&lt;/ul>
+&lt;blockquote>
+&lt;p>May your queries flow and your pagers stay silent.
+&amp;ndash;Dave, Betsy, Niall, Stephen, and Kent&lt;/p>&lt;/blockquote>
+&lt;h2 id="新闻">新闻
+&lt;/h2>&lt;h3 id="项目发布速递">项目发布速递
+&lt;/h3>&lt;ul>
+&lt;li>Azure Functions 的 PowerShell 7 支持现在是 GA，如果在 PowerShell 中编写无服务器函数对你有吸引力。&lt;/li>
+&lt;li>Go 1.15 - 流行的编程语言。&lt;/li>
+&lt;li>AWS Glue 2.0 - AWS 上的 ETL 作业服务。&lt;/li>
+&lt;li>Node 14.8.0 - 服务器端 JavaScript 运行时。&lt;/li>
+&lt;/ul>
+&lt;h3 id="devops-大会峰会">DevOps 大会/峰会
+&lt;/h3>&lt;p>中国 DevOps 社区流水线大赛 &amp;ndash; Pipeline Craft Championship&lt;/p>
+&lt;ul>
+&lt;li>8 月 18 日开始为期两个月，免费活动&lt;/li>
+&lt;li>报名：&lt;a class="link" href="https://wj.qq.com/s2/6852880/c181" target="_blank" rel="noopener"
+>https://wj.qq.com/s2/6852880/c181&lt;/a>&lt;/li>
+&lt;li>活动官网：&lt;a class="link" href="https://Pipeline.devopsmeetup.com" target="_blank" rel="noopener"
+>https://Pipeline.devopsmeetup.com&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;p>提交大议信息发邮件到：&lt;a class="link" href="mailto:martin@devopscoach.org" >martin@devopscoach.org&lt;/a>&lt;/p>
+&lt;h2 id="文章">文章
+&lt;/h2>&lt;p>编写 Kubernetes Operators 的 7 个最佳实践。SRE 的观点&lt;/p>
+&lt;ul>
+&lt;li>Manuel Dewald，红帽公司&lt;/li>
+&lt;li>&lt;a class="link" href="https://www.openshift.com/blog/7-best-practices-for-writing-kubernetes-operators-an-sre-perspective" target="_blank" rel="noopener"
+>https://www.openshift.com/blog/7-best-practices-for-writing-kubernetes-operators-an-sre-perspective&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;p>DevNation 技术讲座：每个用户都应该知道的 10 个很棒的 Kubernetes 工具&lt;/p>
+&lt;ul>
+&lt;li>Alex Soto 和 Burr Sutter，红帽公司。&lt;/li>
+&lt;li>&lt;a class="link" href="https://www.twitch.tv/videos/709079582?t=00h01m01s" target="_blank" rel="noopener"
+>https://www.twitch.tv/videos/709079582?t=00h01m01s&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;p>变化的世界, 变化的 Mozilla (但裁员 250 名员工) 非常悲伤的消息从 Mozilla, 火狐的创造者, 本周，他们已- 经裁掉了一个明显的数量的员工，他们的商业需求驱动.&lt;/p>
+&lt;ul>
+&lt;li>&lt;a class="link" href="https://blog.mozilla.org/blog/2020/08/11/changing-world-changing-mozilla/" target="_blank" rel="noopener"
+>https://blog.mozilla.org/blog/2020/08/11/changing-world-changing-mozilla/&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;p>用 Prometheus 和 Grafana 进行系统监控。&lt;/p>
+&lt;ul>
+&lt;li>监控超级饲料。分布式系统的历史和挑战。&lt;/li>
+&lt;li>&lt;a class="link" href="https://flightaware.engineering/systems-monitoring-with-prometheus-grafana/" target="_blank" rel="noopener"
+>https://flightaware.engineering/systems-monitoring-with-prometheus-grafana/&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;p>在 Git 中想做的事情以及如何做这些事情？&lt;/p>
+&lt;ul>
+&lt;li>一些一般的 GIT 技巧&lt;/li>
+&lt;li>&lt;a class="link" href="https://stu2b50.dev/posts/things-you-wante9665" target="_blank" rel="noopener"
+>https://stu2b50.dev/posts/things-you-wante9665&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;p>公布 Kubernetes 的 Pulumi 开源新项目&lt;/p>
+&lt;ul>
+&lt;li>宣布新功能，推进 Pulumi 的 Kubernetes 支持部署自动化、云原生生态系统集成和 Pulumi 的简单采用。&lt;/li>
+&lt;li>&lt;a class="link" href="https://www.pulumi.com/blog/new-kubernetes-superpowers/" target="_blank" rel="noopener"
+>https://www.pulumi.com/blog/new-kubernetes-superpowers/&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;p>Mirantis 收购了 Kubernetes 的 IDE&amp;ndash;Lens - TechCrunch&lt;/p>
+&lt;ul>
+&lt;li>最近收购了 Docker 企业业务的公司 Mirantis 今天宣布收购了 Lens。&lt;/li>
+&lt;li>&lt;a class="link" href="https://techcrunch.com/2020/08/13/mirantis-acquires-lens-an-ide-for-kubernetes/" target="_blank" rel="noopener"
+>https://techcrunch.com/2020/08/13/mirantis-acquires-lens-an-ide-for-kubernetes/&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;p>MySQL 性能调优&lt;/p>
+&lt;ul>
+&lt;li>技巧、脚本和工具&lt;/li>
+&lt;li>&lt;a class="link" href="https://haydenjames.io/mysql-performance-tuning-tips-scripts-tools/" target="_blank" rel="noopener"
+>https://haydenjames.io/mysql-performance-tuning-tips-scripts-tools/&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;p>&amp;ldquo;第一天 &amp;ldquo;云原生组织&lt;/p>
+&lt;ul>
+&lt;li>在这里，我提出了一个云原生架构，以促进任何组织内的创新和实验的动态文化。&lt;/li>
+&lt;li>&lt;a class="link" href="https://medium.com/lambda-lego/day-one-cloud-native-organisations-250b4e181a8d" target="_blank" rel="noopener"
+>https://medium.com/lambda-lego/day-one-cloud-native-organisations-250b4e181a8d&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;p>从单体架构到微服务。架构和数据管理&lt;/p>
+&lt;ul>
+&lt;li>在本文中，我们分析了从单体架构到微服务架构的转变，深入探讨了微服务通信类型，并以一个零售应用为例，研究了服务之间通信的最佳实践。&lt;/li>
+&lt;li>&lt;a class="link" href="https://epsagon.com/development/monolithic-to-microservices-architecture-data-management/" target="_blank" rel="noopener"
+>https://epsagon.com/development/monolithic-to-microservices-architecture-data-management/&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;h2 id="工具">工具
+&lt;/h2>&lt;ul>
+&lt;li>
+&lt;p>&lt;a class="link" href="https://github.com/mingrammer/diagrams" target="_blank" rel="noopener"
+>https://github.com/mingrammer/diagrams&lt;/a>&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>云系统架构原型设计的 &amp;ldquo;图表即代码&amp;rdquo;（Diagram as Code）&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;a class="link" href="https://github.com/linkedin/shiv" target="_blank" rel="noopener"
+>https://github.com/linkedin/shiv&lt;/a>&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>shiv 是一个命令行实用程序，用于构建完全自包含的 Python zipapps，就像 PEP 441 中概述的那样，但包含了所有的依赖关系。&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;a class="link" href="https://github.com/hazelcast/hazelcast-jet" target="_blank" rel="noopener"
+>https://github.com/hazelcast/hazelcast-jet&lt;/a>&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>开源的分布式流和批处理技术&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;a class="link" href="https://github.com/abe-winter/automigrate" target="_blank" rel="noopener"
+>https://github.com/abe-winter/automigrate&lt;/a>&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>使用 git 版本的 SQL 模式+自动迁移它们。&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;a class="link" href="https://github.com/soraxas/shsh" target="_blank" rel="noopener"
+>https://github.com/soraxas/shsh&lt;/a>&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>一个多线程管理器，用于管理 shell 脚本、函数、独立的二进制文件、tab-completions 等。&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;a class="link" href="https://github.com/dutchcoders/cloudman" target="_blank" rel="noopener"
+>https://github.com/dutchcoders/cloudman&lt;/a>&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>管理 ec2 实例的文本用户界面。&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;a class="link" href="https://github.com/diego3g/rocketredis" target="_blank" rel="noopener"
+>https://github.com/diego3g/rocketredis&lt;/a>&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>一个漂亮的 Redis GUI&lt;/p>
+&lt;/li>
+&lt;/ul></description></item><item><title>DevOps Coach 周刊 3</title><link>https://martinliu.cn/blog/devopscoach-weekly-3/</link><pubDate>Tue, 11 Aug 2020 15:03:54 +0800</pubDate><guid>https://martinliu.cn/blog/devopscoach-weekly-3/</guid><description>&lt;img src="https://martinliu.cn/images/weeklyupdate.jpg" alt="Featured image of post DevOps Coach 周刊 3" />&lt;h2 id="宕机">宕机
+&lt;/h2>&lt;ul>
+&lt;li>上一周新发的宕机事故。&lt;/li>
+&lt;li>近期全球重大宕机事故的分析总结、事后回顾。&lt;/li>
+&lt;/ul>
+&lt;h3 id="上周新发宕机事故">上周新发宕机事故
+&lt;/h3>&lt;ul>
+&lt;li>&lt;strong>Discord&lt;/strong> 这个值得注意的是，它涉及到谷歌云平台中所谓的 &amp;ldquo;吵闹邻居 &amp;ldquo;情况。&lt;a class="link" href="https://discord.statuspage.io/incidents/bnv0wbddzz2x" target="_blank" rel="noopener"
+>https://discord.statuspage.io/incidents/bnv0wbddzz2x&lt;/a>&lt;/li>
+&lt;li>&lt;strong>Slack&lt;/strong> 更新缓存基础架构的坑。从2020年7月23日晚上9:00 PDT到2020年8月1日下午5:17 PDT，客户在使用各种API端点时可能会出现滞后或故障。我们于7月29日开始调查这一问题，并将这些问题追溯到最近对我们的缓存基础设施进行的一项变更，旨在增加该基础设施的容量。一个不可预见的副作用导致一小部分API请求需要更长的时间来处理并最终超时。我们在8月1日恢复了这一更改，所有受影响的客户的问题都得到了解决。8月6日, 6:49 AM GMT+8 &lt;a class="link" href="https://status.slack.com//2020-07/7d32ad54b0703c47" target="_blank" rel="noopener"
+>https://status.slack.com//2020-07/7d32ad54b0703c47&lt;/a>&lt;/li>
+&lt;li>&lt;strong>佳能&lt;/strong> 遭遇勒索软件攻击，Maze宣称对此事负责 来源： &lt;a class="link" href="https://www.zdnet.com/article/canon-suffers-ransomware-attack-maze-claims-responsibility/" target="_blank" rel="noopener"
+>https://www.zdnet.com/article/canon-suffers-ransomware-attack-maze-claims-responsibility/&lt;/a>&lt;/li>
+&lt;li>&lt;strong>Steam&lt;/strong> 服务器目前已经瘫痪 &lt;a class="link" href="https://gamerant.com/steam-servers-down-8-05/" target="_blank" rel="noopener"
+>https://gamerant.com/steam-servers-down-8-05/&lt;/a>&lt;/li>
+&lt;li>&lt;strong>Fastly&lt;/strong> 著名 CDN 服务器最近又出性能事故了， 影响范围，Edge Cloud Services (Fastly API, 快速配置应用, TLS 制备) &lt;a class="link" href="https://status.fastly.com/incidents/d6ljy97shb0p" target="_blank" rel="noopener"
+>https://status.fastly.com/incidents/d6ljy97shb0p&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;h3 id="关于-quayio-宕机事故回顾">关于 Quay.io 宕机事故回顾
+&lt;/h3>&lt;ul>
+&lt;li>来源官网： &lt;a class="link" href="https://www.openshift.com/blog/about-the-quay.io-outage-post-mortem" target="_blank" rel="noopener"
+>https://www.openshift.com/blog/about-the-quay.io-outage-post-mortem&lt;/a>&lt;/li>
+&lt;li>时间线：5 月 19 日第一次宕机，28 日第二次宕机，这些事故影响了大多数 quay.io 服务的用户。&lt;/li>
+&lt;li>Red Hat SRE 团队对本次事件的经验总结：
+&lt;ul>
+&lt;li>&lt;strong>关于谁和什么人在使用你的服务，你永远都不可能有足够的参考数据。&lt;/strong> 由于Quay &amp;ldquo;一直是正常工作&amp;rdquo;，我们从来不需要花太多时间分析我们的流量模式，处理负载的行为。这创造了一种虚假的安全感，即服务将无限期地扩展。&lt;/li>
+&lt;li>&lt;strong>当服务出现故障时，恢复是你的首要任务。&lt;/strong> 由于Quay在第一次中断期间不断出现数据库死锁的情况，我们的标准流程并没有明确的实现服务恢复的预期目标。这就导致我们花了更多的时间进行分析和收集数据，希望找到根本原因，而不是把所有的精力都放在让客户恢复运行上。&lt;/li>
+&lt;li>&lt;strong>要了解你的每一个服务功能的影响。&lt;/strong> App Registry很少被我们的客户使用，所以它不是我们团队的主要优先事项。当你的产品中有很少使用的功能时，bug就不会被提交，开发人员也不会再看代码。我们很容易认为这不会给团队带来任何负担&amp;ndash;直到它突然成为重大事件的一部分。&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h2 id="关于-heroku-事故-2090-的后续分析">关于 Heroku 事故 #2090 的后续分析
+&lt;/h2>&lt;ul>
+&lt;li>概述：此次事件涉及Heroku的基础设施提供商（大概是AWS）的DNS故障。这次事故的坑是 DNS。&lt;/li>
+&lt;li>来源官网：&lt;a class="link" href="https://status.heroku.com/incidents/2090" target="_blank" rel="noopener"
+>https://status.heroku.com/incidents/2090&lt;/a>&lt;/li>
+&lt;li>重要看点：为了给DNS查询提供内部IP地址，我们的服务提供商运行自己的内部DNS服务。这些DNS服务是确保在同一地区运行的基础设施之间建立最快连接的根本。当这些 DNS 服务不可用时，服务之间无法建立新的内部连接。与应用程序或数据服务的外部连接不会受到影响。在此次事件中，我们在一个地区的基础设施子集上经历了这些DNS服务的间歇性故障，包括我们运维的Heroku大部分内部服务的地方。&lt;/li>
+&lt;li>经验总结：我们正在审查我们如何应对服务提供商的DNS故障或降级，以确保我们能够尽快发现并解决任何未来的问题。&lt;/li>
+&lt;/ul>
+&lt;h2 id="linkedin-最近的-hadoop-事故总结理论-vs-实战">LinkedIn 最近的 Hadoop 事故总结：理论 vs. 实战
+&lt;/h2>&lt;ul>
+&lt;li>概述：LinkedIn的这起事件影响了多个内部客户，他们对耐用性和延迟的要求各不相同，使得恢复变得复杂。&lt;/li>
+&lt;li>来源官网：&lt;a class="link" href="https://engineering.linkedin.com/blog/2020/learnings-from-a-recent-hadoop-incident" target="_blank" rel="noopener"
+>https://engineering.linkedin.com/blog/2020/learnings-from-a-recent-hadoop-incident&lt;/a>&lt;/li>
+&lt;li>学习制度化：一场大型事件结束后，总会有一些心得体会。以下是我们正在跟进的几条。
+&lt;ul>
+&lt;li>为Hadoop基础设施建立一个强大和更全面的主机生命周期管理。&lt;/li>
+&lt;li>建立更好地理解我们在负载下各数据中心的网络行为，并确保按需修改网络路由的自动化方式。&lt;/li>
+&lt;li>目前，我们正在Azure上构建下一代基础设施，包括Hadoop协议栈。就中期而言，我们将有一个额外的集群，该集群建立在一个完全不同的技术栈上，这应该会进一步帮助我们实现冗余。&lt;/li>
+&lt;li>调查其他架构的可行性，作为我们Azure迁移的一部分。例如，我们可以将数据摄取一次，然后将相同的数据复制到 D/R Cluster中，并通过数据布局和查询规划优化来吃掉延迟成本。我们正在采用Apache Iceberg作为我们的表格式。有了Iceberg，我们应该可以更好地对受影响的文件进行针对性的恢复。在我们当前架构的临时，我们已经建立了几个工具，让我们能够辅助恢复（例如，恢复除损坏数据以外的所有数据，更容易从另一个集群恢复大文件等），并围绕它建立了运行本，以便于访问。&lt;/li>
+&lt;li>努力审计我们的流程，以确保它们有定义良好的灾难恢复协议。&lt;/li>
+&lt;li>增加我们的灾难演练的频率，此外，还要审查灾难演练中流程的表现与他们所述的恢复策略的评分卡。&lt;/li>
+&lt;li>继续研究我们的工具，围绕着理解世系，因为事实证明它在识别流和数据的依赖性方面非常有用。这也将提供理解生态系统端到端的连接图的能力&amp;ndash;这在灾难恢复等大型协调事件中是非常宝贵的。&lt;/li>
+&lt;li>一些流量所有者在他们的应用工作流本身中增强了弹性。例如，对延迟敏感的应用，产生关键业务小时和每日指标的应用，正在应用逻辑本身中进行明确的数据呆滞性与弹性的权衡。&lt;/li>
+&lt;li>专注于提高我们预测数据恢复的数据可用性SLA的能力，以便在这种性质的事件再次发生时有能力快速发布。我们的内部数据消费者可以使用这些SLA，并在恢复协议的决策选择方面做出明智的决定。&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h3 id="github可用性报告--2020年7月">GitHub可用性报告 &amp;ndash; 2020年7月
+&lt;/h3>&lt;ul>
+&lt;li>概述：相信很多人都经历了 GitHub 7 月13 日的事故。该事故持续了4 小时 25 分钟。以下报告包括对涉及Kubernetes pods和DNS服务受损的事件的描述。&lt;/li>
+&lt;li>来源官网：&lt;a class="link" href="https://github.blog/2020-08-05-github-availability-report-july-2020/" target="_blank" rel="noopener"
+>https://github.blog/2020-08-05-github-availability-report-july-2020/&lt;/a>&lt;/li>
+&lt;li>要点回顾：
+&lt;ul>
+&lt;li>事件的起因是我们的生产型 Kubernetes Pods 开始被标记为不可用。这在我们的集群中层出不穷，导致容量减少，最终导致我们的服务瘫痪。对Pods的调查显示，Pod中的一个容器超过了其定义的内存限制并被终止。尽管该容器不需要处理生产流量，但Kubernetes的性质要求所有容器都是健康的，Pod才能被标记为可用。&lt;/li>
+&lt;li>一般情况下，当一个Pod运行到这种故障模式时，集群会在一分钟左右恢复。在这种情况下，Pod中的容器被配置为ImagePullPolicy为Always，它指示Kubernetes每次都要获取新的容器镜像。然而，由于之前完成了一次例行的DNS维护操作，我们的集群无法成功到达我们的注册表，导致Pods无法启动。当为了缓解而触发了重新部署时，这个问题的影响就增加了，我们看到这个故障开始在我们的生产集群中传播。直到我们使用缓存的DNS记录重新启动进程，我们才得以成功获取容器镜像，重新部署，并恢复我们的服务。&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>后续事项：展望未来，我们已经确定了本季度要解决的一些领域。
+&lt;ul>
+&lt;li>加强监控，确保Pod重启不会再基于这种相同的模式而失败&lt;/li>
+&lt;li>尽量减少我们对镜像仓库的依赖。&lt;/li>
+&lt;li>在DNS变更期间扩大验证范围&lt;/li>
+&lt;li>重新评估所有现有的Kubernetes部署策略&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h2 id="新闻">新闻
+&lt;/h2>&lt;h3 id="项目发布速递">项目发布速递
+&lt;/h3>&lt;ul>
+&lt;li>Nano 5.0 — The popular simple Unix text editor.&lt;/li>
+&lt;li>Julia 1.5 — High performance, dynamically typed language.&lt;/li>
+&lt;li>Mastodon 3.2 — Federated social app.&lt;/li>
+&lt;li>Django 3.1 — Python-based Web application framework.&lt;/li>
+&lt;li>Alacritty 0.5 — Simplicity-focused terminal emulator.&lt;/li>
+&lt;li>Terraform 0.13 General Availability&lt;/li>
+&lt;/ul>
+&lt;h3 id="devops-大会峰会">DevOps 大会/峰会
+&lt;/h3>&lt;p>KubeCon + CloudNativeCon 欧洲 2020&lt;/p>
+&lt;ul>
+&lt;li>8 月 17 – 20， 免费&lt;/li>
+&lt;li>报名： &lt;a class="link" href="https://events.linuxfoundation.org/kubecon-cloudnativecon-europe/" target="_blank" rel="noopener"
+>https://events.linuxfoundation.org/kubecon-cloudnativecon-europe/&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;p>Commit 峰会&lt;/p>
+&lt;ul>
+&lt;li>8 月 26 ~ 27， GitLab 免费&lt;/li>
+&lt;li>报名：&lt;a class="link" href="https://about.gitlab.com/events/commit/" target="_blank" rel="noopener"
+>https://about.gitlab.com/events/commit/&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;p>DevOps Fusion&lt;/p>
+&lt;ul>
+&lt;li>8 月 26 日， 免费&lt;/li>
+&lt;li>报名：&lt;a class="link" href="https://swisstestingday.ch/en/" target="_blank" rel="noopener"
+>https://swisstestingday.ch/en/&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;p>DevOpsCon 伦敦 2020&lt;/p>
+&lt;ul>
+&lt;li>8 月 31 日 ~ 9 月 3 日，收费&lt;/li>
+&lt;li>报名： &lt;a class="link" href="https://devopscon.io/" target="_blank" rel="noopener"
+>https://devopscon.io/&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;p>提交大议信息发邮件到：&lt;a class="link" href="mailto:martin@devopscoach.org" >martin@devopscoach.org&lt;/a>&lt;/p>
+&lt;h2 id="文章">文章
+&lt;/h2>&lt;p>麦肯锡：《十种 &amp;ldquo;反模式&amp;rdquo;，让技术转型脱轨。》&lt;/p>
+&lt;ul>
+&lt;li>大型组织转型项目的反模式清单。在选择技术、技术管理、路线图等方面都有很好的建议。&lt;/li>
+&lt;li>&lt;a class="link" href="https://www.mckinsey.com/business-functions/mckinsey-digital/our-insights/ten-antipatterns-that-are-derailing-technology-transformations" target="_blank" rel="noopener"
+>https://www.mckinsey.com/business-functions/mckinsey-digital/our-insights/ten-antipatterns-that-are-derailing-technology-transformations&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;p>AWS：《为运维可视化构建仪表板》&lt;/p>
+&lt;ul>
+&lt;li>一篇关于仪表盘设计的好文章，有很多道理、提示、技巧和例子。&lt;/li>
+&lt;li>&lt;a class="link" href="https://aws.amazon.com/builders-library/building-dashboards-for-operational-visibility/" target="_blank" rel="noopener"
+>https://aws.amazon.com/builders-library/building-dashboards-for-operational-visibility/&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;p>LearnK8s：《验证Kubernetes YAML的最佳实践和策略》&lt;/p>
+&lt;ul>
+&lt;li>看看对验证和测试Kubernetes配置文件有用的几个工具。有用的对比表和每个不同工具的例子。&lt;/li>
+&lt;li>&lt;a class="link" href="https://learnk8s.io/validating-kubernetes-yaml" target="_blank" rel="noopener"
+>https://learnk8s.io/validating-kubernetes-yaml&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;p>推荐 Arrested DevOps 这个网站，它是帮助你实现理解、开发良好实践、运营你的团队和组织的播客，以获得最大的DevOps妙用。&lt;/p>
+&lt;ul>
+&lt;li>关于Service Mesh和SMI规范的所有事情的讨论。&lt;/li>
+&lt;li>&lt;a class="link" href="https://www.arresteddevops.com/service-mesh/" target="_blank" rel="noopener"
+>https://www.arresteddevops.com/service-mesh/&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;p>Dev.to：《使用Conftest、Regula和OPA保护你的Terraform管道安全》&lt;/p>
+&lt;ul>
+&lt;li>关于使用Conftest和Regula帮助编写安全的Terraform代码和测试作为CI流程的一部分的帖子。&lt;/li>
+&lt;li>&lt;a class="link" href="https://dev.to/prince_of_pasta/securing-your-terraform-pipelines-with-conftest-regula-and-opa-4hkh" target="_blank" rel="noopener"
+>https://dev.to/prince_of_pasta/securing-your-terraform-pipelines-with-conftest-regula-and-opa-4hkh&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;p>无罪网：《事件回顾从小白到大师》&lt;/p>
+&lt;ul>
+&lt;li>Under Armour（！）的首席SRE对他们如何进行SRE有很多有趣的事情可以分享。我喜欢他们对事件回顾的方法，即从1:1采访相关人员开始。保罗-奥斯曼&amp;ndash;Under Armour（无罪峰会）。&lt;/li>
+&lt;li>&lt;a class="link" href="https://www.blameless.com/blog/improving-postmortems-paul-osman" target="_blank" rel="noopener"
+>https://www.blameless.com/blog/improving-postmortems-paul-osman&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;p>medium.com 《主要的DevOps挑战以及如何应对这些挑战？》&lt;/p>
+&lt;ul>
+&lt;li>DevOps通过提供高效的解决方案，帮助加快交付速度，鼓励团队之间的协作，并促进敏捷环境，推动组织走向更美好的未来。&lt;/li>
+&lt;li>&lt;a class="link" href="https://medium.com/faun/major-devops-challenges-and-how-to-address-them-3b4d7b6ee50b" target="_blank" rel="noopener"
+>https://medium.com/faun/major-devops-challenges-and-how-to-address-them-3b4d7b6ee50b&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;h2 id="工具">工具
+&lt;/h2>&lt;ul>
+&lt;li>
+&lt;p>Open Service Mesh是一个新的轻量级、可扩展的、用于动态微服务环境的服务网状结构。它提供了开箱即用的可观察性功能，并使用SMI进行配置。&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;a class="link" href="https://openservicemesh.io/" target="_blank" rel="noopener"
+>https://openservicemesh.io/&lt;/a>&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;a class="link" href="https://github.com/openservicemesh/osm" target="_blank" rel="noopener"
+>https://github.com/openservicemesh/osm&lt;/a>&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Sysbox是一个新的容器运行时，它可以让你更容易地在容器中运行低级软件，比如Systemd、Docker和Kubernetes。由于可插拔的运行时功能，你也可以用Docker运行它。&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;a class="link" href="https://github.com/nestybox/sysbox" target="_blank" rel="noopener"
+>https://github.com/nestybox/sysbox&lt;/a>&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>我们开始看到应用框架和开发者工具为在Kubernetes等平台上运行提供高级抽象。Tye是一个有趣的.NET工具，它可以简化在云原生平台上运行.NET应用程序。&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;a class="link" href="https://github.com/dotnet/tye" target="_blank" rel="noopener"
+>https://github.com/dotnet/tye&lt;/a>&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Turandot允许在Kubernetes中使用TOSCA。TOSCA提供了一种高级服务描述，旨在实现底层基础设施之间的可移植性和互操作性。&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;a class="link" href="https://turandot.puccini.cloud/" target="_blank" rel="noopener"
+>https://turandot.puccini.cloud/&lt;/a>&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Copper是一个Kubernetes的配置文件验证器。它支持使用内置的Javascript DSL编写定制测试。&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;a class="link" href="https://github.com/cloud66-oss/copper" target="_blank" rel="noopener"
+>https://github.com/cloud66-oss/copper&lt;/a>&lt;/p>
+&lt;/li>
+&lt;/ul></description></item><item><title>DevOps Coach 周刊 2</title><link>https://martinliu.cn/blog/devopscoach-weekly-2/</link><pubDate>Mon, 03 Aug 2020 22:26:23 +0800</pubDate><guid>https://martinliu.cn/blog/devopscoach-weekly-2/</guid><description>&lt;img src="https://martinliu.cn/images/weeklyupdate.jpg" alt="Featured image of post DevOps Coach 周刊 2" />&lt;h2 id="宕机">宕机
+&lt;/h2>&lt;p>上周全球重大宕机事故清单。&lt;/p>
+&lt;h3 id="facebook">Facebook
+&lt;/h3>&lt;ul>
+&lt;li>具英媒体报道：7月 28 日 12：20pm， Facebook, Instagram 和 WhatsApp 这三款用户的一半以上的用户，无法加载出页面，无法正常使用服务。 Facebook 官方还没有关于这次事故的回应。实际上整个欧洲大陆，特别是葡萄牙和西班牙的故障更要严重一些。原因不明。&lt;/li>
+&lt;li>影响范围：London, Birmingham 和 Manchester.&lt;/li>
+&lt;li>来源： &lt;a class="link" href="https://metro.co.uk/2020/07/28/facebook-instagram-whatsapp-13048914/" target="_blank" rel="noopener"
+>https://metro.co.uk/2020/07/28/facebook-instagram-whatsapp-13048914/&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;h3 id="fastly---知名-cdn-服务商">fastly - 知名 CDN 服务商
+&lt;/h3>&lt;ul>
+&lt;li>官方声明：Fastly的网络具有内置冗余和自动故障转移路由，以确保最佳性能和正常运行时间。但当网络问题出现时，我们认为我们的客户应该得到清晰、透明的沟通，这样他们才能保持对我们的服务和团队的信任。当我们重新分配流量、升级硬件或在极少数情况下我们的网络不提供流量时，我们会在这里发布通知。如果您遇到问题而没有看到张贴的通知，请发送电子邮件至 &lt;a class="link" href="mailto:support@fastly.com" >support@fastly.com&lt;/a> 寻求帮助。&lt;/li>
+&lt;li>影响范围：North America (Ashburn (BWI), Ashburn (DCA), Ashburn (IAD), Ashburn (WDC), Atlanta (FTY), Atlanta (PDK), Dallas (DAL), Dallas (DFW), Jacksonville (JAX)).&lt;/li>
+&lt;li>来源：&lt;a class="link" href="https://status.fastly.com/history" target="_blank" rel="noopener"
+>https://status.fastly.com/history&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;h3 id="heroku">Heroku
+&lt;/h3>&lt;ul>
+&lt;li>官方声明：JUL 28, 2020 09:15 UTC Heroku 平台的很大的部分都遭受到可用性故障。然后开始和他们的服务提供商一起解决问题。一个多小时后平台恢复了正常。&lt;/li>
+&lt;li>来源：&lt;a class="link" href="https://status.heroku.com/incidents/2090" target="_blank" rel="noopener"
+>https://status.heroku.com/incidents/2090&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;h2 id="新闻">新闻
+&lt;/h2>&lt;p>DevOps实践的采用与组织拥抱数字化转型齐头并进。这两个短语都有被过度使用的风险，但这些帖子讨论了一些有用的心理模型，以帮助聚焦对话。&lt;/p>
+&lt;ul>
+&lt;li>&lt;a class="link" href="https://aws.amazon.com/blogs/enterprise-strategy/mental-models-for-digital-transformation/" target="_blank" rel="noopener"
+>https://aws.amazon.com/blogs/enterprise-strategy/mental-models-for-digital-transformation/&lt;/a>&lt;/li>
+&lt;li>&lt;a class="link" href="https://aws.amazon.com/blogs/enterprise-strategy/mental-models-to-clarify-the-goals-for-of-digital-transformation-part-2/" target="_blank" rel="noopener"
+>https://aws.amazon.com/blogs/enterprise-strategy/mental-models-to-clarify-the-goals-for-of-digital-transformation-part-2/&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;p>开发者平台的哪些属性会导致采用？下面的文章是专门关于大规模边缘平台的，但对于任何为开发者构建各种平台的人来说，包括在内部平台团队中这样做的人来说，都是很好的阅读。&lt;/p>
+&lt;ul>
+&lt;li>&lt;a class="link" href="https://blog.cloudflare.com/cloudflare-workers-serverless-week/" target="_blank" rel="noopener"
+>https://blog.cloudflare.com/cloudflare-workers-serverless-week/&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;p>当第一次接受DevOps实践和云服务时，在大型组织中通常会建立一个卓越中心。在采取这种方法时，需要避免一些陷阱，下面的文章将讨论这些陷阱。&lt;/p>
+&lt;ul>
+&lt;li>&lt;a class="link" href="https://www.contino.io/insights/cloud-centre-of-excellence-2020" target="_blank" rel="noopener"
+>https://www.contino.io/insights/cloud-centre-of-excellence-2020&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;p>最近的DevSecCon在线会议的视频都可以看到，其中涵盖了一系列有趣的主题，包括基础设施作为代码安全、持续审计合规、供应链攻击等。&lt;/p>
+&lt;ul>
+&lt;li>&lt;a class="link" href="https://www.mydevsecops.io/post/devseccon24" target="_blank" rel="noopener"
+>https://www.mydevsecops.io/post/devseccon24&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;p>关于无服务器架构和单体应用之间的权衡，主要集中在较小规模的应用上，是一个不错的讨论。&lt;/p>
+&lt;ul>
+&lt;li>&lt;a class="link" href="https://dev.to/iamcherta/my-monolith-doesn-t-fit-in-your-serverless-311o" target="_blank" rel="noopener"
+>https://dev.to/iamcherta/my-monolith-doesn-t-fit-in-your-serverless-311o&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;p>一篇关于linux内核新特性的深度技术文章，这些特性应该会让非特权容器更受欢迎。对seccomp的细节也做了很好的介绍。&lt;/p>
+&lt;ul>
+&lt;li>&lt;a class="link" href="https://people.kernel.org/brauner/the-seccomp-notifier-new-frontiers-in-unprivileged-container-development" target="_blank" rel="noopener"
+>https://people.kernel.org/brauner/the-seccomp-notifier-new-frontiers-in-unprivileged-container-development&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;p>基于角色的访问控制在保护Kubernetes的安全方面发挥着重要作用。这个方便的网站将文章、工具和官方文档收集在一起。&lt;/p>
+&lt;ul>
+&lt;li>&lt;a class="link" href="https://rbac.dev/" target="_blank" rel="noopener"
+>https://rbac.dev/&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;p>对于任何使用Serverless技术的人来说，这是一项有趣的调查，来自该领域的众多公司。我期待着结果公布时的到来。&lt;/p>
+&lt;ul>
+&lt;li>&lt;a class="link" href="https://codingsans.typeform.com/to/mPinnC" target="_blank" rel="noopener"
+>https://codingsans.typeform.com/to/mPinnC&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;h2 id="文章">文章
+&lt;/h2>&lt;p>LaunchDarkly从基于 Polling 的架构开始，最终迁移到向客户推送变化量（Streaming）。Dawn Parzych&amp;ndash;LaunchDarkly。&lt;/p>
+&lt;ul>
+&lt;li>&lt;a class="link" href="https://launchdarkly.com/blog/launchdarklys-evolution-from-polling-to-streaming/" target="_blank" rel="noopener"
+>https://launchdarkly.com/blog/launchdarklys-evolution-from-polling-to-streaming/&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;p>一个更简单的分布式跟踪的替代方案，用于故障排除。
+简要概述了分布式追踪的一些问题，以及涉及人工智能的另一种方式的建议。 Larry Lancaster - Zebrium&lt;/p>
+&lt;ul>
+&lt;li>&lt;a class="link" href="https://www.zebrium.com/blog/virtual-tracing-a-simpler-alternative-to-distributed-tracing-for-troubleshooting" target="_blank" rel="noopener"
+>https://www.zebrium.com/blog/virtual-tracing-a-simpler-alternative-to-distributed-tracing-for-troubleshooting&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;p>谷歌云 对 Classroom 的故障总结报告 2020-07-07
+这是Google在7月7日对其Google Classroom 事件的事后报告。&lt;/p>
+&lt;ul>
+&lt;li>&lt;a class="link" href="https://static.googleusercontent.com/media/www.google.com/en//appsstatus/ir/u5sinmib27yly4i.pdf" target="_blank" rel="noopener"
+>https://static.googleusercontent.com/media/www.google.com/en//appsstatus/ir/u5sinmib27yly4i.pdf&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;p>面向领域的微服务架构介绍
+长期以来，Uber一直是微服务的倡导者。现在，凭借几年的经验，他们分享了他们所学到的经验，以及如何处理一些陷阱。Adam Gluck - Uber&lt;/p>
+&lt;ul>
+&lt;li>&lt;a class="link" href="https://eng.uber.com/microservice-architecture/" target="_blank" rel="noopener"
+>https://eng.uber.com/microservice-architecture/&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;p>通过远程事件响应使PagerDuty始终保持开启状态。
+本文开篇就从PagerDuty的角度对Cloudflare中断的情况进行了有趣的描述。Dave Bresci - PagerDuty&lt;/p>
+&lt;ul>
+&lt;li>&lt;a class="link" href="https://www.pagerduty.com/blog/remote-incident-response/" target="_blank" rel="noopener"
+>https://www.pagerduty.com/blog/remote-incident-response/&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;p>安全是设计出来的？
+这篇文章反映了两种不同的安全理念。&lt;/p>
+&lt;ul>
+&lt;li>工程设计应确保系统的安全。&lt;/li>
+&lt;li>单纯的设计不能保证系统的安全
+Lorin Hochstein&lt;/li>
+&lt;li>&lt;a class="link" href="https://surfingcomplexity.blog/2020/07/28/safe-by-design/" target="_blank" rel="noopener"
+>https://surfingcomplexity.blog/2020/07/28/safe-by-design/&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;p>我们能做的就是发现问题
+你不能用可用性指标来告知你的系统是否足够可靠，因为它们只能在你出现问题时告诉你。
+Lorin Hochstein&lt;/p>
+&lt;ul>
+&lt;li>&lt;a class="link" href="https://surfingcomplexity.blog/2020/07/28/all-we-can-do-is-find-problems/" target="_blank" rel="noopener"
+>https://surfingcomplexity.blog/2020/07/28/all-we-can-do-is-find-problems/&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;h2 id="工具推荐">工具推荐
+&lt;/h2>&lt;p>管理 K8s 命令行工具的工具，所有命令行工具一站式搞定，一键式安装很多 k8s 集群基础。&lt;/p>
+&lt;ul>
+&lt;li>&lt;a class="link" href="https://github.com/alexellis/arkade/" target="_blank" rel="noopener"
+>https://github.com/alexellis/arkade/&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;p>一个在文件系统之上的文件系统。&lt;/p>
+&lt;ul>
+&lt;li>&lt;a class="link" href="https://github.com/carlosgaldino/gotenksfs" target="_blank" rel="noopener"
+>https://github.com/carlosgaldino/gotenksfs&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;p>一个 Cloud-Native API Gateway&lt;/p>
+&lt;ul>
+&lt;li>&lt;a class="link" href="https://github.com/apache/apisix" target="_blank" rel="noopener"
+>https://github.com/apache/apisix&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;p>一个简单而全面的容器漏洞扫描器，适用于CI。&lt;/p>
+&lt;ul>
+&lt;li>&lt;a class="link" href="https://github.com/aquasecurity/trivy" target="_blank" rel="noopener"
+>https://github.com/aquasecurity/trivy&lt;/a>&lt;/li>
+&lt;/ul></description></item><item><title>DevOps Coach 周刊 1</title><link>https://martinliu.cn/blog/devopscoach-weekly-1/</link><pubDate>Tue, 28 Jul 2020 10:35:19 +0800</pubDate><guid>https://martinliu.cn/blog/devopscoach-weekly-1/</guid><description>&lt;img src="https://martinliu.cn/images/weeklyupdate.jpg" alt="Featured image of post DevOps Coach 周刊 1" />&lt;h2 id="新闻">新闻
+&lt;/h2>&lt;p>又到了一年一度的时间。定期的Puppet Devops状态调查已经开始。今年的重点是变革管理、持续交付和自服务平台之间的关系。
+&lt;a class="link" href="https://polls.onresearch.net/xsurvey/20JT028/20JT028T1/Survey.aspx?ckie=true" target="_blank" rel="noopener"
+>https://polls.onresearch.net/xsurvey/20JT028/20JT028T1/Survey.aspx?ckie=true&lt;/a>&lt;/p>
+&lt;p>文档和设计在构建强大的系统中起着至关重要的作用。这篇文章探讨了为什么设计文档是有用的，以及它们应该包含什么样的内容。
+&lt;a class="link" href="https://www.industrialempathy.com/posts/design-docs-at-google/" target="_blank" rel="noopener"
+>https://www.industrialempathy.com/posts/design-docs-at-google/&lt;/a>&lt;/p>
+&lt;p>一份关于公共Terraform代码安全状况的新报告。对于任何使用Terraform配置服务的人来说，一些有用的数据和一些好的提示。
+&lt;a class="link" href="https://bridgecrew.io/blog/state-of-open-source-terraform-security-report-2020/" target="_blank" rel="noopener"
+>https://bridgecrew.io/blog/state-of-open-source-terraform-security-report-2020/&lt;/a>&lt;/p>
+&lt;p>看看如何使用 Azure Pipelines 自动验证 sysmon 配置。
+&lt;a class="link" href="https://medium.com/falconforce/using-azure-pipelines-to-validate-my-sysmon-configuration-48315dba7571" target="_blank" rel="noopener"
+>https://medium.com/falconforce/using-azure-pipelines-to-validate-my-sysmon-configuration-48315dba7571&lt;/a>&lt;/p>
+&lt;p>这是一个很好的大规模迁移低级组件的故事，在这个案例中是一个应用服务器。金丝雀的推出、上游贡献、性能和其他有趣的话题。
+&lt;a class="link" href="https://about.gitlab.com/blog/2020/07/08/migrating-to-puma-on-gitlab/" target="_blank" rel="noopener"
+>https://about.gitlab.com/blog/2020/07/08/migrating-to-puma-on-gitlab/&lt;/a>&lt;/p>
+&lt;p>拥抱云原生技术和工作方式会带来挑战，本帖记录了其中一些挑战，包括安全、缺乏专业知识、发布周期缓慢等。
+&lt;a class="link" href="https://www.cloudops.com/2020/07/top-7-challenges-to-becoming-cloud-native/" target="_blank" rel="noopener"
+>https://www.cloudops.com/2020/07/top-7-challenges-to-becoming-cloud-native/&lt;/a>&lt;/p>
+&lt;h2 id="文章">文章
+&lt;/h2>&lt;p>“How could they be so stupid?” 上周知名Twitter 账号入侵事件出现了更多细节，导致一些人说出了上面这句话。这里有一个看法，如何看待这不是 &amp;ldquo;愚蠢 &amp;ldquo;的问题。Lorin Hochstein
+&lt;a class="link" href="https://surfingcomplexity.blog/2020/07/20/how-could-they-be-so-stupid/" target="_blank" rel="noopener"
+>https://surfingcomplexity.blog/2020/07/20/how-could-they-be-so-stupid/&lt;/a>&lt;/p>
+&lt;p>Data Consistency Checks 你的数据库中的数据应该是一致的&amp;hellip;&amp;hellip;但话说回来，事故不应该发生，对吗？Slack接受在他们的规模下，数据经常会出问题，他们有框架和一套工具来处理它。Paul Hammond and Samantha Stoller — Slack
+&lt;a class="link" href="https://slack.engineering/data-consistency-checks-e73261318f96" target="_blank" rel="noopener"
+>https://slack.engineering/data-consistency-checks-e73261318f96&lt;/a>&lt;/p>
+&lt;p>Obstacles to Learning from Incidents 我从这篇文章中学到了很多东西。我最喜欢的障碍是 &amp;ldquo;通过差异化来拉开距离&amp;rdquo;，比如 &amp;ldquo;我们绝对不会以这种方式应对事件&amp;rdquo;。Thai Wood — Learning from Incidents
+&lt;a class="link" href="https://www.learningfromincidents.io/blog/obstacles-to-learning-from-incidents" target="_blank" rel="noopener"
+>https://www.learningfromincidents.io/blog/obstacles-to-learning-from-incidents&lt;/a>&lt;/p>
+&lt;p>You don’t need SRE. What you need is SRE. […] SRE，也就是谷歌定义的SRE，对于大多数组织来说并不适用。Sanjeev Sharma
+&lt;a class="link" href="https://sdarchitect.blog/2020/02/20/you-dont-need-sre-what-you-need-is-sre/" target="_blank" rel="noopener"
+>https://sdarchitect.blog/2020/02/20/you-dont-need-sre-what-you-need-is-sre/&lt;/a>&lt;/p>
+&lt;p>Questionable Advice: “What’s the critical path?” 专家建议，当你试图弄清楚你的关键路径是什么（以及为什么你想知道它是什么）时，应该问什么问题。Charity Majors
+&lt;a class="link" href="https://charity.wtf/2020/07/24/questionable-advice-whats-the-critical-path/" target="_blank" rel="noopener"
+>https://charity.wtf/2020/07/24/questionable-advice-whats-the-critical-path/&lt;/a>&lt;/p>
+&lt;p>Thinking About Your Humans With J. Paul Reed 这个播客集有点像J.Paul Reed和Tim Heckman在&lt;a class="link" href="https://srefromhome.com/%e7%9a%84%e8%81%94%e5%90%88%e6%bc%94%e8%ae%b2%e7%9a%84%e9%a2%84%e8%a7%88%e3%80%82%e6%88%91%e5%96%9c%e6%ac%a2%e4%bb%96%e4%bb%ac%e6%8a%8a%e8%bf%99%e5%9c%ba%e4%bc%a0%e6%9f%93%e7%97%85%e5%a4%a7%e6%b5%81%e8%a1%8c%e7%a7%b0%e4%b8%ba%e9%95%bf%e8%be%be%e6%95%b0%e6%9c%88%e7%9a%84%e4%ba%8b%e4%bb%b6%ef%bc%8c%e5%b9%b6%e6%8c%87%e5%87%ba%e5%a6%82%e6%9e%9c%e4%bd%a0%e6%80%bb%e6%98%af%e5%9c%a8%e4%ba%8b%e4%bb%b6%e4%b8%ad%ef%bc%8c%e9%82%a3%e4%b9%88%e4%bd%a0%e6%b0%b8%e8%bf%9c%e4%b8%8d%e4%bc%9a%e5%9c%a8%e4%ba%8b%e4%bb%b6%e4%b8%ad%e3%80%82Julie" target="_blank" rel="noopener"
+>https://srefromhome.com/的联合演讲的预览。我喜欢他们把这场传染病大流行称为长达数月的事件，并指出如果你总是在事件中，那么你永远不会在事件中。Julie&lt;/a> Gunderson and Mandi Walls — Page it to the Limit
+&lt;a class="link" href="https://www.pageittothelimit.com/thinking-about-your-humans/" target="_blank" rel="noopener"
+>https://www.pageittothelimit.com/thinking-about-your-humans/&lt;/a>&lt;/p>
+&lt;p>Rebuilding messaging: How we bootstrapped our platform 我喜欢一个好的双写故事。以下是LinkedIn如何过渡到新的消息存储机制。 Pradhan Cadabam and Jingxuan (Rex) Zhang — LinkedIn
+&lt;a class="link" href="https://engineering.linkedin.com/blog/2020/bootstrapping-our-new-messaging-platform" target="_blank" rel="noopener"
+>https://engineering.linkedin.com/blog/2020/bootstrapping-our-new-messaging-platform&lt;/a>&lt;/p>
+&lt;p>Using Automation and SLOs to Create Margin in your Systems 在系统中留有余地，使其具有适应能力，并利用SLO(同情地)来推动优先事项的确定。
+&lt;a class="link" href="https://thechief.io/c/blameless/using-automation-and-slos-create-margin-your-systems/" target="_blank" rel="noopener"
+>https://thechief.io/c/blameless/using-automation-and-slos-create-margin-your-systems/&lt;/a>&lt;/p>
+&lt;p>How to Classify Incidents 如何对事件进行分类 什么是事件分类？为什么要对事件进行分类？事件严重性与优先级，以及如何创建事件类别？
+&lt;a class="link" href="https://thechief.io/c/blameless/how-classify-incidents/" target="_blank" rel="noopener"
+>https://thechief.io/c/blameless/how-classify-incidents/&lt;/a>&lt;/p>
+&lt;h2 id="宕机">宕机
+&lt;/h2>&lt;p>上周全球重大宕机事故清单。&lt;/p>
+&lt;ul>
+&lt;li>Garmin 作为佳明手表和 app 的用户，我体验到了这场 24+小时的服务中断
+&lt;ul>
+&lt;li>&lt;a class="link" href="https://spectrumlocalnews.com/nys/rochester/ap-online/2020/07/24/garmin-fitness-tracking-service-goes-down-frustrating-users" target="_blank" rel="noopener"
+>https://spectrumlocalnews.com/nys/rochester/ap-online/2020/07/24/garmin-fitness-tracking-service-goes-down-frustrating-users&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Snapchat 打不开 app，黑屏，无法使用摄像头相关功能
+&lt;ul>
+&lt;li>&lt;a class="link" href="https://screenrant.com/snapchat-down-app-slow-response-messages-not-sent-issues/" target="_blank" rel="noopener"
+>https://screenrant.com/snapchat-down-app-slow-response-messages-not-sent-issues/&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Tweetdeck Twitter 客户的工具服务发生故障。
+&lt;ul>
+&lt;li>&lt;a class="link" href="https://www.independent.co.uk/life-style/gadgets-and-tech/news/tweetdeck-down-twitter-not-working-loading-a9633636.html" target="_blank" rel="noopener"
+>https://www.independent.co.uk/life-style/gadgets-and-tech/news/tweetdeck-down-twitter-not-working-loading-a9633636.html&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>GGPoker 在 World Series of Poker (WSOP) 世界扑克大赛赛事期间发生一些列问题.
+&lt;ul>
+&lt;li>&lt;a class="link" href="https://portswigger.net/daily-swig/online-poker-operator-hit-by-ddos-attack-on-opening-day-of-wsop-event" target="_blank" rel="noopener"
+>https://portswigger.net/daily-swig/online-poker-operator-hit-by-ddos-attack-on-opening-day-of-wsop-event&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Fastly (control plane) Full disclosure: Fastly is my employer.
+&lt;ul>
+&lt;li>&lt;a class="link" href="https://status.fastly.com/incidents/7q2psqf255wl" target="_blank" rel="noopener"
+>https://status.fastly.com/incidents/7q2psqf255wl&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Squarespace 这一周非常痛苦，在July 21 事故后发生的相关事件：
+*July 21 &lt;a class="link" href="https://status.squarespace.com/incidents/hh3p432jcq03" target="_blank" rel="noopener"
+>https://status.squarespace.com/incidents/hh3p432jcq03&lt;/a>
+&lt;ul>
+&lt;li>July 22 (包含事件详细分析) &lt;a class="link" href="https://status.squarespace.com/incidents/3cgg1171wyvz" target="_blank" rel="noopener"
+>https://status.squarespace.com/incidents/3cgg1171wyvz&lt;/a>
+*July 24 &lt;a class="link" href="https://status.squarespace.com/incidents/x63nssl9kzvm" target="_blank" rel="noopener"
+>https://status.squarespace.com/incidents/x63nssl9kzvm&lt;/a>&lt;/li>
+&lt;li>July 24 &lt;a class="link" href="https://status.squarespace.com/incidents/v6ql728f1f4d" target="_blank" rel="noopener"
+>https://status.squarespace.com/incidents/v6ql728f1f4d&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Google Cloud Platform 几个谷歌云平台组件受到影响，包括 7 层负载均衡器。
+&lt;ul>
+&lt;li>&lt;a class="link" href="https://status.cloud.google.com/incident/zall/20006" target="_blank" rel="noopener"
+>https://status.cloud.google.com/incident/zall/20006&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h2 id="工具">工具
+&lt;/h2>&lt;p>&lt;a class="link" href="https://github.com/flant/shell-operator" target="_blank" rel="noopener"
+>https://github.com/flant/shell-operator&lt;/a>
+Shell-operator是一个在Kubernetes集群中运行事件驱动脚本的工具。&lt;/p>
+&lt;p>&lt;a class="link" href="https://github.com/Fizzadar/pyinfra" target="_blank" rel="noopener"
+>https://github.com/Fizzadar/pyinfra&lt;/a>
+pyinfra在大规模的基础架构中实现了超快的自动化。它可以用于临时命令执行、服务部署、配置管理等。&lt;/p>
+&lt;h1 id="python-配置管理">python #配置管理
+&lt;/h1>&lt;p>&lt;a class="link" href="https://github.com/alerta/alerta" target="_blank" rel="noopener"
+>https://github.com/alerta/alerta&lt;/a>
+Alerta 监测系统&lt;/p>
+&lt;p>&lt;a class="link" href="https://github.com/GoogleCloudPlatform/terraformer" target="_blank" rel="noopener"
+>https://github.com/GoogleCloudPlatform/terraformer&lt;/a>
+CLI工具可以从现有的基础设施中生成terraform文件（反向Terraform）。&lt;/p>
+&lt;h1 id="基础设施即代码">基础设施即代码
+&lt;/h1>&lt;p>&lt;a class="link" href="https://github.com/visenger/awesome-mlops" target="_blank" rel="noopener"
+>https://github.com/visenger/awesome-mlops&lt;/a>
+MLOps的精选参考资料清单。&lt;/p>
+&lt;h1 id="github">github
+&lt;/h1>&lt;p>&lt;a class="link" href="https://github.com/cycloidio/inframap" target="_blank" rel="noopener"
+>https://github.com/cycloidio/inframap&lt;/a>
+读取你的tfstate或HCL，为每个提供者生成一个特定的图表，只显示最重要/相关的资源。&lt;/p>
+&lt;h1 id="terraform">terraform
+&lt;/h1>&lt;p>&lt;a class="link" href="https://github.com/Hack-with-Github/Awesome-Hacking" target="_blank" rel="noopener"
+>https://github.com/Hack-with-Github/Awesome-Hacking&lt;/a>
+一个为黑客、Pentesters和安全研究人员提供的各种令人敬畏的列表的集合。&lt;/p>
+&lt;h1 id="github-安全">github #安全
+&lt;/h1>&lt;p>&lt;a class="link" href="https://github.com/box/kube-iptables-tailer" target="_blank" rel="noopener"
+>https://github.com/box/kube-iptables-tailer&lt;/a>
+kube-iptables-tailer做的正是你所期望的。它将底层的iptables数据暴露给kubectl，方便发现服务在Kubernetes中互相通信的尝试和失败。&lt;/p>
+&lt;p>&lt;a class="link" href="https://github.com/Stono/kconmon" target="_blank" rel="noopener"
+>https://github.com/Stono/kconmon&lt;/a>
+Kconmon是一个Kubernetes连通性监控工具，它可以运行频繁的测试（tcp、udp和dns），并公开Prometheus指标，这些指标富含节点名称，以及位置信息（如区域），使您能够关联可用性区域或节点之间的问题。&lt;/p></description></item></channel></rss>

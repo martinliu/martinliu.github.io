@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>告警 on Martin Liu's Blog</title><link>https://martinliu.cn/tags/%E5%91%8A%E8%AD%A6/</link><description>Recent content in 告警 on Martin Liu's Blog</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><lastBuildDate>Thu, 21 Aug 2025 17:36:56 +0800</lastBuildDate><atom:link href="https://martinliu.cn/tags/%E5%91%8A%E8%AD%A6/index.xml" rel="self" type="application/rss+xml"/><item><title>Grafana 12.1 正式发布！</title><link>https://martinliu.cn/blog/grafana-12-1-release-all-the-latest-features/</link><pubDate>Tue, 29 Jul 2025 14:34:27 +0800</pubDate><guid>https://martinliu.cn/blog/grafana-12-1-release-all-the-latest-features/</guid><description>&lt;img src="https://martinliu.cn/blog/grafana-12-1-release-all-the-latest-features/grafana-12.1-meta.png" alt="Featured image of post Grafana 12.1 正式发布！" />&lt;p>最新版本带来了多项新功能，简化了 &lt;strong>Grafana 实例（Grafana instances）&lt;/strong> 的管理方式，也优化了 &lt;strong>告警规则（alert rules）&lt;/strong> 的管理体验，方便你快速定位所需的告警内容。此外还有更多改进。&lt;/p>
+&lt;p>以下是本次 Grafana 版本的一些亮点。如果你想了解本次发布的全部更新内容，请参考 &lt;a class="link" href="https://github.com/grafana/grafana/blob/main/CHANGELOG.md" target="_blank" rel="noopener"
+>更新日志&lt;/a> 或 &lt;a class="link" href="https://grafana.com/docs/grafana/latest/whatsnew/whats-new-in-v12-1/?pg=blog&amp;amp;plcmt=body-txt&amp;amp;src=li&amp;amp;mdm=social&amp;amp;camp=blog" target="_blank" rel="noopener"
+>新版功能文档&lt;/a>。&lt;/p>
+&lt;h2 id="grafana-advisor智能化运维监控">Grafana Advisor：智能化运维监控
+&lt;/h2>&lt;p>我们一直在探索降低运维负担的方法，帮助你更高效地进行维护与故障排查。因此，在 Grafana 12.1 中，我们很高兴地宣布 &lt;a class="link" href="https://grafana.com/whats-new/2025-07-22-keep-instances-running-smoothly-with-grafana-advisor/?pg=blog&amp;amp;plcmt=body-txt&amp;amp;src=li&amp;amp;mdm=social&amp;amp;camp=blog" target="_blank" rel="noopener"
+>Grafana Advisor&lt;/a> —— 一个用于帮助管理员保持 Grafana 实例稳定和安全运行的监控工具 —— 现已进入公开预览阶段。&lt;/p>
+&lt;p>&lt;strong>Grafana Advisor&lt;/strong> 最初在 Grafana 12 中作为实验性功能推出，如今它能够自动对你的 Grafana 服务器执行定期健康检查，提供可操作的洞见与建议，帮助你维持系统的最佳运行状态。&lt;/p>
+&lt;p>目前，&lt;strong>Grafana Advisor&lt;/strong> 会定期检查 &lt;strong>数据源连接（data source connections）&lt;/strong>、&lt;strong>插件（plugins）&lt;/strong> 和 &lt;strong>SSO 设置（SSO settings）&lt;/strong>，未来版本中我们计划扩展其功能范围。&lt;/p>
+&lt;p>在 &lt;strong>Grafana Cloud&lt;/strong> 中，Advisor 默认启用。若要在 &lt;strong>Grafana OSS&lt;/strong> 与 &lt;strong>Enterprise 版&lt;/strong> 中启用该功能，可通过配置开关 &lt;code>grafanaAdvisor&lt;/code> 实现。详情请参见我们的 &lt;a class="link" href="https://grafana.com/docs/grafana/latest/administration/grafana-advisor/?src=li&amp;amp;mdm=social&amp;amp;camp=blog" target="_blank" rel="noopener"
+>技术文档&lt;/a>。&lt;/p>
+&lt;h2 id="告警功能的重大升级">告警功能的重大升级
+&lt;/h2>&lt;p>告警是任何可观测性策略中的关键组成部分。在 Grafana 12.1 中，我们带来了几项新的告警功能，包括重新设计的 &lt;strong>告警规则列表页面（alert rule list page）&lt;/strong>，帮助你以更可扩展、直观的方式管理告警。&lt;/p>
+&lt;h3 id="全新设计的告警规则列表页面">全新设计的告警规则列表页面
+&lt;/h3>&lt;p>&lt;em>适用于所有版本的 Grafana&lt;/em>&lt;/p>
+&lt;p>在 &lt;a class="link" href="https://grafana.com/docs/grafana/latest/alerting/?src=li&amp;amp;mdm=social&amp;amp;camp=blog" target="_blank" rel="noopener"
+>Grafana Alerting&lt;/a> 中，一个 &lt;a class="link" href="https://grafana.com/docs/grafana/latest/alerting/fundamentals/alert-rules/?src=li&amp;amp;mdm=social&amp;amp;camp=blog" target="_blank" rel="noopener"
+>告警规则（alert rule）&lt;/a> 定义了触发告警的评估条件。你可能拥有数百甚至上千条这样的规则，而在本次发布中，我们通过完全 &lt;a class="link" href="https://grafana.com/whats-new/2025-07-15-alert-rule-list-page-updates/?src=li&amp;amp;mdm=social&amp;amp;camp=blog" target="_blank" rel="noopener"
+>重新设计的规则列表页面&lt;/a> 让浏览管理更加轻松。&lt;/p>
+&lt;p>新版页面整体提供了更流畅、更快捷、更灵活的使用体验。它支持两种视图模式，满足不同使用场景：&lt;/p>
+&lt;ul>
+&lt;li>&lt;strong>分组视图（Grouped view）&lt;/strong>：按命名空间组织，便于深入查看特定规则组。&lt;/li>
+&lt;li>&lt;strong>列表视图（List view）&lt;/strong>：展示所有告警规则的完整列表，支持快速搜索与过滤。近期的性能优化大幅提升了使用效率。&lt;/li>
+&lt;/ul>
+&lt;p>我们还对界面进行了简化，聚焦于“管理告警规则”这一核心任务。现在你将看到一个更简洁、更清晰的视图，仅显示最关键的信息字段，包括 &lt;strong>规则名称（rule name）&lt;/strong>、&lt;strong>所属位置（location）&lt;/strong>、&lt;strong>类型（type）&lt;/strong> 和 &lt;strong>状态（state）&lt;/strong>。&lt;/p>
+&lt;p>此外，我们还为规则列表页面引入了新的分页 API，使管理操作更轻松便捷。无论你是希望查看结构化的告警规则层级，还是需要快速检索和筛选成千上万条规则，现在都能获得更简洁、更流畅的体验。&lt;/p>
+&lt;p>对于 &lt;strong>Grafana Cloud 用户&lt;/strong>，我们正逐步向所有实例推出新版规则页面；对于 &lt;strong>Grafana OSS 用户&lt;/strong>，当前可通过功能开关启用。请在 Grafana 配置文件的 &lt;code>feature_toggles&lt;/code> 部分中添加开关 &lt;code>alertingListViewV2&lt;/code>：&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-yaml" data-lang="yaml">&lt;span class="line">&lt;span class="cl">&lt;span class="p">[&lt;/span>&lt;span class="l">feature_toggles]&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="l">alertingListViewV2 = true&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>重启 Grafana 后，即可访问新版规则列表页面。&lt;/p>
+&lt;h3 id="支持-prometheus-yaml-文件导入规则">支持 Prometheus YAML 文件导入规则
+&lt;/h3>&lt;p>我们近期还 &lt;a class="link" href="https://grafana.com/docs/grafana-cloud/alerting-and-irm/alerting/alerting-rules/alerting-migration/?src=li&amp;amp;mdm=social&amp;amp;camp=blog" target="_blank" rel="noopener"
+>新增支持&lt;/a>：可以将由数据源管理的规则导入为由 Grafana 管理的告警规则（Grafana-managed alert rules）。不过，以前用户在没有配置 ruler 的情况下，无法导入现有的 &lt;strong>Prometheus 规则（Prometheus rules）&lt;/strong>。&lt;/p>
+&lt;p>而在 Grafana 12.1 中，你现在可以直接 &lt;a class="link" href="https://grafana.com/whats-new/2025-06-02-add-ability-to-import-rules-to-gma-from-prometheus-yaml/?pg=blog&amp;amp;plcmt=body-txt&amp;amp;src=li&amp;amp;mdm=social&amp;amp;camp=blog" target="_blank" rel="noopener"
+>通过 Prometheus YAML 文件导入规则&lt;/a>，并使用同一套 Alerting UI 完成配置。&lt;/p>
+&lt;h3 id="引入活动时间区间active-time-intervals">引入“活动时间区间”（active time intervals）
+&lt;/h3>&lt;p>在本次告警功能更新中，我们将原先的 &lt;a class="link" href="https://grafana.com/docs/grafana/latest/alerting/configure-notifications/mute-timings/?src=li&amp;amp;mdm=social&amp;amp;camp=blog" target="_blank" rel="noopener"
+>静默时间区间（mute time intervals）&lt;/a> 重命名为 &lt;a class="link" href="https://grafana.com/whats-new/2025-07-09-active-time-intervals-in-grafana-alerting/?pg=blog&amp;amp;plcmt=body-txt&amp;amp;src=li&amp;amp;mdm=social&amp;amp;camp=blog" target="_blank" rel="noopener"
+>活动时间区间（active time intervals）&lt;/a>，以更准确地反映其用途 —— 即定义告警“何时应当触发”。&lt;/p>
+&lt;p>如需进一步了解 Grafana 告警功能中的这些改动和其他更新，请查看我们的 &lt;a class="link" href="https://grafana.com/docs/grafana/latest/alerting/?pg=blog&amp;amp;plcmt=body-txt&amp;amp;src=li&amp;amp;mdm=social&amp;amp;camp=blog" target="_blank" rel="noopener"
+>官方文档&lt;/a>。&lt;/p>
+&lt;h2 id="用更灵活的方式查询与可视化数据">用更灵活的方式查询与可视化数据
+&lt;/h2>&lt;p>无论你是想深入分析某项指标，还是构建复杂的仪表盘，这些新功能都将帮助你以更符合需求的方式探索数据。&lt;/p>
+&lt;h3 id="趋势线转换trendlines-transformation">趋势线转换（Trendlines transformation）
+&lt;/h3>&lt;p>&lt;em>适用于所有版本的 Grafana&lt;/em>&lt;/p>
+&lt;p>在 Grafana 中，&lt;a class="link" href="https://grafana.com/docs/grafana/latest/panels-visualizations/query-transform-data/transform-data/?src=li&amp;amp;mdm=social&amp;amp;camp=blog" target="_blank" rel="noopener"
+>转换操作（transformations）&lt;/a> 是一种强大手段，用于在系统进行可视化之前处理查询返回的数据。Grafana 12.1 中新增了一个全新的转换类型：&lt;a class="link" href="https://grafana.com/whats-new/2025-07-21-transformations--regression-analysis/?pg=blog&amp;amp;plcmt=body-txt&amp;amp;src=li&amp;amp;mdm=social&amp;amp;camp=blog" target="_blank" rel="noopener"
+>趋势线（trendlines，也称回归分析）&lt;/a>。&lt;/p>
+&lt;p>这一新转换会对任意数据集拟合一个数学函数 —— 支持线性或多项式回归 —— 以预测原始数据中未直接体现的某一时间点的数值。&lt;/p>
+&lt;p>换句话说，你可以基于统计模型生成一个新序列，用于表示趋势线中的预测值。这在处理波动剧烈、难以洞察趋势的数据时尤为有用。&lt;/p>
+&lt;p>你可以在 &lt;a class="link" href="https://play.grafana.org/goto/9o1-SMyNg?orgId=1&amp;amp;src=li&amp;amp;mdm=social&amp;amp;camp=blog" target="_blank" rel="noopener"
+>Grafana Play 示例&lt;/a> 中查看这一转换的实际效果，或在我们的 &lt;a class="link" href="https://grafana.com/docs/grafana-cloud/visualizations/panels-visualizations/query-transform-data/transform-data/#regression-analysis?src=li&amp;amp;mdm=social&amp;amp;camp=blog" target="_blank" rel="noopener"
+>文档&lt;/a> 中了解更多细节。&lt;/p>
+&lt;h3 id="可视化操作中支持自定义变量">可视化操作中支持自定义变量
+&lt;/h3>&lt;p>&lt;em>适用于所有版本的 Grafana&lt;/em>&lt;/p>
+&lt;p>我们很高兴地宣布，你现在可以在 &lt;a class="link" href="https://grafana.com/whats-new/2025-07-14-custom-variable-support-in-visualization-actions/?pg=blog&amp;amp;plcmt=body-txt&amp;amp;src=li&amp;amp;mdm=social&amp;amp;camp=blog" target="_blank" rel="noopener"
+>可视化操作（visualization actions）中定义自定义变量&lt;/a> 了。&lt;/p>
+&lt;p>当你触发一个 &lt;a class="link" href="https://grafana.com/docs/grafana/latest/panels-visualizations/configure-data-links/#actions?src=li&amp;amp;mdm=social&amp;amp;camp=blog" target="_blank" rel="noopener"
+>操作（action）&lt;/a>（例如调用 API 创建支持工单）时，系统会提示你填写这些变量的值。这样一来，操作变得更加动态、交互性更强，你无需修改仪表盘配置就能实时定制请求内容。&lt;/p>
+&lt;p>这项功能在触发告警、过滤 API 调用，或将用户定义参数传递给外部系统时尤其有用。&lt;/p>
+&lt;h3 id="仪表盘支持服务器配置的快捷时间范围">仪表盘支持服务器配置的快捷时间范围
+&lt;/h3>&lt;p>&lt;em>适用于 Grafana OSS 与 Grafana Enterprise&lt;/em>&lt;/p>
+&lt;p>Grafana 服务器管理员现在可以为仪表盘的 &lt;a class="link" href="https://grafana.com/grafana/plugins/williamvenner-timepickerbuttons-panel/?src=li&amp;amp;mdm=social&amp;amp;camp=blog" target="_blank" rel="noopener"
+>时间选择器（time picker）&lt;/a> 定义自定义的时间范围预设。这一功能非常适合那些需要经常分析特定上下文时间窗口的团队。&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/blog/grafana-12-1-release-all-the-latest-features/screenshot-custom-time-ranges-12-1.png"
+width="594"
+height="517"
+srcset="https://martinliu.cn/blog/grafana-12-1-release-all-the-latest-features/screenshot-custom-time-ranges-12-1_hu_a241bb434e2a8f79.png 480w, https://martinliu.cn/blog/grafana-12-1-release-all-the-latest-features/screenshot-custom-time-ranges-12-1_hu_6a0f3af3c36a678c.png 1024w"
+loading="lazy"
+alt="服务器配置时间范围的截图"
+class="gallery-image"
+data-flex-grow="114"
+data-flex-basis="275px"
+>&lt;/p>
+&lt;p>&lt;em>服务器配置时间范围的截图&lt;/em>&lt;/p>
+&lt;p>只需在你的 &lt;a class="link" href="https://grafana.com/docs/grafana/next/setup-grafana/configure-grafana/?src=li&amp;amp;mdm=social&amp;amp;camp=blog" target="_blank" rel="noopener"
+>服务器配置&lt;/a> 文件中配置 &lt;code>[time_picker] quick_ranges&lt;/code>，即可根据监控数据的实际情况设置全局默认值。&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;span class="lnt">4
+&lt;/span>&lt;span class="lnt">5
+&lt;/span>&lt;span class="lnt">6
+&lt;/span>&lt;span class="lnt">7
+&lt;/span>&lt;span class="lnt">8
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-yaml" data-lang="yaml">&lt;span class="line">&lt;span class="cl">&lt;span class="p">[&lt;/span>&lt;span class="l">time_picker]&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="l">quick_ranges = &amp;#34;&amp;#34;&amp;#34;[&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>{&lt;span class="s2">&amp;#34;from&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="s2">&amp;#34;now-6s&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="s2">&amp;#34;to&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="s2">&amp;#34;now&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="s2">&amp;#34;display&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="s2">&amp;#34;Last 6 seconds&amp;#34;&lt;/span>}&lt;span class="p">,&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>{&lt;span class="s2">&amp;#34;from&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="s2">&amp;#34;now-10m&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="s2">&amp;#34;to&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="s2">&amp;#34;now&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="s2">&amp;#34;display&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="s2">&amp;#34;Last 10 minutes&amp;#34;&lt;/span>}&lt;span class="p">,&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>{&lt;span class="s2">&amp;#34;from&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="s2">&amp;#34;now-25h&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="s2">&amp;#34;to&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="s2">&amp;#34;now&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="s2">&amp;#34;display&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="s2">&amp;#34;Last 24 hours&amp;#34;&lt;/span>}&lt;span class="p">,&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>{&lt;span class="s2">&amp;#34;from&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="s2">&amp;#34;now/w&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="s2">&amp;#34;to&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="s2">&amp;#34;now/w&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="s2">&amp;#34;display&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="s2">&amp;#34;This week&amp;#34;&lt;/span>}&lt;span class="p">,&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>{&lt;span class="s2">&amp;#34;from&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="s2">&amp;#34;now-1w/w&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="s2">&amp;#34;to&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="s2">&amp;#34;now-1w/w&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="s2">&amp;#34;display&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="s2">&amp;#34;Last week&amp;#34;&lt;/span>}&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="p">]&lt;/span>&lt;span class="s2">&amp;#34;&amp;#34;&lt;/span>&lt;span class="l">&amp;#34;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>特别感谢社区成员 Chris Hodges &lt;a class="link" href="https://github.com/grafana/grafana/pull/102254" target="_blank" rel="noopener"
+>为该功能贡献代码&lt;/a>！&lt;/p>
+&lt;h3 id="增强的自定义货币格式">增强的自定义货币格式
+&lt;/h3>&lt;p>&lt;em>适用于所有版本的 Grafana&lt;/em>&lt;/p>
+&lt;p>你现在可以 &lt;a class="link" href="https://grafana.com/whats-new/2025-06-12-enhanced-custom-currency-format--display-exact-financial-values/?pg=blog&amp;amp;plcmt=body-txt&amp;amp;src=li&amp;amp;mdm=social&amp;amp;camp=blog" target="_blank" rel="noopener"
+>显示精确的财务数值&lt;/a>（或按需缩写），以便更灵活地控制仪表盘中的展示方式。&lt;/p>
+&lt;p>此前，Grafana 会自动缩写较大的货币数值 —— 例如 &lt;code>$1,235,667&lt;/code> 会显示为 &lt;code>$1.24M&lt;/code>，&lt;code>$555,558&lt;/code> 会变成 &lt;code>$555.6K&lt;/code>。虽然这种方式适用于大多数可视化场景，但财务数据往往需要显示精确数值。&lt;/p>
+&lt;p>为此，我们增强了自定义货币格式。你现在可以使用 &lt;code>currency:financial:&amp;lt;unit&amp;gt;&lt;/code> 格式完整显示数字。例如：使用 &lt;code>currency:financial:$&lt;/code> 会将 &lt;code>1235667&lt;/code> 格式化为 &lt;code>$1,235,667&lt;/code>，而非 &lt;code>$1.24M&lt;/code>。&lt;/p>
+&lt;p>财务格式还支持灵活的货币符号位置，包括：&lt;/p>
+&lt;p>&lt;strong>前缀&lt;/strong>（默认）：&lt;code>currency:financial:$&lt;/code> 会显示为 &lt;code>$1,235,667&lt;/code>&lt;/p>
+&lt;p>&lt;strong>后缀&lt;/strong>：&lt;code>currency:financial:€:suffix&lt;/code> 会显示为 &lt;code>1,235,667€&lt;/code>&lt;/p>
+&lt;h3 id="microsoft-entra-workload-identity-支持">Microsoft Entra Workload Identity 支持
+&lt;/h3>&lt;p>&lt;em>适用于所有版本的 Grafana&lt;/em>&lt;/p>
+&lt;p>Grafana 现在 &lt;a class="link" href="https://grafana.com/whats-new/2025-07-15-entra-workload-identity-support/?pg=blog&amp;amp;plcmt=body-txt&amp;amp;src=li&amp;amp;mdm=social&amp;amp;camp=blog" target="_blank" rel="noopener"
+>支持 Microsoft Entra Workload Identity&lt;/a>，显著增强了基于联合凭据的身份验证能力。该更新简化了 OAuth 流程，并提升了在 Microsoft Azure 上运行 Grafana 实例的安全性。&lt;/p>
+&lt;p>关于 Entra ID（前身为 Azure AD）身份验证配置的更多信息，请参见我们的 &lt;a class="link" href="https://grafana.com/docs/grafana/next/setup-grafana/configure-security/configure-authentication/azuread/?pg=blog&amp;amp;plcmt=body-txt&amp;amp;src=li&amp;amp;mdm=social&amp;amp;camp=blog" target="_blank" rel="noopener"
+>官方文档&lt;/a>。感谢社区成员 &lt;a class="link" href="https://github.com/mehighlow" target="_blank" rel="noopener"
+>mehiglow&lt;/a> 对该功能的宝贵贡献！&lt;/p>
+&lt;h2 id="grafana-扩展性数据源新增功能">Grafana 扩展性：数据源新增功能
+&lt;/h2>&lt;p>在 Grafana Labs，我们始终相信 —— 不论你的数据存储在哪里，你都应该能够查询和可视化它。因此，我们持续扩展并改进 Grafana 的数据源支持能力。&lt;/p>
+&lt;p>以下是最新的数据源相关更新。&lt;/p>
+&lt;h3 id="可视化-logicmonitor-数据">可视化 LogicMonitor 数据
+&lt;/h3>&lt;p>&lt;a class="link" href="https://www.logicmonitor.com/" target="_blank" rel="noopener"
+>LogicMonitor&lt;/a> 是一个可观测性平台，提供基础设施监控、AIOps 和 IT 运维洞察。现已进入公开预览阶段，全新的 &lt;a class="link" href="https://grafana.com/grafana/plugins/grafana-logicmonitor-datasource/?src=li&amp;amp;mdm=social&amp;amp;camp=blog" target="_blank" rel="noopener"
+>LogicMonitor Devices Enterprise 数据源&lt;/a> 让你可以在 Grafana Cloud 或 Grafana Enterprise 中直接查询与可视化 &lt;code>Device Instance Data&lt;/code>，以及列出 &lt;code>Devices&lt;/code>、&lt;code>Datasources&lt;/code> 和 &lt;code>Instances&lt;/code>。&lt;/p>
+&lt;p>你可以在我们的 &lt;a class="link" href="https://grafana.com/docs/plugins/grafana-logicmonitor-datasource/latest/?src=li&amp;amp;mdm=social&amp;amp;camp=blog" target="_blank" rel="noopener"
+>官方文档&lt;/a> 中了解如何使用与安装该数据源。如需全面了解 Enterprise 数据源，请参考这篇 &lt;a class="link" href="https://grafana.com/blog/2024/05/13/grafana-enterprise-data-source-plugins-a-brief-guide-to-what-they-are-and-how-to-get-started/?src=li&amp;amp;mdm=social&amp;amp;camp=blog" target="_blank" rel="noopener"
+>指南&lt;/a>。&lt;/p>
+&lt;h3 id="bigquery-数据源支持服务账号模拟service-account-impersonation">BigQuery 数据源支持服务账号模拟（Service Account Impersonation）
+&lt;/h3>&lt;p>为提升安全性，Google 建议使用服务账号令牌配合 &lt;a class="link" href="https://cloud.google.com/iam/docs/service-account-impersonation" target="_blank" rel="noopener"
+>服务账号模拟（Service Account Impersonation）&lt;/a>。一旦服务账号令牌遭到泄露，若未关联可模拟的服务账号，该令牌将无法访问 Google Cloud API，从而显著降低未授权访问的风险。&lt;/p>
+&lt;p>这一额外的安全层级现已在我们的 &lt;a class="link" href="https://grafana.com/grafana/plugins/grafana-bigquery-datasource/?src=li&amp;amp;mdm=social&amp;amp;camp=blog" target="_blank" rel="noopener"
+>BigQuery 数据源&lt;/a> 配置中 &lt;a class="link" href="https://grafana.com/whats-new/2025-06-18-support-for-service-account-impersonation-in-bigquery/?src=li&amp;amp;mdm=social&amp;amp;camp=blog" target="_blank" rel="noopener"
+>正式支持&lt;/a>，可有效防止令牌泄露后被滥用。目前该功能已全面开放。&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/blog/grafana-12-1-release-all-the-latest-features/bigquery-service-account-impersonation.png"
+width="1388"
+height="476"
+srcset="https://martinliu.cn/blog/grafana-12-1-release-all-the-latest-features/bigquery-service-account-impersonation_hu_240ed6ee3e0fbace.png 480w, https://martinliu.cn/blog/grafana-12-1-release-all-the-latest-features/bigquery-service-account-impersonation_hu_2d64300ee7a6bafb.png 1024w"
+loading="lazy"
+alt="服务账号模拟开关的截图"
+class="gallery-image"
+data-flex-grow="291"
+data-flex-basis="699px"
+>&lt;/p>
+&lt;p>你可以通过我们的 &lt;a class="link" href="https://grafana.com/grafana/plugins/grafana-bigquery-datasource/?src=li&amp;amp;mdm=social&amp;amp;camp=blog" target="_blank" rel="noopener"
+>插件目录&lt;/a> 或这篇 &lt;a class="link" href="https://grafana.com/blog/2025/06/18/visualize-google-cloud-bigquery-data-in-grafana-the-latest-updates-key-features-and-more/?src=li&amp;amp;mdm=social&amp;amp;camp=blog" target="_blank" rel="noopener"
+>最新博客文章&lt;/a> 深入了解 Grafana 中 BigQuery 数据源的使用方式。&lt;/p>
+&lt;p>如需查看 Grafana 中全部新增功能，请参阅我们的 &lt;a class="link" href="https://grafana.com/docs/grafana/latest/?pg=blog&amp;amp;plcmt=body-txt&amp;amp;src=li&amp;amp;mdm=social&amp;amp;camp=blog" target="_blank" rel="noopener"
+>官方文档&lt;/a>、&lt;a class="link" href="https://github.com/grafana/grafana/blob/main/CHANGELOG.md" target="_blank" rel="noopener"
+>更新日志&lt;/a>，或 &lt;a class="link" href="https://grafana.com/docs/grafana/latest/whatsnew/whats-new-in-v12-1/?pg=blog&amp;amp;plcmt=body-txt&amp;amp;src=li&amp;amp;mdm=social&amp;amp;camp=blog" target="_blank" rel="noopener"
+>新版亮点文档&lt;/a>。&lt;/p></description></item></channel></rss>

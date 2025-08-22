@@ -1,0 +1,451 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Kops on Martin Liu's Blog</title><link>https://martinliu.cn/tags/kops/</link><description>Recent content in Kops on Martin Liu's Blog</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><lastBuildDate>Tue, 25 Jun 2024 21:44:26 +0800</lastBuildDate><atom:link href="https://martinliu.cn/tags/kops/index.xml" rel="self" type="application/rss+xml"/><item><title>Kops on Aws</title><link>https://martinliu.cn/blog/kops-on-aws/</link><pubDate>Mon, 02 Apr 2018 00:22:44 +0800</pubDate><guid>https://martinliu.cn/blog/kops-on-aws/</guid><description>&lt;img src="https://res.cloudinary.com/martinliu/image/upload/BingWallpaper-2018-03-17.jpg" alt="Featured image of post Kops on Aws" />&lt;p>kops这种方式是我找到的最佳的，最适合于培训课堂需要的安装方式，当然对有类似需求的人有帮助。&lt;/p>
+&lt;h2 id="route53-dns配置">Route53 DNS配置
+&lt;/h2>&lt;p>kops需要使用DNS服务，用主机名提供k8s的相关服务访问。配置的注意点：&lt;/p>
+&lt;ul>
+&lt;li>域名还是有必要有一个的，没有的话注册一个也不贵，以后用着也方便&lt;/li>
+&lt;li>建议在aws的Route53里做一个二级域名，例如：k8s.devopscoach.org&lt;/li>
+&lt;li>这个二级域名最好是能被正常公网解析的，为了便于直接访问集群里的服务&lt;/li>
+&lt;li>用 dig NS k8s.devopscoach.org 可以能正常解析（Mac上是这个命令）&lt;/li>
+&lt;/ul>
+&lt;p>由于全球的域名同步会需要一些时间，因此可以先做这一步，用到的时候，可能就已经同步好了。&lt;/p>
+&lt;p>kops会将所有主机的域名解析都自动化的添加A记录到这里。&lt;/p>
+&lt;p>&lt;img src="https://res.cloudinary.com/martinliu/image/upload/dns.png"
+loading="lazy"
+alt="kops On aws"
+>&lt;/p>
+&lt;h2 id="安装工具准备">安装工具准备
+&lt;/h2>&lt;p>需要安装的工具包括 kubectl, kops 和 AWS CLI 工具。kops需要调用 AWS CLI来创建所需要的资源。我觉得简单的方法是：在目标的Region里创建一台Amazon AMI的虚拟机，这样AWS CLI就不用装了，而且在云里的话，执行kops的时候，由于有一大堆资源创建更新的api调用，感觉速度比在本机快很多，而且还用担心断网。&lt;/p>
+&lt;p>可以启动一台t2.micro规格的Amazon AMI即可，另外需要给这个实例配置如下IAM用户权限，在启动的时候选择合适的IAM Role。&lt;/p>
+&lt;ul>
+&lt;li>AmazonEC2FullAccess&lt;/li>
+&lt;li>AmazonRoute53FullAccess&lt;/li>
+&lt;li>AmazonS3FullAccess&lt;/li>
+&lt;li>IAMFullAccess&lt;/li>
+&lt;li>AmazonVPCFullAccess&lt;/li>
+&lt;/ul>
+&lt;p>这台虚拟机启动之后，安装kubectl和kops。&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;span class="lnt">4
+&lt;/span>&lt;span class="lnt">5
+&lt;/span>&lt;span class="lnt">6
+&lt;/span>&lt;span class="lnt">7
+&lt;/span>&lt;span class="lnt">8
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-gdscript3" data-lang="gdscript3">&lt;span class="line">&lt;span class="cl">&lt;span class="n">curl&lt;/span> &lt;span class="o">-&lt;/span>&lt;span class="n">LO&lt;/span> &lt;span class="n">https&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="o">//&lt;/span>&lt;span class="n">storage&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">googleapis&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">com&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">kubernetes&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">release&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">release&lt;/span>&lt;span class="o">/$&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">curl&lt;/span> &lt;span class="o">-&lt;/span>&lt;span class="n">s&lt;/span> &lt;span class="n">https&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="o">//&lt;/span>&lt;span class="n">storage&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">googleapis&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">com&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">kubernetes&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">release&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">release&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">stable&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">txt&lt;/span>&lt;span class="p">)&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">bin&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">linux&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">amd64&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">kubectl&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">sudo&lt;/span> &lt;span class="n">chmod&lt;/span> &lt;span class="o">+&lt;/span>&lt;span class="n">x&lt;/span> &lt;span class="n">kubectl&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">sudo&lt;/span> &lt;span class="n">mv&lt;/span> &lt;span class="n">kubectl&lt;/span> &lt;span class="o">/&lt;/span>&lt;span class="n">usr&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">local&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">bin&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">kubectl&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">wget&lt;/span> &lt;span class="n">https&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="o">//&lt;/span>&lt;span class="n">github&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">com&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">kubernetes&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">kops&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">releases&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">download&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="mf">1.8&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="mi">0&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">kops&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">linux&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">amd64&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">sudo&lt;/span> &lt;span class="n">chmod&lt;/span> &lt;span class="o">+&lt;/span>&lt;span class="n">x&lt;/span> &lt;span class="n">kops&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">linux&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">amd64&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">sudo&lt;/span> &lt;span class="n">mv&lt;/span> &lt;span class="n">kops&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">linux&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">amd64&lt;/span> &lt;span class="o">/&lt;/span>&lt;span class="n">usr&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">local&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">bin&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">kops&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>准备ssh登陆秘钥，用户ssh登录各个ec2实例&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;span class="lnt">14
+&lt;/span>&lt;span class="lnt">15
+&lt;/span>&lt;span class="lnt">16
+&lt;/span>&lt;span class="lnt">17
+&lt;/span>&lt;span class="lnt">18
+&lt;/span>&lt;span class="lnt">19
+&lt;/span>&lt;span class="lnt">20
+&lt;/span>&lt;span class="lnt">21
+&lt;/span>&lt;span class="lnt">22
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">[ec2-user@ip-172-31-27-182 ~]$ ssh-keygen
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Generating public/private rsa key pair.
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Enter file in which to save the key (/home/ec2-user/.ssh/id_rsa):
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Enter passphrase (empty for no passphrase):
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Enter same passphrase again:
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Your identification has been saved in /home/ec2-user/.ssh/id_rsa.
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Your public key has been saved in /home/ec2-user/.ssh/id_rsa.pub.
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">The key fingerprint is:
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">SHA256:oSPZf85vNsC7l9z24umLJs4tQ6qDMCrWfqAVXGYoA34 ec2-user@ip-172-31-27-182
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">The key&amp;#39;s randomart image is:
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">+---[RSA 2048]----+
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">|o . |
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">|.o . + |
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">| .+E+ . |
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">| .o o . . |
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">| + + S. |
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">| oo . o + |
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">| .+o.. .o.+ o |
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">|oo .... .==.O.+. |
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">|o ... .o .*@+==+.|
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">+----[SHA256]-----+
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">[ec2-user@ip-172-31-27-182 ~]$
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;h2 id="创建s3-bucket">创建S3 bucket
+&lt;/h2>&lt;p>这是用来存储Kubernetes群集的配置信息的，kops在创建、运行、更新和管理它创建的群集过程中，没个Cluster的信息可以保存在bucket的一个目录中。&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-gdscript3" data-lang="gdscript3">&lt;span class="line">&lt;span class="cl">&lt;span class="p">[&lt;/span>&lt;span class="n">ec2&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">user&lt;/span>&lt;span class="err">@&lt;/span>&lt;span class="n">ip&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="mi">172&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="mi">31&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="mi">27&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="mi">182&lt;/span> &lt;span class="o">~&lt;/span>&lt;span class="p">]&lt;/span>&lt;span class="o">$&lt;/span> &lt;span class="n">aws&lt;/span> &lt;span class="n">s3&lt;/span> &lt;span class="n">mb&lt;/span> &lt;span class="n">s3&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="o">//&lt;/span>&lt;span class="n">clusters&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">k8s&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">devopscoach&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">org&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">make_bucket&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="n">clusters&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">k8s&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">devopscoach&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">org&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">[&lt;/span>&lt;span class="n">ec2&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">user&lt;/span>&lt;span class="err">@&lt;/span>&lt;span class="n">ip&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="mi">172&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="mi">31&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="mi">27&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="mi">182&lt;/span> &lt;span class="o">~&lt;/span>&lt;span class="p">]&lt;/span>&lt;span class="o">$&lt;/span> &lt;span class="k">export&lt;/span> &lt;span class="n">KOPS_STATE_STORE&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="n">s3&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="o">//&lt;/span>&lt;span class="n">clusters&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">k8s&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">devopscoach&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">org&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>创建完成后，将其放入环境变量中待用。&lt;/p>
+&lt;p>在集群安装完成之后，bucket里面的文件如下：&lt;/p>
+&lt;p>&lt;img src="https://res.cloudinary.com/martinliu/image/upload/s3.png"
+loading="lazy"
+alt="kops On aws"
+>&lt;/p>
+&lt;h2 id="创建kubernetes-cluster">创建Kubernetes Cluster
+&lt;/h2>&lt;p>命令行参数如下：&lt;/p>
+&lt;ul>
+&lt;li>kops create cluster //创建集群&lt;/li>
+&lt;li>&amp;ndash;cloud=aws //使用aws&lt;/li>
+&lt;li>&amp;ndash;zones=ap-northeast-1a //使用这个指定的zone&lt;/li>
+&lt;li>&amp;ndash;name=dev.k8s.devopscoach.org //集群的名字&lt;/li>
+&lt;li>&amp;ndash;dns-zone=k8s.devopscoach.org //集群所使用的DNS解析区&lt;/li>
+&lt;li>&amp;ndash;dns public //对公可访问&lt;/li>
+&lt;/ul>
+&lt;p>命令的执行结果如下。&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;span class="lnt">14
+&lt;/span>&lt;span class="lnt">15
+&lt;/span>&lt;span class="lnt">16
+&lt;/span>&lt;span class="lnt">17
+&lt;/span>&lt;span class="lnt">18
+&lt;/span>&lt;span class="lnt">19
+&lt;/span>&lt;span class="lnt">20
+&lt;/span>&lt;span class="lnt">21
+&lt;/span>&lt;span class="lnt">22
+&lt;/span>&lt;span class="lnt">23
+&lt;/span>&lt;span class="lnt">24
+&lt;/span>&lt;span class="lnt">25
+&lt;/span>&lt;span class="lnt">26
+&lt;/span>&lt;span class="lnt">27
+&lt;/span>&lt;span class="lnt">28
+&lt;/span>&lt;span class="lnt">29
+&lt;/span>&lt;span class="lnt">30
+&lt;/span>&lt;span class="lnt">31
+&lt;/span>&lt;span class="lnt">32
+&lt;/span>&lt;span class="lnt">33
+&lt;/span>&lt;span class="lnt">34
+&lt;/span>&lt;span class="lnt">35
+&lt;/span>&lt;span class="lnt">36
+&lt;/span>&lt;span class="lnt">37
+&lt;/span>&lt;span class="lnt">38
+&lt;/span>&lt;span class="lnt">39
+&lt;/span>&lt;span class="lnt">40
+&lt;/span>&lt;span class="lnt">41
+&lt;/span>&lt;span class="lnt">42
+&lt;/span>&lt;span class="lnt">43
+&lt;/span>&lt;span class="lnt">44
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">[ec2-user@ip-172-31-27-182 ~]$ kops create cluster --cloud=aws --zones=ap-northeast-1a --name=dev.k8s.devopscoach.org --dns-zone=k8s.devopscoach.org --dns public
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">I0401 17:05:06.003257 30031 create_cluster.go:971] Using SSH public key: /home/ec2-user/.ssh/id_rsa.pub
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">I0401 17:05:07.132058 30031 subnets.go:184] Assigned CIDR 172.20.32.0/19 to subnet ap-northeast-1a
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Previewing changes that will be made:
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">*********************************************************************************
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">A new kops version is available: 1.8.1
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Upgrading is recommended
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">More information: https://github.com/kubernetes/kops/blob/master/permalinks/upgrade_kops.md#1.8.1
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">*********************************************************************************
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">I0401 17:05:12.605297 30031 executor.go:91] Tasks: 0 done / 73 total; 31 can run
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">I0401 17:05:13.546597 30031 executor.go:91] Tasks: 31 done / 73 total; 24 can run
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">-----此处删除了n个字符------
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> VPC/dev.k8s.devopscoach.org
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> CIDR 172.20.0.0/16
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> EnableDNSHostnames true
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> EnableDNSSupport true
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> Shared false
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> Tags {Name: dev.k8s.devopscoach.org, KubernetesCluster: dev.k8s.devopscoach.org, kubernetes.io/cluster/dev.k8s.devopscoach.org: owned}
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> VPCDHCPOptionsAssociation/dev.k8s.devopscoach.org
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> VPC name:dev.k8s.devopscoach.org
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> DHCPOptions name:dev.k8s.devopscoach.org
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Must specify --yes to apply changes
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Cluster configuration has been created.
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Suggestions:
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> * list clusters with: kops get cluster
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> * edit this cluster with: kops edit cluster dev.k8s.devopscoach.org
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> * edit your node instance group: kops edit ig --name=dev.k8s.devopscoach.org nodes
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> * edit your master instance group: kops edit ig --name=dev.k8s.devopscoach.org master-ap-northeast-1a
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Finally configure your cluster with: kops update cluster dev.k8s.devopscoach.org --yes
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">[ec2-user@ip-172-31-27-182 ~]$
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>kops命令列出了所有需要建立的资源清单。而真实的开始资源创建，并搭建和配置Kubernetes集群还需要执行，以上输出中提示的最后一条命令: &lt;code>kops update cluster dev.k8s.devopscoach.org --yes &lt;/code>&lt;/p>
+&lt;p>执行结果如下：&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;span class="lnt">14
+&lt;/span>&lt;span class="lnt">15
+&lt;/span>&lt;span class="lnt">16
+&lt;/span>&lt;span class="lnt">17
+&lt;/span>&lt;span class="lnt">18
+&lt;/span>&lt;span class="lnt">19
+&lt;/span>&lt;span class="lnt">20
+&lt;/span>&lt;span class="lnt">21
+&lt;/span>&lt;span class="lnt">22
+&lt;/span>&lt;span class="lnt">23
+&lt;/span>&lt;span class="lnt">24
+&lt;/span>&lt;span class="lnt">25
+&lt;/span>&lt;span class="lnt">26
+&lt;/span>&lt;span class="lnt">27
+&lt;/span>&lt;span class="lnt">28
+&lt;/span>&lt;span class="lnt">29
+&lt;/span>&lt;span class="lnt">30
+&lt;/span>&lt;span class="lnt">31
+&lt;/span>&lt;span class="lnt">32
+&lt;/span>&lt;span class="lnt">33
+&lt;/span>&lt;span class="lnt">34
+&lt;/span>&lt;span class="lnt">35
+&lt;/span>&lt;span class="lnt">36
+&lt;/span>&lt;span class="lnt">37
+&lt;/span>&lt;span class="lnt">38
+&lt;/span>&lt;span class="lnt">39
+&lt;/span>&lt;span class="lnt">40
+&lt;/span>&lt;span class="lnt">41
+&lt;/span>&lt;span class="lnt">42
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">[ec2-user@ip-172-31-27-182 ~]$ kops update cluster dev.k8s.devopscoach.org --yes
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">*********************************************************************************
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">A new kops version is available: 1.8.1
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Upgrading is recommended
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">More information: https://github.com/kubernetes/kops/blob/master/permalinks/upgrade_kops.md#1.8.1
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">*********************************************************************************
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">I0401 17:13:02.482203 30077 executor.go:91] Tasks: 0 done / 73 total; 31 can run
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">I0401 17:13:04.389402 30077 vfs_castore.go:430] Issuing new certificate: &amp;#34;apiserver-aggregator-ca&amp;#34;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">I0401 17:13:04.628667 30077 vfs_castore.go:430] Issuing new certificate: &amp;#34;ca&amp;#34;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">I0401 17:13:07.291294 30077 executor.go:91] Tasks: 31 done / 73 total; 24 can run
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">I0401 17:13:09.273293 30077 vfs_castore.go:430] Issuing new certificate: &amp;#34;kubelet-api&amp;#34;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">I0401 17:13:09.803612 30077 vfs_castore.go:430] Issuing new certificate: &amp;#34;kubelet&amp;#34;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">I0401 17:13:09.809131 30077 vfs_castore.go:430] Issuing new certificate: &amp;#34;kube-scheduler&amp;#34;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">I0401 17:13:09.973826 30077 vfs_castore.go:430] Issuing new certificate: &amp;#34;apiserver-proxy-client&amp;#34;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">I0401 17:13:10.317412 30077 vfs_castore.go:430] Issuing new certificate: &amp;#34;kops&amp;#34;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">I0401 17:13:10.321177 30077 vfs_castore.go:430] Issuing new certificate: &amp;#34;apiserver-aggregator&amp;#34;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">I0401 17:13:10.440919 30077 vfs_castore.go:430] Issuing new certificate: &amp;#34;kube-controller-manager&amp;#34;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">I0401 17:13:10.630182 30077 vfs_castore.go:430] Issuing new certificate: &amp;#34;kubecfg&amp;#34;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">I0401 17:13:11.020560 30077 vfs_castore.go:430] Issuing new certificate: &amp;#34;master&amp;#34;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">I0401 17:13:11.040010 30077 vfs_castore.go:430] Issuing new certificate: &amp;#34;kube-proxy&amp;#34;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">I0401 17:13:12.698208 30077 executor.go:91] Tasks: 55 done / 73 total; 16 can run
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">I0401 17:13:13.609559 30077 launchconfiguration.go:333] waiting for IAM instance profile &amp;#34;nodes.dev.k8s.devopscoach.org&amp;#34; to be ready
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">I0401 17:13:13.656221 30077 launchconfiguration.go:333] waiting for IAM instance profile &amp;#34;masters.dev.k8s.devopscoach.org&amp;#34; to be ready
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">I0401 17:13:24.156701 30077 executor.go:91] Tasks: 71 done / 73 total; 2 can run
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">I0401 17:13:24.864262 30077 executor.go:91] Tasks: 73 done / 73 total; 0 can run
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">I0401 17:13:24.864379 30077 dns.go:153] Pre-creating DNS records
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">I0401 17:13:26.454177 30077 update_cluster.go:248] Exporting kubecfg for cluster
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">kops has set your kubectl context to dev.k8s.devopscoach.org
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Cluster is starting. It should be ready in a few minutes.
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Suggestions:
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> * validate cluster: kops validate cluster
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> * list nodes: kubectl get nodes --show-labels
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> * ssh to the master: ssh -i ~/.ssh/id_rsa admin@api.dev.k8s.devopscoach.org
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">The admin user is specific to Debian. If not using Debian please use the appropriate user based on your OS.
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> * read about installing addons: https://github.com/kubernetes/kops/blob/master/docs/addons.md
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>以上这套组合拳打出去之后，需要等几分钟才能完成Kubernetes集群的部署。&lt;/p>
+&lt;p>在以上实例中创建的Ec2实例如下：&lt;/p>
+&lt;ul>
+&lt;li>master-ap-northeast-1a.masters.dev.k8s.devopscoach.org //m3.medium&lt;/li>
+&lt;li>nodes.dev.k8s.devopscoach.org //t2.medium&lt;/li>
+&lt;li>nodes.dev.k8s.devopscoach.org //t2.medium&lt;/li>
+&lt;/ul>
+&lt;p>&lt;img src="https://res.cloudinary.com/martinliu/image/upload/ec2.png"
+loading="lazy"
+alt="kops On aws"
+>&lt;/p>
+&lt;p>也创建了两个ASG：&lt;/p>
+&lt;ul>
+&lt;li>一个是针对master的扩容规则&lt;/li>
+&lt;li>另外一个是针对worker node的扩容规则&lt;/li>
+&lt;/ul>
+&lt;p>从扩容规则为空可以看出，它主要是用于定义集群规格的，而非自动化扩容的。&lt;/p>
+&lt;p>&lt;img src="https://res.cloudinary.com/martinliu/image/upload/asg.png"
+loading="lazy"
+alt="kops On aws"
+>&lt;/p>
+&lt;p>在安装完成之后，用一下命令确认集群状态如下：&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;span class="lnt">14
+&lt;/span>&lt;span class="lnt">15
+&lt;/span>&lt;span class="lnt">16
+&lt;/span>&lt;span class="lnt">17
+&lt;/span>&lt;span class="lnt">18
+&lt;/span>&lt;span class="lnt">19
+&lt;/span>&lt;span class="lnt">20
+&lt;/span>&lt;span class="lnt">21
+&lt;/span>&lt;span class="lnt">22
+&lt;/span>&lt;span class="lnt">23
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">[ec2-user@ip-172-31-27-182 ~]$ kops validate cluster
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Using cluster from kubectl context: dev.k8s.devopscoach.org
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Validating cluster dev.k8s.devopscoach.org
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">INSTANCE GROUPS
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">NAME ROLE MACHINETYPE MIN MAX SUBNETS
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">master-ap-northeast-1a Master m3.medium 1 1 ap-northeast-1a
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">nodes Node t2.medium 2 2 ap-northeast-1a
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">NODE STATUS
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">NAME ROLE READY
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">ip-172-20-38-48.ap-northeast-1.compute.internal master True
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">ip-172-20-45-235.ap-northeast-1.compute.internal node True
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">ip-172-20-63-157.ap-northeast-1.compute.internal node True
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Your cluster dev.k8s.devopscoach.org is ready
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">[ec2-user@ip-172-31-27-182 ~]$ kubectl get nodes --show-labels
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">NAME STATUS ROLES AGE VERSION LABELS
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">ip-172-20-38-48.ap-northeast-1.compute.internal Ready master 5m v1.8.7 beta.kubernetes.io/arch=amd64,beta.kubernetes.io/instance-type=m3.medium,beta.kubernetes.io/os=linux,failure-domain.beta.kubernetes.io/region=ap-northeast-1,failure-domain.beta.kubernetes.io/zone=ap-northeast-1a,kops.k8s.io/instancegroup=master-ap-northeast-1a,kubernetes.io/hostname=ip-172-20-38-48.ap-northeast-1.compute.internal,kubernetes.io/role=master,node-role.kubernetes.io/master=
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">ip-172-20-45-235.ap-northeast-1.compute.internal Ready node 4m v1.8.7 beta.kubernetes.io/arch=amd64,beta.kubernetes.io/instance-type=t2.medium,beta.kubernetes.io/os=linux,failure-domain.beta.kubernetes.io/region=ap-northeast-1,failure-domain.beta.kubernetes.io/zone=ap-northeast-1a,kops.k8s.io/instancegroup=nodes,kubernetes.io/hostname=ip-172-20-45-235.ap-northeast-1.compute.internal,kubernetes.io/role=node,node-role.kubernetes.io/node=
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">ip-172-20-63-157.ap-northeast-1.compute.internal Ready node 4m v1.8.7 beta.kubernetes.io/arch=amd64,beta.kubernetes.io/instance-type=t2.medium,beta.kubernetes.io/os=linux,failure-domain.beta.kubernetes.io/region=ap-northeast-1,failure-domain.beta.kubernetes.io/zone=ap-northeast-1a,kops.k8s.io/instancegroup=nodes,kubernetes.io/hostname=ip-172-20-63-157.ap-northeast-1.compute.internal,kubernetes.io/role=node,node-role.kubernetes.io/node=
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">[ec2-user@ip-172-31-27-182 ~]$
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;h2 id="创建并访问服务">创建并访问服务
+&lt;/h2>&lt;p>如下所示的创建两副本的nginx部署，部署的命令 sample-nginx。&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;span class="lnt">4
+&lt;/span>&lt;span class="lnt">5
+&lt;/span>&lt;span class="lnt">6
+&lt;/span>&lt;span class="lnt">7
+&lt;/span>&lt;span class="lnt">8
+&lt;/span>&lt;span class="lnt">9
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">[ec2-user@ip-172-31-27-182 ~]$ kubectl run sample-nginx --image=nginx --replicas=2 --port=80
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">deployment.apps &amp;#34;sample-nginx&amp;#34; created
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">[ec2-user@ip-172-31-27-182 ~]$ kubectl get pods
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">NAME READY STATUS RESTARTS AGE
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">sample-nginx-7588757c8f-jvkjt 1/1 Running 0 5s
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">sample-nginx-7588757c8f-zq8tj 1/1 Running 0 5s
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">[ec2-user@ip-172-31-27-182 ~]$ kubectl get deployments
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">NAME DESIRED CURRENT UP-TO-DATE AVAILABLE AGE
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">sample-nginx 2 2 2 2 13s
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>然后将这个部署暴露为服务，使用到Kubernetes的命令如下：&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;span class="lnt">4
+&lt;/span>&lt;span class="lnt">5
+&lt;/span>&lt;span class="lnt">6
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">[ec2-user@ip-172-31-27-182 ~]$ kubectl expose deployment sample-nginx --port=80 --type=LoadBalancer
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">service &amp;#34;sample-nginx&amp;#34; exposed
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">[ec2-user@ip-172-31-27-182 ~]$ kubectl get services -o wide
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">NAME TYPE CLUSTER-IP EXTERNAL-IP PORT(S) AGE SELECTOR
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">kubernetes ClusterIP 100.64.0.1 &amp;lt;none&amp;gt; 443/TCP 10m &amp;lt;none&amp;gt;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">sample-nginx LoadBalancer 100.64.127.19 ae3a1ca9235d111e890d706038dd676b-392190656.ap-northeast-1.elb.amazonaws.com 80:30363/TCP 25s run=sample-nginx
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>这条命令 &lt;code>ubectl expose deployment sample-nginx --port=80 --type=LoadBalancer &lt;/code> 会创建一个ELB并将，集群里容正在运行的 sample—nginx 服务注册到这个ELB，然后就可以访问浏览到Nginx的默认页面了。&lt;/p>
+&lt;p>&lt;img src="https://res.cloudinary.com/martinliu/image/upload/nginx.png"
+loading="lazy"
+alt="kops On aws"
+>&lt;/p>
+&lt;h2 id="删除集群">删除集群
+&lt;/h2>&lt;p>用一条命令就能删除以上所建立的Kubernetes集群。&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">kops delete cluster --name=dev.k8s.devopscoach.org --yes
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div></description></item></channel></rss>

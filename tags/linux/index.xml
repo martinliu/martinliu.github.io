@@ -1,0 +1,503 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Linux on Martin Liu's Blog</title><link>https://martinliu.cn/tags/linux/</link><description>Recent content in Linux on Martin Liu's Blog</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><lastBuildDate>Tue, 25 Jun 2024 21:44:26 +0800</lastBuildDate><atom:link href="https://martinliu.cn/tags/linux/index.xml" rel="self" type="application/rss+xml"/><item><title>探究改变了整个行业的全球开源大潮</title><link>https://martinliu.cn/blog/elastic-university-campus-intro/</link><pubDate>Tue, 27 Apr 2021 09:48:32 +0800</pubDate><guid>https://martinliu.cn/blog/elastic-university-campus-intro/</guid><description>&lt;img src="https://martinliu.cn/img/cos/2021-04-27-opensource.jpg" alt="Featured image of post 探究改变了整个行业的全球开源大潮" />&lt;p>开源科普讲座简介：这是给大学校园的老师和同学们定制的免费公益讲座。在最近的20年里，开源软件已经了席卷全球。当今企业应用开源技术和云计算创作着巨大的社会和商业价值，大学生应该怎样了解、学习和参与开源技术？这成了所有相关学科的同学们不可规避的话题。我们想通过这样一个专题讲座交流的形式，帮助大家按照从由来到未来发展的逻辑梳理开源软件技术的发展。结合我（刘征）20年的外企工作经历，帮助大家深度剖析一家典型的来起源于开源社区的公司，通过这个公司的变迁我们可以看到开源企业所能取得的成功和面临的挑战。Elastic Stack 这个技术栈的核心是 Elasticsearch，这是一个被广泛深度应用的开源大数据搜索平台，中国的一线互联网公司的各种流行产品的背后也都有着它的身影，让我们一起简单理解一下这个技术栈的使用方法，希望它能在校园的研究工作、同学的毕业设计项目等等方面有所帮助。本讲座是注重IT知识的非商业宣传讲座，为了有助于增加同学们的就业竞争力，在最后一个是交流互动环节，我们可以做一些就业形势、求职和职业发展等方面的答疑。&lt;/p>
+&lt;p>下面是本次交流见过的概要内容介绍，希望能引起大家的兴趣，如果有任何建议和疑问也可以随时和我直接联系。&lt;/p>
+&lt;h2 id="开源用20年改变了整个it行业">开源用20年改变了整个IT行业
+&lt;/h2>&lt;p>开源方式是在开源社区内进行思考和协作的一种形式。这一理念基于知识自由和核心原则：透明、协作、交付、包容和社区。社区的思想交流和软件开发推动了以下行业的创新、科学和技术进步：教育、政府、法律、医疗保健和制造业。这项活动提供了一种通过源代码协作、共享和协助实现个人及团体目标的方式。&lt;/p>
+&lt;p>开源软件是协作性的，依靠社区生产和同行评审来使用、更改和共享源代码。开发人员分享洞察、构想和代码，共同和单独创建更多创新的软件解决方案。这种可扩展且灵活的软件可确保任何拥有源代码的人都能将其修改、增强和重新分发，从而提高可复用性和可访问性。开源软件基于对等生产和大规模协作的基本原则，从而为最终用户创造更可持续的软件开发体验。&lt;/p>
+&lt;p>封源软件 (CSS) 是不向公众分发的专有软件。这类软件进行了加密，因此仅创建该代码的原始作者有权合法复制、修改、更新和编辑源代码。闭源软件会限制最终用户对应用可以执行的操作，防止用户修改、共享、复制或重新发布源代码。&lt;/p>
+&lt;p>除了开源和闭源软件之外，FOSS（自由和开源软件）允许用户从更有哲理的角度访问软件。在自由和开源软件中，自由软件基金会 (FSF) 保护用户自由，开源促进会 (OSI) 确保可靠软件的技术价值。有各种各样的免费软件许可证，可供商业使用、修改和销售，包括：GPL、LGPL 和 BSD 许可证。&lt;/p>
+&lt;p>一些最受欢迎的开源软件许可证包括：&lt;/p>
+&lt;ul>
+&lt;li>MIT 许可证©：MIT 许可证是一种免费的软件许可证，允许用户修改原始代码，而且限制要求非常少。&lt;/li>
+&lt;li>GNU General Public© (GPL)：GNU 是一系列免费的软件许可证，可确保最终用户能够运行、研究、共享和修改软件。&lt;/li>
+&lt;li>Apache®：Apache License 2.0 是一种免费的软件许可证，允许用户出于任何目的使用、修改和分发软件。&lt;/li>
+&lt;li>BSD：此许可证对开发人员的限制较少，允许用户使用和修改代码而不必共享修改。&lt;/li>
+&lt;li>MySQL™：MySQL 是一个开源数据库管理系统，具有两个单独的许可证 - mySQL Standard Edition 和 MySQL Enterprise Edition。&lt;/li>
+&lt;li>SUSE：SUSE Linux 建立在开源 Linux 内核上，并随系统和应用软件一起分发。&lt;/li>
+&lt;li>Ubuntu®：Ubuntu 是一个 Linux 发行版，由在桌面、云端和物联网中发布的免费和开源软件组成。&lt;/li>
+&lt;/ul>
+&lt;p>开源软件大事记：&lt;/p>
+&lt;ol>
+&lt;li>在 1969 年 AT&amp;amp;T® 贝尔实验室，Unix 做为一种专有但可许可的产品诞生。很快加州大学伯克利分校开发了自己的 Unix 操作系统，名为 Berkley Software Distribution（BSD 许可证）的学术版本。BSD 和 AT&amp;amp;T 的 System V 版最终合并成为统一的第七版 Unix，然后进一步演进为：Sun Solaris、FreeBSD、NetBSD 和 OpenBSD。&lt;/li>
+&lt;li>1984 年，Richard Stallman 创建了一个名为 GNU (GNU&amp;rsquo;s Not Unix) 的自由 Unix 克隆。此版本是开放的，可根据需要自由使用、修改和重新分发。Richard Stallman 是 Open Source 界的伟大人物之一, 他是gcc, gdb, emacs的作者。&lt;/li>
+&lt;li>1991 年，Linus Torvalds 创建了名为“Linux”或 Linux 内核的操作系统内核。通过与 FSF 和 BSD 组件相结合，Linux 成为一个完整的操作系统。Linux 正式踏上了颠覆整个 IT 行业和改造这个世界的使命，知道今天无不知，无人不晓的云计算和智能硬件，知道工业物联网和火星登录计划。&lt;/li>
+&lt;/ol>
+&lt;h2 id="市值过百亿的-elastic-公司曲折的开源旅程">市值过百亿的 Elastic 公司曲折的开源旅程
+&lt;/h2>&lt;p>Elastic 公司的开源故事起源于创始人 Shay 和妻子的菜谱的故事。现在 Elastic 是一家员工进 2000 人的上市公司，它帮助企业实时大规模地使用数据，完成企业搜索，确保可观测性和安全。Elastic 解决方案基于一个免费的开放技术栈。该技术栈可以部署在任何地方，帮助用户从任何类型的数据中快速获取可作为行动依据的洞见，从搜索文档一直到监控基础架构，再到检测网络攻击威胁。全球各地已有数千家企业利用Elastic 解决方案来支持关键任务系统，包括思科、Goldman Sachs、微软、The Mayo Clinic、NASA、《纽约时报》、维基百科和Verizon等等。Elastic 成立于2012年，已在纽约证券交易所（NYSE）上市，股票代码为ESTC。今天它的股票市值已经超过百亿，从开源开放，到免费开放；从 Appache v2 许可到 Elastic V2 + SSPL 许可，在最近短短的 3 年里到底这家公司都经历了什么？这家公司的开源历程能给予我们怎样的启发？&lt;/p>
+&lt;h2 id="轻松入手-elastic-stack-搜索技术栈">轻松入手 Elastic Stack 搜索技术栈
+&lt;/h2>&lt;p>Elastic Stack 技术栈包含了一组开源项目。 “ELK”是三个重要组成开源项目的首字母缩写，这三个项目分别是：Elasticsearch、Logstash 和 Kibana。Elasticsearch 是一个搜索和分析引擎。Logstash 是服务器端数据处理管道，能够同时从多个来源采集数据，转换数据，然后将数据发送到诸如 Elasticsearch 等“存储库”中。Kibana 则可以让用户在 Elasticsearch 中使用图形和图表对数据进行可视化。&lt;/p>
+&lt;p>&lt;img src="https://www.elastic.co/static-res/images/elk/elk-stack-elkb-diagram.svg"
+loading="lazy"
+>&lt;/p>
+&lt;p>Elastic Stack 就是 ELK Stack，但是更加灵活，可以帮助人们出色完成各项事务。下面我们演示一下内容：&lt;/p>
+&lt;ol>
+&lt;li>Elasticsearch 和 Kibana 的安装&lt;/li>
+&lt;li>使用 Kibana 可视化分析和展示航公公司航班信息、电商平台订单和Web 网络服务器的日志。&lt;/li>
+&lt;li>导入最近几年的电影数据，尝试从多个角度分析和展示这些数据&lt;/li>
+&lt;/ol>
+&lt;h2 id="开源及就业答疑">开源及就业答疑
+&lt;/h2>&lt;p>在这个环节里，我们也准备了一些求职准备的经验技巧。&lt;/p>
+&lt;ul>
+&lt;li>软件专业学生如何构建无敌求职简历&lt;/li>
+&lt;li>软件行业里工作岗位的分工和配合&lt;/li>
+&lt;li>在 996 和 007 的企业中工作是怎样的体验&lt;/li>
+&lt;/ul>
+&lt;p>最后，希望和同学们做自由交流，内容范围和问题不限。&lt;/p>
+&lt;p>参考文档：&lt;/p>
+&lt;ul>
+&lt;li>&lt;a class="link" href="https://www.ibm.com/cn-zh/topics/open-source" target="_blank" rel="noopener"
+>https://www.ibm.com/cn-zh/topics/open-source&lt;/a>&lt;/li>
+&lt;li>&lt;a class="link" href="https://www.elastic.co/cn/" target="_blank" rel="noopener"
+>https://www.elastic.co/cn/&lt;/a>&lt;/li>
+&lt;li>&lt;a class="link" href="https://www.elastic.co/cn/what-is/elk-stack" target="_blank" rel="noopener"
+>https://www.elastic.co/cn/what-is/elk-stack&lt;/a>&lt;/li>
+&lt;li>&lt;a class="link" href="https://ld.sogou.com/article/i5634372.htm?ch=lds.pc.sh.media.all" target="_blank" rel="noopener"
+>https://ld.sogou.com/article/i5634372.htm?ch=lds.pc.sh.media.all&lt;/a>&lt;/li>
+&lt;li>&lt;a class="link" href="https://www.163.com/dy/article/G0NG79CD0543QP26.html" target="_blank" rel="noopener"
+>https://www.163.com/dy/article/G0NG79CD0543QP26.html&lt;/a>&lt;/li>
+&lt;/ul></description></item><item><title>安装完美 CentOS7 虚拟机模板</title><link>https://martinliu.cn/2015/06/05/e5ae89e8a385e5ae8ce7be8e-centos7-e8999ae68b9fe69cbae6a8a1e69dbf/</link><pubDate>Fri, 05 Jun 2015 15:44:52 +0000</pubDate><guid>https://martinliu.cn/2015/06/05/e5ae89e8a385e5ae8ce7be8e-centos7-e8999ae68b9fe69cbae6a8a1e69dbf/</guid><description>&lt;h2 id="初始化安装">初始化安装
+&lt;/h2>&lt;p>下载最新版 CentOS7 DVD 选择 mini 安装。&lt;/p>
+&lt;h2 id="网络配置">网络配置
+&lt;/h2>&lt;p>安装过程中设置了静态网络地址，如下：&lt;/p>
+&lt;p>[bash]&lt;/p>
+&lt;p>[root@centos7-tmp ~]# cat /etc/sysconfig/network-scripts/ifcfg-eth0
+TYPE=Ethernet
+BOOTPROTO=none
+DEFROUTE=yes
+IPV4_FAILURE_FATAL=no
+IPV6INIT=no
+NAME=eth0
+DEVICE=eth0
+ONBOOT=yes
+DNS1=192.168.10.1
+DOMAIN=xenlab.com
+IPADDR=192.168.10.8
+PREFIX=24
+GATEWAY=192.168.10.1
+UUID=5fb06bd0-0bb0-7ffb-45f1-d6edd65f3e03&lt;/p>
+&lt;p>[/bash]&lt;/p>
+&lt;h2 id="软件包">软件包
+&lt;/h2>&lt;p>Change log:&lt;/p>
+&lt;ol>
+&lt;li>
+&lt;p>yum install wget &lt;a class="link" href="http://itgeeker.net/tag/telnet/" target="_blank" rel="noopener"
+>telnet&lt;/a> perl perl-devel net-tools kernel-devel&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>yum install vim-enhanced.x86_64&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>yum -y install git&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>yum install acpid&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>yum install tree&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>yum install ntp&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>yum install unzip&lt;/p>
+&lt;/li>
+&lt;/ol>
+&lt;h2 id="repo-软件更新源">Repo 软件更新源
+&lt;/h2>&lt;p>Change log:&lt;/p>
+&lt;ol>
+&lt;li>
+&lt;p>初始化安装，添加了个几个国内的源&lt;/p>
+&lt;/li>
+&lt;li>&lt;/li>
+&lt;/ol>
+&lt;p>rpm -Uvh &lt;a class="link" href="http://rpms.famillecollet.com/enterprise/remi-release-7.rpm" target="_blank" rel="noopener"
+>http://rpms.famillecollet.com/enterprise/remi-release-7.rpm&lt;/a>&lt;/p>
+&lt;ol start="3">
+&lt;li>
+&lt;p>/etc/yum.repo/bk/dvd.repo ；这个是在用 KVM 虚拟机挂 ISO 文件光驱的时候用的，到时候 mount /dev/cdrom /media/dvd , 把该文件方的夫目录中即可使用 iso 文件中的 repos&lt;/p>
+&lt;/li>
+&lt;li>&lt;/li>
+&lt;/ol>
+&lt;p>当前的软件源如下：&lt;/p>
+&lt;p>[bash]&lt;/p>
+&lt;p>[root@centos7-tmp ~]# yum repolist
+Loaded plugins: fastestmirror
+Repository base is listed more than once in the configuration
+Repository updates is listed more than once in the configuration
+Repository extras is listed more than once in the configuration
+Repository centosplus is listed more than once in the configuration
+Loading mirror speeds from cached hostfile&lt;/p>
+&lt;ul>
+&lt;li>base: mirrors.163.com&lt;/li>
+&lt;li>epel: mirrors.neusoft.edu.cn&lt;/li>
+&lt;li>extras: mirrors.btte.net&lt;/li>
+&lt;li>remi-safe: remi.kazukioishi.net&lt;/li>
+&lt;li>updates: mirrors.btte.net
+repo id                                 repo name                                                                          status
+base/7/x86_64                           CentOS-7 - Base                                                                    8,652
+epel/x86_64                             Extra Packages for Enterprise Linux 7 - x86_64                                     8,022
+extras/7/x86_64                         CentOS-7 - Extras                                                                    128
+remi-safe                               Safe Remi&amp;rsquo;s RPM repository for Enterprise Linux 7 - x86_64                           123
+updates/7/x86_64                        CentOS-7 - Updates                                                                   609
+repolist: 17,534
+[root@centos7-tmp ~]#&lt;/li>
+&lt;/ul>
+&lt;p>[/bash]&lt;/p>
+&lt;h2 id="系统服务配置">系统服务配置
+&lt;/h2>&lt;p>Change log:&lt;/p>
+&lt;ol>
+&lt;li>
+&lt;p>关闭 SELinux&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>关闭 NetworkManager&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>关闭 FirewallD&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>systemctl enable acpid.service&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>开启 truned-adm virtual-guest 服务模式&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>systemctl enable ntpd&lt;/p>
+&lt;/li>
+&lt;/ol>
+&lt;p>[bash]&lt;/p>
+&lt;p>[root@centos7-tmp tuned]# tuned-adm  list
+Cannot talk to Tuned daemon via DBus.
+Available profiles:&lt;/p>
+&lt;ul>
+&lt;li>balanced&lt;/li>
+&lt;li>blog&lt;/li>
+&lt;li>latency-performance&lt;/li>
+&lt;li>network-latency&lt;/li>
+&lt;li>network-throughput&lt;/li>
+&lt;li>powersave&lt;/li>
+&lt;li>throughput-performance&lt;/li>
+&lt;li>virtual-guest&lt;/li>
+&lt;li>virtual-host
+Cannot talk to Tuned daemon via DBus.
+It seems that tuned daemon is not running, preset profile is not activated.
+Preset profile: virtual-guest&lt;/li>
+&lt;/ul>
+&lt;p>[/bash]&lt;/p>
+&lt;h2 id="模板文件封装">模板文件封装
+&lt;/h2>&lt;p>用 sys-unconfig 关机。用 virt-sysprep,  virt-sparsify 去除不必要信息，压缩。&lt;/p>
+&lt;p>[bash]&lt;/p>
+&lt;p>[root@martin-fedora vm]# ll -h
+total 12G
+-rw-r&amp;ndash;r&amp;ndash;  1 qemu qemu  81G Jun  5 22:36 centos7-tmp.qcow2
+-rw-r&amp;ndash;r&amp;ndash;  1 root root  81G Jun  5 22:34 centos7-tmp.qcow2.bk
+-rw-r&amp;ndash;r&amp;ndash;  1 root root 2.9G Jun  5 07:56 rhel66-clone-1.qcow2
+-rw-r&amp;ndash;r&amp;ndash;  1 root root 1.6G Jun  3 15:01 rhel66-clone.qcow2
+-rw-r&amp;ndash;r&amp;ndash;  1 root root  81G Jun  3 13:03 rhel66.qcow2
+-rw-r&amp;ndash;r&amp;ndash;. 1 root root  81G Jun  1 00:59 rhel71.qcow2
+[root@martin-fedora vm]# export TMPDIR=/home/martin
+[root@martin-fedora vm]# virt-sparsify &amp;ndash;compress centos7-tmp.qcow2 centos7-tmp-v1.qcow2
+Input disk virtual size = 85899345920 bytes (80.0G)
+Create overlay file in /home/martin to protect source disk &amp;hellip;
+Examine source disk &amp;hellip;
+Fill free space in /dev/centos/root with zero &amp;hellip;
+100% ⟦▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒⟧ 00:00
+Clearing Linux swap on /dev/centos/swap &amp;hellip;
+100% ⟦▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒⟧ 00:00
+Fill free space in /dev/sda1 with zero &amp;hellip;
+Fill free space in volgroup centos with zero &amp;hellip;
+Copy to destination and make sparse &amp;hellip;&lt;/p>
+&lt;p>Sparsify operation completed with no errors.  Before deleting the old disk,
+carefully check that the target disk boots and works correctly.
+[root@martin-fedora vm]# ll -h
+total 12G
+-rw-r&amp;ndash;r&amp;ndash;  1 qemu qemu  81G Jun  5 22:36 centos7-tmp.qcow2
+-rw-r&amp;ndash;r&amp;ndash;  1 root root  81G Jun  5 22:34 centos7-tmp.qcow2.bk
+-rw-r&amp;ndash;r&amp;ndash;  1 root root 520M Jun  5 23:11 centos7-tmp-v1.qcow2
+-rw-r&amp;ndash;r&amp;ndash;  1 root root 2.9G Jun  5 07:56 rhel66-clone-1.qcow2
+-rw-r&amp;ndash;r&amp;ndash;  1 root root 1.6G Jun  3 15:01 rhel66-clone.qcow2
+-rw-r&amp;ndash;r&amp;ndash;  1 root root  81G Jun  3 13:03 rhel66.qcow2
+-rw-r&amp;ndash;r&amp;ndash;. 1 root root  81G Jun  1 00:59 rhel71.qcow2&lt;/p>
+&lt;p>[/bash]&lt;/p>
+&lt;h2 id="yum-update--y">yum update -y
+&lt;/h2>&lt;ul>
+&lt;li>
+&lt;p>2015-07-10 : Done yum updated. 删除了不需要的 Kernel，安装了 unzip, 修改启动过程为直接文字启动。&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>2015-11.15: update kernel to 7.1, set old kernel 1: package-cleanup &amp;ndash;oldkernels &amp;ndash;count=1&lt;/p>
+&lt;/li>
+&lt;/ul>
+&lt;h2 id="使用方法">使用方法
+&lt;/h2>&lt;p>root 密码 martinliu.cn 开机后记得一定要先修改。&lt;/p>
+&lt;p>百度网盘下载地址 [su_button url=&amp;ldquo;http://pan.baidu.com/s/1pJurap9&amp;rdquo; target=&amp;ldquo;blank&amp;rdquo; style=&amp;ldquo;stroked&amp;rdquo; size=&amp;ldquo;6&amp;rdquo; icon=&amp;ldquo;icon: codepen&amp;rdquo;]centos7-tmp-v7[/su_button]&lt;/p></description></item><item><title>Practical Linux Infrastructure</title><link>https://martinliu.cn/2015/03/29/practical-linux-infrastructure/</link><pubDate>Sun, 29 Mar 2015 14:10:37 +0000</pubDate><guid>https://martinliu.cn/2015/03/29/practical-linux-infrastructure/</guid><description>&lt;p>&lt;img src="http://ecx.images-amazon.com/images/I/51mcZ%2BD9AsL._SL500_PIsitb-sticker-arrow-big,TopRight,35,-73_OU01_SS75_SS75_.jpg"
+loading="lazy"
+alt="Practical Linux Infrastructure by Syed Ali"
+>&lt;/p>
+&lt;p>&lt;strong>Practical Linux Infrastructure&lt;/strong>
+by Syed Ali
+&lt;strong>Link:&lt;/strong> &lt;a class="link" href="http://amzn.com/148420512X" target="_blank" rel="noopener"
+>http://amzn.com/148420512X&lt;/a>&lt;/p>
+&lt;p>[gallery size=&amp;ldquo;medium&amp;rdquo; ids=&amp;ldquo;53654,53655&amp;rdquo;]&lt;/p>
+&lt;!-- raw HTML omitted -->
+&lt;p>CI/CD 要自动化尽可能多的测试案例，从而对代码获得更多的信心。另外，它还要执行一个完整的软件系统的 build，并确保 checked in 的代码并不会搞坏其它东西。任何失败，开发人员都不得不去调查原因。有这样的一些软件可以帮助实施 CI/CD 的 pipeline：&lt;/p>
+&lt;p>[wm_list bullet=&amp;ldquo;icon-linux&amp;rdquo; class=&amp;quot;&amp;quot;]&lt;/p>
+&lt;ul>
+&lt;li>
+&lt;p>Jenkins (&lt;a class="link" href="http://jenkins-ci.org" target="_blank" rel="noopener"
+>http://jenkins-ci.org&lt;/a>)&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>CruiseControl (&lt;a class="link" href="http://cruisecontrol.sourceforge.net" target="_blank" rel="noopener"
+>http://cruisecontrol.sourceforge.net&lt;/a>)&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Buildbot (&lt;a class="link" href="http://buildbot.net" target="_blank" rel="noopener"
+>http://buildbot.net&lt;/a>)&lt;/p>
+&lt;/li>
+&lt;/ul>
+&lt;p>[/wm_list]&lt;/p>
+&lt;!-- raw HTML omitted -->
+&lt;p>公有云解决方案比私有云方案是不是更贵还是便宜，这取决于企业的规模。&lt;/p></description></item><item><title>虚拟机根分区扩容</title><link>https://martinliu.cn/2015/01/21/e8999ae68b9fe69cbae6a0b9e58886e58cbae689a9e5aeb9/</link><pubDate>Wed, 21 Jan 2015 15:46:31 +0000</pubDate><guid>https://martinliu.cn/2015/01/21/e8999ae68b9fe69cbae6a0b9e58886e58cbae689a9e5aeb9/</guid><description>&lt;p>我的 Satellite 虚拟机下载了所有常用的 repo，100GB 的磁盘空间都占满了，无奈必须扩容，否则没法用了。&lt;/p>
+&lt;p>扩容的前提条件正好满足：根分区在最后一个分区。&lt;/p>
+&lt;p>由于是 kvm 的虚拟机，所以首先需要扩大硬盘文件的大小： qemu-img resize my.img +100G 。&lt;/p>
+&lt;p>下面去操作系统里扩容。先要用 fdisk 删除根分区。记录初始的其实点。然后用 n 命令新建分区，输入原始其实点位置，回车默认接受结束点的最后一个位置。w 存盘。&lt;/p>
+&lt;p>reboot 系统，起来之后用命令扩容分区： resize2fs /dev/vda2 ； 在线扩容需要等一段时间，100GB 的空间初始化在我的普通磁盘上做了 5 分钟左右。在此 reboot 机器，起来之后在看 df -kh 发现已经增加了 100GB 了，接下来再也不用担心类似情况了。&lt;/p></description></item><item><title>RHEL 性能 提升方法和工具</title><link>https://martinliu.cn/2015/01/10/rhel-e680a7e883bd-e68f90e58d87e696b9e6b395e5928ce5b7a5e585b7/</link><pubDate>Sat, 10 Jan 2015 16:42:29 +0000</pubDate><guid>https://martinliu.cn/2015/01/10/rhel-e680a7e883bd-e68f90e58d87e696b9e6b395e5928ce5b7a5e585b7/</guid><description>&lt;p>RHEL 7 中已经引入了比较完备的性能优化、调整和监控的工具。对于我这个监控背景的人来说，不具体看下，实在忍不住。&lt;/p>
+&lt;p>首先，从这篇 KB 学起来把。&lt;a class="link" href="https://access.redhat.com/articles/785283" target="_blank" rel="noopener"
+> https://access.redhat.com/articles/785283&lt;/a>&lt;/p>
+&lt;p>RHEL 下性能调优的工具有三种。&lt;/p>
+&lt;ul>
+&lt;li>
+&lt;p>Performance Co-Pilot&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>TUNA&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Tuned&lt;/p>
+&lt;/li>
+&lt;/ul>
+&lt;p>下面依次简单说下这几个工具。&lt;/p>
+&lt;h1 id="performance-co-pilot-监控工具"> Performance Co-Pilot 监控工具
+&lt;/h1>&lt;p>[caption id=&amp;ldquo;attachment_53397&amp;rdquo; align=&amp;ldquo;alignnone&amp;rdquo; width=&amp;ldquo;1000&amp;rdquo;]&lt;img src="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2015/01/Screenshot-from-2015-01-11-000449-1000x630.png"
+loading="lazy"
+alt="PCP Charts - Overview View"
+>](&lt;a class="link" href="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2015/01/Screenshot-from-2015-01-11-000449.png" target="_blank" rel="noopener"
+>http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2015/01/Screenshot-from-2015-01-11-000449.png&lt;/a>) PCP Charts - Overview View[/caption]&lt;/p>
+&lt;p>PCP 是一个工具集，它分为两个部分：&lt;/p>
+&lt;ul>
+&lt;li>
+&lt;p>PCP Collectors ： 性能指标数据采集器，它可以从系统内核或者其他数据源来持续的采集数据。是由几个系统服务组成。 These are the parts of PCP that collect and extract performance data from various sources, e.g. the operating system kernel.&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>PCP Monitors ：性能参数集中查看和监控的图形界面。它可以同时连接多台服务器。These  are the parts of PCP that display data collected from hosts (or archives) that have the PCP Collector installed.  Many monitor tools are available as part of the core PCP release, whileother (typically graphical) monitoring tools are available separately in the  PCP  GUI package.&lt;/p>
+&lt;/li>
+&lt;/ul>
+&lt;p>极简实施测试方法：&lt;/p>
+&lt;ol>
+&lt;li>安装 pcp 的相关软件包（在需要被监控的机器上安装 pcp 即可，在需要使用图形界面查看的机器上安装 pcp-gui）&lt;/li>
+&lt;/ol>
+&lt;p>$ yum install pcp pcp-gui&lt;/p>
+&lt;ol start="2">
+&lt;li>启用数据收集器的服务（在需要被监控的机器上运行这些服务，在监控的周期完成之后，可以考虑关闭这些服务）&lt;/li>
+&lt;/ol>
+&lt;p>$ chkconfig pmcd on; service pmcd start
+$ chkconfig pmie on; service pmie start
+$ chkconfig pmlogger on; service pmlogger start&lt;/p>
+&lt;ol start="3">
+&lt;li>查看监控到的图形：&lt;/li>
+&lt;/ol>
+&lt;ol>
+&lt;li>
+&lt;p>在 pcp-gui 主机的 host 文件中加入被监控主机的地址解析&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>在 RHEL 7 桌面的程序中，找到并运行 PCP Charts 程序&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>它默认就是连接到本机，因此加入我们需要查看的性能参数图形即可。点击 open view ，选择 overview 视图即可。当然，它内置的监控视图还有很多，当然如果你希望，还可以把远程的服务器性能实时状态（点击新建视图）视图也加入进来。其它视图如下图所示。&lt;/p>
+&lt;/li>
+&lt;/ol>
+&lt;p>[caption id=&amp;ldquo;attachment_53396&amp;rdquo; align=&amp;ldquo;alignnone&amp;rdquo; width=&amp;ldquo;520&amp;rdquo;]&lt;img src="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2015/01/Screenshot-from-2015-01-11-000611-520x306.png"
+loading="lazy"
+alt="内置视图"
+>](&lt;a class="link" href="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2015/01/Screenshot-from-2015-01-11-000611.png" target="_blank" rel="noopener"
+>http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2015/01/Screenshot-from-2015-01-11-000611.png&lt;/a>) 内置监控视图[/caption]&lt;/p>
+&lt;p>更多信息求助   man PCPIntro documentation.&lt;/p>
+&lt;p>主要适用场景：&lt;/p>
+&lt;ul>
+&lt;li>
+&lt;p>在 RHEL 下作应用或者操作系统的性能测试或调优，如果不需要或者没有必要使用第三方工具的话，它应该是首选。&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>对生产系统性能做瓶颈定位，用它可以收集和追踪系统一段时间（一天、一周、一个月）的各种性能参数的表现情况，收集下来的数据可以作单点的或者横向的分析。它能够收集的参数还是相当全面的。&lt;/p>
+&lt;/li>
+&lt;/ul>
+&lt;p>PCP 的目的是了解系统的实时的性能状态，为性能调优找到方向和目标。也可以作为日常性能监控的工具之一，为性能派错提供一臂之力。&lt;/p>
+&lt;h1 id="tuna">TUNA
+&lt;/h1>&lt;p>TUNA 则适合于复杂性能参数的调整，能对很多 kernel 和网络的性能参数在图形界面中配置，对于一次性要修改 n 个文件的深度复杂性能调优，它可以是一个提高工作效率的利器。而且，如果是某种性能参模版，可以用它作配置的导入导出。这一便于工程师，面对一对类似系统做重复的手工劳动。&lt;/p>
+&lt;p>[gallery size=&amp;ldquo;mobile&amp;rdquo; link=&amp;ldquo;file&amp;rdquo; ids=&amp;ldquo;53398,53399,53400&amp;rdquo;]&lt;/p>
+&lt;p>极简实施测试方法：&lt;/p>
+&lt;ol>
+&lt;li>
+&lt;p>Install the necessary packages:
+$ yum install tuna&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Start the tuning application
+$ tuna&lt;/p>
+&lt;/li>
+&lt;/ol>
+&lt;p>For more information, please see the man tuna documentation&lt;/p>
+&lt;p>主要适用场景：&lt;/p>
+&lt;ol>
+&lt;li>
+&lt;p>高效深度调优&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>工作在范围比较大的性能参数上&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>需要保存并且一致地实施这些参数配置到其它机器上&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>希望使用图形界面操作&lt;/p>
+&lt;/li>
+&lt;/ol>
+&lt;h1 id="tuned">TUNED
+&lt;/h1>&lt;p>写了一堆文字了，现在我才开始我需要作的正事。我的需求是：优化一台物理的测试机的性能。我希望用最少的时间，直接让系统进入针对 kvm 虚拟机性能优化的基础优化状态（性能优化基线）。目前我还没有时间关心所有的性能参数细节，我只想快速完成这件事。方法如下：&lt;/p>
+&lt;ol>
+&lt;li>
+&lt;p>安装 tuned
+$ yum install tuned&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>使用 tuned-adm 选择并加载
+$ tuned-adm list
+Available profiles:&lt;/p>
+&lt;/li>
+&lt;/ol>
+&lt;ul>
+&lt;li>balanced&lt;/li>
+&lt;li>blog&lt;/li>
+&lt;li>latency-performance&lt;/li>
+&lt;li>powersave&lt;/li>
+&lt;li>sap&lt;/li>
+&lt;li>throughput-performance&lt;/li>
+&lt;li>virtual-guest&lt;/li>
+&lt;li>virtual-host
+Current active profile: balanced&lt;/li>
+&lt;/ul>
+&lt;p>tuned-adm profile  virtual-host      // 最重要的就是这个命令，让操作系统优化成虚拟机 host 服务器的性能优化调整基线&lt;/p>
+&lt;p>上面这条命令其实就是我写本文的目的。打完这条命令，我可以洗洗睡了。如果你还睡不着，可以看下下面这个文章。&lt;/p>
+&lt;p>&lt;a class="link" href="https://access.redhat.com/site/documentation/en-US/Red_Hat_Enterprise_Linux/7-Beta/html-single/Performance_Tuning_Guide/#_tuned_adm" target="_blank" rel="noopener"
+>Red Hat Enterprise Linux 7.0 - Performance Tuning Guide - 3.7. tuned-adm&lt;/a>&lt;/p>
+&lt;h1 id="性能-提升方法">  性能 提升方法
+&lt;/h1>&lt;p>性能调优有几个方面需要考量。工具方面，需要选择一个合适的工具集，需要这个工具集能够统一的覆盖所有需要管理和调优的操作系统类型和版本；目的在于能够得到所有系统的基于统一工具的性能快照（当前的状态基线）；流程方面，需要建立性能调优和持续性能改进的流程。它应该和 ITIL 里的可用性管理和容量管理关联起来。性能提升的流程应该有一下几个活动：&lt;/p>
+&lt;ol>
+&lt;li>
+&lt;p>目标选择：选择当前环境性能基线快照目标的对象服务器，选择尽可能要典型、全面、量要够。针对采样对象，作统一的性能参数收集，选择必选和候选的性能参数指标。指标要选的有目的和有特点。目标采样对象可能会慢慢的扩大到更多的对象。目标采集的性能参数也需要，每次都 review，可以作有必要的调整。&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>性能参数收集：最好在相同的时间段内收集一定时长的性能参数。建议使用一种统一的工具，这样可以更好第做横向对比。实在不行，可以对同一种操作系统使用一种工具。当然采集工具的数量越少越好，越多工作量越大，分析报表的成本越高。这个阶段 RHEL 上可以使用 PCP。&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>建立性能调优目标：每一种业务应用或者某一类系统的基本性能诉求可能是一致的，把收集回来的数据，做分析整理和加工，对比历史的、业内标准的或者同行业的参考数据。得出本次性能参数调整的目标参数集。不同类型的系统，目标调整的参数集应该是不同的。&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>实施性能优化参数：手工的或者用自动化工具来在目标系统中实时系统参数调整。当然，建议提前做测试，保证不会影响业务正常运行，也可以使用分批分拨实施的方法。建议的方法如下，a)使用自动化配置管理工具，如 puppet 或类似方案，把参数调整模版用 puppet 的模块来表达，并持续改进，发布最新的版本到目标 host group 上去即可。b）使用手工的方式实施，这里可用用到 tuna 工具。&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>调优结果分析：再次收集一个周期的性能数据。对比这些数据和第二步骤中的数据。分析和记录本次调优的成败和总结。找出提升的部分，无提升的步骤。为下次调优做些后续的注意事项。&lt;/p>
+&lt;/li>
+&lt;/ol>
+&lt;p>以上活动应该在 IT Service mnager 的负责下定期执行。目标就是提升系统性能和效率，确保每个业务都能运行在最高的性能，为系统的容量管理和性能管理给出可靠的参考数据。&lt;/p>
+&lt;p>最后，tuned 并没有写在上面的流程中，并不是说它没有到。它其实应该被用在每个操作系统实例安装和初始化的阶段。它提供的是红帽为 RHEL 推荐的最基础的性能调优参数建议，是性能调优基线的基线。实施方法很简单，在系统初始化的 post action 中加入这个条目，针对不同类型的系统激活一个合适的 profile 即可。&lt;/p>
+&lt;p>性能 提升不是一蹴而就的，而是一个长期的过程。可以使用 PDAC 的思想，扎实的走好以上建议流程。使用自动化运维工具和必要的数据分析工具加速以上流程。&lt;/p></description></item><item><title>Start over from RHEL</title><link>https://martinliu.cn/2014/09/21/start-rhel/</link><pubDate>Sun, 21 Sep 2014 15:40:15 +0000</pubDate><guid>https://martinliu.cn/2014/09/21/start-rhel/</guid><description>&lt;p>RHEL 7 是一个划时代的版本，比 6 有很多的重大改变，特别是系统底层的管理这块，很多命令集都发生了变化。对我而言需要在一个新的平台上提升 linux 的技能，还是很凑巧的事情。逐渐感觉到红帽从操作系统层面，向上往云的方向，向下往软件定义的 XXX 方向，横向直接积压其它服务器虚拟化技术的势头逐渐明显。传统数据中心转型在即，整个技术堆栈需要重新定义和规划；创新型小公司不断挑战传统巨头厂商的地位，市场在重新定义和分化，仿佛这是进入战国时代的节奏。&lt;/p>
+&lt;!-- raw HTML omitted --></description></item><item><title>Top 10 things Ubuntu is doing right</title><link>https://martinliu.cn/2012/12/18/top-10-things-ubuntu-is-doing-right/</link><pubDate>Tue, 18 Dec 2012 15:14:04 +0000</pubDate><guid>https://martinliu.cn/2012/12/18/top-10-things-ubuntu-is-doing-right/</guid><description>&lt;p>&lt;a class="link" href="http://www.datamation.com/open-source/top-10-things-ubuntu-is-doing-right.html" target="_blank" rel="noopener"
+>http://www.datamation.com/open-source/top-10-things-ubuntu-is-doing-right.html&lt;/a>&lt;/p></description></item><item><title>OCS inventory NG 两三事</title><link>https://martinliu.cn/2010/07/16/ocs-inventory-ng/</link><pubDate>Fri, 16 Jul 2010 19:03:17 +0000</pubDate><guid>https://martinliu.cn/2010/07/16/ocs-inventory-ng/</guid><description>&lt;p>&lt;img src="http://www.ocsinventory-ng.org/uploads/images/why-ocs.png"
+loading="lazy"
+>头等大事是有关于 OCSNG 很快就要出 UTF8 多语言支持版的 Windows 采集代理程序。新闻如下：
+** 新版 windows 采集代理被彻底重写，它将包括下面的新特性：**&lt;/p>
+&lt;ul>
+&lt;li>全 Unicode 代理，多语言 UTF-8 支持&lt;/li>
+&lt;li>Native 32 and 64 bits agent&lt;/li>
+&lt;li>BIOS AssetTag 收集&lt;/li>
+&lt;li>硬盘序列号收集&lt;/li>
+&lt;li>部署返回码收集&lt;/li>
+&lt;li>全 HTTPS 支持&lt;/li>
+&lt;li>Socks 4 、5 HTTP 代理支持&lt;/li>
+&lt;li>FTP, FTPS 和 SMB 包部署支持&lt;/li>
+&lt;li>二进制插件支持&lt;/li>
+&lt;/ul>
+&lt;p>另外，是一本新书的发布，这是我见到的第一本系统介绍 OCSNG 的图书。&lt;a class="link" href="http://www.packtpub.com/ocs-inventory-ng-1-02-it-inventory-and-resource-management/book?utm_source=martinliu.cn&amp;amp;utm_medium=bookrev&amp;amp;utm_content=blog&amp;amp;utm_campaign=mdb_003818" target="_blank" rel="noopener"
+>&lt;img src="https://www.packtpub.com/sites/default/files/imagecache/productview/1100_MockupCover_0.jpg"
+loading="lazy"
+>&lt;/a>可能是由于我写过一些相关的 post，该书的出版社发邮件给我，想请我 review，并写写书评。处于对 OCSNG 和 GLPI 的喜爱，忍不住诱惑，就答应了。很快的我得到了这本书的电子版。虽然没有时间看完，浏览了几章后，还是可以说这本书写的是非常实用。特别是对系统的安装、配置、部署和使用都从系统管理员的角度写的非常到位。书上没什么废话，文字写的比较随意，很易懂的随意。可喜的是该书还捎带着把 GLPI 也给介绍了，包括如何与 OCSNG 做集成配置，以及 GLPI 的主要功能说明。对于这种偏门的开源软件系统能有如此细致使用的介绍实属难得，更何况我对 OCSNG 和 GLPI 的网站文档本身就不敢恭维。这里提供一个样章供参考 &lt;a class="link" href="https://www.packtpub.com/sites/default/files/1100-chapter-1-introduction-to-it-inventory-and-resource%20.pdf" target="_blank" rel="noopener"
+>&amp;ldquo;Introduction to IT Inventory and Resource Management&amp;rdquo;&lt;/a>&lt;/p>
+&lt;p>最后，还是期待新版 OCSNG 的 Window 采集代理程序能早点发布吧。期望它发布之时我有时间做这样一个虚机，以便分享给各位感兴趣的人。规划如下：&lt;/p>
+&lt;ul>
+&lt;li>基于 Fedora 10&lt;/li>
+&lt;li>安装 OCSNG_UNIX_SERVER-1.3.2. + glpi-0.78-RC2&lt;/li>
+&lt;li>做一定系统的基本优化，配置 OCSNG 和 GPLI 的集成&lt;/li>
+&lt;li>期望该虚机能应用于实际的网络环境中&lt;/li>
+&lt;/ul></description></item><item><title>Remedy ITSM 7.6 installation Tips</title><link>https://martinliu.cn/2009/11/28/remedy-itsm-76-installation-tips/</link><pubDate>Sat, 28 Nov 2009 09:29:04 +0000</pubDate><guid>https://martinliu.cn/2009/11/28/remedy-itsm-76-installation-tips/</guid><description>&lt;p>自从 7.6 发布和以后一直没有时间安装，通过最近的几次安装，积累了一些经验，供大家参考。在安装开始之前请一定查看&lt;a class="link" href="http://www.bmc.com/support/product-availability-compatibility" target="_blank" rel="noopener"
+>ARS_7500_Comp_Matrixv1001.pdf&lt;/a>文档，保证操作系统、数据库、中间件和 JDK 的版本都符合要求。如果是安装生产系统的话，建议把数据库和应用服务器分开，硬件配置也一定参考 Remedy ITSM 安装手册中的建议硬件配置要求。&lt;/p>
+&lt;p>&lt;img src="http://www.beareyes.com.cn/2/lib/200701/19/452/image002.jpg"
+loading="lazy"
+>&lt;img src="http://www.my-softwareteacher.com/images/oracle_logo.gif"
+loading="lazy"
+>&lt;/p>
+&lt;p>最近在 Linux 的虚拟机上做了一次安装，相关细节如下:&lt;/p>
+&lt;ul>
+&lt;li>Suse Linux Enterprise server 10 sp2 64 bit&lt;/li>
+&lt;li>Oracle 10G 64bit (10201_database_linux_x86_64.cpio.gz)&lt;/li>
+&lt;li>JDK 1.6(jdk-6u6-linux-i586.bin)&lt;/li>
+&lt;/ul>
+&lt;p>在 Suse Linux 上安装 Oracle 还是比较容易的，可以参考这个安装手册进行，&lt;a class="link" href="ftp.novell.com/partners/oracle/docs/10gR2_sles10_install.pdf" >下载&lt;/a>。数据库安最好按照成 utf8 字符集，如下图所示：&lt;/p>
+&lt;p>&lt;a class="link" href="http://martinliu.cn/?attachment_id=50187" target="_blank" rel="noopener"
+>&lt;/a>&lt;a class="link" href="http://martinliu.cn/http:/martinliu.cn/2009/11/remedy-itsm-76-installation-tips.html/snap00142/" target="_blank" rel="noopener"
+>&lt;img src="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2009/11/snap00142-300x234.jpg"
+loading="lazy"
+>&lt;/a>&lt;/p>
+&lt;p>Remedy ITSM 套件的安装分为三个步骤：1）ARS 7.5 SP3 的安装；2）Atrium CMDB7.6 安装；3）ITSM 7.6 安装；其中第一步是最重要的，第二步骤如果安装产品目录数据的话时间花费比正常多一点。Remedy ARS 7.5 是最新的补丁包，它修复了 sp2 的很多 bug；是 Remedy ITSM 7.6 安装的必须版本。在安装 ARS 的时候需要准确的导出相关的环境变量，如果环境变量没有或者不够的话，安装程序则无法正确地连接数据库，下面的例子可以参考一下。&lt;/p>
+&lt;p>&lt;a class="link" href="http://martinliu.cn/http:/martinliu.cn/2009/11/remedy-itsm-76-installation-tips.html/snap00143/" target="_blank" rel="noopener"
+>&lt;img src="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2009/11/snap00143-300x59.jpg"
+loading="lazy"
+>&lt;/a>&lt;/p>
+&lt;p>每一步安装完成之后都需要详细查看相关的日志，确保每一步都安装完全正确。在安装完 ARS 之后一定要为服务器添加所有相关 License。&lt;/p></description></item><item><title>[網播] Born to MISrepresent 第二集：當 OpenNMS 遇上 SFLC ，催生了 Moglen Ravicher LLC</title><link>https://martinliu.cn/2009/02/04/e7b6b2e692ad-born-to-misrepresent-e7acace4ba8ce99b86efbc9ae795b6-opennms-e98187e4b88a-sflc-efbc8ce582ace7949fe4ba86-moglen-ravicher-llc/</link><pubDate>Wed, 04 Feb 2009 04:52:02 +0000</pubDate><guid>https://martinliu.cn/2009/02/04/e7b6b2e692ad-born-to-misrepresent-e7acace4ba8ce99b86efbc9ae795b6-opennms-e98187e4b88a-sflc-efbc8ce582ace7949fe4ba86-moglen-ravicher-llc/</guid><description>&lt;p>（原文於 2008-04-08 發表於 &lt;a class="link" href="http://blog.roodo.com/ystuan/archives/5830995.html" target="_blank" rel="noopener"
+>http://blog.roodo.com/ystuan/archives/5830995.html&lt;/a>）&lt;/p>
+&lt;p>這個音檔的授權是&lt;a class="link" href="http://creativecommons.org/licenses/by-nc-sa/2.5/tw/" target="_blank" rel="noopener"
+>姓名標示-非商業性-相同方式分享 2.5 台灣&lt;/a>，跟我的網誌一樣。&lt;/p>
+&lt;p>下載 ogg 格式：&lt;a class="link" href="http://www.archive.org/download/BornToMisrepresentEp2/Born_to_MISrepresent_EP2.ogg" target="_blank" rel="noopener"
+>Born_to_MISrepresent_EP2.ogg&lt;/a>
+下載 mp3 格式：&lt;a class="link" href="http://www.archive.org/download/BornToMisrepresentEp2/Born_to_MISrepresent_EP2.mp3" target="_blank" rel="noopener"
+>Born_to_MISrepresent_EP2.mp3&lt;/a>
+前往存放在 Archive.org 上的頁面：&lt;a class="link" href="http://www.archive.org/details/BornToMisrepresentEp2" target="_blank" rel="noopener"
+>Born to MISrepresent EP2&lt;/a>，有更多資訊以及格式。&lt;/p>
+&lt;p>內容摘要：&lt;/p>
+&lt;p>OpenNMS 1.3.11 版發佈，並宣佈與 Hyperic 就雙方的產品進行合作。這項合作的推手是一個雙方的共同客戶。Hyperic 的 agent 預料將可和擁有強大平台但是拙於 agent (agent-less)的 OpenNMS 形成良好互補。（自 1.3.10 版就開始跟 Hyperic Agent 進行整合，最近 OpenNMS 版本號已跳升至 1.5.90 ） Tarus 的 blog 有更多細節：&lt;a class="link" href="http://blogs.opennms.org/?p=175" target="_blank" rel="noopener"
+>The Year of Integration&lt;/a>&lt;/p>
+&lt;p>Hyperic 跟 OpenNMS 的初步整合，可線上收看 &lt;a class="link" href="http://download.hyperic.com/swf/HyperCAST10/playback.html" target="_blank" rel="noopener"
+>Integrating Hyperic HQ and OpenNMS&lt;/a>（瀏覽器需支援 flash 格式播放）&lt;/p>
+&lt;p>當 OpenNMS 遇上 SFLC ：前一陣子 Tarus 跑去 &lt;a class="link" href="http://ask.slashdot.org/article.pl?sid=08/03/04/0023245" target="_blank" rel="noopener"
+>Ask Slashdot&lt;/a> ，嚷嚷說 &lt;a class="link" href="http://www.cittio.com/" target="_blank" rel="noopener"
+>Cittio Watchtower&lt;/a> 使用 OpenNMS 的程式碼當然可以，但是使用的方式違反了（程式碼採用的）GPL 授權。&lt;/p>
+&lt;p>想也知道，跑去 Slashdot 一定會引來關注，他也尋求軟體自由法律中心（Software Freedom Law Center，SFLC）的協助。但是，SFLC 服務對象僅限於非營利機構，結果呢，SFLC 決定以成立一間新的律師事務所(&lt;a class="link" href="http://www.moglenravicher.com/" target="_blank" rel="noopener"
+>Moglen Ravicher LLC&lt;/a>)的方式，來服務支持自由軟體的營利機構， OpenNMS Group 因此成了 Moglen Ravicher LLC 的第一個客戶。&lt;/p>
+&lt;p>喔，不用猜， SFLC 的&lt;a class="link" href="http://www.softwarefreedom.org/news/2008/mar/26/moglen-ravicher/" target="_blank" rel="noopener"
+>新聞稿&lt;/a>直接告訴大家，兩塊招牌底下都是同一群律師，事務所的所有利潤會回饋給 SFLC 。（嗯，其實我們也可以說 OpenNMS 有兩種，一種是 opennms.org - 社群，一種則是 opennms.com - 主要參與者所開的公司 OpenNMS Group。）&lt;/p>
+&lt;p>筆者已經在 FLOSS Weekly 聽過 &lt;a class="link" href="http://twit.tv/floss13" target="_blank" rel="noopener"
+>Eben Moglen 談 GPL 3.0&lt;/a> ，這次為多瞭解另一位大咖 Dan Ravicher （其實只是想搞清楚他的姓怎麼唸&amp;hellip;&amp;hellip;），找到了 Dan 談 &lt;a class="link" href="http://www.ip.qut.edu.au/2006-08-innovation-ravicher" target="_blank" rel="noopener"
+>GPL 3, Patents and Other Current Issues&lt;/a> ，都很棒，推薦給大家，尤其是後者，其實 Dan 還回顧了 GPL 的誕生，解釋了 RHEL 的 subscription model 為何不違反 GPL 但又可以約束客戶（超意外收穫！解答了筆者幾百年前的疑惑）&lt;/p>
+&lt;p>照例 Tarus 也在他的 blog 提到整件事：&lt;a class="link" href="http://blogs.opennms.org/?p=181" target="_blank" rel="noopener"
+>OpenNMS, Eben Moglen and Cittio&lt;/a>&lt;/p></description></item><item><title>Running Linux from any machine without installation</title><link>https://martinliu.cn/2008/07/04/running-linux-from-any-machine-without-installation/</link><pubDate>Fri, 04 Jul 2008 14:31:15 +0000</pubDate><guid>https://martinliu.cn/2008/07/04/running-linux-from-any-machine-without-installation/</guid><description>&lt;h1 id="httpwwwslaxorgscreenshotphps3slax---your-pocket-operating-system">&lt;a class="link" href="http://www.slax.org/screenshot.php?s=3" target="_blank" rel="noopener"
+>&lt;img src="http://www.slax.org/images/slax.png"
+loading="lazy"
+alt="http://www.slax.org/screenshot.php?s=3"
+>&lt;/a>Slax - your pocket operating system
+&lt;/h1>&lt;!-- raw HTML omitted -->
+&lt;!-- raw HTML omitted -->
+&lt;!-- raw HTML omitted -->
+&lt;p>&lt;strong>Slax How to&lt;/strong>&lt;/p>
+&lt;p>&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->&lt;/p>
+&lt;!-- raw HTML omitted --></description></item></channel></rss>

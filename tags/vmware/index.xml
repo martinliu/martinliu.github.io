@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>VMWare on Martin Liu's Blog</title><link>https://martinliu.cn/tags/vmware/</link><description>Recent content in VMWare on Martin Liu's Blog</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><lastBuildDate>Sun, 09 Oct 2022 21:44:15 +0800</lastBuildDate><atom:link href="https://martinliu.cn/tags/vmware/index.xml" rel="self" type="application/rss+xml"/><item><title>虚拟桌面 之我见</title><link>https://martinliu.cn/2014/11/23/e8999ae68b9fe6a18ce99da2-e4b98be68891e8a781/</link><pubDate>Sun, 23 Nov 2014 10:16:23 +0000</pubDate><guid>https://martinliu.cn/2014/11/23/e8999ae68b9fe6a18ce99da2-e4b98be68891e8a781/</guid><description>&lt;h1 id="虚拟桌面-的业务价值">虚拟桌面 的业务价值
+&lt;/h1>&lt;p>虚拟应用产生在虚拟桌面之前，虚拟应用是一种和 VPN 类似的原创访问方法。它其实最初实现的是图形 GUI 的远程访问，注意不是文字终端。它和 VPN 具有本质的区别，在于虚拟桌面是“终端不留数据/秘”的；这个它性拜它的传输协议所赐，虚拟桌面传输的主要是图像信息和键鼠指令。它的另外一个特性是“维护渐变”，在终端上维护近似于零（除了安装和配置虚拟桌面连接客户端程序外）；在服务器端应用升级和维护简单，主要是通过升级和更新一堆的 Windows 操作系统来实现。因此，主要的业务价值有两点：1）数据安全；2）维护简单。基于这些价值取向，它可以很好地胜任一下业务场景：
+[su_list icon=&amp;ldquo;icon: flag&amp;rdquo;]&lt;/p>
+&lt;ul>
+&lt;li>多网隔离、集中上网、运维/外包/审计人员访问管理&lt;/li>
+&lt;li>前端操作环境和后端业务数据的分离&lt;/li>
+&lt;li>呼叫中心、处理中心和窗口柜员&lt;/li>
+&lt;li>移动办公、BYOD&lt;/li>
+&lt;li>安全研发、协作研发&lt;/li>
+&lt;li>3D 虚拟桌面&lt;/li>
+&lt;li>等等等等&lt;/li>
+&lt;/ul>
+&lt;p>[/su_list]&lt;/p>
+&lt;p>业务价值很精练，业务场景太多这里就不赘述。&lt;/p>
+&lt;h1 id="关键技术点">关键技术点
+&lt;/h1>&lt;p>下面是虚拟桌面/应用的基本原理架构图。
+&lt;a class="link" href="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2014/11/xen.png" target="_blank" rel="noopener"
+>&lt;img src="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2014/11/xen-520x229.png"
+loading="lazy"
+alt="xen"
+>&lt;/a>
+通过上图可以对虚拟桌面的技术架构一目了然。虚拟桌面基础架构就是在数据中心里面部署的一堆 Windows 虚拟机，核心就在于让远程用户可以操作使用这些虚拟机里面的应用或者这些虚拟机桌面。鉴于此，核心技术主要有两个方面：Windows 操作系统虚拟机的集中发布更新和管理；远程访问协议和所有终端管控策略。&lt;/p>
+&lt;h2 id="windows-虚拟机的发布和更新">Windows 虚拟机的发布和更新
+&lt;/h2>&lt;p>Windows 的虚拟机有两种：Server 和 Desktop；虚拟应用技术主要是利用 Windows Server 操作系统天然的多用户性质，实现一份安装程序的多用户同时使用。虚拟桌面是复制 n 个预装应用的 Desktop 桌面操作系统来实现 n 个用户的使用。&lt;/p>
+&lt;h3 id="1虚拟机克隆">1）虚拟机克隆
+&lt;/h3>&lt;p>使用服务器虚拟化技术可以方便地从 OS 模板中克隆出 n 个虚拟机，它的挑战在于：&lt;/p>
+&lt;ul>
+&lt;li>创建和更新的速度要快，特别是在虚拟机数量大的情况下&lt;/li>
+&lt;li>可否永久保持用户的个人数据，更新操作不会清空旧的个人数据&lt;/li>
+&lt;li>存储空间要节省&lt;/li>
+&lt;/ul>
+&lt;h3 id="2stream-os-流化操作系统">2）Stream OS 流化操作系统
+&lt;/h3>&lt;p>这种方案是一种古老而容易被人遗忘的技术。就是很久很久以前的无盘工作站的思路。虚拟机或者物理机以网络启动的方法获得一个运行的 Windows 操作系统。所有的操作系统启动镜像都在服务器端统一管理，一种镜像可以对应启动 n 可操作系统，这些操作系统目前多以虚拟机的形式存在。它的特点&lt;/p>
+&lt;ul>
+&lt;li>虚拟机对磁盘的消耗非常小，磁盘是写缓存和用户数据。它的大小可以是 0 或者几个 GB。&lt;/li>
+&lt;li>创建的速度快&lt;/li>
+&lt;li>大批量虚拟机启动过程对网络有一定的压力，一般需要使用隔离的万兆网&lt;/li>
+&lt;li>同样有个人数据保持的问题&lt;/li>
+&lt;li>更新速度非常快，所有的操作系统在母盘更新后，需要重启来更新&lt;/li>
+&lt;/ul>
+&lt;p>不管用什么方式集中管理虚拟机，总之桌面虚拟化是要同时玩转这几个球水晶球。&lt;/p>
+&lt;ul>
+&lt;li>存储成本和性能&lt;/li>
+&lt;li>操作系统更新和个人数据保持&lt;/li>
+&lt;li>虚拟应用和虚拟桌面的混搭&lt;/li>
+&lt;li>虚拟机发布更新方式的混搭&lt;/li>
+&lt;/ul>
+&lt;h2 id="远程访问协议">远程访问协议
+&lt;/h2>&lt;p>远程访问协议哪家强，可以公允的说还是 Citrix ICA 强。本文不是评测访问协议，只是点到为止。远程 GUI 界面发的虚拟访问方式一共有以下几种：&lt;/p>
+&lt;p>[su_list icon=&amp;ldquo;icon: flask&amp;rdquo;]&lt;/p>
+&lt;ul>
+&lt;li>Citrix ICA/ HDX ICA : Citriix 的发家的技术，具有网络适应性强可用于广域网，后台管控策略精细，用户体验高等特点。&lt;/li>
+&lt;li>PCoIP ：最早适用于非虚拟桌面领域的，后来和 VMWare 和 Teradici 共同研发之后用在了 VDI 的访问上。&lt;/li>
+&lt;li>RDP ：Windows Server 操作系统自带的远程桌面访问协议，不管你用还是不用它就在那里，它的技术日趋成熟，体验越来越好，不容忽视，从 MS 许可证的角度讲，任何一个虚拟桌面就需要购买微软的虚拟桌面 windows 许可证。&lt;/li>
+&lt;li>SPICE ：它是一个开源的协议，可以和 KVM 配合实现 Windows 和 Linux 的远程桌面范围，自身的成熟度和完整度都一般。由于代码的开放性，有使之在某些公司手里成为可造之材。&lt;/li>
+&lt;li>其它 ：国内主要的方式是类似于破解 RDP 的形式，基于 RDP 做一些改进和优化。&lt;/li>
+&lt;/ul>
+&lt;p>[/su_list]&lt;/p>
+&lt;p>总之一句话“优秀的访问协议”是好的虚拟桌面的天然基因，但它并不是虚拟桌面的全部。几个核心的考察指标包括：&lt;/p>
+&lt;ul>
+&lt;li>是否支持集中管理：在一个集中的管理服务器上实现对虚拟机、用户、访问终端等等的集中统一管理。&lt;/li>
+&lt;li>管理的颗粒度：你不清楚的话，就到厂商的管理控制台上数数就行&lt;/li>
+&lt;li>带宽消耗：带宽消耗和视觉效果 100%是成反比的，节省带宽就以为这降低显示效果，但是还要要求不降低操作灵敏度的情况下，是否支持 WAN。这些看似矛盾的因素就是要在一个共同体里同时寻找。&lt;/li>
+&lt;li>客户端设备兼容：是否任何有计算能力有显示输出的设备都可以操作。主要是设备的类型和操作系统。&lt;/li>
+&lt;/ul>
+&lt;h2 id="服务器虚拟化技术">服务器虚拟化技术
+&lt;/h2>&lt;p>没有服务器虚拟化似乎不成虚拟桌面项目。它是运行虚拟机的载体。选择的范围主要几家：vSphere，XenServer、Hyper-V 和 KVM。可以说他们和虚拟桌面是强相关的有一定的兼容性制约。如果不差钱，那么直接买最贵的。如果非常清晰自己的业务需求，则可以推导出自己合适的技术。&lt;/p>
+&lt;h2 id="网络技术">网络技术
+&lt;/h2>&lt;p>一个完美的虚拟桌面基础架构需要实现数据中心 100%的包裹，需要实现外网设备统一的访问入口。说的更形象一点：虚拟桌面平台的虚拟机操作环境可以成为数据中心企业数据的传输终点，所有用户和数据的交互都在这里发生，数据是否能继续它的旅程传输出去，是受到策略的控制。外部客户访问这个入口，入口想一扇门，打开它用户就能够访问到自己的所有的应用和桌面，这扇门对外只开放一个端口，它起到了远程访问协议的代理服务器的功能，它把虚拟桌面基础架构中成百上千的 IP 地址的访问都终结掉，给防火墙策略的制定减轻了压力，实为容易忽视的关键技术点。&lt;/p>
+&lt;h1 id="项目的成败">项目的成败
+&lt;/h1>&lt;p>毫不夸张的讲，能给你把大规模虚拟桌面项目做成功的人才对你有真爱。大规模虚拟桌面项目太复杂，实施难度大，成本高，这是业内的共识。对于大的组织，业务需求的梳理和确认需要有厂商引导，在这个过程中最尖锐的问题会在与：1）应用的兼容性；2）外设的兼容性。目前的 Windows 应用并非天然能够在虚拟机里面运行的，特别是在有负载外设需要通过远程协议链接的时候，更是如此。让企业修改应用是一个非常头痛的事情；选择修改应用，使之更适用于虚拟化环境，从长远看是明智的选择，并非企业的让步。而逼着厂商来适应一个糟糕的，或者本不该出现在虚拟桌面环境中的应用，即使是花了很大的代价实现了，也是投入和产出及不划算的。&lt;/p>
+&lt;p>成本结构的烦恼，宏观的看成本中排名前几位是：存储、服务器、软件许可。也就是说桌面虚拟化厂商玩命的在硬件厂商打工。如何节省存储和服务器成本，方法可以是：减少虚拟机的资源消耗量。注意有些情况下是在不极大降低虚拟的数量上来做的，这就不得不去细看一下虚拟机的制备方法上，各家的优势了。方法也可以是：调整 VDI 和虚拟应用使用的比例。&lt;/p>
+&lt;p>实施的过程不仅是搭建和测试，更要命的时用户的接受程度。在有些地方是需要强推，在某些情况下是要把技术问题留给厂商解决。一切都在于实施成本的平衡，没有一帆风顺的实施。实施的过程也是不断积累运维经验的过程，企业需要做好学习和提高的准备，这个球也不好接住。&lt;/p>
+&lt;h1 id="总结">总结
+&lt;/h1>&lt;p>桌面虚拟化和应用虚拟化是两个不同的技术。在一个项目和客户里，可能是两种不同的技术路线，在很多情况下也是混合使用的。它们构成了“企业应用交付基础架构”，这个基础架构在数据中心里地地位和网络设备、服务器、存储、数据库等等是相同的。只是它处在一个比较特殊的位置。很多人可能还不能理解到这一层。&lt;/p>
+&lt;p>从 ITSM 的角度看，它提供了一种 IT 服务。用户通过它可以安全高效地使用各种企业业务应用和数据。企业可以用应用交付基础架构，轻松地把业务系统部署到任何的工作场所；并得到更好地数据安全性的保证，更快速地交付各种业务（甚至所有内网应用）给最终用户（不管他们身在何处）。&lt;/p></description></item><item><title>什么是真的云？</title><link>https://martinliu.cn/2013/04/15/forrester-private-clouds-what-is-cloud-computing/</link><pubDate>Mon, 15 Apr 2013 17:31:21 +0000</pubDate><guid>https://martinliu.cn/2013/04/15/forrester-private-clouds-what-is-cloud-computing/</guid><description>&lt;p>[su_box  ]
+最近有一篇比较热的文章，中文标题《Forrester：70%的“私有云”根本不是云》；你如果稍微搜索一下，你发现它几乎被转载烂了，但是我看了几篇，真心的担心读者们是否都能正确的理解。写本文，全当是给您的一个阅读帮助。
+[/su_box]&lt;/p>
+&lt;p>&lt;a class="link" href="http://www.cnw.com.cn/news-international/htm2013/20130227_264664.shtml" target="_blank" rel="noopener"
+>中文版网页点这里&lt;/a>
+&lt;a class="link" href="http://www.networkworld.com/news/2013/022613-forrester-private-clouds-267108.html" target="_blank" rel="noopener"
+>英文版网页点这里&lt;/a>&lt;/p>
+&lt;p>&lt;strong>中文翻译的质量有限，有些概念和逻辑错误，我做了一点点的修订，从而避免误解。&lt;/strong>&lt;/p>
+&lt;p>**【基于 CNW.com.cn 译稿】**如果企业数据中心拥有高度虚拟化的环境，有一个 Web 门户供商业用户申请和访问虚机，再有一种方法可以跟踪有多少资源被使用了……拥有这一切并不能叫做有了一个&lt;a class="link" href="http://search.cnw.com.cn/searchview.aspx?searchtype=Content&amp;amp;searchstr=%CB%BD%D3%D0%D4%C6" target="_blank" rel="noopener"
+>私有云&lt;/a>。&lt;/p>
+&lt;p>假如有足够大的容量可以为员工提供他们所需要的任意数量的计算资源，并能够动态地上下扩展或收缩容量，但仍然需要 IT 人员制备好系统的话，那么这仍然不能叫私有云。&lt;/p>
+&lt;p>虚拟化和私有云之间的界限是比较模糊的，根据 Forrester 的最新报告，在企业的 IT 高管们所自诩的私有云中，高达 70%的 IT 环境其实并非私有云。“这是个严重的问题。实际上是在做云洗白而已。”Forrester 的云专家 James Staten 如此说。&lt;/p>
+&lt;p>为什么说这个问题非常重要? Staten 认为，如果将一个高度虚拟化的环境称为云环境，但它又不具备私有云的一项或多项关键特征，那么 IT 部门就给了用户一个不切实际的期望。假如用户们发现这个环境不能自配置，或者没有弹性&lt;a class="link" href="http://search.cnw.com.cn/searchview.aspx?searchtype=Content&amp;amp;searchstr=%D7%CA%D4%B4%B3%D8" target="_blank" rel="noopener"
+>资源池&lt;/a>而感到不满时，他们就有可能因此而气馁。那么当下一次用户需要实时运行一个虚机时，他们会选择在哪里运行呢? 是 IT 部门给他们的伪私有云? 还是亚马逊的 AWS? 如此一来，IT 部门就无法控制事态了。&lt;/p>
+&lt;p>大多数云专家已经对云计算(公有云或私有云)的定义有了普遍的共识，这就是 NIST 提出的五个关键特征。这些特征包括：&lt;/p>
+&lt;p>● 用户可按需索取、&lt;a class="link" href="http://search.cnw.com.cn/searchview.aspx?searchtype=Content&amp;amp;searchstr=%D7%D4%B7%FE%CE%F1" target="_blank" rel="noopener"
+>自服务&lt;/a>&lt;/p>
+&lt;p>● 泛在的网络接入&lt;/p>
+&lt;p>● 共享资源池&lt;/p>
+&lt;p>● &lt;a class="link" href="http://search.cnw.com.cn/searchview.aspx?searchtype=Content&amp;amp;searchstr=%B5%AF%D0%D4%C0%A9%D5%B9" target="_blank" rel="noopener"
+>弹性扩展&lt;/a>资源的能力&lt;/p>
+&lt;p>● 拥有可计量的服务&lt;/p>
+&lt;p>如果没有这五大特征，那从技术上说就不能叫云。和某些人的想法相悖的是，虚拟化并不是私有云。它只是为云提供动力的一个基本要素，但只依靠它是创建不出一个云的。VMware 的营销经理 Mike Adams 说，私有云必须在虚拟化环境之上综合更多复杂的管理功能，方能满足 NIST 的定义要求。&lt;/p>
+&lt;p>CA 的战略解决方案副总裁兼云专家 Andi Mann 给这场讨论踩了一脚刹车。“如果你不符合所有这五大特征，那么你就陷入了语义学纠结中。”他认为真正的问题并不是说符合这五个复选标记的东西就叫做云，而是在于 IT 能否为用户提供适当的服务。“有时候，80%的云都已足够好了，”他说。“用户真正在意的是业务服务。谁会在意你的环境叫什么。你要关心的就是客户，就是业务用户是不是得到了他们需要的资源。”&lt;/p>
+&lt;p>也许企业并不需要弹性扩展，因为原本就是静态工作负载。即便不需要弹性的资源扩展能力，它仍然还可以需要云的其他特征——自服务、计费、泛在网络接入和共享资源池。但它在技术上可能并不符合 NIST 的定义。“所以，如果你要想技术上也说得过去，也可以将其称为：高效率的虚拟环境，”Mann 说。&lt;/p>
+&lt;p>那么，所有这些云洗白来自哪里? Staten 认为，IT 管理人员基本上对云都抱有恐惧心理。企业内的虚拟化专家通常都处于支配地位; 在需要资源时，他们可以去制备相应的资源容量。而云被视为一种赋予用户自服务和动态扩展资源权力的模式，对 IT 是一种威胁。如果用户可以自己开通了，那还要他们这些虚拟化专家干什么呢?&lt;/p>
+&lt;p>Staten 认为，这样想上述问题是错误的。即便有了云，IT 管理人员还是有大量的工作可做，比如需要设置和确保云服务有一个可供用户选择的服务目录，需要完成安全访问协议配置，提供资源可用性和虚拟化组件等。管理人员必须接受这样一个理念：如果他们不这么做，那么用户不论如何还是需要访问和使用他们所需要的资源，这样还是会陷入可怕的“影子 IT”的局面。(Martin 修订)&lt;/p>
+&lt;p>我想先对以上的几个关键点和名词做一些解释，从而能让我们更好的理解原文作者的意图。&lt;/p>
+&lt;ol>
+&lt;li>
+&lt;p>&amp;ldquo;cloud-washing&amp;rdquo;  &amp;ndash;  “云洗白”   这个比喻是说：本来根本什么云都不是！但是还是要狡辩和伪装为私有云。真像是：纯虚拟化环境不等于云&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>&amp;ldquo;shadow IT.&amp;rdquo;   &amp;ndash;  “影子 IT”   这个比喻是说：IT 部门是业务部门挥之不去的阴霾，他们跟没发赶上业务部门需求变化请求的脚本，业务部门的人从来不管你是用的是神马云，你们这帮人根本没有按时的交付过任何东西，甚至于每当想起需要 IT 部门来配合做什么东西，就感到没有指望，啥都需要漫长的等待。&lt;/p>
+&lt;/li>
+&lt;/ol>
+&lt;p>IT 部门真的是技术不行么？IT 部门真的是干活的人不够么？这个比喻后背后真是的故事：特别是大规模的企业，业务部门所需要的任何 IT 资源和变更都必须通过 IT 自动、半自动或者手工配置实现；小的到开通一个邮箱，重置一次密码；大到新的业务系统的升级和上线；往往 IT 或者业务用户发频繁和密集地发起种种请求时，没有任何一家传统企业的 IT 部门（亚马逊、谷歌这种公司除外，因为它们已经是云计算公司了）能够很有自信地、充分让业务部门满意地完成被要求完成的所有工作。它们为什么完成不了呢？这个就走入了 IT 管理的经典理论，这就是我之前十年工作经验中天天和用户沟通的东西：“保持 IT 系统的稳定，还是接受变化”；为了既能响应业务部门不断的变化请求和 IT 用户的日常需求，IT 部门想到了很好的流程来加以解决，这个流程是什么？它叫“变更管理流程”。举个例子，大型的商业银行一般一周或者两周有一次系统变更日；所有的对 IT 系统的配置和改变，必须提前计划安排好工作顺序，只能在变更日当晚的固定时间窗口中完成，例如晚上 11 点到凌晨 5 点；如果在这个时间段某个工作没有完成怎么办？对不起！没有完成的变更叫做失败变更，你还必须在变更窗前前就把系统回退到未变更前的状态！你现在发现了么？对生产系统是多么严肃的事情！如果你在变更前，没有万无一失的备份计划，你但失误，你就歇菜了；或者你觉得是顺利完成变更了，但是营业厅一开门，IT 的投诉热线就被打爆了，这也不行；变更一但导致生产系统的宕机，轻则 IT 部门的领导引咎辞职，重则数据中心的大领导乌纱帽不保。&lt;/p>
+&lt;p>以上讲述的故事可以说是我的亲身经历，就是中国的国情；那么这个文章的出处毕竟是国外的，这几个发话的大佬们都是何方神圣？&lt;/p>
+&lt;p>Forrester 的云专家 James Staten ：&lt;a class="link" href="http://www.forrester.com/james-staten" target="_blank" rel="noopener"
+>BIO&lt;/a>  从 Bio 上看，他好像是 Forrester 的头牌云分析师之一，有 20 年的 IT 从业经验。&lt;/p>
+&lt;p>VMware 的营销经理 Mike Adams ：网上查不到它的 Bio，在 VMWare 网站搜索，也只能看到他是http://blogs.vmware.com/vsphere/ 的负责人。网上并没有关于此人的详细介绍，但是我们从 vsphere 的 blog 上在读一下这个产品的定位“BEGIN THE JOURNEY TO A PRIVATE CLOUD WITH DATACENTER VIRTUALIZATION”；这个说法和此大师在文章中说的一样：vsphere 是数据中心虚拟化的一个技术组建，数据中心虚拟化技术是私有云建设的起点。但是它是起点，不是私有云。纯种的服务器虚拟化项目也不是那天就能进化成私有云了。&lt;/p>
+&lt;p>CA 的战略解决方案副总裁兼云专家 Andi Mann ：&lt;a class="link" href="http://www.linkedin.com/in/andimann" target="_blank" rel="noopener"
+>BIO&lt;/a>  从 Bio 上可以看出，这大叔才是练家子，人家 84 年从 IT 管理员出身干起；感觉它说的话比较在点子上，并没有去忽悠云；而是从云的本质，也就是 IT 的本质去看，去分析的。也就是“IT 是提供服务和支持的，为的是让用户能够操作和使用业务系统去完成业务工作。” 如果这句话抽象，我可以举个例子：领导需要阅读邮件，他关心的是 IT 能否让我安全的在设备上查邮箱，浏览和回复邮件；当然你能让他在任何设备、任何网络上、任何时间都能完成以上动作，那就再好不过了。银行的储蓄业务柜员需要的是完成一个存、取钱、开销户等相关操作，他关心的是 IT 系统能够正常快速的相应，让客户快速的离开柜台；她根本不关心，网线后面连接的系统是啥做的。&lt;/p>
+&lt;p>言归正传：把焦点放到“云”的概念上一点意义都没有！倒不如把心思放在云的价值上；把心思放在私/公有云的建设方案上！我试图从云计算的基础特征上来解读一下云计算对云企业的价值：&lt;/p>
+&lt;ol>
+&lt;li>
+&lt;p>用户可按需索取、自服务：让用户能够更方便的访问（请求、开通和使用）IT 资源和服务，用户无需等待，资源召之即来&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>泛在的网络接入：个人觉得这个应该翻译为高速度高带宽的网络接入，这个是外界访问到计算资源的必要条件之一；如果你资源再多，但是出口太窄也没有意义；如果翻译成这样也凑合如果能理解为，在个中网络条件下都能够正常安全的加入到云所提供的 IT 服务上也可以。&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>共享资源池： 这个可以提高 IT 资源的利用率，利用率高了，投资就减少了，浪费了低了&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>弹性扩展资源的能力：这个可以应付突发的大批量用户访问请求，并且能够自动资源回收，最重要的是这些扩展和收缩的发生都是云系统自动完成的，不需要管理员手工操作&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>拥有可计量的服务 ： 这个对于 IT 部门需要向用户收钱的实在是重要；或者对服务提供商更重要，如果国内的用户实在没有这个需求也可以不强求。&lt;/p>
+&lt;/li>
+&lt;/ol>
+&lt;p>那么，我们清楚了云的标准和价值后，我们需要判断的是什么？我认为是，我们为什么要建云？你在建云的时候，必须要有一个原因；有了这个原因了才有云的价值取向，才能谈到云的需求，才能谈到云的方案。当然，云就是以云的方案和设计理念去建设的，不存在伪云计算最终能进化或者发展成云计算这一说，就像是，猴子长的年纪在大也无法开口讲话一样。厂商也要不要故意误导，用户也不要片面理解。&lt;/p>
+&lt;p>在引申一下：云计算和虚拟化究竟有啥关系？我斗胆从云的经典分类上来说 Iaas\PaaS\SaaS；从技术上讲，只有 IaaS 和服务器虚拟化有必然联系，其它两种 PaaS 和 SaaS 可以和虚拟化一点必然关系都没有，但是如果他们需要的话，可能可以利用到虚拟化技术的某些优势，但是用非虚拟化技术的架构实现这两种云计算一点问题都没有。网上盛传的“虚拟化是云计算的基石”根本就是一种误解；不过虚拟化的确能帮你做很多事，能帮助你交付很多种的 IT 服务。如果你一定要把他们挂上钩，那么你需要回答的是，你是否要建设 IaaS 云？你的 IaaS 云管理平台是什么，要关注在 IaaS 云计算管理平台的功能和能力上来，看你的 IaaS 是否需要管理多种类型的 Hypersior？是否需要管理到分布在各地的成千上万个服务器？等等。。。从这些需求中才会细化出 IaaS 云管理平台对服务器虚拟化平台的需求。云计算建设是自顶向下的过程，从清晰的概念和建设思路出发，切勿本末倒置，切勿舍本逐末。&lt;/p></description></item><item><title>虚拟让你轻松玩开源</title><link>https://martinliu.cn/2008/04/02/vm-jumpbox-rpath-play-oss/</link><pubDate>Wed, 02 Apr 2008 06:46:29 +0000</pubDate><guid>https://martinliu.cn/2008/04/02/vm-jumpbox-rpath-play-oss/</guid><description>&lt;p>&lt;a class="link" href="http://www.martinliu.cn/wp-content/uploads/2008/04/homepage-promo.png" target="_blank" rel="noopener"
+>&lt;img src="http://www.martinliu.cn/wp-content/uploads/2008/04/homepage-promo.png"
+loading="lazy"
+>&lt;/a>开源一般都是谁在玩？我觉得还是开发人员比较多，通常有开发背景的人才会比较轻松的去下载源代码，编译并运行。现在网上有很多能让您轻松搞定开源软件的方法，虚拟技术的发展使我们能更轻松的获取并运行开源的解决方案。向往糖果盒子中放巧克力一样容易。&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->最近我收到了几个&lt;a class="link" href="http://otrs.org" target="_blank" rel="noopener"
+>OTRS&lt;/a>的新版发布的新闻邮件。先说说关于 OTRS 的一些新闻，2008-03-31 发布了最新的一个版本 &lt;a class="link" href="http://otrs.org/news/2008/otrs_2_2_6/" target="_blank" rel="noopener"
+>OTRS 2.2.6 (Ipanema)&lt;/a>。这个版本是一个 2.2.6 的安全补丁修复版，修复了一些安全的 bug，同时有提供了另外两种语言的支持：土耳其和越南语；当然 OTRS 是能够支持简繁体的中文的。而且关于语言方面的翻译对照表也是可以自行修改的，可以把流程当中的一些术语翻译成符合你企业实用习惯的名称。OTRS 后台能支持非常多的数据库，包括 Oracle，MS SQL 等非开源数据库，它的核心程序是用 Perl 写的，这些程序运行在 Apache web 服务器上，客户端是用的纯 web 的方式，后台的管理提供 Web 和命令行两种方式。它的安装对于我来说不是很方便，安装文档中并没有写的很详细需要哪行 Perl 的包，apache 上需要安装哪行 Perl 相关的东西；不过您对 Perl 非常熟练的话相信没有这个问题。导致的问题是我在安装了 ORTS 之后，它或者它的某些程序运行不了。&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->总结一下体验开源软件可能的一些步骤：&lt;!-- raw HTML omitted -->&lt;/p>
+&lt;p>&lt;!-- raw HTML omitted -->&lt;/p>
+&lt;ol>
+&lt;li>安装某个版本的Linux
+&lt;!-- raw HTML omitted -->&lt;/li>
+&lt;li>下载开源软件的安装包或者源码，开发人员可能更多回去下载源码，编译安装
+&lt;!-- raw HTML omitted -->&lt;/li>
+&lt;li>寻找次软件相关的安装文档和攻略，一步一步的照做。
+&lt;!-- raw HTML omitted -->&lt;/li>
+&lt;li>配置系统来满足次软件的安装和运行条件
+&lt;!-- raw HTML omitted -->&lt;/li>
+&lt;li>管理和运行该软件需要的服务，例如MySQL，apache等
+&lt;!-- raw HTML omitted -->&lt;/li>
+&lt;li>运行该软件
+&lt;!-- raw HTML omitted -->&lt;/li>
+&lt;li>继续查看软件的使用文档，学更多内容，体验感兴趣的功能
+&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->在这一个过程中可能遇到的问题有：&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->&lt;/li>
+&lt;/ol>
+&lt;ul>
+&lt;li>痛苦与重新安装操作系统，往往系统中的一些包会缺少或者版本不符合安装需求，如果对Linux系统包管理不熟练的话这是最容易出现的问题。
+&lt;!-- raw HTML omitted -->&lt;/li>
+&lt;li>痛苦与对底层支持应用的配置和管理，底层依赖的系统服务可能有数据库、web服务器或者应用服务器等；至今记得我第一次被迫在PostgreSQL中创建数据和用户的痛苦
+&lt;!-- raw HTML omitted -->&lt;/li>
+&lt;li>有些OSS项目文档做的非常好，有些不好，那么安装和配置OSS的过程也可能会非常麻烦；毕竟很多配置文件的修改都需要手工修改配置文件
+&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->&lt;/li>
+&lt;/ul>
+&lt;!-- raw HTML omitted -->
+&lt;p>&lt;!-- raw HTML omitted -->应用虚拟技术可能是一个比较好的方式，目前我找到两个比较好的网站能提供 OSS 虚拟应用下载的，如下所示。&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->&lt;img src="http://www.rpath.com/conary-static//apps/mint/images/corplogo.gif"
+loading="lazy"
+>&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->&lt;a class="link" href="http://www.rpath.com/rbuilder/" target="_blank" rel="noopener"
+>http://www.rpath.com/rbuilder/&lt;/a>&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->&lt;img src="http://www.jumpbox.com/sites/all/themes/jumpbox/logo-white.gif"
+loading="lazy"
+>&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->&lt;a class="link" href="http://www.jumpbox.com/" target="_blank" rel="noopener"
+>http://www.jumpbox.com/&lt;/a>&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->这两个网站的区别是：JumpBox 是提供开源软件包下载和相关服务的，当然下载肯定是免费的；rPath 不但提供下载而且能给你空间去攒一个你自己的虚拟应用。&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->当然 VWMare 的网站也能提供这些虚拟应用的下载：&lt;a class="link" href="http://www.vmware.com/appliances/" target="_blank" rel="noopener"
+>http://www.vmware.com/appliances/&lt;/a>&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->这里不想讨论虚拟技术的好处，不过它确实给体验和应用 OSS 带来很多方便。我第一次下载的虚拟应用是 Zenoss，下载总共花了 10 分钟，下载的过程当中我在看 Zenoss 的文档，下载的虚拟机运行起来之后，我做的第一件事情就是运行自动发现网络设备的命令了。&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->通过虚拟这个桥梁，更加节约了我们体验和应用 OSS 的时间。我想这应该是开源和虚拟共同给我们带来的好处，道理很简单如果你下载并且使用一份包含 Windows 操作系统的应用，而没有给 MS 交钱的话，那么你就是盗版使用 Windows 了。更没有人会给你免费安装配置一套商业应用软件。&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->那么让我们从体验 OTRS 开始把，什么是 OTRS 请参考本博客中的文章。你可以从 JumpBox 下载并运行 OTRS2.2.6，下载地址是：&lt;a class="link" href="http://downloads2.jumpbox.com/otrs-1.0.1.zip" target="_blank" rel="noopener"
+>http://downloads2.jumpbox.com/otrs-1.0.1.zip &lt;/a>&lt;/p></description></item></channel></rss>

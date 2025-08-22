@@ -1,0 +1,340 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Redis on Martin Liu's Blog</title><link>https://martinliu.cn/tags/redis/</link><description>Recent content in Redis on Martin Liu's Blog</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><lastBuildDate>Thu, 21 Aug 2025 17:36:56 +0800</lastBuildDate><atom:link href="https://martinliu.cn/tags/redis/index.xml" rel="self" type="application/rss+xml"/><item><title>Docker、Jenkins、Prometheus，本地能跑？！这套技术栈你需要搞定</title><link>https://martinliu.cn/blog/docker-jenkins-prometheus-locally-heres-the-stack/</link><pubDate>Mon, 28 Jul 2025 17:58:33 +0800</pubDate><guid>https://martinliu.cn/blog/docker-jenkins-prometheus-locally-heres-the-stack/</guid><description>&lt;img src="https://martinliu.cn/blog/docker-jenkins-prometheus-locally-heres-the-stack/1_izxF5LhLRecc_epDuvJmhg.png" alt="Featured image of post Docker、Jenkins、Prometheus，本地能跑？！这套技术栈你需要搞定" />&lt;h2 id="-tldr--一套真正可用的本地-devops-技术栈">✨ TL;DR — 一套真正可用的本地 DevOps 技术栈
+&lt;/h2>&lt;p>&lt;strong>问题&lt;/strong>：云端 DevOps 费用高、迭代慢，还难调试。&lt;br>
+&lt;strong>解决方案&lt;/strong>：用 Docker Compose 跑起来的一套完整 DevOps 技术栈，全部本地化。&lt;/p>
+&lt;h2 id="核心组件包括">核心组件包括：
+&lt;/h2>&lt;ul>
+&lt;li>Jenkins（CI/CD）&lt;/li>
+&lt;li>Prometheus + Grafana（监控）&lt;/li>
+&lt;li>Loki + Promtail（日志聚合）&lt;/li>
+&lt;li>NGINX / Traefik（反向代理）&lt;/li>
+&lt;li>Mailhog（邮件测试）&lt;/li>
+&lt;li>Postgres + Redis（辅助服务）&lt;/li>
+&lt;/ul>
+&lt;h2 id="我的经验总结">我的经验总结：
+&lt;/h2>&lt;ul>
+&lt;li>从小起步，逐步扩展。&lt;/li>
+&lt;li>固定版本，避免意外变更。&lt;/li>
+&lt;li>健康检查能救命。&lt;/li>
+&lt;li>Docker Compose 胜过过早引入 Kubernetes。&lt;/li>
+&lt;li>养成写“技术栈日志”的习惯。&lt;/li>
+&lt;/ul>
+&lt;p>我的需求其实很简单。&lt;/p>
+&lt;p>我只想要一个稳的 CI 流水线、一套能看懂的监控指标，以及在部署前能本地测试全部功能的方式，不必再为云服务花冤枉钱。&lt;/p>
+&lt;p>结果呢？Jenkins 启动就挂，Prometheus 抓不到数据，Docker Compose 日志铺天盖地像在写小说。&lt;/p>
+&lt;p>我差点放弃。但在无数次试错、两次烧坏电脑，还有通宵翻遍 DevOps 博客之后，我终于搞出了一套真的能用的本地环境。&lt;/p>
+&lt;p>&lt;strong>不用 Kubernetes。不付 AWS 账单。没有凌晨四点的 Slack 报警。&lt;/strong>&lt;/p>
+&lt;p>这不是教程，而是我自己打磨出来的生存指南，你完全可以照着用。🤝&lt;/p>
+&lt;h2 id="什么才是-devops-技术栈本地而非理论">什么才是 DevOps 技术栈（本地，而非理论）
+&lt;/h2>&lt;p>提到 DevOps，大多数人想到的是云原生架构、Kubernetes 自动扩容集群，还有那种比房租还贵的精美仪表盘。但如果你是独立开发者、在搞实验，或只是想学习而不影响线上环境，&lt;strong>你需要的，是能直接在自己电脑上跑的东西。&lt;/strong>&lt;/p>
+&lt;p>对我来说，一个“本地优先”的 DevOps 技术栈应该包含：&lt;/p>
+&lt;ul>
+&lt;li>&lt;strong>Docker：&lt;/strong> 容器的基础设施。所有服务都运行在容器里，包括 Jenkins 和 Prometheus。&lt;/li>
+&lt;li>&lt;strong>Jenkins：&lt;/strong> 仍然是最灵活的 CI/CD 引擎。虽说有点老派，但用得好依然顶用。&lt;/li>
+&lt;li>&lt;strong>Prometheus + Grafana：&lt;/strong> 用于采集与可视化监控指标。Prometheus 负责抓，Grafana 负责看。&lt;/li>
+&lt;li>&lt;strong>Loki：&lt;/strong> 日志聚合利器。因为容器一多，&lt;code>docker logs&lt;/code> 根本不够用。&lt;/li>
+&lt;li>&lt;strong>NGINX 或 Traefik：&lt;/strong> 做反向代理，把多个服务统一映射到本地域名下。&lt;/li>
+&lt;li>&lt;strong>Mailhog / Redis / Postgres：&lt;/strong> 可选组件，用于测试邮件、缓存或数据库相关功能。&lt;/li>
+&lt;/ul>
+&lt;p>这就是基础配置。没有 AWS，没有 GCP，也不用托管的 EKS。只有 &lt;strong>容器、端口，以及偶尔崩溃的终端窗口&lt;/strong>。&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/blog/docker-jenkins-prometheus-locally-heres-the-stack/1_izxF5LhLRecc_epDuvJmhg.png"
+width="1536"
+height="1024"
+srcset="https://martinliu.cn/blog/docker-jenkins-prometheus-locally-heres-the-stack/1_izxF5LhLRecc_epDuvJmhg_hu_a4581d5e1ad86937.png 480w, https://martinliu.cn/blog/docker-jenkins-prometheus-locally-heres-the-stack/1_izxF5LhLRecc_epDuvJmhg_hu_d5bd9d6c46ed3dc5.png 1024w"
+loading="lazy"
+alt="devops stack"
+class="gallery-image"
+data-flex-grow="150"
+data-flex-basis="360px"
+>&lt;/p>
+&lt;h2 id="让我豁然开朗的-docker-composeyml-配置">让我豁然开朗的 docker-compose.yml 配置
+&lt;/h2>&lt;p>谈本地 DevOps，绕不开 &lt;code>docker-compose.yml&lt;/code>。它是整个系统的指挥中枢，决定了你是轻松一键部署，还是陷入无尽的手动操作噩梦。&lt;/p>
+&lt;p>下面是我用的一个简化版本配置：&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;span class="lnt">14
+&lt;/span>&lt;span class="lnt">15
+&lt;/span>&lt;span class="lnt">16
+&lt;/span>&lt;span class="lnt">17
+&lt;/span>&lt;span class="lnt">18
+&lt;/span>&lt;span class="lnt">19
+&lt;/span>&lt;span class="lnt">20
+&lt;/span>&lt;span class="lnt">21
+&lt;/span>&lt;span class="lnt">22
+&lt;/span>&lt;span class="lnt">23
+&lt;/span>&lt;span class="lnt">24
+&lt;/span>&lt;span class="lnt">25
+&lt;/span>&lt;span class="lnt">26
+&lt;/span>&lt;span class="lnt">27
+&lt;/span>&lt;span class="lnt">28
+&lt;/span>&lt;span class="lnt">29
+&lt;/span>&lt;span class="lnt">30
+&lt;/span>&lt;span class="lnt">31
+&lt;/span>&lt;span class="lnt">32
+&lt;/span>&lt;span class="lnt">33
+&lt;/span>&lt;span class="lnt">34
+&lt;/span>&lt;span class="lnt">35
+&lt;/span>&lt;span class="lnt">36
+&lt;/span>&lt;span class="lnt">37
+&lt;/span>&lt;span class="lnt">38
+&lt;/span>&lt;span class="lnt">39
+&lt;/span>&lt;span class="lnt">40
+&lt;/span>&lt;span class="lnt">41
+&lt;/span>&lt;span class="lnt">42
+&lt;/span>&lt;span class="lnt">43
+&lt;/span>&lt;span class="lnt">44
+&lt;/span>&lt;span class="lnt">45
+&lt;/span>&lt;span class="lnt">46
+&lt;/span>&lt;span class="lnt">47
+&lt;/span>&lt;span class="lnt">48
+&lt;/span>&lt;span class="lnt">49
+&lt;/span>&lt;span class="lnt">50
+&lt;/span>&lt;span class="lnt">51
+&lt;/span>&lt;span class="lnt">52
+&lt;/span>&lt;span class="lnt">53
+&lt;/span>&lt;span class="lnt">54
+&lt;/span>&lt;span class="lnt">55
+&lt;/span>&lt;span class="lnt">56
+&lt;/span>&lt;span class="lnt">57
+&lt;/span>&lt;span class="lnt">58
+&lt;/span>&lt;span class="lnt">59
+&lt;/span>&lt;span class="lnt">60
+&lt;/span>&lt;span class="lnt">61
+&lt;/span>&lt;span class="lnt">62
+&lt;/span>&lt;span class="lnt">63
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-yaml" data-lang="yaml">&lt;span class="line">&lt;span class="cl">&lt;span class="nt">version&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="s2">&amp;#34;3.8&amp;#34;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="nt">services&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">jenkins&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">image&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">jenkins/jenkins:lts-jdk17&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">ports&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>- &lt;span class="s2">&amp;#34;8080:8080&amp;#34;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">volumes&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>- &lt;span class="l">jenkins_home:/var/jenkins_home&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">prometheus&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">image&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">prom/prometheus&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">ports&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>- &lt;span class="s2">&amp;#34;9090:9090&amp;#34;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">volumes&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>- &lt;span class="l">./prometheus.yml:/etc/prometheus/prometheus.yml&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">grafana&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">image&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">grafana/grafana&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">ports&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>- &lt;span class="s2">&amp;#34;3000:3000&amp;#34;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">volumes&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>- &lt;span class="l">grafana_data:/var/lib/grafana&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">loki&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">image&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">grafana/loki:2.9.0&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">ports&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>- &lt;span class="s2">&amp;#34;3100:3100&amp;#34;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">command&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>-&lt;span class="l">config.file=/etc/loki/local-config.yaml&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">nginx&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">image&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">nginx:stable&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">ports&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>- &lt;span class="s2">&amp;#34;80:80&amp;#34;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">volumes&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>- &lt;span class="l">./nginx.conf:/etc/nginx/nginx.conf&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">mailhog&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">image&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">mailhog/mailhog&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">ports&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>- &lt;span class="s2">&amp;#34;8025:8025&amp;#34;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>- &lt;span class="s2">&amp;#34;1025:1025&amp;#34;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">redis&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">image&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">redis&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">ports&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>- &lt;span class="s2">&amp;#34;6379:6379&amp;#34;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">postgres&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">image&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">postgres:14&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">ports&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>- &lt;span class="s2">&amp;#34;5432:5432&amp;#34;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">environment&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">POSTGRES_USER&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">dev&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">POSTGRES_PASSWORD&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">dev&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">POSTGRES_DB&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">app_db&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">volumes&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>- &lt;span class="l">pgdata:/var/lib/postgresql/data&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="nt">volumes&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">jenkins_home&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">grafana_data&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">pgdata&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;h2 id="让我少走弯路的配置笔记">让我少走弯路的配置笔记
+&lt;/h2>&lt;ul>
+&lt;li>&lt;strong>分离 &lt;code>.env&lt;/code> 文件&lt;/strong>：不要在配置中硬编码密钥或端口。&lt;/li>
+&lt;li>&lt;strong>挂载配置文件&lt;/strong>：Prometheus 和 NGINX 的配置最好通过挂载方式管理，方便随时调整。&lt;/li>
+&lt;li>&lt;strong>状态服务使用数据卷&lt;/strong>：Jenkins、Grafana、Postgres 等需要持久化的服务应该使用数据卷。&lt;/li>
+&lt;li>&lt;strong>尽量避免使用 &lt;code>depends_on&lt;/code>&lt;/strong>：它不会真正等待服务就绪。建议用 &lt;code>restart: unless-stopped&lt;/code> 配合健康检查来提升稳定性。&lt;/li>
+&lt;/ul>
+&lt;p>这套配置让我可以放心地搭建和试验。每个服务都在容器里运行，出问题直接重建，简单又高效。&lt;/p>
+&lt;h2 id="我的本地-devops-文件结构也就是理智的来源">我的本地 DevOps 文件结构（也就是理智的来源）
+&lt;/h2>&lt;p>尝试了多个混乱结构之后，我最终找到了这样一套清晰、模块化的目录布局，让调试更高效。&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;span class="lnt">14
+&lt;/span>&lt;span class="lnt">15
+&lt;/span>&lt;span class="lnt">16
+&lt;/span>&lt;span class="lnt">17
+&lt;/span>&lt;span class="lnt">18
+&lt;/span>&lt;span class="lnt">19
+&lt;/span>&lt;span class="lnt">20
+&lt;/span>&lt;span class="lnt">21
+&lt;/span>&lt;span class="lnt">22
+&lt;/span>&lt;span class="lnt">23
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">/devops-stack
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">├── docker-compose.yml
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">├── .env
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">├── README.md
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">├── prometheus/
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">│ └── prometheus.yml
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">├── grafana/
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">│ └── provisioning/
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">│ ├── datasources/
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">│ └── dashboards/
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">├── loki/
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">│ └── local-config.yaml
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">├── nginx/
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">│ └── nginx.conf
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">├── jenkins/
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">│ └── jobs/
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">│ └── sample-job.groovy
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">├── volumes/
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">│ ├── grafana/
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">│ ├── jenkins/
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">│ └── postgres/
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">└── logs/
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> └── stack.log
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;h2 id="为什么这套结构有效">为什么这套结构有效？
+&lt;/h2>&lt;ul>
+&lt;li>🔹 prometheus/ 自定义抓取配置都放在这里。我用 Git 做版本管理，便于追踪每次修改。&lt;/li>
+&lt;li>🔹 grafana/provisioning/ 通过这个目录预配置仪表盘和数据源，重建容器时无需手动重复设置。&lt;/li>
+&lt;li>🔹 loki/ Loki 的 &lt;code>local-config.yaml&lt;/code> 存放位置。如果你聚合多个容器日志，这个配置经常需要调整。&lt;/li>
+&lt;li>🔹 nginx/ 将代理配置从项目根目录独立出来，便于快速热更新和测试路由变更。&lt;/li>
+&lt;li>🔹 jenkins/jobs/ 用于保存流水线定义、Groovy 脚本或种子任务，比每次在 Jenkins UI 操作方便得多。&lt;/li>
+&lt;li>🔹 volumes/ 可选目录，用于挂载持久化数据。无需深入 Docker 内部也能查看状态数据。&lt;/li>
+&lt;li>🔹 logs/ 集中存放容器日志或自定义输出，调试更高效。特别是在 Promtail 表现不稳定时很有用。&lt;/li>
+&lt;/ul>
+&lt;h2 id="如果重来一次我会这样做">如果重来一次，我会这样做：
+&lt;/h2>&lt;h3 id="1-不要从-jenkins-起步">1. 不要从 Jenkins 起步
+&lt;/h3>&lt;p>Jenkins 虽然强大，但太笨重。如果你只是想学习 CI/CD，建议先从 GitHub Actions（可通过 &lt;a class="link" href="https://github.com/nektos/act" target="_blank" rel="noopener"
+>act&lt;/a> 本地运行）或 Drone CI 开始。Jenkins 附带插件多、配置烦人，还有那些让人头大的 XML 配置文件（Extensible Markup Language）。&lt;/p>
+&lt;h3 id="2-不要过度设计监控">2. 不要过度设计监控
+&lt;/h3>&lt;p>就算你是为了跑个博客，也没必要一开始就上 Prometheus + Grafana + Loki + Tempo。先用简单的日志输出（&lt;code>docker logs&lt;/code>，或者加个 Mailhog）起步，有需要时再慢慢加监控。&lt;/p>
+&lt;h3 id="3-坚持用-docker-compose">3. 坚持用 Docker Compose
+&lt;/h3>&lt;p>我曾花了好几天尝试 Minikube、Kind 和 Kubernetes，结果发现其实一个靠谱的 &lt;code>docker-compose.yml&lt;/code> 足以应付本地需求。除非你要部署到云上或准备考 Kubernetes 认证，不然 &lt;strong>K8s 只会拖慢你的前期学习节奏&lt;/strong>。&lt;/p>
+&lt;h3 id="4-保持技术栈日志">4. 保持“技术栈日志”
+&lt;/h3>&lt;p>每次出错或修好 bug，我都会记一笔。这份日志成了我的生存手册，也成了这篇文章的基础。强烈推荐你也开始记录，真的有用。&lt;/p>
+&lt;h2 id="复制即用最简本地-devops-技术栈">复制即用：最简本地 DevOps 技术栈
+&lt;/h2>&lt;p>如果你读到这里心想“我就想马上试一把”，下面就是你需要的——一套&lt;strong>最小可行的 DevOps 技术栈&lt;/strong>：&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">mkdir devops-mini &lt;span class="o">&amp;amp;&amp;amp;&lt;/span> &lt;span class="nb">cd&lt;/span> devops-mini
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">touch docker-compose.yml
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>编辑 &lt;em>docker-compose.yml&lt;/em> 文件&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;span class="lnt">14
+&lt;/span>&lt;span class="lnt">15
+&lt;/span>&lt;span class="lnt">16
+&lt;/span>&lt;span class="lnt">17
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-yaml" data-lang="yaml">&lt;span class="line">&lt;span class="cl">&lt;span class="nt">version&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="s1">&amp;#39;3.8&amp;#39;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="nt">services&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">jenkins&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">image&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">jenkins/jenkins:lts-jdk17&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">ports&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>- &lt;span class="s2">&amp;#34;8080:8080&amp;#34;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">volumes&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>- &lt;span class="l">jenkins_home:/var/jenkins_home&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">grafana&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">image&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">grafana/grafana&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">ports&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>- &lt;span class="s2">&amp;#34;3000:3000&amp;#34;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="nt">volumes&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">jenkins_home&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>启动本地技术栈。&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">docker compose up -d
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>搞定了。CI + 监控，完全本地，不靠云。&lt;/p>
+&lt;p>等你准备好折腾时，再加上 Postgres、Redis、Loki、Prometheus 或 NGINX。&lt;br>
+放心，总会出点问题。&lt;/p>
+&lt;h2 id="收尾搭建它搞崩它掌握它">收尾：搭建它，搞崩它，掌握它
+&lt;/h2>&lt;p>搭一套本地 DevOps 技术栈并不轻松、不优雅，更不会很快。&lt;/p>
+&lt;p>但这个过程教会我的，比任何云服务仪表盘或 YouTube 教程都更接近真实世界。&lt;/p>
+&lt;p>当你亲手跑 Jenkins、从头配置 Grafana 仪表盘、或者搞清楚容器间为什么无法通信时，&lt;br>
+&lt;strong>你就不再只是执行脚本的人，而是真的开始具备系统工程师的思维了。&lt;/strong>&lt;/p>
+&lt;p>所以，如果你还在等 CI 部署完成，或厌倦了在黑盒云服务里调 bug……&lt;/p>
+&lt;p>🔥 &lt;strong>自己动手搭一套。搞崩它。修复它。大胆去学。&lt;/strong>&lt;/p>
+&lt;p>如果这篇文章哪怕帮到你一点点， &lt;strong>点个赞、写评论、转发一下。&lt;/strong> 让更多开发者不再害怕从零搭建基础架构。&lt;/p>
+&lt;blockquote>
+&lt;p>source: Medium - Level Up Coding&lt;/p>&lt;/blockquote></description></item></channel></rss>

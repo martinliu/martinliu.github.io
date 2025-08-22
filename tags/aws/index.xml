@@ -1,0 +1,952 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Aws on Martin Liu's Blog</title><link>https://martinliu.cn/tags/aws/</link><description>Recent content in Aws on Martin Liu's Blog</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><lastBuildDate>Fri, 22 Aug 2025 07:45:06 +0800</lastBuildDate><atom:link href="https://martinliu.cn/tags/aws/index.xml" rel="self" type="application/rss+xml"/><item><title>使用 Terraform、AWS 和 Python 构建无服务器实时数据管道</title><link>https://martinliu.cn/blog/building-a-serverless-real-time-data-pipeline-with-terraform-aws-and-python/</link><pubDate>Sat, 02 Aug 2025 15:42:33 +0800</pubDate><guid>https://martinliu.cn/blog/building-a-serverless-real-time-data-pipeline-with-terraform-aws-and-python/</guid><description>&lt;img src="https://martinliu.cn/blog/building-a-serverless-real-time-data-pipeline-with-terraform-aws-and-python/serverless-data-pipeline.png" alt="Featured image of post 使用 Terraform、AWS 和 Python 构建无服务器实时数据管道" />&lt;p>最近，我一直在利用业余时间学习和试验 AWS 的数据服务，发现它们非常引人入胜。&lt;/p>
+&lt;p>在本文中，我们将探讨我是如何利用 AWS 服务（如 Data Catalog、DataBrew 和 DynamoDB）构建一个实时无服务器数据管道的，以及如何借助 Terraform 将其无缝部署到 AWS。&lt;/p>
+&lt;p>无论您是数据工程领域的新手还是经验丰富的专家，本指南都将为您提供帮助！&lt;/p>
+&lt;h2 id="前提条件">前提条件
+&lt;/h2>&lt;ul>
+&lt;li>&lt;a class="link" href="https://aws.amazon.com/" target="_blank" rel="noopener"
+>AWS&lt;/a> 账户&lt;/li>
+&lt;li>&lt;a class="link" href="https://www.python.org/downloads/" target="_blank" rel="noopener"
+>Python&lt;/a> 3&lt;/li>
+&lt;li>&lt;a class="link" href="https://developer.hashicorp.com/terraform/install" target="_blank" rel="noopener"
+>Terraform&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;h2 id="为什么选择-terraform">为什么选择 Terraform
+&lt;/h2>&lt;ul>
+&lt;li>开源&lt;/li>
+&lt;li>庞大的开发者社区&lt;/li>
+&lt;li>不可变基础设施 (Immutable Infrastructure)&lt;/li>
+&lt;li>IaC (Infrastructure as Code)&lt;/li>
+&lt;li>云无关性 (Cloud agnostic)&lt;/li>
+&lt;li>旨在提升我对新技术的了解&lt;/li>
+&lt;/ul>
+&lt;h2 id="项目结构">项目结构
+&lt;/h2>&lt;p>&lt;img src="https://miro.medium.com/v2/resize:fit:640/format:webp/1*eEvDjru5qOJc73wpcie1Hw.png"
+loading="lazy"
+alt="项目结构"
+>&lt;/p>
+&lt;h2 id="概述">概述
+&lt;/h2>&lt;p>我即不是数据工程师，也没有在构建数据管道项目中；但是，我最近接触了一些数据服务。结合我对 AWS 的普遍了解，我决定亲手探索一些新服务。&lt;/p>
+&lt;p>本文源于我将构建数据管道作为一个有趣的项目来实践的经验，我发现整个过程非常有趣且富有成效。&lt;/p>
+&lt;h2 id="使用到的关键服务">使用到的关键服务
+&lt;/h2>&lt;h3 id="1-amazon-s3">1. Amazon S3
+&lt;/h3>&lt;ul>
+&lt;li>作为数据存储层。&lt;/li>
+&lt;li>存储了项目中使用的 JSON 文件&lt;/li>
+&lt;/ul>
+&lt;h3 id="2-amazon-dynamodb">2. Amazon DynamoDB
+&lt;/h3>&lt;ul>
+&lt;li>作为数据库层。&lt;/li>
+&lt;li>使用 DynamoDB 流 (DynamoDB streams) 和 AWS Lambda 将 JSON 数据从 DynamoDB 导出到 S3&lt;/li>
+&lt;/ul>
+&lt;h3 id="3-aws-glue">3. AWS Glue
+&lt;/h3>&lt;ul>
+&lt;li>负责数据提取、转换和加载 (ETL - Extraction, Transformation, and Loading)。&lt;/li>
+&lt;li>使用 Glue Data Catalog 管理数据集的元数据 (metadata)。&lt;/li>
+&lt;li>它还支持使用爬网程序 (crawler) 进行爬网，该程序自动发现架构 (schema) 并创建表；然而，在这个项目中，我们手动定义了架构，因此不需要此功能。&lt;/li>
+&lt;/ul>
+&lt;h3 id="4-amazon-databrew">4. Amazon DataBrew
+&lt;/h3>&lt;ul>
+&lt;li>用于转换 S3 中存储的数据，方法是删除重复条目。&lt;/li>
+&lt;li>一旦项目放置在 S3 存储桶的路径 &lt;code>/data&lt;/code> 中，它就会作为触发作业（来自 Lambda）运行。&lt;/li>
+&lt;li>指向 Glue Data Catalog 作为输入数据集。&lt;/li>
+&lt;/ul>
+&lt;h3 id="5-amazon-athena">5. Amazon Athena
+&lt;/h3>&lt;ul>
+&lt;li>使用标准 SQL 查询存储在 Glue Catalog 中的转换数据。&lt;/li>
+&lt;li>完全无服务器，并与 Glue Data Catalog 集成。&lt;/li>
+&lt;/ul>
+&lt;h2 id="最终架构">最终架构
+&lt;/h2>&lt;p>&lt;img src="https://miro.medium.com/v2/resize:fit:640/format:webp/1*0v_rLNRcapex3MRovi_luA.png"
+loading="lazy"
+alt="数据管道架构"
+>&lt;/p>
+&lt;h2 id="架构解释">架构解释
+&lt;/h2>&lt;h3 id="第一流程">第一流程
+&lt;/h3>&lt;ul>
+&lt;li>一个 &lt;em>.json&lt;/em> 文件被添加到 S3 上的路径 &lt;code>/data&lt;/code>&lt;/li>
+&lt;li>第一个 Glue 数据目录表 (Glue Catalog Table) 从 S3 的 &lt;code>/data&lt;/code> 路径读取数据&lt;/li>
+&lt;li>上传到 &lt;code>/data&lt;/code> 会触发一个 Lambda 函数，该函数启动 DataBrew 转换作业，通过移除 &lt;code>email&lt;/code> 列中的任何重复行来清理第一个 Glue 数据目录表（输入数据集）中的数据&lt;/li>
+&lt;li>DataBrew 作业将转换后的数据输出到 S3 中的新路径 &lt;code>/cleaned&lt;/code> 下，覆盖该路径中的其他项目以避免输出路径中出现重复&lt;/li>
+&lt;li>第二个 Glue 数据目录表从 S3 的 &lt;code>/cleaned&lt;/code> 路径读取数据&lt;/li>
+&lt;li>Athena 工作组 (workgroup) 从第二个 Glue 数据目录表读取数据并对其运行查询。这反过来又将查询结果存储在 S3 中的新输出位置 &lt;code>/athena-results/&lt;/code>&lt;/li>
+&lt;/ul>
+&lt;h3 id="第二流程">第二流程
+&lt;/h3>&lt;ul>
+&lt;li>一条数据被添加到 DynamoDB。&lt;/li>
+&lt;li>随着新数据的增加，DynamoDB 流 (stream) 被触发&lt;/li>
+&lt;li>连接到 DynamoDB 流的 Lambda 函数（用 Python 编写）被调用，它将新项目转换为 &lt;em>.json&lt;/em> 文件&lt;/li>
+&lt;li>执行第一个流程中的所有步骤&lt;/li>
+&lt;/ul>
+&lt;p>总而言之，实时数据处理的目标是通过 DynamoDB Streams 和 S3 存储桶通知 (S3 Bucket Notification) 与 Lambda 的集成来实现的。&lt;/p>
+&lt;h2 id="代码定义">代码定义
+&lt;/h2>&lt;h2 id="maintf">main.tf
+&lt;/h2>&lt;p>提供商 (Provider)：第一步通常是定义提供商。这里我们将云提供商定义为 &lt;em>aws&lt;/em>。&lt;/p>
+&lt;p>此外，我们还包含了将在项目中使用的各种模块 (module)，并传入所有必需的变量。&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;span class="lnt">4
+&lt;/span>&lt;span class="lnt">5
+&lt;/span>&lt;span class="lnt">6
+&lt;/span>&lt;span class="lnt">7
+&lt;/span>&lt;span class="lnt">8
+&lt;/span>&lt;span class="lnt">9
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-terraform" data-lang="terraform">&lt;span class="line">&lt;span class="cl">&lt;span class="nx">terraform&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nx">required_providers&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nx">aws&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nx">source&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="s2">&amp;#34;hashicorp/aws&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nx">version&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="s2">&amp;#34;~&amp;gt; 5.0&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nx">required_version&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="s2">&amp;#34;&amp;gt;= 1.3.0&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;span class="lnt">14
+&lt;/span>&lt;span class="lnt">15
+&lt;/span>&lt;span class="lnt">16
+&lt;/span>&lt;span class="lnt">17
+&lt;/span>&lt;span class="lnt">18
+&lt;/span>&lt;span class="lnt">19
+&lt;/span>&lt;span class="lnt">20
+&lt;/span>&lt;span class="lnt">21
+&lt;/span>&lt;span class="lnt">22
+&lt;/span>&lt;span class="lnt">23
+&lt;/span>&lt;span class="lnt">24
+&lt;/span>&lt;span class="lnt">25
+&lt;/span>&lt;span class="lnt">26
+&lt;/span>&lt;span class="lnt">27
+&lt;/span>&lt;span class="lnt">28
+&lt;/span>&lt;span class="lnt">29
+&lt;/span>&lt;span class="lnt">30
+&lt;/span>&lt;span class="lnt">31
+&lt;/span>&lt;span class="lnt">32
+&lt;/span>&lt;span class="lnt">33
+&lt;/span>&lt;span class="lnt">34
+&lt;/span>&lt;span class="lnt">35
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-terraform" data-lang="terraform">&lt;span class="line">&lt;span class="cl">&lt;span class="kr">provider&lt;/span> &lt;span class="s2">&amp;#34;aws&amp;#34;&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nx">region&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="s2">&amp;#34;us-east-1&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">}&lt;/span>&lt;span class="nb">module&lt;/span> &lt;span class="s2">&amp;#34;s3_bucket&amp;#34;&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nx">source&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="s2">&amp;#34;./modules/s3&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nx">bucket_name&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="s2">&amp;#34;upload-bucket-data-pipeline-234&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">}&lt;/span>&lt;span class="nb">module&lt;/span> &lt;span class="s2">&amp;#34;dynamodb_table&amp;#34;&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nx">source&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="s2">&amp;#34;./modules/dynamodb&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nx">table_name&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="s2">&amp;#34;dynamodb-table&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">}&lt;/span>&lt;span class="nb">module&lt;/span> &lt;span class="s2">&amp;#34;lambda_function&amp;#34;&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nx">source&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="s2">&amp;#34;./modules/lambda&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nx">lambda_name&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="s2">&amp;#34;dynamodb_to_s3&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nx">handler_trigger&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="s2">&amp;#34;dynamodb_to_s3_trigger.lambda_handler&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nx">s3_bucket&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="nb">module&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">s3_bucket&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">bucket_name&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nx">table_name&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="nb">module&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">dynamodb_table&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">table_name&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nx">dynamodb_stream_arn&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="nb">module&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">dynamodb_table&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">stream_arn&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">}&lt;/span>&lt;span class="nb">module&lt;/span> &lt;span class="s2">&amp;#34;glue_catalog&amp;#34;&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nx">source&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="s2">&amp;#34;./modules/glue/glue_raw&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nx">database_name&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="s2">&amp;#34;catalog_db&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nx">table_name&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="s2">&amp;#34;catalog_json_table&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nx">s3_location&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="s2">&amp;#34;s3://&lt;/span>&lt;span class="si">${&lt;/span>&lt;span class="nb">module&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">s3_bucket&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">bucket_name&lt;/span>&lt;span class="si">}&lt;/span>&lt;span class="s2">/data/&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">}&lt;/span>&lt;span class="nb">module&lt;/span> &lt;span class="s2">&amp;#34;databrew&amp;#34;&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nx">source&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="s2">&amp;#34;./modules/databrew&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nx">glue_table&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="nb">module&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">glue_catalog&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">table_name&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nx">glue_db&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="nb">module&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">glue_catalog&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">database_name&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nx">s3_bucket_name&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="nb">module&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">s3_bucket&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">bucket_name&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nx">data_zip&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="nb">module&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">lambda_function&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">data_zip&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">}&lt;/span>&lt;span class="nb">module&lt;/span> &lt;span class="s2">&amp;#34;glue_catalog_cleaned&amp;#34;&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nx">source&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="s2">&amp;#34;./modules/glue/glue_cleaned&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nx">database_name&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="s2">&amp;#34;catalog_cleaned_db&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nx">table_name&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="s2">&amp;#34;catalog_cleaned_json_table&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nx">s3_location&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="s2">&amp;#34;s3://&lt;/span>&lt;span class="si">${&lt;/span>&lt;span class="nb">module&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">s3_bucket&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">bucket_name&lt;/span>&lt;span class="si">}&lt;/span>&lt;span class="s2">/cleaned/&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">}&lt;/span>&lt;span class="nb">module&lt;/span> &lt;span class="s2">&amp;#34;athena&amp;#34;&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nx">source&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="s2">&amp;#34;./modules/athena&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nx">result_output_location&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="s2">&amp;#34;s3://&lt;/span>&lt;span class="si">${&lt;/span>&lt;span class="nb">module&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">s3_bucket&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">bucket_name&lt;/span>&lt;span class="si">}&lt;/span>&lt;span class="s2">/athena-results/&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;h2 id="backendtf">backend.tf
+&lt;/h2>&lt;p>首先，创建 S3 存储桶用于远程存储 Terraform 状态文件 (state file)，这有助于促进协作。&lt;/p>
+&lt;p>&lt;img src="https://miro.medium.com/v2/resize:fit:640/format:webp/1*wNoK6qiZ3af-6HkhCDH48A.png"
+loading="lazy"
+alt="Terraform 状态文件所在的 S3 存储桶"
+>&lt;/p>
+&lt;p>创建后，将以下内容添加到 &lt;code>backend.tf&lt;/code> 文件中：&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;span class="lnt">4
+&lt;/span>&lt;span class="lnt">5
+&lt;/span>&lt;span class="lnt">6
+&lt;/span>&lt;span class="lnt">7
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-terraform" data-lang="terraform">&lt;span class="line">&lt;span class="cl">&lt;span class="nx">terraform&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nx">backend&lt;/span> &lt;span class="s2">&amp;#34;s3&amp;#34;&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nx">bucket&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="s2">&amp;#34;serverless-data-pipeline-backend-bucket&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nx">key&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="s2">&amp;#34;serverless-pipeline/dev/terraform.tfstate&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nx">region&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="s2">&amp;#34;us-east-1&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>一旦我们运行 &lt;code>terraform init&lt;/code> 和 &lt;code>terraform apply&lt;/code> 来部署项目，我们就应该看到状态存储在存储桶中，如下所示：&lt;/p>
+&lt;p>&lt;img src="https://miro.medium.com/v2/resize:fit:640/format:webp/1*bJ3LTvt6vayJgGsRZsQc5A.png"
+loading="lazy"
+alt="S3 中的 Terraform 状态文件"
+>&lt;/p>
+&lt;ul>
+&lt;li>module/main.tf : 每个服务的基础设施和配置都放置在各自的 &lt;code>main.tf&lt;/code> 文件中&lt;/li>
+&lt;li>module/output.tf : 每个服务的输出详情 (output detail) 都放置在各自的 &lt;code>output.tf&lt;/code> 文件中&lt;/li>
+&lt;li>module/variable.tf : 每个服务期望的输入变量 (input variables) 都放置在各自的 &lt;code>variable.tf&lt;/code> 文件中&lt;/li>
+&lt;/ul>
+&lt;h2 id="部署应用程序">部署应用程序
+&lt;/h2>&lt;p>现在我们已准备好部署应用程序。运行以下命令进行部署。&lt;/p>
+&lt;p>&lt;strong>Terraform init&lt;/strong>：这会初始化项目，拉取部署所需的所有必要软件包。&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">terraform init
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>&lt;strong>Terraform plan&lt;/strong>：这会显示提议的更改，在部署前发现任何意外更改时非常有用。&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">terraform plan
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>&lt;strong>Terraform apply&lt;/strong>：这会将项目部署到 AWS。&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">terraform apply
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;h2 id="测试应用程序">测试应用程序
+&lt;/h2>&lt;p>S3 存储桶 (S3 bucket) 最初加载了一个 &lt;code>sample.json&lt;/code> 文件，其内容如下：&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;span class="lnt">14
+&lt;/span>&lt;span class="lnt">15
+&lt;/span>&lt;span class="lnt">16
+&lt;/span>&lt;span class="lnt">17
+&lt;/span>&lt;span class="lnt">18
+&lt;/span>&lt;span class="lnt">19
+&lt;/span>&lt;span class="lnt">20
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-json" data-lang="json">&lt;span class="line">&lt;span class="cl">&lt;span class="p">[&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nt">&amp;#34;id&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="s2">&amp;#34;1&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nt">&amp;#34;name&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="s2">&amp;#34;John Doe&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nt">&amp;#34;email&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="s2">&amp;#34;john@example.com&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nt">&amp;#34;timestamp&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="s2">&amp;#34;2025-04-19T12:00:00Z&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">},&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nt">&amp;#34;id&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="s2">&amp;#34;2&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nt">&amp;#34;name&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="s2">&amp;#34;Mary Doe&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nt">&amp;#34;email&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="s2">&amp;#34;mary@example.com&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nt">&amp;#34;timestamp&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="s2">&amp;#34;2025-06-20T12:00:00Z&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">},&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nt">&amp;#34;id&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="s2">&amp;#34;3&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nt">&amp;#34;name&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="s2">&amp;#34;Jane Doe&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nt">&amp;#34;email&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="s2">&amp;#34;john@example.com&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nt">&amp;#34;timestamp&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="s2">&amp;#34;2025-06-22T12:00:00Z&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">]&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>&lt;em>注：&lt;/em> 如您所见，我们有一个重复的电子邮件地址 &lt;code>*john@example.com*&lt;/code>，理想的结果是移除这个重复条目。&lt;/p>
+&lt;p>这个文件是在使用 Terraform 创建存储桶后立即上传的，因此它不会触发 DataBrew 作业，因为该触发器设置是在项目的后期才进行的。&lt;/p>
+&lt;p>为了测试实时功能 (Real-time feature) 和项目的完整流程，我们可以向 S3 上传新对象，或向 DynamoDB 添加新条目。我们将向 DynamoDB 添加一个新条目来测试完整流程：&lt;/p>
+&lt;p>通过 AWS 控制台 (console) 进入 DynamoDB，并添加一条新数据：&lt;/p>
+&lt;p>&lt;img src="https://miro.medium.com/v2/resize:fit:640/format:webp/1*Wq6-HKR3_Itogo9ncr3C-Q.png"
+loading="lazy"
+>&lt;/p>
+&lt;p>添加此条目将触发 DynamoDB 流 (stream)，它会使用关联的 Lambda 函数 (lambda function) 将新对象插入 S3。&lt;/p>
+&lt;p>&lt;img src="https://miro.medium.com/v2/resize:fit:640/format:webp/1*HEIxp2piYd2b9y5pxqV2xA.png"
+loading="lazy"
+>&lt;/p>
+&lt;p>&lt;img src="https://miro.medium.com/v2/resize:fit:640/format:webp/1*MGNKOjFIP0mJQ4DDgG8Agw.png"
+loading="lazy"
+>&lt;/p>
+&lt;p>前往 S3，我们看到新条目 &lt;code>7.json&lt;/code> 已添加：&lt;/p>
+&lt;p>&lt;img src="https://miro.medium.com/v2/resize:fit:640/format:webp/1*dhhBJ1oL-3OSa9JHP832oA.png"
+loading="lazy"
+>&lt;/p>
+&lt;p>接下来，前往数据目录 (Data Catalog)，我们看到数据库 (Databases) 和表 (Tables)。&lt;/p>
+&lt;p>&lt;img src="https://miro.medium.com/v2/resize:fit:640/format:webp/1*XFt97o-Egelq4T-PdDUQmA.png"
+loading="lazy"
+>&lt;/p>
+&lt;p>数据目录数据库&lt;/p>
+&lt;p>&lt;img src="https://miro.medium.com/v2/resize:fit:640/format:webp/1*V1EV7KY8iSVvMgeGIX4Fsw.png"
+loading="lazy"
+>&lt;/p>
+&lt;p>数据目录表&lt;/p>
+&lt;p>前往 DataBrew，我们看到该项目。&lt;/p>
+&lt;p>一旦 Lambda 函数被添加到 &lt;code>/data&lt;/code> 路径的新内容触发，它就会启动 DataBrew 转换作业 (transformation job)：&lt;/p>
+&lt;p>&lt;img src="https://miro.medium.com/v2/resize:fit:640/format:webp/1*YeJ5a_JzUjWoD8vD9-4n-A.png"
+loading="lazy"
+>&lt;/p>
+&lt;p>完成后，它看起来像这样：&lt;/p>
+&lt;p>&lt;img src="https://miro.medium.com/v2/resize:fit:640/format:webp/1*GZNvEGrYWP4Wom1VKMAwBQ.png"
+loading="lazy"
+>&lt;/p>
+&lt;p>已完成的 DataBrew 作业&lt;/p>
+&lt;p>DataBrew 数据血缘 (Data lineage) 允许我们查看使用 DataBrew 的流程的图形化表示。&lt;/p>
+&lt;p>&lt;strong>空闲作业&lt;/strong>：&lt;/p>
+&lt;p>&lt;img src="https://miro.medium.com/v2/resize:fit:640/format:webp/1*arMXfxrhANbnvXymY8ejBg.png"
+loading="lazy"
+alt="空闲作业的数据血缘"
+>&lt;/p>
+&lt;p>&lt;strong>运行中作业&lt;/strong>：&lt;/p>
+&lt;p>&lt;img src="https://miro.medium.com/v2/resize:fit:640/format:webp/1*CgVAhqi82C2tZcIRpCtz6A.png"
+loading="lazy"
+alt="数据血缘的作业运行中"
+>&lt;/p>
+&lt;p>最后，前往 Athena，并选择 &lt;code>my-athena-workgroup&lt;/code> 工作组 (workgroup) 来运行查询。&lt;/p>
+&lt;p>在 DataBrew 作业运行之前，如果我们使用 Athena 运行查询，将不会有任何结果，因为 &lt;code>/cleaned&lt;/code> 路径中还没有任何项目：&lt;/p>
+&lt;p>&lt;img src="https://miro.medium.com/v2/resize:fit:640/format:webp/1*8K6f2X_uNLtstmSxZu1q9g.png"
+loading="lazy"
+>&lt;/p>
+&lt;p>然而，在 DataBrew 作业成功运行后，我们点击 &lt;em>&lt;strong>Run again&lt;/strong>&lt;/em> 按钮以在 Athena 中重新运行查询：&lt;/p>
+&lt;p>&lt;img src="https://miro.medium.com/v2/resize:fit:640/format:webp/1*NDVMRuZ4Kh5GdTGIIkcHnQ.png"
+loading="lazy"
+>&lt;/p>
+&lt;p>结果如下：&lt;/p>
+&lt;p>&lt;img src="https://miro.medium.com/v2/resize:fit:640/format:webp/1*kjeCuYwKZMO-2RJJgpd0Dw.png"
+loading="lazy"
+>&lt;/p>
+&lt;p>如果你仔细观察，会发现它移除了在项目创建时上传到 S3 的 &lt;code>sample.json&lt;/code> 文件中发现的邮箱为 &lt;code>john@example.com&lt;/code> 的重复条目。&lt;/p>
+&lt;p>它还添加了邮箱为 &lt;code>mathew@gmail.com&lt;/code> 的新的 DynamoDB 条目。&lt;/p>
+&lt;p>这意味着我们的管道按预期工作！！&lt;/p>
+&lt;h2 id="通过-dynamodb-添加重复条目">通过 DynamoDB 添加重复条目
+&lt;/h2>&lt;p>让我们通过向 DynamoDB 添加一个新条目来进一步测试，但这次它的邮箱将与我们现有的记录匹配。&lt;/p>
+&lt;p>&lt;img src="https://miro.medium.com/v2/resize:fit:640/format:webp/1*bWxYzQotL_N0JyVhsCzpTA.png"
+loading="lazy"
+>&lt;/p>
+&lt;p>我们添加了一个邮箱为 &lt;code>mathew@gmail.com&lt;/code> 的新冲突条目&lt;/p>
+&lt;p>&lt;img src="https://miro.medium.com/v2/resize:fit:640/format:webp/1*C0iTx5McyVuu5836kCQ2-Q.png"
+loading="lazy"
+>&lt;/p>
+&lt;p>这将触发一个新的 DataBrew 作业 (Job)：&lt;/p>
+&lt;p>&lt;img src="https://miro.medium.com/v2/resize:fit:640/format:webp/1*Rz50Z-SHv_PHcq1UUcKIgg.png"
+loading="lazy"
+>&lt;/p>
+&lt;p>一旦成功了，我们会看到下图：&lt;/p>
+&lt;p>&lt;img src="https://miro.medium.com/v2/resize:fit:640/format:webp/1*iKPaL44m6-cWhAfAW1gTJg.png"
+loading="lazy"
+>&lt;/p>
+&lt;p>接下来，前往 Athena 再次运行查询，这次它不再包含重复记录了！&lt;/p>
+&lt;p>&lt;img src="https://miro.medium.com/v2/resize:fit:640/format:webp/1*Er8Fx7_rGw4IFALgSGq6ag.png"
+loading="lazy"
+>&lt;/p>
+&lt;h2 id="结论">结论
+&lt;/h2>&lt;p>我创建这个项目和文章是为了提高我在 Terraform 方面的技能，并亲自动手实践数据工程领域，同时磨练我的 Python 技能。&lt;/p>
+&lt;p>你可以在 &lt;a class="link" href="https://github.com/chyke007/serverless-data-pipeline" target="_blank" rel="noopener"
+>这里&lt;/a> 找到完整的源代码。&lt;/p>
+&lt;p>我希望这篇文章能帮助你对在 AWS 中构建数据工程项目更有信心。我很高兴看到你将创造出什么！&lt;/p>
+&lt;p>全栈开发人员、技术作家和 Jamstack 爱好者。热爱终身学习。&lt;/p></description></item><item><title>通过统计数据看 2024 年的 DevOps 趋势</title><link>https://martinliu.cn/blog/devops-statistics/</link><pubDate>Tue, 02 Jan 2024 10:32:21 +0800</pubDate><guid>https://martinliu.cn/blog/devops-statistics/</guid><description>&lt;img src="https://martinliu.cn/blog/devops-statistics/download.jpg" alt="Featured image of post 通过统计数据看 2024 年的 DevOps 趋势" />&lt;h2 id="2024年devops-的采用统计">2024年DevOps 的采用统计
+&lt;/h2>&lt;p>DevOps 市场庞大，相应的，它离停滞不前还差得远，仍在不断演变，最重要的是，DevOps已经证明了自己的重要性，以往任何时候都更为重要。您将惊讶地了解，在DevOps中发生了一些非凡的事情。您想知道这些事情是什么吗？继续阅读以了解它们。&lt;/p>
+&lt;p>根据Gartner的研究，到2025年，超过85%的组织将采纳云为先的原则。这不是很有趣吗？当然，是的，对吧？现在让我们带您了解一下2024年的DevOps采用统计数据。&lt;/p>
+&lt;ol>
+&lt;li>DevOps有助于企业将处理支持工单所花费的时间减少60% - 对于寻求在2024年采用DevOps的组织而言，这是一个很好的前景。&lt;/li>
+&lt;li>组织通过DevOps能够将33%的时间投资于基础设施改进。&lt;/li>
+&lt;li>94%的组织认为平台工程有助于他们充分实现DevOps的好处 - 这对于那些想在2024年在企业中取得规模化成功的人来说是一个很好的统计数据。&lt;/li>
+&lt;/ol>
+&lt;p>这些统计数据令人兴奋，不是吗？这些统计数据描绘了：DevOps已经改变了企业的工作方式，并产生了成果。&lt;/p>
+&lt;h2 id="devops-的增长统计">DevOps 的增长统计
+&lt;/h2>&lt;p>全球DevOps市场规模预计将从2023年的104亿美元增至2028年的255亿美元，增长率为18.95%。根据Global Newswire的研究，到2026年，预计将达到12215.54百万美元，复合年增长率为18.95%。&lt;/p>
+&lt;ol>
+&lt;li>86%的企业表示，他们的公司必须迅速开发和投产新软件，因此他们认为DevOps具有价值。不容忽视的是，能够迅速向消费者交付数字产品的企业具有竞争优势。&lt;/li>
+&lt;li>Google收集的数据和研究也表明，77%的组织目前依赖DevOps部署软件，或计划不久将会这样做。&lt;/li>
+&lt;/ol>
+&lt;h2 id="2024年devops的容器化统计">2024年DevOps的容器化统计
+&lt;/h2>&lt;p>灵活性和快速发布是孕育容器理念的最重要基石，它已经成为当今IT世界的主流。现在让我们介绍一下DevOps容器化服务的一些统计数据，这些数据最终会让您感到惊讶。&lt;/p>
+&lt;ol>
+&lt;li>根据Gartner的新预测，全球容器管理收入预计将从2020年的465.8百万美元小幅增长到2024年的944百万美元。&lt;/li>
+&lt;li>Gartner还预测，到2024年，15%的企业应用将在容器生态系统中运行。这一估计较2020年的不到5%有所增加，受技术债务、应用积压和预算约束的限制。&lt;/li>
+&lt;li>46%的软件开发人员的首要任务是容器化，43%是质量和安全性，32%是CI/CD实施。&lt;/li>
+&lt;li>应用容器市场规模在2021年估值为27.6亿美元，预计将在2030年达到338.6亿美元，复合年增长率为32.12%。&lt;/li>
+&lt;/ol>
+&lt;h2 id="devops-cicd-的统计">DevOps CI/CD 的统计
+&lt;/h2>&lt;p>CI/CD流水线是一组在公司技术引入变更时运行的自动化流程。现在让我们看一下DevOps CI/CD的统计数据。&lt;/p>
+&lt;ol>
+&lt;li>全球CI工具市场规模在2022年估值为970.52百万美元，预计在2031年达到4377.77百万美元，在预测期间（2023-2031年）以18.22%的复合年增长率增长。&lt;/li>
+&lt;li>随着企业对DevOps团队提出更高效率的需求，CI工具市场继续扩大，2021年估值为802.2百万美元。预计到2030年将达到37.6亿美元，代表18.74%的复合年增长率。&lt;/li>
+&lt;/ol>
+&lt;h2 id="aws-devops-的统计">AWS DevOps 的统计
+&lt;/h2>&lt;p>首要的事情是，AWS DevOps有着令人印象深刻的声誉。2010年从物理服务器过渡到Amazon Web Services（AWS）云使应用程序和服务能够以更高的速度交付。&lt;/p>
+&lt;ol>
+&lt;li>它开始使用由内部Apollo系统管理的持续部署过程。该系统允许开发人员随时在任何服务器上开发代码，在任何需要的地方部署。&lt;/li>
+&lt;li>截至2011年5月底，亚马逊平均每11.6秒向生产服务器部署新软件。在最繁忙的时候，每小时向生产环境发送1000多个新的版本。&lt;/li>
+&lt;/ol>
+&lt;h2 id="2024年azure-devops-的统计">2024年Azure DevOps 的统计
+&lt;/h2>&lt;p>截至2023年，全球超过10695家公司已经开始使用Microsoft Azure DevOps Server作为版本控制工具。使用Azure DevOps服务器进行版本控制的企业主要来自美国，约5073家客户，占Microsoft Azure DevOps服务器客户总数的60.76%。&lt;/p>
+&lt;ol>
+&lt;li>Azure DevOps的市场份额为8.81%。它在版本控制类别中与三个竞争工具竞争。&lt;/li>
+&lt;li>Azure DevOps用户数量接近10亿。根据Azure Active Directory的数据，Azure用户有7.222亿。&lt;/li>
+&lt;li>在2023财年第一季度，Microsoft Azure的收入增长率为31%。&lt;/li>
+&lt;/ol>
+&lt;h2 id="2024年devops工程师统计分析">2024年DevOps工程师统计分析
+&lt;/h2>&lt;p>DevOps已经进入了多个组织，引发了对多个DevOps人才的竞价战。因此，让我们看看一些揭示或描绘DevOps工作蓬勃发展的统计数据。&lt;/p>
+&lt;ol>
+&lt;li>DevOps工程师的平均薪水是133,133美元，美国的DevOps工程师的额外现金补偿为16,860美元。&lt;/li>
+&lt;li>美国目前有超过6,881名DevOps工程师。&lt;/li>
+&lt;li>所有DevOps工程师中，13.8%是女性，86.2%是男性。&lt;/li>
+&lt;li>就业DevOps工程师的平均年龄为39岁。&lt;/li>
+&lt;/ol>
+&lt;h2 id="2024年devops市场统计">2024年DevOps市场统计
+&lt;/h2>&lt;p>DevOps市场规模在2023年超过104亿美元，并预计从2024年到2028年将以19.7%的复合年增长率增长。此外，它受到缩短软件开发周期和加速交付的需求的推动。&lt;/p>
+&lt;ol>
+&lt;li>来自本地部分的DevOps市场规模预计将在2032年达到450亿美元，原因是人们对云环境中数据隐私的担忧增强。&lt;/li>
+&lt;li>全球DevOps市场规模预计将在预测期间以19.7%的复合年增长率增长，从2023年的估计值104亿美元增至2028年的255亿美元。&lt;/li>
+&lt;/ol>
+&lt;h2 id="devops使用统计">DevOps使用统计
+&lt;/h2>&lt;p>Atlassian调查了一些激动人心的DevOps趋势，揭示了一些有趣的统计数据；大多数人可能想知道结果描绘了什么，对吧？&lt;/p>
+&lt;ol>
+&lt;li>99%的受访者表示DevOps对他们的组织产生了积极影响。此外，78%的人说，由于DevOps，他们不得不学习新的技能，而48%的人说，这帮助他们得到了加薪。&lt;/li>
+&lt;li>61%的受访者表示，DevOps有助于生产更高质量的可交付成果。&lt;/li>
+&lt;li>49%的受访者表示，DevOps改善了他们的发布实验。&lt;/li>
+&lt;li>99%的受访者表示，DevOps对他们的组织产生了积极影响。&lt;/li>
+&lt;/ol>
+&lt;h2 id="2024年devsecops统计">2024年DevSecOps统计
+&lt;/h2>&lt;p>DevSecOps确保在整个开发过程中都有安全控制。它通过将安全性集成到CI/CD管道中所需的地方来实现这一目标。现在让我们带您了解DevSecOps的统计数据。&lt;/p>
+&lt;ol>
+&lt;li>34%的组织拥有经验丰富的DevSecOps文化，对于那些寻求在2024年采用DevSecOps的人来说，这是一个好兆头。&lt;/li>
+&lt;li>到2024年，组织在DevSecOps自动化方面的年度投资将约增加35%。&lt;/li>
+&lt;li>将DevSecOps文化扩展到组织中的更多团队和应用程序是数字转型和更快、更安全软件发布的关键驱动因素，占94%的CIO。&lt;/li>
+&lt;li>根据90%的IT领导者的说法，通过在DevOps和安全项目中增加AIOps的使用，可以在2024年及以后扩大DevSecOps。&lt;/li>
+&lt;li>96%的受访者表示，自动化安全和合规性操作，这是DevOps的核心原则，对他们的业务产生了好处。&lt;/li>
+&lt;li>60%的工程师能够以两倍的速度发布代码，这归功于DevSecOps的原则。&lt;/li>
+&lt;/ol>
+&lt;h2 id="2024年devops收益统计">2024年DevOps收益统计
+&lt;/h2>&lt;p>在实施DevOps之后，组织必须了解，这需要组织变革和转变。这不仅仅是关于实施新技术，更是关于以人和流程为重心的方法。让我们看一些DevOps收益的统计数据。&lt;/p>
+&lt;ol>
+&lt;li>操作在最高安全级别运行的22%的企业已经达到了DevOps的高级阶段，根据Puppet的报告。&lt;/li>
+&lt;li>根据Forrester收集的数据，51%的DevOps用户将DevOps应用于新的和现有的应用程序，其中只有13%表示他们的DevOps方法仅限于概念验证实施。&lt;/li>
+&lt;li>Forrester的另一项研究表明，71%的DevOps采用者使用微服务和容器。&lt;/li>
+&lt;/ol>
+&lt;p>这是关于2024年DevOps采用和增长的一些统计数据，让我们深入了解了DevOps的影响和趋势。&lt;/p>
+&lt;p>&lt;a class="link" href="https://radixweb.com/blog/devops-statistics" target="_blank" rel="noopener"
+>来源：https://radixweb.com/blog/devops-statistics&lt;/a>&lt;/p></description></item><item><title>Kops on Aws</title><link>https://martinliu.cn/blog/kops-on-aws/</link><pubDate>Mon, 02 Apr 2018 00:22:44 +0800</pubDate><guid>https://martinliu.cn/blog/kops-on-aws/</guid><description>&lt;img src="https://res.cloudinary.com/martinliu/image/upload/BingWallpaper-2018-03-17.jpg" alt="Featured image of post Kops on Aws" />&lt;p>kops这种方式是我找到的最佳的，最适合于培训课堂需要的安装方式，当然对有类似需求的人有帮助。&lt;/p>
+&lt;h2 id="route53-dns配置">Route53 DNS配置
+&lt;/h2>&lt;p>kops需要使用DNS服务，用主机名提供k8s的相关服务访问。配置的注意点：&lt;/p>
+&lt;ul>
+&lt;li>域名还是有必要有一个的，没有的话注册一个也不贵，以后用着也方便&lt;/li>
+&lt;li>建议在aws的Route53里做一个二级域名，例如：k8s.devopscoach.org&lt;/li>
+&lt;li>这个二级域名最好是能被正常公网解析的，为了便于直接访问集群里的服务&lt;/li>
+&lt;li>用 dig NS k8s.devopscoach.org 可以能正常解析（Mac上是这个命令）&lt;/li>
+&lt;/ul>
+&lt;p>由于全球的域名同步会需要一些时间，因此可以先做这一步，用到的时候，可能就已经同步好了。&lt;/p>
+&lt;p>kops会将所有主机的域名解析都自动化的添加A记录到这里。&lt;/p>
+&lt;p>&lt;img src="https://res.cloudinary.com/martinliu/image/upload/dns.png"
+loading="lazy"
+alt="kops On aws"
+>&lt;/p>
+&lt;h2 id="安装工具准备">安装工具准备
+&lt;/h2>&lt;p>需要安装的工具包括 kubectl, kops 和 AWS CLI 工具。kops需要调用 AWS CLI来创建所需要的资源。我觉得简单的方法是：在目标的Region里创建一台Amazon AMI的虚拟机，这样AWS CLI就不用装了，而且在云里的话，执行kops的时候，由于有一大堆资源创建更新的api调用，感觉速度比在本机快很多，而且还用担心断网。&lt;/p>
+&lt;p>可以启动一台t2.micro规格的Amazon AMI即可，另外需要给这个实例配置如下IAM用户权限，在启动的时候选择合适的IAM Role。&lt;/p>
+&lt;ul>
+&lt;li>AmazonEC2FullAccess&lt;/li>
+&lt;li>AmazonRoute53FullAccess&lt;/li>
+&lt;li>AmazonS3FullAccess&lt;/li>
+&lt;li>IAMFullAccess&lt;/li>
+&lt;li>AmazonVPCFullAccess&lt;/li>
+&lt;/ul>
+&lt;p>这台虚拟机启动之后，安装kubectl和kops。&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;span class="lnt">4
+&lt;/span>&lt;span class="lnt">5
+&lt;/span>&lt;span class="lnt">6
+&lt;/span>&lt;span class="lnt">7
+&lt;/span>&lt;span class="lnt">8
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-gdscript3" data-lang="gdscript3">&lt;span class="line">&lt;span class="cl">&lt;span class="n">curl&lt;/span> &lt;span class="o">-&lt;/span>&lt;span class="n">LO&lt;/span> &lt;span class="n">https&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="o">//&lt;/span>&lt;span class="n">storage&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">googleapis&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">com&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">kubernetes&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">release&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">release&lt;/span>&lt;span class="o">/$&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">curl&lt;/span> &lt;span class="o">-&lt;/span>&lt;span class="n">s&lt;/span> &lt;span class="n">https&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="o">//&lt;/span>&lt;span class="n">storage&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">googleapis&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">com&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">kubernetes&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">release&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">release&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">stable&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">txt&lt;/span>&lt;span class="p">)&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">bin&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">linux&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">amd64&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">kubectl&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">sudo&lt;/span> &lt;span class="n">chmod&lt;/span> &lt;span class="o">+&lt;/span>&lt;span class="n">x&lt;/span> &lt;span class="n">kubectl&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">sudo&lt;/span> &lt;span class="n">mv&lt;/span> &lt;span class="n">kubectl&lt;/span> &lt;span class="o">/&lt;/span>&lt;span class="n">usr&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">local&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">bin&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">kubectl&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">wget&lt;/span> &lt;span class="n">https&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="o">//&lt;/span>&lt;span class="n">github&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">com&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">kubernetes&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">kops&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">releases&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">download&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="mf">1.8&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="mi">0&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">kops&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">linux&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">amd64&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">sudo&lt;/span> &lt;span class="n">chmod&lt;/span> &lt;span class="o">+&lt;/span>&lt;span class="n">x&lt;/span> &lt;span class="n">kops&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">linux&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">amd64&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">sudo&lt;/span> &lt;span class="n">mv&lt;/span> &lt;span class="n">kops&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">linux&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">amd64&lt;/span> &lt;span class="o">/&lt;/span>&lt;span class="n">usr&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">local&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">bin&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">kops&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>准备ssh登陆秘钥，用户ssh登录各个ec2实例&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;span class="lnt">14
+&lt;/span>&lt;span class="lnt">15
+&lt;/span>&lt;span class="lnt">16
+&lt;/span>&lt;span class="lnt">17
+&lt;/span>&lt;span class="lnt">18
+&lt;/span>&lt;span class="lnt">19
+&lt;/span>&lt;span class="lnt">20
+&lt;/span>&lt;span class="lnt">21
+&lt;/span>&lt;span class="lnt">22
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">[ec2-user@ip-172-31-27-182 ~]$ ssh-keygen
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Generating public/private rsa key pair.
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Enter file in which to save the key (/home/ec2-user/.ssh/id_rsa):
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Enter passphrase (empty for no passphrase):
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Enter same passphrase again:
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Your identification has been saved in /home/ec2-user/.ssh/id_rsa.
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Your public key has been saved in /home/ec2-user/.ssh/id_rsa.pub.
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">The key fingerprint is:
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">SHA256:oSPZf85vNsC7l9z24umLJs4tQ6qDMCrWfqAVXGYoA34 ec2-user@ip-172-31-27-182
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">The key&amp;#39;s randomart image is:
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">+---[RSA 2048]----+
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">|o . |
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">|.o . + |
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">| .+E+ . |
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">| .o o . . |
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">| + + S. |
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">| oo . o + |
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">| .+o.. .o.+ o |
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">|oo .... .==.O.+. |
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">|o ... .o .*@+==+.|
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">+----[SHA256]-----+
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">[ec2-user@ip-172-31-27-182 ~]$
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;h2 id="创建s3-bucket">创建S3 bucket
+&lt;/h2>&lt;p>这是用来存储Kubernetes群集的配置信息的，kops在创建、运行、更新和管理它创建的群集过程中，没个Cluster的信息可以保存在bucket的一个目录中。&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-gdscript3" data-lang="gdscript3">&lt;span class="line">&lt;span class="cl">&lt;span class="p">[&lt;/span>&lt;span class="n">ec2&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">user&lt;/span>&lt;span class="err">@&lt;/span>&lt;span class="n">ip&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="mi">172&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="mi">31&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="mi">27&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="mi">182&lt;/span> &lt;span class="o">~&lt;/span>&lt;span class="p">]&lt;/span>&lt;span class="o">$&lt;/span> &lt;span class="n">aws&lt;/span> &lt;span class="n">s3&lt;/span> &lt;span class="n">mb&lt;/span> &lt;span class="n">s3&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="o">//&lt;/span>&lt;span class="n">clusters&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">k8s&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">devopscoach&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">org&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">make_bucket&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="n">clusters&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">k8s&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">devopscoach&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">org&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">[&lt;/span>&lt;span class="n">ec2&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">user&lt;/span>&lt;span class="err">@&lt;/span>&lt;span class="n">ip&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="mi">172&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="mi">31&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="mi">27&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="mi">182&lt;/span> &lt;span class="o">~&lt;/span>&lt;span class="p">]&lt;/span>&lt;span class="o">$&lt;/span> &lt;span class="k">export&lt;/span> &lt;span class="n">KOPS_STATE_STORE&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="n">s3&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="o">//&lt;/span>&lt;span class="n">clusters&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">k8s&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">devopscoach&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">org&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>创建完成后，将其放入环境变量中待用。&lt;/p>
+&lt;p>在集群安装完成之后，bucket里面的文件如下：&lt;/p>
+&lt;p>&lt;img src="https://res.cloudinary.com/martinliu/image/upload/s3.png"
+loading="lazy"
+alt="kops On aws"
+>&lt;/p>
+&lt;h2 id="创建kubernetes-cluster">创建Kubernetes Cluster
+&lt;/h2>&lt;p>命令行参数如下：&lt;/p>
+&lt;ul>
+&lt;li>kops create cluster //创建集群&lt;/li>
+&lt;li>&amp;ndash;cloud=aws //使用aws&lt;/li>
+&lt;li>&amp;ndash;zones=ap-northeast-1a //使用这个指定的zone&lt;/li>
+&lt;li>&amp;ndash;name=dev.k8s.devopscoach.org //集群的名字&lt;/li>
+&lt;li>&amp;ndash;dns-zone=k8s.devopscoach.org //集群所使用的DNS解析区&lt;/li>
+&lt;li>&amp;ndash;dns public //对公可访问&lt;/li>
+&lt;/ul>
+&lt;p>命令的执行结果如下。&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;span class="lnt">14
+&lt;/span>&lt;span class="lnt">15
+&lt;/span>&lt;span class="lnt">16
+&lt;/span>&lt;span class="lnt">17
+&lt;/span>&lt;span class="lnt">18
+&lt;/span>&lt;span class="lnt">19
+&lt;/span>&lt;span class="lnt">20
+&lt;/span>&lt;span class="lnt">21
+&lt;/span>&lt;span class="lnt">22
+&lt;/span>&lt;span class="lnt">23
+&lt;/span>&lt;span class="lnt">24
+&lt;/span>&lt;span class="lnt">25
+&lt;/span>&lt;span class="lnt">26
+&lt;/span>&lt;span class="lnt">27
+&lt;/span>&lt;span class="lnt">28
+&lt;/span>&lt;span class="lnt">29
+&lt;/span>&lt;span class="lnt">30
+&lt;/span>&lt;span class="lnt">31
+&lt;/span>&lt;span class="lnt">32
+&lt;/span>&lt;span class="lnt">33
+&lt;/span>&lt;span class="lnt">34
+&lt;/span>&lt;span class="lnt">35
+&lt;/span>&lt;span class="lnt">36
+&lt;/span>&lt;span class="lnt">37
+&lt;/span>&lt;span class="lnt">38
+&lt;/span>&lt;span class="lnt">39
+&lt;/span>&lt;span class="lnt">40
+&lt;/span>&lt;span class="lnt">41
+&lt;/span>&lt;span class="lnt">42
+&lt;/span>&lt;span class="lnt">43
+&lt;/span>&lt;span class="lnt">44
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">[ec2-user@ip-172-31-27-182 ~]$ kops create cluster --cloud=aws --zones=ap-northeast-1a --name=dev.k8s.devopscoach.org --dns-zone=k8s.devopscoach.org --dns public
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">I0401 17:05:06.003257 30031 create_cluster.go:971] Using SSH public key: /home/ec2-user/.ssh/id_rsa.pub
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">I0401 17:05:07.132058 30031 subnets.go:184] Assigned CIDR 172.20.32.0/19 to subnet ap-northeast-1a
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Previewing changes that will be made:
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">*********************************************************************************
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">A new kops version is available: 1.8.1
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Upgrading is recommended
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">More information: https://github.com/kubernetes/kops/blob/master/permalinks/upgrade_kops.md#1.8.1
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">*********************************************************************************
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">I0401 17:05:12.605297 30031 executor.go:91] Tasks: 0 done / 73 total; 31 can run
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">I0401 17:05:13.546597 30031 executor.go:91] Tasks: 31 done / 73 total; 24 can run
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">-----此处删除了n个字符------
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> VPC/dev.k8s.devopscoach.org
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> CIDR 172.20.0.0/16
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> EnableDNSHostnames true
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> EnableDNSSupport true
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> Shared false
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> Tags {Name: dev.k8s.devopscoach.org, KubernetesCluster: dev.k8s.devopscoach.org, kubernetes.io/cluster/dev.k8s.devopscoach.org: owned}
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> VPCDHCPOptionsAssociation/dev.k8s.devopscoach.org
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> VPC name:dev.k8s.devopscoach.org
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> DHCPOptions name:dev.k8s.devopscoach.org
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Must specify --yes to apply changes
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Cluster configuration has been created.
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Suggestions:
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> * list clusters with: kops get cluster
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> * edit this cluster with: kops edit cluster dev.k8s.devopscoach.org
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> * edit your node instance group: kops edit ig --name=dev.k8s.devopscoach.org nodes
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> * edit your master instance group: kops edit ig --name=dev.k8s.devopscoach.org master-ap-northeast-1a
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Finally configure your cluster with: kops update cluster dev.k8s.devopscoach.org --yes
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">[ec2-user@ip-172-31-27-182 ~]$
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>kops命令列出了所有需要建立的资源清单。而真实的开始资源创建，并搭建和配置Kubernetes集群还需要执行，以上输出中提示的最后一条命令: &lt;code>kops update cluster dev.k8s.devopscoach.org --yes &lt;/code>&lt;/p>
+&lt;p>执行结果如下：&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;span class="lnt">14
+&lt;/span>&lt;span class="lnt">15
+&lt;/span>&lt;span class="lnt">16
+&lt;/span>&lt;span class="lnt">17
+&lt;/span>&lt;span class="lnt">18
+&lt;/span>&lt;span class="lnt">19
+&lt;/span>&lt;span class="lnt">20
+&lt;/span>&lt;span class="lnt">21
+&lt;/span>&lt;span class="lnt">22
+&lt;/span>&lt;span class="lnt">23
+&lt;/span>&lt;span class="lnt">24
+&lt;/span>&lt;span class="lnt">25
+&lt;/span>&lt;span class="lnt">26
+&lt;/span>&lt;span class="lnt">27
+&lt;/span>&lt;span class="lnt">28
+&lt;/span>&lt;span class="lnt">29
+&lt;/span>&lt;span class="lnt">30
+&lt;/span>&lt;span class="lnt">31
+&lt;/span>&lt;span class="lnt">32
+&lt;/span>&lt;span class="lnt">33
+&lt;/span>&lt;span class="lnt">34
+&lt;/span>&lt;span class="lnt">35
+&lt;/span>&lt;span class="lnt">36
+&lt;/span>&lt;span class="lnt">37
+&lt;/span>&lt;span class="lnt">38
+&lt;/span>&lt;span class="lnt">39
+&lt;/span>&lt;span class="lnt">40
+&lt;/span>&lt;span class="lnt">41
+&lt;/span>&lt;span class="lnt">42
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">[ec2-user@ip-172-31-27-182 ~]$ kops update cluster dev.k8s.devopscoach.org --yes
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">*********************************************************************************
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">A new kops version is available: 1.8.1
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Upgrading is recommended
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">More information: https://github.com/kubernetes/kops/blob/master/permalinks/upgrade_kops.md#1.8.1
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">*********************************************************************************
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">I0401 17:13:02.482203 30077 executor.go:91] Tasks: 0 done / 73 total; 31 can run
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">I0401 17:13:04.389402 30077 vfs_castore.go:430] Issuing new certificate: &amp;#34;apiserver-aggregator-ca&amp;#34;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">I0401 17:13:04.628667 30077 vfs_castore.go:430] Issuing new certificate: &amp;#34;ca&amp;#34;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">I0401 17:13:07.291294 30077 executor.go:91] Tasks: 31 done / 73 total; 24 can run
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">I0401 17:13:09.273293 30077 vfs_castore.go:430] Issuing new certificate: &amp;#34;kubelet-api&amp;#34;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">I0401 17:13:09.803612 30077 vfs_castore.go:430] Issuing new certificate: &amp;#34;kubelet&amp;#34;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">I0401 17:13:09.809131 30077 vfs_castore.go:430] Issuing new certificate: &amp;#34;kube-scheduler&amp;#34;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">I0401 17:13:09.973826 30077 vfs_castore.go:430] Issuing new certificate: &amp;#34;apiserver-proxy-client&amp;#34;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">I0401 17:13:10.317412 30077 vfs_castore.go:430] Issuing new certificate: &amp;#34;kops&amp;#34;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">I0401 17:13:10.321177 30077 vfs_castore.go:430] Issuing new certificate: &amp;#34;apiserver-aggregator&amp;#34;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">I0401 17:13:10.440919 30077 vfs_castore.go:430] Issuing new certificate: &amp;#34;kube-controller-manager&amp;#34;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">I0401 17:13:10.630182 30077 vfs_castore.go:430] Issuing new certificate: &amp;#34;kubecfg&amp;#34;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">I0401 17:13:11.020560 30077 vfs_castore.go:430] Issuing new certificate: &amp;#34;master&amp;#34;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">I0401 17:13:11.040010 30077 vfs_castore.go:430] Issuing new certificate: &amp;#34;kube-proxy&amp;#34;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">I0401 17:13:12.698208 30077 executor.go:91] Tasks: 55 done / 73 total; 16 can run
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">I0401 17:13:13.609559 30077 launchconfiguration.go:333] waiting for IAM instance profile &amp;#34;nodes.dev.k8s.devopscoach.org&amp;#34; to be ready
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">I0401 17:13:13.656221 30077 launchconfiguration.go:333] waiting for IAM instance profile &amp;#34;masters.dev.k8s.devopscoach.org&amp;#34; to be ready
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">I0401 17:13:24.156701 30077 executor.go:91] Tasks: 71 done / 73 total; 2 can run
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">I0401 17:13:24.864262 30077 executor.go:91] Tasks: 73 done / 73 total; 0 can run
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">I0401 17:13:24.864379 30077 dns.go:153] Pre-creating DNS records
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">I0401 17:13:26.454177 30077 update_cluster.go:248] Exporting kubecfg for cluster
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">kops has set your kubectl context to dev.k8s.devopscoach.org
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Cluster is starting. It should be ready in a few minutes.
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Suggestions:
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> * validate cluster: kops validate cluster
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> * list nodes: kubectl get nodes --show-labels
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> * ssh to the master: ssh -i ~/.ssh/id_rsa admin@api.dev.k8s.devopscoach.org
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">The admin user is specific to Debian. If not using Debian please use the appropriate user based on your OS.
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> * read about installing addons: https://github.com/kubernetes/kops/blob/master/docs/addons.md
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>以上这套组合拳打出去之后，需要等几分钟才能完成Kubernetes集群的部署。&lt;/p>
+&lt;p>在以上实例中创建的Ec2实例如下：&lt;/p>
+&lt;ul>
+&lt;li>master-ap-northeast-1a.masters.dev.k8s.devopscoach.org //m3.medium&lt;/li>
+&lt;li>nodes.dev.k8s.devopscoach.org //t2.medium&lt;/li>
+&lt;li>nodes.dev.k8s.devopscoach.org //t2.medium&lt;/li>
+&lt;/ul>
+&lt;p>&lt;img src="https://res.cloudinary.com/martinliu/image/upload/ec2.png"
+loading="lazy"
+alt="kops On aws"
+>&lt;/p>
+&lt;p>也创建了两个ASG：&lt;/p>
+&lt;ul>
+&lt;li>一个是针对master的扩容规则&lt;/li>
+&lt;li>另外一个是针对worker node的扩容规则&lt;/li>
+&lt;/ul>
+&lt;p>从扩容规则为空可以看出，它主要是用于定义集群规格的，而非自动化扩容的。&lt;/p>
+&lt;p>&lt;img src="https://res.cloudinary.com/martinliu/image/upload/asg.png"
+loading="lazy"
+alt="kops On aws"
+>&lt;/p>
+&lt;p>在安装完成之后，用一下命令确认集群状态如下：&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;span class="lnt">14
+&lt;/span>&lt;span class="lnt">15
+&lt;/span>&lt;span class="lnt">16
+&lt;/span>&lt;span class="lnt">17
+&lt;/span>&lt;span class="lnt">18
+&lt;/span>&lt;span class="lnt">19
+&lt;/span>&lt;span class="lnt">20
+&lt;/span>&lt;span class="lnt">21
+&lt;/span>&lt;span class="lnt">22
+&lt;/span>&lt;span class="lnt">23
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">[ec2-user@ip-172-31-27-182 ~]$ kops validate cluster
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Using cluster from kubectl context: dev.k8s.devopscoach.org
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Validating cluster dev.k8s.devopscoach.org
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">INSTANCE GROUPS
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">NAME ROLE MACHINETYPE MIN MAX SUBNETS
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">master-ap-northeast-1a Master m3.medium 1 1 ap-northeast-1a
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">nodes Node t2.medium 2 2 ap-northeast-1a
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">NODE STATUS
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">NAME ROLE READY
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">ip-172-20-38-48.ap-northeast-1.compute.internal master True
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">ip-172-20-45-235.ap-northeast-1.compute.internal node True
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">ip-172-20-63-157.ap-northeast-1.compute.internal node True
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Your cluster dev.k8s.devopscoach.org is ready
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">[ec2-user@ip-172-31-27-182 ~]$ kubectl get nodes --show-labels
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">NAME STATUS ROLES AGE VERSION LABELS
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">ip-172-20-38-48.ap-northeast-1.compute.internal Ready master 5m v1.8.7 beta.kubernetes.io/arch=amd64,beta.kubernetes.io/instance-type=m3.medium,beta.kubernetes.io/os=linux,failure-domain.beta.kubernetes.io/region=ap-northeast-1,failure-domain.beta.kubernetes.io/zone=ap-northeast-1a,kops.k8s.io/instancegroup=master-ap-northeast-1a,kubernetes.io/hostname=ip-172-20-38-48.ap-northeast-1.compute.internal,kubernetes.io/role=master,node-role.kubernetes.io/master=
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">ip-172-20-45-235.ap-northeast-1.compute.internal Ready node 4m v1.8.7 beta.kubernetes.io/arch=amd64,beta.kubernetes.io/instance-type=t2.medium,beta.kubernetes.io/os=linux,failure-domain.beta.kubernetes.io/region=ap-northeast-1,failure-domain.beta.kubernetes.io/zone=ap-northeast-1a,kops.k8s.io/instancegroup=nodes,kubernetes.io/hostname=ip-172-20-45-235.ap-northeast-1.compute.internal,kubernetes.io/role=node,node-role.kubernetes.io/node=
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">ip-172-20-63-157.ap-northeast-1.compute.internal Ready node 4m v1.8.7 beta.kubernetes.io/arch=amd64,beta.kubernetes.io/instance-type=t2.medium,beta.kubernetes.io/os=linux,failure-domain.beta.kubernetes.io/region=ap-northeast-1,failure-domain.beta.kubernetes.io/zone=ap-northeast-1a,kops.k8s.io/instancegroup=nodes,kubernetes.io/hostname=ip-172-20-63-157.ap-northeast-1.compute.internal,kubernetes.io/role=node,node-role.kubernetes.io/node=
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">[ec2-user@ip-172-31-27-182 ~]$
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;h2 id="创建并访问服务">创建并访问服务
+&lt;/h2>&lt;p>如下所示的创建两副本的nginx部署，部署的命令 sample-nginx。&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;span class="lnt">4
+&lt;/span>&lt;span class="lnt">5
+&lt;/span>&lt;span class="lnt">6
+&lt;/span>&lt;span class="lnt">7
+&lt;/span>&lt;span class="lnt">8
+&lt;/span>&lt;span class="lnt">9
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">[ec2-user@ip-172-31-27-182 ~]$ kubectl run sample-nginx --image=nginx --replicas=2 --port=80
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">deployment.apps &amp;#34;sample-nginx&amp;#34; created
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">[ec2-user@ip-172-31-27-182 ~]$ kubectl get pods
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">NAME READY STATUS RESTARTS AGE
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">sample-nginx-7588757c8f-jvkjt 1/1 Running 0 5s
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">sample-nginx-7588757c8f-zq8tj 1/1 Running 0 5s
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">[ec2-user@ip-172-31-27-182 ~]$ kubectl get deployments
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">NAME DESIRED CURRENT UP-TO-DATE AVAILABLE AGE
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">sample-nginx 2 2 2 2 13s
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>然后将这个部署暴露为服务，使用到Kubernetes的命令如下：&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;span class="lnt">4
+&lt;/span>&lt;span class="lnt">5
+&lt;/span>&lt;span class="lnt">6
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">[ec2-user@ip-172-31-27-182 ~]$ kubectl expose deployment sample-nginx --port=80 --type=LoadBalancer
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">service &amp;#34;sample-nginx&amp;#34; exposed
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">[ec2-user@ip-172-31-27-182 ~]$ kubectl get services -o wide
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">NAME TYPE CLUSTER-IP EXTERNAL-IP PORT(S) AGE SELECTOR
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">kubernetes ClusterIP 100.64.0.1 &amp;lt;none&amp;gt; 443/TCP 10m &amp;lt;none&amp;gt;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">sample-nginx LoadBalancer 100.64.127.19 ae3a1ca9235d111e890d706038dd676b-392190656.ap-northeast-1.elb.amazonaws.com 80:30363/TCP 25s run=sample-nginx
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>这条命令 &lt;code>ubectl expose deployment sample-nginx --port=80 --type=LoadBalancer &lt;/code> 会创建一个ELB并将，集群里容正在运行的 sample—nginx 服务注册到这个ELB，然后就可以访问浏览到Nginx的默认页面了。&lt;/p>
+&lt;p>&lt;img src="https://res.cloudinary.com/martinliu/image/upload/nginx.png"
+loading="lazy"
+alt="kops On aws"
+>&lt;/p>
+&lt;h2 id="删除集群">删除集群
+&lt;/h2>&lt;p>用一条命令就能删除以上所建立的Kubernetes集群。&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">kops delete cluster --name=dev.k8s.devopscoach.org --yes
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div></description></item><item><title>AWS 服务索引地图</title><link>https://martinliu.cn/2015/02/11/aws-e69c8de58aa1e7b4a2e5bc95e59cb0e59bbe/</link><pubDate>Wed, 11 Feb 2015 14:41:22 +0000</pubDate><guid>https://martinliu.cn/2015/02/11/aws-e69c8de58aa1e7b4a2e5bc95e59cb0e59bbe/</guid><description>&lt;p>以上图片用 FreeMind 软件生成，下载英文版原图点击这里：&lt;a class="link" href="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2015/02/aws-service-map.mm_.zip" target="_blank" rel="noopener"
+>aws-service-map.mm&lt;/a>&lt;/p>
+&lt;p>&lt;a class="link" href="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2015/02/aws-service-map.jpeg" target="_blank" rel="noopener"
+>&lt;img src="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2015/02/aws-service-map-1024x710.jpeg"
+loading="lazy"
+alt="aws-service-map"
+>&lt;/a>&lt;/p>
+&lt;p>下载中文版 PDF 全图点击这里：&lt;a class="link" href="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2015/02/aws-%e6%9c%8d%e5%8a%a1-%e8%84%91%e5%9b%be.pdf" target="_blank" rel="noopener"
+>aws-服务-脑图&lt;/a>&lt;/p>
+&lt;p>&lt;a class="link" href="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2015/02/aws-%e6%9c%8d%e5%8a%a1-%e8%84%91%e5%9b%be.jpeg" target="_blank" rel="noopener"
+>&lt;img src="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2015/02/aws-%e6%9c%8d%e5%8a%a1-%e8%84%91%e5%9b%be-1024x446.jpeg"
+loading="lazy"
+alt="aws-服务-脑图"
+>&lt;/a>&lt;/p></description></item><item><title>AWS-FAQ post - AWS 一月有什么动态?</title><link>https://martinliu.cn/2015/02/07/aws-faq-post-aws-e4b880e69c88e69c89e4bb80e4b988e58aa8e68081/</link><pubDate>Sat, 07 Feb 2015 15:07:42 +0000</pubDate><guid>https://martinliu.cn/2015/02/07/aws-faq-post-aws-e4b880e69c88e69c89e4bb80e4b988e58aa8e68081/</guid><description>&lt;p>AWS-FAQ post - AWS 一月有什么动态?&lt;/p>
+&lt;p>&lt;a class="link" href="http://www.aws-faq.com/blog/aws-blog/aws-%E4%B8%8A%E5%91%A8%E5%8F%91%E7%94%9F%E4%BA%86%E4%BB%80%E4%B9%88-2015-%E5%B9%B41%E6%9C%88.html" target="_blank" rel="noopener"
+>http://www.aws-faq.com/blog/aws-blog/aws-%E4%B8%8A%E5%91%A8%E5%8F%91%E7%94%9F%E4%BA%86%E4%BB%80%E4%B9%88-2015-%E5%B9%B41%E6%9C%88.html&lt;/a>&lt;/p>
+&lt;ul>
+&lt;li>AWS 邮件服务的推出还是比较有趣，虽然很晚推出这个服务，但是还是推出了&lt;/li>
+&lt;li>__ 总之 1 月的动静不大&lt;/li>
+&lt;/ul></description></item><item><title>AWS 免费套餐截止后必须终止</title><link>https://martinliu.cn/2013/09/24/aws-e5858de8b4b9e5a597e9a490e688aae6ada2e5908ee5bf85e9a1bbe7bb88e6ada2/</link><pubDate>Tue, 24 Sep 2013 05:26:22 +0000</pubDate><guid>https://martinliu.cn/2013/09/24/aws-e5858de8b4b9e5a597e9a490e688aae6ada2e5908ee5bf85e9a1bbe7bb88e6ada2/</guid><description>&lt;p>对于亚马逊 AWS 的测试用户来说，你要知道你的免费套餐的截止日期，否则预期就会收费了，会计时收费，像叫停车费一样。我今天收到了亚马逊的提醒邮件，被告知，我的免费套餐将在本月截止，然后我不得不终止了该服务器。&lt;/p>
+&lt;p>我是去年 10 月 19 日开通的这个免费实例，作为一个一年的 AWS 用户来说，深深的体会到了 AWS 的强大，它的管理控制台非常成熟，它的提供的服务非常全面，它的云市场做的相当好。对于任何一个普通人，你可以无痛，无压力的面对一个自己的数据中心，你可以假象你拥有一个世界上最高级的数据中心，你可以给你的应用任意、随时随地的附件任何一种高级的数据中心基础架构服务，你可以具有无限的资源，并且这个资源不限制类型和容量。共有云必将和私有云二分天下，共有云必将赢得所有中小企业用户。&lt;/p>
+&lt;p>[caption id=&amp;ldquo;attachment_52574&amp;rdquo; align=&amp;ldquo;aligncenter&amp;rdquo; width=&amp;ldquo;300&amp;rdquo;]&lt;img src="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2013/09/EC2_Management_Console-300x225.png"
+loading="lazy"
+alt="EC2_Management_Console"
+>](&lt;a class="link" href="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2013/09/EC2_Management_Console.png" target="_blank" rel="noopener"
+>http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2013/09/EC2_Management_Console.png&lt;/a>) EC2_Management_Console[/caption]&lt;/p>
+&lt;p>[caption id=&amp;ldquo;attachment_52575&amp;rdquo; align=&amp;ldquo;aligncenter&amp;rdquo; width=&amp;ldquo;300&amp;rdquo;]&lt;img src="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2013/09/Try_Cloud_Computing_Free_with_AWS_Free_Tier-300x106.png"
+loading="lazy"
+alt="Try_Cloud_Computing_Free_with_AWS_Free_Tier"
+>](&lt;a class="link" href="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2013/09/Try_Cloud_Computing_Free_with_AWS_Free_Tier.png" target="_blank" rel="noopener"
+>http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2013/09/Try_Cloud_Computing_Free_with_AWS_Free_Tier.png&lt;/a>) Try_Cloud_Computing_Free_with_AWS_Free_Tier[/caption]&lt;/p></description></item></channel></rss>

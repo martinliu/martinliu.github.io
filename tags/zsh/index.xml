@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Zsh on Martin Liu's Blog</title><link>https://martinliu.cn/tags/zsh/</link><description>Recent content in Zsh on Martin Liu's Blog</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><lastBuildDate>Sun, 09 Oct 2022 21:44:15 +0800</lastBuildDate><atom:link href="https://martinliu.cn/tags/zsh/index.xml" rel="self" type="application/rss+xml"/><item><title>入手 zsh 和 oh-my-zsh</title><link>https://martinliu.cn/2015/03/23/e585a5e6898b-zsh-e5928c-oh-my-zsh/</link><pubDate>Mon, 23 Mar 2015 02:47:45 +0000</pubDate><guid>https://martinliu.cn/2015/03/23/e585a5e6898b-zsh-e5928c-oh-my-zsh/</guid><description>&lt;p>&lt;img src="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2015/03/zsh.gif"
+loading="lazy"
+alt="zsh"
+>&lt;/p>
+&lt;p>安装 zsh 在任何系统上几乎都是差不多。Zsh 是一款功能强大的交互式 shell，与 Bash 相比，Zsh 下面几点表现令人印象深刻：&lt;/p>
+&lt;p>[wm_list bullet=&amp;ldquo;icon-linux&amp;rdquo; class=&amp;quot;&amp;quot;]&lt;/p>
+&lt;ul>
+&lt;li>
+&lt;p>自动补全&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>拼写纠错&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>定制性强&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>美观的命令提示符（这点吸引力最大）&lt;/p>
+&lt;/li>
+&lt;/ul>
+&lt;p>[/wm_list]&lt;/p>
+&lt;p>相信你安装之后，对上面几点会有更加真切的感受！&lt;/p>
+&lt;p>下面是 RHEL 7 上的安装过程。&lt;/p>
+&lt;p>[bash]&lt;/p>
+&lt;p>[root@w540]&lt;del># yum install git
+[root@w540]&lt;/del># curl -L &lt;a class="link" href="https://github.com/robbyrussell/oh-my-zsh/raw/master/tools/install.sh" target="_blank" rel="noopener"
+>https://github.com/robbyrussell/oh-my-zsh/raw/master/tools/install.sh&lt;/a> | sh
+[root@w540]~# cat .zshrc&lt;/p>
+&lt;h1 id="path-to-your-oh-my-zsh-installation">Path to your oh-my-zsh installation.
+&lt;/h1>&lt;p>export ZSH=/root/.oh-my-zsh&lt;/p>
+&lt;h1 id="set-name-of-the-theme-to-load">Set name of the theme to load.
+&lt;/h1>&lt;h1 id="look-in-oh-my-zshthemes">Look in ~/.oh-my-zsh/themes/
+&lt;/h1>&lt;h1 id="optionally-if-you-set-this-to-random-itll-load-a-random-theme-each">Optionally, if you set this to &amp;ldquo;random&amp;rdquo;, it&amp;rsquo;ll load a random theme each
+&lt;/h1>&lt;h1 id="time-that-oh-my-zsh-is-loaded">time that oh-my-zsh is loaded.
+&lt;/h1>&lt;p>#ZSH_THEME=&amp;ldquo;robbyrussell&amp;rdquo;
+ZSH_THEME=&amp;ldquo;bira&amp;rdquo; # 后面的文字都省略，我就修改了这个文件的这一个参数，bira 的提示符感觉比较新颖和实用
+[root@w540]~# zsh
+╭─root@w540 ~
+╰─$ ls
+anaconda-ks.cfg Desktop Documents Downloads initial-setup-ks.cfg ist Music Pictures Public Templates Videos
+╭─root@w540 ~
+╰─$
+[/bash]&lt;/p>
+&lt;p>下面是装完之后的截图，以后我的测试机的默认 shell 应该都是这个样子了：）&lt;/p>
+&lt;p>&lt;a class="link" href="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2015/03/rhel7-zsh-ohmyzsh.jpg" target="_blank" rel="noopener"
+>&lt;img src="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2015/03/rhel7-zsh-ohmyzsh.jpg"
+loading="lazy"
+alt="rhel7-zsh-ohmyzsh"
+>&lt;/a>&lt;/p>
+&lt;p>zsh 的功能还是比较强大的，然后再加上 ohmyzsh 这套配置参数文件和工具插件，shell 下地工作效率应该可以提高了。下面是一下参考网站：&lt;/p>
+&lt;p>[wm_list bullet=&amp;ldquo;icon-linux&amp;rdquo; class=&amp;quot;&amp;quot;]&lt;/p>
+&lt;ul>
+&lt;li>
+&lt;p>oh-my-zsh 入手中文参考：&lt;a class="link" href="http://tuhaihe.com/2013/05/17/oh-my-zsh.html" target="_blank" rel="noopener"
+>http://tuhaihe.com/2013/05/17/oh-my-zsh.html&lt;/a>&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>oh-my-zsh 官网（作者认为这是他此生做的最有意义的一件事）：&lt;a class="link" href="http://ohmyz.sh/" target="_blank" rel="noopener"
+>http://ohmyz.sh/&lt;/a>&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>zsh 官网：&lt;a class="link" href="http://www.zsh.org/" target="_blank" rel="noopener"
+>http://www.zsh.org/&lt;/a>&lt;/p>
+&lt;/li>
+&lt;/ul>
+&lt;p>[/wm_list]&lt;/p>
+&lt;p>Mac OS X 用户则建议实用 iTerm2 来替换原声的 terminal。下载 item2 在这里：&lt;a class="link" href="http://iterm2.com/" target="_blank" rel="noopener"
+>http://iterm2.com/&lt;/a>&lt;/p>
+&lt;p>&lt;a class="link" href="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2015/03/iterm2-logo.jpg" target="_blank" rel="noopener"
+>&lt;img src="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2015/03/iterm2-logo.jpg"
+loading="lazy"
+alt="iterm2-logo"
+>&lt;/a>&lt;/p></description></item></channel></rss>

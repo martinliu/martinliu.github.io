@@ -1,0 +1,565 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>SRE on Martin Liu's Blog</title><link>https://martinliu.cn/tags/-sre-/</link><description>Recent content in SRE on Martin Liu's Blog</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><lastBuildDate>Mon, 24 Jun 2024 18:24:30 +0800</lastBuildDate><atom:link href="https://martinliu.cn/tags/-sre-/index.xml" rel="self" type="application/rss+xml"/><item><title>《2020 年 SRE 报告》by Catchpoint</title><link>https://martinliu.cn/blog/2020-sre-report-by-catchpoint/</link><pubDate>Mon, 01 Mar 2021 11:29:33 +0800</pubDate><guid>https://martinliu.cn/blog/2020-sre-report-by-catchpoint/</guid><description>&lt;img src="https://martinliu.cn/img/2021/03/2020-sre-report.jpg" alt="Featured image of post 《2020 年 SRE 报告》by Catchpoint" />&lt;p>2020 年是不寻常的疫情年，所有行业都受到了巨大的影响， SRE 纯分布式工作方式的转型也是本报告的亮点之一。报告从 4 个方面详细介绍了疫情年中 SRE 的众生相。&lt;/p>
+&lt;p>本报告出自：&lt;a class="link" href="https://pages.catchpoint.com/2020-sre-report" target="_blank" rel="noopener"
+>https://pages.catchpoint.com/2020-sre-report&lt;/a>&lt;/p>
+&lt;p>本文是个人学习的结果，非 Catchpint 官方出品，观点尽量与官方保持一致，但个别地方可能难免会出现偏差，有任何质疑请参考原文，或者与我交流。&lt;/p>
+&lt;h2 id="概要">概要
+&lt;/h2>&lt;h3 id="sre--调查贡献者">SRE 调查贡献者
+&lt;/h3>&lt;p>Catchpoint 要特别感谢 Sanjeev Sharma、Marc Hornbeek、Archana Joshi 和 Niladri Choudhuri。他们的见解和贡献为整个报告奠定了基础。&lt;/p>
+&lt;p>我们还要特别感谢 Nithyanand Mehta。Nith 关于成熟度的内部白皮书为本报告的一些关键谈话点提供了灵感。&lt;/p>
+&lt;p>感谢 Eveline Oehrlich 和 DevOps Institute 的同事。他们的反馈和时间是至关重要的贡献，超过了本文档所能捕捉到的内容。&lt;/p>
+&lt;h3 id="支持伙伴">支持伙伴
+&lt;/h3>&lt;p>如果没有 Blameless、Gremlin、Honeycomb、NS1、LaunchDarkly 和 Packet 这些了不起的合作伙伴，Catchpoint就 不可能开展本次 &amp;lsquo;SRE from Home&amp;rsquo; 的调查。&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/img/2021/Screen%20Shot%202020-10-01%20at%2012.01.12%20AM.jpg"
+loading="lazy"
+alt="Screen Shot 2020-10-01 at 12.01.12 A"
+>&lt;/p>
+&lt;h2 id="前言">前言
+&lt;/h2>&lt;p>长期以来，人们一直在讨论客户期望值不断提高的恶性循环，认为这是推动在快速、边缘分布式的环境中提供服务的复杂性不断增加的原因。可靠的方式。今年，我们特别考虑到在家工作的突然增加；我们认为我们的员工和客户一样分布在世界各地。&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/img/2021/sre2.jpg"
+loading="lazy"
+>&lt;/p>
+&lt;p>我们真的很感激大家为 2020 年的 SRE 报告提供数据，这样就有了两组清晰的数据。今年的报告包括 &amp;ldquo;在家工作前 &amp;ldquo;和 &amp;ldquo;在家工作后 &amp;ldquo;两个时间段的调查结果和数据，提供了业界最独特的视角之一，说明了 2020 年里 SRE 的特殊意义。&lt;/p>
+&lt;p>我们评估了600多百名调查对象的数据。在分析数据的同时，我们希望能对当今 SRE 先锋们的趋势、现状和面临的挑战进行真实、人性化的观察。&lt;/p>
+&lt;p>我们衷心感谢为本报告做出贡献的所有个人，现在我们也同样感谢您，读者。我们希望您能像我们享受研究和写作一样，享受阅读的乐趣。&lt;/p>
+&lt;p>与Catchpoint以前的 SRE 报告一样，我们考虑了那些被认定为从事 SRE 类工作的个人的数据，尽管头衔可能还没有用到 &amp;quot; SRE &amp;ldquo;。&lt;/p>
+&lt;h2 id="介绍">介绍
+&lt;/h2>&lt;p>从&amp;quot;当你要求软件工程师设计一个运维团队时会发生什么？&amp;rdquo; 这个问题出发，将会得出的答案是：&amp;rdquo; SRE 团队负责其服务的可用性、延迟、性能、效率、变更管理、监控、应急响应和容量规划。&amp;rdquo; 如果说 SRE 是广义的 DevOps 原则的狭义实施，那么它们的主要区别就是 SRE 的核心重点是可靠性。&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/img/2021/sre-1.jpg"
+loading="lazy"
+>&lt;/p>
+&lt;p>以上述问答为基础，今年的 SRE 2020报告强调了一个目标，这个目标可能是关于与所有相关从业者的共同目标，无论他们的头衔是什么： &lt;strong>通过设计可观测的系统来防止服务中断，而不是去被动的修复服务中断&lt;/strong> 。让我们从一个明确的融合点开始，并向后延伸，使大型或小型组织都能根据这个 2020 年的基线数据进行自我评估。&lt;/p>
+&lt;p>如果一个共同的目标是解决复杂的问题，那么这个旅程应该是什么样的呢？在一个由边缘计算工作推动的微服务世界中，这个旅程涉及到的组件比以前更多了，这些现在需要在在家工作的现实中重新评估这些组件。这包括暴露出那些可能会被忽视，或以前并不存在的领域。考虑诸如士气、员工体验和人类健康等问题，与传统的资产类别，如组织结构、工具堆栈、硬件和软件一起考虑。&lt;/p>
+&lt;h2 id="关键要点1-可观测性组件存在而可观测性存在么">关键要点1 ：可观测性组件存在，而可观测性存在么？
+&lt;/h2>&lt;p>&lt;img src="https://martinliu.cn/img/2021/ch1.jpg"
+loading="lazy"
+>&lt;/p>
+&lt;blockquote>
+&lt;p>找出你所提供的服务在哪里汇聚成了典型的 &lt;strong>数字&lt;/strong>体验消费点；从那里往后梳理。不仅要考虑到你的代码，还要考虑到网络、第三方和所有交付链中的组件；从客户的应用体验好坏的角度来评估 &lt;strong>可观测性&lt;/strong>三个支柱。问自己：&amp;ldquo;客户的体验是由于那些代码、互联网和网络、第三方或其他交付链组件所构成的？&amp;quot;。&lt;/p>&lt;/blockquote>
+&lt;p>如果我们提供的能力是通往积极业务成果的门户，那么在当今这个边缘分布、以体验为中心的世界中，几乎没有人可以争驳斥，通过设计和构建可观测系统来进行预防是一种必要的能力。&lt;/p>
+&lt;p>当提出 &amp;quot; SRE 使用的工具类别是什么？&amp;ldquo;这个问题时，高达93%的人选择了监控，而53%的人选择了可观测性。当我们深入到进一步的指标问题时，一束耀眼的光芒向我们提出了挑战，并邀请我们对一些监控性的进行深入研究。&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/img/2021/16145734184864.jpg"
+loading="lazy"
+>&lt;/p>
+&lt;ul>
+&lt;li>监控和告警 93%&lt;/li>
+&lt;li>仪表板 73%&lt;/li>
+&lt;li>基础设施作为代码 71%&lt;/li>
+&lt;li>分析与趋势 56%&lt;/li>
+&lt;li>应用程序发布和部署管理 55%&lt;/li>
+&lt;li>APM代码追踪 53%&lt;/li>
+&lt;li>可观测性 53%&lt;/li>
+&lt;li>安全 47%&lt;/li>
+&lt;li>测试 41%&lt;/li>
+&lt;li>遥测 38%&lt;/li>
+&lt;li>混沌工程 26%&lt;/li>
+&lt;li>ITSM工具 26%&lt;/li>
+&lt;li>价值流管理10%&lt;/li>
+&lt;/ul>
+&lt;p>如果说可观测性的学术定义是：&amp;ldquo;根据系统外部暴露的信息，可以推断出系统内部工作状态的好坏&amp;rdquo;，那么我们在说暴露的时候，一定要附加一个情境性的定义，通常是只对于 &lt;em>消费者、客户或者员工的体验&lt;/em>。&lt;/p>
+&lt;blockquote>
+&lt;p>考虑一下: 如果一个用户的数字体验由第三方、网络（互联网和内部）、代码和基础设施组成，所有这些要素都汇聚在一个关键点上，就构成了我们所谓的体验。&lt;/p>&lt;/blockquote>
+&lt;blockquote>
+&lt;p>而不要拘泥于关于&lt;strong>可观测性&lt;/strong>在实践、度量和追踪（三根支柱）的商业定义，谨防将过多的关注点放在 &lt;em>白盒内部&lt;/em>。&lt;/p>&lt;/blockquote>
+&lt;p>71%的受访者表示&lt;strong>错误率&lt;/strong>是一种他们所跟踪的关键指标。表示客户满意度（数据见下一节）是一个高度优先级，但测量&lt;em>错误率&lt;/em>而不是&lt;em>最终用户响应时间&lt;/em>，将导致持续关注&lt;strong>从内到外&lt;/strong>而不是&lt;strong>从外到内&lt;/strong>。与其争论各种白盒与黑盒监控理论，不如专注于&lt;strong>理解体验&lt;/strong>，进而研究用户体验交付的组件之间的关联性。&lt;/p>
+&lt;p>&lt;strong>贵组织跟踪以下哪些指标？&lt;/strong>&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/img/2021/16145744115347.jpg"
+loading="lazy"
+>&lt;/p>
+&lt;ul>
+&lt;li>错误率71%&lt;/li>
+&lt;li>终端用户响应时间69%。&lt;/li>
+&lt;li>MTTR 60%&lt;/li>
+&lt;li>MTTD 42%&lt;/li>
+&lt;li>错误/性能预算 36%&lt;/li>
+&lt;/ul>
+&lt;p>同样值得讨论的是，第三方的关注度或可视性的泛滥。根据 HTTP Archive 的数据，93% 的页面至少包括一个第三方域名；平均一个页面包括 9 个不同的第三方域名！这说明，第三方域名的重要性。然而，只有 11% 的受访者表示他们的自动化工作流程扩展到了第三方供应商。&lt;/p>
+&lt;p>鉴于可观测性的支柱也必须适用于第三方组件，也许可以理解为什么只关注白盒内部的引力。就像 SRE 致力于设计可观测性系统是相对新鲜的一样，使用数字体验监控来揭示第三方系统，并收集数据也是比较新的。不过，这里却蕴含着一个黄金机会，可以考虑将黑匣数字体验监控延伸到第三方。仅仅依靠白盒监控意味着你并不知道用户看到了什么，尤其是与第三方有关的情况。例如，无法加载的页面或无法导航的应用程序可能是 CDN、传输网络或 DNS 供应商状态不正常的后果。&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/img/2021/16145747826279.jpg"
+loading="lazy"
+>&lt;/p>
+&lt;ul>
+&lt;li>11%的受访者表示，事件管理的自动化工作流程包括含第三方供应商的所有的工作流程。&lt;/li>
+&lt;li>37%的受访者认为第三方是导致居家办公时事故增加的原因（仅次于流量/容量问题）。&lt;/li>
+&lt;/ul>
+&lt;p>&lt;strong>使用了何种仿真监控策略？&lt;/strong>&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/img/2021/16145754797127.jpg"
+loading="lazy"
+>&lt;/p>
+&lt;ul>
+&lt;li>测试 API&lt;/li>
+&lt;li>测试网络&lt;/li>
+&lt;li>多步骤交易&lt;/li>
+&lt;li>测试 DNS&lt;/li>
+&lt;li>压力测试&lt;/li>
+&lt;li>测试 CDN&lt;/li>
+&lt;li>没用使用&lt;/li>
+&lt;/ul>
+&lt;p>对于仿真用户测试，这里的一个关键指标是，只有 39% 的用户在使用了仿真的多步骤交易来模拟用户体验。&lt;/p>
+&lt;p>与其他监控特定组件（如DNS或CDN）的用例相比，或与完全不使用任何仿真监控的受访者相比。&lt;/p>
+&lt;p>&lt;strong>SRE团队在多大程度上实施了全面的应用程序和基础设施性能监控和告警？&lt;/strong>&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/img/2021/16145757182600.jpg"
+loading="lazy"
+>&lt;/p>
+&lt;ul>
+&lt;li>监控和告警的自动化程度高。监控系统足够智能，能够辨别是否需要对特定事件发出告警。44%&lt;/li>
+&lt;li>我们有系统级的性能监控和自动告警，但没有应用级的。 21%&lt;/li>
+&lt;li>我们可以看到一些应用和系统的情况，但在一些关键领域，我们没有能力监控。20%&lt;/li>
+&lt;li>有的只是实时监控的仪表盘。没有自动化的。 12%&lt;/li>
+&lt;li>没有实时监控，值守的团队会收到来自客户支持的人工提醒。 4%&lt;/li>
+&lt;/ul>
+&lt;p>&lt;img src="https://martinliu.cn/img/2021/16145764118295.jpg"
+loading="lazy"
+>&lt;/p>
+&lt;p>89%的受访者表示他们执行监控活动，44%的受访者表示监控和告警是高度自动化的。这是个好消息，说明白盒内部考虑的周全。但坏消息是，对内部的明确关注导致我们想当然了，关注数字体验的外在黑盒监控仍然被误解。对于这一点，我们提供了以下观点，供企业在通过设计可观测系统成熟到预防措施时进行评估。&lt;/p>
+&lt;blockquote>
+&lt;p>找出你所提供的服务在哪里汇聚成了典型的 &lt;strong>数字&lt;/strong>体验消费点；从那里往后梳理。不仅要考虑到你的代码，还要考虑到网络、第三方和所有交付链中的组件；从客户的应用体验好坏的角度来评估 &lt;strong>可观测性&lt;/strong>三个支柱。问自己：&amp;ldquo;客户的体验是由于那些代码、互联网和网络、第三方或其他交付链组件所构成的？&amp;quot;。&lt;/p>&lt;/blockquote>
+&lt;p>&lt;strong>在服务层面是否有健康监控，以便能够检测到中断或性能问题（在服务层面）？&lt;/strong>&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/img/2021/16145765275496.jpg"
+loading="lazy"
+>&lt;/p>
+&lt;ul>
+&lt;li>每个服务都有自己的监控和告警，并且有自己的健康检查API，可以插入到我们的可观测性框架中。43%&lt;/li>
+&lt;li>有些服务有自己的监控和告警，有健康检查API，但有些服务却没有。27%&lt;/li>
+&lt;li>每个服务都有自己的监控和告警。没有健康检查API或可观测性框架。19%&lt;/li>
+&lt;li>没有服务级监控。 9%&lt;/li>
+&lt;li>不适用。我们的系统中没有独立的服务。我们都是单体应用。2%&lt;/li>
+&lt;/ul>
+&lt;p>可观测性就是要回答以前无法回答的问题，因为它与 &amp;ldquo;为什么&amp;quot;有关。&amp;ldquo;为什么&amp;quot;用户无法访问我的网站？&amp;ldquo;为什么&amp;quot;用户无法访问自己的数据？&amp;ldquo;为什么&amp;quot;用户的情绪如此失望？&lt;/p>
+&lt;p>回答 &amp;ldquo;为什么&amp;quot;的能力应该由一个框架来驱动，而不是由某个单点工具。这是一个如此重要的指标性问题，我们提出来作为本节的结尾。如果43%的受访者将他们的数据插入可观测性能力框架，那么57%的受访者则没有这样做。在下一节中，我们将通过一些关键的 &amp;ldquo;开发&amp;rdquo; 与 &amp;ldquo;运维&amp;quot;数据来进一步探索这一差距。&lt;/p>
+&lt;h2 id="关键要点-2-人肉运维负荷的代价">关键要点 2 ：人肉运维负荷的代价
+&lt;/h2>&lt;p>&lt;img src="https://martinliu.cn/img/2021/sre3.jpg"
+loading="lazy"
+>&lt;/p>
+&lt;blockquote>
+&lt;p>实施 DevOps 的 SRE 原则，通过设计和构建可观测性的系统来预防事故。努力将可靠性进一步向左移动，获得降低成本、团队调整和业务收益等成果。以开发工作与运维工作各占一半时间为基准，在运维工作中 On-Call 值守的比例不超过 25%。然后，当你向着预防的最终目标进行管理场景的迭代时，找出制约因素，从而消除约束点。达成最后成果以奠定了一个 SRE 团队的基础。当你消除约束点时，之后相应的更新你的场景。&lt;/p>&lt;/blockquote>
+&lt;p>如果维持系统的成本有高达90%是发生在系统的部署之后（即向右转移），那么为什么企业还是以操作型、被动式为主的方式来进行？在这本章的这个小节中，我们探讨了这一问题，并提出企业的 SRE 有机会向左转移，帮助企业履行所有的工作，并转化为成熟的、可观测性的能力。&lt;/p>
+&lt;p>Google 建议应该有一个上限目标，即50%的运维工作和50%的开发工作（或者称为&amp;quot;55分&amp;rdquo;）。在理想情况下，运维工作的数量应该比这少得多。运维工作中的 On-Call 部分应该不超过25%。开发活动与运维活动各占一半工作量的目标似乎是一个空想。根据调查数据显示，大部分工作都是以运维类活动为主。&lt;/p>
+&lt;p>&lt;strong>SRE 的工作时间中开发工作的比例占多少&lt;/strong>&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/img/2021/16145777848228.jpg"
+loading="lazy"
+>&lt;/p>
+&lt;p>当受访者被问到：“SRE 的工作时间中开发工作的比例占多少？”这个问题时，只有 14% 的人表示超过 50%。&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/img/2021/16145778274283.jpg"
+loading="lazy"
+>&lt;/p>
+&lt;p>当被问到基本相同的问题时（但列出具体的选择让人们选择），如 &amp;quot; 在这些活动中哪些活动是SRE工作的一部分？&amp;ldquo;时，结果令人大开眼界。&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/img/2021/16145781100582.jpg"
+loading="lazy"
+>&lt;/p>
+&lt;ul>
+&lt;li>25% : 选择开发活动（如：开发应用，写有助于运维的软件）&lt;/li>
+&lt;li>75% : 选择运维活动（如：处理工单，事故响应）&lt;/li>
+&lt;/ul>
+&lt;p>在家工作两个半月后，净增10%的受访者表示，他们的活动已经转变为包含更多的运维工作。&lt;/p>
+&lt;p>&lt;strong>居家工作的 Dev vs Ops&lt;/strong>&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/img/2021/Screen%20Shot%202020-10-02%20at%209.25.46%20AM.jpg"
+loading="lazy"
+alt="Screen Shot 2020-10-02 at 9.25.46 A"
+>&lt;/p>
+&lt;p>&lt;strong>在家工作以来，你的工作活动有什么变化？（Dev vs Ops）&lt;/strong>
+&lt;img src="https://martinliu.cn/img/2021/Screen%20Shot%202020-10-02%20at%209.26.09%20AM.jpg"
+loading="lazy"
+alt="Screen Shot 2020-10-02 at 9.26.09 A"
+>&lt;/p>
+&lt;ul>
+&lt;li>太多的开发 5%&lt;/li>
+&lt;li>多了一些开发 11%&lt;/li>
+&lt;li>大致相同 57%&lt;/li>
+&lt;li>更多运维 17%&lt;/li>
+&lt;li>太多的运维 9%&lt;/li>
+&lt;/ul>
+&lt;p>&lt;strong>在你的组织中，谁在执行 SRE 工作活动？&lt;/strong>&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/img/2021/Screen%20Shot%202020-10-02%20at%209.28.36%20AM.jpg"
+loading="lazy"
+alt="Screen Shot 2020-10-02 at 9.28.36 A"
+>&lt;/p>
+&lt;ul>
+&lt;li>我们有一个专门的SRE团队，独立于其他运营/管理团队。46%&lt;/li>
+&lt;li>DevOps团队处理SRE活动。19%&lt;/li>
+&lt;li>业务和系统管理小组负责SRE活动。16%&lt;/li>
+&lt;li>SRE活动在全组织范围内开展，而不是局限于一个团队。13%&lt;/li>
+&lt;li>SRE对我们来说还是个新事物，我们还不清楚这是否需要单独的。7%&lt;/li>
+&lt;/ul>
+&lt;p>如果我们都在通过设计和实施可观测系统来进行预防，那么我们还有很长的路要走。首先，我们要走的路很长。最重要的是，考虑采用&amp;rdquo;&lt;strong>建立它，就会实现&lt;/strong>&amp;ldquo;的方法来改造一个 SRE 组织。首先要从识别那些作为是DevOps 的 SRE 工作开始。根据我们的调查，83%的人认为自己在做 SRE 活动。不过，我们提醒大家，你认为正在从事的 SRE 活动，并不意味着你是一个 SRE 。这是因为我们必须将其作为一个整体来考虑，而不是将其作为一部分或几块。 SRE 团队的定义越来越明确，但跨度也越来越大。在不同的焦点上，确实使 SRE 工作被埋没或隐藏起来。&lt;/p>
+&lt;p>46%的人声称有一个专门的 SRE 团队。然而，53%的人表示，他们在生命周期的后期才参与其中，因此遇到了挑战，52%的人表示说他们花了太多时间排错（稍后再谈）：关键的 SRE 反模式指标。&lt;/p>
+&lt;p>对事故和问题作出反应是 SRE 生活的一部分。如果我们重新提出了一个核心目标，即通过设计预防措施来实现可观测系统，那么旅程的阶段可能是这样的。&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/img/2021/Screen%20Shot%202020-10-02%20at%209.36.40%20AM.jpg"
+loading="lazy"
+alt="Screen Shot 2020-10-02 at 9.36.40 A"
+>&lt;/p>
+&lt;blockquote>
+&lt;p>被动的 -&amp;gt; 主动的 -&amp;gt; 前瞻/预防的&lt;/p>&lt;/blockquote>
+&lt;p>在这种情况下，我们问 SRE 们都进行哪些被动性活动。在这一问题上，我们问道：&amp;rdquo; SRE 从事哪些被动活动？这里的目的是帮助确定公司可能在哪些方面开始成熟起来。根据自己的业务和组织的背景，从被动到主动。&lt;/p>
+&lt;p>从每一个问题的结果来看，事后回顾和应对系统产生的告警分别名列前茅。然而，读者查看这些结果的另一种方法，是将他们分类看。然后判断你是否应该在某个分类上更成熟。例如，如果事后回顾类型与分析包括 SLI 和 SLO 在内的度量指标有重叠，然后再考虑是否可以将整体分析作为预防之路的起点。&lt;/p>
+&lt;p>&lt;strong>在你的组织内， SRE 参与了哪些 &amp;ldquo;被动 &amp;ldquo;活动？&lt;/strong>&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/img/2021/Screen%20Shot%202020-10-02%20at%209.35.25%20AM.jpg"
+loading="lazy"
+alt="Screen Shot 2020-10-02 at 9.35.25 A"
+>&lt;/p>
+&lt;ul>
+&lt;li>通过计划的活动对问题进行事后分析。80%&lt;/li>
+&lt;li>响应系统生成的告警信息 75%&lt;/li>
+&lt;li>分析指标，包括 SLI、SLO、SLA等指标 72%&lt;/li>
+&lt;li>文档记录所获的知识 69%&lt;/li>
+&lt;li>基础设施问题的维修 68%&lt;/li>
+&lt;li>On-Call 轮值 68%&lt;/li>
+&lt;li>审查并回应客户报告的支持工单 58%&lt;/li>
+&lt;li>一般行政任务（如进度报告、内务管理）49%&lt;/li>
+&lt;li>重现客户报告的问题 47%&lt;/li>
+&lt;li>为客户安装、配置和/或调试应用程序。41%&lt;/li>
+&lt;/ul>
+&lt;p>如果没有人在做救火的反应，那么我们可以认为我们所做的一切都是主动的。与其孤立地辩论一项活动的性质，不如转移话题，提问&amp;quot;我们这样做能防止什么事情发生？&amp;quot;。这样，在讨论 SRE 章程是什么样子的时候，对话就可以转向基于结果的方式。理想情况下，我们希望将服务运维优化到不再需要持续的人力工作的程度，这样 SRE 团队就可以专注于高价值的活动。&lt;/p>
+&lt;p>&lt;strong>你在哪些 &amp;ldquo;主动&amp;quot;活动上花费了适度或大量的时间？&lt;/strong>&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/img/2021/Screen%20Shot%202020-10-02%20at%209.49.01%20AM.jpg"
+loading="lazy"
+alt="Screen Shot 2020-10-02 at 9.49.01 A"
+>&lt;/p>
+&lt;ul>
+&lt;li>自动化任务，使其无需手动执行。61%&lt;/li>
+&lt;li>监控和分析系统指标，以发现可能导致未来出现故障或SLA问题的趋势。56%&lt;/li>
+&lt;li>支持部署后行动 54%&lt;/li>
+&lt;li>SRE专用系统规划 53%&lt;/li>
+&lt;li>编写优化运维操作的软件 48%&lt;/li>
+&lt;li>与开发部门合作，帮助开发应用程序 42%&lt;/li>
+&lt;li>系统的预防性维护 41%&lt;/li>
+&lt;li>容量规划活动 38%&lt;/li>
+&lt;li>通过混沌工程等实践进行弹性检查。19%&lt;/li>
+&lt;/ul>
+&lt;p>&lt;strong>作为 SRE 工作的一部分， SRE 要做哪些活动？&lt;/strong>&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/img/2021/Screen%20Shot%202020-10-02%20at%209.54.12%20AM.jpg"
+loading="lazy"
+alt="Screen Shot 2020-10-02 at 9.54.12 A"
+>&lt;/p>
+&lt;ul>
+&lt;li>监控 89%&lt;/li>
+&lt;li>事故响应/故障单和解决升级问题 83%&lt;/li>
+&lt;li>指标分析 78%&lt;/li>
+&lt;li>帮助基础设施和业务能力规划的努力 74%&lt;/li>
+&lt;li>与开发部门合作，帮助他们开发应用程序 74%&lt;/li>
+&lt;li>记录所获知识 71%&lt;/li>
+&lt;li>编写软件帮助操作 65%&lt;/li>
+&lt;li>质量保证测试和发布 30%&lt;/li>
+&lt;/ul>
+&lt;p>当去掉主动或被动的限定词，问&amp;rdquo; SRE 在这些活动中，哪些是作为 SRE 工作的一部分&amp;quot;时，我们看到监控和事故管理被列为首要活动。同样重要的是，编写优化运维操作的软件被排在第五位。牢记开发应该是最主要的活动类型（相对于运维），考虑是什么原因导致了目前的状态。&lt;/p>
+&lt;ul>
+&lt;li>章程是否不正确或不存在？&lt;/li>
+&lt;li>是否没有考虑到 SRE 原则的必要性？&lt;/li>
+&lt;li>是否没有评估以客户为中心提供服务的方法？&lt;/li>
+&lt;li>还能问什么？接着问&amp;quot;为什么&amp;rdquo;？&lt;/li>
+&lt;/ul>
+&lt;p>一旦 SRE 的工作和价值得到认可，就可以开始得到回报。为了帮助获得支持，将对话与某种业务背景联系起来。例如，当可靠性被提前考虑而不是推迟考虑时，就会降低系统的拥有成本。让一个可靠的系统，更加可靠要容易得多。&lt;/p>
+&lt;p>将谈话的重点放在解决复杂问题和实现业务目标的动力和愿望上；将这一数据点作为基线。&lt;/p>
+&lt;p>&lt;strong>您如何考虑 SRE 和DevOps团队的关系？&lt;/strong>&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/img/2021/Screen%20Shot%202020-10-02%20at%209.56.33%20AM.jpg"
+loading="lazy"
+alt="Screen Shot 2020-10-02 at 9.56.33 A"
+>&lt;/p>
+&lt;ul>
+&lt;li>41% 的人说DevOps和 SRE 是同一个团队的一部分。&lt;/li>
+&lt;li>26% 的人说DevOps和 SRE 是互补的。&lt;/li>
+&lt;li>19% 表示不知道&lt;/li>
+&lt;li>11% 表示二者是竞争关系&lt;/li>
+&lt;/ul>
+&lt;p>&lt;strong>在度量变更的业务影响方面，这些指标各有多重要？&lt;/strong>&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/img/2021/Screen%20Shot%202020-10-02%20at%209.58.23%20AM.jpg"
+loading="lazy"
+alt="Screen Shot 2020-10-02 at 9.58.23 A"
+>&lt;/p>
+&lt;ul>
+&lt;li>客户满意度下降 82%&lt;/li>
+&lt;li>收入损失 79%&lt;/li>
+&lt;li>客户流失 79%&lt;/li>
+&lt;li>雇员生产力下降 69%&lt;/li>
+&lt;li>社交媒体的吐槽 59%&lt;/li>
+&lt;/ul>
+&lt;p>幸运的是，调查对象能够阐明如何从业务角度衡量成功。&lt;/p>
+&lt;p>修炼能力是获得正向业务成果的通道。当进行&amp;quot;我们为什么需要 SRE &amp;ldquo;的对话时，不要只谈能力或只谈积极的结果。相反，要将它们结合起来，说&amp;quot;这些能力将帮助我们实现这些结果&amp;rdquo;。&lt;/p>
+&lt;p>&lt;strong>有多少个专职与 SRE 活动的团队成员？&lt;/strong>&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/img/2021/Screen%20Shot%202020-10-02%20at%2010.56.40%20AM.jpg"
+loading="lazy"
+alt="Screen Shot 2020-10-02 at 10.56.40 A"
+>&lt;/p>
+&lt;p>在本节结束时，有一个巨大的机会，可以在早期阶段将被动的业务工作向左移。从&amp;quot;不仅仅是帮助开发&amp;rdquo;，而是&amp;quot;从工作结果中获取反馈，并将其作为一种投资，用于帮助构建/提升产品或服务的可观测性&amp;rdquo;。例如，在 SRE 拿起那个传呼机后（开始 OnCall 工作），他们所记录的注意事项，可能会引指导下一波服务的开发工作，以避免落入相同的坑。&lt;/p>
+&lt;p>我们最后的想法是， SRE 参与整体生命周期的想法适用于任何组织的规模。换句话说，旅程的各个阶段还是一样的。&lt;/p>
+&lt;blockquote>
+&lt;p>实施 DevOps 的 SRE 原则，通过设计和构建可观测性的系统来预防事故。努力将可靠性进一步向左移动，获得降低成本、团队调整和业务收益等成果。以开发工作与运维工作各占一半时间为基准，在运维工作中 On-Call 值守的比例不超过 25%。然后，当你向着预防的最终目标进行管理场景的迭代时，找出制约因素，从而消除约束点。达成最后成果以奠定了一个 SRE 团队的基础。当你消除约束点时，之后相应的更新你的场景。&lt;/p>&lt;/blockquote>
+&lt;h2 id="关键要点3-远程工作转型带来了机遇和挑战">关键要点3 ：远程工作转型带来了机遇和挑战
+&lt;/h2>&lt;p>&lt;img src="https://martinliu.cn/img/2021/sre3.jpg"
+loading="lazy"
+>&lt;/p>
+&lt;blockquote>
+&lt;p>将新出现的或以前被忽视的挑战转化为战略上差异化的机会。关注士气、员工体验、工作/生活平衡、员工参与度和情绪等挑战，可以展示公司员工至上的心态，吸引或留住顶尖人才。&lt;/p>&lt;/blockquote>
+&lt;p>任何其他头衔的 SRE 仍然会创造商业价值。但是，企业是否重视他们的 SRE 呢？&lt;/p>
+&lt;blockquote>
+&lt;p>如果说，&amp;ldquo;正确对待你的员工，他们就会正确对待你的客户 &amp;ldquo;只是一句座右铭，那么现在愿它成为你的战斗口号。&lt;/p>&lt;/blockquote>
+&lt;p>在 SRE 2020 调查问卷的一组有关在家工作前的问题中，受访者指出了他们面临的一些关键挑战。然后，在两个半月的在家工作后，又有更多的挑战浮出了水面。&lt;/p>
+&lt;p>这包括以前可能被忽视的挑战，或者对一些人来说不存在的挑战，它们都浮出了水面。诸如士气、员工体验、工作/生活平衡、员工参与度和情绪等挑战；现在企业有机会将其转化为战略性的差异化资产了，公司展示出员工至上的心态。换句话说，如果说 &amp;ldquo;正确对待你的员工，他们就会正确对待你的客户&amp;quot;这句话，在以前只是一句座右铭，那么现在愿它成为一个战斗口号。&lt;/p>
+&lt;p>&lt;em>居家工作之前&lt;/em>&lt;/p>
+&lt;p>&lt;strong>哪些问题具有一定或极强的挑战性？&lt;/strong>&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/img/2021/Screen%20Shot%202021-02-28%20at%208.38.55%20PM.jpg"
+loading="lazy"
+alt="Screen Shot 2021-02-28 at 8.38.55 P"
+>&lt;/p>
+&lt;ul>
+&lt;li>常常在生命周期后期参与 53%&lt;/li>
+&lt;li>调试时间过长 52%&lt;/li>
+&lt;li>缺乏其他团队的支持 47%&lt;/li>
+&lt;li>培训预算不足 46%&lt;/li>
+&lt;li>监控技术过于耗时 45%&lt;/li>
+&lt;li>在非办公时间经常提供支持 39%&lt;/li>
+&lt;li>工作压力过大，缺乏支持 38%&lt;/li>
+&lt;li>工具预算不足 36%&lt;/li>
+&lt;/ul>
+&lt;p>&lt;em>居家工作之后&lt;/em>&lt;/p>
+&lt;p>&lt;strong>&amp;lsquo;在家&amp;rsquo;后，你面临着哪些问题？&lt;/strong>&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/img/2021/Screen%20Shot%202021-02-28%20at%208.39.00%20PM.jpg"
+loading="lazy"
+alt="Screen Shot 2021-02-28 at 8.39.00 P"
+>&lt;/p>
+&lt;ul>
+&lt;li>工作/生活平衡 60%&lt;/li>
+&lt;li>团队沟通 56%&lt;/li>
+&lt;li>重点/清晰度 51%&lt;/li>
+&lt;li>设施，包括设备和宽带 42%&lt;/li>
+&lt;li>隔离/鼓励 41%&lt;/li>
+&lt;li>激励 39%&lt;/li>
+&lt;li>心理健康、压力或情绪健康 37%；&lt;/li>
+&lt;li>工具技术栈 23%&lt;/li>
+&lt;li>界定成功指标 22%&lt;/li>
+&lt;li>On-Call 值守 12%&lt;/li>
+&lt;li>其他 7%&lt;/li>
+&lt;/ul>
+&lt;p>&lt;img src="https://martinliu.cn/img/2021/sre4.jpg"
+loading="lazy"
+>&lt;/p>
+&lt;blockquote>
+&lt;p>&amp;ldquo;在这段经历中，我发现我发现：每天在家带孩子是压力最大的部分。一般来说，保持工作与生活的平衡是很困难的，但当你经常失去注意力时，很难不觉得自己和其他人是一样的努力工作（即使你的公司是支持你的）。&amp;rdquo;&lt;br>
+&amp;ndash; 受访者反馈&lt;/p>&lt;/blockquote>
+&lt;p>在我们 2019 年的 SRE 报告中，得分高的&lt;strong>琐事泛滥&lt;/strong>是最严重的，59%的受访者认为组织中的琐事太多。在我们的 SRE 2020 报告中，我们重新验证了这一发现，并扩展到按分布式的数据形式展示。&lt;/p>
+&lt;p>&lt;strong>SRE 的工作有百分之多少是琐事？&lt;/strong>&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/img/2021/Screen%20Shot%202021-02-28%20at%208.41.30%20PM.jpg"
+loading="lazy"
+alt="Screen Shot 2021-02-28 at 8.41.30 P"
+>&lt;/p>
+&lt;p>&lt;strong>SRE 的工作有百分之多少是琐事？&lt;/strong>&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/img/2021/Screen%20Shot%202021-02-28%20at%208.41.36%20PM.jpg"
+loading="lazy"
+alt="Screen Shot 2021-02-28 at 8.41.36 P"
+>&lt;/p>
+&lt;p>41%的受访者表示，他们的工作有一半或更多是琐事。考虑到： 1）高琐事率 2）附加问题中60%的受访者将工作/生活平衡列为在家工作后的头号挑战，我们建议企业从战略上考虑降低职业倦怠（透支/996）的方案。&lt;/p>
+&lt;p>在此，我们将琐事（本身可能正是人们时常需要的精神激活剂）与倦怠（我们要避免的结果）区分开来。&lt;/p>
+&lt;p>一个组织在处理大量的工作时，要考虑到缺乏自动化的根本原因。如果结论是由于缺乏技能或人力，那么前进的道路可能会与长期积累的大量技术债务不同。&lt;/p>
+&lt;p>如果团队的目标一致，或者优先级一致，那么自动化能力是否可以扩大？首先梳理开发+运维是否有根本性的缺失？最起码，在&amp;quot;开发&amp;quot;与&amp;quot;运维&amp;quot;时间各占一半的情况下，要有一个基准线，以了解工作量的差距。然后，与管理者对话，使团队有一个合理的期望；而不是，例如，觉得他们应该做到‘零运维’的工作。&lt;/p>
+&lt;p>&lt;strong>SRE 的琐事主要来源是那些？&lt;/strong>&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/img/2021/Screen%20Shot%202021-02-28%20at%208.43.07%20PM.jpg"
+loading="lazy"
+alt="Screen Shot 2021-02-28 at 8.43.07 P"
+>&lt;/p>
+&lt;ul>
+&lt;li>可以自动化的人工维护任务 29%&lt;/li>
+&lt;li>关于可自动化的应用程序发布的工作 19%&lt;/li>
+&lt;li>可以自动化的人工值守任务 18%&lt;/li>
+&lt;li>解决假阳性/阴性问题 16%&lt;/li>
+&lt;li>非紧急服务相关信息 13%&lt;/li>
+&lt;li>解决与服务无关的信息 12%&lt;/li>
+&lt;/ul>
+&lt;p>&lt;strong>使用自动化进行自修复的问题和事件的百分比是多少？&lt;/strong>&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/img/2021/Screen%20Shot%202021-02-28%20at%208.44.18%20PM.jpg"
+loading="lazy"
+alt="Screen Shot 2021-02-28 at 8.44.18 P"
+>&lt;/p>
+&lt;p>45%的人说监控技术太耗时。这是一个机会，可以通过可观测性能力将重点放在预防措施上，同时还可以扩展到使用软件（而不是人）来解释数据，并判断是否需要采取行动。与其生成告警，再要求人来决定是否需要采取行动，到不如只在应该由人采取行动的时候，才触发告警。然后让系统实际执行行动。&lt;/p>
+&lt;p>为了帮助企业实现这种向可操作性告警方向转变，我们说：&amp;ldquo;你不可能对所有的事情都进行监控和告警，所以先从最重要的事情：开始对‘用户体验’监控和告警&amp;rdquo;。在这种情况下，各种人工智能(&amp;ldquo;AI&amp;rdquo;)或机器学习(&amp;ldquo;ML&amp;rdquo;)能力才可能会有用武之地。&lt;/p>
+&lt;p>16%的人认为解决假阳性/阴性是一个主要的苦恼来源。&lt;/p>
+&lt;p>&lt;strong>您是否使用自动化工具进行容量规划和制备？&lt;/strong>&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/img/2021/Screen%20Shot%202021-02-28%20at%208.45.02%20PM.jpg"
+loading="lazy"
+alt="Screen Shot 2021-02-28 at 8.45.02 P"
+>&lt;/p>
+&lt;ul>
+&lt;li>手工容量规划+自动化制备&lt;/li>
+&lt;li>手工制备+自动化容量规划&lt;/li>
+&lt;li>容量规划和制备都是手工的&lt;/li>
+&lt;li>是的，容量规划和制备都是自动化的&lt;/li>
+&lt;li>容量规划根据预算周期或者是否冻结走&lt;/li>
+&lt;/ul>
+&lt;p>看到这个数据，我们有些惊讶。在我们的2018年 SRE 报告中，65%的受访者表示，他们全部或部分使用云计算。我们预计这个数字从那时起就会增加（尽管我们今年没有明确提出这个问题）。随着云提供的各种功能，包括各种 &amp;ldquo;特性/函数即服务&amp;rdquo;，我们对评估什么是可自动化的，以减少琐事和随后的透支的建议仍然是相同的：当在分析组织中为何存在大量琐事时，缺乏自动化解决方案，最可能被认为是根本原因。那如果得出的根因结论却是：技能或能力的欠缺呢？那么在前方的道路上，可能就不会在长期的积累大量技术债务了。&lt;/p>
+&lt;p>&lt;strong>您的 SRE 团队成员有哪些培训和认证？&lt;/strong>&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/img/2021/Screen%20Shot%202021-02-28%20at%208.45.53%20PM.jpg"
+loading="lazy"
+alt="Screen Shot 2021-02-28 at 8.45.53 P"
+>&lt;/p>
+&lt;ul>
+&lt;li>内部辅导和培训方案 78%&lt;/li>
+&lt;li>云厂商认证（如 AWS，GCP，Azure） 51%&lt;/li>
+&lt;li>工具厂商的培训或特殊工具 40%&lt;/li>
+&lt;li>个人或者团队参加第三方 DevOps 课程 29%&lt;/li>
+&lt;li>个人或者团队参加第三方 SRE 课程 24%&lt;/li>
+&lt;li>个人或者团队参加第三方 ITILv3 课程 16%&lt;/li>
+&lt;/ul>
+&lt;p>缺乏预算和培训（来自前面的挑战清单），再加上大量的琐事，就会导致透支。正如我们增编问题的数据所显示的那样，这些问题更加严重，工作/生活平衡（60%）和专注/清晰（51%）是在家工作之后，关于‘幸福感’（well-bing）的两个最高挑战。&lt;/p>
+&lt;p>内部辅导和培训是之间存在着关联性的方案(78%)，但对 SRE 培训的预算不足。这表明&lt;strong>内部计划&lt;/strong>可能不那么有效。该数据也让我们不得不问，是否调试时间过长（52%）？是因为培训在这里也是一个空白。既然内部培训是最主要的培训方式，那么就要看这些项目的效果。培训教练或团队领袖是否是该领域的专家？这是否是一个挑战？希望做内部培训是否是没有预算的直接后果？牢记我们的愿望是：让员工提高工作效率，那么深入的 &lt;strong>SRE 培训&lt;/strong> 和扎实的理解 SRE 角色是必不可少的，通过设计和实施系统的可观测性，来实施预防措施的路线图。&lt;/p>
+&lt;p>我们还是将&lt;strong>缺乏工具预算的问题&lt;/strong>也纳入了培训的这一章节，因为缺乏预算是两者之间的共同主题。不幸的是，员工生产力下降的指标，是商业影响的第二低指标，因此投资于培训可能是应该开始做了。&lt;/p>
+&lt;p>在 2019 年的 SRE 报告中，琐事和压力是首当其冲的焦点。我们可能用的是一些预期的反应来调查。&lt;/p>
+&lt;p>&lt;strong>你在家后面临哪些心理/个人幸福感的挑战？&lt;/strong>&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/img/2021/Screen%20Shot%202021-02-28%20at%208.47.10%20PM.jpg"
+loading="lazy"
+alt="Screen Shot 2021-02-28 at 8.47.10 P"
+>&lt;/p>
+&lt;ul>
+&lt;li>工作/生活平衡 60%&lt;/li>
+&lt;li>专注/清晰 51%&lt;/li>
+&lt;li>隔离 41%&lt;/li>
+&lt;li>动力 39%&lt;/li>
+&lt;li>精神健康、压力或情感幸福感 37%&lt;/li>
+&lt;li>其它 2%&lt;/li>
+&lt;/ul>
+&lt;p>以上问题的解决思路包括：&lt;/p>
+&lt;ul>
+&lt;li>使用自动化消除琐事&lt;/li>
+&lt;li>通过无职责文化，消除事故回顾的压力&lt;/li>
+&lt;li>通过可观测性的能力转换到主动度量，在根本上减少事件&lt;/li>
+&lt;/ul>
+&lt;p>大多数组织的强制在家工作的政策，都凸显了更加关注员工的幸福感的必要性。当读者看到这个关于在家的数据集时，请问：&amp;ldquo;这个数据集的结论，如何使年初调查数据的结论变得更好或更坏？&amp;quot;。例如，那些感觉到被隔离的人，在之前，他们会觉得沟通或缺乏支持是问题么？会对其有什么影响？他们会不会可能感到得到了更多或更少的支持？&lt;/p>
+&lt;p>将新出现的，或以前被忽视的挑战转化为战略上的差异化机会。关注士气、员工体验、工作/生活平衡、员工参与度和情绪等挑战，可以展示公司员工至上的心态，以吸引或留住顶尖人才。&lt;/p>
+&lt;h2 id="关键要点4-远程-sre-光明的未来">关键要点4 ：远程 SRE 光明的未来
+&lt;/h2>&lt;p>&lt;img src="https://martinliu.cn/img/2021/sre5.jpg"
+loading="lazy"
+>&lt;/p>
+&lt;blockquote>
+&lt;p>重新评估各种业务连续性方案。考虑是否需要调整&lt;strong>恢复时间&lt;/strong>和&lt;strong>恢复时间点&lt;/strong>。在进行灾难或连续性演习时，确定现在可以实施预防措施的机会领域。在您的 SRE 章程中记录任何新的洞见。&lt;/p>&lt;/blockquote>
+&lt;p>在我们的 SRE 2018 年调查中，按《纽约时报》的风格，这个标题是这样说的。&lt;/p>
+&lt;blockquote>
+&lt;p>&amp;ldquo;如果你想远程工作， SRE 角色可能不适合你。虽然有些 SRE 是远程工作的，但 81% 的 SRE 表示，他们团队的所有或大部分工作都在办公室里进行的。&amp;rdquo;&lt;/p>&lt;/blockquote>
+&lt;p>我们想到的第一个问题是：&amp;ldquo;当世界重新开放时，你的员工中，有百分之多少会首选&amp;quot;远程/在家办公&amp;rdquo;（有多少比例的人的次要选择是&amp;quot;现场/办公室&amp;rdquo;）？&amp;rdquo; 在一个异步、世事纷繁的时代，这个数据可能不会让你感到惊讶。&lt;/p>
+&lt;p>&lt;strong>预期远程工作人员的百分比&lt;/strong>&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/img/2021/Screen%20Shot%202021-02-28%20at%208.50.10%20PM.jpg"
+loading="lazy"
+alt="Screen Shot 2021-02-28 at 8.50.10 P"
+>&lt;/p>
+&lt;p>考虑到从全员现场、到分布式劳动力的转变，我们希望进一步研究其他变化因素，为决策者提供一个投资方向。需要应对哪些新的挑战？&lt;strong>事件管理&lt;/strong>是什么样的？如果没有了办公桌，将如何运行他们的灾难恢复桌面演习？&lt;/p>
+&lt;p>我们不想在说&amp;quot;远程 SRE 的未来很遥远&amp;quot;的时候，做出&amp;quot;水很深 &amp;ldquo;式的说法。而是说，远程 SRE 的未来是光明的，但也要注意以下几点。&lt;/p>
+&lt;blockquote>
+&lt;p>&amp;ldquo;小学教师工资发的不够&amp;hellip;&amp;hellip;&amp;rdquo;
+&amp;ndash;调查对象&lt;/p>&lt;/blockquote>
+&lt;p>&lt;img src="https://martinliu.cn/img/2021/sre6.jpg"
+loading="lazy"
+>&lt;/p>
+&lt;p>牢记本报告之前关于&lt;strong>希望通过设计和实施可观察系统&lt;/strong>来预防事故的评论。然后考虑这些直接、宏观的问题，对你的 SRE 章程有什么影响。&lt;/p>
+&lt;p>主动式与被动式相比（向更多的被动式净增2%）没有开发与运维相比（向更多的运维净增10%）的差距那么大。在这里，我们再次参考在家工作前的数据，表明75%的受访者在做运维活动（而25%在做开发活动）。&lt;/p>
+&lt;p>&lt;strong>自从 &amp;ldquo;在家工作 &amp;ldquo;后，你的活动有什么变化？(主动与被动)&lt;/strong>&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/img/2021/16145887375405.jpg"
+loading="lazy"
+>&lt;/p>
+&lt;ul>
+&lt;li>太多主动了 4%&lt;/li>
+&lt;li>主动多些 14%&lt;/li>
+&lt;li>基本一致 60%&lt;/li>
+&lt;li>有点被动 16%&lt;/li>
+&lt;li>太被动了 4%&lt;/li>
+&lt;/ul>
+&lt;p>&lt;strong>自从 &amp;ldquo;在家工作 &amp;ldquo;后，你的活动有什么变化？(开发与运维)&lt;/strong>&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/img/2021/16145888275975.jpg"
+loading="lazy"
+>&lt;/p>
+&lt;ul>
+&lt;li>太多开发了 5%&lt;/li>
+&lt;li>开发多了一些 11%&lt;/li>
+&lt;li>差不多持平 57%&lt;/li>
+&lt;li>运维多了一些 17%&lt;/li>
+&lt;li>太多运维了 9%&lt;/li>
+&lt;/ul>
+&lt;p>我们想了解事件的绝对数量以及相对数量（下一页）。需要提醒的是，&amp;ldquo;在家工作后&amp;quot;这组调查问题，在家工作的两个半月后提出的。&lt;/p>
+&lt;p>&lt;strong>在家后，你负责的站点或应用经历的事故更多/少吗？&lt;/strong>&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/img/2021/16145889082162.jpg"
+loading="lazy"
+>&lt;/p>
+&lt;ul>
+&lt;li>无/零 17%&lt;/li>
+&lt;li>1 次 9%&lt;/li>
+&lt;li>2~5 次 42%&lt;/li>
+&lt;li>6~10 次 11%&lt;/li>
+&lt;li>要多得多 21%&lt;/li>
+&lt;/ul>
+&lt;p>对于，&amp;ldquo;自家工作以来，发生的事件多还是少&amp;rdquo;，数据形成了一条正态分布的钟形曲线。不过，在这个问题中，最突出的是7%的人不知道!&lt;/p>
+&lt;p>&lt;strong>在家后，你所负责的站点或应用经历了更多/少的事故&lt;/strong>
+&lt;img src="https://martinliu.cn/img/2021/Screen%20Shot%202021-02-28%20at%208.57.02%20PM-1.jpg"
+loading="lazy"
+alt="Screen Shot 2021-02-28 at 8.57.02 P"
+>&lt;/p>
+&lt;ul>
+&lt;li>更少 9%&lt;/li>
+&lt;li>差不多相同 73%&lt;/li>
+&lt;li>更多事故 9%&lt;/li>
+&lt;li>不知道 7%&lt;/li>
+&lt;/ul>
+&lt;p>&lt;img src="https://martinliu.cn/img/2021/16145898292315.jpg"
+loading="lazy"
+>&lt;/p>
+&lt;ul>
+&lt;li>流量增长和/或容量问题 54%&lt;/li>
+&lt;li>第三方问题 37%&lt;/li>
+&lt;li>发布管理相关变更 25%&lt;/li>
+&lt;li>测试和质量控制 25%&lt;/li>
+&lt;li>安全 4%&lt;/li>
+&lt;li>其它 16%&lt;/li>
+&lt;/ul>
+&lt;p>流量和(或)容量问题的增加被认为是导致事故增加的首要因素。&lt;strong>第三方&lt;/strong>被认为是第二大因素，这也是为什么，我们在本报告的第一部分中，讨论了有必要考虑如何处理第三方依赖的策略。&lt;/p>
+&lt;p>我们想指出，只有那些表示自从在家工作后发生更多事故的受訪者们，才被问及这个问题。但我们想把数据包括在内，考虑到尽职。&lt;/p>
+&lt;p>净+9%的受访者表示，自从在家之后，事件管理变得更加有效。这是一个令人振奋的数据，我们不知道更好的事件管理是否与公司做更少的发布有关（根据 Atlassian 的这个数据，66%的受访者已经放慢了他们软件的发布频率) 注意14%的受访者选择了&lt;strong>无法评价&lt;/strong>和&lt;strong>识别机会&lt;/strong>，看看是否是由于在家的原因。&lt;/p>
+&lt;p>&lt;strong>请评价贵公司自&amp;quot;在家&amp;quot;以来事故管理流程的有效性&lt;/strong>&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/img/2021/16145899532646.jpg"
+loading="lazy"
+>&lt;/p>
+&lt;ul>
+&lt;li>&amp;ldquo;在家 &amp;ldquo;时，效果较差（MTTR较高）5%。&lt;/li>
+&lt;li>大约相同的MTTR 66%&lt;/li>
+&lt;li>&amp;ldquo;在家&amp;quot;时更有效(MTTR较低) 14%。&lt;/li>
+&lt;li>无法评价 14%&lt;/li>
+&lt;/ul>
+&lt;p>我们在 &amp;ldquo;在家后&amp;rdquo; 调查中问的最后一个直接问题是：&amp;ldquo;你或你团队中的任何人，是否不得不去现场？&amp;rdquo; 对于回答&amp;quot;是&amp;quot;这个问题的14%的人，我们后续的开放式问题：&amp;ldquo;有多少次？他们的答案各种都有，有总是和每班一个人（跟着太阳走）的，有只有一次和每两周一次的。&lt;/p>
+&lt;p>&lt;strong>从&amp;rsquo;在家&amp;rsquo;开始，你有没有不得不去现场过？&lt;/strong>&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/img/2021/16145899912972.jpg"
+loading="lazy"
+>&lt;/p>
+&lt;ul>
+&lt;li>是的 14%&lt;/li>
+&lt;li>不是 86%&lt;/li>
+&lt;/ul>
+&lt;p>&lt;strong>&amp;lsquo;在家&amp;rsquo;后，事故管理在哪些方面变得更具挑战性？&lt;/strong>&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/img/2021/Screen%20Shot%202021-02-28%20at%208.59.41%20PM.jpg"
+loading="lazy"
+alt="Screen Shot 2021-02-28 at 8.59.41 P"
+>&lt;/p>
+&lt;ul>
+&lt;li>检测事故发生/宕机 9％&lt;/li>
+&lt;li>查明事故根本原因 9％&lt;/li>
+&lt;li>向正确的团队升级 28%&lt;/li>
+&lt;li>修复根因 8%&lt;/li>
+&lt;li>验证修复是否成功 13%。&lt;/li>
+&lt;li>以上的都不是 51%&lt;/li>
+&lt;/ul>
+&lt;p>在我们努力结束今年的报告之际，我们提供最后一个数据点。公司重新评估他们将如何继续运营。我们问道：&amp;ldquo;你们多久执行一次针对在家场景的灾难恢复演练&amp;rdquo; 当你考虑到你的各种恢复时间可能是如何 受影响的情况下，考虑到以前的路径，到预防性的座右铭，因此你要努力设计和实施系统的可观察的问题。&lt;/p>
+&lt;p>&lt;strong>你们多久执行一次针对在家场景的灾难恢复演练？&lt;/strong>
+&lt;img src="https://martinliu.cn/img/2021/Screen%20Shot%202021-02-28%20at%209.00.47%20PM.jpg"
+loading="lazy"
+alt="Screen Shot 2021-02-28 at 9.00.47 P"
+>&lt;/p>
+&lt;ul>
+&lt;li>完全没有 40%&lt;/li>
+&lt;li>还没有；我们正在计划26%&lt;/li>
+&lt;li>随机19%&lt;/li>
+&lt;li>每月5%&lt;/li>
+&lt;li>每周5%&lt;/li>
+&lt;li>其它5%&lt;/li>
+&lt;/ul>
+&lt;p>可观测性是指能够回答&amp;quot;为什么我们客户体验到了这个效果？&amp;rdquo; 是不是因为第三方，应用代码、传输网络或其他交付链中的组件，如DNS或CDN？然后使用这些答案来迭代改进现有的，或新建的产品或服务。&lt;/p>
+&lt;p>当&amp;quot;内建&amp;quot;可靠性时，要考虑到开发和运维之间的分裂。在您制定 SRE 章程时，您可以将其与业务工作进行比较。这里的目标是：尽早将可靠性纳入其中，因为提升一个已经靠谱了的系统，还是要来的要更容易些。&lt;/p>
+&lt;p>最后，考虑到您的员工队伍的分布性质，并承认可能被忽视或被忽视的一系列挑战。无论存在与否，都要考虑到诸如，琐事、缺乏支持、工作/生活平衡，以及，孤独感可能会导致的某些操作规则或流程被取消，都要从根上重新进行评估。&lt;/p>
+&lt;h2 id="方法论">方法论
+&lt;/h2>&lt;p>&lt;img src="https://martinliu.cn/img/2021/sre7.jpg"
+loading="lazy"
+>&lt;/p>
+&lt;p>2020年1月，Catchpoint进行了一项通过电子邮件列表和社交媒体推广的 SRE 调查。 该调查询问了来自不同行业的技术专业人员，调查关于他们作为&lt;strong>站点可靠性工程师&lt;/strong> SRE 角色。通过报告，这组问题被称为&amp;quot;预先&amp;quot;问题集。&lt;/p>
+&lt;p>2020年6月，Catchpoint 又进行了一项增补调查，加入了关于新冠疫情（COVID 19）后，居家办公的考虑。这组问题旨在询问各种&amp;quot;发生了什么变化&amp;quot;的问题，被称为&amp;quot;后疫情&amp;quot;或&amp;quot;在家 &amp;ldquo;问题集。&lt;/p>
+&lt;p>在编写本报告时，收到了共有594名调查对象的反馈。在预定的时间里，其它人在格式化本报告和编写附录的过程中在也纷至沓来，统计周期的只对本报告的统计数字产生了较小的影响，不超过1%。&lt;/p></description></item></channel></rss>

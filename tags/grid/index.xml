@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Grid on Martin Liu's Blog</title><link>https://martinliu.cn/tags/grid/</link><description>Recent content in Grid on Martin Liu's Blog</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><lastBuildDate>Sun, 09 Oct 2022 21:44:15 +0800</lastBuildDate><atom:link href="https://martinliu.cn/tags/grid/index.xml" rel="self" type="application/rss+xml"/><item><title>Ganglia install and configure</title><link>https://martinliu.cn/2008/05/24/ganglia-install-and-configure/</link><pubDate>Sat, 24 May 2008 02:15:27 +0000</pubDate><guid>https://martinliu.cn/2008/05/24/ganglia-install-and-configure/</guid><description>&lt;p>我准备安装的版本是 ganglia-3.0.7 ， 参考的安装文档是&lt;a class="link" href="http://www.linuxsir.org/bbs/thread309837.html" target="_blank" rel="noopener"
+>http://www.linuxsir.org/bbs/thread309837.html&lt;/a>&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->rpm 的安装会比较省事。rpm 安装都会很正常，不过在 Suse 下面需要注意一下两点：&lt;!-- raw HTML omitted -->&lt;/p>
+&lt;p>&lt;!-- raw HTML omitted -->&lt;/p>
+&lt;ul>
+&lt;li>gmond和gmated的启动脚本不是rpm包中默认装上的那个，那个脚本适用于redhat linux；下载源码编译之后在gmond/ gmated/的文件夹里有后缀为 .SuSE的哪两个文件才对。
+&lt;!-- raw HTML omitted -->&lt;/li>
+&lt;li>rpm吧gmated的web界面默认安装路径是/var/www/http/ ，SuSE下的apache的路径是 /srv/www/htdoc/；安装完后copy或者连接过来
+&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->配置：&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->&lt;/li>
+&lt;li>gmond.conf 更具我参考的安装文档产生这个文件的命令是 gmond -t &amp;gt; /etc/gmond.conf；rpm安装包中有这个文件，如果需要恢复到默认状态可以使用这个命令。
+&lt;!-- raw HTML omitted -->&lt;/li>
+&lt;li>gmated.conf 是服务器端的主要配置文件，详细阅读一下源码包中的那个html文件对这个文件的配置会有帮助
+&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->安装过程中出现的问题如下：在启动gmond的时候启动失败，debug一下可以看到下面的错误。&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->sles:~ # gmond &amp;ndash;debug=9&lt;!-- raw HTML omitted -->slurpfile() open() error on file /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq: No such file or directory&lt;!-- raw HTML omitted -->udp_recv_channel mcast_join=239.2.11.71 mcast_if=NULL port=8649 bind=239.2.11.71&lt;!-- raw HTML omitted -->Error creating multicast server mcast_join=239.2.11.71 port=8649 mcast_if=NULL family=&amp;lsquo;inet4&amp;rsquo;. Exiting.&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->在所有虚拟机（host-only 网络设置）上都遇到这个错误。一次一个NAT网络的虚机上正常&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->至今觉得这是一个网络的问题，还没有想出正确的配置和解决方法。如果您有什么好建议请留言。&lt;/li>
+&lt;/ul></description></item><item><title>Clouds are coming</title><link>https://martinliu.cn/2008/04/18/clouds-are-coming/</link><pubDate>Fri, 18 Apr 2008 15:05:23 +0000</pubDate><guid>https://martinliu.cn/2008/04/18/clouds-are-coming/</guid><description>&lt;p>&lt;img src="http://www.swish-designs.co.uk/images/cloud_fig3.png"
+loading="lazy"
+>&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->最近两周最吸引我的 TAG 是这个词“cloud computing”。在我&lt;a class="link" href="http://www.martinliu.cn/2008/04/10/do-you-have-a-google-app-engine/" target="_blank" rel="noopener"
+>前一个文章&lt;/a>中稍微展望了一下云计算的前景“云计算吧电能转化成计算能力，然后向用电一样的来使用，我们甚至不需要使用 PC 这样的个人信息话设备来管理我们的信息，所有的信息和信息的处理都在云上发生”。在了解了更多的信息之后，这些可能实现，但是这种巨变需要时间，而且可能是很长时间；清醒之后不得不佩服 Google 在这方面的宣传。&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->理性认识云计算的简单方式，扫扫盲：&lt;!-- raw HTML omitted -->&lt;/p>
+&lt;p>&lt;!-- raw HTML omitted -->&lt;/p>
+&lt;ul>
+&lt;li>阅读一下wikipedia对&lt;a class="link" href="http://en.wikipedia.org/wiki/Cloud_computing" target="_blank" rel="noopener"
+>‘cloud computing’&lt;/a>的解释
+&lt;!-- raw HTML omitted -->&lt;/li>
+&lt;li>听听John Willi的两个&lt;a class="link" href="http://www.johnmwillis.com/best-of/" target="_blank" rel="noopener"
+>Podcast&lt;/a>
+&lt;!-- raw HTML omitted -->&lt;/li>
+&lt;li>多看看非google来源的信息：）
+&lt;!-- raw HTML omitted -->&lt;/li>
+&lt;li>读读这个GRIDtoday的文章 &amp;ndash; &lt;a class="link" href="http://www.gridtoday.com/grid/2284608.html" target="_blank" rel="noopener"
+>&amp;ldquo;Clouds are Looming and We Love It&amp;rdquo;&lt;/a>
+&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->很多厂商都在参与这个热点，open source也要加油，期待开源在这个领域的发展。&lt;/li>
+&lt;/ul></description></item></channel></rss>

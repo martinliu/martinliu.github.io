@@ -1,0 +1,1747 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Elk on Martin Liu's Blog</title><link>https://martinliu.cn/tags/elk/</link><description>Recent content in Elk on Martin Liu's Blog</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><lastBuildDate>Tue, 25 Jun 2024 21:44:26 +0800</lastBuildDate><atom:link href="https://martinliu.cn/tags/elk/index.xml" rel="self" type="application/rss+xml"/><item><title>面向未来的 Elastic Stack 数据摄入架构</title><link>https://martinliu.cn/blog/fleet-and-elastic-agent/</link><pubDate>Mon, 17 Oct 2022 21:09:52 +0800</pubDate><guid>https://martinliu.cn/blog/fleet-and-elastic-agent/</guid><description>&lt;img src="https://martinliu.cn/blog/fleet-and-elastic-agent/pexels-analogicus-5516029.jpg" alt="Featured image of post 面向未来的 Elastic Stack 数据摄入架构" />&lt;h2 id="数据摄入的痛点">数据摄入的痛点
+&lt;/h2>&lt;p>安装、升级和维护各种数据采集工具，包括 Filebeat、Metricbeat、APM 埋点、Logstash数据重整转发、端点安全控制，还有很多很多其它功能选项，貌似每增加一丁点功能，以前的数据采集项目又要重新再来一遍。&lt;/p>
+&lt;p>采集管理的配置文件不光只是 YAML 文件，越写越长的 YAML 文件渐渐将你带入了十八层地狱。&lt;/p>
+&lt;p>在每个端点上启用和配置不同采集模块行为参数，很多情况下，你不得不在大量采集点的命令行里执行配置命令。&lt;/p>
+&lt;p>不同采集模块在采集节点上都需要创建新的用户，不仅复杂化了操作系统用户的管理，还可能引入更多的风险。&lt;/p>
+&lt;p>自动化配置管理工具可以批量分发和部署这些数据摄入配置文件，但是你又不得不为此学习另外一种新的武功。&lt;/p>
+&lt;h2 id="优化的方向">优化的方向
+&lt;/h2>&lt;h3 id="简化采集端部署">简化采集端部署
+&lt;/h3>&lt;p>下面是 Elastic Agent 所实现的效果。减少采集不同类型数据的采集代理程序的种类，最好能只使用一个全功能的采集代理程序；有可能的话用一种万能的采集代理程序替代所有单点采集程序，诸如：Filebeat， Metricbeat， APM Agent， Heartbeat， Winlogbeat 等等各种 Elastic Stack 的采集程序。其他的这种类型的各个厂商和各种开源工具你可以自己联想。&lt;/p>
+&lt;p>尽量发挥万能型采集代理程序的特性，最好它能够一键式的安装，能支持上百种流行的开源软件、商业软件和云服务。&lt;/p>
+&lt;p>在采集代理程序开始正常工作以后，避免在端点的命令做任何配置工作。&lt;/p>
+&lt;p>以上的数据采集端点程序部署在大多数情况下，都是覆盖可观测性解决方案的需求；如果可能的话，能够兼顾信息安全管理需求是一种更高效的做法；如果能一石二鸟，那又何乐而不为呢。&lt;/p>
+&lt;h3 id="直观的集中统一管理">直观的集中统一管理
+&lt;/h3>&lt;p>使用一个统一的采集代理管理中间层 Fleet 掌控全局。在这里一站式的实现采集代理的配置分发、更新等变更；实现采集代理程序的持续版本升级；随着采集端点数量的蔓延，横向扩展 Fleet 层，用一个 Fleet 服务器对接分布在各地的数千个 Elastic Agent。&lt;/p>
+&lt;h2 id="elk-数据摄入架构变迁">ELK 数据摄入架构变迁
+&lt;/h2>&lt;p>7.13 的 ELK 架构是持续了很久的传统模式，是社区里存在着大量描述文章，本文忽略对其的解释。&lt;/p>
+&lt;p>渐进式的架构变化是从 7.13 开始初具雏形的，Fleet 功能组件作为 Kibana 的内置功能，正式登场。&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/blog/fleet-and-elastic-agent/2022-10-17_23-34-49.png"
+width="1986"
+height="872"
+srcset="https://martinliu.cn/blog/fleet-and-elastic-agent/2022-10-17_23-34-49_hu_bcf44bb01c006b92.png 480w, https://martinliu.cn/blog/fleet-and-elastic-agent/2022-10-17_23-34-49_hu_ad85e7c2a9c14f85.png 1024w"
+loading="lazy"
+alt="7.13 前的架构图"
+class="gallery-image"
+data-flex-grow="227"
+data-flex-basis="546px"
+>&lt;/p>
+&lt;p>Kiban 的定位是作为 Elastic Stack 的数据探索窗口，和管理控制平面。统一管理 Elastic Agent 需要增加两个功能：策略管理器和配置包管理器。需要引入新的 Fleet 服务器实现下面的需求：&lt;/p>
+&lt;ul>
+&lt;li>对 n 多采集点的更小暴露平面。&lt;/li>
+&lt;li>降低了 Kibana 服务器本身资源消耗和部署工作量。&lt;/li>
+&lt;li>更容易管理并发模式。&lt;/li>
+&lt;/ul>
+&lt;p>从 7.14 以后的架构图如下。这是以后的发展方向。&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/blog/fleet-and-elastic-agent/2022-10-17_23-36-03.png"
+width="2062"
+height="880"
+srcset="https://martinliu.cn/blog/fleet-and-elastic-agent/2022-10-17_23-36-03_hu_3d0be2e26c47d2db.png 480w, https://martinliu.cn/blog/fleet-and-elastic-agent/2022-10-17_23-36-03_hu_24d33c01084562d2.png 1024w"
+loading="lazy"
+alt="7.14 后的架构图"
+class="gallery-image"
+data-flex-grow="234"
+data-flex-basis="562px"
+>&lt;/p>
+&lt;p>Fleet 服务器的代码和 Elastic Agent 是一套程序。它就像是一个万能工具一样。&lt;/p>
+&lt;p>它在对底层的采集端点上，实现的是全能型代理程序的管理。他在 Fleet 这个模式的主要功能是：从 Elasticsearch 后端或许最新版的 Agent 管理策略；相应采集端点上采集代理的管理策略拉取请求。管理策略的单向下发，采集数据的单向上传可以有几个选项，或者集中目标：&lt;/p>
+&lt;ol>
+&lt;li>自己部署管理的 Elasticsearch 集群&lt;/li>
+&lt;li>自己部署管理的 Logstash 服务器&lt;/li>
+&lt;li>Elastic Cloud SaaS 服务里的 Elasticsearch 服务端点&lt;/li>
+&lt;li>Elastic Cloud SaaS 服务里的 Logstash 服务端点&lt;/li>
+&lt;/ol>
+&lt;p>Elastic Agent 采集端进程管理所有其他 Beats 进程，使用 GRPC 通讯协议发送数据，和下拉管理策略更新。&lt;/p>
+&lt;p>Elastic Agent 可以工作在被 Fleet 服务器统一管理的模式；也还可以运行在独立自管理状态，从而满足极端少量的特殊需求。&lt;/p>
+&lt;p>其他周边的重要组件：&lt;/p>
+&lt;ol>
+&lt;li>Elastic Package Registry - 包含了 Elastic Stack 技术栈中所有组件的配置细节，包括安装、升级、更新和删除等等。用 zip 压缩包文件的方式分发。&lt;/li>
+&lt;li>Policy Builder - 在 Kibana 的界面里展现所有可以让用户掌控/修改定制的配置细节，用简单的开关按钮和输入框完成不容易出错的采集配置细节的定制，这样就消除了对 YAML 配置文件的管理。&lt;/li>
+&lt;/ol>
+&lt;p>参考信息：&lt;/p>
+&lt;ul>
+&lt;li>&lt;a class="link" href="https://www.elastic.co/guide/en/fleet/current/index.html" target="_blank" rel="noopener"
+>Fleet and Elastic Agent Guide&lt;/a>&lt;/li>
+&lt;li>&lt;a class="link" href="https://www.elastic.co/blog/review-testing-methods-for-elastic-integrations-using-the-elastic-package-tool" target="_blank" rel="noopener"
+>Review testing methods for Elastic integrations using the elastic-package tool&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;p>Feature picture ❤️ analogicus图片: &lt;a class="link" href="https://www.pexels.com/zh-cn/photo/5516029/" target="_blank" rel="noopener"
+>https://www.pexels.com/zh-cn/photo/5516029/&lt;/a>&lt;/p></description></item><item><title>Elastic 可观测性工作坊</title><link>https://martinliu.cn/blog/workshop-elastic-observability/</link><pubDate>Sat, 06 Feb 2021 10:36:12 +0800</pubDate><guid>https://martinliu.cn/blog/workshop-elastic-observability/</guid><description>&lt;img src="https://martinliu.cn/img/2021/Hubble_01.jpg" alt="Featured image of post Elastic 可观测性工作坊" />&lt;p>本工作坊包括本地虚拟机版本、AWS 和腾讯云共三个版本，目标是用实践的方式理解 Elastic 可观测性解决方案。可观测性是解决运维云原生应用的复杂性和分布式式难点的关键所在。&lt;/p>
+&lt;h2 id="简介">简介
+&lt;/h2>&lt;p>Elastic 可观测性解决方案是基于 Elastic Stack 的一站式解决方案。该解决方案具有完备的日志、指标、APM 和可用性采集能力，可以在大规模/云原生的环境下，完成服务质量目标（SLO）的管理。本实战工作坊基于多层架构的宠物诊所为示例应用程序，手把手的引导参与者搭建可观测性管理平台，体验分层次的收集整合、分析、关联和搜索运维数据的全过程。&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/images/elastic-obv-solution.png"
+loading="lazy"
+alt="可观测性解决方案"
+>&lt;/p>
+&lt;h2 id="为什么要做这个工作坊">为什么要做这个工作坊？
+&lt;/h2>&lt;p>从理论的理解到技术工具的实操掌握需要一个过程。&lt;/p>
+&lt;ul>
+&lt;li>关于可观测性的各种一小时左右的技术、方案、产品分享，完全无法让听众正确理解可观测性的相关概念&lt;/li>
+&lt;li>而通过实操性质的，上机动手实验则可以让新手迅速入门，使熟手快速全面的提高&lt;/li>
+&lt;li>大量 ELK 用户只使用到了日志管理的部分功能，还不了解任何一种可观测性管理方案的全貌&lt;/li>
+&lt;li>社区里的朋友们对可观测性心存大量误解，如“ APM 工具就等于可观测性” 等等，因此相关的正确观念和技术急需尽快普及&lt;/li>
+&lt;/ul>
+&lt;p>通过半天的实战演练，彻底学会相关知识。&lt;/p>
+&lt;h2 id="动手实验">动手实验
+&lt;/h2>&lt;p>本工作坊的最佳参与方式是在老师的引导下，在线下/线上同步进行。其次是在视频的指导下自学。所有动手实验的目标是：理解可观测性解决方案的各个组成部分，以及为什么要使用这些工具？而且这个整个方案的实施过程和顺序也是经过精心设计的，目标是让理论和实际彻底融会贯通。&lt;/p>
+&lt;p>您将会学到：&lt;/p>
+&lt;ol>
+&lt;li>搭建单节点 Elasticsearch 服务，并且配置好 Kibana 管理图形管理界面。&lt;/li>
+&lt;li>学习可观测性的基本概念和实施步骤&lt;/li>
+&lt;li>搭建和配置服务健康检查的探针&lt;/li>
+&lt;li>部署采集操作系统性能监控指标的流程&lt;/li>
+&lt;li>配置操作系统日志的采集和分析工具&lt;/li>
+&lt;li>搭建用于 APM 追踪分析的后台服务&lt;/li>
+&lt;li>运行一个多层架构的宠物商店应用，对各个子服务进行 APM 监控埋点&lt;/li>
+&lt;li>配置常用的服务质量监控大屏&lt;/li>
+&lt;/ol>
+&lt;p>本工作坊课程基于如下的应用系统。&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/images/16042852442364.png"
+loading="lazy"
+alt="架构图"
+>&lt;/p>
+&lt;p>应用基本概况：&lt;/p>
+&lt;ul>
+&lt;li>多层宠物商店应用系统&lt;/li>
+&lt;li>所有组件都部署在一个虚拟机上&lt;/li>
+&lt;li>包括前端、后端和内置的数据库&lt;/li>
+&lt;li>使用到的技术有 JavaScript、NodeJs 和 Java Spring 等。&lt;/li>
+&lt;li>本应用系统是被监控的对象&lt;/li>
+&lt;/ul>
+&lt;p>Elastic Stack 的基本状况：&lt;/p>
+&lt;ul>
+&lt;li>版本 7.9.3&lt;/li>
+&lt;li>组件 Elasticsearch、Kibana、APM、Filebeat、Metricbeat 和 Heatbeat。&lt;/li>
+&lt;/ul>
+&lt;p>实验环境：&lt;/p>
+&lt;ul>
+&lt;li>本地虚拟机环境，打包好的虚拟机里包含了所有必要的软件包和演示应用。&lt;/li>
+&lt;li>AWS 云环境，本课程所使用的公共 AMI 操作系统镜像：宁夏区 &lt;code>ami-0e5a0e294902966af&lt;/code> 北京区 &lt;code>ami-0e1382088b62cb38d&lt;/code>&lt;/li>
+&lt;li>腾讯云环境，基于腾讯云提供的 Elasticsearch 服务，演示用的虚拟机在制作中，稍后会发布到云市场。&lt;/li>
+&lt;li>阿里云环境，基于阿里云提供的 Elasticsearch 服务的课件正在开发中。&lt;/li>
+&lt;/ul>
+&lt;h2 id="可观测性构建四步法">可观测性构建四步法
+&lt;/h2>&lt;p>可观测性依赖于应用系统自身和监控工具平台的配合实现。&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/images/e2e85893b5dd8014.jpeg"
+loading="lazy"
+alt="可观测性"
+>&lt;/p>
+&lt;p>分层次的构建可观测性的推荐过程如下：&lt;/p>
+&lt;ol>
+&lt;li>STEP0：使用 Heatbeat 构建轻量灵活的服务健康检查能力&lt;/li>
+&lt;li>STEP1：使用 Metricbeat 构建全面细致的指标采集能力&lt;/li>
+&lt;li>STEP2：使用 Filebeat 构建高维度的日志采集能力&lt;/li>
+&lt;li>STEP3：使用 APM 构建分布式应用系统的全堆栈追踪能力&lt;/li>
+&lt;/ol>
+&lt;p>通过以上的四个构建步骤，使用 Elastic Stack 实施四大服务质量监控能力的构建，搭建了持续统一运维管理的工具平台。&lt;/p>
+&lt;p>使用 SRE 基于‘用户旅程’或‘系统边界’的 SLO 分析设定方法，从 Elastic Stack 的已有数据采集能力中，选取第批直接可用的 SLI 采集点。在基于 SLO 的监控过程中，不断的优选 SLI，调整告警的数量和质量，为开发团队提供持续有效的反馈。&lt;/p>
+&lt;p>使用 Canvas 的画布功能，定制如下的 SLO 监控大屏。&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/images/2020-11-05_00-13-06.jpeg"
+loading="lazy"
+alt="2020-11-05_00-13-06"
+>&lt;/p>
+&lt;h2 id="工作坊课件">工作坊课件
+&lt;/h2>&lt;p>讲师 PPT 下载： &lt;a class="link" href="https://docs.qq.com/slide/DUGRzYVVTU3ZxblBP" target="_blank" rel="noopener"
+>https://docs.qq.com/slide/DUGRzYVVTU3ZxblBP&lt;/a>&lt;/p>
+&lt;h3 id="本地虚拟机环境">本地虚拟机环境
+&lt;/h3>&lt;p>可以使用本地的 VirtualBox 或者 VMWare 的虚拟机环境，配合以下课件完成所有练习。&lt;/p>
+&lt;ol>
+&lt;li>&lt;a class="link" href="https://elk-workshop.github.io/codelabs/one-nodes-es-server/#0" target="_blank" rel="noopener"
+>‘Elastic Stack 单节点搭建’ 课件&lt;/a>&lt;/li>
+&lt;li>&lt;a class="link" href="https://elk-workshop.github.io/codelabs/elastic-observability-foundation/#0" target="_blank" rel="noopener"
+>‘Elastic 可观测性方案’ 课件&lt;/a>&lt;/li>
+&lt;/ol>
+&lt;h3 id="aws-云计算环境">AWS 云计算环境
+&lt;/h3>&lt;p>可以使用 AWS 云计算（中国区北京或宁夏区）环境，配合以下的课件完成所有练习。&lt;/p>
+&lt;ol>
+&lt;li>&lt;a class="link" href="https://elk-workshop.github.io/codelabs/one-nodes-es-server/#0" target="_blank" rel="noopener"
+>‘Elastic Stack 单节点搭建’ 课件&lt;/a>&lt;/li>
+&lt;li>&lt;a class="link" href="https://elk-workshop.github.io/codelabs/elastic-observability-foundation/#0" target="_blank" rel="noopener"
+>‘Elastic 可观测性方案’ 课件&lt;/a>&lt;/li>
+&lt;/ol>
+&lt;h3 id="腾讯云计算环境">腾讯云计算环境
+&lt;/h3>&lt;p>可以使用腾讯云计环境，配合以下的课件完成所有练习。&lt;/p>
+&lt;ol>
+&lt;li>在本环境下，不需要搭建 Elastic Stack 的服务器，参展下面课件的第二步骤，创建 Elasticsearch 服务集群。&lt;/li>
+&lt;li>&lt;a class="link" href="https://elk-workshop.github.io/codelabs/elastic-observability-foundation-qq/#0" target="_blank" rel="noopener"
+>‘Elastic 可观测性方案’ 课件&lt;/a>&lt;/li>
+&lt;li>腾讯云环境录播网址：&lt;a class="link" href="https://cloud.tencent.com/developer/salon/live-1304" target="_blank" rel="noopener"
+>腾讯课堂查看&lt;/a>&lt;/li>
+&lt;/ol>
+&lt;h3 id="阿里云计算环境">阿里云计算环境
+&lt;/h3>&lt;p>可以使用阿里云环境，配合以下的课件完成所有练习。&lt;/p>
+&lt;blockquote>
+&lt;p>课件开发中。&lt;/p>&lt;/blockquote>
+&lt;h2 id="如何参与本工作坊">如何参与本工作坊？
+&lt;/h2>&lt;p>本工作坊会在多个社区中举办，具体安排如下：&lt;/p>
+&lt;ul>
+&lt;li>定期在 Elastic 社区中举办可观测性主题的线上或者线下的社区活动，具体报名方式，
+&lt;ol>
+&lt;li>请关注 Elastic 公司的官方微公众号 “Elastic搜索”。&lt;/li>
+&lt;li>关注 Elastic 公司社区在百格的社区活动报名网址：&lt;a class="link" href="https://www.bagevent.com/org/738410" target="_blank" rel="noopener"
+>https://www.bagevent.com/org/738410&lt;/a>&lt;/li>
+&lt;/ol>
+&lt;/li>
+&lt;li>Elasitc 用户日 专场活动，接受企业的团队预约，可以在约定的时间里，通过线上或者线下的方式进行，建议参与学习交流的人数在 10~20 人。 预约邮件： &lt;a class="link" href="mailto:zheng.liu@elastic.co" >zheng.liu@elastic.co&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;p>由于 Elastic Stack 产品的更新迭代速度特别快，本工作坊的软件版本和学习课件也会不定期更新。欢迎大家积极参与 Elastic 技术社区的交流和学习活动。&lt;/p></description></item><item><title>入门 Elastic Workplace Search</title><link>https://martinliu.cn/blog/getting-start-elastic-workplace-search/</link><pubDate>Fri, 24 Apr 2020 10:37:16 +0800</pubDate><guid>https://martinliu.cn/blog/getting-start-elastic-workplace-search/</guid><description>&lt;img src="https://martinliu.cn/images/abstract-1.jpg" alt="Featured image of post 入门 Elastic Workplace Search" />&lt;h2 id="简介">简介
+&lt;/h2>&lt;p>Elastic Workplace Search 提供了一个统一的搜索体验，从而便于任何人在任何时间找到所需的文档信息。为企业搭建了一个横跨所有工作内容、所有团队和真相的统一搜索参考平台。&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/images/Picture1.jpg"
+loading="lazy"
+>&lt;/p>
+&lt;p>这个搜索平台能够对接各种数据源，并且实现文档内容级别的索引，目前所支持的数据源包括：OneDrive、SharePoint、ServiceNow、Box、Dropbox、Github、Github Enterprise、Google Drive、JIRA、Confluence、Salesforce、Zendesk 等。&lt;/p>
+&lt;p>它具有以下特点：&lt;/p>
+&lt;ul>
+&lt;li>配置部署简单，缩短了系统上线和等待时间。不像是传统的消耗数个月甚至一年都无法完成的搜索项目，这个解决方案可以让企业在几天或几周内就能投入使用。&lt;/li>
+&lt;li>个性化定制的搜索体验。通过 Elasticsearch 所提供的搜索能力，管理员可以控制企业、团队级别的数据源，个体用户可以控制自己的私有数据源，所有级别上都可以调整相关度权重，从而提高搜索结果的准确性和实用性&lt;/li>
+&lt;li>提供各种自然语言的和关键字的搜索。系统提供了强大的语言分析和关键字检测能力，用户可以使用任意关键字和搜索开关轻松的搜索到所需的信息。&lt;/li>
+&lt;li>具备丰富的开箱即用功能：无须开发即可实现用户管理、数据源管理、基于用户和组的数据源可见性设置、数据源对不同用户和组的权重等功能。&lt;/li>
+&lt;/ul>
+&lt;h2 id="系统安装配置">系统安装配置
+&lt;/h2>&lt;p>本文的假设，文中所使用的安装包和需要部署的配置文件都在 /vagrant 这个目录下面。下面的所有命令中都假设从这个目录里选用和复制。配置文件见代码库：&lt;a class="link" href="https://github.com/martinliu/elastic-labs" target="_blank" rel="noopener"
+>https://github.com/martinliu/elastic-labs&lt;/a>&lt;/p>
+&lt;p>本文所使用的安装测试环境是：&lt;/p>
+&lt;ul>
+&lt;li>CentOS Server 8&lt;/li>
+&lt;li>JDK 11&lt;/li>
+&lt;li>Elasticsearch 7.6.1&lt;/li>
+&lt;li>Kibana 7.6.1&lt;/li>
+&lt;li>Elastic Workplace Search 7.6.1&lt;/li>
+&lt;/ul>
+&lt;p>下面使用 &lt;code>vagrant up&lt;/code> 一键式拉起基础测试环境的说明，请参考之前的文章。本测试所使用的基础 ES 安装脚本如下。&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;span class="lnt">14
+&lt;/span>&lt;span class="lnt">15
+&lt;/span>&lt;span class="lnt">16
+&lt;/span>&lt;span class="lnt">17
+&lt;/span>&lt;span class="lnt">18
+&lt;/span>&lt;span class="lnt">19
+&lt;/span>&lt;span class="lnt">20
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-gdscript3" data-lang="gdscript3">&lt;span class="line">&lt;span class="cl">&lt;span class="n">echo&lt;/span> &lt;span class="n">I&lt;/span> &lt;span class="n">am&lt;/span> &lt;span class="n">provisioning&lt;/span> &lt;span class="n">a&lt;/span> &lt;span class="n">Elasticsearch&lt;/span> &lt;span class="n">Server&lt;/span>&lt;span class="o">...&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">date&lt;/span> &lt;span class="o">&amp;gt;&lt;/span> &lt;span class="o">/&lt;/span>&lt;span class="n">etc&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">vagrant_provisioned_at&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">sudo&lt;/span> &lt;span class="n">swapoff&lt;/span> &lt;span class="o">-&lt;/span>&lt;span class="n">a&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">sudo&lt;/span> &lt;span class="n">sysctl&lt;/span> &lt;span class="o">-&lt;/span>&lt;span class="n">w&lt;/span> &lt;span class="n">vm&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">max_map_count&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="mi">262144&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">sysctl&lt;/span> &lt;span class="o">-&lt;/span>&lt;span class="n">p&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">sudo&lt;/span> &lt;span class="n">sh&lt;/span> &lt;span class="o">-&lt;/span>&lt;span class="n">c&lt;/span> &lt;span class="s2">&amp;#34;echo &amp;#39;elasticsearch - nofile 65535&amp;#39; &amp;gt;&amp;gt; /etc/security/limits.conf&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">sudo&lt;/span> &lt;span class="n">sh&lt;/span> &lt;span class="o">-&lt;/span>&lt;span class="n">c&lt;/span> &lt;span class="s2">&amp;#34;echo &amp;#39;**** -- -- -- -- -- -- -- -- ****&amp;#39; &amp;gt; /etc/motd&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">sudo&lt;/span> &lt;span class="n">sh&lt;/span> &lt;span class="o">-&lt;/span>&lt;span class="n">c&lt;/span> &lt;span class="s2">&amp;#34;echo &amp;#39;**** Welcome to Elastic Stack Labs&amp;#39; &amp;gt;&amp;gt; /etc/motd&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">sudo&lt;/span> &lt;span class="n">sh&lt;/span> &lt;span class="o">-&lt;/span>&lt;span class="n">c&lt;/span> &lt;span class="s2">&amp;#34;echo &amp;#39;**** -- -- -- -- -- -- -- -- ****&amp;#39; &amp;gt;&amp;gt; /etc/motd&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">sudo&lt;/span> &lt;span class="n">sh&lt;/span> &lt;span class="o">-&lt;/span>&lt;span class="n">c&lt;/span> &lt;span class="s2">&amp;#34;echo &amp;#39;*&amp;#39; &amp;gt;&amp;gt; /etc/motd&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">sudo&lt;/span> &lt;span class="n">rpm&lt;/span> &lt;span class="o">-&lt;/span>&lt;span class="n">ivh&lt;/span> &lt;span class="o">/&lt;/span>&lt;span class="n">vagrant&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">rpm&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">elasticsearch&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="mf">7.6&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="mi">1&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">x86_64&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">rpm&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">sudo&lt;/span> &lt;span class="o">/&lt;/span>&lt;span class="n">usr&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">share&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">elasticsearch&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">bin&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">elasticsearch&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">certutil&lt;/span> &lt;span class="n">cert&lt;/span> &lt;span class="o">-&lt;/span>&lt;span class="n">out&lt;/span> &lt;span class="o">/&lt;/span>&lt;span class="n">etc&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">elasticsearch&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">elastic&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">certificates&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">p12&lt;/span> &lt;span class="o">-&lt;/span>&lt;span class="k">pass&lt;/span> &lt;span class="s2">&amp;#34;&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">sudo&lt;/span> &lt;span class="n">chmod&lt;/span> &lt;span class="mi">660&lt;/span> &lt;span class="o">/&lt;/span>&lt;span class="n">etc&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">elasticsearch&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">elastic&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">certificates&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">p12&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">sudo&lt;/span> &lt;span class="n">cp&lt;/span> &lt;span class="o">/&lt;/span>&lt;span class="n">vagrant&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">elasticsearch&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">elasticsearch&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">yml&lt;/span> &lt;span class="o">/&lt;/span>&lt;span class="n">etc&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">elasticsearch&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">elasticsearch&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">yml&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">sudo&lt;/span> &lt;span class="n">systemctl&lt;/span> &lt;span class="n">daemon&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">reload&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">sudo&lt;/span> &lt;span class="n">systemctl&lt;/span> &lt;span class="n">start&lt;/span> &lt;span class="n">elasticsearch&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">service&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">sudo&lt;/span> &lt;span class="n">systemctl&lt;/span> &lt;span class="n">status&lt;/span> &lt;span class="n">elasticsearch&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">sudo&lt;/span> &lt;span class="o">/&lt;/span>&lt;span class="n">usr&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">share&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">elasticsearch&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">bin&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">elasticsearch&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">setup&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">passwords&lt;/span> &lt;span class="n">auto&lt;/span> &lt;span class="o">-&lt;/span>&lt;span class="n">b&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">echo&lt;/span> &lt;span class="n">Provisioning&lt;/span> &lt;span class="n">script&lt;/span> &lt;span class="n">works&lt;/span> &lt;span class="n">good&lt;/span>&lt;span class="o">!&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">echo&lt;/span> &lt;span class="n">Please&lt;/span> &lt;span class="n">go&lt;/span> &lt;span class="n">to&lt;/span> &lt;span class="n">http&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="o">//&lt;/span>&lt;span class="mf">192.168&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="mf">50.10&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="mi">9200&lt;/span>&lt;span class="o">/&lt;/span> &lt;span class="n">using&lt;/span> &lt;span class="n">above&lt;/span> &lt;span class="n">passwords&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>这段脚本配合 vagrant 的 provision 功能使用，它本来就是一段 shell 脚本，可以可以独立执行，它的输出结果如下。&lt;/p>
+&lt;p>使用 vagrant up 命令拉起了测试虚拟机之后，在屏幕的输出信息中复制出 elastic 用户的密码。&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl"> master1: Changed password for user apm_system
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> master1: PASSWORD apm_system = XAZnaek3wm0GxN3OHwhP
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> master1: Changed password for user kibana
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> master1: PASSWORD kibana = sUg8OaYqh4f55GzoYApk
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> master1: Changed password for user logstash_system
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> master1: PASSWORD logstash_system = RLthIQOH3aOFLVKqaTMu
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> master1: Changed password for user beats_system
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> master1: PASSWORD beats_system = 73yH90G3hvrzYgVDnG3y
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> master1: Changed password for user remote_monitoring_user
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> master1: PASSWORD remote_monitoring_user = Sk9J77H9QFPsOZtVQJld
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> master1: Changed password for user elastic
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> master1: PASSWORD elastic = OeR3gADZ1Fw1cgc90pwE
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>本示例使用了 &lt;code>elasticsearc-native&lt;/code> 的用户认证模式。 为了方便起见，安装了 Kibana 7.6.1 ，过程此处忽略；在 Kibana 的用户管理中创建如下用户：&lt;/p>
+&lt;ul>
+&lt;li>sales1 、 sales2&lt;/li>
+&lt;li>dev1 、 dev2&lt;/li>
+&lt;/ul>
+&lt;p>示例如下图所示。&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/images/2020-04-22_09-15-47.jpeg"
+loading="lazy"
+>&lt;/p>
+&lt;p>这些是测试用户，用于 Elastic Workplace Search 的测试中。&lt;/p>
+&lt;h2 id="安装-elastic-enterprise-search">安装 Elastic Enterprise Search
+&lt;/h2>&lt;p>Elastic Enterprise Search 需要 JDK 8 或者 JDK 11， 本实例安装了 Oracle JDK 11。&lt;/p>
+&lt;p>&lt;code>sudo rpm -ivh /vagrant/rpm/jdk-11.0.6_linux-x64_bin.rpm&lt;/code>&lt;/p>
+&lt;p>复制 Enterprise Search 的安装包到 &lt;code>/opt&lt;/code> 目录下，解压缩这个安装包。&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">sudo cp /vagrant/rpm/enterprise-search-7.6.0.tar.gz.tar /opt
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">sudo cd /opt
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">sudo tar zxvf /opt/enterprise-search-7.6.0.tar.gz.tar
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>在 Enterprise Search 的配置文件中加入 &lt;code>elastic&lt;/code> 用户的密码等配置信息。并且将配置文件部署到测试服务器中。本实例的配置文件 &lt;code>enterprise-search.yml&lt;/code> 内容如下。&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;span class="lnt">4
+&lt;/span>&lt;span class="lnt">5
+&lt;/span>&lt;span class="lnt">6
+&lt;/span>&lt;span class="lnt">7
+&lt;/span>&lt;span class="lnt">8
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">elasticsearch.username: elastic
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">elasticsearch.password: eZhp0h2ZTPKchlxxwwex
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">elasticsearch.host: http://192.168.50.10:9200
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">allow_es_settings_modification: true
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">ent_search.auth.source: elasticsearch-native
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">ent_search.external_url: http://192.168.50.10:3002
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">ent_search.listen_host: 0.0.0.0
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">ent_search.listen_port: 3002
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>将以上目标配置文件复制到 Elastic Workplace Search 的配置文件目录中，覆盖默认配置文件。&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">sudo cp /vagrant/enterprise-search/enterprise-search.yml /opt/enterprise-search-7.6.0/config/enterprise-search.yml
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>启动 Enterprise Search 服务器，并且设置默认的管理员密码。&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">sudo ENT_SEARCH_DEFAULT_PASSWORD=martin1demo /opt/enterprise-search-7.6.0/bin/enterprise-search
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>在启动的过程中，关注一下的屏幕输出信息，则表示一切正常。&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">*** Default user credentials have been setup. These are only printed once, so please ensure they are recorded. ***
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> username: enterprise_search
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> password: martin1demo
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">No secret management encryption keys were provided.
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Your secrets will be stored unencrypted.
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">You can use the following generated encryption key in your config file to store new encrypted secrets:
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">secret_management.encryption_keys: [911f804cd11f7bc2dd338743ea1752b0b7cd2589cc80060159ed94a918bc09d3]
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>等待服务器启动正常后，参考相关文档。完成 Github、Jira 和 Confluence 等数据源的配置。&lt;/p>
+&lt;h2 id="配置数据源">配置数据源
+&lt;/h2>&lt;p>见介绍文档 &lt;a class="link" href="https://www.elastic.co/guide/en/workplace-search/current/workplace-search-content-sources.html" target="_blank" rel="noopener"
+>https://www.elastic.co/guide/en/workplace-search/current/workplace-search-content-sources.html&lt;/a>&lt;/p>
+&lt;ul>
+&lt;li>Confluence Cloud&lt;/li>
+&lt;li>Confluence Server&lt;/li>
+&lt;li>Dropbox&lt;/li>
+&lt;li>GitHub&lt;/li>
+&lt;li>Google Drive&lt;/li>
+&lt;li>Jira Cloud&lt;/li>
+&lt;li>Jira Server&lt;/li>
+&lt;li>OneDrive&lt;/li>
+&lt;li>Salesforce&lt;/li>
+&lt;li>ServiceNow&lt;/li>
+&lt;li>SharePoint Online&lt;/li>
+&lt;li>Zendesk&lt;/li>
+&lt;/ul>
+&lt;p>除了默认支持以上数据源外，还可以使用 Custom API 实现自己的数据源接入。数据源的类型分：&lt;/p>
+&lt;ul>
+&lt;li>组织级：可以分配给个人和用户组&lt;/li>
+&lt;li>私有级：用户个体接入某个数据源，而仅供自己使用&lt;/li>
+&lt;/ul>
+&lt;h3 id="github-数据源对接">GitHub 数据源对接
+&lt;/h3>&lt;p>首先你需要属于 GitHub 的一个组织，或者多个组织，然后在某个组织，或者几个组织做为一个数据源，对接到 Elastic Workplace Search 中。具体的配置步骤如下.&lt;/p>
+&lt;p>在 GitHub 中找到需要搜索的组织，每个 repo 的 issue 和 pr 都是全文搜索的目标。
+&lt;img src="https://martinliu.cn/images/2020-04-21_14-31-43.jpeg"
+loading="lazy"
+>&lt;/p>
+&lt;p>在 GitHub 的账户中创建一个 OAuth App，图中 1、2、3、4 信息点需要和你的测试环境匹配。复制出 client ID 和 Client Secret 备用。&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/images/2020-04-21_14-17-22.jpeg"
+loading="lazy"
+>&lt;/p>
+&lt;p>在 Elastic Workplace Search 的数据源配置页面创建 GitHub 数据源。填入上一步的两个 ID。
+&lt;img src="https://martinliu.cn/images/2020-04-21_14-35-49.jpeg"
+loading="lazy"
+>&lt;/p>
+&lt;p>保存以上配置后，在这一步点击 Connect GitHub。
+&lt;img src="https://martinliu.cn/images/2020-04-21_14-39-16.jpeg"
+loading="lazy"
+>&lt;/p>
+&lt;p>在这一步选择需要搜索的组织，勾选后，点击完成连接配置。
+&lt;img src="https://martinliu.cn/images/2020-04-21_14-40-38.jpeg"
+loading="lazy"
+>&lt;/p>
+&lt;p>正常连接成功后，就可以看到这个组织里所有 repo 中的 issue 和 pr 了。
+&lt;img src="https://martinliu.cn/images/2020-04-21_14-55-21.jpeg"
+loading="lazy"
+>&lt;/p>
+&lt;h3 id="atlassion-数据源对接">Atlassion 数据源对接
+&lt;/h3>&lt;p>支持对 Confluence 和 Jira 两款产品的云服务和本地部署的搜索。配置的过程非常简单， 如果你有多套独立的 Confluence 和 Jira 环境，那么就可以给每个需要搜索的环境配置一个数据源，并且按照需要将对它们的统一搜索配置到一个统一的搜索平台之内。&lt;/p>
+&lt;p>配置文档见： &lt;a class="link" href="https://www.elastic.co/guide/en/workplace-search/current/workplace-search-confluence-cloud-connector.html" target="_blank" rel="noopener"
+>https://www.elastic.co/guide/en/workplace-search/current/workplace-search-confluence-cloud-connector.html&lt;/a> 和其它。下面是一个配置成功的 Jira 云服务的结果。&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/images/2020-04-26_10-23-51.jpeg"
+loading="lazy"
+>&lt;/p>
+&lt;p>如果所示，每套 Atlassion 环境的产品都可以仅仅通过配置接入这个搜索平台。Jira 中索引的内容类型如下：&lt;/p>
+&lt;ul>
+&lt;li>Task&lt;/li>
+&lt;li>子任务&lt;/li>
+&lt;li>长篇故事&lt;/li>
+&lt;li>Project&lt;/li>
+&lt;li>Other&lt;/li>
+&lt;/ul>
+&lt;p>配置完成以后，默认的同步周期是 2 小时做一次增量索引。下图是用户对 Jira 和 Confluence 的两个本地部署服务器联合统一搜索的效果。管理员可设置任何一个人和用户组能搜索那些数据源，每个数据源在搜索结果中的权重排位。从而实现对任何一个用户组定制化搜索结果的作用。&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/images/WechatIMG32.jpeg"
+loading="lazy"
+>&lt;/p>
+&lt;h2 id="用户配置示例">用户配置示例
+&lt;/h2>&lt;p>本文的目标是给两个用户组的人分配不同的数据源权重，从而得到各异的搜索结果排名。下面是一些建议的思路和配置过程。&lt;/p>
+&lt;p>这里把仅有的两个数据源设置成了组织级别的可搜索，也就是他可以进入任何一个合法用户的搜索清单中。加入是特定团队所使用的数据源，在这里需要关闭搜索开关。
+&lt;img src="https://martinliu.cn/images/2020-04-26_11-17-20.jpeg"
+loading="lazy"
+>&lt;/p>
+&lt;p>本文使用的 Elasticsearc 原生用户的认证，示例中将用户名为 sales* 开头的的用户名分配到 Elastic Workplace Search 的 “销售&amp;amp;市场” 组中。
+&lt;img src="https://martinliu.cn/images/2020-04-26_11-23-23.jpeg"
+loading="lazy"
+>&lt;/p>
+&lt;p>示例中将用户名为 dev* 开头的的用户名分配到 Elastic Workplace Search 的 “产品开发和运维” 组中。这里只是示例，你可以用任何已知用户与搜索用户组的对应，从而满足你的使用场景。
+&lt;img src="https://martinliu.cn/images/2020-04-26_11-24-29.jpeg"
+loading="lazy"
+>&lt;/p>
+&lt;p>在组织级别的组属性设置中，先设置默认用户的数据源权重，这里使用默认的 1，也就是不区分两个数据源的权重，使用相同权重。
+&lt;img src="https://martinliu.cn/images/2020-04-26_11-30-03.jpeg"
+loading="lazy"
+>&lt;/p>
+&lt;p>下面是对 “销售&amp;amp;市场” 组的数据源权重设置，这里假设这个组的人员可能更会搜索 Jira 中的关于项目开发、问题解决进展这类的信息，不会太关注工程师实际解决的代码相关的问题。因此将 Jira 中的权重从 1 增加到 5 ，从而在相同关键字中，提升 Jira 中搜索结果的整体排名。
+&lt;img src="https://martinliu.cn/images/2020-04-26_19-14-15.jpeg"
+loading="lazy"
+>&lt;/p>
+&lt;p>同理为 “产品开发&amp;amp;运维” 团队设置 GitHub 的高权重。
+&lt;img src="https://martinliu.cn/images/2020-04-26_19-15-07.jpeg"
+loading="lazy"
+>&lt;/p>
+&lt;p>最后在这个安全的选项设置中，开启了搜索用户可以自主添加数据源的情况，也就是说这部分是个性化的数据源，可能是自己所使用的网盘，或者个人的 GitHub 组织等等，都可以！用户可以将对自己有帮助的，需要搜索的数据源都自助式的添加上，从而提高自己的工作效率。
+&lt;img src="https://martinliu.cn/images/2020-04-26_19-16-19.jpeg"
+loading="lazy"
+>&lt;/p>
+&lt;h2 id="搜索效果确认">搜索效果确认
+&lt;/h2>&lt;p>下面是用户 sales1 搜索 &lt;code>ealsticsearch&lt;/code> 关键字的结果示意图。&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/images/2020-04-26_19-54-40.jpeg"
+loading="lazy"
+>&lt;/p>
+&lt;p>在上图中，搜索用户可以点击右侧的数据源图标，点选其中的一个数据源作为搜索范围，可以点击 All Time 时间设置条件，筛选出目标时段的文档等。还可以在搜索框中使用类似 &lt;code>ppt&lt;/code> 等文件类型搜索条件。 搜索结果是故意设置的，这是 Jira 中的一个 pdf 附件，pdf 的原文也可以搜索，而且对于 销售&amp;amp;市场 用户组来说， Jira 的权重大于 GitHub 很多，因此即使 Github 中有四个匹配的结果，也就将其排了在了最下面。&lt;/p>
+&lt;p>下图是 dev1 用户（属于产品开发&amp;amp;运维组）的登录后界面。这里显示了建议的搜索快捷短语 &lt;code>pull requests form last week&lt;/code> ，页面上的搜索结果是按照数据源中最更新的文档靠前的规则排列的。
+&lt;img src="https://martinliu.cn/images/2020-04-26_20-01-51.jpeg"
+loading="lazy"
+>&lt;/p>
+&lt;p>下面这个用户搜索可关键词 &lt;code>app search&lt;/code>，从这个结果中可以看出，即使是在 GitHub 中的一半匹配（并无完整的 app search 这个词组出现在任何文档里）搜索结果的排名都比 Jira 中的完全命中的排名高。
+&lt;img src="https://martinliu.cn/images/2020-04-26_20-03-00.jpeg"
+loading="lazy"
+>&lt;/p>
+&lt;h2 id="测试总结">测试总结
+&lt;/h2>&lt;p>到目前为止，本文展示了一部分 Elastic Workplace Search 的基础功能。以及一些假象的搜索和配置场景，相信对此感兴趣的读者参考本文，也可以在 1 天之内完全实现以上所有的测试场景，从而为正确评估这个产品打下一个基础。&lt;/p>
+&lt;p>如果，想进一步集成自己的资料库的话，可以参考自定义 API 的相关文档，开发自定义的数据源。这就是一个功能齐全的搜索平台，它可以非常方便的集成任何公司的环境中，并且实现集中统一搜索平台的效果。&lt;/p>
+&lt;h2 id="devops核心能力建设">DevOps核心能力建设
+&lt;/h2>&lt;p>如果你也是 DevOps 的实践者，如果你看过我之前写的关于 DevOps 状态调查报告和能力成长模型的相关文章，你可能对下图也有印象。&lt;/p>
+&lt;p>&lt;img src="https://res.cloudinary.com/martinliu/image/upload/v1567339751/2019-dora-DevOps-all.jpg"
+loading="lazy"
+>&lt;/p>
+&lt;p>这是 DORA 出的最新版本的 DevOps 能力成长模型，在 2019 年的DevOps 能力调查中，增加了对生产力工具的调查，该模型中所关注的三种生产力能力工具包括：&lt;/p>
+&lt;ul>
+&lt;li>各种有用易用的工具&lt;/li>
+&lt;li>互联网搜索&lt;/li>
+&lt;li>内网搜索&lt;/li>
+&lt;/ul>
+&lt;p>在这个部分有两项生产力影响因素能力是关于搜索的。在我国的很多工作环境中，特别是开发相关的工作，无 Internet 环境的纯内网是很普遍的。而内网上的 Atlassian 相关产品，微软相关产品又是最多用的；不同业务部门或者团队拥有自建的 Jira 或者 Confulence 服务器；在团队协作的时候，或者在执行跨部门的项目的时候，项目资料的统一搜索就成了问题。类似的需求和现象不胜枚举，希望本文介绍的 Elastic Workplace Search 统一搜索平台可以成为你的帮手，为你填补 DevOps 能力成长模型中关于 &lt;code>内网搜索&lt;/code> 的这一项空白。当然，这个平台所支持的外网 SaaS 服务也是很多的，可以综合使用。&lt;/p></description></item><item><title>随心所欲的为应用无痛添加搜索功能</title><link>https://martinliu.cn/blog/getting-start-elastic-app-search/</link><pubDate>Sat, 11 Apr 2020 09:36:49 +0800</pubDate><guid>https://martinliu.cn/blog/getting-start-elastic-app-search/</guid><description>&lt;img src="https://martinliu.cn/images/abstract-1.jpg" alt="Featured image of post 随心所欲的为应用无痛添加搜索功能" />&lt;p>开发搜索功能从此再也不用犯愁了，有了 App Search ，为应用增加搜索功能一下子变得简单了很多。本文描述了如何轻松上手这套搜索平台的所有步骤。&lt;/p>
+&lt;p>什么是 App Search? 这是一套强大的 API 和开发者工具集，以构建功能强大的面向用户的搜索应用为目标。相关详细介绍见 &lt;a class="link" href="https://www.elastic.co/cn/app-search" target="_blank" rel="noopener"
+>https://www.elastic.co/cn/app-search&lt;/a>&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/images/apps1.jpg"
+loading="lazy"
+>&lt;/p>
+&lt;p>丰富的开箱即用功能:&lt;/p>
+&lt;ul>
+&lt;li>为相关性搜索应用场景而优化&lt;/li>
+&lt;li>拼写错误容忍&lt;/li>
+&lt;li>相关度调整&lt;/li>
+&lt;li>支持第三方 API 客户端，且具备强大的 API&lt;/li>
+&lt;li>独立的 API 日志和搜索分析&lt;/li>
+&lt;li>自动化扩展&amp;amp;运维支持&lt;/li>
+&lt;li>Search UI library&lt;/li>
+&lt;/ul>
+&lt;h2 id="环境准备">环境准备
+&lt;/h2>&lt;p>测试环境现需要一台 Elasticsearch 服务器，或者和下面等同的环境。&lt;/p>
+&lt;p>本文的环境描述如下：&lt;/p>
+&lt;ul>
+&lt;li>macOS 10.15.4&lt;/li>
+&lt;li>vagrant 2.2.7&lt;/li>
+&lt;li>virtualbox 6.0.15&lt;/li>
+&lt;li>虚拟机模板 bento/centos-8&lt;/li>
+&lt;li>elasticsearch 7.6.1&lt;/li>
+&lt;li>app-search 7.6.1&lt;/li>
+&lt;li>jdk-11.06&lt;/li>
+&lt;/ul>
+&lt;p>本文的测试环境基于 Vagrant + VirtualBox 的组合环境搭建而成，基础安装工作可以一键完成。&lt;/p>
+&lt;p>主要脚本 Vagrantfile、pre-install-ES.sh 请参考此代码库：&lt;/p>
+&lt;p>&lt;a class="link" href="https://github.com/martinliu/elastic-labs/tree/master/app-search" target="_blank" rel="noopener"
+>https://github.com/martinliu/elastic-labs/tree/master/app-search&lt;/a>&lt;/p>
+&lt;p>开启并登陆这套安装环境的命令如下。&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">vagrant up
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">vagrant ssh
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>在以上命令的启动信息里找到如下的 elastic 用户密码部分备用。&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">master1: Changed password for user elastic
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">master1: PASSWORD elastic = eczHJ7NPrsO1B1BRA8SS
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;h2 id="安装-app-search">安装 App Search
+&lt;/h2>&lt;p>浏览 App Search 的安装文档： &lt;a class="link" href="https://swiftype.com/documentation/app-search/self-managed/installation" target="_blank" rel="noopener"
+>https://swiftype.com/documentation/app-search/self-managed/installation&lt;/a>&lt;/p>
+&lt;p>安装 App Search 所需的 JDK 8 或者 11 ，本文安装的是 Oracle 的 JDK 11。本文假设所有的安装文件和已经编辑好的配置文件都放在了 /vagrant 目录下。&lt;/p>
+&lt;p>&lt;code>sudo rpm -ivh /vagrant/rpm/jdk-11.0.6_linux-x64_bin.rpm&lt;/code>&lt;/p>
+&lt;p>安装 App Search 服务器。&lt;/p>
+&lt;p>&lt;code>sudo rpm -ivh /vagrant/rpm/app-search-7.6.1.rpm&lt;/code>&lt;/p>
+&lt;p>浏览 App Search 服务器默认的配置文件，了解有哪些可用选项。&lt;/p>
+&lt;p>&lt;code>sudo more /usr/share/app-search/config/app-search.yml&lt;/code>&lt;/p>
+&lt;p>将 Elasticsearch 服务器安装时产生的随机密码更新到 app-search.yml 文件中，并且定制它的内容如下：&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;span class="lnt">4
+&lt;/span>&lt;span class="lnt">5
+&lt;/span>&lt;span class="lnt">6
+&lt;/span>&lt;span class="lnt">7
+&lt;/span>&lt;span class="lnt">8
+&lt;/span>&lt;span class="lnt">9
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-gdscript3" data-lang="gdscript3">&lt;span class="line">&lt;span class="cl">&lt;span class="n">allow_es_settings_modification&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="bp">true&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">elasticsearch&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">host&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="n">http&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="o">//&lt;/span>&lt;span class="mf">192.168&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="mf">50.10&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="mi">9200&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">elasticsearch&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">username&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="n">elastic&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">elasticsearch&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">password&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="n">eczHJ7NPrsO1B1BRA8SS&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">app_search&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">external_url&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="n">http&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="o">//&lt;/span>&lt;span class="mf">192.168&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="mf">50.10&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="mi">3002&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">app_search&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">listen_host&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="mf">192.168&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="mf">50.10&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">app_search&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">listen_port&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="mi">3002&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">log_directory&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="o">/&lt;/span>&lt;span class="k">var&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="nb">log&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">app&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">search&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">filebeat_log_directory&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="o">/&lt;/span>&lt;span class="k">var&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="nb">log&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">app&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">search&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>将更新好的 app-search.yml 更新到它默认的路径中。&lt;/p>
+&lt;p>&lt;code>sudo cp /vagrant/appsearch/app-search.yml /usr/share/app-search/config/app-search.yml&lt;/code>&lt;/p>
+&lt;p>启动 App Search 服务器。&lt;/p>
+&lt;p>&lt;code>sudo /usr/share/app-search/bin/app-search&lt;/code>&lt;/p>
+&lt;p>在启动日志中，找到如下的默认用户名和密码。&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;span class="lnt">4
+&lt;/span>&lt;span class="lnt">5
+&lt;/span>&lt;span class="lnt">6
+&lt;/span>&lt;span class="lnt">7
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">#########################################################
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">*** Default user credentials have been setup. These are only printed once, so please ensure they are recorded. ***
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> username: app_search
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> password: vjqmjhv2s5rzixjc
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">#########################################################
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>在服务器初始化启动完毕之后，用上面的用户名和密码，在浏览器中登录 App Search 服务器 &lt;a class="link" href="http://192.168.50.10:3002" target="_blank" rel="noopener"
+>http://192.168.50.10:3002&lt;/a>&lt;/p>
+&lt;p>到此为止，App Search 服务器的安装就完成了。它其实是一个基于 Elasticsearch 的搜索服务平台。&lt;/p>
+&lt;p>它的特点是帮助开发者随心所欲的为已有的或者正在开发的项目增加功能强大的搜索功能，而且将搜索功能的实施成本降低到无痛点的程度。App Search 可以覆盖的使用场景如下：&lt;/p>
+&lt;ul>
+&lt;li>SaaS / web 应用&lt;/li>
+&lt;li>复杂的电商应用&lt;/li>
+&lt;li>客户支持服务站点&lt;/li>
+&lt;li>Geo 地理搜索&lt;/li>
+&lt;li>公司官网&lt;/li>
+&lt;li>内部的搜索&lt;/li>
+&lt;li>还有更多其他&lt;/li>
+&lt;/ul>
+&lt;h2 id="创建名为-games-的搜索引擎">创建名为 games 的搜索引擎
+&lt;/h2>&lt;p>在首页的创建引擎的输入框中输入 games， 语言选择默认选项，点击创建。浏览新创建的引擎，点击左下角的菜单 Credentials，复制 privite-key 备用。&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/images/apps2.jpg"
+loading="lazy"
+>&lt;/p>
+&lt;p>找到这个搜索引擎的 API 调用网址备用。
+&lt;code>http://192.168.50.10:3002/api/as/v1/&lt;/code>&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/images/apps3.jpg"
+loading="lazy"
+>&lt;/p>
+&lt;h2 id="通过-api-索引数据文档">通过 API 索引数据文档
+&lt;/h2>&lt;p>需要通过 App Search 提供的 API 索引一份具有 4000+ 条数据的 json 文件。数据文件见代码库中的 &lt;code>video-games.json&lt;/code> 。本文使用 Ruby 编写了一个上传脚本，见 &lt;code>upload.rb&lt;/code> ，该脚本使用了名为 elastic-app-search 的客户端库。你可以使用其他编程语音，实现待接入系统和 App Search 服务器的对接，并与之保持同步，保持待搜索数据的更新。&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;span class="lnt">14
+&lt;/span>&lt;span class="lnt">15
+&lt;/span>&lt;span class="lnt">16
+&lt;/span>&lt;span class="lnt">17
+&lt;/span>&lt;span class="lnt">18
+&lt;/span>&lt;span class="lnt">19
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl"># `gem install elastic-app-search progress_bar`
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">require &amp;#39;elastic-app-search&amp;#39;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">require &amp;#39;json&amp;#39;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">require &amp;#39;progress_bar&amp;#39;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">API_ENDPOINT = &amp;#39;http://192.168.50.10:3002/api/as//v1/&amp;#39;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">API_KEY = &amp;#39;private-jdhcmi1yhy8wjxo6upb4qki3&amp;#39;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">ENGINE_NAME = &amp;#39;games&amp;#39;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">client = Elastic::AppSearch::Client.new(:api_key =&amp;gt; API_KEY, :api_endpoint =&amp;gt; API_ENDPOINT)
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">file = File.read(&amp;#39;./video-games.json&amp;#39;)
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">data = JSON.parse(file)
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">bar = ProgressBar.new(data.count / 100)
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">data.each_slice(100) do |slice|
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> client.index_documents(ENGINE_NAME, slice)
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> bar.increment!
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">end
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>以上脚本中的 API_ENDPOINT 和 API_KEY 需要更新，与当前测试系统匹配。这个脚本的运行效果如下：&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-gdscript3" data-lang="gdscript3">&lt;span class="line">&lt;span class="cl">&lt;span class="err">➜&lt;/span> &lt;span class="n">app&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">search&lt;/span> &lt;span class="n">git&lt;/span>&lt;span class="p">:(&lt;/span>&lt;span class="n">master&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="err">✗&lt;/span> &lt;span class="n">ruby&lt;/span> &lt;span class="n">upload&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">rb&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">[&lt;/span>&lt;span class="c1">##########################################################################] [40/40] [100.00%] [00:54] [00:00] [ 0.73/s]&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>索引之后，在搜引擎的 Documents 页面，浏览索引后的数据，用 Query Tester 进行一些搜索，了解这些数据的内容，注意观察当前搜索的结果和排序。&lt;/p>
+&lt;h2 id="修订-schema">修订 Schema
+&lt;/h2>&lt;p>开发者可以按照需要随时修改 Schema，实际上这是一个 Schema 的平台。 Schema 的修改后，数据即可生效，在这个过程中前端用户的搜索体验不会受到任何影响。&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/images/apps4.jpg"
+loading="lazy"
+>&lt;/p>
+&lt;p>修改三个字段的定义，并增加 language 字段，点击右上角的 Update Type 按钮生效。&lt;/p>
+&lt;h2 id="按需进行搜索设置">按需进行搜索设置
+&lt;/h2>&lt;h3 id="创建同义词">创建同义词
+&lt;/h3>&lt;p>为 Pokemon 创建同义词 Pikachu，如下图所示。&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/images/apps5.jpg"
+loading="lazy"
+>&lt;/p>
+&lt;h3 id="调整搜索字段的权重">调整搜索字段的权重
+&lt;/h3>&lt;p>为 globa_sales 增加 Functional Boost 1。
+&lt;img src="https://martinliu.cn/images/apps6.jpg"
+loading="lazy"
+>&lt;/p>
+&lt;p>为 Name 增加 weight 3 ，点击右上角的 Save 保存。在这个过程中观察右侧的搜结果的动态变化，还可以做其他字段的修改，知道搜素结果满意为止。&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/images/apps7.jpg"
+loading="lazy"
+>&lt;/p>
+&lt;h3 id="创建-curations">创建 curations
+&lt;/h3>&lt;p>故意将某条搜索结果置顶，这有可能因为，这款游戏目前是热评游戏，是畅销爆款，是高利率商品，是广告商品，或者其他业务原因。可以给某个关键字，置顶一条或者多条搜索结果。下面将 pokemon 的 pokemon-ranger-ds-2006 这款产品置顶。点击右上角的 Query Tester 测试一下效果。&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/images/apps8.jpg"
+loading="lazy"
+>&lt;/p>
+&lt;h2 id="创建用户端搜索界面">创建用户端搜索界面
+&lt;/h2>&lt;p>Reference UI 是提供给用户使用的搜索界面，它可以是只有一个输入框，也可以是比较复杂的条件查询。如下所示。&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/images/apps10.jpg"
+loading="lazy"
+>&lt;/p>
+&lt;p>调整之后点击 Create Preview 按钮，进入搜素界面的确认页面，尝试使用所设定的搜索功能。满意后点击右上角的 Download ZIP Package 按钮下载这个界面的所有代码。&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/images/apps11.jpg"
+loading="lazy"
+>&lt;/p>
+&lt;p>在本地解压缩这份搜索代码，并进行调试。&lt;/p>
+&lt;p>在命令行，进入这个目录，先执行 &lt;code>npm install&lt;/code>命令，然后执行&lt;code>npm start&lt;/code>命令。&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;span class="lnt">4
+&lt;/span>&lt;span class="lnt">5
+&lt;/span>&lt;span class="lnt">6
+&lt;/span>&lt;span class="lnt">7
+&lt;/span>&lt;span class="lnt">8
+&lt;/span>&lt;span class="lnt">9
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">Compiled successfully!
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">You can now view app-search-reference-ui-react in the browser.
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> Local: http://localhost:3000/
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> On Your Network: http://192.168.1.6:3000/
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Note that the development build is not optimized.
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">To create a production build, use npm run build.
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>在弹出的网页中，在本地测试这个搜索界面的可用性。最后运行 &lt;code>npm run build&lt;/code> 命令，&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;span class="lnt">14
+&lt;/span>&lt;span class="lnt">15
+&lt;/span>&lt;span class="lnt">16
+&lt;/span>&lt;span class="lnt">17
+&lt;/span>&lt;span class="lnt">18
+&lt;/span>&lt;span class="lnt">19
+&lt;/span>&lt;span class="lnt">20
+&lt;/span>&lt;span class="lnt">21
+&lt;/span>&lt;span class="lnt">22
+&lt;/span>&lt;span class="lnt">23
+&lt;/span>&lt;span class="lnt">24
+&lt;/span>&lt;span class="lnt">25
+&lt;/span>&lt;span class="lnt">26
+&lt;/span>&lt;span class="lnt">27
+&lt;/span>&lt;span class="lnt">28
+&lt;/span>&lt;span class="lnt">29
+&lt;/span>&lt;span class="lnt">30
+&lt;/span>&lt;span class="lnt">31
+&lt;/span>&lt;span class="lnt">32
+&lt;/span>&lt;span class="lnt">33
+&lt;/span>&lt;span class="lnt">34
+&lt;/span>&lt;span class="lnt">35
+&lt;/span>&lt;span class="lnt">36
+&lt;/span>&lt;span class="lnt">37
+&lt;/span>&lt;span class="lnt">38
+&lt;/span>&lt;span class="lnt">39
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">➜ games-react-demo-ui git:(master) ✗ npm run build
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&amp;gt; app-search-reference-ui-react@1.2.0 build /Users/martin/code/elastic-labs/app-search/games-react-demo-ui
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&amp;gt; npm-run-all build-css build-js
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&amp;gt; app-search-reference-ui-react@1.2.0 build-css /Users/martin/code/elastic-labs/app-search/games-react-demo-ui
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&amp;gt; node-sass-chokidar src/ -o src/
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">No input files were found.
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&amp;gt; app-search-reference-ui-react@1.2.0 build-js /Users/martin/code/elastic-labs/app-search/games-react-demo-ui
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&amp;gt; node ./scripts/build-no-chunks.js
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Creating an optimized production build...
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Browserslist: caniuse-lite is outdated. Please run next command `npm update`
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Browserslist: caniuse-lite is outdated. Please run next command `npm update`
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Compiled successfully.
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">File sizes after gzip:
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> 109.1 KB build/static/js/main.2f745bc0.js
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> 3.64 KB build/static/css/main.e43852a4.css
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">The project was built assuming it is hosted at the server root.
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">You can control this with the homepage field in your package.json.
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">For example, add this to build it for GitHub Pages:
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &amp;#34;homepage&amp;#34; : &amp;#34;http://myname.github.io/myapp&amp;#34;,
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">The build folder is ready to be deployed.
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">You may serve it with a static server:
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> npm install -g serve
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> serve -s build
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Find out more about deployment here:
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> https://bit.ly/CRA-deploy
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>最后将构建结果部署到一个目标的先安装的 Nginx 服务器上。&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">sudo yum install -y nginx
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">sudo mv -f build/* /usr/share/nginx/html
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>在浏览器中访问 Nginx 服务器 &lt;code>http://192.168.50.10/index.html&lt;/code> 观察最终的实现效果。
+&lt;img src="https://martinliu.cn/images/apps12.jpg"
+loading="lazy"
+>&lt;/p>
+&lt;h2 id="总结">总结
+&lt;/h2>&lt;p>使用 App Search 搜索平台，开发者可以快速的开发出一套定制化的搜索系统，轻松的实现后台搜索业务逻辑的调整，并轻松的将用户搜索界面测试后部署上线。&lt;/p></description></item><item><title>使用 Elastic Stack 监控 Covid-19 疫情发展</title><link>https://martinliu.cn/blog/using-elastic-stack-for-monitoring-covid-19/</link><pubDate>Wed, 08 Apr 2020 17:04:08 +0800</pubDate><guid>https://martinliu.cn/blog/using-elastic-stack-for-monitoring-covid-19/</guid><description>&lt;p>代号为 COVID-19 的新型冠状病毒肺炎在全球肆虐着，剧情翻转的非常快，目前欧美已经成为了全球的重灾区。
+本文介绍如何使用 Elastic Stack，实现对国内外疫情发展态势的分析。介绍一种简单易行的数据分析流程。说不定你也可以得出独到的高价值洞察。&lt;/p>
+&lt;p>本文使用的 Elastic Stack 版本和环境如下：&lt;/p>
+&lt;ul>
+&lt;li>Vagrant 的基础镜像 bento/centos-8&lt;/li>
+&lt;li>Elasticsearch 7.6.1&lt;/li>
+&lt;li>Kibana 7.6.1&lt;/li>
+&lt;li>Logstash 7.6.1&lt;/li>
+&lt;/ul>
+&lt;p>关于使用 Vagrant 环境搭建 Elastic Stack 的方法，见我之前的文章。本文的数据分析处理流程图如下所示。&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/images/2020-04-08_17-58-31.jpeg"
+loading="lazy"
+>&lt;/p>
+&lt;h2 id="分析和展示丁香园数据">分析和展示丁香园数据
+&lt;/h2>&lt;p>本文的目标分析数据源是 &lt;a class="link" href="https://ncov.dxy.cn/ncovh5/view/pneumonia" target="_blank" rel="noopener"
+>https://ncov.dxy.cn/ncovh5/view/pneumonia&lt;/a> 这个也是我们最近一直在关注的关于中国的疫情公布平台。&lt;/p>
+&lt;p>丁香园网页的数据被香港大学的 Isaac Lin 同学，通过他所开发的网络爬虫抓取加工后，用 API 的形式和 csv 数据文件的形式提供了出来，他的爬虫程序和结果数据给很多目前分析疫情的人带来了很大的帮助，有不少人去他的 blog 和 github 上点赞和评论的。&lt;/p>
+&lt;ul>
+&lt;li>&lt;a class="link" href="https://github.com/BlankerL/DXY-COVID-19-Data/tree/master/csv" target="_blank" rel="noopener"
+>https://github.com/BlankerL/DXY-COVID-19-Data/tree/master/csv&lt;/a>&lt;/li>
+&lt;li>&lt;a class="link" href="https://lab.isaaclin.cn/nCoV/" target="_blank" rel="noopener"
+>https://lab.isaaclin.cn/nCoV/&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;p>你可以用 Python 程序调用 Lin 同学的 API 然后在将处理后的结果写入 ES，这样的脚本可以参考 Rockybean 的这个 &lt;a class="link" href="https://www.yuque.com/elastictalk/blog/et25?from=timeline%e3%80%82%e4%b9%9f%e5%8f%af%e4%bb%a5%e7%94%a8%e4%b8%8b%e9%9d%a2%e7%9a%84%e5%91%bd%e4%bb%a4%e5%b0%86Github" target="_blank" rel="noopener"
+>https://www.yuque.com/elastictalk/blog/et25?from=timeline。也可以用下面的命令将Github&lt;/a> 的 csv 文件下载到本地，在做手工的数据分析，这样也等于是对林同学的数据内容和定义进行一次深入的探索，这也将更有益于你理解数据，方面后面使用 Kibana 做数据分析。&lt;/p>
+&lt;p>在本机使用 git 做数据下载和同步的命令如下。&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">git clone https://github.com/BlankerL/DXY-COVID-19-Data.git
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">cd DXY-COVID-19-Data/
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">git pull
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>你也可以用用&lt;code>git pull&lt;/code>命令在日后做数据更新，并进行后续的跟踪分析。&lt;/p>
+&lt;p>同步到本地的数据也可以使用 Logstash 或者是 Filebeat 持续的同步到 ES 中，这样就可以在 Kibana 上看到每日的实时更新结果。&lt;/p>
+&lt;h3 id="导入数据并初始化索引">导入数据并初始化索引
+&lt;/h3>&lt;p>本文选择了最简单直接的方式，使用 Kibana 自带的数据导入功能，手工导入丁香园的 csv 时序数据文件 &lt;code>csv/DXYArea.csv&lt;/code>。 如下图所示。&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/images/2020-04-08_10-23-22.jpeg"
+loading="lazy"
+>&lt;/p>
+&lt;p>这个工具是机器学习的周边工具 &lt;code>数据可视化器&lt;/code> ，它对这份数据做了初步的分析和识别，点击导入，然后在下面点击 Advancd ，进入高级设置，如下图所示：&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/images/2020-04-08_10-27-15.jpeg"
+loading="lazy"
+>&lt;/p>
+&lt;ul>
+&lt;li>可以在 index name 中可以输入&lt;code>dxy-area-m5&lt;/code> 作为本次新建的索引名称。&lt;/li>
+&lt;li>然后删除默认的 Mapping 定义，输入下面的重新重定义的数据结构。&lt;/li>
+&lt;/ul>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;span class="lnt">14
+&lt;/span>&lt;span class="lnt">15
+&lt;/span>&lt;span class="lnt">16
+&lt;/span>&lt;span class="lnt">17
+&lt;/span>&lt;span class="lnt">18
+&lt;/span>&lt;span class="lnt">19
+&lt;/span>&lt;span class="lnt">20
+&lt;/span>&lt;span class="lnt">21
+&lt;/span>&lt;span class="lnt">22
+&lt;/span>&lt;span class="lnt">23
+&lt;/span>&lt;span class="lnt">24
+&lt;/span>&lt;span class="lnt">25
+&lt;/span>&lt;span class="lnt">26
+&lt;/span>&lt;span class="lnt">27
+&lt;/span>&lt;span class="lnt">28
+&lt;/span>&lt;span class="lnt">29
+&lt;/span>&lt;span class="lnt">30
+&lt;/span>&lt;span class="lnt">31
+&lt;/span>&lt;span class="lnt">32
+&lt;/span>&lt;span class="lnt">33
+&lt;/span>&lt;span class="lnt">34
+&lt;/span>&lt;span class="lnt">35
+&lt;/span>&lt;span class="lnt">36
+&lt;/span>&lt;span class="lnt">37
+&lt;/span>&lt;span class="lnt">38
+&lt;/span>&lt;span class="lnt">39
+&lt;/span>&lt;span class="lnt">40
+&lt;/span>&lt;span class="lnt">41
+&lt;/span>&lt;span class="lnt">42
+&lt;/span>&lt;span class="lnt">43
+&lt;/span>&lt;span class="lnt">44
+&lt;/span>&lt;span class="lnt">45
+&lt;/span>&lt;span class="lnt">46
+&lt;/span>&lt;span class="lnt">47
+&lt;/span>&lt;span class="lnt">48
+&lt;/span>&lt;span class="lnt">49
+&lt;/span>&lt;span class="lnt">50
+&lt;/span>&lt;span class="lnt">51
+&lt;/span>&lt;span class="lnt">52
+&lt;/span>&lt;span class="lnt">53
+&lt;/span>&lt;span class="lnt">54
+&lt;/span>&lt;span class="lnt">55
+&lt;/span>&lt;span class="lnt">56
+&lt;/span>&lt;span class="lnt">57
+&lt;/span>&lt;span class="lnt">58
+&lt;/span>&lt;span class="lnt">59
+&lt;/span>&lt;span class="lnt">60
+&lt;/span>&lt;span class="lnt">61
+&lt;/span>&lt;span class="lnt">62
+&lt;/span>&lt;span class="lnt">63
+&lt;/span>&lt;span class="lnt">64
+&lt;/span>&lt;span class="lnt">65
+&lt;/span>&lt;span class="lnt">66
+&lt;/span>&lt;span class="lnt">67
+&lt;/span>&lt;span class="lnt">68
+&lt;/span>&lt;span class="lnt">69
+&lt;/span>&lt;span class="lnt">70
+&lt;/span>&lt;span class="lnt">71
+&lt;/span>&lt;span class="lnt">72
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">{
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &amp;#34;@timestamp&amp;#34;: {
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &amp;#34;type&amp;#34;: &amp;#34;date&amp;#34;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> },
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &amp;#34;continentEnglishName&amp;#34;: {
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &amp;#34;type&amp;#34;: &amp;#34;keyword&amp;#34;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> },
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &amp;#34;continentName&amp;#34;: {
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &amp;#34;type&amp;#34;: &amp;#34;keyword&amp;#34;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> },
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &amp;#34;countryEnglishName&amp;#34;: {
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &amp;#34;type&amp;#34;: &amp;#34;keyword&amp;#34;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> },
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &amp;#34;countryName&amp;#34;: {
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &amp;#34;type&amp;#34;: &amp;#34;keyword&amp;#34;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> },
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &amp;#34;provinceEnglishName&amp;#34;: {
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &amp;#34;type&amp;#34;: &amp;#34;keyword&amp;#34;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> },
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &amp;#34;provinceName&amp;#34;: {
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &amp;#34;type&amp;#34;: &amp;#34;keyword&amp;#34;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> },
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &amp;#34;province_confirmedCount&amp;#34;: {
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &amp;#34;type&amp;#34;: &amp;#34;integer&amp;#34;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> },
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &amp;#34;province_curedCount&amp;#34;: {
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &amp;#34;type&amp;#34;: &amp;#34;integer&amp;#34;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> },
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &amp;#34;province_deadCount&amp;#34;: {
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &amp;#34;type&amp;#34;: &amp;#34;integer&amp;#34;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> },
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &amp;#34;province_suspectedCount&amp;#34;: {
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &amp;#34;type&amp;#34;: &amp;#34;integer&amp;#34;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> },
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &amp;#34;province_zipCode&amp;#34;: {
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &amp;#34;type&amp;#34;: &amp;#34;integer&amp;#34;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> },
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &amp;#34;cityEnglishName&amp;#34;: {
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &amp;#34;type&amp;#34;: &amp;#34;keyword&amp;#34;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> },
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &amp;#34;cityName&amp;#34;: {
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &amp;#34;type&amp;#34;: &amp;#34;keyword&amp;#34;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> },
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &amp;#34;city_confirmedCount&amp;#34;: {
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &amp;#34;type&amp;#34;: &amp;#34;integer&amp;#34;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> },
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &amp;#34;city_curedCount&amp;#34;: {
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &amp;#34;type&amp;#34;: &amp;#34;integer&amp;#34;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> },
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &amp;#34;city_deadCount&amp;#34;: {
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &amp;#34;type&amp;#34;: &amp;#34;integer&amp;#34;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> },
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &amp;#34;city_suspectedCount&amp;#34;: {
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &amp;#34;type&amp;#34;: &amp;#34;integer&amp;#34;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> },
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &amp;#34;city_zipCode&amp;#34;: {
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &amp;#34;type&amp;#34;: &amp;#34;integer&amp;#34;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> },
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &amp;#34;level&amp;#34;:{
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &amp;#34;type&amp;#34;: &amp;#34;keyword&amp;#34;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> },
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &amp;#34;location&amp;#34;: {
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &amp;#34;type&amp;#34;: &amp;#34;geo_point&amp;#34;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> },
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &amp;#34;is_china&amp;#34;: {
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &amp;#34;type&amp;#34;: &amp;#34;boolean&amp;#34;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> },
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &amp;#34;updateTime&amp;#34;: {
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &amp;#34;type&amp;#34;: &amp;#34;date&amp;#34;,
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &amp;#34;format&amp;#34;: &amp;#34;yyyy-MM-dd HH:mm:ss&amp;#34;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> }
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">}
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>对以上 Mapping 的简要说明：&lt;/p>
+&lt;ul>
+&lt;li>增加了字段 level, is_china 和 Location，你也可以加入你所需要的其它待用字段，所有新增无值字段都需要后期进行初始化。&lt;/li>
+&lt;li>level 定义了数据记录的级别为：国家、港澳台和省级。&lt;/li>
+&lt;li>is_china 定义了国内外数据标识&lt;/li>
+&lt;li>在导入后，本文使用的字段的批量初始化/维护是调用 /_update_by_query 方法，也可以是使用 ingest pipline 的方式，或者其它 Elastic Stack 中的其它替代功能。&lt;/li>
+&lt;/ul>
+&lt;p>如上图所示的数据导入成功之后，点击 View index in Discovery， 我们可以使用 Kibana 的 Discovery 功能来对所导入的数据进行分析和确认，特别是一些关键字段的数值。观察这些数据的格式和内容的含义是什么。使用 filter 功能了解数据的内容和特征。建议使用下面的 filter 和组合探索一下【也可以使用 kql 语言做查询，如果用 kql 做查询的话，也可以很方便的将这些查询条件进行复用】。&lt;/p>
+&lt;ul>
+&lt;li>countryName:中国&lt;/li>
+&lt;li>NOT countryName:中国&lt;/li>
+&lt;li>countryName:中国 / provinceName:中国&lt;/li>
+&lt;li>countryName:中国 / NOT provinceName:中国 / cityName exists&lt;/li>
+&lt;li>countryName:中国 / NOT provinceName:中国 / NOT cityName exists&lt;/li>
+&lt;li>countryName:中国 / cityName: 境外输入&lt;/li>
+&lt;/ul>
+&lt;p>以上的 / 是多个 filter 叠加的含义，可以大概的猜测出下面的结论。&lt;/p>
+&lt;ul>
+&lt;li>中国国内数据&lt;/li>
+&lt;li>国外数据&lt;/li>
+&lt;li>中国省级统计数据&lt;/li>
+&lt;li>中国各省的各个城市的统计数据&lt;/li>
+&lt;li>中国的港澳台数据&lt;/li>
+&lt;li>中国海关所监控到的境外输入数据&lt;/li>
+&lt;/ul>
+&lt;p>为了后面使用省的名称做地图分析，这里需要查看数据中各个省英文名称，以广西为例，设置查询条件：provinceEnglishName Guangxi&lt;/p>
+&lt;p>现在来浏览 Elastic Map 地图服务所引用的中国各省的中英文名称和代码，查看 &lt;a class="link" href="https://maps.elastic.co/#file/china_provinces" target="_blank" rel="noopener"
+>https://maps.elastic.co/#file/china_provinces&lt;/a> ；&lt;/p>
+&lt;p>可以发现现所导入的数据和 Elastic 地图服务的官方数据不一致。&lt;/p>
+&lt;p>下图是用 Excel 分析对比的结果，建议使用 Python、logstash 或者其它工具在导入的过程中对这个字段做预处理和校准。&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/images/2020-04-07_12-55-23.jpeg"
+loading="lazy"
+>&lt;/p>
+&lt;p>本文下面描述了 Dev Tool 中运行相关的数据优化和及校准脚本。&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;span class="lnt">14
+&lt;/span>&lt;span class="lnt">15
+&lt;/span>&lt;span class="lnt">16
+&lt;/span>&lt;span class="lnt">17
+&lt;/span>&lt;span class="lnt">18
+&lt;/span>&lt;span class="lnt">19
+&lt;/span>&lt;span class="lnt">20
+&lt;/span>&lt;span class="lnt">21
+&lt;/span>&lt;span class="lnt">22
+&lt;/span>&lt;span class="lnt">23
+&lt;/span>&lt;span class="lnt">24
+&lt;/span>&lt;span class="lnt">25
+&lt;/span>&lt;span class="lnt">26
+&lt;/span>&lt;span class="lnt">27
+&lt;/span>&lt;span class="lnt">28
+&lt;/span>&lt;span class="lnt">29
+&lt;/span>&lt;span class="lnt">30
+&lt;/span>&lt;span class="lnt">31
+&lt;/span>&lt;span class="lnt">32
+&lt;/span>&lt;span class="lnt">33
+&lt;/span>&lt;span class="lnt">34
+&lt;/span>&lt;span class="lnt">35
+&lt;/span>&lt;span class="lnt">36
+&lt;/span>&lt;span class="lnt">37
+&lt;/span>&lt;span class="lnt">38
+&lt;/span>&lt;span class="lnt">39
+&lt;/span>&lt;span class="lnt">40
+&lt;/span>&lt;span class="lnt">41
+&lt;/span>&lt;span class="lnt">42
+&lt;/span>&lt;span class="lnt">43
+&lt;/span>&lt;span class="lnt">44
+&lt;/span>&lt;span class="lnt">45
+&lt;/span>&lt;span class="lnt">46
+&lt;/span>&lt;span class="lnt">47
+&lt;/span>&lt;span class="lnt">48
+&lt;/span>&lt;span class="lnt">49
+&lt;/span>&lt;span class="lnt">50
+&lt;/span>&lt;span class="lnt">51
+&lt;/span>&lt;span class="lnt">52
+&lt;/span>&lt;span class="lnt">53
+&lt;/span>&lt;span class="lnt">54
+&lt;/span>&lt;span class="lnt">55
+&lt;/span>&lt;span class="lnt">56
+&lt;/span>&lt;span class="lnt">57
+&lt;/span>&lt;span class="lnt">58
+&lt;/span>&lt;span class="lnt">59
+&lt;/span>&lt;span class="lnt">60
+&lt;/span>&lt;span class="lnt">61
+&lt;/span>&lt;span class="lnt">62
+&lt;/span>&lt;span class="lnt">63
+&lt;/span>&lt;span class="lnt">64
+&lt;/span>&lt;span class="lnt">65
+&lt;/span>&lt;span class="lnt">66
+&lt;/span>&lt;span class="lnt">67
+&lt;/span>&lt;span class="lnt">68
+&lt;/span>&lt;span class="lnt">69
+&lt;/span>&lt;span class="lnt">70
+&lt;/span>&lt;span class="lnt">71
+&lt;/span>&lt;span class="lnt">72
+&lt;/span>&lt;span class="lnt">73
+&lt;/span>&lt;span class="lnt">74
+&lt;/span>&lt;span class="lnt">75
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">#维护is_china字段
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">POST dxy-area-m5/_update_by_query
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">{
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &amp;#34;script&amp;#34;:{
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &amp;#34;lang&amp;#34;: &amp;#34;painless&amp;#34;,
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &amp;#34;source&amp;#34;: &amp;#34;&amp;#34;&amp;#34;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> if (ctx._source.countryEnglishName == &amp;#34;China&amp;#34;) {
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> ctx._source.is_china = true;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> } else {
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> ctx._source.is_china = false;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> }
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &amp;#34;&amp;#34;&amp;#34;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> }
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">}
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">#维护 level 字段，对于中国的数据来说，如果省的名字是中国这就是国家级的统计数据
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">POST dxy-area-m5/_update_by_query
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">{
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &amp;#34;script&amp;#34;:{
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &amp;#34;lang&amp;#34;: &amp;#34;painless&amp;#34;,
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &amp;#34;source&amp;#34;: &amp;#34;&amp;#34;&amp;#34;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> if(ctx._source.provinceName == ctx._source.countryName){
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> ctx._source.level = &amp;#34;country&amp;#34;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> } else {
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> if (ctx._source.cityName == null) {
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> ctx._source.level = &amp;#34;cn-hmt&amp;#34;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> } else {
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> ctx._source.level = &amp;#34;province&amp;#34;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> }
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> }
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &amp;#34;&amp;#34;&amp;#34;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> }
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">}
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">#更新省的名字为国际代码
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">POST dxy-area-m5/_update_by_query
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">{
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &amp;#34;script&amp;#34;:{
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &amp;#34;lang&amp;#34;: &amp;#34;painless&amp;#34;,
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &amp;#34;source&amp;#34;: &amp;#34;&amp;#34;&amp;#34;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> if (ctx._source.provinceEnglishName == &amp;#34;Guangxi&amp;#34;) {
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> ctx._source.provinceEnglishName = &amp;#34;Guangxi Zhuang Autonomous Region&amp;#34;;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> }
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> if (ctx._source.provinceEnglishName == &amp;#34;Hong Kong&amp;#34;) {
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> ctx._source.provinceEnglishName = &amp;#34;HongKong&amp;#34;;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> }
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> if (ctx._source.provinceEnglishName == &amp;#34;Macao&amp;#34;) {
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> ctx._source.provinceEnglishName = &amp;#34;Macau&amp;#34;;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> }
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> if (ctx._source.provinceEnglishName == &amp;#34;Neimenggu&amp;#34;) {
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> ctx._source.provinceEnglishName = &amp;#34;Inner Mongolia&amp;#34;;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> }
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> if (ctx._source.provinceEnglishName == &amp;#34;Ningxia&amp;#34;) {
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> ctx._source.provinceEnglishName = &amp;#34;Ningxia Hui Autonomous Region&amp;#34;;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> }
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> if (ctx._source.provinceEnglishName == &amp;#34;Taiwan&amp;#34;) {
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> ctx._source.provinceEnglishName = &amp;#34;Taiwan Province&amp;#34;;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> ctx._source.provinceName = &amp;#34;台湾省 (中华人民共和国)&amp;#34;;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> }
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> if (ctx._source.provinceEnglishName == &amp;#34;Xizang&amp;#34;) {
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> ctx._source.provinceEnglishName = &amp;#34;Tibet&amp;#34;;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> }
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> if (ctx._source.cityName == &amp;#34;境外输入人员&amp;#34;) {
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> ctx._source.cityName = &amp;#34;境外输入&amp;#34;;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> }
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &amp;#34;&amp;#34;&amp;#34;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> }
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">}
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>注意：以上的三个 POST 方法调用的对象是 &lt;code>dxy-area-m5&lt;/code> ，这个索引的名字需要和你上面导入数据创建的索引一致。由于是手工初次处理这些数据，建议再次运行以上的一系列搜索过滤条件，确认这些目标字段和数据得到了正确的处理。&lt;/p>
+&lt;h3 id="可视化和展示数据">可视化和展示数据
+&lt;/h3>&lt;p>在分析数据就绪了以后，下面介绍一组通过 Kibana 进行数据可视化分析展示的思路和方法。&lt;/p>
+&lt;h4 id="-从-discovery-界面中直接调用可视化视图创建">💻 从 Discovery 界面中直接调用可视化视图创建
+&lt;/h4>&lt;p>在 Discovery 的查询界面里，点击左侧 fields 清单中的 provinceName，或者其它想进行可视化分析的字段，点击后即可查看其中一部分的数值分布情况，点击下面的 Visualize 按钮。就可以进入可视化编辑模式。&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/images/2020-04-08_11-11-13.jpeg"
+loading="lazy"
+>&lt;/p>
+&lt;p>进入这个 field 的默认可视化配置模式，选择 Y 轴的指标为 province_confirmedCount 的最大值，然后在上方增加 is_china:true 和 level:province 过滤条件后，就可以得到下面的结果。&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/images/2020-04-08_11-09-48.jpeg"
+loading="lazy"
+>&lt;/p>
+&lt;p>还可以对 Buckets 里面 X 轴的值进行调整，使用省的名字。 这样基本上得出了确诊数省排名的结果。或者你还可以调整出其它的分析结论。在分析结束后，点击左上角的 Save ，将分析组合保存下来用于后期的仪表板的制作。&lt;/p>
+&lt;h4 id="-使用-visualization-的-lens-功能探索数据">💻 使用 Visualization 的 lens 功能探索数据
+&lt;/h4>&lt;p>点击 New Visualization，选择左上角的 Lens 图标。在 CHANGE INDEX PATTERN 中选择目标的索引如：dxy-area-m5。 拖拽几个字段进入中间的显示区：continentName countryName province_confirmedCount 这些字段，也可以尝试将这些字段拖入右侧的 X 轴或者 Y 轴。&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/images/2020-04-08_12-35-17.jpeg"
+loading="lazy"
+>&lt;/p>
+&lt;p>拖入不同的位置，图形下方的建议可视化展示风格会随之变化，Lens 功能在预判和猜测你可能会用到的展示和分析组合。感受这些建议图形所提供的数据分析的线索。&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/images/2020-04-08_12-59-59.jpeg"
+loading="lazy"
+>&lt;/p>
+&lt;p>同样的，你也可以在上面使用过滤器和时间段选择功能，这些数据筛选条件发生变化之后，可视化的图形数据也会随之变化。&lt;/p>
+&lt;h4 id="使用-tsvb-时序数据可视化构造器">使用 TSVB 时序数据可视化构造器
+&lt;/h4>&lt;p>这个控件的功能稍微复杂一些，用下图说明它的用法。&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/images/2020-04-08_19-02-31.jpeg"
+loading="lazy"
+>&lt;/p>
+&lt;p>如上图所示，现在 Panel Options 里面设置需要使用的数据索引，以及其他参数。&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/images/2020-04-08_19-08-55.jpeg"
+loading="lazy"
+>&lt;/p>
+&lt;p>然后在 Data 中选择需要显示的数据指标，如上图中选择了全国累计确诊和累计治愈，两个指标。将他们放在一起更能回答这样一个问题：是否治愈的速度是足够的，如果治愈速度跟得上的话，说明医疗资源是足够用的，如果这两条线之间的落差比较大就危险了。&lt;/p>
+&lt;p>上方的 TSVB 图形显示了所有数值和格式调整后的预览效果。可以无限的修订知道满意为止。这个控件天然支持指标数值、排行榜、速度表、Markdown 文本和数据表。可以切换到不同的视角看它的展示效果。&lt;/p>
+&lt;h4 id="使用地图展示省级累计数据">使用地图展示省级累计数据
+&lt;/h4>&lt;p>我们可以使用已经导入的数据在地图上显示省级的累计确诊和治愈人数。过程是这样的：&lt;/p>
+&lt;ul>
+&lt;li>点击 Kibana 左侧的 Maps 图标，创建一个新的地图。&lt;/li>
+&lt;li>创建图层，选择 EMS Boundaries ，选择这个图层所使用的基础地图为 China Provinces&lt;/li>
+&lt;li>点击 Add layer 按钮&lt;/li>
+&lt;li>在图层配置里输入图层名称缩放级别，透明度的设置&lt;/li>
+&lt;li>设置 Tooltip fields 的设置中增加 name(zh) ,中文的省名称&lt;/li>
+&lt;li>设置 Term Joins 的规则，点击 Join 关键字，设置索引中的数据和地图的关联。如下图所示，这就是我们为什么要把导入数据中的省英文名称与 EMS 的定义数据对齐了。&lt;/li>
+&lt;/ul>
+&lt;p>&lt;img src="https://martinliu.cn/images/2020-04-08_21-30-40.jpeg"
+loading="lazy"
+>&lt;/p>
+&lt;ul>
+&lt;li>点击 and use metrics 设置在每个省上显示的数据。如下图所示。&lt;/li>
+&lt;/ul>
+&lt;p>&lt;img src="https://martinliu.cn/images/2020-04-08_21-31-05.jpeg"
+loading="lazy"
+>&lt;/p>
+&lt;ul>
+&lt;li>最后设置 Layer Style， 将 Fill color 填色设置为 By Value， 选择省累计确诊，下面的颜色可以选择白色到深红的过度。&lt;/li>
+&lt;li>最后点击 Save &amp;amp; close 按钮。&lt;/li>
+&lt;/ul>
+&lt;p>这里的技术点在于：Elastic 地图中的基础数据（地理名称代码）必须和目标索引中的相关字段能够匹配上（join）上，然后才能将索引中的实际做聚合运算的字段根据地理名称进行处理，例如根据数值的大小，将各个省填充成不同的颜色，用 tooltips 显示这个省的数据信息。&lt;/p>
+&lt;h4 id="创建-dashboard-仪表板">创建 Dashboard 仪表板
+&lt;/h4>&lt;p>上面所设计的所有的图示和地图都是创建 Dashboard 的素材，等做了一些素材之后就可以做仪表板了。这个过程就是在空白的仪表板上逐渐加入合适的图表，然后不断调整图表布局的过程，然后呈现出一个阶段性的效果。如下图所示。&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/images/2020-04-08_13-44-03.jpeg"
+loading="lazy"
+>&lt;/p>
+&lt;h2 id="世卫组织数据的处理和展示">世卫组织数据的处理和展示
+&lt;/h2>&lt;p>浏览世卫组织的数据 &lt;a class="link" href="https://github.com/CSSEGISandData/COVID-19" target="_blank" rel="noopener"
+>https://github.com/CSSEGISandData/COVID-19&lt;/a>&lt;/p>
+&lt;p>基于以上数据可以制作一个如下的仪表板：&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/images/2020-04-08_13-44-40.jpeg"
+loading="lazy"
+>&lt;/p>
+&lt;p>这个仪表板中的地图是亮点，建议仔细学习研究一下。 这个仪表板的来源是一篇国外的文章： &lt;a class="link" href="https://www.siscale.com/importing-covid-19-data-into-elasticsearch/" target="_blank" rel="noopener"
+>https://www.siscale.com/importing-covid-19-data-into-elasticsearch/&lt;/a>&lt;/p>
+&lt;p>我在一个小时左右，根据经验顺利的在我的实验环境里顺利生成了这个成果。下面是根据这篇文章怎么样使用 logstash 导入 Github 中世卫组织发布的数据，并持续与之保持同步。这里是他们的代码：&lt;a class="link" href="https://github.com/siscale/covid-19-elk" target="_blank" rel="noopener"
+>https://github.com/siscale/covid-19-elk&lt;/a>&lt;/p>
+&lt;p>下面描述如何使用这份代码。首先你需要有一个安装好的切正常运行的 Elasticsearch 7.6.1 服务器，一个可以正常使用的 Kibana 7.6.1 服务器。在此基础之上，安装 logstash 服务器，修改并放好 logstash 的配置文件。 在 Kibana 的 Dev Tool 中导入索引的 Mapping。启动 logstash 服务器，等待和确认数据的传入。导入 Kibana 的相关对象。浏览查看和确认 siscale （国外一家 Elastic 的合作伙伴公司） 的作品。理解每个可视化展示控件的设计细节。&lt;/p>
+&lt;p>你可以参考下面的安装步骤和注意事项。&lt;/p>
+&lt;ul>
+&lt;li>登录 Kibana，进入 Dev Tool 中，将文件 index-template-mapping.json 中的内容复制进去并点击执行按钮。&lt;/li>
+&lt;li>安装 Logstash 7.6.1&lt;/li>
+&lt;/ul>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">yum install java-11-openjdk-11.0.6.10-0.el8_1.x86_64
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">rpm -ivh logstash-7.6.1.rpm
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;ul>
+&lt;li>将配置文件中的 /etc/logstash/covid-19-hashes.json 修改为 /usr/share/logstash/covid-19-hashes.json 然后把它们复制到 logstash 的配置目录中&lt;/li>
+&lt;/ul>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">cp logstash-github-covid-19-daily-reports-template.conf logstash-github-covid-19-time-series-template.conf /etc/logstash/conf.d/
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;ul>
+&lt;li>确保你的虚拟机（测试环境和 github 以及其他的国外基本正常的情况下）网络正常的情况下，启动 logstash 服务并且关注该服务的日志信息&lt;/li>
+&lt;/ul>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-gdscript3" data-lang="gdscript3">&lt;span class="line">&lt;span class="cl">&lt;span class="n">sudo&lt;/span> &lt;span class="n">systemctl&lt;/span> &lt;span class="n">start&lt;/span> &lt;span class="n">logstash&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">sudo&lt;/span> &lt;span class="n">tail&lt;/span> &lt;span class="o">-&lt;/span>&lt;span class="n">f&lt;/span> &lt;span class="o">/&lt;/span>&lt;span class="k">var&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="nb">log&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">logstash&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">logstash&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">plain&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">log&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>PS:在日志中可以看到 logstash 完全正常的启动成功，或者看到报错，这时候就需要停止 logstash 服务，并进行调整。直到服务彻底运行成功不报错。&lt;/p>
+&lt;p>在 logstash 服务正常运行的情况下，世卫组织的数据是会被正常的导入到 ES 中的，你可以在 Discovery 中查看如下的查询结果。那么恭喜你，你已经和世卫组织的数据保持实时同步了。&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/images/2020-04-08_22-05-06.jpeg"
+loading="lazy"
+>&lt;/p>
+&lt;p>最后是导入该项目的仪表板对象。操作步骤参考：登录 kibana， 进入管理， 点击 Kibana 下面的 saved objeces ； 点击 import 按钮。选择 kibana-7.6.1-covid-19-dashboard.ndjson ，然后即可浏览名为 COVID 19 的仪表板了。导入后在 Kibana 的仪表板清单中选择查看名为 “COCID 19” 的仪表板。预祝你能看到和我相同的结果，建议仔细查看他们的地图设计，做的是非常的细致，如下图所示，它是三个图层叠加的显示效果。&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/images/2020-04-08_23-34-36.jpeg"
+loading="lazy"
+>&lt;/p>
+&lt;h2 id="总结">总结
+&lt;/h2>&lt;p>最后希望你通过本文已经成功的展示出了以上的预期结果。下面简单总结一下相关知识点。&lt;/p>
+&lt;ul>
+&lt;li>对陌生数据集的首次探索可以是手动导入 csv 文件的手动过程&lt;/li>
+&lt;li>在导入的过程中需要做适当的 field mapping 的调整，和扩展，让后期的查询和数据分析更加清晰&lt;/li>
+&lt;li>对导入后的数据，充分利用 Discovery 的查询和分析能力，确定好数据校准和调优的更新策略&lt;/li>
+&lt;li>充分利用 ES 的批量查询修改 API，可以轻松快捷的实现数据修订。&lt;/li>
+&lt;li>地图的使用重点在地理信息代码和数据索引中的实际 field 的 join，因此需要特别设计和维护 join 的字段，确保他们的精确性。&lt;/li>
+&lt;li>仪表板的制作和设计依赖于各种图标的设计&lt;/li>
+&lt;/ul>
+&lt;p>Elastic Stack 在本案例中得到了充分而综合的运用。从 E 到 L 到 K 一个都不能少。建议大家能平衡掌握这个技术栈的各种技术能力，补足不太擅长的部分。&lt;/p>
+&lt;p>本文参考的网址如下：&lt;/p>
+&lt;ul>
+&lt;li>&lt;a class="link" href="https://gisanddata.maps.arcgis.com/apps/opsdashboard/index.html#/bda7594740fd40299423467b48e9ecf6" target="_blank" rel="noopener"
+>https://gisanddata.maps.arcgis.com/apps/opsdashboard/index.html#/bda7594740fd40299423467b48e9ecf6&lt;/a>&lt;/li>
+&lt;li>&lt;a class="link" href="http://covid.surge.sh/" target="_blank" rel="noopener"
+>http://covid.surge.sh/&lt;/a>&lt;/li>
+&lt;li>&lt;a class="link" href="https://informationisbeautiful.net/visualizations/covid-19-coronavirus-infographic-datapack/" target="_blank" rel="noopener"
+>https://informationisbeautiful.net/visualizations/covid-19-coronavirus-infographic-datapack/&lt;/a>&lt;/li>
+&lt;li>&lt;a class="link" href="https://ncov.dxy.cn/ncovh5/view/pneumonia" target="_blank" rel="noopener"
+>https://ncov.dxy.cn/ncovh5/view/pneumonia&lt;/a>&lt;/li>
+&lt;li>&lt;a class="link" href="https://github.com/CSSEGISandData/COVID-19" target="_blank" rel="noopener"
+>https://github.com/CSSEGISandData/COVID-19&lt;/a>&lt;/li>
+&lt;li>&lt;a class="link" href="https://lab.isaaclin.cn/nCoV/" target="_blank" rel="noopener"
+>https://lab.isaaclin.cn/nCoV/&lt;/a>&lt;/li>
+&lt;li>&lt;a class="link" href="https://github.com/siscale/covid-19-elk" target="_blank" rel="noopener"
+>https://github.com/siscale/covid-19-elk&lt;/a>&lt;/li>
+&lt;li>&lt;a class="link" href="https://www.mapbox.cn/coronavirusmap/#3.35/28.47/109.74" target="_blank" rel="noopener"
+>https://www.mapbox.cn/coronavirusmap/#3.35/28.47/109.74&lt;/a>&lt;/li>
+&lt;li>&lt;a class="link" href="https://ncov.deepeye.tech/" target="_blank" rel="noopener"
+>https://ncov.deepeye.tech/&lt;/a>&lt;/li>
+&lt;li>&lt;a class="link" href="https://www.siscale.com/importing-covid-19-data-into-elasticsearch/" target="_blank" rel="noopener"
+>https://www.siscale.com/importing-covid-19-data-into-elasticsearch/&lt;/a>&lt;/li>
+&lt;/ul></description></item><item><title>最简化 Elasticsearch &amp; Kibana &amp; Filebeat 安装说明</title><link>https://martinliu.cn/blog/elk-stack-install/</link><pubDate>Thu, 26 Mar 2020 08:51:15 +0800</pubDate><guid>https://martinliu.cn/blog/elk-stack-install/</guid><description>&lt;img src="https://martinliu.cn/images/abstract-1.jpg" alt="Featured image of post 最简化 Elasticsearch &amp; Kibana &amp; Filebeat 安装说明" />&lt;p>&lt;img src="https://martinliu.cn/images/980-elastic-stack.jpg"
+loading="lazy"
+alt="elk"
+>&lt;/p>
+&lt;p>本文描述如何搭建一套具备用户名和密码安全认证的 Elastic Stack 系统，并开始使用 Filebeat 的基础模块实现分布式的日志收集。&lt;/p>
+&lt;ul>
+&lt;li>安装单节点 Elasticsearch 服务器，启用用户名和密码安全认证，并创建 TLS 数字证书备用&lt;/li>
+&lt;li>安装 Kibana 服务器，并配置与 Elasticsearch 服务的连接&lt;/li>
+&lt;li>安装和配置 Filebeat 代理程序，并配置 system 和 auditd 模块&lt;/li>
+&lt;li>使用 Kibana 监控 Filebeat 所采集的系统日志，并监控系统的状态&lt;/li>
+&lt;/ul>
+&lt;p>为了使你也获得与我一致的安装和测试体验，请先下载并浏览相本文所使用的代码库：&lt;a class="link" href="https://github.com/martinliu/elastic-labs" target="_blank" rel="noopener"
+>https://github.com/martinliu/elastic-labs&lt;/a>&lt;/p>
+&lt;h2 id="试验环境概述和启动">试验环境概述和启动
+&lt;/h2>&lt;p>本文所使用相关软件以及版本。&lt;/p>
+&lt;ul>
+&lt;li>macOS Catalina version 10.15.3&lt;/li>
+&lt;li>Vagrant 2.2.4&lt;/li>
+&lt;li>VirtalBox 6.0&lt;/li>
+&lt;li>操作系统镜像: bento/centos-8 (virtualbox, 202002.04.0)&lt;/li>
+&lt;li>Elastic Stack 安装包（RPM）
+&lt;ul>
+&lt;li>Elasticsearch 7.6.1&lt;/li>
+&lt;li>Kibana 7.6.1&lt;/li>
+&lt;li>Filebeat 7.6.1&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>使用 Vagrant 的目录共享功能，分享安装包到测试机的 /vagrant/rpm 目录下&lt;/li>
+&lt;/ul>
+&lt;p>注意事项：&lt;/p>
+&lt;ol>
+&lt;li>你也可以使用任何一台 CentOS 8 虚拟机或者云主机，则后续的安装命令和 rpm 安装包的路径需要有所变化。&lt;/li>
+&lt;li>Vagrant 文件中定义的虚拟机配置为 4 GB 内存，建议你的操作系统最低为 8GB 内存，推荐 16GB 或者更高，&lt;/li>
+&lt;li>本文也适用于 Linux 或 Windows 操作系统的 Vagrant 测试环境，需要提前下载并且准备好 bento/centos-8 的基础操作系统镜像。&lt;/li>
+&lt;/ol>
+&lt;p>启动测试环境。&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">vagrant up
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">vagrant status
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;h2 id="安装-elasticsearch-服务器">安装 Elasticsearch 服务器
+&lt;/h2>&lt;p>SSH 登录测试虚拟机。&lt;/p>
+&lt;p>&lt;code>vagrant ssh&lt;/code>&lt;/p>
+&lt;p>执行 RPM 安装命令，安装 elasticsearch 服务器。&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;span class="lnt">4
+&lt;/span>&lt;span class="lnt">5
+&lt;/span>&lt;span class="lnt">6
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-gdscript3" data-lang="gdscript3">&lt;span class="line">&lt;span class="cl">&lt;span class="n">cd&lt;/span> &lt;span class="o">/&lt;/span>&lt;span class="n">vagrant&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">rpm&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">sudo&lt;/span> &lt;span class="n">rpm&lt;/span> &lt;span class="o">-&lt;/span>&lt;span class="n">ivh&lt;/span> &lt;span class="o">./&lt;/span>&lt;span class="n">elasticsearch&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="mf">7.6&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="mi">1&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">x86_64&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">rpm&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">sudo&lt;/span> &lt;span class="n">systemctl&lt;/span> &lt;span class="n">daemon&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">reload&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">sudo&lt;/span> &lt;span class="n">systemctl&lt;/span> &lt;span class="n">enable&lt;/span> &lt;span class="n">elasticsearch&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">service&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">sudo&lt;/span> &lt;span class="n">systemctl&lt;/span> &lt;span class="n">start&lt;/span> &lt;span class="n">elasticsearch&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">service&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">sudo&lt;/span> &lt;span class="n">systemctl&lt;/span> &lt;span class="n">status&lt;/span> &lt;span class="n">elasticsearch&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">service&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>测试 Elasticsearch 服务是否功能正常 【 Dry run 】&lt;/p>
+&lt;p>curl localhost:9200&lt;/p>
+&lt;p>期待的输出类似下面。&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;span class="lnt">14
+&lt;/span>&lt;span class="lnt">15
+&lt;/span>&lt;span class="lnt">16
+&lt;/span>&lt;span class="lnt">17
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">{
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &amp;#34;name&amp;#34; : &amp;#34;elk-master&amp;#34;,
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &amp;#34;cluster_name&amp;#34; : &amp;#34;elasticsearch&amp;#34;,
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &amp;#34;cluster_uuid&amp;#34; : &amp;#34;X4V2Yvc-SJ6ccjWbXQ5OmQ&amp;#34;,
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &amp;#34;version&amp;#34; : {
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &amp;#34;number&amp;#34; : &amp;#34;7.6.1&amp;#34;,
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &amp;#34;build_flavor&amp;#34; : &amp;#34;default&amp;#34;,
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &amp;#34;build_type&amp;#34; : &amp;#34;rpm&amp;#34;,
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &amp;#34;build_hash&amp;#34; : &amp;#34;aa751e09be0a5072e8570670309b1f12348f023b&amp;#34;,
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &amp;#34;build_date&amp;#34; : &amp;#34;2020-02-29T00:15:25.529771Z&amp;#34;,
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &amp;#34;build_snapshot&amp;#34; : false,
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &amp;#34;lucene_version&amp;#34; : &amp;#34;8.4.0&amp;#34;,
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &amp;#34;minimum_wire_compatibility_version&amp;#34; : &amp;#34;6.8.0&amp;#34;,
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &amp;#34;minimum_index_compatibility_version&amp;#34; : &amp;#34;6.0.0-beta1&amp;#34;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> },
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &amp;#34;tagline&amp;#34; : &amp;#34;You Know, for Search&amp;#34;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">}
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>浏览和学习 Elasticsearch 默认的配置文件。&lt;/p>
+&lt;p>&lt;code>sudo cat /etc/elasticsearch/elasticsearch.yml&lt;/code>&lt;/p>
+&lt;p>使用 Elasticsearch 的精简版目标测试配置文件。&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">sudo cp /vagrant/elasticsearch/elasticsearch.yml /etc/elasticsearch/elasticsearch.yml
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">sudo systemctl restart elasticsearch.service
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">sudo systemctl status elasticsearch.service
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>手工查看 Elasticsearch 服务器的日志，并确认服务启动正常。&lt;/p>
+&lt;p>&lt;code>sudo tail -f /var/log/elasticsearch/my-elk.log&lt;/code>&lt;/p>
+&lt;p>Ctl + c 终止以上日志查看，再次测试 Elasticsearch 服务。&lt;/p>
+&lt;p>&lt;code>curl localhost:9200&lt;/code>&lt;/p>
+&lt;p>替换为 IP 地址测试。&lt;/p>
+&lt;p>&lt;code>curl http://192.168.50.10:9200/&lt;/code>&lt;/p>
+&lt;h2 id="配置-elasticsearch-服务的-tls-数字证书和身份验证">配置 Elasticsearch 服务的 TLS 数字证书和身份验证
+&lt;/h2>&lt;p>停止 Elasticsearch 服务。&lt;/p>
+&lt;p>&lt;code>sudo systemctl stop elasticsearch.service&lt;/code>&lt;/p>
+&lt;h3 id="创建-tls-数字证书">创建 TLS 数字证书
+&lt;/h3>&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">cd /usr/share/elasticsearch
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">sudo bin/elasticsearch-certutil cert -out /etc/elasticsearch/elastic-certificates.p12 -pass &amp;#34;&amp;#34;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">sudo chmod 660 /etc/elasticsearch/elastic-certificates.p12
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;h3 id="更新-elasticsearch-配置文件">更新 Elasticsearch 配置文件
+&lt;/h3>&lt;p>手工打开 Elasticsearch 配置文件。&lt;/p>
+&lt;p>&lt;code>sudo vi /etc/elasticsearch/elasticsearch.yml&lt;/code>&lt;/p>
+&lt;p>在配置文件的末端增加下面的配置段落。&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;span class="lnt">4
+&lt;/span>&lt;span class="lnt">5
+&lt;/span>&lt;span class="lnt">6
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># ------------------------------- TLS and Cert ---------------------------------&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">xpack.security.enabled: &lt;span class="nb">true&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">xpack.security.transport.ssl.enabled: &lt;span class="nb">true&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">xpack.security.transport.ssl.verification_mode: certificate
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">xpack.security.transport.ssl.keystore.path: elastic-certificates.p12
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">xpack.security.transport.ssl.truststore.path: elastic-certificates.p12
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>重新启动配置 Elasticsearch 服务。&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">sudo systemctl restart elasticsearch.service
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">sudo systemctl status elasticsearch.service
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>确认服务已经正常启动。&lt;/p>
+&lt;p>&lt;code>sudo tail -f /var/log/elasticsearch/my-elk.log&lt;/code>&lt;/p>
+&lt;h3 id="创建-elasticsearch-服务的用户密码">创建 Elasticsearch 服务的用户密码
+&lt;/h3>&lt;p>运行 Elasticsearch 的密码配置工具，为各种内置用户生成随机的密码。&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">sudo cd /usr/share/elasticsearch
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">sudo bin/elasticsearch-setup-passwords auto
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>将生成的密码信息妥善保存备用。&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;span class="lnt">14
+&lt;/span>&lt;span class="lnt">15
+&lt;/span>&lt;span class="lnt">16
+&lt;/span>&lt;span class="lnt">17
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">Changed password &lt;span class="k">for&lt;/span> user apm_system
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">PASSWORD &lt;span class="nv">apm_system&lt;/span> &lt;span class="o">=&lt;/span> AHyg5HzJRZg8Fiva0buW
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Changed password &lt;span class="k">for&lt;/span> user kibana
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">PASSWORD &lt;span class="nv">kibana&lt;/span> &lt;span class="o">=&lt;/span> Kt72IXkiarlGr7do02Yp
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Changed password &lt;span class="k">for&lt;/span> user logstash_system
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">PASSWORD &lt;span class="nv">logstash_system&lt;/span> &lt;span class="o">=&lt;/span> Q9nnlOdf6V9kyPbbhqN7
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Changed password &lt;span class="k">for&lt;/span> user beats_system
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">PASSWORD &lt;span class="nv">beats_system&lt;/span> &lt;span class="o">=&lt;/span> bLNrZDggPKRSKc35EG32
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Changed password &lt;span class="k">for&lt;/span> user remote_monitoring_user
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">PASSWORD &lt;span class="nv">remote_monitoring_user&lt;/span> &lt;span class="o">=&lt;/span> o1pi2yTDnhrKBGcS6xqP
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Changed password &lt;span class="k">for&lt;/span> user elastic
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">PASSWORD &lt;span class="nv">elastic&lt;/span> &lt;span class="o">=&lt;/span> RO11xymgXTCD16ivTP33
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>在浏览器中访问&lt;a class="link" href="http://192.168.50.10:9200/" target="_blank" rel="noopener"
+>http://192.168.50.10:9200/&lt;/a> ，测试并确认上面的 elastic 用户的密码。&lt;/p>
+&lt;h2 id="安装和配置-kibana-服务器">安装和配置 Kibana 服务器
+&lt;/h2>&lt;p>执行 Kibana 安装命令&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">cd /vagrant/rpm/
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">sudo rpm -ivh kibana-7.6.1-x86_64.rpm
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>查看并学习 Kibana 默认配置文件&lt;/p>
+&lt;p>&lt;code>sudo cat /etc/kibana/kibana.yml&lt;/code>&lt;/p>
+&lt;p>更新默认配置文件，准备好 elastic 用户的密码，将其更新到 Kibana 配置文件中。&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">sudo cp /vagrant/kibana/kibna.yml /etc/kibana/kibana.yml
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">sudo systemctl start kibana.service
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">sudo systemctl status kibana.service
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>查看重启的服务是否工作正常。&lt;/p>
+&lt;p>&lt;code>sudo tail -f /var/log/messages&lt;/code>&lt;/p>
+&lt;p>在浏览器里测试登录 Kibana &lt;a class="link" href="http://192.168.50.10:5601" target="_blank" rel="noopener"
+>http://192.168.50.10:5601&lt;/a> ，使用 elastic 的用户名和密码。&lt;/p>
+&lt;h2 id="安装-filebeat-并配置-2-个模块">安装 filebeat 并配置 2 个模块
+&lt;/h2>&lt;p>执行 Filebeat 安装包。&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">cd /vagrant/rpm
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">sudo rpm -ivh ./filebeat-7.6.1-x86_64.rpm
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>查看默认的 Filebeat 配置文件。&lt;/p>
+&lt;p>&lt;code>sudo cat /etc/filebeat/filebeat.yml&lt;/code>&lt;/p>
+&lt;p>更新默认配置文件，准备好 elastic 用户的密码，将其更新到 Kibana 配置文件中。&lt;/p>
+&lt;p>&lt;code>sudo cp /vagrant/filebeat/filebeat.yml /etc/filebeat/filebeat.yml&lt;/code>&lt;/p>
+&lt;p>查看 Filebeat 的默认日志监控模块。&lt;/p>
+&lt;p>&lt;code>sudo filebeat modules list&lt;/code>&lt;/p>
+&lt;p>启用 Filebeat 的 System 和 Auditd 模块，监控系统日志和基础的操作系统安全信息。&lt;/p>
+&lt;p>&lt;code>sudo filebeat modules enable system auditd&lt;/code>&lt;/p>
+&lt;p>查看 Filebeat 监控模块的配置文件。&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">sudo cd /etc/filebeat
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">sudo ls -l modules.d/
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>建议查看以上启用的 System 和 Auditd 模块的配置文件。&lt;/p>
+&lt;p>运行 Filebeat 在后台的初始化命令，在后台创建 Filebeat 所需要的索引 filebeat-* ，并导入所有模块相关的 Dashboard 等 Kibana 日志可视化分析工具。&lt;/p>
+&lt;p>&lt;code>sudo filebeat setup&lt;/code>&lt;/p>
+&lt;p>在浏览器中登录 &lt;a class="link" href="http://192.168.50.10:5601" target="_blank" rel="noopener"
+>http://192.168.50.10:5601&lt;/a> Kibana 后，点击左侧的 Dashboard 图标，查看所有刚才导入的内容，搜索并打开 System 关键字的 Dasboard。&lt;/p>
+&lt;p>在启动日志收集代理 Filebeat 服务前，运行一下命令测试 Filebeat 配置文件的正确性。&lt;/p>
+&lt;p>&lt;code>sudo filebeat test config&lt;/code>&lt;/p>
+&lt;p>启动 Filebeat 服务，开始对这台操作系统的日志进行监控。&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">sudo systemctl start filebeat
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">sudo systemctl status filebeat
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;h2 id="建议的测试">建议的测试
+&lt;/h2>&lt;ol>
+&lt;li>点击左侧的 Dicovery 图标，选中 Filebeat-* 索引，打开并一条日志数据，并查看所有字段；用 KQL 进行全文搜索。&lt;/li>
+&lt;li>点击左侧的 Dashboard 图标，搜索 system 关键字，查看一个仪表板的日志展示；搜索 audit 关键字，并查打开一个仪表板，在命令行中尝试 ssh localhost，多尝试几次，刷新 Audit 仪表板，观察数据是否发生了变化。&lt;/li>
+&lt;li>点击左侧的 Logs 图标，用鼠标上下滚动日志信息流， 点击右上角的开始 Live Stream 查看模式，观察日志信息流的自动滚动效果，在 KQL 搜素框中输入 tags : demo-service ，体验它的搜索建议功能，在 Highlight 中输入 &lt;a class="link" href="http://192.168.50.10:5601/app/infra" target="_blank" rel="noopener"
+>http://192.168.50.10:5601/app/infra&lt;/a> ，观察日志信息流显示的变化。&lt;/li>
+&lt;li>点击左侧的 SIEM 图标，看看这里都有什么内容。&lt;/li>
+&lt;/ol>
+&lt;h2 id="后续">后续
+&lt;/h2>&lt;ul>
+&lt;li>用启用 Filebeat 的 Elasticsearch, Kibana 日志监控模块&lt;/li>
+&lt;li>安装 Apache, MySQL 等软件，并开启 Filebeat 的日志监控模块&lt;/li>
+&lt;/ul>
+&lt;p>参考文档：
+&lt;a class="link" href="https://www.elastic.co/guide/en/elasticsearch/reference/current/setting-system-settings.html" target="_blank" rel="noopener"
+>https://www.elastic.co/guide/en/elasticsearch/reference/current/setting-system-settings.html&lt;/a>&lt;/p></description></item></channel></rss>

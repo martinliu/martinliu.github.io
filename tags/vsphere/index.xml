@@ -1,0 +1,406 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Vsphere on Martin Liu's Blog</title><link>https://martinliu.cn/tags/vsphere/</link><description>Recent content in Vsphere on Martin Liu's Blog</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><lastBuildDate>Tue, 25 Jun 2024 21:44:26 +0800</lastBuildDate><atom:link href="https://martinliu.cn/tags/vsphere/index.xml" rel="self" type="application/rss+xml"/><item><title>HCI | 超融合平台线上训练营第二期</title><link>https://martinliu.cn/blog/hci-nutanix-ce-training-camp/</link><pubDate>Sun, 20 Feb 2022 23:05:40 +0800</pubDate><guid>https://martinliu.cn/blog/hci-nutanix-ce-training-camp/</guid><description>&lt;img src="https://martinliu.cn/img/cos/2022-02-21-hci-nutanix.jpeg" alt="Featured image of post HCI | 超融合平台线上训练营第二期" />&lt;p>本文总结了我从单机的 Home Lab 环境，发展到三节点 Nutanix 超融合混合盘集群的经验和教训。&lt;/p>
+&lt;h2 id="为什么需要超融合集群">为什么需要超融合集群
+&lt;/h2>&lt;p>我的 Home lab 的进化史&lt;/p>
+&lt;ul>
+&lt;li>长期保持一些特定功能的虚拟机&lt;/li>
+&lt;li>在本地保持丰富的虚拟机模版和快照&lt;/li>
+&lt;li>将照片和视频家庭资料放到媒体服务器中【Plex】&lt;/li>
+&lt;li>探索IoT智能家居，家庭安防等项目&lt;/li>
+&lt;li>充分利用虚拟话带来的福利，计算和存储资源超量分配&lt;/li>
+&lt;li>利用高级分布式软件定义存储都高级功能，空间的节省：压缩，去重，纠删码等；性能提升：虚拟机享受全闪存本地磁盘+精简制备；同时享用性能和空间：通过 SSD+HDD的混合容量存储池实现鱼和熊掌兼得。&lt;/li>
+&lt;li>本地实验室网速提升到万兆以太网，尝试最新的数据中心DPU（智能网卡）、边缘计算和IoT趣味设备。&lt;/li>
+&lt;li>排除家用 NAS主机（群晖）、ALL in One 主机、云和容器等选项&lt;/li>
+&lt;/ul>
+&lt;p>其他可能选项&lt;/p>
+&lt;ul>
+&lt;li>VMware 的 ESXi 平台 + VSAN ；熟悉 VMware 技术栈； 或被人带着追捧者多用。&lt;/li>
+&lt;li>Citrix 的 XenServer + 家用集中存储；少见家用的人。&lt;/li>
+&lt;li>其他的开源虚拟化选项 Proxmox ，单机版家用服务区比较常见。&lt;/li>
+&lt;/ul>
+&lt;h2 id="各种系统使用体验">各种系统使用体验
+&lt;/h2>&lt;p>不论是单机的服务器/NAS，总之使用场景的需求是越用越多的，HomeLab 用的时间越久，想要做的事情就会越多。&lt;/p>
+&lt;h3 id="intel-nuc">Intel NUC
+&lt;/h3>&lt;p>这是一台 Nutanix 售前工程师标配的测试机。我用了好几年，非常皮实耐用。&lt;/p>
+&lt;p>&lt;strong>硬件平台&lt;/strong>：&lt;/p>
+&lt;ul>
+&lt;li>集成主板，i7 8 Core + 集成 Intel 显卡&lt;/li>
+&lt;li>32GB 内存，DDR4 - 2133 MHz&lt;/li>
+&lt;li>SSD 500GB x 2 ， M.2 nvme 接口&lt;/li>
+&lt;/ul>
+&lt;p>&lt;strong>使用体验&lt;/strong>：&lt;/p>
+&lt;ol>
+&lt;li>CPU和内存资源都比较有限&lt;/li>
+&lt;li>散热不理想，风扇噪音越用越大&lt;/li>
+&lt;li>无法扩展&lt;/li>
+&lt;li>不适合长期开机&lt;/li>
+&lt;li>安装 Nutanix CE （AHV） 超级轻松，从不会遇到失败，hypervisor 安装在U盘上。安装后，调低 cvm 的资源，剩余可用资源，所剩无几。&lt;/li>
+&lt;/ol>
+&lt;h3 id="lenovo-p720">Lenovo P720
+&lt;/h3>&lt;p>公有云虽然是完全可用的，但是无法满足我企业数据中心相关技术的本地体验。还是需要搞一台配置高的，资源更多的机器，因此入手了第二台测试机，为了放置空间和电费都更容易接受，折中选择了二手的品牌机工作站。&lt;/p>
+&lt;p>硬件平台：&lt;/p>
+&lt;ul>
+&lt;li>Intel(R) Xeon(R) CPU E5-2680 v4 @ 2.40GHz 14 core x 2&lt;/li>
+&lt;li>64 GB ，还有很多空余插槽&lt;/li>
+&lt;li>SSD ：120 GB + 256GB ，一共有四个 3.5 寸的标准磁盘位。&lt;/li>
+&lt;li>安装 VMWare ESXi + vCenter
+&lt;ul>
+&lt;li>超分资源+精简存储制备&lt;/li>
+&lt;li>广泛的开源虚拟机模版下载&lt;/li>
+&lt;li>大量开源和私有企业技术支持&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;p>经过一年多的扩容，截止到现在的配置如下：&lt;/p>
+&lt;ul>
+&lt;li>56 logical core： 2 x Intel(R) Xeon(R) CPU E5-2680 v4 @ 2.40GHz -14 core 【保持】&lt;/li>
+&lt;li>128 GB DDR4 2011Mhz 【感谢上海网友】&lt;/li>
+&lt;li>HDD：西部数据WD 4Tb 5400rpm x 2 【增加了两块 HDD】&lt;/li>
+&lt;li>SSD：三星750 Evo 120GB，三星870 Evo 250 GB，三星870 Evo 1TB 【新增一块 SSD】&lt;/li>
+&lt;li>NIC：Boardcom BCM57412 NetXtreme-E 10Gb SPF+双口 【感谢panpan】&lt;/li>
+&lt;/ul>
+&lt;p>使用体验：&lt;/p>
+&lt;ol>
+&lt;li>存储空间不足，虚拟机越来越多，需要不断买新磁盘扩容&lt;/li>
+&lt;li>CPU&amp;amp;内存有限，无法做一些性能基准测试&lt;/li>
+&lt;li>想扩展为单机版 VSAN ，或者 VSAN 群集，但是它无法支持SSD+HDD的混合容量磁盘组&lt;/li>
+&lt;li>只有两张千兆网卡（主板集成），无法实现集群情况下高速的网络数据I/O&lt;/li>
+&lt;li>虚拟机开多了，导致CPU过热，机器会自动关机后，机器暂时无法启动，不得不替换了更好的散热器&lt;/li>
+&lt;/ol>
+&lt;p>单机工作站的 HomeLab 模式无法实现，我对更多集群型软件的部署使用场景，包括：&lt;/p>
+&lt;ul>
+&lt;li>Elasticsearch 冷热温多层架构 + ELK 全家桶的长期数据本地保留&lt;/li>
+&lt;li>高可用 K8S 集群搭建和长期持有
+*更多 DevOps 开源工具链的搭建，新版本更新，长期随时可用&lt;/li>
+&lt;li>还有其它，不赘述。&lt;/li>
+&lt;/ul>
+&lt;h2 id="建议平台选型">建议平台选型
+&lt;/h2>&lt;p>为了实现三节点的超融合群集，双十一出手购买了一些产品。&lt;/p>
+&lt;h3 id="国产主板套装-x-2">国产主板套装 x 2
+&lt;/h3>&lt;p>国产套版的性价比和评价其实都还是ok的，满心怀疑的开始测试起来。&lt;/p>
+&lt;ul>
+&lt;li>
+&lt;p>华南金牌 x99-AD4 - 单路&lt;/p>
+&lt;ul>
+&lt;li>12 CPUs x Intel(R) Xeon(R) CPU E5-2690 v3 @ 2.60GHz&lt;/li>
+&lt;li>64 GB - DDR4 - 2400Mhz&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>
+&lt;p>磁盘接口：&lt;/p>
+&lt;ul>
+&lt;li>nvme接口：1 x M.2 - AHV 可用，ESXi不可用&lt;/li>
+&lt;li>NGFF接口: 1 x M.2 - 同上&lt;/li>
+&lt;li>sSATA x 2：空闲&lt;/li>
+&lt;li>SATA x 6:
+&lt;ul>
+&lt;li>SSD1: KINGSTON 60GB x 2&lt;/li>
+&lt;li>SSD2: Samsung SSD 860 500GB + Samsung MZ7TE 256GB&lt;/li>
+&lt;li>HDD3/4: 西部数据WD 4Tb 5400rpm x 4&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>
+&lt;p>主板集成RTL8111/8168/8411 千兆网卡，ESXi 7/6 都不能直接兼容&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>显卡：无集成显卡，ATI Radeon HD 2GB x 2 - 买错了，最好是集成显卡。&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>万兆网卡： Boardcom BCM57412 NetXtreme-E 10Gb SPF+双口 【感谢panpan】 x 2&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>千兆网卡：&lt;/p>
+&lt;ul>
+&lt;li>Intel 82576 千兆双口 x 1 （ESX i 6/7 兼容）&lt;/li>
+&lt;li>Intel I340-T2 千兆双口 x 1 （ESX i 7 不兼容）&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>
+&lt;p>机箱：开放式亚克力透明双层机箱 x 2&lt;/p>
+&lt;/li>
+&lt;/ul>
+&lt;p>使用经验：&lt;/p>
+&lt;ol>
+&lt;li>BIOS 中的Boot模式一定要设置为Legacy模式&lt;/li>
+&lt;li>忽略主板集成网卡，除非你非常擅长将驱动注入ESXi 的iso文件，安装前兆或者万兆网卡&lt;/li>
+&lt;li>Nutanix CE安装的时候需要网卡驱动正常，ESXi 虚拟化必须能从本地web服务器下载iso安装文件&lt;/li>
+&lt;li>AHV虚拟化安装很正常，连nvme接口的M.2磁盘都可以正常使用&lt;/li>
+&lt;li>ESXi虚拟化安装的结果是失败的，但是手工可以拯救CVM，步骤可以忍受。&lt;/li>
+&lt;/ol>
+&lt;h3 id="超微豪华高仿nutanix">超微豪华高仿Nutanix
+&lt;/h3>&lt;p>新购了一块超微主板，做下对比测试，缓解一下华南主板坑多的低落心情。&lt;/p>
+&lt;ul>
+&lt;li>单路：SuperMicro X10SRL-F&lt;/li>
+&lt;li>CPU：E5-2690 v3 @2.60 GHz，12 core&lt;/li>
+&lt;li>SATA3: x 10
+&lt;ul>
+&lt;li>SSD 1/2&lt;/li>
+&lt;li>HDD x2&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>主板集成双千兆网卡 （ESXi 6/7 兼容）&lt;/li>
+&lt;/ul>
+&lt;p>用这块主板 + 以上华南金牌的全套磁盘+CPU+内存+万兆网卡，安装Nutanix CE，ESXi 6/7都可以顺利安装，连CVM都能够自动创建成功，不需要手工拯救失败的CVM，这个平台安装部署Nutanix CE 应该是毫无压力感。&lt;/p>
+&lt;p>超微主板是Nutanix原厂超融合硬件平台的供应商，这任选了一块测试版的兼容性就确实没话说。不用再测，不用在多了，关键是把上面的国产廉价平台能用起来。&lt;/p>
+&lt;h3 id="方案汇总">方案汇总
+&lt;/h3>&lt;table>
+&lt;thead>
+&lt;tr>
+&lt;th>类型&lt;/th>
+&lt;th>主板&lt;/th>
+&lt;th>内存&lt;/th>
+&lt;th>SSD&lt;/th>
+&lt;th>HDD&lt;/th>
+&lt;th>网络&lt;/th>
+&lt;th>节点&lt;/th>
+&lt;th>价格&lt;/th>
+&lt;/tr>
+&lt;/thead>
+&lt;tbody>
+&lt;tr>
+&lt;td>最小可平台&lt;/td>
+&lt;td>Intel NUC&lt;/td>
+&lt;td>32GB&lt;/td>
+&lt;td>500GB x 2&lt;/td>
+&lt;td>USB/hypervisor&lt;/td>
+&lt;td>1G1/2&lt;/td>
+&lt;td>1&lt;/td>
+&lt;td>7+千左右&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>工作站平台&lt;/td>
+&lt;td>Lenovo P710&lt;/td>
+&lt;td>128GB&lt;/td>
+&lt;td>1/2/3+&lt;/td>
+&lt;td>1/2/3/4/5+&lt;/td>
+&lt;td>1Gx2/10Gx2&lt;/td>
+&lt;td>1&lt;/td>
+&lt;td>8+千左右&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>国产套版&lt;/td>
+&lt;td>华南x99-AD4&lt;/td>
+&lt;td>64GB&lt;/td>
+&lt;td>2&lt;/td>
+&lt;td>1/2/3/4&lt;/td>
+&lt;td>1Gx2+10Gx2&lt;/td>
+&lt;td>1/3/4&lt;/td>
+&lt;td>7+千左右/2套&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>超微平台&lt;/td>
+&lt;td>SuperMicro X10SRL-F&lt;/td>
+&lt;td>/&lt;/td>
+&lt;td>/&lt;/td>
+&lt;td>/&lt;/td>
+&lt;td>/&lt;/td>
+&lt;td>1/3/4&lt;/td>
+&lt;td>随意搭配，参考市价&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>旧服务器&lt;/td>
+&lt;td>Dell/Lenvov/HP/浪潮&lt;/td>
+&lt;td>/&lt;/td>
+&lt;td>2+直通&lt;/td>
+&lt;td>2+直通&lt;/td>
+&lt;td>1Gx2+10Gx2&lt;/td>
+&lt;td>1/3/4&lt;/td>
+&lt;td>参考市价&lt;/td>
+&lt;/tr>
+&lt;/tbody>
+&lt;/table>
+&lt;h3 id="其他组件的选择">其他组件的选择
+&lt;/h3>&lt;p>下面是对于自选平台的DYI的建议：&lt;/p>
+&lt;ul>
+&lt;li>机箱：根据主板的选择，开放式主板方便使用水冷系统，热量容易散发，可以借助环境的空气散热，选择封闭机箱则需要注意CPU散热器的选择，确保CPU工作温度正常。&lt;/li>
+&lt;li>电源：CPU和显卡电耗需要提前计算，确保电源供电攻略足够。&lt;/li>
+&lt;li>显卡：主板尽量带集成显卡，保持系统最简化可用，后续如果需要GPU了，可以在加显卡，确保主板有两个PCIx16的插槽。&lt;/li>
+&lt;li>网卡：尽量选择ESXi7可以识别免驱动的，7这个版本兼容的网卡类型比6少很多，安装过程中需要IP地址，免得给自己找麻烦，我的一块千兆网卡不能被7正常驱动，因此ESXi的版本无奈降到6.7u3。&lt;/li>
+&lt;li>PCI插槽：建议16x至少2个，用于显卡和万兆网卡，其它速率的若干，用于兼容其它可能的网卡或者设备。&lt;/li>
+&lt;/ul>
+&lt;h2 id="集群搭建流程">集群搭建流程
+&lt;/h2>&lt;p>&lt;img src="https://martinliu.cn/img/cos/2022-02-21-WechatIMG1773.jpeg"
+loading="lazy"
+alt="test machine"
+>&lt;/p>
+&lt;h3 id="准备工作">准备工作
+&lt;/h3>&lt;p>注册Nutanix社区帐号，&lt;a class="link" href="https://next.nutanix.com/%ef%bc%8c%e5%bf%85%e9%a1%bb%e7%94%a8%e5%85%ac%e5%8f%b8%e9%82%ae%e7%ae%b1%e6%b3%a8%e5%86%8c%ef%bc%8c%e6%89%8d%e8%83%bd%e4%b8%8b%e8%bd%bd%e6%9c%80%e6%96%b0%e7%9a%84Nutanix" target="_blank" rel="noopener"
+>https://next.nutanix.com/，必须用公司邮箱注册，才能下载最新的Nutanix&lt;/a> CE安装镜像，和其它相关组件。在首次登陆Nutanix CE群集的时候，也需要输入这个帐号和密码验证。&lt;/p>
+&lt;p>准备安装镜像：&lt;/p>
+&lt;ol>
+&lt;li>Windows 10 + Ruft&lt;/li>
+&lt;li>下载 Nutanix-2020-9016.tar&lt;/li>
+&lt;li>Fedora 35 Live CD&lt;/li>
+&lt;li>16 GB U 盘 x2&lt;/li>
+&lt;/ol>
+&lt;p>准备网络环境&lt;/p>
+&lt;ol>
+&lt;li>千兆 + 万兆 （DAC 铜缆）&lt;/li>
+&lt;li>DHCP + DNS + Internet 网络&lt;/li>
+&lt;li>Web 服务器 + esxi702a.iso 「不安装 vsphere 虚拟化的不需要 web 服务器」&lt;/li>
+&lt;/ol>
+&lt;h3 id="安装流程">安装流程
+&lt;/h3>&lt;ol>
+&lt;li>Fedora Live CD 启动，磁盘工具删除分区&lt;/li>
+&lt;li>插好网线&lt;/li>
+&lt;li>Nutanix 安装盘启动，观察网卡 IP 地址获取&lt;/li>
+&lt;li>设置 Hypervisor 类型、磁盘布局、集群信息等，建议不要勾选创建点节点集群的选项，后期手工创建更可控。&lt;/li>
+&lt;/ol>
+&lt;p>&lt;img src="https://martinliu.cn/img/cos/2022-02-21-WechatIMG1774.jpeg"
+loading="lazy"
+alt="setup"
+>
+5. 同意软件许可
+6. 等待 Hypervisor （ahv一般较快，或者vsphere）成功安装&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/img/cos/2022-02-21-WechatIMG1775.jpeg"
+loading="lazy"
+alt="hypervisor 安装过程中"
+>&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/img/cos/2022-02-21-WechatIMG1776.jpeg"
+loading="lazy"
+alt="hypervisor 安装完毕"
+>&lt;/p>
+&lt;ol start="5">
+&lt;li>安装后重启服务器，首次 host 启动，观察 cvm 启动过程和结果，等待 CVM 就绪，确认 CVM 上硬盘的挂载情况&lt;/li>
+&lt;li>登录后确保集群处于未配置状态&lt;/li>
+&lt;li>重复以上步骤，安装其他 2 ～ 3 个节点 【CE 最多支持4个节点】&lt;/li>
+&lt;li>检查和确认集群的状态，每个节点都输出，集群未配置，准备工作就绪。&lt;/li>
+&lt;li>在其中一个 cvm 上，运行创建 Nutanix 集群的命令， cluster create&lt;/li>
+&lt;li>首次登陆集群，完成初始化配置&lt;/li>
+&lt;li>配置并确认网络配置，在存储迟管理的地方，创建过载到所有vsphere 主机的共享 NFS 统一存储空间。存储资源就绪。&lt;/li>
+&lt;li>安装部署 vcenter，在 Prism 中注册 vcenter&lt;/li>
+&lt;li>安装虚拟机模版&lt;/li>
+&lt;li>创建虚拟机测试&lt;/li>
+&lt;li>运行基本的性能验收测试&lt;/li>
+&lt;li>正式投产&lt;/li>
+&lt;li>可选：安装 PC、Fileserver、CALM、K8s&lt;/li>
+&lt;/ol>
+&lt;h3 id="问题解决">问题解决
+&lt;/h3>&lt;ul>
+&lt;li>【Hypervisor】安装过程中 screen is terminating&lt;/li>
+&lt;/ul>
+&lt;p>&lt;img src="https://martinliu.cn/img/cos/2022-02-21-WechatIMG1777.jpeg"
+loading="lazy"
+alt="terminal screen"
+>&lt;/p>
+&lt;ul>
+&lt;li>【vSphere虚拟化】虚拟化安装成功，但是重启后 cvm 创建失败&lt;/li>
+&lt;/ul>
+&lt;p>&lt;img src="https://martinliu.cn/img/cos/2022-02-21-WechatIMG1778.jpeg"
+loading="lazy"
+alt="failed-install"
+>&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/img/cos/2022-02-21-2021-11-27_22-00-44.png"
+loading="lazy"
+alt="CVM failed"
+>&lt;/p>
+&lt;ul>
+&lt;li>【vSphere虚拟化】cvm 创建成功且运行正常，但是不能正常挂载 HDD&lt;/li>
+&lt;/ul>
+&lt;p>&lt;img src="https://martinliu.cn/img/cos/2022-02-21-2022-02-21_19-17-50.png"
+loading="lazy"
+alt="CVM lost one hdd"
+>
+&lt;img src="https://martinliu.cn/img/cos/2022-02-21-2022-02-21_19-16-35.png"
+loading="lazy"
+alt="CVM lost one HDD"
+>&lt;/p>
+&lt;h3 id="esxi-安装后-cvm-创建失败hdd挂载问题">ESXi 安装后 CVM 创建失败/HDD挂载问题
+&lt;/h3>&lt;p>由于安装程序无法正常初始化所有磁盘，直通的HDD没有正常加载，初始化脚本有小bug导致。手工挂在直通HDD，修复有bug的python代码，重新初始化创建 cvm，确保 CVM 虚拟机最后能正常运行。&lt;/p>
+&lt;p>处理方法：&lt;/p>
+&lt;ol>
+&lt;li>
+&lt;p>网页访问 ESXi 的 ip 地址 ，使用默认的用户名【root】和密码【nutanix/4u】登录，查看确认如下：&lt;/p>
+&lt;ol>
+&lt;li>存储-设备下面是否所有磁盘都可见&lt;/li>
+&lt;li>网络：所有uplink，网卡，两个虚拟交换机，五个port group&lt;/li>
+&lt;/ol>
+&lt;/li>
+&lt;li>
+&lt;p>SSH 登陆 ESXi host ，查看错误日志的内容：&lt;code>/bootbank/Nutanix/firstboot/esx_first_boot_launcher.log&lt;/code>；查看是否是如下的常见错误：&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-sh" data-lang="sh">&lt;span class="line">&lt;span class="cl">FATAL Fatal exception encountered:
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Traceback &lt;span class="o">(&lt;/span>most recent call last&lt;span class="o">)&lt;/span>:
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> File &lt;span class="s2">&amp;#34;/bootbank/Nutanix/firstboot/esx_first_boot.py&amp;#34;&lt;/span>, line 2516, in &amp;lt;module&amp;gt;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> main&lt;span class="o">()&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> File &lt;span class="s2">&amp;#34;/bootbank/Nutanix/firstboot/esx_first_boot.py&amp;#34;&lt;/span>, line 2361, in main
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> create_svm_vmx_and_attach_rdm_disks_ce&lt;span class="o">()&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> File &lt;span class="s2">&amp;#34;/bootbank/Nutanix/firstboot/esx_first_boot.py&amp;#34;&lt;/span>, line 1478, in create_svm_vmx_and_attach_rdm_disks_ce
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nv">dev_paths&lt;/span> &lt;span class="o">=&lt;/span> get_disk_locations_ce&lt;span class="o">()&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> File &lt;span class="s2">&amp;#34;/bootbank/Nutanix/firstboot/esx_first_boot.py&amp;#34;&lt;/span>, line 1019, in get_disk_locations_ce
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> device_identifiers.remove&lt;span class="o">(&lt;/span>disk&lt;span class="o">[&lt;/span>:-3&lt;span class="o">])&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">ValueError: list.remove&lt;span class="o">(&lt;/span>x&lt;span class="o">)&lt;/span>: x not in list
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;/li>
+&lt;li>
+&lt;p>使用这篇文章&lt;a class="link" href="https://next.nutanix.com/discussion-forum-14/esxi-failed-install-on-hpe-dl380-gen9-ce-2020-09-16-38898" target="_blank" rel="noopener"
+>https://next.nutanix.com/discussion-forum-14/esxi-failed-install-on-hpe-dl380-gen9-ce-2020-09-16-38898&lt;/a>中的解决方案，查看这个论坛帖子需要注册论坛的账号。&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>使用上文的方案，运行修改后的 esx_first_boot.py 程序。等待程序执行完毕，在ESXi web client中观察CVM的创建过程。&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>CVM 创建成功运行起来之后，你会发现它可能只挂载了SSD，下面需要手工加载加载系统中的HDD。&lt;/p>
+&lt;ol>
+&lt;li>ssh 登陆 ESXi host&lt;/li>
+&lt;li>用命令 &lt;code>ls /vmfs/devices/disks/&lt;/code> 查看系统上的所有磁盘设备，记录未挂载上的HDD的设备路径，例如：&lt;code>/vmfs/devices/disks/t10.ATA_____WDC_WD40EFRX2D68N32N0_________________________WD2DWCC7K0ZN6E93&lt;/code>&lt;/li>
+&lt;li>进入 CVM 虚拟机的配置文件目录 【如：&lt;code>/vmfs/volumes/NTNX-local-ds-4abcf92c-A/&lt;/code>】，创建所有HDD的直通磁盘，参考命令：&lt;code>vmkfstools -z /vmfs/devices/disks/t10.ATA_____WDC_WD40EFRX2D68N32N0_________________________WD&lt;/code>
+&lt;code>2DWCC7K0ZN6E93 ./wd4t-1.vmdk&lt;/code>&lt;/li>
+&lt;li>在ESXi web client中，关机（PowerOff） CVM，修改配置&lt;/li>
+&lt;li>将上一步创建的直通HDD添加进来&lt;/li>
+&lt;li>修改虚拟机选项的操作系统，改为CentOS7&lt;/li>
+&lt;li>查看CVM虚拟机所有磁盘，确保所有SSD和HDD都已经加载，先不要修改其它任何配置，开机，观察虚拟机是否可以正常启动。&lt;/li>
+&lt;/ol>
+&lt;/li>
+&lt;li>
+&lt;p>ssh登陆CVM虚拟机的操作系统，使用默认用户名【nutanix】和密码【nutanix/4u】。用ping其它集群节点的（host和cvm）ip地址，确保网关和DNS服务器都可达。&lt;/p>
+&lt;/li>
+&lt;/ol>
+&lt;p>CVM 正常运行后，才可以作为空白节点加入群集，或者用于创建新群集。&lt;/p>
+&lt;h2 id="经验教训">经验教训
+&lt;/h2>&lt;ol>
+&lt;li>在 Nutanix 官方用户论坛的CE板块搜索问题或提问，你不是孤独的。&lt;/li>
+&lt;li>散热器买专用的，通用的套具安装费劲，适配的并会很好&lt;/li>
+&lt;li>磁盘至少使用 Fedora live cd 的磁盘工具查看状态，避免坏盘。&lt;/li>
+&lt;li>cvm 创建失败应该是可以修复的&lt;/li>
+&lt;li>安装过程需要联网&lt;/li>
+&lt;li>集成显卡更好，&lt;/li>
+&lt;li>相同的错误复发时要记得赶紧收工，明天再搞&lt;/li>
+&lt;/ol>
+&lt;h2 id="其他可用资源">其他可用资源
+&lt;/h2>&lt;p>HCI超融合技术对于了解它的人来说很火热，但是还有很多不太了解HCI的人；HCI的用户对它也有不同的使用场景和期望。请大家参与这个《中国超融合状态调查》，我们每月为参与本调查的朋友进行抽奖，抽奖结果在下次直播的时候公布。扫码参与调查。&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/img/cos/2022-01-04-dc.png"
+loading="lazy"
+alt="CVM HDD"
+>&lt;/p>
+&lt;p>我们为希望学习HCI技术的朋友们创建了一个qq群，希望可以给大家带来一定帮助。扫码加入我们的QQ群。&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/img/cos/2022-01-04-qq.png"
+loading="lazy"
+alt="CVM HDD"
+>&lt;/p>
+&lt;h2 id="下期预告">下期预告
+&lt;/h2>&lt;p>HCI系统的搭建还有很多问题值得一起探讨和学习，HCI超融合系统软件还有很多功能可以学习了解。我们为DevOps社区的朋友们新开辟了这个HCI板块，希望以后会每个月为大家输出一期新的内容。下期直播的简介如下：&lt;/p>
+&lt;ul>
+&lt;li>日期：2022 年 3 月 22 日， 下午 1点开始&lt;/li>
+&lt;li>内容：Nutanix CE 的多集群管理&lt;/li>
+&lt;li>主持人：刘征，吴孔辉&lt;/li>
+&lt;li>直播平台：B站搜/关注：中国DevOps社区&lt;/li>
+&lt;li>直播抽奖：未知神秘礼物 🎁&lt;/li>
+&lt;li>报名：互动吧搜/关注：中国DevOps社区&lt;/li>
+&lt;/ul></description></item></channel></rss>

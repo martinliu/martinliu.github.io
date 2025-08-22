@@ -1,0 +1,1068 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>运维 on Martin Liu's Blog</title><link>https://martinliu.cn/tags/%E8%BF%90%E7%BB%B4/</link><description>Recent content in 运维 on Martin Liu's Blog</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><lastBuildDate>Sun, 30 Jun 2024 13:07:55 +0800</lastBuildDate><atom:link href="https://martinliu.cn/tags/%E8%BF%90%E7%BB%B4/index.xml" rel="self" type="application/rss+xml"/><item><title>Google 白皮书：产品导向的 SRE 可靠性</title><link>https://martinliu.cn/blog/product-focused-reliability-for-sre/</link><pubDate>Wed, 12 Jun 2024 13:25:58 +0800</pubDate><guid>https://martinliu.cn/blog/product-focused-reliability-for-sre/</guid><description>&lt;img src="https://martinliu.cn/blog/product-focused-reliability-for-sre/pexels-pavel-danilyuk-7868970.jpg" alt="Featured image of post Google 白皮书：产品导向的 SRE 可靠性" />&lt;blockquote>
+&lt;p>作者：Carl Crous, Parker Roth 和 Victoria Hurd；
+译者：刘征
+原文：&lt;a class="link" href="https://sre.google/resources/practices-and-processes/product-focused-reliability-for-sre/" target="_blank" rel="noopener"
+>https://sre.google/resources/practices-and-processes/product-focused-reliability-for-sre/&lt;/a>&lt;/p>&lt;/blockquote>
+&lt;h2 id="介绍">介绍
+&lt;/h2>&lt;p>站点可靠性工程师（SRE）传统上通过其服务间接支持产品，负责服务质量目标（SLO），并提高服务的可靠性。然而，这种方法存在一些局限，有可能影响产品和用户体验：&lt;/p>
+&lt;ul>
+&lt;li>服务仅能部分满足用户需求和业务目标。度量服务的可靠性只是对用户需求或业务目标的近似。&lt;/li>
+&lt;li>用户界面（UI）越来越复杂。在 UI 和 SRE 度量的服务之间存在许多层次，导致产品覆盖的显著差距。&lt;/li>
+&lt;li>服务增长可能轻易超过组织的工程增长，导致服务被忽视或团队负担过重。&lt;/li>
+&lt;li>服务支持优化了产品整体可靠性和性能的一小部分，而在这些服务范围之外存在显著风险。&lt;/li>
+&lt;li>服务本质上是同步的。异步流程常常被忽视或难以优先处理，因为其成功无法通过单一服务来度量。&lt;/li>
+&lt;/ul>
+&lt;p>本文探讨了这些限制，并讨论了一些 Google SRE 团队如何通过将支持重新聚焦于产品和最终用户需求来解决这些问题，而不是集中于基础设施和服务。我们还讨论了 SLO 策略，描述了 Google SRE 如何定义产品，并解释了如何决定哪些因素对实现产品可靠性至关重要。&lt;/p>
+&lt;p>&lt;strong>产品参与度&lt;/strong>&lt;/p>
+&lt;p>为了支持产品，SRE 需要熟悉产品及其功能的设计和开发。同时，还需要了解终端用户在使用产品时的目标。&lt;/p>
+&lt;p>为了获取产品和用户信息，SRE 需要与产品经理和用户体验研究人员合作。这些人根据“要完成的工作”（Jobs to be Done）和 Google 的关键用户旅程（CUJ）等框架定义产品和功能，这些框架识别终端用户的目标和期望结果。&lt;/p>
+&lt;p>使用这些信息，SRE 可以识别出对产品及其用户重要的内容，并用定义产品的相同语言来定义可靠性。&lt;/p>
+&lt;h2 id="服务支持模型">服务支持模型
+&lt;/h2>&lt;p>SRE 的核心责任是“负责其支持服务的可用性、延迟、性能、效率、变更管理、监控、应急响应和容量规划”[3]。&lt;/p>
+&lt;p>在这种模型中，服务是 SRE 团队的主要“所有权单位”和“工作对象”。这种对服务的关注是 SRE 团队从传统上所建立的方式。它驱动了 SRE 按怎样的优先级别处理工作、度量性能，并扩大范围，从而能支持到更多的服务。&lt;/p>
+&lt;p>从传统上看，SRE 在基于服务的工作中表现出色，能确保他们所支持的服务具有高可用性。然而，服务的可用性并不总是能等同于：用户对产品的满意，原因如下：&lt;/p>
+&lt;ul>
+&lt;li>产品仍然会发生超出 SRE 团队范围的故障，例如 Web端 或移动应用中的问题。&lt;/li>
+&lt;li>SRE 团队花时间响应了可能对用户并没有影响的状况。例如，HTTP 404 错误可能并不会影响用户。&lt;/li>
+&lt;/ul>
+&lt;p>当 SRE 的职责范围仅限于某一组服务时，SRE 团队通常并没有足够的信息来有效解决以上问题。相反，SRE 被迫在并不了解服务应如何表现的情况下，来评估这些服务。&lt;/p>
+&lt;p>SRE 团队其实可以接受对产品本身的责任，而不仅限于对服务可靠性的责任。这种在更高层面上的 &lt;strong>优先考虑产品，而不是服务&lt;/strong> 的承诺。我们称其为产品支持模型，它开启了一种新的可靠性思维方式。&lt;/p>
+&lt;h2 id="产品支持模型">产品支持模型
+&lt;/h2>&lt;p>这种新产品支持模型的核心是: SRE 负责产品关键功能的可靠性。过去，SRE 会被分配了&lt;strong>一组服务&lt;/strong>，它们在彼时都是受到重视的关键服务。现在，SRE 会被分配了&lt;strong>一组功能和用户想要的结果&lt;/strong>。在没有传统服务所有权固定边界的情况下，SRE 团队可以将其优先事项与业务和用户结果对齐，并在每一层服务堆栈中处理更广泛和更有影响力的工作。&lt;/p>
+&lt;blockquote>
+&lt;p>“如果你不能度量它，你就不能改进它。” — 彼得·德鲁克&lt;/p>&lt;/blockquote>
+&lt;p>在工程团队能够管理产品的可靠性之前，必须先能够度量其可靠性。建立一套提供足够广度和深度覆盖的度量标准是至关重要的，这有助于团队识别最具影响力的工程工作，同时避免想要过度优化任何特定系统的诱惑。&lt;/p>
+&lt;p>在团队能够度量产品的可靠性之前，必须先知道要度量什么，以及如何度量。需要度量的内容：来自于将产品建模为一组用户可见的行为或功能，并根据它们给用户带来的价值，对这些用户行为进行优先级排序。在掌握了这份优先级列表后，团队可以开始从支持团队/服务，转型为支持产品及其用户。&lt;/p>
+&lt;p>图 1 说明了如何通过与利益相关者对齐、产品建模和度量的坚实基础，来实现提高产品可靠性的终极目标。同在这些概念上达成的共识，能使团队能够将资源投入到对最终用户和业务最具影响力的问题上。&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/blog/product-focused-reliability-for-sre/prbw.webp"
+width="3840"
+height="1655"
+srcset="https://martinliu.cn/blog/product-focused-reliability-for-sre/prbw_hu_17a862cd226ec73.webp 480w, https://martinliu.cn/blog/product-focused-reliability-for-sre/prbw_hu_49b07369473f2a0e.webp 1024w"
+loading="lazy"
+alt="图 1：产品可靠性引导工作流程"
+class="gallery-image"
+data-flex-grow="232"
+data-flex-basis="556px"
+>&lt;/p>
+&lt;h2 id="开始">开始
+&lt;/h2>&lt;p>在本节中，你将学习如何实施以产品为中心的可靠性参与（engage），包括以下关键步骤：&lt;/p>
+&lt;ol>
+&lt;li>与利益相关者对齐&lt;/li>
+&lt;li>建模产品&lt;/li>
+&lt;li>度量性能&lt;/li>
+&lt;li>管理可靠性&lt;/li>
+&lt;/ol>
+&lt;p>每个步骤列出了为 SRE 团队带来价值的中间交付物及其解锁的机会。我们鼓励你按顺序进行，但也指出了可以利用现有指标和关系的领域。&lt;/p>
+&lt;h3 id="1-与你的利益相关者对齐">1. 与你的利益相关者对齐
+&lt;/h3>&lt;p>与任何 SRE 参与过程类似，第一步是确定相关的利益相关者。在基于服务的参与中，依赖于 SRE 和开发团队之间的合作，而以产品为中心的参与则需要更多样化的合作伙伴。这里的更广泛的合作伙伴通常包括以下角色：&lt;/p>
+&lt;ul>
+&lt;li>产品经理：定义产品策略和需求。&lt;/li>
+&lt;li>UX 设计师和研究人员：将需求转化为用户体验。&lt;/li>
+&lt;li>工程团队：开发必要的功能和基础设施以实现用户体验。【译者注：在以服务为支持对象的模式中，SRE 仅重点关注&amp;amp;合作此方】&lt;/li>
+&lt;li>支持专家：通过直接或书面沟通与最终用户互动。&lt;/li>
+&lt;/ul>
+&lt;p>为了成功的管理产品可靠性，关键是要确定每个角色的责任。&lt;/p>
+&lt;blockquote>
+&lt;p>交付物：记录角色和职责的文档，例如 RACI 矩阵[7]。&lt;/p>&lt;/blockquote>
+&lt;p>在确定了所有的利益相关者后，与他们会面沟通，启动 SRE 的合作伙伴关系。&lt;/p>
+&lt;h3 id="2-建模产品">2. 建模产品
+&lt;/h3>&lt;p>人们（用户）使用产品是为了实现他们在现实世界里的目标。为了帮助产品团队构建能够促进用户目标的产品和服务，你需要了解产品用户的目标。&lt;/p>
+&lt;p>本节介绍了两个关键概念：用户目标和步骤。用户目标描述了用户的意图和他们想要实现的目标。例如，邮件服务的一个目标可能是“与人交流”。步骤是用户为实现其目标而采取的各个独立操作。&lt;/p>
+&lt;p>“要完成的工作”（JTBD）[1,5] 框架将用户目标建模为工作，而 Google 的关键用户旅程（CUJs）[2] 将用户目标建模为伴随一系列任务或步骤的目标。&lt;/p>
+&lt;p>了解用户在使用产品或功能时的目标是软件开发的有力工具，因为它为你提供了关于产品最重要方面的清晰信号。用户的意图也是 SRE 可以利用的强大可靠性工具。&lt;/p>
+&lt;p>假设你的产品是使用“要完成的工作”框架构建的，那么你将拥有一份有待促进的&lt;strong>用户目标列表&lt;/strong>。产品经理、UX 设计师和其他非工程学科角色，也都可能拥有这份列表。这份列表提供了用户期望目标的高阶描述，基于跨职能的数据，为涉及软件开发生命周期的许多学科提供了共同的语言。利用这些共享的用户目标作为产品支持的基础是建模产品可靠性的基础第一步。&lt;/p>
+&lt;p>然而，如果你还没有用户目标列表，可能就需要自己开发这份列表，这将带来显著的工程成本，并导致只有 SRE 愿意使用该列表。更好的方法是与产品经理合作，并鼓励他们采用某种框架，并来负责定义用户目标。&lt;/p>
+&lt;p>用户目标被分解为：用户为实现其总体目标，所要采取的一系列步骤。每个步骤都是独立的工作单元，与其他步骤无关。这些步骤提供以下信息：&lt;/p>
+&lt;ul>
+&lt;li>解释当用户在使用产品时，他们在做什么，或用户目标是什么。&lt;/li>
+&lt;li>定义每个步骤的开始条件和多个成功或失败条件。&lt;/li>
+&lt;li>可以与产品界面或基础设施相关联的具体操作列表，例如用户发送电子邮件时调用的 RPC。&lt;/li>
+&lt;/ul>
+&lt;p>以上用户目标只是：一个将步骤组合在一起的组织元素。&lt;/p>
+&lt;p>基于这些步骤，你可以确定完成这些步骤所需用到的产品界面和基础设施的哪些部分。某个界面或基础设施服务的某些部分可能会涉及到不同的目标，因此它们可以具有不同的重要性级别。&lt;/p>
+&lt;blockquote>
+&lt;p>交付物：一个产品的用户目标登记表，包含了所有用户目标和步骤的高阶描述。&lt;/p>&lt;/blockquote>
+&lt;p>&lt;strong>邮件服务产品定义示例&lt;/strong>&lt;/p>
+&lt;p>让我们考虑一个允许用户发送和接收电子邮件的邮件产品，还具有一些增值功能。我们将根据表 1 中描述的目标和步骤来建模此产品，并在图 2 中进行了说明。表 1 提供了可以被产品开发和支持中涉及的多个学科使用的基本产品模型。&lt;/p>
+&lt;p>表 1: 用户目标和步骤示例&lt;/p>
+&lt;table>
+&lt;thead>
+&lt;tr>
+&lt;th>目标&lt;/th>
+&lt;th>步骤&lt;/th>
+&lt;th>描述&lt;/th>
+&lt;/tr>
+&lt;/thead>
+&lt;tbody>
+&lt;tr>
+&lt;td>撰写邮件&lt;/td>
+&lt;td>登录&lt;/td>
+&lt;td>用户在登录页面进行身份验证。&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;/td>
+&lt;td>打开撰写对话框&lt;/td>
+&lt;td>用户点击**“撰写”**按钮，撰写对话框被显示出来。&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;/td>
+&lt;td>查找地址&lt;/td>
+&lt;td>用户开始输入收件人的电子邮件地址，系统显示匹配的地址供选择。&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;/td>
+&lt;td>检查拼写&lt;/td>
+&lt;td>当用户输入消息时，系统会突出显示拼写错误。&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;/td>
+&lt;td>发送邮件&lt;/td>
+&lt;td>用户点击**“发送”**按钮，邮件被排队等待发送。&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>阅读邮件&lt;/td>
+&lt;td>登录&lt;/td>
+&lt;td>用户在登录页面进行身份验证。&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;/td>
+&lt;td>打开收件箱&lt;/td>
+&lt;td>用户打开收件箱页面，显示所有邮件。&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;/td>
+&lt;td>打开邮件&lt;/td>
+&lt;td>用户选择一封邮件，系统显示邮件内容。&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;/td>
+&lt;td>接收邮件（异步）&lt;/td>
+&lt;td>当邮件服务收到新邮件时，它们会自动显示在用户的收件箱中。&lt;/td>
+&lt;/tr>
+&lt;/tbody>
+&lt;/table>
+&lt;p>&lt;img src="https://martinliu.cn/blog/product-focused-reliability-for-sre/gmail.webp"
+width="3593"
+height="1443"
+srcset="https://martinliu.cn/blog/product-focused-reliability-for-sre/gmail_hu_8d30cd89c8cf5506.webp 480w, https://martinliu.cn/blog/product-focused-reliability-for-sre/gmail_hu_6aac2f98b3fc6679.webp 1024w"
+loading="lazy"
+alt="图 2: 用户目标和步骤的流程图（见表 1）"
+class="gallery-image"
+data-flex-grow="248"
+data-flex-basis="597px"
+>&lt;/p>
+&lt;p>&lt;strong>产品重要性和优先级&lt;/strong>&lt;/p>
+&lt;p>在转型到&lt;strong>产品支持模型&lt;/strong>时，请记住，SRE 团队在学习这种新方法时会面临更大的认知负荷。请通过战略性选择支持的方式和位置，来管理 SRE 团队的额外工作量。&lt;/p>
+&lt;p>例如，你可能希望将大量支持集中在核心用户目标及其步骤上，并用高成本但准确的端到端 SLO 对其进行监控。在这种情况下，你还可以通过更便宜和传统的基于服务器的 SLO 支持较不重要的目标。&lt;/p>
+&lt;p>安排 SRE 工作的优先级本身就是一个具有挑战性的问题。我们通过基于特定目标与产品关键绩效指标（KPI）之间的关系，来定义重要性来解决这个问题。这些指标通常已被用来评估停机的严重性，因此使用这些 KPI 来安排 SRE 任务的优先度，可以确保 SRE 跟上不断变化的产品需求。&lt;/p>
+&lt;p>在 Google，我们使用特定产品的严重性指南（如 Google Cloud 重大事故 [6] 的场景）来指示停机对产品的严重性和影响。在 Google Ads 中，收入是评估停机严重性的关键指标，而在 YouTube 中，严重性指南包括用户观看视频的时间。参见邮件服务严重性示例，了解如何为典型的邮件服务定义严重性指南。这种分类主要用于衡量停机的影响，但也提供了一个明确的重要性信号，你可以将其应用于其他领域。&lt;/p>
+&lt;p>严重性指南通常以对用户的影响为准，因此与用户目标和步骤密切相关。使用严重性指南，你可以根据严重停机对产品或功能的影响来组织用户目标和步骤，这被定义为产品重要性。参见邮件服务产品重要性示例，了解如何为典型的邮件服务定义产品重要性。&lt;/p>
+&lt;p>这种重要性定义为优先安排 SRE 工作提供了明确的指导方针。确保整个基础设施有良好的基本覆盖，并制定评估更有针对性努力的投资回报的原则。考虑在关注不太重要的目标之前，你希望为最重要的目标实现什么级别的可靠性。&lt;/p>
+&lt;p>通常，团队会陷入寻求一种新方法来解决可靠性问题的陷阱，然后试图将这种方法应用于所有场景，而不考虑适用性。然而，监控的初始化成本和在各处部署改进的持续维护成本的总和其实并不都合理的。例如，离线或批处理流量与互动用户流量相比，具有不同的可用性和延迟需求，因此每类流量需要不同的 SLO。&lt;/p>
+&lt;p>更深入地了解对产品重要的内容还具有许多优势，从知道测试覆盖的重要性，到更好的事故响应。如果 SRE 知道问题很严重，他们会更快地反应和升级，从而更快地解决问题。&lt;/p>
+&lt;blockquote>
+&lt;p>交付物：一套与产品的用户目标和步骤一致的严重性和重要性定义。&lt;/p>&lt;/blockquote>
+&lt;p>&lt;strong>邮件服务严重性示例&lt;/strong>&lt;/p>
+&lt;p>继续邮件服务产品定义示例，我们定义了产品的事故严重性分级如下：&lt;/p>
+&lt;p>表 2: 事故严重性分级示例&lt;/p>
+&lt;table>
+&lt;thead>
+&lt;tr>
+&lt;th>严重性&lt;/th>
+&lt;th>描述&lt;/th>
+&lt;/tr>
+&lt;/thead>
+&lt;tbody>
+&lt;tr>
+&lt;td>重大&lt;/td>
+&lt;td>任何影响接收或发送邮件的情况。对核心功能有 &amp;gt;20% 的影响。&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>中等&lt;/td>
+&lt;td>对核心功能有 &amp;gt;5% 的影响。对辅助功能有 &amp;gt;20% 的影响。&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>轻微&lt;/td>
+&lt;td>对任何功能有 &amp;gt;0% 的影响。&lt;/td>
+&lt;/tr>
+&lt;/tbody>
+&lt;/table>
+&lt;p>在这个例子中，核心功能是用户需要用来阅读和撰写邮件的功能，例如认证系统或地址簿是辅助功能，例如拼写检查和自动补齐等，虽然增加了价值，但并不是产品使用的关键。&lt;/p>
+&lt;p>影响的定义因产品而异，取决于独特的用户和业务需求。一些产品可能只关注技术影响，例如失败请求的百分比或延迟超过可接受阈值的请求百分比。其他产品可能关注收入损失、品牌损害或其他与业务 KPI 更直接相关的概念。无论为产品选择哪些标准，考虑以下关键原则是很重要的：&lt;/p>
+&lt;ul>
+&lt;li>结果集合应覆盖用户感知行为和业务优先级的所有方面。&lt;/li>
+&lt;li>应能够以及时和可持续的方式确定事故的严重性。&lt;/li>
+&lt;li>产品和工程领导层之间应对事故严重性非分级有广泛一致的意见。&lt;/li>
+&lt;/ul>
+&lt;p>&lt;strong>邮件服务产品重要性示例&lt;/strong>&lt;/p>
+&lt;p>使用邮件服务严重性示例中的严重性分级，下面我们来定义产品的重要性如下：&lt;/p>
+&lt;p>表 3: 产品重要性定义示例&lt;/p>
+&lt;table>
+&lt;thead>
+&lt;tr>
+&lt;th>重要性&lt;/th>
+&lt;th>描述&lt;/th>
+&lt;th>用户目标 &amp;gt; 步骤&lt;/th>
+&lt;/tr>
+&lt;/thead>
+&lt;tbody>
+&lt;tr>
+&lt;td>关键&lt;/td>
+&lt;td>负责邮件传输和投递的服务，是核心功能的关键（非可有可无）依赖项。&lt;/td>
+&lt;td>撰写邮件、 阅读邮件&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>重要&lt;/td>
+&lt;td>非关键的核心功能依赖项（优雅降级）或辅助功能的依赖项。&lt;/td>
+&lt;td>撰写邮件 &amp;gt; 检查拼写 、 阅读邮件 &amp;gt; 过滤垃圾邮件&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>无&lt;/td>
+&lt;td>所有其他服务，通常是内部或未发布的功能。&lt;/td>
+&lt;td>所有未被识别为产品优先级的其他产品功能。&lt;/td>
+&lt;/tr>
+&lt;/tbody>
+&lt;/table>
+&lt;p>你可以看到，重要性定义是围绕用户目标（例如撰写和发送邮件）建模的，而不是系统如何实现这些需求。一些具体步骤（例如检查拼写和过滤垃圾邮件）如果不被视为目标的关键组成部分，其重要性可能会有所不同。一些方面没有明确列出，例如身份验证，因为这是大多数目标中的一个步骤。&lt;/p>
+&lt;p>&lt;strong>附加价值&lt;/strong>&lt;/p>
+&lt;p>虽然 &lt;strong>度量性能&lt;/strong> 讨论了如何使用这个产品模型作为衡量产品性能的基础，但这不是该模型提供的唯一价值。对产品的用户目标有清晰的理解，可以在对用户需求的达成共识的基础上，协调测试策略、产品使用指标和其他生产问题。&lt;/p>
+&lt;h3 id="3-度量性能">3. 度量性能
+&lt;/h3>&lt;p>服务质量目标（SLO）是任何 SRE 团队工作的关键组成部分，提供反映系统可靠性的实际指标。《Google SRE 工作手册》[4] 是定义 SLO 和服务质量指标（SLI）的详细资源，并描述了如何使用它们，特别是针对服务。&lt;/p>
+&lt;p>基于服务的 SLO 通常无法提供足够的产品覆盖。一些问题无法通过对某个服务器的监控覆盖，例如网络间或移动应用程序中的问题，或异步操作产生的问题等。&lt;/p>
+&lt;p>当 SRE 团队发现基于服务的 SLO 存在不足时，他们会开始以多种方式扩展 SLO。从而提供更广泛产品覆盖的 SLO 主要有三类：服务 SLO、客户端埋点和端到端 SLO。&lt;/p>
+&lt;p>&lt;strong>服务 SLO&lt;/strong>&lt;/p>
+&lt;p>服务 SLO 是最常见的 SLO 类型。它们通过服务本身的指标进行监控，例如应用服务器日志或实时监控指标【译者注：包括后台服务埋点的 APM 数据】。也可以通过服务上层的日志进行度量，例如负载均衡器。你还可以使用黑盒监控（如拨测）结果来度量服务正常运行时间。&lt;/p>
+&lt;p>以下是服务 SLO 的主要特征：&lt;/p>
+&lt;p>表格 4: 服务 SLO 特征&lt;/p>
+&lt;table>
+&lt;thead>
+&lt;tr>
+&lt;th>特征&lt;/th>
+&lt;th>描述&lt;/th>
+&lt;/tr>
+&lt;/thead>
+&lt;tbody>
+&lt;tr>
+&lt;td>低成本&lt;/td>
+&lt;td>服务 SLO 常见且广泛使用。&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>高信心&lt;/td>
+&lt;td>服务 SLO 的数据在你的控制之下，可以提供非常高的可用性保证，例如对 SLO 数据的 SLO 保证。&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>低延迟&lt;/td>
+&lt;td>你可以以非常低的延迟收集和处理数据，从几秒到几分钟。&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>覆盖范围狭窄&lt;/td>
+&lt;td>这些 SLO 仅涵盖服务能看到的内容。通过在服务堆栈的更高层次度量 SLO，可以改善这一点。如果返回结果被服务视为成功，则 SLO 不受影响。然而，成功（正常）的结果并不总是保证结果有用（用户不受影响），例如返回空响应或向旧客户端返回不兼容的新数据。&lt;/td>
+&lt;/tr>
+&lt;/tbody>
+&lt;/table>
+&lt;p>&lt;strong>客户端埋点&lt;/strong>&lt;/p>
+&lt;p>随着网络和移动应用程序的用户界面变得越来越复杂，越来越多的 SRE 团队开始直接支持这些界面。这可以通过直接从用户界面获取遥测数据来实现【译者注：包括真实用户监控-RUM】。&lt;/p>
+&lt;p>这种遥测需要记录事件的日志或监控侧通道，这些事件可以处理并用于定义 SLO。&lt;/p>
+&lt;p>这些数据通常需要批处理，并在后台发送，与交互式 RPC 请求分开。当应用程序关闭或失去网络连接时，一些遥测数据可能会丢失。所有这些因素都会影响数据的可靠性，预计会有一些个位数百分比的损失。此外，度量客户端设备上的信号还包括：测量设备的性能和互联网连接。&lt;/p>
+&lt;p>然而，客户端 SLO 提供了用户实际体验到的产品性能的有用洞察信息。你可以使用这些 SLO 为连接较不可靠的用户提供更好的体验。当可以从用户界面度量开始和结束条件时，界面行为的复杂性，例如缓存、重试和异步 RPC 请求，都是透明的。&lt;/p>
+&lt;p>在决定何时以及如何使用客户端 SLO 时，请考虑以下所有特征：&lt;/p>
+&lt;p>表格 5 : 客户端 SLO 特征&lt;/p>
+&lt;table>
+&lt;thead>
+&lt;tr>
+&lt;th>特征&lt;/th>
+&lt;th>描述&lt;/th>
+&lt;/tr>
+&lt;/thead>
+&lt;tbody>
+&lt;tr>
+&lt;td>中等成本&lt;/td>
+&lt;td>客户端 SLO 的埋点需要在用户界面中添加埋点探针功能以获取 RUM 数据，并需要一个系统来接收、处理数据，并设置 SLO 管理。&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>低信心&lt;/td>
+&lt;td>预期会有数据丢失。监控可能会受到性能较差的客户端设备和互联网连接的影响。&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>中等延迟&lt;/td>
+&lt;td>信号通常从客户端设备批量传输。这些信号量数据需要进行额外的处理后，才能用于 SLO 管理，从而导致 15 分钟到 1 小时的延迟。&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>广泛覆盖&lt;/td>
+&lt;td>来自客户端设备的指标允许 SLO 直接衡量用户对产品性能和可靠性的体验。&lt;/td>
+&lt;/tr>
+&lt;/tbody>
+&lt;/table>
+&lt;p>&lt;strong>端到端 SLO&lt;/strong>&lt;/p>
+&lt;p>有些产品功能和业务指标不能通过服务或客户端埋点直接度量。这些通常需要结合来自多个来源的数据，并涉及异步任务。&lt;/p>
+&lt;p>例如，用户可能要求生成报告。用户界面发送一个 RPC 请求，该请求在报告被排入系统队列后成功。但这并不意味着报告成功生成。某些后台系统从队列中取出报告并生成它，或未能生成。要度量报告是否成功生成，你需要将用户的原始 RPC 请求与最终的报告生成结果结合起来。&lt;/p>
+&lt;p>端到端 SLO 通常根据用户交互来度量其 SLI，因此可以提供相当准确的结果。&lt;/p>
+&lt;p>实现端到端 SLO 需要相当多的工程工作量，因为你需要完成以下任务：&lt;/p>
+&lt;ul>
+&lt;li>确定度量 SLI 所需的数据集。&lt;/li>
+&lt;li>采集和存储所需的数据。&lt;/li>
+&lt;li>汇总并结合来自多个来源的数据。&lt;/li>
+&lt;/ul>
+&lt;p>端到端 SLO 的主要特征如下：&lt;/p>
+&lt;p>表格 6: 端到端 SLO 特征&lt;/p>
+&lt;table>
+&lt;thead>
+&lt;tr>
+&lt;th>特征&lt;/th>
+&lt;th>描述&lt;/th>
+&lt;/tr>
+&lt;/thead>
+&lt;tbody>
+&lt;tr>
+&lt;td>非常高的成本&lt;/td>
+&lt;td>端到端 SLO 的埋点可能需要数月的工程工作。每个 SLO 都可能带来独特的工程挑战和约束。&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>高信心&lt;/td>
+&lt;td>你可以使用多个数据源，并且可以通过交叉引用来跟踪任何数据源中的丢失数据。&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>高延迟&lt;/td>
+&lt;td>结合来自多个来源的信号可能既耗时又复杂。持续处理新数据成本高，因此通常优先选择离线批处理解决方案（通常每天或每几小时运行一次）。&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>覆盖范围窄&lt;/td>
+&lt;td>端到端 SLO 旨在覆盖非常特定的功能或业务指标，并且以最高的信心度进行。&lt;/td>
+&lt;/tr>
+&lt;/tbody>
+&lt;/table>
+&lt;p>&lt;strong>优先级&lt;/strong>&lt;/p>
+&lt;p>网络、移动应用程序和其他互联网连接设备变得越来越复杂，这推动了微服务架构的兴起，简化和扩展了运行现代应用程序所需的服务。&lt;/p>
+&lt;p>全球服务器数量呈指数级增长，这在 GCP 等公共云提供商的增长中可以看到。然而，全球软件工程师的数量增长较为缓慢。&lt;/p>
+&lt;p>需要认识到，每个 SLO 都有维护其底层数据，以及响应 SLO 失效的持续成本。某些产品功能也可能会随着时间的推移变得不那么重要，而其他功能可能在产品的整个生命周期中保持关键地位。&lt;/p>
+&lt;p>软件工程师和站点可靠性工程师需要优先考虑哪些 SLO 仍然相当重要，它决定了 SRE 要在哪些方面投入时间以提高产品的可靠性。&lt;/p>
+&lt;p>&lt;strong>产品 SLO&lt;/strong>&lt;/p>
+&lt;p>产品级 SLO 是围绕用户实现目标的步骤定义的。通过利用&lt;strong>用户目标步骤&lt;/strong>信息注释（编者注：打标签或者元数据）和扩展，任何 SLO（如服务、客户端或端到端）都可以转换为产品级 SLO。&lt;/p>
+&lt;p>进行将 SLO 与用户目标相互关联的工作看似比较简单，却能够使你理解 SLO 对用户的意义何在，以及它对产品的重要性。&lt;/p>
+&lt;p>当 SLO 是以服务和基础设施为框架时，设置目标或延迟阈值存在一定挑战。但当 SLO 带有了用户目标的附加背景信息时，度量的内容会变得更加清晰。例如，与其问“用户数据服务器上的地址查找服务应该有多可靠和快速？”，不如问“用户在查找电子邮件地址时可以容忍多少错误，这些地址应该多快返回？”&lt;/p>
+&lt;p>结合产品功能的关键性，你可以验证 SLO 设置是否合适，且不过于严格。这种方法为你提供了更宽的 SLO 目标范围，反应出了什么对产品重要。&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/blog/product-focused-reliability-for-sre/all-4.webp"
+width="814"
+height="325"
+srcset="https://martinliu.cn/blog/product-focused-reliability-for-sre/all-4_hu_5bc38e212b5fbd42.webp 480w, https://martinliu.cn/blog/product-focused-reliability-for-sre/all-4_hu_ddb9e6216d6e0255.webp 1024w"
+loading="lazy"
+alt="图 3: 产品 SLO 如何围绕用户目标和步骤定义的示例"
+class="gallery-image"
+data-flex-grow="250"
+data-flex-basis="601px"
+>&lt;/p>
+&lt;blockquote>
+&lt;p>交付物：列出覆盖不同 SLO 类型（可用性、延迟）和监控方法（服务端、客户端、端到端）的产品 SLO 的优先级排序清单。实施最高优先级的 SLO，并将较低优先级的 SLO 创建为待办事项，稍后再进行优先级排序。&lt;/p>&lt;/blockquote>
+&lt;p>&lt;strong>遥测&lt;/strong>&lt;/p>
+&lt;p>在实施产品 SLO 之前，必须先采集相关指标（也称为 SLI），从而跟踪相关的产品功能。为开发出这些指标，需将产品 SLO 模型的概念世界与实际基础设施生产环境对应起来。这是实施产品可靠性模型的关键价值驱动因素。&lt;/p>
+&lt;p>例如，团队对 SLO 性能的理解曾经仅限于“数据库写入的可用性为 98%”。而专注于产品的 SLO 需要说明清楚，这 2% 的错误是否导致了 100% 的“保存电子邮件草稿”步骤的失败。&lt;/p>
+&lt;p>将概要的可用性度量指标转化为：准确且可操作的产品性能指标的关键在于，理解每个请求所支持的产品功能。除了简单的可观测性需求外，功能请求级信息还可用于流量路由和负载分发策略，确保低优先级功能不会损害更关键的功能。&lt;/p>
+&lt;p>虽然你可以通过多种方式将请求与产品功能关联起来，但有需要考虑这样两种主要的方式：客户端注释和服务器端注释。&lt;/p>
+&lt;p>表 7: 客户端注释和服务器端注释的比较&lt;/p>
+&lt;table>
+&lt;thead>
+&lt;tr>
+&lt;th>注释类型&lt;/th>
+&lt;th>描述&lt;/th>
+&lt;th>用例&lt;/th>
+&lt;/tr>
+&lt;/thead>
+&lt;tbody>
+&lt;tr>
+&lt;td>客户端注释&lt;/td>
+&lt;td>更新用户界面（网页和移动应用程序），将用户目标步骤的元数据附加好，并传播到后端服务的 RPC 请求上。这在技术上具有挑战性，需要 UI 团队协助设计，并最终负责维护这些注释。&lt;/td>
+&lt;td>使用客户端注释是最准确的映射用户通过界面实现目标的方法。注释是由单个的 RPC 请求携带传播的，因此具有最高的保真度。&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>服务器端注释&lt;/td>
+&lt;td>分析后端服务器所接收到的 RPC 请求，并推断用户的目标步骤。&lt;/td>
+&lt;td>当修改客户端的成本太高或你不拥有客户端（如 REST 服务）时，必须使用此方法。服务器端注释不如客户端注释准确，因为服务器需要做出许多假设来推断 RPC 请求所服务用户步骤（功能）。&lt;/td>
+&lt;/tr>
+&lt;/tbody>
+&lt;/table>
+&lt;p>你可能无法注释所有流量。根据产品的关键性分级，你可以决定哪些地方值得添加注释；你可能只注释那些最关键的用户目标。&lt;/p>
+&lt;p>注释一个 RPC 请求后，你的服务需要在整个基础设施堆栈中传播该注释。这有助于你在许多 SRE 工具和流程中理解用户的目标及其重要性，包括以下内容：&lt;/p>
+&lt;ul>
+&lt;li>在监控仪表板和应用程序日志中，通过用户目标步骤了解问题及其影响。&lt;/li>
+&lt;li>快速确定哪个用户目标受到了问题影响，从而确定事故的严重性。&lt;/li>
+&lt;li>识别只考虑特定的用户目标步骤的服务质量目标 (SLO)，并忽略不重要请求（如批处理和测试流量）。&lt;/li>
+&lt;/ul>
+&lt;h3 id="4-可靠性管理">4. 可靠性管理
+&lt;/h3>&lt;p>现在你已经确定了利益相关者、用户目标和步骤、关键性定义以及产品 SLO，你已准备好支持产品。&lt;/p>
+&lt;p>我们建议你从小规模开始支持一个产品或服务。可以先为一些 SLO 启动某一个目标或步骤，然后迭代扩展团队的责任和范围。支持产品是一个持续进行的过程。在每个阶段，你将与利益相关者一起确定在下列投资领域之间的权衡：&lt;/p>
+&lt;ol>
+&lt;li>改进支持目标集的指标，以增加这些目标符合预期的信心。&lt;/li>
+&lt;li>扩展支持目标集，确保产品的所有方面都符合预期。&lt;/li>
+&lt;li>解决由投资领域 #1 和 #2 产生的指标所突显的性能差距。&lt;/li>
+&lt;/ol>
+&lt;p>确保在所有三个领域都有所投资。在领域 #1 和 #2 投资不足会导致团队错过领域 #3 中最有影响力的问题。另一方面，仅在领域 #1 和 #2 投资不会导致对用户和组织业务目标有帮助的改进。使用在关键实施步骤中收集和产生的信息，帮助组织确定在每个领域投资多少。&lt;/p>
+&lt;p>&lt;strong>纳管&lt;/strong>&lt;/p>
+&lt;p>纳管是 SRE 团队评估其将承担责任的产品或服务的接手的过程。此过程通常包括了解产品或服务以充分支持，并确保其符合 SRE 团队定义的一系列要求。&lt;/p>
+&lt;p>在 SRE 团队承担产品的用户目标和步骤责任之前，团队需要定义一个正式的纳管流程，以确保以下内容：&lt;/p>
+&lt;ul>
+&lt;li>目标和步骤足够重要。&lt;/li>
+&lt;li>步骤映射到所使用的服务，并在这些服务中进行了注释。&lt;/li>
+&lt;li>潜在的 SLO 已被识别，并在整体产品优先级中进行了优先排序。&lt;/li>
+&lt;li>SLO 稳定，支持它们不会对团队或服务所有者构成过度负担。&lt;/li>
+&lt;/ul>
+&lt;p>SRE 团队推动这个过程，与相关利益相关者会面，并与产品团队合作解决任何不足之处。&lt;/p>
+&lt;p>&lt;strong>迭代&lt;/strong>&lt;/p>
+&lt;p>在完成一个目标和其部分步骤的纳管过程之后，你可以通过以下方式迭代和改进团队的覆盖范围：&lt;/p>
+&lt;ul>
+&lt;li>纳管更多的用户目标和步骤。&lt;/li>
+&lt;li>优化已经纳管的用户目标和步骤的覆盖范围。&lt;/li>
+&lt;li>改进工具，以更好地支持用户目标和步骤。&lt;/li>
+&lt;/ul>
+&lt;p>我们建议不要试图支持每一个用户目标，而是为你支持的产品中最重要的方面设定一个门槛。同样，我们建议你决定哪些用户目标使用更昂贵的 SLO 方法进行埋点。一些用户目标可能只需要基于服务的 SLO，而其他用户目标可能会受益于客户端或端到端的埋点。&lt;/p>
+&lt;p>最后，为了确定在哪里和何时投资改进工具，请评估支持的可持续性。工具不足会导致扩展受限，使团队在支持目标集的无效分类、调试和缓解工作中不堪重负。&lt;/p>
+&lt;p>&lt;strong>离岗&lt;/strong>&lt;/p>
+&lt;p>为了确保团队专注于产品的正确部分，我们建议团队定期重新评估支持的用户目标、步骤和 SLO。一些 SLO 可能随着时间的推移变得不那么重要，而一些用户目标可能会变得过时。&lt;/p>
+&lt;p>维护一个所有支持的用户目标、步骤和 SLO 的优先列表是很重要的。使用此列表来验证团队是否在最重要的领域上花费时间和资源。当列表中的项目不再重要（或远不如不支持的项目重要）时，请考虑将它们离岗，以便团队可以重新专注于产品的最重要方面。&lt;/p>
+&lt;p>&lt;strong>服务器支持&lt;/strong>&lt;/p>
+&lt;p>在关注产品的同时，不能忽视支撑产品的基础设施服务器。始终需要确保服务器及其提供的服务保持健康。无论服务器对产品有多么重要，确保服务器健康是必要的，因为你花费了资源来运行它们。&lt;/p>
+&lt;p>在 Google 专注于产品之前，提出了提供基础支持的概念。基础支持是一组由 SRE 定义的标准和最佳实践，使他们能够在不了解服务器具体用途的情况下为任何服务器提供一般支持。例如，基础支持可以要求某些库和框架提供常见功能，如负载平衡、服务间通信（RPCs），甚至是由主要负责服务器的开发团队拥有的最小 SLO。在这种情况下，平台而不是 SRE 提供基础可靠性支持，从而使 SRE 能够专注于不包含在基本策略中的更具影响力的可靠性改进。&lt;/p>
+&lt;p>对于最关键的基础设施，可能需要额外的支持，但这不是强制性的。如果 SRE 主要负责最关键的用户目标，关键基础设施中的重大故障将导致产品级别 SLO 失败。此外，基础设施层面上的故障如果不影响产品 SLO，将不会提醒 SRE，可以由拥有该服务的开发团队处理（如未发布的功能和不太关键的批处理服务的问题）。&lt;/p>
+&lt;p>将 SRE 支持集中在产品 SLO 上而不是服务上，可以使 SRE 支持更多产品，并将这种支持与产品最重要的部分对齐。&lt;/p>
+&lt;h2 id="产品可靠性模型的前提条件">产品可靠性模型的前提条件
+&lt;/h2>&lt;p>产品导向支持模型并不适用于所有用例。在实施前，建议你评估项目是否满足以下要求，以确定模型的适用性。&lt;/p>
+&lt;p>&lt;strong>明确的角色和责任&lt;/strong>&lt;/p>
+&lt;p>该模型需要比传统以服务为导向的参与，需要牵扯更多的利益相关者。传统的 SRE 参与通常局限于工程团队，而产品导向的参与则需要与更多角色（如 PM 和 UX）协作。与利益相关者进行有效的互动需要明确的角色和责任分工。即使是加载主页这样简单的操作，也需要有人明确速度标准。如果无法达成共识，就无法用这些结果来度量和管理产品的可靠性。&lt;/p>
+&lt;p>&lt;strong>用户目标和步骤定义&lt;/strong>&lt;/p>
+&lt;p>正如在“建模产品”中提到的，采用产品导向支持模型需要明确的用户目标和步骤定义。&lt;/p>
+&lt;p>SRE 可以尝试为现有产品重新调整和推导用户目标，但失去了组织级别的支持，它的许多其他优势也将丧失。如果决策者不接受产品的定义，也不及时维护，它将很快过时且不准确。&lt;/p>
+&lt;p>因此，拥有正确的利益相关协作，并维护好产品模型是关键要求。&lt;/p>
+&lt;p>&lt;strong>易于维护的服务器&lt;/strong>&lt;/p>
+&lt;p>服务器支持需要提供产品支持模型所需的详细信息。&lt;/p>
+&lt;p>基本要求是单个服务器必须相对容易支持。这需要足够的标准和框架，使开发团队能够自行部署和维护，并在必要时由 SRE 提供帮助。&lt;/p>
+&lt;p>如果 SRE 大部分时间都在支持某个服务器，他们将没有精力关注产品级别的问题。&lt;/p>
+&lt;p>&lt;strong>与用户功能的直接映射&lt;/strong>&lt;/p>
+&lt;p>必须尽可能在接近用户的地方度量用户目标和步骤（例如，在用户界面或处理用户界面请求的服务器中），因此更紧密地与堆栈入口点的服务器对齐。&lt;/p>
+&lt;p>提供服务API的基础设施服务通常解决特定问题，可能与用户目标无关。例如，数据存储服务可能有一个低级API，仅包含与用户目标无关的简单加载和存储命令。&lt;/p>
+&lt;p>以下是将产品支持模型应用于基础设施服务的几种选项：&lt;/p>
+&lt;p>表 8: 基础设施服务的产品支持模型的应用选项&lt;/p>
+&lt;table>
+&lt;thead>
+&lt;tr>
+&lt;th>选项&lt;/th>
+&lt;th>描述&lt;/th>
+&lt;th>用例&lt;/th>
+&lt;/tr>
+&lt;/thead>
+&lt;tbody>
+&lt;tr>
+&lt;td>将基础设施客户端视为用户，并为基础设施的API定义用户目标和步骤。&lt;/td>
+&lt;td>这是最不理想的选项，因为它等同于没有用户目标的产品。然而，在某些情况下，基础设施本身可以被视为一个产品。在这些情况下，产品决策者必须定义该产品，而不是SRE的责任。&lt;/td>
+&lt;td>可能适用于基础设施本身被视为产品的情况。&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>配置基础设施客户端，根据其终端用户的输入提供用户目标信息。&lt;/td>
+&lt;td>此选项通过以下方式帮助基础设施团队：提供有关终端用户目标的有价值信息；帮助基础设施团队识别对终端用户重要的RPC请求。&lt;/td>
+&lt;td>提供有关终端用户目标的有价值信息；识别对终端用户重要的RPC请求。&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>不采用产品聚焦方法。&lt;/td>
+&lt;td>基础设施服务由其服务API定义，可能会从传统的服务支持模型中受益。如果你希望获得产品支持模型的好处，考虑通过其他方式实现这些好处。&lt;/td>
+&lt;td>传统的服务支持模型可能更适合基础设施服务。&lt;/td>
+&lt;/tr>
+&lt;/tbody>
+&lt;/table>
+&lt;h2 id="结论">结论
+&lt;/h2>&lt;p>产品支持模型为 SRE 团队提供了一种框架，使他们能够将支持工作集中在对用户和业务最重要的方面。该模型使 SRE 团队与组织的其他团队保持一致，并支持统一的术语和目标。&lt;/p>
+&lt;p>该模型通过帮助 SRE 团队理解产品的关键点，并利用这些知识更好地填补服务支持模型的空白，解决了传统服务支持模型的许多问题。最终，产品支持模型让 SRE 团队专注于用户，确保产品满足最终用户的实际需求。&lt;/p>
+&lt;h2 id="参考文献">参考文献
+&lt;/h2>&lt;p>[1] Ulwick, A.W. 和 Osterwalder, A. (2016). Jobs to be done: Theory to practice. [在线] Idea Bite Press. 可在： &lt;a class="link" href="https://jobs-to-be-done-book.com/" target="_blank" rel="noopener"
+>https://jobs-to-be-done-book.com/&lt;/a>&lt;/p>
+&lt;p>[2] chang, austin (2017). What To Do If Your Product Isn&amp;rsquo;t Growing. [在线] Initialized Capital. 可在： &lt;a class="link" href="https://medium.com/initialized-capital/what-to-do-if-your-product-isnt-growing-7eb9d158fc" target="_blank" rel="noopener"
+>https://medium.com/initialized-capital/what-to-do-if-your-product-isnt-growing-7eb9d158fc&lt;/a>&lt;/p>
+&lt;p>[3] Beyer, B., Jones, C., Petoff, J. 和 Murphy, N. (2016). Site reliability engineering: How Google runs production systems. Sebastopol, Ca: O&amp;rsquo;reilly Media.&lt;/p>
+&lt;p>[4] Beyer, B., Murphy, N., Rensin, D.K., Kawahara, K. 和 Thorne, S. (2018). The site reliability workbook: Practical ways to implement SRE. Cambridge O&amp;rsquo;reilly.&lt;/p>
+&lt;p>[5] Kalbach, J. (2020). The jobs to be done playbook: Align your markets, organizations, and strategy around customer needs. New York: Two Waves Books.&lt;/p>
+&lt;p>[6] Google Cloud. (n.d.). Incidents and the Google Cloud Service Health Dashboard | Support Documentation. [在线] 可在： &lt;a class="link" href="https://cloud.google.com/support/docs/dashboard#major_incident" target="_blank" rel="noopener"
+>https://cloud.google.com/support/docs/dashboard#major_incident&lt;/a> [访问时间：2023 年 4 月 20 日]。&lt;/p>
+&lt;p>[7] Wikipedia Contributors (2019). Responsibility Assignment Matrix. [在线] Wikipedia. 可在： &lt;a class="link" href="https://en.wikipedia.org/wiki/Responsibility_assignment_matrix" target="_blank" rel="noopener"
+>https://en.wikipedia.org/wiki/Responsibility_assignment_matrix&lt;/a>&lt;/p>
+&lt;p>❤️ Photo by Pavel Danilyuk: &lt;a class="link" href="https://www.pexels.com/photo/group-of-people-discussion-on-a-wooden-table-7868970/" target="_blank" rel="noopener"
+>https://www.pexels.com/photo/group-of-people-discussion-on-a-wooden-table-7868970/&lt;/a>&lt;/p></description></item><item><title>SRE 实践的知识体系梳理</title><link>https://martinliu.cn/blog/sre-knowedge-body-mind-map-live-show/</link><pubDate>Mon, 10 Oct 2022 23:13:43 +0800</pubDate><guid>https://martinliu.cn/blog/sre-knowedge-body-mind-map-live-show/</guid><description>&lt;img src="https://martinliu.cn/blog/sre-knowedge-body-mind-map-live-show/1_er5uoPoOmLkfuxjTAy2zwQ.jpeg" alt="Featured image of post SRE 实践的知识体系梳理" />&lt;blockquote>
+&lt;p>直播预告。在 10 月 19 日晚上，我会在社区里再次为大家梳理一下 SRE 的知识体系模型，还是用脑图的方式，向大家讲解 SRE 都有相关部分组成。&lt;/p>&lt;/blockquote>
+&lt;p>本次直播活动的录播视频。&lt;/p>
+&lt;div class="video-wrapper">
+&lt;iframe src="https://player.bilibili.com/player.html?as_wide=1&amp;amp;high_quality=1&amp;amp;page=1&amp;bvid=BV1XD4y1r7dS"
+scrolling="no"
+frameborder="no"
+framespacing="0"
+allowfullscreen="true"
+>
+&lt;/iframe>
+&lt;/div>
+&lt;p>下面这幅脑图是在我翻译完了《SRE Workbook》之后编写的，用了我好几天的时间，并且前后改了好几版。&lt;/p>
+&lt;p>编制这个脑图的出发点在于：SRE 从来源到 5 大基础模块，到推广实施的方法论都看似比较完整，比较成体系。这种脉络明晰的知识体系（knowledge body）本来就有画出脑图的可能性；而且脑图应该是一种比较便于吸收和学习的形式。&lt;/p>
+&lt;p>脑图的第一个版本是从 《SRE Workbook》的目录开始的，我尝试用最精简的方式，梳理每一章节中的知识点。可是在编制了前两章以后，就发现这个工作量其实非常的大。然后，我果断的放弃了“完美”的目标，然后将目标定位为：先完成一版。下图就是这样一个版本。后续我们讨论还有那些改进和与社区协作的想法。&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/blog/sre-knowedge-body-mind-map-live-show/SRE-Workbookv1.5.jpg"
+width="1921"
+height="15987"
+srcset="https://martinliu.cn/blog/sre-knowedge-body-mind-map-live-show/SRE-Workbookv1.5_hu_89fac9aa53d9ef66.jpg 480w, https://martinliu.cn/blog/sre-knowedge-body-mind-map-live-show/SRE-Workbookv1.5_hu_2c9f1c3c415fd588.jpg 1024w"
+loading="lazy"
+alt="SRE 知识体系脑图"
+class="gallery-image"
+data-flex-grow="12"
+data-flex-basis="28px"
+>&lt;/p>
+&lt;p>后续的未尽事项：&lt;/p>
+&lt;ul>
+&lt;li>细化现有版本，将《SRE Workbook》中的知识点尽量都涵盖尽量。&lt;/li>
+&lt;li>将 SRE 的第一本出版物《Google SRE 运维解密》也梳理进来，由于它已经被 Workbook 彻底包含，并且多次引用。&lt;/li>
+&lt;li>将 SRE 安全那本书也梳理进来，由于安全的特殊性，独立做一个节点梳理比较现实；如果能融入的更好，则更加。&lt;/li>
+&lt;li>需要找到一种方便人们协作的线上脑图协作软件，应该至少具备一下功能：
+&lt;ul>
+&lt;li>多人协作&lt;/li>
+&lt;li>评论知识点&lt;/li>
+&lt;li>支持导入导出标准格式的脑图文件&lt;/li>
+&lt;li>支持导入导出 pdf，png，jpg ，html 等方便人们引用的文档&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;p>欢迎范围和参考 Google 官方 SRE 独立站点。&lt;a class="link" href="https://sre.google/" target="_blank" rel="noopener"
+>https://sre.google/&lt;/a>&lt;/p>
+&lt;p>网站中的相关出版书籍如下。&lt;/p>
+&lt;h2 id="site-reliability-engineering">Site Reliability Engineering
+&lt;/h2>&lt;p>&lt;img src="https://martinliu.cn/blog/sre-knowedge-body-mind-map-live-show/sre1.jpg"
+width="400"
+height="512"
+srcset="https://martinliu.cn/blog/sre-knowedge-body-mind-map-live-show/sre1_hu_ce687973065581b.jpg 480w, https://martinliu.cn/blog/sre-knowedge-body-mind-map-live-show/sre1_hu_db21d47bfca863e5.jpg 1024w"
+loading="lazy"
+alt="sre book 1"
+class="gallery-image"
+data-flex-grow="78"
+data-flex-basis="187px"
+>&lt;/p>
+&lt;ul>
+&lt;li>中文版书名：&lt;a class="link" href="https://book.douban.com/subject/26875239//" target="_blank" rel="noopener"
+>SRE：Google运维解密&lt;/a>&lt;/li>
+&lt;li>&lt;a class="link" href="https://sre.google/sre-book/table-of-contents/" target="_blank" rel="noopener"
+>英文版线上阅读&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;h2 id="the-site-reliability-workbook">The Site Reliability Workbook
+&lt;/h2>&lt;p>&lt;img src="https://martinliu.cn/blog/sre-knowedge-body-mind-map-live-show/sre2.jpg"
+width="399"
+height="512"
+srcset="https://martinliu.cn/blog/sre-knowedge-body-mind-map-live-show/sre2_hu_a870f6fe6677e22f.jpg 480w, https://martinliu.cn/blog/sre-knowedge-body-mind-map-live-show/sre2_hu_faa09da4880cce19.jpg 1024w"
+loading="lazy"
+alt="sre book 2"
+class="gallery-image"
+data-flex-grow="77"
+data-flex-basis="187px"
+>&lt;/p>
+&lt;ul>
+&lt;li>中文版书名：&lt;a class="link" href="https://book.douban.com/subject/35224058/" target="_blank" rel="noopener"
+>Google SRE 工作手册&lt;/a>&lt;/li>
+&lt;li>&lt;a class="link" href="https://sre.google/sre-book/table-of-contents/" target="_blank" rel="noopener"
+>英文版线上阅读&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;h2 id="building-secure--reliable-systems">Building Secure &amp;amp; Reliable Systems
+&lt;/h2>&lt;p>&lt;img src="https://martinliu.cn/blog/sre-knowedge-body-mind-map-live-show/sre3.jpg"
+width="399"
+height="512"
+srcset="https://martinliu.cn/blog/sre-knowedge-body-mind-map-live-show/sre3_hu_cb1f80e18fe3f419.jpg 480w, https://martinliu.cn/blog/sre-knowedge-body-mind-map-live-show/sre3_hu_223bcf2207e59ae4.jpg 1024w"
+loading="lazy"
+alt="sre book 3"
+class="gallery-image"
+data-flex-grow="77"
+data-flex-basis="187px"
+>&lt;/p>
+&lt;ul>
+&lt;li>中文书名：&lt;a class="link" href="https://book.douban.com/subject/35585206/" target="_blank" rel="noopener"
+>《Google系统架构解密》&lt;/a>&lt;/li>
+&lt;li>&lt;a class="link" href="https://sre.google/static/pdf/building_secure_and_reliable_systems.pdf" target="_blank" rel="noopener"
+>英文版 PDF 版 官方免费下载&lt;/a>&lt;/li>
+&lt;/ul></description></item><item><title>删除Cisco交换机中的所有VLAN数据</title><link>https://martinliu.cn/blog/delete-all-vlan-from-cisco-switch/</link><pubDate>Tue, 09 Nov 2021 12:58:16 +0800</pubDate><guid>https://martinliu.cn/blog/delete-all-vlan-from-cisco-switch/</guid><description>&lt;img src="https://martinliu.cn/img/cos/2021-11-09-bigstock-network-hub-and-patch-cables-12234593-1.jpeg" alt="Featured image of post 删除Cisco交换机中的所有VLAN数据" />&lt;p>最近在闲鱼上收了几台网络设备，其中有一台Cisco 3560X作为lab的核心交换机，其它一些都是用于练习网络运维。本文从清除老旧设备上的vlan开始，将会记录我在这些网络设备上的所有重要配置操作。&lt;/p>
+&lt;h2 id="网络设备的初始化">网络设备的初始化
+&lt;/h2>&lt;h3 id="cisco-交换机">Cisco 交换机
+&lt;/h3>&lt;p>Cisco 3560 的初始化是非常容易和方便的，这是一台非常新的设备，拆机后，机箱内部都没有什么积累明显的灰尘。第一次开机的时候通过mini USB口的连线连接，登陆console后发现需要密码才能进入enable模式，然后不得不重置这个设备的所有配置。&lt;/p>
+&lt;ul>
+&lt;li>在交换机开机的情况下，先用mini USB连接好电脑和交换机。&lt;/li>
+&lt;li>拔掉交换机的电源线&lt;/li>
+&lt;li>按住交换机前面板，左上角的mode按钮不放&lt;/li>
+&lt;li>插上交换机电源线&lt;/li>
+&lt;li>保持mode按钮10+秒以上&lt;/li>
+&lt;li>看着交换机正常启动，并且进入了快速配置模式&lt;/li>
+&lt;li>选择进入快速配置模式，或者选择no，进入正常无向导的手工配置模式&lt;/li>
+&lt;/ul>
+&lt;p>到此处为止，你就进入了一个无密码，几乎无配置的状态。虽然现在这是一台几乎空白配置的交换机。但是交换机的文件系统里还是有一个名为vlan.dat的数据文件。这个文件是之前这个交换机的管理员留下的。有了他的存在当你当你执行 ‘ show vlan brief ’ 命令的时候，这个数据文件中的vlan数据有近百行，滚动了半天，非常烦人。因此需要想办法将其删除。&lt;/p>
+&lt;h4 id="清除vlan数据文件">清除VLAN数据文件
+&lt;/h4>&lt;p>参考文章：&lt;a class="link" href="https://www.networkstraining.com/deleting-the-vlan-database-from-a-cisco-switch/" target="_blank" rel="noopener"
+>https://www.networkstraining.com/deleting-the-vlan-database-from-a-cisco-switch/&lt;/a>&lt;/p>
+&lt;p>首先查看flash上有哪些文件，使用命令 &lt;code>show flash&lt;/code>&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;span class="lnt">14
+&lt;/span>&lt;span class="lnt">15
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">sw-bj-01#show flash:
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Directory of flash:/
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> 10 -rwx 4371 Jan 2 2006 23:55:34 +00:00 config.text
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> 2 -rwx 26945536 Aug 31 2018 10:01:56 +00:00 c3560e-universalk9-mz.152-4.E6.bin
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> 3 -rwx 26844160 Feb 28 2019 05:02:21 +00:00 c3560e-universalk9-mz.152-4.E7.bin
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> 4 -rwx 0 Mar 27 2019 18:36:06 +00:00 merge_config.txt
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> 5 -rwx 6168 Jan 2 2006 23:55:34 +00:00 multiple-fs
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> 6 -rwx 2915 Jan 2 2006 00:02:10 +00:00 config.old
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> 8 -rwx 27468 Mar 27 2019 18:36:05 +00:00 candidate_config.txt
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> 9 -rwx 736 Jan 2 2006 00:08:27 +00:00 vlan.dat
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> 11 -rwx 3835 Jan 2 2006 23:55:34 +00:00 private-config.text
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">57671680 bytes total (3395584 bytes free)
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>上面的命令结果中的倒数第二行就是用来保存vlan信息的文件。然后我们使用 &lt;code>delete vlan.dat&lt;/code> 命令将其删除即可。然后使用 &lt;code>copy running-config startup-config&lt;/code> 保存当前的战果。还可以使用 reload 重启一下交换机，再次登陆交换机之后使用 show vlan brief 命令校验当前的交换机上只有默认的6个vlan存在。&lt;/p>
+&lt;h4 id="启用-ssh-和-web-登陆">启用 ssh 和 web 登陆
+&lt;/h4>&lt;p>每次都适用console线连接并配置交换机？这样还是有点麻烦的，我们需要启用交换机的管理ip和ssh登陆这样以后就可以从网络配置了。以后就可以用Ansible之类的DevOps工具玩NetOps了。配置过程的主要命令如下：&lt;/p>
+&lt;ol>
+&lt;li>配置管理ip， 参考命令如下：&lt;/li>
+&lt;/ol>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;span class="lnt">4
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl"># ip default-gateway 192.168.101.1
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"># interface vlan 101
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">(config-if)# ip address 192.168.101.2 255.255.255.0
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;ol start="2">
+&lt;li>主机名， 参考命令如下：&lt;/li>
+&lt;/ol>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl"># config t
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">(config)# hostname myswitch
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">(config)# ip domain-name thegeekstuff.com
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;ol start="3">
+&lt;li>创建 RSA 密钥，用于启用ssh登陆，参考命令如下&lt;/li>
+&lt;/ol>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;span class="lnt">4
+&lt;/span>&lt;span class="lnt">5
+&lt;/span>&lt;span class="lnt">6
+&lt;/span>&lt;span class="lnt">7
+&lt;/span>&lt;span class="lnt">8
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-gdscript3" data-lang="gdscript3">&lt;span class="line">&lt;span class="cl">&lt;span class="n">myswitch&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">config&lt;/span>&lt;span class="p">)&lt;/span>&lt;span class="c1"># crypto key generate rsa&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">The&lt;/span> &lt;span class="n">name&lt;/span> &lt;span class="k">for&lt;/span> &lt;span class="n">the&lt;/span> &lt;span class="n">keys&lt;/span> &lt;span class="n">will&lt;/span> &lt;span class="n">be&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="n">myswitch&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">thegeekstuff&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">com&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">Choose&lt;/span> &lt;span class="n">the&lt;/span> &lt;span class="n">size&lt;/span> &lt;span class="n">of&lt;/span> &lt;span class="n">the&lt;/span> &lt;span class="n">key&lt;/span> &lt;span class="n">modulus&lt;/span> &lt;span class="ow">in&lt;/span> &lt;span class="n">the&lt;/span> &lt;span class="nb">range&lt;/span> &lt;span class="n">of&lt;/span> &lt;span class="mi">360&lt;/span> &lt;span class="n">to&lt;/span> &lt;span class="mi">2048&lt;/span> &lt;span class="k">for&lt;/span> &lt;span class="n">your&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">General&lt;/span> &lt;span class="n">Purpose&lt;/span> &lt;span class="n">Keys&lt;/span>&lt;span class="o">.&lt;/span> &lt;span class="n">Choosing&lt;/span> &lt;span class="n">a&lt;/span> &lt;span class="n">key&lt;/span> &lt;span class="n">modulus&lt;/span> &lt;span class="n">greater&lt;/span> &lt;span class="n">than&lt;/span> &lt;span class="mi">512&lt;/span> &lt;span class="n">may&lt;/span> &lt;span class="n">take&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">a&lt;/span> &lt;span class="n">few&lt;/span> &lt;span class="n">minutes&lt;/span>&lt;span class="o">.&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">How&lt;/span> &lt;span class="n">many&lt;/span> &lt;span class="n">bits&lt;/span> &lt;span class="ow">in&lt;/span> &lt;span class="n">the&lt;/span> &lt;span class="n">modulus&lt;/span> &lt;span class="p">[&lt;/span>&lt;span class="mi">512&lt;/span>&lt;span class="p">]:&lt;/span> &lt;span class="mi">1024&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="o">%&lt;/span> &lt;span class="n">Generating&lt;/span> &lt;span class="mi">1024&lt;/span> &lt;span class="n">bit&lt;/span> &lt;span class="n">RSA&lt;/span> &lt;span class="n">keys&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">keys&lt;/span> &lt;span class="n">will&lt;/span> &lt;span class="n">be&lt;/span> &lt;span class="n">non&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">exportable&lt;/span>&lt;span class="o">...&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="n">OK&lt;/span>&lt;span class="p">]&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;ol start="4">
+&lt;li>配置一些 Line VTY 和 console 的参数&lt;/li>
+&lt;/ol>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;span class="lnt">4
+&lt;/span>&lt;span class="lnt">5
+&lt;/span>&lt;span class="lnt">6
+&lt;/span>&lt;span class="lnt">7
+&lt;/span>&lt;span class="lnt">8
+&lt;/span>&lt;span class="lnt">9
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl"># line vty 0 4
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">(config-line)# transport input ssh
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">(config-line)# login local
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">(config-line)# password mypassword
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">(config-line)# exit
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"># line console 0
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">(config-line)# logging synchronous
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">(config-line)# login local
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;ol start="5">
+&lt;li>设置用户名和密码&lt;/li>
+&lt;/ol>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">myswitch# config t
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Enter configuration commands, one per line. End with CNTL/Z.
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">myswitch(config)# username myusername password mypassword
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>如果你还没有配置enable的密码可以参考下面的命令。&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">myswitch# enable secret myenablepassword
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">myswitch# service password-encryption
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;ol start="6">
+&lt;li>校验 ssh 访问&lt;/li>
+&lt;/ol>
+&lt;p>使用命令如下：&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">myswitch# sh ip ssh
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">SSH Enabled - version 1.99
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Authentication timeout: 120 secs; Authentication retries: 3
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>现在你可以用网络上的电脑测试ssh登陆这个交换机的ip了。&lt;/p>
+&lt;h3 id="cisco-路由器">Cisco 路由器
+&lt;/h3>&lt;p>待完成&lt;/p>
+&lt;h3 id="cisco-防火墙">Cisco 防火墙
+&lt;/h3>&lt;p>待完成&lt;/p>
+&lt;p>&amp;mdash;- 未完待续 &amp;mdash;-&lt;/p></description></item><item><title>腾讯云下部署 Elastic Stack 各种 Beat 的最佳实践</title><link>https://martinliu.cn/blog/beats-implement-on-qcloud/</link><pubDate>Fri, 07 Aug 2020 17:14:20 +0800</pubDate><guid>https://martinliu.cn/blog/beats-implement-on-qcloud/</guid><description>&lt;img src="https://martinliu.cn/images/abstract-6.jpg" alt="Featured image of post 腾讯云下部署 Elastic Stack 各种 Beat 的最佳实践" />&lt;h2 id="概述">概述
+&lt;/h2>&lt;p>使用 Elastic Stack 的各种 Beats 模块可以彻底的终结在服务器上手工捞日志查指标的扭曲实践。利用腾讯云提供的 Elasticsearch 服务，可以轻松搞定大规模云环境的运维。本文一次性的帮你梳理清楚了，必备的基础操作，确保你能用 Elastic Stack 安全、稳定和扩展的持续监控你的生产环境。&lt;/p>
+&lt;h2 id="创建-es-集群">创建 ES 集群
+&lt;/h2>&lt;p>登录腾讯云服务控制台，查询并进入 Elasticsearc 服务，点击新建按钮，创建 Elasticsearch 集群。如下图所示。&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/images/qcloud-es.jpeg"
+loading="lazy"
+>&lt;/p>
+&lt;p>集群配置说明：&lt;/p>
+&lt;ul>
+&lt;li>北京区&lt;/li>
+&lt;li>7.5.1 - 白金版&lt;/li>
+&lt;li>单可用区&lt;/li>
+&lt;li>冷热模式&lt;/li>
+&lt;/ul>
+&lt;p>本实例其它参数保持默认，可以根据实际业务需求修改这些参数。&lt;/p>
+&lt;p>点击下一步后，设置 Elasticsearch 集群的超级用户名和密码。&lt;/p>
+&lt;p>在几分钟之后这个集群就成功创建了。查看下面这些基础的配置。&lt;/p>
+&lt;ul>
+&lt;li>启用 Kibana 内网地址： &lt;a class="link" href="http://es-ot7wei87.internal.kibana.tencentelasticsearch.com:5601" target="_blank" rel="noopener"
+>http://es-ot7wei87.internal.kibana.tencentelasticsearch.com:5601&lt;/a> 用于 Bests 的 Setup 命令&lt;/li>
+&lt;li>启用 Kibana 公网地址： &lt;a class="link" href="https://es-ot7wei87.kibana.tencentelasticsearch.com:5601" target="_blank" rel="noopener"
+>https://es-ot7wei87.kibana.tencentelasticsearch.com:5601&lt;/a> 用户Elastic Stack 的初始化配置，如创建角色和调整索引生命周期策略等。&lt;/li>
+&lt;/ul>
+&lt;p>这样我们就有了一个安全、可扩展和性能足够的 ES 后台服务。&lt;/p>
+&lt;h2 id="创建-beats-写入角色和用户">创建 Beats 写入角色和用户
+&lt;/h2>&lt;p>登录 Kibana ，点击角色和用户管理，创建用于 Beast 配置文件的‘只写’权限用户。&lt;/p>
+&lt;ul>
+&lt;li>创建 beats-writer 角色&lt;/li>
+&lt;li>创建 beats-writer 用户，该用户只赋予beats-writer角色，自定义一个安全的复杂密码。&lt;/li>
+&lt;/ul>
+&lt;p>Beats-write 角色设置如下图所示：&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/images/beats-writer.jpeg"
+loading="lazy"
+>&lt;/p>
+&lt;p>这个用户会用到后面的所有 Beats 配置文件中，用最小化权限用户极大的降低了数据泄露的风险。&lt;/p>
+&lt;h2 id="beats-初始化配置">Beats 初始化配置
+&lt;/h2>&lt;p>登录准备好的一个 Linux 服务器，在这台机器上做 Beats 相关的初始化工作；也就是要执行一些列的 setup 命令；这些命令的作用是：&lt;/p>
+&lt;ul>
+&lt;li>在 ES 后台加载索引模板，以及索引的 ILM 策略。&lt;/li>
+&lt;li>加载 Kibana 相关的对象和可视化仪表板。&lt;/li>
+&lt;/ul>
+&lt;p>注意这是一次性的工作，在一个虚拟机上，只需要成功执行一次。&lt;/p>
+&lt;p>SSH 登录到准备的 Linux 服务器上，首先需要安装相关 beats 的 rpm 安装包，安装命令在这里忽略，否则无法执行这些命令。 安装好 filebeat 和 metricbeat 的rpm 包后， 执行下面参考命令。&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-sh" data-lang="sh">&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">filebeat setup -e &lt;span class="se">\
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="se">&lt;/span> -E output.logstash.enabled&lt;span class="o">=&lt;/span>&lt;span class="nb">false&lt;/span> &lt;span class="se">\
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="se">&lt;/span> -E output.elasticsearch.hosts&lt;span class="o">=[&lt;/span>&lt;span class="s1">&amp;#39;192.168.0.43:9200&amp;#39;&lt;/span>&lt;span class="o">]&lt;/span> &lt;span class="se">\
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="se">&lt;/span> -E output.elasticsearch.username&lt;span class="o">=&lt;/span>elastic &lt;span class="se">\
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="se">&lt;/span> -E output.elasticsearch.password&lt;span class="o">=&lt;/span>YourPassWord &lt;span class="se">\
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="se">&lt;/span> -E setup.kibana.host&lt;span class="o">=&lt;/span>es-ot7wei87.internal.kibana.tencentelasticsearch.com:5601
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">metricbeat setup -e &lt;span class="se">\
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="se">&lt;/span> -E output.elasticsearch.hosts&lt;span class="o">=[&lt;/span>&lt;span class="s1">&amp;#39;192.168.0.43:9200&amp;#39;&lt;/span>&lt;span class="o">]&lt;/span> &lt;span class="se">\
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="se">&lt;/span> -E output.elasticsearch.username&lt;span class="o">=&lt;/span>elastic &lt;span class="se">\
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="se">&lt;/span> -E output.elasticsearch.password&lt;span class="o">=&lt;/span>YourPassWord &lt;span class="se">\
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="se">&lt;/span> -E setup.kibana.host&lt;span class="o">=&lt;/span>es-ot7wei87.internal.kibana.tencentelasticsearch.com:5601
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>运行以上命令的时候 Beats 处于默认安装的状态，这些命令行参数是必要的查收，有了这些参数 beats 会忽略默认的配置文件。&lt;/p>
+&lt;p>以上命令根据需求，如果需要使用到其它的 Beats，请使用相关的 setup 命令。其中的 es 和 kibana 相关信息需求参考上一步创建的 es 集群信息。&lt;/p>
+&lt;p>以上所有命令成功之后，登录 Kibana 界面，点击 Dashboard 菜单，这里应该已经加载了很多仪表板。目前为止 Elastic Stack 后台就初始化成功了。&lt;/p>
+&lt;h2 id="在节点上正式部署-beats">在节点上正式部署 Beats
+&lt;/h2>&lt;p>参考和修改安装脚本，一键式安装和配置 Beats&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">git clone https://github.com/martinliu/elastic-stack-lab.git
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">cd tencent
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">sh add-agent.sh
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>成功执行完以上脚本后，相关的 beats 服务应是正常运行的状态。执行完这个命令之后，在 Linux 服务器上使用检查服务是否正常运行 &lt;code>sudo systemctl status filebeat&lt;/code> ；使用这个命令应该可以看到filebeat 服务都是正常运行的。&lt;/p>
+&lt;p>这个脚本所使用的配置文件中的要点：&lt;/p>
+&lt;ul>
+&lt;li>删除了所有和数据摄入无关的配置（例如 es 和 kibana 的配置和初始化等）&lt;/li>
+&lt;li>加入了最小化的必要的最佳实践参数集合&lt;/li>
+&lt;li>建议根据需求增加 beats 相关的模块&lt;/li>
+&lt;li>根据需求加入必要的 Beat 配置参数&lt;/li>
+&lt;/ul>
+&lt;p>实例配置文件如。&lt;/p>
+&lt;p>filebeat.yml&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;span class="lnt">14
+&lt;/span>&lt;span class="lnt">15
+&lt;/span>&lt;span class="lnt">16
+&lt;/span>&lt;span class="lnt">17
+&lt;/span>&lt;span class="lnt">18
+&lt;/span>&lt;span class="lnt">19
+&lt;/span>&lt;span class="lnt">20
+&lt;/span>&lt;span class="lnt">21
+&lt;/span>&lt;span class="lnt">22
+&lt;/span>&lt;span class="lnt">23
+&lt;/span>&lt;span class="lnt">24
+&lt;/span>&lt;span class="lnt">25
+&lt;/span>&lt;span class="lnt">26
+&lt;/span>&lt;span class="lnt">27
+&lt;/span>&lt;span class="lnt">28
+&lt;/span>&lt;span class="lnt">29
+&lt;/span>&lt;span class="lnt">30
+&lt;/span>&lt;span class="lnt">31
+&lt;/span>&lt;span class="lnt">32
+&lt;/span>&lt;span class="lnt">33
+&lt;/span>&lt;span class="lnt">34
+&lt;/span>&lt;span class="lnt">35
+&lt;/span>&lt;span class="lnt">36
+&lt;/span>&lt;span class="lnt">37
+&lt;/span>&lt;span class="lnt">38
+&lt;/span>&lt;span class="lnt">39
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-gdscript3" data-lang="gdscript3">&lt;span class="line">&lt;span class="cl">&lt;span class="c1">#=========================== Filebeat inputs =============================&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">filebeat&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">inputs&lt;/span>&lt;span class="p">:&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="o">-&lt;/span> &lt;span class="n">type&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="nb">log&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">enabled&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="bp">false&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">paths&lt;/span>&lt;span class="p">:&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="o">-&lt;/span> &lt;span class="o">/&lt;/span>&lt;span class="k">var&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="nb">log&lt;/span>&lt;span class="o">/*.&lt;/span>&lt;span class="n">log&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">#============================= Filebeat modules ===============================&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">filebeat&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">config&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">modules&lt;/span>&lt;span class="p">:&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">path&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="o">$&lt;/span>&lt;span class="p">{&lt;/span>&lt;span class="n">path&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">config&lt;/span>&lt;span class="p">}&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">modules&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">d&lt;/span>&lt;span class="o">/*.&lt;/span>&lt;span class="n">yml&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">reload&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">enabled&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="bp">true&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">reload&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">period&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="mi">60&lt;/span>&lt;span class="n">s&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">#-------------------------- Elasticsearch output ------------------------------&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">output&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">elasticsearch&lt;/span>&lt;span class="p">:&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">hosts&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="p">[&lt;/span>&lt;span class="s2">&amp;#34;${INT_ES_SRV}&amp;#34;&lt;/span>&lt;span class="p">]&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">password&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="o">$&lt;/span>&lt;span class="p">{&lt;/span>&lt;span class="n">BEATS_WRITER_PW&lt;/span>&lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">username&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="o">$&lt;/span>&lt;span class="p">{&lt;/span>&lt;span class="n">BEATS_WRITER_USERNAME&lt;/span>&lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">#================================ Processors =====================================&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">processors&lt;/span>&lt;span class="p">:&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="o">-&lt;/span> &lt;span class="n">add_host_metadata&lt;/span>&lt;span class="p">:&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">netinfo&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">enabled&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="bp">true&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">cache&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">ttl&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="mi">5&lt;/span>&lt;span class="n">m&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="o">-&lt;/span> &lt;span class="n">add_cloud_metadata&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="o">~&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="o">-&lt;/span> &lt;span class="n">add_docker_metadata&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="o">~&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="o">-&lt;/span> &lt;span class="n">add_kubernetes_metadata&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="o">~&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="o">-&lt;/span> &lt;span class="n">add_fields&lt;/span>&lt;span class="p">:&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">target&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="s1">&amp;#39;&amp;#39;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">fields&lt;/span>&lt;span class="p">:&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">service&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">name&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="s1">&amp;#39;Joint Lab&amp;#39;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">service&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">id&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="s1">&amp;#39;es-qq&amp;#39;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">#==================== Best Practice Configuration ==========================&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">setup&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">ilm&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">check_exists&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="bp">false&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">logging&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">level&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="n">error&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">queue&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">spool&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="o">~&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">monitoring&lt;/span>&lt;span class="p">:&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">enabled&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="bp">true&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>metricbeat.yml&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;span class="lnt">14
+&lt;/span>&lt;span class="lnt">15
+&lt;/span>&lt;span class="lnt">16
+&lt;/span>&lt;span class="lnt">17
+&lt;/span>&lt;span class="lnt">18
+&lt;/span>&lt;span class="lnt">19
+&lt;/span>&lt;span class="lnt">20
+&lt;/span>&lt;span class="lnt">21
+&lt;/span>&lt;span class="lnt">22
+&lt;/span>&lt;span class="lnt">23
+&lt;/span>&lt;span class="lnt">24
+&lt;/span>&lt;span class="lnt">25
+&lt;/span>&lt;span class="lnt">26
+&lt;/span>&lt;span class="lnt">27
+&lt;/span>&lt;span class="lnt">28
+&lt;/span>&lt;span class="lnt">29
+&lt;/span>&lt;span class="lnt">30
+&lt;/span>&lt;span class="lnt">31
+&lt;/span>&lt;span class="lnt">32
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-gdscript3" data-lang="gdscript3">&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># =========================== Modules configuration ============================&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">metricbeat&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">config&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">modules&lt;/span>&lt;span class="p">:&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">path&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="o">$&lt;/span>&lt;span class="p">{&lt;/span>&lt;span class="n">path&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">config&lt;/span>&lt;span class="p">}&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">modules&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">d&lt;/span>&lt;span class="o">/*.&lt;/span>&lt;span class="n">yml&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">reload&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">enabled&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="bp">true&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">reload&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">period&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="mi">10&lt;/span>&lt;span class="n">s&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">#-------------------------- Elasticsearch output ------------------------------&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">output&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">elasticsearch&lt;/span>&lt;span class="p">:&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">hosts&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="p">[&lt;/span>&lt;span class="s2">&amp;#34;${INT_ES_SRV}&amp;#34;&lt;/span>&lt;span class="p">]&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">password&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="o">$&lt;/span>&lt;span class="p">{&lt;/span>&lt;span class="n">BEATS_WRITER_PW&lt;/span>&lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">username&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="o">$&lt;/span>&lt;span class="p">{&lt;/span>&lt;span class="n">BEATS_WRITER_USERNAME&lt;/span>&lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">#================================ Processors =====================================&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">processors&lt;/span>&lt;span class="p">:&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="o">-&lt;/span> &lt;span class="n">add_host_metadata&lt;/span>&lt;span class="p">:&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">netinfo&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">enabled&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="bp">true&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">cache&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">ttl&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="mi">5&lt;/span>&lt;span class="n">m&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="o">-&lt;/span> &lt;span class="n">add_cloud_metadata&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="o">~&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="o">-&lt;/span> &lt;span class="n">add_docker_metadata&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="o">~&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="o">-&lt;/span> &lt;span class="n">add_kubernetes_metadata&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="o">~&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="o">-&lt;/span> &lt;span class="n">add_fields&lt;/span>&lt;span class="p">:&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">target&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="s1">&amp;#39;&amp;#39;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">fields&lt;/span>&lt;span class="p">:&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">service&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">name&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="s1">&amp;#39;Joint Lab&amp;#39;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">service&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">id&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="s1">&amp;#39;es-qq&amp;#39;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">#==================== Best Practice Configuration ==========================&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">setup&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">ilm&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">check_exists&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="bp">false&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">logging&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">level&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="n">error&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">queue&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">spool&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="o">~&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">monitoring&lt;/span>&lt;span class="p">:&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">enabled&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="bp">true&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>以上配置文件使用了这些通用最佳实践配置参数。&lt;/p>
+&lt;ul>
+&lt;li>使用 ECS 扩展字段，丰富上下文含义&lt;/li>
+&lt;li>启用 beats 端点监控&lt;/li>
+&lt;li>用 keystore 隐藏所有敏感信息&lt;/li>
+&lt;/ul>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">#禁用索引 ilm 策略检查，避免无用动作
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">setup.ilm.check_exists: false
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">#把Beats自身的日志记录调到最低级别降低
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">logging.level: error
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">#开启本地默认的端点缓存行为
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">queue.spool: ~
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">#启用端点的监控
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">monitoring:
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> enabled: true
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;h2 id="排错方法">排错方法
+&lt;/h2>&lt;h3 id="filebeat-setup-不成功">filebeat setup 不成功
+&lt;/h3>&lt;p>在任何 beats 首次做 setup 命令的时候，它可能是会在分钟级别成功结束。如果发生失败或者卡顿的情况，可以等一下，等更长时间看看。不成功的话，需要反复执行，排查 es 和 kibana 服务是否能正常工作。知道陈功了，才能进行下一步的安装工作。&lt;/p>
+&lt;h3 id="配置文件错误导致的服务不能启动">配置文件错误导致的服务不能启动
+&lt;/h3>&lt;p>由于上面的定制化配置文件也可能出现错误，特别是在首次部署这个配置文件的时候，可以先把日志级别 error 哪一行注释掉，把启动服务那两行也注释掉。&lt;/p>
+&lt;p>然后在命令行执行 &lt;code>filebeat -e&lt;/code> 查看整个 feilebeat 的启动过程，这个命令会读取定制化的配置文件，然后开始连接后台 es 服务，然后进入正常数据传送的状态。这个过程中如果有任何配置错误，也可以直观的看到相关信息，直到调整到正常的状态。&lt;/p>
+&lt;p>以上过程的调整好了以后，一定要通过 git 版本管理起来，然后可以放心的在其它节点上执行 beast 的一键式部署工作。&lt;/p>
+&lt;h2 id="总结">总结
+&lt;/h2>&lt;p>以上是在 Beats 部署相关基础最佳实践，也就是说在生产环境中 ES 后台和 beats 的搭配，以及本文所涉及的内容都是基线配置。建议根据自己的需求做更多的调优，这里使用 shell 脚本的方式部署 beats 和相关的配置，shell 脚本适合用于演示原理，建议替换成你所熟悉的自动化运维工具，例如 ansible 等工具。从而保证更大规模的自动化部署和维护。&lt;/p>
+&lt;p>本相关的配置文件和脚本位于：&lt;a class="link" href="https://github.com/martinliu/elastic-stack-lab.git" target="_blank" rel="noopener"
+>https://github.com/martinliu/elastic-stack-lab.git&lt;/a>&lt;/p></description></item></channel></rss>

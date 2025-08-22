@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Oracle on Martin Liu's Blog</title><link>https://martinliu.cn/tags/oracle/</link><description>Recent content in Oracle on Martin Liu's Blog</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><lastBuildDate>Sun, 09 Oct 2022 21:44:15 +0800</lastBuildDate><atom:link href="https://martinliu.cn/tags/oracle/index.xml" rel="self" type="application/rss+xml"/><item><title>ARS启动故障修复案例</title><link>https://martinliu.cn/2011/04/02/ars-start-issue-on-oracle/</link><pubDate>Sat, 02 Apr 2011 13:43:21 +0000</pubDate><guid>https://martinliu.cn/2011/04/02/ars-start-issue-on-oracle/</guid><description>&lt;p>ARS 版本 7.6.04
+数据库 Oracle11G 和 ARS 在同一台服务器上&lt;/p>
+&lt;p>错误现象：
+ARS 服务不能正常启动&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;span class="lnt">4
+&lt;/span>&lt;span class="lnt">5
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">arerror.log报 390600 : SQL 数据库不可用 -- 将重试连接 (ARNOTE 590)
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Sat Apr 02 20:27:41 2011 : Action Request System(R) 服务器 x64 版本 7.6.04 Build 002 201101141059
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">(c) Copyright 1991-2010 BMC Software, Inc.
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Sat Apr 02 20:29:51 2011  390600 : SQL 数据库不可用 -- 将重试连接 (ARNOTE 590)
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Sat Apr 02 20:29:51 2011     ORA-12170: TNS:Connect timeout occurred
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>排错步骤：
+使用 sqlplus 测试登录，返回 TNS 超时错误&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;span class="lnt">4
+&lt;/span>&lt;span class="lnt">5
+&lt;/span>&lt;span class="lnt">6
+&lt;/span>&lt;span class="lnt">7
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">[powershell]
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> C:\Users\martin&amp;gt;sqlplus ARAdmin/AR#Admin#@ars
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">SQL*Plus: Release 11.2.0.1.0 Production on Sat Apr 2 20:48:35 2011
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Copyright (c) 1982, 2010, Oracle.  All rights reserved.
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">ERROR:
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">ORA-12170: TNS:Connect timeout occurred  
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">[/powershell]
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>使用 tnsping ars 测试也不成功
+ping 本机主机名&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">[powershell]
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">ping arsserver
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Pinging arsserver [fe80::c123:5921:b71b:64fd%13] with 32 bytes of data:
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Reply from fe80::c123:5921:b71b:64fd%13: time&amp;lt;1ms
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Reply from fe80::c123:5921:b71b:64fd%13: time&amp;lt;1ms
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Reply from fe80::c123:5921:b71b:64fd%13: time&amp;lt;1ms
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Reply from fe80::c123:5921:b71b:64fd%13: time&amp;lt;1ms
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Ping statistics for fe80::c123:5921:b71b:64fd%13:
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Packets: Sent = 4, Received = 4, Lost = 0 (0% loss),
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Approximate round trip times in milli-seconds:
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Minimum = 0ms, Maximum = 0ms, Average = 0ms 
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">[/powershell]
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>貌似找到原因，修改 host 文件，加入主机名到 127.0.0.1 后面，在测试 ping 主机名成功。
+重启 Oracle 监听器服务，再次测试 tnsping 和 sqlplus ，测试都获得成功。
+重新启动 ARS 服务，服务被正常启动&lt;/p></description></item><item><title>Install Oracle 10.2.01 on OpenSuSE 10.3</title><link>https://martinliu.cn/2008/05/08/install-oracle-102-on-opensuse-103/</link><pubDate>Thu, 08 May 2008 01:51:16 +0000</pubDate><guid>https://martinliu.cn/2008/05/08/install-oracle-102-on-opensuse-103/</guid><description>&lt;p>&lt;img src="http://www.railsonwave.com/assets/2007/9/5/oracle.jpg"
+loading="lazy"
+>&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->A) Download 10201_database_linux32.zip from Oracle website.&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->B) Download 10gR2_openSUSE102_introduction.pdf and ora.rpm from ftp ftp.novelŀcom&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->C) Install Oracle, following quick steps:&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->1. Install openSUSE 10.2 with &amp;ldquo;C/C++ Development&amp;rdquo; selection.&lt;!-- raw HTML omitted -->2. Download and Install orarun package.&lt;!-- raw HTML omitted -->3. Enable and set password for newly created user oracle by orarun.&lt;!-- raw HTML omitted -->4. Set updated kernel parameters by executing /etc/init.d/oracle start.&lt;!-- raw HTML omitted -->5. Download and unzip Oracle 10gR2 Database SW.&lt;!-- raw HTML omitted -->Edit file database/install/oraparam.ini to add &amp;ldquo;SuSE-10&amp;rdquo; to line #39.&lt;!-- raw HTML omitted -->6. login as user oracle and run Oracle Universal Installer &amp;ldquo;database/runInstaller&amp;rdquo;.&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->&lt;strong>Troubleshooting:&lt;/strong>&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->1) installer error:&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->oracle@Martin:&lt;del>/database&amp;gt; ./runInstaller&lt;!-- raw HTML omitted -->Starting Oracle Universal Installer&amp;hellip;&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->Checking installer requirements&amp;hellip;&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->Checking operating system version: must be redhat-3, SuSE-9, redhat-4, UnitedLinux-1.0, asianux-1, asianux-2 or SuSE-10&lt;!-- raw HTML omitted -->Passed&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->All installer requirements met.&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->Preparing to launch Oracle Universal Installer from /tmp/OraInstall2008-05-08_09-11-56AM. Please wait &amp;hellip;oracle@Martin:&lt;/del>/database&amp;gt; java: xcb_xlib.c:52: xcb_xlib_unlock: Assertion `c-&amp;gt;xlib.lock&amp;rsquo; failed.&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->Solution :&lt;!-- raw HTML omitted -->&lt;/p>
+&lt;p>&lt;!-- raw HTML omitted -->&lt;/p>
+&lt;ul>
+&lt;li>export LIBXCB_ALLOW_SLOPPY_LOCK=1
+&lt;!-- raw HTML omitted -->&lt;/li>
+&lt;li>run runInstaller again
+&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->2) 在安装完成末期,需要root用户运行两个脚本，完了之后，我遇到一个错误对话框，点击过去之后好像没有发现安装失败，安装目前正常&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->More SQL scripts:&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->&lt;a class="link" href="http://cs-netlab-01.lynchburg.edu/courses/Oracle/SQLPlus.htm" target="_blank" rel="noopener"
+>http://cs-netlab-01.lynchburg.edu/courses/Oracle/SQLPlus.htm&lt;/a>&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->SQL&amp;gt; CREATE TABLESPACE AMP&lt;!-- raw HTML omitted -->2 DATAFILE &amp;lsquo;/opt/oracle/oradata/orcl/AMP.dbf&amp;rsquo; SIZE 200M;&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->Tablespace created.&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->SQL&amp;gt; CREATE USER AMP IDENTIFIED BY ca1234&lt;!-- raw HTML omitted -->2 DEFAULT TABLESPACE AMP&lt;!-- raw HTML omitted -->3 QUOTA UNLIMITED ON AMP;&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->User created.&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->SQL&amp;gt; GRANT CONNECT, RESOURCE TO AMP;&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->Grant succeeded.&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->SQL&amp;gt; GRANT CREATE SESSION, CREATE TABLE TO AMP;&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->Grant succeeded.&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->&lt;strong>How to start oracle em manully?&lt;/strong>&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->可能出现的错误如下，没有ORACLE_SID的 环境变量, 可能网络地址和环境发生变化,比如主机名修改等.&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->oracle@Martin:&lt;del>/product/10.2/db_1/bin&amp;gt; ./emctl start dbconsole&lt;!-- raw HTML omitted -->TZ set to PRC&lt;!-- raw HTML omitted -->EM Configuration issue. /opt/oracle/product/10.2/db_1/localhost_orcl not found.&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->oracle@Martin:&lt;/del>/product/10.2/db_1/bin&amp;gt; ./emctl start dbconsole&lt;!-- raw HTML omitted -->TZ set to PRC&lt;!-- raw HTML omitted -->OC4J Configuration issue. /opt/oracle/product/10.2/db_1/oc4j/j2ee/OC4J_DBConsole_localhost_orcl not found.&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->修正方式:&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->oracle@Martin:&lt;del>/product/10.2/db_1/oc4j/j2ee&amp;gt; cp -R OC4J_DBConsole_Martin.bmc.com_orcl OC4J_DBConsole_localhost_orcl&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->oracle@Martin:&lt;/del>/product/10.2/db_1&amp;gt; cp -R Martin.bmc.com_orcl/ localhost_orcl&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->oracle@Martin:~/product/10.2/db_1&amp;gt; bin/emctl start dbconsole&lt;!-- raw HTML omitted -->TZ set to PRC&lt;!-- raw HTML omitted -->Oracle Enterprise Manager 10g Database Control Release 10.2.0.1.0&lt;!-- raw HTML omitted -->Copyright (c) 1996, 2005 Oracle Corporation. All rights reserved.&lt;!-- raw HTML omitted -->&lt;a class="link" href="http://Martin.bmc.com:1158/em/console/aboutApplication" target="_blank" rel="noopener"
+>http://Martin.bmc.com:1158/em/console/aboutApplication&lt;/a>&lt;!-- raw HTML omitted -->Starting Oracle Enterprise Manager 10g Database Control &amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;. started.&lt;!-- raw HTML omitted -->&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&lt;!-- raw HTML omitted -->Logs are generated in directory /opt/oracle/product/10.2/db_1/localhost_orcl/sysman/log&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->启动了后访问: http://localhost:1158/em/&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->&lt;strong>手工启动Oracle实例的方法&lt;/strong>&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->1) sqlplus&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->sqlplus /nolog&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->connect sys/manager as sysdba&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->startup&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->2) rcoracle&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->需要修改如下几个文件：/etc/oraInst.loc  /etc/oratab /  /etc/sysconfig/oracle /opt/oracle/product/10.2/db_1/bin/dbstart /usr/sbin/rcoracle 修改这些文件中的路径等信息知道 rcoracle start 命令不出错为止。&lt;/li>
+&lt;/ul></description></item></channel></rss>

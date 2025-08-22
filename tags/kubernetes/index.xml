@@ -1,0 +1,370 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Kubernetes on Martin Liu's Blog</title><link>https://martinliu.cn/tags/kubernetes/</link><description>Recent content in Kubernetes on Martin Liu's Blog</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><lastBuildDate>Sun, 27 Jul 2025 23:02:45 +0800</lastBuildDate><atom:link href="https://martinliu.cn/tags/kubernetes/index.xml" rel="self" type="application/rss+xml"/><item><title>欢迎进入 SRE 的第三纪元 - AI 可靠性工程</title><link>https://martinliu.cn/blog/ai-reliability-engineering-welcome-to-the-third-age-of-sre/</link><pubDate>Sun, 27 Jul 2025 09:44:13 +0800</pubDate><guid>https://martinliu.cn/blog/ai-reliability-engineering-welcome-to-the-third-age-of-sre/</guid><description>&lt;img src="https://martinliu.cn/blog/ai-reliability-engineering-welcome-to-the-third-age-of-sre/afadfd03-nasik-lababan-auk3gkpv6u-unsplash-1024x683.jpg" alt="Featured image of post 欢迎进入 SRE 的第三纪元 - AI 可靠性工程" />&lt;p>Source: &lt;a class="link" href="https://thenewstack.io/ai-reliability-engineering-welcome-to-the-third-age-of-sre/" target="_blank" rel="noopener"
+>Denys Vasyliev @ The New Stack&lt;/a>&lt;/p>
+&lt;blockquote>
+&lt;p>SRE 必须构建值得信赖的 AI 系统，充分利用不断涌现的工具与标准化生态。&lt;/p>&lt;/blockquote>
+&lt;p>当 &lt;a class="link" href="https://events.linuxfoundation.org/kubecon-cloudnativecon-europe/?p=clayton-coleman" target="_blank" rel="noopener"
+>Clayton Coleman&lt;/a> 的这句话在 KubeCon 北美大会上被引用时，引发了强烈共鸣。仅仅五年前，问一位站点可靠性工程师（Site Reliability Engineer，SRE）他们的职责，回答通常围绕着让 Web 应用保持高性能、具备可扩展性和高可用性。而如今，整个技术格局已然发生深刻变化。AI 推理（Inference）工作负载——即训练完成的模型基于所学知识对新数据做出预测的过程——正逐渐成为像 Web 应用一样关键的核心系统。&lt;/p>
+&lt;p>“&lt;em>Inference&lt;/em>——是指模型在推理阶段将其学到的模式应用于此前未见的数据，以生成预测或决策。在这个过程中，模型会利用其已有的知识，对来自真实世界的输入进行响应。”&lt;/p>
+&lt;p>这种演变催生了一个全新的工程领域：AI 可靠性工程（AI Reliability Engineering，AIRe）。我们面临的挑战早已不再是 HTTP 请求的延迟，而是如何减少大语言模型（LLM）在生成标记（token）时的卡顿。优化数据库查询显得有些传统，如今我们更需要关注如何提升模型的检查点（checkpoint）恢复效率和张量（tensor）处理性能。AI 模型，正如曾经的 Web 应用那样，也需要卓越的可扩展性、可靠性和可观测性——而这些能力的架构工作仍在持续进行中。&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/blog/ai-reliability-engineering-welcome-to-the-third-age-of-sre/bb3cd678-image5.png"
+width="468"
+height="166"
+srcset="https://martinliu.cn/blog/ai-reliability-engineering-welcome-to-the-third-age-of-sre/bb3cd678-image5_hu_4af95aeeb5897f4a.png 480w, https://martinliu.cn/blog/ai-reliability-engineering-welcome-to-the-third-age-of-sre/bb3cd678-image5_hu_71cd87ce85d26400.png 1024w"
+loading="lazy"
+alt="The new stack of AI"
+class="gallery-image"
+data-flex-grow="281"
+data-flex-basis="676px"
+>&lt;/p>
+&lt;p>我已经深入从事 AI 可靠性工程近两年，专注于研究、原型设计，并构建实际的推理系统。从 DevOps 各类大会到 SRE Days，再到纽伦堡和伦敦的社区聚会，我不断与行业同行交流实践经验。现在，我希望在这里将这些珍贵的洞察与你分享。&lt;/p>
+&lt;p>&lt;strong>不可靠的 AI，甚至比没有 AI 更危险。&lt;/strong>&lt;/p>
+&lt;ul>
+&lt;li>&lt;strong>推理（Inference）&lt;/strong> 不仅仅是模型的运行过程，它是一门独立的运维工程学科，具备独特的架构抉择与工程范式。与训练阶段可以容忍时间与成本不同，推理处于生产的关键链路上，每一毫秒都可能影响最终体验。&lt;/li>
+&lt;li>&lt;strong>实时 vs 批量&lt;/strong>：推理运行方式主要分为实时（也称在线）和批量（离线）两种。实时推理支撑着聊天机器人、欺诈检测和自动驾驶等对低延迟有严苛要求的应用；而批量推理则周期性地处理大规模数据集，用于图像识别、日志分析或趋势预测等场景。&lt;/li>
+&lt;li>&lt;strong>资源特征&lt;/strong>：尽管相较训练更轻量，推理依然对性能要求极高。尤其在实时场景下，既需要快速计算，也要求基础设施具备高可用性。尽管 CPU 仍有用武之地，但现代推理系统越来越依赖 GPU、TPU，或专用芯片（如 AWS Inferentia、NVIDIA TensorRT）以实现极低延迟。&lt;/li>
+&lt;li>&lt;strong>部署环境&lt;/strong>：推理部署可以无处不在，从边缘设备到云端超大规模集群。你可以在 Serverless 端点、Kubernetes 集群，甚至微型 IoT 模块中找到它的身影。SageMaker、Vertex AI、Hugging Face 和 Together.ai 等平台让部署变得更轻松，但最终选择仍需在成本、控制力和延迟之间权衡。&lt;/li>
+&lt;li>&lt;strong>性能优化手册(Playbook)&lt;/strong>：性能与效率的挑战从未止步。团队广泛应用量化（例如将 FP32 精度转为 INT8）、模型蒸馏和神经架构搜索（Neural Architecture Search，NAS）等技术，以尽可能在不牺牲结果质量的前提下，打造更小、更快、更高效的推理引擎。&lt;/li>
+&lt;li>&lt;strong>&lt;a class="link" href="https://thenewstack.io/monitoring-vs-observability-whats-the-difference/" title="Observability and Monitoring"
+target="_blank" rel="noopener"
+>可观测性与监控&lt;/a>&lt;/strong>：传统遥测系统难以满足需求。推理系统需要更精细的可观测性，涵盖预测延迟、token（标记）吞吐量、数据漂移，甚至模型幻觉（即生成虚假信息）的比率。OpenTelemetry、Prometheus 和专为 AI 打造的追踪工具如今已成为基础设施标配。&lt;/li>
+&lt;li>&lt;strong>可扩展性&lt;/strong>：推理流量不可预期，经常随着用户行为剧烈波动。因此需要通过 Kubernetes HPA、Cloud Run 实现高效自动扩容，并结合 Envoy、Istio、KServe 等实现智能流量调度，以确保系统始终从容应对。&lt;/li>
+&lt;li>&lt;strong>安全防线&lt;/strong>：AI 推理引入了新的安全挑战，包括对抗性输入攻击与潜在的数据泄露。工程师必须将模型端点像保护 API 端点一样严格防御，实施身份验证、访问频率限制、数据加密以及运行时完整性验证。&lt;/li>
+&lt;/ul>
+&lt;p>&lt;em>&lt;strong>推理已不再是机器学习的附属过程。它就是核心应用。它就是生产环境。而它也正在重塑整套运维架构体系。&lt;/strong>&lt;/em>&lt;/p>
+&lt;p>&lt;strong>传统的 SRE 原则虽为 AI 提供了基础，但已难以满足它的独特需求。&lt;/strong>&lt;/p>
+&lt;ul>
+&lt;li>&lt;strong>模型的不确定性本质&lt;/strong>：与典型的 Web 应用不同，AI 模型不是确定性的。同一个输入可能会产生不同结果。一个模型即便系统运行稳定、没有宕机，也可能输出错误、有偏差甚至荒谬的内容——这彻底颠覆了我们对“可靠性”的传统认知。&lt;/li>
+&lt;li>&lt;strong>评估标准正在变化&lt;/strong>：光靠“可用性 SLA”已远远不够。我们需要引入 &lt;em>准确性 SLA&lt;/em> 的新范式，通过精确率、召回率、公平性以及模型漂移等维度，来衡量模型在实际环境下的表现。&lt;/li>
+&lt;/ul>
+&lt;p>&lt;img src="https://martinliu.cn/blog/ai-reliability-engineering-welcome-to-the-third-age-of-sre/e116da6b-image2.png"
+width="468"
+height="259"
+srcset="https://martinliu.cn/blog/ai-reliability-engineering-welcome-to-the-third-age-of-sre/e116da6b-image2_hu_fa6e039316647ee7.png 480w, https://martinliu.cn/blog/ai-reliability-engineering-welcome-to-the-third-age-of-sre/e116da6b-image2_hu_50716b6fa25a4711.png 1024w"
+loading="lazy"
+alt="Emerging AI Challenges – SRE Day – AIRe 2025"
+class="gallery-image"
+data-flex-grow="180"
+data-flex-basis="433px"
+>&lt;/p>
+&lt;ul>
+&lt;li>&lt;strong>基础设施变革&lt;/strong>：随着 AI 工作负载的出现，传统的架构设计也在演进。像 Ingress、水平 Pod 自动扩缩（HPA）这些概念，正逐步被模型网格（Model Mesh）、LoRa 负载均衡、AI 网关等新技术所取代，尤其是在 GPU 资源密集的场景下尤为关键。Kubernetes 社区也在持续演进，推动包括“Serving 工作组”、动态资源分配（DRA）以及 Gateway API 等机制，以支持 AI 推理的特殊需求。&lt;/li>
+&lt;li>&lt;strong>可观测性的盲区&lt;/strong>：传统监控工具擅长监测 CPU、内存和响应延迟，但面对 AI 模型中的置信度、漂移情况，甚至幻觉（即模型生成虚假内容的倾向）等问题，常常无能为力。我们亟需构建 AI 专用的可观测性体系。&lt;/li>
+&lt;li>&lt;strong>新型故障模式&lt;/strong>：现在的问题已不再是“系统崩溃”，而是更隐蔽的“模型静默退化”。这种退化通常不会立刻显现故障，但模型的准确性、公平性会在不知不觉中下降，输出越来越偏离预期。将这种变化当作严重生产事故来看待，需要全新的监测机制和响应工具。&lt;/li>
+&lt;/ul>
+&lt;p>&lt;strong>模型衰减（Model Decay）&lt;/strong>——也称为 &lt;em>模型静默退化（Silent model degradation）&lt;/em>，不同于传统软件的崩溃报错，它表现为模型持续运行但输出质量悄然下降，可能变得不准确、带偏见或逻辑不一致。这种无声的“故障”，往往更难察觉也更难解决。&lt;/p>
+&lt;blockquote>
+&lt;p>我们为何将模型静默退化当作生产级事故来看待？&lt;/p>&lt;/blockquote>
+&lt;p>因为它本质上就是&amp;quot;silent failure&amp;quot;。与崩溃的 Pod 或无法响应的 API 不同，模型静默退化是悄无声息的——系统仍能正常响应请求，但返回的答案可能越来越模糊、偏颇甚至完全错误。用户不会看到直观的 500 错误页面，而是遇到“幻觉式”输出、有害内容，或基于错误数据做出的决策。这不只是代码 bug，更是对用户信任的严重破坏。在 AI 世界里，“正确性”本身就等同于可用性（uptime）。当“可靠性”意味着输出质量时，模型退化——就是宕机。&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/blog/ai-reliability-engineering-welcome-to-the-third-age-of-sre/f6df7415-image1.png"
+width="452"
+height="231"
+srcset="https://martinliu.cn/blog/ai-reliability-engineering-welcome-to-the-third-age-of-sre/f6df7415-image1_hu_3eae5c49d28998b7.png 480w, https://martinliu.cn/blog/ai-reliability-engineering-welcome-to-the-third-age-of-sre/f6df7415-image1_hu_3527fb19fe1336e1.png 1024w"
+loading="lazy"
+alt="Gateway API Inference Extension, OpenInference and AI Gateways"
+class="gallery-image"
+data-flex-grow="195"
+data-flex-basis="469px"
+>&lt;/p>
+&lt;blockquote>
+&lt;p>我们或许不仅要为 AI 扩展 Kubernetes —— 甚至终有一天，我们不得不为它另起炉灶（fork）。&lt;/p>&lt;/blockquote>
+&lt;p>大语言模型（Large Language Models，LLMs）对流量路由、速率限制和安全防护提出了前所未有的要求，而这些功能并非 Kubernetes Ingress 机制的设计初衷。Kubernetes 架构自诞生以来就是围绕无状态 Web 应用打造的，推理场景从未被列为核心用例。尽管 Kubernetes 社区正积极适配，但关键差距依然存在。&lt;/p>
+&lt;p>推理工作负载需要更紧密集成的架构支持：既包括对 GPU/TPU 等硬件加速器的原生支持，也涵盖资源编排与高并发流控能力。为此，Kubernetes 正在推进多个项目，如 WG-Serving（针对 AI/ML 推理优化）、设备管理（通过 DRA 动态资源分配集成加速器），以及 Gateway API 推理扩展，这些都在为 LLM 的规模化、可靠路由打下基础。与此同时，新一代 AI 网关也应运而生，提供专为推理定制的流量控制、可观测性和权限管理能力。&lt;/p>
+&lt;p>但归根结底，我们仍是在一个“原本不是为 AI 而生”的编排平台上进行集成工作。Google 最近宣布，将 Kubernetes 的 etcd 存储引擎替换为基于 Spanner 的架构后，成功实现了单集群支持 65,000 节点的能力，这或许预示着未来我们不仅需要对 Kubernetes 进行功能扩展，甚至可能要彻底分叉（fork）一个属于 AI 推理的基础平台。&lt;/p>
+&lt;blockquote>
+&lt;p>那么，面对全新的 AI 现实，我们应如何实践 SRE 理念？&lt;/p>&lt;/blockquote>
+&lt;ul>
+&lt;li>&lt;strong>制定面向 AI 的服务目标与承诺（SLO/SLA）：&lt;/strong> 传统的可用性指标已不足以衡量 AI 系统的可靠性。我们需要将准确性、公平性、延迟和模型漂移纳入考量，制定清晰的服务等级协议（SLA）。例如 TTFT（生成首个 token 的响应时间）、TPOT（每个输出 token 的平均生成时间）、准确率或偏差范围等，都是需要量化承诺的核心指标。&lt;/li>
+&lt;li>&lt;strong>打造 AI 专属的可观测体系：&lt;/strong> 在使用 OpenTelemetry、Grafana 等常规监控工具的基础上，结合 OpenInference 等 AI 专用追踪与评估平台，实现对模型响应分布、置信度评分和错误类型（如幻觉）的深入监测。&lt;/li>
+&lt;li>&lt;strong>建立 AI 故障应急机制：&lt;/strong> AI 系统可能出现特有问题，如突发的预测漂移或偏差上升。因此，我们需要制定专门的应急预案（playbook），包括模型自动回滚至稳定版本，或启用 AI 熔断机制，以保障系统稳定性。&lt;/li>
+&lt;li>&lt;strong>兼顾扩展性与安全性进行架构设计：&lt;/strong> 可通过模型副本负载均衡、缓存机制、GPU 调度优化（Kubernetes 仍在演进中）及 AI 网关等技术，管理推理流量并加强安全性。安全机制可涵盖基于 token 的限速、语义缓存与访问权限控制。同时，还需通过模型来源追踪、安全交付与运行时监控，确保模型始终可信、稳定。&lt;/li>
+&lt;li>&lt;strong>构建持续评估机制：&lt;/strong> 模型评估不应只在部署前完成。它应覆盖部署前的离线测试、上线前的影子测试与 A/B 测试，以及部署后的实时监控，持续检测模型是否出现性能漂移或精度退化。&lt;/li>
+&lt;/ul>
+&lt;p>&lt;img src="https://martinliu.cn/blog/ai-reliability-engineering-welcome-to-the-third-age-of-sre/1ef2c34a-image3.png"
+width="392"
+height="213"
+srcset="https://martinliu.cn/blog/ai-reliability-engineering-welcome-to-the-third-age-of-sre/1ef2c34a-image3_hu_ff056c405ea27eb3.png 480w, https://martinliu.cn/blog/ai-reliability-engineering-welcome-to-the-third-age-of-sre/1ef2c34a-image3_hu_c7417e8be103b2ad.png 1024w"
+loading="lazy"
+alt="Example Model Evaluation SLA in Production"
+class="gallery-image"
+data-flex-grow="184"
+data-flex-basis="441px"
+>&lt;/p>
+&lt;h2 id="ai-网关sre-在-ai-时代的核心工具">AI 网关：SRE 在 AI 时代的核心工具
+&lt;/h2>&lt;p>在 SRE 发展的初期阶段，我们依靠负载均衡器、服务网格和 API 网关来管理流量、执行安全策略，并实现系统可观测性。而如今，AI 推理带来的工作负载同样需要这些能力——但复杂度更高，规模更大，且容不得半点延迟或错误。这就是 AI 网关登场的时刻。&lt;/p>
+&lt;p>你可以把它理解为现代 SRE 面对 AI 系统的一站式解决方案：它能将请求精准路由到正确的模型、在多个副本间实现高效负载均衡、实施速率限制与安全策略，并集成深度可观测性机制。像 Gloo AI Gateway 这样的项目正是这一领域的先锋，专注解决企业在 AI 落地中遇到的关键难题，如模型成本控制、基于 token 的权限机制、以及对 LLM 响应的实时追踪分析——这些都是传统服务网格难以胜任的。&lt;/p>
+&lt;p>这就是当代 SRE 的新定位：不仅要调节自动扩缩容机制，还要掌控 AI 系统的控制平面（control plane），成为智能系统运行的核心操盘手。&lt;/p>
+&lt;p>&lt;em>AI 网关不仅是 SRE 新工具箱中的一员——它或许是最关键的那一个。&lt;/em>&lt;/p>
+&lt;h2 id="sre-的第三个时代ai-可靠性工程">SRE 的第三个时代：AI 可靠性工程
+&lt;/h2>&lt;p>SRE 的角色正在发生深刻转变。我们需要的是《97 条 SRE 必知法则》书中所强调的那种探索精神——对整个系统的深入理解，从芯片层的硬件架构到模型输出背后的微妙机制。我们要构建值得信赖的 AI 系统，并借助不断成熟的工具链与标准体系来实现这一目标。&lt;/p>
+&lt;p>Björn Rabenstein 曾提到 SRE 正步入“第三个时代”，一个其原则将全面融入系统建设的阶段。确实如此，但推动这个新时代到来的，不再是传统系统的演进，而是 AI 的崛起。AI 可靠性工程（AI Reliability Engineering）不仅仅是传统 SRE 的延伸，它代表了一次根本性的范式转移：从关注“基础设施是否可靠”，走向“智能系统本身是否可信”。&lt;/p></description></item><item><title>DevOps 在 2023 年的趋势和预测</title><link>https://martinliu.cn/blog/deveops-trands-in-2023/</link><pubDate>Wed, 04 Jan 2023 10:19:53 +0800</pubDate><guid>https://martinliu.cn/blog/deveops-trands-in-2023/</guid><description>&lt;img src="https://martinliu.cn/blog/deveops-trands-in-2023/pexels-samar-mourya-13378403.jpg" alt="Featured image of post DevOps 在 2023 年的趋势和预测" />&lt;p>随着技术的发展，与之相关的趋势也在不断变化。DevOps也不例外。现在，企业比以往任何时候，都更加认识到DevOps的价值，及其优化开发和运营的能力。随着我们走过2022年，进入2023年，重要的是要保持领先，了解未来几年推动DevOps的趋势。&lt;/p>
+&lt;p>2022年对于DevOps技术来说是令人兴奋的一年，因为企业越来越认识到自动化和协作对于实现业务成功的重要性。采取敏捷的DevOps方法的公司在效率和生产力方面有了相当大的改善。这是由云计算的持续采用和容器化的崛起所做出的支撑。此外，随着 DevOps-as-a-Service（DaaS）解决方案的日益普及，意味着所有规模的组织都能够从DevOps实践中受益，而不需要专门的DevOps团队。&lt;/p>
+&lt;p>云原生架构、无服务器计算和容器被广泛的采用，更多的组织将它们作为未来的方向。这使团队能够以敏捷和高效的方式快速部署、扩展和管理应用程序。人工智能/ML工具成为DevOps工具箱中的一部分，使团队能够更快速、高效地提供软件更新和功能，并检测代码中的异常情况，从而更容易在潜在问题变成严重问题之前发现它们。安全性仍然是一个重要的优先事项，企业在最新的技术和最佳实践方面进行了大量投资，以确保他们的系统是安全可靠的。&lt;/p>
+&lt;p>同时，DevOps团队也开始专注于改善他们的协作和沟通，使团队能够更快地行动，并对客户的需求和反馈做出更多响应。&lt;/p>
+&lt;p>在过去的一年里，我们在DevOps领域看到了很多令人兴奋的发展，但2023年的趋势是什么？让我们来看看今年我们在DevOps领域可以看到的主要趋势。&lt;/p>
+&lt;h2 id="kubernetes-的采用和部署的增加">Kubernetes 的采用和部署的增加
+&lt;/h2>&lt;p>2022年，Kubernetes的采用显著增加，使其成为事实上的容器编排平台。这是由于它的灵活性和可扩展性，使企业能够在云中快速旋转和拆解应用程序。此外，DevOps的兴起使该平台成为云基础设施的一个关键组成部分。&lt;/p>
+&lt;p>Kubernetes的流行因其与云原生堆栈的整合而得到进一步支持。它支持各种应用，包括微服务、无服务器和数据库，使其成为希望利用云的组织的首选。因此，Kubernetes的部署数量在2022年急剧增加。这一趋势预计将持续到2023年，更多的公司将采用Kubernetes作为其云原生解决方案。&lt;/p>
+&lt;p>预计Kubernetes将很快主导市场，每个组织都会转向这个平台进行部署。社区的支持水平和该平台令人印象深刻的增长速度没有放缓的迹象，使Kubernetes仍然是满足部署需求的首选。&lt;/p>
+&lt;h2 id="无服务器计算将得到广泛的应用">无服务器计算将得到广泛的应用
+&lt;/h2>&lt;p>无服务器计算已经成为科技行业的一个主要趋势，预计在2023年将变得更加流行。这种计算方法允许企业在不需要管理服务器的情况下，开发和运行服务和应用程序，使其成为一种高度创新和高效的软件部署方法。据Gartner称，到2025年，超过85%的组织将使用云计算策略，95%的新数字工作负载将在云平台上进行。这意味着，任何不采用无服务器计算的组织都可能难以跟上竞争的脚步。&lt;/p>
+&lt;p>预计到2030年，无服务器市场将达到300亿美元。目前，已经有超过50%的基于云计算进程的企业将无服务器计算整合到他们的系统中。DevOps流程尤其受益于这一趋势，因为它有助于缩小开发和运营之间的隔阂，简化DevOps流水线的代码。成功实施无服务器计算的一个例子是 Autodesk，一家专门为建筑、工程、施工和制造设计软件的公司。通过扩大其在AWS的业务范围并实施AWS Dynamodb和AWS Lambda，Autodesk能够将创建账户所需的时间从两周大幅减少到十分钟。&lt;/p>
+&lt;p>无服务器计算为工程师提供了许多好处，包括通过消除服务器管理来减少工作量，通过只在需要时支付服务器空间来降低成本，以及在减少延迟的同时轻松扩展和部署。因此，这是一个值得在2023年关注的趋势。&lt;/p>
+&lt;h2 id="微服务架构的采用将继续增长">微服务架构的采用将继续增长
+&lt;/h2>&lt;p>微服务架构是一种越来越流行的设计、构建和管理应用程序的结构。这种方法有助于DevOps专业人员开发出更加模块化、与其他组件解耦、更易于维护和扩展的应用程序。通过将一个复杂的应用程序分离成更小、更容易管理的服务，DevOps专业人士对应用程序的各个部分有更多的控制。这使得更新和排除错误更加容易。此外，微服务允许DevOps专业人员通过创建新的服务或更新现有服务来快速响应客户需求。&lt;/p>
+&lt;p>以提供可扩展性、灵活性和敏捷性的方式开发和部署服务的能力是DevOps专业人士开始接受微服务的主要原因。在一个不断发展的IT环境中，公司需要能够快速、轻松地适应行业的变化。微服务是实现这一目标的好方法，因为它们允许在小的、易于管理的部分中开发和部署服务。因此，DevOps专业人员应该关注微服务在未来几年的持续发展。&lt;/p>
+&lt;h2 id="安全自动化将获得发展势头">安全自动化将获得发展势头
+&lt;/h2>&lt;p>安全自动化涉及自动化安全流程和任务，以确保应用程序和系统的安全和保护，使其免受潜在威胁。在2023年，DevOps专业人士应密切关注安全自动化的增长和安全即代码方法的采用。&lt;/p>
+&lt;p>企业实施安全自动化的一种方式是使用Harness安全测试自动化（STO）等工具，该工具允许在CI/CD管道内进行单元、集成和负载测试的自动化。这可以节省宝贵的工程时间，并降低整体云计算成本。集成到CI/CD流水线中的安全自动化保证了代码在部署到生产之前接受严格的安全测试。这确保了只有被验证为安全的代码才被允许进行。此外，在软件开发生命周期（SDLC）中使用人工智能和机器学习正变得越来越普遍，因为这些技术可以被训练来识别代码中的违规行为并提供改进建议。&lt;/p>
+&lt;p>另一方面，安全即代码解决方案将安全测试整合到CI/CD流水线中，使企业能够在整个开发过程中执行安全策略。这有助于确保安全在开发过程的每个阶段都得到考虑，而不是事后才想到。安全自动化和安全即代码解决方案都可以节省宝贵的工程时间，降低整体云计算成本，同时保持高水平的安全性。&lt;/p>
+&lt;p>2023年，随着企业寻求简化和自动化其安全流程，安全自动化将获得更大的发展势头。安全自动化工具将变得越来越复杂，具有自动安全测试、漏洞扫描和持续安全监控等功能。这将使企业能够在安全风险成为重大问题之前快速有效地识别和解决这些风险。&lt;/p>
+&lt;h2 id="混沌工程实验的增加">混沌工程实验的增加
+&lt;/h2>&lt;p>混沌工程是一个相对较新的领域，近年来得到了普及，预计在未来几年将继续增长。&lt;/p>
+&lt;p>混沌工程是一种战略方法，涉及到通过将产品、服务和系统置于极端条件下测试其复原力和可靠性。这有助于组织了解其系统和应用在这种条件下的行为，并确保它们能够承受这些条件。混沌工程的目标是识别部署过程中的 &amp;ldquo;不完美&amp;rdquo;，如漫长的周期时间，并防止故障发生。混沌工程师的目标不是要消除故障，而是要减轻故障，具体方法是找出不完善的地方并自动修复。&lt;/p>
+&lt;p>我们相信，随着企业认识到确保其产品和服务的高可用性和弹性的重要性，混沌工程和混沌原则的使用将在2023年变得更加广泛。随着混沌工程的采用越来越多，也可能会开发出新的工具和最佳实践，以帮助组织更好地理解和管理其系统的复杂性。&lt;/p>
+&lt;h2 id="docker将继续提升开发者的体验">Docker将继续提升开发者的体验
+&lt;/h2>&lt;p>Docker是一个深受开发者欢迎的工具，它通过允许开发者在云中快速构建、打包和部署应用程序，简化了开发生命周期。Docker的吸引力在于它的简单性，以及它将容器化应用快速带入生产环境的方式。&lt;/p>
+&lt;p>Docker是一个深受开发者欢迎的工具，它通过允许开发者在云中快速构建、打包和部署应用程序，简化了开发生命周期。Docker的吸引力在于它的简单性，以及它将容器化应用快速带入生产环境的方式。&lt;/p>
+&lt;p>尽管最初的假设是，当Kubernetes取消支持时，Docker将被淘汰，但事实并非如此。值得注意的是，Docker的设计从一开始就没有考虑到Kubernetes。Docker之所以能够保持其受欢迎程度，是因为有大量的开发者社区在使用它，而且它提供了易用性。&lt;/p>
+&lt;p>围绕Docker的社区令人印象深刻，无与伦比，它的广泛采用和强大的社区支持使它成为寻求简化工作流程和提高生产力的开发者的可靠选择。因此，Docker预计在未来几年仍将是DevOps领域的一个关键角色，为更多协作开发工作流程的趋势推波助澜。&lt;/p>
+&lt;p>2023年值得关注的一个DevOps趋势是Docker继续增强开发者的体验。该公司已经在开发新的工具和功能，使部署过程更简单、更快、更有效。它的重点是简化操作，同时也提供直观的用户体验。因此，采用Docker的公司可望体验到更大程度的灵活性和可扩展性。&lt;/p>
+&lt;h2 id="gitops将获得更多的信任">GitOps将获得更多的信任
+&lt;/h2>&lt;p>在GitOps中，开发人员将他们的代码存储在Git仓库中，然后将其部署到Kubernetes集群中。这种方法的好处是，开发人员可以将他们的代码保存在源码控制中，而不必担心管理Kubernetes集群的问题。&lt;/p>
+&lt;p>在过去的几年里，GitOps作为一种提高软件交付速度、可靠性和安全性的方法，在DevOps专业人士中获得了巨大的吸引力。在2023年，我们希望看到GitOps在希望改善其软件交付流程的组织中获得更多的信任和采用。&lt;/p>
+&lt;p>我们相信GitOps在2023年将继续流行，有几个原因。首先，GitOps使企业能够采用更加声明性的方法来管理其应用程序和基础设施。这意味着，开发人员不必手动配置和部署资源，只需将他们想要的状态提交给Git，剩下的就交给自动化工具处理。这可以帮助减少错误的风险，提高软件交付的速度和可靠性。&lt;/p>
+&lt;p>GitOps促进了开发团队内部的协作和透明度。通过使用Git作为真理的中心来源，团队中的每个人都可以看到正在进行的更改和系统的当前状态。这可以帮助减少冲突，改善团队成员之间的沟通。&lt;/p>
+&lt;p>GitOps可以帮助企业提高其软件交付过程的安全性。通过使用Git作为唯一的真理源，并使部署过程自动化，企业可以减少未经授权的更改的风险，并确保只有经过批准的更改被部署到生产中。&lt;/p>
+&lt;p>随着GitOps继续在DevOps领域获得关注，预计它在未来几年只会继续增长。这是因为它能够简化DevOps流程，使开发者更容易部署他们的代码。因此，GitOps肯定会成为2023年值得关注的领先DevOps趋势之一。具体来说，随着开发者越来越了解GitOps的好处，对GitOps的信任将继续增加。随着越来越多的组织采用GitOps，并成为DevOps流程的标准部分，GitOps将获得更多信任。&lt;/p>
+&lt;h2 id="aiops将变得突出">AIOps将变得突出
+&lt;/h2>&lt;p>MLOps和AIOps是两个最突出的DevOps工具，预计将成为该行业的主要参与者，到2026年预计价值为409.1亿美元。这些工具对于优化DevOps操作和实现高质量的快速发布至关重要。MLOps有助于加强机器学习的开发系统，而AIOps则使IT流程和操作自动化。&lt;/p>
+&lt;p>AIOps是一个强大的工具，可以使复杂的DevOps流程自动化，使团队能够快速检测和解决任何潜在的问题。它还可以提供对DevOps流程性能的洞察力，并在造成任何破坏之前确定任何潜在的问题。AIOps通常被用作DevOps工具链的一部分，实时监控和管理这些系统，为集成工具和DevOps工程师提供自动反馈。AIOps也可用于自动化某些任务，如应用测试和部署，这可以大大减少完成DevOps任务所需的时间和精力。&lt;/p>
+&lt;p>2023年，随着企业寻求提高IT效能，减少管理复杂数字系统的人工劳动，预计AIOps将继续流行。&lt;/p>
+&lt;h2 id="内部开发者平台将变得更加重要">内部开发者平台将变得更加重要
+&lt;/h2>&lt;p>到2022年，颠覆公司构建软件方式的DevOps趋势已经发展成为一种软件交付方式，通过打破孤岛将开发和运营联系起来。&lt;/p>
+&lt;p>内部开发者平台是一套专门为企业的开发者设计的工具和服务，通常托管在企业自己的基础设施内。&lt;/p>
+&lt;p>内部开发者平台为工程团队提供了一个集中的中心，以进行合作和共享资源。这可以帮助内部开发人员的学习和发展，使他们能够增加技术知识，并使他们能够轻松地与其他工程团队一起进行项目工作。这种平台还可以帮助减少错误，提高代码质量，因为资源共享和审查更容易。在2023年，我们预计会看到企业内部越来越多地采用内部开发者平台的趋势。&lt;/p>
+&lt;h2 id="devops协作将成为主流">DevOps协作将成为主流
+&lt;/h2>&lt;p>DevOps的理念包括打破软件开发人员和开发运营团队之间的围墙，允许他们在构建、测试和部署软件方面进行协作。随着越来越多的组织追求敏捷开发，他们也在提高开发人员和系统之间的障碍。亚马逊、谷歌和Stripe等组织都依靠DevOps协作来促进速度和创新。&lt;/p>
+&lt;p>协作工作正在改变，高管们正在使用新的软件工具来帮助他们监控工作流程。使用Slack、Microsoft Teams、GitHub和Atlassian的工具的DevOps团队对他们的工作流程有更大的可见性。在未来两年，DevOps领导层将继续看到DevOps协作成为主流，新的管理方式将出现。&lt;/p>
+&lt;h2 id="低代码平台">低代码平台
+&lt;/h2>&lt;p>低代码平台的确是扩展敏捷和DevOps优势的有用工具。它们允许开发人员快速、轻松地构建和部署应用程序，而不需要编写大量的代码。这对于需要快速开发和部署应用程序的组织来说特别有利，因为这可以让他们更有效地应对不断变化的业务需求和市场条件。&lt;/p>
+&lt;p>低代码平台也可以很好地适用于想要采用DevOps方法的组织，因为它们可以促进开发人员和IT运营团队之间的合作。通过使用低代码平台，开发人员可以专注于构建和测试应用程序，而IT运营团队可以专注于部署和监控。这些平台通常与所有主要的DevOps工具集成，从而有助于成为管理CI/CD的单一界面。&lt;/p>
+&lt;p>总的来说，对于希望采用敏捷和DevOps实践的组织来说，低代码平台可以成为一个有价值的工具，因为它们可以帮助加速开发过程，提高应用程序的质量和可靠性。&lt;/p>
+&lt;h2 id="向标准化部署和真正的自动化转变">向标准化部署和真正的自动化转变
+&lt;/h2>&lt;p>现在出现了许多端到端的DevOps平台，它们都是以低代码的方式构建的。此外，他们专注于为部署引入标准化；这一直是阻碍团队扩展和控制其部署的主要障碍。使用标准化的CI/CD管道使团队能够重新使用特定的管道来部署性质相似的微服务，只需在需要时调整一些参数。这有助于解决管道臃肿的问题，简化管道管理。&lt;/p>
+&lt;p>这些低代码平台还有助于实现真正意义上的自动化，这一直是DevOps的一个关键原则，但由于各团队的工具和工作流程分散，其实施一直是孤立和不统一的。这种趋势在未来可能会继续，重点是通过DevOps平台实现真正的端到端自动化。自动化可以帮助减少构建、测试和部署软件所需的时间和精力，这可以提高效率并加快开发过程。部署后的自动化在帮助检测故障和启动即时回滚以确保更高的应用可用性方面也有很大的作用。&lt;/p>
+&lt;h2 id="混合云环境的兴起">混合云环境的兴起
+&lt;/h2>&lt;p>许多组织正朝着混合云模式发展，其中一些工作负载在企业内部运行，另一些在云中运行。要求也决定了需要让应用程序在多个云区域运行，并有许多共享资源。这种趋势在未来几年可能会继续下去，DevOps实践将需要适应，不仅要支持混合云的部署，还要支持简化的跨集群监控、备份等。&lt;/p>
+&lt;h2 id="基础设施即代码">基础设施即代码
+&lt;/h2>&lt;p>基础设施即代码（IAC）将成为DevOps的领先趋势之一。这一趋势有利于通过自动化而不是人工的方式来管理和配置基础设施。这是一个基本的DevOps最佳实践，将持续监控、虚拟化测试和版本控制应用于指导基础设施开发和管理的基础代码。&lt;/p>
+&lt;p>基础设施即代码使采用DevOps技术以及基础设施团队和软件开发团队之间更紧密的合作成为可能。当基础设施是代码并被纳入你公司的软件生命周期时，有一个共同的词汇和一套共同的标准，利益相关者已经理解。团队之间的沟通因这种共享的知识而得到促进，这对DevOps至关重要。&lt;/p>
+&lt;h2 id="devsecops">DevSecOps
+&lt;/h2>&lt;p>DevSecOps是指开发、安全和运营。它是一种软件开发实践，在每个阶段都集成了安全元素，直到开发的解决方案不能成功交付。DevSecOps是从DevOps演变而来的，因此，实施DevSecOps而不是DevOps将在未来获得更大的发展。DevSecOps将安全整合到CI/CD管道中，使开发团队能够以DevOps的速度解决目前最紧迫的一些安全问题。&lt;/p>
+&lt;h2 id="sre-网站可靠性工程">SRE (网站可靠性工程)
+&lt;/h2>&lt;p>DevOps部署的下一个层次是站点可靠性工程。在DevOps的未来趋势中，似乎采用SRE作为战略，以实现高可用性、可靠性和增强的数字消费者体验。SRE技术对于完成内部服务水平目标和服务水平协议（SLA）（SLO）也是必要的。&lt;/p>
+&lt;h2 id="可观测性">可观测性
+&lt;/h2>&lt;p>可观察性将是DevOps的关键趋势之一。它提到了协助开发和运营团队记录、收集、关联和分析来自分布式应用的大量性能数据的方法和软件工具，以获得当下的洞察力。&lt;/p>
+&lt;h2 id="多云环境">多云环境
+&lt;/h2>&lt;p>DevOps和多云环境相辅相成，具有同义关系。他们的结合提供了好处，在提高生产力的同时，也为彼此增加了价值数。尽管如此，DevOps和多云在一起仍然是不寻常的。大多数拥有完善的DevOps管道的企业离将多云安排到位还有一段距离。&lt;/p>
+&lt;h2 id="结论">结论
+&lt;/h2>&lt;p>随着IT组织实施DevOps计划，他们无疑将面临一些挑战，这些挑战将考验他们在不断的压力下管理变化、跨团队协作和有效工作的能力。大多数IT组织将意识到，有必要让所有利益相关者参与到DevOps中来，包括业务部门，这样他们都能理解正在实施的方法背后的原因。&lt;/p>
+&lt;p>2023年，DevOps团队将继续推进他们的采用率，因为他们从企业高管那里得到的支持越来越多。DevOps团队将继续关注自动化，将应用程序迁移到云平台，推出Docker容器，建立容器协调工具，以及将他们的关注点扩展到安全方面。更多的公司将把DevOps嵌入到他们的运营结构中。这一发展将使企业开发、部署和运行应用程序的方式以及支持其团队的方式发生重大变化。除了采用DevOps实践外，企业还将调整数字化实践，从他们开发和部署的软件中获得更大的价值和质量，并管理企业的数字化转型。&lt;/p>
+&lt;h2 id="参考">参考
+&lt;/h2>&lt;p>本文参考的文章资料如下：&lt;/p>
+&lt;ul>
+&lt;li>&lt;a class="link" href="https://alltechmagazine.com/devops-trends-to-watch-for-in-2023/" target="_blank" rel="noopener"
+>https://alltechmagazine.com/devops-trends-to-watch-for-in-2023/&lt;/a>&lt;/li>
+&lt;li>&lt;a class="link" href="https://ozone.one/top-6-devops-trends-to-look-for-in-2023/" target="_blank" rel="noopener"
+>https://ozone.one/top-6-devops-trends-to-look-for-in-2023/&lt;/a>&lt;/li>
+&lt;li>&lt;a class="link" href="https://www.solutionanalysts.com/blog/top-10-trends-of-devops-in-2023/" target="_blank" rel="noopener"
+>https://www.solutionanalysts.com/blog/top-10-trends-of-devops-in-2023/&lt;/a>&lt;/li>
+&lt;li>&lt;a class="link" href="https://www.analyticsinsight.net/top-10-devops-trends-and-predictions-to-follow-up-in-2023/" target="_blank" rel="noopener"
+>https://www.analyticsinsight.net/top-10-devops-trends-and-predictions-to-follow-up-in-2023/&lt;/a>&lt;/li>
+&lt;/ul></description></item><item><title> DevOps 的未来：2021 年的 15 个趋势</title><link>https://martinliu.cn/blog/future-devops-15-trends-2021/</link><pubDate>Sun, 21 Mar 2021 00:05:58 +0800</pubDate><guid>https://martinliu.cn/blog/future-devops-15-trends-2021/</guid><description>&lt;img src="https://martinliu.cn/img/2021/03/The-Future-Is-Bright.jpg" alt="Featured image of post DevOps 的未来：2021 年的 15 个趋势" />&lt;p>本文的原文地址：[https://thechief.io/c/editorial/future-DevOps -15-trends-2021/](&lt;a class="link" href="https://thechief.io/c/editorial/future-DevOps" target="_blank" rel="noopener"
+>https://thechief.io/c/editorial/future-DevOps&lt;/a> -15-trends-2021/ ) 本文是一篇译文，旨在学习，并分享给社区。&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/img/cos/2021-03-20-Screen%20Shot%202021-03-21%20at%201.26.38%20AM.jpg"
+loading="lazy"
+>&lt;/p>
+&lt;p>DevOps 和整个IT运维是一个不断发展的领域，本文的趋势就是证明。总是需要跟上趋势并利用其优势。&lt;/p>
+&lt;p>DevOps 正在与机器学习和人工智能等各种技术创新不断发展和融合，这些创新将在2021年占据更多的领域。&lt;/p>
+&lt;p>学习这些趋势，并在你的 DevOps 实践中实施它们，将使你在这个革命性的领域中保持活力。&lt;/p>
+&lt;p>在过去十年的引入中，DevOps 已经成长为许多IT公司不可或缺的一部分。&lt;/p>
+&lt;p>专家预测，到2025年，DevOps 市场规模将达到128.5亿美元。在软件工程中实施 DevOps 所带来的效率和众多优势，是其被大量采用的关键驱动力。&lt;/p>
+&lt;p>年复一年，软件开发领域总有一些新的实践出现，有些则被抛弃。&lt;/p>
+&lt;p>在本文中，我们将探讨 DevOps 的上升趋势和实践，以及对2021年该行业的期望。&lt;/p>
+&lt;h1 id="1-devsecops-将成为新的-devops">1-DevSecOps 将成为新的 DevOps
+&lt;/h1>&lt;p>随着企业拥抱无服务器、Docker、Kubernetes和其他现代云技术，安全将一如既往地成为高度优先级，成为 DevOps 的默认部分。&lt;/p>
+&lt;p>与 DevOps &amp;ndash;开发团队和IT团队的融合类似，DevSecOps 将是将安全融入开发和IT运维团队。&lt;/p>
+&lt;p>技术研究公司国际数据公司(IDC)预测，到2024年，DevSecOps 将推动亚太地区至少50%的新应用，这让 DevSecOps 从2021年开始有了成长的乐土。&lt;/p>
+&lt;h1 id="2-aiops-的实施率将上升">2-AIOps 的实施率将上升
+&lt;/h1>&lt;p>自2017年以来，采用人工智能和机器学习来增强、自动化和管理IT运维，是 DevOps 过程中的革命性改变。&lt;/p>
+&lt;p>Gartner 的研究指出，到2023年，40%的DevOps 团队将利用人工智能进行IT运维（AIOps）来增强应用和基础设施监控工具。&lt;/p>
+&lt;p>随着超过30%的IT组织已经利用机器学习和人工智能，越来越多的组织将采用 AIOps 来提高关键 DevOps 任务的效率和自动化程度，为IT操作人员腾出时间用于更有价值的业务活动。&lt;/p>
+&lt;h1 id="3-基础架构自动化ia将更占主导地位">3-基础架构自动化（IA）将更占主导地位
+&lt;/h1>&lt;p>基础设施管理工具将帮助 DevOps 团队将自动化引入交付、配置和IT基础设施管理。&lt;/p>
+&lt;p>IA 应用可以无缝地自动化IT基础设施的交付、配置和管理，帮助 IT 团队提高工作效率和可靠性。&lt;/p>
+&lt;p>2021年，企业将开始用企业级的 IA 工具取代自定义设置，实现部署和配置的自动化。&lt;/p>
+&lt;h1 id="4-混沌工程将成为常规的测试技术">4-混沌工程将成为常规的测试技术
+&lt;/h1>&lt;p>混沌工程&amp;ndash;在生产中对软件进行实验，以建立对系统抵御突发事故能力的信心的学科，在 DevOps 中会变得更加重要。&lt;/p>
+&lt;p>软件被要求具有高效和冗余性，混沌工程提供了这方面的测试以及更多。&lt;/p>
+&lt;p>Gartner 提出，到2023年，40%的组织将实施混沌工程作为 DevOps 的一部分，这将减少高达 20% 的意外停机时间。&lt;/p>
+&lt;h1 id="5-在-devops-流程中实现更多自动化">5-在 DevOps 流程中实现更多自动化
+&lt;/h1>&lt;p>实际上，每个IT组织都在以某种方式使用自动化。Business wire 的一份报告显示，美国61%的组织广泛使用自动化。&lt;/p>
+&lt;p>企业正在意识到自动化的力量和好处，并将其引入到 DevOps 的每一个层面，从开发，到部署和管理阶段。&lt;/p>
+&lt;p>在2021年，DevOps 将获得并使用更多先进的自动化工具来评估容易出错的人工执行任务，并更好地在 DevOps 发展中加速开发和部署。&lt;/p>
+&lt;p>事实的更广泛的大流行，很多公司正在并将继续进行大量的自动化工作，这是前所未有的。&lt;/p>
+&lt;h1 id="6-从设计到部署公司将采用混合云">6-从设计到部署，公司将采用混合云
+&lt;/h1>&lt;p>随着2020年整个行业经历的转变，远程工作成为新的常态，企业将全面拥抱混合运维。随着企业对其技术堆栈进行的现代化改造，从而利用云的优势，混合云将成为部署的新常态，以及一般的业务。&lt;/p>
+&lt;p>企业将开始同时使用内部私有云部署和公有云来进行IT运维。&lt;/p>
+&lt;h1 id="7-利用-agileops-实现更敏捷的软件交付">7-利用 AgileOps 实现更敏捷的软件交付
+&lt;/h1>&lt;p>AgileOps 结合了成熟的敏捷和 DevOps 技术，为I&amp;amp;O团队提高敏捷性、管理软件开发和快速响应需求。&lt;/p>
+&lt;p>快速实时响应用户需求的需求不断增加，将推动 AgileOps 在IT运维中的进一步发展。&lt;/p>
+&lt;h1 id="8-基础设施即代码iac将蓬勃发展">8-基础设施即代码（IaC）将蓬勃发展
+&lt;/h1>&lt;p>IaC 提供了一种通过配置文件来管理IT基础设施的手段，包括服务器、网络、存储设备（内部和云端）。&lt;/p>
+&lt;p>通过 IaC，软件工程师可以通过运行一个脚本，来构建一套完整的基础设施，提供部署相同配置的一致性、可靠性，并提高软件开发环境的效率。&lt;/p>
+&lt;p>基础设施即代码(IaC)的快速恢复、减少停机时间等优势，将推动更多公司在运维中采用它。&lt;/p>
+&lt;h1 id="9-dataops的趋势是真实的并将更加成熟">9-DataOps的趋势是真实的，并将更加成熟
+&lt;/h1>&lt;p>DataOps 将通过使用机器学习模型来预测事故或中断，从而彻底改变 DevOps。DataOps 使用预测分析，拥有彻底改变 DevOps 的潜力。&lt;/p>
+&lt;p>Itamar Ben Hemo 是 Rivery 的CEO和联合创始人，他写道。&lt;/p>
+&lt;blockquote>
+&lt;p>就像DevOps将软件开发系统化了一样，DataOps旨在加速数据的收集、处理和分析。正如CIO所指出的，&amp;ldquo;IDC在&amp;rsquo;数据到见解&amp;rsquo;的管道中定义了四个核心阶段。识别数据、收集数据、转换数据和分析数据。这些阶段也共同构成了这门新兴学科 DataOps 的核心要素。&amp;rdquo;&lt;/p>&lt;/blockquote>
+&lt;p>根据Nexla进行的一项调查，73%的公司计划投资DataOps来管理数据团队，关于他们如何使用数据，他们的团队结构和数据挑战发现，73%的公司正在投资DataOps。&lt;/p>
+&lt;h1 id="10-无服务器架构将被广泛采用">10-无服务器架构将被广泛采用
+&lt;/h1>&lt;p>无服务器(Serverless)计算为应用和软件部署提供了可扩展性，而无需物理硬件成本。&lt;/p>
+&lt;p>由于企业正在寻求减少和最大限度地利用开支，以缓解新冠疫情的影响，更多的公司将迁移到无服务器架构，消除管理基础设施的责任，允许他们 &amp;ldquo;为你使用的东西付费&amp;rdquo;。&lt;/p>
+&lt;p>将会有一个强有力无服务器的诉求，即我们将把代码推送到云端，其余的操作将由云提供商完成。&lt;/p>
+&lt;h1 id="11-devops-将更深的实施-kubernetes">11-DevOps 将更深的实施 Kubernetes
+&lt;/h1>&lt;p>越来越多的公司将开始看到Kubernetes提供的灵活性、可扩展性、自动化、高可用性和可移植性等优势，将带来直接的经济和运维效益，从而开始更深入的应用它。&lt;/p>
+&lt;h1 id="12-边缘计算将被重视">12-边缘计算将被重视
+&lt;/h1>&lt;p>组织正在需要处理收集数据的地方依靠边缘计算，以获得更好的延迟、成本优化和分析。&lt;/p>
+&lt;p>随着IT操作人员进一步研究过滤监控数据，边缘计算将为DevOps提供这方面的优势，从而在2021年得到更多的应用。&lt;/p>
+&lt;h1 id="13-迁移到微服务变得很重要">13-迁移到微服务变得很重要
+&lt;/h1>&lt;p>通过实施微服务，企业将能够控制应用程序并自动管理软件版本，而且风险更低。&lt;/p>
+&lt;p>商业企业在2021年及以后继续加速向云计算转移。他们越来越多地以灵活性为代价，尝试微服务带来的新技术栈。&lt;/p>
+&lt;h1 id="14-noops将来到运维场景再次">14-NoOps将来到运维场景（再次）
+&lt;/h1>&lt;p>NoOps 的思想是去除DevOps中所有的平台管理部分，减少开发者和基础设施之间的摩擦。&lt;/p>
+&lt;p>随着 DevOps 中各种自动化和 AI 的兴起，NoOps 将在2021年登场，之后开始经历颠覆性的增长。&lt;/p>
+&lt;h1 id="15-gitops将研究院">15-GitOps将研究院
+&lt;/h1>&lt;p>GitOps 是一种集部署、监控、管理于一体的构建云应用的运维模式。GitOps 允许 DevOps 使用开发者工具来驱动运维，在DevOps中建立了一个 &amp;ldquo;你构建，你负责&amp;rdquo; 的流程。&lt;/p>
+&lt;p>如果你想了解更多关于 GitOps的信息，请查看我们的播客集&lt;a class="link" href="https://anchor.fm/thedevopsfauncast/episodes/GitOps-This-is-What-You-Need-to-Know-12-epga8p?ref=thechiefio?ref=thechiefio" target="_blank" rel="noopener"
+>GitOps: This is What You Need to Know.&lt;/a>&lt;/p></description></item><item><title>Skaffold 让 K8s 开发者更加酸爽</title><link>https://martinliu.cn/blog/skaffold-make-local-k8s-dev-easy/</link><pubDate>Wed, 15 Jul 2020 00:09:53 +0800</pubDate><guid>https://martinliu.cn/blog/skaffold-make-local-k8s-dev-easy/</guid><description>&lt;img src="https://martinliu.cn/images/abstract-1.jpg" alt="Featured image of post Skaffold 让 K8s 开发者更加酸爽" />&lt;p>&lt;img src="https://martinliu.cn/images/skaffold.png"
+loading="lazy"
+>&lt;/p>
+&lt;p>今天介绍一个本地 Kubernetes 开发的利器 Skaffold。
+这是我偶然间发现的一个工具，询问了一下周围的人，居然还没有人用过。测试之后，确实有一种不吐不快的感觉。&lt;/p>
+&lt;h2 id="简介">简介
+&lt;/h2>&lt;p>&lt;img src="https://martinliu.cn/images/intro.gif"
+loading="lazy"
+>&lt;/p>
+&lt;p>Skaffold Google 开发的一个开源项目。是一个非常轻量的命令行工具，就是一个可执行文件。它的主页上是这样的介绍它的。&lt;/p>
+&lt;ul>
+&lt;li>轻量：Skaffold只是一个客户端工具。由于集群上不需要任何的相关组件，您的集群没有任何开销或维护负担。&lt;/li>
+&lt;li>运行在任何地方：Skaffold是与世界分享你的项目的最简单的方法：&amp;ldquo;git clone&amp;rdquo;，然后 &amp;ldquo;skaffold run&amp;rdquo;。此外，你还可以使用配置文件、本地用户配置、环境变量和标志来轻松地集成不同环境的差异。&lt;/li>
+&lt;li>功能丰富：Skaffold拥有许多Kubernetes原生开发的基本功能，包括基于策略的打镜像标签、资源端口转发和日志、文件同步等。&lt;/li>
+&lt;li>优化你的开发：Skaffold使内部循环紧密，高度优化，让您在开发的同时得到即时反馈。&lt;/li>
+&lt;/ul>
+&lt;h2 id="客户评价">客户评价
+&lt;/h2>&lt;p>&lt;img src="https://martinliu.cn/images/forgerock.png"
+loading="lazy"
+>&lt;/p>
+&lt;p>&amp;ldquo;我们的客户很喜欢[Kubernetes]，但一直给我们反馈说在Kubernetes上开发很麻烦。Skaffold一针见血地解决了这个问题。以前需要几分钟才能部署的docker镜像或配置的更改，现在只需要几秒钟。Skaffold的插件架构使我们能够部署到Helm或Kustomize，并使用各种docker构建插件，如Kaniko。Skaffold用一个精简的工具取代了我们定制的实用程序和脚本集合，并且易于使用。&amp;rdquo;
+Warren Strange，ForgeRock的工程总监。&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/images/quora.png"
+loading="lazy"
+>&lt;/p>
+&lt;p>&amp;ldquo;当我们评估我们可以使用Kubernetes的工作流程时，Skaffold脱颖而出，成为我们在开发和部署中都想要的工具。它为我们提供了一个跨应用程序的通用入口点，我们也可以为CI/CD重用。现在，我们所有的Kubernetes应用的CI/CD管道在构建和部署时都使用Skaffold。&amp;rdquo;
+Taylor Barrella，Quora的软件工程师&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/images/tng.png"
+loading="lazy"
+>&lt;/p>
+&lt;p>&amp;ldquo;Skaffold是一个了不起的工具，它为我们简化了开发和交付。Skaffold通过覆盖两个维度，击中了我们的甜蜜点。第一，从本地开发、集成测试到交付的整个开发周期。第二，Skaffold让我们能够在Linux、OSX和Windows上独立开发，不需要特定的平台逻辑。&amp;rdquo;
+Martin Höfling，TNG技术咨询有限公司首席顾问&lt;/p>
+&lt;h2 id="推荐首次测试流程">推荐首次测试流程
+&lt;/h2>&lt;p>前置条件，你的开发用工作电脑上已经安装了它需要调用的 kubectl 和 docker 命令，kubectl 需要有至少一个可用的配置，这个配置可以指向任一一个你有权限部署的 Kubernetes 集群。&lt;/p>
+&lt;p>我在 macOS 上，直接运行 &lt;code>‌brew install skaffold&lt;/code> 即可，其它系统参考：&lt;a class="link" href="https://skaffold.dev/docs/install/" target="_blank" rel="noopener"
+>https://skaffold.dev/docs/install/&lt;/a>&lt;/p>
+&lt;p>克隆 Skaffold 的代码库到本地，获取必要的测试应用代码。&lt;/p>
+&lt;p>&lt;code>‌git clone https://github.com/GoogleContainerTools/skaffold&lt;/code>&lt;/p>
+&lt;p>进入代码库中的‘hello world’示例应用。&lt;/p>
+&lt;p>执行：&lt;code>‌cd skaffold/examples/getting-started&lt;/code>&lt;/p>
+&lt;p>执行 &lt;code>‌skaffold dev&lt;/code> ，你会看到 Skaffold 进入了这个项目的构建和运行的状态，执行结果是持续的输出 ”[getting-started] Hello world!“&lt;/p>
+&lt;p>现在 Skaffold 就进入了 /getting-started 的监视状态。观察任何代码文件的修改存盘动作，每次代码的变更会触发 Skaffold 流水线的执行，skaffold.yaml 文件中描述了本地流水线中的相关动作：&lt;/p>
+&lt;ul>
+&lt;li>使用 Dockerfile 从源头构建Docker镜像。&lt;/li>
+&lt;li>用Docker镜像的内容的sha256哈希值来打上标签。&lt;/li>
+&lt;li>更新 Kubernetes manifest k8s-pod.yaml，以使用上一步构建的镜像。&lt;/li>
+&lt;li>使用 kubectl apply -f 部署 Kubernetes manifest。&lt;/li>
+&lt;li>从已部署的应用程序取回日志在本地控制台显示。&lt;/li>
+&lt;/ul>
+&lt;p>现在用代码编辑器打开这个项目唯一的程序文件 main.go ，修改其中的 Hello World 为其它你想到的词，保存后，观察构建的过程。&lt;/p>
+&lt;h2 id="推荐微服务测试">推荐微服务测试
+&lt;/h2>&lt;p>参考以下视频，测试 Skaffold 代码库中的 microservice 项目。&lt;/p>
+&lt;h2 id="skaffold-流水线阶段">Skaffold 流水线阶段
+&lt;/h2>&lt;p>Skaffold 主要会用到五个阶段。&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/images/workflow.png"
+loading="lazy"
+>&lt;/p>
+&lt;p>其所有阶段如下：&lt;/p>
+&lt;ul>
+&lt;li>Init ： generate a starting point for Skaffold configuration&lt;/li>
+&lt;li>Build ：build images with different builders&lt;/li>
+&lt;li>Tag ： tag images based on different policies&lt;/li>
+&lt;li>Test ：test images with structure tests&lt;/li>
+&lt;li>Deploy ：deploy with kubectl, kustomize or helm&lt;/li>
+&lt;li>File Sync ： sync changed files directly to containers&lt;/li>
+&lt;li>Log ： Tailing tail logs from workloads&lt;/li>
+&lt;li>Port Forwarding ：forward ports from services and arbitrary resources to localhost&lt;/li>
+&lt;li>Cleanup ： cleanup manifests and images&lt;/li>
+&lt;/ul>
+&lt;p>当你启动Skaffold时，它就会收集你项目中的源代码，并使用你所选择的工具构建工件；工件一旦成功构建，就会根据你的需要进行标记，并推送到你指定的仓库中。在工作流程的最后，Skaffold还帮助你将工件部署到你的Kubernetes集群中，同样使用你喜欢的工具。&lt;/p>
+&lt;p>Skaffold允许你跳过各个阶段。例如，如果你在本地使用Minikube运行Kubernetes，Skaffold不会将工件推送到远程仓库。&lt;/p>
+&lt;p>每个阶段的详情见：&lt;a class="link" href="https://skaffold.dev/docs/pipeline-stages/" target="_blank" rel="noopener"
+>https://skaffold.dev/docs/pipeline-stages/&lt;/a>&lt;/p>
+&lt;h2 id="架构设计">架构设计
+&lt;/h2>&lt;p>Skaffold 秉承着插件化的设计思想。&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/images/architecture.png"
+loading="lazy"
+>&lt;/p>
+&lt;p>以上架构内置了对下来工具的支持：&lt;/p>
+&lt;ul>
+&lt;li>Build
+&lt;ul>
+&lt;li>Dockerfile locally, in-cluster with kaniko or on cloud using Google Cloud Build&lt;/li>
+&lt;li>Jib Maven and Jib Gradle locally or on cloud using Google Cloud Build&lt;/li>
+&lt;li>Bazel locally&lt;/li>
+&lt;li>Cloud Native Buildpacks locally or on cloud using Google Cloud Build&lt;/li>
+&lt;li>Custom script locally or in-cluster&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Test
+&lt;ul>
+&lt;li>container-structure-test&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>Tag&lt;/li>
+&lt;/ul>
+&lt;ul>
+&lt;li>Git tagger&lt;/li>
+&lt;/ul>
+&lt;ul>
+&lt;li>
+&lt;p>Sha256 tagger&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Env Template tagger&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>DateTime tagger&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Deploy&lt;/p>
+&lt;/li>
+&lt;/ul>
+&lt;ul>
+&lt;li>Kubernetes Command-Line Interface (kubectl)&lt;/li>
+&lt;/ul>
+&lt;ul>
+&lt;li>Helm&lt;/li>
+&lt;li>kustomize&lt;/li>
+&lt;/ul>
+&lt;h2 id="总结">总结
+&lt;/h2>&lt;p>Skaffold 确实让基于 Kubernetes 的开发者的本地工作环境更加优化和整洁了。希望本文对你的工作有所帮助。&lt;/p></description></item></channel></rss>

@@ -1,0 +1,358 @@
+<!doctype html><html lang=zh-cn dir=ltr><head><meta charset=utf-8><meta name=viewport content='width=device-width,initial-scale=1'><meta name=description content="高可靠性 3 节点的 ES 集群适用于各种应用场景"><meta name=keywords content="DevOps,Elastic Stack,Elasticsearch"><title>Elasticsearch 3 节点集群搭建 (7.9.0)</title><link rel=canonical href=https://martinliu.cn/blog/elasticsearch-3-nodes-cluster-setup/><link rel=stylesheet href=/scss/style.min.6cdf49b1ce11fdcb5b101472ec608dcfd7395a19af16339a150cd1a4536b6113.css><meta property='og:title' content="Elasticsearch 3 节点集群搭建 (7.9.0)"><meta property='og:description' content="高可靠性 3 节点的 ES 集群适用于各种应用场景"><meta property='og:url' content='https://martinliu.cn/blog/elasticsearch-3-nodes-cluster-setup/'><meta property='og:site_name' content="Martin Liu's Blog"><meta property='og:type' content='article'><meta property='article:section' content='Post'><meta property='article:tag' content='DevOps'><meta property='article:tag' content='Elastic Stack'><meta property='article:tag' content='Elasticsearch'><meta property='article:published_time' content='2020-08-27T13:54:46+08:00'><meta property='article:modified_time' content='2024-06-25T21:44:26+08:00'><meta property='og:image' content='https://martinliu.cn/images/abstract-6.jpg'><meta name=twitter:title content="Elasticsearch 3 节点集群搭建 (7.9.0)"><meta name=twitter:description content="高可靠性 3 节点的 ES 集群适用于各种应用场景"><meta name=twitter:card content="summary_large_image"><meta name=twitter:image content='https://martinliu.cn/images/abstract-6.jpg'><script async src="https://www.googletagmanager.com/gtag/js?id=G-30EQ6H78E5"></script><script>var dnt,doNotTrack=!1;if(!1&&(dnt=navigator.doNotTrack||window.doNotTrack||navigator.msDoNotTrack,doNotTrack=dnt=="1"||dnt=="yes"),!doNotTrack){window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","G-30EQ6H78E5")}</script></head><body class=article-page><script>(function(){const e="StackColorScheme";localStorage.getItem(e)||localStorage.setItem(e,"auto")})()</script><script>(function(){const t="StackColorScheme",e=localStorage.getItem(t),n=window.matchMedia("(prefers-color-scheme: dark)").matches===!0;e=="dark"||e==="auto"&&n?document.documentElement.dataset.scheme="dark":document.documentElement.dataset.scheme="light"})()</script><div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky"><button class="hamburger hamburger--spin" type=button id=toggle-menu aria-label=切换菜单>
+<span class=hamburger-box><span class=hamburger-inner></span></span></button><header><figure class=site-avatar><a href=/><img src=/img/avatar_hu_288ed5026836b766.png width=300 height=300 class=site-logo loading=lazy alt=Avatar></a></figure><div class=site-meta><h1 class=site-name><a href=/>Martin Liu's Blog</a></h1><h2 class=site-description>Founder of DevOps China</h2></div></header><ol class=menu-social><li><a href=https://github.com/martinliu/ target=_blank title=GitHub rel=me><svg class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M9 19c-4.3 1.4-4.3-2.5-6-3m12 5v-3.5c0-1 .1-1.4-.5-2 2.8-.3 5.5-1.4 5.5-6a4.6 4.6.0 00-1.3-3.2 4.2 4.2.0 00-.1-3.2s-1.1-.3-3.5 1.3a12.3 12.3.0 00-6.2.0C6.5 2.8 5.4 3.1 5.4 3.1a4.2 4.2.0 00-.1 3.2A4.6 4.6.0 004 9.5c0 4.6 2.7 5.7 5.5 6-.6.6-.6 1.2-.5 2V21"/></svg></a></li><li><a href=https://www.linkedin.com/in/liuzheng/ target=_blank title=LinkedIn rel=me><svg viewBox="0 0 32 32" width="32" height="32"><path d="M7.5 5C6.132813 5 5 6.132813 5 7.5v17C5 25.867188 6.132813 27 7.5 27h17c1.367188.0 2.5-1.132812 2.5-2.5V7.5C27 6.132813 25.867188 5 24.5 5zm0 2h17C24.785156 7 25 7.214844 25 7.5v17C25 24.785156 24.785156 25 24.5 25H7.5C7.214844 25 7 24.785156 7 24.5V7.5c0-.285156.214844-.5.5-.5zm2.9375 1.71875C9.488281 8.71875 8.71875 9.488281 8.71875 10.4375S9.488281 12.15625 10.4375 12.15625 12.15625 11.386719 12.15625 10.4375 11.386719 8.71875 10.4375 8.71875zm9.03125 4.5625c-1.433594.0-2.386719.785156000000001-2.78125 1.53125H16.625V13.5H13.8125V23H16.75V18.3125C16.75 17.074219 16.996094 15.875 18.53125 15.875c1.511719.0 1.53125 1.398438 1.53125 2.5V23H23V17.78125c0-2.554687-.542968999999999-4.5-3.53125-4.5zM9 13.5V23h2.96875V13.5z"/></svg></a></li><li><a href=https://twitter.com/martinliu target=_blank title=Twitter rel=me><svg class="icon icon-tabler icon-tabler-brand-twitter" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M22 4.01c-1 .49-1.98.689-3 .99-1.121-1.265-2.783-1.335-4.38-.737S11.977 6.323 12 8v1c-3.245.083-6.135-1.395-8-4 0 0-4.182 7.433 4 11-1.872 1.247-3.739 2.088-6 2 3.308 1.803 6.913 2.423 10.034 1.517 3.58-1.04 6.522-3.723 7.651-7.742a13.84 13.84.0 00.497-3.753C20.18 7.773 21.692 5.25 22 4.009z"/></svg></a></li></ol><ol class=menu id=main-menu><li><a href=/><svg class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><polyline points="5 12 3 12 12 3 21 12 19 12"/><path d="M5 12v7a2 2 0 002 2h10a2 2 0 002-2v-7"/><path d="M9 21v-6a2 2 0 012-2h2a2 2 0 012 2v6"/></svg>
+<span>首页</span></a></li><li><a href=/about/><svg class="icon icon-tabler icon-tabler-messages" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><path d="M21 14l-3-3h-7a1 1 0 01-1-1V4a1 1 0 011-1h9a1 1 0 011 1v10"/><path d="M14 15v2a1 1 0 01-1 1H6l-3 3V11a1 1 0 011-1h2"/></svg>
+<span>关于</span></a></li><li><a href=/course/><svg class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><rect x="3" y="4" width="18" height="4" rx="2"/><path d="M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8"/><line x1="10" y1="12" x2="14" y2="12"/></svg>
+<span>课程</span></a></li><li><a href=/search/><svg class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="10" cy="10" r="7"/><line x1="21" y1="21" x2="15" y2="15"/></svg>
+<span>搜索</span></a></li><li><a href=/archives/><svg class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><rect x="3" y="4" width="18" height="4" rx="2"/><path d="M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8"/><line x1="10" y1="12" x2="14" y2="12"/></svg>
+<span>归档</span></a></li><li><a href=/links/><svg class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><path d="M10 14a3.5 3.5.0 005 0l4-4a3.5 3.5.0 00-5-5l-.5.5"/><path d="M14 10a3.5 3.5.0 00-5 0l-4 4a3.5 3.5.0 005 5l.5-.5"/></svg>
+<span>链接</span></a></li><li class=menu-bottom-section><ol class=menu><li id=i18n-switch><svg class="icon icon-tabler icon-tabler-language" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M4 5h7"/><path d="M9 3v2c0 4.418-2.239 8-5 8"/><path d="M5 9c-.003 2.144 2.952 3.908 6.7 4"/><path d="M12 20l4-9 4 9"/><path d="M19.1 18h-6.2"/></svg>
+<select name=language title=language onchange="window.location.href=this.selectedOptions[0].value"><option value=https://martinliu.cn/ selected>中文</option><option value=https://martinliu.cn/en/>English</option></select></li><li id=dark-mode-toggle><svg class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="8" cy="12" r="2"/><rect x="2" y="6" width="20" height="12" rx="6"/></svg>
+<svg class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="16" cy="12" r="2"/><rect x="2" y="6" width="20" height="12" rx="6"/></svg>
+<span>暗色模式</span></li></ol></li></ol></aside><aside class="sidebar right-sidebar sticky"><section class="widget archives"><div class=widget-icon><svg class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><line x1="5" y1="9" x2="19" y2="9"/><line x1="5" y1="15" x2="19" y2="15"/><line x1="11" y1="4" x2="7" y2="20"/><line x1="17" y1="4" x2="13" y2="20"/></svg></div><h2 class="widget-title section-title">目录</h2><div class=widget--toc><nav id=TableOfContents><ol><li><a href=#演示环境介绍>演示环境介绍</a></li><li><a href=#elasticsearch-安装脚本>Elasticsearch 安装脚本</a></li><li><a href=#elasticsearch-配置文件>Elasticsearch 配置文件</a></li><li><a href=#总结>总结</a></li></ol></nav></div></section></aside><main class="main full-width"><article class="has-image main-article"><header class=article-header><div class=article-image><a href=/blog/elasticsearch-3-nodes-cluster-setup/><img src=/images/abstract-6.jpg loading=lazy alt="Featured image of post Elasticsearch 3 节点集群搭建 (7.9.0)"></a></div><div class=article-details><header class=article-category><a href=/categories/devops/ style=background-color:#2a9d8f;color:#fff>DevOps</a></header><div class=article-title-wrapper><h2 class=article-title><a href=/blog/elasticsearch-3-nodes-cluster-setup/>Elasticsearch 3 节点集群搭建 (7.9.0)</a></h2><h3 class=article-subtitle>高可靠性 3 节点的 ES 集群适用于各种应用场景</h3></div><footer class=article-time><div><svg class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><path d="M11.795 21H5a2 2 0 01-2-2V7a2 2 0 012-2h12a2 2 0 012 2v4"/><circle cx="18" cy="18" r="4"/><path d="M15 3v4"/><path d="M7 3v4"/><path d="M3 11h16"/><path d="M18 16.496V18l1 1"/></svg>
+<time class=article-time--published>2020-08-27, Thursday</time></div><div><svg class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15 15"/></svg>
+<time class=article-time--reading>阅读时长: 5 分钟</time></div></footer></div></header><section class=article-content><p>最近发布的 Elastic Stack 7.9 ，带来了很多新的特性。Elastic Agent 统一集成数据采集代理是一大亮点。另外还看增加了企业搜索、端点安全防护等组件。Ingest Manager 统一 Beat 配置管理功能让我们向 SaaS 风格的监控工具又迈进了一步。由代理端自行注册到后端，在后端统一纳管所有被管理服务器，将是一种以后非常通用的模式。这样做的好处是：将数据采集端点的配置工作量和复杂度降低到最低。Beats 的各种相关独立模块也在平行的发布，这种双轨模式也可以让用户更弹性的做出选择，能最大程度的保持旧版本部署环境管理模式的延续性。 Ingest manager 的前提条件是：后台 ES 需要启用 api key 安全，启用 ES 客户端的 HTTPS 访问。我们也可以看到这两个功能选项也有其非常广泛的应用需求。本文将用最简单的文字，向你描述一套 3 节点的 ES 集群的搭建方式，这套系统的核心特性如下：</p><ul><li>启用用户名和密码认证</li><li>启用集群内 es 节点间 transport.ssl 通讯加密</li><li>启用 es 的 http 客户端 http.ssl 加密通讯</li><li>安装脚本中包括创建数字证书的必要命令（没猜错的话，大部分人可能会在这一步花费大量时间）</li></ul><h2 id=演示环境介绍>演示环境介绍</h2><p>我使用的是本地的测试环境，环境配置如下：</p><ul><li>Mac OS</li><li>vagrant</li><li>virtualBox - CentOS 8</li><li>Elastic Stack 7.9.0</li><li>ip 和主机名分配见 Vagrantfile 文件</li><li>Vagrant 的 vagrant-hostsupdater 插件实现了 Mac OS 主机和所有虚拟机的 host 文件 DNS 解析的同步，保证所有相关虚拟机都可以解析其它虚拟机的 FQDN，尽量模拟生产环境。</li></ul><p>本文所使用的所有配置文件和安装脚本见：<a class=link href=https://github.com/DevOps-Coach/elasticstack.git target=_blank rel=noopener>https://github.com/DevOps-Coach/elasticstack.git</a></p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-gdscript3 data-lang=gdscript3><span class=line><span class=cl><span class=err>➜</span>  <span class=n>elasticstack</span> <span class=n>git</span><span class=p>:(</span><span class=n>master</span><span class=p>)</span> <span class=err>✗</span> <span class=n>vagrant</span> <span class=n>up</span> <span class=n>es1</span> <span class=n>es2</span> <span class=n>es3</span>
+</span></span><span class=line><span class=cl><span class=n>Bringing</span> <span class=n>machine</span> <span class=s1>&#39;es1&#39;</span> <span class=n>up</span> <span class=n>with</span> <span class=s1>&#39;virtualbox&#39;</span> <span class=n>provider</span><span class=o>...</span>
+</span></span><span class=line><span class=cl><span class=n>Bringing</span> <span class=n>machine</span> <span class=s1>&#39;es2&#39;</span> <span class=n>up</span> <span class=n>with</span> <span class=s1>&#39;virtualbox&#39;</span> <span class=n>provider</span><span class=o>...</span>
+</span></span><span class=line><span class=cl><span class=n>Bringing</span> <span class=n>machine</span> <span class=s1>&#39;es3&#39;</span> <span class=n>up</span> <span class=n>with</span> <span class=s1>&#39;virtualbox&#39;</span> <span class=n>provider</span><span class=o>...</span>
+</span></span><span class=line><span class=cl><span class=o>==&gt;</span> <span class=n>es1</span><span class=p>:</span> <span class=n>Importing</span> <span class=n>base</span> <span class=n>box</span> <span class=s1>&#39;bento/centos-8&#39;</span><span class=o>...</span>
+</span></span><span class=line><span class=cl><span class=o>==&gt;</span> <span class=n>es1</span><span class=p>:</span> <span class=n>Matching</span> <span class=n>MAC</span> <span class=n>address</span> <span class=k>for</span> <span class=n>NAT</span> <span class=n>networking</span><span class=o>...</span>
+</span></span><span class=line><span class=cl><span class=o>==&gt;</span> <span class=n>es1</span><span class=p>:</span> <span class=n>Checking</span> <span class=k>if</span> <span class=n>box</span> <span class=s1>&#39;bento/centos-8&#39;</span> <span class=n>version</span> <span class=s1>&#39;202002.04.0&#39;</span> <span class=n>is</span> <span class=n>up</span> <span class=n>to</span> <span class=n>date</span><span class=o>...</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=err>省略中间大量输出。。。。。。</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=n>es3</span><span class=p>:</span> <span class=err>●</span> <span class=n>elasticsearch</span><span class=o>.</span><span class=n>service</span> <span class=o>-</span> <span class=n>Elasticsearch</span>
+</span></span><span class=line><span class=cl>    <span class=n>es3</span><span class=p>:</span>    <span class=n>Loaded</span><span class=p>:</span> <span class=n>loaded</span> <span class=p>(</span><span class=o>/</span><span class=n>usr</span><span class=o>/</span><span class=n>lib</span><span class=o>/</span><span class=n>systemd</span><span class=o>/</span><span class=n>system</span><span class=o>/</span><span class=n>elasticsearch</span><span class=o>.</span><span class=n>service</span><span class=p>;</span> <span class=n>enabled</span><span class=p>;</span> <span class=n>vendor</span> <span class=n>preset</span><span class=p>:</span> <span class=n>disabled</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=n>es3</span><span class=p>:</span>    <span class=n>Active</span><span class=p>:</span> <span class=n>active</span> <span class=p>(</span><span class=n>running</span><span class=p>)</span> <span class=n>since</span> <span class=n>Thu</span> <span class=mi>2020</span><span class=o>-</span><span class=mi>08</span><span class=o>-</span><span class=mi>27</span> <span class=mi>05</span><span class=p>:</span><span class=mi>55</span><span class=p>:</span><span class=mi>21</span> <span class=n>UTC</span><span class=p>;</span> <span class=mi>223</span><span class=n>ms</span> <span class=n>ago</span>
+</span></span><span class=line><span class=cl>    <span class=n>es3</span><span class=p>:</span>      <span class=n>Docs</span><span class=p>:</span> <span class=n>https</span><span class=p>:</span><span class=o>//</span><span class=n>www</span><span class=o>.</span><span class=n>elastic</span><span class=o>.</span><span class=n>co</span>
+</span></span><span class=line><span class=cl>    <span class=n>es3</span><span class=p>:</span>  <span class=n>Main</span> <span class=n>PID</span><span class=p>:</span> <span class=mi>4205</span> <span class=p>(</span><span class=n>java</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=n>es3</span><span class=p>:</span>     <span class=n>Tasks</span><span class=p>:</span> <span class=mi>41</span> <span class=p>(</span><span class=n>limit</span><span class=p>:</span> <span class=mi>11499</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=n>es3</span><span class=p>:</span>    <span class=n>Memory</span><span class=p>:</span> <span class=mf>1.2</span><span class=n>G</span>
+</span></span><span class=line><span class=cl>    <span class=n>es3</span><span class=p>:</span>    <span class=n>CGroup</span><span class=p>:</span> <span class=o>/</span><span class=n>system</span><span class=o>.</span><span class=n>slice</span><span class=o>/</span><span class=n>elasticsearch</span><span class=o>.</span><span class=n>service</span>
+</span></span><span class=line><span class=cl>    <span class=n>es3</span><span class=p>:</span>            <span class=err>├─</span><span class=mi>4205</span> <span class=o>/</span><span class=n>usr</span><span class=o>/</span><span class=n>share</span><span class=o>/</span><span class=n>elasticsearch</span><span class=o>/</span><span class=n>jdk</span><span class=o>/</span><span class=n>bin</span><span class=o>/</span><span class=n>java</span> <span class=o>-</span><span class=n>Xshare</span><span class=p>:</span><span class=n>auto</span> <span class=o>-</span><span class=n>Des</span><span class=o>.</span><span class=n>networkaddress</span><span class=o>.</span><span class=n>cache</span><span class=o>.</span><span class=n>ttl</span><span class=o>=</span><span class=mi>60</span> <span class=o>-</span><span class=n>Des</span><span class=o>.</span><span class=n>networkaddress</span><span class=o>.</span><span class=n>cache</span><span class=o>.</span><span class=n>negative</span><span class=o>.</span><span class=n>ttl</span><span class=o>=</span><span class=mi>10</span> <span class=o>-</span><span class=n>XX</span><span class=p>:</span><span class=o>+</span><span class=n>AlwaysPreTouch</span> <span class=o>-</span><span class=n>Xss1m</span> <span class=o>-</span><span class=n>Djava</span><span class=o>.</span><span class=n>awt</span><span class=o>.</span><span class=n>headless</span><span class=o>=</span><span class=bp>true</span> <span class=o>-</span><span class=n>Dfile</span><span class=o>.</span><span class=n>encoding</span><span class=o>=</span><span class=n>UTF</span><span class=o>-</span><span class=mi>8</span> <span class=o>-</span><span class=n>Djna</span><span class=o>.</span><span class=n>nosys</span><span class=o>=</span><span class=bp>true</span> <span class=o>-</span><span class=n>XX</span><span class=p>:</span><span class=o>-</span><span class=n>OmitStackTraceInFastThrow</span> <span class=o>-</span><span class=n>XX</span><span class=p>:</span><span class=o>+</span><span class=n>ShowCodeDetailsInExceptionMessages</span> <span class=o>-</span><span class=n>Dio</span><span class=o>.</span><span class=n>netty</span><span class=o>.</span><span class=n>noUnsafe</span><span class=o>=</span><span class=bp>true</span> <span class=o>-</span><span class=n>Dio</span><span class=o>.</span><span class=n>netty</span><span class=o>.</span><span class=n>noKeySetOptimization</span><span class=o>=</span><span class=bp>true</span> <span class=o>-</span><span class=n>Dio</span><span class=o>.</span><span class=n>netty</span><span class=o>.</span><span class=n>recycler</span><span class=o>.</span><span class=n>maxCapacityPerThread</span><span class=o>=</span><span class=mi>0</span> <span class=o>-</span><span class=n>Dio</span><span class=o>.</span><span class=n>netty</span><span class=o>.</span><span class=n>allocator</span><span class=o>.</span><span class=n>numDirectArenas</span><span class=o>=</span><span class=mi>0</span> <span class=o>-</span><span class=n>Dlog4j</span><span class=o>.</span><span class=n>shutdownHookEnabled</span><span class=o>=</span><span class=bp>false</span> <span class=o>-</span><span class=n>Dlog4j2</span><span class=o>.</span><span class=n>disable</span><span class=o>.</span><span class=n>jmx</span><span class=o>=</span><span class=bp>true</span> <span class=o>-</span><span class=n>Djava</span><span class=o>.</span><span class=n>locale</span><span class=o>.</span><span class=n>providers</span><span class=o>=</span><span class=n>SPI</span><span class=p>,</span><span class=n>COMPAT</span> <span class=o>-</span><span class=n>Xms1g</span> <span class=o>-</span><span class=n>Xmx1g</span> <span class=o>-</span><span class=n>XX</span><span class=p>:</span><span class=o>+</span><span class=n>UseG1GC</span> <span class=o>-</span><span class=n>XX</span><span class=p>:</span><span class=n>G1ReservePercent</span><span class=o>=</span><span class=mi>25</span> <span class=o>-</span><span class=n>XX</span><span class=p>:</span><span class=n>InitiatingHeapOccupancyPercent</span><span class=o>=</span><span class=mi>30</span> <span class=o>-</span><span class=n>Djava</span><span class=o>.</span><span class=n>io</span><span class=o>.</span><span class=n>tmpdir</span><span class=o>=/</span><span class=n>tmp</span><span class=o>/</span><span class=n>elasticsearch</span><span class=o>-</span><span class=mi>14730718416313121303</span> <span class=o>-</span><span class=n>XX</span><span class=p>:</span><span class=o>+</span><span class=n>HeapDumpOnOutOfMemoryError</span> <span class=o>-</span><span class=n>XX</span><span class=p>:</span><span class=n>HeapDumpPath</span><span class=o>=/</span><span class=k>var</span><span class=o>/</span><span class=n>lib</span><span class=o>/</span><span class=n>elasticsearch</span> <span class=o>-</span><span class=n>XX</span><span class=p>:</span><span class=n>ErrorFile</span><span class=o>=/</span><span class=k>var</span><span class=o>/</span><span class=nb>log</span><span class=o>/</span><span class=n>elasticsearch</span><span class=o>/</span><span class=n>hs_err_pid</span><span class=o>%</span><span class=n>p</span><span class=o>.</span><span class=n>log</span> <span class=o>-</span><span class=n>Xlog</span><span class=p>:</span><span class=n>gc</span><span class=o>*</span><span class=p>,</span><span class=n>gc</span><span class=o>+</span><span class=n>age</span><span class=o>=</span><span class=n>trace</span><span class=p>,</span><span class=n>safepoint</span><span class=p>:</span><span class=n>file</span><span class=o>=/</span><span class=k>var</span><span class=o>/</span><span class=nb>log</span><span class=o>/</span><span class=n>elasticsearch</span><span class=o>/</span><span class=n>gc</span><span class=o>.</span><span class=n>log</span><span class=p>:</span><span class=n>utctime</span><span class=p>,</span><span class=n>pid</span><span class=p>,</span><span class=n>tags</span><span class=p>:</span><span class=n>filecount</span><span class=o>=</span><span class=mi>32</span><span class=p>,</span><span class=n>filesize</span><span class=o>=</span><span class=mi>64</span><span class=n>m</span> <span class=o>-</span><span class=n>XX</span><span class=p>:</span><span class=n>MaxDirectMemorySize</span><span class=o>=</span><span class=mi>536870912</span> <span class=o>-</span><span class=n>Des</span><span class=o>.</span><span class=n>path</span><span class=o>.</span><span class=n>home</span><span class=o>=/</span><span class=n>usr</span><span class=o>/</span><span class=n>share</span><span class=o>/</span><span class=n>elasticsearch</span> <span class=o>-</span><span class=n>Des</span><span class=o>.</span><span class=n>path</span><span class=o>.</span><span class=n>conf</span><span class=o>=/</span><span class=n>etc</span><span class=o>/</span><span class=n>elasticsearch</span> <span class=o>-</span><span class=n>Des</span><span class=o>.</span><span class=n>distribution</span><span class=o>.</span><span class=n>flavor</span><span class=o>=</span><span class=n>default</span> <span class=o>-</span><span class=n>Des</span><span class=o>.</span><span class=n>distribution</span><span class=o>.</span><span class=n>type</span><span class=o>=</span><span class=n>rpm</span> <span class=o>-</span><span class=n>Des</span><span class=o>.</span><span class=n>bundled_jdk</span><span class=o>=</span><span class=bp>true</span> <span class=o>-</span><span class=n>cp</span> <span class=o>/</span><span class=n>usr</span><span class=o>/</span><span class=n>share</span><span class=o>/</span><span class=n>elasticsearch</span><span class=o>/</span><span class=n>lib</span><span class=o>/*</span> <span class=n>org</span><span class=o>.</span><span class=n>elasticsearch</span><span class=o>.</span><span class=n>bootstrap</span><span class=o>.</span><span class=n>Elasticsearch</span> <span class=o>-</span><span class=n>p</span> <span class=o>/</span><span class=k>var</span><span class=o>/</span><span class=n>run</span><span class=o>/</span><span class=n>elasticsearch</span><span class=o>/</span><span class=n>elasticsearch</span><span class=o>.</span><span class=n>pid</span> <span class=o>--</span><span class=n>quiet</span>
+</span></span><span class=line><span class=cl>    <span class=n>es3</span><span class=p>:</span>            <span class=err>└─</span><span class=mi>4360</span> <span class=o>/</span><span class=n>usr</span><span class=o>/</span><span class=n>share</span><span class=o>/</span><span class=n>elasticsearch</span><span class=o>/</span><span class=n>modules</span><span class=o>/</span><span class=n>x</span><span class=o>-</span><span class=n>pack</span><span class=o>-</span><span class=n>ml</span><span class=o>/</span><span class=n>platform</span><span class=o>/</span><span class=n>linux</span><span class=o>-</span><span class=n>x86_64</span><span class=o>/</span><span class=n>bin</span><span class=o>/</span><span class=n>controller</span>
+</span></span><span class=line><span class=cl>    <span class=n>es3</span><span class=p>:</span>
+</span></span><span class=line><span class=cl>    <span class=n>es3</span><span class=p>:</span> <span class=n>Aug</span> <span class=mi>27</span> <span class=mi>05</span><span class=p>:</span><span class=mi>54</span><span class=p>:</span><span class=mi>54</span> <span class=n>es3</span><span class=o>.</span><span class=n>zenlab</span><span class=o>.</span><span class=n>local</span> <span class=n>systemd</span><span class=p>[</span><span class=mi>1</span><span class=p>]:</span> <span class=n>Starting</span> <span class=n>Elasticsearch</span><span class=o>...</span>
+</span></span><span class=line><span class=cl>    <span class=n>es3</span><span class=p>:</span> <span class=n>Aug</span> <span class=mi>27</span> <span class=mi>05</span><span class=p>:</span><span class=mi>55</span><span class=p>:</span><span class=mi>21</span> <span class=n>es3</span><span class=o>.</span><span class=n>zenlab</span><span class=o>.</span><span class=n>local</span> <span class=n>systemd</span><span class=p>[</span><span class=mi>1</span><span class=p>]:</span> <span class=n>Started</span> <span class=n>Elasticsearch</span><span class=o>.</span>
+</span></span><span class=line><span class=cl>    <span class=n>es3</span><span class=p>:</span> <span class=n>Provisioning</span> <span class=n>script</span> <span class=n>works</span> <span class=n>good</span><span class=o>!</span>
+</span></span><span class=line><span class=cl>    <span class=n>es3</span><span class=p>:</span> <span class=n>Please</span> <span class=n>access</span> <span class=n>Elasticsearch</span> <span class=n>https</span><span class=p>:</span><span class=o>//</span><span class=mf>192.168</span><span class=o>.</span><span class=mf>50.13</span><span class=p>:</span><span class=mi>9200</span>
+</span></span></code></pre></td></tr></table></div></div><p>最后的系统登录验证命令：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-gdscript3 data-lang=gdscript3><span class=line><span class=cl><span class=err>➜</span>  <span class=n>elasticstack</span> <span class=n>git</span><span class=p>:(</span><span class=n>master</span><span class=p>)</span> <span class=err>✗</span> <span class=n>curl</span> <span class=o>--</span><span class=n>cacert</span> <span class=n>certs</span><span class=o>/</span><span class=n>ca</span><span class=o>/</span><span class=n>ca</span><span class=o>.</span><span class=n>crt</span> <span class=o>-</span><span class=n>u</span> <span class=n>elastic</span> <span class=s1>&#39;https://es1.zenlab.local:9200/_cat/nodes?v&#39;</span>
+</span></span><span class=line><span class=cl><span class=n>Enter</span> <span class=n>host</span> <span class=n>password</span> <span class=k>for</span> <span class=n>user</span> <span class=s1>&#39;elastic&#39;</span><span class=p>:</span>
+</span></span><span class=line><span class=cl><span class=n>ip</span>            <span class=n>heap</span><span class=o>.</span><span class=n>percent</span> <span class=n>ram</span><span class=o>.</span><span class=n>percent</span> <span class=n>cpu</span> <span class=n>load_1m</span> <span class=n>load_5m</span> <span class=n>load_15m</span> <span class=n>node</span><span class=o>.</span><span class=n>role</span> <span class=n>master</span> <span class=n>name</span>
+</span></span><span class=line><span class=cl><span class=mf>192.168</span><span class=o>.</span><span class=mf>50.13</span>           <span class=mi>26</span>          <span class=mi>95</span>   <span class=mi>8</span>    <span class=mf>0.03</span>    <span class=mf>0.31</span>     <span class=mf>0.18</span> <span class=n>dilmrt</span>    <span class=o>-</span>      <span class=n>es3</span>
+</span></span><span class=line><span class=cl><span class=mf>192.168</span><span class=o>.</span><span class=mf>50.12</span>           <span class=mi>33</span>          <span class=mi>95</span>   <span class=mi>0</span>    <span class=mf>0.01</span>    <span class=mf>0.14</span>     <span class=mf>0.09</span> <span class=n>dilmrt</span>    <span class=o>-</span>      <span class=n>es2</span>
+</span></span><span class=line><span class=cl><span class=mf>192.168</span><span class=o>.</span><span class=mf>50.11</span>           <span class=mi>36</span>          <span class=mi>93</span>   <span class=mi>1</span>    <span class=mf>0.06</span>    <span class=mf>0.16</span>     <span class=mf>0.12</span> <span class=n>dilmrt</span>    <span class=o>*</span>      <span class=n>es1</span>
+</span></span></code></pre></td></tr></table></div></div><p>以上命令需要输入 elastic 用户的密码，es1 节点初始化了所有 Elasticsearch 内置用户的密码，需要复制 console 中的那一段密码信息备用。</p><p>创建以上所有数字证书和秘钥文件的种子文件是 certs/instance.yml ：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span><span class=lnt>32
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl># instance.yml
+</span></span><span class=line><span class=cl>instances:
+</span></span><span class=line><span class=cl>  - name: &#39;es1&#39;
+</span></span><span class=line><span class=cl>    ip: [&#39;192.168.50.11&#39;]
+</span></span><span class=line><span class=cl>    dns: [ &#39;es1.zenlab.local&#39; ]
+</span></span><span class=line><span class=cl>  - name: &#34;es2&#34;
+</span></span><span class=line><span class=cl>    ip: [&#39;192.168.50.12&#39;]
+</span></span><span class=line><span class=cl>    dns: [ &#39;es2.zenlab.local&#39; ]
+</span></span><span class=line><span class=cl>  - name: &#39;es3&#39;
+</span></span><span class=line><span class=cl>    ip: [&#39;192.168.50.13&#39;]
+</span></span><span class=line><span class=cl>    dns: [ &#39;es3.zenlab.local&#39; ]
+</span></span><span class=line><span class=cl>  - name: &#39;es4&#39;
+</span></span><span class=line><span class=cl>    ip: [&#39;192.168.50.14&#39;]
+</span></span><span class=line><span class=cl>    dns: [ &#39;es4.zenlab.local&#39; ]
+</span></span><span class=line><span class=cl>  - name: &#34;es5&#34;
+</span></span><span class=line><span class=cl>    ip: [&#39;192.168.50.15&#39;]
+</span></span><span class=line><span class=cl>    dns: [ &#39;es5.zenlab.local&#39; ]
+</span></span><span class=line><span class=cl>  - name: &#39;es6&#39;
+</span></span><span class=line><span class=cl>    ip: [&#39;192.168.50.16&#39;]
+</span></span><span class=line><span class=cl>    dns: [ &#39;es6.zenlab.local&#39; ]
+</span></span><span class=line><span class=cl>  - name: &#39;es7&#39;
+</span></span><span class=line><span class=cl>    ip: [&#39;192.168.50.17&#39;]
+</span></span><span class=line><span class=cl>    dns: [ &#39;es1.zenlab.local&#39; ]
+</span></span><span class=line><span class=cl>  - name: &#34;es8&#34;
+</span></span><span class=line><span class=cl>    ip: [&#39;192.168.50.18&#39;]
+</span></span><span class=line><span class=cl>    dns: [ &#39;es2.zenlab.local&#39; ]
+</span></span><span class=line><span class=cl>  - name: &#39;es9&#39;
+</span></span><span class=line><span class=cl>    ip: [&#39;192.168.50.19&#39;]
+</span></span><span class=line><span class=cl>    dns: [ &#39;es3.zenlab.local&#39; ]
+</span></span><span class=line><span class=cl>  - name: &#39;lk&#39;
+</span></span><span class=line><span class=cl>    ip: [&#39;192.168.50.20&#39;]
+</span></span><span class=line><span class=cl>    dns: [ &#39;lk.zenlab.local&#39; ]
+</span></span></code></pre></td></tr></table></div></div><p>这里一次性生产了所有我这个本地测试环境里可能用到的数字证书文件。</p><h2 id=elasticsearch-安装脚本>Elasticsearch 安装脚本</h2><p>下面是第一个 Elasticsearch 节点的安装脚本和注释，pre-install-es1.sh ：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span><span class=lnt>32
+</span><span class=lnt>33
+</span><span class=lnt>34
+</span><span class=lnt>35
+</span><span class=lnt>36
+</span><span class=lnt>37
+</span><span class=lnt>38
+</span><span class=lnt>39
+</span><span class=lnt>40
+</span><span class=lnt>41
+</span><span class=lnt>42
+</span><span class=lnt>43
+</span><span class=lnt>44
+</span><span class=lnt>45
+</span><span class=lnt>46
+</span><span class=lnt>47
+</span><span class=lnt>48
+</span><span class=lnt>49
+</span><span class=lnt>50
+</span><span class=lnt>51
+</span><span class=lnt>52
+</span><span class=lnt>53
+</span><span class=lnt>54
+</span><span class=lnt>55
+</span><span class=lnt>56
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=cp>#!/bin/bash
+</span></span></span><span class=line><span class=cl><span class=cp></span><span class=c1># author: Martin Liu</span>
+</span></span><span class=line><span class=cl><span class=c1># url:martinliu.cn</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1>#指定安装的版本</span>
+</span></span><span class=line><span class=cl><span class=nv>elastic_version</span><span class=o>=</span><span class=s1>&#39;7.9.0&#39;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1>#开始安装流程</span>
+</span></span><span class=line><span class=cl><span class=nb>echo</span> <span class=s2>&#34;Provisioning a Elasticsearch &#34;</span><span class=nv>$elastic_version</span><span class=s2>&#34; Server...&#34;</span>
+</span></span><span class=line><span class=cl>sudo date &gt; /etc/vagrant_provisioned_at
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1>#配置 ES 需要的操作系统参数</span>
+</span></span><span class=line><span class=cl>sudo swapoff -a
+</span></span><span class=line><span class=cl>sudo sysctl -w vm.max_map_count<span class=o>=</span><span class=m>262144</span>
+</span></span><span class=line><span class=cl>sudo sysctl -p
+</span></span><span class=line><span class=cl>sudo sh -c <span class=s2>&#34;echo &#39;elasticsearch  -  nofile  65535&#39; &gt;&gt; /etc/security/limits.conf&#34;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1>#设置个性化 SSH 登录提示信息</span>
+</span></span><span class=line><span class=cl>sudo sh -c <span class=s2>&#34;echo &#39;**** --  --  --  --  --  --  --  -- ****&#39; &gt; /etc/motd&#34;</span>
+</span></span><span class=line><span class=cl>sudo sh -c <span class=s2>&#34;echo &#39;**** Welcome to Elastic Stack Labs&#39; &gt;&gt; /etc/motd&#34;</span>
+</span></span><span class=line><span class=cl>sudo sh -c <span class=s2>&#34;echo &#39;**** --  --  --  --  --  --  --  -- ****&#39; &gt;&gt; /etc/motd&#34;</span>
+</span></span><span class=line><span class=cl>sudo sh -c <span class=s2>&#34;echo &#39;*&#39; &gt;&gt; /etc/motd&#34;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1>#安装 ES 软件包</span>
+</span></span><span class=line><span class=cl>sudo rpm -ivh /vagrant/rpm/elasticsearch-<span class=nv>$elastic_version</span>-x86_64.rpm 
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1>#创建 ES 集群内部通信加密数字证书，提前清理旧的证书文件和目录</span>
+</span></span><span class=line><span class=cl>sudo rm -f /vagrant/certs/certs.zip
+</span></span><span class=line><span class=cl>sudo rm -rf /vagrant/certs/es*
+</span></span><span class=line><span class=cl>sudo rm -rf /vagrant/certs/ca
+</span></span><span class=line><span class=cl>sudo rm -rf /vagrant/certs/lk
+</span></span><span class=line><span class=cl>sudo /usr/share/elasticsearch/bin/elasticsearch-certutil cert -in /vagrant/certs/instance.yml  -pem  -out /vagrant/certs/certs.zip -s
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1>#解压缩所有证书备用</span>
+</span></span><span class=line><span class=cl>sudo /usr/bin/unzip  /vagrant/certs/certs.zip -d /vagrant/certs/
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1>#部署节点需要的秘钥</span>
+</span></span><span class=line><span class=cl>sudo cp /vagrant/certs/ca/ca.crt  /etc/elasticsearch/
+</span></span><span class=line><span class=cl>sudo cp /vagrant/certs/es1/* /etc/elasticsearch/
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1>#更新 ES 默认的配置文件</span>
+</span></span><span class=line><span class=cl>sudo cp /vagrant/es1.yml /etc/elasticsearch/elasticsearch.yml
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1>#配置和启动 ES 系统服务</span>
+</span></span><span class=line><span class=cl>sudo systemctl daemon-reload
+</span></span><span class=line><span class=cl>sudo systemctl <span class=nb>enable</span> elasticsearch.service
+</span></span><span class=line><span class=cl>sudo systemctl start elasticsearch.service
+</span></span><span class=line><span class=cl>sudo systemctl status elasticsearch
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1>#初始化 ES 服务器内建用户的密码，这些密码需要在控制台上复制保存备用</span>
+</span></span><span class=line><span class=cl>sudo /usr/share/elasticsearch/bin/elasticsearch-setup-passwords auto -b
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1>#成功顺利的完成了安装</span>
+</span></span><span class=line><span class=cl><span class=nb>echo</span> Provisioning script works good!
+</span></span><span class=line><span class=cl><span class=nb>echo</span> Please access Elasticsearch https://192.168.50.11:9200
+</span></span></code></pre></td></tr></table></div></div><p>说明：你也可以参考以上脚本手工执行，如果是非 Vagrant 环境，请注意替换各个命令中相关文件的路径。第二个和第三个节点的安装脚本稍有不同，详情见代码库。</p><h2 id=elasticsearch-配置文件>Elasticsearch 配置文件</h2><p>下面是第一个 Elasticsearch 节点的参考配置文件， es1.yml ：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span><span class=lnt>32
+</span><span class=lnt>33
+</span><span class=lnt>34
+</span><span class=lnt>35
+</span><span class=lnt>36
+</span><span class=lnt>37
+</span><span class=lnt>38
+</span><span class=lnt>39
+</span><span class=lnt>40
+</span><span class=lnt>41
+</span><span class=lnt>42
+</span><span class=lnt>43
+</span><span class=lnt>44
+</span><span class=lnt>45
+</span><span class=lnt>46
+</span><span class=lnt>47
+</span><span class=lnt>48
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-gdscript3 data-lang=gdscript3><span class=line><span class=cl><span class=c1># ---------------------------------- Cluster -----------------------------------</span>
+</span></span><span class=line><span class=cl><span class=c1>#设定集群名称</span>
+</span></span><span class=line><span class=cl><span class=n>cluster</span><span class=o>.</span><span class=n>name</span><span class=p>:</span> <span class=n>elk4devops</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># ------------------------------------ Node ------------------------------------</span>
+</span></span><span class=line><span class=cl><span class=c1>#设定节点名称，此处使用的是 hostname</span>
+</span></span><span class=line><span class=cl><span class=n>node</span><span class=o>.</span><span class=n>name</span><span class=p>:</span> <span class=n>es1</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># ----------------------------------- Paths ------------------------------------</span>
+</span></span><span class=line><span class=cl><span class=c1>#设定 es 服务器数据目录</span>
+</span></span><span class=line><span class=cl><span class=n>path</span><span class=o>.</span><span class=n>data</span><span class=p>:</span> <span class=o>/</span><span class=k>var</span><span class=o>/</span><span class=n>lib</span><span class=o>/</span><span class=n>elasticsearch</span>
+</span></span><span class=line><span class=cl><span class=c1>#设定 es 服务器日志目录</span>
+</span></span><span class=line><span class=cl><span class=n>path</span><span class=o>.</span><span class=n>logs</span><span class=p>:</span> <span class=o>/</span><span class=k>var</span><span class=o>/</span><span class=nb>log</span><span class=o>/</span><span class=n>elasticsearch</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># ---------------------------------- Network -----------------------------------</span>
+</span></span><span class=line><span class=cl><span class=c1>#设定此节点加入网络的名称，这里使用的是 FQDN</span>
+</span></span><span class=line><span class=cl><span class=n>network</span><span class=o>.</span><span class=n>host</span><span class=p>:</span> <span class=n>es1</span><span class=o>.</span><span class=n>zenlab</span><span class=o>.</span><span class=n>local</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># --------------------------------- Discovery ----------------------------------</span>
+</span></span><span class=line><span class=cl><span class=c1>#设定初始的 master 节点为 es1</span>
+</span></span><span class=line><span class=cl><span class=n>cluster</span><span class=o>.</span><span class=n>initial_master_nodes</span><span class=p>:</span> <span class=p>[</span><span class=s2>&#34;es1&#34;</span><span class=p>]</span>
+</span></span><span class=line><span class=cl><span class=n>discovery</span><span class=o>.</span><span class=n>seed_hosts</span><span class=p>:</span> <span class=p>[</span><span class=s2>&#34;es1.zenlab.local&#34;</span><span class=p>]</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># ------------------------------- TLS and Cert ---------------------------------</span>
+</span></span><span class=line><span class=cl><span class=c1>#启用用户名和密码认证</span>
+</span></span><span class=line><span class=cl><span class=n>xpack</span><span class=o>.</span><span class=n>security</span><span class=o>.</span><span class=n>enabled</span><span class=p>:</span> <span class=bp>true</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1>#启用 ES 集群内加密传输</span>
+</span></span><span class=line><span class=cl><span class=n>xpack</span><span class=o>.</span><span class=n>security</span><span class=o>.</span><span class=n>transport</span><span class=o>.</span><span class=n>ssl</span><span class=o>.</span><span class=n>enabled</span><span class=p>:</span> <span class=bp>true</span>
+</span></span><span class=line><span class=cl><span class=n>xpack</span><span class=o>.</span><span class=n>security</span><span class=o>.</span><span class=n>transport</span><span class=o>.</span><span class=n>ssl</span><span class=o>.</span><span class=n>certificate_authorities</span><span class=p>:</span> <span class=n>ca</span><span class=o>.</span><span class=n>crt</span>
+</span></span><span class=line><span class=cl><span class=n>xpack</span><span class=o>.</span><span class=n>security</span><span class=o>.</span><span class=n>transport</span><span class=o>.</span><span class=n>ssl</span><span class=o>.</span><span class=n>key</span><span class=p>:</span> <span class=o>$</span><span class=p>{</span><span class=n>node</span><span class=o>.</span><span class=n>name</span><span class=p>}</span><span class=o>.</span><span class=n>key</span>
+</span></span><span class=line><span class=cl><span class=n>xpack</span><span class=o>.</span><span class=n>security</span><span class=o>.</span><span class=n>transport</span><span class=o>.</span><span class=n>ssl</span><span class=o>.</span><span class=n>certificate</span><span class=p>:</span> <span class=o>$</span><span class=p>{</span><span class=n>node</span><span class=o>.</span><span class=n>name</span><span class=p>}</span><span class=o>.</span><span class=n>crt</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1>#启用 ES 集群客户端访问加密</span>
+</span></span><span class=line><span class=cl><span class=n>xpack</span><span class=o>.</span><span class=n>security</span><span class=o>.</span><span class=n>http</span><span class=o>.</span><span class=n>ssl</span><span class=o>.</span><span class=n>enabled</span><span class=p>:</span> <span class=bp>true</span>
+</span></span><span class=line><span class=cl><span class=n>xpack</span><span class=o>.</span><span class=n>security</span><span class=o>.</span><span class=n>http</span><span class=o>.</span><span class=n>ssl</span><span class=o>.</span><span class=n>certificate_authorities</span><span class=p>:</span> <span class=n>ca</span><span class=o>.</span><span class=n>crt</span>
+</span></span><span class=line><span class=cl><span class=n>xpack</span><span class=o>.</span><span class=n>security</span><span class=o>.</span><span class=n>http</span><span class=o>.</span><span class=n>ssl</span><span class=o>.</span><span class=n>key</span><span class=p>:</span> <span class=o>$</span><span class=p>{</span><span class=n>node</span><span class=o>.</span><span class=n>name</span><span class=p>}</span><span class=o>.</span><span class=n>key</span>
+</span></span><span class=line><span class=cl><span class=n>xpack</span><span class=o>.</span><span class=n>security</span><span class=o>.</span><span class=n>http</span><span class=o>.</span><span class=n>ssl</span><span class=o>.</span><span class=n>certificate</span><span class=p>:</span> <span class=o>$</span><span class=p>{</span><span class=n>node</span><span class=o>.</span><span class=n>name</span><span class=p>}</span><span class=o>.</span><span class=n>crt</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1>#  For Elastic Agent</span>
+</span></span><span class=line><span class=cl><span class=n>xpack</span><span class=o>.</span><span class=n>security</span><span class=o>.</span><span class=n>authc</span><span class=o>.</span><span class=n>api_key</span><span class=o>.</span><span class=n>enabled</span><span class=p>:</span> <span class=bp>true</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1>#启用监控数据收集</span>
+</span></span><span class=line><span class=cl><span class=n>xpack</span><span class=o>.</span><span class=n>monitoring</span><span class=o>.</span><span class=n>collection</span><span class=o>.</span><span class=n>enabled</span><span class=p>:</span> <span class=bp>true</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1>#  ------------------------------- App Search ---------------------------------</span>
+</span></span><span class=line><span class=cl><span class=c1>#提前为 App Search 做好准备</span>
+</span></span><span class=line><span class=cl><span class=n>action</span><span class=o>.</span><span class=n>auto_create_index</span><span class=p>:</span> <span class=s2>&#34;.app-search-*-logs-*,-.app-search-*,+*&#34;</span>
+</span></span></code></pre></td></tr></table></div></div><p>说明：第二个和第三个节点的配置文件稍有不同，详情见代码库。</p><h2 id=总结>总结</h2><p>在三节点集群的搭建过程中，最好建议启用各种安全和加密选项，用配置安装脚本最小化工作量；这样一步到位的安全性，可以为后续增加其他 Elastic Stack 的产品组件打下良好的基础，ES 集群的配置尽量完善，尽量覆盖后期的其他各种潜在需求，减少未来配置变更的工作量，让后续的测试越来越轻松。</p></section><footer class=article-footer><section class=article-tags><a href=/tags/devops/>DevOps</a>
+<a href=/tags/elastic-stack/>Elastic Stack</a>
+<a href=/tags/elasticsearch/>Elasticsearch</a></section><section class=article-copyright><svg class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="12" cy="12" r="9"/><path d="M14.5 9a3.5 4 0 100 6"/></svg>
+<span>署名-非商业性使用-禁止演绎 4.0 (CC BY-NC-ND 4.0)</span></section><section class=article-lastmod><svg class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15 15"/></svg>
+<span>最后更新于 2024-06-25 21:44 CST</span></section></footer></article><aside class=related-content--wrapper><h2 class=section-title>相关文章</h2><div class=related-content><div class="flex article-list--tile"><article class=has-image><a href=/blog/elastic-agent-fleet-update-8-4/><div class=article-image><img src=/blog/elastic-agent-fleet-update-8-4/observability.c1f372cd573e43879b8d7bfc8ce68366_hu_40150ac0e568a2ac.png width=250 height=150 loading=lazy alt="Featured image of post Elastic Agent 和 Fleet 服务器 安装手册 v8.4" data-key=elastic-agent-fleet-update-8-4 data-hash="md5-wfNyzVc+Q4ebjXv8jOaDZg=="></div><div class=article-details><h2 class=article-title>Elastic Agent 和 Fleet 服务器 安装手册 v8.4</h2></div></a></article><article class=has-image><a href=/blog/fleet-and-elastic-agent/><div class=article-image><img src=/blog/fleet-and-elastic-agent/pexels-analogicus-5516029.5079435024d2ca9dce58dbdca7092e26_hu_da1dddf9ab595c85.jpg width=250 height=150 loading=lazy alt="Featured image of post 面向未来的 Elastic Stack 数据摄入架构" data-key=fleet-and-Elastic-agent data-hash="md5-UHlDUCTSyp3OWNvcpwkuJg=="></div><div class=article-details><h2 class=article-title>面向未来的 Elastic Stack 数据摄入架构</h2></div></a></article><article class=has-image><a href=/blog/beats-implement-on-qcloud/><div class=article-image><img src=/images/abstract-6.jpg loading=lazy data-key=beats-implement-on-qcloud data-hash=/images/abstract-6.jpg></div><div class=article-details><h2 class=article-title>腾讯云下部署 Elastic Stack 各种 Beat 的最佳实践</h2></div></a></article><article class=has-image><a href=/blog/apm-why-it-so-hard/><div class=article-image><img src=/images/abstract-3.jpg loading=lazy data-key=apm-why-it-so-hard data-hash=/images/abstract-3.jpg></div><div class=article-details><h2 class=article-title>APM 分布式追踪为何这么难？</h2></div></a></article><article class=has-image><a href=/blog/sql-tricks-application-dba/><div class=article-image><img src=/images/abstract-1.jpg loading=lazy data-key=sql-tricks-application-dba data-hash=/images/abstract-1.jpg></div><div class=article-details><h2 class=article-title>应用开发 DBA 技巧集锦</h2></div></a></article></div></div></aside><div class=disqus-container><div id=disqus_thread></div><script>window.disqus_config=function(){},function(){if(["localhost","127.0.0.1"].indexOf(window.location.hostname)!=-1){document.getElementById("disqus_thread").innerHTML="Disqus comments not available by default when the website is previewed locally.";return}var t=document,e=t.createElement("script");e.async=!0,e.src="//martinliu.disqus.com/embed.js",e.setAttribute("data-timestamp",+new Date),(t.head||t.body).appendChild(e)}()</script><noscript>Please enable JavaScript to view the <a href=https://disqus.com/?ref_noscript>comments powered by Disqus.</a></noscript><a href=https://disqus.com class=dsq-brlink>comments powered by <span class=logo-disqus>Disqus</span></a></div><style>.disqus-container{background-color:var(--card-background);border-radius:var(--card-border-radius);box-shadow:var(--shadow-l1);padding:var(--card-padding)}</style><script>window.addEventListener("onColorSchemeChange",e=>{typeof DISQUS=="object"&&DISQUS.reset({reload:!0})})</script><footer class=site-footer><section class=copyright>&copy;
+2007 -
+2025 Martin Liu's Blog</section><section class=powerby>本博客始于 2007 年<br>使用 <a href=https://gohugo.io/ target=_blank rel=noopener>Hugo</a> 构建<br>主题 <b><a href=https://github.com/CaiJimmy/hugo-theme-stack target=_blank rel=noopener data-version=3.29.0>Stack</a></b> 由 <a href=https://jimmycai.com target=_blank rel=noopener>Jimmy</a> 设计</section></footer><div class=pswp tabindex=-1 role=dialog aria-hidden=true><div class=pswp__bg></div><div class=pswp__scroll-wrap><div class=pswp__container><div class=pswp__item></div><div class=pswp__item></div><div class=pswp__item></div></div><div class="pswp__ui pswp__ui--hidden"><div class=pswp__top-bar><div class=pswp__counter></div><button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+<button class="pswp__button pswp__button--share" title=Share></button>
+<button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+<button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button><div class=pswp__preloader><div class=pswp__preloader__icn><div class=pswp__preloader__cut><div class=pswp__preloader__donut></div></div></div></div></div><div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap"><div class=pswp__share-tooltip></div></div><button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+</button>
+<button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)"></button><div class=pswp__caption><div class=pswp__caption__center></div></div></div></div></div><script src=https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo=" crossorigin=anonymous defer></script><script src=https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU=" crossorigin=anonymous defer></script><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css crossorigin=anonymous><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css crossorigin=anonymous></main></div><script src=https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z+KMkF24hUW8WePSA9HM=" crossorigin=anonymous></script><script type=text/javascript src=/ts/main.1e9a3bafd846ced4c345d084b355fb8c7bae75701c338f8a1f8a82c780137826.js defer></script><script>(function(){const e=document.createElement("link");e.href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap",e.type="text/css",e.rel="stylesheet",document.head.appendChild(e)})()</script></body></html>

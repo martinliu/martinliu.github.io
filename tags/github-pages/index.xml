@@ -1,0 +1,225 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Github-Pages on Martin Liu's Blog</title><link>https://martinliu.cn/tags/github-pages/</link><description>Recent content in Github-Pages on Martin Liu's Blog</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><lastBuildDate>Tue, 25 Jun 2024 21:44:26 +0800</lastBuildDate><atom:link href="https://martinliu.cn/tags/github-pages/index.xml" rel="self" type="application/rss+xml"/><item><title>10 分钟读懂 DevOps 工具链</title><link>https://martinliu.cn/blog/10-minute-read-to-understanding-devops-tools/</link><pubDate>Fri, 02 Apr 2021 22:34:09 +0800</pubDate><guid>https://martinliu.cn/blog/10-minute-read-to-understanding-devops-tools/</guid><description>&lt;img src="https://martinliu.cn/img/cos/2021-04-03-eggs-3216877_1920.jpeg" alt="Featured image of post 10 分钟读懂 DevOps 工具链" />&lt;p>【译文】上周，我和我的几位非常资深的同事都在评论说，有很多新的DevOps工具正在出现，而且每天都越来越难跟踪它们，以及它们在DevOps 领域的定位。我问了他们几个工具，Ansible、Terraform、Salt、Chef、Bamboo、CloudFormation这些工具的定位在哪里？我为什么要用这个而不是那个？它们甚至是同一种东西吗？我是不是漏掉了一个主要角色？我得到了什么，一些白眼和问题。所以，我想我会做一些研究，阅读，并试图让我们所有人理解它，以便我们可以将那些产品都分类到我们都熟悉的类别或用途。&lt;/p>
+&lt;p>原文：&lt;a class="link" href="https://levelup.gitconnected.com/the-10-minute-read-to-understanding-devops-tools-bc4ac807a25d" target="_blank" rel="noopener"
+>https://levelup.gitconnected.com/the-10-minute-read-to-understanding-devops-tools-bc4ac807a25d&lt;/a>&lt;/p>
+&lt;p>在我们开始谈论DevOps工具和类别之前，让我们退一步讨论几个基本的（但往往是超载的）术语以及它们的含义。&lt;/p>
+&lt;p>&lt;strong>计算机/服务器&lt;/strong> - &lt;strong>Computer/Server&lt;/strong>： 具有中央处理器（CPU）、内存（RAM）、本地存储（磁盘）并运行操作系统的物理设备。&lt;/p>
+&lt;p>&lt;strong>虚拟机&lt;/strong> - &lt;strong>Virtual Machine&lt;/strong>：在主机上运行的计算机系统的模拟器（虚拟机管理程序）；vm 通常可以在CPU、内存和磁盘使用方面与其他操作系统隔离。&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/img/cos/2021-04-02-0-cuHFPvnmr141Dfcc.png"
+loading="lazy"
+>&lt;/p>
+&lt;p>&lt;strong>容器&lt;/strong>&amp;ndash;&lt;strong>Containers&lt;/strong>：打包一个软件及其所有依赖，使其能够在任何基础设施上统一、一致地运行。Docker容器是最流行的。它们允许你打包一堆东西（你的软件、配置和其他软件），以便于部署和传输。你可以把容器看作是虚拟化的下一代进化（继虚拟机之后）。&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/img/cos/2021-04-02-0-hWRNCynYRFw2KCxn.png"
+loading="lazy"
+>&lt;/p>
+&lt;p>&lt;strong>网络设备&lt;/strong> - &lt;strong>Network Device&lt;/strong>：在设备之间路由网络流量的硬件。例如路由器、负载平衡器和防火墙。&lt;/p>
+&lt;p>&lt;strong>软件&lt;/strong> - &lt;strong>Software&lt;/strong>：编码并在操作系统上运行的代码。&lt;/p>
+&lt;p>&lt;strong>DevOps&lt;/strong> - 传统上有 &amp;ldquo;开发&amp;rdquo;（你来构建它），还有 &amp;ldquo;运维&amp;rdquo;（我们将运行它），他们两者之间的一切都受制于作坊式的工作方式。从2010年左右开始，到2018年左右DevOps 已经发展为几乎无处不在的现象，DevOps的理念是：&amp;ldquo;一套实践，目的是在保证高质量的前提下，缩短从提交系统变更到变更投入正常生产环境之间的时间&amp;rdquo;。&lt;/p>
+&lt;p>当你在考虑构建和运行一个非同寻常的系统时，其实还有很多不得不做的事情。以下是需要考虑到的传统的事项清单。&lt;/p>
+&lt;ol>
+&lt;li>获取计算机/服务器硬件 （Obtaining the computer/server hardware）&lt;/li>
+&lt;li>配置计算机/服务器硬件（操作系统、网络布线等）（Configuring the computer/server hardware (operating systems, network wiring, etc.)）&lt;/li>
+&lt;li>监控计算机/服务器硬件（Monitoring the computer/server hardware）&lt;/li>
+&lt;li>获取网络设备（负载均衡器、防火墙、路由器等）（Obtaining the network devices (load balancers, firewalls, routers, etc.)）&lt;/li>
+&lt;li>配置网络设备（Configuring the network devices）&lt;/li>
+&lt;li>监控网络设备（Monitoring the network devices）&lt;/li>
+&lt;li>编写软件（Constructing the software）&lt;/li>
+&lt;li>构建软件（Building the software）&lt;/li>
+&lt;li>测试软件（Testing the software）&lt;/li>
+&lt;li>软件打包（Packaging the software）&lt;/li>
+&lt;li>部署/发布软件（Deploying/releasing the software）&lt;/li>
+&lt;li>监测软件（Monitoring the software）&lt;/li>
+&lt;/ol>
+&lt;p>在DevOps之前，我们曾经有四个不同的团队在做这项工作。&lt;/p>
+&lt;ul>
+&lt;li>Developer 开发人员 — 他们会做 #7, #8 ，有时候包括 #10&lt;/li>
+&lt;li>QA 测试人员— 他们会做 #9 ，有时候包括 #11&lt;/li>
+&lt;li>System Administrator 系统管理员 — 他们会做 #1, #2, #3, #12&lt;/li>
+&lt;li>Network Administrator 网络管理员 — 他们会做 #4, #5, #6&lt;/li>
+&lt;/ul>
+&lt;p>对于硬件、网络设备和软件的配置，每个团队很可能会使用自己的一套脚本和工具，而且在很多情况下，会通过手工操作来实现 &amp;ldquo;软件发布&amp;rdquo;。&lt;/p>
+&lt;p>随着DevOps的出现，对我来说，关键的想法是打破这些部门墙，让每个人都成为 &amp;ldquo;一个 &amp;quot; 团队的一部分，为所有事物的配置、部署和管理方式带来一致性。&lt;/p>
+&lt;p>&lt;strong>云&lt;/strong>&amp;ndash;&lt;strong>Cloud&lt;/strong>：定义信息技术史上最流行的名词是很难的，但我喜欢那件T恤，上面写着 &amp;ldquo;没有云，只是别人的电脑&amp;rdquo;。最初，当云服务开始的时候，它们真的只是别人的电脑（或者运行在电脑上的虚拟机），或者存储。随着时间的推移，它们已经演变成到了现在的状态，包含很多很多的增值服务。硬件大部分已经被抽象掉了，现在大多数云服务中，你不能购买它们的硬件设备，但你可以购买这些硬件设备所提供的各种云服务。&lt;/p>
+&lt;p>&lt;strong>基础架构即代码&lt;/strong>(&lt;strong>IAC&lt;/strong>)&amp;ndash;：一种新的能力或概念，它允许我们通过定义或配置文件来完整的定义数据中心中所有项目的设置，包括虚拟机、容器和网络设备。这个概念是我可以创建一些配置和一些脚本，然后使用我们即将讨论的一个工具来运行它们，它们会自动为我们按需配制出数据中心的所有服务。CI/CD是IAC的前身，多年来我们一直致力于自动化我们的构建/测试/集成/部署周期，在我们的云基础设施上做这个工作是一个自然的延伸。这带来了成本的降低，更快的上市时间，以及更小的风险（人为错误）。&lt;/p>
+&lt;p>随着IAC的出现，许多传统的开发工具现在可以用于管理基础设施。像软件仓库、构建工具、CI/CD、代码分析器和测试工具等类别的工具（如下所列），传统上是由软件开发人员使用的，现在可以被DevOps工程师用来构建和维护基础设施。&lt;/p>
+&lt;blockquote>
+&lt;p>AGAIN: &amp;ldquo;随着DevOps的出现，对我来说，关键的理念是&amp;hellip;&amp;hellip;让每个人都成为&amp;rsquo;一个&amp;rsquo;团队的一部分，为所有事物的配置、部署和管理方式带来一致性。&amp;rdquo;&lt;/p>&lt;/blockquote>
+&lt;p>因此，现在我们已经定义了以上基础术语/概念，让我回到试图对DevOps工具进行分类的任务，以使我们更容易确定什么工具是用于什么目的的。&lt;/p>
+&lt;ul>
+&lt;li>&lt;strong>软件仓库&lt;/strong> &amp;ndash; 管理软件版本的工具&amp;ndash;目前使用最广泛的是Git。&lt;/li>
+&lt;li>&lt;strong>构建工具&lt;/strong>&amp;ndash;有些软件在打包或使用前需要编译，传统的构建工具包括Make、Ant、Maven和MSBuild。&lt;/li>
+&lt;li>&lt;strong>持续集成工具&lt;/strong>&amp;ndash;在配置好以后，每次将代码提交到存储库中时，它都会对软件进行构建、部署和测试。这通常可以提高软件质量和上市时间。这个市场上最流行的工具是 Jenkins、Travis、TeamCity和Bamboo。&lt;/li>
+&lt;li>&lt;strong>代码分析/审查工具&lt;/strong>&amp;ndash;这些工具可以查找代码中的错误，检查代码格式和质量，以及测试覆盖率。这些工具因编程语言而异。SonarQube是这个领域的一个流行工具，还有其他各种 &amp;ldquo;轻量的 &amp;ldquo;工具。&lt;/li>
+&lt;li>&lt;strong>配置管理&lt;/strong>&amp;ndash;配置管理工具和数据库通常存储所有关于你的硬件和软件项目的信息，以及提供一个脚本和/或模板系统，用于自动化常见任务。在这个领域似乎有很多玩家。传统的玩家是Chef、Puppet和Salt Stack。&lt;/li>
+&lt;li>&lt;strong>部署工具&lt;/strong>&amp;ndash;这些工具有助于软件的部署。许多CI工具也是CD（持续部署）工具，它们协助软件的部署。传统上在Ruby语言中，Capistrano工具被广泛使用；在Java语言中，Maven被很多人使用。所有的编排工具也都支持某种形式的部署。&lt;/li>
+&lt;li>&lt;strong>编排工具&lt;/strong>&amp;ndash;这些工具配置、调度和管理计算机系统和软件。它们通常将 &amp;ldquo;自动化 &amp;ldquo;和 &amp;ldquo;工作流 &amp;ldquo;作为其服务的一部分。Kubernetes是一个非常流行的编排工具，它专注于容器。Terraform是一个非常流行的编排工具，它的关注点更广，包括云编排。另外，每个云提供商都有自己的一套工具（CloudFormation、GCP Deployment Manager, 和ARM）。&lt;/li>
+&lt;li>&lt;strong>监控工具&lt;/strong> - 这些工具允许监控硬件和软件。通常，它们包括监控代理程序，用于监视进程和日志文件，以确保系统的健康。Nagios是一种流行的监控工具。&lt;/li>
+&lt;li>&lt;strong>测试工具&lt;/strong> - 测试工具用于管理测试，以及测试自动化，包括性能和负载测试等。&lt;/li>
+&lt;/ul>
+&lt;p>当然，和其他任何一套产品一样，类别也不一定完全清晰。许多工具都是跨类别的，并提供两个或多个类别的功能。下面是我试图展示大多数非常流行的工具，并可视化它们在这些类别中的位置。&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/img/cos/2021-04-02-1-wTp-r9QJvF-DXGZDZUHmbA.jpeg"
+loading="lazy"
+>&lt;/p>
+&lt;p>正如你所看到的，有几个玩家，如Ansible、Terraform和云工具(AWS、GCP和Azure)，正试图通过他们的产品覆盖部署、配置管理和编排类别。老牌工具集Puppet、Chef和Salt Stack专注于配置管理和自动化，但已经扩展到编排和部署的。还有像GitLab和Azure DevOps这样的工具，几乎试图跨越DevOps的所有类别。&lt;/p>
+&lt;p>我希望这个概述能帮助你了解DevOps的基础知识，可用工具的类别，以及目前市场上的各种产品如何在这些类别中的一个或多个类别中提供帮助。在Solution Street，多年来我们已经使用了许多这样的工具，对我们来说，没有一个单一的 &amp;ldquo;一招鲜 &amp;ldquo;的工具能胜任所有情况下使用。使用什么是基于所使用的技术，在哪里托管（以及未来可能在哪里托管），以及团队的人才和构成。&lt;/p>
+&lt;blockquote>
+&lt;p>教练观点：敏捷教练不能回避DevOps 工具链的话题，中低层管理人员更应该在宏观上深刻理解 SLDC 所有环节的技术概要和工具需求，需要具备基础的概念知识，具备和工程师讨论所必备的语言。工程师们更要有工具链整体优化的意识，而不仅仅是精通某个环节，或局限在与自己的上下游工具上，工作在这个系统中的所有人需要有全局协作和优化的意识，优化价值流的流量、流速，关注价值的产生。警惕&amp;mdash;-整个工具链的自动化程度越高，不一定工作效率越高，加班越少，公司盈利越多。它们其实是相互作用的。&lt;/p>&lt;/blockquote></description></item><item><title>在 Github 上搭建基于 Hugo 的免费个人博客</title><link>https://martinliu.cn/blog/github-hugo-blog/</link><pubDate>Sat, 06 Feb 2021 00:00:00 +0000</pubDate><guid>https://martinliu.cn/blog/github-hugo-blog/</guid><description>&lt;img src="https://martinliu.cn/img/2019/03/pic03.jpg" alt="Featured image of post 在 Github 上搭建基于 Hugo 的免费个人博客" />&lt;p>最近更新了新的博客样式，再次搬迁回到了 GitHub 平台，并使用了 Github Action 的自动化 CI/CD 发布功能。这个是一个任何人都可以拥有的方案，现在用最简洁的语言分享给大家。&lt;/p>
+&lt;p>选择将博客搭建在 Github 上的原因包括：&lt;/p>
+&lt;ul>
+&lt;li>Github Pages 是一个免费使用的功能，在不强求网站访问速度，考虑持久性的情况下，Github Pages 不失为一根优秀的羊毛。&lt;/li>
+&lt;li>用 master 分支管理 hugo 站点的所有代码和文件（markdown、网站模板和图片），用 gh-pages 分支存放 Hugo 编译后的网站发布文件&lt;/li>
+&lt;li>Github Actions 功能实现了自动化的编译和部署功能，使用它所提供的工作流将 master 分支中的更新编译后发布到 gh-pages 分支中&lt;/li>
+&lt;/ul>
+&lt;p>而 Hugo 是一款比较流行的静态网站管理软件，可以在各种操作系统轻松的安装本地的博客环境，在本地的操作系统上实现博客的预览和测试。Hugo 的社区提供了大量的免费网站模板，不同类型的模板可以满足各种网站需求。&lt;/p>
+&lt;h2 id="选择-hugo-博客主题">选择 Hugo 博客主题
+&lt;/h2>&lt;p>在 &lt;a class="link" href="https://themes.gohugo.io/" target="_blank" rel="noopener"
+>https://themes.gohugo.io/&lt;/a> 可以搜索到大量的免费网站模板。我这次选择了名为 “HUGO FUTURE IMPERFECT SLIM” 的模板。&lt;/p>
+&lt;p>这是一个功能非常丰富的模板：&lt;/p>
+&lt;ul>
+&lt;li>界面简洁，兼具丰富的格式，博客文章有头图&lt;/li>
+&lt;li>带有侧栏&lt;/li>
+&lt;li>带有 ‘about’ ‘categories’ ‘contact’ 等独立页面格式，无头图&lt;/li>
+&lt;li>具有多语言支持和菜单选择&lt;/li>
+&lt;li>带有搜索页面&lt;/li>
+&lt;li>带有讨论功能&lt;/li>
+&lt;/ul>
+&lt;p>对我而言这些都是很快就都可以用到的功能。&lt;/p>
+&lt;p>Hugo 博客本地安装和配置新手指南，参考这两篇文章。&lt;/p>
+&lt;ol>
+&lt;li>&lt;a class="link" href="https://zhuanlan.zhihu.com/p/102131163" target="_blank" rel="noopener"
+>零基础使用 Hugo 和 GitHub 搭建个人博客&lt;/a>&lt;/li>
+&lt;li>&lt;a class="link" href="https://sb.sb/blog/migrate-to-hugo/" target="_blank" rel="noopener"
+>使用 Hugo 生成静态博客教程&lt;/a>&lt;/li>
+&lt;/ol>
+&lt;h2 id="github-pages-新手指南">GitHub Pages 新手指南
+&lt;/h2>&lt;p>在 &lt;a class="link" href="https://pages.github.com/" target="_blank" rel="noopener"
+>https://pages.github.com/&lt;/a> 提供了视频和文字版本的新手指南教程。为了方便新手理解，下面就使用‘user or organization site’这个最常用的选项做简要说明：&lt;/p>
+&lt;ol>
+&lt;li>创建与自己的 &lt;strong>Github 用户/组织&lt;/strong> 同名前缀的公开代码仓库，例如：zhangsan/zhangsan.github.io&lt;/li>
+&lt;li>选择在命令行里（前提是安装配置好了 Git，否则使用图形化界面 GitHub Desktop 工具）&lt;/li>
+&lt;li>克隆第一步创建的那个代码库到本地电脑的目录中。&lt;/li>
+&lt;li>创建只包含 ‘Hello World’ 为内容的主页测试文件。&lt;/li>
+&lt;li>推送本地的更新到 Github 服务器端&lt;/li>
+&lt;li>在本地的浏览器中查看测试网页 &lt;a class="link" href="http://zhagnsan.github.io/" target="_blank" rel="noopener"
+>http://zhagnsan.github.io/&lt;/a>&lt;/li>
+&lt;/ol>
+&lt;p>GitHub Pages 的新手指南已经包含在了上一节推荐的两篇文章中。&lt;/p>
+&lt;h2 id="使用-github-actions-自动化发布博客更新">使用 Github Actions 自动化发布博客更新
+&lt;/h2>&lt;p>本地的测试环境是非常重要的，可以帮我们快速的掌握 Hugo 的基本使用方式，测试和选择网站模板。在模板确定了以后，就进入了日常的内容更新过程中，平常内容更新的工作都是在 master 分支中进行。并不会在本地操作 gh-pages 分支，这个分支里只会存放的是 Hugo 编译之后结果内容，即 public 目录中的内容。&lt;/p>
+&lt;p>你可以在代码库的 Actions 标签页面中，创建一个默认的演示工作流文件，在本地做一个测试更新，用 push 动作测试触发和执行它。从无到有的创建新工作流文件的过程在这里不讲解。&lt;/p>
+&lt;p>在本使用 Github Actions 的功能的主要目的如下：&lt;/p>
+&lt;ol>
+&lt;li>通过 master 分支的 push 事件，触发自动化工作流，即 CI/CD 工作流，这里是持续部署的过程。&lt;/li>
+&lt;li>将 master 分支的内容签出，使用新配置的 Hugo 软件构建全站的所有内容&lt;/li>
+&lt;li>将构建后的结果发布更新到 gh-pages 分支中。&lt;/li>
+&lt;/ol>
+&lt;p>下面是我所使用的工作流代码和注释。&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;span class="lnt">14
+&lt;/span>&lt;span class="lnt">15
+&lt;/span>&lt;span class="lnt">16
+&lt;/span>&lt;span class="lnt">17
+&lt;/span>&lt;span class="lnt">18
+&lt;/span>&lt;span class="lnt">19
+&lt;/span>&lt;span class="lnt">20
+&lt;/span>&lt;span class="lnt">21
+&lt;/span>&lt;span class="lnt">22
+&lt;/span>&lt;span class="lnt">23
+&lt;/span>&lt;span class="lnt">24
+&lt;/span>&lt;span class="lnt">25
+&lt;/span>&lt;span class="lnt">26
+&lt;/span>&lt;span class="lnt">27
+&lt;/span>&lt;span class="lnt">28
+&lt;/span>&lt;span class="lnt">29
+&lt;/span>&lt;span class="lnt">30
+&lt;/span>&lt;span class="lnt">31
+&lt;/span>&lt;span class="lnt">32
+&lt;/span>&lt;span class="lnt">33
+&lt;/span>&lt;span class="lnt">34
+&lt;/span>&lt;span class="lnt">35
+&lt;/span>&lt;span class="lnt">36
+&lt;/span>&lt;span class="lnt">37
+&lt;/span>&lt;span class="lnt">38
+&lt;/span>&lt;span class="lnt">39
+&lt;/span>&lt;span class="lnt">40
+&lt;/span>&lt;span class="lnt">41
+&lt;/span>&lt;span class="lnt">42
+&lt;/span>&lt;span class="lnt">43
+&lt;/span>&lt;span class="lnt">44
+&lt;/span>&lt;span class="lnt">45
+&lt;/span>&lt;span class="lnt">46
+&lt;/span>&lt;span class="lnt">47
+&lt;/span>&lt;span class="lnt">48
+&lt;/span>&lt;span class="lnt">49
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl"># 将 Hubo 博客构建后部署到 Github Pages
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">name: Deploy github-pages
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"># 在 master 主干分支的任何 push 事件都会触发本 DevOps 工作流水线
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">on:
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> push:
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> branches: [ master ]
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"># 以下是本串行执行工作流的所有组成部分
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">jobs:
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> # 这里只定义了一个名为 &amp;#34;deploy&amp;#34; 的多步骤作业
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> build-deploy-hugo-blog:
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> # 将后续的所有工作步骤都运行在最新版的 ubuntu 操作系统上
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> runs-on: ubuntu-latest
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> # 本构建和部署作业的所有步骤定义如下
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> steps:
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> # Step 1 - Checks-out 你的代码库到 $GITHUB_WORKSPACE
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> - name: Checkout blog code repo
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> uses: actions/checkout@v2 # 这是 Github 官方提供的一个动作模块
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> with:
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> submodules: true # 同步更新所使用的 Hugo 模板
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> fetch-depth: 0 # 更新到该模板最新的版本
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> # Step 2 - 配置最新版本的 Hugo 环境
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> - name: Setup Hugo
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> uses: peaceiris/actions-hugo@v2 # 这是 Github Actions 市场中的一个动作模块
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> with:
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> hugo-version: &amp;#39;latest&amp;#39;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> # Step 3 - 清理代码库中 public 目录中的内容
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> - name: Clean public directory
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> run: rm -rf public # 彻底删除这个目录
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> # Step 4 - 用最新版本的 Hugo 构建个人博客站点
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> - name: Build blog site
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> run: hugo --minify
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> # Step 5 - 创建用于私有域名所需要的 CNAME 文件
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> - name: Create CNAME file
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> run: echo &amp;#39;martinliu.cn&amp;#39; &amp;gt; public/CNAME
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> # Step 6 - 将构建好的博客站点推送发布到 gh-pages 分支
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> - name: Deploy blog to Github-pages
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> uses: peaceiris/actions-gh-pages@v3
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> with:
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> github_token: ${{ secrets.DEPLOY_KEY }}
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> publish_dir: ./public
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;h2 id="后续事项">后续事项
+&lt;/h2>&lt;ol>
+&lt;li>解决旧文章头图空白的问题&lt;/li>
+&lt;li>增加文章评论功能&lt;/li>
+&lt;li>增加 CDN 功能&lt;/li>
+&lt;/ol></description></item></channel></rss>

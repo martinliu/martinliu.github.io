@@ -1,0 +1,637 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Filebeat on Martin Liu's Blog</title><link>https://martinliu.cn/tags/filebeat/</link><description>Recent content in Filebeat on Martin Liu's Blog</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><lastBuildDate>Tue, 25 Jun 2024 21:44:26 +0800</lastBuildDate><atom:link href="https://martinliu.cn/tags/filebeat/index.xml" rel="self" type="application/rss+xml"/><item><title>腾讯云下部署 Elastic Stack 各种 Beat 的最佳实践</title><link>https://martinliu.cn/blog/beats-implement-on-qcloud/</link><pubDate>Fri, 07 Aug 2020 17:14:20 +0800</pubDate><guid>https://martinliu.cn/blog/beats-implement-on-qcloud/</guid><description>&lt;img src="https://martinliu.cn/images/abstract-6.jpg" alt="Featured image of post 腾讯云下部署 Elastic Stack 各种 Beat 的最佳实践" />&lt;h2 id="概述">概述
+&lt;/h2>&lt;p>使用 Elastic Stack 的各种 Beats 模块可以彻底的终结在服务器上手工捞日志查指标的扭曲实践。利用腾讯云提供的 Elasticsearch 服务，可以轻松搞定大规模云环境的运维。本文一次性的帮你梳理清楚了，必备的基础操作，确保你能用 Elastic Stack 安全、稳定和扩展的持续监控你的生产环境。&lt;/p>
+&lt;h2 id="创建-es-集群">创建 ES 集群
+&lt;/h2>&lt;p>登录腾讯云服务控制台，查询并进入 Elasticsearc 服务，点击新建按钮，创建 Elasticsearch 集群。如下图所示。&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/images/qcloud-es.jpeg"
+loading="lazy"
+>&lt;/p>
+&lt;p>集群配置说明：&lt;/p>
+&lt;ul>
+&lt;li>北京区&lt;/li>
+&lt;li>7.5.1 - 白金版&lt;/li>
+&lt;li>单可用区&lt;/li>
+&lt;li>冷热模式&lt;/li>
+&lt;/ul>
+&lt;p>本实例其它参数保持默认，可以根据实际业务需求修改这些参数。&lt;/p>
+&lt;p>点击下一步后，设置 Elasticsearch 集群的超级用户名和密码。&lt;/p>
+&lt;p>在几分钟之后这个集群就成功创建了。查看下面这些基础的配置。&lt;/p>
+&lt;ul>
+&lt;li>启用 Kibana 内网地址： &lt;a class="link" href="http://es-ot7wei87.internal.kibana.tencentelasticsearch.com:5601" target="_blank" rel="noopener"
+>http://es-ot7wei87.internal.kibana.tencentelasticsearch.com:5601&lt;/a> 用于 Bests 的 Setup 命令&lt;/li>
+&lt;li>启用 Kibana 公网地址： &lt;a class="link" href="https://es-ot7wei87.kibana.tencentelasticsearch.com:5601" target="_blank" rel="noopener"
+>https://es-ot7wei87.kibana.tencentelasticsearch.com:5601&lt;/a> 用户Elastic Stack 的初始化配置，如创建角色和调整索引生命周期策略等。&lt;/li>
+&lt;/ul>
+&lt;p>这样我们就有了一个安全、可扩展和性能足够的 ES 后台服务。&lt;/p>
+&lt;h2 id="创建-beats-写入角色和用户">创建 Beats 写入角色和用户
+&lt;/h2>&lt;p>登录 Kibana ，点击角色和用户管理，创建用于 Beast 配置文件的‘只写’权限用户。&lt;/p>
+&lt;ul>
+&lt;li>创建 beats-writer 角色&lt;/li>
+&lt;li>创建 beats-writer 用户，该用户只赋予beats-writer角色，自定义一个安全的复杂密码。&lt;/li>
+&lt;/ul>
+&lt;p>Beats-write 角色设置如下图所示：&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/images/beats-writer.jpeg"
+loading="lazy"
+>&lt;/p>
+&lt;p>这个用户会用到后面的所有 Beats 配置文件中，用最小化权限用户极大的降低了数据泄露的风险。&lt;/p>
+&lt;h2 id="beats-初始化配置">Beats 初始化配置
+&lt;/h2>&lt;p>登录准备好的一个 Linux 服务器，在这台机器上做 Beats 相关的初始化工作；也就是要执行一些列的 setup 命令；这些命令的作用是：&lt;/p>
+&lt;ul>
+&lt;li>在 ES 后台加载索引模板，以及索引的 ILM 策略。&lt;/li>
+&lt;li>加载 Kibana 相关的对象和可视化仪表板。&lt;/li>
+&lt;/ul>
+&lt;p>注意这是一次性的工作，在一个虚拟机上，只需要成功执行一次。&lt;/p>
+&lt;p>SSH 登录到准备的 Linux 服务器上，首先需要安装相关 beats 的 rpm 安装包，安装命令在这里忽略，否则无法执行这些命令。 安装好 filebeat 和 metricbeat 的rpm 包后， 执行下面参考命令。&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-sh" data-lang="sh">&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">filebeat setup -e &lt;span class="se">\
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="se">&lt;/span> -E output.logstash.enabled&lt;span class="o">=&lt;/span>&lt;span class="nb">false&lt;/span> &lt;span class="se">\
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="se">&lt;/span> -E output.elasticsearch.hosts&lt;span class="o">=[&lt;/span>&lt;span class="s1">&amp;#39;192.168.0.43:9200&amp;#39;&lt;/span>&lt;span class="o">]&lt;/span> &lt;span class="se">\
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="se">&lt;/span> -E output.elasticsearch.username&lt;span class="o">=&lt;/span>elastic &lt;span class="se">\
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="se">&lt;/span> -E output.elasticsearch.password&lt;span class="o">=&lt;/span>YourPassWord &lt;span class="se">\
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="se">&lt;/span> -E setup.kibana.host&lt;span class="o">=&lt;/span>es-ot7wei87.internal.kibana.tencentelasticsearch.com:5601
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">metricbeat setup -e &lt;span class="se">\
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="se">&lt;/span> -E output.elasticsearch.hosts&lt;span class="o">=[&lt;/span>&lt;span class="s1">&amp;#39;192.168.0.43:9200&amp;#39;&lt;/span>&lt;span class="o">]&lt;/span> &lt;span class="se">\
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="se">&lt;/span> -E output.elasticsearch.username&lt;span class="o">=&lt;/span>elastic &lt;span class="se">\
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="se">&lt;/span> -E output.elasticsearch.password&lt;span class="o">=&lt;/span>YourPassWord &lt;span class="se">\
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="se">&lt;/span> -E setup.kibana.host&lt;span class="o">=&lt;/span>es-ot7wei87.internal.kibana.tencentelasticsearch.com:5601
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>运行以上命令的时候 Beats 处于默认安装的状态，这些命令行参数是必要的查收，有了这些参数 beats 会忽略默认的配置文件。&lt;/p>
+&lt;p>以上命令根据需求，如果需要使用到其它的 Beats，请使用相关的 setup 命令。其中的 es 和 kibana 相关信息需求参考上一步创建的 es 集群信息。&lt;/p>
+&lt;p>以上所有命令成功之后，登录 Kibana 界面，点击 Dashboard 菜单，这里应该已经加载了很多仪表板。目前为止 Elastic Stack 后台就初始化成功了。&lt;/p>
+&lt;h2 id="在节点上正式部署-beats">在节点上正式部署 Beats
+&lt;/h2>&lt;p>参考和修改安装脚本，一键式安装和配置 Beats&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">git clone https://github.com/martinliu/elastic-stack-lab.git
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">cd tencent
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">sh add-agent.sh
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>成功执行完以上脚本后，相关的 beats 服务应是正常运行的状态。执行完这个命令之后，在 Linux 服务器上使用检查服务是否正常运行 &lt;code>sudo systemctl status filebeat&lt;/code> ；使用这个命令应该可以看到filebeat 服务都是正常运行的。&lt;/p>
+&lt;p>这个脚本所使用的配置文件中的要点：&lt;/p>
+&lt;ul>
+&lt;li>删除了所有和数据摄入无关的配置（例如 es 和 kibana 的配置和初始化等）&lt;/li>
+&lt;li>加入了最小化的必要的最佳实践参数集合&lt;/li>
+&lt;li>建议根据需求增加 beats 相关的模块&lt;/li>
+&lt;li>根据需求加入必要的 Beat 配置参数&lt;/li>
+&lt;/ul>
+&lt;p>实例配置文件如。&lt;/p>
+&lt;p>filebeat.yml&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;span class="lnt">14
+&lt;/span>&lt;span class="lnt">15
+&lt;/span>&lt;span class="lnt">16
+&lt;/span>&lt;span class="lnt">17
+&lt;/span>&lt;span class="lnt">18
+&lt;/span>&lt;span class="lnt">19
+&lt;/span>&lt;span class="lnt">20
+&lt;/span>&lt;span class="lnt">21
+&lt;/span>&lt;span class="lnt">22
+&lt;/span>&lt;span class="lnt">23
+&lt;/span>&lt;span class="lnt">24
+&lt;/span>&lt;span class="lnt">25
+&lt;/span>&lt;span class="lnt">26
+&lt;/span>&lt;span class="lnt">27
+&lt;/span>&lt;span class="lnt">28
+&lt;/span>&lt;span class="lnt">29
+&lt;/span>&lt;span class="lnt">30
+&lt;/span>&lt;span class="lnt">31
+&lt;/span>&lt;span class="lnt">32
+&lt;/span>&lt;span class="lnt">33
+&lt;/span>&lt;span class="lnt">34
+&lt;/span>&lt;span class="lnt">35
+&lt;/span>&lt;span class="lnt">36
+&lt;/span>&lt;span class="lnt">37
+&lt;/span>&lt;span class="lnt">38
+&lt;/span>&lt;span class="lnt">39
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-gdscript3" data-lang="gdscript3">&lt;span class="line">&lt;span class="cl">&lt;span class="c1">#=========================== Filebeat inputs =============================&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">filebeat&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">inputs&lt;/span>&lt;span class="p">:&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="o">-&lt;/span> &lt;span class="n">type&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="nb">log&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">enabled&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="bp">false&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">paths&lt;/span>&lt;span class="p">:&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="o">-&lt;/span> &lt;span class="o">/&lt;/span>&lt;span class="k">var&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="nb">log&lt;/span>&lt;span class="o">/*.&lt;/span>&lt;span class="n">log&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">#============================= Filebeat modules ===============================&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">filebeat&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">config&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">modules&lt;/span>&lt;span class="p">:&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">path&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="o">$&lt;/span>&lt;span class="p">{&lt;/span>&lt;span class="n">path&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">config&lt;/span>&lt;span class="p">}&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">modules&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">d&lt;/span>&lt;span class="o">/*.&lt;/span>&lt;span class="n">yml&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">reload&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">enabled&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="bp">true&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">reload&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">period&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="mi">60&lt;/span>&lt;span class="n">s&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">#-------------------------- Elasticsearch output ------------------------------&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">output&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">elasticsearch&lt;/span>&lt;span class="p">:&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">hosts&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="p">[&lt;/span>&lt;span class="s2">&amp;#34;${INT_ES_SRV}&amp;#34;&lt;/span>&lt;span class="p">]&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">password&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="o">$&lt;/span>&lt;span class="p">{&lt;/span>&lt;span class="n">BEATS_WRITER_PW&lt;/span>&lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">username&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="o">$&lt;/span>&lt;span class="p">{&lt;/span>&lt;span class="n">BEATS_WRITER_USERNAME&lt;/span>&lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">#================================ Processors =====================================&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">processors&lt;/span>&lt;span class="p">:&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="o">-&lt;/span> &lt;span class="n">add_host_metadata&lt;/span>&lt;span class="p">:&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">netinfo&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">enabled&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="bp">true&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">cache&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">ttl&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="mi">5&lt;/span>&lt;span class="n">m&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="o">-&lt;/span> &lt;span class="n">add_cloud_metadata&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="o">~&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="o">-&lt;/span> &lt;span class="n">add_docker_metadata&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="o">~&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="o">-&lt;/span> &lt;span class="n">add_kubernetes_metadata&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="o">~&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="o">-&lt;/span> &lt;span class="n">add_fields&lt;/span>&lt;span class="p">:&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">target&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="s1">&amp;#39;&amp;#39;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">fields&lt;/span>&lt;span class="p">:&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">service&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">name&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="s1">&amp;#39;Joint Lab&amp;#39;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">service&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">id&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="s1">&amp;#39;es-qq&amp;#39;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">#==================== Best Practice Configuration ==========================&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">setup&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">ilm&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">check_exists&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="bp">false&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">logging&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">level&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="n">error&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">queue&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">spool&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="o">~&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">monitoring&lt;/span>&lt;span class="p">:&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">enabled&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="bp">true&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>metricbeat.yml&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;span class="lnt">14
+&lt;/span>&lt;span class="lnt">15
+&lt;/span>&lt;span class="lnt">16
+&lt;/span>&lt;span class="lnt">17
+&lt;/span>&lt;span class="lnt">18
+&lt;/span>&lt;span class="lnt">19
+&lt;/span>&lt;span class="lnt">20
+&lt;/span>&lt;span class="lnt">21
+&lt;/span>&lt;span class="lnt">22
+&lt;/span>&lt;span class="lnt">23
+&lt;/span>&lt;span class="lnt">24
+&lt;/span>&lt;span class="lnt">25
+&lt;/span>&lt;span class="lnt">26
+&lt;/span>&lt;span class="lnt">27
+&lt;/span>&lt;span class="lnt">28
+&lt;/span>&lt;span class="lnt">29
+&lt;/span>&lt;span class="lnt">30
+&lt;/span>&lt;span class="lnt">31
+&lt;/span>&lt;span class="lnt">32
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-gdscript3" data-lang="gdscript3">&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># =========================== Modules configuration ============================&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">metricbeat&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">config&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">modules&lt;/span>&lt;span class="p">:&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">path&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="o">$&lt;/span>&lt;span class="p">{&lt;/span>&lt;span class="n">path&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">config&lt;/span>&lt;span class="p">}&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">modules&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">d&lt;/span>&lt;span class="o">/*.&lt;/span>&lt;span class="n">yml&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">reload&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">enabled&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="bp">true&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">reload&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">period&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="mi">10&lt;/span>&lt;span class="n">s&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">#-------------------------- Elasticsearch output ------------------------------&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">output&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">elasticsearch&lt;/span>&lt;span class="p">:&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">hosts&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="p">[&lt;/span>&lt;span class="s2">&amp;#34;${INT_ES_SRV}&amp;#34;&lt;/span>&lt;span class="p">]&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">password&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="o">$&lt;/span>&lt;span class="p">{&lt;/span>&lt;span class="n">BEATS_WRITER_PW&lt;/span>&lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">username&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="o">$&lt;/span>&lt;span class="p">{&lt;/span>&lt;span class="n">BEATS_WRITER_USERNAME&lt;/span>&lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">#================================ Processors =====================================&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">processors&lt;/span>&lt;span class="p">:&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="o">-&lt;/span> &lt;span class="n">add_host_metadata&lt;/span>&lt;span class="p">:&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">netinfo&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">enabled&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="bp">true&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">cache&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">ttl&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="mi">5&lt;/span>&lt;span class="n">m&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="o">-&lt;/span> &lt;span class="n">add_cloud_metadata&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="o">~&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="o">-&lt;/span> &lt;span class="n">add_docker_metadata&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="o">~&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="o">-&lt;/span> &lt;span class="n">add_kubernetes_metadata&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="o">~&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="o">-&lt;/span> &lt;span class="n">add_fields&lt;/span>&lt;span class="p">:&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">target&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="s1">&amp;#39;&amp;#39;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">fields&lt;/span>&lt;span class="p">:&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">service&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">name&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="s1">&amp;#39;Joint Lab&amp;#39;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">service&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">id&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="s1">&amp;#39;es-qq&amp;#39;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">#==================== Best Practice Configuration ==========================&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">setup&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">ilm&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">check_exists&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="bp">false&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">logging&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">level&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="n">error&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">queue&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">spool&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="o">~&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">monitoring&lt;/span>&lt;span class="p">:&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">enabled&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="bp">true&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>以上配置文件使用了这些通用最佳实践配置参数。&lt;/p>
+&lt;ul>
+&lt;li>使用 ECS 扩展字段，丰富上下文含义&lt;/li>
+&lt;li>启用 beats 端点监控&lt;/li>
+&lt;li>用 keystore 隐藏所有敏感信息&lt;/li>
+&lt;/ul>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">#禁用索引 ilm 策略检查，避免无用动作
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">setup.ilm.check_exists: false
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">#把Beats自身的日志记录调到最低级别降低
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">logging.level: error
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">#开启本地默认的端点缓存行为
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">queue.spool: ~
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">#启用端点的监控
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">monitoring:
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> enabled: true
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;h2 id="排错方法">排错方法
+&lt;/h2>&lt;h3 id="filebeat-setup-不成功">filebeat setup 不成功
+&lt;/h3>&lt;p>在任何 beats 首次做 setup 命令的时候，它可能是会在分钟级别成功结束。如果发生失败或者卡顿的情况，可以等一下，等更长时间看看。不成功的话，需要反复执行，排查 es 和 kibana 服务是否能正常工作。知道陈功了，才能进行下一步的安装工作。&lt;/p>
+&lt;h3 id="配置文件错误导致的服务不能启动">配置文件错误导致的服务不能启动
+&lt;/h3>&lt;p>由于上面的定制化配置文件也可能出现错误，特别是在首次部署这个配置文件的时候，可以先把日志级别 error 哪一行注释掉，把启动服务那两行也注释掉。&lt;/p>
+&lt;p>然后在命令行执行 &lt;code>filebeat -e&lt;/code> 查看整个 feilebeat 的启动过程，这个命令会读取定制化的配置文件，然后开始连接后台 es 服务，然后进入正常数据传送的状态。这个过程中如果有任何配置错误，也可以直观的看到相关信息，直到调整到正常的状态。&lt;/p>
+&lt;p>以上过程的调整好了以后，一定要通过 git 版本管理起来，然后可以放心的在其它节点上执行 beast 的一键式部署工作。&lt;/p>
+&lt;h2 id="总结">总结
+&lt;/h2>&lt;p>以上是在 Beats 部署相关基础最佳实践，也就是说在生产环境中 ES 后台和 beats 的搭配，以及本文所涉及的内容都是基线配置。建议根据自己的需求做更多的调优，这里使用 shell 脚本的方式部署 beats 和相关的配置，shell 脚本适合用于演示原理，建议替换成你所熟悉的自动化运维工具，例如 ansible 等工具。从而保证更大规模的自动化部署和维护。&lt;/p>
+&lt;p>本相关的配置文件和脚本位于：&lt;a class="link" href="https://github.com/martinliu/elastic-stack-lab.git" target="_blank" rel="noopener"
+>https://github.com/martinliu/elastic-stack-lab.git&lt;/a>&lt;/p></description></item><item><title>最简化 Elasticsearch &amp; Kibana &amp; Filebeat 安装说明</title><link>https://martinliu.cn/blog/elk-stack-install/</link><pubDate>Thu, 26 Mar 2020 08:51:15 +0800</pubDate><guid>https://martinliu.cn/blog/elk-stack-install/</guid><description>&lt;img src="https://martinliu.cn/images/abstract-1.jpg" alt="Featured image of post 最简化 Elasticsearch &amp; Kibana &amp; Filebeat 安装说明" />&lt;p>&lt;img src="https://martinliu.cn/images/980-elastic-stack.jpg"
+loading="lazy"
+alt="elk"
+>&lt;/p>
+&lt;p>本文描述如何搭建一套具备用户名和密码安全认证的 Elastic Stack 系统，并开始使用 Filebeat 的基础模块实现分布式的日志收集。&lt;/p>
+&lt;ul>
+&lt;li>安装单节点 Elasticsearch 服务器，启用用户名和密码安全认证，并创建 TLS 数字证书备用&lt;/li>
+&lt;li>安装 Kibana 服务器，并配置与 Elasticsearch 服务的连接&lt;/li>
+&lt;li>安装和配置 Filebeat 代理程序，并配置 system 和 auditd 模块&lt;/li>
+&lt;li>使用 Kibana 监控 Filebeat 所采集的系统日志，并监控系统的状态&lt;/li>
+&lt;/ul>
+&lt;p>为了使你也获得与我一致的安装和测试体验，请先下载并浏览相本文所使用的代码库：&lt;a class="link" href="https://github.com/martinliu/elastic-labs" target="_blank" rel="noopener"
+>https://github.com/martinliu/elastic-labs&lt;/a>&lt;/p>
+&lt;h2 id="试验环境概述和启动">试验环境概述和启动
+&lt;/h2>&lt;p>本文所使用相关软件以及版本。&lt;/p>
+&lt;ul>
+&lt;li>macOS Catalina version 10.15.3&lt;/li>
+&lt;li>Vagrant 2.2.4&lt;/li>
+&lt;li>VirtalBox 6.0&lt;/li>
+&lt;li>操作系统镜像: bento/centos-8 (virtualbox, 202002.04.0)&lt;/li>
+&lt;li>Elastic Stack 安装包（RPM）
+&lt;ul>
+&lt;li>Elasticsearch 7.6.1&lt;/li>
+&lt;li>Kibana 7.6.1&lt;/li>
+&lt;li>Filebeat 7.6.1&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>使用 Vagrant 的目录共享功能，分享安装包到测试机的 /vagrant/rpm 目录下&lt;/li>
+&lt;/ul>
+&lt;p>注意事项：&lt;/p>
+&lt;ol>
+&lt;li>你也可以使用任何一台 CentOS 8 虚拟机或者云主机，则后续的安装命令和 rpm 安装包的路径需要有所变化。&lt;/li>
+&lt;li>Vagrant 文件中定义的虚拟机配置为 4 GB 内存，建议你的操作系统最低为 8GB 内存，推荐 16GB 或者更高，&lt;/li>
+&lt;li>本文也适用于 Linux 或 Windows 操作系统的 Vagrant 测试环境，需要提前下载并且准备好 bento/centos-8 的基础操作系统镜像。&lt;/li>
+&lt;/ol>
+&lt;p>启动测试环境。&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">vagrant up
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">vagrant status
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;h2 id="安装-elasticsearch-服务器">安装 Elasticsearch 服务器
+&lt;/h2>&lt;p>SSH 登录测试虚拟机。&lt;/p>
+&lt;p>&lt;code>vagrant ssh&lt;/code>&lt;/p>
+&lt;p>执行 RPM 安装命令，安装 elasticsearch 服务器。&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;span class="lnt">4
+&lt;/span>&lt;span class="lnt">5
+&lt;/span>&lt;span class="lnt">6
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-gdscript3" data-lang="gdscript3">&lt;span class="line">&lt;span class="cl">&lt;span class="n">cd&lt;/span> &lt;span class="o">/&lt;/span>&lt;span class="n">vagrant&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">rpm&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">sudo&lt;/span> &lt;span class="n">rpm&lt;/span> &lt;span class="o">-&lt;/span>&lt;span class="n">ivh&lt;/span> &lt;span class="o">./&lt;/span>&lt;span class="n">elasticsearch&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="mf">7.6&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="mi">1&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">x86_64&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">rpm&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">sudo&lt;/span> &lt;span class="n">systemctl&lt;/span> &lt;span class="n">daemon&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">reload&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">sudo&lt;/span> &lt;span class="n">systemctl&lt;/span> &lt;span class="n">enable&lt;/span> &lt;span class="n">elasticsearch&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">service&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">sudo&lt;/span> &lt;span class="n">systemctl&lt;/span> &lt;span class="n">start&lt;/span> &lt;span class="n">elasticsearch&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">service&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">sudo&lt;/span> &lt;span class="n">systemctl&lt;/span> &lt;span class="n">status&lt;/span> &lt;span class="n">elasticsearch&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">service&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>测试 Elasticsearch 服务是否功能正常 【 Dry run 】&lt;/p>
+&lt;p>curl localhost:9200&lt;/p>
+&lt;p>期待的输出类似下面。&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;span class="lnt">14
+&lt;/span>&lt;span class="lnt">15
+&lt;/span>&lt;span class="lnt">16
+&lt;/span>&lt;span class="lnt">17
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">{
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &amp;#34;name&amp;#34; : &amp;#34;elk-master&amp;#34;,
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &amp;#34;cluster_name&amp;#34; : &amp;#34;elasticsearch&amp;#34;,
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &amp;#34;cluster_uuid&amp;#34; : &amp;#34;X4V2Yvc-SJ6ccjWbXQ5OmQ&amp;#34;,
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &amp;#34;version&amp;#34; : {
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &amp;#34;number&amp;#34; : &amp;#34;7.6.1&amp;#34;,
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &amp;#34;build_flavor&amp;#34; : &amp;#34;default&amp;#34;,
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &amp;#34;build_type&amp;#34; : &amp;#34;rpm&amp;#34;,
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &amp;#34;build_hash&amp;#34; : &amp;#34;aa751e09be0a5072e8570670309b1f12348f023b&amp;#34;,
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &amp;#34;build_date&amp;#34; : &amp;#34;2020-02-29T00:15:25.529771Z&amp;#34;,
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &amp;#34;build_snapshot&amp;#34; : false,
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &amp;#34;lucene_version&amp;#34; : &amp;#34;8.4.0&amp;#34;,
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &amp;#34;minimum_wire_compatibility_version&amp;#34; : &amp;#34;6.8.0&amp;#34;,
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &amp;#34;minimum_index_compatibility_version&amp;#34; : &amp;#34;6.0.0-beta1&amp;#34;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> },
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &amp;#34;tagline&amp;#34; : &amp;#34;You Know, for Search&amp;#34;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">}
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>浏览和学习 Elasticsearch 默认的配置文件。&lt;/p>
+&lt;p>&lt;code>sudo cat /etc/elasticsearch/elasticsearch.yml&lt;/code>&lt;/p>
+&lt;p>使用 Elasticsearch 的精简版目标测试配置文件。&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">sudo cp /vagrant/elasticsearch/elasticsearch.yml /etc/elasticsearch/elasticsearch.yml
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">sudo systemctl restart elasticsearch.service
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">sudo systemctl status elasticsearch.service
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>手工查看 Elasticsearch 服务器的日志，并确认服务启动正常。&lt;/p>
+&lt;p>&lt;code>sudo tail -f /var/log/elasticsearch/my-elk.log&lt;/code>&lt;/p>
+&lt;p>Ctl + c 终止以上日志查看，再次测试 Elasticsearch 服务。&lt;/p>
+&lt;p>&lt;code>curl localhost:9200&lt;/code>&lt;/p>
+&lt;p>替换为 IP 地址测试。&lt;/p>
+&lt;p>&lt;code>curl http://192.168.50.10:9200/&lt;/code>&lt;/p>
+&lt;h2 id="配置-elasticsearch-服务的-tls-数字证书和身份验证">配置 Elasticsearch 服务的 TLS 数字证书和身份验证
+&lt;/h2>&lt;p>停止 Elasticsearch 服务。&lt;/p>
+&lt;p>&lt;code>sudo systemctl stop elasticsearch.service&lt;/code>&lt;/p>
+&lt;h3 id="创建-tls-数字证书">创建 TLS 数字证书
+&lt;/h3>&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">cd /usr/share/elasticsearch
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">sudo bin/elasticsearch-certutil cert -out /etc/elasticsearch/elastic-certificates.p12 -pass &amp;#34;&amp;#34;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">sudo chmod 660 /etc/elasticsearch/elastic-certificates.p12
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;h3 id="更新-elasticsearch-配置文件">更新 Elasticsearch 配置文件
+&lt;/h3>&lt;p>手工打开 Elasticsearch 配置文件。&lt;/p>
+&lt;p>&lt;code>sudo vi /etc/elasticsearch/elasticsearch.yml&lt;/code>&lt;/p>
+&lt;p>在配置文件的末端增加下面的配置段落。&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;span class="lnt">4
+&lt;/span>&lt;span class="lnt">5
+&lt;/span>&lt;span class="lnt">6
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># ------------------------------- TLS and Cert ---------------------------------&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">xpack.security.enabled: &lt;span class="nb">true&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">xpack.security.transport.ssl.enabled: &lt;span class="nb">true&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">xpack.security.transport.ssl.verification_mode: certificate
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">xpack.security.transport.ssl.keystore.path: elastic-certificates.p12
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">xpack.security.transport.ssl.truststore.path: elastic-certificates.p12
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>重新启动配置 Elasticsearch 服务。&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">sudo systemctl restart elasticsearch.service
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">sudo systemctl status elasticsearch.service
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>确认服务已经正常启动。&lt;/p>
+&lt;p>&lt;code>sudo tail -f /var/log/elasticsearch/my-elk.log&lt;/code>&lt;/p>
+&lt;h3 id="创建-elasticsearch-服务的用户密码">创建 Elasticsearch 服务的用户密码
+&lt;/h3>&lt;p>运行 Elasticsearch 的密码配置工具，为各种内置用户生成随机的密码。&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">sudo cd /usr/share/elasticsearch
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">sudo bin/elasticsearch-setup-passwords auto
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>将生成的密码信息妥善保存备用。&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;span class="lnt">14
+&lt;/span>&lt;span class="lnt">15
+&lt;/span>&lt;span class="lnt">16
+&lt;/span>&lt;span class="lnt">17
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">Changed password &lt;span class="k">for&lt;/span> user apm_system
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">PASSWORD &lt;span class="nv">apm_system&lt;/span> &lt;span class="o">=&lt;/span> AHyg5HzJRZg8Fiva0buW
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Changed password &lt;span class="k">for&lt;/span> user kibana
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">PASSWORD &lt;span class="nv">kibana&lt;/span> &lt;span class="o">=&lt;/span> Kt72IXkiarlGr7do02Yp
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Changed password &lt;span class="k">for&lt;/span> user logstash_system
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">PASSWORD &lt;span class="nv">logstash_system&lt;/span> &lt;span class="o">=&lt;/span> Q9nnlOdf6V9kyPbbhqN7
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Changed password &lt;span class="k">for&lt;/span> user beats_system
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">PASSWORD &lt;span class="nv">beats_system&lt;/span> &lt;span class="o">=&lt;/span> bLNrZDggPKRSKc35EG32
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Changed password &lt;span class="k">for&lt;/span> user remote_monitoring_user
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">PASSWORD &lt;span class="nv">remote_monitoring_user&lt;/span> &lt;span class="o">=&lt;/span> o1pi2yTDnhrKBGcS6xqP
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Changed password &lt;span class="k">for&lt;/span> user elastic
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">PASSWORD &lt;span class="nv">elastic&lt;/span> &lt;span class="o">=&lt;/span> RO11xymgXTCD16ivTP33
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>在浏览器中访问&lt;a class="link" href="http://192.168.50.10:9200/" target="_blank" rel="noopener"
+>http://192.168.50.10:9200/&lt;/a> ，测试并确认上面的 elastic 用户的密码。&lt;/p>
+&lt;h2 id="安装和配置-kibana-服务器">安装和配置 Kibana 服务器
+&lt;/h2>&lt;p>执行 Kibana 安装命令&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">cd /vagrant/rpm/
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">sudo rpm -ivh kibana-7.6.1-x86_64.rpm
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>查看并学习 Kibana 默认配置文件&lt;/p>
+&lt;p>&lt;code>sudo cat /etc/kibana/kibana.yml&lt;/code>&lt;/p>
+&lt;p>更新默认配置文件，准备好 elastic 用户的密码，将其更新到 Kibana 配置文件中。&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">sudo cp /vagrant/kibana/kibna.yml /etc/kibana/kibana.yml
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">sudo systemctl start kibana.service
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">sudo systemctl status kibana.service
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>查看重启的服务是否工作正常。&lt;/p>
+&lt;p>&lt;code>sudo tail -f /var/log/messages&lt;/code>&lt;/p>
+&lt;p>在浏览器里测试登录 Kibana &lt;a class="link" href="http://192.168.50.10:5601" target="_blank" rel="noopener"
+>http://192.168.50.10:5601&lt;/a> ，使用 elastic 的用户名和密码。&lt;/p>
+&lt;h2 id="安装-filebeat-并配置-2-个模块">安装 filebeat 并配置 2 个模块
+&lt;/h2>&lt;p>执行 Filebeat 安装包。&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">cd /vagrant/rpm
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">sudo rpm -ivh ./filebeat-7.6.1-x86_64.rpm
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>查看默认的 Filebeat 配置文件。&lt;/p>
+&lt;p>&lt;code>sudo cat /etc/filebeat/filebeat.yml&lt;/code>&lt;/p>
+&lt;p>更新默认配置文件，准备好 elastic 用户的密码，将其更新到 Kibana 配置文件中。&lt;/p>
+&lt;p>&lt;code>sudo cp /vagrant/filebeat/filebeat.yml /etc/filebeat/filebeat.yml&lt;/code>&lt;/p>
+&lt;p>查看 Filebeat 的默认日志监控模块。&lt;/p>
+&lt;p>&lt;code>sudo filebeat modules list&lt;/code>&lt;/p>
+&lt;p>启用 Filebeat 的 System 和 Auditd 模块，监控系统日志和基础的操作系统安全信息。&lt;/p>
+&lt;p>&lt;code>sudo filebeat modules enable system auditd&lt;/code>&lt;/p>
+&lt;p>查看 Filebeat 监控模块的配置文件。&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">sudo cd /etc/filebeat
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">sudo ls -l modules.d/
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>建议查看以上启用的 System 和 Auditd 模块的配置文件。&lt;/p>
+&lt;p>运行 Filebeat 在后台的初始化命令，在后台创建 Filebeat 所需要的索引 filebeat-* ，并导入所有模块相关的 Dashboard 等 Kibana 日志可视化分析工具。&lt;/p>
+&lt;p>&lt;code>sudo filebeat setup&lt;/code>&lt;/p>
+&lt;p>在浏览器中登录 &lt;a class="link" href="http://192.168.50.10:5601" target="_blank" rel="noopener"
+>http://192.168.50.10:5601&lt;/a> Kibana 后，点击左侧的 Dashboard 图标，查看所有刚才导入的内容，搜索并打开 System 关键字的 Dasboard。&lt;/p>
+&lt;p>在启动日志收集代理 Filebeat 服务前，运行一下命令测试 Filebeat 配置文件的正确性。&lt;/p>
+&lt;p>&lt;code>sudo filebeat test config&lt;/code>&lt;/p>
+&lt;p>启动 Filebeat 服务，开始对这台操作系统的日志进行监控。&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">sudo systemctl start filebeat
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">sudo systemctl status filebeat
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;h2 id="建议的测试">建议的测试
+&lt;/h2>&lt;ol>
+&lt;li>点击左侧的 Dicovery 图标，选中 Filebeat-* 索引，打开并一条日志数据，并查看所有字段；用 KQL 进行全文搜索。&lt;/li>
+&lt;li>点击左侧的 Dashboard 图标，搜索 system 关键字，查看一个仪表板的日志展示；搜索 audit 关键字，并查打开一个仪表板，在命令行中尝试 ssh localhost，多尝试几次，刷新 Audit 仪表板，观察数据是否发生了变化。&lt;/li>
+&lt;li>点击左侧的 Logs 图标，用鼠标上下滚动日志信息流， 点击右上角的开始 Live Stream 查看模式，观察日志信息流的自动滚动效果，在 KQL 搜素框中输入 tags : demo-service ，体验它的搜索建议功能，在 Highlight 中输入 &lt;a class="link" href="http://192.168.50.10:5601/app/infra" target="_blank" rel="noopener"
+>http://192.168.50.10:5601/app/infra&lt;/a> ，观察日志信息流显示的变化。&lt;/li>
+&lt;li>点击左侧的 SIEM 图标，看看这里都有什么内容。&lt;/li>
+&lt;/ol>
+&lt;h2 id="后续">后续
+&lt;/h2>&lt;ul>
+&lt;li>用启用 Filebeat 的 Elasticsearch, Kibana 日志监控模块&lt;/li>
+&lt;li>安装 Apache, MySQL 等软件，并开启 Filebeat 的日志监控模块&lt;/li>
+&lt;/ul>
+&lt;p>参考文档：
+&lt;a class="link" href="https://www.elastic.co/guide/en/elasticsearch/reference/current/setting-system-settings.html" target="_blank" rel="noopener"
+>https://www.elastic.co/guide/en/elasticsearch/reference/current/setting-system-settings.html&lt;/a>&lt;/p></description></item></channel></rss>

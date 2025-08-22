@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Network on Martin Liu's Blog</title><link>https://martinliu.cn/tags/network/</link><description>Recent content in Network on Martin Liu's Blog</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><lastBuildDate>Tue, 25 Jun 2024 21:44:26 +0800</lastBuildDate><atom:link href="https://martinliu.cn/tags/network/index.xml" rel="self" type="application/rss+xml"/><item><title>删除Cisco交换机中的所有VLAN数据</title><link>https://martinliu.cn/blog/delete-all-vlan-from-cisco-switch/</link><pubDate>Tue, 09 Nov 2021 12:58:16 +0800</pubDate><guid>https://martinliu.cn/blog/delete-all-vlan-from-cisco-switch/</guid><description>&lt;img src="https://martinliu.cn/img/cos/2021-11-09-bigstock-network-hub-and-patch-cables-12234593-1.jpeg" alt="Featured image of post 删除Cisco交换机中的所有VLAN数据" />&lt;p>最近在闲鱼上收了几台网络设备，其中有一台Cisco 3560X作为lab的核心交换机，其它一些都是用于练习网络运维。本文从清除老旧设备上的vlan开始，将会记录我在这些网络设备上的所有重要配置操作。&lt;/p>
+&lt;h2 id="网络设备的初始化">网络设备的初始化
+&lt;/h2>&lt;h3 id="cisco-交换机">Cisco 交换机
+&lt;/h3>&lt;p>Cisco 3560 的初始化是非常容易和方便的，这是一台非常新的设备，拆机后，机箱内部都没有什么积累明显的灰尘。第一次开机的时候通过mini USB口的连线连接，登陆console后发现需要密码才能进入enable模式，然后不得不重置这个设备的所有配置。&lt;/p>
+&lt;ul>
+&lt;li>在交换机开机的情况下，先用mini USB连接好电脑和交换机。&lt;/li>
+&lt;li>拔掉交换机的电源线&lt;/li>
+&lt;li>按住交换机前面板，左上角的mode按钮不放&lt;/li>
+&lt;li>插上交换机电源线&lt;/li>
+&lt;li>保持mode按钮10+秒以上&lt;/li>
+&lt;li>看着交换机正常启动，并且进入了快速配置模式&lt;/li>
+&lt;li>选择进入快速配置模式，或者选择no，进入正常无向导的手工配置模式&lt;/li>
+&lt;/ul>
+&lt;p>到此处为止，你就进入了一个无密码，几乎无配置的状态。虽然现在这是一台几乎空白配置的交换机。但是交换机的文件系统里还是有一个名为vlan.dat的数据文件。这个文件是之前这个交换机的管理员留下的。有了他的存在当你当你执行 ‘ show vlan brief ’ 命令的时候，这个数据文件中的vlan数据有近百行，滚动了半天，非常烦人。因此需要想办法将其删除。&lt;/p>
+&lt;h4 id="清除vlan数据文件">清除VLAN数据文件
+&lt;/h4>&lt;p>参考文章：&lt;a class="link" href="https://www.networkstraining.com/deleting-the-vlan-database-from-a-cisco-switch/" target="_blank" rel="noopener"
+>https://www.networkstraining.com/deleting-the-vlan-database-from-a-cisco-switch/&lt;/a>&lt;/p>
+&lt;p>首先查看flash上有哪些文件，使用命令 &lt;code>show flash&lt;/code>&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;span class="lnt">14
+&lt;/span>&lt;span class="lnt">15
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">sw-bj-01#show flash:
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Directory of flash:/
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> 10 -rwx 4371 Jan 2 2006 23:55:34 +00:00 config.text
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> 2 -rwx 26945536 Aug 31 2018 10:01:56 +00:00 c3560e-universalk9-mz.152-4.E6.bin
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> 3 -rwx 26844160 Feb 28 2019 05:02:21 +00:00 c3560e-universalk9-mz.152-4.E7.bin
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> 4 -rwx 0 Mar 27 2019 18:36:06 +00:00 merge_config.txt
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> 5 -rwx 6168 Jan 2 2006 23:55:34 +00:00 multiple-fs
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> 6 -rwx 2915 Jan 2 2006 00:02:10 +00:00 config.old
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> 8 -rwx 27468 Mar 27 2019 18:36:05 +00:00 candidate_config.txt
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> 9 -rwx 736 Jan 2 2006 00:08:27 +00:00 vlan.dat
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> 11 -rwx 3835 Jan 2 2006 23:55:34 +00:00 private-config.text
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">57671680 bytes total (3395584 bytes free)
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>上面的命令结果中的倒数第二行就是用来保存vlan信息的文件。然后我们使用 &lt;code>delete vlan.dat&lt;/code> 命令将其删除即可。然后使用 &lt;code>copy running-config startup-config&lt;/code> 保存当前的战果。还可以使用 reload 重启一下交换机，再次登陆交换机之后使用 show vlan brief 命令校验当前的交换机上只有默认的6个vlan存在。&lt;/p>
+&lt;h4 id="启用-ssh-和-web-登陆">启用 ssh 和 web 登陆
+&lt;/h4>&lt;p>每次都适用console线连接并配置交换机？这样还是有点麻烦的，我们需要启用交换机的管理ip和ssh登陆这样以后就可以从网络配置了。以后就可以用Ansible之类的DevOps工具玩NetOps了。配置过程的主要命令如下：&lt;/p>
+&lt;ol>
+&lt;li>配置管理ip， 参考命令如下：&lt;/li>
+&lt;/ol>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;span class="lnt">4
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl"># ip default-gateway 192.168.101.1
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"># interface vlan 101
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">(config-if)# ip address 192.168.101.2 255.255.255.0
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;ol start="2">
+&lt;li>主机名， 参考命令如下：&lt;/li>
+&lt;/ol>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl"># config t
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">(config)# hostname myswitch
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">(config)# ip domain-name thegeekstuff.com
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;ol start="3">
+&lt;li>创建 RSA 密钥，用于启用ssh登陆，参考命令如下&lt;/li>
+&lt;/ol>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;span class="lnt">4
+&lt;/span>&lt;span class="lnt">5
+&lt;/span>&lt;span class="lnt">6
+&lt;/span>&lt;span class="lnt">7
+&lt;/span>&lt;span class="lnt">8
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-gdscript3" data-lang="gdscript3">&lt;span class="line">&lt;span class="cl">&lt;span class="n">myswitch&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">config&lt;/span>&lt;span class="p">)&lt;/span>&lt;span class="c1"># crypto key generate rsa&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">The&lt;/span> &lt;span class="n">name&lt;/span> &lt;span class="k">for&lt;/span> &lt;span class="n">the&lt;/span> &lt;span class="n">keys&lt;/span> &lt;span class="n">will&lt;/span> &lt;span class="n">be&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="n">myswitch&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">thegeekstuff&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">com&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">Choose&lt;/span> &lt;span class="n">the&lt;/span> &lt;span class="n">size&lt;/span> &lt;span class="n">of&lt;/span> &lt;span class="n">the&lt;/span> &lt;span class="n">key&lt;/span> &lt;span class="n">modulus&lt;/span> &lt;span class="ow">in&lt;/span> &lt;span class="n">the&lt;/span> &lt;span class="nb">range&lt;/span> &lt;span class="n">of&lt;/span> &lt;span class="mi">360&lt;/span> &lt;span class="n">to&lt;/span> &lt;span class="mi">2048&lt;/span> &lt;span class="k">for&lt;/span> &lt;span class="n">your&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">General&lt;/span> &lt;span class="n">Purpose&lt;/span> &lt;span class="n">Keys&lt;/span>&lt;span class="o">.&lt;/span> &lt;span class="n">Choosing&lt;/span> &lt;span class="n">a&lt;/span> &lt;span class="n">key&lt;/span> &lt;span class="n">modulus&lt;/span> &lt;span class="n">greater&lt;/span> &lt;span class="n">than&lt;/span> &lt;span class="mi">512&lt;/span> &lt;span class="n">may&lt;/span> &lt;span class="n">take&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">a&lt;/span> &lt;span class="n">few&lt;/span> &lt;span class="n">minutes&lt;/span>&lt;span class="o">.&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">How&lt;/span> &lt;span class="n">many&lt;/span> &lt;span class="n">bits&lt;/span> &lt;span class="ow">in&lt;/span> &lt;span class="n">the&lt;/span> &lt;span class="n">modulus&lt;/span> &lt;span class="p">[&lt;/span>&lt;span class="mi">512&lt;/span>&lt;span class="p">]:&lt;/span> &lt;span class="mi">1024&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="o">%&lt;/span> &lt;span class="n">Generating&lt;/span> &lt;span class="mi">1024&lt;/span> &lt;span class="n">bit&lt;/span> &lt;span class="n">RSA&lt;/span> &lt;span class="n">keys&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">keys&lt;/span> &lt;span class="n">will&lt;/span> &lt;span class="n">be&lt;/span> &lt;span class="n">non&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">exportable&lt;/span>&lt;span class="o">...&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="n">OK&lt;/span>&lt;span class="p">]&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;ol start="4">
+&lt;li>配置一些 Line VTY 和 console 的参数&lt;/li>
+&lt;/ol>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;span class="lnt">4
+&lt;/span>&lt;span class="lnt">5
+&lt;/span>&lt;span class="lnt">6
+&lt;/span>&lt;span class="lnt">7
+&lt;/span>&lt;span class="lnt">8
+&lt;/span>&lt;span class="lnt">9
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl"># line vty 0 4
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">(config-line)# transport input ssh
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">(config-line)# login local
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">(config-line)# password mypassword
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">(config-line)# exit
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"># line console 0
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">(config-line)# logging synchronous
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">(config-line)# login local
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;ol start="5">
+&lt;li>设置用户名和密码&lt;/li>
+&lt;/ol>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">myswitch# config t
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Enter configuration commands, one per line. End with CNTL/Z.
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">myswitch(config)# username myusername password mypassword
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>如果你还没有配置enable的密码可以参考下面的命令。&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">myswitch# enable secret myenablepassword
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">myswitch# service password-encryption
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;ol start="6">
+&lt;li>校验 ssh 访问&lt;/li>
+&lt;/ol>
+&lt;p>使用命令如下：&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">myswitch# sh ip ssh
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">SSH Enabled - version 1.99
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Authentication timeout: 120 secs; Authentication retries: 3
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>现在你可以用网络上的电脑测试ssh登陆这个交换机的ip了。&lt;/p>
+&lt;h3 id="cisco-路由器">Cisco 路由器
+&lt;/h3>&lt;p>待完成&lt;/p>
+&lt;h3 id="cisco-防火墙">Cisco 防火墙
+&lt;/h3>&lt;p>待完成&lt;/p>
+&lt;p>&amp;mdash;- 未完待续 &amp;mdash;-&lt;/p></description></item><item><title>Go Open Source,GO! Vyatta开源软件挺进网络硬件领域</title><link>https://martinliu.cn/2007/06/09/go-open-sourcego-vyatta-network/</link><pubDate>Sat, 09 Jun 2007 08:56:00 +0000</pubDate><guid>https://martinliu.cn/2007/06/09/go-open-sourcego-vyatta-network/</guid><description>&lt;p>&lt;a class="link" href="http://www.vyatta.com/images/masthead.jpg" target="_blank" rel="noopener"
+>&lt;img src="http://www.vyatta.com/images/masthead.jpg"
+loading="lazy"
+>&lt;/a>&lt;!-- raw HTML omitted -->这是一个比较新的产品，提供开源的软件路由的解决方案；他们的目标直指 Cisco 这些大牌网络硬件厂商。它能简单的安装和运行在 32bit 的普通计算机硬件上，实现路由器的几乎所有功能；能支持的硬件平台和路由协议还真不少，请查看 &lt;a class="link" href="http://www.vyatta.com/products/vyatta_software_datasheet.pdf" target="_blank" rel="noopener"
+>Datasheet&lt;/a>；下载&lt;a class="link" href="http://www.vyatta.com/download/" target="_blank" rel="noopener"
+> 网址&lt;/a>&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->在 VMWare 中安装了一下发现它可以完全满足我需求：&lt;!-- raw HTML omitted -->1）在公司中办公网络建立一个隔离的测试网。&lt;!-- raw HTML omitted -->2）测试网中提供 DHCP,DNS 服务&lt;!-- raw HTML omitted -->3）提供 NAT,Firewall&lt;!-- raw HTML omitted -->4）安装简单，硬件需求低&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->准备在公司实际环境中安装测试，安装和配置信息待续。&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->现在我正在 Vyatta Router 后面的小网内更新这个 Blog。&lt;!-- raw HTML omitted -->上午的安装过程如下：&lt;!-- raw HTML omitted -->（硬件准备）&lt;!-- raw HTML omitted -->测试机一台 Dell Gx620，主板上带 Intel 的内置网卡一块 TP-LINK TG-3269C，网线若干&lt;!-- raw HTML omitted -->（网络环境）&lt;!-- raw HTML omitted -->在一台办公网的机器上，寻找一个未使用的 IP 地址，这个地址会分配给 Router 的 Internet 网卡上；然后运行 ipconfig /all 记录下默认网关、默认 DNS 和子网掩码，这些信息会配置到 Router 上。&lt;!-- raw HTML omitted -->（安装过程）&lt;!-- raw HTML omitted -->&lt;/p>
+&lt;p>&lt;!-- raw HTML omitted -->&lt;/p>
+&lt;ol>
+&lt;li>下载Vyatta的试用手册 &lt;a class="link" href="http://www.vyatta.com/documentation/vyatta_evalguide.pdf" target="_blank" rel="noopener"
+>Quick Eval Guide - Boot, Configure &amp;amp; Test the Vyatta software&lt;/a>翻到手册的第三页，重新标准出你的网络信息，注意后面的配置跟这里的信息有关。为了简单起见，我就改了对外链接的哪个网卡的IP地址，至于内网么，有什么ip地址范围都无所谓了呵呵
+&lt;!-- raw HTML omitted -->&lt;/li>
+&lt;li>下载刻录Vyatta软件 &lt;a class="link" href="http://www.vyatta.com/download/ofr.php" target="_blank" rel="noopener"
+>Vyatta Community Edition 2 - CD-ROM Image&lt;/a> 刻录到一张空白CD上
+&lt;!-- raw HTML omitted -->&lt;/li>
+&lt;li>把可好的CD放入机器中，从CDROM启动，这其实是一个livecd。启动过程可以无需关心，看似是一个Linux PE的CD，启动之后用root进入操作系统，root的密码是vyatta。进入后可以查看一下 vi /var/log/dmesg 主要看看你的两个网卡它是否能真确识别。我的测试机是Intel CPU的，不知道AMD的机器是否呢个装，没试过。
+&lt;!-- raw HTML omitted -->&lt;/li>
+&lt;li>其它的配置过程文档中说的非常详细，不用我在多说。
+&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->安装之后的小节：&lt;!-- raw HTML omitted -->Router有两个网卡，在对外的网卡上做了，NAT，firewall，在对内的网卡上做了DHCP,DNS，现在我的笔记本在Router后的小网里，运行ipconfig /all的结果如下&lt;!-- raw HTML omitted -->Ethernet adapter Local Area Connection:&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->Connection-specific DNS Suffix . : mycompany.com&lt;!-- raw HTML omitted -->Description . . . . . . . . . . . : Broadcom 570x Gigabit Integrated Con&lt;!-- raw HTML omitted -->troller&lt;!-- raw HTML omitted -->Physical Address. . . . . . . . . : 00-0F-1F-BB-B2-92&lt;!-- raw HTML omitted -->Dhcp Enabled. . . . . . . . . . . : Yes&lt;!-- raw HTML omitted -->Autoconfiguration Enabled . . . . : Yes&lt;!-- raw HTML omitted -->IP Address. . . . . . . . . . . . : 10.0.0.150&lt;!-- raw HTML omitted -->Subnet Mask . . . . . . . . . . . : 255.255.255.0&lt;!-- raw HTML omitted -->Default Gateway . . . . . . . . . : 10.0.0.1&lt;!-- raw HTML omitted -->DHCP Server . . . . . . . . . . . : 10.0.0.1&lt;!-- raw HTML omitted -->DNS Servers . . . . . . . . . . . : 192.168.172.200&lt;!-- raw HTML omitted -->10.100.112.27&lt;!-- raw HTML omitted -->Lease Obtained. . . . . . . . . . : 2007年6月12日 11:57:30&lt;!-- raw HTML omitted -->Lease Expires . . . . . . . . . . : 2007年6月13日 11:57:30&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->总之这是一个非常成功的测试，这个产品真的非常Coooooool！！！！！它让我看到了OpenSource的东西不仅可以在纯软件领域和商业产品有所比较，它还能在硬件领域有所作为。&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->&lt;/li>
+&lt;/ol></description></item></channel></rss>
