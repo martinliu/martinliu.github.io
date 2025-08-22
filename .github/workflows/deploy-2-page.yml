@@ -80,7 +80,7 @@ jobs:
               run: |
                   echo "🔧 安装优化工具..."
                   sudo apt-get update -qq
-                  sudo apt-get install -y webp optipng jpegoptim brotli parallel
+                  sudo apt-get install -y webp optipng jpegoptim brotli
                   echo "✅ 优化工具安装完成"
 
             - name: Build
@@ -114,18 +114,41 @@ jobs:
                   total_images=$(find public -name "*.jpg" -o -name "*.jpeg" -o -name "*.png" | wc -l)
                   echo "📊 发现 $total_images 张图片"
                   
-                  # 使用 GNU parallel 进行并行处理（如果可用）
-                  if command -v parallel >/dev/null 2>&1; then
-                      echo "🚀 使用并行处理加速优化"
-                      
-                      # 并行转换 WebP
-                      find public -name "*.jpg" -o -name "*.jpeg" -o -name "*.png" | parallel -j4 'webp_name="${1%.*}.webp"; if [ ! -f "$webp_name" ] || [ "$1" -nt "$webp_name" ]; then cwebp -q 85 "$1" -o "$webp_name" && echo "转换: $1 -> $webp_name"; fi' -- {}
-                      
-                      # 并行压缩 PNG
-                      find public -name "*.png" | parallel -j4 'if [ $(stat -f%z "$1" 2>/dev/null || stat -c%s "$1" 2>/dev/null || echo 0) -ge 102400 ]; then optimized_marker="$1.optimized"; if [ ! -f "$optimized_marker" ] || [ "$1" -nt "$optimized_marker" ]; then optipng -o1 "$1" && touch "$optimized_marker" && echo "压缩PNG: $1"; fi; fi' -- {}
-                      
-                      # 并行压缩 JPEG
-                      find public -name "*.jpg" -o -name "*.jpeg" | parallel -j4 'if [ $(stat -f%z "$1" 2>/dev/null || stat -c%s "$1" 2>/dev/null || echo 0) -ge 102400 ]; then optimized_marker="$1.optimized"; if [ ! -f "$optimized_marker" ] || [ "$1" -nt "$optimized_marker" ]; then jpegoptim --size=85% "$1" && touch "$optimized_marker" && echo "压缩JPEG: $1"; fi; fi' -- {}
+                  # 使用并行处理加速优化（使用 xargs 更可靠）
+                  echo "🚀 使用并行处理加速优化"
+                  
+                  # 并行转换 WebP（使用 xargs）
+                  find public -name "*.jpg" -o -name "*.jpeg" -o -name "*.png" | xargs -I {} -P 4 bash -c '
+                      img="$1"
+                      webp_name="${img%.*}.webp"
+                      if [ ! -f "$webp_name" ] || [ "$img" -nt "$webp_name" ]; then
+                          cwebp -q 85 "$img" -o "$webp_name" && echo "转换: $img -> $webp_name"
+                      fi
+                  ' _ {}
+                  
+                  # 并行压缩 PNG（只处理大文件）
+                  find public -name "*.png" | xargs -I {} -P 4 bash -c '
+                      img="$1"
+                      size=$(stat -f%z "$img" 2>/dev/null || stat -c%s "$img" 2>/dev/null || echo 0)
+                      if [ $size -ge 102400 ]; then
+                          optimized_marker="$img.optimized"
+                          if [ ! -f "$optimized_marker" ] || [ "$img" -nt "$optimized_marker" ]; then
+                              optipng -o1 "$img" && touch "$optimized_marker" && echo "压缩PNG: $img"
+                          fi
+                      fi
+                  ' _ {}
+                  
+                  # 并行压缩 JPEG（只处理大文件）
+                  find public -name "*.jpg" -o -name "*.jpeg" | xargs -I {} -P 4 bash -c '
+                      img="$1"
+                      size=$(stat -f%z "$img" 2>/dev/null || stat -c%s "$img" 2>/dev/null || echo 0)
+                      if [ $size -ge 102400 ]; then
+                          optimized_marker="$img.optimized"
+                          if [ ! -f "$optimized_marker" ] || [ "$img" -nt "$optimized_marker" ]; then
+                              jpegoptim --size=85% "$img" && touch "$optimized_marker" && echo "压缩JPEG: $img"
+                          fi
+                      fi
+                  ' _ {}
                   else
                       echo "⚠️ GNU parallel 不可用，使用串行处理"
                       
