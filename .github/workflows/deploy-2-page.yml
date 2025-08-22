@@ -1,8 +1,18 @@
-name: Deploy to Github Pages
+# 🔧 调试模式的 GitHub Pages 部署工作流
+# 
+# 当前配置：
+# - 所有分支的 push 都会触发完整构建和部署流程
+# - 用于调试和测试部署流程
+# 
+# 调试完成后，请修改 on.push.branches 为 [master] 
+# 以恢复只在 master 分支合并时触发
+#
+name: Deploy to Github Pages (Debug Mode)
 
 on:
     push:
-        branches: [master]
+        # 调试模式：所有分支的 push 都触发构建
+        branches: ['**']
     pull_request:
         branches: [master]
     workflow_dispatch:
@@ -10,7 +20,7 @@ on:
             enable_optimization:
                 description: '启用完整优化'
                 required: false
-                default: 'true'
+                default: true
                 type: boolean
 
 env:
@@ -149,58 +159,8 @@ jobs:
                           fi
                       fi
                   ' _ {}
-                  else
-                      echo "⚠️ GNU parallel 不可用，使用串行处理"
-                      
-                      # 转换为 WebP 格式（增量处理）
-                      webp_count=0
-                      find public -name "*.jpg" -o -name "*.jpeg" -o -name "*.png" | while read img; do
-                          webp_name="${img%.*}.webp"
-                          if [ ! -f "$webp_name" ] || [ "$img" -nt "$webp_name" ]; then
-                              cwebp -q 85 "$img" -o "$webp_name"
-                              webp_count=$((webp_count + 1))
-                              echo "转换 ($webp_count): $img -> $webp_name"
-                          fi
-                      done
-                      
-                      # 压缩 PNG（增量处理，使用更快的压缩级别）
-                      png_count=0
-                      find public -name "*.png" | while read img; do
-                          # 跳过已经很小的文件（小于100KB）
-                          if [ $(stat -f%z "$img" 2>/dev/null || stat -c%s "$img" 2>/dev/null || echo 0) -lt 102400 ]; then
-                              continue
-                          fi
-                          
-                          # 创建标记文件来跟踪优化状态
-                          optimized_marker="${img}.optimized"
-                          if [ ! -f "$optimized_marker" ] || [ "$img" -nt "$optimized_marker" ]; then
-                              png_count=$((png_count + 1))
-                              echo "压缩PNG ($png_count): $img"
-                              # 使用更快的压缩级别 -o1 而不是 -o2
-                              optipng -o1 "$img" && touch "$optimized_marker"
-                          fi
-                      done
-                      
-                      # 压缩 JPEG（增量处理，跳过小文件）
-                      jpeg_count=0
-                      find public -name "*.jpg" -o -name "*.jpeg" | while read img; do
-                          # 跳过已经很小的文件（小于100KB）
-                          if [ $(stat -f%z "$img" 2>/dev/null || stat -c%s "$img" 2>/dev/null || echo 0) -lt 102400 ]; then
-                              continue
-                          fi
-                          
-                          # 创建标记文件来跟踪优化状态
-                          optimized_marker="${img}.optimized"
-                          if [ ! -f "$optimized_marker" ] || [ "$img" -nt "$optimized_marker" ]; then
-                              jpeg_count=$((jpeg_count + 1))
-                              echo "压缩JPEG ($jpeg_count): $img"
-                              jpegoptim --size=85% "$img" && touch "$optimized_marker"
-                          fi
-                      done
-                  fi
                   
                   echo "✅ 图片优化完成"
-
             - name: Generate compressed files
               if: github.ref == 'refs/heads/master' || github.event.inputs.enable_optimization == 'true'
               run: |
@@ -269,3 +229,20 @@ jobs:
                   force: false  # 禁用强制推送
                   git-config-name: 'github-actions[bot]'
                   git-config-email: 'github-actions[bot]@users.noreply.github.com'
+                  commit-message: |
+                      Deploy from ${{ github.ref_name }} branch
+                      
+                      Source commit: ${{ github.sha }}
+                      Workflow: ${{ github.workflow }}
+                      
+            - name: Debug Info
+              run: |
+                  echo "🔍 调试信息："
+                  echo "分支: ${{ github.ref_name }}"
+                  echo "提交: ${{ github.sha }}"
+                  echo "事件: ${{ github.event_name }}"
+                  echo "仓库: ${{ github.repository }}"
+                  echo "运行ID: ${{ github.run_id }}"
+                  echo ""
+                  echo "📝 部署到 GitHub Pages 完成!"
+                  echo "🌐 预览地址: https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/"
