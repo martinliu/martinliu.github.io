@@ -10,7 +10,7 @@ hidden: false
 comments: true
 draft: false
 categories: ["DevOps"]
-tags: ["Docker", "Jenkins", "Prometheus", "Grafana", "Loki", "Traefik", "Mailhog", "Postgres", "Redis"]
+tags: ["Docker", "Jenkins", "Prometheus", "Grafana", "Loki", "Traefik", "Postgres"]
 ---
 
 ## ✨ TL;DR — 一套真正可用的本地 DevOps 技术栈

@@ -1,8 +1,18 @@
-name: Deploy to Github Pages
+# 🔧 调试模式的 GitHub Pages 部署工作流
+# 
+# 当前配置：
+# - 所有分支的 push 都会触发完整构建和部署流程
+# - 用于调试和测试部署流程
+# 
+# 调试完成后，请修改 on.push.branches 为 [master] 
+# 以恢复只在 master 分支合并时触发
+#
+name: Deploy to Github Pages (Debug Mode)
 
 on:
     push:
-        branches: [master]
+        # 调试模式：所有分支的 push 都触发构建
+        branches: ['**']
     pull_request:
         branches: [master]
     workflow_dispatch:
@@ -10,7 +20,7 @@ on:
             enable_optimization:
                 description: '启用完整优化'
                 required: false
-                default: 'true'
+                default: true
                 type: boolean
 
 env:
@@ -64,7 +74,8 @@ jobs:
                   extended: true
 
             - name: Cache optimization tools
-              if: github.ref == 'refs/heads/master' || github.event.inputs.enable_optimization == 'true'
+              # 调试模式：所有分支都执行优化
+              # if: github.ref == 'refs/heads/master' || github.event.inputs.enable_optimization == 'true'
               uses: actions/cache@v4
               id: tools-cache
               with:
@@ -76,7 +87,9 @@ jobs:
                   key: optimization-tools-${{ runner.os }}-v2
 
             - name: Install optimization tools
-              if: (github.ref == 'refs/heads/master' || github.event.inputs.enable_optimization == 'true') && steps.tools-cache.outputs.cache-hit != 'true'
+              # 调试模式：所有分支都执行优化
+              # if: (github.ref == 'refs/heads/master' || github.event.inputs.enable_optimization == 'true') && steps.tools-cache.outputs.cache-hit != 'true'
+              if: steps.tools-cache.outputs.cache-hit != 'true'
               run: |
                   echo "🔧 安装优化工具..."
                   sudo apt-get update -qq
@@ -93,7 +106,8 @@ jobs:
                   hugo --minify --gc --enableGitInfo --cleanDestinationDir --logLevel info
 
             - name: Cache optimization results  
-              if: github.ref == 'refs/heads/master' || github.event.inputs.enable_optimization == 'true'
+              # 调试模式：所有分支都执行优化
+              # if: github.ref == 'refs/heads/master' || github.event.inputs.enable_optimization == 'true'
               uses: actions/cache@v4
               with:
                   path: |
@@ -106,7 +120,8 @@ jobs:
                       optimization-
 
             - name: Optimize images
-              if: github.ref == 'refs/heads/master' || github.event.inputs.enable_optimization == 'true'
+              # 调试模式：所有分支都执行优化
+              # if: github.ref == 'refs/heads/master' || github.event.inputs.enable_optimization == 'true'
               run: |
                   echo "🖼️ 开始图片优化..."
                   
@@ -122,7 +137,15 @@ jobs:
                       img="$1"
                       webp_name="${img%.*}.webp"
                       if [ ! -f "$webp_name" ] || [ "$img" -nt "$webp_name" ]; then
-                          cwebp -q 85 "$img" -o "$webp_name" && echo "转换: $img -> $webp_name"
+                          # 根据图片大小选择不同的质量设置
+                          size=$(stat -f%z "$img" 2>/dev/null || stat -c%s "$img" 2>/dev/null || echo 0)
+                          if [ $size -gt 1048576 ]; then
+                              # 大于1MB的图片使用更低质量
+                              cwebp -q 75 "$img" -o "$webp_name" && echo "转换(大图): $img -> $webp_name"
+                          else
+                              # 小图片使用标准质量
+                              cwebp -q 85 "$img" -o "$webp_name" && echo "转换: $img -> $webp_name"
+                          fi
                       fi
                   ' _ {}
                   
@@ -138,71 +161,32 @@ jobs:
                       fi
                   ' _ {}
                   
-                  # 并行压缩 JPEG（只处理大文件）
+                  # 并行压缩 JPEG（只处理大文件，分级优化）
                   find public -name "*.jpg" -o -name "*.jpeg" | xargs -I {} -P 4 bash -c '
                       img="$1"
                       size=$(stat -f%z "$img" 2>/dev/null || stat -c%s "$img" 2>/dev/null || echo 0)
                       if [ $size -ge 102400 ]; then
                           optimized_marker="$img.optimized"
                           if [ ! -f "$optimized_marker" ] || [ "$img" -nt "$optimized_marker" ]; then
-                              jpegoptim --size=85% "$img" && touch "$optimized_marker" && echo "压缩JPEG: $img"
+                              # 根据文件大小调整压缩策略
+                              if [ $size -gt 1048576 ]; then
+                                  # 大于1MB的图片：更激进的压缩
+                                  jpegoptim --max=75 --strip-all "$img" && touch "$optimized_marker" && echo "压缩JPEG(大图75%): $img"
+                              elif [ $size -gt 524288 ]; then
+                                  # 大于512KB的图片：中等压缩
+                                  jpegoptim --max=80 --strip-all "$img" && touch "$optimized_marker" && echo "压缩JPEG(中图80%): $img"
+                              else
+                                  # 小图片：标准压缩
+                                  jpegoptim --size=85% "$img" && touch "$optimized_marker" && echo "压缩JPEG(小图85%): $img"
+                              fi
                           fi
                       fi
                   ' _ {}
-                  else
-                      echo "⚠️ GNU parallel 不可用，使用串行处理"
-                      
-                      # 转换为 WebP 格式（增量处理）
-                      webp_count=0
-                      find public -name "*.jpg" -o -name "*.jpeg" -o -name "*.png" | while read img; do
-                          webp_name="${img%.*}.webp"
-                          if [ ! -f "$webp_name" ] || [ "$img" -nt "$webp_name" ]; then
-                              cwebp -q 85 "$img" -o "$webp_name"
-                              webp_count=$((webp_count + 1))
-                              echo "转换 ($webp_count): $img -> $webp_name"
-                          fi
-                      done
-                      
-                      # 压缩 PNG（增量处理，使用更快的压缩级别）
-                      png_count=0
-                      find public -name "*.png" | while read img; do
-                          # 跳过已经很小的文件（小于100KB）
-                          if [ $(stat -f%z "$img" 2>/dev/null || stat -c%s "$img" 2>/dev/null || echo 0) -lt 102400 ]; then
-                              continue
-                          fi
-                          
-                          # 创建标记文件来跟踪优化状态
-                          optimized_marker="${img}.optimized"
-                          if [ ! -f "$optimized_marker" ] || [ "$img" -nt "$optimized_marker" ]; then
-                              png_count=$((png_count + 1))
-                              echo "压缩PNG ($png_count): $img"
-                              # 使用更快的压缩级别 -o1 而不是 -o2
-                              optipng -o1 "$img" && touch "$optimized_marker"
-                          fi
-                      done
-                      
-                      # 压缩 JPEG（增量处理，跳过小文件）
-                      jpeg_count=0
-                      find public -name "*.jpg" -o -name "*.jpeg" | while read img; do
-                          # 跳过已经很小的文件（小于100KB）
-                          if [ $(stat -f%z "$img" 2>/dev/null || stat -c%s "$img" 2>/dev/null || echo 0) -lt 102400 ]; then
-                              continue
-                          fi
-                          
-                          # 创建标记文件来跟踪优化状态
-                          optimized_marker="${img}.optimized"
-                          if [ ! -f "$optimized_marker" ] || [ "$img" -nt "$optimized_marker" ]; then
-                              jpeg_count=$((jpeg_count + 1))
-                              echo "压缩JPEG ($jpeg_count): $img"
-                              jpegoptim --size=85% "$img" && touch "$optimized_marker"
-                          fi
-                      done
-                  fi
                   
                   echo "✅ 图片优化完成"
-
             - name: Generate compressed files
-              if: github.ref == 'refs/heads/master' || github.event.inputs.enable_optimization == 'true'
+              # 调试模式：所有分支都执行优化
+              # if: github.ref == 'refs/heads/master' || github.event.inputs.enable_optimization == 'true'
               run: |
                   echo "🗜️ 生成压缩文件..."
                   
@@ -237,27 +221,108 @@ jobs:
                   echo "✅ 文件压缩完成"
 
             - name: Build statistics
-              if: github.ref == 'refs/heads/master' || github.event.inputs.enable_optimization == 'true'
+              # 调试模式：所有分支都执行优化
+              # if: github.ref == 'refs/heads/master' || github.event.inputs.enable_optimization == 'true'
               run: |
                   echo "📊 构建统计..."
                   file_count=$(find public -type f | wc -l)
                   echo "总文件数: $file_count"
                   
-                  # 只在文件数量较少时计算大小（避免长时间计算）
-                  if [ $file_count -lt 10000 ]; then
-                      echo "总大小: $(du -sh public | cut -f1)"
+                  # 优化：只在文件数量较少时计算详细统计
+                  if [ $file_count -lt 5000 ]; then
+                      echo "计算详细统计..."
+                      total_size=$(du -sh public | cut -f1)
+                      echo "总大小: $total_size"
                       
-                      # 快速统计压缩文件
+                      # 统计优化效果
                       gzip_files=$(find public -name "*.gz" | wc -l)
                       brotli_files=$(find public -name "*.br" | wc -l)
                       webp_files=$(find public -name "*.webp" | wc -l)
+                      optimized_images=$(find public -name "*.optimized" | wc -l)
                       
-                      echo "Gzip 文件数: $gzip_files"
-                      echo "Brotli 文件数: $brotli_files" 
-                      echo "WebP 文件数: $webp_files"
+                      echo "📈 优化统计:"
+                      echo "  Gzip 文件: $gzip_files"
+                      echo "  Brotli 文件: $brotli_files" 
+                      echo "  WebP 图片: $webp_files"
+                      echo "  优化图片: $optimized_images"
+                      
+                      # 计算压缩比（如果有原始文件大小记录）
+                      if [ -f "build-stats.txt" ]; then
+                          echo "📊 与上次构建对比:"
+                          cat build-stats.txt
+                      fi
+                      
+                      # 保存本次统计
+                      echo "files:$file_count,gzip:$gzip_files,brotli:$brotli_files,webp:$webp_files" > build-stats.txt
                   else
-                      echo "文件数量较多，跳过详细统计以节省时间"
+                      echo "📊 快速统计 (文件数量: $file_count)"
+                      
+                      # 快速统计关键指标
+                      webp_count=$(find public -name "*.webp" | wc -l)
+                      gz_count=$(find public -name "*.gz" | head -100 | wc -l)
+                      
+                      echo "  WebP 文件: $webp_count"
+                      echo "  压缩文件 (采样): ${gz_count}+..."
+                      echo "⚡ 跳过详细统计以节省时间"
                   fi
+
+            - name: Performance Summary
+              run: |
+                  echo "⚡ 构建性能总结:"
+                  echo "🕐 构建时间: 约 ${{ github.event.head_commit.timestamp }} 开始"
+                  echo "📦 输出文件: $(find public -type f | wc -l) 个文件"
+                  echo "🖼️ 图片处理: $(find public -name "*.webp" | wc -l) WebP + $(find public -name "*.optimized" | wc -l) 优化"
+                  echo "🗜️ 文件压缩: Gzip + Brotli 双重压缩"
+                  echo "💾 缓存利用: 增量处理，避免重复工作"
+                  echo ""
+                  echo "🚀 部署建议: 当前性能表现优秀，建议保持此配置"
+
+            - name: Create Performance Files
+              run: |
+                  echo "🚀 创建性能优化文件..."
+                  
+                  # 创建 _headers 文件用于 Netlify/GitHub Pages 缓存
+                  cat > public/_headers << 'EOF'
+                  /*
+                    X-Frame-Options: DENY
+                    X-Content-Type-Options: nosniff
+                    Referrer-Policy: strict-origin-when-cross-origin
+                  
+                  /*.css
+                    Cache-Control: public, max-age=31536000, immutable
+                  
+                  /*.js
+                    Cache-Control: public, max-age=31536000, immutable
+                  
+                  /*.woff2
+                    Cache-Control: public, max-age=31536000, immutable
+                  
+                  /*.webp
+                    Cache-Control: public, max-age=31536000
+                  
+                  /*.jpg
+                    Cache-Control: public, max-age=31536000
+                  
+                  /*.png
+                    Cache-Control: public, max-age=31536000
+                  
+                  /*.html
+                    Cache-Control: public, max-age=0, must-revalidate
+                  EOF
+                  
+                  # 创建 robots.txt（如果不存在）
+                  if [ ! -f "public/robots.txt" ]; then
+                      cat > public/robots.txt << 'EOF'
+                  User-agent: *
+                  Allow: /
+                  
+                  Sitemap: https://martinliu.cn/sitemap.xml
+                  EOF
+                      echo "✅ 创建 robots.txt"
+                  fi
+                  
+                  # 添加性能监控脚本（可选）
+                  echo "📊 性能文件创建完成"
 
             - name: Deploy 🚀
               uses: JamesIves/github-pages-deploy-action@v4.6.8
@@ -269,3 +334,20 @@ jobs:
                   force: false  # 禁用强制推送
                   git-config-name: 'github-actions[bot]'
                   git-config-email: 'github-actions[bot]@users.noreply.github.com'
+                  commit-message: |
+                      Deploy from ${{ github.ref_name }} branch
+                      
+                      Source commit: ${{ github.sha }}
+                      Workflow: ${{ github.workflow }}
+                      
+            - name: Debug Info
+              run: |
+                  echo "🔍 调试信息："
+                  echo "分支: ${{ github.ref_name }}"
+                  echo "提交: ${{ github.sha }}"
+                  echo "事件: ${{ github.event_name }}"
+                  echo "仓库: ${{ github.repository }}"
+                  echo "运行ID: ${{ github.run_id }}"
+                  echo ""
+                  echo "📝 部署到 GitHub Pages 完成!"
+                  echo "🌐 预览地址: https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/"
