@@ -1,19 +1,25 @@
 # Change baseurl before deploy
 baseurl = "https://martinliu.cn"
 languageCode = "zh-cn"
-#paginate = 8
 pagination.pagerSize = 8 
 title = "Martin Liu's Blog | SRE培训 | SRE认证 | SRE课程"
 
 # 增加构建超时时间
 timeout = "5m"
 
+# 性能优化设置
+enableRobotsTXT = true
+enableGitInfo = true
+enableEmoji = true
+
+# 关闭不必要的功能以提高性能
+disableAliases = false
+disableHugoGeneratorInject = false
+
 # Theme i18n support
-# Available values: en, fr, id, ja, ko, pt-br, zh-cn, zh-tw, es, de, nl, it, th, el, uk, ar
 DefaultContentLanguage = "zh-cn"
 
 # Set hasCJKLanguage to true if DefaultContentLanguage is in [zh-cn ja ko]
-# This will make .Summary and .WordCount behave correctly for CJK languages.
 hasCJKLanguage = true
 
 # Change it to your Disqus shortname before using
@@ -22,3 +28,15 @@ disqusShortname = "martinliu"
 googleAnalytics = "G-30EQ6H78E5"
 
 ignoreLogs = ['warning-goldmark-raw-html']
+
+# 图片处理优化
+[imaging]
+quality = 80
+resampleFilter = "lanczos"
+anchor = "smart"
+# 图片格式优化
+[imaging.exif]
+includeFields = ""
+excludeFields = ".*"
+disableDate = true
+disableLatLong = true

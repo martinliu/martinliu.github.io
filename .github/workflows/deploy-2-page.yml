@@ -137,7 +137,15 @@ jobs:
                       img="$1"
                       webp_name="${img%.*}.webp"
                       if [ ! -f "$webp_name" ] || [ "$img" -nt "$webp_name" ]; then
-                          cwebp -q 85 "$img" -o "$webp_name" && echo "转换: $img -> $webp_name"
+                          # 根据图片大小选择不同的质量设置
+                          size=$(stat -f%z "$img" 2>/dev/null || stat -c%s "$img" 2>/dev/null || echo 0)
+                          if [ $size -gt 1048576 ]; then
+                              # 大于1MB的图片使用更低质量
+                              cwebp -q 75 "$img" -o "$webp_name" && echo "转换(大图): $img -> $webp_name"
+                          else
+                              # 小图片使用标准质量
+                              cwebp -q 85 "$img" -o "$webp_name" && echo "转换: $img -> $webp_name"
+                          fi
                       fi
                   ' _ {}
                   
@@ -153,14 +161,24 @@ jobs:
                       fi
                   ' _ {}
                   
-                  # 并行压缩 JPEG（只处理大文件）
+                  # 并行压缩 JPEG（只处理大文件，分级优化）
                   find public -name "*.jpg" -o -name "*.jpeg" | xargs -I {} -P 4 bash -c '
                       img="$1"
                       size=$(stat -f%z "$img" 2>/dev/null || stat -c%s "$img" 2>/dev/null || echo 0)
                       if [ $size -ge 102400 ]; then
                           optimized_marker="$img.optimized"
                           if [ ! -f "$optimized_marker" ] || [ "$img" -nt "$optimized_marker" ]; then
-                              jpegoptim --size=85% "$img" && touch "$optimized_marker" && echo "压缩JPEG: $img"
+                              # 根据文件大小调整压缩策略
+                              if [ $size -gt 1048576 ]; then
+                                  # 大于1MB的图片：更激进的压缩
+                                  jpegoptim --max=75 --strip-all "$img" && touch "$optimized_marker" && echo "压缩JPEG(大图75%): $img"
+                              elif [ $size -gt 524288 ]; then
+                                  # 大于512KB的图片：中等压缩
+                                  jpegoptim --max=80 --strip-all "$img" && touch "$optimized_marker" && echo "压缩JPEG(中图80%): $img"
+                              else
+                                  # 小图片：标准压缩
+                                  jpegoptim --size=85% "$img" && touch "$optimized_marker" && echo "压缩JPEG(小图85%): $img"
+                              fi
                           fi
                       fi
                   ' _ {}
@@ -258,6 +276,53 @@ jobs:
                   echo "💾 缓存利用: 增量处理，避免重复工作"
                   echo ""
                   echo "🚀 部署建议: 当前性能表现优秀，建议保持此配置"
+
+            - name: Create Performance Files
+              run: |
+                  echo "🚀 创建性能优化文件..."
+                  
+                  # 创建 _headers 文件用于 Netlify/GitHub Pages 缓存
+                  cat > public/_headers << 'EOF'
+                  /*
+                    X-Frame-Options: DENY
+                    X-Content-Type-Options: nosniff
+                    Referrer-Policy: strict-origin-when-cross-origin
+                  
+                  /*.css
+                    Cache-Control: public, max-age=31536000, immutable
+                  
+                  /*.js
+                    Cache-Control: public, max-age=31536000, immutable
+                  
+                  /*.woff2
+                    Cache-Control: public, max-age=31536000, immutable
+                  
+                  /*.webp
+                    Cache-Control: public, max-age=31536000
+                  
+                  /*.jpg
+                    Cache-Control: public, max-age=31536000
+                  
+                  /*.png
+                    Cache-Control: public, max-age=31536000
+                  
+                  /*.html
+                    Cache-Control: public, max-age=0, must-revalidate
+                  EOF
+                  
+                  # 创建 robots.txt（如果不存在）
+                  if [ ! -f "public/robots.txt" ]; then
+                      cat > public/robots.txt << 'EOF'
+                  User-agent: *
+                  Allow: /
+                  
+                  Sitemap: https://martinliu.cn/sitemap.xml
+                  EOF
+                      echo "✅ 创建 robots.txt"
+                  fi
+                  
+                  # 添加性能监控脚本（可选）
+                  echo "📊 性能文件创建完成"
 
             - name: Deploy 🚀
               uses: JamesIves/github-pages-deploy-action@v4.6.8

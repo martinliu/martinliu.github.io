@@ -10,7 +10,7 @@ comments: true
 draft: false
 slug: grafana-cloud-updates-onboard-teams-with-new-ai-powered-tooling-secrets-management-for-enhanced-security
 categories: ["SRE"]
-tags: ["Grafana", "AI", "Secrets Management", "Synthetic Monitoring", "Jenkins"]
+tags: ["Grafana", "AI", "Synthetic Monitoring", "Jenkins"]
 ---
 
 >From: [Grafana Labs Blog](https://grafana.com/blog/2025/08/20/grafana-cloud-updates-onboard-teams-with-new-ai-powered-tooling-secrets-management-for-enhanced-security-and-more/)
