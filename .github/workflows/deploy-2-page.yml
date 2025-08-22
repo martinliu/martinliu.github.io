@@ -44,8 +44,9 @@ jobs:
                   path: |
                       ~/.cache/go-build
                       ~/go/pkg/mod
-                  key: ${{ runner.os }}-go-${{ hashFiles('**/go.sum') }}
+                  key: ${{ runner.os }}-go-${{ hashFiles('**/go.sum') }}-v2
                   restore-keys: |
+                      ${{ runner.os }}-go-${{ hashFiles('**/go.sum') }}
                       ${{ runner.os }}-go-
 
             - name: Cache Hugo resources
@@ -65,19 +66,22 @@ jobs:
             - name: Cache optimization tools
               if: github.ref == 'refs/heads/master' || github.event.inputs.enable_optimization == 'true'
               uses: actions/cache@v4
+              id: tools-cache
               with:
                   path: |
                       /usr/bin/cwebp
                       /usr/bin/optipng
                       /usr/bin/jpegoptim
                       /usr/bin/brotli
-                  key: optimization-tools-${{ runner.os }}
+                  key: optimization-tools-${{ runner.os }}-v2
 
             - name: Install optimization tools
-              if: github.ref == 'refs/heads/master' || github.event.inputs.enable_optimization == 'true'
+              if: (github.ref == 'refs/heads/master' || github.event.inputs.enable_optimization == 'true') && steps.tools-cache.outputs.cache-hit != 'true'
               run: |
-                  sudo apt-get update
-                  sudo apt-get install -y webp optipng jpegoptim brotli
+                  echo "🔧 安装优化工具..."
+                  sudo apt-get update -qq
+                  sudo apt-get install -y webp optipng jpegoptim brotli parallel
+                  echo "✅ 优化工具安装完成"
 
             - name: Build
               env:
@@ -88,69 +92,157 @@ jobs:
                   mkdir -p /tmp/hugo_cache
                   hugo --minify --gc --enableGitInfo --cleanDestinationDir --logLevel info
 
+            - name: Cache optimization results  
+              if: github.ref == 'refs/heads/master' || github.event.inputs.enable_optimization == 'true'
+              uses: actions/cache@v4
+              with:
+                  path: |
+                      public/**/*.webp
+                      public/**/*.optimized
+                      public/**/*.gz
+                      public/**/*.br
+                  key: optimization-${{ hashFiles('public/**/*.jpg', 'public/**/*.jpeg', 'public/**/*.png', 'public/**/*.html', 'public/**/*.css', 'public/**/*.js') }}-v3
+                  restore-keys: |
+                      optimization-
+
             - name: Optimize images
               if: github.ref == 'refs/heads/master' || github.event.inputs.enable_optimization == 'true'
               run: |
                   echo "🖼️ 开始图片优化..."
                   
-                  # 转换为 WebP 格式
-                  find public -name "*.jpg" -o -name "*.jpeg" -o -name "*.png" | while read img; do
-                      webp_name="${img%.*}.webp"
-                      if [ ! -f "$webp_name" ]; then
-                          cwebp -q 85 "$img" -o "$webp_name"
-                          echo "转换: $img -> $webp_name"
-                      fi
-                  done
+                  # 统计文件数量
+                  total_images=$(find public -name "*.jpg" -o -name "*.jpeg" -o -name "*.png" | wc -l)
+                  echo "📊 发现 $total_images 张图片"
                   
-                  # 压缩 PNG
-                  find public -name "*.png" -exec optipng -o2 {} \;
+                  # 使用 GNU parallel 进行并行处理（如果可用）
+                  if command -v parallel >/dev/null 2>&1; then
+                      echo "🚀 使用并行处理加速优化"
+                      
+                      # 并行转换 WebP
+                      find public -name "*.jpg" -o -name "*.jpeg" -o -name "*.png" | parallel -j4 'webp_name="${1%.*}.webp"; if [ ! -f "$webp_name" ] || [ "$1" -nt "$webp_name" ]; then cwebp -q 85 "$1" -o "$webp_name" && echo "转换: $1 -> $webp_name"; fi' -- {}
+                      
+                      # 并行压缩 PNG
+                      find public -name "*.png" | parallel -j4 'if [ $(stat -f%z "$1" 2>/dev/null || stat -c%s "$1" 2>/dev/null || echo 0) -ge 102400 ]; then optimized_marker="$1.optimized"; if [ ! -f "$optimized_marker" ] || [ "$1" -nt "$optimized_marker" ]; then optipng -o1 "$1" && touch "$optimized_marker" && echo "压缩PNG: $1"; fi; fi' -- {}
+                      
+                      # 并行压缩 JPEG
+                      find public -name "*.jpg" -o -name "*.jpeg" | parallel -j4 'if [ $(stat -f%z "$1" 2>/dev/null || stat -c%s "$1" 2>/dev/null || echo 0) -ge 102400 ]; then optimized_marker="$1.optimized"; if [ ! -f "$optimized_marker" ] || [ "$1" -nt "$optimized_marker" ]; then jpegoptim --size=85% "$1" && touch "$optimized_marker" && echo "压缩JPEG: $1"; fi; fi' -- {}
+                  else
+                      echo "⚠️ GNU parallel 不可用，使用串行处理"
+                      
+                      # 转换为 WebP 格式（增量处理）
+                      webp_count=0
+                      find public -name "*.jpg" -o -name "*.jpeg" -o -name "*.png" | while read img; do
+                          webp_name="${img%.*}.webp"
+                          if [ ! -f "$webp_name" ] || [ "$img" -nt "$webp_name" ]; then
+                              cwebp -q 85 "$img" -o "$webp_name"
+                              webp_count=$((webp_count + 1))
+                              echo "转换 ($webp_count): $img -> $webp_name"
+                          fi
+                      done
+                      
+                      # 压缩 PNG（增量处理，使用更快的压缩级别）
+                      png_count=0
+                      find public -name "*.png" | while read img; do
+                          # 跳过已经很小的文件（小于100KB）
+                          if [ $(stat -f%z "$img" 2>/dev/null || stat -c%s "$img" 2>/dev/null || echo 0) -lt 102400 ]; then
+                              continue
+                          fi
+                          
+                          # 创建标记文件来跟踪优化状态
+                          optimized_marker="${img}.optimized"
+                          if [ ! -f "$optimized_marker" ] || [ "$img" -nt "$optimized_marker" ]; then
+                              png_count=$((png_count + 1))
+                              echo "压缩PNG ($png_count): $img"
+                              # 使用更快的压缩级别 -o1 而不是 -o2
+                              optipng -o1 "$img" && touch "$optimized_marker"
+                          fi
+                      done
+                      
+                      # 压缩 JPEG（增量处理，跳过小文件）
+                      jpeg_count=0
+                      find public -name "*.jpg" -o -name "*.jpeg" | while read img; do
+                          # 跳过已经很小的文件（小于100KB）
+                          if [ $(stat -f%z "$img" 2>/dev/null || stat -c%s "$img" 2>/dev/null || echo 0) -lt 102400 ]; then
+                              continue
+                          fi
+                          
+                          # 创建标记文件来跟踪优化状态
+                          optimized_marker="${img}.optimized"
+                          if [ ! -f "$optimized_marker" ] || [ "$img" -nt "$optimized_marker" ]; then
+                              jpeg_count=$((jpeg_count + 1))
+                              echo "压缩JPEG ($jpeg_count): $img"
+                              jpegoptim --size=85% "$img" && touch "$optimized_marker"
+                          fi
+                      done
+                  fi
                   
-                  # 压缩 JPEG  
-                  find public -name "*.jpg" -o -name "*.jpeg" -exec jpegoptim --size=85% {} \;
+                  echo "✅ 图片优化完成"
 
             - name: Generate compressed files
               if: github.ref == 'refs/heads/master' || github.event.inputs.enable_optimization == 'true'
               run: |
                   echo "🗜️ 生成压缩文件..."
                   
+                  # 统计需要压缩的文件数量
+                  total_files=$(find public -type f \( -name "*.html" -o -name "*.css" -o -name "*.js" -o -name "*.xml" -o -name "*.json" \) | wc -l)
+                  echo "📊 发现 $total_files 个可压缩文件"
+                  
                   # 生成 Gzip 文件（增量处理）
+                  gzip_count=0
                   find public -type f \( -name "*.html" -o -name "*.css" -o -name "*.js" -o -name "*.xml" -o -name "*.json" \) | while read file; do
                       if [ ! -f "$file.gz" ] || [ "$file" -nt "$file.gz" ]; then
                           gzip -9 -c "$file" > "$file.gz"
-                          echo "Gzip: $file"
+                          gzip_count=$((gzip_count + 1))
+                          if [ $((gzip_count % 100)) -eq 0 ]; then
+                              echo "Gzip 进度: $gzip_count/$total_files"
+                          fi
                       fi
                   done
                   
                   # 生成 Brotli 文件（增量处理）
+                  brotli_count=0
                   find public -type f \( -name "*.html" -o -name "*.css" -o -name "*.js" -o -name "*.xml" -o -name "*.json" \) | while read file; do
                       if [ ! -f "$file.br" ] || [ "$file" -nt "$file.br" ]; then
                           brotli -9 -c "$file" > "$file.br"
-                          echo "Brotli: $file"
+                          brotli_count=$((brotli_count + 1))
+                          if [ $((brotli_count % 100)) -eq 0 ]; then
+                              echo "Brotli 进度: $brotli_count/$total_files"
+                          fi
                       fi
                   done
+                  
+                  echo "✅ 文件压缩完成"
 
             - name: Build statistics
               if: github.ref == 'refs/heads/master' || github.event.inputs.enable_optimization == 'true'
               run: |
                   echo "📊 构建统计..."
-                  echo "总文件数: $(find public -type f | wc -l)"
-                  echo "总大小: $(du -sh public | cut -f1)"
-                  echo ""
-                  echo "大于 1MB 的文件:"
-                  find public -type f -size +1M -exec ls -lh {} \; | head -5 || echo "无"
-                  echo ""
-                  echo "压缩效果统计:"
-                  original_size=$(find public -name "*.html" -o -name "*.css" -o -name "*.js" | xargs du -c | tail -1 | cut -f1)
-                  gzip_files=$(find public -name "*.gz" | wc -l)
-                  brotli_files=$(find public -name "*.br" | wc -l)
-                  echo "原始文件总大小: ${original_size}KB"
-                  echo "Gzip 文件数: $gzip_files"
-                  echo "Brotli 文件数: $brotli_files"
+                  file_count=$(find public -type f | wc -l)
+                  echo "总文件数: $file_count"
+                  
+                  # 只在文件数量较少时计算大小（避免长时间计算）
+                  if [ $file_count -lt 10000 ]; then
+                      echo "总大小: $(du -sh public | cut -f1)"
+                      
+                      # 快速统计压缩文件
+                      gzip_files=$(find public -name "*.gz" | wc -l)
+                      brotli_files=$(find public -name "*.br" | wc -l)
+                      webp_files=$(find public -name "*.webp" | wc -l)
+                      
+                      echo "Gzip 文件数: $gzip_files"
+                      echo "Brotli 文件数: $brotli_files" 
+                      echo "WebP 文件数: $webp_files"
+                  else
+                      echo "文件数量较多，跳过详细统计以节省时间"
+                  fi
 
             - name: Deploy 🚀
               uses: JamesIves/github-pages-deploy-action@v4.6.8
               with:
                   branch: gh-pages
                   folder: public
-                  clean: true
-                  single-commit: true
+                  clean: false  # 禁用清理以加快部署
+                  single-commit: false  # 保留 git 历史以支持增量部署
+                  force: false  # 禁用强制推送
+                  git-config-name: 'github-actions[bot]'
+                  git-config-email: 'github-actions[bot]@users.noreply.github.com'

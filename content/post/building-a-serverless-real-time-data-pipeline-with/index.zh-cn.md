@@ -12,7 +12,6 @@ tags:
     - Python
     - Serverless
     - DynamoDB
-    - DataBrew
     - S3
     - Glue
     - Athena
