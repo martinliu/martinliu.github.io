@@ -74,7 +74,8 @@ jobs:
                   extended: true
 
             - name: Cache optimization tools
-              if: github.ref == 'refs/heads/master' || github.event.inputs.enable_optimization == 'true'
+              # 调试模式：所有分支都执行优化
+              # if: github.ref == 'refs/heads/master' || github.event.inputs.enable_optimization == 'true'
               uses: actions/cache@v4
               id: tools-cache
               with:
@@ -86,7 +87,9 @@ jobs:
                   key: optimization-tools-${{ runner.os }}-v2
 
             - name: Install optimization tools
-              if: (github.ref == 'refs/heads/master' || github.event.inputs.enable_optimization == 'true') && steps.tools-cache.outputs.cache-hit != 'true'
+              # 调试模式：所有分支都执行优化
+              # if: (github.ref == 'refs/heads/master' || github.event.inputs.enable_optimization == 'true') && steps.tools-cache.outputs.cache-hit != 'true'
+              if: steps.tools-cache.outputs.cache-hit != 'true'
               run: |
                   echo "🔧 安装优化工具..."
                   sudo apt-get update -qq
@@ -103,7 +106,8 @@ jobs:
                   hugo --minify --gc --enableGitInfo --cleanDestinationDir --logLevel info
 
             - name: Cache optimization results  
-              if: github.ref == 'refs/heads/master' || github.event.inputs.enable_optimization == 'true'
+              # 调试模式：所有分支都执行优化
+              # if: github.ref == 'refs/heads/master' || github.event.inputs.enable_optimization == 'true'
               uses: actions/cache@v4
               with:
                   path: |
@@ -116,7 +120,8 @@ jobs:
                       optimization-
 
             - name: Optimize images
-              if: github.ref == 'refs/heads/master' || github.event.inputs.enable_optimization == 'true'
+              # 调试模式：所有分支都执行优化
+              # if: github.ref == 'refs/heads/master' || github.event.inputs.enable_optimization == 'true'
               run: |
                   echo "🖼️ 开始图片优化..."
                   
@@ -162,7 +167,8 @@ jobs:
                   
                   echo "✅ 图片优化完成"
             - name: Generate compressed files
-              if: github.ref == 'refs/heads/master' || github.event.inputs.enable_optimization == 'true'
+              # 调试模式：所有分支都执行优化
+              # if: github.ref == 'refs/heads/master' || github.event.inputs.enable_optimization == 'true'
               run: |
                   echo "🗜️ 生成压缩文件..."
                   
@@ -197,7 +203,8 @@ jobs:
                   echo "✅ 文件压缩完成"
 
             - name: Build statistics
-              if: github.ref == 'refs/heads/master' || github.event.inputs.enable_optimization == 'true'
+              # 调试模式：所有分支都执行优化
+              # if: github.ref == 'refs/heads/master' || github.event.inputs.enable_optimization == 'true'
               run: |
                   echo "📊 构建统计..."
                   file_count=$(find public -type f | wc -l)
