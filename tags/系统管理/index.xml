@@ -1,0 +1,269 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>系统管理 on Martin Liu's Blog</title><link>https://martinliu.cn/tags/%E7%B3%BB%E7%BB%9F%E7%AE%A1%E7%90%86/</link><description>Recent content in 系统管理 on Martin Liu's Blog</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><lastBuildDate>Tue, 26 Aug 2025 16:59:53 +0800</lastBuildDate><atom:link href="https://martinliu.cn/tags/%E7%B3%BB%E7%BB%9F%E7%AE%A1%E7%90%86/index.xml" rel="self" type="application/rss+xml"/><item><title>我为什么使用多个 SSH 密钥，而不是只用一个？</title><link>https://martinliu.cn/blog/why-i-run-multiple-ssh-keys-instead-of-just-one/</link><pubDate>Mon, 25 Aug 2025 10:00:00 +0800</pubDate><guid>https://martinliu.cn/blog/why-i-run-multiple-ssh-keys-instead-of-just-one/</guid><description>&lt;img src="https://martinliu.cn/blog/why-i-run-multiple-ssh-keys-instead-of-just-one/ssh-key-management-best-practices-feature.jpg" alt="Featured image of post 我为什么使用多个 SSH 密钥，而不是只用一个？" />&lt;blockquote>
+&lt;p>作者：Faruk Ahmed&lt;/p>&lt;/blockquote>
+&lt;p>对于许多 Linux 管理员来说，使用单个 SSH 密钥对登录他们所有的服务器、测试环境或云实例是默认做法。
+这种方式简单、方便——但它也是一个单点故障。&lt;/p>
+&lt;p>随着时间的推移，我了解到&lt;strong>按用途和环境分离 SSH 密钥&lt;/strong>不仅是良好的安全习惯，更是重大的安全提升。&lt;/p>
+&lt;h2 id="-一钥通吃的风险">🛑 “一钥通吃”的风险
+&lt;/h2>&lt;p>如果你对所有事务都使用同一个 SSH 私钥，那么一旦泄露，后果可能是灾难性的：&lt;/p>
+&lt;ul>
+&lt;li>笔记本电脑丢失？所有使用该密钥的服务器都将面临风险。&lt;/li>
+&lt;li>密钥从安全性较低的环境中被窃取？攻击者可以利用它渗透到关键系统。&lt;/li>
+&lt;li>需要轮换密钥？你将不得不手忙脚乱地在&lt;em>所有地方&lt;/em>替换它。&lt;/li>
+&lt;/ul>
+&lt;p>这就是&lt;strong>爆炸半径问题 (blast radius problem)&lt;/strong> 的定义。&lt;/p>
+&lt;h2 id="-我如何划分密钥">🧩 我如何划分密钥
+&lt;/h2>&lt;p>我为以下用途维护&lt;strong>单独的 SSH 密钥&lt;/strong>：&lt;/p>
+&lt;ol>
+&lt;li>
+&lt;p>&lt;strong>生产环境 (Production)&lt;/strong>&lt;/p>
+&lt;ul>
+&lt;li>存储在硬件令牌 (hardware token) 或安全密钥保管库 (secure key vault) 中&lt;/li>
+&lt;li>仅用于关键服务器&lt;/li>
+&lt;li>绝不离开安全设备&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>
+&lt;p>预演/测试环境 (Staging/Test)&lt;/p>
+&lt;ul>
+&lt;li>与生产环境分离&lt;/li>
+&lt;li>存在于工作笔记本电脑上&lt;/li>
+&lt;li>易于替换&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>
+&lt;p>个人项目 (Personal Projects)&lt;/p>
+&lt;ul>
+&lt;li>用于家庭实验室 (home labs)、个人 VPS、树莓派 (Raspberry Pis)&lt;/li>
+&lt;li>绝不与工作系统混用&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>
+&lt;p>一次性/临时用途 (Disposable/Temporary)&lt;/p>
+&lt;ul>
+&lt;li>为短期项目或供应商访问创建&lt;/li>
+&lt;li>使用后删除&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ol>
+&lt;h2 id="-我的工作流程">🛠 我的工作流程
+&lt;/h2>&lt;p>&lt;strong>密钥生成 (Key Generation)&lt;/strong>：&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">ssh-keygen -t ed25519 -f ~/.ssh/prod_id_ed25519 -C &lt;span class="s2">&amp;#34;Production Key&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">ssh-keygen -t ed25519 -f ~/.ssh/staging_id_ed25519 -C &lt;span class="s2">&amp;#34;Staging Key&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">ssh-keygen -t ed25519 -f ~/.ssh/personal_id_ed25519 -C &lt;span class="s2">&amp;#34;Personal Key&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>&lt;strong>SSH 配置示例&lt;/strong> (&lt;code>~/.ssh/config&lt;/code>)：&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;span class="lnt">14
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">Host prod-server-1
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> HostName 192.168.1.100
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> User admin
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> IdentityFile ~/.ssh/prod_id_ed25519
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Host staging-box-alpha
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> HostName staging.example.com
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> User deploy
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> IdentityFile ~/.ssh/staging_id_ed25519
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Host personal-pi
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> HostName raspberrypi.local
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> User pi
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> IdentityFile ~/.ssh/personal_id_ed25519
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>这样，我就不必记住要使用哪个密钥——SSH 会自动选择正确的密钥。&lt;/p>
+&lt;h2 id="-这种方法为何有效">🧠 这种方法为何有效
+&lt;/h2>&lt;ul>
+&lt;li>&lt;strong>限制损害 (Limits Damage)&lt;/strong> — 如果一个密钥泄露，只有该环境面临风险。&lt;/li>
+&lt;li>&lt;strong>更易轮换 (Easier Rotation)&lt;/strong> — 我可以轮换单个密钥而无需触及其他密钥。&lt;/li>
+&lt;li>&lt;strong>利于审计 (Audit-Friendly)&lt;/strong> — 密钥直接映射到其用途，使合规性 (compliance) 更容易。&lt;/li>
+&lt;li>&lt;strong>鼓励最小权限原则 (Encourages Principle of Least Privilege)&lt;/strong> — 没有单个密钥可以访问&lt;em>所有&lt;/em>内容。&lt;/li>
+&lt;/ul>
+&lt;h2 id="-总结">📌 总结
+&lt;/h2>&lt;p>一开始，管理多个 SSH 密钥可能感觉有些多余，但这却是最简单、最不影响效率的风险降低方法之一。&lt;/p>
+&lt;p>一个密钥通吃所有事务可能很方便……直到它不再方便为止。&lt;/p>
+&lt;h2 id="扩展附录ssh-config-常用技巧">扩展附录：SSH Config 常用技巧
+&lt;/h2>&lt;h3 id="1-通配符与模式匹配">1. 通配符与模式匹配
+&lt;/h3>&lt;ul>
+&lt;li>&lt;code>Host *&lt;/code>&lt;br>
+匹配所有主机，可以用来定义全局默认配置。&lt;/li>
+&lt;li>&lt;code>Host *.example.com&lt;/code>&lt;br>
+匹配所有 &lt;code>example.com&lt;/code> 域下的主机。&lt;/li>
+&lt;li>&lt;code>Host staging-*&lt;/code>&lt;br>
+匹配前缀为 &lt;code>staging-&lt;/code> 的所有主机别名。&lt;/li>
+&lt;/ul>
+&lt;blockquote>
+&lt;p>&lt;strong>优先级&lt;/strong>：具体匹配 &amp;gt; 通配符匹配 &amp;gt; &lt;code>Host *&lt;/code>。&lt;/p>&lt;/blockquote>
+&lt;h3 id="2-include-指令">2. Include 指令
+&lt;/h3>&lt;p>可以拆分配置文件，保持清晰：&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">Include ~/.ssh/config.d/*.conf
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;h3 id="3-jumphost--proxyjump">3. JumpHost / ProxyJump
+&lt;/h3>&lt;ul>
+&lt;li>
+&lt;p>通过中间跳板机连接：&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;span class="lnt">4
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">Host prod-app
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> HostName app.internal
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> User deploy
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> ProxyJump bastion.example.com
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;h3 id="4-端口转发">4. 端口转发
+&lt;/h3>&lt;ul>
+&lt;li>
+&lt;p>本地转发：&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">LocalForward 8080 localhost:80
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;/li>
+&lt;li>
+&lt;p>远程转发：&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">RemoteForward 9000 localhost:9000
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;h3 id="5-指定端口与超时">5. 指定端口与超时
+&lt;/h3>&lt;ul>
+&lt;li>
+&lt;p>非标准端口：&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">Port 2222
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;/li>
+&lt;li>
+&lt;p>连接保持活跃：&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">ServerAliveInterval 60
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">ServerAliveCountMax 5
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;h3 id="6-多身份密钥管理">6. 多身份密钥管理
+&lt;/h3>&lt;ul>
+&lt;li>
+&lt;p>全局默认密钥：&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">IdentityFile ~/.ssh/id_ed25519
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;/li>
+&lt;li>
+&lt;p>针对特定主机指定：&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">Host gitlab.com
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> User git
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> IdentityFile ~/.ssh/gitlab_id_ed25519
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;h3 id="7-控制连接复用-提升速度">7. 控制连接复用 (提升速度)
+&lt;/h3>&lt;ul>
+&lt;li>
+&lt;p>避免重复握手，复用连接：&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;span class="lnt">4
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">Host *
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> ControlMaster auto
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> ControlPath ~/.ssh/control-%r@%h:%p
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> ControlPersist 10m
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;h3 id="8-别名与简化命令">8. 别名与简化命令
+&lt;/h3>&lt;ul>
+&lt;li>
+&lt;p>配置好 &lt;code>Host&lt;/code> 别名后，可以直接：&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">ssh prod-server-1
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">ssh staging-box-alpha
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">ssh personal-pi
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;/li>
+&lt;/ul>
+&lt;p>⚡ 这些技巧组合使用，可以大幅简化 SSH 日常管理，尤其是 &lt;strong>多环境运维&lt;/strong> 或 &lt;strong>开发调试&lt;/strong> 场景。&lt;/p></description></item></channel></rss>
