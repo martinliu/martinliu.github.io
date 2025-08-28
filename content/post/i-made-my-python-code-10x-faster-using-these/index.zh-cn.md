@@ -1,22 +1,27 @@
 ---
-author:
-- '[[Matías Salinas]]'
-created: 2025-08-27
-description: 如果你是一个多年从事云计算基础设施 (Cloud Infrastructure)、SRE 和应用数据科学 (Applied Data Science)
-  工作的人，你一定很欣赏 Python 提供的清晰和简洁。无论你是在原型设计一个机器学习…
-original_lang: en
-published: 2025-05-06
-source: https://msalinas92.medium.com/i-made-my-python-code-10x-faster-using-these-little-known-tricks-that-most-developers-ignore-72d36d097b60
+title: "用这些鲜为人知（且大多数开发者都忽略）的技巧，让你的 Python 代码提速 10 倍"
+date: 2025-08-27T16:00:00+08:00
+description: "如果你是一个多年从事云计算基础设施、SRE 和应用数据科学工作的人，你一定很欣赏 Python 提供的清晰和简洁。探索被低估、被忽视的 Python 性能优化技巧，让你的代码快如闪电。"
+categories: 
+  - "DevOps"
 tags:
-- clippings
-target_lang: zh-CN
-title: 用这些鲜为人知（且大多数开发者都忽略）的技巧，让你的 Python 代码提速 10 倍
-translated: true
-translation_date: '2025-08-28'
+  - "Python"
+  - "性能优化"
+  - "编程技巧"
+  - "数据科学"
+  - "云计算"
+  - "代码优化"
+keywords:
+  - "Python 性能优化"
+  - "代码加速"
+  - "编程技巧"
+  - "数据科学"
+  - "SRE"
+  - "云基础设施"
+image: 1_JtvDNgonwDl8sRlYYW69kA.webp
+slug: "i-made-my-python-code-10x-faster-using-these"
+draft: false
 ---
-
-
-
 
 如果你是一名在云计算基础架构 (cloud infrastructure)、SRE (Site Reliability Engineering) 和应用数据科学领域工作的从业者，你一定很欣赏 Python 提供的清晰性和简洁性。无论你是在原型化机器学习模型、编排后端工作流，还是在生产级系统 (production-grade system) 中构建自动化管道，Python 始终是你工具库中的首选。但说实话—— **Python 有时会很慢**。慢得令人痛苦。
 

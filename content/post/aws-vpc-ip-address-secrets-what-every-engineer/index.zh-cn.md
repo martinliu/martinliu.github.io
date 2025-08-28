@@ -1,27 +1,35 @@
 ---
-author:
-- '[[Ismail Kovvuru]]'
-created: 2025-08-28
-description: 像专家一样掌握 AWS VPC IP 地址分配。探索设计安全、可扩展的 AWS 网络时，需要了解的潜在规则、专家技巧和 2025 年最佳实践。非常适合
-  DevOps 和云工程师。当大多数…
-original_lang: en
-published: 2025-08-13
-source: https://medium.com/@ismailkovvuru/aws-vpc-ip-address-secrets-what-every-engineer-must-know-in-2025-8166818d3589
+title: "AWS VPC 和 IP Address 的秘密：2025 年DevOps工程师必知"
+date: 2025-08-28T10:00:00+08:00
+description: "像专家一样掌握 AWS VPC IP 地址分配。探索设计安全、可扩展的 AWS 网络时，需要了解的潜在规则、专家技巧和 2025 年最佳实践。非常适合 DevOps 和云工程师。"
+categories: 
+  - "SRE"
 tags:
-- clippings
-target_lang: zh-CN
-title: AWS VPC 和 IP Address 的秘密：2025 年DevOps工程师必知
+  - "AWS"
+  - "VPC"
+  - "网络"
+  - "云计算"
+  - "IP地址"
+  - "CIDR"
+keywords:
+  - "AWS VPC"
+  - "IP地址分配"
+  - "CIDR规划"
+  - "云网络"
+  - "DevOps"
+image: "1_S9_CChjGu1uWc_wnNUGxzw.webp"
+slug: "aws-vpc-ip-address-secrets-what-every-engineer"
+original_lang: "en"
+source: "https://medium.com/@ismailkovvuru/aws-vpc-ip-address-secrets-what-every-engineer-must-know-in-2025-8166818d3589"
 translated: true
-translation_date: '2025-08-28'
+translation_date: "2025-08-28"
+draft: false
 ---
-
 
 
 像专家一样学习 AWS VPC IP 地址分配。探索隐藏规则、专家技巧和 2025 年最佳实践，以设计安全、可扩展的 AWS 网络。DevOps 和云工程师的完美指南。
 
-![AWS VPC IP地址配置示意图](1_S9_CChjGu1uWc_wnNUGxzw.webp)
-
-当大多数工程师启动一个新的 **AWS 虚拟私有云 (Virtual Private Cloud - VPC)** 时，他们会直接选择经典的 `**/16**` CIDR 块。
+当大多数工程师启动一个新的 **AWS 虚拟私有云 (Virtual Private Cloud - VPC)** 时，他们会直接选择经典的 ` /16 ` CIDR 块。
 为什么？因为它“感觉很安全”——**65,536 个 IP 地址**都在一个整齐的范围内。
 不缺地址，没有规划烦恼……至少看起来是这样。
 
@@ -43,11 +51,11 @@ translation_date: '2025-08-28'
 - 不要将 RFC 6598 (100.64.0.0/10) 用于 AWS VPC 或企业私有工作负载，它已被 ISP 保留用于运营商级 NAT (Carrier-Grade NAT)（根据 RFC 6598）。请坚持使用 RFC 1918 范围进行 VPC 设计。
 - 在**组织层面**而非每个团队层面记录和预留 CIDR 块
 
-| CIDR Block | Total IPs | Usable IPs (After AWS Reserve) | Best For                           |
-| ---------- | --------- | ------------------------------ | ---------------------------------- |
-| `/16`      | 65,536    | 65,531                         | Massive multi-service environments |
-| `/24`      | 256       | 251                            | Small production workloads         |
-| `/28`      | 16        | 11                             | Test/Sandbox                       |
+| CIDR 块 | 总 IP 数 | 可用 IP 数 (AWS 保留后) | 最适用场景                    |
+| ------- | -------- | ----------------------- | ---------------------------- |
+| `/16`   | 65,536   | 65,531                  | 大型多服务环境               |
+| `/24`   | 256      | 251                     | 小型生产工作负载             |
+| `/28`   | 16       | 11                      | 测试/沙箱环境                |
 
 **为什么这个选择在今天比以往任何时候都更重要：**
 
@@ -91,13 +99,13 @@ AWS **在每个子网中保留 5 个 IP 地址**。
 
 以下是我看到工程师（甚至经验丰富的工程师）仍然会犯错的地方：
 
-| Mistake                        | Impact                                     | Solution                                               |
-| ------------------------------ | ------------------------------------------ | ------------------------------------------------------ |
-| Picking `/16` for small apps   | Wastes IP space, causes overlap in peering | Right-size using `/24` or `/23`                        |
-| Ignoring container IP needs    | EKS runs out of IPs mid-deploy             | Use prefix delegation or CNI custom networking         |
-| Overlapping CIDRs between VPCs | Peering/TGW routing breaks                 | Use AWS IPAM to manage org-wide                        |
-| Using tiny `/28` in prod       | IP exhaustion kills scaling events         | Leave 20–30% buffer for growth                         |
-| Forgetting AWS reserves IPs    | Service launches fail unexpectedly         | Always subtract the 5-IP rule in planning              |
+| 错误做法                          | 影响                                | 解决方案                                     |
+| --------------------------------- | ----------------------------------- | -------------------------------------------- |
+| 为小型应用选择 `/16`              | 浪费 IP 空间，在对等连接中造成重叠  | 使用 `/24` 或 `/23` 合理调整大小             |
+| 忽略容器 IP 需求                  | EKS 在部署中途耗尽 IP               | 使用前缀委托或 CNI 自定义网络                |
+| VPC 之间 CIDR 重叠                | 对等连接/TGW 路由中断               | 使用 AWS IPAM 进行组织级管理                 |
+| 在生产中使用过小的 `/28`          | IP 耗尽导致扩展事件失败             | 为增长预留 20-30% 缓冲                       |
+| 忘记 AWS 保留 IP                  | 服务启动意外失败                    | 在规划中始终减去 5-IP 规则                   |
 
 ### 现代扩展注意事项
 
@@ -219,18 +227,18 @@ IP 相关问题可能导致静默故障。优秀的工程师会：
 
 ### 子网规划速查表
 
-| Environment       | CIDR  | Usable IPs | Notes                   |
-| ----------------- | ----- | ---------- | ----------------------- |
-| Sandbox/Test      | `/28` | 11         | Tiny, short-lived       |
-| Small Prod        | `/24` | 251        | Web apps, small DBs     |
-| Large Prod        | `/23` | 507        | Multi-tier + scaling    |
-| Service-heavy Env | `/22` | 1019       | Many services, multi-AZ |
+| 环境类型        | CIDR  | 可用 IP 数 | 说明                     |
+| --------------- | ----- | ---------- | ------------------------ |
+| 沙箱/测试       | `/28` | 11         | 微小型，短期使用         |
+| 小型生产        | `/24` | 251        | Web 应用，小型数据库     |
+| 大型生产        | `/23` | 507        | 多层架构 + 扩展          |
+| 服务密集型环境  | `/22` | 1019       | 多服务，多可用区         |
 
 ### 来自实践的最终建议
 
 下次创建 VPC 时：
 
-1. 除非有实际需求，否则**不要默认使用** `**/16**`。
+1. 除非有实际需求，否则**不要默认使用** `/16`。
 2. 在每个子网中**考虑 5 个 IP 地址规则**。
 3. **规划容器、端点和扩展** — 不仅仅是 EC2。
 4. **使用 IPAM** 避免重叠并自动化分配。
@@ -255,5 +263,3 @@ IP 相关问题可能导致静默故障。优秀的工程师会：
 它关乎**面向 IPv6 的未来规划，避免代价高昂的 IPv4 陷阱，实现私有优先的连接，以及从第一天起就设计混合/多云环境**。
 
 掌握这些虽小但却至关重要细节的工程师——正确的 CIDR 选择、积极主动的 IPv6 设置、私有优先的理念——将是那些构建**弹性、安全且可扩展的云网络**，并能够经受未来十年考验的人。
-
-一名 DevOps 工程师，掌握 Docker、Kubernetes、Terraform、AWS 和 CI/CD 技能。自动化工作流程，以提高软件交付和可靠性。
