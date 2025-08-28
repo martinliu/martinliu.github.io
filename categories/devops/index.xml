@@ -1,4 +1,347 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>DevOps on Martin Liu's Blog</title><link>https://martinliu.cn/categories/devops/</link><description>Recent content in DevOps on Martin Liu's Blog</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><atom:link href="https://martinliu.cn/categories/devops/index.xml" rel="self" type="application/rss+xml"/><item><title>技能不是问题，可见性才是关键 —— 我的 DevOps 职场经验分享</title><link>https://martinliu.cn/blog/devops-wasnt-my-problem-nobody-just-knew-i-existed/</link><pubDate>Tue, 26 Aug 2025 20:00:00 +0800</pubDate><guid>https://martinliu.cn/blog/devops-wasnt-my-problem-nobody-just-knew-i-existed/</guid><description>&lt;img src="https://martinliu.cn/blog/devops-wasnt-my-problem-nobody-just-knew-i-existed/1_3vFTMBRkvLlFBa3v3VukRA.webp" alt="Featured image of post 技能不是问题，可见性才是关键 —— 我的 DevOps 职场经验分享" />&lt;blockquote>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>DevOps on Martin Liu's Blog</title><link>https://martinliu.cn/categories/devops/</link><description>Recent content in DevOps on Martin Liu's Blog</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><atom:link href="https://martinliu.cn/categories/devops/index.xml" rel="self" type="application/rss+xml"/><item><title>DevOps 的七个隐形痛点（以及五个靠谱解法）</title><link>https://martinliu.cn/blog/7-hidden-pains-every-devops-engineer-faces/</link><pubDate>Thu, 28 Aug 2025 15:30:00 +0800</pubDate><guid>https://martinliu.cn/blog/7-hidden-pains-every-devops-engineer-faces/</guid><description>&lt;img src="https://martinliu.cn/blog/7-hidden-pains-every-devops-engineer-faces/1_jBaUuJtCdz0DTwlD0JF9dw.jpeg" alt="Featured image of post DevOps 的七个隐形痛点（以及五个靠谱解法）" />&lt;p>舞台上的 DevOps 常被描绘成技术乌托邦：自动化流水线顺滑运行，开发与运维无缝协作，代码提交到上线一气呵成。可在我七年、三家公司的一线实践里，另外一面从不出现在主题演讲里。&lt;/p>
+&lt;p>下面这 7 个“隐形痛点”，几乎每位 DevOps 都会遇到。&lt;/p>
+&lt;h2 id="1-没人愿意做的大扫除">1. 没人愿意做的“大扫除”
+&lt;/h2>&lt;blockquote>
+&lt;p>“像打扫房子一样——每天清一点，比几个月不管再硬抠强太多。”&lt;/p>&lt;/blockquote>
+&lt;p>我接手过一批年久失修的仓库，本以为只是更个依赖，结果一路演变成数周拉锯战：硬编码的功能分支、成百上千个孤儿仓库、以及对版本控制“我行我素”的开发者。&lt;/p>
+&lt;p>最扎心的是：&lt;strong>从初创到巨头，技术债都会悄悄堆积，最后往往让 DevOps 收拾残局。&lt;/strong>&lt;/p>
+&lt;h2 id="2-提速透支未来">2. “提速”=“透支未来”
+&lt;/h2>&lt;blockquote>
+&lt;p>“有人为了‘这一次快一点’绕过流程，等出事了再说 DevOps 拖慢速度。”&lt;/p>&lt;/blockquote>
+&lt;p>我经历过团队为了赶版本绕过 CI/CD：三个月后，我们还在填坑——环境不一致、配置缺失、只在生产复现的幽灵 Bug。&lt;/p>
+&lt;p>讽刺的是：&lt;strong>绕过护栏的人，很少是修坑的人。&lt;/strong>&lt;/p>
+&lt;h2 id="3-请你看下日志吧的沟通鸿沟">3. “请你看下日志吧”的沟通鸿沟
+&lt;/h2>&lt;p>“我的流水线挂了，能帮修下吗？”——这是 DevOps 的日常高频语句。可很多时候，&lt;strong>日志已经把问题写明白了&lt;/strong>。
+我曾陪一位开发排查一上午，最终错误是“Service Account 缺少存储桶权限”。我指出时，对方说：“我以为那是背景噪音。”&lt;/p>
+&lt;p>这不是技术问题，而是沟通问题：对 DevOps 明晃晃的信息，对部分开发并不显眼。&lt;/p>
+&lt;h2 id="4-身份危机devops--ops">4. 身份危机：DevOps ≠ Ops
+&lt;/h2>&lt;p>很多岗位把 DevOps 和传统运维混为一谈。
+有的所谓 “DevOps 工程师”，实际是换了头衔的系统管理员；也有的更像开发，只是多了点云权限。
+现实是：&lt;strong>DevOps 处在一个光谱上&lt;/strong>——有的周几乎全是运营工作，另一些时期几乎全是开发，不同公司/团队/项目的比例差异巨大。&lt;/p>
+&lt;h2 id="5-yaml-工程的瘟疫">5. YAML 工程的瘟疫
+&lt;/h2>&lt;blockquote>
+&lt;p>“30 个 K8s 集群、几十万个 Pod、数个 GitOps 仓库、上十万份 YAML。”&lt;/p>&lt;/blockquote>
+&lt;p>YAML 本身不难，难在规模。一份“简单”的部署配置，能迅速演化成少数人看得懂的迷宫。
+我曾为一个神秘的 K8s 故障排查数天，根因竟是某个在多仓库间复制的 YAML 文件里——一个&lt;strong>错位的空格&lt;/strong>。&lt;/p>
+&lt;h2 id="6-漏网之鱼全都变成你的问题">6. “漏网之鱼”全都变成“你的问题”
+&lt;/h2>&lt;p>数据库、监控、告警、安全、合规、成本优化……很多组织把一切边界模糊的事都丢给 DevOps。
+范围过宽，焦点就会被稀释，&lt;strong>职业倦怠&lt;/strong>如影随形。正如同事所言：“所有‘没人接’的，最后都是你的。”&lt;/p>
+&lt;h2 id="7-隐形的悖论">7. 隐形的悖论
+&lt;/h2>&lt;blockquote>
+&lt;p>“只有出问题时，人们才想起我们。”&lt;/p>&lt;/blockquote>
+&lt;p>当一切顺滑时，没有人注意到精心打磨的流水线、前瞻性的监控和成百上千小时的部署优化；一旦出事，所有目光立刻投向 DevOps。
+&lt;strong>成功意味着无感失败；失败意味着全员关注。&lt;/strong>&lt;/p>
+&lt;h2 id="五个确实有效的应对策略">五个确实有效的应对策略
+&lt;/h2>&lt;p>这些年踩过无数坑之后，我总结了 5 个在不同团队都验证过的做法：&lt;/p>
+&lt;h3 id="1-把清理产品化常态化">1. 把“清理”产品化、常态化
+&lt;/h3>&lt;p>别把技术债当独立项目，而是纳入日常节奏。&lt;/p>
+&lt;p>一个简单且有效的做法：&lt;strong>给“清债”固定预算&lt;/strong>——例如每周一第一个小时，明确要关掉一项债务（更新依赖、重构脚本、补文档都算）。&lt;/p>
+&lt;h3 id="2-构建自助化解决方案">2. 构建自助化解决方案
+&lt;/h3>&lt;p>不要做每一次失败的“人工兜底”。**投入在“开发者自助”**更省总成本：&lt;/p>
+&lt;ul>
+&lt;li>更清晰的错误信息与行动建议&lt;/li>
+&lt;li>成体系的文档与排障手册&lt;/li>
+&lt;li>自动化诊断脚本与按钮式修复&lt;/li>
+&lt;/ul>
+&lt;blockquote>
+&lt;p>我做过一个简单的 Slack 机器人，用规则识别常见流水线故障并自动回复修复建议，让 DevOps 中断减少了近 &lt;strong>40%&lt;/strong>。&lt;/p>&lt;/blockquote>
+&lt;h3 id="3-落地谁破坏谁修复">3. 落地“谁破坏，谁修复”
+&lt;/h3>&lt;p>绕过流程或引入有风险变更的人，要负责后续修复与复盘。&lt;strong>把反馈闭环拉到本人&lt;/strong>，是最有效的流程教育。&lt;/p>
+&lt;h3 id="4-画清边界与期望">4. 画清边界与期望
+&lt;/h3>&lt;p>写下来、讲清楚：&lt;strong>团队的职责是什么，不是什么&lt;/strong>。不是拒绝协作，而是让协作可预期、可计划。&lt;/p>
+&lt;h3 id="5-让价值可见化">5. 让价值“可见化”
+&lt;/h3>&lt;p>在一切顺利时，也要持续对外沟通：&lt;/p>
+&lt;ul>
+&lt;li>部署频率（Deployment Frequency）&lt;/li>
+&lt;li>平均恢复时间（MTTR）&lt;/li>
+&lt;li>变更失败率（Change Failure Rate）&lt;/li>
+&lt;/ul>
+&lt;p>用趋势和对比讲故事，让大家&lt;strong>看见稳定背后的投入&lt;/strong>。&lt;/p>
+&lt;h2 id="devops-的人文侧技术之外的关键">DevOps 的人文侧：技术之外的关键
+&lt;/h2>&lt;p>最优秀的 DevOps，不只会写基础设施代码，更是&lt;strong>沟通者、导师与推动者&lt;/strong>。&lt;/p>
+&lt;p>我早期犯过的错，是只盯着自动化与基础设施。很快我发现，&lt;strong>帮助团队理解“为什么”&lt;/strong>，往往比“怎么做”更有价值。
+一位前辈对我说过一句一直受用的话：&lt;/p>
+&lt;blockquote>
+&lt;p>&lt;strong>DevOps 的核心不是让机器协同，而是让人协同。&lt;/strong>&lt;/p>&lt;/blockquote>
+&lt;h2 id="继续向前">继续向前
+&lt;/h2>&lt;p>尽管有这些痛点，DevOps 社区在不断进化：工具更易用、实践更成熟，组织也在从“为了更快”转向“为了更稳、更可持续”的战略视角。&lt;/p>
+&lt;p>如果你正在考虑进入这个领域，或正被这些挫折困扰——记住：&lt;strong>这些问题真实存在，但并非不可解&lt;/strong>。通过清晰沟通、稳健流程与重视协作，我们可以逐步化解它们。&lt;/p>
+&lt;p>当某天感觉一切都不顺时，也请记住：你并不孤单。一个庞大的同行社区正面对同样问题、分享解法，并一起向更好的工程实践迈进。&lt;/p>
+&lt;p>&lt;strong>你在 DevOps 之路上遇到过哪些“隐形痛点”？欢迎在评论区分享你的经历与招数。&lt;/strong>&lt;/p></description></item><item><title>用这些鲜为人知（且大多数开发者都忽略）的技巧，让你的 Python 代码提速 10 倍</title><link>https://martinliu.cn/blog/i-made-my-python-code-10x-faster-using-these/</link><pubDate>Wed, 27 Aug 2025 16:00:00 +0800</pubDate><guid>https://martinliu.cn/blog/i-made-my-python-code-10x-faster-using-these/</guid><description>&lt;img src="https://martinliu.cn/blog/i-made-my-python-code-10x-faster-using-these/1_JtvDNgonwDl8sRlYYW69kA.webp" alt="Featured image of post 用这些鲜为人知（且大多数开发者都忽略）的技巧，让你的 Python 代码提速 10 倍" />&lt;p>如果你是一名在云计算基础架构 (cloud infrastructure)、SRE (Site Reliability Engineering) 和应用数据科学领域工作的从业者，你一定很欣赏 Python 提供的清晰性和简洁性。无论你是在原型化机器学习模型、编排后端工作流，还是在生产级系统 (production-grade system) 中构建自动化管道，Python 始终是你工具库中的首选。但说实话—— &lt;strong>Python 有时会很慢&lt;/strong>。慢得令人痛苦。&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/blog/i-made-my-python-code-10x-faster-using-these/0_VXY46SwRfsnWJKIC.webp"
+width="640"
+height="360"
+srcset="https://martinliu.cn/blog/i-made-my-python-code-10x-faster-using-these/0_VXY46SwRfsnWJKIC_hu_aa960e03568e00c7.webp 480w, https://martinliu.cn/blog/i-made-my-python-code-10x-faster-using-these/0_VXY46SwRfsnWJKIC_hu_dacac778015c9775.webp 1024w"
+loading="lazy"
+alt="Python"
+class="gallery-image"
+data-flex-grow="177"
+data-flex-basis="426px"
+>&lt;/p>
+&lt;p>然而，你需要了解并牢记的是，&lt;strong>Python 的大多数性能问题都是开发者自己造成的&lt;/strong>。问题不在于语言本身，而在于你使用它的方式。事实上，Python 的瓶颈往往是由被忽视的细节引起的：低效的数据结构 (data structures)、不必要的内存分配 (allocations)、重复的计算 (redundant computations)，或者仅仅是你从其他语言带来的、不完全适用的习惯。&lt;/p>
+&lt;p>你可能见过太多的工程师（尤其是在高性能计算 (high-performance computing) 领域之外）低估了一些小决定的成本。比如循环方式不当、内置函数使用效率低下、忽视性能分析 (profiling)，或者过度依赖 Pandas (Pandas) 来执行本可以使用 NumPy (NumPy) 或 Polars (Polars) 提速 50 倍的操作。更别提那些仍然在 Pandas 中使用 &lt;code>apply&lt;/code> 而不是向量化 (vectorization) 的人了。&lt;/p>
+&lt;p>在这篇文章中，作者不会谈论你随处可见的那些显而易见的建议，比如&amp;quot;使用 NumPy&amp;quot;或&amp;quot;避免 for 循环&amp;quot;。这些你都听过了。这是一次&lt;strong>深入探讨那些被低估、被忽视、有时甚至有些奇特的技巧，它们能够显著加速你的 Python 代码&lt;/strong>——这些技巧你真希望能早点知道。本文将通过实际案例、你可能没用过（但应该用）的库，以及那些悄悄侵蚀你性能的习惯，为你一一讲解。&lt;/p>
+&lt;p>所以，如果你正在处理大型数据管道 (data pipelines)、后端 API (Application Programming Interface)、科学计算 (scientific computing)，甚至是自动化基础架构 (infrastructure) 的工作——并且你觉得 Python 正在拖累你——那么这篇文章就是为你准备的。&lt;/p>
+&lt;h2 id="-1-停止使用-rangelen--改用-enumerate">🚀 1. 停止使用 range(len(&amp;hellip;)) — 改用 enumerate
+&lt;/h2>&lt;p>这看起来可能微不足道，但在某些紧密的循环中，它却出乎意料地常见且代价高昂：&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;span class="lnt">4
+&lt;/span>&lt;span class="lnt">5
+&lt;/span>&lt;span class="lnt">6
+&lt;/span>&lt;span class="lnt">7
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-python" data-lang="python">&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># Slow&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">for&lt;/span> &lt;span class="n">i&lt;/span> &lt;span class="ow">in&lt;/span> &lt;span class="nb">range&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="nb">len&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">my_list&lt;/span>&lt;span class="p">)):&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">value&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">my_list&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="n">i&lt;/span>&lt;span class="p">]&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># Faster and more Pythonic&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">for&lt;/span> &lt;span class="n">i&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">value&lt;/span> &lt;span class="ow">in&lt;/span> &lt;span class="nb">enumerate&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">my_list&lt;/span>&lt;span class="p">):&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="o">...&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>使用 &lt;code>enumerate&lt;/code>（枚举）可以避免重复的索引和方法调用。它更简洁，并有助于解释器在底层进行更好的优化。&lt;/p>
+&lt;h2 id="-2-避免将-list-用于大型集合--改用-arraydeque-或-numpy-数组">⚡ 2. 避免将 list 用于大型集合 — 改用 array、deque 或 numpy 数组
+&lt;/h2>&lt;p>Python 列表 (lists) 通用且灵活，但对于大型数值运算来说，它们的&lt;strong>内存效率不高&lt;/strong>且速度不快。&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-python" data-lang="python">&lt;span class="line">&lt;span class="cl">&lt;span class="kn">from&lt;/span> &lt;span class="nn">array&lt;/span> &lt;span class="kn">import&lt;/span> &lt;span class="n">array&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">my_array&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">array&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s1">&amp;#39;i&amp;#39;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="p">[&lt;/span>&lt;span class="mi">1&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="mi">2&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="mi">3&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="mi">4&lt;/span>&lt;span class="p">])&lt;/span> &lt;span class="c1"># Much faster than list for ints&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>或者更好的是，对数值数据使用 &lt;code>numpy&lt;/code> 或 &lt;code>polars.Series&lt;/code>。NumPy 使用由 C 语言支持的固定类型数组，而 Polars（见下文）是用 Rust 编写的，并针对速度进行了优化。&lt;/p>
+&lt;h2 id="-3-使用-functoolslru_cache-加速纯函数">🧠 3. 使用 functools.lru_cache 加速纯函数
+&lt;/h2>&lt;p>如果你有计算开销大的纯函数（即，相同输入 → 相同输出），记忆化 (memoization) 可以带来显著的性能提升：&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;span class="lnt">4
+&lt;/span>&lt;span class="lnt">5
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-python" data-lang="python">&lt;span class="line">&lt;span class="cl">&lt;span class="kn">from&lt;/span> &lt;span class="nn">functools&lt;/span> &lt;span class="kn">import&lt;/span> &lt;span class="n">lru_cache&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nd">@lru_cache&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">maxsize&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="mi">128&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">def&lt;/span> &lt;span class="nf">expensive_computation&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">x&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">y&lt;/span>&lt;span class="p">):&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="o">...&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>这在许多机器学习 (Machine Learning) 管线中被严重低估。&lt;/p>
+&lt;h2 id="-4-使用-numba-将-python-编译成机器码--无需更改代码">🏁 4. 使用 Numba 将 Python 编译成机器码 — 无需更改代码
+&lt;/h2>&lt;p>这是一个改变游戏规则的工具。&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;span class="lnt">4
+&lt;/span>&lt;span class="lnt">5
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-python" data-lang="python">&lt;span class="line">&lt;span class="cl">&lt;span class="kn">from&lt;/span> &lt;span class="nn">numba&lt;/span> &lt;span class="kn">import&lt;/span> &lt;span class="n">jit&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nd">@jit&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">nopython&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="kc">True&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">def&lt;/span> &lt;span class="nf">compute&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">x&lt;/span>&lt;span class="p">):&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="o">...&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>被 &lt;code>@jit&lt;/code> 包装的函数可以运行得&lt;strong>快 100 倍&lt;/strong>。Numba 使用 LLVM 编译你的代码，只需极少的语法改动。它最适用于循环和数值计算代码。&lt;/p>
+&lt;h2 id="-5-将-pandas-切换到-polars-处理-dataframe">⚙️ 5. 将 Pandas 切换到 Polars 处理 DataFrame
+&lt;/h2>&lt;p>Pandas 很棒。但对于大型数据集来说，它速度慢且是单线程的。此时，让开发者引入 &lt;code>[Polars](https://pola.rs/)&lt;/code>，一个用 Rust 编写并支持原生多线程的极速 DataFrame 库。&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-python" data-lang="python">&lt;span class="line">&lt;span class="cl">&lt;span class="kn">import&lt;/span> &lt;span class="nn">polars&lt;/span> &lt;span class="k">as&lt;/span> &lt;span class="nn">pl&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">df&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">pl&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">read_csv&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s2">&amp;#34;data.csv&amp;#34;&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">df&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">df&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">filter&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">pl&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">col&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s2">&amp;#34;sales&amp;#34;&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="o">&amp;gt;&lt;/span> &lt;span class="mi">1000&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>在实际的 ETL (Extract, Transform, Load) 管线中，Polars 的性能可以比 Pandas &lt;strong>高 10 倍甚至更多&lt;/strong>。&lt;/p>
+&lt;h2 id="-6-使用内置性能分析工具--不要盲目优化">🔍 6. 使用内置性能分析工具 — 不要盲目优化
+&lt;/h2>&lt;p>在优化任何东西之前，请先进行&lt;strong>性能分析 (Profiling)&lt;/strong>。你无法改进无法衡量的事物。&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">python -m cProfile my_script.py
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>或者更好的是，使用 &lt;code>line_profiler&lt;/code>：&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">pip install line_profiler
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-python" data-lang="python">&lt;span class="line">&lt;span class="cl">&lt;span class="nd">@profile&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">def&lt;/span> &lt;span class="nf">my_func&lt;/span>&lt;span class="p">():&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="o">...&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>然后使用以下命令运行：&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">kernprof -l my_script.py
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">python -m line_profiler my_script.py.lprof
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>这显示了逐行的瓶颈，是性能调试 (Performance Debugging) 的利器。&lt;/p>
+&lt;h2 id="-7-在紧密循环中最小化属性查找">⛏️ 7. 在紧密循环中最小化属性查找
+&lt;/h2>&lt;p>这一个细微但非常真实：&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;span class="lnt">4
+&lt;/span>&lt;span class="lnt">5
+&lt;/span>&lt;span class="lnt">6
+&lt;/span>&lt;span class="lnt">7
+&lt;/span>&lt;span class="lnt">8
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-python" data-lang="python">&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># Bad&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">for&lt;/span> &lt;span class="n">_&lt;/span> &lt;span class="ow">in&lt;/span> &lt;span class="nb">range&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="mi">1000000&lt;/span>&lt;span class="p">):&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">value&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">my_object&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">some_attribute&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># Better&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">attr&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">my_object&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">some_attribute&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">for&lt;/span> &lt;span class="n">_&lt;/span> &lt;span class="ow">in&lt;/span> &lt;span class="nb">range&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="mi">1000000&lt;/span>&lt;span class="p">):&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">value&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">attr&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>每一次属性访问 (attribute access) 都是一次字典查找 (dictionary lookup)。在大型循环中，这会累积起来。&lt;/p>
+&lt;h2 id="-8-预分配列表而不是在循环中追加">🧬 8. 预分配列表而不是在循环中追加
+&lt;/h2>&lt;p>追加操作方便，但在大规模操作时会很慢：&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;span class="lnt">4
+&lt;/span>&lt;span class="lnt">5
+&lt;/span>&lt;span class="lnt">6
+&lt;/span>&lt;span class="lnt">7
+&lt;/span>&lt;span class="lnt">8
+&lt;/span>&lt;span class="lnt">9
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-python" data-lang="python">&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># Slow&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">result&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="p">[]&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">for&lt;/span> &lt;span class="n">i&lt;/span> &lt;span class="ow">in&lt;/span> &lt;span class="nb">range&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="mi">1000000&lt;/span>&lt;span class="p">):&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">result&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">append&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">i&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># Faster&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">result&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="p">[&lt;/span>&lt;span class="kc">None&lt;/span>&lt;span class="p">]&lt;/span> &lt;span class="o">*&lt;/span> &lt;span class="mi">1000000&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">for&lt;/span> &lt;span class="n">i&lt;/span> &lt;span class="ow">in&lt;/span> &lt;span class="nb">range&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="mi">1000000&lt;/span>&lt;span class="p">):&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">result&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="n">i&lt;/span>&lt;span class="p">]&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">i&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>这在数据预处理中尤为重要。&lt;/p>
+&lt;h2 id="-9-尝试-pydantic-v2-或-msgspec-进行快速数据验证">📦 9. 尝试 Pydantic V2 (或 msgspec) 进行快速数据验证
+&lt;/h2>&lt;p>如果你正在构建 API (Application Programming Interface) 或摄取数据，你可能正在使用 Pydantic。但 v2 &lt;strong>用 Rust 重写&lt;/strong>，速度快得多：&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;span class="lnt">4
+&lt;/span>&lt;span class="lnt">5
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-python" data-lang="python">&lt;span class="line">&lt;span class="cl">&lt;span class="kn">from&lt;/span> &lt;span class="nn">pydantic&lt;/span> &lt;span class="kn">import&lt;/span> &lt;span class="n">BaseModel&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">class&lt;/span> &lt;span class="nc">User&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">BaseModel&lt;/span>&lt;span class="p">):&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nb">id&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="nb">int&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">name&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="nb">str&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>或者，为了极致性能：&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;span class="lnt">4
+&lt;/span>&lt;span class="lnt">5
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-python" data-lang="python">&lt;span class="line">&lt;span class="cl">&lt;span class="kn">import&lt;/span> &lt;span class="nn">msgspec&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">class&lt;/span> &lt;span class="nc">User&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">msgspec&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">Struct&lt;/span>&lt;span class="p">):&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nb">id&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="nb">int&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">name&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="nb">str&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>&lt;code>msgspec&lt;/code> 比 Pydantic 和 dataclasses 都快。&lt;/p>
+&lt;h2 id="-10-尽可能使用生成器而不是列表">🧪 10. 尽可能使用生成器而不是列表
+&lt;/h2>&lt;p>如果你不需要一次性获取所有结果，请使用生成器 (Generators)：&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;span class="lnt">4
+&lt;/span>&lt;span class="lnt">5
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-python" data-lang="python">&lt;span class="line">&lt;span class="cl">&lt;span class="k">def&lt;/span> &lt;span class="nf">slow&lt;/span>&lt;span class="p">():&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">return&lt;/span> &lt;span class="p">[&lt;/span>&lt;span class="n">x&lt;/span>&lt;span class="o">**&lt;/span>&lt;span class="mi">2&lt;/span> &lt;span class="k">for&lt;/span> &lt;span class="n">x&lt;/span> &lt;span class="ow">in&lt;/span> &lt;span class="nb">range&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="mi">10&lt;/span>&lt;span class="o">**&lt;/span>&lt;span class="mi">6&lt;/span>&lt;span class="p">)]&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">def&lt;/span> &lt;span class="nf">fast&lt;/span>&lt;span class="p">():&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">return&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="n">x&lt;/span>&lt;span class="o">**&lt;/span>&lt;span class="mi">2&lt;/span> &lt;span class="k">for&lt;/span> &lt;span class="n">x&lt;/span> &lt;span class="ow">in&lt;/span> &lt;span class="nb">range&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="mi">10&lt;/span>&lt;span class="o">**&lt;/span>&lt;span class="mi">6&lt;/span>&lt;span class="p">))&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>内存使用量将从千兆字节降到几乎为零。&lt;/p>
+&lt;h2 id="-额外提示使用-mypyc-编译你的脚本-实验性但有前景">⚙️ 额外提示：使用 mypyc 编译你的脚本 (实验性但有前景)
+&lt;/h2>&lt;p>如果你的模块中使用了类型提示 (type hints)：&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;span class="lnt">4
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">pip install mypy mypyc
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># Compiles your script to C extension&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">mypyc my_module.py
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>这对于数值计算代码尤其强大，而且如果你已经在使用类型标注 (typing)，只需要进行极小的改动。&lt;/p>
+&lt;h2 id="最终思考">最终思考
+&lt;/h2>&lt;p>大多数开发者认为 Python 运行缓慢。然而，如果使用得当，Python 的速度会&lt;strong>出人意料地快&lt;/strong>。真正的瓶颈不在于语言本身，而在于我们的使用习惯。通过结合智能利用原生特性、未被充分利用的库以及性能优先的思维模式，我们可以在高吞吐量的生产工作负载中，也能实现全新的速度水平。&lt;/p>
+&lt;p>在自己的案例中，优化了生产环境中几个关键的推理评分和数据转换流水线，将运行时间从&lt;strong>数分钟缩短到数秒&lt;/strong>。最棒的是什么？不要更换语言，也不要用 C++ 重写一切。你只需要开始将 Python 视为它本应有的强大语言——只要使用得当。&lt;/p>
+&lt;p>如果你认真想要从 Python 中榨取性能，请从这些建议开始。然后进行性能分析 (profile)、测试，并持续学习。总会有更快的方法。&lt;/p></description></item><item><title>技能不是问题，可见性才是关键 —— 我的 DevOps 职场经验分享</title><link>https://martinliu.cn/blog/devops-wasnt-my-problem-nobody-just-knew-i-existed/</link><pubDate>Tue, 26 Aug 2025 20:00:00 +0800</pubDate><guid>https://martinliu.cn/blog/devops-wasnt-my-problem-nobody-just-knew-i-existed/</guid><description>&lt;img src="https://martinliu.cn/blog/devops-wasnt-my-problem-nobody-just-knew-i-existed/1_3vFTMBRkvLlFBa3v3VukRA.webp" alt="Featured image of post 技能不是问题，可见性才是关键 —— 我的 DevOps 职场经验分享" />&lt;blockquote>
 &lt;p>作者：Zudonu Osomudeya&lt;/p>&lt;/blockquote>
 &lt;p>我确实具备一些实打实的技能。&lt;/p>
 &lt;ul>

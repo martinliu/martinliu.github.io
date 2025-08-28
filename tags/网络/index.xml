@@ -1,0 +1,298 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>网络 on Martin Liu's Blog</title><link>https://martinliu.cn/tags/%E7%BD%91%E7%BB%9C/</link><description>Recent content in 网络 on Martin Liu's Blog</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><lastBuildDate>Thu, 28 Aug 2025 18:07:39 +0800</lastBuildDate><atom:link href="https://martinliu.cn/tags/%E7%BD%91%E7%BB%9C/index.xml" rel="self" type="application/rss+xml"/><item><title>AWS VPC 和 IP Address 的秘密：2025 年DevOps工程师必知</title><link>https://martinliu.cn/blog/aws-vpc-ip-address-secrets-what-every-engineer/</link><pubDate>Thu, 28 Aug 2025 10:00:00 +0800</pubDate><guid>https://martinliu.cn/blog/aws-vpc-ip-address-secrets-what-every-engineer/</guid><description>&lt;img src="https://martinliu.cn/blog/aws-vpc-ip-address-secrets-what-every-engineer/1_S9_CChjGu1uWc_wnNUGxzw.webp" alt="Featured image of post AWS VPC 和 IP Address 的秘密：2025 年DevOps工程师必知" />&lt;p>像专家一样学习 AWS VPC IP 地址分配。探索隐藏规则、专家技巧和 2025 年最佳实践，以设计安全、可扩展的 AWS 网络。DevOps 和云工程师的完美指南。&lt;/p>
+&lt;p>当大多数工程师启动一个新的 &lt;strong>AWS 虚拟私有云 (Virtual Private Cloud - VPC)&lt;/strong> 时，他们会直接选择经典的 &lt;code>/16&lt;/code> CIDR 块。
+为什么？因为它“感觉很安全”——&lt;strong>65,536 个 IP 地址&lt;/strong>都在一个整齐的范围内。
+不缺地址，没有规划烦恼……至少看起来是这样。&lt;/p>
+&lt;p>但现实是：在 AWS 网络中，&lt;strong>CIDR 块大小的选择并非一劳永逸&lt;/strong>。错误的决策可能导致 &lt;strong>IP 地址耗尽、集成失败、安全漏洞和痛苦的迁移&lt;/strong>。而且，AWS 仍然隐藏着&lt;strong>一个小的 IP 秘密&lt;/strong>，这个秘密总是让新工程师头疼。&lt;/p>
+&lt;h3 id="2025-年-cidr-范围规划为何更加重要">2025 年 CIDR 范围规划为何更加重要
+&lt;/h3>&lt;p>您的 VPC CIDR 范围定义了您&lt;strong>有多少私有 IP 地址&lt;/strong>——以及这些地址如何被使用、划分并与其他网络集成。&lt;/p>
+&lt;p>太多工程师仍然选择 &lt;code>10.0.0.0/16&lt;/code>，然后就此作罢。问题出在哪里？&lt;/p>
+&lt;ul>
+&lt;li>与企业本地网络重叠&lt;/li>
+&lt;li>在 VPC 对等连接 (VPC Peering) 或中转网关 (Transit Gateway) 期间与其他 AWS 账户发生冲突&lt;/li>
+&lt;li>当您扩展到多个区域时限制了增长&lt;/li>
+&lt;/ul>
+&lt;p>&lt;strong>2025 年最佳实践：&lt;/strong>&lt;/p>
+&lt;ul>
+&lt;li>创造性地使用 &lt;strong>RFC 1918&lt;/strong> 范围 (&lt;code>172.16.0.0/12&lt;/code> 或 &lt;code>192.168.0.0/16&lt;/code>)&lt;/li>
+&lt;li>不要将 RFC 6598 (100.64.0.0/10) 用于 AWS VPC 或企业私有工作负载，它已被 ISP 保留用于运营商级 NAT (Carrier-Grade NAT)（根据 RFC 6598）。请坚持使用 RFC 1918 范围进行 VPC 设计。&lt;/li>
+&lt;li>在&lt;strong>组织层面&lt;/strong>而非每个团队层面记录和预留 CIDR 块&lt;/li>
+&lt;/ul>
+&lt;table>
+&lt;thead>
+&lt;tr>
+&lt;th>CIDR 块&lt;/th>
+&lt;th>总 IP 数&lt;/th>
+&lt;th>可用 IP 数 (AWS 保留后)&lt;/th>
+&lt;th>最适用场景&lt;/th>
+&lt;/tr>
+&lt;/thead>
+&lt;tbody>
+&lt;tr>
+&lt;td>&lt;code>/16&lt;/code>&lt;/td>
+&lt;td>65,536&lt;/td>
+&lt;td>65,531&lt;/td>
+&lt;td>大型多服务环境&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>/24&lt;/code>&lt;/td>
+&lt;td>256&lt;/td>
+&lt;td>251&lt;/td>
+&lt;td>小型生产工作负载&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>&lt;code>/28&lt;/code>&lt;/td>
+&lt;td>16&lt;/td>
+&lt;td>11&lt;/td>
+&lt;td>测试/沙箱环境&lt;/td>
+&lt;/tr>
+&lt;/tbody>
+&lt;/table>
+&lt;p>&lt;strong>为什么这个选择在今天比以往任何时候都更重要：&lt;/strong>&lt;/p>
+&lt;ul>
+&lt;li>&lt;strong>容器 (Containers) 和微服务 (Microservices)&lt;/strong>：在 EKS 和 ECS 中，&lt;strong>每个 Pod/任务 (pod/task) 都会获得自己的 IP&lt;/strong>（默认情况下），这使得小规模子网会 &lt;em>很快&lt;/em> 被占满。&lt;/li>
+&lt;li>&lt;strong>AWS PrivateLink 和 VPC Lattice&lt;/strong>：每个终端节点或服务都会在您的子网中创建弹性网络接口 (Elastic Network Interface - ENI)——消耗额外的 IP 地址。&lt;/li>
+&lt;li>&lt;strong>混合云 (Hybrid Cloud) 增长&lt;/strong>：多 VPC 和多账户网络意味着重叠的 CIDR 块会破坏对等连接和中转网关集成。&lt;/li>
+&lt;li>&lt;strong>IPv4 稀缺性&lt;/strong>：您不能再将私有地址空间视为无限，尤其是在大型组织中。&lt;/li>
+&lt;/ul>
+&lt;h3 id="ipv4-耗尽与弹性-ip-经济学">IPv4 耗尽与弹性 IP 经济学
+&lt;/h3>&lt;p>2024 年 2 月，AWS 提高了闲置弹性 IP (Elastic IP) 的收费。到 2025 年年中，&lt;strong>公共 IPv4 地址将成为稀缺资源&lt;/strong>。&lt;/p>
+&lt;p>&lt;strong>您现在应该怎么做：&lt;/strong>&lt;/p>
+&lt;ul>
+&lt;li>除非绝对必要，否则停止分配公有 IP 地址 (Public IP Address)&lt;/li>
+&lt;li>使用 NAT 网关 (NAT Gateway)，但要平衡成本（或者在小型环境中使用 NAT 实例 (NAT Instance)）&lt;/li>
+&lt;li>利用 AWS PrivateLink 和 VPC 终端节点 (VPC Endpoint) 完全避免公开暴露&lt;/li>
+&lt;li>开始使用 AWS Network Firewall 和 Route 53 测试 IPv6 入站/出站流量&lt;/li>
+&lt;/ul>
+&lt;h3 id="aws-5-个-ip-地址规则鲜为人知的细节">AWS 5 个 IP 地址规则（鲜为人知的细节）
+&lt;/h3>&lt;p>无论您选择何种 CIDR，您都&lt;strong>永远无法使用子网中的所有 IP 地址&lt;/strong>。
+AWS &lt;strong>在每个子网中保留 5 个 IP 地址&lt;/strong>。&lt;/p>
+&lt;p>&lt;strong>保留的 IP 地址：&lt;/strong>&lt;/p>
+&lt;ol>
+&lt;li>&lt;strong>第一个 IP&lt;/strong> → 网络 ID（定义子网）&lt;/li>
+&lt;li>&lt;strong>第二个 IP&lt;/strong> → 默认 VPC 路由器（网关）&lt;/li>
+&lt;li>&lt;strong>第三个 IP&lt;/strong> → 由 AWS 保留（内部用途）&lt;/li>
+&lt;li>&lt;strong>最后一个 IP&lt;/strong> → 广播地址（RFC 标准，未使用但已保留）&lt;/li>
+&lt;li>&lt;strong>额外一个&lt;/strong> → AWS 内部未来使用&lt;/li>
+&lt;/ol>
+&lt;p>&lt;strong>计算示例：&lt;/strong>&lt;/p>
+&lt;ul>
+&lt;li>&lt;code>/24&lt;/code> = 总计 256 个 → 251 个可用&lt;/li>
+&lt;li>&lt;code>/28&lt;/code> = 总计 16 个 → 11 个可用&lt;/li>
+&lt;/ul>
+&lt;blockquote>
+&lt;p>&lt;em>在设计跨可用区 (Availability Zone - AZ) 的高可用性时，应平均划分 CIDR 范围，&lt;strong>并&lt;/strong>在估算容量之前减去 AWS 保留的地址。&lt;/em>&lt;/p>&lt;/blockquote>
+&lt;h3 id="2025-年的实际陷阱">2025 年的实际陷阱
+&lt;/h3>&lt;p>以下是我看到工程师（甚至经验丰富的工程师）仍然会犯错的地方：&lt;/p>
+&lt;table>
+&lt;thead>
+&lt;tr>
+&lt;th>错误做法&lt;/th>
+&lt;th>影响&lt;/th>
+&lt;th>解决方案&lt;/th>
+&lt;/tr>
+&lt;/thead>
+&lt;tbody>
+&lt;tr>
+&lt;td>为小型应用选择 &lt;code>/16&lt;/code>&lt;/td>
+&lt;td>浪费 IP 空间，在对等连接中造成重叠&lt;/td>
+&lt;td>使用 &lt;code>/24&lt;/code> 或 &lt;code>/23&lt;/code> 合理调整大小&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>忽略容器 IP 需求&lt;/td>
+&lt;td>EKS 在部署中途耗尽 IP&lt;/td>
+&lt;td>使用前缀委托或 CNI 自定义网络&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>VPC 之间 CIDR 重叠&lt;/td>
+&lt;td>对等连接/TGW 路由中断&lt;/td>
+&lt;td>使用 AWS IPAM 进行组织级管理&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>在生产中使用过小的 &lt;code>/28&lt;/code>&lt;/td>
+&lt;td>IP 耗尽导致扩展事件失败&lt;/td>
+&lt;td>为增长预留 20-30% 缓冲&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>忘记 AWS 保留 IP&lt;/td>
+&lt;td>服务启动意外失败&lt;/td>
+&lt;td>在规划中始终减去 5-IP 规则&lt;/td>
+&lt;/tr>
+&lt;/tbody>
+&lt;/table>
+&lt;h3 id="现代扩展注意事项">现代扩展注意事项
+&lt;/h3>&lt;p>到 2025 年，占用 IP 地址的不再仅仅是 EC2。您的计划必须考虑：&lt;/p>
+&lt;ul>
+&lt;li>&lt;strong>Amazon EKS/ECS&lt;/strong> → 默认情况下，每个 pod/任务一个 IP 地址。&lt;/li>
+&lt;li>&lt;strong>NAT 网关&lt;/strong> → 每个可用区预留多个 IP 地址用于扩展。&lt;/li>
+&lt;li>&lt;strong>VPC 终端节点 (PrivateLink)&lt;/strong> → 创建弹性网络接口 (Elastic Network Interface - ENI)，占用每个可用区中的 IP 地址。&lt;/li>
+&lt;li>&lt;strong>负载均衡器 (应用负载均衡器 ALB/网络负载均衡器 NLB)&lt;/strong> → 每个可用区的每个子网都需要 ENI。&lt;/li>
+&lt;li>&lt;strong>AWS Lattice 服务&lt;/strong> → 为服务间网络分配 IP 地址。&lt;/li>
+&lt;/ul>
+&lt;blockquote>
+&lt;p>&lt;em>在 EKS 中，启用&lt;strong>前缀委托 (Prefix Delegation)&lt;/strong>，以便 pod 共享 /28 前缀而不是获取唯一的 IP 地址 — 从而减少消耗。&lt;/em>&lt;/p>&lt;/blockquote>
+&lt;h3 id="安全与影响范围">安全与影响范围
+&lt;/h3>&lt;p>CIDR 规划也是一种&lt;strong>安全控制措施&lt;/strong>：&lt;/p>
+&lt;ul>
+&lt;li>更小、特定用途的子网可以在遭受攻击时限制影响范围。&lt;/li>
+&lt;li>通过 CIDR 而不仅仅是安全组 (Security Group) 来分段工作负载。&lt;/li>
+&lt;li>示例：&lt;code>/28&lt;/code> 用于公有 ALB 层，&lt;code>/24&lt;/code> 用于私有应用服务器，&lt;code>/26&lt;/code> 用于数据库层。&lt;/li>
+&lt;/ul>
+&lt;h3 id="混合云与多账户网络">混合云与多账户网络
+&lt;/h3>&lt;p>CIDR 重叠 = 无法在网络之间路由。&lt;/p>
+&lt;p>通过以下方式避免这种情况：&lt;/p>
+&lt;ul>
+&lt;li>使用 &lt;strong>AWS VPC IP 地址管理器 (IPAM)&lt;/strong> 集中分配 CIDR。&lt;/li>
+&lt;li>为开发/生产/预发布 (dev/prod/staging) 遵循&lt;strong>保留范围策略&lt;/strong>。&lt;/li>
+&lt;li>为所有 AWS 账户和本地网络保留一份记录完整的&lt;strong>IP 分配图&lt;/strong>。&lt;/li>
+&lt;/ul>
+&lt;h3 id="可观测性与故障排除">可观测性与故障排除
+&lt;/h3>&lt;p>IP 相关问题可能导致静默故障。优秀的工程师会：&lt;/p>
+&lt;ul>
+&lt;li>使用 &lt;strong>VPC 流日志 (VPC Flow Logs)&lt;/strong> (在子网或 ENI 级别)&lt;/li>
+&lt;li>启用 &lt;strong>CloudWatch Logs Insights&lt;/strong> 查询以进行 IP 级别故障排除&lt;/li>
+&lt;li>使用 &lt;strong>可达性分析器 (Reachability Analyzer)&lt;/strong> 在更改前模拟数据包流&lt;/li>
+&lt;li>使用 &lt;strong>网络访问分析器 (Network Access Analyzer)&lt;/strong> 持续验证最小权限网络&lt;/li>
+&lt;/ul>
+&lt;h3 id="aws-vpc-和无人提及的-ip-地址秘密">AWS VPC 和无人提及的 IP 地址秘密
+&lt;/h3>&lt;h3 id="图-1-aws-子网中的-5-ip-规则">图 1: AWS 子网中的 5-IP 规则
+&lt;/h3>&lt;p>&lt;img src="https://martinliu.cn/blog/aws-vpc-ip-address-secrets-what-every-engineer/1_j-NeuXZTzPTiko4rkOvqOw.webp"
+width="640"
+height="960"
+srcset="https://martinliu.cn/blog/aws-vpc-ip-address-secrets-what-every-engineer/1_j-NeuXZTzPTiko4rkOvqOw_hu_25076655c3d4d357.webp 480w, https://martinliu.cn/blog/aws-vpc-ip-address-secrets-what-every-engineer/1_j-NeuXZTzPTiko4rkOvqOw_hu_e077b24825e64715.webp 1024w"
+loading="lazy"
+alt="AWS子网IP保留规则示意图"
+class="gallery-image"
+data-flex-grow="66"
+data-flex-basis="160px"
+>&lt;/p>
+&lt;p>&lt;em>相同的 5-IP 规则适用于&lt;strong>每个子网&lt;/strong>，无论大小如何。&lt;/em>&lt;/p>
+&lt;h3 id="真实案例eks--privatelink-中的-ip-消耗">真实案例：EKS + PrivateLink 中的 IP 消耗
+&lt;/h3>&lt;p>场景：&lt;/p>
+&lt;ul>
+&lt;li>&lt;code>/23&lt;/code> 子网 (总共 512 个 IP，AWS 预留后可用 507 个)&lt;/li>
+&lt;li>50 节点 &lt;strong>EKS&lt;/strong> 集群 (默认 CNI，每个节点 20 个 Pod)&lt;/li>
+&lt;li>每个可用区 1 个 &lt;strong>NAT 网关 (NAT Gateway)&lt;/strong>&lt;/li>
+&lt;li>5 个 &lt;strong>PrivateLink 端点 (PrivateLink endpoints)&lt;/strong>&lt;/li>
+&lt;/ul>
+&lt;p>&lt;strong>IP 分配明细：&lt;/strong>&lt;/p>
+&lt;ul>
+&lt;li>&lt;strong>EKS 节点：&lt;/strong> 50 个 IP (每个节点一个)&lt;/li>
+&lt;li>&lt;strong>EKS Pod：&lt;/strong> 1,000 个 IP (每个节点 20 个，唯一的 ENI (Elastic Network Interface)) → &lt;em>已超出可用 IP 数量！&lt;/em>&lt;/li>
+&lt;li>&lt;strong>NAT 网关：&lt;/strong> 1 个 IP&lt;/li>
+&lt;li>&lt;strong>PrivateLink：&lt;/strong> 5 个 IP (每个端点 ENI 一个)&lt;/li>
+&lt;/ul>
+&lt;p>&lt;strong>结果：&lt;/strong>
+即使使用 &lt;code>/23&lt;/code>，在集群完全调度之前，IP 就会耗尽。
+➡ &lt;strong>解决方案：&lt;/strong> 为 EKS 使用&lt;strong>前缀委托 (prefix delegation)&lt;/strong> 或&lt;strong>自定义网络 (custom networking)&lt;/strong>，以大幅减少每个 Pod 的 IP 消耗。&lt;/p>
+&lt;h3 id="适用于-aws-的-cidr-决策框架-2025">适用于 AWS 的 CIDR 决策框架 (2025)
+&lt;/h3>&lt;h4 id="step-1--确定您的工作负载配置文件">Step 1 — 确定您的工作负载配置文件
+&lt;/h4>&lt;ul>
+&lt;li>以 EC2 为主：按实例数量加缓冲大小&lt;/li>
+&lt;li>以容器为重：计算 Pod/任务数量 (EKS/ECS)&lt;/li>
+&lt;li>以服务为重：计算 NAT、PrivateLink、Lattice 产生的 ENI 数量&lt;/li>
+&lt;/ul>
+&lt;h4 id="step-2--规划增长">Step 2 — 规划增长
+&lt;/h4>&lt;ul>
+&lt;li>为扩展事件增加 20–30% 的缓冲&lt;/li>
+&lt;li>从一开始就考虑&lt;strong>双栈 (IPv4 + IPv6)&lt;/strong>&lt;/li>
+&lt;/ul>
+&lt;h4 id="step-3--避免重叠">Step 3 — 避免重叠
+&lt;/h4>&lt;ul>
+&lt;li>使用 &lt;strong>AWS IPAM (IP Address Manager)&lt;/strong> 进行组织范围的分配&lt;/li>
+&lt;li>为多账户和混合设置记录所有 CIDR&lt;/li>
+&lt;/ul>
+&lt;h4 id="step-4--从设计上确保安全">Step 4 — 从设计上确保安全
+&lt;/h4>&lt;ul>
+&lt;li>对公共层使用小 CIDR，对私有层使用大 CIDR&lt;/li>
+&lt;li>使用专用 CIDR 分段敏感工作负载&lt;/li>
+&lt;/ul>
+&lt;h4 id="step-5--考虑扩展性">Step 5 — 考虑扩展性
+&lt;/h4>&lt;ul>
+&lt;li>选择可以扩展的尺寸 (&lt;code>/24&lt;/code> → &lt;code>/23&lt;/code>)，如果需要&lt;/li>
+&lt;li>请记住：您&lt;strong>无法缩小&lt;/strong>，只能增加&lt;/li>
+&lt;/ul>
+&lt;h3 id="2025-年主要启示">2025 年主要启示
+&lt;/h3>&lt;ul>
+&lt;li>&lt;strong>5-IP 规则&lt;/strong>仍然适用并将永远适用。&lt;/li>
+&lt;li>EKS、PrivateLink 和现代 AWS 服务消耗 IP 的速度远超 EC2 时代的架构。&lt;/li>
+&lt;li>&lt;strong>IPAM&lt;/strong> 是您在多 VPC/多账户世界中最好的朋友。&lt;/li>
+&lt;li>&lt;strong>IPv6&lt;/strong> 不是可选的 — 现在就开始双栈。&lt;/li>
+&lt;li>CIDR 规划不仅关乎&lt;strong>容量&lt;/strong>，更关乎&lt;strong>安全性和可扩展性&lt;/strong>。&lt;/li>
+&lt;/ul>
+&lt;h3 id="2025-年不可忽视的趋势">2025 年不可忽视的趋势
+&lt;/h3>&lt;ul>
+&lt;li>&lt;strong>IPv6 Everywhere&lt;/strong>：所有新的 VPC 都应采用双栈 (dual-stack) 模式，以便面向未来。&lt;/li>
+&lt;li>&lt;strong>BYOIP (Bring Your Own IP)&lt;/strong>：许多企业正在将 IPv4 地址空间带入 AWS，以避免冲突。&lt;/li>
+&lt;li>&lt;strong>Automated IP Allocation&lt;/strong>：IaC (基础设施即代码) 流水线现在集成了 IPAM (IP Address Management)，实现零人工 CIDR 分配。&lt;/li>
+&lt;li>&lt;strong>Subnet CIDR Expansion&lt;/strong>：AWS 现在支持无中断地扩展子网 — 如果您提前规划，这将是救星。&lt;/li>
+&lt;/ul>
+&lt;h3 id="aws-ip-小知识却非常实用">AWS IP 小知识，却非常实用
+&lt;/h3>&lt;ul>
+&lt;li>您可以稍后向 VPC &lt;strong>添加&lt;/strong> CIDR 块，但&lt;strong>不能缩小&lt;/strong>它们。&lt;/li>
+&lt;li>始终预留未来 &lt;strong>2-3 年的增长空间&lt;/strong>。&lt;/li>
+&lt;li>某些 AWS 服务（例如 FSx、Directory Service）需要&lt;strong>最小子网大小&lt;/strong>。&lt;/li>
+&lt;li>在生产子网容量中保留 20-30% 的余量。&lt;/li>
+&lt;li>除了实例，NAT 网关 (NAT Gateway) 和负载均衡器 (Load Balancer) 还会额外占用 IP 地址。&lt;/li>
+&lt;/ul>
+&lt;h3 id="子网规划速查表">子网规划速查表
+&lt;/h3>&lt;table>
+&lt;thead>
+&lt;tr>
+&lt;th>环境类型&lt;/th>
+&lt;th>CIDR&lt;/th>
+&lt;th>可用 IP 数&lt;/th>
+&lt;th>说明&lt;/th>
+&lt;/tr>
+&lt;/thead>
+&lt;tbody>
+&lt;tr>
+&lt;td>沙箱/测试&lt;/td>
+&lt;td>&lt;code>/28&lt;/code>&lt;/td>
+&lt;td>11&lt;/td>
+&lt;td>微小型，短期使用&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>小型生产&lt;/td>
+&lt;td>&lt;code>/24&lt;/code>&lt;/td>
+&lt;td>251&lt;/td>
+&lt;td>Web 应用，小型数据库&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>大型生产&lt;/td>
+&lt;td>&lt;code>/23&lt;/code>&lt;/td>
+&lt;td>507&lt;/td>
+&lt;td>多层架构 + 扩展&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>服务密集型环境&lt;/td>
+&lt;td>&lt;code>/22&lt;/code>&lt;/td>
+&lt;td>1019&lt;/td>
+&lt;td>多服务，多可用区&lt;/td>
+&lt;/tr>
+&lt;/tbody>
+&lt;/table>
+&lt;h3 id="来自实践的最终建议">来自实践的最终建议
+&lt;/h3>&lt;p>下次创建 VPC 时：&lt;/p>
+&lt;ol>
+&lt;li>除非有实际需求，否则&lt;strong>不要默认使用&lt;/strong> &lt;code>/16&lt;/code>。&lt;/li>
+&lt;li>在每个子网中&lt;strong>考虑 5 个 IP 地址规则&lt;/strong>。&lt;/li>
+&lt;li>&lt;strong>规划容器、端点和扩展&lt;/strong> — 不仅仅是 EC2。&lt;/li>
+&lt;li>&lt;strong>使用 IPAM&lt;/strong> 避免重叠并自动化分配。&lt;/li>
+&lt;li>&lt;strong>使用 CIDR 作为边界&lt;/strong>，为安全性进行分段。&lt;/li>
+&lt;li>&lt;strong>现在就考虑 IPv6&lt;/strong>，不要等到以后。&lt;/li>
+&lt;/ol>
+&lt;p>今天几分钟的 IP 规划，可以为你节省未来&lt;strong>数周的昂贵迁移成本&lt;/strong>。&lt;/p>
+&lt;h3 id="2025-年-aws-vpc-清单">2025 年 AWS VPC 清单
+&lt;/h3>&lt;p>上线前，请验证：&lt;/p>
+&lt;ul>
+&lt;li>从第一天起就支持双栈 (IPv4 + IPv6)&lt;/li>
+&lt;li>跨组织和混合网络无重叠的 CIDR&lt;/li>
+&lt;li>私有连接 (VPC 端点 (VPC endpoint)、PrivateLink) 用于内部服务&lt;/li>
+&lt;li>最小化公共 IPv4 暴露，并有充分理由&lt;/li>
+&lt;li>子网大小与工作负载扩展对齐&lt;/li>
+&lt;li>安全组 (Security Group) 和网络 ACL (NACL) 根据使用的 IP 范围进行调整&lt;/li>
+&lt;li>已部署可观测性，用于数据包级别的故障排除&lt;/li>
+&lt;/ul>
+&lt;p>到了 2025 年，AWS VPC 设计不再仅仅是“选择一个 CIDR 并点击创建”那么简单。
+它关乎&lt;strong>面向 IPv6 的未来规划，避免代价高昂的 IPv4 陷阱，实现私有优先的连接，以及从第一天起就设计混合/多云环境&lt;/strong>。&lt;/p>
+&lt;p>掌握这些虽小但却至关重要细节的工程师——正确的 CIDR 选择、积极主动的 IPv6 设置、私有优先的理念——将是那些构建&lt;strong>弹性、安全且可扩展的云网络&lt;/strong>，并能够经受未来十年考验的人。&lt;/p></description></item></channel></rss>

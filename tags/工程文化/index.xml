@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>工程文化 on Martin Liu's Blog</title><link>https://martinliu.cn/tags/%E5%B7%A5%E7%A8%8B%E6%96%87%E5%8C%96/</link><description>Recent content in 工程文化 on Martin Liu's Blog</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><lastBuildDate>Thu, 28 Aug 2025 18:07:39 +0800</lastBuildDate><atom:link href="https://martinliu.cn/tags/%E5%B7%A5%E7%A8%8B%E6%96%87%E5%8C%96/index.xml" rel="self" type="application/rss+xml"/><item><title>DevOps 的七个隐形痛点（以及五个靠谱解法）</title><link>https://martinliu.cn/blog/7-hidden-pains-every-devops-engineer-faces/</link><pubDate>Thu, 28 Aug 2025 15:30:00 +0800</pubDate><guid>https://martinliu.cn/blog/7-hidden-pains-every-devops-engineer-faces/</guid><description>&lt;img src="https://martinliu.cn/blog/7-hidden-pains-every-devops-engineer-faces/1_jBaUuJtCdz0DTwlD0JF9dw.jpeg" alt="Featured image of post DevOps 的七个隐形痛点（以及五个靠谱解法）" />&lt;p>舞台上的 DevOps 常被描绘成技术乌托邦：自动化流水线顺滑运行，开发与运维无缝协作，代码提交到上线一气呵成。可在我七年、三家公司的一线实践里，另外一面从不出现在主题演讲里。&lt;/p>
+&lt;p>下面这 7 个“隐形痛点”，几乎每位 DevOps 都会遇到。&lt;/p>
+&lt;h2 id="1-没人愿意做的大扫除">1. 没人愿意做的“大扫除”
+&lt;/h2>&lt;blockquote>
+&lt;p>“像打扫房子一样——每天清一点，比几个月不管再硬抠强太多。”&lt;/p>&lt;/blockquote>
+&lt;p>我接手过一批年久失修的仓库，本以为只是更个依赖，结果一路演变成数周拉锯战：硬编码的功能分支、成百上千个孤儿仓库、以及对版本控制“我行我素”的开发者。&lt;/p>
+&lt;p>最扎心的是：&lt;strong>从初创到巨头，技术债都会悄悄堆积，最后往往让 DevOps 收拾残局。&lt;/strong>&lt;/p>
+&lt;h2 id="2-提速透支未来">2. “提速”=“透支未来”
+&lt;/h2>&lt;blockquote>
+&lt;p>“有人为了‘这一次快一点’绕过流程，等出事了再说 DevOps 拖慢速度。”&lt;/p>&lt;/blockquote>
+&lt;p>我经历过团队为了赶版本绕过 CI/CD：三个月后，我们还在填坑——环境不一致、配置缺失、只在生产复现的幽灵 Bug。&lt;/p>
+&lt;p>讽刺的是：&lt;strong>绕过护栏的人，很少是修坑的人。&lt;/strong>&lt;/p>
+&lt;h2 id="3-请你看下日志吧的沟通鸿沟">3. “请你看下日志吧”的沟通鸿沟
+&lt;/h2>&lt;p>“我的流水线挂了，能帮修下吗？”——这是 DevOps 的日常高频语句。可很多时候，&lt;strong>日志已经把问题写明白了&lt;/strong>。
+我曾陪一位开发排查一上午，最终错误是“Service Account 缺少存储桶权限”。我指出时，对方说：“我以为那是背景噪音。”&lt;/p>
+&lt;p>这不是技术问题，而是沟通问题：对 DevOps 明晃晃的信息，对部分开发并不显眼。&lt;/p>
+&lt;h2 id="4-身份危机devops--ops">4. 身份危机：DevOps ≠ Ops
+&lt;/h2>&lt;p>很多岗位把 DevOps 和传统运维混为一谈。
+有的所谓 “DevOps 工程师”，实际是换了头衔的系统管理员；也有的更像开发，只是多了点云权限。
+现实是：&lt;strong>DevOps 处在一个光谱上&lt;/strong>——有的周几乎全是运营工作，另一些时期几乎全是开发，不同公司/团队/项目的比例差异巨大。&lt;/p>
+&lt;h2 id="5-yaml-工程的瘟疫">5. YAML 工程的瘟疫
+&lt;/h2>&lt;blockquote>
+&lt;p>“30 个 K8s 集群、几十万个 Pod、数个 GitOps 仓库、上十万份 YAML。”&lt;/p>&lt;/blockquote>
+&lt;p>YAML 本身不难，难在规模。一份“简单”的部署配置，能迅速演化成少数人看得懂的迷宫。
+我曾为一个神秘的 K8s 故障排查数天，根因竟是某个在多仓库间复制的 YAML 文件里——一个&lt;strong>错位的空格&lt;/strong>。&lt;/p>
+&lt;h2 id="6-漏网之鱼全都变成你的问题">6. “漏网之鱼”全都变成“你的问题”
+&lt;/h2>&lt;p>数据库、监控、告警、安全、合规、成本优化……很多组织把一切边界模糊的事都丢给 DevOps。
+范围过宽，焦点就会被稀释，&lt;strong>职业倦怠&lt;/strong>如影随形。正如同事所言：“所有‘没人接’的，最后都是你的。”&lt;/p>
+&lt;h2 id="7-隐形的悖论">7. 隐形的悖论
+&lt;/h2>&lt;blockquote>
+&lt;p>“只有出问题时，人们才想起我们。”&lt;/p>&lt;/blockquote>
+&lt;p>当一切顺滑时，没有人注意到精心打磨的流水线、前瞻性的监控和成百上千小时的部署优化；一旦出事，所有目光立刻投向 DevOps。
+&lt;strong>成功意味着无感失败；失败意味着全员关注。&lt;/strong>&lt;/p>
+&lt;h2 id="五个确实有效的应对策略">五个确实有效的应对策略
+&lt;/h2>&lt;p>这些年踩过无数坑之后，我总结了 5 个在不同团队都验证过的做法：&lt;/p>
+&lt;h3 id="1-把清理产品化常态化">1. 把“清理”产品化、常态化
+&lt;/h3>&lt;p>别把技术债当独立项目，而是纳入日常节奏。&lt;/p>
+&lt;p>一个简单且有效的做法：&lt;strong>给“清债”固定预算&lt;/strong>——例如每周一第一个小时，明确要关掉一项债务（更新依赖、重构脚本、补文档都算）。&lt;/p>
+&lt;h3 id="2-构建自助化解决方案">2. 构建自助化解决方案
+&lt;/h3>&lt;p>不要做每一次失败的“人工兜底”。**投入在“开发者自助”**更省总成本：&lt;/p>
+&lt;ul>
+&lt;li>更清晰的错误信息与行动建议&lt;/li>
+&lt;li>成体系的文档与排障手册&lt;/li>
+&lt;li>自动化诊断脚本与按钮式修复&lt;/li>
+&lt;/ul>
+&lt;blockquote>
+&lt;p>我做过一个简单的 Slack 机器人，用规则识别常见流水线故障并自动回复修复建议，让 DevOps 中断减少了近 &lt;strong>40%&lt;/strong>。&lt;/p>&lt;/blockquote>
+&lt;h3 id="3-落地谁破坏谁修复">3. 落地“谁破坏，谁修复”
+&lt;/h3>&lt;p>绕过流程或引入有风险变更的人，要负责后续修复与复盘。&lt;strong>把反馈闭环拉到本人&lt;/strong>，是最有效的流程教育。&lt;/p>
+&lt;h3 id="4-画清边界与期望">4. 画清边界与期望
+&lt;/h3>&lt;p>写下来、讲清楚：&lt;strong>团队的职责是什么，不是什么&lt;/strong>。不是拒绝协作，而是让协作可预期、可计划。&lt;/p>
+&lt;h3 id="5-让价值可见化">5. 让价值“可见化”
+&lt;/h3>&lt;p>在一切顺利时，也要持续对外沟通：&lt;/p>
+&lt;ul>
+&lt;li>部署频率（Deployment Frequency）&lt;/li>
+&lt;li>平均恢复时间（MTTR）&lt;/li>
+&lt;li>变更失败率（Change Failure Rate）&lt;/li>
+&lt;/ul>
+&lt;p>用趋势和对比讲故事，让大家&lt;strong>看见稳定背后的投入&lt;/strong>。&lt;/p>
+&lt;h2 id="devops-的人文侧技术之外的关键">DevOps 的人文侧：技术之外的关键
+&lt;/h2>&lt;p>最优秀的 DevOps，不只会写基础设施代码，更是&lt;strong>沟通者、导师与推动者&lt;/strong>。&lt;/p>
+&lt;p>我早期犯过的错，是只盯着自动化与基础设施。很快我发现，&lt;strong>帮助团队理解“为什么”&lt;/strong>，往往比“怎么做”更有价值。
+一位前辈对我说过一句一直受用的话：&lt;/p>
+&lt;blockquote>
+&lt;p>&lt;strong>DevOps 的核心不是让机器协同，而是让人协同。&lt;/strong>&lt;/p>&lt;/blockquote>
+&lt;h2 id="继续向前">继续向前
+&lt;/h2>&lt;p>尽管有这些痛点，DevOps 社区在不断进化：工具更易用、实践更成熟，组织也在从“为了更快”转向“为了更稳、更可持续”的战略视角。&lt;/p>
+&lt;p>如果你正在考虑进入这个领域，或正被这些挫折困扰——记住：&lt;strong>这些问题真实存在，但并非不可解&lt;/strong>。通过清晰沟通、稳健流程与重视协作，我们可以逐步化解它们。&lt;/p>
+&lt;p>当某天感觉一切都不顺时，也请记住：你并不孤单。一个庞大的同行社区正面对同样问题、分享解法，并一起向更好的工程实践迈进。&lt;/p>
+&lt;p>&lt;strong>你在 DevOps 之路上遇到过哪些“隐形痛点”？欢迎在评论区分享你的经历与招数。&lt;/strong>&lt;/p></description></item></channel></rss>
