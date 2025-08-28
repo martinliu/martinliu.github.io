@@ -29,25 +29,25 @@ toc: true
 
 ### GitHub基础认证
 
-![foundations](foundations-river-image__1_.png)
+![foundations](foundations-river-image__1_.webp)
 
 GitHub基础认证计划：旨在向初学者介绍GitHub平台的基本概念和产品。您将学习如何使用git，并探索GitHub的核心功能，如存储库管理、提交、分支、合并和项目管理。您还将了解如何为GitHub上的开源项目做贡献，并有效地使用markdown。您可以在此查看完整课程表（<https://learn.microsoft.com/en-us/collections/o1njfe825p602p>），以了解此路径中涵盖的更多主题。
 
 ### GitHub Actions认证
 
-![Actions](actions-river-image__1_.png)
+![Actions](actions-river-image__1_.webp)
 
 GitHub Actions证书:向您介绍GitHub Actions，以便您可以学会自动化软件开发工作流程。您将学习如何构建CI/CD管道，管理GitHub Actions，以及许多其他内容。到最后，您将准备好成为团队中处理所有与操作有关事务的人。在此查看完整课程表（<https://learn.microsoft.com/en-us/collections/n5p4a5z7keznp5>）。
 
 ### GitHub高级安全认证
 
-![security](ghas-river-image__1_.png)
+![security](ghas-river-image__1_.webp)
 
 GitHub高级安全（GHAS）证书：旨在教您如何在开发生命周期的每个阶段使用高级安全功能保护您的代码。GHAS专门针对GitHub企业版，因此该证书旨在供企业开发人员评估和配置私有存储库上的秘密扫描、使用CodeQL进行代码扫描、依赖关系管理等等。在此查看完整课程表（<https://learn.microsoft.com/en-us/collections/rqymc6yw8q5rey>）。
 
 ### GitHub管理认证
 
-![admin](admin-river-image__1_.png)
+![admin](admin-river-image__1_.webp)
 
 GitHub管理认证:将教您如何维护一个健康、强大和安全的GitHub环境，以满足组织的需求。您可以在此查看完整课程表（<https://learn.microsoft.com/en-us/collections/mom7u1gzjdxw03>）。
 
@@ -59,7 +59,7 @@ GitHub认证官网为每个认证计划创建了详细的学习指南。您可�
 
 每一门课程的学习资料都可以在微软学习网站上免费访问并学习。
 
-![learn](2024-01-25_09-58-51.png)
+![learn](2024-01-25_09-58-51.webp)
 
 建议的学习路径是：
 
@@ -73,7 +73,7 @@ GitHub认证官网为每个认证计划创建了详细的学习指南。您可�
 每一门认证考试的费用是 $99，；由于这个培训认证是刚刚 GA 不久，目前 “GitHub基础认证” 认证考试是打折促销，折后只需要
 $49 。
 
-![exam](2024-01-25_10-56-28.png)
+![exam](2024-01-25_10-56-28.webp)
 
 我目测了一下考试的范围和难度：感觉广度是一个挑战，毕竟不是每个人都会参与项目管理、协作、安全、开源/内源这些相关的工作内容。深度上应该不太难，毕竟假如你是天天在 GitHub 上工作的人，都会有一定最基础的经验。建议可以先学习了在说，毕竟学习的内容是免费的。如果想报名考试，报名和考试都是线上进行的，还是比较方便的，特别是 GAF 的折后价格还不错。
 

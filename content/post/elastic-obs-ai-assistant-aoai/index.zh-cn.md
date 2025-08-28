@@ -3,7 +3,7 @@ title: "先睹为快 Azure OpenAI 驱动的 Elastic 可观测性 ‘AI 助理’
 date: 2023-12-05T13:10:43+08:00
 description:  Elastic 可观测性解决方案中的 AI 助理目前还处于技术预览阶段，本文将介绍基本的配置和使用体验。
 slug: elastic-elastic-obs-ai-assistant-aoai
-image: pexels-cottonbro-studio-6153354.jpg
+image: pexels-cottonbro-studio-6153354.webp
 categories:
     - DevOps
 tags:
@@ -21,7 +21,7 @@ toc: true
 
 我最近好在学习微软的 Azure OpenAI 服务，在我的 Azure 环境中，已经创建了一个 OpenAI 服务，可以用于AI Assistant 的测试。因此，我就想看看 Elastic 的 AI Assistant 和 Azure 的 OpenAI 服务结合起来的效果如何。
 
-![](AIOps_blog-720x420.png)
+![](AIOps_blog-720x420.webp)
 
 ## Elastic 可观测性的 AI Assistant
 
@@ -46,13 +46,13 @@ toc: true
 
 首先，你需要在 Azure 的 Portal 中创建一个 OpenAI 服务，这个服务提供 OpenAI GPT-4 模型，我创建的服务名称是 `ai4elasticstack`。
 
-![](2023-12-05_13-44-47.jpg)
+![](2023-12-05_13-44-47.webp)
 
 这里确保选择 Azure OpenAI 的服务所在区域里能提供 gpt-4 模型，比如我选择的是瑞士中部。
 
 然后，是在这个区域中部署所需要的模型。
 
-![](2023-12-05_13-52-26.jpg)
+![](2023-12-05_13-52-26.webp)
 
 这里我部署了 gpt-4-32k 模型，需要注意的是：token 的限速需要调整到最大，这样才能保证 AI Assistant 的正常使用。
 
@@ -60,7 +60,7 @@ toc: true
 
 在 Elastic Cloud 中，创建一个 AI Assistant 所需要使用到的连接器，这个连接器的类型是 Azure OpenAI，然后，填写 Azure OpenAI 服务的相关信息，如下图所示。
 
-![](2023-12-05_13-56-18.jpg)
+![](2023-12-05_13-56-18.webp)
 
 URL 是一个重要的参数，它的格式如下：
 
@@ -88,7 +88,7 @@ elastic_agent.metricbeat
 
 点击 `view detail`，查看这条日志的详细信息。
 
-![](2023-12-05_09-59-13.png)
+![](2023-12-05_09-59-13.webp)
 
 AI Assistant 会自动分析这条日志，然后给出两个选项。
 
@@ -135,7 +135,7 @@ Elastic Assistant ：这个错误信息表示 Metricbeat 无法获取 Docker 容
 
 我测试了一个开放式的问题，希望 AI 能帮我分析出：我的服务器是否即将有磁盘空间用尽的情况发生。如下图所示：
 
-![](2023-12-05_17-13-51.png)
+![](2023-12-05_17-13-51.webp)
 
 下面解释一下 AI Assistant 的回答：
 

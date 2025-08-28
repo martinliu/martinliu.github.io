@@ -3,7 +3,7 @@ title: "SRE 实践的知识体系梳理"
 date: 2022-10-10T23:13:43+08:00
 description:  回归 IT 系统动态存在的本源，平衡质量和变化的矛盾。追溯 SRE 的源头，探讨在云计算时代大潮中，我们的业务系统稳定性建设应该何去何从。
 slug: sre-knowedge-body-mind-map-live-show
-image: 1_er5uoPoOmLkfuxjTAy2zwQ.jpeg
+image: 1_er5uoPoOmLkfuxjTAy2zwQ.webp
 categories:
     - blog
     - sre
@@ -26,7 +26,7 @@ tags:
 
 脑图的第一个版本是从 《SRE Workbook》的目录开始的，我尝试用最精简的方式，梳理每一章节中的知识点。可是在编制了前两章以后，就发现这个工作量其实非常的大。然后，我果断的放弃了“完美”的目标，然后将目标定位为：先完成一版。下图就是这样一个版本。后续我们讨论还有那些改进和与社区协作的想法。
 
-![SRE 知识体系脑图](SRE-Workbookv1.5.jpg)
+![SRE 知识体系脑图](SRE-Workbookv1.5.webp)
 
 后续的未尽事项：
 
@@ -45,21 +45,21 @@ tags:
 
 ## Site Reliability Engineering
 
-![sre book 1](sre1.jpg)
+![sre book 1](sre1.webp)
 
 * 中文版书名：[SRE：Google运维解密](https://book.douban.com/subject/26875239//)
 * [英文版线上阅读](https://sre.google/sre-book/table-of-contents/)
 
 ## The Site Reliability Workbook
 
-![sre book 2](sre2.jpg)
+![sre book 2](sre2.webp)
 
 * 中文版书名：[Google SRE 工作手册](https://book.douban.com/subject/35224058/)
 * [英文版线上阅读](https://sre.google/sre-book/table-of-contents/)
 
 ## Building Secure & Reliable Systems
 
-![sre book 3](sre3.jpg)
+![sre book 3](sre3.webp)
 
 * 中文书名：[《Google系统架构解密》](https://book.douban.com/subject/35585206/)
 * [英文版 PDF 版 官方免费下载](https://sre.google/static/pdf/building_secure_and_reliable_systems.pdf)

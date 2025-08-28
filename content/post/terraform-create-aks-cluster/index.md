@@ -3,7 +3,7 @@ title: "使用 Terraform 创建 Aks 集群"
 date: 2023-11-13T09:49:03+08:00
 description:  拥有 K8S 的集群的方式知多少，之 Azure 篇，方法 2。
 slug: terraform-create-aks-cluster
-image: 154.png
+image: 154.webp
 categories:
     - DevOps
 tags:
@@ -162,7 +162,7 @@ terraform apply
 
 在执行以上命令的过程中，我们可以在 Terraform Cloud 的 Web 界面中，看到 Terraform 的执行过程。
 
-![terraform runs](2023-11-14_23-14-28.jpg)
+![terraform runs](2023-11-14_23-14-28.webp)
 
 
 在测试完成了之后，可以使用下面的命令，删除 AKS 集群。

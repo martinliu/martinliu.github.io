@@ -3,7 +3,7 @@ title: "如何在 Azure 中使用 Red Hat 的开发者订阅"
 date: 2023-05-21T10:21:15+08:00
 description:  想要自由访问和下载所有红帽产品的朋友可以试试红帽开发者计划
 slug: use-rhel-dev-sub-in-azure
-image: virtual-machine.png
+image: virtual-machine.webp
 categories:
     - DevOps
 tags:
@@ -43,13 +43,13 @@ toc: true
 
 下图是在客户门户网站上查看当前订阅使用状况的界面。
 
-![ Red Hat 客户门户网站](red-hat-dev-sub.jpg)
+![ Red Hat 客户门户网站](red-hat-dev-sub.webp)
 
 如果你所使用的公有云里有Red Hat官方支持的 RHEL 镜像，你可以将你的开发者订阅使用在公有云的虚拟机上。在Cloud Access这个页面上，可以看到我将微软的Azure账户和红帽开发者订阅做了关联。
 
 这样就可以实现：有限数量的 Azure 虚拟机可以运行最新版的 RHEL 操作系统，这些操作系统的 License 计费到了 Red Hat 开发者订阅上；而开发者订阅又是有限免费的，因此实现了这些虚拟机的免费使用 RHEL 订阅。由于我在 Azure 中的长运行虚拟机并不多，因此这些虚拟机目前都是使用的 Red Hat Enterprise Linux。
 
-![Red Hat 客户门户中的 Cloud Access 管理](red-hat-dev-sub-cloud-access.jpg)
+![Red Hat 客户门户中的 Cloud Access 管理](red-hat-dev-sub-cloud-access.webp)
 
 ## Azure 支持 AHB 的混合权益
 
@@ -57,7 +57,7 @@ toc: true
 
 Azure 提供的 AHB（Azure Hybrid Benefit）使用中携带你自己的订阅到公有云里使用的方式。如下图所示。
 
-![即用即付”(PAYG) 和“自带订阅”(BYOS)](azure-hybrid-benefit-compare.png)
+![即用即付”(PAYG) 和“自带订阅”(BYOS)](azure-hybrid-benefit-compare.webp)
 
 右侧的这个框的说明了 Azure 虚拟机的成本结构。除了计算资源这部分需要计费意外。如果你在 Azure 中开启了 RHEL 虚拟机实例，默认情况下 RHEL 的许可证费用是有 Azure 代收的，Azure 的账单里包含了这部分。
 
@@ -67,7 +67,7 @@ Azure 提供的 AHB（Azure Hybrid Benefit）使用中携带你自己的订阅�
 
 如下图所示，在创建 Azure 的虚拟机的时候，选择 Red Hat Enterprise Linux 模板。
 
-![配置 RHEL 订阅授权](azure-rhel-sub.jpg)
+![配置 RHEL 订阅授权](azure-rhel-sub.webp)
 
 在授权这个部分，点击第二个“了解更多信息”链接。这时候，浏览器会跳转到红帽客户门户中，在输入了用户名和密码登录了以后，你就完成了红帽开发者订阅和当前 Azure 账户的关联。
 

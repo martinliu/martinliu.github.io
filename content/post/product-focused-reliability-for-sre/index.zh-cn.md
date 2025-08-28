@@ -3,7 +3,7 @@ title: "Google 白皮书：产品导向的 SRE 可靠性"
 date: 2024-06-12T13:25:58+08:00
 description:  本文讨论 Google SRE 团队如何通过将支持重新聚焦于产品和最终用户需求来解决服务 SLO 的问题，而不是集中于基础设施和服务。
 slug: product-focused-reliability-for-sre
-image: pexels-pavel-danilyuk-7868970.jpg
+image: pexels-pavel-danilyuk-7868970.webp
 categories:
     - SRE
 tags:

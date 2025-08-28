@@ -3,7 +3,7 @@ title: Grafana Labs 连续第二年荣膺 2025 年 Gartner® 可观测性平台�
 date: 2025-08-27T10:00:00+08:00
 description: "Grafana Labs 连续第二年荣膺 2025 年 Gartner® 可观测性平台魔力象限™ 的领导者称号，在愿景完整性方面表现突出。"
 slug: grafana-labs-named-a-leader-again-in-the-2025-gartner-magic-quadrant-for-observability-platforms
-image: Gartner-MQ-observability-platforms-meta.png
+image: Gartner-MQ-observability-platforms-meta.webp
 categories:
     - SRE
 tags:
@@ -26,7 +26,7 @@ toc: true
 
 我们为过去一年所产生的影响感到自豪，我们支持了超过 2500 万用户和 5000 多家客户，助力他们实现可观测性之旅。
 
-![图 1: Grafana Labs 荣膺 2025 Gartner® 可观测性平台魔力象限™ 领导者](mq-for-observability-platforms.png)
+![图 1: Grafana Labs 荣膺 2025 Gartner® 可观测性平台魔力象限™ 领导者](mq-for-observability-platforms.webp)
 
 除了在魔力象限（Magic Quadrant）中的位置，Grafana Labs 还被纳入 2025 Gartner® 可观测性平台关键能力（Critical Capabilities）报告。该报告对关键用例进行了更深入的评估。我们很自豪能成为所有用例中得分最高的四家供应商之一，其中包括：
 

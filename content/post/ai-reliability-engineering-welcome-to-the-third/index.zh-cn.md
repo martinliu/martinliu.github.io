@@ -3,7 +3,7 @@ title: "欢迎进入 SRE 的第三纪元 - AI 可靠性工程"
 date: 2025-07-27T09:44:13+08:00
 description: SRE 必须构建我们能够信任的 AI 并利用不断发展的工具和标准生态系统。
 slug: ai-reliability-engineering-welcome-to-the-third-age-of-sre
-image: afadfd03-nasik-lababan-auk3gkpv6u-unsplash-1024x683.jpg
+image: afadfd03-nasik-lababan-auk3gkpv6u-unsplash-1024x683.webp
 categories:
     - SRE
 tags:
@@ -27,7 +27,7 @@ hiden: false
 
 这种演变催生了一个全新的工程领域：AI 可靠性工程（AI Reliability Engineering，AIRe）。我们面临的挑战早已不再是 HTTP 请求的延迟，而是如何减少大语言模型（LLM）在生成标记（token）时的卡顿。优化数据库查询显得有些传统，如今我们更需要关注如何提升模型的检查点（checkpoint）恢复效率和张量（tensor）处理性能。AI 模型，正如曾经的 Web 应用那样，也需要卓越的可扩展性、可靠性和可观测性——而这些能力的架构工作仍在持续进行中。
 
-![The new stack of AI](bb3cd678-image5.png)
+![The new stack of AI](bb3cd678-image5.webp)
 
 我已经深入从事 AI 可靠性工程近两年，专注于研究、原型设计，并构建实际的推理系统。从 DevOps 各类大会到 SRE Days，再到纽伦堡和伦敦的社区聚会，我不断与行业同行交流实践经验。现在，我希望在这里将这些珍贵的洞察与你分享。
 
@@ -49,7 +49,7 @@ hiden: false
 * **模型的不确定性本质**：与典型的 Web 应用不同，AI 模型不是确定性的。同一个输入可能会产生不同结果。一个模型即便系统运行稳定、没有宕机，也可能输出错误、有偏差甚至荒谬的内容——这彻底颠覆了我们对“可靠性”的传统认知。
 * **评估标准正在变化**：光靠“可用性 SLA”已远远不够。我们需要引入 *准确性 SLA* 的新范式，通过精确率、召回率、公平性以及模型漂移等维度，来衡量模型在实际环境下的表现。
 
-![Emerging AI Challenges – SRE Day – AIRe 2025](e116da6b-image2.png)
+![Emerging AI Challenges – SRE Day – AIRe 2025](e116da6b-image2.webp)
 
 * **基础设施变革**：随着 AI 工作负载的出现，传统的架构设计也在演进。像 Ingress、水平 Pod 自动扩缩（HPA）这些概念，正逐步被模型网格（Model Mesh）、LoRa 负载均衡、AI 网关等新技术所取代，尤其是在 GPU 资源密集的场景下尤为关键。Kubernetes 社区也在持续演进，推动包括“Serving 工作组”、动态资源分配（DRA）以及 Gateway API 等机制，以支持 AI 推理的特殊需求。
 * **可观测性的盲区**：传统监控工具擅长监测 CPU、内存和响应延迟，但面对 AI 模型中的置信度、漂移情况，甚至幻觉（即模型生成虚假内容的倾向）等问题，常常无能为力。我们亟需构建 AI 专用的可观测性体系。
@@ -61,7 +61,7 @@ hiden: false
 
 因为它本质上就是"silent failure"。与崩溃的 Pod 或无法响应的 API 不同，模型静默退化是悄无声息的——系统仍能正常响应请求，但返回的答案可能越来越模糊、偏颇甚至完全错误。用户不会看到直观的 500 错误页面，而是遇到“幻觉式”输出、有害内容，或基于错误数据做出的决策。这不只是代码 bug，更是对用户信任的严重破坏。在 AI 世界里，“正确性”本身就等同于可用性（uptime）。当“可靠性”意味着输出质量时，模型退化——就是宕机。
 
-![Gateway API Inference Extension, OpenInference and AI Gateways](f6df7415-image1.png)
+![Gateway API Inference Extension, OpenInference and AI Gateways](f6df7415-image1.webp)
 
 >我们或许不仅要为 AI 扩展 Kubernetes —— 甚至终有一天，我们不得不为它另起炉灶（fork）。
 
@@ -79,7 +79,7 @@ hiden: false
 * **兼顾扩展性与安全性进行架构设计：** 可通过模型副本负载均衡、缓存机制、GPU 调度优化（Kubernetes 仍在演进中）及 AI 网关等技术，管理推理流量并加强安全性。安全机制可涵盖基于 token 的限速、语义缓存与访问权限控制。同时，还需通过模型来源追踪、安全交付与运行时监控，确保模型始终可信、稳定。
 * **构建持续评估机制：** 模型评估不应只在部署前完成。它应覆盖部署前的离线测试、上线前的影子测试与 A/B 测试，以及部署后的实时监控，持续检测模型是否出现性能漂移或精度退化。
 
-![Example Model Evaluation SLA in Production](1ef2c34a-image3.png)
+![Example Model Evaluation SLA in Production](1ef2c34a-image3.webp)
 
 ## AI 网关：SRE 在 AI 时代的核心工具
 

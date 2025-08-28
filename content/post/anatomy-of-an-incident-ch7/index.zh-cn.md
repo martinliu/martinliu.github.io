@@ -3,7 +3,7 @@ title: "Google 白皮书 《事故管理剖析》第七章 总结与展望"
 date: 2024-07-06T12:46:48+08:00
 description:  Google 的生产服务事故管理方法，Google 编写这份报告（白皮书）是为了分享&总结一份：技术事故响应实践的指南。
 slug: anatomy-of-an-incident-ch7
-image: pexels-pixabay-69934.png
+image: pexels-pixabay-69934.webp
 categories:
     -  SRE
 tags:

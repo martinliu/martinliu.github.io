@@ -2,7 +2,7 @@
 title: "用 Mac Mini M4 重构 HomeLab 结构"
 description: 年货买了个 Mac Mini M4，打算用它来重构一下 HomeLab 的结构。
 date: 2025-01-31T10:03:16+08:00
-image: mac-mini-with-ext-nvme-drive.jpg
+image: mac-mini-with-ext-nvme-drive.webp
 slug: macmini-m4-homelab-redesign
 categories:
     - Blog
@@ -78,13 +78,13 @@ docker run -d -p 9005:8080 -e WEBUI_AUTH=False   --add-host=host.docker.internal
   
 然后就可以在浏览器中访问 `http://192.168.31.6:9005` 来使用 Open WebUI 了。
 
-![Open WebUI](open-webui.png)
+![Open WebUI](open-webui.webp)
 
 Open WebUI 可以识别出我在后台容器中运行的 Deepseek-r1 14b 模型，它提供了基于网页的问答互动界面，而且对具有政治倾向的问题，回答的不置可否，体现出非常谨慎的态度。
 
 下面是在手机端问的另外一个问题，回答是令我满意的。
 
-![Open WebUI Mobile](iphone-webUI.png)
+![Open WebUI Mobile](iphone-webUI.webp)
 
 也就是说：局域网中的任何移动设备和电脑，都可以通过浏览器访问 Open WebUI，来使用 Deepseek-r1 14b 模型。
 
@@ -111,7 +111,7 @@ OrbStack 在我的 MacBook Pro 上已经使用了一段时间了，已经平替�
 
 > 从 Macbook 上推流音乐的方式是：打开苹果自家的 Music 软件，导入喜欢听的音乐文件，然后在播放界面，点击右上角的 AirPlay 图标，选择 Mac Mini M4，然后就可以听到音乐了。
 
-![Mac Music AirPlay](mac-music.png)
+![Mac Music AirPlay](mac-music.webp)
 
 > 从 iPhone 上可以通过屏幕镜像的功能，将任何视频或者音频 App 的声音推送到 Mac Mini M4 上。这样就可以在 Mac Mini M4 上播放 iPhone 上的任何音乐或者视频的声音了。
 

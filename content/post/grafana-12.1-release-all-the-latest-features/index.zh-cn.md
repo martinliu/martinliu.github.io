@@ -2,7 +2,7 @@
 title: "Grafana 12.1 正式发布！"
 description: "Grafana 12.1 版本带来了许多令人兴奋的新功能和改进，旨在提升用户体验和系统性能。"
 date: 2025-07-29T14:34:27+08:00
-image: grafana-12.1-meta.png
+image: grafana-12.1-meta.webp
 math: 
 license: 
 hidden: false
@@ -102,7 +102,7 @@ alertingListViewV2 = true
 
 Grafana 服务器管理员现在可以为仪表盘的 [时间选择器（time picker）](https://grafana.com/grafana/plugins/williamvenner-timepickerbuttons-panel/?src=li&mdm=social&camp=blog) 定义自定义的时间范围预设。这一功能非常适合那些需要经常分析特定上下文时间窗口的团队。
 
-![服务器配置时间范围的截图](screenshot-custom-time-ranges-12-1.png)
+![服务器配置时间范围的截图](screenshot-custom-time-ranges-12-1.webp)
 
 *服务器配置时间范围的截图*
 
@@ -165,7 +165,7 @@ Grafana 现在 [支持 Microsoft Entra Workload Identity](https://grafana.com/wh
 
 这一额外的安全层级现已在我们的 [BigQuery 数据源](https://grafana.com/grafana/plugins/grafana-bigquery-datasource/?src=li&mdm=social&camp=blog) 配置中 [正式支持](https://grafana.com/whats-new/2025-06-18-support-for-service-account-impersonation-in-bigquery/?src=li&mdm=social&camp=blog)，可有效防止令牌泄露后被滥用。目前该功能已全面开放。
 
-![服务账号模拟开关的截图](bigquery-service-account-impersonation.png)
+![服务账号模拟开关的截图](bigquery-service-account-impersonation.webp)
 
 
 你可以通过我们的 [插件目录](https://grafana.com/grafana/plugins/grafana-bigquery-datasource/?src=li&mdm=social&camp=blog) 或这篇 [最新博客文章](https://grafana.com/blog/2025/06/18/visualize-google-cloud-bigquery-data-in-grafana-the-latest-updates-key-features-and-more/?src=li&mdm=social&camp=blog) 深入了解 Grafana 中 BigQuery 数据源的使用方式。

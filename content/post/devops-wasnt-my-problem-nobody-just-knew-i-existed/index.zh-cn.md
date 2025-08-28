@@ -3,7 +3,7 @@ title: "技能不是问题，可见性才是关键 —— 我的 DevOps 职场�
 date: 2025-08-26T20:00:00+08:00
 description: "从技术技能到个人品牌：一个 DevOps 工程师的自我发现之旅，探讨在技术领域如何从隐藏到可见，从技能到影响力的转变。"
 slug: devops-wasnt-my-problem-nobody-just-knew-i-existed
-image: 1_3vFTMBRkvLlFBa3v3VukRA.png
+image: 1_3vFTMBRkvLlFBa3v3VukRA.webp
 categories:
     - DevOps
 tags:

@@ -3,7 +3,7 @@ title: "面向未来的 Elastic Stack 数据摄入架构"
 date: 2022-10-17T21:09:52+08:00
 description:  从 7.14 版本开始，可观测性和安全管理的数据摄入方式顺利的完成了重大的架构转型。传统的 ELK 架构已经彻底走到了尽头。
 slug: fleet-and-Elastic-agent
-image: pexels-analogicus-5516029.jpg
+image: pexels-analogicus-5516029.webp
 categories:
     - DevOps
 tags:
@@ -47,7 +47,7 @@ tags:
 
 渐进式的架构变化是从 7.13 开始初具雏形的，Fleet 功能组件作为 Kibana 的内置功能，正式登场。
 
-![7.13 前的架构图](2022-10-17_23-34-49.png)
+![7.13 前的架构图](2022-10-17_23-34-49.webp)
 
 Kiban 的定位是作为 Elastic Stack 的数据探索窗口，和管理控制平面。统一管理 Elastic Agent 需要增加两个功能：策略管理器和配置包管理器。需要引入新的 Fleet 服务器实现下面的需求：
 
@@ -57,7 +57,7 @@ Kiban 的定位是作为 Elastic Stack 的数据探索窗口，和管理控制�
 
 从 7.14 以后的架构图如下。这是以后的发展方向。
 
-![7.14 后的架构图](2022-10-17_23-36-03.png)
+![7.14 后的架构图](2022-10-17_23-36-03.webp)
 
 Fleet 服务器的代码和 Elastic Agent 是一套程序。它就像是一个万能工具一样。
 

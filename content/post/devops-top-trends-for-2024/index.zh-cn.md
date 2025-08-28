@@ -3,7 +3,7 @@ title: "2024年 DevOps 的10大趋势"
 date: 2024-01-02T10:03:49+08:00
 description:  探讨正在塑造DevOps未来的十大趋势
 slug: devops-top-trends-for-2024
-image: devops-trends-thumbnail.png
+image: devops-trends-thumbnail.webp
 categories:
     - DevOps
 tags:

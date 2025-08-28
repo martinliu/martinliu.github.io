@@ -3,7 +3,7 @@ title: "我为什么使用多个 SSH 密钥，而不是只用一个？"
 date: 2025-08-25T10:00:00+08:00
 description: "从单点故障到多层安全：学习如何通过按用途和环境分离 SSH 密钥来提升系统安全性，降低爆炸半径风险。"
 slug: why-i-run-multiple-ssh-keys-instead-of-just-one
-image: ssh-key-management-best-practices-feature.jpg
+image: ssh-key-management-best-practices-feature.webp
 categories:
     - SRE
 tags:

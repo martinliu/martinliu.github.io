@@ -3,7 +3,7 @@ title: "Google Report : Enterprise Roadmap to SRE"
 date: 2024-04-30T11:23:56+08:00
 description: "The report provides guidance on how to build and sustain a Site Reliability Engineering (SRE) function within large and complex organizations."
 slug: google-enterprise-roadmap-to-sre
-image: pexels-anete-lusina-4792380.jpg
+image: pexels-anete-lusina-4792380.webp
 categories:
     - SRE
 tags:
@@ -14,7 +14,7 @@ toc: true
 
 ---
 
-![Enterprise roadmap to SRE](2024-04-30_11-55-54.png)
+![Enterprise roadmap to SRE](2024-04-30_11-55-54.webp)
 
 * [Read from Oreilly](https://www.oreilly.com/library/view/enterprise-roadmap-to/9781098117740/)
 * [Download from Google](https://sre.google/resources/practices-and-processes/enterprise-roadmap-to-sre/)

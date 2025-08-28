@@ -5,7 +5,7 @@ author: "Martin Liu"
 draft: true
 date: 2024-01-10T16:19:04+08:00
 slug: course/doi-sre-cert
-image: sref-header.jpg
+image: sref-header.webp
 layout: "page"
 categories:
 - SRE
@@ -20,13 +20,13 @@ tags:
 
 当今的组织在更复杂的技术环境中处理更多的变化，导致更高的中断和事故风险。IT团队必须提高服务可靠性和系统弹性。随着自动化和可观察性成为更高效、更快速部署的关键因素，SRE职位已成为增长最快的职位之一。
 
-![SRE](640.jpg)
+![SRE](640.webp)
 
 SRE Foundation 认证课程重点介绍了SRE的发展及其未来方向，并为参与者提供了实践，方法和工具，以使整个组织中的人们参与到可靠性和稳定性中，这些案例通过使用真实场景和案例来证明。完成课程后，学员将在回到公司后可以切实地利用诸如了解，设置和跟踪服务水平目标（SLO）的内容。
 
 DevOps Institute （DOI）是本认证课程的官方所有者，官网SRE Foundation 认证课程概述：<https://devopsinstitute.com/certification/sre-foundation/>
 
-![SRE](640.png)
+![SRE](640.webp)
 
 SRE Foundation 认证课程所使用的教材和 SRE 资源，基于 DOI 同业内 SRE 领域的思想领袖的共创，以及同 SRE 相关企业/组织的合作；汲取了各种真实的最佳实践案例，旨在传授启动 SRE 所必须的关键原则和实践。本课程能够帮助使学习者成功完成 SRE Foundation 认证考试。
 

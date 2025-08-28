@@ -4,7 +4,7 @@ description: "SLO兵法是一个工作坊类型的培训，学员需要分组完
 author: "Martin Liu"
 date: 2024-01-10T15:19:04+08:00
 slug: course/slo-art-of-implement-sre
-image: art-slo.png
+image: art-slo.webp
 layout: "page"
 categories:
 - SRE

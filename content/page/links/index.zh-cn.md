@@ -4,7 +4,7 @@ links:
   - title: 中国 DevOps 社区
     description: 中国 DevOps 社区
     website: https://www.devopschina.org/
-    image: logo-s-800.jpeg
+    image: logo-s-800.webp
   - title: 敏捷开发资源大全
     description: 敏捷开发资源大全
     website: https://www.agile123.net/

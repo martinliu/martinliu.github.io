@@ -3,7 +3,7 @@ title: "停止统计生产事故"
 date: 2024-07-13T20:11:14+08:00
 description:  “可以被计数的并不总是重要的，而重要的事情并不总是可以被计数。” —— William Bruce Cameron
 slug: stop-counting-prod-incidents
-image: pexels-freestockpro-12955678.jpg
+image: pexels-freestockpro-12955678.webp
 categories:
     - SRE
 tags:

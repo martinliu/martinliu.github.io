@@ -3,7 +3,7 @@ title: "Dynatrace 出品 2023 年 SRE 状态报告"
 date: 2024-06-10T09:29:28+08:00
 description:  在 2023 年中 SRE 面临的挑战和最佳实践。
 slug: state-of-sre-in-2023
-image: pexels-pavel-danilyuk-9143840.jpg
+image: pexels-pavel-danilyuk-9143840.webp
 categories:
     - SRE
 tags:

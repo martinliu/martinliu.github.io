@@ -3,7 +3,7 @@ title: 更新到 Jimmy Cai 的 Stack Hugo Theme
 description:  上一个皮肤用了一段时间以后，发现作者已经停止更新很久了，而 Hugo 的版本和新功能还更新的挺快的，是时候给 blog 穿一件新衣服了。
 slug: change-to-jimmy-stack-theme
 date: 2022-10-09 00:00:00+0000
-image: 2022-10-1-beijing-guomao.jpg
+image: 2022-10-1-beijing-guomao.webp
 categories:
     - blog
 tags:
@@ -99,9 +99,9 @@ hugo new content/post/new-blog-test/index.md
 
 这个国庆节期间，我基本上也完成了 home lab 的 Rack 搭建项目，初步效果如下：
 
-![](new-rack.png)
+![](new-rack.webp)
 
-以上这张图片放置在了和 md 文件相同的目录中，插入这张图片的代码就变得异常简单了 `![](new-rack.png)` ；而且图片也被拉伸到了和文章页面宽度等宽，大小合适的情况下会充满页面宽度，而且能够自适应浏览器显示器的宽度。
+以上这张图片放置在了和 md 文件相同的目录中，插入这张图片的代码就变得异常简单了 `![](new-rack.webp)` ；而且图片也被拉伸到了和文章页面宽度等宽，大小合适的情况下会充满页面宽度，而且能够自适应浏览器显示器的宽度。
 
 后续会出一些关于这个 home lab 的文章。
 

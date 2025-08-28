@@ -3,7 +3,7 @@ title: "如何寻找占用空间最大的容器，并删除它所使用的卷，
 date: 2024-11-13T22:44:45+08:00
 description:  一个报错的容器可能会耗尽服务器的所有可用磁盘空间，导致其他所有容器都无法正常工作。
 slug: identify-clean-up-large-docker-containers-volumes
-image: 91625BFA-9860-451D-B947-558D4B63D207.jpg
+image: 91625BFA-9860-451D-B947-558D4B63D207.webp
 categories:
     - DevOps
 tags:
