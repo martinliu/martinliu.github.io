@@ -3,7 +3,7 @@ title: "CloudBees 全球企业高管安全管理调查报告-2022年"
 date: 2022-12-18T12:17:39+08:00
 description:  《CloudBees全球CxO安全调查》对美国、英国、法国、德国、西班牙和澳大利亚的600名CxO高管进行了调查，发现安全和合规性挑战是大多数组织的创新战略的一个重要障碍。
 slug: cloudbees-global-c-suite-security-survey-report-2022
-image: cover.png
+image: cover.webp
 categories:
     - itsm
 tags:

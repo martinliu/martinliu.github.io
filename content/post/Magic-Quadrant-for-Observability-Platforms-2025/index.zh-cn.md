@@ -3,7 +3,7 @@ title: "2025 年 Magic Quadrant：可观测性平台魔力象限"
 description: "深入分析2025年可观测性平台市场，揭示主要厂商的优势与挑战，助力企业做出明智的技术选择。"
 date: 2025-08-24T16:57:03+08:00
 slug: "magic-quadrant-observability-platforms-2025"
-image: 1180-thumbnail.jpg
+image: 1180-thumbnail.webp
 math: 
 license: 
 hidden: false
@@ -62,7 +62,7 @@ Gartner 将可观测性平台定义为：帮助用户了解应用、服务和基
 
 图 1: 可观测性平台魔力象限
 
-![Figure 1: Magic Quadrant for Observability Platforms](Figure_1_Magic_Quadrant_for_Observability_Platforms.png)
+![Figure 1: Magic Quadrant for Observability Platforms](Figure_1_Magic_Quadrant_for_Observability_Platforms.webp)
 
 ### 厂商优势与注意事项
 
@@ -455,7 +455,7 @@ Gartner 分析师通过厂商在流程、系统、执行方法与运营机制上
 
 **运营能力：** 评估厂商是否具备履行承诺与服务目标的执行力，涉及组织结构、团队技能、合作伙伴关系以及服务等级协议（SLA）的遵守情况。包括是否与主流云服务商协作，以及宕机与服务中断的响应能力。
 
-![table1](table1.png)
+![table1](table1.webp)
 
 ### 愿景完整性（Completeness of Vision）
 
@@ -477,7 +477,7 @@ Gartner 分析师通过评估厂商对当前市场机会的理解能力、对未
 
 **地域策略：** 厂商是否具备将产品、人才与服务本地化的能力，并能覆盖本土以外地区的客户需求。包括各区域团队建设、SaaS 平台部署位置、面向区域差异的产品策略，以及当地合作伙伴的广度与深度。
 
-![table2](table2.png)
+![table2](table2.webp)
 
 ### 象限定义说明（Quadrant Descriptions）
 

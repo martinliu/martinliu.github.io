@@ -3,7 +3,7 @@ title: "State of Devops 2024"
 date: 2024-10-28T15:17:39+08:00
 description:  副标题
 slug: state-of-devops-2024
-image: state_of_dora_2024.max-2500x2500.jpg
+image: state_of_dora_2024.max-2500x2500.webp
 categories:
     - DevOps
 tags:

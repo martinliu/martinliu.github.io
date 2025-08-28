@@ -3,7 +3,7 @@ title: "使用 Azure CLI 创建 K8S 集群"
 date: 2023-11-10T22:52:40+08:00
 description: 拥有 K8S 的集群的方式知多少，之 Azure 篇，方法 1。 
 slug: az-cli-create-aks-cluster
-image: hb9riivbne1jpgrnh77w.png
+image: hb9riivbne1jpgrnh77w.webp
 categories:
     - DevOps
 tags:
@@ -143,7 +143,7 @@ kubectl get nodes
 下面参考 <https://learn.microsoft.com/zh-cn/azure/aks/learn/quick-kubernetes-deploy-cli> 文档中的操作步骤，部署
  [AKS 应用商店应用程序](https://github.com/Azure-Samples/aks-store-demo) 。该应用系统的示意图如下：
 
-![](aks-store-architecture.png)
+![](aks-store-architecture.webp)
 
 创建名为 [aks-store-quickstart.yaml ，清单文件点此下载](aks-store-quickstart.yaml) ，并将以下清单复制到其中：
 

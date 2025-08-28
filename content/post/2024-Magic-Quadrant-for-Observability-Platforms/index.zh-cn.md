@@ -3,7 +3,7 @@ title: "2024 年 Gartner 可观测性平台魔力象限"
 date: 2024-08-15T10:04:45+08:00
 description:  本文介绍了 2024 年 Gartner 可观测性平台魔力象限，探讨了 AWS、BMC、Chronosphere、Datadog、Dynatrace、Elastic 和 Grafana Labs 等供应商的优势和注意事项。
 slug: 2024-Magic-Quadrant-for-Observability-Platforms
-image: pexels-pavel-danilyuk-9143804.jpg
+image: pexels-pavel-danilyuk-9143804.webp
 categories:
     - SRE
 tags:
@@ -56,7 +56,7 @@ Gartner 将可观测性平台定义为：能够从日志、指标、事件和追
 
 ## 魔力象限
 
-![图 1: Y24Q3 可观测性平台魔力象限](Figure-1.png)
+![图 1: Y24Q3 可观测性平台魔力象限](Figure-1.webp)
 
 供应商优势与注意事项分析如下。  
 

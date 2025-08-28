@@ -3,7 +3,7 @@ title: "为 Hugo 网站添加 Elastic RUM 用户体验监控"
 date: 2023-12-08T09:44:13+08:00
 description: RUM 对于网站的用户体验监控非常重要，本文介绍如何为 Hugo 网站添加 Elastic RUM 监控。
 slug: add-elastic-rum-to-hugo-site
-image: pexels-amina-filkins-5424636.jpg
+image: pexels-amina-filkins-5424636.webp
 categories:
     - SRE
 tags:
@@ -76,7 +76,7 @@ Elastic APM实时用户体验监控（RUM）JavaScript代理提供了对你的We
 
 如下图所示：
 
-![Elastic APM RUM](elastic-cloud-apm-rum.png)
+![Elastic APM RUM](elastic-cloud-apm-rum.webp)
 
 在 APM 的配置向导里，我们先点击 RUM（JS）这个标签，然后页面中会出现为前端项目添加 Elastic RUM 的 JavaScript 代码的两种方式。
 
@@ -121,7 +121,7 @@ Elastic APM实时用户体验监控（RUM）JavaScript代理提供了对你的We
 
 点击Kibana界面左侧导航栏里的 `User Experience 仪表板` 就可以看到下图。
 
-![Elastic APM RUM 用户体验分析](elastic-cloud-apm-rum-2.png)
+![Elastic APM RUM 用户体验分析](elastic-cloud-apm-rum-2.webp)
 
 ### 页面加载持续时间
 
@@ -146,7 +146,7 @@ Elastic APM实时用户体验监控（RUM）JavaScript代理提供了对你的We
 
 核心Web Vitals是Google最近推出的一项倡议，旨在引入一组新的度量标准，通过量化真实用户体验更好地分类良好和糟糕的网站。这是通过查看三个关键指标来实现的：加载性能、视觉稳定性和互动性：
 
-![Web要点](web-dev-vitals.png)
+![Web要点](web-dev-vitals.webp)
 （图片来源：<https://web.dev/vitals）>
 
 * 最大内容绘制（LCP）: 加载性能。LCP是页面的主要内容可能已加载的时间戳。对于用户来说，这是您网站的感知加载速度。为了提供良好的用户体验，Google建议将LCP控制在2.5秒以下。
@@ -165,7 +165,7 @@ JavaScript错误可能对用户在你的网站上的体验产生负面影响。�
 
 点击Kibana界面左侧导航栏里的 `APM 服务` ，选择我的 blog 的服务名称，就可以看到下图。
 
-![Elastic APM](elastic-cloud-apm-rum-3.png)
+![Elastic APM](elastic-cloud-apm-rum-3.webp)
 
 由于 Elastic RUM 和 Elastic APM 实现的是全链路的追踪，如果我的 Blog 会访问到其他后台服务，而且那些后台服务也接入了 APM 监控，那么在 APM 的界面里，就可以看到端到端的追踪监控视图。
 

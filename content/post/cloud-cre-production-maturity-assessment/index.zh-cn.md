@@ -3,7 +3,7 @@ title: "Google SRE 白皮书：Cloud CRE 生产成熟度评估"
 date: 2024-07-07T21:12:04+08:00
 description: 谷歌 Cloud CRE 团队开发了一种生产成熟度评估方法，以帮助客户评估其生产环境的成熟度，并提供指导，以帮助他们提高其生产环境的可靠性。
 slug: cloud-cre-production-maturity-assessment
-image: pexels-loan-patru-1487385115-27000643.jpg
+image: pexels-loan-patru-1487385115-27000643.webp
 categories:
     - SRE
 tags:

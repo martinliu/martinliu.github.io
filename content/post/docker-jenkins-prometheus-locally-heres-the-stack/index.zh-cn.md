@@ -2,7 +2,7 @@
 title: "Docker、Jenkins、Prometheus，本地能跑？！这套技术栈你需要搞定"
 description: 只需要不长的时间在本地测试 Jenkins、Prometheus 和 Docker；下面👇就是最终跑通的方案。
 date: 2025-07-28T17:58:33+08:00
-image: 1_izxF5LhLRecc_epDuvJmhg.png
+image: 1_izxF5LhLRecc_epDuvJmhg.webp
 slug: docker-jenkins-prometheus-locally-heres-the-stack
 math: 
 license: 
@@ -62,7 +62,7 @@ tags: ["Docker", "Jenkins", "Prometheus", "Grafana", "Loki", "Traefik", "Postgre
 
 这就是基础配置。没有 AWS，没有 GCP，也不用托管的 EKS。只有 **容器、端口，以及偶尔崩溃的终端窗口**。
 
-![devops stack](1_izxF5LhLRecc_epDuvJmhg.png)
+![devops stack](1_izxF5LhLRecc_epDuvJmhg.webp)
 
 ## 让我豁然开朗的 docker-compose.yml 配置
 

@@ -3,7 +3,7 @@ title: "2024 年 Gartner DevOps平台魔力象限"
 date: 2024-09-20T09:49:13+08:00
 description:  基于市场中 11 个主要供应商的能力和表现，Gartner 对 DevOps 平台进行了评估，以帮助组织选择适合其需求的解决方案。
 slug: 2024-magic-quadrant-for-devops-platforms
-image: 66da11103b54e7739f860dd8_blog-gartner-mq.png
+image: 66da11103b54e7739f860dd8_blog-gartner-mq.webp
 categories:
     - DevOps
 tags:
@@ -64,13 +64,13 @@ DevOps 平台支持多种应用场景，包括但不限于：
 
 图 1：DevOps 平台魔力象限
 
-![图 1：DevOps 平台魔力象限](figure.png)
+![图 1：DevOps 平台魔力象限](figure.webp)
 
 ### 供应商优劣分析
 
 ### Amazon Web Services
 
-![Amazon Web Services](amazon-ec2.jpg)
+![Amazon Web Services](amazon-ec2.webp)
 
 亚马逊网络服务 (AWS) 在此魔力象限中被列为具有远见的领导者。其 DevOps 平台 Amazon CodeCatalyst 集成了多项 AWS 工具，包括 AWS CodeArtifact、AWS CodeBuild、AWS CodeCommit、AWS CodeDeploy、AWS CodePipeline 和 AWS CodeStar。（评估期间，亚马逊已停止为 CodeCommit 接受新用户。）Amazon CodeCatalyst 平台正在迅速开发更多的协作和报告功能。
 
@@ -90,7 +90,7 @@ AWS 拥有全球业务网络，为各类规模和行业的客户提供服务。A
 
 ### Atlassian
 
-![Atlassian](atlassian-atlas.png)
+![Atlassian](atlassian-atlas.webp)
 
 Atlassian 被评为本魔力象限中的领导者。其 DevOps 平台由多个工具组成，包括 Jira、Bitbucket、Jira Service Management、Confluence、Compass 和 Jira Product Discovery。这些工具提供了从产品发现到工作管理、问题跟踪、源代码管理、发布编排、CI/CD、事故管理、变更管理和团队协作的全方位支持。
 
@@ -110,7 +110,7 @@ Atlassian 的业务遍布全球，为各行各业、不同规模的客户提供�
 
 ### Buildkite
 
-![Buildkite](buildkite.png)
+![Buildkite](buildkite.webp)
 
 Buildkite 是本次魔力象限中的利基玩家。其 DevOps 平台包含 Pipelines、Packages 和 Test Analytics，支持 CI/CD 流水线、包管理（测试版）以及测试套件优化和分析功能。
 
@@ -130,7 +130,7 @@ Buildkite 的主要业务位于北美，同时在亚太地区也有一定的客�
 
 ### CircleCI
 
-![CircleCI](circleci.png)
+![CircleCI](circleci.webp)
 
 CircleCI 是本次魔力象限中的挑战者。它的 DevOps 平台同样叫做 CircleCI，提供托管和自托管的构建基础设施、自托管运行器、CI/CD 流水线、测试自动化、构建性能洞察以及支持 LLM 的应用程序。
 
@@ -150,7 +150,7 @@ CircleCI 的业务主要集中在北美，同时在欧洲也有一定的客户�
 
 ### CloudBees
 
-![CloudBees](cloudbees.png)
+![CloudBees](cloudbees.webp)
 
 CloudBees 是魔力象限中的挑战者，其 DevOps 平台包括 CloudBees CI、CloudBees 持续交付与发布编排 (CD/RO)、特性管理和合规工具。
 
@@ -170,7 +170,7 @@ CloudBees 主要在北美运营，同时在欧洲也有一定业务，客户涵�
 
 ### GitLab
 
-![GitLab](gitlab.jpeg)
+![GitLab](gitlab.webp)
 
 GitLab 是魔力象限中的领导者，其 DevOps 平台包括 GitLab 和 GitLab Duo，涵盖了计划、源代码管理、CI、部署自动化、可观测性、应用安全测试、软件供应链安全、合规报告、价值流分析和事故管理等多项功能。
 
@@ -190,7 +190,7 @@ GitLab 的业务遍布全球，客户群涵盖各行业的不同规模企业。2
 
 ### Harness
 
-![Harness](harness-platform.jpg)
+![Harness](harness-platform.webp)
 
 Harness 是本魔力象限的领导者之一，其 DevOps 平台包括代码库、持续集成、持续交付和 GitOps、特性管理、服务可靠性管理、混沌工程、软件工程洞察、内部开发者门户、安全测试编排、基础设施即代码管理、软件供应链保障和云成本管理等模块。
 
@@ -210,7 +210,7 @@ Harness 的业务遍及北美、欧洲和印度，客户主要为来自多个行
 
 ### JetBrains
 
-![JetBrains](teamcity.png)
+![JetBrains](teamcity.webp)
 
 JetBrains 是本次魔力象限中的一个利基玩家，其 DevOps 平台由 Space、TeamCity 和 YouTrack 组成。（在本次评估过程中，JetBrains 宣布将停止支持 Space，并计划推出新产品。）此外，JetBrains 拥有多款面向不同编程语言的集成开发环境 (IDE)。YouTrack 主要提供项目管理和知识管理功能，适用于传统和敏捷开发方式；而 TeamCity 是 JetBrains 的 CI/CD 平台，可在本地部署或云上使用。
 
@@ -230,7 +230,7 @@ JetBrains 的业务遍及全球，但未公布其客户的具体规模或细节�
 
 ### JFrog
 
-![JFrog](jfrog-2024-03-28.png)
+![JFrog](jfrog-2024-03-28.webp)
 
 JFrog 是本次魔力象限中的一位挑战者，其 DevOps 平台包括 JFrog Artifactory、JFrog Pipelines、JFrog Distribution、JFrog Security Essentials（Xray）、JFrog Advanced Security、JFrog Curation、JFrog Connect 和 JFrog Catalog。
 
@@ -250,7 +250,7 @@ JFrog 的业务主要集中在北美和欧洲，拥有来自各行业、不同�
 
 ### Microsoft
 
-![Microsoft](microsoft-teams.png)
+![Microsoft](microsoft-teams.webp)
 
 Microsoft 是本次魔力象限中的领导者，提供 GitHub 和 Azure DevOps 两个独立的 DevOps 平台。当前，Microsoft 更加专注于 GitHub 平台，平台功能包括 Dependabot、GitHub Actions、GitHub Advisory Database、GitHub Codespaces、GitHub Copilot、GitHub Discussions、GitHub Issues、GitHub Packages、GitHub Projects 和 GitHub Repositories。
 
@@ -270,7 +270,7 @@ Microsoft 的业务遍布全球，服务于来自各行各业的客户。在 202
 
 ### Red Hat
 
-![Red Hat](red-hat-openshift-container-platform.png)
+![Red Hat](red-hat-openshift-container-platform.webp)
 
 Red Hat 是本次魔力象限中的挑战者。它通过 Red Hat OpenShift 和 Red Hat Ansible Automation Platform 提供 DevOps 功能支持，涵盖 CI/CD 和基础设施自动化。这一平台利用云开发环境、标准模板和 playbooks，支持平台工程的实施，基于 Kubernetes、Tekton、Ansible 和 Argo CD 等开源技术构建。
 

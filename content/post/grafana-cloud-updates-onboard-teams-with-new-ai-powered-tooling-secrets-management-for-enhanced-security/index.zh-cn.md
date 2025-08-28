@@ -2,7 +2,7 @@
 title: "Grafana Cloud 推出多项更新：AI 驱动工具、秘钥管理强化安全性，以及更多功能"
 description: 如果你之前没有关注，本文是每月一次的 Grafana Cloud 最新功能汇总。你也可以在 Grafana Cloud 更新日志中查看所有新增功能。
 date: 2025-08-21T16:55:49+08:00
-image: cloud-updates-aug-2025.png
+image: cloud-updates-aug-2025.webp
 math: 
 license: 
 hidden: false
@@ -25,7 +25,7 @@ tags: ["Grafana", "AI", "Synthetic Monitoring", "Jenkins"]
 
 这一理念也持续推动我们构建新的工具。例如，本月我们很高兴宣布：Grafana Assistant——一款嵌入于 Grafana Cloud 的 AI 助手，现已进入公开预览阶段。它支持自然语言操作，帮助你更高效地进行查询、构建和故障排查。
 
-![alt text](maxresdefault-2.jpg)
+![alt text](maxresdefault-2.webp)
 
 Grafana Assistant 可简化常见的工作流程，比如编写 PromQL、LogQL 或 TraceQL 查询，以及创建仪表盘等，同时始终让你掌控操作过程。它能帮助你减少重复性工作，提升整体效率，包括：
 
@@ -52,7 +52,7 @@ Grafana Assistant 可简化常见的工作流程，比如编写 PromQL、LogQL �
 
 当前，密钥的创建、修改和删除权限仅限于管理员用户。不过，只要用户具备检查项的编辑权限，且知晓密钥名称，即可在相应脚本中调用密钥。
 
-![Synthetic Monitoring 用户界面截图，左侧显示“创建密钥”对话框，右侧是“密钥管理”部分。](secrets-management-config.png)
+![Synthetic Monitoring 用户界面截图，左侧显示“创建密钥”对话框，右侧是“密钥管理”部分。](secrets-management-config.webp)
 
 Synthetic Monitoring 用户界面截图，左侧显示“创建密钥”对话框，右侧是“密钥管理”部分。
 
@@ -84,7 +84,7 @@ Synthetic Monitoring 用户界面截图，左侧显示“创建密钥”对话�
 
 为此，我们推出了全新的 [Tailscale](https://tailscale.com/) 与 Grafana Cloud 集成方案。该集成现已开启私密预览，允许你通过 [Private Data Source Connect](https://grafana.com/docs/grafana-cloud/connect-externally-hosted/private-data-source-connect/?pg=blog&plcmt=body-txt)，从 Grafana Cloud 直接安全访问位于 Tailscale 网络（称为 [tailnet](https://tailscale.com/kb/1136/tailnet)）中的数据源。
 
-![YouTube 视频](maxresdefault-1.jpg)
+![YouTube 视频](maxresdefault-1.webp)
 
 该集成带来的关键优势包括：
 
@@ -102,7 +102,7 @@ Synthetic Monitoring 用户界面截图，左侧显示“创建密钥”对话�
 
 随着开箱即用的告警功能[正式发布](https://grafana.com/whats-new/2025-07-22-frontend-observability-out-of-the-box-alerting/?pg=blog&plcmt=body-txt)，Grafana Cloud Frontend Observability 向前迈出了重要一步，即使是首次使用 Grafana 告警功能的用户，也可以通过 [Grafana 托管告警](https://grafana.com/docs/grafana/latest/alerting/alerting-rules/create-grafana-managed-rule/?pg=blog&plcmt=body-txt) 快速上手，无需预先了解复杂的配置流程。
 
-![YouTube 视频](maxresdefault.jpg)
+![YouTube 视频](maxresdefault.webp)
 
 借助简化的工作流，你可以：
 
@@ -167,7 +167,7 @@ Grafana Cloud IRM 的外发 Webhook 现已支持事件相关触发器，为自�
 
 通过这一集成，你可以在统一平台中查看 Claude 模型的调用频率、响应时间和累计费用，配套的预设仪表盘与告警机制可帮助你迅速启动监控并及时采取优化措施。
 
-![Claude](anthropic-usage-dashboard_1.png)
+![Claude](anthropic-usage-dashboard_1.webp)
 
 详细信息请参阅[官方文档](https://grafana.com/docs/grafana-cloud/monitor-infrastructure/integrations/integration-reference/integration-anthropic/?pg=blog&plcmt=body-txt)。
 
@@ -180,4 +180,4 @@ Grafana Cloud IRM 的外发 Webhook 现已支持事件相关触发器，为自�
 - **Jenkins 概览仪表盘**：展示整个 Jenkins 实例的运行状况，包括所有项目、节点、执行器状态和构建队列等信息。  
 - **Jenkins DORA 指标仪表盘**：聚焦衡量研发效能的四项核心指标：部署频率、变更交付时长、变更失败率与服务恢复时间。
 
-![Grafana 仪表盘截图，展示四个图表：部署频率、变更交付时间、变更失败率和 30 天内服务恢复时间。](jenkins-enterprise-data-source-dashboard.png)
+![Grafana 仪表盘截图，展示四个图表：部署频率、变更交付时间、变更失败率和 30 天内服务恢复时间。](jenkins-enterprise-data-source-dashboard.webp)

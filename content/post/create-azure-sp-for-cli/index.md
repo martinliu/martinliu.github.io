@@ -3,7 +3,7 @@ title: "创建用于命令行登录认证 Azure 的 Service Principal 必读"
 date: 2023-11-14T11:03:55+08:00
 description:  包括 Azure CLI 在内的 Azure 命令行工具，都可以使用 Service Principal 的方式，来完成 Azure 账号的登录认证。本文介绍如何创建一个用于在命令行登录认证 Azure 的 Service Principal。
 slug: create-azure-sp-for-cli
-image: pexels-miguel-2882566.jpg
+image: pexels-miguel-2882566.webp
 categories:
     - DevOps
 tags:

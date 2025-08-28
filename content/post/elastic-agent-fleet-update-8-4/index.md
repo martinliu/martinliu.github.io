@@ -3,7 +3,7 @@ title: "Elastic Agent 和 Fleet 服务器 安装手册 v8.4"
 date: 2022-10-18T21:32:14+08:00
 description: 用当前最新版本的 Elastic Stack 软件测试验证崭新的 ELK 架构，初步体验可观测性和安全管理解决方案。
 slug: elastic-agent-fleet-update-8-4
-image: observability.png
+image: observability.webp
 categories:
     - DevOps
 tags:
@@ -258,7 +258,7 @@ update-ca-trust extract
 
 回到 Fleet 主页，找到 agent 管理的地方，按照流程做，点击创建 Fleet  Server 配置。然后就会在页面上生成 Fleet 服务器的安装配置命令。
 
-![Fleet server](2022-10-18_10-46-39.png)
+![Fleet server](2022-10-18_10-46-39.webp)
 
 按着提示的命令参数安装 Fleet 服务器。
 
@@ -407,11 +407,11 @@ downloads/
 
 进入 Fleet 的配置页面，在  `Agent Binary Download` 下面点击 “Add agent binary source” ，新建一个新的代理安装包下载来源网站。
 
-![Agent Binary Download](2022-10-18_14-21-44.png)
+![Agent Binary Download](2022-10-18_14-21-44.webp)
 
 在 Agent Policies 页面新建一个新的测试用 Agent 管理策略，名为 “my-policy2”；进入这个策略的配置界面，修改 *Agent Binary Download* 为刚才创建的下载源。保存并测试这个策略。
 
-![](2022-10-18_14-25-35.png)
+![](2022-10-18_14-25-35.webp)
 
 点击 “Add agent” 连接，获取下面的新注册代理注册命令。
 
@@ -456,11 +456,11 @@ cat /opt/Elastic/Agent/elastic-agent-20221018.ndjson
 5. 这些节点会自动的，很快的更新到新的管理策略中，Elastic Agent 会自动化安装 Packetbeat 采集模块。
 6. 返回 Kiban ，进入安全管理解决方案，我们可以看到 Filebeat 和 Packetbeat 的采集结果。
 
-![添加 Packetbeat 模块](2022-10-18_22-49-08.png)
+![添加 Packetbeat 模块](2022-10-18_22-49-08.webp)
 
 在策略更新了以后，我们没有在 Elastic Agent 端做任何操作，它就已经自动化的下载新的策略，并更新了自身。
 
-![查看 安全管理解决方案](2022-10-18_22-53-55.png)
+![查看 安全管理解决方案](2022-10-18_22-53-55.webp)
 
 
 ## 常见问题

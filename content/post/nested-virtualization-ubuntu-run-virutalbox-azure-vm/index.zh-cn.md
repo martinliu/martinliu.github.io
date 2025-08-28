@@ -3,7 +3,7 @@ title: "嵌套虚拟化：在 Azure Ubuntu VM 中运行 VirtualBox 虚拟机"
 date: 2024-08-02T16:28:51+08:00
 description:  本文介绍如何在 Azure 虚拟机上运行 VirtualBox，以及如何在 Ubuntu 上用 vagrant 和 Ansible 管理虚拟机环境。
 slug: nested-virtualization-ubuntu-run-virutalbox-azure-vm
-image: pexels-cottonbro-4966171.jpg
+image: pexels-cottonbro-4966171.webp
 categories:
     - DevOps
 tags:
@@ -31,7 +31,7 @@ Azure 是在 2017 年 1 月，宣布支持两个新的可支持嵌套虚拟化�
 
 在 Azure 门户中，选择 `虚拟机`，然后选择 `创建`，选择 `Dv3 或者 Ev3` 系列的虚拟机，其它相关选项如下图所示。
 
-![创建虚拟机](2024-07-27_23-01-57.png)
+![创建虚拟机](2024-07-27_23-01-57.webp)
 
 1. 安全类型：这里选择 “Standard” ，这里默认的是 “Trusted launch virtual machines” , 如果选择了默认选项，嵌套虚拟机的虚拟机是无法正常启动的。
 2. 在选择机型的时候，选择 `D` 或者 `E` 开头的，并且是 `v3` 结尾的系列。
@@ -208,7 +208,7 @@ vboxmanage showvminfo <vm-name>
 
 强烈推荐这本书《[Ansible for DevOps](https://www.ansiblefordevops.com/)》，这是一本非常好的 Ansible 入门书籍，作者 Jeff Geerling 是一位非常有经验的 DevOps 工程师，他在这本书中详细介绍了 Ansible 的基本概念和高级用法，非常适合初学者学习。
 
-![Ansible for DevOps](ansible-for-devops-cover-2x.jpg)
+![Ansible for DevOps](ansible-for-devops-cover-2x.webp)
 
 * 书的代码库：<https://github.com/geerlingguy/ansible-for-devops.git>
 * 书的全文：<https://github.com/geerlingguy/ansible-for-devops-manuscript.git>

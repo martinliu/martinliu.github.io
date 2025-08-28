@@ -4,7 +4,7 @@ description: 以全面深入的理论与实践，引领你探索可观测性的�
 author: "Martin Liu"
 date: 2024-01-10T16:19:04+08:00
 slug: course/o11y-foundation
-image: o11yf.png
+image: o11yf.webp
 layout: "page"
 categories:
 - SRE

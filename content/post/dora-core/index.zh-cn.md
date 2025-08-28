@@ -15,7 +15,7 @@ toc: true
 
 ## DORA Core 模型
 
-![DORA Core 英文版](dora-core-model-v1.2.2.png)
+![DORA Core 英文版](dora-core-model-v1.2.2.webp)
 [下载 PDF 版](dora-core-model-v1.2.2.pdf)
 
 关于这个模型：DORA Core是DORA研究计划的成果，它是从历史和广度上发现到的，一系列最坚实存在的能力、指标和成果的集合。核心是从DORA的持续研究中得出的，包括我们年度《加速DevOps状态报告》中提出的分析。核心旨在在从业者的背景中作为指南使用：它有意追随研究，更保守地发展。核心模型中显示的概念和关系已经在我们的研究中反复证明，并已成功被软件工程团队用于优先考虑持续改进。常见问题解答见下文。

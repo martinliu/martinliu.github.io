@@ -3,7 +3,7 @@ title: "鱼缸里的生态系统"
 date: 2022-11-07T14:27:37+08:00
 description:  在物尽其用想法的驱使下，收拾了家里两个闲置很久的鱼缸，从养水，造景，养草，放鱼开始操练起来
 slug: aquarium-eco-systems
-image:  small-tank.jpg
+image:  small-tank.webp
 categories:
     - Blog
 tags:
@@ -24,7 +24,7 @@ toc: false
 
 说回到下面这个鱼缸的故事。
 
-![ 实验鱼缸 ](big-tank.jpg)
+![ 实验鱼缸 ](big-tank.webp)
 
 这是一个 35 cm 宽的白玻璃鱼缸。由于疫情的缘故，在家里呆着的时间会比较多。几乎所有社交也都减免了，天天过着几乎是隐居一般的生活。养几条鱼，让屋子里多一些生机，能看着小鱼儿们在水草间游弋，也是一种非常减压的举动。
 

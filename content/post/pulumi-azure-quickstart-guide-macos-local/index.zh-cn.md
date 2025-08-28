@@ -3,7 +3,7 @@ title: "Pulumi IaC 之 Azure 快速入门指南（MacOS & Python 本地）"
 date: 2024-10-12T11:49:22+08:00
 description:  在本地 macOS 环境中使用 Pulumi 部署 Azure 资源的快速入门指南，本示例的编程语言使用 Python。
 slug: pulumi-azure-quickstart-guide-macos-local
-image: azure-nextgen.png
+image: azure-nextgen.webp
 categories:
     - DevOps
 tags:
@@ -40,7 +40,7 @@ Pulumi CLI 在本地环境中，可以使用 ‘pulumi login’ 默认的交互�
 
 参考下图，登录 Pulumi Cloud 服务，获取 Access Token。
 
-![个人 Access Token](pulumi-login-access-token.png)
+![个人 Access Token](pulumi-login-access-token.webp)
 
 在命令行中，将 Access Token 设置为环境变量，用于后续的登录认证。
 
@@ -172,7 +172,7 @@ To perform an initial deployment, run `pulumi up`
 
 下图是初始化后的项目目录结构。
 
-![Pulumi 项目目录结构](pulumi-project-structure.png)
+![Pulumi 项目目录结构](pulumi-project-structure.webp)
 
 在项目目录中，有一个 `Pulumi.yaml` 文件，用于描述项目的基本信息，如项目名称、描述、编程语言等。
 
@@ -308,21 +308,21 @@ Duration: 38s
 
 在部署完毕之后，我们可以在 Pulumi Cloud 网页中看到此项目的部署过程，以及资源的状态信息。如下图所示。
 
-![Pulumi Cloud 项目部署](pulumi-cloud-project-deploy.png)
+![Pulumi Cloud 项目部署](pulumi-cloud-project-deploy.webp)
 
 下面在 Azure 门户中，可以看到创建的资源组和存储账户。我们可以看到，资源组的名称是 `resource_group`，存储账户的名称是 `sa`开头的资源，后面跟随着一些随机字符。
 
-![Azure 门户中的资源](azure-portal-resources.png)
+![Azure 门户中的资源](azure-portal-resources.webp)
 
 根据以上的操作体验，我们可以参考下图，理解 Pulumi CLI 和 Azure 云服务之间的交互过程。
 
-![Pulumi CLI 和 Azure 云服务交互](engine-block-diagram.png)
+![Pulumi CLI 和 Azure 云服务交互](engine-block-diagram.webp)
 
 pulumi 命令行工具本身是一个部署引擎，它会启动一个本地的语言服务器，用于执行 Python 程序，完成对 Azure 云服务的资源部署。
 
 本 Python 测试项目是一个典型的 Pulumi 项目模板，它使用 IaC 的方式，将 Azure 资源的部署和更新，通过 Python 代码的方式，实现了对 Azure 资源的管理。这个 Pulumi 项目的部署结果称为 ‘Stack’，是一个 Azure 基础设施的技术栈，本项目模板目录可以在你的业务应用项目的根目录中，作为一个子目录，用于管理 Azure 资源的部署和更新。随着业务项目的开发和迭代，可以通过 Pulumi CLI 工具，完成 Azure 多个环境资源的部署和更新，例如开发环境、测试环境、生产环境等。
 
-![Pulumi 项目模板](infra-project.jpg)
+![Pulumi 项目模板](infra-project.webp)
 
 ## 更新 Pulumi 项目
 

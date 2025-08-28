@@ -3,7 +3,7 @@ title: "使用 Terraform、AWS 和 Python 构建无服务器实时数据管道"
 date: 2025-08-02T15:42:33+08:00
 description: 在本文中，我们将探讨我是如何利用 AWS 服务，例如数据目录 (Data Catalog)、DataBrew (DataBrew) 和 DynamoDB (DynamoDB)，构建实时无服务器数据管道的。
 slug: building-a-serverless-real-time-data-pipeline-with-terraform-aws-and-python
-image: serverless-data-pipeline.png
+image: serverless-data-pipeline.webp
 categories:
     - DevOps
 tags:

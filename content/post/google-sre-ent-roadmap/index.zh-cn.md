@@ -3,7 +3,7 @@ title: "《企业 SRE 路线图》Google SRE 企业路线图白皮书"
 date: 2024-04-30T11:23:43+08:00
 description:  "这本书由O'Reilly Media, Inc.在2022年出版，旨在帮助大型和复杂的组织（即企业）采用SRE。"
 slug: google-enterprise-roadmap-to-sre
-image: pexels-anete-lusina-4792380.jpg
+image: pexels-anete-lusina-4792380.webp
 categories:
     - SRE
 tags:
@@ -14,7 +14,7 @@ toc: true
 
 ---
 
-![Enterprise roadmap to SRE](2024-04-30_11-55-54.png)
+![Enterprise roadmap to SRE](2024-04-30_11-55-54.webp)
 
 * [下载中文版 PDF 文件](/wp/enterprise-roadmap-to-sre-cn.pdf)
 * [下载英文版 PDF 文件](/wp/enterprise-roadmap-to-sre.pdf)

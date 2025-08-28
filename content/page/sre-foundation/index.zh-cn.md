@@ -4,7 +4,7 @@ description: "这是一门专为IT专业人士设计的实战课程。课程深�
 author: "Martin Liu"
 date: 2024-01-10T16:19:04+08:00
 slug: course/sre-foundation
-image: sref.png
+image: sref.webp
 layout: "page"
 categories:
 - SRE

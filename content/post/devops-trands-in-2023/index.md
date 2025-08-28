@@ -3,7 +3,7 @@ title: "DevOps 在 2023 年的趋势和预测"
 date: 2023-01-04T10:19:53+08:00
 description:  在软件开发领域，新兴技术正在蓬勃发展。像DevOps这样的技术正在不断证明自己在庞大的名单中的重要性。自其提出以来，每个人都认识到DevOps具有独特的潜力，将彻底改变开发行业。在这种大流行中，DevOps已经被确立为一种必须的开发方法。
 slug: deveops-trands-in-2023
-image: pexels-samar-mourya-13378403.jpg
+image: pexels-samar-mourya-13378403.webp
 categories:
     - DevOps
 tags:

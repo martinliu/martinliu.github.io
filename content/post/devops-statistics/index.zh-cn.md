@@ -3,7 +3,7 @@ title: "通过统计数据看 2024 年的 DevOps 趋势"
 date: 2024-01-02T10:32:21+08:00
 description:  看看各个大型调查机构和云厂商对 DevOps 的看法，以及他们对未来的预测。
 slug: devops-statistics
-image: download.jpg
+image: download.webp
 categories:
     - DevOps
 tags:
