@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>白皮书 on Martin Liu's Blog</title><link>https://martinliu.cn/tags/%E7%99%BD%E7%9A%AE%E4%B9%A6/</link><description>Recent content in 白皮书 on Martin Liu's Blog</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><lastBuildDate>Sat, 13 Jul 2024 18:51:57 +0800</lastBuildDate><atom:link href="https://martinliu.cn/tags/%E7%99%BD%E7%9A%AE%E4%B9%A6/index.xml" rel="self" type="application/rss+xml"/><item><title>Google SRE 白皮书：《SRE 视角的事故管理指标》</title><link>https://martinliu.cn/blog/incident-metrics-in-sre/</link><pubDate>Fri, 12 Jul 2024 17:03:39 +0800</pubDate><guid>https://martinliu.cn/blog/incident-metrics-in-sre/</guid><description>&lt;img src="https://martinliu.cn/blog/incident-metrics-in-sre/pexels-kevinbidwell-3013676.jpg" alt="Featured image of post Google SRE 白皮书：《SRE 视角的事故管理指标》" />&lt;h2 id="前言">前言
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>白皮书 on Martin Liu's Blog</title><link>https://martinliu.cn/tags/%E7%99%BD%E7%9A%AE%E4%B9%A6/</link><description>Recent content in 白皮书 on Martin Liu's Blog</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><lastBuildDate>Thu, 28 Aug 2025 16:07:06 +0800</lastBuildDate><atom:link href="https://martinliu.cn/tags/%E7%99%BD%E7%9A%AE%E4%B9%A6/index.xml" rel="self" type="application/rss+xml"/><item><title>Google SRE 白皮书：《SRE 视角的事故管理指标》</title><link>https://martinliu.cn/blog/incident-metrics-in-sre/</link><pubDate>Fri, 12 Jul 2024 17:03:39 +0800</pubDate><guid>https://martinliu.cn/blog/incident-metrics-in-sre/</guid><description>&lt;img src="https://martinliu.cn/blog/incident-metrics-in-sre/pexels-kevinbidwell-3013676.webp" alt="Featured image of post Google SRE 白皮书：《SRE 视角的事故管理指标》" />&lt;h2 id="前言">前言
 &lt;/h2>&lt;h3 id="摘要">摘要
 &lt;/h3>&lt;p>评估由于&lt;strong>流程变化、产品采购或技术变革&lt;/strong>所产生的提升改进是一种常见的工作。在可靠性工程中，通常会测量平均恢复时间（MTTR）或平均缓解时间（MTTM）等指标。这些指标有时用于评估上述变化所带来的改进效果或跟踪其发展趋势。&lt;/p>
 &lt;p>在本报告中，我通过一个简单的蒙特卡洛模拟过程（可应用于许多其他情况）和统计分析，展示了这些指标在生产事故管理的背景下，并不适用于决策或趋势分析的方面。为此，我提出了一些：在特定情况下会更有效的替代方法。&lt;/p>
@@ -18,10 +18,10 @@
 &lt;li>&lt;strong>缓解&lt;/strong>：产品不再受到严重影响，但系统可能仍存在着部分的功能退化。&lt;/li>
 &lt;li>&lt;strong>恢复&lt;/strong>：系统完全恢复正常运行；有时缓解和恢复是同一时间点，但有时恢复时间之后，具体会有所不同。&lt;/li>
 &lt;/ol>
-&lt;p>&lt;img src="https://martinliu.cn/blog/incident-metrics-in-sre/2024-07-12_18-43-32.png"
+&lt;p>&lt;img src="https://martinliu.cn/blog/incident-metrics-in-sre/2024-07-12_18-43-32.webp"
 width="1295"
 height="551"
-srcset="https://martinliu.cn/blog/incident-metrics-in-sre/2024-07-12_18-43-32_hu_a95a50d7c8b37682.png 480w, https://martinliu.cn/blog/incident-metrics-in-sre/2024-07-12_18-43-32_hu_b9e7b3603d3fdfad.png 1024w"
+srcset="https://martinliu.cn/blog/incident-metrics-in-sre/2024-07-12_18-43-32_hu_dad72c63fe54cd42.webp 480w, https://martinliu.cn/blog/incident-metrics-in-sre/2024-07-12_18-43-32_hu_b40f84e2cc87da9f.webp 1024w"
 loading="lazy"
 alt="图 1. 事故的简化时间线，突出显示了关键节点"
 class="gallery-image"
@@ -37,10 +37,10 @@ data-flex-basis="564px"
 &lt;h3 id="事故持续时间的分布">事故持续时间的分布
 &lt;/h3>&lt;p>要分析事故持续时间的统计数据，需要多样化的数据来源，以避免仅依据一个公司或产品得出结论。我收集了三家知名互联网公司的公共事故状态仪表板数据（员工数量在一千到两千之间）。图 2 展示了事故持续时间的分布。&lt;/p>
 &lt;p>我没有区分事故类型：如果公司认为事故值得向用户公布，我就将其纳入分析。这些事故的持续时间代表了从首次影响到最后影响的用户沟通时间。我简化称之为恢复时间，虽然这种叫法并不完全精确。因为恢复时间和缓解时间通常相同，我发现它们遵循类似的分布，这种不精确性不会影响分析结果。&lt;/p>
-&lt;p>&lt;img src="https://martinliu.cn/blog/incident-metrics-in-sre/2024-07-12_18-43-56.png"
+&lt;p>&lt;img src="https://martinliu.cn/blog/incident-metrics-in-sre/2024-07-12_18-43-56.webp"
 width="1297"
 height="760"
-srcset="https://martinliu.cn/blog/incident-metrics-in-sre/2024-07-12_18-43-56_hu_2cdce210366d07ba.png 480w, https://martinliu.cn/blog/incident-metrics-in-sre/2024-07-12_18-43-56_hu_8b5b75653f38c62c.png 1024w"
+srcset="https://martinliu.cn/blog/incident-metrics-in-sre/2024-07-12_18-43-56_hu_9f98f048bb74c04e.webp 480w, https://martinliu.cn/blog/incident-metrics-in-sre/2024-07-12_18-43-56_hu_902821161e64fb99.webp 1024w"
 loading="lazy"
 alt="图 2. 事故持续时间的分布及事故次数"
 class="gallery-image"
@@ -49,10 +49,10 @@ data-flex-basis="409px"
 >&lt;/p>
 &lt;p>行的顺序依次为公司 A (N = 798；2019 年 173 起)，公司 B (N = 350；2019 年 103 起)，和公司 C (N = 2,186；2019 年 609 起)。列显示了每家公司在短期和长期内分布的尾部。&lt;/p>
 &lt;p>我还收集了 Google 的事故数据（见图 3），在我的分析中，Google 的数据集代表了一家专注于互联网服务的巨型公司。这个数据集是在一年的时间内收集的，时间比图 2 中的任何数据集都短，但它还包括内部事故（例如，仅影响开发人员生产力的事故）。虽然我不能分享具体的数字，但可以预见，Google 的事故数据集比三个公共数据集中任何一个都大好几倍。&lt;/p>
-&lt;p>&lt;img src="https://martinliu.cn/blog/incident-metrics-in-sre/2024-07-12_18-44-14.png"
+&lt;p>&lt;img src="https://martinliu.cn/blog/incident-metrics-in-sre/2024-07-12_18-44-14.webp"
 width="1295"
 height="275"
-srcset="https://martinliu.cn/blog/incident-metrics-in-sre/2024-07-12_18-44-14_hu_79fd40bf1cac2b27.png 480w, https://martinliu.cn/blog/incident-metrics-in-sre/2024-07-12_18-44-14_hu_444ccb509f97797b.png 1024w"
+srcset="https://martinliu.cn/blog/incident-metrics-in-sre/2024-07-12_18-44-14_hu_55dfc94dc890ea18.webp 480w, https://martinliu.cn/blog/incident-metrics-in-sre/2024-07-12_18-44-14_hu_42dea5cf7b565362.webp 1024w"
 loading="lazy"
 alt="图 3. 2019 年 Google 的事故持续时间分布，数据经过模糊处理"
 class="gallery-image"
@@ -60,10 +60,10 @@ data-flex-grow="470"
 data-flex-basis="1130px"
 >&lt;/p>
 &lt;p>得出的关键观察是：在每种情况下，事故都呈现出正偏分布，大多数事故能迅速解决。图 4 显示，这些分布大致接近对数正态（或伽玛）分布，但我没有对经验数据进行概率分布拟合。所有数据集都显示了事故持续时间的巨大差异。这与我的经验相符：大多数事故能相对较快解决，但一些更复杂且持续时间较长，还会有少数灾难性的“黑天鹅事件”发生。&lt;sup id="fnref:4">&lt;a href="#fn:4" class="footnote-ref" role="doc-noteref">4&lt;/a>&lt;/sup>&lt;/p>
-&lt;p>&lt;img src="https://martinliu.cn/blog/incident-metrics-in-sre/2024-07-12_18-44-30.png"
+&lt;p>&lt;img src="https://martinliu.cn/blog/incident-metrics-in-sre/2024-07-12_18-44-30.webp"
 width="1295"
 height="389"
-srcset="https://martinliu.cn/blog/incident-metrics-in-sre/2024-07-12_18-44-30_hu_ebb31913eaea3001.png 480w, https://martinliu.cn/blog/incident-metrics-in-sre/2024-07-12_18-44-30_hu_3e871281460abe9f.png 1024w"
+srcset="https://martinliu.cn/blog/incident-metrics-in-sre/2024-07-12_18-44-30_hu_dac35a265e7d8fd4.webp 480w, https://martinliu.cn/blog/incident-metrics-in-sre/2024-07-12_18-44-30_hu_b01ad922ad3736e4.webp 1024w"
 loading="lazy"
 alt="图 4. 事故持续时间的对数正态 Q-Q 图"
 class="gallery-image"
@@ -136,10 +136,10 @@ data-flex-basis="798px"
 &lt;/tbody>
 &lt;/table>
 &lt;p>进行模拟后，我绘制了图表来观察结果（见图 5）。&lt;/p>
-&lt;p>&lt;img src="https://martinliu.cn/blog/incident-metrics-in-sre/2024-07-13_11-33-23.png"
+&lt;p>&lt;img src="https://martinliu.cn/blog/incident-metrics-in-sre/2024-07-13_11-33-23.webp"
 width="1301"
 height="521"
-srcset="https://martinliu.cn/blog/incident-metrics-in-sre/2024-07-13_11-33-23_hu_e0ecea1707f43870.png 480w, https://martinliu.cn/blog/incident-metrics-in-sre/2024-07-13_11-33-23_hu_ff03b6e2176dda1e.png 1024w"
+srcset="https://martinliu.cn/blog/incident-metrics-in-sre/2024-07-13_11-33-23_hu_abcc56caee33a9b1.webp 480w, https://martinliu.cn/blog/incident-metrics-in-sre/2024-07-13_11-33-23_hu_5c3c5e474ff3988d.webp 1024w"
 loading="lazy"
 alt="图 5."
 class="gallery-image"
@@ -153,10 +153,10 @@ data-flex-basis="599px"
 &lt;p>果然，图 6 显示公司 A 有 19% 的几率 MTTR 改进半小时（或更好），公司 B 有 23%，公司 C 有 10%……即使在这个模拟中，你没有对事故做任何改变&lt;sup id="fnref:10">&lt;a href="#fn:10" class="footnote-ref" role="doc-noteref">10&lt;/a>&lt;/sup>。换句话说，即使假设的产品对你没有任何作用，你也会认为它有效并决定购买产品。&lt;/p>
 &lt;blockquote>
 &lt;p>注意：对此发现，一个愤世嫉俗的回应是开始销售虚假的缩短事故时间的产品。这种商业行为会设定价格，使得部分客户仅凭运气看到宣传的改进并购买产品，从而盈利。我绝不支持这种商业计划。然而，这确实突出了使用低质量指标可能带来的问题。&lt;/p>&lt;/blockquote>
-&lt;p>&lt;img src="https://martinliu.cn/blog/incident-metrics-in-sre/2024-07-13_11-33-46.png"
+&lt;p>&lt;img src="https://martinliu.cn/blog/incident-metrics-in-sre/2024-07-13_11-33-46.webp"
 width="1302"
 height="515"
-srcset="https://martinliu.cn/blog/incident-metrics-in-sre/2024-07-13_11-33-46_hu_2ee356487d8db928.png 480w, https://martinliu.cn/blog/incident-metrics-in-sre/2024-07-13_11-33-46_hu_6c7839bbb58dec66.png 1024w"
+srcset="https://martinliu.cn/blog/incident-metrics-in-sre/2024-07-13_11-33-46_hu_2c8258ff479ec53f.webp 480w, https://martinliu.cn/blog/incident-metrics-in-sre/2024-07-13_11-33-46_hu_291b90547a286515.webp 1024w"
 loading="lazy"
 alt="图 6."
 class="gallery-image"
@@ -172,10 +172,10 @@ data-flex-basis="606px"
 &lt;h3 id="通过更多事故进行更好的分析">通过更多事故进行更好的分析
 &lt;/h3>&lt;p>你可能会直觉上理解为什么观察到的 MTTR 会有如此广泛的变化：事故的方差太大。这种直觉有统计学依据。&lt;/p>
 &lt;p>中心极限定理告诉我们，随着样本数量的增加，样本和的分布趋向于正态分布&lt;sup id="fnref:11">&lt;a href="#fn:11" class="footnote-ref" role="doc-noteref">11&lt;/a>&lt;/sup>。你可以在之前的分析中看到一些证据（例如图 6），这些分布看起来有些正态。虽然不能自动假设结果分布总是正态的（稍后会详细说明），但这也意味着在极限情况下方差会趋于收敛。&lt;/p>
-&lt;p>&lt;img src="https://martinliu.cn/blog/incident-metrics-in-sre/2024-07-13_11-35-41.png"
+&lt;p>&lt;img src="https://martinliu.cn/blog/incident-metrics-in-sre/2024-07-13_11-35-41.webp"
 width="1268"
 height="237"
-srcset="https://martinliu.cn/blog/incident-metrics-in-sre/2024-07-13_11-35-41_hu_9b2b0f4bc69940fb.png 480w, https://martinliu.cn/blog/incident-metrics-in-sre/2024-07-13_11-35-41_hu_5ff6005bf68624e9.png 1024w"
+srcset="https://martinliu.cn/blog/incident-metrics-in-sre/2024-07-13_11-35-41_hu_a5a6cccefc465323.webp 480w, https://martinliu.cn/blog/incident-metrics-in-sre/2024-07-13_11-35-41_hu_ea5d5c33d3a759a0.webp 1024w"
 loading="lazy"
 alt="公式"
 class="gallery-image"
@@ -230,10 +230,10 @@ data-flex-basis="1284px"
 &lt;p>随着样本数量的增加，标准差会下降，从而提高检测较小显著变化的能力。在原始场景中，你评估的产品承诺将事故持续时间减少 10%；即使有一千起事故，这仍然会落入 90% 置信区间。即便有一年的数据，你也无法得到一个有信心的结论。&lt;/p>
 &lt;p>公司 A 和公司 B 的相似结果是巧合。这两家公司提供的服务非常不同，但它们的平均事故持续时间和标准差却相似。如果只考虑一年的事故数据，差异会很大：公司 A 的平均事故持续时间是 4 小时 35 分钟，而公司 B 是 2 小时 38 分钟。它们的其他统计数据，如中位数，也比平均值差异更大。&lt;/p>
 &lt;p>即使事故数量很多（超过每年的总数），方差仍然太高。图 7 显示，即使 MTTR 观察到的变化很大，仍然在 90% 置信区间内。虽然增加事故数量有助于获得更好的信号，但这与可靠性工程的整体目标相违背。&lt;/p>
-&lt;p>&lt;img src="https://martinliu.cn/blog/incident-metrics-in-sre/2024-07-13_11-34-27.png"
+&lt;p>&lt;img src="https://martinliu.cn/blog/incident-metrics-in-sre/2024-07-13_11-34-27.webp"
 width="1302"
 height="504"
-srcset="https://martinliu.cn/blog/incident-metrics-in-sre/2024-07-13_11-34-27_hu_e8f463d142ffe21.png 480w, https://martinliu.cn/blog/incident-metrics-in-sre/2024-07-13_11-34-27_hu_a811a03e8aeaae33.png 1024w"
+srcset="https://martinliu.cn/blog/incident-metrics-in-sre/2024-07-13_11-34-27_hu_f0e32665300e814.webp 480w, https://martinliu.cn/blog/incident-metrics-in-sre/2024-07-13_11-34-27_hu_271ba2cab099598.webp 1024w"
 loading="lazy"
 alt="图 7."
 class="gallery-image"
@@ -325,10 +325,10 @@ data-flex-basis="620px"
 &lt;p>虽然公司 A 和公司 B 的 MTTR 在这些百分位数测量中的结果相似，但你可以看到事故持续时间差异的影响。&lt;/p>
 &lt;p>几何平均数&lt;/p>
 &lt;p>你可能感兴趣的另一个汇总统计量是几何平均数，其计算公式为。&lt;/p>
-&lt;p>&lt;img src="https://martinliu.cn/blog/incident-metrics-in-sre/2024-07-13_17-23-25.png"
+&lt;p>&lt;img src="https://martinliu.cn/blog/incident-metrics-in-sre/2024-07-13_17-23-25.webp"
 width="1542"
 height="156"
-srcset="https://martinliu.cn/blog/incident-metrics-in-sre/2024-07-13_17-23-25_hu_37b76af9cca713ea.png 480w, https://martinliu.cn/blog/incident-metrics-in-sre/2024-07-13_17-23-25_hu_5ce5601e79b671c.png 1024w"
+srcset="https://martinliu.cn/blog/incident-metrics-in-sre/2024-07-13_17-23-25_hu_17dee94625cb1683.webp 480w, https://martinliu.cn/blog/incident-metrics-in-sre/2024-07-13_17-23-25_hu_14830f261cfcaeb1.webp 1024w"
 loading="lazy"
 alt="公式"
 class="gallery-image"
@@ -401,10 +401,10 @@ data-flex-basis="2372px"
 &lt;p>本报告讨论了你是否能够检测到事故处理的改进，重点分析事故的解决过程。从发生事故到完全没有事故超出了本文的讨论范围。&lt;/p>
 &lt;p>然而，既然我已经收集了所有这些数据，至少可以简要查看这些数据集，以了解事故数量随时间的变化。我不会在这里进行更深入的分析。&lt;/p>
 &lt;p>事故数量和事故持续时间一样不稳定。即使按全年汇总，如图 8 所示，数值也会大幅波动。在月度或季度的分辨率下，这种波动更为严重。最多可以从这个图表中看到一些明显的趋势：公司 C 的事故数量在 2019 年急剧增加（这一趋势在 2020 年继续，但图中未显示），与之前的年份相比。这一趋势只有在多年时间尺度上才明显，尤其是与公司 A 和公司 B 的不稳定趋势相比时更为明显。&lt;/p>
-&lt;p>&lt;img src="https://martinliu.cn/blog/incident-metrics-in-sre/2024-07-13_11-35-06.png"
+&lt;p>&lt;img src="https://martinliu.cn/blog/incident-metrics-in-sre/2024-07-13_11-35-06.webp"
 width="1302"
 height="452"
-srcset="https://martinliu.cn/blog/incident-metrics-in-sre/2024-07-13_11-35-06_hu_e2cad3dba4116273.png 480w, https://martinliu.cn/blog/incident-metrics-in-sre/2024-07-13_11-35-06_hu_34b913600b1c8cfe.png 1024w"
+srcset="https://martinliu.cn/blog/incident-metrics-in-sre/2024-07-13_11-35-06_hu_dacf15e1e337a123.webp 480w, https://martinliu.cn/blog/incident-metrics-in-sre/2024-07-13_11-35-06_hu_397e6e70f7ad5504.webp 1024w"
 loading="lazy"
 alt="图 8."
 class="gallery-image"
@@ -421,10 +421,10 @@ data-flex-basis="691px"
 &lt;p>一种测试方法是运行模拟以生成样本均值分布的正态概率图（Q-Q 图）。&lt;sup id="fnref:14">&lt;a href="#fn:14" class="footnote-ref" role="doc-noteref">14&lt;/a>&lt;/sup>
 在图 9 中，我对公司 A 的数据进行了这样的模拟。随着样本量的增加（例如一年的事故数量），图表趋向于正态分布。但对于仅三个月的事故数量，图表明显偏离正态分布。
 假设持续时间是正态分布的可能会误导并影响后续的计算。&lt;/p>
-&lt;p>&lt;img src="https://martinliu.cn/blog/incident-metrics-in-sre/2024-07-13_11-35-23.png"
+&lt;p>&lt;img src="https://martinliu.cn/blog/incident-metrics-in-sre/2024-07-13_11-35-23.webp"
 width="1301"
 height="568"
-srcset="https://martinliu.cn/blog/incident-metrics-in-sre/2024-07-13_11-35-23_hu_fb91b346242197a9.png 480w, https://martinliu.cn/blog/incident-metrics-in-sre/2024-07-13_11-35-23_hu_15008b774cda93cd.png 1024w"
+srcset="https://martinliu.cn/blog/incident-metrics-in-sre/2024-07-13_11-35-23_hu_466193f6881b4b0.webp 480w, https://martinliu.cn/blog/incident-metrics-in-sre/2024-07-13_11-35-23_hu_75ae8f60626b5bbb.webp 1024w"
 loading="lazy"
 alt="图 9."
 class="gallery-image"
@@ -434,10 +434,10 @@ data-flex-basis="549px"
 &lt;p>公司 A 样本均值事故持续时间的正态概率图，由 1,000 次模拟生成，模拟事故数量为 2019 年的全年事故数和大约一个季度的事故数。&lt;/p>
 &lt;p>一旦确定样本均值分布是正态的，你可以使用标准工具，例如 z 检验或 t 检验来建立置信区间&lt;sup id="fnref:15">&lt;a href="#fn:15" class="footnote-ref" role="doc-noteref">15&lt;/a>&lt;/sup>。我们特别关注的是两个分布之间的差异。既然它们来自同一总体，均值差异（以及样本总体差异的正态分布的众数）将趋于零，正如我们在模拟中所见。更有趣的是标准差，它决定了置信区间。&lt;/p>
 &lt;p>样本均值的方差收敛到：&lt;sup id="fnref:16">&lt;a href="#fn:16" class="footnote-ref" role="doc-noteref">16&lt;/a>&lt;/sup>&lt;/p>
-&lt;p>&lt;img src="https://martinliu.cn/blog/incident-metrics-in-sre/2024-07-13_11-35-41.png"
+&lt;p>&lt;img src="https://martinliu.cn/blog/incident-metrics-in-sre/2024-07-13_11-35-41.webp"
 width="1268"
 height="237"
-srcset="https://martinliu.cn/blog/incident-metrics-in-sre/2024-07-13_11-35-41_hu_9b2b0f4bc69940fb.png 480w, https://martinliu.cn/blog/incident-metrics-in-sre/2024-07-13_11-35-41_hu_5ff6005bf68624e9.png 1024w"
+srcset="https://martinliu.cn/blog/incident-metrics-in-sre/2024-07-13_11-35-41_hu_a5a6cccefc465323.webp 480w, https://martinliu.cn/blog/incident-metrics-in-sre/2024-07-13_11-35-41_hu_ea5d5c33d3a759a0.webp 1024w"
 loading="lazy"
 alt="公式"
 class="gallery-image"
@@ -445,10 +445,10 @@ data-flex-grow="535"
 data-flex-basis="1284px"
 >&lt;/p>
 &lt;p>两个正态分布差异的方差是：&lt;sup id="fnref:17">&lt;a href="#fn:17" class="footnote-ref" role="doc-noteref">17&lt;/a>&lt;/sup>&lt;/p>
-&lt;p>&lt;img src="https://martinliu.cn/blog/incident-metrics-in-sre/2024-07-13_11-35-54.png"
+&lt;p>&lt;img src="https://martinliu.cn/blog/incident-metrics-in-sre/2024-07-13_11-35-54.webp"
 width="1273"
 height="197"
-srcset="https://martinliu.cn/blog/incident-metrics-in-sre/2024-07-13_11-35-54_hu_dd1156e92dcf0591.png 480w, https://martinliu.cn/blog/incident-metrics-in-sre/2024-07-13_11-35-54_hu_2455a9cd3b54ac94.png 1024w"
+srcset="https://martinliu.cn/blog/incident-metrics-in-sre/2024-07-13_11-35-54_hu_ced7d37eb2bf7268.webp 480w, https://martinliu.cn/blog/incident-metrics-in-sre/2024-07-13_11-35-54_hu_73e1e971fb0a200b.webp 1024w"
 loading="lazy"
 alt="公式"
 class="gallery-image"
@@ -456,10 +456,10 @@ data-flex-grow="646"
 data-flex-basis="1550px"
 >&lt;/p>
 &lt;p>在这种情况下，两个样本均值正态分布的方差和样本量相同，结果是：&lt;/p>
-&lt;p>&lt;img src="https://martinliu.cn/blog/incident-metrics-in-sre/2024-07-13_11-36-09.png"
+&lt;p>&lt;img src="https://martinliu.cn/blog/incident-metrics-in-sre/2024-07-13_11-36-09.webp"
 width="1309"
 height="190"
-srcset="https://martinliu.cn/blog/incident-metrics-in-sre/2024-07-13_11-36-09_hu_66af57f913414942.png 480w, https://martinliu.cn/blog/incident-metrics-in-sre/2024-07-13_11-36-09_hu_c32e69c30905f590.png 1024w"
+srcset="https://martinliu.cn/blog/incident-metrics-in-sre/2024-07-13_11-36-09_hu_e7f893574343e0b5.webp 480w, https://martinliu.cn/blog/incident-metrics-in-sre/2024-07-13_11-36-09_hu_c86ee0d26d89ebf5.webp 1024w"
 loading="lazy"
 alt="公式"
 class="gallery-image"
@@ -468,10 +468,10 @@ data-flex-basis="1653px"
 >&lt;/p>
 &lt;p>这也解释了为什么 50/50 分割是最佳选择，因为不同的样本比例会导致更大的方差，从而得到更差的结果。&lt;/p>
 &lt;p>然后你可以应用双尾 z 检验。你可以扩展 z 检验公式；知道分布均值是 0，你可以寻找 MTTR 的特定变化，同时扩展方差计算：&lt;/p>
-&lt;p>&lt;img src="https://martinliu.cn/blog/incident-metrics-in-sre/2024-07-13_11-36-22.png"
+&lt;p>&lt;img src="https://martinliu.cn/blog/incident-metrics-in-sre/2024-07-13_11-36-22.webp"
 width="1298"
 height="248"
-srcset="https://martinliu.cn/blog/incident-metrics-in-sre/2024-07-13_11-36-22_hu_5f512416d0db1138.png 480w, https://martinliu.cn/blog/incident-metrics-in-sre/2024-07-13_11-36-22_hu_e22233605d2458e5.png 1024w"
+srcset="https://martinliu.cn/blog/incident-metrics-in-sre/2024-07-13_11-36-22_hu_be7c8028e90fd522.webp 480w, https://martinliu.cn/blog/incident-metrics-in-sre/2024-07-13_11-36-22_hu_3d0b6695435a2bf6.webp 1024w"
 loading="lazy"
 alt="公式"
 class="gallery-image"
@@ -479,10 +479,10 @@ data-flex-grow="523"
 data-flex-basis="1256px"
 >&lt;/p>
 &lt;p>你也可以反过来：查找相应的 z 分数（双尾检验在 α = 0.10 时的 z 分数约为 1.644），找到 MTTR 变化的置信区间：&lt;/p>
-&lt;p>&lt;img src="https://martinliu.cn/blog/incident-metrics-in-sre/2024-07-13_11-36-46.png"
+&lt;p>&lt;img src="https://martinliu.cn/blog/incident-metrics-in-sre/2024-07-13_11-36-46.webp"
 width="1302"
 height="205"
-srcset="https://martinliu.cn/blog/incident-metrics-in-sre/2024-07-13_11-36-46_hu_ee78a1ef73fb6941.png 480w, https://martinliu.cn/blog/incident-metrics-in-sre/2024-07-13_11-36-46_hu_f1274add62a2d2b5.png 1024w"
+srcset="https://martinliu.cn/blog/incident-metrics-in-sre/2024-07-13_11-36-46_hu_4ffaee6923c3d9cb.webp 480w, https://martinliu.cn/blog/incident-metrics-in-sre/2024-07-13_11-36-46_hu_16d2dcec15c6bd10.webp 1024w"
 loading="lazy"
 alt="公式"
 class="gallery-image"
@@ -490,10 +490,10 @@ data-flex-grow="635"
 data-flex-basis="1524px"
 >&lt;/p>
 &lt;p>对于公司 A，事故持续时间的标准差为 5 小时 16 分钟，使用 N1 = N2 = 100/2 = 50 的样本来计算 90% 置信区间：&lt;/p>
-&lt;p>&lt;img src="https://martinliu.cn/blog/incident-metrics-in-sre/2024-07-13_11-37-05.png"
+&lt;p>&lt;img src="https://martinliu.cn/blog/incident-metrics-in-sre/2024-07-13_11-37-05.webp"
 width="1303"
 height="209"
-srcset="https://martinliu.cn/blog/incident-metrics-in-sre/2024-07-13_11-37-05_hu_e881711a494d8333.png 480w, https://martinliu.cn/blog/incident-metrics-in-sre/2024-07-13_11-37-05_hu_e3784421f7c0279a.png 1024w"
+srcset="https://martinliu.cn/blog/incident-metrics-in-sre/2024-07-13_11-37-05_hu_eff4a51b9eb8b32e.webp 480w, https://martinliu.cn/blog/incident-metrics-in-sre/2024-07-13_11-37-05_hu_3691742a0cf7b7b5.webp 1024w"
 loading="lazy"
 alt="公式"
 class="gallery-image"
@@ -507,10 +507,10 @@ data-flex-basis="1496px"
 &lt;/h2>&lt;p>之前的分析显示，随着样本数量的增加，方差会下降。Google 拥有的员工数量约是三家匿名公司总和的一百倍，事故数量也显著多于这些公司。这是否有助于获得更可靠的事故指标？&lt;/p>
 &lt;p>我们将以相同的方法分析 Google 的事故数据，并利用更丰富的数据集（包括内部元数据）进一步细分数据。&lt;/p>
 &lt;p>图 10 显示了所有重大事故和最严重事故的持续时间分布。这两个数据集中还包括内部事故，例如仅影响 Google 员工及其生产力的事故，甚至是对任何用户（内部或外部）完全不可见的事件。最严重事故的数据集中包含了更高比例的面向用户的事故（例如，会在服务状态仪表板上列出）。&lt;/p>
-&lt;p>&lt;img src="https://martinliu.cn/blog/incident-metrics-in-sre/2024-07-13_11-37-31.png"
+&lt;p>&lt;img src="https://martinliu.cn/blog/incident-metrics-in-sre/2024-07-13_11-37-31.webp"
 width="1302"
 height="472"
-srcset="https://martinliu.cn/blog/incident-metrics-in-sre/2024-07-13_11-37-31_hu_106a01163a423429.png 480w, https://martinliu.cn/blog/incident-metrics-in-sre/2024-07-13_11-37-31_hu_e7f09b54a9790c14.png 1024w"
+srcset="https://martinliu.cn/blog/incident-metrics-in-sre/2024-07-13_11-37-31_hu_e058cd3e34b82458.webp 480w, https://martinliu.cn/blog/incident-metrics-in-sre/2024-07-13_11-37-31_hu_ffa78f3547b58659.webp 1024w"
 loading="lazy"
 alt="图 10."
 class="gallery-image"
@@ -706,7 +706,7 @@ data-flex-basis="662px"
 &lt;p>Steve Krug，《Rocket Surgery Made Easy》（加利福尼亚州伯克利：New Riders，2010）。&amp;#160;&lt;a href="#fnref:25" class="footnote-backref" role="doc-backlink">&amp;#x21a9;&amp;#xfe0e;&lt;/a>&lt;/p>
 &lt;/li>
 &lt;/ol>
-&lt;/div></description></item><item><title>Google SRE 白皮书：Cloud CRE 生产成熟度评估</title><link>https://martinliu.cn/blog/cloud-cre-production-maturity-assessment/</link><pubDate>Sun, 07 Jul 2024 21:12:04 +0800</pubDate><guid>https://martinliu.cn/blog/cloud-cre-production-maturity-assessment/</guid><description>&lt;img src="https://martinliu.cn/blog/cloud-cre-production-maturity-assessment/pexels-loan-patru-1487385115-27000643.jpg" alt="Featured image of post Google SRE 白皮书：Cloud CRE 生产成熟度评估" />&lt;ul>
+&lt;/div></description></item><item><title>Google SRE 白皮书：Cloud CRE 生产成熟度评估</title><link>https://martinliu.cn/blog/cloud-cre-production-maturity-assessment/</link><pubDate>Sun, 07 Jul 2024 21:12:04 +0800</pubDate><guid>https://martinliu.cn/blog/cloud-cre-production-maturity-assessment/</guid><description>&lt;img src="https://martinliu.cn/blog/cloud-cre-production-maturity-assessment/pexels-loan-patru-1487385115-27000643.webp" alt="Featured image of post Google SRE 白皮书：Cloud CRE 生产成熟度评估" />&lt;ul>
 &lt;li>&lt;a class="link" href="https://martinliu.cn/wp/cloud-cre-production-maturity-assessment-cn.pdf" >下载中文版 PDF 文件&lt;/a>&lt;/li>
 &lt;/ul>
 &lt;p>【译者注】Google Cloud 的客户可靠性工程团队（Cloud CRE）是一支专业团队，致力于帮助客户提高其 Google Cloud 平台上的可靠性。Cloud CRE 团队的使命是帮助客户建立可靠的服务，以便他们可以专注于创新。为了实现这一目标，Cloud CRE 团队开发了一种生产成熟度评估方法，以帮助客户评估其生产环境的成熟度，并提供指导，以帮助他们提高其生产环境的可靠性。&lt;/p>
@@ -1497,7 +1497,7 @@ MTTR：平均修复时间。事件从发生到解决的平均时间。
 &lt;/tbody>
 &lt;/table>
 &lt;p>❤️ Photo by PNW Production: &lt;a class="link" href="https://www.pexels.com/photo/a-black-calculator-near-a-ruler-8250929/" target="_blank" rel="noopener"
->https://www.pexels.com/photo/a-black-calculator-near-a-ruler-8250929/&lt;/a>&lt;/p></description></item><item><title>Google 白皮书 《事故管理剖析》第七章 总结与展望</title><link>https://martinliu.cn/blog/anatomy-of-an-incident-ch7/</link><pubDate>Sat, 06 Jul 2024 12:46:48 +0800</pubDate><guid>https://martinliu.cn/blog/anatomy-of-an-incident-ch7/</guid><description>&lt;img src="https://martinliu.cn/blog/anatomy-of-an-incident-ch7/pexels-pixabay-69934.png" alt="Featured image of post Google 白皮书 《事故管理剖析》第七章 总结与展望" />&lt;ul>
+>https://www.pexels.com/photo/a-black-calculator-near-a-ruler-8250929/&lt;/a>&lt;/p></description></item><item><title>Google 白皮书 《事故管理剖析》第七章 总结与展望</title><link>https://martinliu.cn/blog/anatomy-of-an-incident-ch7/</link><pubDate>Sat, 06 Jul 2024 12:46:48 +0800</pubDate><guid>https://martinliu.cn/blog/anatomy-of-an-incident-ch7/</guid><description>&lt;img src="https://martinliu.cn/blog/anatomy-of-an-incident-ch7/pexels-pixabay-69934.webp" alt="Featured image of post Google 白皮书 《事故管理剖析》第七章 总结与展望" />&lt;ul>
 &lt;li>&lt;a class="link" href="https://martinliu.cn/wp/anatomy-of-an-incident-cn.pdf" >下载中文版 PDF 文件&lt;/a>&lt;/li>
 &lt;li>&lt;a class="link" href="https://martinliu.cn/wp/anatomy-of-an-incident.pdf" >下载英文版 PDF 文件&lt;/a>&lt;/li>
 &lt;li>&lt;a class="link" href="https://sre.google/resources/practices-and-processes/anatomy-of-an-incident/" target="_blank" rel="noopener"
@@ -1550,7 +1550,7 @@ loading="lazy"
 alt="cover"
 >&lt;/p>
 &lt;p>❤️ Photo by Pixabay: &lt;a class="link" href="https://www.pexels.com/photo/photo-of-a-2-fireman-killing-a-huge-fire-69934/" target="_blank" rel="noopener"
->https://www.pexels.com/photo/photo-of-a-2-fireman-killing-a-huge-fire-69934/&lt;/a>&lt;/p></description></item><item><title>Google 白皮书 《事故管理剖析》第六章 真实事故案例：玛雅末日事件</title><link>https://martinliu.cn/blog/anatomy-of-an-incident-ch6/</link><pubDate>Fri, 05 Jul 2024 12:46:48 +0800</pubDate><guid>https://martinliu.cn/blog/anatomy-of-an-incident-ch6/</guid><description>&lt;img src="https://martinliu.cn/blog/anatomy-of-an-incident-ch6/pexels-pixabay-69934.png" alt="Featured image of post Google 白皮书 《事故管理剖析》第六章 真实事故案例：玛雅末日事件" />&lt;ul>
+>https://www.pexels.com/photo/photo-of-a-2-fireman-killing-a-huge-fire-69934/&lt;/a>&lt;/p></description></item><item><title>Google 白皮书 《事故管理剖析》第六章 真实事故案例：玛雅末日事件</title><link>https://martinliu.cn/blog/anatomy-of-an-incident-ch6/</link><pubDate>Fri, 05 Jul 2024 12:46:48 +0800</pubDate><guid>https://martinliu.cn/blog/anatomy-of-an-incident-ch6/</guid><description>&lt;img src="https://martinliu.cn/blog/anatomy-of-an-incident-ch6/pexels-pixabay-69934.webp" alt="Featured image of post Google 白皮书 《事故管理剖析》第六章 真实事故案例：玛雅末日事件" />&lt;ul>
 &lt;li>&lt;a class="link" href="https://martinliu.cn/wp/anatomy-of-an-incident-cn.pdf" >下载中文版 PDF 文件&lt;/a>&lt;/li>
 &lt;li>&lt;a class="link" href="https://martinliu.cn/wp/anatomy-of-an-incident.pdf" >下载英文版 PDF 文件&lt;/a>&lt;/li>
 &lt;li>&lt;a class="link" href="https://sre.google/resources/practices-and-processes/anatomy-of-an-incident/" target="_blank" rel="noopener"
@@ -1586,7 +1586,7 @@ loading="lazy"
 alt="cover"
 >&lt;/p>
 &lt;p>❤️ Photo by Pixabay: &lt;a class="link" href="https://www.pexels.com/photo/photo-of-a-2-fireman-killing-a-huge-fire-69934/" target="_blank" rel="noopener"
->https://www.pexels.com/photo/photo-of-a-2-fireman-killing-a-huge-fire-69934/&lt;/a>&lt;/p></description></item><item><title>Google 白皮书 《事故管理剖析》第五章 事后复盘分析及其应用</title><link>https://martinliu.cn/blog/anatomy-of-an-incident-ch5/</link><pubDate>Sun, 30 Jun 2024 22:46:48 +0800</pubDate><guid>https://martinliu.cn/blog/anatomy-of-an-incident-ch5/</guid><description>&lt;img src="https://martinliu.cn/blog/anatomy-of-an-incident-ch5/pexels-pixabay-69934.png" alt="Featured image of post Google 白皮书 《事故管理剖析》第五章 事后复盘分析及其应用" />&lt;ul>
+>https://www.pexels.com/photo/photo-of-a-2-fireman-killing-a-huge-fire-69934/&lt;/a>&lt;/p></description></item><item><title>Google 白皮书 《事故管理剖析》第五章 事后复盘分析及其应用</title><link>https://martinliu.cn/blog/anatomy-of-an-incident-ch5/</link><pubDate>Sun, 30 Jun 2024 22:46:48 +0800</pubDate><guid>https://martinliu.cn/blog/anatomy-of-an-incident-ch5/</guid><description>&lt;img src="https://martinliu.cn/blog/anatomy-of-an-incident-ch5/pexels-pixabay-69934.webp" alt="Featured image of post Google 白皮书 《事故管理剖析》第五章 事后复盘分析及其应用" />&lt;ul>
 &lt;li>&lt;a class="link" href="https://martinliu.cn/wp/anatomy-of-an-incident-cn.pdf" >下载中文版 PDF 文件&lt;/a>&lt;/li>
 &lt;li>&lt;a class="link" href="https://martinliu.cn/wp/anatomy-of-an-incident.pdf" >下载英文版 PDF 文件&lt;/a>&lt;/li>
 &lt;li>&lt;a class="link" href="https://sre.google/resources/practices-and-processes/anatomy-of-an-incident/" target="_blank" rel="noopener"
@@ -1594,10 +1594,10 @@ alt="cover"
 &lt;/ul>
 &lt;p>在前一章中，我们介绍了几种减小客户影响的方法，包括技术和人员方面，因为两者都会影响检测时间、缓解/恢复时间和故障间隔时间。在本节中，我们将讨论事故结束后的工作：撰写事后复盘分析，并将其作为强大的工具来分析问题并从错误中学习。&lt;/p>
 &lt;p>在事故结束后，应该确保集中精力在如何减少未来的事故上？为了解决这个问题，我们建议采用数据驱动的方法（图 5-1）。这些数据可以来自风险分析过程，或者是我们之前提到的度量数据。依靠从事后复盘分析中收集的数据，以及对之前影响客户的事故的学习非常重要。&lt;/p>
-&lt;p>&lt;img src="https://martinliu.cn/blog/anatomy-of-an-incident-ch5/2024-07-01_21-06-40.png"
+&lt;p>&lt;img src="https://martinliu.cn/blog/anatomy-of-an-incident-ch5/2024-07-01_21-06-40.webp"
 width="1245"
 height="612"
-srcset="https://martinliu.cn/blog/anatomy-of-an-incident-ch5/2024-07-01_21-06-40_hu_16722b3609e9902b.png 480w, https://martinliu.cn/blog/anatomy-of-an-incident-ch5/2024-07-01_21-06-40_hu_cef315090704352d.png 1024w"
+srcset="https://martinliu.cn/blog/anatomy-of-an-incident-ch5/2024-07-01_21-06-40_hu_7136f05f85dc06fa.webp 480w, https://martinliu.cn/blog/anatomy-of-an-incident-ch5/2024-07-01_21-06-40_hu_38e33d0a6a8d384d.webp 1024w"
 loading="lazy"
 alt="图 5-1. 你应集中精力的地方"
 class="gallery-image"
@@ -1670,20 +1670,20 @@ data-flex-basis="488px"
 &lt;h3 id="用于组织改进的系统分析">用于组织改进的系统分析
 &lt;/h3>&lt;p>我们已经讨论了无责的事后复盘分析，并提到事后复盘分析是一种系统分析形式。然而，你是否真正深入了解你的系统，充分理解发生了什么以及为什么？事件应该被分析以得出结论，而不仅仅是叙述。事故之后或在事后复盘分析中，分析的深度在于是否对事件和系统各方面进行了深入分析，以揭示和解释结论。这很重要，因为它增加了团队在事故之后解决正确问题的概率。&lt;/p>
 &lt;p>在撰写事后复盘分析时，你应该力求对系统有最完整和准确的了解，以确保所做的修复是正确的。在图 5-2 中，标有“你认为的问题是什么”的圆圈反映了你在事故期间对系统的理解——这是你能控制的部分。标有“实际问题是什么”的圆圈反映了事故期间系统的实际状态。在复杂技术生态系统中，理解所有细微差别是极其困难的（实际上，我们曾有一位高级工程师花了整整一个月时间来理解一个20分钟的事故！）。然而，事故之后的分析越深入，圆圈的重叠部分越大，你越接近理解根本问题（图 5-3）。&lt;/p>
-&lt;p>&lt;img src="https://martinliu.cn/blog/anatomy-of-an-incident-ch5/2024-07-01_21-07-31.png"
+&lt;p>&lt;img src="https://martinliu.cn/blog/anatomy-of-an-incident-ch5/2024-07-01_21-07-31.webp"
 width="1247"
 height="699"
-srcset="https://martinliu.cn/blog/anatomy-of-an-incident-ch5/2024-07-01_21-07-31_hu_8253a4cf41d586b2.png 480w, https://martinliu.cn/blog/anatomy-of-an-incident-ch5/2024-07-01_21-07-31_hu_29c5d34f4db7e6cd.png 1024w"
+srcset="https://martinliu.cn/blog/anatomy-of-an-incident-ch5/2024-07-01_21-07-31_hu_99afd28ae6a68146.webp 480w, https://martinliu.cn/blog/anatomy-of-an-incident-ch5/2024-07-01_21-07-31_hu_58be278e8802a5a8.webp 1024w"
 loading="lazy"
 alt="图 5-2. Venn 图显示理解与事实之间的差距"
 class="gallery-image"
 data-flex-grow="178"
 data-flex-basis="428px"
 >&lt;/p>
-&lt;p>&lt;img src="https://martinliu.cn/blog/anatomy-of-an-incident-ch5/2024-07-01_21-07-45.png"
+&lt;p>&lt;img src="https://martinliu.cn/blog/anatomy-of-an-incident-ch5/2024-07-01_21-07-45.webp"
 width="1245"
 height="873"
-srcset="https://martinliu.cn/blog/anatomy-of-an-incident-ch5/2024-07-01_21-07-45_hu_86aa2cd0ca160a3.png 480w, https://martinliu.cn/blog/anatomy-of-an-incident-ch5/2024-07-01_21-07-45_hu_e2cf800fb6c28487.png 1024w"
+srcset="https://martinliu.cn/blog/anatomy-of-an-incident-ch5/2024-07-01_21-07-45_hu_193515d14bc5f402.webp 480w, https://martinliu.cn/blog/anatomy-of-an-incident-ch5/2024-07-01_21-07-45_hu_d420c66178ff35cc.webp 1024w"
 loading="lazy"
 alt="图 5-3. Venn 图显示系统分析的好处"
 class="gallery-image"
@@ -1692,10 +1692,10 @@ data-flex-basis="342px"
 >&lt;/p>
 &lt;p>即使事故已经缓解，系统再次稳定，理解真正的问题仍然重要。这涉及可操作性——即你在事故之后有能力修复或更改的内容。事故后的系统增量改进有助于随着时间的推移建立恢复力。这是第三个重要的圆圈，代表你可以控制并可以实施修复的系统中的事物（图 5-4）。这个圆圈无法移动，因为总有一些你无法控制的事情会影响系统的健康（例如天气、地球的大小、光速）。&lt;/p>
 &lt;p>在中心的那个小交集（在集合理论中表示为 1 ∩ 2 ∩ 3）是你团队在事故之后可以做的最好的工作。“你认为的问题是什么”和“你能修复什么”的重叠部分 [(1 ∩ 3) – 2] 是危险的：这些是你认为在长期内会有帮助但实际上不会解决真正问题的解决方案。你可能正在解决与主要问题相关的某些事物，或者你可能正在处理另一个隐藏问题的表现症状。假设你已经解决了一个实际上没有解决的问题是一个危险的境地——因为缺乏对这一风险的认识，这种情况变得更加严重。如果特定事故再次发生，你将面临客户信任的降低和本可以更有效利用的时间的浪费。&lt;/p>
-&lt;p>&lt;img src="https://martinliu.cn/blog/anatomy-of-an-incident-ch5/2024-07-01_21-08-15.png"
+&lt;p>&lt;img src="https://martinliu.cn/blog/anatomy-of-an-incident-ch5/2024-07-01_21-08-15.webp"
 width="1245"
 height="1184"
-srcset="https://martinliu.cn/blog/anatomy-of-an-incident-ch5/2024-07-01_21-08-15_hu_ace9123c0380bc1c.png 480w, https://martinliu.cn/blog/anatomy-of-an-incident-ch5/2024-07-01_21-08-15_hu_807d2cf080f3e110.png 1024w"
+srcset="https://martinliu.cn/blog/anatomy-of-an-incident-ch5/2024-07-01_21-08-15_hu_faae8c44895b2d0b.webp 480w, https://martinliu.cn/blog/anatomy-of-an-incident-ch5/2024-07-01_21-08-15_hu_9c775b9366ea7237.webp 1024w"
 loading="lazy"
 alt="图 5-4. Venn 图显示工程工作与系统分析的相互作用"
 class="gallery-image"
@@ -1703,10 +1703,10 @@ data-flex-grow="105"
 data-flex-basis="252px"
 >&lt;/p>
 &lt;p>通过更深入的系统分析，中心的那个小片段（1 ∩ 2 ∩ 3）在两个不动的圆圈中被最大化（图 5-5）。换句话说，你正在最大化你优先考虑的修复措施的有效性。如果你想确保你正在针对正确的问题，移动圆圈是值得的。关键是要在系统分析上投入足够多的时间，以便你和你的团队能够以高概率选择最适合的工程项目来提高系统的恢复力。但要注意收益递减——例如，花一个月时间调查每一次中断并不是明智的资源使用。在以下部分中，我们提出了一些关键点，可能有助于思考如何移动圆圈。&lt;/p>
-&lt;p>&lt;img src="https://martinliu.cn/blog/anatomy-of-an-incident-ch5/2024-07-01_21-08-35.png"
+&lt;p>&lt;img src="https://martinliu.cn/blog/anatomy-of-an-incident-ch5/2024-07-01_21-08-35.webp"
 width="1244"
 height="1183"
-srcset="https://martinliu.cn/blog/anatomy-of-an-incident-ch5/2024-07-01_21-08-35_hu_6de8dcc1332c36fb.png 480w, https://martinliu.cn/blog/anatomy-of-an-incident-ch5/2024-07-01_21-08-35_hu_5c4fcb515aaa5283.png 1024w"
+srcset="https://martinliu.cn/blog/anatomy-of-an-incident-ch5/2024-07-01_21-08-35_hu_107cc438fefb89d6.webp 480w, https://martinliu.cn/blog/anatomy-of-an-incident-ch5/2024-07-01_21-08-35_hu_510ebc5b952091fd.webp 1024w"
 loading="lazy"
 alt="图 5-5. Venn 图突出工程工作与系统分析之间的相互作用"
 class="gallery-image"
@@ -1796,7 +1796,7 @@ alt="cover"
 >https://status.cloud.google.com/incident/compute/16007&lt;/a>&amp;#160;&lt;a href="#fnref:6" class="footnote-backref" role="doc-backlink">&amp;#x21a9;&amp;#xfe0e;&lt;/a>&lt;/p>
 &lt;/li>
 &lt;/ol>
-&lt;/div></description></item><item><title>Google SRE 白皮书： 《事故管理剖析》第四章 缓解和恢复</title><link>https://martinliu.cn/blog/anatomy-of-an-incident-ch4/</link><pubDate>Fri, 28 Jun 2024 22:46:48 +0800</pubDate><guid>https://martinliu.cn/blog/anatomy-of-an-incident-ch4/</guid><description>&lt;img src="https://martinliu.cn/blog/anatomy-of-an-incident-ch4/pexels-pixabay-69934.png" alt="Featured image of post Google SRE 白皮书： 《事故管理剖析》第四章 缓解和恢复" />&lt;ul>
+&lt;/div></description></item><item><title>Google SRE 白皮书： 《事故管理剖析》第四章 缓解和恢复</title><link>https://martinliu.cn/blog/anatomy-of-an-incident-ch4/</link><pubDate>Fri, 28 Jun 2024 22:46:48 +0800</pubDate><guid>https://martinliu.cn/blog/anatomy-of-an-incident-ch4/</guid><description>&lt;img src="https://martinliu.cn/blog/anatomy-of-an-incident-ch4/pexels-pixabay-69934.webp" alt="Featured image of post Google SRE 白皮书： 《事故管理剖析》第四章 缓解和恢复" />&lt;ul>
 &lt;li>&lt;a class="link" href="https://martinliu.cn/wp/anatomy-of-an-incident-cn.pdf" >下载中文版 PDF 文件&lt;/a>&lt;/li>
 &lt;li>&lt;a class="link" href="https://martinliu.cn/wp/anatomy-of-an-incident.pdf" >下载英文版 PDF 文件&lt;/a>&lt;/li>
 &lt;li>&lt;a class="link" href="https://sre.google/resources/practices-and-processes/anatomy-of-an-incident/" target="_blank" rel="noopener"
@@ -1821,10 +1821,10 @@ alt="cover"
 &lt;h3 id="计算事故的影响">计算事故的影响
 &lt;/h3>&lt;p>事故会影响可靠性目标，影响的大小：取决于故障的数量、持续时间、影响范围和规模。因此，想要减小事故的影响，首先需要了解可以采取哪些措施。让我们先看看应该如何量化和衡量事故的影响。&lt;/p>
 &lt;p>图 4-1 显示了衡量影响的方法：计算不可靠的时间，包括检测到问题的时间和修复（缓解）问题的时间，然后将其乘以事故的次数，即事故的频率。&lt;/p>
-&lt;p>&lt;img src="https://martinliu.cn/blog/anatomy-of-an-incident-ch4/2024-06-30_10-36-16.png"
+&lt;p>&lt;img src="https://martinliu.cn/blog/anatomy-of-an-incident-ch4/2024-06-30_10-36-16.webp"
 width="1352"
 height="612"
-srcset="https://martinliu.cn/blog/anatomy-of-an-incident-ch4/2024-06-30_10-36-16_hu_9901f1e02da11c99.png 480w, https://martinliu.cn/blog/anatomy-of-an-incident-ch4/2024-06-30_10-36-16_hu_b34c024ee30ef0c8.png 1024w"
+srcset="https://martinliu.cn/blog/anatomy-of-an-incident-ch4/2024-06-30_10-36-16_hu_94a2e56a65e2b74c.webp 480w, https://martinliu.cn/blog/anatomy-of-an-incident-ch4/2024-06-30_10-36-16_hu_4fa35daaa2c9b6df.webp 1024w"
 loading="lazy"
 alt="图 4-1. 中断生命周期"
 class="gallery-image"
@@ -1838,10 +1838,10 @@ data-flex-basis="530px"
 &lt;li>故障间隔时间（TBF）是从一次事故开始到，同类型事故下一开始的时间。&lt;/li>
 &lt;/ul>
 &lt;p>想要减小事故的影响，并使系统恢复到已知正常的状态，需要技术和“人”的因素的结合，例如：流程和支持。在谷歌，我们发现一旦涉及人为干预，中断至少会持续 20 到 30 分钟。通常，自动化和自愈系统是很好的策略，因为它们会有助于缩短检测时间和修复时间。&lt;/p>
-&lt;p>&lt;img src="https://martinliu.cn/blog/anatomy-of-an-incident-ch4/2024-06-30_10-36-34.png"
+&lt;p>&lt;img src="https://martinliu.cn/blog/anatomy-of-an-incident-ch4/2024-06-30_10-36-34.webp"
 width="1346"
 height="303"
-srcset="https://martinliu.cn/blog/anatomy-of-an-incident-ch4/2024-06-30_10-36-34_hu_355516c20cd4aa79.png 480w, https://martinliu.cn/blog/anatomy-of-an-incident-ch4/2024-06-30_10-36-34_hu_537dafee541c2694.png 1024w"
+srcset="https://martinliu.cn/blog/anatomy-of-an-incident-ch4/2024-06-30_10-36-34_hu_ac3aa611503e249c.webp 480w, https://martinliu.cn/blog/anatomy-of-an-incident-ch4/2024-06-30_10-36-34_hu_bbbff38263f49cf7.webp 1024w"
 loading="lazy"
 alt="不可用性公式"
 class="gallery-image"
@@ -1857,10 +1857,10 @@ data-flex-basis="1066px"
 &lt;li>使用有效的告警以避免告警疲劳。在需要立即采取行动时使用呼叫【译者注：短信、电话外呼等任何快速触达的通知方式】。只有正确的响应者——特定团队和所有者——才应该收到告警。另一个常见的投诉是收到不可操作的告警【译者注：与事故无关的人员也经常会在半夜被值守的人喊醒，冤】。&lt;/li>
 &lt;/ul>
 &lt;p>随之而来的问题是：“如果只对需要立即采取行动的事情进行呼叫，那其余的问题如何处理？”一个解决方案是：为不同情况使用不同的工具和平台。可能“正确的平台”是，一个工单系统或仪表板，或者仅需要根据该指标，用拉取的处理模式，进行相应的故障排除和调试。&lt;/p>
-&lt;p>&lt;img src="https://martinliu.cn/blog/anatomy-of-an-incident-ch4/2024-06-30_10-36-52.png"
+&lt;p>&lt;img src="https://martinliu.cn/blog/anatomy-of-an-incident-ch4/2024-06-30_10-36-52.webp"
 width="1352"
 height="617"
-srcset="https://martinliu.cn/blog/anatomy-of-an-incident-ch4/2024-06-30_10-36-52_hu_ef7416bdad45f937.png 480w, https://martinliu.cn/blog/anatomy-of-an-incident-ch4/2024-06-30_10-36-52_hu_10b7e2ce1dd5cb81.png 1024w"
+srcset="https://martinliu.cn/blog/anatomy-of-an-incident-ch4/2024-06-30_10-36-52_hu_f6762d29e67b647d.webp 480w, https://martinliu.cn/blog/anatomy-of-an-incident-ch4/2024-06-30_10-36-52_hu_86c40635f309fdc8.webp 1024w"
 loading="lazy"
 alt="图 4-2. 中断生命周期：检测时间"
 class="gallery-image"
@@ -1869,10 +1869,10 @@ data-flex-basis="525px"
 >&lt;/p>
 &lt;h3 id="缩短修复时间">缩短修复时间
 &lt;/h3>&lt;p>我们已经讨论了：用缩短检测时间作为减小事故影响的一种方法。另一种方法是：缩短修复时间(Reducing the Time to Repair)（图 4-3）。缩短修复时间主要涉及“人”的方面。使用事故管理协议和组织事故管理响应可以减少事故管理的模糊性，缩短对用户影响的时间。除此之外，你还需要培训响应者，制定明确的程序和手册，并降低值守的压力。让我们详细探讨这些策略。&lt;/p>
-&lt;p>&lt;img src="https://martinliu.cn/blog/anatomy-of-an-incident-ch4/2024-06-30_10-37-12.png"
+&lt;p>&lt;img src="https://martinliu.cn/blog/anatomy-of-an-incident-ch4/2024-06-30_10-37-12.webp"
 width="1354"
 height="619"
-srcset="https://martinliu.cn/blog/anatomy-of-an-incident-ch4/2024-06-30_10-37-12_hu_44f7062f82ad261d.png 480w, https://martinliu.cn/blog/anatomy-of-an-incident-ch4/2024-06-30_10-37-12_hu_8e48ad3df07845.png 1024w"
+srcset="https://martinliu.cn/blog/anatomy-of-an-incident-ch4/2024-06-30_10-37-12_hu_956602e2a02617d5.webp 480w, https://martinliu.cn/blog/anatomy-of-an-incident-ch4/2024-06-30_10-37-12_hu_fc7b0a17defb50a7.webp 1024w"
 loading="lazy"
 alt="图 4-3. 中断生命周期：修复时间"
 class="gallery-image"
@@ -1884,10 +1884,10 @@ data-flex-basis="524px"
 &lt;p>&lt;strong>建立有组织的事故响应程序&lt;/strong>&lt;/p>
 &lt;p>事故管理中存在一些常见问题。例如，缺乏责任感、沟通不畅、缺乏层次结构和自由发挥/英雄主义，可能导致更长的解决时间，也会增加值守人员和响应者的额外压力，并最终影响到客户。为了解决这个问题，我们建议通过建立一个层次结构明确的结构、任务和沟通渠道来组织响应。这有助于保持清晰的指挥链，并指定明确的角色。&lt;/p>
 &lt;p>在谷歌，我们使用 IMAG（谷歌事故管理），这是一个基于消防员和医护人员使用的事故指挥系统（ICS）的灵活框架。IMAG 教你如何通过建立层次结构明确的结构、任务和沟通渠道来组织紧急响应。它建立了一种标准、一致的方式来处理紧急情况和组织有效的响应。&lt;sup id="fnref:6">&lt;a href="#fn:6" class="footnote-ref" role="doc-noteref">6&lt;/a>&lt;/sup>&lt;/p>
-&lt;p>&lt;img src="https://martinliu.cn/blog/anatomy-of-an-incident-ch4/2024-06-30_10-37-33.png"
+&lt;p>&lt;img src="https://martinliu.cn/blog/anatomy-of-an-incident-ch4/2024-06-30_10-37-33.webp"
 width="1351"
 height="629"
-srcset="https://martinliu.cn/blog/anatomy-of-an-incident-ch4/2024-06-30_10-37-33_hu_d3f14413e53d0576.png 480w, https://martinliu.cn/blog/anatomy-of-an-incident-ch4/2024-06-30_10-37-33_hu_c5b1fc5671a6223f.png 1024w"
+srcset="https://martinliu.cn/blog/anatomy-of-an-incident-ch4/2024-06-30_10-37-33_hu_54e371ecc590d62b.webp 480w, https://martinliu.cn/blog/anatomy-of-an-incident-ch4/2024-06-30_10-37-33_hu_80dd4f5b22623faf.webp 1024w"
 loading="lazy"
 alt="图 4-4. 一个 ICS 层次结构示例"
 class="gallery-image"
@@ -1909,10 +1909,10 @@ data-flex-basis="515px"
 &lt;p>如你所见，有许多方法可以缩短修复时间，并最大限度地减小事故的影响。现在让我们看看延长故障间隔时间来减少事故影响的另一种方法。&lt;/p>
 &lt;h3 id="延长故障间隔时间">延长故障间隔时间
 &lt;/h3>&lt;p>为了延长故障间隔时间并减少故障次数，可以重构架构，并解决在风险分析和流程改进中识别出的故障点（图 4-5）。此外，还有一些措施可以帮助延长 TBF（故障间隔时间）。&lt;/p>
-&lt;p>&lt;img src="https://martinliu.cn/blog/anatomy-of-an-incident-ch4/2024-06-30_10-38-00.png"
+&lt;p>&lt;img src="https://martinliu.cn/blog/anatomy-of-an-incident-ch4/2024-06-30_10-38-00.webp"
 width="1353"
 height="618"
-srcset="https://martinliu.cn/blog/anatomy-of-an-incident-ch4/2024-06-30_10-38-00_hu_72807ec5b7584015.png 480w, https://martinliu.cn/blog/anatomy-of-an-incident-ch4/2024-06-30_10-38-00_hu_c2f82102b8a25533.png 1024w"
+srcset="https://martinliu.cn/blog/anatomy-of-an-incident-ch4/2024-06-30_10-38-00_hu_d18fa2ec6b63396c.webp 480w, https://martinliu.cn/blog/anatomy-of-an-incident-ch4/2024-06-30_10-38-00_hu_66cada0333efdbe3.webp 1024w"
 loading="lazy"
 alt="图 4-5. 中断生命周期：故障间隔时间"
 class="gallery-image"
@@ -2005,7 +2005,7 @@ alt="cover"
 >https://research.google/pubs/postmortem-action-items-plan-the-work-and-work-the-plan/&lt;/a>&amp;#160;&lt;a href="#fnref:12" class="footnote-backref" role="doc-backlink">&amp;#x21a9;&amp;#xfe0e;&lt;/a>&lt;/p>
 &lt;/li>
 &lt;/ol>
-&lt;/div></description></item><item><title>Google SRE 白皮书： 《事故管理剖析》第三章 扩展事故管理响应</title><link>https://martinliu.cn/blog/anatomy-of-an-incident-ch3/</link><pubDate>Wed, 26 Jun 2024 22:46:48 +0800</pubDate><guid>https://martinliu.cn/blog/anatomy-of-an-incident-ch3/</guid><description>&lt;img src="https://martinliu.cn/blog/anatomy-of-an-incident-ch3/pexels-pixabay-69934.png" alt="Featured image of post Google SRE 白皮书： 《事故管理剖析》第三章 扩展事故管理响应" />&lt;ul>
+&lt;/div></description></item><item><title>Google SRE 白皮书： 《事故管理剖析》第三章 扩展事故管理响应</title><link>https://martinliu.cn/blog/anatomy-of-an-incident-ch3/</link><pubDate>Wed, 26 Jun 2024 22:46:48 +0800</pubDate><guid>https://martinliu.cn/blog/anatomy-of-an-incident-ch3/</guid><description>&lt;img src="https://martinliu.cn/blog/anatomy-of-an-incident-ch3/pexels-pixabay-69934.webp" alt="Featured image of post Google SRE 白皮书： 《事故管理剖析》第三章 扩展事故管理响应" />&lt;ul>
 &lt;li>&lt;a class="link" href="https://martinliu.cn/wp/anatomy-of-an-incident-cn.pdf" >下载中文版 PDF 文件&lt;/a>&lt;/li>
 &lt;li>&lt;a class="link" href="https://martinliu.cn/wp/anatomy-of-an-incident.pdf" >下载英文版 PDF 文件&lt;/a>&lt;/li>
 &lt;li>&lt;a class="link" href="https://sre.google/resources/practices-and-processes/anatomy-of-an-incident/" target="_blank" rel="noopener"
@@ -2015,10 +2015,10 @@ alt="cover"
 &lt;p>在 Google，我们为所有系统提供了最佳的事故管理覆盖。Google 规模庞大，每年处理超过 2 万亿次搜索，需要大量的数据中心、至少一百万台计算机和超过 80000 名员工。所有这些活动都通过一个庞大且高度互联的系统系（ system-to-system 简称 SoS）进行，依赖其技术堆栈保持生产运行。支持这个技术堆栈意味着适当的人员随时待命，以便在问题出现时进行故障排除和修复。这些人员是我们站点可靠性工程团队中的响应人员，他们为系统提供事故管理覆盖，并在事故发生时进行响应。&lt;/p>
 &lt;h2 id="组件响应者">组件响应者
 &lt;/h2>&lt;p>在站点可靠性工程团队中，我们还拥有组件响应者，他们负责 Google 技术基础设施中某个组件或系统的响应（图 3-1）。&lt;/p>
-&lt;p>&lt;img src="https://martinliu.cn/blog/anatomy-of-an-incident-ch3/2024-06-27_21-24-47.png"
+&lt;p>&lt;img src="https://martinliu.cn/blog/anatomy-of-an-incident-ch3/2024-06-27_21-24-47.webp"
 width="802"
 height="157"
-srcset="https://martinliu.cn/blog/anatomy-of-an-incident-ch3/2024-06-27_21-24-47_hu_bd36474fcc570670.png 480w, https://martinliu.cn/blog/anatomy-of-an-incident-ch3/2024-06-27_21-24-47_hu_30ca5b876a206b22.png 1024w"
+srcset="https://martinliu.cn/blog/anatomy-of-an-incident-ch3/2024-06-27_21-24-47_hu_8a849b20ad612fcd.webp 480w, https://martinliu.cn/blog/anatomy-of-an-incident-ch3/2024-06-27_21-24-47_hu_59b90565ff95ade7.webp 1024w"
 loading="lazy"
 alt="图 3-1. 组件响应者"
 class="gallery-image"
@@ -2029,10 +2029,10 @@ data-flex-basis="1225px"
 &lt;p>单个组件响应者的责任范围有限，这使他们能够深入了解其领域及相关系统。这些响应者是防止故障从一个组件蔓延到整个堆栈的第一道防线。这些单独的组件比整体的系统体系级 SoS 堆栈要小，正如我们将在下面描述的“系统体系（SoS）响应者”一节中讨论的那样，通常具有明确且独立的系统边界。因此，可以设置合理的监控和告警机制，使组件响应者始终了解其系统的故障模式。&lt;/p>
 &lt;p>当技术堆栈的范围超出一个人可理解和维护的能力时，我们将技术堆栈拆分，以便多个响应者可以分别对整个堆栈的单个组件提供覆盖。随着时间的推移，这些组件变得更加复杂，并进一步分解。通过保持有限的范围，主要响应者可以在任何给定时间解决小范围内的问题。然而，也存在风险，即忽视了跨多个组件的生产故障，或者如果问题超出其专业范围，则无法为组件响应者提供足够的支持。&lt;/p>
 &lt;p>例如，假设一个底层故障在技术堆栈的显著部分发生级联效应。这种级联效应的速度超过了人类自我组织的速度。在一次影响范围广泛的事故中，我们很快就会达到每个组件团队都被呼叫、分配了响应人员并管理自己的状态。这些组件团队并行工作，但这些响应人员可能彼此并不知情（图 3-2）。其中一个响应人员处理的事故可能是根本原因，而其他则是后果。但究竟是哪一个呢？&lt;/p>
-&lt;p>&lt;img src="https://martinliu.cn/blog/anatomy-of-an-incident-ch3/2024-06-27_21-26-04.png"
+&lt;p>&lt;img src="https://martinliu.cn/blog/anatomy-of-an-incident-ch3/2024-06-27_21-26-04.webp"
 width="803"
 height="210"
-srcset="https://martinliu.cn/blog/anatomy-of-an-incident-ch3/2024-06-27_21-26-04_hu_cdc59451a3dcaa27.png 480w, https://martinliu.cn/blog/anatomy-of-an-incident-ch3/2024-06-27_21-26-04_hu_56bae06ff1ee7ec9.png 1024w"
+srcset="https://martinliu.cn/blog/anatomy-of-an-incident-ch3/2024-06-27_21-26-04_hu_bdfc307f406c60a3.webp 480w, https://martinliu.cn/blog/anatomy-of-an-incident-ch3/2024-06-27_21-26-04_hu_a8c2a41a6f14b977.webp 1024w"
 loading="lazy"
 alt="图 3-2. 从组件到更大的场景"
 class="gallery-image"
@@ -2042,10 +2042,10 @@ data-flex-basis="917px"
 &lt;p>在一个足够大且复杂的技术堆栈中，一个主要响应人员几乎不可能同时驱动缓解并维护所有依赖关系和被依赖关系的状态。为了缓解这种风险，除了出色的组件响应人员之外，我们还建立了一个二级响应人员的结构。我们在 Google 称这些二级响应人员为系统响应人员，接下来我们将讨论这一部分。&lt;/p>
 &lt;h2 id="系统响应人员">系统响应人员
 &lt;/h2>&lt;p>系统响应人员（SoS 响应人员）负责处理跨多个组件系统、跨系统边界或复杂情况的事故。这些 SoS 响应人员经过专业培训，具有适当的权限和地位，并有权领导有组织的协调响应。他们是第二道防线，更全面地关注问题，并在应对分布式计算故障时提供关键优势支持（图 3-3）。&lt;/p>
-&lt;p>&lt;img src="https://martinliu.cn/blog/anatomy-of-an-incident-ch3/2024-06-27_21-26-33.png"
+&lt;p>&lt;img src="https://martinliu.cn/blog/anatomy-of-an-incident-ch3/2024-06-27_21-26-33.webp"
 width="802"
 height="123"
-srcset="https://martinliu.cn/blog/anatomy-of-an-incident-ch3/2024-06-27_21-26-33_hu_7fc6a94038f7dbd0.png 480w, https://martinliu.cn/blog/anatomy-of-an-incident-ch3/2024-06-27_21-26-33_hu_cb812bdf88106e78.png 1024w"
+srcset="https://martinliu.cn/blog/anatomy-of-an-incident-ch3/2024-06-27_21-26-33_hu_48e14d0a1a46ef0c.webp 480w, https://martinliu.cn/blog/anatomy-of-an-incident-ch3/2024-06-27_21-26-33_hu_9c1c7c5509f9f967.webp 1024w"
 loading="lazy"
 alt="图 3-3. 系统响应人员"
 class="gallery-image"
@@ -2062,10 +2062,10 @@ data-flex-basis="1564px"
 &lt;p>Tech IRT 的成员继续为原团队工作，同时轮流进行全球 24/7 的值守/值班。他们能够在这些重大紧急情况下继续工作，因为他们经常练习这项专门技能。&lt;/p>
 &lt;p>Tech IRT 成员每年两次接受为期两周的生产培训，深入了解系统运行和故障的细节。他们还需要每季度展示有效使用紧急工具的能力。
 图 3-4 描绘了 Google 的事故响应组织架构。随着架构级别的增加，产品日常功能的细节变得更加抽象。每个角色同样重要——金字塔的每个后续级别都承受较少的寻呼负载。如果组件响应人员无法解决问题且威胁到产品稳定性，他们可以将问题升级到产品专注的 IRT。&lt;/p>
-&lt;p>&lt;img src="https://martinliu.cn/blog/anatomy-of-an-incident-ch3/2024-06-27_21-27-04.png"
+&lt;p>&lt;img src="https://martinliu.cn/blog/anatomy-of-an-incident-ch3/2024-06-27_21-27-04.webp"
 width="802"
 height="315"
-srcset="https://martinliu.cn/blog/anatomy-of-an-incident-ch3/2024-06-27_21-27-04_hu_4ab2c921ce8f12e9.png 480w, https://martinliu.cn/blog/anatomy-of-an-incident-ch3/2024-06-27_21-27-04_hu_c26ef06ae5385e7d.png 1024w"
+srcset="https://martinliu.cn/blog/anatomy-of-an-incident-ch3/2024-06-27_21-27-04_hu_b173384e2f86ce76.webp 480w, https://martinliu.cn/blog/anatomy-of-an-incident-ch3/2024-06-27_21-27-04_hu_8f961171658098c5.webp 1024w"
 loading="lazy"
 alt="图 3-4. 事故响应组织架构"
 class="gallery-image"
@@ -2076,10 +2076,10 @@ data-flex-basis="611px"
 &lt;p>那么，是什么使得这个组织架构能够无缝运行呢？答案是共同的协议、信任、尊重和透明度。接下来我们将详细探讨这些。&lt;/p>
 &lt;h2 id="事故响应组织架构">事故响应组织架构
 &lt;/h2>&lt;p>成功的事故响应组织有四个特征：统一协议、信任、尊重和透明（见图 3-5）。&lt;/p>
-&lt;p>&lt;img src="https://martinliu.cn/blog/anatomy-of-an-incident-ch3/2024-06-27_21-27-24.png"
+&lt;p>&lt;img src="https://martinliu.cn/blog/anatomy-of-an-incident-ch3/2024-06-27_21-27-24.webp"
 width="805"
 height="609"
-srcset="https://martinliu.cn/blog/anatomy-of-an-incident-ch3/2024-06-27_21-27-24_hu_33344bbee071c599.png 480w, https://martinliu.cn/blog/anatomy-of-an-incident-ch3/2024-06-27_21-27-24_hu_7356f56fdbdd07d9.png 1024w"
+srcset="https://martinliu.cn/blog/anatomy-of-an-incident-ch3/2024-06-27_21-27-24_hu_eb1275f84bd3a0df.webp 480w, https://martinliu.cn/blog/anatomy-of-an-incident-ch3/2024-06-27_21-27-24_hu_778ab3637f5e1a42.webp 1024w"
 loading="lazy"
 alt="图 3-5. 成功事故响应组织的特征"
 class="gallery-image"
@@ -2152,7 +2152,7 @@ loading="lazy"
 alt="cover"
 >&lt;/p>
 &lt;p>❤️ Photo by Pixabay: &lt;a class="link" href="https://www.pexels.com/photo/photo-of-a-2-fireman-killing-a-huge-fire-69934/" target="_blank" rel="noopener"
->https://www.pexels.com/photo/photo-of-a-2-fireman-killing-a-huge-fire-69934/&lt;/a>&lt;/p></description></item><item><title>Google SRE 白皮书： 《事故管理剖析》第二章 实战演习事故响应准备</title><link>https://martinliu.cn/blog/anatomy-of-an-incident-ch2/</link><pubDate>Tue, 25 Jun 2024 22:46:48 +0800</pubDate><guid>https://martinliu.cn/blog/anatomy-of-an-incident-ch2/</guid><description>&lt;img src="https://martinliu.cn/blog/anatomy-of-an-incident-ch2/pexels-pixabay-69934.png" alt="Featured image of post Google SRE 白皮书： 《事故管理剖析》第二章 实战演习事故响应准备" />&lt;ul>
+>https://www.pexels.com/photo/photo-of-a-2-fireman-killing-a-huge-fire-69934/&lt;/a>&lt;/p></description></item><item><title>Google SRE 白皮书： 《事故管理剖析》第二章 实战演习事故响应准备</title><link>https://martinliu.cn/blog/anatomy-of-an-incident-ch2/</link><pubDate>Tue, 25 Jun 2024 22:46:48 +0800</pubDate><guid>https://martinliu.cn/blog/anatomy-of-an-incident-ch2/</guid><description>&lt;img src="https://martinliu.cn/blog/anatomy-of-an-incident-ch2/pexels-pixabay-69934.webp" alt="Featured image of post Google SRE 白皮书： 《事故管理剖析》第二章 实战演习事故响应准备" />&lt;ul>
 &lt;li>&lt;a class="link" href="https://martinliu.cn/wp/anatomy-of-an-incident-cn.pdf" >下载中文版 PDF 文件&lt;/a>&lt;/li>
 &lt;li>&lt;a class="link" href="https://martinliu.cn/wp/anatomy-of-an-incident.pdf" >下载英文版 PDF 文件&lt;/a>&lt;/li>
 &lt;li>&lt;a class="link" href="https://sre.google/resources/practices-and-processes/anatomy-of-an-incident/" target="_blank" rel="noopener"
@@ -2192,7 +2192,7 @@ loading="lazy"
 alt="cover"
 >&lt;/p>
 &lt;p>❤️ Photo by Pixabay: &lt;a class="link" href="https://www.pexels.com/photo/photo-of-a-2-fireman-killing-a-huge-fire-69934/" target="_blank" rel="noopener"
->https://www.pexels.com/photo/photo-of-a-2-fireman-killing-a-huge-fire-69934/&lt;/a>&lt;/p></description></item><item><title>Google SRE 白皮书： 《事故管理剖析》第一章 概述</title><link>https://martinliu.cn/blog/anatomy-of-an-incident-ch1/</link><pubDate>Tue, 25 Jun 2024 22:46:48 +0800</pubDate><guid>https://martinliu.cn/blog/anatomy-of-an-incident-ch1/</guid><description>&lt;img src="https://martinliu.cn/blog/anatomy-of-an-incident-ch1/pexels-pixabay-69934.jpg" alt="Featured image of post Google SRE 白皮书： 《事故管理剖析》第一章 概述" />&lt;ul>
+>https://www.pexels.com/photo/photo-of-a-2-fireman-killing-a-huge-fire-69934/&lt;/a>&lt;/p></description></item><item><title>Google SRE 白皮书： 《事故管理剖析》第一章 概述</title><link>https://martinliu.cn/blog/anatomy-of-an-incident-ch1/</link><pubDate>Tue, 25 Jun 2024 22:46:48 +0800</pubDate><guid>https://martinliu.cn/blog/anatomy-of-an-incident-ch1/</guid><description>&lt;img src="https://martinliu.cn/blog/anatomy-of-an-incident-ch1/pexels-pixabay-69934.webp" alt="Featured image of post Google SRE 白皮书： 《事故管理剖析》第一章 概述" />&lt;ul>
 &lt;li>&lt;a class="link" href="https://martinliu.cn/wp/anatomy-of-an-incident-cn.pdf" >下载中文版 PDF 文件&lt;/a>&lt;/li>
 &lt;li>&lt;a class="link" href="https://martinliu.cn/wp/anatomy-of-an-incident.pdf" >下载英文版 PDF 文件&lt;/a>&lt;/li>
 &lt;li>&lt;a class="link" href="https://sre.google/resources/practices-and-processes/anatomy-of-an-incident/" target="_blank" rel="noopener"
@@ -2258,10 +2258,10 @@ alt="cover"
 &lt;li>&lt;strong>响应 Response&lt;/strong> ：当触发因素导致潜在风险变为实际问题时的应对措施。这包括响应告警、决定问题是否是事故，并与受影响的人员沟通。&lt;/li>
 &lt;li>&lt;strong>缓解和恢复 Mitigation and recovery&lt;/strong> ：使系统恢复到功能状态的一系列行动。这包括为了避免影响或防止影响扩大的紧急缓解措施。恢复阶段还包括进行事后分析和反思，撰写事后报告。事后报告是一份关于事故的书面记录，包含采取的措施、影响、根本原因和防止再次发生或减少未来影响的后续行动。&lt;/li>
 &lt;/ul>
-&lt;p>&lt;img src="https://martinliu.cn/blog/anatomy-of-an-incident-ch1/2024-06-25_23-02-44.png"
+&lt;p>&lt;img src="https://martinliu.cn/blog/anatomy-of-an-incident-ch1/2024-06-25_23-02-44.webp"
 width="932"
 height="925"
-srcset="https://martinliu.cn/blog/anatomy-of-an-incident-ch1/2024-06-25_23-02-44_hu_b1e2e86453846976.png 480w, https://martinliu.cn/blog/anatomy-of-an-incident-ch1/2024-06-25_23-02-44_hu_46dce263178723af.png 1024w"
+srcset="https://martinliu.cn/blog/anatomy-of-an-incident-ch1/2024-06-25_23-02-44_hu_9e150a3cf62c54c8.webp 480w, https://martinliu.cn/blog/anatomy-of-an-incident-ch1/2024-06-25_23-02-44_hu_3114e4922f7810c.webp 1024w"
 loading="lazy"
 alt="图 1-1. 事故管理生命周期"
 class="gallery-image"
@@ -2277,7 +2277,7 @@ loading="lazy"
 alt="cover"
 >&lt;/p>
 &lt;p>❤️ Photo by Pixabay: &lt;a class="link" href="https://www.pexels.com/photo/photo-of-a-2-fireman-killing-a-huge-fire-69934/" target="_blank" rel="noopener"
->https://www.pexels.com/photo/photo-of-a-2-fireman-killing-a-huge-fire-69934/&lt;/a>&lt;/p></description></item><item><title>Google 白皮书：SRE 容量管理最佳实践</title><link>https://martinliu.cn/blog/sre-best-practices-for-capacity-management/</link><pubDate>Mon, 17 Jun 2024 13:23:28 +0800</pubDate><guid>https://martinliu.cn/blog/sre-best-practices-for-capacity-management/</guid><description>&lt;img src="https://martinliu.cn/blog/sre-best-practices-for-capacity-management/pexels-fox-58267-9097039.jpg" alt="Featured image of post Google 白皮书：SRE 容量管理最佳实践" />&lt;p>作为 SRE，您需要确定服务的初始资源需求，并确保服务在意外需求下仍能稳定运行。容量管理是指确保您的服务拥有足够的资源，从而实现可扩展性、高效性和可靠性。无论是用户端服务还是公司内部服务，都必须应对预期和意外的增长。我们将利用率定义为资源使用的百分比。确定初始资源利用率并预测未来需求并不容易。我们提供了一些估算利用率和识别盲点的方法，并讨论了构建冗余以避免故障的好处。利用这些信息，您可以设计架构，使每个组件的资源分配增加能够有效地线性提升整个服务的容量。&lt;/p>
+>https://www.pexels.com/photo/photo-of-a-2-fireman-killing-a-huge-fire-69934/&lt;/a>&lt;/p></description></item><item><title>Google 白皮书：SRE 容量管理最佳实践</title><link>https://martinliu.cn/blog/sre-best-practices-for-capacity-management/</link><pubDate>Mon, 17 Jun 2024 13:23:28 +0800</pubDate><guid>https://martinliu.cn/blog/sre-best-practices-for-capacity-management/</guid><description>&lt;img src="https://martinliu.cn/blog/sre-best-practices-for-capacity-management/pexels-fox-58267-9097039.webp" alt="Featured image of post Google 白皮书：SRE 容量管理最佳实践" />&lt;p>作为 SRE，您需要确定服务的初始资源需求，并确保服务在意外需求下仍能稳定运行。容量管理是指确保您的服务拥有足够的资源，从而实现可扩展性、高效性和可靠性。无论是用户端服务还是公司内部服务，都必须应对预期和意外的增长。我们将利用率定义为资源使用的百分比。确定初始资源利用率并预测未来需求并不容易。我们提供了一些估算利用率和识别盲点的方法，并讨论了构建冗余以避免故障的好处。利用这些信息，您可以设计架构，使每个组件的资源分配增加能够有效地线性提升整个服务的容量。&lt;/p>
 &lt;h2 id="容量管理原则">容量管理原则
 &lt;/h2>&lt;p>在本文中，服务被定义为提供一组功能的所有二进制文件（服务栈）的集合。成功的容量管理需要从两个复杂的角度出发：资源制备，即现在运行服务所需的初始容量；以及容量规划，以保障未来服务的可靠性。&lt;/p>
 &lt;p>容量管理的核心原则包括以下三点，以保持服务的可扩展性、可用性和可管理性：&lt;/p>
@@ -2305,10 +2305,10 @@ alt="cover"
 &lt;/h2>&lt;p>我们将讨论集中在服务系统上，即通过查找数据来响应用户请求的服务。不过，这些原则同样适用于数据存储服务、数据转换服务以及其他大多数计算机任务。&lt;/p>
 &lt;p>资源制备涉及确定服务所需资源的目标利用率并分配这些资源。目标利用率被定义为在保证服务可靠运行的情况下，特定资源类别的最高可能利用率。资源类别指的是特定类型的计算资产，比如 CPU、RAM 和存储。&lt;/p>
 &lt;p>要为你的服务进行资源制备，需要使用需求信号作为输入，并创建包含具体资源分配的生产布局，如图 1 所示。服务通常使用多种资源类别。&lt;/p>
-&lt;p>&lt;img src="https://martinliu.cn/blog/sre-best-practices-for-capacity-management/2024-06-17_14-25-37.png"
+&lt;p>&lt;img src="https://martinliu.cn/blog/sre-best-practices-for-capacity-management/2024-06-17_14-25-37.webp"
 width="940"
 height="476"
-srcset="https://martinliu.cn/blog/sre-best-practices-for-capacity-management/2024-06-17_14-25-37_hu_cb46c906d7ca6228.png 480w, https://martinliu.cn/blog/sre-best-practices-for-capacity-management/2024-06-17_14-25-37_hu_5d20bf26be88ab99.png 1024w"
+srcset="https://martinliu.cn/blog/sre-best-practices-for-capacity-management/2024-06-17_14-25-37_hu_488080937d391812.webp 480w, https://martinliu.cn/blog/sre-best-practices-for-capacity-management/2024-06-17_14-25-37_hu_da7ba864277c470b.webp 1024w"
 loading="lazy"
 alt="图 1: 资源制备解决方案中的需求信号和资源分配"
 class="gallery-image"
@@ -2354,10 +2354,10 @@ data-flex-basis="473px"
 &lt;p>虽然部分冗余涉及容量，但也与服务架构本身有关。例如，一致性存储服务通常要求大多数副本处于运行状态，以确保写操作不会被回滚。
 为 N+2 制备服务对可靠性有积极影响：可以计划整个区域的维护，但在维护期间会将冗余降至 N+1。服务仍然可以容忍另一个区域的意外事件。这将冗余降至 N+0，但不会导致中断。需要注意的是，切换到另一个区域可能会对可见的延迟产生影响。&lt;/p>
 &lt;p>当冗余为 N+0 并且无法容忍进一步的故障时，优先任务是尽快缓解或解决意外事件。一个选项是完成或回滚计划的维护工作，以将服务恢复到 N+1。否则，任何其他区域出现事件都可能导致面向用户的中断。&lt;/p>
-&lt;p>&lt;img src="https://martinliu.cn/blog/sre-best-practices-for-capacity-management/2024-06-17_14-25-54.png"
+&lt;p>&lt;img src="https://martinliu.cn/blog/sre-best-practices-for-capacity-management/2024-06-17_14-25-54.webp"
 width="1813"
 height="707"
-srcset="https://martinliu.cn/blog/sre-best-practices-for-capacity-management/2024-06-17_14-25-54_hu_262c585f81ce29ce.png 480w, https://martinliu.cn/blog/sre-best-practices-for-capacity-management/2024-06-17_14-25-54_hu_ec6f96ac83cd6607.png 1024w"
+srcset="https://martinliu.cn/blog/sre-best-practices-for-capacity-management/2024-06-17_14-25-54_hu_d334953dad671404.webp 480w, https://martinliu.cn/blog/sre-best-practices-for-capacity-management/2024-06-17_14-25-54_hu_ae384dffa3952b86.webp 1024w"
 loading="lazy"
 alt="图 2: 服务制备资源成本的示例比较（以三个副本和五个副本为例）"
 class="gallery-image"
@@ -2593,7 +2593,7 @@ data-flex-basis="615px"
 &lt;p>原文地址: &lt;a class="link" href="https://static.googleusercontent.com/media/sre.google/en//static/pdf/login_winter20_10_torres.pdf" target="_blank" rel="noopener"
 >https://static.googleusercontent.com/media/sre.google/en//static/pdf/login_winter20_10_torres.pdf&lt;/a>&lt;/p>&lt;/blockquote>
 &lt;p>❤️ Photo by FOX: &lt;a class="link" href="https://www.pexels.com/photo/clear-drinking-glass-with-brown-liquid-9097039/" target="_blank" rel="noopener"
->https://www.pexels.com/photo/clear-drinking-glass-with-brown-liquid-9097039/&lt;/a>&lt;/p></description></item><item><title>Google 白皮书：产品导向的 SRE 可靠性</title><link>https://martinliu.cn/blog/product-focused-reliability-for-sre/</link><pubDate>Wed, 12 Jun 2024 13:25:58 +0800</pubDate><guid>https://martinliu.cn/blog/product-focused-reliability-for-sre/</guid><description>&lt;img src="https://martinliu.cn/blog/product-focused-reliability-for-sre/pexels-pavel-danilyuk-7868970.jpg" alt="Featured image of post Google 白皮书：产品导向的 SRE 可靠性" />&lt;blockquote>
+>https://www.pexels.com/photo/clear-drinking-glass-with-brown-liquid-9097039/&lt;/a>&lt;/p></description></item><item><title>Google 白皮书：产品导向的 SRE 可靠性</title><link>https://martinliu.cn/blog/product-focused-reliability-for-sre/</link><pubDate>Wed, 12 Jun 2024 13:25:58 +0800</pubDate><guid>https://martinliu.cn/blog/product-focused-reliability-for-sre/</guid><description>&lt;img src="https://martinliu.cn/blog/product-focused-reliability-for-sre/pexels-pavel-danilyuk-7868970.webp" alt="Featured image of post Google 白皮书：产品导向的 SRE 可靠性" />&lt;blockquote>
 &lt;p>作者：Carl Crous, Parker Roth 和 Victoria Hurd；
 译者：刘征
 原文：&lt;a class="link" href="https://sre.google/resources/practices-and-processes/product-focused-reliability-for-sre/" target="_blank" rel="noopener"
@@ -3077,7 +3077,7 @@ data-flex-basis="601px"
 &lt;p>[7] Wikipedia Contributors (2019). Responsibility Assignment Matrix. [在线] Wikipedia. 可在： &lt;a class="link" href="https://en.wikipedia.org/wiki/Responsibility_assignment_matrix" target="_blank" rel="noopener"
 >https://en.wikipedia.org/wiki/Responsibility_assignment_matrix&lt;/a>&lt;/p>
 &lt;p>❤️ Photo by Pavel Danilyuk: &lt;a class="link" href="https://www.pexels.com/photo/group-of-people-discussion-on-a-wooden-table-7868970/" target="_blank" rel="noopener"
->https://www.pexels.com/photo/group-of-people-discussion-on-a-wooden-table-7868970/&lt;/a>&lt;/p></description></item><item><title>《企业 SRE 路线图》第六章：不限于谷歌</title><link>https://martinliu.cn/blog/google-enterprise-roadmap-to-sre-chapter6/</link><pubDate>Sat, 04 May 2024 01:01:05 +0800</pubDate><guid>https://martinliu.cn/blog/google-enterprise-roadmap-to-sre-chapter6/</guid><description>&lt;img src="https://martinliu.cn/blog/google-enterprise-roadmap-to-sre-chapter6/pexels-anete-lusina-4792380.jpg" alt="Featured image of post 《企业 SRE 路线图》第六章：不限于谷歌" />&lt;blockquote>
+>https://www.pexels.com/photo/group-of-people-discussion-on-a-wooden-table-7868970/&lt;/a>&lt;/p></description></item><item><title>《企业 SRE 路线图》第六章：不限于谷歌</title><link>https://martinliu.cn/blog/google-enterprise-roadmap-to-sre-chapter6/</link><pubDate>Sat, 04 May 2024 01:01:05 +0800</pubDate><guid>https://martinliu.cn/blog/google-enterprise-roadmap-to-sre-chapter6/</guid><description>&lt;img src="https://martinliu.cn/blog/google-enterprise-roadmap-to-sre-chapter6/pexels-anete-lusina-4792380.webp" alt="Featured image of post 《企业 SRE 路线图》第六章：不限于谷歌" />&lt;blockquote>
 &lt;p>译者：刘征&lt;/p>&lt;/blockquote>
 &lt;ul>
 &lt;li>&lt;a class="link" href="https://martinliu.cn/wp/enterprise-roadmap-to-sre-cn.pdf" >下载中文版 PDF 文件&lt;/a>&lt;/li>
@@ -3118,7 +3118,7 @@ data-flex-basis="601px"
 &lt;/h2>&lt;p>James Brookbank 是 Google 的一名云解决方案架构师。解决方案架构师通过解决复杂的技术问题并提供专业的架构指导，帮助 Google 的客户更轻松地使用云服务。在加入 Google 之前，James 曾在多家大型企业工作，专注于 IT 基础设施和金融服务。&lt;/p>
 &lt;p>Steve McGhee 是一位可靠性倡导者，帮助团队了解如何最佳地构建和运营世界级的可靠服务。在此之前，他在 Google 担任了超过 10 年的 SRE，学习如何在搜索、YouTube、Android 和云中扩展全球系统。他曾在加利福尼亚、日本和英国管理多个工程团队。Steve 还曾在一家加利福尼亚的企业工作，帮助他们向云迁移。&lt;/p>
 &lt;p>Feature picture ❤️ Anete Lusina: &lt;a class="link" href="https://www.pexels.com/photo/miniature-toy-car-on-top-of-monopoly-board-game-4792380/" target="_blank" rel="noopener"
->https://www.pexels.com/photo/miniature-toy-car-on-top-of-monopoly-board-game-4792380/&lt;/a>&lt;/p></description></item><item><title>《企业 SRE 路线图》第五章：积极培育成功</title><link>https://martinliu.cn/blog/google-enterprise-roadmap-to-sre-chapter5/</link><pubDate>Fri, 03 May 2024 23:55:05 +0800</pubDate><guid>https://martinliu.cn/blog/google-enterprise-roadmap-to-sre-chapter5/</guid><description>&lt;img src="https://martinliu.cn/blog/google-enterprise-roadmap-to-sre-chapter5/pexels-anete-lusina-4792380.jpg" alt="Featured image of post 《企业 SRE 路线图》第五章：积极培育成功" />&lt;blockquote>
+>https://www.pexels.com/photo/miniature-toy-car-on-top-of-monopoly-board-game-4792380/&lt;/a>&lt;/p></description></item><item><title>《企业 SRE 路线图》第五章：积极培育成功</title><link>https://martinliu.cn/blog/google-enterprise-roadmap-to-sre-chapter5/</link><pubDate>Fri, 03 May 2024 23:55:05 +0800</pubDate><guid>https://martinliu.cn/blog/google-enterprise-roadmap-to-sre-chapter5/</guid><description>&lt;img src="https://martinliu.cn/blog/google-enterprise-roadmap-to-sre-chapter5/pexels-anete-lusina-4792380.webp" alt="Featured image of post 《企业 SRE 路线图》第五章：积极培育成功" />&lt;blockquote>
 &lt;p>译者：刘征&lt;/p>&lt;/blockquote>
 &lt;ul>
 &lt;li>&lt;a class="link" href="https://martinliu.cn/wp/enterprise-roadmap-to-sre-cn.pdf" >下载中文版 PDF 文件&lt;/a>&lt;/li>
@@ -3170,7 +3170,7 @@ data-flex-basis="601px"
 &lt;h2 id="航向">航向
 &lt;/h2>&lt;p>采用更主动的方法可以让你有更多时间专注于战略愿景。你会开始更清楚地了解组织中不同服务实际需要的可靠性水平。利用这些数据并设定新的预期结果来决定优化的重点。也许你的一些内部系统被标记为业务关键，但你的 SRE 们现在知道它们只需要 99.9% 的服务水平目标（SLO）。其他系统可能现在需要更高的可靠性水平，而判断你是否成功的一个可靠方法是当你开始看到其他团队对获得 SRE 好处的兴趣。&lt;/p>
 &lt;p>Feature picture ❤️ Anete Lusina: &lt;a class="link" href="https://www.pexels.com/photo/miniature-toy-car-on-top-of-monopoly-board-game-4792380/" target="_blank" rel="noopener"
->https://www.pexels.com/photo/miniature-toy-car-on-top-of-monopoly-board-game-4792380/&lt;/a>&lt;/p></description></item><item><title>《企业 SRE 路线图》第四章： SRE 实践</title><link>https://martinliu.cn/blog/google-sre-ent-roadmap-chapter4/</link><pubDate>Thu, 02 May 2024 21:41:05 +0800</pubDate><guid>https://martinliu.cn/blog/google-sre-ent-roadmap-chapter4/</guid><description>&lt;img src="https://martinliu.cn/blog/google-sre-ent-roadmap-chapter4/pexels-anete-lusina-4792380.jpg" alt="Featured image of post 《企业 SRE 路线图》第四章： SRE 实践" />&lt;blockquote>
+>https://www.pexels.com/photo/miniature-toy-car-on-top-of-monopoly-board-game-4792380/&lt;/a>&lt;/p></description></item><item><title>《企业 SRE 路线图》第四章： SRE 实践</title><link>https://martinliu.cn/blog/google-sre-ent-roadmap-chapter4/</link><pubDate>Thu, 02 May 2024 21:41:05 +0800</pubDate><guid>https://martinliu.cn/blog/google-sre-ent-roadmap-chapter4/</guid><description>&lt;img src="https://martinliu.cn/blog/google-sre-ent-roadmap-chapter4/pexels-anete-lusina-4792380.webp" alt="Featured image of post 《企业 SRE 路线图》第四章： SRE 实践" />&lt;blockquote>
 &lt;p>译者：刘征&lt;/p>&lt;/blockquote>
 &lt;ul>
 &lt;li>&lt;a class="link" href="https://martinliu.cn/wp/enterprise-roadmap-to-sre-cn.pdf" >下载中文版 PDF 文件&lt;/a>&lt;/li>
@@ -3207,10 +3207,10 @@ data-flex-basis="601px"
 &lt;p>另一个文化抓手是规划和目标设定。由于 SRE 最接近生产问题，他们通常很清楚最重要的是什么，哪些问题最紧急，哪些问题造成了最大的痛苦。允许 SR E团队设定自己的优先级和路线图，你就赋予了团队权力，他们将会更加有效率和愉快的工作。管理层应遵循共同制定，并达成对预期成果的共识的做法。业务需要加速开发吗？用户需要更快获得发布结果（新版本）吗？一个常见的反模式是泰勒主义，即领导者专权设定和优先考虑详细的计划和任务，然后将它们分配给下属。&lt;/p>
 &lt;h2 id="构建能力平台">构建能力平台
 &lt;/h2>&lt;p>SRE 团队可以构建一个平台，向合作团队提供能力，理想情况下，随着时间的推移，他们的贡献将扩展到整个组织。通过在共享服务、实践、规范和代码中引入弹性机制，这些团队可以开发出由：自动化、代码、共享库、管道、流程、规范、文档、手册组成的共享平台，甚至包括那些只存在于人们头脑中的特殊未记录知识。与其让每个团队都试图创建自己的最佳实践，不如将这些实践融入到平台中。产品可以从头在平台上构建（所谓的“数字原住民”），也可以移植到平台上。随着平台能力的增长，团队对其操作特性越来越有信心和体感舒适，逐渐将更加关键的工作负载都可以迁移过来。通过采纳这种将能力编码到平台中的模型，SRE 团队可以通过将能力同时应用到多个服务中来放大他们的影响力。平台是一个内部产品，应该像产品一样进行管理，将服务团队视为客户，接受功能请求，并跟踪缺陷（见图4-1）。&lt;/p>
-&lt;p>&lt;img src="https://martinliu.cn/blog/google-sre-ent-roadmap-chapter4/platfrom-of-capabilities.png"
+&lt;p>&lt;img src="https://martinliu.cn/blog/google-sre-ent-roadmap-chapter4/platfrom-of-capabilities.webp"
 width="647"
 height="378"
-srcset="https://martinliu.cn/blog/google-sre-ent-roadmap-chapter4/platfrom-of-capabilities_hu_451a5b42bb13f857.png 480w, https://martinliu.cn/blog/google-sre-ent-roadmap-chapter4/platfrom-of-capabilities_hu_c072b3ac4c3135fb.png 1024w"
+srcset="https://martinliu.cn/blog/google-sre-ent-roadmap-chapter4/platfrom-of-capabilities_hu_b381b09c21c8284.webp 480w, https://martinliu.cn/blog/google-sre-ent-roadmap-chapter4/platfrom-of-capabilities_hu_e985e87f25e35293.webp 1024w"
 loading="lazy"
 alt="图 4-1. 能力平台示意图"
 class="gallery-image"
@@ -3261,7 +3261,7 @@ data-flex-basis="410px"
 &lt;h2 id="技能提升">技能提升
 &lt;/h2>&lt;p>在培养和过渡现有员工成为 SRE 时，制定一个技能提升计划至关重要。这包括“需要哪些技能”和“如何获得这些技能”——即角色需要的技能以及如何使员工掌握这些技能。技能差距分析和调查等工具在这方面非常有用，用来核实对工作所需基础技能的假设。这些技能在 SRE 文献中往往没有具体提及，但它们对于 SRE 在全组织范围内扩大贡献至关重要。例如，传统运维团队对软件工程基础（如版本控制、单元测试和软件设计模式）不熟悉并不罕见。确保这些基本技能包含在你的技能提升计划中，并针对每个学习者的特点进行调整至关重要，这不仅是为了在团队中建立足够的技能基础，还为了为个人提供一个顺利过渡到新角色预期的路径（从而减少团队成员的流失）。&lt;/p>
 &lt;p>Feature picture ❤️ Anete Lusina: &lt;a class="link" href="https://www.pexels.com/photo/miniature-toy-car-on-top-of-monopoly-board-game-4792380/" target="_blank" rel="noopener"
->https://www.pexels.com/photo/miniature-toy-car-on-top-of-monopoly-board-game-4792380/&lt;/a>&lt;/p></description></item><item><title>《企业 SRE 路线图》第三章：SRE 原则</title><link>https://martinliu.cn/blog/google-enterprise-roadmap-to-sre-chapter3/</link><pubDate>Wed, 01 May 2024 21:41:05 +0800</pubDate><guid>https://martinliu.cn/blog/google-enterprise-roadmap-to-sre-chapter3/</guid><description>&lt;img src="https://martinliu.cn/blog/google-enterprise-roadmap-to-sre-chapter3/pexels-anete-lusina-4792380.jpg" alt="Featured image of post 《企业 SRE 路线图》第三章：SRE 原则" />&lt;blockquote>
+>https://www.pexels.com/photo/miniature-toy-car-on-top-of-monopoly-board-game-4792380/&lt;/a>&lt;/p></description></item><item><title>《企业 SRE 路线图》第三章：SRE 原则</title><link>https://martinliu.cn/blog/google-enterprise-roadmap-to-sre-chapter3/</link><pubDate>Wed, 01 May 2024 21:41:05 +0800</pubDate><guid>https://martinliu.cn/blog/google-enterprise-roadmap-to-sre-chapter3/</guid><description>&lt;img src="https://martinliu.cn/blog/google-enterprise-roadmap-to-sre-chapter3/pexels-anete-lusina-4792380.webp" alt="Featured image of post 《企业 SRE 路线图》第三章：SRE 原则" />&lt;blockquote>
 &lt;p>译者：刘征&lt;/p>&lt;/blockquote>
 &lt;ul>
 &lt;li>&lt;a class="link" href="https://martinliu.cn/wp/enterprise-roadmap-to-sre-cn.pdf" >下载中文版 PDF 文件&lt;/a>&lt;/li>
@@ -3370,10 +3370,10 @@ Goodhart 的法则在这里适用：当一个度量成为了目标，它就不�
 真正的风险预算意味着接受一系列的失败。&lt;/p>&lt;/blockquote>
 &lt;h2 id="当心优先级分歧">当心优先级分歧
 &lt;/h2>&lt;p>整个领导团队完全支持你的可能性很小。更可能的是，人们想要可靠性，但对变更和成本有合理的担忧。我们建议承认变更的 J 型曲线，如图 3-1 所示，这意味着在一开始的几个相对容易的胜利之后，实现有影响的变更的曲线变得困难。例如，采用自己的新自动化可能感觉像是一个倒退，然后才会实现显著的收益。通过进行屋顶射击而不是月球发射来确保成功。你仍然可以追求显著的改进，但一开始要保守一些。&lt;/p>
-&lt;p>&lt;img src="https://martinliu.cn/blog/google-enterprise-roadmap-to-sre-chapter3/2024-05-20_22-49-23.png"
+&lt;p>&lt;img src="https://martinliu.cn/blog/google-enterprise-roadmap-to-sre-chapter3/2024-05-20_22-49-23.webp"
 width="721"
 height="448"
-srcset="https://martinliu.cn/blog/google-enterprise-roadmap-to-sre-chapter3/2024-05-20_22-49-23_hu_48d3b4cc431c1020.png 480w, https://martinliu.cn/blog/google-enterprise-roadmap-to-sre-chapter3/2024-05-20_22-49-23_hu_f1a86b537b575ad1.png 1024w"
+srcset="https://martinliu.cn/blog/google-enterprise-roadmap-to-sre-chapter3/2024-05-20_22-49-23_hu_7970b27cc0910f84.webp 480w, https://martinliu.cn/blog/google-enterprise-roadmap-to-sre-chapter3/2024-05-20_22-49-23_hu_1426f8e751a5c3df.webp 1024w"
 loading="lazy"
 alt="图 3-1. 变革的 J 曲线，来自 DORA 2018 年 DevOps 状态报告"
 class="gallery-image"
@@ -3393,7 +3393,7 @@ data-flex-basis="386px"
 &lt;p>反模式：稳步上升的进展
 现实世界的变革有起有落。如果你没有失败，那么你就没有在学习。&lt;/p>&lt;/blockquote>
 &lt;p>Feature picture ❤️ Anete Lusina: &lt;a class="link" href="https://www.pexels.com/photo/miniature-toy-car-on-top-of-monopoly-board-game-4792380/" target="_blank" rel="noopener"
->https://www.pexels.com/photo/miniature-toy-car-on-top-of-monopoly-board-game-4792380/&lt;/a>&lt;/p></description></item><item><title>《企业 SRE 路线图》第二章：SRE 方法对可靠性的意义何在？</title><link>https://martinliu.cn/blog/google-enterprise-roadmap-to-sre-chapter2/</link><pubDate>Tue, 30 Apr 2024 21:41:05 +0800</pubDate><guid>https://martinliu.cn/blog/google-enterprise-roadmap-to-sre-chapter2/</guid><description>&lt;img src="https://martinliu.cn/blog/google-enterprise-roadmap-to-sre-chapter2/pexels-anete-lusina-4792380.jpg" alt="Featured image of post 《企业 SRE 路线图》第二章：SRE 方法对可靠性的意义何在？" />&lt;blockquote>
+>https://www.pexels.com/photo/miniature-toy-car-on-top-of-monopoly-board-game-4792380/&lt;/a>&lt;/p></description></item><item><title>《企业 SRE 路线图》第二章：SRE 方法对可靠性的意义何在？</title><link>https://martinliu.cn/blog/google-enterprise-roadmap-to-sre-chapter2/</link><pubDate>Tue, 30 Apr 2024 21:41:05 +0800</pubDate><guid>https://martinliu.cn/blog/google-enterprise-roadmap-to-sre-chapter2/</guid><description>&lt;img src="https://martinliu.cn/blog/google-enterprise-roadmap-to-sre-chapter2/pexels-anete-lusina-4792380.webp" alt="Featured image of post 《企业 SRE 路线图》第二章：SRE 方法对可靠性的意义何在？" />&lt;blockquote>
 &lt;p>译者：刘征&lt;/p>&lt;/blockquote>
 &lt;ul>
 &lt;li>&lt;a class="link" href="https://martinliu.cn/wp/enterprise-roadmap-to-sre-cn.pdf" >下载中文版 PDF 文件&lt;/a>&lt;/li>
@@ -3419,10 +3419,10 @@ data-flex-basis="386px"
 &lt;li>阶段 2 是预期中新的增长领域。&lt;/li>
 &lt;li>阶段 3 是未来潜在的长期增长领域，目前处于研发阶段。&lt;/li>
 &lt;/ul>
-&lt;p>&lt;img src="https://martinliu.cn/blog/google-enterprise-roadmap-to-sre-chapter2/2024-05-04_15-11-58.png"
+&lt;p>&lt;img src="https://martinliu.cn/blog/google-enterprise-roadmap-to-sre-chapter2/2024-05-04_15-11-58.webp"
 width="442"
 height="275"
-srcset="https://martinliu.cn/blog/google-enterprise-roadmap-to-sre-chapter2/2024-05-04_15-11-58_hu_5e4489e473634a16.png 480w, https://martinliu.cn/blog/google-enterprise-roadmap-to-sre-chapter2/2024-05-04_15-11-58_hu_2fa5035989a7f560.png 1024w"
+srcset="https://martinliu.cn/blog/google-enterprise-roadmap-to-sre-chapter2/2024-05-04_15-11-58_hu_9cb5f5a23052c6ff.webp 480w, https://martinliu.cn/blog/google-enterprise-roadmap-to-sre-chapter2/2024-05-04_15-11-58_hu_5858d9837be89d07.webp 1024w"
 loading="lazy"
 alt="图 2-1：增长的三个阶段"
 class="gallery-image"
@@ -3438,10 +3438,10 @@ data-flex-basis="385px"
 &lt;/h2>&lt;p>为什么 SRE 不是在 20 世纪 70 年代或者 2010 年被发明并流行起来？显然，基于互联网的服务的复杂性近年来已经明显增长，尤其值得注意的是伴随着云计算的崛起。从商业上讲，我们将云视为分布式系统的后浪，而分布式系统是计算机科学中的一个深入研究的领域。只有在过去的十多年里，这个计算机科学的分支才对个人消费者（例如，Google，Facebook，Apple）和企业（如 Salesforce）产生了重要影响，或者说，它的原则早已经被服务提供商（如 Akamai，Stripe）广泛有效地用于提供可扩展的互联网系统，更不用说云服务提供商了。&lt;/p>
 &lt;p>“数据仓库级计算”（这是 Google 的一个概念，将数据中心比喻为一个超级的数据仓库计算机的模式）的引入改变了企业构建、交付、运营和扩展服务的方式。这些新模式明显改变了企业对待成本（CapEx）的方式，从租赁或建造空间和购买计算机系统的资本支出模型转向了按需租赁计算服务片段的运营支出模型（OpEx）。然而，这还涉及到系统设计、架构和应对不断变化的故障模式的问题。&lt;/p>
 &lt;p>传统的基础设施遵循类似建筑行业或金字塔的模型：从底部向上构建的大而坚固的基座。如果基座出现了问题，对其上面的所有东西都会是灾难。我们将这种模型称为基于组件的可靠性模型，或者联合模型，即需要使系统中的所有组件都可用，系统才能正常运行；如图 2-2所示，&lt;/p>
-&lt;p>&lt;img src="https://martinliu.cn/blog/google-enterprise-roadmap-to-sre-chapter2/2024-05-04_15-12-14.png"
+&lt;p>&lt;img src="https://martinliu.cn/blog/google-enterprise-roadmap-to-sre-chapter2/2024-05-04_15-12-14.webp"
 width="442"
 height="219"
-srcset="https://martinliu.cn/blog/google-enterprise-roadmap-to-sre-chapter2/2024-05-04_15-12-14_hu_ba70bbbd7540f68b.png 480w, https://martinliu.cn/blog/google-enterprise-roadmap-to-sre-chapter2/2024-05-04_15-12-14_hu_f1ef5da66d30cf09.png 1024w"
+srcset="https://martinliu.cn/blog/google-enterprise-roadmap-to-sre-chapter2/2024-05-04_15-12-14_hu_f28c0dffab661422.webp 480w, https://martinliu.cn/blog/google-enterprise-roadmap-to-sre-chapter2/2024-05-04_15-12-14_hu_87e007e0d267e178.webp 1024w"
 loading="lazy"
 alt="图 2-2：可靠性金字塔 "
 class="gallery-image"
@@ -3466,7 +3466,7 @@ data-flex-basis="484px"
 &lt;p>将运维只看做成本中心是一个常见的错误。你应该考虑收入和总拥有成本的全局，避免局部优化成本，并认识到，只关注短期削减成本最终可能会让你的公司付出更大的代价。例如，通过评估发生事故的情况，估计事故将对收入或品牌的影响，投资一个 SRE 团队的定位，就可以视为一种长期的保险，包括一系列的事故缓解和预防策略。理想情况下，这个团队不仅仅是“保险”，实际上还是驱动改善（可靠性！）向客户交付创新的驱动力。考虑以你的阶段 2 模型产品为目标，并统筹规划你的平台。不要只解决今天的问题；还要为将来做计划。&lt;/p>
 &lt;p>考虑转型现有员工的好处。只要给予正确的激励、机会和足够的时间，一个组织就可以改变其常态，并优雅地接受其人员的现代化角色和责任，同时也尽可能地减少了不必要的人员流动。因为，毫无疑问，一个组织最宝贵的资产永远是它的人员。在评估员工的技能集时，不应低估了他们对公司核心业务的真正理解。&lt;/p>
 &lt;p>Feature picture ❤️ Anete Lusina: &lt;a class="link" href="https://www.pexels.com/photo/miniature-toy-car-on-top-of-monopoly-board-game-4792380/" target="_blank" rel="noopener"
->https://www.pexels.com/photo/miniature-toy-car-on-top-of-monopoly-board-game-4792380/&lt;/a>&lt;/p></description></item><item><title>《企业 SRE 路线图》第一章：初探企业 SRE</title><link>https://martinliu.cn/blog/google-enterprise-roadmap-to-sre-chapter1/</link><pubDate>Tue, 30 Apr 2024 21:41:05 +0800</pubDate><guid>https://martinliu.cn/blog/google-enterprise-roadmap-to-sre-chapter1/</guid><description>&lt;img src="https://martinliu.cn/blog/google-enterprise-roadmap-to-sre-chapter1/pexels-anete-lusina-4792380.jpg" alt="Featured image of post 《企业 SRE 路线图》第一章：初探企业 SRE " />&lt;blockquote>
+>https://www.pexels.com/photo/miniature-toy-car-on-top-of-monopoly-board-game-4792380/&lt;/a>&lt;/p></description></item><item><title>《企业 SRE 路线图》第一章：初探企业 SRE</title><link>https://martinliu.cn/blog/google-enterprise-roadmap-to-sre-chapter1/</link><pubDate>Tue, 30 Apr 2024 21:41:05 +0800</pubDate><guid>https://martinliu.cn/blog/google-enterprise-roadmap-to-sre-chapter1/</guid><description>&lt;img src="https://martinliu.cn/blog/google-enterprise-roadmap-to-sre-chapter1/pexels-anete-lusina-4792380.webp" alt="Featured image of post 《企业 SRE 路线图》第一章：初探企业 SRE " />&lt;blockquote>
 &lt;p>译者：刘征&lt;/p>&lt;/blockquote>
 &lt;ul>
 &lt;li>&lt;a class="link" href="https://martinliu.cn/wp/enterprise-roadmap-to-sre-cn.pdf" >下载中文版 PDF 文件&lt;/a>&lt;/li>
@@ -3498,10 +3498,10 @@ data-flex-basis="484px"
 &lt;h3 id="拥抱自身的特殊性">拥抱自身的特殊性
 &lt;/h3>&lt;p>在企业的某个特定组织内采用 SRE，其实并没有一个标准化的最佳实践的做法。企业能成功的方式才是它唯一正确的方式。Google SRE 现在已经对很多组织的工作成果进行了大量的研究，知道了一些行之有效的方式，还有一些无效的做法；然而，企业必然还是会犯一些新颖的错误。将这些组织的经验视为真正的学习工具，将各种有效的改进循环融入你当前的企业的组织中。&lt;/p>
 &lt;p>Feature picture ❤️ Anete Lusina: &lt;a class="link" href="https://www.pexels.com/photo/miniature-toy-car-on-top-of-monopoly-board-game-4792380/" target="_blank" rel="noopener"
->https://www.pexels.com/photo/miniature-toy-car-on-top-of-monopoly-board-game-4792380/&lt;/a>&lt;/p></description></item><item><title>《企业 SRE 路线图》Google SRE 企业路线图白皮书</title><link>https://martinliu.cn/blog/google-enterprise-roadmap-to-sre/</link><pubDate>Tue, 30 Apr 2024 11:23:43 +0800</pubDate><guid>https://martinliu.cn/blog/google-enterprise-roadmap-to-sre/</guid><description>&lt;img src="https://martinliu.cn/blog/google-enterprise-roadmap-to-sre/pexels-anete-lusina-4792380.jpg" alt="Featured image of post 《企业 SRE 路线图》Google SRE 企业路线图白皮书" />&lt;p>&lt;img src="https://martinliu.cn/blog/google-enterprise-roadmap-to-sre/2024-04-30_11-55-54.png"
+>https://www.pexels.com/photo/miniature-toy-car-on-top-of-monopoly-board-game-4792380/&lt;/a>&lt;/p></description></item><item><title>《企业 SRE 路线图》Google SRE 企业路线图白皮书</title><link>https://martinliu.cn/blog/google-enterprise-roadmap-to-sre/</link><pubDate>Tue, 30 Apr 2024 11:23:43 +0800</pubDate><guid>https://martinliu.cn/blog/google-enterprise-roadmap-to-sre/</guid><description>&lt;img src="https://martinliu.cn/blog/google-enterprise-roadmap-to-sre/pexels-anete-lusina-4792380.webp" alt="Featured image of post 《企业 SRE 路线图》Google SRE 企业路线图白皮书" />&lt;p>&lt;img src="https://martinliu.cn/blog/google-enterprise-roadmap-to-sre/2024-04-30_11-55-54.webp"
 width="661"
 height="991"
-srcset="https://martinliu.cn/blog/google-enterprise-roadmap-to-sre/2024-04-30_11-55-54_hu_787702fe910a09f6.png 480w, https://martinliu.cn/blog/google-enterprise-roadmap-to-sre/2024-04-30_11-55-54_hu_b71446943d7739a5.png 1024w"
+srcset="https://martinliu.cn/blog/google-enterprise-roadmap-to-sre/2024-04-30_11-55-54_hu_facdffe1a239d453.webp 480w, https://martinliu.cn/blog/google-enterprise-roadmap-to-sre/2024-04-30_11-55-54_hu_2cbd16391d2212c5.webp 1024w"
 loading="lazy"
 alt="Enterprise roadmap to SRE"
 class="gallery-image"

@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Vagrant on Martin Liu's Blog</title><link>https://martinliu.cn/tags/vagrant/</link><description>Recent content in Vagrant on Martin Liu's Blog</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><lastBuildDate>Fri, 02 Aug 2024 21:16:57 +0800</lastBuildDate><atom:link href="https://martinliu.cn/tags/vagrant/index.xml" rel="self" type="application/rss+xml"/><item><title>嵌套虚拟化：在 Azure Ubuntu VM 中运行 VirtualBox 虚拟机</title><link>https://martinliu.cn/blog/nested-virtualization-ubuntu-run-virutalbox-azure-vm/</link><pubDate>Fri, 02 Aug 2024 16:28:51 +0800</pubDate><guid>https://martinliu.cn/blog/nested-virtualization-ubuntu-run-virutalbox-azure-vm/</guid><description>&lt;img src="https://martinliu.cn/blog/nested-virtualization-ubuntu-run-virutalbox-azure-vm/pexels-cottonbro-4966171.jpg" alt="Featured image of post 嵌套虚拟化：在 Azure Ubuntu VM 中运行 VirtualBox 虚拟机" />&lt;h2 id="azure-支持嵌套虚拟化">Azure 支持嵌套虚拟化
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Vagrant on Martin Liu's Blog</title><link>https://martinliu.cn/tags/vagrant/</link><description>Recent content in Vagrant on Martin Liu's Blog</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><lastBuildDate>Thu, 28 Aug 2025 16:07:06 +0800</lastBuildDate><atom:link href="https://martinliu.cn/tags/vagrant/index.xml" rel="self" type="application/rss+xml"/><item><title>嵌套虚拟化：在 Azure Ubuntu VM 中运行 VirtualBox 虚拟机</title><link>https://martinliu.cn/blog/nested-virtualization-ubuntu-run-virutalbox-azure-vm/</link><pubDate>Fri, 02 Aug 2024 16:28:51 +0800</pubDate><guid>https://martinliu.cn/blog/nested-virtualization-ubuntu-run-virutalbox-azure-vm/</guid><description>&lt;img src="https://martinliu.cn/blog/nested-virtualization-ubuntu-run-virutalbox-azure-vm/pexels-cottonbro-4966171.webp" alt="Featured image of post 嵌套虚拟化：在 Azure Ubuntu VM 中运行 VirtualBox 虚拟机" />&lt;h2 id="azure-支持嵌套虚拟化">Azure 支持嵌套虚拟化
 &lt;/h2>&lt;p>嵌套虚拟化是一种经常在物理服务器实验环境中所使用到的场景。例如，你可以在 VMware ESXi 或者 Hyper-V 虚拟机中运行 ESXi，KVM，Hyper-V 等一种或者多种虚拟机管理服务器，然后最内层的 Hypervisor 上运行虚拟机。在 Azure 的虚拟机中，运行 VirtualBox ，重建 VirtualBox 的虚拟机测试环境，就这种情况。&lt;/p>
 &lt;p>&lt;img src="https://martinliu.cn/blog/nested-virtualization-ubuntu-run-virutalbox-azure-vm/a085cd14-acfe-42ba-aec9-470a149cb855.webp"
 width="168"
@@ -25,10 +25,10 @@ data-flex-basis="435px"
 &lt;p>注意：如果没有选择合适于嵌套虚拟化的机型，你依然可以在虚拟机中安装 VirtualBox，可以创建虚拟机，但是无法正常启动运行嵌套的虚拟机。&lt;/p>
 &lt;h2 id="创建-azure-虚拟机">创建 Azure 虚拟机
 &lt;/h2>&lt;p>在 Azure 门户中，选择 &lt;code>虚拟机&lt;/code>，然后选择 &lt;code>创建&lt;/code>，选择 &lt;code>Dv3 或者 Ev3&lt;/code> 系列的虚拟机，其它相关选项如下图所示。&lt;/p>
-&lt;p>&lt;img src="https://martinliu.cn/blog/nested-virtualization-ubuntu-run-virutalbox-azure-vm/2024-07-27_23-01-57.png"
+&lt;p>&lt;img src="https://martinliu.cn/blog/nested-virtualization-ubuntu-run-virutalbox-azure-vm/2024-07-27_23-01-57.webp"
 width="950"
 height="1312"
-srcset="https://martinliu.cn/blog/nested-virtualization-ubuntu-run-virutalbox-azure-vm/2024-07-27_23-01-57_hu_3d51c17b1bd7a6c5.png 480w, https://martinliu.cn/blog/nested-virtualization-ubuntu-run-virutalbox-azure-vm/2024-07-27_23-01-57_hu_2bf35d438ff83301.png 1024w"
+srcset="https://martinliu.cn/blog/nested-virtualization-ubuntu-run-virutalbox-azure-vm/2024-07-27_23-01-57_hu_7ab2b1de6cac7232.webp 480w, https://martinliu.cn/blog/nested-virtualization-ubuntu-run-virutalbox-azure-vm/2024-07-27_23-01-57_hu_9b7c7c5ae58c3dda.webp 1024w"
 loading="lazy"
 alt="创建虚拟机"
 class="gallery-image"
@@ -286,10 +286,10 @@ data-flex-basis="173px"
 &lt;h2 id="推荐学习资源">推荐学习资源
 &lt;/h2>&lt;p>强烈推荐这本书《&lt;a class="link" href="https://www.ansiblefordevops.com/" target="_blank" rel="noopener"
 >Ansible for DevOps&lt;/a>》，这是一本非常好的 Ansible 入门书籍，作者 Jeff Geerling 是一位非常有经验的 DevOps 工程师，他在这本书中详细介绍了 Ansible 的基本概念和高级用法，非常适合初学者学习。&lt;/p>
-&lt;p>&lt;img src="https://martinliu.cn/blog/nested-virtualization-ubuntu-run-virutalbox-azure-vm/ansible-for-devops-cover-2x.jpg"
+&lt;p>&lt;img src="https://martinliu.cn/blog/nested-virtualization-ubuntu-run-virutalbox-azure-vm/ansible-for-devops-cover-2x.webp"
 width="593"
 height="782"
-srcset="https://martinliu.cn/blog/nested-virtualization-ubuntu-run-virutalbox-azure-vm/ansible-for-devops-cover-2x_hu_bf8fc0b21fa2b3c8.jpg 480w, https://martinliu.cn/blog/nested-virtualization-ubuntu-run-virutalbox-azure-vm/ansible-for-devops-cover-2x_hu_f4453e711e2fd7e9.jpg 1024w"
+srcset="https://martinliu.cn/blog/nested-virtualization-ubuntu-run-virutalbox-azure-vm/ansible-for-devops-cover-2x_hu_843347e374ff5103.webp 480w, https://martinliu.cn/blog/nested-virtualization-ubuntu-run-virutalbox-azure-vm/ansible-for-devops-cover-2x_hu_8015cb1713430674.webp 1024w"
 loading="lazy"
 alt="Ansible for DevOps"
 class="gallery-image"

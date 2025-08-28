@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>容量管理 on Martin Liu's Blog</title><link>https://martinliu.cn/tags/%E5%AE%B9%E9%87%8F%E7%AE%A1%E7%90%86/</link><description>Recent content in 容量管理 on Martin Liu's Blog</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><lastBuildDate>Sun, 30 Jun 2024 13:07:55 +0800</lastBuildDate><atom:link href="https://martinliu.cn/tags/%E5%AE%B9%E9%87%8F%E7%AE%A1%E7%90%86/index.xml" rel="self" type="application/rss+xml"/><item><title>Google 白皮书：SRE 容量管理最佳实践</title><link>https://martinliu.cn/blog/sre-best-practices-for-capacity-management/</link><pubDate>Mon, 17 Jun 2024 13:23:28 +0800</pubDate><guid>https://martinliu.cn/blog/sre-best-practices-for-capacity-management/</guid><description>&lt;img src="https://martinliu.cn/blog/sre-best-practices-for-capacity-management/pexels-fox-58267-9097039.jpg" alt="Featured image of post Google 白皮书：SRE 容量管理最佳实践" />&lt;p>作为 SRE，您需要确定服务的初始资源需求，并确保服务在意外需求下仍能稳定运行。容量管理是指确保您的服务拥有足够的资源，从而实现可扩展性、高效性和可靠性。无论是用户端服务还是公司内部服务，都必须应对预期和意外的增长。我们将利用率定义为资源使用的百分比。确定初始资源利用率并预测未来需求并不容易。我们提供了一些估算利用率和识别盲点的方法，并讨论了构建冗余以避免故障的好处。利用这些信息，您可以设计架构，使每个组件的资源分配增加能够有效地线性提升整个服务的容量。&lt;/p>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>容量管理 on Martin Liu's Blog</title><link>https://martinliu.cn/tags/%E5%AE%B9%E9%87%8F%E7%AE%A1%E7%90%86/</link><description>Recent content in 容量管理 on Martin Liu's Blog</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><lastBuildDate>Thu, 28 Aug 2025 16:07:06 +0800</lastBuildDate><atom:link href="https://martinliu.cn/tags/%E5%AE%B9%E9%87%8F%E7%AE%A1%E7%90%86/index.xml" rel="self" type="application/rss+xml"/><item><title>Google 白皮书：SRE 容量管理最佳实践</title><link>https://martinliu.cn/blog/sre-best-practices-for-capacity-management/</link><pubDate>Mon, 17 Jun 2024 13:23:28 +0800</pubDate><guid>https://martinliu.cn/blog/sre-best-practices-for-capacity-management/</guid><description>&lt;img src="https://martinliu.cn/blog/sre-best-practices-for-capacity-management/pexels-fox-58267-9097039.webp" alt="Featured image of post Google 白皮书：SRE 容量管理最佳实践" />&lt;p>作为 SRE，您需要确定服务的初始资源需求，并确保服务在意外需求下仍能稳定运行。容量管理是指确保您的服务拥有足够的资源，从而实现可扩展性、高效性和可靠性。无论是用户端服务还是公司内部服务，都必须应对预期和意外的增长。我们将利用率定义为资源使用的百分比。确定初始资源利用率并预测未来需求并不容易。我们提供了一些估算利用率和识别盲点的方法，并讨论了构建冗余以避免故障的好处。利用这些信息，您可以设计架构，使每个组件的资源分配增加能够有效地线性提升整个服务的容量。&lt;/p>
 &lt;h2 id="容量管理原则">容量管理原则
 &lt;/h2>&lt;p>在本文中，服务被定义为提供一组功能的所有二进制文件（服务栈）的集合。成功的容量管理需要从两个复杂的角度出发：资源制备，即现在运行服务所需的初始容量；以及容量规划，以保障未来服务的可靠性。&lt;/p>
 &lt;p>容量管理的核心原则包括以下三点，以保持服务的可扩展性、可用性和可管理性：&lt;/p>
@@ -26,10 +26,10 @@
 &lt;/h2>&lt;p>我们将讨论集中在服务系统上，即通过查找数据来响应用户请求的服务。不过，这些原则同样适用于数据存储服务、数据转换服务以及其他大多数计算机任务。&lt;/p>
 &lt;p>资源制备涉及确定服务所需资源的目标利用率并分配这些资源。目标利用率被定义为在保证服务可靠运行的情况下，特定资源类别的最高可能利用率。资源类别指的是特定类型的计算资产，比如 CPU、RAM 和存储。&lt;/p>
 &lt;p>要为你的服务进行资源制备，需要使用需求信号作为输入，并创建包含具体资源分配的生产布局，如图 1 所示。服务通常使用多种资源类别。&lt;/p>
-&lt;p>&lt;img src="https://martinliu.cn/blog/sre-best-practices-for-capacity-management/2024-06-17_14-25-37.png"
+&lt;p>&lt;img src="https://martinliu.cn/blog/sre-best-practices-for-capacity-management/2024-06-17_14-25-37.webp"
 width="940"
 height="476"
-srcset="https://martinliu.cn/blog/sre-best-practices-for-capacity-management/2024-06-17_14-25-37_hu_cb46c906d7ca6228.png 480w, https://martinliu.cn/blog/sre-best-practices-for-capacity-management/2024-06-17_14-25-37_hu_5d20bf26be88ab99.png 1024w"
+srcset="https://martinliu.cn/blog/sre-best-practices-for-capacity-management/2024-06-17_14-25-37_hu_488080937d391812.webp 480w, https://martinliu.cn/blog/sre-best-practices-for-capacity-management/2024-06-17_14-25-37_hu_da7ba864277c470b.webp 1024w"
 loading="lazy"
 alt="图 1: 资源制备解决方案中的需求信号和资源分配"
 class="gallery-image"
@@ -75,10 +75,10 @@ data-flex-basis="473px"
 &lt;p>虽然部分冗余涉及容量，但也与服务架构本身有关。例如，一致性存储服务通常要求大多数副本处于运行状态，以确保写操作不会被回滚。
 为 N+2 制备服务对可靠性有积极影响：可以计划整个区域的维护，但在维护期间会将冗余降至 N+1。服务仍然可以容忍另一个区域的意外事件。这将冗余降至 N+0，但不会导致中断。需要注意的是，切换到另一个区域可能会对可见的延迟产生影响。&lt;/p>
 &lt;p>当冗余为 N+0 并且无法容忍进一步的故障时，优先任务是尽快缓解或解决意外事件。一个选项是完成或回滚计划的维护工作，以将服务恢复到 N+1。否则，任何其他区域出现事件都可能导致面向用户的中断。&lt;/p>
-&lt;p>&lt;img src="https://martinliu.cn/blog/sre-best-practices-for-capacity-management/2024-06-17_14-25-54.png"
+&lt;p>&lt;img src="https://martinliu.cn/blog/sre-best-practices-for-capacity-management/2024-06-17_14-25-54.webp"
 width="1813"
 height="707"
-srcset="https://martinliu.cn/blog/sre-best-practices-for-capacity-management/2024-06-17_14-25-54_hu_262c585f81ce29ce.png 480w, https://martinliu.cn/blog/sre-best-practices-for-capacity-management/2024-06-17_14-25-54_hu_ec6f96ac83cd6607.png 1024w"
+srcset="https://martinliu.cn/blog/sre-best-practices-for-capacity-management/2024-06-17_14-25-54_hu_d334953dad671404.webp 480w, https://martinliu.cn/blog/sre-best-practices-for-capacity-management/2024-06-17_14-25-54_hu_ae384dffa3952b86.webp 1024w"
 loading="lazy"
 alt="图 2: 服务制备资源成本的示例比较（以三个副本和五个副本为例）"
 class="gallery-image"
