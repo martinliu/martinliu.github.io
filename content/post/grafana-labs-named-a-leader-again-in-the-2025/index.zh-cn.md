@@ -48,7 +48,7 @@ Gartner 还指出我们深度参与了开源社区，尤其是 Prometheus 和 Op
 
 尽管 Gartner 的评估中没有明确提及，但我们在过去一年中推出的两项重大增强功能获得了客户的强烈积极反馈，这两项功能都旨在帮助团队更快地行动，并以更小的阻力获取洞察。
 
-首先，[Grafana Drilldown 应用](https://grafana.com/blog/2025/02/20/grafana-drilldown-apps-the-improved-queryless-experience-formerly-known-as-the-explore-apps/) 让探索数据变得前所未有的简单，无需编写复杂的查询语句。其次，客户越来越多地采用 [Grafana Cloud Asserts](https://grafana.com/products/cloud/asserts/?pg=blog&plcmt=body-txt)——我们的持续关联 (continuous correlation) 和根本原因分析 (root cause analysis) 工具。 Assert 能够自动映射你的整个技术栈中的依赖关系，持续分析信号，并呈现相关洞察，从而帮助你在问题升级前发现、理解并解决它们。
+首先，[Grafana Drilldown 应用](https://grafana.com/blog/2025/02/20/grafana-drilldown-apps-the-improved-queryless-experience-formerly-known-as-the-explore-apps/) 让探索数据变得前所未有的简单，无需编写复杂的查询语句。其次，客户越来越多地采用 [Grafana Cloud Asserts](https://grafana.com/products/cloud/asserts/?pg=blog&plcmt=body-txt)——我们的持续关联 (continuous correlation) 和根本原因分析 (root cause analysis) 工具。Grafana Cloud Asserts 能够自动映射你的整个技术栈中的依赖关系，持续分析信号，并呈现相关洞察，从而帮助你在问题升级前发现、理解并解决它们。
 
 各组织已经在使用这些工具来更智能地工作和更快地响应，我们很高兴能将这一切与 [Grafana Assistant](https://grafana.com/blog/2025/05/07/llm-grafana-assistant/)（目前处于私有预览 (private preview) 阶段）整合起来，它是一个上下文感知 (context-aware)、集成的聊天代理，可帮助用户了解 Grafana，探索和查询他们的可观测性 (observability) 数据，管理仪表盘，并进行调查——所有这些都通过自然语言 (natural language) 完成。
 
