@@ -95,7 +95,7 @@ Gartner 可观测性平台关键能力 (Gartner Critical Capabilities for Observ
 
 - [阅读完整的 Gartner 魔力象限报告](https://www.grafana.com/resources/grafana-observability-platforms-gartner-magic-quadrant-2025/?pg=blog&plcmt=body-txt)
 - [了解更多关于 Grafana Cloud 的信息](https://grafana.com/products/cloud/?pg=blog&plcmt=body-txt)
-- [Create a forever-free Grafana Cloud account today](https://grafana.com/auth/sign-up/create-user/?pg=blog&plcmt=body-txt)
+- [立即创建永久免费 Grafana Cloud 账户](https://grafana.com/auth/sign-up/create-user/?pg=blog&plcmt=body-txt)
 
 Gartner，《可观测性平台关键能力》（Critical Capabilities for Observability Platforms），作者：Matt Crossley, Gregg Siegfried, Padraig Byrne, Andre Bridges, Martin Caren，发布日期：2025年7月8日
 
