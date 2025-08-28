@@ -44,7 +44,7 @@ toc: true
 
 正如关键能力报告中所述，一个主要差异化因素是我们的 [自适应遥测 (Adaptive Telemetry)](https://grafana.com/blog/2025/01/14/what-is-adaptive-telemetry-and-how-can-it-reduce-mttr-noise-and-cost/) 套件，它帮助客户显著降低可观测性成本——平均可节省 20% 到 50% 的指标费用和 20% 到 40% 的日志费用。这些成本效益的实现无需牺牲可见性或性能，使团队能够更可持续地扩展可观测性。
 
-Gartner 还指出我们深度参与了开源社区，尤其是 Prometheus 和 OpenTelemetry，根据我们最近的 [Observability Survey](https://grafana.com/observability-survey/?pg=blog&plcmt=body-txt)，这两个项目目前被 71% 的组织使用。我们对开放标准的承诺不仅体现在贡献上，也体现在领导力方面：我们最近 [welcomed OpenTelemetry co-founder Ted Young to Grafana Labs](https://grafana.com/blog/2025/03/27/meet-ted-young-opentelemetry-co-founder-and-the-newest-grafanista/)，并向 OpenTelemetry 项目贡献了 Beyla [donated our eBPF auto-instrumentation tool](https://grafana.com/blog/2025/05/07/opentelemetry-ebpf-instrumentation-beyla-donation/)，这进一步强化了我们致力于构建一个以互操作性 (interoperability) 和透明度 (transparency) 为常态的未来的决心。
+Gartner 还指出我们深度参与了开源社区，尤其是 Prometheus 和 OpenTelemetry，根据我们最近的 [可观测性调研](https://grafana.com/observability-survey/?pg=blog&plcmt=body-txt)，这两个项目目前被 71% 的组织使用。我们对开放标准的承诺不仅体现在贡献上，也体现在领导力方面：我们最近 [欢迎 OpenTelemetry 联合创始人 Ted Young 加入 Grafana Labs](https://grafana.com/blog/2025/03/27/meet-ted-young-opentelemetry-co-founder-and-the-newest-grafanista/)，并向 OpenTelemetry 项目 [捐赠了我们的 eBPF 自动检测工具 Beyla](https://grafana.com/blog/2025/05/07/opentelemetry-ebpf-instrumentation-beyla-donation/)，这进一步强化了我们致力于构建一个以互操作性 (interoperability) 和透明度 (transparency) 为常态的未来的决心。
 
 尽管 Gartner 的评估中没有明确提及，但我们在过去一年中推出的两项重大增强功能获得了客户的强烈积极反馈，这两项功能都旨在帮助团队更快地行动，并以更小的阻力获取洞察。
 
