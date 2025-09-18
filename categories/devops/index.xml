@@ -67,7 +67,1047 @@
 &lt;/h2>&lt;p>尽管有这些痛点，DevOps 社区在不断进化：工具更易用、实践更成熟，组织也在从“为了更快”转向“为了更稳、更可持续”的战略视角。&lt;/p>
 &lt;p>如果你正在考虑进入这个领域，或正被这些挫折困扰——记住：&lt;strong>这些问题真实存在，但并非不可解&lt;/strong>。通过清晰沟通、稳健流程与重视协作，我们可以逐步化解它们。&lt;/p>
 &lt;p>当某天感觉一切都不顺时，也请记住：你并不孤单。一个庞大的同行社区正面对同样问题、分享解法，并一起向更好的工程实践迈进。&lt;/p>
-&lt;p>&lt;strong>你在 DevOps 之路上遇到过哪些“隐形痛点”？欢迎在评论区分享你的经历与招数。&lt;/strong>&lt;/p></description></item><item><title>用这些鲜为人知（且大多数开发者都忽略）的技巧，让你的 Python 代码提速 10 倍</title><link>https://martinliu.cn/blog/i-made-my-python-code-10x-faster-using-these/</link><pubDate>Wed, 27 Aug 2025 16:00:00 +0800</pubDate><guid>https://martinliu.cn/blog/i-made-my-python-code-10x-faster-using-these/</guid><description>&lt;img src="https://martinliu.cn/blog/i-made-my-python-code-10x-faster-using-these/1_JtvDNgonwDl8sRlYYW69kA.webp" alt="Featured image of post 用这些鲜为人知（且大多数开发者都忽略）的技巧，让你的 Python 代码提速 10 倍" />&lt;p>如果你是一名在云计算基础架构 (cloud infrastructure)、SRE (Site Reliability Engineering) 和应用数据科学领域工作的从业者，你一定很欣赏 Python 提供的清晰性和简洁性。无论你是在原型化机器学习模型、编排后端工作流，还是在生产级系统 (production-grade system) 中构建自动化管道，Python 始终是你工具库中的首选。但说实话—— &lt;strong>Python 有时会很慢&lt;/strong>。慢得令人痛苦。&lt;/p>
+&lt;p>&lt;strong>你在 DevOps 之路上遇到过哪些“隐形痛点”？欢迎在评论区分享你的经历与招数。&lt;/strong>&lt;/p></description></item><item><title>2025 年别再使用 Jenkins！</title><link>https://martinliu.cn/blog/stop-using-jenkins-in-2025/</link><pubDate>Thu, 28 Aug 2025 10:00:00 +0800</pubDate><guid>https://martinliu.cn/blog/stop-using-jenkins-in-2025/</guid><description>&lt;img src="https://martinliu.cn/blog/stop-using-jenkins-in-2025/1_9wQ57gpbdI9JwUHpJmtFdA.jpeg" alt="Featured image of post 2025 年别再使用 Jenkins！" />&lt;h2 id="阻碍你前进的遗留巨头">阻碍你前进的遗留巨头
+&lt;/h2>&lt;p>认识一下 Janet。她是一家中型科技公司的 DevOps 工程师，工作了五年。每个周一早上，她都会像闹钟一样，为不可避免的事情做好准备：“Jenkins 服务器又宕机了。”或者“构建失败了，没人知道为什么。”又或者她最喜欢的那句，“我们需要更新所有的 Jenkins 插件，但我们担心一切都会崩溃。”&lt;/p>
+&lt;p>听起来很熟悉？你并不孤单。&lt;/p>
+&lt;p>Jenkins 在过去的 15 年里一直是首选的 CI/CD 工具。它就像那辆老旧的家庭汽车，虽然总是进修理店，但你仍然保留着，因为，嗯，你习惯了它。但正如你在 2025 年不会再使用翻盖手机一样，现在或许是时候重新审视你与 Jenkins 的关系了 😒。&lt;/p>
+&lt;h2 id="为什么-jenkins-正在显露老态">为什么 Jenkins 正在显露老态
+&lt;/h2>&lt;p>Jenkins 在 2005 年推出时是革命性的。但 iPod 也是。技术发展迅速，曾经的尖端产品很快就会过时。以下是 Jenkins 正在落后的原因：&lt;/p>
+&lt;ol>
+&lt;li>
+&lt;p>让安全团队彻夜难眠的安全漏洞: Jenkins 有着令人不安的安全问题历史。仅在 2021 年，Jenkins 安全团队就披露了 30 多个漏洞，并且新的漏洞还在不断出现。许多组织以提升的权限运行 Jenkins，这使得这些漏洞尤为危险。以 Acme Corp（化名）为例。他们的 Jenkins 实例通过 CVE-2023–27898 被攻破，这是一个在脚本安全插件 (Script Security Plugin) 中的关键漏洞。攻击者获得了他们生产凭证的访问权限，并在其基础设施中部署了加密货币挖矿程序 (crypto miners)。清理工作让他们花费了三天的工程时间，并损害了客户信任。&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>拖慢整个团队效率的性能问题: “我趁构建运行的时候去喝杯咖啡”这不仅仅是开发人员的玩笑，更是一个生产力问题。Jenkins 实例通常会随着时间的推移变得越来越慢，特别是当你添加更多作业和插件时。Michael，一个游戏初创公司的开发人员，描述了他的经历：“我们的 Jenkins 构建以前需要 10 分钟。在增加了两年功能和测试之后，它们需要 45 分钟。我们花在等待 Jenkins 上的时间比实际编码的时间还要多。”&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>滋生“Jenkins 专家”的配置复杂性: Jenkins 的灵活性是有代价的：复杂性。组织往往最终只有一两个“Jenkins 大师”，他们是唯一了解一切如何运作的人。当他们去度假或离开公司时，恐慌就会随之而来。一位工程经理曾这样说：“我们有超过 200 个 Jenkins 流水线，每个的配置都略有不同。没人敢碰它们，因为我们担心它们会中断。这简直是最纯粹的技术债。”&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>消耗资源的维护开销: 自行托管的 Jenkins 需要持续维护。&lt;/p>
+&lt;/li>
+&lt;/ol>
+&lt;p>你需要：&lt;/p>
+&lt;ul>
+&lt;li>管理 Jenkins 服务器本身&lt;/li>
+&lt;li>定期更新 Jenkins 核心&lt;/li>
+&lt;li>更新几十甚至上百个插件&lt;/li>
+&lt;li>处理备份和灾难恢复&lt;/li>
+&lt;li>配置和维护构建代理 (build agents)&lt;/li>
+&lt;/ul>
+&lt;p>这些维护工作不会增加业务价值；它只是为了维持系统运行。&lt;/p>
+&lt;h2 id="github-actions现代替代方案">GitHub Actions：现代替代方案
+&lt;/h2>&lt;p>Janet 的故事有一个圆满的结局。她的团队从 Jenkins 迁移到了 GitHub Actions，周一早上的“救火”式应对也成为了历史。&lt;/p>
+&lt;p>GitHub Actions 代表了一种截然不同的持续集成/持续部署 (CI/CD) 方法：&lt;/p>
+&lt;ol>
+&lt;li>
+&lt;p>内置安全性，无需维护服务器 : GitHub Actions 在 GitHub 的云中运行。你无需担心 Jenkins 服务器的安全或应用安全补丁。GitHub 的安全团队会为你处理这些。最好的安全服务器是你根本无需管理的服务器。&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>自动扩展的性能 ： 需要更多构建能力？GitHub Actions 会自动扩展以满足需求。你可以并行运行构建，而无需管理额外的构建代理。Janet 的团队在迁移到 GitHub Actions 后，构建时间缩短了 60%，仅仅是因为他们可以并行执行测试，而无需担心基础设施 (infrastructure) 限制。&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>人人都能理解的代码化配置：GitHub Actions 使用直接存储在你的代码仓库 (repository) 中的 YAML 文件。这种方法有几个优点：&lt;/p>
+&lt;/li>
+&lt;/ol>
+&lt;ul>
+&lt;li>配置与它所构建的代码共存&lt;/li>
+&lt;li>变更通过常规代码审查 (code reviews) 进行追踪&lt;/li>
+&lt;li>新团队成员可以快速理解设置&lt;/li>
+&lt;li>无需专业知识&lt;/li>
+&lt;/ul>
+&lt;p>一位开发人员报告说：“GitHub Actions 的学习曲线比 Jenkins 平缓得多。我可以在一个下午，而不是几周内，理解我们整个 CI/CD 流水线。”&lt;/p>
+&lt;ol start="4">
+&lt;li>零维护开销 ：使用 GitHub Actions，你将拥有：&lt;/li>
+&lt;/ol>
+&lt;ul>
+&lt;li>无需维护服务器&lt;/li>
+&lt;li>无需更新插件&lt;/li>
+&lt;li>无需配置构建代理&lt;/li>
+&lt;li>无需管理备份&lt;/li>
+&lt;/ul>
+&lt;p>这让工程师可以将时间投入到实际的产品开发中，而不是基础设施的维护。&lt;/p>
+&lt;p>&lt;strong>实际影响&lt;/strong>&lt;/p>
+&lt;p>让我告诉你 Realtime Analytics, Inc. 从 Jenkins 切换到 GitHub Actions 后发生了什么。&lt;/p>
+&lt;p>在切换之前，他们有：&lt;/p>
+&lt;ul>
+&lt;li>两名全职工程师专门负责 Jenkins 维护&lt;/li>
+&lt;li>每周发生的故障影响开发者生产力&lt;/li>
+&lt;li>平均构建时间 35 分钟&lt;/li>
+&lt;li>定期出现安全隐患，需要紧急修补&lt;/li>
+&lt;/ul>
+&lt;p>切换到 GitHub Actions 六个月后：&lt;/p>
+&lt;ul>
+&lt;li>两名工程师都被重新分配到产品开发工作&lt;/li>
+&lt;li>零 CI/CD 故障&lt;/li>
+&lt;li>构建时间缩短到 12 分钟&lt;/li>
+&lt;li>安全问题由 GitHub 自动处理&lt;/li>
+&lt;/ul>
+&lt;p>他们的 CTO 估算，仅工程时间一项，这项改变每年就为他们节省了大约 30 万美元，这还不包括改善的开发者体验和更快的上市时间。&lt;/p>
+&lt;h2 id="切换比你想象的更容易">切换：比你想象的更容易
+&lt;/h2>&lt;p>从 Jenkins 迁移到 GitHub Actions 的想法可能看起来令人生畏，但实际上它比你想象的要简单直接得多。&lt;/p>
+&lt;p>这里有一个简化的方法：&lt;/p>
+&lt;ol>
+&lt;li>从一个小型、非关键项目开始&lt;/li>
+&lt;li>将其 Jenkins 流水线 (pipeline) 转换为 GitHub Actions 工作流 (workflow)&lt;/li>
+&lt;li>并行运行这两个系统以建立信心&lt;/li>
+&lt;li>随着团队适应，逐步迁移更多项目&lt;/li>
+&lt;/ol>
+&lt;p>GitHub 甚至专门为 Jenkins 用户提供了迁移指南和示例。&lt;/p>
+&lt;h2 id="github-actions-完美吗不但它是一个重大改进">GitHub Actions 完美吗？不，但它是一个重大改进
+&lt;/h2>&lt;p>公平地说，GitHub Actions 并非没有局限性：&lt;/p>
+&lt;ul>
+&lt;li>对于非常专业的构建要求，你可能需要定制解决方案&lt;/li>
+&lt;li>如果你没有使用 GitHub 进行源代码管理 (source control)，集成就不会那么无缝&lt;/li>
+&lt;li>一些复杂的 Jenkins 设置可能需要你重新思考方法&lt;/li>
+&lt;/ul>
+&lt;p>然而，对于绝大多数开发团队来说，GitHub Actions 几乎在所有方面都代表着对 Jenkins 的巨大改进。&lt;/p>
+&lt;h2 id="总结">总结
+&lt;/h2>&lt;p>&lt;strong>Jenkins 多年来一直为我们服务得很好&lt;/strong>，但软件开发已经演进。现代的 CI/CD (持续集成/持续交付) 解决方案，例如 GitHub Actions，专为当今的开发实践而设计：云原生 (cloud-native)、注重安全，并优化了开发者生产力 (developer productivity)。&lt;/p>
+&lt;p>正如 Janet 所发现的，最初的迁移努力会迅速带来回报。她的团队现在部署更频繁，问题更少，并且几乎不花时间维护他们的 CI/CD 基础设施。&lt;/p>
+&lt;p>&lt;strong>问问自己：&lt;/strong> 上个月你的团队花了多少时间与 Jenkins 搏斗？如果把这些时间用于其他工作，你本可以构建出什么？&lt;/p>
+&lt;p>CI/CD 的未来已经到来。&lt;strong>也许&lt;/strong>是时候让 Jenkins 成为过去式了。&lt;/p></description></item><item><title>90% 的人 DevOps 转型失败：一份真正奏效的路线图</title><link>https://martinliu.cn/blog/90-of-people-fail-at-devops-heres-the-roadmap-that/</link><pubDate>Thu, 28 Aug 2025 10:00:00 +0800</pubDate><guid>https://martinliu.cn/blog/90-of-people-fail-at-devops-heres-the-roadmap-that/</guid><description>&lt;img src="https://martinliu.cn/blog/90-of-people-fail-at-devops-heres-the-roadmap-that/image_0_94126cb8.png" alt="Featured image of post 90% 的人 DevOps 转型失败：一份真正奏效的路线图" />&lt;p>几年前，我困在了一个没有前途的 Linux 技术支持岗位上，上夜班，看不到任何成长。尽管有9年经验，我的薪水却微薄，健康状况每况愈下，也没有社交生活。我眼看着大学同学在事业上平步青云，而我却仍旧陷在自己的舒适区里。&lt;/p>
+&lt;p>但当我决定转型到 DevOps 时，一切都改变了。经过4-5个月的集中学习，我找到了一份薪水翻了3倍的工作。这种转变不仅仅是职业上的，更是个人生活上的。我找回了生活，重拾了自信，最终找到了既有挑战又令我兴奋的工作。&lt;/p>
+&lt;p>今天，我想分享正是这个路线图，让我的转型成为可能。这不仅仅是另一篇泛泛的“学习这些工具”的文章——这是一条真实、经过实践检验的路径，它帮助我在没有任何该领域经验的情况下，成功进入了 DevOps (开发运维) 领域。&lt;/p>
+&lt;h2 id="什么是-devops">什么是 DevOps？
+&lt;/h2>&lt;p>简单来说，DevOps 是一种组织遵循的方法论 (methodology)，旨在将开发团队 (development team) 和运维团队 (operations team) 合并成一个统一的团队。通过这种方式，两个团队共同协作，高效地开发和部署应用程序。&lt;/p>
+&lt;p>DevOps 是一个广义术语 (umbrella term)，它涵盖了各种用于自动化应用程序开发和部署过程的工具。DevOps 的主要好处之一是，通过自动化这些过程，与手动方法相比，它更省时，也更不容易出错。这种自动化缩短了产品上市时间 (Time to Market, TTM)，使其成为快速发展公司的理想选择。&lt;/p>
+&lt;h2 id="你将面临哪些困难以及如何克服它们">你将面临哪些困难（以及如何克服它们）？
+&lt;/h2>&lt;p>让我坦诚地谈谈你将遇到的挑战：&lt;/p>
+&lt;p>&lt;strong>资源过多&lt;/strong> 最大的问题不是找不到教程，而是不知道该选择哪个！有成千上万的课程、博客和视频。你可能会浪费几周时间只为了决定学什么，结果反而更困惑，而不是取得进展。&lt;/p>
+&lt;p>&lt;strong>到处都是糟糕的路线图&lt;/strong> 大多数在线学习路径要么过于简单（“只需学习 Docker！”），要么过于复杂（列出50多种工具）。你需要一个切合你初学者水平和繁忙日程的现实路线图。&lt;/p>
+&lt;p>&lt;strong>试图一次性学完所有东西&lt;/strong> 你会想同时学习 Docker、Kubernetes、AWS 和 Terraform。这种跳跃式的学习会导致知识掌握不深，并带来倦怠。&lt;strong>一次只专注于一件事。&lt;/strong>&lt;/p>
+&lt;p>&lt;strong>工具过载和社媒喧嚣&lt;/strong>
+你会看到人们每周都在社媒上谈论“最新最棒”的工具。不要落入这个陷阱。专注于核心基础知识，并首先掌握必要的工具。忽略这些喧嚣，保持简单——你不需要 20 种工具才能成功。&lt;/p>
+&lt;p>&lt;strong>感到力不从心&lt;/strong>
+DevOps 拥有大量的工具和令人困惑的术语。你有时会感到迷茫。别担心——即使是经验丰富的工程师也会有这种感觉。这是正常的，随着时间推移会好转。&lt;/p>
+&lt;h2 id="完整的-6-个月-devops-路线图">完整的 6 个月 DevOps 路线图
+&lt;/h2>&lt;p>本路线图旨在让你从完全的初学者成长为能够胜任工作的 DevOps 工程师。每个月的内容都在前一个月的基础上进行，在增加复杂性之前打下坚实的基础。&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/blog/90-of-people-fail-at-devops-heres-the-roadmap-that/image_1_2eeeb884.png"
+width="640"
+height="427"
+srcset="https://martinliu.cn/blog/90-of-people-fail-at-devops-heres-the-roadmap-that/image_1_2eeeb884_hu_998e192d4afb0653.png 480w, https://martinliu.cn/blog/90-of-people-fail-at-devops-heres-the-roadmap-that/image_1_2eeeb884_hu_fd4c3f5b3227c065.png 1024w"
+loading="lazy"
+alt="DevOps 6个月学习路线图"
+class="gallery-image"
+data-flex-grow="149"
+data-flex-basis="359px"
+>&lt;/p>
+&lt;h2 id="第一月基础技能--linux网络shell-脚本和-git">第一月：基础技能 — Linux、网络、Shell 脚本和 Git
+&lt;/h2>&lt;p>&lt;strong>第 1-2 周：Linux 基础知识&lt;/strong> Linux 构成了大多数 DevOps 基础设施 (infrastructure) 的支柱。首先学习你作为 DevOps 工程师每天都会用到的基本命令行技能。&lt;/p>
+&lt;p>需要掌握的关键技能：&lt;/p>
+&lt;ul>
+&lt;li>文件和目录管理 (ls, cd, mkdir, rm, cp, mv)&lt;/li>
+&lt;li>文件权限和所有权 (chmod, chown, umask)&lt;/li>
+&lt;li>进程管理 (ps, top, htop, kill, jobs)&lt;/li>
+&lt;li>系统监控 (df, du, free, uptime, iostat)&lt;/li>
+&lt;li>文本处理工具 (grep, awk, sed, cut, sort, uniq)&lt;/li>
+&lt;li>包管理 (apt, yum, rpm)&lt;/li>
+&lt;/ul>
+&lt;p>&lt;strong>第 3 周：网络基础知识&lt;/strong> 理解网络对于故障排除和设计可扩展系统至关重要。&lt;/p>
+&lt;p>基本网络概念：&lt;/p>
+&lt;ul>
+&lt;li>IP 地址和子网划分 (IPv4, IPv6)&lt;/li>
+&lt;li>OSI 模型 (OSI model) 和 TCP/IP 协议栈 (TCP/IP stack)&lt;/li>
+&lt;li>DNS 解析 (DNS resolution) 和配置&lt;/li>
+&lt;li>网络诊断工具 (ping, traceroute, netstat, ss)&lt;/li>
+&lt;li>防火墙 (Firewall) 和安全组 (Security Group)&lt;/li>
+&lt;li>负载均衡 (Load Balancing) 概念&lt;/li>
+&lt;/ul>
+&lt;p>&lt;strong>第 4 周：Shell 脚本和 Git&lt;/strong> 通过脚本实现自动化和版本控制是基本的 DevOps 技能。&lt;/p>
+&lt;p>Shell 脚本技能：&lt;/p>
+&lt;ul>
+&lt;li>变量 (Variable) 和环境变量 (Environment Variable)&lt;/li>
+&lt;li>控制结构 (if/else, 循环, case 语句)&lt;/li>
+&lt;li>函数 (Function) 和脚本组织&lt;/li>
+&lt;li>错误处理和退出码 (Exit Code)&lt;/li>
+&lt;li>Cron 任务 (Cron Job) 和任务调度&lt;/li>
+&lt;/ul>
+&lt;p>Git 版本控制：&lt;/p>
+&lt;ul>
+&lt;li>仓库初始化和克隆&lt;/li>
+&lt;li>基本命令 (add, commit, push, pull, status)&lt;/li>
+&lt;li>分支策略和合并&lt;/li>
+&lt;li>冲突解决&lt;/li>
+&lt;li>GitHub 工作流 (workflow) 和协作&lt;/li>
+&lt;/ul>
+&lt;h2 id="第二月云平台和容器化">第二月：云平台和容器化
+&lt;/h2>&lt;p>&lt;strong>第 1-2 周：AWS 云基础知识&lt;/strong> 专注于一个主要的云平台来建立深厚的专业知识。AWS 在市场中处于领先地位，使其成为初学者的最佳选择。&lt;/p>
+&lt;p>核心 AWS 服务：&lt;/p>
+&lt;ul>
+&lt;li>EC2 (弹性计算云) 用于虚拟服务器&lt;/li>
+&lt;li>VPC (虚拟私有云) 用于网络&lt;/li>
+&lt;li>S3 (简单存储服务) 用于对象存储&lt;/li>
+&lt;li>IAM (身份和访问管理) 用于安全&lt;/li>
+&lt;li>RDS (关系型数据库服务) 用于托管数据库&lt;/li>
+&lt;li>负载均衡器 (ALB, NLB) 用于流量分发&lt;/li>
+&lt;li>自动扩缩组 (Auto Scaling Groups) 用于弹性&lt;/li>
+&lt;li>CloudWatch 用于监控和日志记录&lt;/li>
+&lt;/ul>
+&lt;p>&lt;strong>第 3-4 周：Docker 容器化&lt;/strong> 容器化通过在不同阶段提供一致的环境，彻底改变了应用程序部署方式。&lt;/p>
+&lt;p>Docker 基础：&lt;/p>
+&lt;ul>
+&lt;li>容器与虚拟机概念&lt;/li>
+&lt;li>Docker 架构和组件&lt;/li>
+&lt;li>镜像创建与管理&lt;/li>
+&lt;li>Dockerfile 最佳实践和优化&lt;/li>
+&lt;li>容器网络和卷&lt;/li>
+&lt;li>注册表管理 (Docker Hub, ECR)&lt;/li>
+&lt;/ul>
+&lt;p>Docker Compose：&lt;/p>
+&lt;ul>
+&lt;li>多容器应用编排&lt;/li>
+&lt;li>服务定义和网络&lt;/li>
+&lt;li>环境变量和 Secrets 管理&lt;/li>
+&lt;li>卷挂载和数据持久化&lt;/li>
+&lt;/ul>
+&lt;h2 id="第三个月基础设施即代码和-cicd-自动化">第三个月：基础设施即代码和 CI/CD 自动化
+&lt;/h2>&lt;p>&lt;strong>第 1-2 周：使用 Terraform 实现基础设施即代码&lt;/strong>&lt;/p>
+&lt;p>基础设施即代码 (IaC) 是区分初级 DevOps 工程师和高级专业人士的关键。&lt;/p>
+&lt;p>Terraform 要点：&lt;/p>
+&lt;ul>
+&lt;li>Terraform (HCL) 语法&lt;/li>
+&lt;li>Provider 和资源管理&lt;/li>
+&lt;li>状态管理和远程后端&lt;/li>
+&lt;li>变量、输出和数据源&lt;/li>
+&lt;li>模块化可重用基础设施&lt;/li>
+&lt;/ul>
+&lt;p>&lt;strong>第 3 周：使用 GitHub Actions 实现 CI/CD&lt;/strong>&lt;/p>
+&lt;p>持续集成 (Continuous Integration) 和持续部署 (Continuous Deployment) 自动化了软件交付管道。&lt;/p>
+&lt;p>CI/CD 管道组件：&lt;/p>
+&lt;ul>
+&lt;li>工作流触发器和事件&lt;/li>
+&lt;li>作业 (Jobs)、步骤 (Steps) 和操作 (Actions)&lt;/li>
+&lt;li>针对多环境的矩阵构建 (Matrix Builds)&lt;/li>
+&lt;li>Secrets 和环境变量管理&lt;/li>
+&lt;li>部署策略 (滚动部署、蓝绿部署、金丝雀部署)&lt;/li>
+&lt;/ul>
+&lt;p>&lt;strong>第 4 周：AWS ECS 容器编排&lt;/strong>&lt;/p>
+&lt;p>在初期阶段，学习容器编排可以避开 Kubernetes 的复杂性。&lt;/p>
+&lt;p>ECS 基础：&lt;/p>
+&lt;ul>
+&lt;li>集群管理和容量提供程序 (Capacity Providers)&lt;/li>
+&lt;li>任务定义和服务配置&lt;/li>
+&lt;li>服务发现和负载均衡&lt;/li>
+&lt;li>自动扩缩策略和方案&lt;/li>
+&lt;/ul>
+&lt;h2 id="第四个月kubernetes-生态系统和高级编排">第四个月：Kubernetes 生态系统和高级编排
+&lt;/h2>&lt;p>&lt;strong>第 1 周：Kubernetes 基础&lt;/strong>&lt;/p>
+&lt;p>Kubernetes 是大规模容器编排的行业标准。&lt;/p>
+&lt;p>Kubernetes 核心概念：&lt;/p>
+&lt;ul>
+&lt;li>集群架构 (主节点、工作节点、etcd)&lt;/li>
+&lt;li>Pods、Deployments 和 ReplicaSets&lt;/li>
+&lt;li>Services 和 Ingress 控制器&lt;/li>
+&lt;li>用于配置的 ConfigMaps 和 Secrets&lt;/li>
+&lt;li>持久卷 (Persistent Volumes) 和存储类 (Storage Classes)&lt;/li>
+&lt;li>用于资源隔离的命名空间 (Namespaces)&lt;/li>
+&lt;li>RBAC (基于角色的访问控制)&lt;/li>
+&lt;/ul>
+&lt;p>&lt;strong>第 2 周：Kubernetes 高级特性&lt;/strong>&lt;/p>
+&lt;ul>
+&lt;li>用于有状态应用的 StatefulSets&lt;/li>
+&lt;li>用于节点级服务的 DaemonSets&lt;/li>
+&lt;li>用于批处理的 Jobs 和 CronJobs&lt;/li>
+&lt;li>水平 Pod 自动扩缩 (Horizontal Pod Autoscaling, HPA)&lt;/li>
+&lt;li>用于流量控制的网络策略 (Network Policies)&lt;/li>
+&lt;/ul>
+&lt;p>&lt;strong>第 3 周：使用 Prometheus 和 Grafana 进行监控&lt;/strong>&lt;/p>
+&lt;p>可观测性 (Observability) 对于维护大规模可靠系统至关重要。&lt;/p>
+&lt;p>Prometheus 监控：&lt;/p>
+&lt;ul>
+&lt;li>指标收集和存储&lt;/li>
+&lt;li>服务发现配置&lt;/li>
+&lt;li>告警规则和通知路由&lt;/li>
+&lt;/ul>
+&lt;p>Grafana 可视化：&lt;/p>
+&lt;ul>
+&lt;li>仪表盘创建和模板化&lt;/li>
+&lt;li>面板类型和可视化选项&lt;/li>
+&lt;li>告警管理和通知渠道&lt;/li>
+&lt;/ul>
+&lt;p>&lt;strong>第 4 周：使用 ArgoCD 和 Helm 进行 GitOps&lt;/strong>&lt;/p>
+&lt;p>GitOps 代表了部署自动化的未来。&lt;/p>
+&lt;p>ArgoCD 实现：&lt;/p>
+&lt;ul>
+&lt;li>GitOps 原则和工作流&lt;/li>
+&lt;li>应用定义和同步策略&lt;/li>
+&lt;li>多集群管理&lt;/li>
+&lt;li>渐进式交付策略&lt;/li>
+&lt;/ul>
+&lt;p>Helm 包管理：&lt;/p>
+&lt;ul>
+&lt;li>Chart 结构和模板化&lt;/li>
+&lt;li>Values 文件和环境定制&lt;/li>
+&lt;li>Chart 仓库和分发&lt;/li>
+&lt;/ul>
+&lt;h2 id="第五个月python-自动化和事件驱动架构">第五个月：Python 自动化和事件驱动架构
+&lt;/h2>&lt;p>&lt;strong>第 1-2 周：用于 DevOps 自动化的 Python&lt;/strong>&lt;/p>
+&lt;p>Python 因其简洁性和丰富的库生态系统而成为 DevOps 自动化的首选语言。&lt;/p>
+&lt;p>Python DevOps 要点：&lt;/p>
+&lt;ul>
+&lt;li>自动化所需的 Python 基础知识&lt;/li>
+&lt;li>使用 API 和 JSON 数据&lt;/li>
+&lt;li>错误处理和日志记录最佳实践&lt;/li>
+&lt;li>用于云自动化的 AWS SDK (boto3)&lt;/li>
+&lt;li>基础设施自动化脚本&lt;/li>
+&lt;/ul>
+&lt;p>&lt;strong>第 2 周：AWS Lambda 和无服务器架构&lt;/strong>&lt;/p>
+&lt;p>无服务器计算 (Serverless Computing) 消除了基础设施管理开销。&lt;/p>
+&lt;p>Lambda 基础：&lt;/p>
+&lt;ul>
+&lt;li>函数创建和部署&lt;/li>
+&lt;li>事件源和触发器&lt;/li>
+&lt;li>环境变量和配置&lt;/li>
+&lt;li>性能优化和冷启动&lt;/li>
+&lt;/ul>
+&lt;p>事件驱动架构：&lt;/p>
+&lt;ul>
+&lt;li>用于消息队列的 Amazon SQS&lt;/li>
+&lt;li>用于发布/订阅消息的 Amazon SNS&lt;/li>
+&lt;li>用于事件路由的 Amazon EventBridge&lt;/li>
+&lt;/ul>
+&lt;p>&lt;strong>第 3-4 周：高级无服务器模式&lt;/strong>&lt;/p>
+&lt;ul>
+&lt;li>用于工作流编排的 Step Functions&lt;/li>
+&lt;li>API Gateway 集成&lt;/li>
+&lt;li>成本优化策略&lt;/li>
+&lt;/ul>
+&lt;h2 id="第六个月真实项目和求职准备">第六个月：真实项目和求职准备
+&lt;/h2>&lt;p>最后一个月将专注于构建一个项目作品集，以展示你解决实际业务问题的能力。&lt;/p>
+&lt;p>&lt;strong>能让你获得工作的 5 个项目作品集：&lt;/strong>&lt;/p>
+&lt;ol>
+&lt;li>&lt;strong>自动化基础设施监控与告警系统&lt;/strong>&lt;/li>
+&lt;li>&lt;strong>基于 GitOps 自动化（GitOps Automation）的多环境基础设施&lt;/strong>&lt;/li>
+&lt;li>&lt;strong>容器化微服务平台（Containerized Microservices Platform）&lt;/strong>&lt;/li>
+&lt;li>&lt;strong>事件驱动的无服务器（Serverless）数据处理管线&lt;/strong>&lt;/li>
+&lt;li>&lt;strong>带合规自动化（Compliance Automation）的 DevSecOps（开发安全运维一体化）管线&lt;/strong>&lt;/li>
+&lt;/ol>
+&lt;p>&lt;strong>求职准备策略：&lt;/strong>&lt;/p>
+&lt;ul>
+&lt;li>简历优化，突出量化成就&lt;/li>
+&lt;li>GitHub 作品集开发，包含清晰且文档完善的代码仓库&lt;/li>
+&lt;li>面试准备，重点关注场景题&lt;/li>
+&lt;li>拓展人脉和参与社区活动&lt;/li>
+&lt;/ul>
+&lt;h2 id="成功的心智框架">成功的心智框架
+&lt;/h2>&lt;p>&lt;strong>第 1–3 个月：一次精通一个工具&lt;/strong> 不要试图同时学习多个工具。你的大脑需要时间为每个新概念建立神经通路（neural pathways）。全身心投入一个工具，直到你觉得运用自如，然后再转向下一个。&lt;/p>
+&lt;p>&lt;strong>第 4–5 个月：开始在项目中混合使用工具&lt;/strong> 既然你已经打下了坚实的基础，就可以开始组合使用工具了。构建使用 Docker + AWS，或者 Terraform + Kubernetes 的项目。奇迹将在此发生——你将理解工具是如何协同工作的。&lt;/p>
+&lt;p>&lt;strong>第 6 个月：复杂项目与面试准备&lt;/strong> 构建能够解决实际业务问题的出色项目。练习向他人解释你的工作。通过理解不仅是工具的使用方法，更是你选择这些工具的原因，来准备技术面试。&lt;/p>
+&lt;h2 id="如何欺骗你的大脑在学习中不感到不知所措">如何欺骗你的大脑，在学习中不感到不知所措
+&lt;/h2>&lt;ul>
+&lt;li>有些日子你觉得自己是天才，有些日子你觉得自己一无所知。这两种感觉都很正常，也是学习过程的一部分。关键在于持之以恒，即使在动力不足时也要坚持下去。&lt;/li>
+&lt;li>不要被庞大的工具和技术生态系统所压倒。相反，一次只关注一件事，持续构建，并相信这个过程。&lt;/li>
+&lt;li>当学习感觉不可能，你的大脑快要爆炸时，请休息一下。看看 Netflix，散散步，睡一觉。第二天或几天后再回来，突然间那个“不可能”的概念就会豁然开朗。&lt;/li>
+&lt;/ul>
+&lt;p>请记住，在前 3 个月，抵制过度思考或在工具之间跳跃的冲动。掌握基础知识。在第 4-5 个月，开始在实际项目中混合使用工具。第 6 个月是关于构建令人印象深刻的项目作品集并为面试做准备。&lt;/p>
+&lt;h2 id="结论">结论
+&lt;/h2>&lt;p>你的现状，无论是死胡同般的工作、低薪，还是缺乏职业成长，除非你采取行动，否则一切都不会改变。我分享的这条路并不容易，但它已被证明是有效的。我曾走过这条路，数百人也同样如此。&lt;/p>
+&lt;p>&lt;strong>如果你不做出改变，一切都不会改变。&lt;/strong>&lt;/p></description></item><item><title>Scrum 正在演变，许多团队正在尝试替代方案</title><link>https://martinliu.cn/blog/scrum-is-evolving-and-many-teams-are-experimenting/</link><pubDate>Thu, 28 Aug 2025 10:00:00 +0800</pubDate><guid>https://martinliu.cn/blog/scrum-is-evolving-and-many-teams-are-experimenting/</guid><description>&lt;img src="https://martinliu.cn/blog/scrum-is-evolving-and-many-teams-are-experimenting/0_RoRZP60AWsV890oG.jpg" alt="Featured image of post Scrum 正在演变，许多团队正在尝试替代方案" />&lt;p>Scrum 对许多团队而言仍然很有价值，但近年来，从初创公司到大型科技公司（Big Tech）的软件企业一直在尝试新的实践，以适应更快的周期和更高的自主性。本文将重点介绍 10 种现代方法，它们可以补充甚至超越传统的 Scrum。本文揭示了 10 种正在取代 Scrum 的现代方法，并解释了如何在你的 Java 开发团队中实施它们。&lt;/p>
+&lt;p>Scrum 使用率从 2020 年至 2024 年的下降，以及 Kanban、Shape Up 和持续交付（Continuous Delivery）等替代方法在软件开发团队中的兴起。&lt;/p>
+&lt;h2 id="1-团队自主性优于流程仪式">1. 团队自主性优于流程仪式
+&lt;/h2>&lt;p>一些大型科技公司（Big Tech）正在尝试更自主的模型——即使是小型团队也可以尝试其中的一些元素，赋能的工程师比流程驱动的团队能交付更好的结果。虽然 Scrum 强调明确的角色，但一些团队正在尝试更高的自主性，赋予工程师对其代码、部署和决策的端到端所有权。这种转变通常会提高生产力，并减少代码、部署和决策制定中的流程开销。&lt;/p>
+&lt;p>核心原则很简单：聘用聪明人，然后让他们自由发挥。当工程师可以选择自己的工具、设定自己的时间表并在准备就绪时进行部署时，生产力会飙升高达 30%。这种方法消除了冲刺规划会议（sprint planning meetings）和故事点估算（story point estimation）的开销。&lt;/p>
+&lt;p>Java 实施示例（任何人都能懂的伪代码）：&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;span class="lnt">14
+&lt;/span>&lt;span class="lnt">15
+&lt;/span>&lt;span class="lnt">16
+&lt;/span>&lt;span class="lnt">17
+&lt;/span>&lt;span class="lnt">18
+&lt;/span>&lt;span class="lnt">19
+&lt;/span>&lt;span class="lnt">20
+&lt;/span>&lt;span class="lnt">21
+&lt;/span>&lt;span class="lnt">22
+&lt;/span>&lt;span class="lnt">23
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-Java" data-lang="Java">&lt;span class="line">&lt;span class="cl">&lt;span class="c1">// Autonomous team deployment pipeline&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="nd">@Component&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="kd">public&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="kd">class&lt;/span> &lt;span class="nc">AutonomousDeployment&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">{&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nd">@Autowired&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="kd">private&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">GitRepository&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">repo&lt;/span>&lt;span class="p">;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nd">@Autowired&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="kd">private&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">CIService&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">continuousIntegration&lt;/span>&lt;span class="p">;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="c1">// Engineers trigger deployments directly&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="kd">public&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="kt">void&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nf">deployWhenReady&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">String&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">featureBranch&lt;/span>&lt;span class="p">)&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">{&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="k">if&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">continuousIntegration&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="na">allTestsPass&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">featureBranch&lt;/span>&lt;span class="p">))&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">{&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="n">repo&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="na">mergeToMain&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">featureBranch&lt;/span>&lt;span class="p">);&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="n">deployToProduction&lt;/span>&lt;span class="p">();&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="p">}&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="p">}&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="kd">private&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="kt">void&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nf">deployToProduction&lt;/span>&lt;span class="p">()&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">{&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="c1">// Automated deployment without ceremony&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="n">System&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="na">out&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="na">println&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s">&amp;#34;Deploying autonomously - no approval needed&amp;#34;&lt;/span>&lt;span class="p">);&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="p">}&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="p">}&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;h2 id="2-持续交付而非冲刺发布">2. 持续交付而非冲刺发布
+&lt;/h2>&lt;p>许多 Scrum 团队以 2-4 周的周期进行交付。持续交付（Continuous Delivery）扩展了这一理念，实现了每天多次发布，提供了更快的反馈和更小、更安全的变更。持续交付消除了冲刺（sprint）边界的人为限制，并实现了用户的实时反馈。&lt;/p>
+&lt;p>Amazon 平均每 11.7 秒部署一次代码。这种方法降低了风险，因为每次更改都更小，更容易调试（debug）。如果出现问题，你只需回滚（roll back）一个小的更改，而不是解开一个复杂冲刺所累积的功能。&lt;/p>
+&lt;p>Java 持续交付（CD）流水线示例（任何人都能懂的伪代码）：&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;span class="lnt">14
+&lt;/span>&lt;span class="lnt">15
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-Java" data-lang="Java">&lt;span class="line">&lt;span class="cl">&lt;span class="nd">@RestController&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="kd">public&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="kd">class&lt;/span> &lt;span class="nc">FeatureFlagController&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">{&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nd">@Autowired&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="kd">private&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">FeatureToggleService&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">toggleService&lt;/span>&lt;span class="p">;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="c1">// Deploy features behind flags - no sprint waiting&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nd">@GetMapping&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s">&amp;#34;/api/new-feature&amp;#34;&lt;/span>&lt;span class="p">)&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="kd">public&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">ResponseEntity&lt;/span>&lt;span class="o">&amp;lt;?&amp;gt;&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">getNewFeature&lt;/span>&lt;span class="p">()&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">{&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="k">if&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">toggleService&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="na">isEnabled&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s">&amp;#34;new-checkout-flow&amp;#34;&lt;/span>&lt;span class="p">))&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">{&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="k">return&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">ResponseEntity&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="na">ok&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="k">new&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">EnhancedCheckout&lt;/span>&lt;span class="p">());&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="p">}&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="k">return&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">ResponseEntity&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="na">ok&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="k">new&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">StandardCheckout&lt;/span>&lt;span class="p">());&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="p">}&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="p">}&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>对比展示了大型科技公司（Big Tech）如何与传统 Scrum 驱动的组织不同地进行项目管理，强调自主性、持续交付（Continuous Delivery）和工程师主导的举措。&lt;/p>
+&lt;h2 id="3-shape-upbasecamp-的-6-周专注周期">3. Shape Up：Basecamp 的 6 周专注周期
+&lt;/h2>&lt;p>Basecamp 创建了 Shape Up，旨在解决无休止的积压工作 (backlogs) 和范围蔓延 (scope creep) 等挑战。团队不再管理数百张工单（bug修复或者线上支持），而是专注于一个重要问题整整 6 周，然后进行为期 2 周的冷却期 (cooldown)。&lt;/p>
+&lt;p>其中一个出色的洞察是“投入预设 (appetite setting)”——即预先决定一个问题值得投入多少时间。如果你无法在 6 周内解决它，那么要么缩减范围，要么放弃它。这消除了困扰 Scrum 团队的无休止的范围谈判。&lt;/p>
+&lt;p>Shape Up 的 Java 项目结构（任何人都能懂的伪代码）：&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;span class="lnt">14
+&lt;/span>&lt;span class="lnt">15
+&lt;/span>&lt;span class="lnt">16
+&lt;/span>&lt;span class="lnt">17
+&lt;/span>&lt;span class="lnt">18
+&lt;/span>&lt;span class="lnt">19
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-Java" data-lang="Java">&lt;span class="line">&lt;span class="cl">&lt;span class="c1">// Six-week focused development approach&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="kd">public&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="kd">class&lt;/span> &lt;span class="nc">ShapeUpProject&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">{&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="kd">private&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="kd">final&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="kt">int&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">CYCLE_WEEKS&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">6&lt;/span>&lt;span class="p">;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="kd">private&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="kd">final&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">LocalDate&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">startDate&lt;/span>&lt;span class="p">;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="kd">private&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="kd">final&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">String&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">appetite&lt;/span>&lt;span class="p">;&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="c1">// &amp;#34;6 weeks max&amp;#34;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="kd">private&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="kd">final&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">Problem&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">problemToSolve&lt;/span>&lt;span class="p">;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="kd">public&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nf">ShapeUpProject&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">Problem&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">problem&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">String&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">timeAppetite&lt;/span>&lt;span class="p">)&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">{&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="k">this&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="na">problemToSolve&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">problem&lt;/span>&lt;span class="p">;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="k">this&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="na">appetite&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">timeAppetite&lt;/span>&lt;span class="p">;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="k">this&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="na">startDate&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">LocalDate&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="na">now&lt;/span>&lt;span class="p">();&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="p">}&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="c1">// Circuit breaker - kill if scope grows too large&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="kd">public&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="kt">boolean&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nf">shouldContinue&lt;/span>&lt;span class="p">()&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">{&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="k">return&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">ChronoUnit&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="na">WEEKS&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="na">between&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">startDate&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">LocalDate&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="na">now&lt;/span>&lt;span class="p">())&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="o">&amp;lt;&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">CYCLE_WEEKS&lt;/span>&lt;span class="p">;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="p">}&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="p">}&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;h2 id="4-看板-kanban可视流优于冲刺规划">4. 看板 (Kanban)：可视流优于冲刺规划
+&lt;/h2>&lt;p>Netflix、Microsoft 和许多其他公司都采用了看板 (Kanban) 流系统。与基于冲刺 (sprint) 的规划不同，看板强调限制在制品 (Work In Progress, WIP) 并优化流系统。团队不再承诺冲刺目标，而是专注于限制在制品并优化其价值交付流。&lt;/p>
+&lt;p>看板的强大之处在于其简洁性。你有三列：待办 (To Do)、进行中 (Doing)、已完成 (Done)。你对“进行中”状态的项目数量设定限制。这可以防止上下文切换 (context switching)，并帮助团队更快地完成工作，而不是启动更多工作。&lt;/p>
+&lt;p>看板板实现：&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;span class="lnt">14
+&lt;/span>&lt;span class="lnt">15
+&lt;/span>&lt;span class="lnt">16
+&lt;/span>&lt;span class="lnt">17
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-Java" data-lang="Java">&lt;span class="line">&lt;span class="cl">&lt;span class="n">Traditional&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">Scrum&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">Board&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="err">┌──────────────┐&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="err">┌──────────────┐&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="err">┌──────────────┐&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="err">│&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">BACKLOG&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="err">│&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="err">│&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">SPRINT&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="err">│&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="err">│&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">DONE&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="err">│&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="err">│&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="err">│&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="err">│&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">COMMITTED&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="err">│&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="err">│&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="err">│&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="err">│&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="err">•&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">200&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">items&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="err">│&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="err">│&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="err">•&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">15&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">items&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="err">│&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="err">│&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="err">•&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">12&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">items&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="err">│&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="err">│&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="err">•&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">Endless&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="err">│&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="err">│&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="err">•&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">Fixed&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="err">│&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="err">│&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="err">│&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="err">│&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="err">•&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">Groomed&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="err">│&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="err">│&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="err">•&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">Estimated&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="err">│&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="err">│&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="err">│&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="err">└──────────────┘&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="err">└──────────────┘&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="err">└──────────────┘&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="n">Modern&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">Kanban&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">Flow&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="err">┌──────────────┐&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="err">┌──────────────┐&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="err">┌──────────────┐&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="err">│&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">TODO&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="err">│&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="err">│&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">DOING&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="err">│&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="err">│&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">DONE&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="err">│&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="err">│&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="err">│&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="err">│&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">WIP&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">3&lt;/span>&lt;span class="p">)&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="err">│&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="err">│&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="err">│&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="err">│&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="err">•&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">Just&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">Next&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="err">│&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="err">│&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="err">•&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">Item&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">A&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="err">│&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="err">│&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="err">•&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">Feature&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">X&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="err">│&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="err">│&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="err">•&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">Priority&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="err">│&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="err">│&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="err">•&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">Item&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">B&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="err">│&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="err">│&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="err">•&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">Bug&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">Fix&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">Y&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="err">│&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="err">│&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="err">•&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">Ready&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="err">│&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="err">│&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="err">•&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">Item&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">C&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="err">│&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="err">│&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="err">│&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="err">└──────────────┘&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="err">└──────────────┘&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="err">└──────────────┘&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;h2 id="5-无估算-no-estimates-运动关注流而非预测">5. 无估算 (No Estimates) 运动：关注流，而非预测
+&lt;/h2>&lt;p>一些团队正在尝试 NoEstimates (无估算) 运动，从故事点 (story points) 转向。他们将工作分解成大小相似的块并跟踪流，这可以减少估算开销。团队不再争论一个任务是 5 个点还是 8 个点，而是专注于将工作分解成大小相似的块并衡量实际流速 (flow rates)。&lt;/p>
+&lt;p>NoEstimates 方法会问：“我们能在 2-3 天内完成这个任务吗？”如果能，就去做。如果不能，就进一步分解。这完全消除了估算会议，并比传统的故事点提供了更可预测的交付。==&lt;/p>
+&lt;p>NoEstimates 的 Java 实现（任何人都能懂的伪代码）：&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;span class="lnt">14
+&lt;/span>&lt;span class="lnt">15
+&lt;/span>&lt;span class="lnt">16
+&lt;/span>&lt;span class="lnt">17
+&lt;/span>&lt;span class="lnt">18
+&lt;/span>&lt;span class="lnt">19
+&lt;/span>&lt;span class="lnt">20
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-Java" data-lang="Java">&lt;span class="line">&lt;span class="cl">&lt;span class="nd">@Entity&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="kd">public&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="kd">class&lt;/span> &lt;span class="nc">WorkItem&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">{&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="kd">private&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">LocalDateTime&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">startTime&lt;/span>&lt;span class="p">;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="kd">private&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">LocalDateTime&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">completeTime&lt;/span>&lt;span class="p">;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="kd">private&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="kt">boolean&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">isSmallEnough&lt;/span>&lt;span class="p">;&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="c1">// Can complete in 2-3 days?&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="c1">// Track cycle time instead of story points&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="kd">public&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">Duration&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nf">getCycleTime&lt;/span>&lt;span class="p">()&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">{&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="k">if&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">completeTime&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="o">!=&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="kc">null&lt;/span>&lt;span class="p">)&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">{&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="k">return&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">Duration&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="na">between&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">startTime&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">completeTime&lt;/span>&lt;span class="p">);&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="p">}&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="k">return&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">Duration&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="na">between&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">startTime&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">LocalDateTime&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="na">now&lt;/span>&lt;span class="p">());&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="p">}&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="c1">// Predictability through consistent sizing&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="kd">public&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="kt">boolean&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nf">isRightSize&lt;/span>&lt;span class="p">()&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">{&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="k">return&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">getCycleTime&lt;/span>&lt;span class="p">().&lt;/span>&lt;span class="na">toDays&lt;/span>&lt;span class="p">()&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="o">&amp;lt;=&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">3&lt;/span>&lt;span class="p">;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="p">}&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="p">}&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;h2 id="6-okrs-加工程领导力">6. OKRs 加工程领导力
+&lt;/h2>&lt;p>Intel、Google 和 LinkedIn 等公司将目标与关键结果 (Objectives and Key Results, OKRs) 与工程师主导的执行相结合。工程师不再由产品负责人 (product owners) 编写详细需求，而是理解业务目标并找出最佳技术方案。&lt;/p>
+&lt;p>该模型将开发者视为问题解决者，而非功能生产机器。工程师与客户沟通，理解各项指标，并提出解决方案。这带来了更具创新性的产品和更高的工作满意度。&lt;/p>
+&lt;p>Java OKR 集成示例（任何人都能懂的伪代码）：&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;span class="lnt">14
+&lt;/span>&lt;span class="lnt">15
+&lt;/span>&lt;span class="lnt">16
+&lt;/span>&lt;span class="lnt">17
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-Java" data-lang="Java">&lt;span class="line">&lt;span class="cl">&lt;span class="nd">@Component&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="kd">public&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="kd">class&lt;/span> &lt;span class="nc">TeamOKRTracker&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">{&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="c1">// Objective: Reduce customer checkout abandonment by 20%&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="kd">private&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="kd">final&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">ObjectiveMetric&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">checkoutAbandonment&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="k">new&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">ObjectiveMetric&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s">&amp;#34;checkout_abandonment&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">0&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="na">20&lt;/span>&lt;span class="p">);&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="c1">// Engineers decide HOW to achieve the objective&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="kd">public&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="kt">void&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nf">implementSolution&lt;/span>&lt;span class="p">()&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">{&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="k">if&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">checkoutAbandonment&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="na">isOnTrack&lt;/span>&lt;span class="p">())&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">{&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="n">System&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="na">out&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="na">println&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s">&amp;#34;Current approach working - continue&amp;#34;&lt;/span>&lt;span class="p">);&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="p">}&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="k">else&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">{&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="c1">// Engineers pivot based on data, not requirements&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="n">tryNewApproach&lt;/span>&lt;span class="p">();&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="p">}&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="p">}&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="p">}&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;h2 id="7-spotify-的小队模型大规模自主团队">7. Spotify 的小队模型：大规模自主团队
+&lt;/h2>&lt;p>Spotify 彻底改变了大型组织保持敏捷性的方式。他们的模型将人员组织成小队 (squads)（团队）、部落 (tribes)（小队的集合）、章节 (chapters)（基于技能的群体）和兴趣组 (guilds)（共同兴趣社区）。&lt;/p>
+&lt;p>关键洞察在于，文化和自主性比流程更重要。每个小队选择自己的方法论——有些使用 Scrum，有些使用 Kanban，许多采用混合方法。重要的是在使命和价值观上保持一致。&lt;/p>
+&lt;p>Java 中的小队结构（任何人都能懂的伪代码）：&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;span class="lnt">14
+&lt;/span>&lt;span class="lnt">15
+&lt;/span>&lt;span class="lnt">16
+&lt;/span>&lt;span class="lnt">17
+&lt;/span>&lt;span class="lnt">18
+&lt;/span>&lt;span class="lnt">19
+&lt;/span>&lt;span class="lnt">20
+&lt;/span>&lt;span class="lnt">21
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-Java" data-lang="Java">&lt;span class="line">&lt;span class="cl">&lt;span class="c1">// Spotify-style autonomous squad organization&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="kd">public&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="kd">class&lt;/span> &lt;span class="nc">AutonomousSquad&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">{&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="kd">private&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">String&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">mission&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="s">&amp;#34;Make checkout delightful&amp;#34;&lt;/span>&lt;span class="p">;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="kd">private&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">List&lt;/span>&lt;span class="o">&amp;lt;&lt;/span>&lt;span class="n">Developer&lt;/span>&lt;span class="o">&amp;gt;&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">squadMembers&lt;/span>&lt;span class="p">;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="kd">private&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">WorkingMethod&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">chosenMethod&lt;/span>&lt;span class="p">;&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="c1">// Squad decides!&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="c1">// Squads have end-to-end responsibility&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="kd">public&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="kt">void&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nf">deliverFeature&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">Feature&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">feature&lt;/span>&lt;span class="p">)&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">{&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="n">design&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">feature&lt;/span>&lt;span class="p">);&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="n">develop&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">feature&lt;/span>&lt;span class="p">);&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="n">test&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">feature&lt;/span>&lt;span class="p">);&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="n">deploy&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">feature&lt;/span>&lt;span class="p">);&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="n">monitor&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">feature&lt;/span>&lt;span class="p">);&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="p">}&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="c1">// Cross-pollination with other squads&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="kd">public&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="kt">void&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nf">shareLearningSessions&lt;/span>&lt;span class="p">()&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">{&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="c1">// Guilds facilitate knowledge sharing&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="p">}&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="p">}&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;h2 id="8-devops-集成开发与运维合二为一">8. DevOps 集成：开发与运维合二为一
+&lt;/h2>&lt;p>最成功的公司已经消除了开发和运维团队之间的移交。开发者不再将代码“一扔了之”，而是端到端 (end-to-end) 地拥有他们的应用程序，包括部署、监控和维护。&lt;/p>
+&lt;p>这种方法消除了“在我机器上可以运行”的问题，因为开发者要对生产环境性能负责。它还能够实现更快的反馈周期，并减少团队之间的推诿扯皮。&lt;/p>
+&lt;p>DevOps 流水线集成：&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;span class="lnt">14
+&lt;/span>&lt;span class="lnt">15
+&lt;/span>&lt;span class="lnt">16
+&lt;/span>&lt;span class="lnt">17
+&lt;/span>&lt;span class="lnt">18
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-c" data-lang="c">&lt;span class="line">&lt;span class="cl">&lt;span class="n">Traditional&lt;/span> &lt;span class="n">Handoff&lt;/span> &lt;span class="nl">Model&lt;/span>&lt;span class="p">:&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="err">┌───────────┐&lt;/span> &lt;span class="err">┌───────────┐&lt;/span> &lt;span class="err">┌───────────┐&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="err">│&lt;/span> &lt;span class="n">DEV&lt;/span> &lt;span class="err">│───►│&lt;/span> &lt;span class="n">QA&lt;/span> &lt;span class="err">│───►│&lt;/span> &lt;span class="n">OPS&lt;/span> &lt;span class="err">│&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="err">│&lt;/span> &lt;span class="s">&amp;#34;Done&amp;#34;&lt;/span> &lt;span class="err">│&lt;/span> &lt;span class="err">│&lt;/span> &lt;span class="s">&amp;#34;Test&amp;#34;&lt;/span> &lt;span class="err">│&lt;/span> &lt;span class="err">│&lt;/span> &lt;span class="s">&amp;#34;Deploy&amp;#34;&lt;/span> &lt;span class="err">│&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="err">└───────────┘&lt;/span> &lt;span class="err">└───────────┘&lt;/span> &lt;span class="err">└───────────┘&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="err">│&lt;/span> &lt;span class="err">│&lt;/span> &lt;span class="err">│&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="err">▼&lt;/span> &lt;span class="err">▼&lt;/span> &lt;span class="err">▼&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">Blame&lt;/span> &lt;span class="n">Dev&lt;/span> &lt;span class="n">Blame&lt;/span> &lt;span class="n">QA&lt;/span> &lt;span class="n">Blame&lt;/span> &lt;span class="n">Ops&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">Modern&lt;/span> &lt;span class="n">DevOps&lt;/span> &lt;span class="nl">Integration&lt;/span>&lt;span class="p">:&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="err">┌─────────────────────────────────────────────────────┐&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="err">│&lt;/span> &lt;span class="n">FULL&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">STACK&lt;/span> &lt;span class="n">OWNERSHIP&lt;/span> &lt;span class="err">│&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="err">│&lt;/span> &lt;span class="err">┌─────────┐&lt;/span> &lt;span class="err">┌─────────┐&lt;/span> &lt;span class="err">┌─────────┐&lt;/span> &lt;span class="err">┌─────────┐│&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="err">│&lt;/span> &lt;span class="err">│&lt;/span> &lt;span class="n">Code&lt;/span> &lt;span class="err">│&lt;/span> &lt;span class="err">│&lt;/span> &lt;span class="n">Test&lt;/span> &lt;span class="err">│&lt;/span> &lt;span class="err">│&lt;/span> &lt;span class="n">Deploy&lt;/span> &lt;span class="err">│&lt;/span> &lt;span class="err">│&lt;/span> &lt;span class="n">Monitor&lt;/span> &lt;span class="err">││&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="err">│&lt;/span> &lt;span class="err">│&lt;/span> &lt;span class="err">│&lt;/span> &lt;span class="err">│&lt;/span> &lt;span class="err">│&lt;/span> &lt;span class="err">│&lt;/span> &lt;span class="err">│&lt;/span> &lt;span class="err">│&lt;/span> &lt;span class="err">││&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="err">│&lt;/span> &lt;span class="err">└─────────┘&lt;/span> &lt;span class="err">└─────────┘&lt;/span> &lt;span class="err">└─────────┘&lt;/span> &lt;span class="err">└─────────┘│&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="err">│&lt;/span> &lt;span class="n">Same&lt;/span> &lt;span class="n">Team&lt;/span> &lt;span class="err">│&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="err">└─────────────────────────────────────────────────────┘&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;h2 id="9-精益开发消除浪费最大化价值">9. 精益开发：消除浪费，最大化价值
+&lt;/h2>&lt;p>源自丰田制造的精益原则在软件开发中焕发了新的活力。其核心思想是消除任何不能直接为客户创造价值的活动。&lt;/p>
+&lt;p>在实践中，这意味着更少的会议、更少的文档、更短的反馈周期和更快的决策。采用精益方法的团队将更多时间用于编码，更少时间用于仪式性活动。&lt;/p>
+&lt;p>精益 Java 开发原则（任何人都能懂的伪代码）：&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;span class="lnt">14
+&lt;/span>&lt;span class="lnt">15
+&lt;/span>&lt;span class="lnt">16
+&lt;/span>&lt;span class="lnt">17
+&lt;/span>&lt;span class="lnt">18
+&lt;/span>&lt;span class="lnt">19
+&lt;/span>&lt;span class="lnt">20
+&lt;/span>&lt;span class="lnt">21
+&lt;/span>&lt;span class="lnt">22
+&lt;/span>&lt;span class="lnt">23
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-Java" data-lang="Java">&lt;span class="line">&lt;span class="cl">&lt;span class="nd">@Service&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="kd">public&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="kd">class&lt;/span> &lt;span class="nc">LeanDevelopmentService&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">{&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="c1">// Principle 1: Eliminate waste (unnecessary meetings, docs)&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="kd">public&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="kt">void&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nf">eliminateWaste&lt;/span>&lt;span class="p">()&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">{&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="c1">// No daily standups if async communication works&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="c1">// No estimation meetings if flow is predictable&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="c1">// No detailed specs if quick prototypes suffice&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="p">}&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="c1">// Principle 2: Build quality in (automated testing)&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nd">@Test&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="kd">public&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="kt">void&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nf">testDrivenDevelopment&lt;/span>&lt;span class="p">()&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">{&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="c1">// Write tests first, eliminate manual testing waste&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="n">assertTrue&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s">&amp;#34;Quality built into process&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="kc">true&lt;/span>&lt;span class="p">);&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="p">}&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="c1">// Principle 3: Deliver fast (continuous deployment)&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="kd">public&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="kt">void&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nf">deliverFast&lt;/span>&lt;span class="p">()&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">{&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="c1">// Small batches, frequent releases&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="n">System&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="na">out&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="na">println&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s">&amp;#34;Value delivered in hours, not sprints&amp;#34;&lt;/span>&lt;span class="p">);&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="p">}&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="p">}&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;h2 id="10-混合方法多种方法论的精华">10. 混合方法：多种方法论的精华
+&lt;/h2>&lt;p>最明智的公司不会只选择一种方法论并永远墨守成规。他们根据特定背景下的有效性，持续试验和调整，结合不同方法的要素。&lt;/p>
+&lt;p>例如，一个团队可能使用 Shape Up 的六周周期进行功能开发，使用 Kanban 进行 Bug 修复，并采用持续交付 (continuous delivery) 进行部署。关键在于衡量结果并调整流程，以优化成果，而不是墨守方法论。&lt;/p>
+&lt;p>混合实现示例（任何人都能懂的伪代码）：&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;span class="lnt">14
+&lt;/span>&lt;span class="lnt">15
+&lt;/span>&lt;span class="lnt">16
+&lt;/span>&lt;span class="lnt">17
+&lt;/span>&lt;span class="lnt">18
+&lt;/span>&lt;span class="lnt">19
+&lt;/span>&lt;span class="lnt">20
+&lt;/span>&lt;span class="lnt">21
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-Java" data-lang="Java">&lt;span class="line">&lt;span class="cl">&lt;span class="nd">@Component&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="kd">public&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="kd">class&lt;/span> &lt;span class="nc">HybridMethodology&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">{&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="c1">// Use different approaches for different work types&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="kd">public&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="kt">void&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nf">handleWork&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">WorkType&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">type&lt;/span>&lt;span class="p">)&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">{&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="k">switch&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">type&lt;/span>&lt;span class="p">)&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">{&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="k">case&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">FEATURE_DEVELOPMENT&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="n">useShapeUpCycle&lt;/span>&lt;span class="p">();&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="c1">// 6-week focused cycles&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="k">break&lt;/span>&lt;span class="p">;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="k">case&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">BUG_FIXES&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="n">useKanbanFlow&lt;/span>&lt;span class="p">();&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="c1">// Continuous flow&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="k">break&lt;/span>&lt;span class="p">;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="k">case&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">EXPERIMENTS&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="n">useNoEstimates&lt;/span>&lt;span class="p">();&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="c1">// Quick validation&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="k">break&lt;/span>&lt;span class="p">;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="k">case&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">INFRASTRUCTURE&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="n">useDevOpsPipeline&lt;/span>&lt;span class="p">();&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="c1">// Automated deployment&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="k">break&lt;/span>&lt;span class="p">;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="p">}&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="p">}&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="p">}&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;h2 id="未来已来">未来已来
+&lt;/h2>&lt;p>数据表明 Scrum 不再是唯一的（或绝对主导的）框架——团队正在将其与更新的实践相结合。那些拥抱自主性、持续交付 (Continuous Delivery) 和以结果为导向的方法的团队，始终优于那些过度依赖流程的团队。适应这些新方法的公司将蓬勃发展，而那些根据自身需求调整流程的团队往往能更快地行动并交付更多价值。&lt;/p>
+&lt;p>不要等待你的组织强制推行变革。今天就开始在你的团队中试验这些方法吧。尝试一个月不进行估算，为你的下一个功能实现持续部署 (Continuous Deployment)，或者让你的开发人员完全拥有其部署流水线 (Deployment Pipeline)。&lt;/p>
+&lt;p>你会首先尝试什么？在下面的评论中分享你的实验和结果。&lt;/p>
+&lt;p>将复杂的技术拆解为简单的文字。如果你正在学习，那么我正是为你而写。&lt;/p></description></item><item><title>我为什么要从 Kubernetes Ingress 迁移到 Gateway API</title><link>https://martinliu.cn/blog/why-im-moving-from-kubernetes-ingress-to-gateway/</link><pubDate>Thu, 28 Aug 2025 10:00:00 +0800</pubDate><guid>https://martinliu.cn/blog/why-im-moving-from-kubernetes-ingress-to-gateway/</guid><description>&lt;img src="https://martinliu.cn/blog/why-im-moving-from-kubernetes-ingress-to-gateway/1_rhwXmfU4EZHiwcLjTUxOaQ.png" alt="Featured image of post 我为什么要从 Kubernetes Ingress 迁移到 Gateway API" />&lt;p>对于每一位踏入 Kubernetes 世界的 DevOps 工程师来说，Ingress 通常是他们遇到的第一个资源，甚至可能是他们的“初恋”。当需要简单的 HTTP(S) 路由时，Ingress 就会派上用场，为集群内部的服务打开了通往外部世界的大门。多年来，它一直运行良好。但技术世界永不停歇，需求不断演变，现有解决方案也开始触及其局限性。正是在这种背景下，Gateway API 进入了 Kubernetes 生态系统。&lt;/p>
+&lt;p>那么，既然我们已经有了像 Ingress 这样成熟且广泛采用的解决方案，为什么还需要一个新的 API 呢？Gateway API 解决了哪些问题？它缓解了哪些痛点？在这篇博客文章中，我们将探讨我使用 Ingress 的经验、Gateway API 带来的创新，以及为什么这种转变是完全合理的。我们的目标是以技术性强但友好的语调来解释这些内容。&lt;/p>
+&lt;h2 id="ingress-的局限性">Ingress 的局限性
+&lt;/h2>&lt;p>&lt;strong>注解地狱 (Annotation Hell)：&lt;/strong> Ingress 最大的缺点之一是它对注解 (annotations) 的依赖，以实现高级功能。对于限流 (rate limiting)、URL 重写 (URL rewrites)、请求体大小限制 (body size limits)、CORS 设置 (CORS settings) 等类似功能，我们不得不使用每个 Ingress 控制器 (Ingress Controller) 特定的注解。这导致了不同 Ingress 控制器（Nginx、Traefik、HAProxy 等）之间的不一致性。您在使用 Nginx Ingress 时编写的注解，在切换到 Traefik 后可能会变得毫无意义。当然，如果您像我一样通常只使用 Nginx Ingress，这可能对您来说不是问题，但未来您可能需要替代方案。&lt;/p>
+&lt;p>&lt;strong>缺乏高级流量管理：&lt;/strong> Ingress 自身不足以支持现代部署策略，例如金丝雀部署 (canary deployments) 和蓝绿部署 (blue/green deployments)。这些场景通常需要额外的工具，比如服务网格 (Service Mesh) 或复杂的注解组合。这增加了架构的复杂性和运维开销 (operational overhead)。&lt;/p>
+&lt;p>&lt;strong>协议限制：&lt;/strong> Ingress 从根本上是为 HTTP 和 HTTPS 流量设计的。它没有内置支持其他协议，如 TCP 和 UDP。这使得在 Kubernetes 上运行使用不同协议的应用程序时，需要寻找替代解决方案。&lt;/p>
+&lt;h2 id="为什么选择-gateway-apikubernetes-流量管理的新时代">为什么选择 Gateway API？Kubernetes 流量管理的新时代
+&lt;/h2>&lt;p>考虑到 Ingress 的局限性，Kubernetes 社区认识到需要一种更全面、更灵活的流量管理解决方案。Gateway API 应运而生。Gateway API 不仅支持 HTTP(S) 流量，还支持 TCP 和 UDP 等其他协议。它提供了一个基于角色且可扩展的结构。让我们深入了解 Gateway API 的核心组件以及它解决的问题：&lt;/p>
+&lt;p>Gateway API 围绕三个主要的自定义资源定义 (Custom Resource Definitions, CRDs) 构建：&lt;/p>
+&lt;p>&lt;strong>GatewayClass：&lt;/strong> 该资源定义了网关 (Gateway) 的行为和功能。就像 Ingress Controllers 一样，不同的 Gateway Controllers (例如 NGINX Gateway) 提供自己的 GatewayClass。&lt;/p>
+&lt;p>&lt;strong>Gateway：&lt;/strong> 该资源表示集群中的一个网络网关，通常是一个负载均衡器或代理。它定义了监听器 (listeners)，并指定哪些路由 (Route) 对象可以附加到这些监听器。例如，一个 Gateway 对象可能在 80 端口和 443 端口监听 HTTP 和 HTTPS 流量。&lt;/p>
+&lt;p>&lt;strong>Route：&lt;/strong> Route 资源定义了到达 Gateway 的流量应如何路由。HTTPRoute 用于 HTTP/HTTPS 流量，而 TCPRoute 和 UDPRoute 等其他类型则用于不同的协议。路由根据主机 (host)、路径 (path)、请求头 (headers) 等匹配流量，并将其路由到后端服务 (backend services)。这是开发人员可以定义自己的路由规则的地方。&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/blog/why-im-moving-from-kubernetes-ingress-to-gateway/1__1TVbXaobEeF2gWCENYxkw.png"
+width="640"
+height="560"
+srcset="https://martinliu.cn/blog/why-im-moving-from-kubernetes-ingress-to-gateway/1__1TVbXaobEeF2gWCENYxkw_hu_9a9ca8f5c7e8bae2.png 480w, https://martinliu.cn/blog/why-im-moving-from-kubernetes-ingress-to-gateway/1__1TVbXaobEeF2gWCENYxkw_hu_51ef272340507958.png 1024w"
+loading="lazy"
+alt="Gateway API 架构图"
+class="gallery-image"
+data-flex-grow="114"
+data-flex-basis="274px"
+>&lt;/p>
+&lt;p>这种三层结构完美地实现了 Gateway API 最重要的创新之一：关注点分离 (separation of concerns)。&lt;/p>
+&lt;p>&lt;strong>基础设施提供商 (Infrastructure Providers)：&lt;/strong> 管理 GatewayClass 并决定可以使用哪些 Gateway Controllers。&lt;/p>
+&lt;p>&lt;strong>集群操作员 (Cluster Operators)：&lt;/strong> 创建和管理 Gateway 对象。这包括面向公众的配置、监听器和基本的安全设置。&lt;/p>
+&lt;p>&lt;strong>应用程序开发人员 (Application Developers)：&lt;/strong> 为其应用程序定义 Route 对象，例如 HTTPRoute。这些规则包括基于主机/路径/请求头的路由、流量拆分 (traffic splitting) 和重写 (rewrites)。&lt;/p>
+&lt;h2 id="实践示例">实践示例
+&lt;/h2>&lt;p>假设我们有以下 Ingress 资源，它通过 k8senol.com 根据路径将流量路由到两个服务（message-service 和 swap-service）：&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;span class="lnt">14
+&lt;/span>&lt;span class="lnt">15
+&lt;/span>&lt;span class="lnt">16
+&lt;/span>&lt;span class="lnt">17
+&lt;/span>&lt;span class="lnt">18
+&lt;/span>&lt;span class="lnt">19
+&lt;/span>&lt;span class="lnt">20
+&lt;/span>&lt;span class="lnt">21
+&lt;/span>&lt;span class="lnt">22
+&lt;/span>&lt;span class="lnt">23
+&lt;/span>&lt;span class="lnt">24
+&lt;/span>&lt;span class="lnt">25
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-yaml" data-lang="yaml">&lt;span class="line">&lt;span class="cl">&lt;span class="nt">apiVersion&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">networking.k8s.io/v1&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="nt">kind&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">Ingress&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="nt">metadata&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">name&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">oldfriend-ingress&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">annotations&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">nginx.ingress.kubernetes.io/rewrite-target&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">/&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="nt">spec&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">rules&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>- &lt;span class="nt">host&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">k8senol.com&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">http&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">paths&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>- &lt;span class="nt">path&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">/message&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">pathType&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">Prefix&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">backend&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">service&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">name&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">message-service&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">port&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">number&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="m">80&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>- &lt;span class="nt">path&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">/swap&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">pathType&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">Prefix&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">backend&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">service&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">name&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">swap-service&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">port&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">number&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="m">80&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>现在，让我们使用 Gateway API 通过三个步骤（GatewayClass、Gateway 和 HTTPRoute）来实现相同的场景。&lt;/p>
+&lt;p>&lt;strong>第一步：&lt;/strong> 定义 GatewayClass 首先，我们需要创建一个 GatewayClass 来指定将使用的 Gateway Controller。&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;span class="lnt">4
+&lt;/span>&lt;span class="lnt">5
+&lt;/span>&lt;span class="lnt">6
+&lt;/span>&lt;span class="lnt">7
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-yaml" data-lang="yaml">&lt;span class="line">&lt;span class="cl">&lt;span class="nt">apiVersion&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">gateway.networking.k8s.io/v1&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="nt">kind&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">GatewayClass&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="nt">metadata&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">name&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">k8senol-gw-class&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="nt">spec&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">controllerName&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">k8senol.com/gateway-controller&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>这个 YAML 定义了一个由 k8senol.com/gateway-controller 控制器管理的网关类 (GatewayClass)。在实际应用中，这个值会是你所使用的网关控制器 (Gateway Controller) 的具体名称（例如，gateway.nginx.org/nginx-gateway-controller）。&lt;/p>
+&lt;p>&lt;strong>第二步 Step 2: 创建网关 (Gateway)&lt;/strong>
+接下来，我们将创建网关 (Gateway) 资源，它将集群暴露给外部流量，并定义要监听的端口和协议。&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;span class="lnt">14
+&lt;/span>&lt;span class="lnt">15
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-yaml" data-lang="yaml">&lt;span class="line">&lt;span class="cl">&lt;span class="nt">apiVersion&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">gateway.networking.k8s.io/v1&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="nt">kind&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">Gateway&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="nt">metadata&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">name&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">k8senol-gateway&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">namespace&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">default&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="nt">spec&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">gatewayClassName&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">k8senol-gw-class&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">listeners&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>- &lt;span class="nt">name&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">http&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">protocol&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">HTTP&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">port&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="m">80&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">hostname&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="s2">&amp;#34;*.k8senol.com&amp;#34;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">allowedRoutes&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">namespaces&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">from&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">Same&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>这个网关 (Gateway) 对象使用 k8senol-gw-class 监听端口 80 上的 HTTP 流量。主机名 “*.k8senol.com” 允许该域下的所有子域名进行路由。allowedRoutes 部分限制路由 (Route) 附件只能在同一命名空间（默认）中。&lt;/p>
+&lt;p>&lt;strong>第三步: 创建 HTTP 路由 (HTTPRoute)&lt;/strong>
+最后，我们使用 HTTP 路由 (HTTPRoute) 对象来定义路由规则。&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;span class="lnt">14
+&lt;/span>&lt;span class="lnt">15
+&lt;/span>&lt;span class="lnt">16
+&lt;/span>&lt;span class="lnt">17
+&lt;/span>&lt;span class="lnt">18
+&lt;/span>&lt;span class="lnt">19
+&lt;/span>&lt;span class="lnt">20
+&lt;/span>&lt;span class="lnt">21
+&lt;/span>&lt;span class="lnt">22
+&lt;/span>&lt;span class="lnt">23
+&lt;/span>&lt;span class="lnt">24
+&lt;/span>&lt;span class="lnt">25
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-yaml" data-lang="yaml">&lt;span class="line">&lt;span class="cl">&lt;span class="nt">apiVersion&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">gateway.networking.k8s.io/v1&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="nt">kind&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">HTTPRoute&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="nt">metadata&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">name&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">k8senol-routes&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">namespace&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">default&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="nt">spec&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">parentRefs&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>- &lt;span class="nt">name&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">k8senol-gateway&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">hostnames&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>- &lt;span class="s2">&amp;#34;k8senol.com&amp;#34;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">rules&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>- &lt;span class="nt">matches&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>- &lt;span class="nt">path&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">type&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">PathPrefix&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">value&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">/message&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">backendRefs&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>- &lt;span class="nt">name&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">message-service&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">port&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="m">80&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>- &lt;span class="nt">matches&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>- &lt;span class="nt">path&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">type&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">PathPrefix&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">value&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">/swap&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">backendRefs&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>- &lt;span class="nt">name&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">swap-service&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">port&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="m">80&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>这个 HTTP 路由 (HTTPRoute) 对象附加到 k8senol-gateway。hostnames 字段将这些规则应用于 k8senol.com。rules 部分复制了 Ingress (Ingress) 的路由逻辑：/message 路由到 message-service，/swap 路由到 swap-service。&lt;/p>
+&lt;p>如你所见，单个 Ingress YAML 现在在 Gateway API 中被拆分为三个不同的资源。虽然这最初看起来更复杂，但每个资源都有明确的职责。从长远来看，这会带来更清晰、更易管理且更安全的流量管理架构。&lt;/p>
+&lt;p>Kubernetes Ingress 毫无疑问是 Kubernetes 生态系统的基石，在将服务暴露给外部世界方面发挥了关键作用。凭借其简单易懂的结构，它在早期阶段为我们提供了良好的服务。但随着技术发展和需求变得日益复杂，对灵活强大解决方案的需求也随之增长。&lt;/p>
+&lt;p>Gateway API 应运而生，以应对 Ingress (Ingress) 的局限性，并将 Kubernetes 流量管理提升到一个全新的水平。凭借角色分离、可扩展性、多协议支持和高级流量控制能力，它能更有效地满足现代云原生应用的需求。&lt;/p>
+&lt;p>这不仅仅是技术上的变革。它也反映了我们对 Kubernetes 中网络认知的转变。从今天开始探索 Gateway API 是朝着构建更强大、更灵活、更易管理的基础设施迈出的有意义的一步。&lt;/p>
+&lt;p>请记住，持续学习和适应是 DevOps (DevOps) 世界成功的关键。这次转型不仅会提升你的技术技能，还会提高你理解和管理复杂系统的能力。&lt;/p></description></item><item><title>用这些鲜为人知（且大多数开发者都忽略）的技巧，让你的 Python 代码提速 10 倍</title><link>https://martinliu.cn/blog/i-made-my-python-code-10x-faster-using-these/</link><pubDate>Wed, 27 Aug 2025 16:00:00 +0800</pubDate><guid>https://martinliu.cn/blog/i-made-my-python-code-10x-faster-using-these/</guid><description>&lt;img src="https://martinliu.cn/blog/i-made-my-python-code-10x-faster-using-these/1_JtvDNgonwDl8sRlYYW69kA.webp" alt="Featured image of post 用这些鲜为人知（且大多数开发者都忽略）的技巧，让你的 Python 代码提速 10 倍" />&lt;p>如果你是一名在云计算基础架构 (cloud infrastructure)、SRE (Site Reliability Engineering) 和应用数据科学领域工作的从业者，你一定很欣赏 Python 提供的清晰性和简洁性。无论你是在原型化机器学习模型、编排后端工作流，还是在生产级系统 (production-grade system) 中构建自动化管道，Python 始终是你工具库中的首选。但说实话—— &lt;strong>Python 有时会很慢&lt;/strong>。慢得令人痛苦。&lt;/p>
 &lt;p>&lt;img src="https://martinliu.cn/blog/i-made-my-python-code-10x-faster-using-these/0_VXY46SwRfsnWJKIC.webp"
 width="640"
 height="360"
