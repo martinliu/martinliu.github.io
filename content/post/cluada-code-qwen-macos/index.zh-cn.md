@@ -1,7 +1,7 @@
 ---
 title: "在 MacOS 上使用 Cluada Code 集成 本地运行的 Qwen 模型"
 date: 2026-02-18T05:35:42+08:00
-description:  用本地的 Ollama 可以很方便的将模型和 Clauda Code 集成起来，但速度很不理想。
+description:  Ollama 可以很方便的将 Qwen 模型和 Clauda Code 集成起来，但速度很不理想，其实不可用。
 slug: claude-code-qwen3-coder-30b
 image: cover-claude-qwen-macos.png
 categories:
