@@ -1,0 +1,72 @@
+<header class="article-header">
+    {{- $image := partialCached "helper/image" (dict "Context" . "Type" "article") .RelPermalink "article" -}}
+    {{ if $image.exists }}
+        <div class="article-image">
+            <a href="{{ .RelPermalink }}">
+                {{ if $image.resource }}
+                    {{- $fallbackResource := $image.resource -}}
+                    {{- $fallbackPermalink := $fallbackResource.RelPermalink -}}
+                    {{- $fallbackWidth := $fallbackResource.Width -}}
+                    {{- $fallbackHeight := $fallbackResource.Height -}}
+                    {{- $fallbackSrcset := "" -}}
+
+                    {{- $webpResource := false -}}
+                    {{- $webpPermalink := "" -}}
+                    {{- $webpSrcset := "" -}}
+
+                    {{- $ext := lower (path.Ext $fallbackResource.Name) -}}
+                    {{- if or (eq $ext ".jpg") (eq $ext ".jpeg") (eq $ext ".png") -}}
+                        {{- $webpName := replaceRE `(?i)\.(jpe?g|png)$` ".webp" $fallbackResource.Name -}}
+                        {{- $candidate := .Page.Resources.GetMatch (printf "%s" ($webpName | safeURL)) -}}
+                        {{- if $candidate -}}
+                            {{- $webpResource = $candidate -}}
+                            {{- $webpPermalink = $webpResource.RelPermalink -}}
+                        {{- end -}}
+                    {{- else if eq $ext ".webp" -}}
+                        {{- $webpResource = $fallbackResource -}}
+                        {{- $webpPermalink = $webpResource.RelPermalink -}}
+                    {{- end -}}
+
+                    {{- if (default true .Page.Site.Params.imageProcessing.cover.enabled) -}}
+                        {{- $fallbackThumb := $fallbackResource.Resize "800x" -}}
+                        {{- $fallbackRetina := $fallbackResource.Resize "1600x" -}}
+                        {{- $fallbackSrcset = printf "%s 800w, %s 1600w" $fallbackThumb.RelPermalink $fallbackRetina.RelPermalink -}}
+                        {{- $fallbackPermalink = $fallbackThumb.RelPermalink -}}
+                        {{- $fallbackWidth = $fallbackThumb.Width -}}
+                        {{- $fallbackHeight = $fallbackThumb.Height -}}
+
+                        {{- if $webpResource -}}
+                            {{- $webpThumb := $webpResource.Resize "800x" -}}
+                            {{- $webpRetina := $webpResource.Resize "1600x" -}}
+                            {{- $webpSrcset = printf "%s 800w, %s 1600w" $webpThumb.RelPermalink $webpRetina.RelPermalink -}}
+                            {{- $webpPermalink = $webpThumb.RelPermalink -}}
+                        {{- end -}}
+                    {{- end -}}
+
+                    {{ if $webpPermalink }}
+                        <picture>
+                            <source srcset="{{ if $webpSrcset }}{{ $webpSrcset }}{{ else }}{{ $webpPermalink }}{{ end }}" type="image/webp" />
+                            <img src="{{ $fallbackPermalink }}"
+                                {{ with $fallbackSrcset }}srcset="{{ . }}"{{ end }}
+                                width="{{ $fallbackWidth }}"
+                                height="{{ $fallbackHeight }}"
+                                loading="lazy"
+                                alt="Featured image of post {{ .Title }}" />
+                        </picture>
+                    {{ else }}
+                        <img src="{{ $fallbackPermalink }}"
+                            {{ with $fallbackSrcset }}srcset="{{ . }}"{{ end }}
+                            width="{{ $fallbackWidth }}"
+                            height="{{ $fallbackHeight }}"
+                            loading="lazy"
+                            alt="Featured image of post {{ .Title }}" />
+                    {{ end }}
+                {{ else }}
+                    <img src="{{ $image.permalink }}" loading="lazy" alt="Featured image of post {{ .Title }}" />
+                {{ end }}
+            </a>
+        </div>
+    {{ end }}
+
+    {{ partialCached "article/components/details" . .RelPermalink }}
+</header>
