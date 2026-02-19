@@ -1,27 +1,21 @@
-# 🔧 调试模式的 GitHub Pages 部署工作流
-# 
-# 当前配置：
-# - 所有分支的 push 都会触发完整构建和部署流程
-# - 用于调试和测试部署流程
-# 
-# 调试完成后，请修改 on.push.branches 为 [master] 
-# 以恢复只在 master 分支合并时触发
+# 🔧 GitHub Pages 调试部署工作流
 #
-name: Deploy to Github Pages (Debug Mode)
+# 当前策略：
+# - 任意分支 push 都触发完整构建和部署（便于联调流程）
+# - master 分支上的 pull_request 也会触发
+#
+# 调试结束后，可将 on.push.branches 收敛为 [master]
+# 以恢复仅主分支推送触发部署
+#
+name: Deploy to Github Pages 
 
 on:
     push:
-        # 调试模式：所有分支的 push 都触发构建
+        # 调试模式：匹配所有分支
         branches: ['**']
     pull_request:
         branches: [master]
     workflow_dispatch:
-        inputs:
-            enable_optimization:
-                description: '启用完整优化'
-                required: false
-                default: true
-                type: boolean
 
 env:
     HUGO_VERSION: '0.148.2'
@@ -73,29 +67,6 @@ jobs:
                   hugo-version: ${{ env.HUGO_VERSION }}
                   extended: true
 
-            - name: Cache optimization tools
-              # 调试模式：所有分支都执行优化
-              # if: github.ref == 'refs/heads/master' || github.event.inputs.enable_optimization == 'true'
-              uses: actions/cache@v4
-              id: tools-cache
-              with:
-                  path: |
-                      /usr/bin/cwebp
-                      /usr/bin/optipng
-                      /usr/bin/jpegoptim
-                      /usr/bin/brotli
-                  key: optimization-tools-${{ runner.os }}-v2
-
-            - name: Install optimization tools
-              # 调试模式：所有分支都执行优化
-              # if: (github.ref == 'refs/heads/master' || github.event.inputs.enable_optimization == 'true') && steps.tools-cache.outputs.cache-hit != 'true'
-              if: steps.tools-cache.outputs.cache-hit != 'true'
-              run: |
-                  echo "🔧 安装优化工具..."
-                  sudo apt-get update -qq
-                  sudo apt-get install -y webp optipng jpegoptim brotli
-                  echo "✅ 优化工具安装完成"
-
             - name: Build
               env:
                   HUGO_ENV: production
@@ -105,136 +76,14 @@ jobs:
                   mkdir -p /tmp/hugo_cache
                   hugo --minify --gc --enableGitInfo --cleanDestinationDir --logLevel info
 
-            - name: Cache optimization results  
-              # 调试模式：所有分支都执行优化
-              # if: github.ref == 'refs/heads/master' || github.event.inputs.enable_optimization == 'true'
-              uses: actions/cache@v4
-              with:
-                  path: |
-                      public/**/*.webp
-                      public/**/*.optimized
-                      public/**/*.gz
-                      public/**/*.br
-                  key: optimization-${{ hashFiles('public/**/*.jpg', 'public/**/*.jpeg', 'public/**/*.png', 'public/**/*.html', 'public/**/*.css', 'public/**/*.js') }}-v3
-                  restore-keys: |
-                      optimization-
-
-            # Note: Image optimization moved to local script scripts/optimize-images-simple.sh
-            # The time-consuming "Generate compressed files" step has been removed
-            # Run local optimization before committing: ./scripts/run-optimization.sh
-
-            - name: Build statistics
-              # 调试模式：所有分支都执行优化
-              # if: github.ref == 'refs/heads/master' || github.event.inputs.enable_optimization == 'true'
-              run: |
-                  echo "📊 构建统计..."
-                  file_count=$(find public -type f | wc -l)
-                  echo "总文件数: $file_count"
-                  
-                  # 优化：只在文件数量较少时计算详细统计
-                  if [ $file_count -lt 5000 ]; then
-                      echo "计算详细统计..."
-                      total_size=$(du -sh public | cut -f1)
-                      echo "总大小: $total_size"
-                      
-                      # 统计优化效果
-                      gzip_files=$(find public -name "*.gz" | wc -l)
-                      brotli_files=$(find public -name "*.br" | wc -l)
-                      webp_files=$(find public -name "*.webp" | wc -l)
-                      optimized_images=$(find public -name "*.optimized" | wc -l)
-                      
-                      echo "📈 优化统计:"
-                      echo "  Gzip 文件: $gzip_files"
-                      echo "  Brotli 文件: $brotli_files" 
-                      echo "  WebP 图片: $webp_files"
-                      echo "  优化图片: $optimized_images"
-                      
-                      # 计算压缩比（如果有原始文件大小记录）
-                      if [ -f "build-stats.txt" ]; then
-                          echo "📊 与上次构建对比:"
-                          cat build-stats.txt
-                      fi
-                      
-                      # 保存本次统计
-                      echo "files:$file_count,gzip:$gzip_files,brotli:$brotli_files,webp:$webp_files" > build-stats.txt
-                  else
-                      echo "📊 快速统计 (文件数量: $file_count)"
-                      
-                      # 快速统计关键指标
-                      webp_count=$(find public -name "*.webp" | wc -l)
-                      gz_count=$(find public -name "*.gz" | head -100 | wc -l)
-                      
-                      echo "  WebP 文件: $webp_count"
-                      echo "  压缩文件 (采样): ${gz_count}+..."
-                      echo "⚡ 跳过详细统计以节省时间"
-                  fi
-
-            - name: Performance Summary
-              run: |
-                  echo "⚡ 构建性能总结:"
-                  echo "🕐 构建时间: 约 ${{ github.event.head_commit.timestamp }} 开始"
-                  echo "📦 输出文件: $(find public -type f | wc -l) 个文件"
-                  echo "🖼️ 图片处理: $(find public -name "*.webp" | wc -l) WebP + $(find public -name "*.optimized" | wc -l) 优化"
-                  echo "🗜️ 文件压缩: Gzip + Brotli 双重压缩"
-                  echo "💾 缓存利用: 增量处理，避免重复工作"
-                  echo ""
-                  echo "🚀 部署建议: 当前性能表现优秀，建议保持此配置"
-
-            - name: Create Performance Files
-              run: |
-                  echo "🚀 创建性能优化文件..."
-                  
-                  # 创建 _headers 文件用于 Netlify/GitHub Pages 缓存
-                  cat > public/_headers << 'EOF'
-                  /*
-                    X-Frame-Options: DENY
-                    X-Content-Type-Options: nosniff
-                    Referrer-Policy: strict-origin-when-cross-origin
-                  
-                  /*.css
-                    Cache-Control: public, max-age=31536000, immutable
-                  
-                  /*.js
-                    Cache-Control: public, max-age=31536000, immutable
-                  
-                  /*.woff2
-                    Cache-Control: public, max-age=31536000, immutable
-                  
-                  /*.webp
-                    Cache-Control: public, max-age=31536000
-                  
-                  /*.jpg
-                    Cache-Control: public, max-age=31536000
-                  
-                  /*.png
-                    Cache-Control: public, max-age=31536000
-                  
-                  /*.html
-                    Cache-Control: public, max-age=0, must-revalidate
-                  EOF
-                  
-                  # 创建 robots.txt（如果不存在）
-                  if [ ! -f "public/robots.txt" ]; then
-                      cat > public/robots.txt << 'EOF'
-                  User-agent: *
-                  Allow: /
-                  
-                  Sitemap: https://martinliu.cn/sitemap.xml
-                  EOF
-                      echo "✅ 创建 robots.txt"
-                  fi
-                  
-                  # 添加性能监控脚本（可选）
-                  echo "📊 性能文件创建完成"
-
             - name: Deploy 🚀
               uses: JamesIves/github-pages-deploy-action@v4.6.8
               with:
                   branch: gh-pages
                   folder: public
-                  clean: false  # 禁用清理以加快部署
-                  single-commit: false  # 保留 git 历史以支持增量部署
-                  force: false  # 禁用强制推送
+                  clean: false  # 保留 gh-pages 历史文件，减少全量删除/重建
+                  single-commit: false  # 保留 gh-pages 提交历史，便于回溯
+                  force: false  # 使用非强推，避免覆盖远端并发更新
                   git-config-name: 'github-actions[bot]'
                   git-config-email: 'github-actions[bot]@users.noreply.github.com'
                   commit-message: |

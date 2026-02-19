@@ -24,7 +24,7 @@ echo -e "${YELLOW}项目目录: ${PROJECT_DIR}${NC}"
 check_tools() {
     local missing_tools=()
     
-    for tool in webp optipng jpegoptim magick; do
+    for tool in cwebp optipng jpegoptim; do
         if ! command -v $tool &> /dev/null; then
             missing_tools+=($tool)
         fi
@@ -32,15 +32,8 @@ check_tools() {
     
     if [ ${#missing_tools[@]} -ne 0 ]; then
         echo -e "${YELLOW}⚠️  缺少以下工具: ${missing_tools[*]}${NC}"
-        echo -e "${BLUE}正在安装缺少的工具...${NC}"
-        
-        # 运行安装脚本
-        if [ -f "${SCRIPT_DIR}/install-deps.sh" ]; then
-            "${SCRIPT_DIR}/install-deps.sh"
-        else
-            echo -e "${YELLOW}请手动安装: brew install webp optipng jpegoptim imagemagick${NC}"
-            exit 1
-        fi
+        echo -e "${YELLOW}请手动安装: brew install webp optipng jpegoptim${NC}"
+        exit 1
     fi
 }
 
@@ -56,7 +49,7 @@ directories=("static/images" "assets/img" "content")
 for dir in "${directories[@]}"; do
     if [[ -d "${PROJECT_DIR}/${dir}" ]]; then
         echo -e "${BLUE}📁 优化目录: ${dir}${NC}"
-        "${SCRIPT_DIR}/optimize-images-simple.sh" "${PROJECT_DIR}/${dir}"
+        SHOW_SKIPPED=0 "${SCRIPT_DIR}/optimize-images-simple.sh" "${PROJECT_DIR}/${dir}"
     else
         echo -e "${YELLOW}⏭️  跳过不存在的目录: ${dir}${NC}"
     fi
