@@ -267,6 +267,8 @@ qwen3-coder:latest    06c1097efce0    25 GB    100% GPU     64000      2 minutes
 
 在网上看到一篇文章介绍了这个组合：LM Studio 运行 Qwen 模型，使用 LiteLLM Proxy 来提供 API 接口给 Claude Code 来调用。这个组合的安装和配置过程也很顺利。
 
+参考文章：[Run Claude Code Locally on Apple Silicon Using LM Studio and LiteLLM (Zero Cost)](https://medium.com/data-science-collective/run-claude-code-locally-on-apple-silicon-using-lm-studio-and-litellm-zero-cost-1416a6b984af)
+
 ![LM Studio 运行 Qwen 模型](2026-02-19_14-57-32.png)
 
 LiteLLM 使用下面的配置文件来启动：
