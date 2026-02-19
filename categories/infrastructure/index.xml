@@ -16,7 +16,8 @@
 >&lt;img src="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2015/12/my-pi.jpg"
 loading="lazy"
 alt="my-pi"
->&lt;/a>&lt;/p>
+>
+&lt;/a>&lt;/p>
 &lt;p>它链接外部世界的方式就是通过板子上面的三个接口，下侧比较明显的排针，中上侧白色竖着的，和中右侧的两个白色排线插头。这些主要是链接传感器用的。另外还包括板载的 4 个 USB 口，USB 口也可以接外设和 Wifi 模块。当然还有网线插口。&lt;/p>
 &lt;p>这是 Raspberry 的 2 代 B 型版，它的特点是计算处理能力是比较强劲的。感觉做控制中心比较合适，如智能家庭的总控制中心。它还可以和 Arduino 组合起来，Arduino 的处理能力较低，可以通过它作为外部传感器的 hub，单纯的做信息收集，和动作指令的执行（发出继电器开关的开合信号等）。就某种单一具体的 IoT 功能的实现，Raspberry 和 Arduino 没有太大的差异。但是在构建复杂系统的时候，把两者结合起来的设计还是多见的。接下来，我可能会去把 Amazon 上的那个 Arduino 开发套装买回来，这样就配齐了，当然 Raspberry A 型板也可以入。&lt;/p>
 &lt;p>如果你把所有的东西都连接到互联网了，那么安全性怎么保证？今天在http://www.wired.com 网站上看到的头条就是《How &lt;a class="link" href="http://www.wired.com/2015/12/2015-the-year-the-internet-of-things-got-hacked/" target="_blank" rel="noopener"
@@ -26,7 +27,8 @@ alt="my-pi"
 &lt;p>[caption id=&amp;ldquo;attachment_53901&amp;rdquo; align=&amp;ldquo;alignnone&amp;rdquo; width=&amp;ldquo;512&amp;rdquo;]&lt;img src="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2015/07/ovirt-512px-Architecture.png"
 loading="lazy"
 alt="ovirt 架构图"
-> ovirt 架构图[/caption]&lt;/p>
+>
+ovirt 架构图[/caption]&lt;/p>
 &lt;h2 id="kvm-嵌套虚拟化准备">KVM 嵌套虚拟化准备
 &lt;/h2>&lt;p>在测试 KVM 服务器虚拟化的过程中，如果您能有独立的物理机跑 Hypervisor，那么您可以忽略本节。至今进入 ovirt 的安装。  下面的测试的物理机是 Lenovo T440s 笔记本，运行的 Fedora 22 操作系统，使用 KVM manager 做虚拟机的管理工具。本次测试用到两个虚拟机：&lt;/p>
 &lt;ol>
@@ -351,21 +353,24 @@ o- loopback &amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hel
 >&lt;img src="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2015/03/rhevm-web-admin-520x293.jpg"
 loading="lazy"
 alt="rhevm-web-admin"
->&lt;/a>&lt;/p>
+>
+&lt;/a>&lt;/p>
 &lt;p>下面需要安装跑虚拟机的 Hypervisor 了，RHEV 的 Hypervisor 有两种，一种是精简话的裁剪 rhel 版本叫做 RHEVH（偏向 vshpere 的做法），还有一种就是 rhel 的标准版，然后安装 Hypervisor 相关的包（偏向 OpenStack 的做法）。下面我会安装第二种做法。目的是：我有两台相同配置的计算节点，我希望把动态的变更他们的功能；一会做 RHEV 虚拟机的演示，一会做 OpenStack nova 的演示。&lt;/p>
 &lt;p>用了一个组合视图安装了这两个服务器虚拟化节点。组合视图里如下所示：
 &lt;a class="link" href="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2015/03/rhev-view-compose.jpg" target="_blank" rel="noopener"
 >&lt;img src="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2015/03/rhev-view-compose-520x286.jpg"
 loading="lazy"
 alt="rhev-view-compose"
->&lt;/a>
+>
+&lt;/a>
 如上图所示：1）视图 1 是基础的 RHEL 操作系统 repo；2）视图 2 是 RHEV 相关的 repos 视图，其中包括了安装 RHEVM 和 host 的所有需要的 repo。考激活秘钥控制每个 repo 的默认是否开启，它们对安装后的 os 可见，但是默认并不是开启的，因此，我设置 rhevm 和 jboss 为默认关闭的，由于安装 rhev host 的情况比较多，需要安装 rhevm 的话，可以手动 enable 这需要的 repos 即可。&lt;/p>
 &lt;p>安装和配置完存储之后的 RHEVM 控制台：
 &lt;a class="link" href="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2015/03/rhevm-hosts.jpg" target="_blank" rel="noopener"
 >&lt;img src="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2015/03/rhevm-hosts-520x286.jpg"
 loading="lazy"
 alt="rhevm-hosts"
->&lt;/a>&lt;/p>
+>
+&lt;/a>&lt;/p>
 &lt;p>目前由于没有安装 OpenStack 环境，所以没有 Glance 服务，因此 iso 镜像只能暂时放在了 dis06 的一个服务器虚拟化 Hypervisor 节点上，目前是临时的方案，回头一定把 iso 放到 Glance 服务上 host。&lt;/p>
 &lt;p>下面上传一个 iso 之后就可以创建虚拟机了。
 [bash]
@@ -379,19 +384,22 @@ ERROR: mount.nfs: Connection timed out&lt;/p>
 >&lt;img src="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2015/03/sat6-built-vm-via-rhev-1-520x286.jpg"
 loading="lazy"
 alt="sat6-built-vm-via-rhev-1"
->&lt;/a>&lt;/p>
+>
+&lt;/a>&lt;/p>
 &lt;p>手动创建 RHEV 虚拟机 1：通过 New Host 设置相关参数。选择 Deploy on 为 rhevm03（rhevm），这个配置让 sat6 去联系 RHEVM，rhevm 的配置信息必须提前输入到 sat6 中。然后还要在 sat6 中设置虚拟机的三种规格，就是 Computer profile 中的选项，这个选项确定了 cpu，ram，磁盘和网络等信息。剩下的就是最重要的 Lifecycle Evn 和 Puppet Env 了，这两个选项确定把系统安装为标准的 rhel6 的核心最小化安装。当然可以一次性完成某种应用的全套安装和配置。&lt;/p>
 &lt;p>&lt;a class="link" href="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2015/03/sat6-built-vm-via-rhev-2.jpg" target="_blank" rel="noopener"
 >&lt;img src="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2015/03/sat6-built-vm-via-rhev-2-520x286.jpg"
 loading="lazy"
 alt="sat6-built-vm-via-rhev-2"
->&lt;/a>&lt;/p>
+>
+&lt;/a>&lt;/p>
 &lt;p>手动创建 RHEV 虚拟机 2：通过 Virtual Machine 参数可以看到 1，2，3 都来自标准的规格配置，如果需要手动修改的话，可以在这里修改，这里可以看到默认的存储是 w540-iscsi-lun0 这个之前在 RHEVM 里面配置好的 iscsi 存储。&lt;/p>
 &lt;p>&lt;a class="link" href="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2015/03/sat6-built-vm-via-rhev-3.jpg" target="_blank" rel="noopener"
 >&lt;img src="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2015/03/sat6-built-vm-via-rhev-3-520x286.jpg"
 loading="lazy"
 alt="sat6-built-vm-via-rhev-3"
->&lt;/a>&lt;/p>
+>
+&lt;/a>&lt;/p>
 &lt;p>手动创建 RHEV 虚拟机 3：点击提交之后，sat6 就开始了实时创建 rhev 虚拟机的过程，sat6 使用 REST API 告诉 RHEVM 这些信息，然后 RHEVM 再确定使用哪个 Hypervisor 来建立并运行虚拟机。&lt;/p>
 &lt;p>问题来了：如果需要在 RHEV 资源池里建立 n 个相同配置的虚拟机，管理员该如何操作？&lt;/p>
 &lt;p>在 sat6 里面，管理员重复以上操作，当然需要手动操作 n 次。这样是不是很麻烦，确实很麻烦！！如何解决？这就需要一种能够实现 Orchestration 功能的工具来做，也就是自动化编排工具。这种工具最好是统一的能够跨异构资源池的，能够满足如下需求：今天企业可能是纯的 vshpere 的虚拟化环境，接下来企业有可能引入其他服务器虚拟化资源池技术，如：RHEV，Hyper-V；在以后还可能引入 OpenStack 资源池。那么这种自动化编排工具和底层的类似 satellite6 的（标准化部署工具）必须形成一个统一的平台来操作所有异构的资源池。也就是说：在 Orchestration 工具中统一管理异构资源池，并配合标准化部署工具，实现 workload 的标准化自动化部署。红帽的 Orchestration 工具是 CloudForms。它能够对接业内所有流行的资源池，如下图所示：&lt;/p>
@@ -399,23 +407,27 @@ alt="sat6-built-vm-via-rhev-3"
 >&lt;img src="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2015/03/cfme-cloud-provides-520x292.jpg"
 loading="lazy"
 alt="cfme-cloud-provides"
->&lt;/a> &lt;a class="link" href="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2015/03/cfme-infra-provides.jpg" target="_blank" rel="noopener"
+>
+&lt;/a> &lt;a class="link" href="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2015/03/cfme-infra-provides.jpg" target="_blank" rel="noopener"
 >&lt;img src="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2015/03/cfme-infra-provides-520x293.jpg"
 loading="lazy"
 alt="cfme-infra-provides"
->&lt;/a>&lt;/p>
+>
+&lt;/a>&lt;/p>
 &lt;p>上图是 Satellite 的上层 Orchestration 的能力，底层必须还有标准化的部署工具支持，也就是 Satellite6，它对以上基础架构类型的支持情况，如下图所示：&lt;/p>
 &lt;p>&lt;a class="link" href="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2015/03/satellite6-provider.jpg" target="_blank" rel="noopener"
 >&lt;img src="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2015/03/satellite6-provider-520x286.jpg"
 loading="lazy"
 alt="satellite6-provider"
->&lt;/a>&lt;/p>
+>
+&lt;/a>&lt;/p>
 &lt;p>使用 CloudForms 做上层 Orchestration 的调度，必须依赖于底层的 workload 的标准化，标准化到什么程度，从虚拟机供给的角度可以参考 Amazon AWS 的 EC2 的实际案例。如下图所示：&lt;/p>
 &lt;p>&lt;a class="link" href="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2015/03/ec2-types.jpg" target="_blank" rel="noopener"
 >&lt;img src="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2015/03/ec2-types-520x258.jpg"
 loading="lazy"
 alt="ec2-types"
->&lt;/a>&lt;/p>
+>
+&lt;/a>&lt;/p>
 &lt;p>AWS 服务的我曾研究过一点，上图的全图下载点这里 &amp;ndash;&amp;gt; &lt;a class="link" href="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2015/03/aws-%e6%9c%8d%e5%8a%a1-%e8%84%91%e5%9b%be.pdf" target="_blank" rel="noopener"
 >aws-服务-脑图&lt;/a>&lt;/p>
 &lt;p>以上所有是 Martin&amp;rsquo;s Lab 的搭建的一部分，下周可能去一个银行客户演示。需要做的优化还很多，请关注后续更新。&lt;/p></description></item><item><title>虚拟桌面 之我见</title><link>https://martinliu.cn/2014/11/23/e8999ae68b9fe6a18ce99da2-e4b98be68891e8a781/</link><pubDate>Sun, 23 Nov 2014 10:16:23 +0000</pubDate><guid>https://martinliu.cn/2014/11/23/e8999ae68b9fe6a18ce99da2-e4b98be68891e8a781/</guid><description>&lt;h1 id="虚拟桌面-的业务价值">虚拟桌面 的业务价值
@@ -438,7 +450,8 @@ alt="ec2-types"
 >&lt;img src="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2014/11/xen-520x229.png"
 loading="lazy"
 alt="xen"
->&lt;/a>
+>
+&lt;/a>
 通过上图可以对虚拟桌面的技术架构一目了然。虚拟桌面基础架构就是在数据中心里面部署的一堆 Windows 虚拟机，核心就在于让远程用户可以操作使用这些虚拟机里面的应用或者这些虚拟机桌面。鉴于此，核心技术主要有两个方面：Windows 操作系统虚拟机的集中发布更新和管理；远程访问协议和所有终端管控策略。&lt;/p>
 &lt;h2 id="windows-虚拟机的发布和更新">Windows 虚拟机的发布和更新
 &lt;/h2>&lt;p>Windows 的虚拟机有两种：Server 和 Desktop；虚拟应用技术主要是利用 Windows Server 操作系统天然的多用户性质，实现一份安装程序的多用户同时使用。虚拟桌面是复制 n 个预装应用的 Desktop 桌面操作系统来实现 n 个用户的使用。&lt;/p>
@@ -518,7 +531,8 @@ Reviewer’s Guide for Remote 3D Graphics Apps [/su_button]&lt;/p>
 >&lt;img src="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2013/08/grid-overview-header.jpg"
 loading="lazy"
 alt="grid-overview-header"
->&lt;/a>&lt;/p>
+>
+&lt;/a>&lt;/p>
 &lt;p>到货实物如下：&lt;/p>
 &lt;p>[gallery link=&amp;ldquo;file&amp;rdquo; ids=&amp;ldquo;52542,52543,52544,52545,52546,52547&amp;rdquo;]&lt;/p>
 &lt;p>此卡的简单技术指标如下。&lt;/p>
@@ -570,7 +584,8 @@ alt="grid-overview-header"
 >&lt;img src="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2013/08/NVIDIA_vGPU_News.jpg"
 loading="lazy"
 alt="NVIDIA_vGPU_News"
->&lt;/a>&lt;/p>
+>
+&lt;/a>&lt;/p>
 &lt;p>详细 K1 K2 技术参数指标，&lt;a class="link" href="http://www.nvidia.com/content/cloud-computing/pdf/nvidia-grid-datasheet-k1-k2.pdf" target="_blank" rel="noopener"
 > 下载 ； &lt;/a> 这个表格清晰的说明了这两种卡的硬件技术参数。重要的是看它软件合作伙伴这一块。硬件在好，没有支持的软件也不行，我们必须还有看看它的软件合作伙伴：&lt;a class="link" href="http://www.nvidia.com/object/grid-software-partners.html" target="_blank" rel="noopener"
 >http://www.nvidia.com/object/grid-software-partners.html&lt;/a>&lt;/p>
@@ -610,7 +625,8 @@ alt="NVIDIA_vGPU_News"
 >&lt;img src="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2013/08/6-xenclient-usercase.jpg"
 loading="lazy"
 alt="6-xenclient-usercase"
->&lt;/a>&lt;/p>
+>
+&lt;/a>&lt;/p>
 &lt;ul>
 &lt;li>安全加固移动性笔记本电脑&lt;/li>
 &lt;li>桌面级操作系统更新管理&lt;/li>
@@ -834,14 +850,16 @@ Displays this usage information.&lt;/p>
 &lt;p>The datacenter also hosts firms located in other regions, illustrating Toshiba’s broader ambitions. &lt;a class="link" href="http://www.intelligenthq.com/wp-content/uploads/2012/10/Cloud-Computing.jpeg" target="_blank" rel="noopener"
 >&lt;img src="http://www.intelligenthq.com/wp-content/uploads/2012/10/Cloud-Computing-180x110.jpg"
 loading="lazy"
->&lt;/a>&lt;/p>
+>
+&lt;/a>&lt;/p>
 &lt;p>“&lt;em>Developing this first datacenter in Rhône-Alpes highlights the importance of the Grand Lyon project for Toshiba and embodies the group’s investment in the development of its Cloud offering&lt;/em>,&lt;em>”&lt;/em>  explains Philippe Hartmanshenn, Managing Director of Toshiba Systèmes France’s Cloud &amp;amp; Solutions Division.&lt;/p>
 &lt;p>“&lt;em>This allows us to move both internal and external client resources and services offsite to our high-security servers – located in France. We also plan to use the datacenter to develop and integrate business solutions for our clients from every sector.”&lt;/em>&lt;/p>
 &lt;p>__I felt the need to highlight this as it shows the importance of the cloud, as an important tool to innovation regardless of industry.&lt;/p>
 &lt;p>&lt;a class="link" href="http://www.intelligenthq.com/wp-content/uploads/2013/03/BeFunky_CloudComputingImage.jpg.jpg" target="_blank" rel="noopener"
 >&lt;img src="http://www.intelligenthq.com/wp-content/uploads/2013/03/BeFunky_CloudComputingImage.jpg.jpg"
 loading="lazy"
->&lt;/a>&lt;/p>
+>
+&lt;/a>&lt;/p>
 &lt;p>So who are the Top 10 players of cloud computing services that has been making waves recently?&lt;/p>
 &lt;p>&lt;strong>1. Google&lt;/strong>&lt;/p>
 &lt;p>Google Cloud is the approach of Google to provide enterprise solutions to companies. Google Cloud Platform allows you to build applications and websites, store and analyze data on Google’s infrastructure. Companies can build websites, applications and service on this platform. Apart from these Google also offers Google Apps for businesses, which is now growing. Google has recently unveiled a “patent pledge” that it hopes will shield cloud software and big data developers from  litigation. The pledge, which is like a non-aggression pact, covers ten patents related to Google’s MapReduce technology.&lt;/p>
@@ -957,13 +975,15 @@ CenturyLink, 3rd largest telecommunication company in USA and an established lea
 >&lt;img src="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2013/04/collab_projects.png"
 loading="lazy"
 alt="collab_projects"
->&lt;/a>&lt;/p>
+>
+&lt;/a>&lt;/p>
 &lt;p>首先我们来回顾一下历史：
 &lt;a class="link" href="http://xenproject.org/about/history.html" target="_blank" rel="noopener"
 >&lt;img src="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2013/04/Xen-history.png"
 loading="lazy"
 alt="Xen-history"
->&lt;/a>&lt;/p>
+>
+&lt;/a>&lt;/p>
 &lt;p>上周 Citrix 把经营和支持多年的开源项目 Xen Project 加入到了 inux Foundation，可以说是 Xen Project 的一个新家。可能您还不太了解“Linux Foundation”；访问 &lt;a class="link" href="http://www.linuxfoundation.org/about/faq" target="_blank" rel="noopener"
 >FAQ&lt;/a> 可获得它的一些基本知识。到目前为止 Linux Foundation 总共支持了 8 个开源软件项目。&lt;/p>
 &lt;!-- raw HTML omitted -->
@@ -1126,7 +1146,8 @@ Xen Project 的新家：&lt;a class="link" href="http://xenproject.org/" target=
 >XenDesktop Planning Guide: User Bandwidth Requirements&lt;/a>&lt;/p></description></item><item><title>XenDesktop中如何重定向USB设备</title><link>https://martinliu.cn/2013/04/15/xendesktope4b8ade5a682e4bd95e9878de5ae9ae59091usbe8aebee5a487/</link><pubDate>Mon, 15 Apr 2013 06:44:52 +0000</pubDate><guid>https://martinliu.cn/2013/04/15/xendesktope4b8ade5a682e4bd95e9878de5ae9ae59091usbe8aebee5a487/</guid><description>&lt;p>&lt;img src="webkit-fake-url://C94F41EF-2B27-43A6-8999-EBAB0037856E/hdx-monitor-banner.png"
 loading="lazy"
 alt="hdx-monitor-banner.png"
->&lt;/p>
+>
+&lt;/p>
 &lt;p>原文出处：&lt;a class="link" href="http://support.citrix.com/article/CTX136751" target="_blank" rel="noopener"
 >http://support.citrix.com/article/CTX136751&lt;/a>  这篇文章你还不会，你就 out 了！&lt;/p>
 &lt;p>&lt;strong>概要&lt;/strong>&lt;/p>
@@ -1144,36 +1165,43 @@ alt="hdx-monitor-banner.png"
 &lt;p>&lt;img src="http://support.citrix.com/article/html/images/CTX136751-1.gif"
 loading="lazy"
 alt="ipboard01"
->&lt;/p>
+>
+&lt;/p>
 &lt;ul>
 &lt;li>右击设备选择&lt;strong>属性&lt;/strong>。注意在 Details 面板上，显示如下图的 Hardware ID 和 Class ID。&lt;/li>
 &lt;/ul>
 &lt;p>&lt;img src="http://support.citrix.com/article/html/images/CTX136751-2.gif"
 loading="lazy"
->&lt;/p>
+>
+&lt;/p>
 &lt;p>&lt;img src="http://support.citrix.com/article/html/images/CTX136751-3.gif"
 loading="lazy"
->&lt;/p>
+>
+&lt;/p>
 &lt;ul>
 &lt;li>在&lt;strong>Citrix Desktop Studio&lt;/strong> &amp;gt; &lt;strong>HDX 策略&lt;/strong> &amp;gt; &lt;strong>用户&lt;/strong>中，点击&lt;strong>新建&lt;/strong>USB 设备重定向策略。&lt;/li>
 &lt;/ul>
 &lt;p>&lt;img src="http://support.citrix.com/article/html/images/CTX136751-4.gif"
 loading="lazy"
->&lt;/p>
+>
+&lt;/p>
 &lt;ul>
 &lt;li>点击下一步，&lt;strong>类别&lt;/strong>中选择&lt;strong>USB 设备&lt;/strong> &amp;gt; &lt;strong>客户端 USB 设备重定向，&lt;strong>点击&lt;/strong>添加&lt;/strong>，选择&lt;strong>允许&lt;/strong>后&lt;strong>确定&lt;/strong>。&lt;/li>
 &lt;/ul>
 &lt;p>&lt;img src="http://support.citrix.com/article/html/images/CTX136751-5.gif"
 loading="lazy"
->&lt;/p>
+>
+&lt;/p>
 &lt;p>然后，类别中选择 USB 设备 &amp;gt; 客户端 USB 设备重定向规则，点击添加&lt;/p>
 &lt;p>&lt;img src="http://support.citrix.com/article/html/images/CTX136751-6.gif"
 loading="lazy"
->&lt;/p>
+>
+&lt;/p>
 &lt;p>点击&lt;strong>新建&lt;/strong>添加允许的 Hardware ID：&lt;/p>
 &lt;p>&lt;img src="http://support.citrix.com/article/html/images/CTX136751-7.gif"
 loading="lazy"
->&lt;/p>
+>
+&lt;/p>
 &lt;p>&lt;strong>确定&lt;/strong>后点击&lt;strong>下一步&lt;/strong>，最后&lt;strong>应用&lt;/strong>此策略。&lt;/p>
 &lt;ul>
 &lt;li>在终端设备，查看注册表 HKLM\Software_WOW6432Node*\Citrix\Ica Client\GenericUSB，设置_DeviceRules*值为‘Allow: VID=0911 PID=1844’&lt;/li>
@@ -1182,11 +1210,13 @@ loading="lazy"
 &lt;p>&lt;strong>注意：&lt;strong>当增加&lt;/strong>Allow&lt;/strong>规则，确保它置于规则列表顶部，使它比规则&lt;strong>Deny&lt;/strong>优先级更高。&lt;/p>
 &lt;p>&lt;img src="http://support.citrix.com/article/html/images/CTX136751-8.gif"
 loading="lazy"
->&lt;/p>
+>
+&lt;/p>
 &lt;p>此时在 Desktop Viewer 上可见对应 USB 设备。&lt;/p>
 &lt;p>&lt;img src="http://support.citrix.com/article/html/images/CTX136751-9.gif"
 loading="lazy"
->&lt;/p>
+>
+&lt;/p>
 &lt;ul>
 &lt;li>假如点击设备仍不能映射至会话中，尝试手动在 VDA 的注册表中添加允许标记：
 HKLM\Software\Policies\Citrix\ICA_Client\USB\DeviceRules。&lt;/li>
@@ -1644,21 +1674,24 @@ b) 技术角色&lt;/li>
 >http://www.citrix.com/support/product-lifecycle/product-matrix.html&lt;/a>&lt;/p></description></item><item><title>NetApp技术学习</title><link>https://martinliu.cn/2013/02/26/netappe68a80e69cafe5ada6e4b9a0/</link><pubDate>Tue, 26 Feb 2013 14:18:43 +0000</pubDate><guid>https://martinliu.cn/2013/02/26/netappe68a80e69cafe5ada6e4b9a0/</guid><description>&lt;p>[caption id=&amp;ldquo;attachment_52271&amp;rdquo; align=&amp;ldquo;aligncenter&amp;rdquo; width=&amp;ldquo;300&amp;rdquo;]&lt;img src="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2013/02/sales-ilt-se-asap-rev07-300x178.jpg"
 loading="lazy"
 alt="sales-ilt-se-asap-rev07"
->](&lt;a class="link" href="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2013/02/sales-ilt-se-asap-rev07.jpg" target="_blank" rel="noopener"
+>
+](&lt;a class="link" href="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2013/02/sales-ilt-se-asap-rev07.jpg" target="_blank" rel="noopener"
 >http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2013/02/sales-ilt-se-asap-rev07.jpg&lt;/a>) sales-ilt-se-asap-rev07[/caption]&lt;/p>
 &lt;p>今天参加了 NetApp Accredited Storage Architect Professional Workshop。这个课程偏售前，讲的还是不错，一共 3 天，明天开始做 Lab，实验练习的环境就是在 ONTAP 操作系统中的各种命令；使用官方的模拟器可以很方便的搭建测试环境，模拟器下载地址：&lt;a class="link" href="https://communities.netapp.com/docs/DOC-1034" target="_blank" rel="noopener"
 >https://communities.netapp.com/docs/DOC-1034&lt;/a>&lt;/p>
 &lt;p>[caption id=&amp;ldquo;attachment_52269&amp;rdquo; align=&amp;ldquo;aligncenter&amp;rdquo; width=&amp;ldquo;300&amp;rdquo;]&lt;img src="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2013/02/con01-FilerView-300x257.jpg"
 loading="lazy"
 alt="NetApp模拟器Web访问"
->](&lt;a class="link" href="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2013/02/con01-FilerView.jpg" target="_blank" rel="noopener"
+>
+](&lt;a class="link" href="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2013/02/con01-FilerView.jpg" target="_blank" rel="noopener"
 >http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2013/02/con01-FilerView.jpg&lt;/a>) NetApp 模拟器 Web 访问[/caption]&lt;/p>
 &lt;p>NetApp University : &lt;a class="link" href="http://www.netapp.com/us/services/university/" target="_blank" rel="noopener"
 >http://www.netapp.com/us/services/university/&lt;/a>  更多免费课程还可以在这里注册得到。课程的质量还不错。&lt;/p>
 &lt;p>[caption id=&amp;ldquo;attachment_52270&amp;rdquo; align=&amp;ldquo;aligncenter&amp;rdquo; width=&amp;ldquo;300&amp;rdquo;]&lt;img src="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2013/02/Introduction-to-NetApp-Products-300x217.jpg"
 loading="lazy"
 alt="NetApp在线免费课程"
->](&lt;a class="link" href="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2013/02/Introduction-to-NetApp-Products.jpg" target="_blank" rel="noopener"
+>
+](&lt;a class="link" href="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2013/02/Introduction-to-NetApp-Products.jpg" target="_blank" rel="noopener"
 >http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2013/02/Introduction-to-NetApp-Products.jpg&lt;/a>) NetApp 在线免费课程[/caption]&lt;/p></description></item><item><title>What's new in Windows 8 VDI licensing: Free ride for Windows RT</title><link>https://martinliu.cn/2012/12/13/whats-new-in-windows-8-vdi-licensing-free-ride-for-windows-rt/</link><pubDate>Thu, 13 Dec 2012 15:28:33 +0000</pubDate><guid>https://martinliu.cn/2012/12/13/whats-new-in-windows-8-vdi-licensing-free-ride-for-windows-rt/</guid><description>&lt;p>&lt;a class="link" href="http://searchvirtualdesktop.techtarget.com/tip/Whats-new-in-Windows-8-VDI-licensing-Free-ride-for-Windows-RT?utm_medium=EM&amp;amp;asrc=EM_ERU_19908957&amp;amp;utm_campaign=20121212_ERU%20Transmission%20for%2012/12/2012%20%28UserUniverse:%20635116%29_myka-reports@techtarget.com&amp;amp;utm_source=ERU&amp;amp;src=5093920" target="_blank" rel="noopener"
 >http://searchvirtualdesktop.techtarget.com/tip/Whats-new-in-Windows-8-VDI-licensing-Free-ride-for-Windows-RT?utm_medium=EM&amp;amp;asrc;=EM_ERU_19908957&amp;amp;utm;_campaign=20121212_ERU%20Transmission%20for%2012/12/2012%20%28UserUniverse:%20635116%29_myka-reports@techtarget.com&amp;amp;utm;_source=ERU&amp;amp;src;=5093920&lt;/a>&lt;/p></description></item><item><title>图文阐释-DAS-NAS-SAN</title><link>https://martinliu.cn/2010/01/07/what-is-das-nas-san/</link><pubDate>Thu, 07 Jan 2010 05:20:06 +0000</pubDate><guid>https://martinliu.cn/2010/01/07/what-is-das-nas-san/</guid><description>&lt;!-- raw HTML omitted -->
 &lt;p>目前磁盘存储市场上，存储分类（如下表一）根据服务器类型分为：封闭系统的存储和开放系统的存储，封闭系统主要指大型机，AS400 等服务器， 开放系统指基于包括 Windows、UNIX、Linux 等操作系统的服务器；开放系统的存储分为：内置存储和外挂存储；开放系统的外挂存储根据连接的方 式分为：直连式存储（Direct-Attached Storage，简称 DAS）和网络化存储（Fabric-Attached Storage，简称 FAS）；开放系统的网络化存储根据传输协议又分为：网络接入存储（Network-Attached Storage，简称 NAS）和存储区域网络（Storage Area Network，简称 SAN）。由于目前绝大部分用户采用的是开放系统，其外挂存储占有目前磁盘存储市场的 70%以上，因此本文主要针对开放系统的外挂存 储进行论述说明。
@@ -1695,10 +1728,12 @@ NAS 和 SAN 最本质的不同就是文件管理系统在哪里。如图：&lt;/
 NAS 是将目光集中在应用、用户和文件以及它们共享的数据上。SAN 是将目光集中在磁盘、磁带以及联接它们的可靠的基础结构。将来从桌面系统到数据集中管理到存储设备的全面解决方案将是 NAS 加 SAN。&lt;/p></description></item><item><title>Tomcat压力测试-挺住200并发</title><link>https://martinliu.cn/2009/07/04/tomcate58e8be58a9be6b58be8af95-e68cbae4bd8f200e5b9b6e58f91/</link><pubDate>Sat, 04 Jul 2009 05:37:57 +0000</pubDate><guid>https://martinliu.cn/2009/07/04/tomcate58e8be58a9be6b58be8af95-e68cbae4bd8f200e5b9b6e58f91/</guid><description>&lt;p>&lt;img src="http://www.willisms.com/archives/tomcat.jpg"
 loading="lazy"
 alt="tomcat.jpg"
->&lt;!-- raw HTML omitted -->最近在 CCB 的测试中有一项是住系统登陆页面的压力测试。我一直就很担心是否能通过压力测试，因为一个同事告诉我上次他的结果是 80 就不行了。总结一下，我这次成功的原因主要就是两个地方：&lt;!-- raw HTML omitted -->1）设置 Tomcat 启动和最大内存使用都是 1500MB&lt;!-- raw HTML omitted -->2）修改 server.xml 中关于连接数等参数(回头贴出我的那些配置内容)&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->我的服务器配置如下：&lt;!-- raw HTML omitted -->Dell 2950 1C4 核，8GB 内存，单块 136GB 硬盘，Windows2003 系统，JDK1.6，Tomcat 5.5.21&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->另外，我一直以为 Loadrunner 需要真实 Lic 文件才能用，没想到的是，我随便在网上搜了一个也能用，真是神奇啊！ 不过还是反对盗版哈哈:)&lt;/p></description></item><item><title>For tomcat benchmark testing</title><link>https://martinliu.cn/2009/07/04/for-tomcat-benchmark-testing/</link><pubDate>Sat, 04 Jul 2009 05:36:03 +0000</pubDate><guid>https://martinliu.cn/2009/07/04/for-tomcat-benchmark-testing/</guid><description>&lt;p>Tomcat Configuration 查看一下可以配置的参数&lt;img src="http://tech.tomarea.com/wp-content/uploads/2009/02/tomcat-300x261.jpg"
+>
+&lt;!-- raw HTML omitted -->最近在 CCB 的测试中有一项是住系统登陆页面的压力测试。我一直就很担心是否能通过压力测试，因为一个同事告诉我上次他的结果是 80 就不行了。总结一下，我这次成功的原因主要就是两个地方：&lt;!-- raw HTML omitted -->1）设置 Tomcat 启动和最大内存使用都是 1500MB&lt;!-- raw HTML omitted -->2）修改 server.xml 中关于连接数等参数(回头贴出我的那些配置内容)&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->我的服务器配置如下：&lt;!-- raw HTML omitted -->Dell 2950 1C4 核，8GB 内存，单块 136GB 硬盘，Windows2003 系统，JDK1.6，Tomcat 5.5.21&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->另外，我一直以为 Loadrunner 需要真实 Lic 文件才能用，没想到的是，我随便在网上搜了一个也能用，真是神奇啊！ 不过还是反对盗版哈哈:)&lt;/p></description></item><item><title>For tomcat benchmark testing</title><link>https://martinliu.cn/2009/07/04/for-tomcat-benchmark-testing/</link><pubDate>Sat, 04 Jul 2009 05:36:03 +0000</pubDate><guid>https://martinliu.cn/2009/07/04/for-tomcat-benchmark-testing/</guid><description>&lt;p>Tomcat Configuration 查看一下可以配置的参数&lt;img src="http://tech.tomarea.com/wp-content/uploads/2009/02/tomcat-300x261.jpg"
 loading="lazy"
 alt="TomCat"
->&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->&lt;strong>设置 JVM 的参数 Setting JVM Options for Tomcat&lt;/strong>&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->Edit the /usr/locat/apache-tomcat/bin/catalina.sh file and add the JVM options to the JAVA_OPTS environment variable.JVM Option Value Description&lt;!-- raw HTML omitted -->-Xmx 4g The maximum Java heap size.&lt;!-- raw HTML omitted -->-Xms 4g The initial Java heap size.&lt;!-- raw HTML omitted -->-Xmn 1g The size of young generation.&lt;!-- raw HTML omitted -->-XX:+UseParallelGC – To use parallel garbage collection for scavenges.&lt;!-- raw HTML omitted -->-XX:PermSize 50m The initial size of permanent generation.&lt;!-- raw HTML omitted -->注释：上面两个 4g 的值，我没试过，我用 8GB 内存 windows 的机器 1.5GB 能启动，超过了 Tomcat 服务就启动不了了。&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->&lt;strong>配置 Tomcat Connector Attributes&lt;/strong>&lt;!-- raw HTML omitted -->Edit the /usr/locat/apache-tomcat/conf/server.xml file and add the attributes listed in Table 3 to the Connector element.&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->下面是个例子供参考&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->Tomcat Configuration Attribute Value Description&lt;!-- raw HTML omitted -->The maximum number of request processing threads to be created by this connector, which therefore determines the maximum number of simultaneous requests that can be handled. If not specified, the default value for this attribute is 40. If an executor is associated with this connector, this attribute is ignored and the connector executes tasks using the executor rather than an internal thread pool.&lt;!-- raw HTML omitted -->maxThreads 3000&lt;!-- raw HTML omitted -->The maximum queue length for incoming connection requests when all&lt;!-- raw HTML omitted -->possible request processing threads are in use. Any requests received when&lt;!-- raw HTML omitted -->the queue is full are refused. The default value is 10.&lt;!-- raw HTML omitted -->acceptCount 2000&lt;!-- raw HTML omitted -->The number of request processing threads that are created when this connector&lt;!-- raw HTML omitted -->is first started. The connector also verifies that it has the specified number of&lt;!-- raw HTML omitted -->idle processing threads available. This attribute should be set to a value smaller&lt;!-- raw HTML omitted -->than that set for maxThreads. The default value is 4.&lt;!-- raw HTML omitted -->minSpareThreads 500&lt;!-- raw HTML omitted -->The maximum number of unused request processing threads that are allowed&lt;!-- raw HTML omitted -->to exist until the thread pool starts stopping the unnecessary threads. The&lt;!-- raw HTML omitted -->default value is 50.&lt;!-- raw HTML omitted -->maxSpareThreads 2000&lt;!-- raw HTML omitted -->Set to “true” if you want calls to request.getRemoteHost() to perform DNS&lt;!-- raw HTML omitted -->lookups in order to return the actual host name of the remote client. Set to&lt;!-- raw HTML omitted -->enableLookups false “false” to skip the DNS lookup and return the IP address in String form instead&lt;!-- raw HTML omitted -->(thereby improving performance). By default, DNS lookups are enabled.&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->上面的值比我实际使用的大，我的 200 并发测试通过了，硬件配置见前一帖。&lt;/p></description></item><item><title>Top 25 OSS Projects on Jan 2009</title><link>https://martinliu.cn/blog/top-25-oss-projects-on-06-jan-2009/</link><pubDate>Wed, 07 Jan 2009 10:18:18 +0000</pubDate><guid>https://martinliu.cn/blog/top-25-oss-projects-on-06-jan-2009/</guid><description>&lt;p>This list is from SourceForge.net. You may have the question: How do we adapt open source? My answer might be you just should use them as much as you can.   The world is facing economic crisis, you have to saving your budget. How do you deal with that? It&amp;rsquo;s time to think about OSS now.&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->1. Shine J2EE Framework 开发框架&lt;!-- raw HTML omitted -->&lt;a class="link" href="http://j2sos.org/" target="_blank" rel="noopener"
+>
+&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->&lt;strong>设置 JVM 的参数 Setting JVM Options for Tomcat&lt;/strong>&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->Edit the /usr/locat/apache-tomcat/bin/catalina.sh file and add the JVM options to the JAVA_OPTS environment variable.JVM Option Value Description&lt;!-- raw HTML omitted -->-Xmx 4g The maximum Java heap size.&lt;!-- raw HTML omitted -->-Xms 4g The initial Java heap size.&lt;!-- raw HTML omitted -->-Xmn 1g The size of young generation.&lt;!-- raw HTML omitted -->-XX:+UseParallelGC – To use parallel garbage collection for scavenges.&lt;!-- raw HTML omitted -->-XX:PermSize 50m The initial size of permanent generation.&lt;!-- raw HTML omitted -->注释：上面两个 4g 的值，我没试过，我用 8GB 内存 windows 的机器 1.5GB 能启动，超过了 Tomcat 服务就启动不了了。&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->&lt;strong>配置 Tomcat Connector Attributes&lt;/strong>&lt;!-- raw HTML omitted -->Edit the /usr/locat/apache-tomcat/conf/server.xml file and add the attributes listed in Table 3 to the Connector element.&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->下面是个例子供参考&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->Tomcat Configuration Attribute Value Description&lt;!-- raw HTML omitted -->The maximum number of request processing threads to be created by this connector, which therefore determines the maximum number of simultaneous requests that can be handled. If not specified, the default value for this attribute is 40. If an executor is associated with this connector, this attribute is ignored and the connector executes tasks using the executor rather than an internal thread pool.&lt;!-- raw HTML omitted -->maxThreads 3000&lt;!-- raw HTML omitted -->The maximum queue length for incoming connection requests when all&lt;!-- raw HTML omitted -->possible request processing threads are in use. Any requests received when&lt;!-- raw HTML omitted -->the queue is full are refused. The default value is 10.&lt;!-- raw HTML omitted -->acceptCount 2000&lt;!-- raw HTML omitted -->The number of request processing threads that are created when this connector&lt;!-- raw HTML omitted -->is first started. The connector also verifies that it has the specified number of&lt;!-- raw HTML omitted -->idle processing threads available. This attribute should be set to a value smaller&lt;!-- raw HTML omitted -->than that set for maxThreads. The default value is 4.&lt;!-- raw HTML omitted -->minSpareThreads 500&lt;!-- raw HTML omitted -->The maximum number of unused request processing threads that are allowed&lt;!-- raw HTML omitted -->to exist until the thread pool starts stopping the unnecessary threads. The&lt;!-- raw HTML omitted -->default value is 50.&lt;!-- raw HTML omitted -->maxSpareThreads 2000&lt;!-- raw HTML omitted -->Set to “true” if you want calls to request.getRemoteHost() to perform DNS&lt;!-- raw HTML omitted -->lookups in order to return the actual host name of the remote client. Set to&lt;!-- raw HTML omitted -->enableLookups false “false” to skip the DNS lookup and return the IP address in String form instead&lt;!-- raw HTML omitted -->(thereby improving performance). By default, DNS lookups are enabled.&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->上面的值比我实际使用的大，我的 200 并发测试通过了，硬件配置见前一帖。&lt;/p></description></item><item><title>Top 25 OSS Projects on Jan 2009</title><link>https://martinliu.cn/blog/top-25-oss-projects-on-06-jan-2009/</link><pubDate>Wed, 07 Jan 2009 10:18:18 +0000</pubDate><guid>https://martinliu.cn/blog/top-25-oss-projects-on-06-jan-2009/</guid><description>&lt;p>This list is from SourceForge.net. You may have the question: How do we adapt open source? My answer might be you just should use them as much as you can.   The world is facing economic crisis, you have to saving your budget. How do you deal with that? It&amp;rsquo;s time to think about OSS now.&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->1. Shine J2EE Framework 开发框架&lt;!-- raw HTML omitted -->&lt;a class="link" href="http://j2sos.org/" target="_blank" rel="noopener"
 >http://j2sos.org/&lt;/a>&lt;!-- raw HTML omitted -->&lt;a class="link" href="http://sourceforge.net/projects/shine-app" target="_blank" rel="noopener"
 >http://sourceforge.net/projects/shine-app&lt;/a>&lt;!-- raw HTML omitted -->Shine is a Java-J2EE Application Framework/JWMS(Java Web Model&lt;!-- raw HTML omitted -->Service)Framework/MVC Framework/Service Oriented Framework. Shine Includes Ajax Lib/Server API/J2EE Architecture. Shine Supported JSF/Spring/AspectJ/Struts/Hibernate/ZK-Ajax/&amp;hellip; &lt;a class="link" href="http://www.j2sos.org/" target="_blank" rel="noopener"
 >www.J2SOS.org&lt;/a>&lt;!-- raw HTML omitted -->&lt;/p>
@@ -1732,7 +1767,8 @@ alt="TomCat"
 >&lt;img src="http://www.slax.org/images/slax.png"
 loading="lazy"
 alt="http://www.slax.org/screenshot.php?s=3"
->&lt;/a>Slax - your pocket operating system
+>
+&lt;/a>Slax - your pocket operating system
 &lt;/h1>&lt;!-- raw HTML omitted -->
 &lt;!-- raw HTML omitted -->
 &lt;!-- raw HTML omitted -->
@@ -1740,7 +1776,8 @@ alt="http://www.slax.org/screenshot.php?s=3"
 &lt;p>&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->&lt;/p>
 &lt;!-- raw HTML omitted --></description></item><item><title>What is Google Infrastructure?</title><link>https://martinliu.cn/2008/06/21/google-infrastructure/</link><pubDate>Sat, 21 Jun 2008 07:01:58 +0000</pubDate><guid>https://martinliu.cn/2008/06/21/google-infrastructure/</guid><description>&lt;p>&lt;img src="http://i.i.com.com/cnwk.1d/i/bto/20080529/Google_data_center_c2000_Jeff_Dean_400x318.jpg"
 loading="lazy"
->&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->If you have no idea, you should read this post &amp;ldquo;&lt;a class="link" href="http://news.cnet.com/8301-10784_3-9955184-7.html?tag=blog.1" target="_blank" rel="noopener"
+>
+&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->If you have no idea, you should read this post &amp;ldquo;&lt;a class="link" href="http://news.cnet.com/8301-10784_3-9955184-7.html?tag=blog.1" target="_blank" rel="noopener"
 >Google spotlights data center inner workings&lt;/a>&amp;rdquo;.&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->There are some notes I took as blowing.&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->Google Infrastructure:&lt;!-- raw HTML omitted -->&lt;/p>
 &lt;p>&lt;!-- raw HTML omitted -->&lt;/p>
 &lt;ul>
@@ -1797,12 +1834,14 @@ loading="lazy"
 &lt;/ol></description></item><item><title>Enterprise cloud computing</title><link>https://martinliu.cn/2008/05/12/enterprise-cloud-computing/</link><pubDate>Mon, 12 May 2008 00:57:06 +0000</pubDate><guid>https://martinliu.cn/2008/05/12/enterprise-cloud-computing/</guid><description>&lt;p>&lt;a class="link" href="http://www.datacenterknowledge.com" target="_blank" rel="noopener"
 >&lt;img src="http://www.datacenterknowledge.com/archives/images/DCK_web.jpg"
 loading="lazy"
->http://www.datacenterknowledge.com/&lt;/a>&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->这个网站还是不错，有很多关于数据中心的知识。它应该主要是收集业内在该领域里新咨询，先收录一下，回头慢慢学习。&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->这个 vido 我觉得也可以学习一下。&lt;a class="link" href="http://www.datacenterknowledge.com/archives/2008/May/02/ibm_google_team_on_an_enterprise_cloud.html" target="_blank" rel="noopener"
+>
+http://www.datacenterknowledge.com/&lt;/a>&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->这个网站还是不错，有很多关于数据中心的知识。它应该主要是收集业内在该领域里新咨询，先收录一下，回头慢慢学习。&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->这个 vido 我觉得也可以学习一下。&lt;a class="link" href="http://www.datacenterknowledge.com/archives/2008/May/02/ibm_google_team_on_an_enterprise_cloud.html" target="_blank" rel="noopener"
 >IBM 和 Google 结成联盟开展企业云计算方面的研究&lt;/a>，可能会建立“IBM-Google cloud ” 这个云会运行在 Linux 上，使用 Xen 做系统虚拟和 Apache Hadoop。同时 Google 和 IBM 都有自己巨大的数据中心，还不知道它们将来的研究成果会运行在谁家的设备上，让我们拭目以待。&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->Tips：&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->有些网络视频比较大，在线看如果网速比较慢的话可能不能正常浏览。很多下载视频的工具好像都是要收费注册的，否则只能下载 60％。我发现的一个方法是，把视频网址输入到这里 &lt;a class="link" href="http://www.techcrunch.com/get-youtube-movie/" target="_blank" rel="noopener"
 >http://www.techcrunch.com/get-youtube-movie/&lt;/a> 它会给你生成一个 http 的下载连接，点击后一般的 http 下载工具就能下整个视频了，之后用视频浏览的软件查看，正在缓慢下载上边的视频。不知道你有什么好方法或者是工具可以推荐呢？&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->&lt;a class="link" href="http://youtubedownload.altervista.org/" target="_blank" rel="noopener"
 >http://youtubedownload.altervista.org/&lt;/a> 是我现在所使用的，不过下载的太慢了，不能支持多线程下载。&lt;/p></description></item><item><title>Install Oracle 10.2.01 on OpenSuSE 10.3</title><link>https://martinliu.cn/2008/05/08/install-oracle-102-on-opensuse-103/</link><pubDate>Thu, 08 May 2008 01:51:16 +0000</pubDate><guid>https://martinliu.cn/2008/05/08/install-oracle-102-on-opensuse-103/</guid><description>&lt;p>&lt;img src="http://www.railsonwave.com/assets/2007/9/5/oracle.jpg"
 loading="lazy"
->&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->A) Download 10201_database_linux32.zip from Oracle website.&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->B) Download 10gR2_openSUSE102_introduction.pdf and ora.rpm from ftp ftp.novelŀcom&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->C) Install Oracle, following quick steps:&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->1. Install openSUSE 10.2 with &amp;ldquo;C/C++ Development&amp;rdquo; selection.&lt;!-- raw HTML omitted -->2. Download and Install orarun package.&lt;!-- raw HTML omitted -->3. Enable and set password for newly created user oracle by orarun.&lt;!-- raw HTML omitted -->4. Set updated kernel parameters by executing /etc/init.d/oracle start.&lt;!-- raw HTML omitted -->5. Download and unzip Oracle 10gR2 Database SW.&lt;!-- raw HTML omitted -->Edit file database/install/oraparam.ini to add &amp;ldquo;SuSE-10&amp;rdquo; to line #39.&lt;!-- raw HTML omitted -->6. login as user oracle and run Oracle Universal Installer &amp;ldquo;database/runInstaller&amp;rdquo;.&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->&lt;strong>Troubleshooting:&lt;/strong>&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->1) installer error:&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->oracle@Martin:&lt;del>/database&amp;gt; ./runInstaller&lt;!-- raw HTML omitted -->Starting Oracle Universal Installer&amp;hellip;&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->Checking installer requirements&amp;hellip;&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->Checking operating system version: must be redhat-3, SuSE-9, redhat-4, UnitedLinux-1.0, asianux-1, asianux-2 or SuSE-10&lt;!-- raw HTML omitted -->Passed&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->All installer requirements met.&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->Preparing to launch Oracle Universal Installer from /tmp/OraInstall2008-05-08_09-11-56AM. Please wait &amp;hellip;oracle@Martin:&lt;/del>/database&amp;gt; java: xcb_xlib.c:52: xcb_xlib_unlock: Assertion `c-&amp;gt;xlib.lock&amp;rsquo; failed.&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->Solution :&lt;!-- raw HTML omitted -->&lt;/p>
+>
+&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->A) Download 10201_database_linux32.zip from Oracle website.&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->B) Download 10gR2_openSUSE102_introduction.pdf and ora.rpm from ftp ftp.novelŀcom&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->C) Install Oracle, following quick steps:&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->1. Install openSUSE 10.2 with &amp;ldquo;C/C++ Development&amp;rdquo; selection.&lt;!-- raw HTML omitted -->2. Download and Install orarun package.&lt;!-- raw HTML omitted -->3. Enable and set password for newly created user oracle by orarun.&lt;!-- raw HTML omitted -->4. Set updated kernel parameters by executing /etc/init.d/oracle start.&lt;!-- raw HTML omitted -->5. Download and unzip Oracle 10gR2 Database SW.&lt;!-- raw HTML omitted -->Edit file database/install/oraparam.ini to add &amp;ldquo;SuSE-10&amp;rdquo; to line #39.&lt;!-- raw HTML omitted -->6. login as user oracle and run Oracle Universal Installer &amp;ldquo;database/runInstaller&amp;rdquo;.&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->&lt;strong>Troubleshooting:&lt;/strong>&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->1) installer error:&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->oracle@Martin:&lt;del>/database&amp;gt; ./runInstaller&lt;!-- raw HTML omitted -->Starting Oracle Universal Installer&amp;hellip;&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->Checking installer requirements&amp;hellip;&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->Checking operating system version: must be redhat-3, SuSE-9, redhat-4, UnitedLinux-1.0, asianux-1, asianux-2 or SuSE-10&lt;!-- raw HTML omitted -->Passed&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->All installer requirements met.&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->Preparing to launch Oracle Universal Installer from /tmp/OraInstall2008-05-08_09-11-56AM. Please wait &amp;hellip;oracle@Martin:&lt;/del>/database&amp;gt; java: xcb_xlib.c:52: xcb_xlib_unlock: Assertion `c-&amp;gt;xlib.lock&amp;rsquo; failed.&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->Solution :&lt;!-- raw HTML omitted -->&lt;/p>
 &lt;p>&lt;!-- raw HTML omitted -->&lt;/p>
 &lt;ul>
 &lt;li>export LIBXCB_ALLOW_SLOPPY_LOCK=1
@@ -1813,7 +1852,8 @@ loading="lazy"
 >http://Martin.bmc.com:1158/em/console/aboutApplication&lt;/a>&lt;!-- raw HTML omitted -->Starting Oracle Enterprise Manager 10g Database Control &amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;&amp;hellip;. started.&lt;!-- raw HTML omitted -->&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&lt;!-- raw HTML omitted -->Logs are generated in directory /opt/oracle/product/10.2/db_1/localhost_orcl/sysman/log&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->启动了后访问: http://localhost:1158/em/&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->&lt;strong>手工启动Oracle实例的方法&lt;/strong>&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->1) sqlplus&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->sqlplus /nolog&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->connect sys/manager as sysdba&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->startup&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->2) rcoracle&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->需要修改如下几个文件：/etc/oraInst.loc  /etc/oratab /  /etc/sysconfig/oracle /opt/oracle/product/10.2/db_1/bin/dbstart /usr/sbin/rcoracle 修改这些文件中的路径等信息知道 rcoracle start 命令不出错为止。&lt;/li>
 &lt;/ul></description></item><item><title>Clouds are coming</title><link>https://martinliu.cn/2008/04/18/clouds-are-coming/</link><pubDate>Fri, 18 Apr 2008 15:05:23 +0000</pubDate><guid>https://martinliu.cn/2008/04/18/clouds-are-coming/</guid><description>&lt;p>&lt;img src="http://www.swish-designs.co.uk/images/cloud_fig3.png"
 loading="lazy"
->&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->最近两周最吸引我的 TAG 是这个词“cloud computing”。在我&lt;a class="link" href="http://www.martinliu.cn/2008/04/10/do-you-have-a-google-app-engine/" target="_blank" rel="noopener"
+>
+&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->最近两周最吸引我的 TAG 是这个词“cloud computing”。在我&lt;a class="link" href="http://www.martinliu.cn/2008/04/10/do-you-have-a-google-app-engine/" target="_blank" rel="noopener"
 >前一个文章&lt;/a>中稍微展望了一下云计算的前景“云计算吧电能转化成计算能力，然后向用电一样的来使用，我们甚至不需要使用 PC 这样的个人信息话设备来管理我们的信息，所有的信息和信息的处理都在云上发生”。在了解了更多的信息之后，这些可能实现，但是这种巨变需要时间，而且可能是很长时间；清醒之后不得不佩服 Google 在这方面的宣传。&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->理性认识云计算的简单方式，扫扫盲：&lt;!-- raw HTML omitted -->&lt;/p>
 &lt;p>&lt;!-- raw HTML omitted -->&lt;/p>
 &lt;ul>
@@ -1831,7 +1871,8 @@ loading="lazy"
 &lt;/ul></description></item><item><title>DO you have a google App Engine?</title><link>https://martinliu.cn/2008/04/10/do-you-have-a-google-app-engine/</link><pubDate>Thu, 10 Apr 2008 05:23:44 +0000</pubDate><guid>https://martinliu.cn/2008/04/10/do-you-have-a-google-app-engine/</guid><description>&lt;p>There is what I got from &lt;a class="link" href="http://appengine.google.com/" target="_blank" rel="noopener"
 >http://appengine.google.com/&lt;img src="http://code.google.com/appengine/images/appengine_lowres.jpg"
 loading="lazy"
->&lt;/a>&lt;!-- raw HTML omitted -->&lt;/p>
+>
+&lt;/a>&lt;!-- raw HTML omitted -->&lt;/p>
 &lt;!-- raw HTML omitted -->
 &lt;p>&lt;!-- raw HTML omitted -->I read a post last night, &lt;a class="link" href="http://googleblog.blogspot.com/2008/04/developers-start-your-engines.html" target="_blank" rel="noopener"
 >Developers, start your engines &lt;/a>Even I am not a developer, I definitely look forward to sing up &lt;a class="link" href="http://appengine.google.com/" target="_blank" rel="noopener"
@@ -1862,7 +1903,8 @@ loading="lazy"
 &lt;!-- raw HTML omitted --></description></item><item><title>虚拟让你轻松玩开源</title><link>https://martinliu.cn/2008/04/02/vm-jumpbox-rpath-play-oss/</link><pubDate>Wed, 02 Apr 2008 06:46:29 +0000</pubDate><guid>https://martinliu.cn/2008/04/02/vm-jumpbox-rpath-play-oss/</guid><description>&lt;p>&lt;a class="link" href="http://www.martinliu.cn/wp-content/uploads/2008/04/homepage-promo.png" target="_blank" rel="noopener"
 >&lt;img src="http://www.martinliu.cn/wp-content/uploads/2008/04/homepage-promo.png"
 loading="lazy"
->&lt;/a>开源一般都是谁在玩？我觉得还是开发人员比较多，通常有开发背景的人才会比较轻松的去下载源代码，编译并运行。现在网上有很多能让您轻松搞定开源软件的方法，虚拟技术的发展使我们能更轻松的获取并运行开源的解决方案。向往糖果盒子中放巧克力一样容易。&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->最近我收到了几个&lt;a class="link" href="http://otrs.org" target="_blank" rel="noopener"
+>
+&lt;/a>开源一般都是谁在玩？我觉得还是开发人员比较多，通常有开发背景的人才会比较轻松的去下载源代码，编译并运行。现在网上有很多能让您轻松搞定开源软件的方法，虚拟技术的发展使我们能更轻松的获取并运行开源的解决方案。向往糖果盒子中放巧克力一样容易。&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->最近我收到了几个&lt;a class="link" href="http://otrs.org" target="_blank" rel="noopener"
 >OTRS&lt;/a>的新版发布的新闻邮件。先说说关于 OTRS 的一些新闻，2008-03-31 发布了最新的一个版本 &lt;a class="link" href="http://otrs.org/news/2008/otrs_2_2_6/" target="_blank" rel="noopener"
 >OTRS 2.2.6 (Ipanema)&lt;/a>。这个版本是一个 2.2.6 的安全补丁修复版，修复了一些安全的 bug，同时有提供了另外两种语言的支持：土耳其和越南语；当然 OTRS 是能够支持简繁体的中文的。而且关于语言方面的翻译对照表也是可以自行修改的，可以把流程当中的一些术语翻译成符合你企业实用习惯的名称。OTRS 后台能支持非常多的数据库，包括 Oracle，MS SQL 等非开源数据库，它的核心程序是用 Perl 写的，这些程序运行在 Apache web 服务器上，客户端是用的纯 web 的方式，后台的管理提供 Web 和命令行两种方式。它的安装对于我来说不是很方便，安装文档中并没有写的很详细需要哪行 Perl 的包，apache 上需要安装哪行 Perl 相关的东西；不过您对 Perl 非常熟练的话相信没有这个问题。导致的问题是我在安装了 ORTS 之后，它或者它的某些程序运行不了。&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->总结一下体验开源软件可能的一些步骤：&lt;!-- raw HTML omitted -->&lt;/p>
 &lt;p>&lt;!-- raw HTML omitted -->&lt;/p>
@@ -1893,10 +1935,12 @@ loading="lazy"
 &lt;!-- raw HTML omitted -->
 &lt;p>&lt;!-- raw HTML omitted -->应用虚拟技术可能是一个比较好的方式，目前我找到两个比较好的网站能提供 OSS 虚拟应用下载的，如下所示。&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->&lt;img src="http://www.rpath.com/conary-static//apps/mint/images/corplogo.gif"
 loading="lazy"
->&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->&lt;a class="link" href="http://www.rpath.com/rbuilder/" target="_blank" rel="noopener"
+>
+&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->&lt;a class="link" href="http://www.rpath.com/rbuilder/" target="_blank" rel="noopener"
 >http://www.rpath.com/rbuilder/&lt;/a>&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->&lt;img src="http://www.jumpbox.com/sites/all/themes/jumpbox/logo-white.gif"
 loading="lazy"
->&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->&lt;a class="link" href="http://www.jumpbox.com/" target="_blank" rel="noopener"
+>
+&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->&lt;a class="link" href="http://www.jumpbox.com/" target="_blank" rel="noopener"
 >http://www.jumpbox.com/&lt;/a>&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->这两个网站的区别是：JumpBox 是提供开源软件包下载和相关服务的，当然下载肯定是免费的；rPath 不但提供下载而且能给你空间去攒一个你自己的虚拟应用。&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->当然 VWMare 的网站也能提供这些虚拟应用的下载：&lt;a class="link" href="http://www.vmware.com/appliances/" target="_blank" rel="noopener"
 >http://www.vmware.com/appliances/&lt;/a>&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->这里不想讨论虚拟技术的好处，不过它确实给体验和应用 OSS 带来很多方便。我第一次下载的虚拟应用是 Zenoss，下载总共花了 10 分钟，下载的过程当中我在看 Zenoss 的文档，下载的虚拟机运行起来之后，我做的第一件事情就是运行自动发现网络设备的命令了。&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->通过虚拟这个桥梁，更加节约了我们体验和应用 OSS 的时间。我想这应该是开源和虚拟共同给我们带来的好处，道理很简单如果你下载并且使用一份包含 Windows 操作系统的应用，而没有给 MS 交钱的话，那么你就是盗版使用 Windows 了。更没有人会给你免费安装配置一套商业应用软件。&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->那么让我们从体验 OTRS 开始把，什么是 OTRS 请参考本博客中的文章。你可以从 JumpBox 下载并运行 OTRS2.2.6，下载地址是：&lt;a class="link" href="http://downloads2.jumpbox.com/otrs-1.0.1.zip" target="_blank" rel="noopener"
 >http://downloads2.jumpbox.com/otrs-1.0.1.zip &lt;/a>&lt;/p></description></item><item><title>Top 100网络安全工具</title><link>https://martinliu.cn/2008/01/04/top-100-security-tools/</link><pubDate>Fri, 04 Jan 2008 15:25:00 +0000</pubDate><guid>https://martinliu.cn/2008/01/04/top-100-security-tools/</guid><description>&lt;p>&lt;strong>＃１&lt;a class="link" href="http://www.nessus.org/" target="_blank" rel="noopener"
@@ -1904,14 +1948,16 @@ loading="lazy"
 >&lt;img src="http://lh6.google.com/liuzh66/R35TLoClheI/AAAAAAAAALQ/QPPwyfg47tw/s144/image_thumb1.png"
 loading="lazy"
 alt="image"
->&lt;/a>&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->Nessus 是最好的网络漏洞扫描工具之一，此软件最好是运行在 UNIX 上。它被持续不断地更新，有超过 11,000 的免费插件(但是需要注册或者接受 EULA)。主要的特点包括远程和本地的执行安全检查，带有 GTK 图形用户界面的 client/server 架构，一个用来写自己的插件的内置脚本语言。从 Nessus 3 开始停止开源 &lt;a class="link" href="http://software.newsforge.com/article.pl?sid=05/10/06/1716257&amp;amp;tid=132&amp;amp;tid=78&amp;amp;tid=27" target="_blank" rel="noopener"
+>
+&lt;/a>&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->Nessus 是最好的网络漏洞扫描工具之一，此软件最好是运行在 UNIX 上。它被持续不断地更新，有超过 11,000 的免费插件(但是需要注册或者接受 EULA)。主要的特点包括远程和本地的执行安全检查，带有 GTK 图形用户界面的 client/server 架构，一个用来写自己的插件的内置脚本语言。从 Nessus 3 开始停止开源 &lt;a class="link" href="http://software.newsforge.com/article.pl?sid=05/10/06/1716257&amp;amp;tid=132&amp;amp;tid=78&amp;amp;tid=27" target="_blank" rel="noopener"
 >now closed source&lt;/a>，但是他依然是免费的除非你想要最新的插件。查看所有的漏洞扫描器 &lt;a class="link" href="http://sectools.org/vuln-scanners.html" target="_blank" rel="noopener"
 >vulnerability scanners&lt;/a>&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->&lt;strong>＃2 &lt;a class="link" href="http://www.wireshark.org/" target="_blank" rel="noopener"
 >Wireshark&lt;/a> :附着在 Internet 上的嗅探器&lt;/strong>&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->&lt;a class="link" href="http://lh4.google.com/liuzh66/R35TgIClhrI/AAAAAAAAAM4/wixHkZNVJWA/image7" target="_blank" rel="noopener"
 >&lt;img src="http://lh4.google.com/liuzh66/R35TiIClhsI/AAAAAAAAANA/t3bdb34jO4M/s144/image_thumb3.png"
 loading="lazy"
 alt="image"
->&lt;/a>&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->Wireshark (在 2006 年夏之前名为&lt;a class="link" href="http://www.ethereal.com/" target="_blank" rel="noopener"
+>
+&lt;/a>&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->Wireshark (在 2006 年夏之前名为&lt;a class="link" href="http://www.ethereal.com/" target="_blank" rel="noopener"
 >Ethereal&lt;/a> )是一个 Unix 和 Windows 上 fantastic 的开源网络协议分析器。它能让你分析在线的网络数据和捕获的数据文件。你能方便的浏览捕获数据，深入研究到你需要级别的数据包的细节。Wireshark 还有几个强大功能包括，包括丰富的过滤显示语言和能去查看 TCP 链接重建的过程。它能支持几百种协议和网络介质类型。一个需要注意的方面是 Ethereal 现在遭受这很多可远程利用的安全漏洞，因此保持它的更新和提防在非信任的或者敌对的网络上运行它。查看所有包嗅探器 &lt;a class="link" href="http://sectools.org/sniffers.html" target="_blank" rel="noopener"
 >packet sniffers&lt;/a>&lt;!-- raw HTML omitted -->&lt;/p>
 &lt;h1 id="">
@@ -1920,7 +1966,8 @@ alt="image"
 >&lt;img src="http://lh3.google.com/liuzh66/R35T84Clh8I/AAAAAAAAAPA/Yler5Ex4xys/s144/image_thumb12.png"
 loading="lazy"
 alt="image"
->&lt;/a> 这个轻量级网络入侵检测和阻止系统擅长于 IP 网络上的流量分析和包记录。通过协议分析，内容搜索和各种预处理，Snort 能探测上千种蠕虫, 利用漏洞企图，端口扫描和其他可疑行为。Snort 使用一个弹性的基于规则的语言去描述它应该收集或者忽略的网络通信流量，和一个模块化的检测引擎。从此链接产看更多的基本分析和安全引擎，有一个 Web 用户界面来分析 Snort 告警。开源的 Snort 被一些个人、小企业和部门用的很不错。它的母公司&lt;a class="link" href="http://www.sourcefire.com/" target="_blank" rel="noopener"
+>
+&lt;/a> 这个轻量级网络入侵检测和阻止系统擅长于 IP 网络上的流量分析和包记录。通过协议分析，内容搜索和各种预处理，Snort 能探测上千种蠕虫, 利用漏洞企图，端口扫描和其他可疑行为。Snort 使用一个弹性的基于规则的语言去描述它应该收集或者忽略的网络通信流量，和一个模块化的检测引擎。从此链接产看更多的基本分析和安全引擎，有一个 Web 用户界面来分析 Snort 告警。开源的 Snort 被一些个人、小企业和部门用的很不错。它的母公司&lt;a class="link" href="http://www.sourcefire.com/" target="_blank" rel="noopener"
 >SourceFire&lt;/a>提供了一个非常全的产品线；具有很多的企业级功能和实时规则更新。它们提供了一个免费的（需注册）的 5 天延迟的规则更新源，你还能在&lt;a class="link" href="http://www.bleedingsnort.com/" target="_blank" rel="noopener"
 >Bleeding Edge Snort&lt;/a>找到很多非常好的免费规则。 查看所有入侵检测系统&lt;a class="link" href="http://sectools.org/ids.html" target="_blank" rel="noopener"
 >intrusion detection systems&lt;/a>&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->&lt;strong>＃4 &lt;a class="link" href="http://www.vulnwatch.org/netcat/" target="_blank" rel="noopener"
@@ -1928,7 +1975,8 @@ alt="image"
 >&lt;img src="http://lh5.google.com/liuzh66/R35UVYCliMI/AAAAAAAAARA/2Hj4d6RBDGo/s144/image_thumb17.png"
 loading="lazy"
 alt="image"
->&lt;/a>&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->这个简单的工具通过 TCP 或者 UDP 网络链接读写数据。它被设计为一个可靠的后端工具：能被直接和通过其他程序或脚本简单地驱动执行。同时，它也是一个功能丰富的网络调试和探索工具，因为它能生成几乎所有类型的你需要的网络链接，包括接受绑定了端口的外来链接。最初版本的 Netcat &lt;a class="link" href="http://seclists.org/bugtraq/1995/Oct/0028.html" target="_blank" rel="noopener"
+>
+&lt;/a>&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->这个简单的工具通过 TCP 或者 UDP 网络链接读写数据。它被设计为一个可靠的后端工具：能被直接和通过其他程序或脚本简单地驱动执行。同时，它也是一个功能丰富的网络调试和探索工具，因为它能生成几乎所有类型的你需要的网络链接，包括接受绑定了端口的外来链接。最初版本的 Netcat &lt;a class="link" href="http://seclists.org/bugtraq/1995/Oct/0028.html" target="_blank" rel="noopener"
 >released&lt;/a> 是 Hobbit 在 1995 年发布的，但是不论它是多么的流行也没有被持续。它有时候很难被找到&lt;a class="link" href="http://download.insecure.org/stf/nc110.tgz" target="_blank" rel="noopener"
 >nc110.tgz&lt;/a>。利用这个工具的弹性和用途去开发了很多其他的 Netcat 的实现极大的推广了这个工具- 经常的很多现代的功能都不能在原始版本中找到。其中最有趣的是 &lt;a class="link" href="http://sectools.org/tools3.html#socat" target="_blank" rel="noopener"
 >Socat&lt;/a>，扩展 Netcat 去支持很多其它 socket 类型、SSL 加密、SOCKS 代理和更多。它甚至按自己的意图扩展。还有 &lt;a class="link" href="http://sourceforge.net/projects/nmap-ncat/" target="_blank" rel="noopener"
@@ -1944,7 +1992,8 @@ alt="image"
 >&lt;img src="http://lh6.google.com/liuzh66/R35UpoCliaI/AAAAAAAAASw/0G_VO5lpS_s/s144/image_thumb%5B2%5D.png"
 loading="lazy"
 alt="image"
->&lt;/a> Metasploit 在它 2004 年发布的时候给安全界带来风暴。没有其它什么工具能出现在这个列表的前 15 中， Metasploit 以第五位进入榜单，超过了很多知名的开发超过 10 年的工具。它是一个高级的开源平台。The extensible model through which payloads, encoders, no-op generators, and exploits can be integrated has made it possible to use the Metasploit Framework as an outlet for cutting-edge exploitation research. It ships with hundreds of exploits, as you can see in their &lt;a class="link" href="http://metasploit.com:55555/" target="_blank" rel="noopener"
+>
+&lt;/a> Metasploit 在它 2004 年发布的时候给安全界带来风暴。没有其它什么工具能出现在这个列表的前 15 中， Metasploit 以第五位进入榜单，超过了很多知名的开发超过 10 年的工具。它是一个高级的开源平台。The extensible model through which payloads, encoders, no-op generators, and exploits can be integrated has made it possible to use the Metasploit Framework as an outlet for cutting-edge exploitation research. It ships with hundreds of exploits, as you can see in their &lt;a class="link" href="http://metasploit.com:55555/" target="_blank" rel="noopener"
 >online exploit building demo&lt;/a>. This makes writing your own exploits easier, and it certainly beats scouring the darkest corners of the Internet for illicit shellcode of dubious quality. Similar professional exploitation tools, such as &lt;a class="link" href="http://sectools.org/tools2.html#impact" target="_blank" rel="noopener"
 >Core Impact&lt;/a> and &lt;a class="link" href="http://sectools.org/tools4.html#canvas" target="_blank" rel="noopener"
 >Canvas&lt;/a> already existed for wealthy users on all sides of the ethical spectrum. Metasploit simply brought this capability to the masses. 查看所有 &lt;a class="link" href="http://sectools.org/sploits.html" target="_blank" rel="noopener"
@@ -1987,7 +2036,8 @@ alt="image"
 &lt;/ul></description></item><item><title>Go Open Source,GO! Vyatta开源软件挺进网络硬件领域</title><link>https://martinliu.cn/2007/06/09/go-open-sourcego-vyatta-network/</link><pubDate>Sat, 09 Jun 2007 08:56:00 +0000</pubDate><guid>https://martinliu.cn/2007/06/09/go-open-sourcego-vyatta-network/</guid><description>&lt;p>&lt;a class="link" href="http://www.vyatta.com/images/masthead.jpg" target="_blank" rel="noopener"
 >&lt;img src="http://www.vyatta.com/images/masthead.jpg"
 loading="lazy"
->&lt;/a>&lt;!-- raw HTML omitted -->这是一个比较新的产品，提供开源的软件路由的解决方案；他们的目标直指 Cisco 这些大牌网络硬件厂商。它能简单的安装和运行在 32bit 的普通计算机硬件上，实现路由器的几乎所有功能；能支持的硬件平台和路由协议还真不少，请查看 &lt;a class="link" href="http://www.vyatta.com/products/vyatta_software_datasheet.pdf" target="_blank" rel="noopener"
+>
+&lt;/a>&lt;!-- raw HTML omitted -->这是一个比较新的产品，提供开源的软件路由的解决方案；他们的目标直指 Cisco 这些大牌网络硬件厂商。它能简单的安装和运行在 32bit 的普通计算机硬件上，实现路由器的几乎所有功能；能支持的硬件平台和路由协议还真不少，请查看 &lt;a class="link" href="http://www.vyatta.com/products/vyatta_software_datasheet.pdf" target="_blank" rel="noopener"
 >Datasheet&lt;/a>；下载&lt;a class="link" href="http://www.vyatta.com/download/" target="_blank" rel="noopener"
 > 网址&lt;/a>&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->在 VMWare 中安装了一下发现它可以完全满足我需求：&lt;!-- raw HTML omitted -->1）在公司中办公网络建立一个隔离的测试网。&lt;!-- raw HTML omitted -->2）测试网中提供 DHCP,DNS 服务&lt;!-- raw HTML omitted -->3）提供 NAT,Firewall&lt;!-- raw HTML omitted -->4）安装简单，硬件需求低&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->准备在公司实际环境中安装测试，安装和配置信息待续。&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->现在我正在 Vyatta Router 后面的小网内更新这个 Blog。&lt;!-- raw HTML omitted -->上午的安装过程如下：&lt;!-- raw HTML omitted -->（硬件准备）&lt;!-- raw HTML omitted -->测试机一台 Dell Gx620，主板上带 Intel 的内置网卡一块 TP-LINK TG-3269C，网线若干&lt;!-- raw HTML omitted -->（网络环境）&lt;!-- raw HTML omitted -->在一台办公网的机器上，寻找一个未使用的 IP 地址，这个地址会分配给 Router 的 Internet 网卡上；然后运行 ipconfig /all 记录下默认网关、默认 DNS 和子网掩码，这些信息会配置到 Router 上。&lt;!-- raw HTML omitted -->（安装过程）&lt;!-- raw HTML omitted -->&lt;/p>
 &lt;p>&lt;!-- raw HTML omitted -->&lt;/p>

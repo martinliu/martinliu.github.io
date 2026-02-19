@@ -45,7 +45,8 @@ alt="devops stack"
 class="gallery-image"
 data-flex-grow="150"
 data-flex-basis="360px"
->&lt;/p>
+>
+&lt;/p>
 &lt;h2 id="让我豁然开朗的-docker-composeyml-配置">让我豁然开朗的 docker-compose.yml 配置
 &lt;/h2>&lt;p>谈本地 DevOps，绕不开 &lt;code>docker-compose.yml&lt;/code>。它是整个系统的指挥中枢，决定了你是轻松一键部署，还是陷入无尽的手动操作噩梦。&lt;/p>
 &lt;p>下面是我用的一个简化版本配置：&lt;/p>
@@ -618,7 +619,8 @@ data-flex-basis="360px"
 &lt;p>&lt;img src="https://martinliu.cn/img/cos/2022-02-05-2022-02-05_11-08-30.png"
 loading="lazy"
 alt="Acquia Dev Desktop 2"
->&lt;/p>
+>
+&lt;/p>
 &lt;p>这种集成的 PHP 运行/开发/管理环境，还有很多其它选择，这里不展开。我的目标是：保持最简化和易用，与其它社区伙伴的协作，紧跟 Drupal 版本发布和补丁更新，用容器化实现云上的按需扩展。&lt;/p>
 &lt;p>首先，我使用 Acquia Dev Desktop 2 创建了一个本地的测试站点，用于学习 Drupal 的使用、定制和开发。它不仅是一个友好的 GUI 工具，其实还附带了 php 开发环境的命令行工具：composer 和 drush 。 使用这两个命令行工具可以完成 Drupal 系统的一键式搭建。在开发一个真实的内容管理系统网站以前，最基础的铺垫工作可能差不多了。&lt;/p>
 &lt;h2 id="一键安装-drupal-系统">一键安装 Drupal 系统
@@ -704,7 +706,8 @@ alt="Acquia Dev Desktop 2"
 &lt;p>&lt;img src="https://martinliu.cn/img/cos/2022-02-05-Drupal-Site-Building-Workflow.png"
 loading="lazy"
 alt="Drupal Site Building workflow"
->&lt;/p>
+>
+&lt;/p>
 &lt;p>用下面的表格梳理一下：&lt;/p>
 &lt;table>
 &lt;thead>
@@ -1096,7 +1099,8 @@ alt="Drupal Site Building workflow"
 &lt;p>&lt;img src="https://martinliu.cn/img/cos/2022-02-05-2022-02-05_23-04-12.png"
 loading="lazy"
 alt="Test Env home page"
->&lt;/p>
+>
+&lt;/p>
 &lt;h2 id="在云平台部署社区官网">在云平台部署社区官网
 &lt;/h2>&lt;p>下面是关于后续工作的一些规划：&lt;/p>
 &lt;ul>
@@ -1508,7 +1512,8 @@ alt="Test Env home page"
 &lt;/div>&lt;p>回到Nutanix的Prisum界面（主要的群集管理图形化界面）中查看Storage &amp;ndash;&amp;gt; table &amp;ndash;&amp;gt; Volume Group，应该能看到这个命令所创建的名为testvol的数据卷。如下图所示：&lt;/p>
 &lt;p>&lt;img src="https://martinliu.cn/images/Screen%20Shot%202017-06-20%20at%209.07.13%20PM.png"
 loading="lazy"
->&lt;/p>
+>
+&lt;/p>
 &lt;p>在命令行删除这个测试的卷。&lt;/p>
 &lt;div class="highlight">&lt;div class="chroma">
 &lt;table class="lntable">&lt;tr>&lt;td class="lntd">
@@ -1528,9 +1533,10 @@ loading="lazy"
 &lt;/div>
 &lt;/div>&lt;p>在回到Prisum界面中查看刚才看到的那个卷应该就消失了。到此为止所有节点的DVP部署配置工作就完毕了，并且确认docker服务和DVP功能都很正常。用 sys-unconfig 命令关机，把这个虚拟机在Prisum里面做一个快照备用，也可以在Nutanix的acli命令行里面把它做成一个基础镜像。&lt;/p>
 &lt;p>我们已经理解和熟悉了DVP的基本操作，配置和部署，下面开始安装Docker Datacenter；Docker Datacenter的架构图如下所示：
-&lt;img src="https://martinliu.cn/images/14979754711332.jpg"
+&lt;img src="https://martinliu.cn/images/14979754711332.webp"
 loading="lazy"
->&lt;/p>
+>
+&lt;/p>
 &lt;p>本文安装的架构是：&lt;/p>
 &lt;ol>
 &lt;li>一个 UCP manager 节点&lt;/li>
@@ -1646,7 +1652,8 @@ loading="lazy"
 &lt;img src="https://martinliu.cn/images/Screen%20Shot%202017-06-20%20at%209.49.32%20PM.png"
 loading="lazy"
 alt="Screen Shot 2017-06-20 at 9.49.32 P"
->&lt;/p>
+>
+&lt;/p>
 &lt;h2 id="安装dtr-docker镜像仓库">安装DTR-Docker镜像仓库
 &lt;/h2>&lt;p>在UCP首页的下方，找到并点击 【Install DTR】的按钮，取得安装命令（记得从清单中选择固定IP地址的DTR主机）；在登录DTR主机的控制台里面输入这个命令，命令如下：&lt;/p>
 &lt;div class="highlight">&lt;div class="chroma">
@@ -1686,7 +1693,8 @@ alt="Screen Shot 2017-06-20 at 9.49.32 P"
 &lt;/div>&lt;p>&lt;img src="https://martinliu.cn/images/Screen%20Shot%202017-06-20%20at%2010.10.13%20PM.png"
 loading="lazy"
 alt="Screen Shot 2017-06-20 at 10.10.13 P"
->&lt;/p>
+>
+&lt;/p>
 &lt;p>注意：如果你的环境中没有DNS，就把dtr.zenlab.local换成DTR的IP地址。&lt;/p>
 &lt;p>以上这个步骤主要是方便以后，反复使用和测试这个镜像的可能性，如果所有的节点都有高速的互联网链接，可以忽略以上步骤。&lt;/p>
 &lt;h2 id="docker-swarm群集中使用dvp">Docker Swarm群集中使用DVP
@@ -1695,46 +1703,55 @@ alt="Screen Shot 2017-06-20 at 10.10.13 P"
 &lt;img src="https://martinliu.cn/images/Screen%20Shot%202017-06-21%20at%2012.22.24%20AM.png"
 loading="lazy"
 alt="Screen Shot 2017-06-21 at 12.22.24 A"
->&lt;/p>
+>
+&lt;/p>
 &lt;p>在到Nutanix的Prism里面查看这个Volume Group是否存在。应该如下图所示：&lt;/p>
 &lt;p>&lt;img src="https://martinliu.cn/images/Screen%20Shot%202017-06-21%20at%2012.23.32%20AM.png"
 loading="lazy"
 alt="Screen Shot 2017-06-21 at 12.23.32 A"
->&lt;/p>
+>
+&lt;/p>
 &lt;h2 id="部署owncloud网盘服务">部署OwnCloud网盘服务
 &lt;/h2>&lt;p>登录UCP主页，点击 Service ， 点击 【Create a Service】按钮；开始建立这个服务。输入服务名，镜像名；点击 【Next】按钮。&lt;/p>
 &lt;p>&lt;img src="https://martinliu.cn/images/Screen%20Shot%202017-06-20%20at%2010.49.10%20PM.png"
 loading="lazy"
 alt="Screen Shot 2017-06-20 at 10.49.10 P"
->&lt;/p>
+>
+&lt;/p>
 &lt;p>点击 【Next】按钮。进入 Resource页面，这里需要配置端口和数据卷。
 &lt;img src="https://martinliu.cn/images/Screen%20Shot%202017-06-20%20at%2010.49.35%20PM.png"
 loading="lazy"
 alt="Screen Shot 2017-06-20 at 10.49.35 P"
->&lt;/p>
+>
+&lt;/p>
 &lt;p>&lt;img src="https://martinliu.cn/images/Screen%20Shot%202017-06-20%20at%2010.49.58%20PM.png"
 loading="lazy"
 alt="Screen Shot 2017-06-20 at 10.49.58 P"
->&lt;/p>
+>
+&lt;/p>
 &lt;p>最后点击【Deploy Now】按钮。 部署完毕之后，显示这个服务的状态为正常。
 &lt;img src="https://martinliu.cn/images/Screen%20Shot%202017-06-21%20at%2012.25.51%20AM.png"
 loading="lazy"
 alt="Screen Shot 2017-06-21 at 12.25.51 A"
->&lt;/p>
+>
+&lt;/p>
 &lt;p>&lt;img src="https://martinliu.cn/images/Screen%20Shot%202017-06-20%20at%2010.52.28%20PM.png"
 loading="lazy"
 alt="Screen Shot 2017-06-20 at 10.52.28 P"
->&lt;/p>
+>
+&lt;/p>
 &lt;p>点击这个服务，到这个页面的最下方，找到右下角的发布端口的链接，点击后，就可以看到ownCloud的初始化配置页面了。
 &lt;img src="https://martinliu.cn/images/Screen%20Shot%202017-06-20%20at%2010.53.24%20PM.png"
 loading="lazy"
 alt="Screen Shot 2017-06-20 at 10.53.24 P"
->&lt;/p>
+>
+&lt;/p>
 &lt;p>输入管理员的用户名和密码，进入之后，上传一些图片，测试一下功能是否正常。&lt;/p>
 &lt;p>&lt;img src="https://martinliu.cn/images/Screen%20Shot%202017-06-20%20at%2010.54.06%20PM.png"
 loading="lazy"
 alt="Screen Shot 2017-06-20 at 10.54.06 P"
->&lt;/p>
+>
+&lt;/p>
 &lt;p>尝试一些Docker Datacenter的高级功能，如服务的高可用性；同时Nutanix的DVP在底层保障了数据的持久性和完全性。测试步骤如下：&lt;/p>
 &lt;ol>
 &lt;li>找到运行owncloud的容器，删除这个容器&lt;/li>
@@ -1830,10 +1847,11 @@ alt="Screen Shot 2017-06-20 at 10.54.06 P"
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
 &lt;/div>
 &lt;/div></description></item><item><title>用Minikube体验单节点K8S</title><link>https://martinliu.cn/blog/install-minikube-k8s/</link><pubDate>Thu, 21 Sep 2017 00:00:00 +0000</pubDate><guid>https://martinliu.cn/blog/install-minikube-k8s/</guid><description>&lt;img src="https://martinliu.cn/images/abstract-1.jpg" alt="Featured image of post 用Minikube体验单节点K8S" />&lt;!-- raw HTML omitted -->
-&lt;p>&lt;img src="https://martinliu.cn/images/minikube-logo.png"
+&lt;p>&lt;img src="https://martinliu.cn/images/minikube-logo.webp"
 loading="lazy"
 alt="year-map"
->&lt;/p>
+>
+&lt;/p>
 &lt;!-- raw HTML omitted -->
 &lt;!-- raw HTML omitted -->
 &lt;!-- raw HTML omitted -->
@@ -1991,10 +2009,11 @@ BODY:
 }%&lt;/p>
 &lt;p>&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->&lt;/p>
 &lt;!-- raw HTML omitted -->
-&lt;p>&lt;img src="https://martinliu.cn/images/Overview---Kubernetes-Dashboard.jpg"
+&lt;p>&lt;img src="https://martinliu.cn/images/Overview---Kubernetes-Dashboard.webp"
 loading="lazy"
 alt="year-map"
->&lt;/p>
+>
+&lt;/p>
 &lt;!-- raw HTML omitted -->
 &lt;!-- raw HTML omitted --></description></item><item><title>DevOps 的起点-入手微型数据中心</title><link>https://martinliu.cn/2016/07/01/devops-in-a-box/</link><pubDate>Fri, 01 Jul 2016 03:11:10 +0000</pubDate><guid>https://martinliu.cn/2016/07/01/devops-in-a-box/</guid><description>&lt;h2 id="测试环境说明">测试环境说明
 &lt;/h2>&lt;p>我的笔记本电脑的环境描述如下。&lt;/p>
@@ -3102,7 +3121,8 @@ alt="year-map"
 &lt;/div>&lt;p>正常显示结果如下图所示： &lt;img src="http://yzd.io/images/voting-1.jpg"
 loading="lazy"
 alt="voting"
->&lt;/p>
+>
+&lt;/p>
 &lt;p>打开浏览器测试 result 应用。&lt;/p>
 &lt;div class="highlight">&lt;div class="chroma">
 &lt;table class="lntable">&lt;tr>&lt;td class="lntd">
@@ -3115,11 +3135,13 @@ alt="voting"
 &lt;/div>&lt;p>正常显示结果如下图所示： &lt;img src="http://yzd.io/images/result-1.jpg"
 loading="lazy"
 alt="result"
->&lt;/p>
+>
+&lt;/p>
 &lt;p>在 Rancher 的 hosts 界面中应该看到这些运行的容器。 &lt;img src="http://yzd.io/images/voting-in-rancher-1.jpg"
 loading="lazy"
 alt="voting-in-ranche"
->&lt;/p>
+>
+&lt;/p>
 &lt;p>至此所有关于应用构建和功能测试的过程完成，按 ctl + c 结束 docker-compose up 的运行。&lt;/p>
 &lt;div class="highlight">&lt;div class="chroma">
 &lt;table class="lntable">&lt;tr>&lt;td class="lntd">
@@ -3152,12 +3174,14 @@ alt="voting-in-ranche"
 &lt;p>&lt;img src="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2016/06/40906-1.jpeg"
 loading="lazy"
 alt="40906 (1)"
->&lt;/p>
+>
+&lt;/p>
 &lt;p>Ben 开讲，Serverless 是如何做的？ben 认为 Serverless 是一种全新的应用编程的思路，而 docer 可以很好的支持这种思路，并实现和执行这种思路。docer 群集可以让 Serverless 引用按需执行，并让该应用的底层变得资源冗余并路由可达。ben 开始演示   他的几张 slides， 说 Sererless == docker 这个概念。本开始讲解：如何用 Serverless 架构来实现投票应用的改造。如何把这个 5 个服务模块的纯粹容器微服务系统转换为 serverless 架构的应用。开始修改源代码，把发入队列的票，变成一个处理投票的容，把 http 服务器变成一个 CGIHander（）服务；但是  nodejs  不支持 CGIhander，肿么办？我用 perl 重写了这部分，为毛用 perl，被忘了它乃是古董级的黑客神器的好不好，呵呵！改造完之后的系统架构如下。架构是把处理 postgresql 意外的模块都重写了。数据库保留在最下层。这种 Serverless 重构实践遵从的原则如下。&lt;/p>
 &lt;p>&lt;img src="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2016/06/2-1.jpg"
 loading="lazy"
 alt="2"
->&lt;/p>
+>
+&lt;/p>
 &lt;p>三个原则翻译一下：&lt;/p>
 &lt;ol>
 &lt;li>
@@ -3178,30 +3202,36 @@ alt="2"
 &lt;p>&lt;img src="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2016/06/3-1.jpg"
 loading="lazy"
 alt="3"
->&lt;/p>
+>
+&lt;/p>
 &lt;p>&lt;img src="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2016/06/4.jpg"
 loading="lazy"
 alt="4"
->&lt;/p>
+>
+&lt;/p>
 &lt;p>&lt;img src="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2016/06/5.jpg"
 loading="lazy"
 alt="5"
->&lt;/p>
+>
+&lt;/p>
 &lt;p>实时新旧系统的切换秘密在这里。新版的容器会先运行起来，新系统用一个队列来接收旧系统的数据，这些数据是新旧系统交接的必要的数据，系统会判断需要多长时间，需要收集那些数据来完成这个交接的过程。直到旧系统到新系统的割接完毕。&lt;/p>
 &lt;p>程序猿开始更新 v1 的代码，加入了摄像头实时视频功能。更新提交了 v2 的镜像文件。在下图可以实时的监视到无人机的状态。&lt;/p>
 &lt;p>&lt;img src="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2016/06/6.jpg"
 loading="lazy"
 alt="6"
->&lt;/p>
+>
+&lt;/p>
 &lt;p>&lt;img src="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2016/06/1-1.jpg"
 loading="lazy"
 alt="1"
->&lt;/p>
+>
+&lt;/p>
 &lt;p>无人机在在线更新软件中。并没有掉地上哈哈哈！&lt;/p>
 &lt;p>&lt;img src="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2016/06/6.1.jpg"
 loading="lazy"
 alt="6.1"
->&lt;/p>
+>
+&lt;/p>
 &lt;p>右下角是新版本软件的摄像头把大会现场的视频拍摄，并实时传递到控制台的效果。此图上面的那个图，中间凸起震荡的那个块是无人机软件升级实时更新的过程。&lt;/p>
 &lt;p>本黑科技演示完毕。&lt;/p>
 &lt;h2 id="hackathon-黑客大赛启动">hackathon 黑客大赛启动
@@ -3209,7 +3239,8 @@ alt="6.1"
 &lt;p>&lt;img src="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2016/06/7.jpg"
 loading="lazy"
 alt="7"
->&lt;/p>
+>
+&lt;/p>
 &lt;p>为期一个月的 hackathon 正式开始。&lt;/p>
 &lt;h2 id="最后看点">最后看点
 &lt;/h2>&lt;p>CEO CTO 上台感谢赞助商。所罗门开始讲黑客骚扰现象。号召大家通过&lt;a class="link" href="http://hackharassment.com" target="_blank" rel="noopener"
@@ -3225,7 +3256,8 @@ alt="7"
 &lt;/h2>&lt;p>&lt;img src="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2016/06/2.jpg"
 loading="lazy"
 alt="2"
->&lt;/p>
+>
+&lt;/p>
 &lt;p>Ben Golub CEO 出场。 Today we are all docker blue. 欢迎所有人。 我们和前两年的不同，我们发布了 1.0 等等。 谈了很多 Docker 取得的成就。 感谢和表扬了社区。 感谢 2900+贡献者。 社区的状态动态，每周超过 300 PR，三分之二来自 Docker 公司之外。 docker meetup 的状况， 250+城市举行，125K 人参加聚会。 内容构建方面，docker hub 上有 460K 个应用，到目前为止有 4.1B 此镜像下载。 感谢 docker 的生态社区。 讲述了这两年的使用场景的变化。Docker 逐渐成为了企业级的应用。 所有穿着红色衣服的起立，他们是 Dockr 公司的员工，感谢他们，请鼓掌。 感谢今年的赞助商。 向 Demo Gods 致敬，给神献上祭品，保证后续的演示顺利。 we pray to the old codes and the new.&lt;/p>
 &lt;h2 id="cto-所罗门演讲">CTO 所罗门演讲
 &lt;/h2>&lt;p>所罗门出场。 我去，4000 多人在场，我老爸也在家看我视频直播。 很荣欣大家来参加，感谢大家来参会。 谁参加过 DockerCon14？ 我们要开始做很多的 demo 在会议过程中。 最精彩的部分是，我们来自全球各个行业的不同层面，多样性简直是不可思议。原因是：Programming is changing the world. 我们在一起的原因是：Docker 是编程创新的助力工具。 We’re building Docker incrementally, in the open. 最好的工具目前看不是那些软件工具巨人的公司提供的，而是来自社区和群众的创新，是你们指引着我们构建了愈来愈多的工具。 社区告诉我们几个方面需要努力。&lt;/p>
@@ -3270,7 +3302,8 @@ alt="2"
 &lt;p>&lt;img src="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2016/06/3.jpg"
 loading="lazy"
 alt="3"
->&lt;/p>
+>
+&lt;/p>
 &lt;p>我们先提前介绍一些它的新功能。&lt;/p>
 &lt;ul>
 &lt;li>Swarm mode&lt;/li>
@@ -3794,7 +3827,8 @@ Hello World!
 >&lt;img src="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2015/03/secure-containers.png"
 loading="lazy"
 alt="secure-containers"
->&lt;/a>&lt;/p>
+>
+&lt;/a>&lt;/p>
 &lt;p>Project Atomic 项目相关的开源技术组件如下：&lt;/p>
 &lt;p>[wm_list bullet=&amp;ldquo;icon-linux&amp;rdquo; class=&amp;quot;&amp;quot;]&lt;/p>
 &lt;ul>
@@ -3827,7 +3861,8 @@ alt="secure-containers"
 >&lt;img src="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2015/03/atomic-dev-mail-list.jpg"
 loading="lazy"
 alt="atomic-dev-mail-list"
->&lt;/a>&lt;/p>
+>
+&lt;/a>&lt;/p>
 &lt;h2 id="问-project-atomic-问题和讨论">问   Project Atomic 问题和讨论
 &lt;/h2>&lt;p>&lt;a class="link" href="http://ask.projectatomic.io/en/questions/" target="_blank" rel="noopener"
 >http://ask.projectatomic.io/en/questions/  这里是&lt;/a>项目的论坛可以在这里提问和帮助其他人。&lt;/p>

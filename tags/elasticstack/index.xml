@@ -2,9 +2,10 @@
 &lt;/h2>&lt;p>使用 Elastic Stack 的各种 Beats 模块可以彻底的终结在服务器上手工捞日志查指标的扭曲实践。利用腾讯云提供的 Elasticsearch 服务，可以轻松搞定大规模云环境的运维。本文一次性的帮你梳理清楚了，必备的基础操作，确保你能用 Elastic Stack 安全、稳定和扩展的持续监控你的生产环境。&lt;/p>
 &lt;h2 id="创建-es-集群">创建 ES 集群
 &lt;/h2>&lt;p>登录腾讯云服务控制台，查询并进入 Elasticsearc 服务，点击新建按钮，创建 Elasticsearch 集群。如下图所示。&lt;/p>
-&lt;p>&lt;img src="https://martinliu.cn/images/qcloud-es.jpeg"
+&lt;p>&lt;img src="https://martinliu.cn/images/qcloud-es.webp"
 loading="lazy"
->&lt;/p>
+>
+&lt;/p>
 &lt;p>集群配置说明：&lt;/p>
 &lt;ul>
 &lt;li>北京区&lt;/li>
@@ -29,9 +30,10 @@ loading="lazy"
 &lt;li>创建 beats-writer 用户，该用户只赋予beats-writer角色，自定义一个安全的复杂密码。&lt;/li>
 &lt;/ul>
 &lt;p>Beats-write 角色设置如下图所示：&lt;/p>
-&lt;p>&lt;img src="https://martinliu.cn/images/beats-writer.jpeg"
+&lt;p>&lt;img src="https://martinliu.cn/images/beats-writer.webp"
 loading="lazy"
->&lt;/p>
+>
+&lt;/p>
 &lt;p>这个用户会用到后面的所有 Beats 配置文件中，用最小化权限用户极大的降低了数据泄露的风险。&lt;/p>
 &lt;h2 id="beats-初始化配置">Beats 初始化配置
 &lt;/h2>&lt;p>登录准备好的一个 Linux 服务器，在这台机器上做 Beats 相关的初始化工作；也就是要执行一些列的 setup 命令；这些命令的作用是：&lt;/p>

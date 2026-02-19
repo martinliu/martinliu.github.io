@@ -12,7 +12,8 @@
 &lt;p>&lt;img src="https://res.cloudinary.com/martinliu/image/upload/dns.png"
 loading="lazy"
 alt="kops On aws"
->&lt;/p>
+>
+&lt;/p>
 &lt;h2 id="安装工具准备">安装工具准备
 &lt;/h2>&lt;p>需要安装的工具包括 kubectl, kops 和 AWS CLI 工具。kops需要调用 AWS CLI来创建所需要的资源。我觉得简单的方法是：在目标的Region里创建一台Amazon AMI的虚拟机，这样AWS CLI就不用装了，而且在云里的话，执行kops的时候，由于有一大堆资源创建更新的api调用，感觉速度比在本机快很多，而且还用担心断网。&lt;/p>
 &lt;p>可以启动一台t2.micro规格的Amazon AMI即可，另外需要给这个实例配置如下IAM用户权限，在启动的时候选择合适的IAM Role。&lt;/p>
@@ -116,7 +117,8 @@ alt="kops On aws"
 &lt;p>&lt;img src="https://res.cloudinary.com/martinliu/image/upload/s3.png"
 loading="lazy"
 alt="kops On aws"
->&lt;/p>
+>
+&lt;/p>
 &lt;h2 id="创建kubernetes-cluster">创建Kubernetes Cluster
 &lt;/h2>&lt;p>命令行参数如下：&lt;/p>
 &lt;ul>
@@ -324,7 +326,8 @@ alt="kops On aws"
 &lt;p>&lt;img src="https://res.cloudinary.com/martinliu/image/upload/ec2.png"
 loading="lazy"
 alt="kops On aws"
->&lt;/p>
+>
+&lt;/p>
 &lt;p>也创建了两个ASG：&lt;/p>
 &lt;ul>
 &lt;li>一个是针对master的扩容规则&lt;/li>
@@ -334,7 +337,8 @@ alt="kops On aws"
 &lt;p>&lt;img src="https://res.cloudinary.com/martinliu/image/upload/asg.png"
 loading="lazy"
 alt="kops On aws"
->&lt;/p>
+>
+&lt;/p>
 &lt;p>在安装完成之后，用一下命令确认集群状态如下：&lt;/p>
 &lt;div class="highlight">&lt;div class="chroma">
 &lt;table class="lntable">&lt;tr>&lt;td class="lntd">
@@ -437,7 +441,8 @@ alt="kops On aws"
 &lt;p>&lt;img src="https://res.cloudinary.com/martinliu/image/upload/nginx.png"
 loading="lazy"
 alt="kops On aws"
->&lt;/p>
+>
+&lt;/p>
 &lt;h2 id="删除集群">删除集群
 &lt;/h2>&lt;p>用一条命令就能删除以上所建立的Kubernetes集群。&lt;/p>
 &lt;div class="highlight">&lt;div class="chroma">
@@ -457,21 +462,25 @@ alt="kops On aws"
 &lt;p>&lt;img src="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2016/11/EXIN-DevOps-Master-Cert-Martin-Liu.jpg"
 loading="lazy"
 alt="exin-devops-master-cert-martin-liu"
-> DevOps Master&lt;/p>
+>
+DevOps Master&lt;/p>
 &lt;p>&lt;img src="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2016/11/certificate-devops-freelance-trainer-Liu-Zheng.jpg"
 loading="lazy"
 alt="DevOps Master 认证自由讲师"
-> DevOps Master 认证自由讲师&lt;/p>
+>
+DevOps Master 认证自由讲师&lt;/p>
 &lt;p>我参加的是讲师认证培训 TTT，很高兴能成为 Exin 在国内的首批 5 个认证人员之一。在准备这个考试的过程中我学习了一些书籍，现在还在深度学习的书有两本。&lt;/p>
 &lt;p>&lt;img src="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2016/11/14678659256890.jpg"
 loading="lazy"
 alt="14678659256890"
->&lt;/p>
+>
+&lt;/p>
 &lt;p>我完成了这本黑皮书的读书笔记，很遗憾的是，我发现它的最新版，把封面改成了白底的了，我不能在叫它黑皮书／黑宝书了。这本书我起码看了两遍；目前正在调试它的书中的代码，代码中的营养还是很高的，计划尽快把所有代码调试通过；从而完成我许下多次的线上分享本书的诺言。&lt;/p>
 &lt;p>&lt;img src="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2016/11/14749866044733.jpg"
 loading="lazy"
 alt="14749866044733"
->&lt;/p>
+>
+&lt;/p>
 &lt;p>这本书被我称为 CD 红皮书／红宝书。本书早在 10 年就出版了，也就是说比 Docker 早好多年。他给我最大的印象就是，作者每一页上似乎都在介绍这做事情的原则和规矩是什么？我一点也不夸张，他对 CD 的介绍，就是通过讲解一系列在项目上的经验总结。对作者这种级别的经验，和写书的房子只能用一个词总结“服”。这本书太干，我至今还没有消化完。他让我看到了解决发布和变更风险的终极解决方案，没有一次性解决问题的部署／配置／发布工具，有的是历练和打磨了千万次的持续部署流水线；隐约地觉得没用入手的企业都会慢慢跟上的。&lt;/p>
 &lt;p>以上是我对 DevOps 的阶段性总结，跨度有半年之久。这半年中我逐渐看清了我的主要兴趣点，抛除所有其他主题，目前剩下的就是：云计算和 DevOps。一方面觉得年纪不饶人，不能可能在和年轻人拼精力、体力和创意；我的背景和经验都让我感觉，在这两个话题上，我还是有很多年的经验和技术积累和总结的。云计算是（公有云＋私有云）未来企业 IT 基础架构的走向；DevOps 是目前看比较正确的运作实践。一个便技术，一个便管理，正好完整覆盖了我的经验；在其对应的开源技术这个分支里，我想它们都还有这很多的为探索和研究的项目。&lt;/p></description></item><item><title>DevOps 的起点-入手微型数据中心</title><link>https://martinliu.cn/2016/07/01/devops-in-a-box/</link><pubDate>Fri, 01 Jul 2016 03:11:10 +0000</pubDate><guid>https://martinliu.cn/2016/07/01/devops-in-a-box/</guid><description>&lt;h2 id="测试环境说明">测试环境说明
 &lt;/h2>&lt;p>我的笔记本电脑的环境描述如下。&lt;/p>
@@ -1579,7 +1588,8 @@ alt="14749866044733"
 &lt;/div>&lt;p>正常显示结果如下图所示： &lt;img src="http://yzd.io/images/voting-1.jpg"
 loading="lazy"
 alt="voting"
->&lt;/p>
+>
+&lt;/p>
 &lt;p>打开浏览器测试 result 应用。&lt;/p>
 &lt;div class="highlight">&lt;div class="chroma">
 &lt;table class="lntable">&lt;tr>&lt;td class="lntd">
@@ -1592,11 +1602,13 @@ alt="voting"
 &lt;/div>&lt;p>正常显示结果如下图所示： &lt;img src="http://yzd.io/images/result-1.jpg"
 loading="lazy"
 alt="result"
->&lt;/p>
+>
+&lt;/p>
 &lt;p>在 Rancher 的 hosts 界面中应该看到这些运行的容器。 &lt;img src="http://yzd.io/images/voting-in-rancher-1.jpg"
 loading="lazy"
 alt="voting-in-ranche"
->&lt;/p>
+>
+&lt;/p>
 &lt;p>至此所有关于应用构建和功能测试的过程完成，按 ctl + c 结束 docker-compose up 的运行。&lt;/p>
 &lt;div class="highlight">&lt;div class="chroma">
 &lt;table class="lntable">&lt;tr>&lt;td class="lntd">
@@ -1627,7 +1639,8 @@ alt="voting-in-ranche"
 >“一个有 5 个子服务组成的投票应用”&lt;/a>：&lt;/p>
 &lt;p>&lt;img src="https://media.licdn.com/mpr/mpr/shrinknp_800_800/AAEAAQAAAAAAAAlaAAAAJGI5NTZjMjRkLTRkNmYtNDEyOC04OTNiLTBmY2I5M2QyOTZiMQ.png"
 loading="lazy"
->&lt;/p>
+>
+&lt;/p>
 &lt;p>它的结构如下：&lt;/p>
 &lt;ul>
 &lt;li>两个 web 前端&lt;/li>
@@ -1659,7 +1672,8 @@ loading="lazy"
 &lt;p>我们新的架构大概如下图所示：&lt;/p>
 &lt;p>&lt;img src="https://media.licdn.com/mpr/mpr/shrinknp_800_800/AAEAAQAAAAAAAAjOAAAAJGQyYTVhZTFiLTRkZWQtNDE0Yi1iMzRkLWU4OWU5NjExZDc2OQ.png"
 loading="lazy"
->&lt;/p>
+>
+&lt;/p>
 &lt;p>其中红色的方块是需持续长期运行的服务，而绿色方块成了按需被调用的 Docker 容器。这样这个应用变成了只有少数几个需要被管理的 long-running 服务，在相应请求的时候使用原生的 Swarm 扩容能力，处理能力的上限是 Swarm 群集的上限。&lt;/p>
 &lt;h2 id="具体如何实现">具体如何实现
 &lt;/h2>&lt;p>这里有三个有用的技巧，可以在你的程序中使用：&lt;/p>
@@ -1691,12 +1705,14 @@ loading="lazy"
 &lt;p>&lt;img src="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2016/06/40906-1.jpeg"
 loading="lazy"
 alt="40906 (1)"
->&lt;/p>
+>
+&lt;/p>
 &lt;p>Ben 开讲，Serverless 是如何做的？ben 认为 Serverless 是一种全新的应用编程的思路，而 docer 可以很好的支持这种思路，并实现和执行这种思路。docer 群集可以让 Serverless 引用按需执行，并让该应用的底层变得资源冗余并路由可达。ben 开始演示   他的几张 slides， 说 Sererless == docker 这个概念。本开始讲解：如何用 Serverless 架构来实现投票应用的改造。如何把这个 5 个服务模块的纯粹容器微服务系统转换为 serverless 架构的应用。开始修改源代码，把发入队列的票，变成一个处理投票的容，把 http 服务器变成一个 CGIHander（）服务；但是  nodejs  不支持 CGIhander，肿么办？我用 perl 重写了这部分，为毛用 perl，被忘了它乃是古董级的黑客神器的好不好，呵呵！改造完之后的系统架构如下。架构是把处理 postgresql 意外的模块都重写了。数据库保留在最下层。这种 Serverless 重构实践遵从的原则如下。&lt;/p>
 &lt;p>&lt;img src="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2016/06/2-1.jpg"
 loading="lazy"
 alt="2"
->&lt;/p>
+>
+&lt;/p>
 &lt;p>三个原则翻译一下：&lt;/p>
 &lt;ol>
 &lt;li>
@@ -1717,30 +1733,36 @@ alt="2"
 &lt;p>&lt;img src="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2016/06/3-1.jpg"
 loading="lazy"
 alt="3"
->&lt;/p>
+>
+&lt;/p>
 &lt;p>&lt;img src="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2016/06/4.jpg"
 loading="lazy"
 alt="4"
->&lt;/p>
+>
+&lt;/p>
 &lt;p>&lt;img src="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2016/06/5.jpg"
 loading="lazy"
 alt="5"
->&lt;/p>
+>
+&lt;/p>
 &lt;p>实时新旧系统的切换秘密在这里。新版的容器会先运行起来，新系统用一个队列来接收旧系统的数据，这些数据是新旧系统交接的必要的数据，系统会判断需要多长时间，需要收集那些数据来完成这个交接的过程。直到旧系统到新系统的割接完毕。&lt;/p>
 &lt;p>程序猿开始更新 v1 的代码，加入了摄像头实时视频功能。更新提交了 v2 的镜像文件。在下图可以实时的监视到无人机的状态。&lt;/p>
 &lt;p>&lt;img src="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2016/06/6.jpg"
 loading="lazy"
 alt="6"
->&lt;/p>
+>
+&lt;/p>
 &lt;p>&lt;img src="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2016/06/1-1.jpg"
 loading="lazy"
 alt="1"
->&lt;/p>
+>
+&lt;/p>
 &lt;p>无人机在在线更新软件中。并没有掉地上哈哈哈！&lt;/p>
 &lt;p>&lt;img src="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2016/06/6.1.jpg"
 loading="lazy"
 alt="6.1"
->&lt;/p>
+>
+&lt;/p>
 &lt;p>右下角是新版本软件的摄像头把大会现场的视频拍摄，并实时传递到控制台的效果。此图上面的那个图，中间凸起震荡的那个块是无人机软件升级实时更新的过程。&lt;/p>
 &lt;p>本黑科技演示完毕。&lt;/p>
 &lt;h2 id="hackathon-黑客大赛启动">hackathon 黑客大赛启动
@@ -1748,7 +1770,8 @@ alt="6.1"
 &lt;p>&lt;img src="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2016/06/7.jpg"
 loading="lazy"
 alt="7"
->&lt;/p>
+>
+&lt;/p>
 &lt;p>为期一个月的 hackathon 正式开始。&lt;/p>
 &lt;h2 id="最后看点">最后看点
 &lt;/h2>&lt;p>CEO CTO 上台感谢赞助商。所罗门开始讲黑客骚扰现象。号召大家通过&lt;a class="link" href="http://hackharassment.com" target="_blank" rel="noopener"
@@ -2190,7 +2213,8 @@ Hello World!
 &lt;p>[caption id=&amp;ldquo;attachment_53819&amp;rdquo; align=&amp;ldquo;aligncenter&amp;rdquo; width=&amp;ldquo;800&amp;rdquo;]&lt;img src="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2015/07/cormier_keynote_800px.jpg"
 loading="lazy"
 alt="cormier_keynote_800px"
->](&lt;a class="link" href="http://martinliu.cn/paul%e7%9a%84%e5%bc%80%e6%ba%90%e9%80%bb%e8%be%91%e6%80%9d%e7%bb%b4/cormier_keynote_800px/" target="_blank" rel="noopener"
+>
+](&lt;a class="link" href="http://martinliu.cn/paul%e7%9a%84%e5%bc%80%e6%ba%90%e9%80%bb%e8%be%91%e6%80%9d%e7%bb%b4/cormier_keynote_800px/" target="_blank" rel="noopener"
 >http://martinliu.cn/paul%e7%9a%84%e5%bc%80%e6%ba%90%e9%80%bb%e8%be%91%e6%80%9d%e7%bb%b4/cormier_keynote_800px/&lt;/a>) Keynote 笔记[/caption]&lt;/p>
 &lt;p>从这个角度出发，Red Hat 的使命才刚过开始，它中在用 Linux 和相关开源技术来变革整个企业数据中心的技术堆栈；从基础架构一直到应用开发。&lt;/p>
 &lt;p>为何开源技术当今如此之火热？开源技术正在解决和处理现实社会中那些最复杂的业务问题。为什么会这样？驱动因素是什么？是动态变化的企业业务需求。&lt;/p>
@@ -2202,7 +2226,8 @@ alt="cormier_keynote_800px"
 &lt;p>&lt;img src="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2015/07/paul-keynote.jpg"
 loading="lazy"
 alt="paul-keynote"
->在开源的开发框架里，开发人员可以有更多、更新的开发语言、开发工具、库和社区的支持，这使他们能更快地解决业务问题。这些框架首先被广泛应用于互联网行业公司。Red Hat 基于 JBoss 社区为企业提供了企业级的应用服务器、集成工具、规则引擎和丰富的开发语言。让企业级应用能像互联网公司一样地使用开放应用所需的开发框架和开发平台。相比私有技术公司用了四十多年达到目前的程度，开源领域的快速创新用十几年就做到了，发展速度比私有软件快很多。&lt;/p>
+>
+在开源的开发框架里，开发人员可以有更多、更新的开发语言、开发工具、库和社区的支持，这使他们能更快地解决业务问题。这些框架首先被广泛应用于互联网行业公司。Red Hat 基于 JBoss 社区为企业提供了企业级的应用服务器、集成工具、规则引擎和丰富的开发语言。让企业级应用能像互联网公司一样地使用开放应用所需的开发框架和开发平台。相比私有技术公司用了四十多年达到目前的程度，开源领域的快速创新用十几年就做到了，发展速度比私有软件快很多。&lt;/p>
 &lt;p>现在看到了基础架构和开发框架都极大地受到了开源技术的影响、冲击和变革。运维和开发之间亟待出现一种融合技术，来改善目前的互为孤岛的现状。这种联系将使开源技术为他们带来最大的共同价值。&lt;/p>
 &lt;p>容器技术实际上在操作系统中存在了很多年了，只是最近才被引入开源领域；它的出现将确实会改善孤岛问题，为开发人员解决了应用在各种混合的计算和存储平台之间的可移植性、一致性和敏捷性等问题。&lt;/p>
 &lt;p>开发和运维之间的割裂还导致了业务创新的迟钝，这个问题已经持续存在很多很多年了。因此 Red Hat 发布了 Red Hat Atomic Enterprise Platform。让企业应用可以安全地在各种形式的计算平台上一致地运行。Red Hat 发布了 OpenShift v3 ，它是一些列容器的自动化调度和部署管理工具集合，并包含全套的开放应用开发框架平台。它能帮助企业基于容器技术发展出新一代的混合应用。&lt;/p>
@@ -2212,7 +2237,8 @@ alt="paul-keynote"
 >&lt;img src="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2015/07/DevOps-in-practice-1024x574.png"
 loading="lazy"
 alt="DevOps-in-practice"
->&lt;/a>&lt;/p>
+>
+&lt;/a>&lt;/p>
 &lt;p>企业应用 DevOps 是一种趋势，它不是一个理论，而是一种实践。Red Hat 的全线企业级开源技术平台已经做好了准备，企业现在就可以开始 DevOps 实践之旅。&lt;/p>
 &lt;p>开源和闭源之战将不可逆转地持续下去，Red Hat 将持续守护开源阵营。私有软件技术不愿意看到逐渐开放的变化，他们不希望开放，不愿意去分享；Pual 坚信开放不仅仅是看到代码而已，而是与之共生，是开放的软件开发流程，是基于开放代码上的不断创新活动。这是一场宏大的战役，开源逐渐开始在一些战斗中取胜，待到明年此时，或将看到开源是如何在企业 IT 基础架构上全面获胜的。&lt;/p>
 &lt;p>本演讲的官方 Blog 报道：&lt;a class="link" href="http://summitblog.redhat.com/2015/06/24/paul-cormier-announces-new-products-and-technologies-at-red-hat-summit/" target="_blank" rel="noopener"
@@ -2368,7 +2394,8 @@ Notice: Finished catalog run in 0.21 seconds
 &lt;p>&lt;img src="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2015/06/katello-arch-diagram.png"
 loading="lazy"
 alt="katello-arch-diagram"
->&lt;/p>
+>
+&lt;/p>
 &lt;p>Katell 系统是一个复合型开源项目，是 Pulp, Candlepin 和 Foreman 的组合。Foreman 默认使用 Puppet 作配置管理。&lt;/p>
 &lt;p>它的安装文档见官方手册：&lt;a class="link" href="http://www.katello.org/docs/2.2/installation/index.html" target="_blank" rel="noopener"
 >http://www.katello.org/docs/2.2/installation/index.html&lt;/a>&lt;/p>
@@ -2376,7 +2403,8 @@ alt="katello-arch-diagram"
 &lt;p>&lt;img src="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2015/06/QEMU-KVM-Connection-Details_006.png"
 loading="lazy"
 alt="QEMU-KVM Connection Details_006"
->&lt;/p>
+>
+&lt;/p>
 &lt;p>虚拟机启动之后，确保 host 能正常联网。启动刚才创建的虚拟机，配置好 IP，ping 外网网站，确保它能正常联网即可。其它安装命令如下：&lt;/p>
 &lt;p>[bash]&lt;/p>
 &lt;p>yum -y localinstall &lt;a class="link" href="http://fedorapeople.org/groups/katello/releases/yum/2.2/katello/RHEL/7Server/x86_64/katello-repos-latest.rpm" target="_blank" rel="noopener"
@@ -2608,7 +2636,8 @@ QCon 北京 2015（PPT） &lt;a class="link" href="http://pan.baidu.com/s/1sj2t1
 >&lt;img src="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2015/05/redhat-sulution.jpg"
 loading="lazy"
 alt="redhat-sulution"
->&lt;/a>&lt;/p>
+>
+&lt;/a>&lt;/p>
 &lt;p>学习了一写文档后，逐渐对互联网公司的架构挑战需求和现状有了一些了解。下面先聊下这方面的一些理解。&lt;/p>
 &lt;h1 id="中国规模交易量">中国规模交易量
 &lt;/h1>&lt;p>什么叫中国规模交易量，以淘宝 2014-11-11 双十一当天的数据举例：&lt;/p>
@@ -2635,7 +2664,8 @@ alt="redhat-sulution"
 >&lt;img src="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2015/05/Red-Hat-open-hybrid-cloud-1000x563_0.png"
 loading="lazy"
 alt="Red-Hat-open-hybrid-cloud-1000x563_0"
->&lt;/a>&lt;/p>
+>
+&lt;/a>&lt;/p>
 &lt;p>有些产品模块需要稍微说明一下，方便和开源项目对应起来。&lt;/p>
 &lt;p>[su_list icon=&amp;ldquo;icon: linux&amp;rdquo;]&lt;/p>
 &lt;ul>
@@ -2652,7 +2682,8 @@ alt="Red-Hat-open-hybrid-cloud-1000x563_0"
 &lt;p>红帽的技术支持范围还包括很多操作系统内的功能组件，包括：HA-Proxy，LVS，MySQL 等等。在技术面的广度上，并不限于以上框架图。不过那幅图是全堆栈的最简易的展示。&lt;/p></description></item><item><title>Practical Linux Infrastructure</title><link>https://martinliu.cn/2015/03/29/practical-linux-infrastructure/</link><pubDate>Sun, 29 Mar 2015 14:10:37 +0000</pubDate><guid>https://martinliu.cn/2015/03/29/practical-linux-infrastructure/</guid><description>&lt;p>&lt;img src="http://ecx.images-amazon.com/images/I/51mcZ%2BD9AsL._SL500_PIsitb-sticker-arrow-big,TopRight,35,-73_OU01_SS75_SS75_.jpg"
 loading="lazy"
 alt="Practical Linux Infrastructure by Syed Ali"
->&lt;/p>
+>
+&lt;/p>
 &lt;p>&lt;strong>Practical Linux Infrastructure&lt;/strong>
 by Syed Ali
 &lt;strong>Link:&lt;/strong> &lt;a class="link" href="http://amzn.com/148420512X" target="_blank" rel="noopener"
@@ -2682,7 +2713,8 @@ by Syed Ali
 >&lt;img src="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2015/03/secure-containers.png"
 loading="lazy"
 alt="secure-containers"
->&lt;/a>&lt;/p>
+>
+&lt;/a>&lt;/p>
 &lt;p>Project Atomic 项目相关的开源技术组件如下：&lt;/p>
 &lt;p>[wm_list bullet=&amp;ldquo;icon-linux&amp;rdquo; class=&amp;quot;&amp;quot;]&lt;/p>
 &lt;ul>
@@ -2715,7 +2747,8 @@ alt="secure-containers"
 >&lt;img src="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2015/03/atomic-dev-mail-list.jpg"
 loading="lazy"
 alt="atomic-dev-mail-list"
->&lt;/a>&lt;/p>
+>
+&lt;/a>&lt;/p>
 &lt;h2 id="问-project-atomic-问题和讨论">问   Project Atomic 问题和讨论
 &lt;/h2>&lt;p>&lt;a class="link" href="http://ask.projectatomic.io/en/questions/" target="_blank" rel="noopener"
 >http://ask.projectatomic.io/en/questions/  这里是&lt;/a>项目的论坛可以在这里提问和帮助其他人。&lt;/p>
@@ -2725,7 +2758,8 @@ alt="atomic-dev-mail-list"
 >开源软件之系统架构师篇》&lt;/a>可惜对其中一个同学的回答后来想着欠妥 :(&lt;/p></description></item><item><title>Martin's lab 主服务器搭建</title><link>https://martinliu.cn/2015/03/08/e4b8bbe69c8de58aa1e599a8e690ade5bbba/</link><pubDate>Sun, 08 Mar 2015 15:42:01 +0000</pubDate><guid>https://martinliu.cn/2015/03/08/e4b8bbe69c8de58aa1e599a8e690ade5bbba/</guid><description>&lt;p>&lt;img src="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2015/05/Red-Hat-open-hybrid-cloud-1000x563_0.png"
 loading="lazy"
 alt="Red-Hat-open-hybrid-cloud-1000x563_0"
->&lt;/p>
+>
+&lt;/p>
 &lt;p>上图是红帽产品和技术架构的全貌。来源是：&lt;a class="link" href="http://www.redhat.com/en/technologies/cloud-computing" target="_blank" rel="noopener"
 >http://www.redhat.com/en/technologies/cloud-computing&lt;/a> 这张图我用在了我的首次给公司内部的全体销售培训上。由于我是 IT 管理背景的，因此我很习惯从云管理层往下看云引擎的各个层面。但是管理层产品，其实是后来整合纳入的。红帽起家的旗舰产品还是在底层的 RHEL。总之，我想在一个 Lab 里面实现以上所有的部分，所谓实现是让其每个部分都能在运行在假象的一个有意义的业务场景里。还好，红帽的产品全都是基于 x86 平台的，因此我用几个笔记本，再加上我家里的这台 HP MicroServer G8 服务器应该能够全部部署出来。&lt;/p>
 &lt;p>做这样的一个 lab 还是要一定的规划和设计的，这些初步的规划和设计都在我的本子里手写的，就不在这里敲字了，随后我会抽空上几张图。&lt;/p>
@@ -2737,7 +2771,8 @@ alt="Red-Hat-open-hybrid-cloud-1000x563_0"
 >&lt;img src="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2015/03/employee-sub-520x295.png"
 loading="lazy"
 alt="employee-sub"
->&lt;/a>&lt;/p>
+>
+&lt;/a>&lt;/p>
 &lt;p>红帽的服务必须是基于订阅的每一个节点（物理、虚拟）都需要有有效的订阅，否则红帽的支持服务不能生效。对于一个已经成功注册到红帽官网，并且状态正常的服务器，应该显示如下的注册状态：&lt;/p>
 &lt;p>[bash]
 [root@w540 ~]# subscription-manager list&lt;/p>
@@ -2890,13 +2925,15 @@ Export list for localhost:
 >&lt;img src="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2015/01/Screenshot-from-2015-01-28-001822-1024x686.png"
 loading="lazy"
 alt="Screenshot from 2015-01-28 00:18:22"
->&lt;/a>&lt;/p>
+>
+&lt;/a>&lt;/p>
 &lt;p>安装之后发现确实 Cockpit 的界面已经可以登陆了，是黑色的风格。&lt;/p>
 &lt;p>&lt;a class="link" href="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2015/01/Screenshot-from-2015-01-27-235218.png" target="_blank" rel="noopener"
 >&lt;img src="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2015/01/Screenshot-from-2015-01-27-235218-1024x625.png"
 loading="lazy"
 alt="Screenshot from 2015-01-27 23:52:18"
->&lt;/a>&lt;/p>
+>
+&lt;/a>&lt;/p>
 &lt;p>在继续安装和探索之前，我有装了一个默认选项的 f21 server ，想通过这个节点的节目添加后统一管理。&lt;/p>
 &lt;p>[gallery columns=&amp;ldquo;1&amp;rdquo; size=&amp;ldquo;large&amp;rdquo; ids=&amp;ldquo;53433,53434,53435,53436,53437,53438,53439,53440,53441,53442,53443,53444,53445,53446,53447,53448&amp;rdquo;]&lt;/p>
 &lt;p>我感觉有了这个工具，新手们可以轻松第完成大部分 Linux 系统的维护工作了。&lt;/p>
@@ -2914,14 +2951,16 @@ alt="Screenshot from 2015-01-27 23:52:18"
 >&lt;img src="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2015/01/topbar_logo.png"
 loading="lazy"
 alt="topbar_logo"
->&lt;/a>&lt;/p>
+>
+&lt;/a>&lt;/p>
 &lt;p>安装 virt-manager：yum install -y virt-* ； 装完之后重新启动机器即可使用。&lt;/p>
 &lt;h1 id="建议初始配置">建议初始配置
 &lt;/h1>&lt;p>安装完后有几个环境的配置推荐可以做一下。&lt;/p>
 &lt;p>&lt;img src="http://martinliu.cn/wp-content/gallery/virt-manager-kvm-1/Screenshot-from-2015-01-06-193413.png"
 loading="lazy"
 alt="点击New Volume"
->&lt;/p>
+>
+&lt;/p>
 &lt;p>Storage Pool ： 一个默认的 + 两个自建的&lt;/p>
 &lt;ul>
 &lt;li>Default ：这是 virt-manager 安装时默认创建的，它和操作系统在同一个卷上，我的测试机使用 SSD 卷，因此我所有虚拟机都会使用这个卷，这样速度比较快&lt;/li>
@@ -2931,7 +2970,8 @@ alt="点击New Volume"
 &lt;p>&lt;img src="http://martinliu.cn/wp-content/gallery/virt-manager-kvm-1/Screenshot-from-2015-01-06-210927.png"
 loading="lazy"
 alt="自建的内外1"
->&lt;/p>
+>
+&lt;/p>
 &lt;p>虚拟网络 （一个默认+两个新建）&lt;/p>
 &lt;ul>
 &lt;li>default ： 这个是安装了 virt-manager + kvm 之后就有的，是用 NAT 的方式，带 dhcp，默认虚拟机可以连接物理机所在的外围&lt;/li>
@@ -2941,7 +2981,8 @@ alt="自建的内外1"
 &lt;p>有了以上配置之后，就可以高效工作了，效率感觉比 vmware workstation 要高，速度快稳定。下面是虚拟机创建的流程，里面有些我的推荐做法。&lt;/p>
 &lt;p>&lt;img src="http://martinliu.cn/nextgen-attach_to_post/preview/id--53382"
 loading="lazy"
->&lt;/p>
+>
+&lt;/p>
 &lt;p>本想看下，virt-install 的使用方式，感觉那个参数太多，容易敲错，还是界面比较容易上手，而且出错的机会不高。&lt;/p>
 &lt;h1 id="命令行常用操作指南持续更新中">命令行常用操作指南（持续更新中）
 &lt;/h1>&lt;p>virt-manager 主要操作还是在命令行比较高效，特别是下面的这些操作，在使用过程中，比较多用，用的多了感觉比 GUI 操作方式效率高多了。&lt;/p>
@@ -3229,7 +3270,8 @@ timeframe = realtime &amp;gt; 5 minutes&lt;/p>
 &lt;p>&lt;img src="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2014/02/eberly2.jpg"
 loading="lazy"
 alt="eberly2"
->&lt;/p>
+>
+&lt;/p>
 &lt;p>她是 Facebook 公司的数据中心运营总监，在昨天早晨发表了关于如何优化数据中心运维的演讲。从硬件方面看，为了满足它们巨大的用量，她们不得不把精力完全放到硬件的服务提供性上，说白了“黑猫，白猫，能捉到耗子的就是好猫”，因此她们被逼去自己从服务器硬件设计开始构造自己的数据中心神殿。为什么说是被逼的，你可以想象：加入 IBM，DELL，HP 之流的 sales 推门进去，告诉她们你们买我们的服务器吧，保证好用！可能在她们也买得起，但是绝对用不起，用不起是由于：服务器的采购，供货，修复，维保，这一切都靠供应商的话，从时间和效率上将 Facebook 觉得耗不起。一旦依赖了供应商，自己就必然失去了主导权，多了一重羁绊，无法满足 facebook 这样公司的高速成长。一切创新其实都是被逼出来的。&lt;/p>
 &lt;p>这让我感兴趣 Mark 最近在搞些啥，我简单转发两个我看到并感兴趣的网站。&lt;/p>
 &lt;!-- raw HTML omitted -->
@@ -3241,18 +3283,21 @@ alt="eberly2"
 &lt;p>&lt;img src="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2014/02/open-computer-logo.png"
 loading="lazy"
 alt="open-computer-logo"
->&lt;/p>
+>
+&lt;/p>
 &lt;p>另外一个网站是这个，开源计算机项目网站。我一直对开源的项目尤为感兴趣，甚至于开源的“窗台农庄项目”。但是主要还是开源软件了解的多。这个网站是 Facebook 主导的一个项目，目的在于开放他们部分服务器硬件和数据中心设计的技术。确实是一个很不错的学习资料。在这里我又看到了类似于 QQ 和中国移动竞争的类似场景。如果这个项目火了，这让那些买服务器的公司情何以堪啊！但是我因此加深了 IBM 卖掉 PC 业务给联想的这个事实。国人一直在接受人家过期的技术和业务，这样值得么？从业务的角度上讲，短期是还是值得的，原因是：国内 IT 的发展总是滞后于欧美 3 到 5 年时间。我感觉滞后的原因主要还是语言和文化的不通。&lt;/p>
 &lt;p>如果对 Facebook 的数据中心感兴趣的话还可以看看这个 FAQ, &lt;a class="link" href="http://www.datacenterknowledge.com/the-facebook-data-center-faq/" target="_blank" rel="noopener"
 >http://www.datacenterknowledge.com/the-facebook-data-center-faq/&lt;/a>&lt;/p>
 &lt;p>&lt;img src="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2014/02/facebook-faq-470-new.jpg"
 loading="lazy"
 alt="facebook-faq-470-new"
->&lt;/p></description></item><item><title>让Ubuntu飞一会儿</title><link>https://martinliu.cn/2011/04/10/let-ubuntu-fly/</link><pubDate>Sun, 10 Apr 2011 11:11:27 +0000</pubDate><guid>https://martinliu.cn/2011/04/10/let-ubuntu-fly/</guid><description>&lt;p>很久以前我一直使用的 rpm based Linux，原因很简单，我只要手握一张最新的 DVD，就可以走遍天下都不怕，特别是对 SuSE Linux 的 yast 很依赖，因为它可以帮我解决 rpm 包之间的依赖性。这样工作起来就很简单，基本上是搜索到软件包之后，点击安装既可以搞定所有的软件安装工作。&lt;/p>
+>
+&lt;/p></description></item><item><title>让Ubuntu飞一会儿</title><link>https://martinliu.cn/2011/04/10/let-ubuntu-fly/</link><pubDate>Sun, 10 Apr 2011 11:11:27 +0000</pubDate><guid>https://martinliu.cn/2011/04/10/let-ubuntu-fly/</guid><description>&lt;p>很久以前我一直使用的 rpm based Linux，原因很简单，我只要手握一张最新的 DVD，就可以走遍天下都不怕，特别是对 SuSE Linux 的 yast 很依赖，因为它可以帮我解决 rpm 包之间的依赖性。这样工作起来就很简单，基本上是搜索到软件包之后，点击安装既可以搞定所有的软件安装工作。&lt;/p>
 &lt;p>来到 Ubuntu 世界的我并不很满意，最近一次的 apt-get update，以失败告终，险些把家里的 PC 的一块硬盘给搞丢了，因为升级失败导致分区表失效了，Win 操作系统不认了。直接崩溃，好在那 Live Cd 模式进入还能勉强看得那个盘里的东西，恢复到移动硬盘，重新格式化该分区，才把文件恢复了。着实让我虚惊一场。&lt;/p>
 &lt;p>&lt;img src="http://img3.cache.netease.com/www/logo/logo_png.png"
 loading="lazy"
->我比较喜欢一些小的 LAMP 堆栈式安装的 Linux，如 TurnkeyLinux。安装可以在 10 分钟内搞定系统安装。今年家里的宽度升级到 2MB 了，因此带宽上逐渐能满足 Ubuntu 这种从网上升级的需求。下面就是找国内的升级的源了，进过几个月的使用，最近觉得在北京的联通固定宽带的用户，使用 163 的镜像站点速度还是不错的。再次感谢国内的这样的无私奉献的公司，使得在国内的开源用户可以更快更方便。废话说了一堆：）哈哈下面也就是这几条命了的事情。&lt;/p>
+>
+我比较喜欢一些小的 LAMP 堆栈式安装的 Linux，如 TurnkeyLinux。安装可以在 10 分钟内搞定系统安装。今年家里的宽度升级到 2MB 了，因此带宽上逐渐能满足 Ubuntu 这种从网上升级的需求。下面就是找国内的升级的源了，进过几个月的使用，最近觉得在北京的联通固定宽带的用户，使用 163 的镜像站点速度还是不错的。再次感谢国内的这样的无私奉献的公司，使得在国内的开源用户可以更快更方便。废话说了一堆：）哈哈下面也就是这几条命了的事情。&lt;/p>
 &lt;p>第一步，当然要选择近水楼台的 163 了，来参考http://mirrors.163.com/.help/ubuntu.html 的帮助文档，根据你操作系统的版本，更新/etc/apt/sources.list 文件即可，之后你的 Ubuntu 就是从国内的较快的站点上下载包了&lt;/p>
 &lt;p>第二步，安装多线程 apt 下载加速工具 apt-fast&lt;/p>
 &lt;p>[bash]
@@ -3333,7 +3378,8 @@ root@lamp perl/CPAN# cpan -i XML::Entities
 &lt;p>照例 Tarus 也在他的 blog 提到整件事：&lt;a class="link" href="http://blogs.opennms.org/?p=181" target="_blank" rel="noopener"
 >OpenNMS, Eben Moglen and Cittio&lt;/a>&lt;/p></description></item><item><title>opennms 1.6.1-1 quick start guide</title><link>https://martinliu.cn/2009/01/11/161-1-opennms-quick-install-guide/</link><pubDate>Sun, 11 Jan 2009 02:33:12 +0000</pubDate><guid>https://martinliu.cn/2009/01/11/161-1-opennms-quick-install-guide/</guid><description>&lt;p>&lt;img src="http://www.etproductions.com/images/start.jpg"
 loading="lazy"
->&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->本安装手册为纯命令版，如果有什么疑问清参考官方安装手册，或给本贴留言。&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->[install yum on your Linux box]&lt;!-- raw HTML omitted -->选择任意 Linux 系统，安装上 yum 工具，在命令行测试 yum -v&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->[testing internet connection with those two URL]&lt;!-- raw HTML omitted -->测试是否能上网，用浏览器分别打开这两个网址&lt;!-- raw HTML omitted -->&lt;/p>
+>
+&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->本安装手册为纯命令版，如果有什么疑问清参考官方安装手册，或给本贴留言。&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->[install yum on your Linux box]&lt;!-- raw HTML omitted -->选择任意 Linux 系统，安装上 yum 工具，在命令行测试 yum -v&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->[testing internet connection with those two URL]&lt;!-- raw HTML omitted -->测试是否能上网，用浏览器分别打开这两个网址&lt;!-- raw HTML omitted -->&lt;/p>
 &lt;p>&lt;!-- raw HTML omitted -->&lt;/p>
 &lt;ol>
 &lt;li>&lt;a class="link" href="http://www.martinliu.cn/2007/12/13/opennms-yum-install/" target="_blank" rel="noopener"
@@ -3375,6 +3421,7 @@ loading="lazy"
 &lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->OK， I have get oepnnms 1.6.1-1 installed on my home pc, I hope you good luck and have fun.&lt;/li>
 &lt;/ol></description></item><item><title>[发布说明] OpenNMS 1.6.0 (Stable) Released</title><link>https://martinliu.cn/2008/11/14/e58f91e5b883e8afb4e6988e-opennms-160-stable-released/</link><pubDate>Fri, 14 Nov 2008 14:57:36 +0000</pubDate><guid>https://martinliu.cn/2008/11/14/e58f91e5b883e8afb4e6988e-opennms-160-stable-released/</guid><description>&lt;p>&lt;img src="http://www.opennms.org/images/b/b5/Banner.jpg"
 loading="lazy"
->&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->&lt;a class="link" href="http://sourceforge.net/forum/forum.php?forum_id=882433" target="_blank" rel="noopener"
+>
+&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->&lt;a class="link" href="http://sourceforge.net/forum/forum.php?forum_id=882433" target="_blank" rel="noopener"
 >OpenNMS 1.6.0 (Stable) Released&lt;/a>&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->似乎每年的 10 月以后我就会进入一个超级繁忙的状态，很长时间没有更新 blog 了，今天姑且转载一个 OpenNMS 的发布说明吧。&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->OpenNMS, the world&amp;rsquo;s first enterprise-grade network management platform developed as 100% free and open software, has released version 1.6.0. This is a stable, production release that incorporates nearly three years of development.&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->以上算是 OpenNMS 的广告语大家看看就是，需要注意的是一个企业级的产品实施费用是从很低的门槛一直到企业级的花费的。和其他的企业级解决方案的实施没有区别，差异在于，一个不同的许可证类型，此为开源许可证是也。&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->&lt;/p>
 &lt;p>&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->The last production version, 1.2.0, was aimed to compete squarely with Hewlett-Packard&amp;rsquo;s OpenView Network Node Manager product. This release builds upon that work to expand the reach of OpenNMS to other parts of the OpenView family as well as to provide an open source alternative to products such as Tivoli&amp;rsquo;s Netcool.&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->以上是 OpenNMS 的精神所在：OpenNMS 一直在叫嚣这和 OpenView, NetCool 较量；这足以说明了它的勇气，和发展方向，它的创始人 Tarus 从一个人单枪匹马开始，到现在有一般人 inhouse 开发这个产品，自己全世界出差，如果说没有实现和商业产品的抗衡的话，我个人觉得他起码实现了一个所有开源参与者的梦想“为需要自己的人工作，为自己工作”&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->OpenNMS 1.6.0 sports a redesigned user interface, a number of scalability improvements and increased integration with other products. OpenNMS now runs on Windows, in addition to most flavors of Linux, Solaris and Mac OS X.&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->上面说的是新版的用户界面重新设计了，目前我还没有时间安装，回头装好了一定上图片，新版的稳定性得到提高并增加了和其他产品的集成。现在 OpenNMS 也能在 Windows 上运行了，在我看这是早晚的是，它是个纯 Java 的应用，移植不是什么难事，不过我不推荐在 windows 上完开源的产品，有点不伦不类的感觉，而且从原生态的 Linux 环境中才哪呢个够获取开源的全部优势。&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->One of the major additions to the platform is the Alarms subsystem. OpenNMS can receive events from a number of sources, such as SNMP traps, syslog, TL/1, and custom scripts. A key can be configured for each event that will allow it to be turned into an alarm. Thus if a device is generating multiple, identical events, their number will be reduced into just a single alarm. This greatly reduces the amount of event &amp;ldquo;noise&amp;rdquo; that operators see.&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->上面说告警子系统现在是增强了。OpenNMS 能收到像是 snmp trap，syslog， TL/1 和自定义脚本发来的告警事件。某种键值能被设置，让一个事件能被出发成一个警报。报警事件经过了压制和降噪处理，较少了重复报的数量。&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->In addition, automated actions can be performed on alarms. For example, events that signal problem resolution, or &amp;ldquo;up&amp;rdquo; alarms, can be matched with &amp;ldquo;down&amp;rdquo; alarms to automatically clear them. Event workflow can be built into the system by using these automations to manage the alarm list, thus freeing up the operators to focus on the most important issues.&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->另外，对于一个警报来说，可以和一个自动化的动作配合，例如某些 up 事件能去清除对应的 down 事件。&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->While OpenNMS contains a robust automated discovery system, when managing tens of thousands of nodes it is often preferred to allow an external system to determine what OpenNMS is to monitor. Thus OpenNMS 1.6.0 contains a new &amp;ldquo;model importer&amp;rdquo; feature that allows node, interface and service information to be imported directly into the system using data in an XML format. One company uses this method to manage over 70,000 devices with a single instance of OpenNMS.&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->同时 OpenNMS 现在的自动发现系统非常强大哦，档管理一万个节点的时候，OpenNMS 往往倾向于使用一个外部的系统来决定什么是需要 OpenNMS 监控的。在 1.6 中包括这样一个新功能‘模型导入’，他能把 xml 格式的节点和端口数据自己导入到 OpenNMS 系统中。曾经一个公司用这个方法管理这 7 万个节点，都在一套 OpenNMS 系统内，好家伙~~也就是说这个功能有了之后，你就可以不用一个节点的去发现了，往往有些机器发现的那会正好不在线，那就漏掉很多的机器了。&lt;!-- raw HTML omitted -->Data collection saw many improvements as well. With the proper hardware, OpenNMS is able to collect over one million data points every five minutes. This data can be from SNMP (versions 1, 2c and 3), JMX, HTTP, or NSClient. The collected data can be exported via the web user interface. Reports showing the highest and lowest values for a particular set of data points (Top N Reports) can also be created, and 1.6.0 contains a vastly improved thresholding system. Thresholds can be generated on individual data points, combinations of data points, as well as a &amp;ldquo;relative change&amp;rdquo; such as when a value shows a sudden increase or decrease.&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->数据的采集方面也有很多增强。利用一个合适的硬件，OpenNMS 能够每 5 分钟把超过一百万的数据采集点采集一遍，要是采集稳定的话，这还是比较快的了。被采集的数据点可以使来自 snmp v1,2,3, JMX, http, nsclient。 采集来的数据能通过 web 界面到处了。这还是不错的功能，能有可能做一些系统之外的自定义报表了。自带的报表功能能够定制 TopN 的报表。OpenNMS 现在的阀值管理系统也得到了增强。能为某一个数据点设置，也能为一组数据采集点，同时有了对 &amp;ldquo;relative change&amp;quot;的管理，也就是某个数据忽高忽低的管理，也即是某些瞬间的异常增的很高或降的很低。&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->OpenNMS was originally designed for network service monitoring, and that functionality has been increased as well. New monitors for such things as Windows services are now available, as well as more advanced synthetic transactions. The Page Sequence Monitor was created to monitor a complete web-based transaction, while the Mail Transport Monitor determines the full round-trip availability of a mail service.&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->OpenNMS 天生是监控网络的。新增了很多 monitor，例如 windows 服务监控，模拟交易监控。页面序列监控器用了监控一些列的 web 交易处理行为，还能通过 Mail Transport Monitor 来确定邮件服务的可用性。&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->Probably the biggest change was the development of distributed monitoring. Using a small Java webstart application installed on a remote system, OpenNMS is able to monitor service availability from the point of view of the remote system. Combined with the Page Sequence Monitor one can measure the user&amp;rsquo;s experience when visiting a website from various remote locations.&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->最大的变更在这个版本中是‘分布式监控’，使用一个小的安装在远处的一个主机上的 Java Webstat 应用，opennms 能过过这个监控服务点看到远程的系统上采集的数据。结合页面序列监控功能，它可以实现这样的功能：在南北方，网通电信的网络中找四个点安装这个程序后，模拟从不同网络位置监控某个 web 网站上一系列功能页面的可用性。这就是所谓的模拟交易管理，是 Web 应用管理方面中当下不可缺少的环节。&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->As OpenNMS was designed as a platform, there are numerous ways for external applications, both open and proprietary, to integrate with it. There is a new Trouble Ticketing API that allows for two-way communication between OpenNMS and a number of external ticketing systems such as Jira, Concursive (CentricCRM) and OTRS.&lt;!-- raw HTML omitted -->像 opennms 这样的平台，可以提供给开源或者商业外部系统的接口。通过这些 api 的双向接口，你可以把报警事件送到外部的工单管理系统(事件管理流程平台)中，例如 Jira, Concursive (CentricCRM) and OTRS.、&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->These are just a few of the new features available in 1.6.0. As always, OpenNMS is 100% free and open software. Please check it out and let us know what you think. We hope you enjoy using it as much as we enjoy creating it.&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->嗯，终于读完了整篇的发布说明，你能相信，它都发布了这么久了，我只有在周五晚上抽空仔细读完么。这周简直是太忙，天天加班，还有天天处理不完的状况。今天的一个教训就是“软件系统之间的集成不是简单能搞定的，需要小心，小心在小心”&lt;/p></description></item></channel></rss>

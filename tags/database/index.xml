@@ -9,9 +9,10 @@
 &lt;p>应用DBA通常是开发团队的一部分。他们会拥有深厚的领域知识，所以通常他们只会在一两个项目上工作。基础架构DBA通常是某个IT团队的一部分，他们会同时在多个项目上工作。&lt;/p>
 &lt;p>&lt;strong>我是一名应用DBA&lt;/strong> 我从来没有任何欲望去摆弄备份或调整存储（我相信这很迷人！）。直到今天，我都喜欢说自己是一个懂得开发应用的DBA，而不是一个懂得数据库的开发者。&lt;/p>
 &lt;p>在本文中，我将分享我一路走来收集到的一些关于数据库开发的非浅显技巧。&lt;/p>
-&lt;p>&lt;img src="https://martinliu.cn/images/00-sql-tricks-dba.jpg"
+&lt;p>&lt;img src="https://martinliu.cn/images/00-sql-tricks-dba.webp"
 loading="lazy"
->&lt;/p>
+>
+&lt;/p>
 &lt;p>Be that guy&amp;hellip;&lt;!-- raw HTML omitted -->Image by &lt;!-- raw HTML omitted -->CommitStrip&lt;!-- raw HTML omitted -->&lt;/p>
 &lt;h2 id="只更新需要更新的内容">只更新需要更新的内容
 &lt;/h2>&lt;p>UPDATE是一个相对昂贵的操作。为了加快UPDATE命令的速度，最好确保只更新需要更新的内容。&lt;/p>
@@ -44,9 +45,10 @@ loading="lazy"
 &lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
 &lt;/div>
 &lt;/div>&lt;p>只需要更新10000行。通过减少受影响的行数，执行时间从1.5秒降到了不到300ms。更新的行数少了，也节省了后期的数据库维护工作。&lt;/p>
-&lt;p>&lt;img src="https://martinliu.cn/images/WechatIMG1264.jpeg"
+&lt;p>&lt;img src="https://martinliu.cn/images/WechatIMG1264.webp"
 loading="lazy"
->&lt;/p>
+>
+&lt;/p>
 &lt;p>这种类型的大更新在数据迁移脚本中非常常见。所以下次写迁移脚本时，一定要只更新需要更新的内容。&lt;/p>
 &lt;h2 id="在批量加载过程中禁用约束和索引">在批量加载过程中禁用约束和索引
 &lt;/h2>&lt;p>约束是关系型数据库的重要组成部分：它们能保持数据的一致性和可靠性。不过它们的好处是有代价的，在加载或更新大量行时最明显。&lt;/p>
@@ -224,9 +226,10 @@ loading="lazy"
 >（WAL）&lt;/a>。WAL用于维护完整性，在恢复期间快速推进数据库，并维护复制。&lt;/p>
 &lt;p>写入WAL是经常需要的，但在某些情况下，你可能愿意放弃它的一些用途来使事情变得更快。一个例子是中间表。&lt;/p>
 &lt;p>中间表是一次性的表，它存储了用于实现某些过程的临时数据。例如，ETL过程中一个非常常见的模式是将数据从CSV文件加载到中间表，清理数据，然后加载到目标表。在这种用例中，中间表是一次性的，在备份或复制中没有用处。&lt;/p>
-&lt;p>&lt;img src="https://martinliu.cn/images/WechatIMG1265.jpeg"
+&lt;p>&lt;img src="https://martinliu.cn/images/WechatIMG1265.webp"
 loading="lazy"
->&lt;/p>
+>
+&lt;/p>
 &lt;p>在灾难发生时不需要恢复的中间表，以及在副本中不需要的中间表，可以设置为 UNLOGGED。&lt;/p>
 &lt;div class="highlight">&lt;div class="chroma">
 &lt;table class="lntable">&lt;tr>&lt;td class="lntd">
@@ -789,9 +792,10 @@ loading="lazy"
 &lt;/div>
 &lt;/div>&lt;p>当PostgreSQL分析该表时，发现激活的列有两个不同的值。most_common_vals列中的值t对应的是most_common_freqs列中的频率0.89743334，值f对应的是频率0.10256667。也就是说，经过分析，数据库估计表中89.74%是激活用户，其余10.26%是未激活用户。&lt;/p>
 &lt;p>通过这些统计，PostgreSQL决定，如果希望90%的行满足条件，最好扫描整个表。过了这个阈值，数据库可能会决定使用或不使用索引，这取决于很多因素，没有一个经验法则可以使用。&lt;/p>
-&lt;p>&lt;img src="https://martinliu.cn/images/WechatIMG1266.jpeg"
+&lt;p>&lt;img src="https://martinliu.cn/images/WechatIMG1266.webp"
 loading="lazy"
->&lt;/p>
+>
+&lt;/p>
 &lt;h2 id="使用部分索引">使用部分索引
 &lt;/h2>&lt;p>在上一节中，我们在布尔值列上创建了一个索引，其中90%的值为真（激活用户）。当我们试图查询活跃用户时，数据库没有使用该索引。然而，当我们查询未激活的用户时，数据库却使用了该索引。&lt;/p>
 &lt;p>这就引出了下一个问题&amp;hellip;&amp;hellip;如果数据库不打算使用索引来过滤活跃用户，那么我们为什么要首先使用索引呢？&lt;/p>
@@ -1030,14 +1034,16 @@ loading="lazy"
 &lt;blockquote>
 &lt;p>物理行排序和逻辑列值排序之间的统计相关性。这个范围从-1到+1。当该值接近-1或+1时，由于减少了对磁盘的随机访问，估计对该列进行索引扫描会比接近零时更便宜。&lt;/p>&lt;/blockquote>
 &lt;p>正如官方文档所解释的那样，相关性衡量了特定列值在磁盘上的 &amp;ldquo;排序 &amp;ldquo;程度。&lt;/p>
-&lt;p>&lt;img src="https://martinliu.cn/images/WechatIMG1267.jpeg"
+&lt;p>&lt;img src="https://martinliu.cn/images/WechatIMG1267.webp"
 loading="lazy"
->&lt;/p>
+>
+&lt;/p>
 &lt;p>当相关性为1，或接近1时，意味着表中的页在磁盘上的存储顺序与表中的行大致相同。这其实是很常见的。例如，自动递增的ID通常会有接近1的相关性。跟踪行创建时间的日期和时间戳列通常也会有接近于1的相关性。&lt;/p>
 &lt;p>当相关性为-1时，表的页面相对于列的排序顺序是相反的。&lt;/p>
-&lt;p>&lt;img src="https://martinliu.cn/images/WechatIMG1268.jpeg"
+&lt;p>&lt;img src="https://martinliu.cn/images/WechatIMG1268.webp"
 loading="lazy"
->&lt;/p>
+>
+&lt;/p>
 &lt;p>当相关性接近0时，意味着列中的值与表的页面存储方式没有相关性或相关性很小。&lt;/p>
 &lt;p>回到我们的sale_fact表，当我们将数据加载到表中时，没有先进行排序，这些就是相关性。&lt;/p>
 &lt;div class="highlight">&lt;div class="chroma">
@@ -1186,9 +1192,10 @@ loading="lazy"
 &lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
 &lt;/div>
 &lt;/div>&lt;p>表格聚类后，我们可以看到sold_at的相关性为1。&lt;/p>
-&lt;p>&lt;img src="https://martinliu.cn/images/WechatIMG1269.jpeg"
+&lt;p>&lt;img src="https://martinliu.cn/images/WechatIMG1269.webp"
 loading="lazy"
->&lt;/p>
+>
+&lt;/p>
 &lt;p>关于CLUSTER命令需要注意的一些事情。&lt;/p>
 &lt;ul>
 &lt;li>通过特定列对表进行聚类可能会影响其他列的相关性。例如，请看我们将表按sold_at聚类后，列id的相关性。&lt;/li>
@@ -1202,9 +1209,10 @@ loading="lazy"
 &lt;p>BRIN是为处理非常大的表而设计的，在这些表中，某些列与它们在表中的物理位置有一些自然的关联。&lt;/p>&lt;/blockquote>
 &lt;p>BRIN是Block Range Index的缩写。根据文档，BRIN索引对于相关性高的列效果最好。正如我们在前面的章节中已经看到的，一些字段如自动递增的ID和时间戳与表的物理结构有天然的相关性，因此它们是BRIN索引的良好候选。&lt;/p>
 &lt;p>在某些情况下，与类似的B-Tree索引相比，BRIN索引在大小和性能上可以提供更好的 &amp;ldquo;性价比&amp;rdquo;。&lt;/p>
-&lt;p>&lt;img src="https://martinliu.cn/images/WechatIMG1270.jpeg"
+&lt;p>&lt;img src="https://martinliu.cn/images/WechatIMG1270.webp"
 loading="lazy"
->&lt;/p>
+>
+&lt;/p>
 &lt;p>BRIN索引的工作原理是将值的范围保持在表内相邻的若干页内。假设我们在一列中有这些值，每个值都是单表页。&lt;/p>
 &lt;p>&lt;code>1, 2, 3, 4, 5, 6, 7, 8, 9&lt;/code>&lt;/p>
 &lt;p>BRIN索引在表中相邻页的范围内工作。如果相邻页数设置为3，索引将把表格分为以下范围：&lt;/p>
@@ -1232,9 +1240,10 @@ loading="lazy"
 &lt;p>大的pages_per_range会产生一个小而不准确的索引。
 小的pages_per_range会产生更大更准确的索引。
 默认的页面_per_range为128页。&lt;/p>
-&lt;p>&lt;img src="https://martinliu.cn/images/WechatIMG1271.jpeg"
+&lt;p>&lt;img src="https://martinliu.cn/images/WechatIMG1271.webp"
 loading="lazy"
->&lt;/p>
+>
+&lt;/p>
 &lt;p>为了演示，让我们在2个相邻页面的范围上创建一个BRIN索引，并搜索值5。&lt;/p>
 &lt;ul>
 &lt;li>[1–2] - 肯定不在这&lt;/li>
@@ -1468,9 +1477,10 @@ loading="lazy"
 &lt;blockquote>
 &lt;p>[&amp;hellip; &amp;hellip;]资产的价格可能会有一个困难的时间 超过一个整数，如50元或100元/股。大多数没有经验的交易者倾向于在价格处于整数时买入或卖出资产，因为他们更有可能觉得一只股票在这种水平上的价值相当高。&lt;/p>&lt;/blockquote>
 &lt;p>开发商在这个意义上与投资者并没有什么不同。当他们需要安排一个长期运行的过程时，他们通常会把时间安排在一个整点。&lt;/p>
-&lt;p>&lt;img src="https://martinliu.cn/images/WechatIMG1272.jpeg"
+&lt;p>&lt;img src="https://martinliu.cn/images/WechatIMG1272.webp"
 loading="lazy"
->&lt;/p>
+>
+&lt;/p>
 &lt;p>这种在圆周时间安排任务的倾向，会在这些时间内造成一些异常的负载。所以，如果你需要安排一些长期运行的进程，如果你在其他时间安排，你有更好的机会找到一个系统在休息。&lt;/p>
 &lt;p>另一个好主意是给任务的日程安排应用一个随机的延迟，这样它就不会每次都在同一时间运行。这样，即使另一个任务安排在同一时间运行，也不会有大问题。如果你使用systemd定时器单元来安排任务，你可以使用&lt;a class="link" href="https://www.freedesktop.org/software/systemd/man/systemd.timer.html#RandomizedDelaySec=" target="_blank" rel="noopener"
 >RandomizedDelaySec&lt;/a>选项来实现。&lt;/p>

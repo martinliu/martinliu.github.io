@@ -410,7 +410,8 @@ alt="Fleet server"
 class="gallery-image"
 data-flex-grow="117"
 data-flex-basis="281px"
->&lt;/p>
+>
+&lt;/p>
 &lt;p>按着提示的命令参数安装 Fleet 服务器。&lt;/p>
 &lt;div class="highlight">&lt;div class="chroma">
 &lt;table class="lntable">&lt;tr>&lt;td class="lntd">
@@ -671,7 +672,8 @@ alt="Agent Binary Download"
 class="gallery-image"
 data-flex-grow="133"
 data-flex-basis="320px"
->&lt;/p>
+>
+&lt;/p>
 &lt;p>在 Agent Policies 页面新建一个新的测试用 Agent 管理策略，名为 “my-policy2”；进入这个策略的配置界面，修改 &lt;em>Agent Binary Download&lt;/em> 为刚才创建的下载源。保存并测试这个策略。&lt;/p>
 &lt;p>&lt;img src="https://martinliu.cn/blog/elastic-agent-fleet-update-8-4/2022-10-18_14-25-35.webp"
 width="1920"
@@ -681,7 +683,8 @@ loading="lazy"
 class="gallery-image"
 data-flex-grow="103"
 data-flex-basis="247px"
->&lt;/p>
+>
+&lt;/p>
 &lt;p>点击 “Add agent” 连接，获取下面的新注册代理注册命令。&lt;/p>
 &lt;div class="highlight">&lt;div class="chroma">
 &lt;table class="lntable">&lt;tr>&lt;td class="lntd">
@@ -744,7 +747,8 @@ alt="添加 Packetbeat 模块"
 class="gallery-image"
 data-flex-grow="235"
 data-flex-basis="564px"
->&lt;/p>
+>
+&lt;/p>
 &lt;p>在策略更新了以后，我们没有在 Elastic Agent 端做任何操作，它就已经自动化的下载新的策略，并更新了自身。&lt;/p>
 &lt;p>&lt;img src="https://martinliu.cn/blog/elastic-agent-fleet-update-8-4/2022-10-18_22-53-55.webp"
 width="1920"
@@ -755,7 +759,8 @@ alt="查看 安全管理解决方案"
 class="gallery-image"
 data-flex-grow="114"
 data-flex-basis="275px"
->&lt;/p>
+>
+&lt;/p>
 &lt;h2 id="常见问题">常见问题
 &lt;/h2>&lt;p>Elastic Agent 在采集数据的服务上安装正常，在 Fleet 服务器的管理界面中也可以看到其状态正常。但是在可观测性的页面中看不到它的任何数据。&lt;/p>
 &lt;p>可能的原因：Elastic Agent 采集端程序和 ES 后台服务器的通讯不正常，检查 9200 端口，用 curl + ES 服务器端的数字证书，用户名和密码，尝试访问 ES 的服务地址 &lt;code>https://192.168.10.10:9200&lt;/code>。&lt;/p>
@@ -787,7 +792,8 @@ alt="7.13 前的架构图"
 class="gallery-image"
 data-flex-grow="227"
 data-flex-basis="546px"
->&lt;/p>
+>
+&lt;/p>
 &lt;p>Kiban 的定位是作为 Elastic Stack 的数据探索窗口，和管理控制平面。统一管理 Elastic Agent 需要增加两个功能：策略管理器和配置包管理器。需要引入新的 Fleet 服务器实现下面的需求：&lt;/p>
 &lt;ul>
 &lt;li>对 n 多采集点的更小暴露平面。&lt;/li>
@@ -804,7 +810,8 @@ alt="7.14 后的架构图"
 class="gallery-image"
 data-flex-grow="234"
 data-flex-basis="562px"
->&lt;/p>
+>
+&lt;/p>
 &lt;p>Fleet 服务器的代码和 Elastic Agent 是一套程序。它就像是一个万能工具一样。&lt;/p>
 &lt;p>它在对底层的采集端点上，实现的是全能型代理程序的管理。他在 Fleet 这个模式的主要功能是：从 Elasticsearch 后端或许最新版的 Agent 管理策略；相应采集端点上采集代理的管理策略拉取请求。管理策略的单向下发，采集数据的单向上传可以有几个选项，或者集中目标：&lt;/p>
 &lt;ol>

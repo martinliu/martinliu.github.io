@@ -1,0 +1,1028 @@
+<!doctype html><html lang=zh-cn dir=ltr><head><meta charset=utf-8><meta name=viewport content='width=device-width,initial-scale=1'><meta name=description content="用本地的 Ollama 可以很方便的将模型和 Clauda Code 集成起来，但速度很不理想。"><title>在 MacOS 上使用 Cluada Code 集成 本地运行的 Qwen 模型</title><link rel=canonical href=https://martinliu.cn/blog/claude-code-qwen3-coder-30b/><link rel=stylesheet href=/scss/style.min.6cdf49b1ce11fdcb5b101472ec608dcfd7395a19af16339a150cd1a4536b6113.css><meta property='og:title' content="在 MacOS 上使用 Cluada Code 集成 本地运行的 Qwen 模型"><meta property='og:description' content="用本地的 Ollama 可以很方便的将模型和 Clauda Code 集成起来，但速度很不理想。"><meta property='og:url' content='https://martinliu.cn/blog/claude-code-qwen3-coder-30b/'><meta property='og:site_name' content="Martin Liu's Blog"><meta property='og:type' content='article'><meta property='article:section' content='Post'><meta property='article:tag' content='AI'><meta property='article:published_time' content='2026-02-18T05:35:42+08:00'><meta property='article:modified_time' content='2026-02-19T16:55:59+08:00'><meta property='og:image' content='https://martinliu.cn/blog/claude-code-qwen3-coder-30b/cover-claude-qwen-macos.png'><meta name=twitter:title content="在 MacOS 上使用 Cluada Code 集成 本地运行的 Qwen 模型"><meta name=twitter:description content="用本地的 Ollama 可以很方便的将模型和 Clauda Code 集成起来，但速度很不理想。"><meta name=twitter:card content="summary_large_image"><meta name=twitter:image content='https://martinliu.cn/blog/claude-code-qwen3-coder-30b/cover-claude-qwen-macos.png'><script async src="https://www.googletagmanager.com/gtag/js?id=G-30EQ6H78E5"></script><script>var dnt,doNotTrack=!1;if(!1&&(dnt=navigator.doNotTrack||window.doNotTrack||navigator.msDoNotTrack,doNotTrack=dnt=="1"||dnt=="yes"),!doNotTrack){window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","G-30EQ6H78E5")}</script></head><body class=article-page><script>(function(){const e="StackColorScheme";localStorage.getItem(e)||localStorage.setItem(e,"auto")})()</script><script>(function(){const t="StackColorScheme",e=localStorage.getItem(t),n=window.matchMedia("(prefers-color-scheme: dark)").matches===!0;e=="dark"||e==="auto"&&n?document.documentElement.dataset.scheme="dark":document.documentElement.dataset.scheme="light"})()</script><div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky"><button class="hamburger hamburger--spin" type=button id=toggle-menu aria-label=切换菜单>
+<span class=hamburger-box><span class=hamburger-inner></span></span></button><header><figure class=site-avatar><a href=/><img src=/img/avatar_hu_f0b419c0df6404b3.png width=300 height=300 class=site-logo loading=lazy alt=Avatar></a></figure><div class=site-meta><h1 class=site-name><a href=/>Martin Liu's Blog</a></h1><h2 class=site-description>Founder of DevOps China</h2></div></header><ol class=menu-social><li><a href=https://github.com/martinliu/ target=_blank title=GitHub rel=me><svg class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M9 19c-4.3 1.4-4.3-2.5-6-3m12 5v-3.5c0-1 .1-1.4-.5-2 2.8-.3 5.5-1.4 5.5-6a4.6 4.6.0 00-1.3-3.2 4.2 4.2.0 00-.1-3.2s-1.1-.3-3.5 1.3a12.3 12.3.0 00-6.2.0C6.5 2.8 5.4 3.1 5.4 3.1a4.2 4.2.0 00-.1 3.2A4.6 4.6.0 004 9.5c0 4.6 2.7 5.7 5.5 6-.6.6-.6 1.2-.5 2V21"/></svg></a></li><li><a href=https://www.linkedin.com/in/liuzheng/ target=_blank title=LinkedIn rel=me><svg viewBox="0 0 32 32" width="32" height="32"><path d="M7.5 5C6.132813 5 5 6.132813 5 7.5v17C5 25.867188 6.132813 27 7.5 27h17c1.367188.0 2.5-1.132812 2.5-2.5V7.5C27 6.132813 25.867188 5 24.5 5zm0 2h17C24.785156 7 25 7.214844 25 7.5v17C25 24.785156 24.785156 25 24.5 25H7.5C7.214844 25 7 24.785156 7 24.5V7.5c0-.285156.214844-.5.5-.5zm2.9375 1.71875C9.488281 8.71875 8.71875 9.488281 8.71875 10.4375S9.488281 12.15625 10.4375 12.15625 12.15625 11.386719 12.15625 10.4375 11.386719 8.71875 10.4375 8.71875zm9.03125 4.5625c-1.433594.0-2.386719.785156000000001-2.78125 1.53125H16.625V13.5H13.8125V23H16.75V18.3125C16.75 17.074219 16.996094 15.875 18.53125 15.875c1.511719.0 1.53125 1.398438 1.53125 2.5V23H23V17.78125c0-2.554687-.542968999999999-4.5-3.53125-4.5zM9 13.5V23h2.96875V13.5z"/></svg></a></li><li><a href=https://twitter.com/martinliu target=_blank title=Twitter rel=me><svg class="icon icon-tabler icon-tabler-brand-twitter" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M22 4.01c-1 .49-1.98.689-3 .99-1.121-1.265-2.783-1.335-4.38-.737S11.977 6.323 12 8v1c-3.245.083-6.135-1.395-8-4 0 0-4.182 7.433 4 11-1.872 1.247-3.739 2.088-6 2 3.308 1.803 6.913 2.423 10.034 1.517 3.58-1.04 6.522-3.723 7.651-7.742a13.84 13.84.0 00.497-3.753C20.18 7.773 21.692 5.25 22 4.009z"/></svg></a></li></ol><ol class=menu id=main-menu><li><a href=/><svg class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><polyline points="5 12 3 12 12 3 21 12 19 12"/><path d="M5 12v7a2 2 0 002 2h10a2 2 0 002-2v-7"/><path d="M9 21v-6a2 2 0 012-2h2a2 2 0 012 2v6"/></svg>
+<span>首页</span></a></li><li><a href=/about/><svg class="icon icon-tabler icon-tabler-messages" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><path d="M21 14l-3-3h-7a1 1 0 01-1-1V4a1 1 0 011-1h9a1 1 0 011 1v10"/><path d="M14 15v2a1 1 0 01-1 1H6l-3 3V11a1 1 0 011-1h2"/></svg>
+<span>关于</span></a></li><li><a href=/course/><svg class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><rect x="3" y="4" width="18" height="4" rx="2"/><path d="M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8"/><line x1="10" y1="12" x2="14" y2="12"/></svg>
+<span>课程</span></a></li><li><a href=/search/><svg class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="10" cy="10" r="7"/><line x1="21" y1="21" x2="15" y2="15"/></svg>
+<span>搜索</span></a></li><li><a href=/archives/><svg class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><rect x="3" y="4" width="18" height="4" rx="2"/><path d="M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8"/><line x1="10" y1="12" x2="14" y2="12"/></svg>
+<span>归档</span></a></li><li><a href=/links/><svg class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><path d="M10 14a3.5 3.5.0 005 0l4-4a3.5 3.5.0 00-5-5l-.5.5"/><path d="M14 10a3.5 3.5.0 00-5 0l-4 4a3.5 3.5.0 005 5l.5-.5"/></svg>
+<span>链接</span></a></li><li class=menu-bottom-section><ol class=menu><li id=i18n-switch><svg class="icon icon-tabler icon-tabler-language" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M4 5h7"/><path d="M9 3v2c0 4.418-2.239 8-5 8"/><path d="M5 9c-.003 2.144 2.952 3.908 6.7 4"/><path d="M12 20l4-9 4 9"/><path d="M19.1 18h-6.2"/></svg>
+<select name=language title=language onchange="window.location.href=this.selectedOptions[0].value"><option value=https://martinliu.cn/ selected>中文</option><option value=https://martinliu.cn/en/>English</option></select></li><li id=dark-mode-toggle><svg class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="8" cy="12" r="2"/><rect x="2" y="6" width="20" height="12" rx="6"/></svg>
+<svg class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="16" cy="12" r="2"/><rect x="2" y="6" width="20" height="12" rx="6"/></svg>
+<span>暗色模式</span></li></ol></li></ol></aside><aside class="sidebar right-sidebar sticky"><section class="widget archives"><div class=widget-icon><svg class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><line x1="5" y1="9" x2="19" y2="9"/><line x1="5" y1="15" x2="19" y2="15"/><line x1="11" y1="4" x2="7" y2="20"/><line x1="17" y1="4" x2="13" y2="20"/></svg></div><h2 class="widget-title section-title">目录</h2><div class=widget--toc><nav id=TableOfContents><ol><li><a href=#用-ollama-在本地运行-qwen-模型>用 Ollama 在本地运行 Qwen 模型</a></li><li><a href=#用-lm-studio-在本地运行-qwen-模型>用 LM Studio 在本地运行 Qwen 模型</a></li><li><a href=#使用网络版本的-qwen-模型>使用网络版本的 Qwen 模型</a></li><li><a href=#总结>总结</a></li></ol></nav></div></section></aside><main class="main full-width"><article class="has-image main-article"><header class=article-header><div class=article-image><a href=/blog/claude-code-qwen3-coder-30b/><picture><source srcset="/blog/claude-code-qwen3-coder-30b/cover-claude-qwen-macos_hu_8deafcf9e08dcc2c.webp 800w, /blog/claude-code-qwen3-coder-30b/cover-claude-qwen-macos_hu_a40d8669a83dfa60.webp 1600w" type=image/webp><img src=/blog/claude-code-qwen3-coder-30b/cover-claude-qwen-macos_hu_9ba3e328a897256e.png srcset="/blog/claude-code-qwen3-coder-30b/cover-claude-qwen-macos_hu_9ba3e328a897256e.png 800w, /blog/claude-code-qwen3-coder-30b/cover-claude-qwen-macos_hu_79ef2651af850cc2.png 1600w" width=800 height=352 loading=lazy alt="Featured image of post 在 MacOS 上使用 Cluada Code 集成 本地运行的 Qwen 模型"></picture></a></div><div class=article-details><header class=article-category><a href=/categories/devops/ style=background-color:#2a9d8f;color:#fff>DevOps</a></header><div class=article-title-wrapper><h2 class=article-title><a href=/blog/claude-code-qwen3-coder-30b/>在 MacOS 上使用 Cluada Code 集成 本地运行的 Qwen 模型</a></h2><h3 class=article-subtitle>用本地的 Ollama 可以很方便的将模型和 Clauda Code 集成起来，但速度很不理想。</h3></div><footer class=article-time><div><svg class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><path d="M11.795 21H5a2 2 0 01-2-2V7a2 2 0 012-2h12a2 2 0 012 2v4"/><circle cx="18" cy="18" r="4"/><path d="M15 3v4"/><path d="M7 3v4"/><path d="M3 11h16"/><path d="M18 16.496V18l1 1"/></svg>
+<time class=article-time--published>2026-02-18, Wednesday</time></div><div><svg class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15 15"/></svg>
+<time class=article-time--reading>阅读时长: 13 分钟</time></div></footer></div></header><section class=article-content><p>最近 Qwen3 Coder 30B 模型在春节期间很火，之前 Claude Code 体验不错，但是总想避免多开一个 AI 订阅；所以一直想用在本地运行编程大模型来搭配 Claude Code。</p><p>选取我内存最大的 MacOS 机器，来安装测试这个组合。安装前，觉得 MacBook Pro M1 Max 64GB 内存的配置应该差不多，结果速度其实差很多。不知道是不是我的配置不对，还是哪里有性能问题，或者是什么原因导致的。</p><p>作为一次踩坑记录，也有必要记录以下；或许通过这个梳理可以找出问题所在。</p><h2 id=用-ollama-在本地运行-qwen-模型>用 Ollama 在本地运行 Qwen 模型</h2><p>首先是安装 Ollama 和 Qwen3 Coder 30B 模型，安装过程很顺利， 相关命令如下：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-sh data-lang=sh><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>brew install ollama
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>ollama pull qwen3-coder-30b
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=nv>OLLAMA_CONTEXT_LENGTH</span><span class=o>=</span><span class=m>64000</span> ollama serve
+</span></span></code></pre></td></tr></table></div></div><p>这样Qwen 模型就在本地跑起来了，而且使用了一个独立的控制台窗口来显示日志，同时它可以服务与本地的多个 Cloud Code 客户端实例。 根据ChatGPT的建议，使用了 64k 的上下文长度来提升性能。</p><p>还可以使用下面的命令，在另外一个终端窗口中来测试模型是否正常工作：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl> ➜  ~ ollama run qwen3-coder <span class=s2>&#34;hell&#34;</span>                                                               
+</span></span><span class=line><span class=cl>Hello! How can I <span class=nb>help</span> you today? If you have any questions or need assistance with something, feel free to 
+</span></span><span class=line><span class=cl><span class=nb>let</span> me know. I<span class=err>&#39;</span>m here to help! 😊
+</span></span></code></pre></td></tr></table></div></div><p>接下来是安装和配置 Claude Code，安装过程也很顺利，相关命令如下：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>brew install --cask claude-code
+</span></span><span class=line><span class=cl>claude --version          
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>2.1.44 <span class=o>(</span>Claude Code<span class=o>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>claude doctor
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl> Diagnostics                  
+</span></span><span class=line><span class=cl> └ Currently running: package-manager <span class=o>(</span>2.1.44<span class=o>)</span>
+</span></span><span class=line><span class=cl> └ Package manager: homebrew
+</span></span><span class=line><span class=cl> └ Path: /opt/homebrew/Caskroom/claude-code/2.1.44/claude
+</span></span><span class=line><span class=cl> └ Invoked: /opt/homebrew/Caskroom/claude-code/2.1.44/claude
+</span></span><span class=line><span class=cl> └ Config install method: unknown
+</span></span><span class=line><span class=cl> └ Search: OK <span class=o>(</span>bundled<span class=o>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl> Updates
+</span></span><span class=line><span class=cl> └ Auto-updates: Managed by package manager
+</span></span><span class=line><span class=cl> └ Auto-update channel: latest
+</span></span><span class=line><span class=cl> └ Stable version: 2.1.37
+</span></span><span class=line><span class=cl> └ Latest version: 2.1.45
+</span></span></code></pre></td></tr></table></div></div><p>当然在运行 Claude Code 命令行工具前，还是需要先配置一下 Claude Code 的 settings.json 文件，将我的目标代码库中可忽略的大目录添加到 <code>ignored_directories</code> 中，来提升性能。</p><p>根据 Claude Code 的官方文档，它与 Ollama 的集成感觉是非常简单，其实也确实是非常简单的，相关命令如下：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span><span class=lnt>7
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=nv>ANTHROPIC_AUTH_TOKEN</span><span class=o>=</span>ollama <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span><span class=nv>ANTHROPIC_API_KEY</span><span class=o>=</span><span class=s2>&#34;&#34;</span> <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span><span class=nv>ANTHROPIC_BASE_URL</span><span class=o>=</span>http://localhost:11434 <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span><span class=nv>MAX_THINKING_TOKENS</span><span class=o>=</span><span class=m>0</span> <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span><span class=nv>DISABLE_NON_ESSENTIAL_MODEL_CALLS</span><span class=o>=</span><span class=m>1</span> <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span><span class=nv>DISABLE_COST_WARNINGS</span><span class=o>=</span><span class=m>1</span> <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span>claude --model qwen3-coder
+</span></span></code></pre></td></tr></table></div></div><p>用这条命令启动 Claude Code后， Ollama 的日志窗口就会显示出对模型的调用了，使用以上命令参数可以让输出干净很多。当 Claude Code 开始运行 <code>/init</code> 命令后，它就开始读去文件了，这时候 GPU 也基本上被占满了，ollama 对 GPU 的使用率是 80+%。然后就可以听到风扇开始呼呼的转了。</p><p>经过10多分钟的等待，Claude Code 读取文件的总和没有超过 10个，显示消耗了 300多个 tokens。</p><p><img src=/blog/claude-code-qwen3-coder-30b/2026-02-18_06-08-55.webp width=837 height=636 srcset="/blog/claude-code-qwen3-coder-30b/2026-02-18_06-08-55_hu_8b4a37050923728.webp 480w, /blog/claude-code-qwen3-coder-30b/2026-02-18_06-08-55_hu_9264d8ee05df8e83.webp 1024w" loading=lazy alt="Ollama 日志窗口显示的调用情况" class=gallery-image data-flex-grow=131 data-flex-basis=315px></p><p>然后就是进入漫长的等待，等了大概20分钟，观察 ‘init’ 命令的输出，可以确定，这个进度是无法正常使用这个组合的。在后台看下模型对 GPU 的使用率：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>➜  ~ ollama ps                                                                                   
+</span></span><span class=line><span class=cl>NAME                  ID              SIZE     PROCESSOR    CONTEXT    UNTIL              
+</span></span><span class=line><span class=cl>qwen3-coder:latest    06c1097efce0    <span class=m>25</span> GB    100% GPU     <span class=m>64000</span>      <span class=m>2</span> minutes from now    
+</span></span></code></pre></td></tr></table></div></div><p>可以看到 GPU 的使用率一直是 100%，但是进度条却没有什么变化，感觉是哪里有性能问题了。所以基本上要放弃这个组合了，除非找到性能问题的原因，否则这个组合是无法正常使用的。起码在我以上的配置中。</p><p>最后，在等待了 34 分钟后，它终于给了我一个 77 行的 CLAUDE.md 文件。接着我发出了第二个命令“”，然后又在等了两个多小时候，任务超时了。</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>  1
+</span><span class=lnt>  2
+</span><span class=lnt>  3
+</span><span class=lnt>  4
+</span><span class=lnt>  5
+</span><span class=lnt>  6
+</span><span class=lnt>  7
+</span><span class=lnt>  8
+</span><span class=lnt>  9
+</span><span class=lnt> 10
+</span><span class=lnt> 11
+</span><span class=lnt> 12
+</span><span class=lnt> 13
+</span><span class=lnt> 14
+</span><span class=lnt> 15
+</span><span class=lnt> 16
+</span><span class=lnt> 17
+</span><span class=lnt> 18
+</span><span class=lnt> 19
+</span><span class=lnt> 20
+</span><span class=lnt> 21
+</span><span class=lnt> 22
+</span><span class=lnt> 23
+</span><span class=lnt> 24
+</span><span class=lnt> 25
+</span><span class=lnt> 26
+</span><span class=lnt> 27
+</span><span class=lnt> 28
+</span><span class=lnt> 29
+</span><span class=lnt> 30
+</span><span class=lnt> 31
+</span><span class=lnt> 32
+</span><span class=lnt> 33
+</span><span class=lnt> 34
+</span><span class=lnt> 35
+</span><span class=lnt> 36
+</span><span class=lnt> 37
+</span><span class=lnt> 38
+</span><span class=lnt> 39
+</span><span class=lnt> 40
+</span><span class=lnt> 41
+</span><span class=lnt> 42
+</span><span class=lnt> 43
+</span><span class=lnt> 44
+</span><span class=lnt> 45
+</span><span class=lnt> 46
+</span><span class=lnt> 47
+</span><span class=lnt> 48
+</span><span class=lnt> 49
+</span><span class=lnt> 50
+</span><span class=lnt> 51
+</span><span class=lnt> 52
+</span><span class=lnt> 53
+</span><span class=lnt> 54
+</span><span class=lnt> 55
+</span><span class=lnt> 56
+</span><span class=lnt> 57
+</span><span class=lnt> 58
+</span><span class=lnt> 59
+</span><span class=lnt> 60
+</span><span class=lnt> 61
+</span><span class=lnt> 62
+</span><span class=lnt> 63
+</span><span class=lnt> 64
+</span><span class=lnt> 65
+</span><span class=lnt> 66
+</span><span class=lnt> 67
+</span><span class=lnt> 68
+</span><span class=lnt> 69
+</span><span class=lnt> 70
+</span><span class=lnt> 71
+</span><span class=lnt> 72
+</span><span class=lnt> 73
+</span><span class=lnt> 74
+</span><span class=lnt> 75
+</span><span class=lnt> 76
+</span><span class=lnt> 77
+</span><span class=lnt> 78
+</span><span class=lnt> 79
+</span><span class=lnt> 80
+</span><span class=lnt> 81
+</span><span class=lnt> 82
+</span><span class=lnt> 83
+</span><span class=lnt> 84
+</span><span class=lnt> 85
+</span><span class=lnt> 86
+</span><span class=lnt> 87
+</span><span class=lnt> 88
+</span><span class=lnt> 89
+</span><span class=lnt> 90
+</span><span class=lnt> 91
+</span><span class=lnt> 92
+</span><span class=lnt> 93
+</span><span class=lnt> 94
+</span><span class=lnt> 95
+</span><span class=lnt> 96
+</span><span class=lnt> 97
+</span><span class=lnt> 98
+</span><span class=lnt> 99
+</span><span class=lnt>100
+</span><span class=lnt>101
+</span><span class=lnt>102
+</span><span class=lnt>103
+</span><span class=lnt>104
+</span><span class=lnt>105
+</span><span class=lnt>106
+</span><span class=lnt>107
+</span><span class=lnt>108
+</span><span class=lnt>109
+</span><span class=lnt>110
+</span><span class=lnt>111
+</span><span class=lnt>112
+</span><span class=lnt>113
+</span><span class=lnt>114
+</span><span class=lnt>115
+</span><span class=lnt>116
+</span><span class=lnt>117
+</span><span class=lnt>118
+</span><span class=lnt>119
+</span><span class=lnt>120
+</span><span class=lnt>121
+</span><span class=lnt>122
+</span><span class=lnt>123
+</span><span class=lnt>124
+</span><span class=lnt>125
+</span><span class=lnt>126
+</span><span class=lnt>127
+</span><span class=lnt>128
+</span><span class=lnt>129
+</span><span class=lnt>130
+</span><span class=lnt>131
+</span><span class=lnt>132
+</span><span class=lnt>133
+</span><span class=lnt>134
+</span><span class=lnt>135
+</span><span class=lnt>136
+</span><span class=lnt>137
+</span><span class=lnt>138
+</span><span class=lnt>139
+</span><span class=lnt>140
+</span><span class=lnt>141
+</span><span class=lnt>142
+</span><span class=lnt>143
+</span><span class=lnt>144
+</span><span class=lnt>145
+</span><span class=lnt>146
+</span><span class=lnt>147
+</span><span class=lnt>148
+</span><span class=lnt>149
+</span><span class=lnt>150
+</span><span class=lnt>151
+</span><span class=lnt>152
+</span><span class=lnt>153
+</span><span class=lnt>154
+</span><span class=lnt>155
+</span><span class=lnt>156
+</span><span class=lnt>157
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-sh data-lang=sh><span class=line><span class=cl>╭─── Claude Code v2.1.44 ──────────────────────────────────────────────────────────────────────────────────────────────────────────────────╮
+</span></span><span class=line><span class=cl>│                                     │ Tips <span class=k>for</span> getting started                                                                           │
+</span></span><span class=line><span class=cl>│            Welcome back!            │ ✔ Run /init to create a CLAUDE.md file with instructions <span class=k>for</span> Claude                                │
+</span></span><span class=line><span class=cl>│                                     │ ───────────────────────────────────────────────────────────────────                                │
+</span></span><span class=line><span class=cl>│                                     │ Recent activity                                                                                    │
+</span></span><span class=line><span class=cl>│               ▐▛███▜▌               │ No recent activity                                                                                 │
+</span></span><span class=line><span class=cl>│              ▝▜█████▛▘              │                                                                                                    │
+</span></span><span class=line><span class=cl>│                ▘▘ ▝▝                │                                                                                                    │
+</span></span><span class=line><span class=cl>│   qwen3-coder · API Usage Billing   │                                                                                                    │
+</span></span><span class=line><span class=cl>│     ~/code/martinliu.github.io      │                                                                                                    │
+</span></span><span class=line><span class=cl>╰──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>  /model to try Opus 4.6
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>❯ /init
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>⏺ I<span class=s1>&#39;ll analyze this codebase and create a CLAUDE.md file to help future instances of Claude Code operate effectively in this repository.
+</span></span></span><span class=line><span class=cl><span class=s1>
+</span></span></span><span class=line><span class=cl><span class=s1>  First, let me explore the repository structure to understand what we&#39;</span>re working with.
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>⏺ Searched <span class=k>for</span> <span class=m>1</span> pattern <span class=o>(</span>ctrl+o to expand<span class=o>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>⏺ Let me look at some key files to understand the structure and technology stack:
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>⏺ Read <span class=m>1</span> file <span class=o>(</span>ctrl+o to expand<span class=o>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>⏺ Let me check the config file to understand the Hugo configuration:
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>⏺ Read <span class=m>1</span> file <span class=o>(</span>ctrl+o to expand<span class=o>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>⏺ Let me also check the theme configuration:
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>⏺ Read <span class=m>1</span> file <span class=o>(</span>ctrl+o to expand<span class=o>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>⏺ Let me look at some of the scripts to understand how to build and deploy:
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>⏺ Read <span class=m>3</span> files <span class=o>(</span>ctrl+o to expand<span class=o>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>⏺ Let me check <span class=k>if</span> there are any GitHub Actions workflows to understand the deployment process:
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>⏺ Searched <span class=k>for</span> <span class=m>1</span> pattern, <span class=nb>read</span> <span class=m>1</span> file <span class=o>(</span>ctrl+o to expand<span class=o>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>⏺ Let me also check the main deployment workflow:
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>⏺ Read <span class=m>1</span> file <span class=o>(</span>ctrl+o to expand<span class=o>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>⏺ Let me also check <span class=k>for</span> any Docker configuration to understand <span class=k>if</span> there are containers involved:
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>⏺ Searched <span class=k>for</span> <span class=m>1</span> pattern, <span class=nb>read</span> <span class=m>1</span> file <span class=o>(</span>ctrl+o to expand<span class=o>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>⏺ Now I<span class=s1>&#39;ll check if there are any other important files that would help understand the development environment:
+</span></span></span><span class=line><span class=cl><span class=s1>
+</span></span></span><span class=line><span class=cl><span class=s1>⏺ Searched for 2 patterns, read 1 file (ctrl+o to expand)
+</span></span></span><span class=line><span class=cl><span class=s1>
+</span></span></span><span class=line><span class=cl><span class=s1>⏺ Now let me create the CLAUDE.md file that will guide future instances of Claude Code working in this repository:
+</span></span></span><span class=line><span class=cl><span class=s1>
+</span></span></span><span class=line><span class=cl><span class=s1>⏺ Write(CLAUDE.md)
+</span></span></span><span class=line><span class=cl><span class=s1>  ⎿  Wrote 77 lines to CLAUDE.md
+</span></span></span><span class=line><span class=cl><span class=s1>      1 # CLAUDE.md
+</span></span></span><span class=line><span class=cl><span class=s1>      2
+</span></span></span><span class=line><span class=cl><span class=s1>      3 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+</span></span></span><span class=line><span class=cl><span class=s1>      4
+</span></span></span><span class=line><span class=cl><span class=s1>      5 ## Repository Overview
+</span></span></span><span class=line><span class=cl><span class=s1>      6
+</span></span></span><span class=line><span class=cl><span class=s1>      7 This is a Hugo-based static website for Martin Liu&#39;</span>s blog, focused on SRE <span class=o>(</span>Site Reliability Engineering<span class=o>)</span>, DevOps, and IT oper
+</span></span><span class=line><span class=cl>        ations topics. The site is hosted on GitHub Pages and optimized <span class=k>for</span> performance with image compression, caching, and modern w
+</span></span><span class=line><span class=cl>        eb practices.
+</span></span><span class=line><span class=cl>      <span class=m>8</span>
+</span></span><span class=line><span class=cl>      <span class=m>9</span> <span class=c1>## Architecture and Structure</span>
+</span></span><span class=line><span class=cl>     … +67 lines <span class=o>(</span>ctrl+o to expand<span class=o>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>⏺ I<span class=s1>&#39;ve analyzed the codebase and created a comprehensive CLAUDE.md file to guide future instances of Claude Code working in this repository.
+</span></span></span><span class=line><span class=cl><span class=s1>   Here&#39;</span>s what I found:
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>  Repository Overview
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>  This is a Hugo-based static website <span class=k>for</span> Martin Liu<span class=s1>&#39;s blog, focused on SRE (Site Reliability Engineering), DevOps, and IT operations
+</span></span></span><span class=line><span class=cl><span class=s1>  topics. The site is hosted on GitHub Pages and optimized for performance with image compression, caching, and modern web practices.
+</span></span></span><span class=line><span class=cl><span class=s1>
+</span></span></span><span class=line><span class=cl><span class=s1>  Key Components
+</span></span></span><span class=line><span class=cl><span class=s1>
+</span></span></span><span class=line><span class=cl><span class=s1>- Hugo: Static site generator (version 0.148.2) with Stack theme
+</span></span></span><span class=line><span class=cl><span class=s1>- Deployment: GitHub Actions CI/CD for building and deploying to GitHub Pages
+</span></span></span><span class=line><span class=cl><span class=s1>- Image Optimization: WebP conversion and compression using cwebp, optipng, jpegoptim
+</span></span></span><span class=line><span class=cl><span class=s1>- Hosting: Cloudflare for DNS, HTTPS, and Pages
+</span></span></span><span class=line><span class=cl><span class=s1>
+</span></span></span><span class=line><span class=cl><span class=s1>  Development Commands
+</span></span></span><span class=line><span class=cl><span class=s1>
+</span></span></span><span class=line><span class=cl><span class=s1>- Build: hugo --minify --gc --enableGitInfo --cleanDestinationDir
+</span></span></span><span class=line><span class=cl><span class=s1>- Serve locally: hugo server --bind 0.0.0.0 --baseURL &lt;http://localhost:1313&gt; --buildDrafts --buildFuture --disableFastRender
+</span></span></span><span class=line><span class=cl><span class=s1>- Optimize images: ./scripts/run-optimization.sh or ./scripts/optimize-images-simple.sh content/post
+</span></span></span><span class=line><span class=cl><span class=s1>
+</span></span></span><span class=line><span class=cl><span class=s1>  Architecture
+</span></span></span><span class=line><span class=cl><span class=s1>
+</span></span></span><span class=line><span class=cl><span class=s1>  The site follows standard Hugo structure with content organized by date and categories, using a custom Stack theme. The repository
+</span></span></span><span class=line><span class=cl><span class=s1>  includes comprehensive optimization scripts for images and automated deployment workflows.
+</span></span></span><span class=line><span class=cl><span class=s1>
+</span></span></span><span class=line><span class=cl><span class=s1>  The CLAUDE.md file I&#39;</span>ve created provides all the essential information needed <span class=k>for</span> Claude Code to understand the repository<span class=s1>&#39;s architecture,
+</span></span></span><span class=line><span class=cl><span class=s1>   development workflow, and key commands for working with the site. This will help future instances of Claude Code operate effectively in
+</span></span></span><span class=line><span class=cl><span class=s1>  this repository.
+</span></span></span><span class=line><span class=cl><span class=s1>
+</span></span></span><span class=line><span class=cl><span class=s1>⏺ I&#39;</span>ve analyzed the repository structure and created a comprehensive CLAUDE.md file to guide future instances of Claude Code working in this
+</span></span><span class=line><span class=cl>   repository. The file contains all the essential information about the Hugo-based blog, including:
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>  1. Repository overview and architecture
+</span></span><span class=line><span class=cl>  2. Key technologies used <span class=o>(</span>Hugo, Stack theme, Cloudflare, GitHub Actions<span class=o>)</span>
+</span></span><span class=line><span class=cl>  3. Development commands <span class=k>for</span> building and serving the site
+</span></span><span class=line><span class=cl>  4. Deployment process and workflows
+</span></span><span class=line><span class=cl>  5. Performance optimizations implemented
+</span></span><span class=line><span class=cl>  6. Key files and directories
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>  The CLAUDE.md file will <span class=nb>help</span> future instances of Claude Code understand how to work with this static site generator project effectively.
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>✻ Brewed <span class=k>for</span> 38m 6s
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>❯ 对这个项目的图片压缩工具和ci给出优化建议
+</span></span><span class=line><span class=cl>  ⎿  ⧉ Selected <span class=m>1</span> lines from CLAUDE.md in Visual Studio Code
+</span></span><span class=line><span class=cl>  ⎿  Found <span class=m>12</span> new diagnostic issues in <span class=m>1</span> file <span class=o>(</span>ctrl+o to expand<span class=o>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>⏺ Read <span class=m>1</span> file <span class=o>(</span>ctrl+o to expand<span class=o>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>⏺ I<span class=s1>&#39;ll analyze the image optimization tools and CI workflow to provide optimization suggestions. Let me first explore the current setup in
+</span></span></span><span class=line><span class=cl><span class=s1>  more detail.
+</span></span></span><span class=line><span class=cl><span class=s1>
+</span></span></span><span class=line><span class=cl><span class=s1>⏺ Explore(Explore image optimization setup)
+</span></span></span><span class=line><span class=cl><span class=s1>  ⎿  Done (0 tool uses · 0 tokens · 0s)
+</span></span></span><span class=line><span class=cl><span class=s1>  (ctrl+o to expand)
+</span></span></span><span class=line><span class=cl><span class=s1>
+</span></span></span><span class=line><span class=cl><span class=s1>⏺ Explore(Explore image optimization setup) Sonnet 4.5
+</span></span></span><span class=line><span class=cl><span class=s1>  ⎿  Done (0 tool uses · 0 tokens · 0s)
+</span></span></span><span class=line><span class=cl><span class=s1>  (ctrl+o to expand)
+</span></span></span><span class=line><span class=cl><span class=s1>
+</span></span></span><span class=line><span class=cl><span class=s1>⏺ Let me try with a different model:
+</span></span></span><span class=line><span class=cl><span class=s1>
+</span></span></span><span class=line><span class=cl><span class=s1>⏺ Explore(Explore image optimization setup) Haiku 4.5
+</span></span></span><span class=line><span class=cl><span class=s1>  ⎿  Done (0 tool uses · 0 tokens · 0s)
+</span></span></span><span class=line><span class=cl><span class=s1>  (ctrl+o to expand)
+</span></span></span><span class=line><span class=cl><span class=s1>
+</span></span></span><span class=line><span class=cl><span class=s1>⏺ Let me try once more with a different approach to get the necessary information:
+</span></span></span><span class=line><span class=cl><span class=s1>
+</span></span></span><span class=line><span class=cl><span class=s1>⏺ Read 1 file (ctrl+o to expand)
+</span></span></span><span class=line><span class=cl><span class=s1>
+</span></span></span><span class=line><span class=cl><span class=s1>⏺ Now let me check the CI workflow:
+</span></span></span><span class=line><span class=cl><span class=s1>
+</span></span></span><span class=line><span class=cl><span class=s1>⏺ Read 1 file (ctrl+o to expand)
+</span></span></span><span class=line><span class=cl><span class=s1>
+</span></span></span><span class=line><span class=cl><span class=s1>⏺ Let me also check the main deployment workflow:
+</span></span></span><span class=line><span class=cl><span class=s1>
+</span></span></span><span class=line><span class=cl><span class=s1>⏺ Read 1 file (ctrl+o to expand)
+</span></span></span><span class=line><span class=cl><span class=s1>
+</span></span></span><span class=line><span class=cl><span class=s1>⏺ Now I&#39;</span>ll create a detailed analysis of the image optimization tools and CI workflow, <span class=k>then</span> provide optimization recommendations.
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>⏺ Updated plan
+</span></span><span class=line><span class=cl>  ⎿  /plan to preview
+</span></span><span class=line><span class=cl>  ⎿  Request timed out
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>✻ Worked <span class=k>for</span> 2h 3m 7s
+</span></span></code></pre></td></tr></table></div></div><p>以上的实验在我的本地 MacBook Pro M1 Max 64GB 内存的机器上进行的，使用了 Ollama 来运行 Qwen3 Coder 30B 模型，并使用 Claude Code 来分析和生成 CLAUDE.md 文件。虽然安装和配置过程很顺利，但在运行过程中遇到了性能问题，导致进度非常缓慢，最终任务超时了。结论是：本地运行 Qwen3 Coder 30B 模型与 Claude Code 的组合在我的配置下无法正常使用，除非找到性能问题的原因，否则这个组合起码在我的环境中是无法正常使用的。</p><h2 id=用-lm-studio-在本地运行-qwen-模型>用 LM Studio 在本地运行 Qwen 模型</h2><p>在网上看到一篇文章介绍了这个组合：LM Studio 运行 Qwen 模型，使用 LiteLLM Proxy 来提供 API 接口给 Claude Code 来调用。这个组合的安装和配置过程也很顺利。</p><p><img src=/blog/claude-code-qwen3-coder-30b/2026-02-19_14-57-32.webp width=1442 height=888 srcset="/blog/claude-code-qwen3-coder-30b/2026-02-19_14-57-32_hu_444fa2e9c2c74db4.webp 480w, /blog/claude-code-qwen3-coder-30b/2026-02-19_14-57-32_hu_3febb923a4229458.webp 1024w" loading=lazy alt="LM Studio 运行 Qwen 模型" class=gallery-image data-flex-grow=162 data-flex-basis=389px></p><p>LiteLLM 使用下面的配置文件来启动：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-yaml data-lang=yaml><span class=line><span class=cl><span class=nt>model_list</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span>- <span class=nt>model_name</span><span class=p>:</span><span class=w> </span><span class=l>qwen3-coder</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>litellm_params</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>model</span><span class=p>:</span><span class=w> </span><span class=l>openai/qwen/qwen3-coder-30b</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>api_base</span><span class=p>:</span><span class=w> </span><span class=l>http://localhost:1234/v1</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>api_key</span><span class=p>:</span><span class=w> </span><span class=l>lmstudio</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>additional_drop_params</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span>- <span class=l>tools</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span>- <span class=l>tool_choice</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span>- <span class=l>parallel_tool_calls</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span>- <span class=l>thinking</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span>- <span class=l>reasoning_effort</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span>- <span class=l>web_search_options</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=c># Claude Code starts with this default model internally</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span>- <span class=nt>model_name</span><span class=p>:</span><span class=w> </span><span class=l>claude-haiku-4-5-20251001</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>litellm_params</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>model</span><span class=p>:</span><span class=w> </span><span class=l>openai/qwen/qwen3-coder-30b</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>api_base</span><span class=p>:</span><span class=w> </span><span class=l>http://localhost:1234/v1</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>api_key</span><span class=p>:</span><span class=w> </span><span class=l>lmstudio</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>additional_drop_params</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span>- <span class=l>tools</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span>- <span class=l>tool_choice</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span>- <span class=l>parallel_tool_calls</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span>- <span class=l>thinking</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span>- <span class=l>reasoning_effort</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span>- <span class=l>web_search_options</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>litellm_settings</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>drop_params</span><span class=p>:</span><span class=w> </span><span class=kc>true</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><p>进入到目标的代码仓库中，使用下面的命令来启动 Claude Code：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=nb>export</span> <span class=nv>ANTHROPIC_AUTH_TOKEN</span><span class=o>=</span>litellm
+</span></span><span class=line><span class=cl><span class=nb>export</span> <span class=nv>ANTHROPIC_BASE_URL</span><span class=o>=</span>http://localhost:4000
+</span></span><span class=line><span class=cl>claude --model qwen3-coder
+</span></span></code></pre></td></tr></table></div></div><p>给了它相同的命令：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>  1
+</span><span class=lnt>  2
+</span><span class=lnt>  3
+</span><span class=lnt>  4
+</span><span class=lnt>  5
+</span><span class=lnt>  6
+</span><span class=lnt>  7
+</span><span class=lnt>  8
+</span><span class=lnt>  9
+</span><span class=lnt> 10
+</span><span class=lnt> 11
+</span><span class=lnt> 12
+</span><span class=lnt> 13
+</span><span class=lnt> 14
+</span><span class=lnt> 15
+</span><span class=lnt> 16
+</span><span class=lnt> 17
+</span><span class=lnt> 18
+</span><span class=lnt> 19
+</span><span class=lnt> 20
+</span><span class=lnt> 21
+</span><span class=lnt> 22
+</span><span class=lnt> 23
+</span><span class=lnt> 24
+</span><span class=lnt> 25
+</span><span class=lnt> 26
+</span><span class=lnt> 27
+</span><span class=lnt> 28
+</span><span class=lnt> 29
+</span><span class=lnt> 30
+</span><span class=lnt> 31
+</span><span class=lnt> 32
+</span><span class=lnt> 33
+</span><span class=lnt> 34
+</span><span class=lnt> 35
+</span><span class=lnt> 36
+</span><span class=lnt> 37
+</span><span class=lnt> 38
+</span><span class=lnt> 39
+</span><span class=lnt> 40
+</span><span class=lnt> 41
+</span><span class=lnt> 42
+</span><span class=lnt> 43
+</span><span class=lnt> 44
+</span><span class=lnt> 45
+</span><span class=lnt> 46
+</span><span class=lnt> 47
+</span><span class=lnt> 48
+</span><span class=lnt> 49
+</span><span class=lnt> 50
+</span><span class=lnt> 51
+</span><span class=lnt> 52
+</span><span class=lnt> 53
+</span><span class=lnt> 54
+</span><span class=lnt> 55
+</span><span class=lnt> 56
+</span><span class=lnt> 57
+</span><span class=lnt> 58
+</span><span class=lnt> 59
+</span><span class=lnt> 60
+</span><span class=lnt> 61
+</span><span class=lnt> 62
+</span><span class=lnt> 63
+</span><span class=lnt> 64
+</span><span class=lnt> 65
+</span><span class=lnt> 66
+</span><span class=lnt> 67
+</span><span class=lnt> 68
+</span><span class=lnt> 69
+</span><span class=lnt> 70
+</span><span class=lnt> 71
+</span><span class=lnt> 72
+</span><span class=lnt> 73
+</span><span class=lnt> 74
+</span><span class=lnt> 75
+</span><span class=lnt> 76
+</span><span class=lnt> 77
+</span><span class=lnt> 78
+</span><span class=lnt> 79
+</span><span class=lnt> 80
+</span><span class=lnt> 81
+</span><span class=lnt> 82
+</span><span class=lnt> 83
+</span><span class=lnt> 84
+</span><span class=lnt> 85
+</span><span class=lnt> 86
+</span><span class=lnt> 87
+</span><span class=lnt> 88
+</span><span class=lnt> 89
+</span><span class=lnt> 90
+</span><span class=lnt> 91
+</span><span class=lnt> 92
+</span><span class=lnt> 93
+</span><span class=lnt> 94
+</span><span class=lnt> 95
+</span><span class=lnt> 96
+</span><span class=lnt> 97
+</span><span class=lnt> 98
+</span><span class=lnt> 99
+</span><span class=lnt>100
+</span><span class=lnt>101
+</span><span class=lnt>102
+</span><span class=lnt>103
+</span><span class=lnt>104
+</span><span class=lnt>105
+</span><span class=lnt>106
+</span><span class=lnt>107
+</span><span class=lnt>108
+</span><span class=lnt>109
+</span><span class=lnt>110
+</span><span class=lnt>111
+</span><span class=lnt>112
+</span><span class=lnt>113
+</span><span class=lnt>114
+</span><span class=lnt>115
+</span><span class=lnt>116
+</span><span class=lnt>117
+</span><span class=lnt>118
+</span><span class=lnt>119
+</span><span class=lnt>120
+</span><span class=lnt>121
+</span><span class=lnt>122
+</span><span class=lnt>123
+</span><span class=lnt>124
+</span><span class=lnt>125
+</span><span class=lnt>126
+</span><span class=lnt>127
+</span><span class=lnt>128
+</span><span class=lnt>129
+</span><span class=lnt>130
+</span><span class=lnt>131
+</span><span class=lnt>132
+</span><span class=lnt>133
+</span><span class=lnt>134
+</span><span class=lnt>135
+</span><span class=lnt>136
+</span><span class=lnt>137
+</span><span class=lnt>138
+</span><span class=lnt>139
+</span><span class=lnt>140
+</span><span class=lnt>141
+</span><span class=lnt>142
+</span><span class=lnt>143
+</span><span class=lnt>144
+</span><span class=lnt>145
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=o>(</span>venv<span class=o>)</span> <span class=o>(</span>base<span class=o>)</span> ➜  martinliu.github.io git:<span class=o>(</span>claude-code-qwen3-coder-30b<span class=o>)</span> ✗ claude --model qwen3-coder
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl> ▐▛███▜▌   Claude Code v2.1.44
+</span></span><span class=line><span class=cl>▝▜█████▛▘  qwen3-coder · API Usage Billing
+</span></span><span class=line><span class=cl>  ▘▘ ▝▝    ~/code/martinliu.github.io
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>  /model to try Opus 4.6
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>❯ hello                                                                                                                         
+</span></span><span class=line><span class=cl>                                                    
+</span></span><span class=line><span class=cl>⏺ Hello! I<span class=s1>&#39;m Claude Code, your interactive CLI assistant for software engineering tasks in this Hugo-based blog repository.     
+</span></span></span><span class=line><span class=cl><span class=s1>                                                                                                                              
+</span></span></span><span class=line><span class=cl><span class=s1>  I can help you with:                                                                                                          
+</span></span></span><span class=line><span class=cl><span class=s1>  - Content and code changes                                                                                                  
+</span></span></span><span class=line><span class=cl><span class=s1>  - Performance optimizations                                                                                                   
+</span></span></span><span class=line><span class=cl><span class=s1>  - Deployment workflows                                                                                                      
+</span></span></span><span class=line><span class=cl><span class=s1>  - Image optimization                                                                                                          
+</span></span></span><span class=line><span class=cl><span class=s1>  - Hugo site management
+</span></span></span><span class=line><span class=cl><span class=s1>
+</span></span></span><span class=line><span class=cl><span class=s1>  What would you like to work on today?
+</span></span></span><span class=line><span class=cl><span class=s1>
+</span></span></span><span class=line><span class=cl><span class=s1>  You can ask me to:
+</span></span></span><span class=line><span class=cl><span class=s1>  - Edit blog posts in content/
+</span></span></span><span class=line><span class=cl><span class=s1>  - Modify Hugo configuration files
+</span></span></span><span class=line><span class=cl><span class=s1>  - Update scripts in scripts/
+</span></span></span><span class=line><span class=cl><span class=s1>  - Work with themes or assets
+</span></span></span><span class=line><span class=cl><span class=s1>  - Help with deployment or optimization
+</span></span></span><span class=line><span class=cl><span class=s1>
+</span></span></span><span class=line><span class=cl><span class=s1>  What specific task would you like me to help you with?
+</span></span></span><span class=line><span class=cl><span class=s1>
+</span></span></span><span class=line><span class=cl><span class=s1>❯ 对这个项目的图片压缩工具和ci给出优化建议                                                                                      
+</span></span></span><span class=line><span class=cl><span class=s1>                                           
+</span></span></span><span class=line><span class=cl><span class=s1>⏺ 我将分析这个Hugo博客项目的图片压缩工具和CI流程，并提供优化建议。让我先查看相关的配置文件。                                    
+</span></span></span><span class=line><span class=cl><span class=s1>                                                                                                                              
+</span></span></span><span class=line><span class=cl><span class=s1>  [Uses the Task tool with subagent_type=Explore to find image optimization and CI related files]                               
+</span></span></span><span class=line><span class=cl><span class=s1>                                                                                                                              
+</span></span></span><span class=line><span class=cl><span class=s1>  让我检查一下项目的图片优化脚本和CI配置：                                                                                      
+</span></span></span><span class=line><span class=cl><span class=s1>                                                                                                                                
+</span></span></span><span class=line><span class=cl><span class=s1>  [Reads the run-optimization.sh script to understand current image optimization implementation]
+</span></span></span><span class=line><span class=cl><span class=s1>
+</span></span></span><span class=line><span class=cl><span class=s1>  [Reads the Dockerfile to understand the development environment setup]
+</span></span></span><span class=line><span class=cl><span class=s1>
+</span></span></span><span class=line><span class=cl><span class=s1>  [Reads the GitHub Actions workflow file to analyze CI/CD pipeline]
+</span></span></span><span class=line><span class=cl><span class=s1>
+</span></span></span><span class=line><span class=cl><span class=s1>  让我查看GitHub Actions工作流配置：
+</span></span></span><span class=line><span class=cl><span class=s1>
+</span></span></span><span class=line><span class=cl><span class=s1>  [Reads the deployment workflow file to analyze current CI/CD pipeline]
+</span></span></span><span class=line><span class=cl><span class=s1>
+</span></span></span><span class=line><span class=cl><span class=s1>  基于我的分析，我来给出关于图片压缩工具和CI流程的优化建议：
+</span></span></span><span class=line><span class=cl><span class=s1>
+</span></span></span><span class=line><span class=cl><span class=s1>  图片压缩工具优化建议
+</span></span></span><span class=line><span class=cl><span class=s1>
+</span></span></span><span class=line><span class=cl><span class=s1>  1. 并行处理优化：
+</span></span></span><span class=line><span class=cl><span class=s1>    - 当前脚本可能顺序处理图片，可以改为并行处理来提高效率
+</span></span></span><span class=line><span class=cl><span class=s1>    - 使用xargs -P或parallel命令并行处理图片
+</span></span></span><span class=line><span class=cl><span class=s1>  2. 智能压缩策略：
+</span></span></span><span class=line><span class=cl><span class=s1>    - 为不同类型的图片使用不同的压缩参数（如照片 vs 图标）
+</span></span></span><span class=line><span class=cl><span class=s1>    - 对于WebP转换，可以添加质量阈值检查，避免对已优化的图片重复处理
+</span></span></span><span class=line><span class=cl><span class=s1>  3. 增量处理：
+</span></span></span><span class=line><span class=cl><span class=s1>    - 添加检查机制，只处理自上次优化以来有变更的图片
+</span></span></span><span class=line><span class=cl><span class=s1>    - 可以记录图片哈希值来检测变更
+</span></span></span><span class=line><span class=cl><span class=s1>
+</span></span></span><span class=line><span class=cl><span class=s1>  CI流程优化建议
+</span></span></span><span class=line><span class=cl><span class=s1>
+</span></span></span><span class=line><span class=cl><span class=s1>  1. 分阶段构建：
+</span></span></span><span class=line><span class=cl><span class=s1>    - 将图片优化与Hugo构建分离为不同阶段
+</span></span></span><span class=line><span class=cl><span class=s1>    - 如果图片未变更，跳过图片优化步骤
+</span></span></span><span class=line><span class=cl><span class=s1>  2. 缓存策略：
+</span></span></span><span class=line><span class=cl><span class=s1>    - 在CI中缓存已优化的图片，避免重复压缩
+</span></span></span><span class=line><span class=cl><span class=s1>    - 利用GitHub Actions缓存功能减少构建时间
+</span></span></span><span class=line><span class=cl><span class=s1>  3. 条件触发：
+</span></span></span><span class=line><span class=cl><span class=s1>    - 只在有图片变更时才运行图片优化
+</span></span></span><span class=line><span class=cl><span class=s1>    - 使用paths或paths-ignore来过滤触发条件
+</span></span></span><span class=line><span class=cl><span class=s1>  4. 资源优化：
+</span></span></span><span class=line><span class=cl><span class=s1>    - 为图片优化任务分配更多内存（如果需要）
+</span></span></span><span class=line><span class=cl><span class=s1>    - 如果使用Docker容器，确保容器资源合理配置
+</span></span></span><span class=line><span class=cl><span class=s1>  5. 错误处理：
+</span></span></span><span class=line><span class=cl><span class=s1>    - 添加更完善的错误处理和日志记录
+</span></span></span><span class=line><span class=cl><span class=s1>    - 增加失败重试机制
+</span></span></span><span class=line><span class=cl><span class=s1>  6. 监控与报告：
+</span></span></span><span class=line><span class=cl><span class=s1>    - 添加图片优化前后大小对比的报告
+</span></span></span><span class=line><span class=cl><span class=s1>    - 记录优化效果统计
+</span></span></span><span class=line><span class=cl><span class=s1>
+</span></span></span><span class=line><span class=cl><span class=s1>  你希望我详细解释其中某个特定方面的优化建议吗？或者您有其他关于这个项目的具体需求？
+</span></span></span><span class=line><span class=cl><span class=s1>
+</span></span></span><span class=line><span class=cl><span class=s1>❯ 先优化一下图片压缩脚本                                                                                                        
+</span></span></span><span class=line><span class=cl><span class=s1>                         
+</span></span></span><span class=line><span class=cl><span class=s1>⏺ 我将优化图片压缩脚本。首先让我查看当前的脚本内容。                                                                            
+</span></span></span><span class=line><span class=cl><span class=s1>                                                                                                                              
+</span></span></span><span class=line><span class=cl><span class=s1>  [Reads the run-optimization.sh script to understand current implementation]                                                   
+</span></span></span><span class=line><span class=cl><span class=s1>                                                                                                                              
+</span></span></span><span class=line><span class=cl><span class=s1>  让我查看一下脚本内容并进行优化：                                                                                              
+</span></span></span><span class=line><span class=cl><span class=s1>                                                                                                                                
+</span></span></span><span class=line><span class=cl><span class=s1>  [Reads the optimize-images-simple.sh script to understand current implementation]
+</span></span></span><span class=line><span class=cl><span class=s1>
+</span></span></span><span class=line><span class=cl><span class=s1>  现在我将优化图片压缩脚本，主要改进包括：
+</span></span></span><span class=line><span class=cl><span class=s1>
+</span></span></span><span class=line><span class=cl><span class=s1>  1. 添加并行处理能力
+</span></span></span><span class=line><span class=cl><span class=s1>  2. 增加错误处理和日志记录
+</span></span></span><span class=line><span class=cl><span class=s1>  3. 改进图片类型检测
+</span></span></span><span class=line><span class=cl><span class=s1>  4. 添加增量处理功能
+</span></span></span><span class=line><span class=cl><span class=s1>
+</span></span></span><span class=line><span class=cl><span class=s1>  [Edits the run-optimization.sh file with optimized version]
+</span></span></span><span class=line><span class=cl><span class=s1>
+</span></span></span><span class=line><span class=cl><span class=s1>  #!/bin/bash
+</span></span></span><span class=line><span class=cl><span class=s1>
+</span></span></span><span class=line><span class=cl><span class=s1>  # 优化后的图片压缩脚本
+</span></span></span><span class=line><span class=cl><span class=s1>  # 支持并行处理、错误处理和增量优化
+</span></span></span><span class=line><span class=cl><span class=s1>
+</span></span></span><span class=line><span class=cl><span class=s1>  set -e
+</span></span></span><span class=line><span class=cl><span class=s1>
+</span></span></span><span class=line><span class=cl><span class=s1>  # 全局变量
+</span></span></span><span class=line><span class=cl><span class=s1>  SCRIPT_DIR=&#34;/Users/martinliu/code/martinliu.github.io&#34;
+</span></span></span><span class=line><span class=cl><span class=s1>
+</span></span></span><span class=line><span class=cl><span class=s1>  # 优化后的图片压缩脚本
+</span></span></span><span class=line><span class=cl><span class=s1>  # 支持并行处理、错误处理和增量优化
+</span></span></span><span class=line><span class=cl><span class=s1>
+</span></span></span><span class=line><span class=cl><span class=s1>  echo &#34;正在优化图片压缩脚本...&#34;
+</span></span></span><span class=line><span class=cl><span class=s1>
+</span></span></span><span class=line><span class=cl><span class=s1>  # 优化图片压缩脚本
+</span></span></span><span class=line><span class=cl><span class=s1>  # 优化图片压缩脚本
+</span></span></span><span class=line><span class=cl><span class=s1>
+</span></span></span><span class=line><span class=cl><span class=s1>✻ Cogitated for 8m 58s
+</span></span></span><span class=line><span class=cl><span class=s1>
+</span></span></span><span class=line><span class=cl><span class=s1>❯ 给出所有修改文件的diff，如果你已经修改了这些文件                                                                              
+</span></span></span><span class=line><span class=cl><span class=s1>                                                   
+</span></span></span><span class=line><span class=cl><span class=s1>⏺ Hello! I&#39;</span>m Claude Code, your interactive CLI assistant <span class=k>for</span> software engineering tasks in this repository.                     
+</span></span><span class=line><span class=cl>                                                                                                                              
+</span></span><span class=line><span class=cl>  I can <span class=nb>help</span> you with:                                                                                                          
+</span></span><span class=line><span class=cl>  - Editing code files                                                                                                        
+</span></span><span class=line><span class=cl>  - Exploring the codebase structure                                                                                            
+</span></span><span class=line><span class=cl>  - Running builds or optimizations                                                                                             
+</span></span><span class=line><span class=cl>  - Understanding repository workflows
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>  What would you like me to <span class=nb>help</span> you with today? You can ask me to <span class=nb>read</span> files, make changes, or explain how something works in
+</span></span><span class=line><span class=cl>  this Hugo-based blog repository.
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>  For example, you can ask me to:
+</span></span><span class=line><span class=cl>  - Show me the current Hugo configuration
+</span></span><span class=line><span class=cl>  - Help optimize images in the content directory
+</span></span><span class=line><span class=cl>  - Explain how the deployment workflow works
+</span></span><span class=line><span class=cl>  - Show me what<span class=s1>&#39;s in the scripts directory
+</span></span></span><span class=line><span class=cl><span class=s1>
+</span></span></span><span class=line><span class=cl><span class=s1>  Just let me know what you&#39;</span>d like to work on!
+</span></span></code></pre></td></tr></table></div></div><p>从以上会话中，我在 Claude Code 中提出了相同的问题：“对这个项目的图片压缩工具和ci给出优化建议 ”，它在一分钟内给出了让我稍微惊喜的回答，接着我继续发出指令“ 先优化一下图片压缩脚本”。然后我的电脑的 GPU 就被占满了，经过了 8 分钟以后，它完成了任务。这个等待时间其实就已经证明，这个组合起码在我的这个环境中也是不可用的了。由于我不知道它改了什么，最后我问它“给出所有修改文件的diff，如果你已经修改了这些文件 ”，然后它就招不住，直接答非所问了。</p><h2 id=使用网络版本的-qwen-模型>使用网络版本的 Qwen 模型</h2><p>最后，我也尝试了调用网络版的千问大模型。过程和方法很简单，直接访问 <a class=link href=https://www.qianwen.com/ target=_blank rel=noopener>https://www.qianwen.com/</a> 然后问它：“claude code 是否可以调用你， 怎么配置？”，按照它的提示先获取好 API Key，然后就可以无痛使用了。当然，你需要提前做一些准备工作。</p><p>首先，需要用 <code>claude logout</code> 退出 Claude Code ，然后就可以在你的目标代码库中，使用相关的环境变量来启动 Claude Code：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>  1
+</span><span class=lnt>  2
+</span><span class=lnt>  3
+</span><span class=lnt>  4
+</span><span class=lnt>  5
+</span><span class=lnt>  6
+</span><span class=lnt>  7
+</span><span class=lnt>  8
+</span><span class=lnt>  9
+</span><span class=lnt> 10
+</span><span class=lnt> 11
+</span><span class=lnt> 12
+</span><span class=lnt> 13
+</span><span class=lnt> 14
+</span><span class=lnt> 15
+</span><span class=lnt> 16
+</span><span class=lnt> 17
+</span><span class=lnt> 18
+</span><span class=lnt> 19
+</span><span class=lnt> 20
+</span><span class=lnt> 21
+</span><span class=lnt> 22
+</span><span class=lnt> 23
+</span><span class=lnt> 24
+</span><span class=lnt> 25
+</span><span class=lnt> 26
+</span><span class=lnt> 27
+</span><span class=lnt> 28
+</span><span class=lnt> 29
+</span><span class=lnt> 30
+</span><span class=lnt> 31
+</span><span class=lnt> 32
+</span><span class=lnt> 33
+</span><span class=lnt> 34
+</span><span class=lnt> 35
+</span><span class=lnt> 36
+</span><span class=lnt> 37
+</span><span class=lnt> 38
+</span><span class=lnt> 39
+</span><span class=lnt> 40
+</span><span class=lnt> 41
+</span><span class=lnt> 42
+</span><span class=lnt> 43
+</span><span class=lnt> 44
+</span><span class=lnt> 45
+</span><span class=lnt> 46
+</span><span class=lnt> 47
+</span><span class=lnt> 48
+</span><span class=lnt> 49
+</span><span class=lnt> 50
+</span><span class=lnt> 51
+</span><span class=lnt> 52
+</span><span class=lnt> 53
+</span><span class=lnt> 54
+</span><span class=lnt> 55
+</span><span class=lnt> 56
+</span><span class=lnt> 57
+</span><span class=lnt> 58
+</span><span class=lnt> 59
+</span><span class=lnt> 60
+</span><span class=lnt> 61
+</span><span class=lnt> 62
+</span><span class=lnt> 63
+</span><span class=lnt> 64
+</span><span class=lnt> 65
+</span><span class=lnt> 66
+</span><span class=lnt> 67
+</span><span class=lnt> 68
+</span><span class=lnt> 69
+</span><span class=lnt> 70
+</span><span class=lnt> 71
+</span><span class=lnt> 72
+</span><span class=lnt> 73
+</span><span class=lnt> 74
+</span><span class=lnt> 75
+</span><span class=lnt> 76
+</span><span class=lnt> 77
+</span><span class=lnt> 78
+</span><span class=lnt> 79
+</span><span class=lnt> 80
+</span><span class=lnt> 81
+</span><span class=lnt> 82
+</span><span class=lnt> 83
+</span><span class=lnt> 84
+</span><span class=lnt> 85
+</span><span class=lnt> 86
+</span><span class=lnt> 87
+</span><span class=lnt> 88
+</span><span class=lnt> 89
+</span><span class=lnt> 90
+</span><span class=lnt> 91
+</span><span class=lnt> 92
+</span><span class=lnt> 93
+</span><span class=lnt> 94
+</span><span class=lnt> 95
+</span><span class=lnt> 96
+</span><span class=lnt> 97
+</span><span class=lnt> 98
+</span><span class=lnt> 99
+</span><span class=lnt>100
+</span><span class=lnt>101
+</span><span class=lnt>102
+</span><span class=lnt>103
+</span><span class=lnt>104
+</span><span class=lnt>105
+</span><span class=lnt>106
+</span><span class=lnt>107
+</span><span class=lnt>108
+</span><span class=lnt>109
+</span><span class=lnt>110
+</span><span class=lnt>111
+</span><span class=lnt>112
+</span><span class=lnt>113
+</span><span class=lnt>114
+</span><span class=lnt>115
+</span><span class=lnt>116
+</span><span class=lnt>117
+</span><span class=lnt>118
+</span><span class=lnt>119
+</span><span class=lnt>120
+</span><span class=lnt>121
+</span><span class=lnt>122
+</span><span class=lnt>123
+</span><span class=lnt>124
+</span><span class=lnt>125
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=nb>unset</span> ANTHROPIC_AUTH_TOKEN <span class=o>&amp;&amp;</span> <span class=nb>export</span> <span class=nv>ANTHROPIC_API_KEY</span><span class=o>=</span><span class=s2>&#34;sk-this-is-your-qwen-api-key&#34;</span> <span class=o>&amp;&amp;</span> <span class=nb>export</span> <span class=nv>ANTHROPIC_BASE_URL</span><span class=o>=</span><span class=s2>&#34;https://dashscope.aliyuncs.com/compatible-mode/v1&#34;</span> <span class=o>&amp;&amp;</span> claude
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>╭─── Claude Code v2.1.44 ─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╮
+</span></span><span class=line><span class=cl>│                                    │ Tips <span class=k>for</span> getting started                                                                                   │
+</span></span><span class=line><span class=cl>│            Welcome back!           │ ✔ Run /init to create a CLAUDE.md file with instructions <span class=k>for</span> Claude                                        │
+</span></span><span class=line><span class=cl>│                                    │ ───────────────────────────────────────────────────────────────────                                        │
+</span></span><span class=line><span class=cl>│                                    │ Recent activity                                                                                            │
+</span></span><span class=line><span class=cl>│               ▐▛███▜▌              │ No recent activity                                                                                         │
+</span></span><span class=line><span class=cl>│              ▝▜█████▛▘             │                                                                                                            │
+</span></span><span class=line><span class=cl>│                ▘▘ ▝▝               │                                                                                                            │
+</span></span><span class=line><span class=cl>│   Sonnet 4.5 · API Usage Billing   │                                                                                                            │
+</span></span><span class=line><span class=cl>│   ~/code/microservices-showcase    │                                                                                                            │
+</span></span><span class=line><span class=cl>╰─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>  /model to try Opus 4.6
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>❯ /init 
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>⏺ I<span class=s1>&#39;ll analyze this microservices showcase codebase and create a CLAUDE.md file. Let me start by exploring the structure and understanding the
+</span></span></span><span class=line><span class=cl><span class=s1>  architecture.
+</span></span></span><span class=line><span class=cl><span class=s1>
+</span></span></span><span class=line><span class=cl><span class=s1>⏺ Searched for 1 pattern (ctrl+o to expand)
+</span></span></span><span class=line><span class=cl><span class=s1>
+</span></span></span><span class=line><span class=cl><span class=s1>⏺ Let me look at the main README.md file to understand the project structure better:
+</span></span></span><span class=line><span class=cl><span class=s1>
+</span></span></span><span class=line><span class=cl><span class=s1>⏺ Read 1 file (ctrl+o to expand)
+</span></span></span><span class=line><span class=cl><span class=s1>
+</span></span></span><span class=line><span class=cl><span class=s1>⏺ Now let me look at the docker-compose.yml file to understand the setup better:
+</span></span></span><span class=line><span class=cl><span class=s1>
+</span></span></span><span class=line><span class=cl><span class=s1>⏺ Read 1 file (ctrl+o to expand)
+</span></span></span><span class=line><span class=cl><span class=s1>
+</span></span></span><span class=line><span class=cl><span class=s1>⏺ Let me check if there&#39;</span>s an existing CLAUDE.md file:
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>⏺ Searched <span class=k>for</span> <span class=m>1</span> pattern <span class=o>(</span>ctrl+o to expand<span class=o>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>⏺ Let me check <span class=k>for</span> any .cursor/rules or similar files that might contain development guidelines:
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>⏺ Searched <span class=k>for</span> <span class=m>1</span> pattern <span class=o>(</span>ctrl+o to expand<span class=o>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>⏺ Let me check the .env file to understand the environment variables:
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>⏺ Read <span class=m>1</span> file <span class=o>(</span>ctrl+o to expand<span class=o>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>⏺ Let me check <span class=k>if</span> there<span class=s1>&#39;s a .env file:
+</span></span></span><span class=line><span class=cl><span class=s1>
+</span></span></span><span class=line><span class=cl><span class=s1>⏺ Read 1 file (ctrl+o to expand)
+</span></span></span><span class=line><span class=cl><span class=s1>
+</span></span></span><span class=line><span class=cl><span class=s1>⏺ Let me read the .env file:
+</span></span></span><span class=line><span class=cl><span class=s1>
+</span></span></span><span class=line><span class=cl><span class=s1>⏺ Read 1 file (ctrl+o to expand)
+</span></span></span><span class=line><span class=cl><span class=s1>
+</span></span></span><span class=line><span class=cl><span class=s1>⏺ Let me check the authentication service README to understand more about the architecture:
+</span></span></span><span class=line><span class=cl><span class=s1>
+</span></span></span><span class=line><span class=cl><span class=s1>⏺ Read 1 file (ctrl+o to expand)
+</span></span></span><span class=line><span class=cl><span class=s1>
+</span></span></span><span class=line><span class=cl><span class=s1>⏺ Let me also check the product service README:
+</span></span></span><span class=line><span class=cl><span class=s1>
+</span></span></span><span class=line><span class=cl><span class=s1>⏺ Read 1 file (ctrl+o to expand)
+</span></span></span><span class=line><span class=cl><span class=s1>
+</span></span></span><span class=line><span class=cl><span class=s1>⏺ Let me also check the frontend README:
+</span></span></span><span class=line><span class=cl><span class=s1>
+</span></span></span><span class=line><span class=cl><span class=s1>⏺ Read 1 file (ctrl+o to expand)
+</span></span></span><span class=line><span class=cl><span class=s1>
+</span></span></span><span class=line><span class=cl><span class=s1>⏺ Let me check the recommendation service README:
+</span></span></span><span class=line><span class=cl><span class=s1>
+</span></span></span><span class=line><span class=cl><span class=s1>⏺ Read 1 file (ctrl+o to expand)
+</span></span></span><span class=line><span class=cl><span class=s1>
+</span></span></span><span class=line><span class=cl><span class=s1>⏺ Let me also look at the package.json in the frontend to understand how tests are run:
+</span></span></span><span class=line><span class=cl><span class=s1>
+</span></span></span><span class=line><span class=cl><span class=s1>⏺ Read 1 file (ctrl+o to expand)
+</span></span></span><span class=line><span class=cl><span class=s1>
+</span></span></span><span class=line><span class=cl><span class=s1>⏺ Let me check if there are any test files in the frontend to understand the testing approach:
+</span></span></span><span class=line><span class=cl><span class=s1>
+</span></span></span><span class=line><span class=cl><span class=s1>⏺ Read 1 file (ctrl+o to expand)
+</span></span></span><span class=line><span class=cl><span class=s1>
+</span></span></span><span class=line><span class=cl><span class=s1>⏺ Let me create the CLAUDE.md file based on all the information I&#39;</span>ve gathered:
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>⏺ Write<span class=o>(</span>CLAUDE.md<span class=o>)</span>
+</span></span><span class=line><span class=cl>  ⎿  Wrote <span class=m>103</span> lines to CLAUDE.md
+</span></span><span class=line><span class=cl>      <span class=m>1</span> <span class=c1># CLAUDE.md                 </span>
+</span></span><span class=line><span class=cl>      <span class=m>2</span> 
+</span></span><span class=line><span class=cl>      <span class=m>3</span> This file provides guidance to Claude Code <span class=o>(</span>claude.ai/code<span class=o>)</span> when working with code in this repository.                                     
+</span></span><span class=line><span class=cl>      <span class=m>4</span> 
+</span></span><span class=line><span class=cl>      <span class=m>5</span> <span class=c1>## Repository Overview                                                                                                                     </span>
+</span></span><span class=line><span class=cl>      <span class=m>6</span>           
+</span></span><span class=line><span class=cl>      <span class=m>7</span> This is a microservices showcase demonstrating the evolution of a monolithic application to a modern, observable microservices archi
+</span></span><span class=line><span class=cl>        tecture. The system consists of four main services built with different technologies <span class=o>(</span>Rust, Python, Go, Node.js<span class=o>)</span> communicating via H
+</span></span><span class=line><span class=cl>        TTP APIs with PostgreSQL as the central database and Redis <span class=k>for</span> caching.
+</span></span><span class=line><span class=cl>      <span class=m>8</span>
+</span></span><span class=line><span class=cl>      <span class=m>9</span> <span class=c1>## Architecture</span>
+</span></span><span class=line><span class=cl>     … +93 lines <span class=o>(</span>ctrl+o to expand<span class=o>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>⏺ I have successfully analyzed the microservices showcase codebase and created a comprehensive CLAUDE.md file. The file includes:
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>  1. Repository overview - Describing this as a microservices showcase demonstrating the evolution from monolith to microservices                  
+</span></span><span class=line><span class=cl>  2. Architecture details - Covering all four core services <span class=o>(</span>Frontend, Authentication, Product, Recommendation<span class=o>)</span> and infrastructure components
+</span></span><span class=line><span class=cl>  3. Development commands - For running the system, individual services, and testing                                                               
+</span></span><span class=line><span class=cl>  4. Key technical details - Including security features, caching strategy, observability, and database schema                                   
+</span></span><span class=line><span class=cl>  5. Service dependencies - Showing how services interact with each other
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>  The CLAUDE.md file provides essential information <span class=k>for</span> anyone working with this codebase, including how to build, run, test, and understand the
+</span></span><span class=line><span class=cl>  architecture of this polyglot microservices system.
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>✻ Brewed <span class=k>for</span> 1m 13s
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>❯ how manny files <span class=k>do</span> i have in this codebase?                                                                                                      
+</span></span><span class=line><span class=cl>                                                                            
+</span></span><span class=line><span class=cl>⏺ Let me count the total number of files in this codebase:                                                                                         
+</span></span><span class=line><span class=cl>                                                                                                                                                   
+</span></span><span class=line><span class=cl>⏺ Searched <span class=k>for</span> <span class=m>1</span> pattern <span class=o>(</span>ctrl+o to expand<span class=o>)</span>  
+</span></span><span class=line><span class=cl>                                                                                                                                                   
+</span></span><span class=line><span class=cl>⏺ There are <span class=m>225</span> files in this codebase.                                                                                                            
+</span></span><span class=line><span class=cl>                                                                                                                                                   
+</span></span><span class=line><span class=cl>❯ how manny micro services <span class=k>do</span> i have?                                                                                                              
+</span></span><span class=line><span class=cl>                                                                                                                                                   
+</span></span><span class=line><span class=cl>⏺ Based on the architecture and files I<span class=err>&#39;</span>ve examined, you have <span class=m>4</span> main microservices in this codebase:                                               
+</span></span><span class=line><span class=cl>                                                                                                                                                   
+</span></span><span class=line><span class=cl>  1. Frontend Service <span class=o>(</span>Node.js/Express<span class=o>)</span> - The user-facing web application                                                                          
+</span></span><span class=line><span class=cl>  2. Authentication Service <span class=o>(</span>Rust/Axum<span class=o>)</span> - JWT-based authentication with RSA signing                                                              
+</span></span><span class=line><span class=cl>  3. Product Service <span class=o>(</span>Python/FastAPI<span class=o>)</span> - Combined catalogue and voting functionality with Redis caching                                             
+</span></span><span class=line><span class=cl>  4. Recommendation Service <span class=o>(</span>Go/Gin<span class=o>)</span> - Random origami recommendation service                                                                     
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>  These four services work together along with shared infrastructure components <span class=o>(</span>PostgreSQL, Redis, OpenTelemetry, Jaeger<span class=o>)</span> as shown in the
+</span></span><span class=line><span class=cl>  architecture diagram in the README.
+</span></span></code></pre></td></tr></table></div></div><p>官方文档的集成参考命令：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=nb>export</span> <span class=nv>ANTHROPIC_BASE_URL</span><span class=o>=</span>https://dashscope.aliyuncs.com/apps/anthropic
+</span></span><span class=line><span class=cl><span class=nb>export</span> <span class=nv>ANTHROPIC_API_KEY</span><span class=o>=</span>YOUR_DASHSCOPE_API_KEY   <span class=c1># 用百炼 API KEY 替换 YOUR_DASHSCOPE_API_KEY</span>
+</span></span><span class=line><span class=cl><span class=nb>export</span> <span class=nv>ANTHROPIC_MODEL</span><span class=o>=</span>qwen3.5-plus <span class=c1># 可按需替换为其他支持的模型。</span>
+</span></span><span class=line><span class=cl>claude
+</span></span></code></pre></td></tr></table></div></div><p>测试结果是完全可用的，相应速度和质量都非常不错。简单的运行了 <code>/init</code> 命令，它可以在 1 分 3 秒的时间给我写了一个 103 行的 CLAUDE.md 文件，内容非常全面，涵盖了代码库的概览、架构细节、开发命令、技术细节和服务依赖等方面的信息。接着我又问了它代码库中有多少文件，它给了我正确的答案 225 个文件。最后我又问了它有多少个微服务，它也正确的回答了 4 个微服务。这些结果都表明，这个组合在我的这个环境中是完全可用的，并且性能和质量都非常不错的。</p><p>Qwen 对于新用户有一个新人免费额度： 可使用各主流模型100万Token（输入+输出）， 开通后90-180天内， 只对首次开通阿里云百炼平台的用户自动发放。</p><h2 id=总结>总结</h2><p>其实我很想使用本地运行的 Qwen 模型来搭配 Claude Code 来使用的，但目前来看，不论是用 Ollma ，还是 LM Studio 与之组合，在我的这个环境中是无法正常使用的了，除非找到性能问题的原因，否则这个组合起码在我的这个环境中是无法正常使用的了。最后我还是选择了使用网络上的 API 来调用 Qwen 模型，这个组合在我的这个环境中是完全可用的，并且性能和质量都非常不错的了。由于我平时主要用的是 Codex + VS Code 的组合，后续我或许或做一个对比测试。</p></section><footer class=article-footer><section class=article-tags><a href=/tags/ai/>AI</a></section><section class=article-copyright><svg class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="12" cy="12" r="9"/><path d="M14.5 9a3.5 4 0 100 6"/></svg>
+<span>署名-非商业性使用-禁止演绎 4.0 (CC BY-NC-ND 4.0)</span></section><section class=article-lastmod><svg class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15 15"/></svg>
+<span>最后更新于 2026-02-19 16:55 CST</span></section></footer></article><aside class=related-content--wrapper><h2 class=section-title>相关文章</h2><div class=related-content><div class="flex article-list--tile"><article class=has-image><a href=/blog/pe-team-augment-devops-with-ai/><div class=article-image><img src=/blog/pe-team-augment-devops-with-ai/pexels-pavel-danilyuk-8439093.2fcd91bcde6da48a72dea563792a4bca_hu_3f4fc0b32f4f3049.webp width=250 height=150 loading=lazy alt="Featured image of post 平台工程团队如何利用 AI 增强 DevOps" data-key=pe-team-augment-devops-with-ai data-hash="md5-L82RvN5tpIpy3qVjeSpLyg=="></div><div class=article-details><h2 class=article-title>平台工程团队如何利用 AI 增强 DevOps</h2></div></a></article><article class=has-image><a href=/blog/devops-top-trends-for-2024/><div class=article-image><img src=/blog/devops-top-trends-for-2024/devops-trends-thumbnail.c32c06a9ea4e5062d3f618d6efaf30ba_hu_815943774a00f680.webp width=250 height=150 loading=lazy alt="Featured image of post 2024年 DevOps 的10大趋势" data-key=devops-top-trends-for-2024 data-hash="md5-wywGqepOUGLT9hjW768wug=="></div><div class=article-details><h2 class=article-title>2024年 DevOps 的10大趋势</h2></div></a></article><article class=has-image><a href=/blog/7-hidden-pains-every-devops-engineer-faces/><div class=article-image><img src=/blog/7-hidden-pains-every-devops-engineer-faces/1_jBaUuJtCdz0DTwlD0JF9dw.7916473ccc2b47fc1f232c49bc9e1142_hu_adbb3450d74e1a8d.jpeg width=250 height=150 loading=lazy alt="Featured image of post DevOps 的七个隐形痛点（以及五个靠谱解法）" data-key=7-hidden-pains-every-devops-engineer-faces data-hash="md5-eRZHPMwrR/wfIyxJvJ4RQg=="></div><div class=article-details><h2 class=article-title>DevOps 的七个隐形痛点（以及五个靠谱解法）</h2></div></a></article><article class=has-image><a href=/blog/stop-using-jenkins-in-2025/><div class=article-image><img src=/blog/stop-using-jenkins-in-2025/1_9wQ57gpbdI9JwUHpJmtFdA.9f7dbf7de5678744820f868e6877c119_hu_fc0376e3776dc13f.jpeg width=250 height=150 loading=lazy alt="Featured image of post 2025 年别再使用 Jenkins！" data-key=stop-using-jenkins-in-2025 data-hash="md5-n32/feVnh0SCD4aOaHfBGQ=="></div><div class=article-details><h2 class=article-title>2025 年别再使用 Jenkins！</h2></div></a></article><article class=has-image><a href=/blog/90-of-people-fail-at-devops-heres-the-roadmap-that/><div class=article-image><img src=/blog/90-of-people-fail-at-devops-heres-the-roadmap-that/image_0_94126cb8.fbd6834fd8ffb756e011b7006c3e8048_hu_ef3678b357f0d21c.png width=250 height=150 loading=lazy alt="Featured image of post 90% 的人 DevOps 转型失败：一份真正奏效的路线图" data-key=90-of-people-fail-at-devops-heres-the-roadmap-that data-hash="md5-+9aDT9j/t1bgEbcAbD6ASA=="></div><div class=article-details><h2 class=article-title>90% 的人 DevOps 转型失败：一份真正奏效的路线图</h2></div></a></article></div></div></aside><div class=disqus-container><div id=disqus_thread></div><script>window.disqus_config=function(){},function(){if(["localhost","127.0.0.1"].indexOf(window.location.hostname)!=-1){document.getElementById("disqus_thread").innerHTML="Disqus comments not available by default when the website is previewed locally.";return}var t=document,e=t.createElement("script");e.async=!0,e.src="//martinliu.disqus.com/embed.js",e.setAttribute("data-timestamp",+new Date),(t.head||t.body).appendChild(e)}()</script><noscript>Please enable JavaScript to view the <a href=https://disqus.com/?ref_noscript>comments powered by Disqus.</a></noscript><a href=https://disqus.com class=dsq-brlink>comments powered by <span class=logo-disqus>Disqus</span></a></div><style>.disqus-container{background-color:var(--card-background);border-radius:var(--card-border-radius);box-shadow:var(--shadow-l1);padding:var(--card-padding)}</style><script>window.addEventListener("onColorSchemeChange",e=>{typeof DISQUS=="object"&&DISQUS.reset({reload:!0})})</script><footer class=site-footer><section class=copyright>&copy;
+2007 -
+2026 Martin Liu's Blog</section><section class=powerby>本博客始于 2007 年<br>使用 <a href=https://gohugo.io/ target=_blank rel=noopener>Hugo</a> 构建<br>主题 <b><a href=https://github.com/CaiJimmy/hugo-theme-stack target=_blank rel=noopener data-version=3.29.0>Stack</a></b> 由 <a href=https://jimmycai.com target=_blank rel=noopener>Jimmy</a> 设计</section></footer><div class=pswp tabindex=-1 role=dialog aria-hidden=true><div class=pswp__bg></div><div class=pswp__scroll-wrap><div class=pswp__container><div class=pswp__item></div><div class=pswp__item></div><div class=pswp__item></div></div><div class="pswp__ui pswp__ui--hidden"><div class=pswp__top-bar><div class=pswp__counter></div><button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+<button class="pswp__button pswp__button--share" title=Share></button>
+<button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+<button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button><div class=pswp__preloader><div class=pswp__preloader__icn><div class=pswp__preloader__cut><div class=pswp__preloader__donut></div></div></div></div></div><div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap"><div class=pswp__share-tooltip></div></div><button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+</button>
+<button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)"></button><div class=pswp__caption><div class=pswp__caption__center></div></div></div></div></div><script src=https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo=" crossorigin=anonymous defer></script><script src=https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU=" crossorigin=anonymous defer></script><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css crossorigin=anonymous><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css crossorigin=anonymous></main></div><script src=https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z+KMkF24hUW8WePSA9HM=" crossorigin=anonymous></script><script type=text/javascript src=/ts/main.1e9a3bafd846ced4c345d084b355fb8c7bae75701c338f8a1f8a82c780137826.js defer></script><script>(function(){const e=document.createElement("link");e.href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap",e.type="text/css",e.rel="stylesheet",document.head.appendChild(e)})()</script></body></html>

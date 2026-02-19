@@ -15,7 +15,8 @@ alt="The new stack of AI"
 class="gallery-image"
 data-flex-grow="281"
 data-flex-basis="676px"
->&lt;/p>
+>
+&lt;/p>
 &lt;p>我已经深入从事 AI 可靠性工程近两年，专注于研究、原型设计，并构建实际的推理系统。从 DevOps 各类大会到 SRE Days，再到纽伦堡和伦敦的社区聚会，我不断与行业同行交流实践经验。现在，我希望在这里将这些珍贵的洞察与你分享。&lt;/p>
 &lt;p>&lt;strong>不可靠的 AI，甚至比没有 AI 更危险。&lt;/strong>&lt;/p>
 &lt;ul>
@@ -45,7 +46,8 @@ alt="Emerging AI Challenges – SRE Day – AIRe 2025"
 class="gallery-image"
 data-flex-grow="180"
 data-flex-basis="433px"
->&lt;/p>
+>
+&lt;/p>
 &lt;ul>
 &lt;li>&lt;strong>基础设施变革&lt;/strong>：随着 AI 工作负载的出现，传统的架构设计也在演进。像 Ingress、水平 Pod 自动扩缩（HPA）这些概念，正逐步被模型网格（Model Mesh）、LoRa 负载均衡、AI 网关等新技术所取代，尤其是在 GPU 资源密集的场景下尤为关键。Kubernetes 社区也在持续演进，推动包括“Serving 工作组”、动态资源分配（DRA）以及 Gateway API 等机制，以支持 AI 推理的特殊需求。&lt;/li>
 &lt;li>&lt;strong>可观测性的盲区&lt;/strong>：传统监控工具擅长监测 CPU、内存和响应延迟，但面对 AI 模型中的置信度、漂移情况，甚至幻觉（即模型生成虚假内容的倾向）等问题，常常无能为力。我们亟需构建 AI 专用的可观测性体系。&lt;/li>
@@ -64,7 +66,8 @@ alt="Gateway API Inference Extension, OpenInference and AI Gateways"
 class="gallery-image"
 data-flex-grow="195"
 data-flex-basis="469px"
->&lt;/p>
+>
+&lt;/p>
 &lt;blockquote>
 &lt;p>我们或许不仅要为 AI 扩展 Kubernetes —— 甚至终有一天，我们不得不为它另起炉灶（fork）。&lt;/p>&lt;/blockquote>
 &lt;p>大语言模型（Large Language Models，LLMs）对流量路由、速率限制和安全防护提出了前所未有的要求，而这些功能并非 Kubernetes Ingress 机制的设计初衷。Kubernetes 架构自诞生以来就是围绕无状态 Web 应用打造的，推理场景从未被列为核心用例。尽管 Kubernetes 社区正积极适配，但关键差距依然存在。&lt;/p>
@@ -88,7 +91,8 @@ alt="Example Model Evaluation SLA in Production"
 class="gallery-image"
 data-flex-grow="184"
 data-flex-basis="441px"
->&lt;/p>
+>
+&lt;/p>
 &lt;h2 id="ai-网关sre-在-ai-时代的核心工具">AI 网关：SRE 在 AI 时代的核心工具
 &lt;/h2>&lt;p>在 SRE 发展的初期阶段，我们依靠负载均衡器、服务网格和 API 网关来管理流量、执行安全策略，并实现系统可观测性。而如今，AI 推理带来的工作负载同样需要这些能力——但复杂度更高，规模更大，且容不得半点延迟或错误。这就是 AI 网关登场的时刻。&lt;/p>
 &lt;p>你可以把它理解为现代 SRE 面对 AI 系统的一站式解决方案：它能将请求精准路由到正确的模型、在多个副本间实现高效负载均衡、实施速率限制与安全策略，并集成深度可观测性机制。像 Gloo AI Gateway 这样的项目正是这一领域的先锋，专注解决企业在 AI 落地中遇到的关键难题，如模型成本控制、基于 token 的权限机制、以及对 LLM 响应的实时追踪分析——这些都是传统服务网格难以胜任的。&lt;/p>
@@ -177,7 +181,8 @@ alt="图 1: 三种使用 AI 增强 DevOps 的方法"
 class="gallery-image"
 data-flex-grow="166"
 data-flex-basis="398px"
->&lt;/p>
+>
+&lt;/p>
 &lt;h2 id="分析">分析
 &lt;/h2>&lt;h3 id="识别并优先解决-sdlc-中的瓶颈">识别并优先解决 SDLC 中的瓶颈
 &lt;/h3>&lt;p>想要通过 AI 增强 DevOps 工作流的平台工程团队，应该先识别并优先解决阻碍 SDLC 工作流的瓶颈。&lt;/p>
@@ -203,7 +208,8 @@ alt="图 2: 识别工作项在软件交付生命周期中移动时的瓶颈"
 class="gallery-image"
 data-flex-grow="224"
 data-flex-basis="538px"
->&lt;/p>
+>
+&lt;/p>
 &lt;p>第二类限制更容易发现，因为它们出现在“单一工作线程”中。这些逻辑上的工作线程的例子如下：&lt;/p>
 &lt;ul>
 &lt;li>开发流程内部（编码、构建、测试、调试、重构、提交）&lt;/li>
@@ -223,7 +229,8 @@ alt="图 3: 在软件交付生命周期的每个阶段中迭代地解决最大�
 class="gallery-image"
 data-flex-grow="162"
 data-flex-basis="390px"
->&lt;/p>
+>
+&lt;/p>
 &lt;h3 id="改善开发者体验">改善开发者体验
 &lt;/h3>&lt;p>改善开发者体验已成为软件工程领导者的关键优先事项，58% 的领导者表示，这对他们的组织高管层非常重要。提升开发者体验或生产力是开发者平台和工具类技术和实践的首要价值因素。因此，平台工程团队在使用 AI 增强 DevOps 工作流的第一步应集中在改善使用平台的人员体验上。&lt;/p>
 &lt;p>图 4 展示了在软件开发、交付和运营过程中，通过 AI 增强改善开发者体验的使用案例。&lt;/p>
@@ -236,7 +243,8 @@ alt="图 4: 使用 AI 增强改善 DevOps 中的开发者体验"
 class="gallery-image"
 data-flex-grow="121"
 data-flex-basis="292px"
->&lt;/p>
+>
+&lt;/p>
 &lt;p>通过 AI 使能开发者的使用案例改善的开发者体验涵盖整个 SDLC，从开发、交付到运营。以下是 AI 在各阶段提升开发者体验的方式：&lt;/p>
 &lt;h4 id="开发">开发
 &lt;/h4>&lt;p>在开发阶段，开发者体验主要受认知负荷和上下文切换次数的影响。AI 编码助手可以在 IDE 内提供相关信息，减少开发者的上下文切换，避免他们需要离开开发环境去网上查找信息。&lt;/p>
@@ -278,7 +286,8 @@ alt="图 5: AI 增强的 DevOps 使用案例以优化 SDLC"
 class="gallery-image"
 data-flex-grow="114"
 data-flex-basis="275px"
->&lt;/p>
+>
+&lt;/p>
 &lt;p>图 6 展示了用于实现上述使用案例的一些工具，并不限于所展示的示例。供应商正在迅速扩展其功能，因此一个供应商可能支持比这里描述的更多使用案例。&lt;/p>
 &lt;p>&lt;img src="https://martinliu.cn/blog/pe-team-augment-devops-with-ai/6.webp"
 width="1280"
@@ -289,7 +298,8 @@ alt="图 6: AI 增强的 DevOps 工具在 SDLC 中的应用"
 class="gallery-image"
 data-flex-grow="114"
 data-flex-basis="275px"
->&lt;/p>
+>
+&lt;/p>
 &lt;blockquote>
 &lt;p>&lt;strong>AI 增强开发的下游影响&lt;/strong>&lt;/p>
 &lt;p>AI 编码助手使开发者的编写代码效率提升，但这也带来一个意外的副作用：代码审查和安全审查的工作量积压增加。缓慢的代码审查会降低整体开发效率。根据 2023 年 DORA 报告，代码审查速度快的团队其软件交付性能提高了 50%。平台工程团队可以看清这些系统性互相关系，适合推动系统性变革，而不仅仅是局部改进。&lt;/p>
@@ -309,7 +319,8 @@ alt="图 7: 在可靠性、成本优化和可持续性目标之间实现权衡"
 class="gallery-image"
 data-flex-grow="133"
 data-flex-basis="319px"
->&lt;/p>
+>
+&lt;/p>
 &lt;p>&lt;strong>通过自助内部开发平台优化云原生软件交付基础设施&lt;/strong>&lt;/p>
 &lt;p>优化公有云基础设施变得尤为困难，但也非常重要。这主要是由于云服务种类繁多、定价模式不一致、云原生应用的分布式特性以及流量模式的季节性变化。为了可靠、经济和可持续地管理基础设施，平台工程团队应为产品团队提供支持 AI 增强的自助平台和工具，以优化成本、可靠性和可持续性。&lt;/p>
 &lt;p>新兴技术如自主工作负载优化和增强的 FinOps，可以自动化优化价格和性能，同时实现预定义的业务目标。供应商包括 Akamas、Anodot、Apptio、Avesha、CAST AI、Densify、Google Cloud（Active Assist、Duet AI）、IBM（Turbonomic）、Sedai 和 StormForge。图 8 显示了这些工具支持的 AI 增强使用案例。&lt;/p>
@@ -323,7 +334,8 @@ alt="图 8: 平台工程团队支持的 AI 增强基础设施成本、可靠性�
 class="gallery-image"
 data-flex-grow="123"
 data-flex-basis="295px"
->&lt;/p>
+>
+&lt;/p>
 &lt;h3 id="快速回答">快速回答
 &lt;/h3>&lt;p>&lt;strong>在使用 AI 增强 DevOps 工作流时需要注意哪些陷阱？&lt;/strong>&lt;/p>
 &lt;p>软件工程领导者必须警惕潜在的陷阱和意外的副作用：&lt;/p>
@@ -590,7 +602,8 @@ alt="Observability Engineering"
 class="gallery-image"
 data-flex-grow="76"
 data-flex-basis="182px"
->&lt;/p>
+>
+&lt;/p>
 &lt;ul>
 &lt;li>作者： Charity Majors, Liz Fong-Jones, George Miranda&lt;/li>
 &lt;li>出版日期： 2022 年 5 月&lt;/li>
@@ -608,7 +621,8 @@ loading="lazy"
 class="gallery-image"
 data-flex-grow="116"
 data-flex-basis="280px"
->&lt;/p>
+>
+&lt;/p>
 &lt;blockquote>
 &lt;p>“可观测性” - 应该成为软件在交付生命周期中的不容忽视的一个重要属性。不只是一个技术问题，在软件系统中实现和提升可观测性同样需要 DevOps 风格的多团队协作。&lt;/p>&lt;/blockquote>
 &lt;blockquote>
@@ -625,7 +639,8 @@ alt="中文版"
 class="gallery-image"
 data-flex-grow="78"
 data-flex-basis="187px"
->&lt;/p>
+>
+&lt;/p>
 &lt;p>《可观测性工程》这本书分为五个部分，从历史到未来，从理论到落地，从团队到组织，从商业到文化，内容非常全面。对不同角色和职位的人都有不同的意义：&lt;/p>
 &lt;ul>
 &lt;li>运维：学习掌握本书的内容，可以提升你的眼界和实践能力；你会更好的识别和反思当前所处的困局，你会从分门别类的监控工具集应用，转向“聚焦生产环境问题的快速识别和解决”。&lt;/li>
@@ -645,7 +660,8 @@ alt="本图源于 Honeycomb 文档网站"
 class="gallery-image"
 data-flex-grow="99"
 data-flex-basis="239px"
->&lt;/p>
+>
+&lt;/p>
 &lt;p>“核心分析循环”并不是系统宕机后的救命稻草，而是一种理性冷静的思考方法，你可以在事故的前中后的任何时刻想到它。它能指导我们进行更加深度的分析思考，在一个理智的探索过程中，你会更加有条理的得出一连串假设，并逐个求证，在评判各种已知数据的时候，你同样需要不停的怀疑一切，推翻一切结论的勇气。切勿让单点工具的片面观察角度、对历史经验数据的依懒性，限制了我们 debug 生产系统的想象力，限制了人脑更适合做网状的复杂关联分析的能力。&lt;/p>
 &lt;p>下面是本书中的一些精彩片段。&lt;/p>
 &lt;blockquote>
@@ -679,7 +695,8 @@ alt="第三只眼"
 class="gallery-image"
 data-flex-grow="153"
 data-flex-basis="367px"
->&lt;/p>
+>
+&lt;/p>
 &lt;p>最后，我认为一个软件系统应该拥有三只眼：&lt;/p>
 &lt;ol>
 &lt;li>👁 稳定之眼：从 SRE 站点稳定性工程的角度讲，系统的稳定性是最重要的feature，没有之一。我深度认同这个观点。稳定性包含了服务必须具备的可用性和足够的性能。只有运行在生产环境中，被用户能正常访问和使用的代码才能发挥出它应有的价值。在运行的过程中，应用系统会宕机，运行环境可能会出问题，这都会导致应用系统的无法访问和使用；或者系统的 Bug 导致的高错误率，让系统处于半死不活的状态，用户也能从界面上看到千奇百怪的错误。系统是否进入了非正常的不可用状态？系统是否正在经历着性能抖动的过程？错误率是否高涨到即将溃坝？这些现象本质是产品的稳定性不足导致的，而这些现象是否可见，故障根源是否能快速定位？我们就需要用到第三只眼。&lt;/li>
@@ -701,7 +718,8 @@ data-flex-basis="367px"
 &lt;p>我们架构的两个基本组件在这里为我们提供了特别好的服务。我们使用谷歌云，包括AppEngine、Datastore和Memcache，以及Fastly CDN，它们是无服务器和缓存策略的支柱，这是我们扩展性的关键。&lt;/p>
 &lt;p>&lt;img src="https://martinliu.cn/img/cos/2021-03-24-scaling-traffic-in-a-week.png"
 loading="lazy"
->&lt;/p>
+>
+&lt;/p>
 &lt;h2 id="无服务器基础设施">无服务器基础设施
 &lt;/h2>&lt;p>使用 GCP 的 AppEngine，这种完全管理的环境，意味着我们可以非常容易地扩展，几乎不费吹灰之力。即使在流量大幅增加的情况下，我们的网站也能保持良好的性能，而且干预最少。我们自己不需要担心负载平衡，因为服务器实例会根据需要启动，也不需要任何干预。我们同样使用 Datastore，它可以自动扩展存储和访问容量，与 App Engine 扩展 Web服务器实例的方式非常相似。&lt;/p>
 &lt;h2 id="缓存">缓存
@@ -713,7 +731,8 @@ loading="lazy"
 &lt;p>教练观点：incident management 在目前的所有出版物中，甚至大部分翻译软件中，都被翻译为 “事件管理”。在 IT 行业中，这个词汇的首次出现大约是在 20 年前，从 ITIL 引入运维管理的时候，从第一波 ITIL 在国内传播布道的时候，它就一直被翻译为 “事件管理”，“事件” 其实是一个没有好坏之分，好恶差异的中性词，不带有严重后果的含义。但是如果你在美剧中，在美国 NBC 新闻频道仔细的听；incident 往往和某人遭遇交通事故受伤亡相关；和就在今天美国科罗拉多的一个商场里发生的 10 人死亡的枪击案件相关。大部分企业的 ITIL/ITSM 软件中事件管理流程里所管理的其实都是 Event Management，而不是事故。希望本文能引起大家的注意。本文中将其翻译为“事故管理”，事故应该是 Incident 这个单词在 IT 服务管理这个语境里应该有的，精确的含义。&lt;/p>&lt;/blockquote>
 &lt;p>&lt;img src="https://martinliu.cn/img/cos/2021-03-23-2021.10.20a.jpg"
 loading="lazy"
->&lt;/p>
+>
+&lt;/p>
 &lt;p>本文出处：&lt;a class="link" href="https://www.transposit.com/blog/fighter-pilots-and-incident-management/" target="_blank" rel="noopener"
 >https://www.transposit.com/blog/fighter-pilots-and-incident-management/&lt;/a>&lt;/p>
 &lt;p>想象一下。在你所从事的工作中，你是最棒的，你被招募为蓝天上的飞翔天使。&amp;ldquo;所以，现在我们希望你驾驶着你的喷气式飞机，在很低的高度上高速飞过大量的人群，并发出巨大的噪音。然后我们要做编队飞行，你和你领导机翼间隙只有18英寸。还有一件事我得提一下，有一半的时间里，我们希望你们是倒立的，倒过来的；&lt;strong>所以就像你的IT业务服务遭受了灾难一般，后果非常严重&amp;rdquo;&lt;/strong>&lt;/p>
@@ -738,10 +757,11 @@ loading="lazy"
 &lt;/ul>
 &lt;p>我们的任务可能在飞行高度上有所不同，但在原则上非常相似。承受极端的压力。高风险。以及永无止境的学习空间。借鉴战斗机飞行员的实战经验，我们可以成为自己组织中的特立独行者，将我们的流程提升到新的高度。透明度、诚实，以及对学习和改进的承诺，将会使我们的事故管理飞速发展。&lt;/p></description></item><item><title>SLA、SLO 和 SLI 还是傻傻分不清么？</title><link>https://martinliu.cn/blog/sre-sla-slo-sli/</link><pubDate>Thu, 05 Mar 2020 17:37:29 +1100</pubDate><guid>https://martinliu.cn/blog/sre-sla-slo-sli/</guid><description>&lt;img src="https://martinliu.cn/images/abstract-6.jpg" alt="Featured image of post SLA、SLO 和 SLI 还是傻傻分不清么？" />&lt;p>SLA、SLI 和 SLO 是 SRE 工程实践里非常核心的概念，但是大家在同时提到这些概念的时候，经常容易混淆。&lt;/p>
 &lt;p>长篇大论的文章反而容易使人更加疑惑，还不如画一张示意图说明一下，帮助大家一次性彻底梳理清楚这些不可以含糊不清的核心概念。说明一下，下图假设所讨论的 SLA 个数为 1，使用了软件工程中 ER 图的表达方式，但也有所变化。&lt;/p>
-&lt;p>&lt;img src="https://martinliu.cn/images/sla-sli-slo.jpeg"
+&lt;p>&lt;img src="https://martinliu.cn/images/sla-sli-slo.webp"
 loading="lazy"
 alt="SLA、SLO、SLI"
->&lt;/p>
+>
+&lt;/p>
 &lt;p>一图讲清 SLA、SLO、SLI&lt;/p>
 &lt;p>本文不讲 why，只是帮助大家梳理清楚这些概念在以上人机系统中的相互关系。虽然不想做名词解释。但是为了方便起见，整理一个术语清单。&lt;/p>
 &lt;ul>

@@ -36,7 +36,8 @@ alt=" Red Hat 客户门户网站"
 class="gallery-image"
 data-flex-grow="136"
 data-flex-basis="328px"
->&lt;/p>
+>
+&lt;/p>
 &lt;p>如果你所使用的公有云里有Red Hat官方支持的 RHEL 镜像，你可以将你的开发者订阅使用在公有云的虚拟机上。在Cloud Access这个页面上，可以看到我将微软的Azure账户和红帽开发者订阅做了关联。&lt;/p>
 &lt;p>这样就可以实现：有限数量的 Azure 虚拟机可以运行最新版的 RHEL 操作系统，这些操作系统的 License 计费到了 Red Hat 开发者订阅上；而开发者订阅又是有限免费的，因此实现了这些虚拟机的免费使用 RHEL 订阅。由于我在 Azure 中的长运行虚拟机并不多，因此这些虚拟机目前都是使用的 Red Hat Enterprise Linux。&lt;/p>
 &lt;p>&lt;img src="https://martinliu.cn/blog/use-rhel-dev-sub-in-azure/red-hat-dev-sub-cloud-access.webp"
@@ -48,7 +49,8 @@ alt="Red Hat 客户门户中的 Cloud Access 管理"
 class="gallery-image"
 data-flex-grow="132"
 data-flex-basis="318px"
->&lt;/p>
+>
+&lt;/p>
 &lt;h2 id="azure-支持-ahb-的混合权益">Azure 支持 AHB 的混合权益
 &lt;/h2>&lt;p>参考这篇 Azure 的官方文档&lt;a class="link" href="https://learn.microsoft.com/zh-cn/azure/virtual-machines/linux/azure-hybrid-benefit-linux?tabs=rhelpayg%2Crhelbyos%2CrhelEnablebyos%2Crhelcompliance" target="_blank" rel="noopener"
 >《Red Hat Enterprise Linux (RHEL) 和 SUSE Linux Enterprise Server (SLES) 虚拟机的Azure 混合权益》&lt;/a>&lt;/p>
@@ -62,7 +64,8 @@ alt="即用即付”(PAYG) 和“自带订阅”(BYOS)"
 class="gallery-image"
 data-flex-grow="161"
 data-flex-basis="387px"
->&lt;/p>
+>
+&lt;/p>
 &lt;p>右侧的这个框的说明了 Azure 虚拟机的成本结构。除了计算资源这部分需要计费意外。如果你在 Azure 中开启了 RHEL 虚拟机实例，默认情况下 RHEL 的许可证费用是有 Azure 代收的，Azure 的账单里包含了这部分。&lt;/p>
 &lt;p>对于我在 Azrue 中的长运行虚拟机来说，经过我的配置之后，Azure 的账号和 RedHat 开发者订阅关联在了一起。所以这些 RHEL 虚拟机实例上的 RHEL 许可证费用就是在 RedHat 客户门户账号（来自于红帽开发者计划福利）中计费，最多支持 16 个虚拟机的免费使用。&lt;/p>
 &lt;h2 id="如何在-azure-中配置个人公司的-rhel-订阅">如何在 Azure 中配置个人（公司）的 RHEL 订阅
@@ -76,7 +79,8 @@ alt="配置 RHEL 订阅授权"
 class="gallery-image"
 data-flex-grow="69"
 data-flex-basis="167px"
->&lt;/p>
+>
+&lt;/p>
 &lt;p>在授权这个部分，点击第二个“了解更多信息”链接。这时候，浏览器会跳转到红帽客户门户中，在输入了用户名和密码登录了以后，你就完成了红帽开发者订阅和当前 Azure 账户的关联。&lt;/p>
 &lt;p>在虚拟机创建完成以后，你可以用 RHEL 的订阅管理命令将当前的 RHEL Linux 操作系统注册到红帽客户门户的订阅上。参考命令如下：&lt;/p>
 &lt;div class="highlight">&lt;div class="chroma">
@@ -163,14 +167,16 @@ data-flex-basis="167px"
 &lt;p>&lt;img src="https://res.cloudinary.com/martinliu/image/upload/scp.png"
 loading="lazy"
 alt="scp 容器化应用的设计原则"
->&lt;/p>
+>
+&lt;/p>
 &lt;p>如果你的容器化微服务需要解决多个问题，它可以使用这样的模式，将多个容器用sidecar和init-containers的模式合并成一个部署单元（pod），这样每个容器仍然是处理单个问题。同样，您可以替换处理同样问题的容器。 例如，将Web服务器容器或队列实现容器，更新为更具可扩展性的容器。&lt;/p>
 &lt;h2 id="高度可观测性原则-high-observability-principlehop">高度可观测性原则 HIGH OBSERVABILITY PRINCIPLE（HOP）
 &lt;/h2>&lt;p>容器提供了一种统一的方式来打包和运行应用程序，将它们视为一个黑盒子对象。 但任何旨在成为云原生公民的容器都必须提供API支持，要为运行时环境编写接口（API），以观察容器的健康状况和行为。 这是自动化容器更新和生命周期回收的基本先决条件和统一的方式，从而提高系统的弹性和用户体验。&lt;/p>
 &lt;p>&lt;img src="https://res.cloudinary.com/martinliu/image/upload/hop.png"
 loading="lazy"
 alt="hop 容器化应用的设计原则"
->&lt;/p>
+>
+&lt;/p>
 &lt;p>实际上，您的容器化应用程序必须至少为其提供不同类型的健康检查的API&amp;ndash;活动和就绪等状态。更好的应用程序的行为则必须提供其他手段来观察容器化应用程序的状态。应用程序应该将重要事件记录到标准错误（STDERR）和标准输出（STDOUT）中，从而通过统一的日志聚合工具（诸如Fluentd和Logstash之类的工具）进行分析，并与跟踪和指标收集库相结合，例如OpenTracing，Prometheus等。&lt;/p>
 &lt;p>将您的应用程序视为黑盒子，但实施所有必要的API以帮助平台对其进行观测，并以最佳方式管理您的应用程序。&lt;/p>
 &lt;h2 id="生命周期一致性原则-life-cycle-conformance-principlelcp">生命周期一致性原则 LIFE-CYCLE CONFORMANCE PRINCIPLE（LCP）
@@ -178,7 +184,8 @@ alt="hop 容器化应用的设计原则"
 &lt;p>&lt;img src="https://res.cloudinary.com/martinliu/image/upload/lcp.png"
 loading="lazy"
 alt="lcp 容器化应用的设计原则"
->&lt;/p>
+>
+&lt;/p>
 &lt;p>来自管理平台的各种事件都是为了帮助您管理您的容器的生命周期的。决定处理哪些事件取决于您的应用程序 以及是否对这些事件做出反应。&lt;/p>
 &lt;p>但有些事件比其他事件更重要。例如，任何需要一个干净的关闭进程，这就需要捕获信号：终止（SIGTERM）消息，并尽可能迅速关闭。 这是为了避免通过强制关闭信号：kill（SIGKILL），之后跟随一个SIGTERM。&lt;/p>
 &lt;p>还有其他事件，例如PostStart和PreStop，可能对您的应用程序生命周期管理也非常重要。 例如，某些应用程序需要在服务之前进行预热请求和一些需要在关闭干净之前释放资源。&lt;/p>
@@ -187,21 +194,24 @@ alt="lcp 容器化应用的设计原则"
 &lt;p>&lt;img src="https://res.cloudinary.com/martinliu/image/upload/iip.png"
 loading="lazy"
 alt="iip 容器化应用的设计原则"
->&lt;/p>
+>
+&lt;/p>
 &lt;p>在遵循IIP原则的情况下，应该防止为不同的环境创建相似的容器镜像，要始终坚持为所有环境只配置一个容器映像。 这个原则允许在应用程序更新期间，采用自动回滚和前滚等做法，这是云原生自动化的重要方面。&lt;/p>
 &lt;h2 id="进程可处置性原则-process-disposability-principlepdp">进程可处置性原则 PROCESS DISPOSABILITY PRINCIPLE（PDP）
 &lt;/h2>&lt;p>迁移到容器应用程序的主要动机之一是：容器需要尽可能做到临时性，并做好在任何时候被另一个容器实例替换的准备。需要更换容器的原因有很多，比如：健康检查失败、缩容、应用程序将容器迁移到不同的主机，平台资源匮乏或其它的问题。&lt;/p>
 &lt;p>&lt;img src="https://res.cloudinary.com/martinliu/image/upload/pdp.png"
 loading="lazy"
 alt="pdp 容器化应用的设计原则"
->&lt;/p>
+>
+&lt;/p>
 &lt;p>这意味着容器化的应用程序必须保持其状态为向外扩展的或分布式和冗余的。这也意味着应用程序应该快速启动和关闭，甚至为彻底的硬件故障做好准备。 实施这一原则的另一个有用的做法是创建小容器。 容器在云原生环境可以自动调度并在不同的主机上启动。较小的容器可以实现更快启动时间，因为在重新启动之前容器镜像需要被物理地复制到主机系统。&lt;/p>
 &lt;h2 id="自包含性原则-self-containment-principles-cp">自包含性原则 SELF-CONTAINMENT PRINCIPLE（S-CP）
 &lt;/h2>&lt;p>这个原则规定一个容器应该在构建时包含所有需要的东西。容器的存在应该仅仅依赖于Linux®内核，在并添加相关额外的库，在容器构建时加入它们。除了库之外，它还应该包含语言运行时，应用程序平台（如果需要），以及运行所需的其他依赖关系，等运行容器化应用所需要的诸如此类的东西。&lt;/p>
 &lt;p>&lt;img src="https://res.cloudinary.com/martinliu/image/upload/s-cp.png"
 loading="lazy"
 alt="s-cp 容器化应用的设计原则"
->&lt;/p>
+>
+&lt;/p>
 &lt;p>唯一的例外是：由于不同环境之间差异，并且只能在运行时提供的配置; 例如，通过Kubernetes提供的ConfigMap。&lt;/p>
 &lt;p>某些应用程序由多个容器组件组成。 例如，容器化的Web应用程序也可能需要数据库容器。 根据这个原则，并不建议合并两个容器。相反，它建议的是数据库容器只包含运行数据库所需的所有内容，Web应用程序容器只包含运行Web应用程序所需的所有内容，如Web服务器。 在运行时，Web应用程序容器将根据需要依赖于并访问数据库容器。&lt;/p>
 &lt;h2 id="运行时约束性原则-runtime-confinement-principlercp">运行时约束性原则 RUNTIME CONFINEMENT PRINCIPLE（RCP）
@@ -209,7 +219,8 @@ alt="s-cp 容器化应用的设计原则"
 &lt;p>&lt;img src="https://res.cloudinary.com/martinliu/image/upload/rcp.png"
 loading="lazy"
 alt="rcp 容器化应用的设计原则"
->&lt;/p>
+>
+&lt;/p>
 &lt;p>这个RCP原则建议每个容器申报资源需求，并发送信息到平台。它应该分享容器的资源配置文件，从CPU，内存，网络，磁盘的角度声明。这影响到平台如何执行调度，自动扩展，容量 管理以及容器常规的服务级别协议（SLA）等。&lt;/p>
 &lt;p>除了向平台声明容器的资源需求之外，还有一点也很重要， 应用被约束在使用所声明的资源需求内。如果应用程序对资源的使用保持在约束的范围内，则当资源匮乏发生时，平台不太可能将其终止和迁移。&lt;/p>
 &lt;h2 id="结论">结论

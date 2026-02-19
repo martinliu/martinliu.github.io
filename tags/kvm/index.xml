@@ -4,7 +4,8 @@
 &lt;p>[caption id=&amp;ldquo;attachment_53901&amp;rdquo; align=&amp;ldquo;alignnone&amp;rdquo; width=&amp;ldquo;512&amp;rdquo;]&lt;img src="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2015/07/ovirt-512px-Architecture.png"
 loading="lazy"
 alt="ovirt 架构图"
-> ovirt 架构图[/caption]&lt;/p>
+>
+ovirt 架构图[/caption]&lt;/p>
 &lt;h2 id="kvm-嵌套虚拟化准备">KVM 嵌套虚拟化准备
 &lt;/h2>&lt;p>在测试 KVM 服务器虚拟化的过程中，如果您能有独立的物理机跑 Hypervisor，那么您可以忽略本节。至今进入 ovirt 的安装。  下面的测试的物理机是 Lenovo T440s 笔记本，运行的 Fedora 22 操作系统，使用 KVM manager 做虚拟机的管理工具。本次测试用到两个虚拟机：&lt;/p>
 &lt;ol>
@@ -237,7 +238,8 @@ yum install spice-xpi virt-viewer&lt;/p>
 >http://www.server-world.info/en/note?os=Fedora_22&amp;amp;p=kvm&amp;amp;f=8&lt;/a>&lt;/p></description></item><item><title>Martin's lab 主服务器搭建</title><link>https://martinliu.cn/2015/03/08/e4b8bbe69c8de58aa1e599a8e690ade5bbba/</link><pubDate>Sun, 08 Mar 2015 15:42:01 +0000</pubDate><guid>https://martinliu.cn/2015/03/08/e4b8bbe69c8de58aa1e599a8e690ade5bbba/</guid><description>&lt;p>&lt;img src="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2015/05/Red-Hat-open-hybrid-cloud-1000x563_0.png"
 loading="lazy"
 alt="Red-Hat-open-hybrid-cloud-1000x563_0"
->&lt;/p>
+>
+&lt;/p>
 &lt;p>上图是红帽产品和技术架构的全貌。来源是：&lt;a class="link" href="http://www.redhat.com/en/technologies/cloud-computing" target="_blank" rel="noopener"
 >http://www.redhat.com/en/technologies/cloud-computing&lt;/a> 这张图我用在了我的首次给公司内部的全体销售培训上。由于我是 IT 管理背景的，因此我很习惯从云管理层往下看云引擎的各个层面。但是管理层产品，其实是后来整合纳入的。红帽起家的旗舰产品还是在底层的 RHEL。总之，我想在一个 Lab 里面实现以上所有的部分，所谓实现是让其每个部分都能在运行在假象的一个有意义的业务场景里。还好，红帽的产品全都是基于 x86 平台的，因此我用几个笔记本，再加上我家里的这台 HP MicroServer G8 服务器应该能够全部部署出来。&lt;/p>
 &lt;p>做这样的一个 lab 还是要一定的规划和设计的，这些初步的规划和设计都在我的本子里手写的，就不在这里敲字了，随后我会抽空上几张图。&lt;/p>
@@ -249,7 +251,8 @@ alt="Red-Hat-open-hybrid-cloud-1000x563_0"
 >&lt;img src="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2015/03/employee-sub-520x295.png"
 loading="lazy"
 alt="employee-sub"
->&lt;/a>&lt;/p>
+>
+&lt;/a>&lt;/p>
 &lt;p>红帽的服务必须是基于订阅的每一个节点（物理、虚拟）都需要有有效的订阅，否则红帽的支持服务不能生效。对于一个已经成功注册到红帽官网，并且状态正常的服务器，应该显示如下的注册状态：&lt;/p>
 &lt;p>[bash]
 [root@w540 ~]# subscription-manager list&lt;/p>
@@ -401,14 +404,16 @@ Export list for localhost:
 >&lt;img src="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2015/01/topbar_logo.png"
 loading="lazy"
 alt="topbar_logo"
->&lt;/a>&lt;/p>
+>
+&lt;/a>&lt;/p>
 &lt;p>安装 virt-manager：yum install -y virt-* ； 装完之后重新启动机器即可使用。&lt;/p>
 &lt;h1 id="建议初始配置">建议初始配置
 &lt;/h1>&lt;p>安装完后有几个环境的配置推荐可以做一下。&lt;/p>
 &lt;p>&lt;img src="http://martinliu.cn/wp-content/gallery/virt-manager-kvm-1/Screenshot-from-2015-01-06-193413.png"
 loading="lazy"
 alt="点击New Volume"
->&lt;/p>
+>
+&lt;/p>
 &lt;p>Storage Pool ： 一个默认的 + 两个自建的&lt;/p>
 &lt;ul>
 &lt;li>Default ：这是 virt-manager 安装时默认创建的，它和操作系统在同一个卷上，我的测试机使用 SSD 卷，因此我所有虚拟机都会使用这个卷，这样速度比较快&lt;/li>
@@ -418,7 +423,8 @@ alt="点击New Volume"
 &lt;p>&lt;img src="http://martinliu.cn/wp-content/gallery/virt-manager-kvm-1/Screenshot-from-2015-01-06-210927.png"
 loading="lazy"
 alt="自建的内外1"
->&lt;/p>
+>
+&lt;/p>
 &lt;p>虚拟网络 （一个默认+两个新建）&lt;/p>
 &lt;ul>
 &lt;li>default ： 这个是安装了 virt-manager + kvm 之后就有的，是用 NAT 的方式，带 dhcp，默认虚拟机可以连接物理机所在的外围&lt;/li>
@@ -428,7 +434,8 @@ alt="自建的内外1"
 &lt;p>有了以上配置之后，就可以高效工作了，效率感觉比 vmware workstation 要高，速度快稳定。下面是虚拟机创建的流程，里面有些我的推荐做法。&lt;/p>
 &lt;p>&lt;img src="http://martinliu.cn/nextgen-attach_to_post/preview/id--53382"
 loading="lazy"
->&lt;/p>
+>
+&lt;/p>
 &lt;p>本想看下，virt-install 的使用方式，感觉那个参数太多，容易敲错，还是界面比较容易上手，而且出错的机会不高。&lt;/p>
 &lt;h1 id="命令行常用操作指南持续更新中">命令行常用操作指南（持续更新中）
 &lt;/h1>&lt;p>virt-manager 主要操作还是在命令行比较高效，特别是下面的这些操作，在使用过程中，比较多用，用的多了感觉比 GUI 操作方式效率高多了。&lt;/p>

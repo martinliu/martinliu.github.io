@@ -8,7 +8,8 @@ alt="Python"
 class="gallery-image"
 data-flex-grow="177"
 data-flex-basis="426px"
->&lt;/p>
+>
+&lt;/p>
 &lt;p>然而，你需要了解并牢记的是，&lt;strong>Python 的大多数性能问题都是开发者自己造成的&lt;/strong>。问题不在于语言本身，而在于你使用它的方式。事实上，Python 的瓶颈往往是由被忽视的细节引起的：低效的数据结构 (data structures)、不必要的内存分配 (allocations)、重复的计算 (redundant computations)，或者仅仅是你从其他语言带来的、不完全适用的习惯。&lt;/p>
 &lt;p>你可能见过太多的工程师（尤其是在高性能计算 (high-performance computing) 领域之外）低估了一些小决定的成本。比如循环方式不当、内置函数使用效率低下、忽视性能分析 (profiling)，或者过度依赖 Pandas (Pandas) 来执行本可以使用 NumPy (NumPy) 或 Polars (Polars) 提速 50 倍的操作。更别提那些仍然在 Pandas 中使用 &lt;code>apply&lt;/code> 而不是向量化 (vectorization) 的人了。&lt;/p>
 &lt;p>在这篇文章中，作者不会谈论你随处可见的那些显而易见的建议，比如&amp;quot;使用 NumPy&amp;quot;或&amp;quot;避免 for 循环&amp;quot;。这些你都听过了。这是一次&lt;strong>深入探讨那些被低估、被忽视、有时甚至有些奇特的技巧，它们能够显著加速你的 Python 代码&lt;/strong>——这些技巧你真希望能早点知道。本文将通过实际案例、你可能没用过（但应该用）的库，以及那些悄悄侵蚀你性能的习惯，为你一一讲解。&lt;/p>

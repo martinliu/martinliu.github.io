@@ -164,7 +164,8 @@ alt="AWS子网IP保留规则示意图"
 class="gallery-image"
 data-flex-grow="66"
 data-flex-basis="160px"
->&lt;/p>
+>
+&lt;/p>
 &lt;p>&lt;em>相同的 5-IP 规则适用于&lt;strong>每个子网&lt;/strong>，无论大小如何。&lt;/em>&lt;/p>
 &lt;h3 id="真实案例eks--privatelink-中的-ip-消耗">真实案例：EKS + PrivateLink 中的 IP 消耗
 &lt;/h3>&lt;p>场景：&lt;/p>
@@ -320,7 +321,8 @@ data-flex-basis="160px"
 &lt;/h2>&lt;p>&lt;img src="https://miro.medium.com/v2/resize:fit:640/format:webp/1*eEvDjru5qOJc73wpcie1Hw.png"
 loading="lazy"
 alt="项目结构"
->&lt;/p>
+>
+&lt;/p>
 &lt;h2 id="概述">概述
 &lt;/h2>&lt;p>我即不是数据工程师，也没有在构建数据管道项目中；但是，我最近接触了一些数据服务。结合我对 AWS 的普遍了解，我决定亲手探索一些新服务。&lt;/p>
 &lt;p>本文源于我将构建数据管道作为一个有趣的项目来实践的经验，我发现整个过程非常有趣且富有成效。&lt;/p>
@@ -356,7 +358,8 @@ alt="项目结构"
 &lt;/h2>&lt;p>&lt;img src="https://miro.medium.com/v2/resize:fit:640/format:webp/1*0v_rLNRcapex3MRovi_luA.png"
 loading="lazy"
 alt="数据管道架构"
->&lt;/p>
+>
+&lt;/p>
 &lt;h2 id="架构解释">架构解释
 &lt;/h2>&lt;h3 id="第一流程">第一流程
 &lt;/h3>&lt;ul>
@@ -484,7 +487,8 @@ alt="数据管道架构"
 &lt;p>&lt;img src="https://miro.medium.com/v2/resize:fit:640/format:webp/1*wNoK6qiZ3af-6HkhCDH48A.png"
 loading="lazy"
 alt="Terraform 状态文件所在的 S3 存储桶"
->&lt;/p>
+>
+&lt;/p>
 &lt;p>创建后，将以下内容添加到 &lt;code>backend.tf&lt;/code> 文件中：&lt;/p>
 &lt;div class="highlight">&lt;div class="chroma">
 &lt;table class="lntable">&lt;tr>&lt;td class="lntd">
@@ -510,7 +514,8 @@ alt="Terraform 状态文件所在的 S3 存储桶"
 &lt;p>&lt;img src="https://miro.medium.com/v2/resize:fit:640/format:webp/1*bJ3LTvt6vayJgGsRZsQc5A.png"
 loading="lazy"
 alt="S3 中的 Terraform 状态文件"
->&lt;/p>
+>
+&lt;/p>
 &lt;ul>
 &lt;li>module/main.tf : 每个服务的基础设施和配置都放置在各自的 &lt;code>main.tf&lt;/code> 文件中&lt;/li>
 &lt;li>module/output.tf : 每个服务的输出详情 (output detail) 都放置在各自的 &lt;code>output.tf&lt;/code> 文件中&lt;/li>
@@ -599,61 +604,74 @@ alt="S3 中的 Terraform 状态文件"
 &lt;p>通过 AWS 控制台 (console) 进入 DynamoDB，并添加一条新数据：&lt;/p>
 &lt;p>&lt;img src="https://miro.medium.com/v2/resize:fit:640/format:webp/1*Wq6-HKR3_Itogo9ncr3C-Q.png"
 loading="lazy"
->&lt;/p>
+>
+&lt;/p>
 &lt;p>添加此条目将触发 DynamoDB 流 (stream)，它会使用关联的 Lambda 函数 (lambda function) 将新对象插入 S3。&lt;/p>
 &lt;p>&lt;img src="https://miro.medium.com/v2/resize:fit:640/format:webp/1*HEIxp2piYd2b9y5pxqV2xA.png"
 loading="lazy"
->&lt;/p>
+>
+&lt;/p>
 &lt;p>&lt;img src="https://miro.medium.com/v2/resize:fit:640/format:webp/1*MGNKOjFIP0mJQ4DDgG8Agw.png"
 loading="lazy"
->&lt;/p>
+>
+&lt;/p>
 &lt;p>前往 S3，我们看到新条目 &lt;code>7.json&lt;/code> 已添加：&lt;/p>
 &lt;p>&lt;img src="https://miro.medium.com/v2/resize:fit:640/format:webp/1*dhhBJ1oL-3OSa9JHP832oA.png"
 loading="lazy"
->&lt;/p>
+>
+&lt;/p>
 &lt;p>接下来，前往数据目录 (Data Catalog)，我们看到数据库 (Databases) 和表 (Tables)。&lt;/p>
 &lt;p>&lt;img src="https://miro.medium.com/v2/resize:fit:640/format:webp/1*XFt97o-Egelq4T-PdDUQmA.png"
 loading="lazy"
->&lt;/p>
+>
+&lt;/p>
 &lt;p>数据目录数据库&lt;/p>
 &lt;p>&lt;img src="https://miro.medium.com/v2/resize:fit:640/format:webp/1*V1EV7KY8iSVvMgeGIX4Fsw.png"
 loading="lazy"
->&lt;/p>
+>
+&lt;/p>
 &lt;p>数据目录表&lt;/p>
 &lt;p>前往 DataBrew，我们看到该项目。&lt;/p>
 &lt;p>一旦 Lambda 函数被添加到 &lt;code>/data&lt;/code> 路径的新内容触发，它就会启动 DataBrew 转换作业 (transformation job)：&lt;/p>
 &lt;p>&lt;img src="https://miro.medium.com/v2/resize:fit:640/format:webp/1*YeJ5a_JzUjWoD8vD9-4n-A.png"
 loading="lazy"
->&lt;/p>
+>
+&lt;/p>
 &lt;p>完成后，它看起来像这样：&lt;/p>
 &lt;p>&lt;img src="https://miro.medium.com/v2/resize:fit:640/format:webp/1*GZNvEGrYWP4Wom1VKMAwBQ.png"
 loading="lazy"
->&lt;/p>
+>
+&lt;/p>
 &lt;p>已完成的 DataBrew 作业&lt;/p>
 &lt;p>DataBrew 数据血缘 (Data lineage) 允许我们查看使用 DataBrew 的流程的图形化表示。&lt;/p>
 &lt;p>&lt;strong>空闲作业&lt;/strong>：&lt;/p>
 &lt;p>&lt;img src="https://miro.medium.com/v2/resize:fit:640/format:webp/1*arMXfxrhANbnvXymY8ejBg.png"
 loading="lazy"
 alt="空闲作业的数据血缘"
->&lt;/p>
+>
+&lt;/p>
 &lt;p>&lt;strong>运行中作业&lt;/strong>：&lt;/p>
 &lt;p>&lt;img src="https://miro.medium.com/v2/resize:fit:640/format:webp/1*CgVAhqi82C2tZcIRpCtz6A.png"
 loading="lazy"
 alt="数据血缘的作业运行中"
->&lt;/p>
+>
+&lt;/p>
 &lt;p>最后，前往 Athena，并选择 &lt;code>my-athena-workgroup&lt;/code> 工作组 (workgroup) 来运行查询。&lt;/p>
 &lt;p>在 DataBrew 作业运行之前，如果我们使用 Athena 运行查询，将不会有任何结果，因为 &lt;code>/cleaned&lt;/code> 路径中还没有任何项目：&lt;/p>
 &lt;p>&lt;img src="https://miro.medium.com/v2/resize:fit:640/format:webp/1*8K6f2X_uNLtstmSxZu1q9g.png"
 loading="lazy"
->&lt;/p>
+>
+&lt;/p>
 &lt;p>然而，在 DataBrew 作业成功运行后，我们点击 &lt;em>&lt;strong>Run again&lt;/strong>&lt;/em> 按钮以在 Athena 中重新运行查询：&lt;/p>
 &lt;p>&lt;img src="https://miro.medium.com/v2/resize:fit:640/format:webp/1*NDVMRuZ4Kh5GdTGIIkcHnQ.png"
 loading="lazy"
->&lt;/p>
+>
+&lt;/p>
 &lt;p>结果如下：&lt;/p>
 &lt;p>&lt;img src="https://miro.medium.com/v2/resize:fit:640/format:webp/1*kjeCuYwKZMO-2RJJgpd0Dw.png"
 loading="lazy"
->&lt;/p>
+>
+&lt;/p>
 &lt;p>如果你仔细观察，会发现它移除了在项目创建时上传到 S3 的 &lt;code>sample.json&lt;/code> 文件中发现的邮箱为 &lt;code>john@example.com&lt;/code> 的重复条目。&lt;/p>
 &lt;p>它还添加了邮箱为 &lt;code>mathew@gmail.com&lt;/code> 的新的 DynamoDB 条目。&lt;/p>
 &lt;p>这意味着我们的管道按预期工作！！&lt;/p>
@@ -661,23 +679,28 @@ loading="lazy"
 &lt;/h2>&lt;p>让我们通过向 DynamoDB 添加一个新条目来进一步测试，但这次它的邮箱将与我们现有的记录匹配。&lt;/p>
 &lt;p>&lt;img src="https://miro.medium.com/v2/resize:fit:640/format:webp/1*bWxYzQotL_N0JyVhsCzpTA.png"
 loading="lazy"
->&lt;/p>
+>
+&lt;/p>
 &lt;p>我们添加了一个邮箱为 &lt;code>mathew@gmail.com&lt;/code> 的新冲突条目&lt;/p>
 &lt;p>&lt;img src="https://miro.medium.com/v2/resize:fit:640/format:webp/1*C0iTx5McyVuu5836kCQ2-Q.png"
 loading="lazy"
->&lt;/p>
+>
+&lt;/p>
 &lt;p>这将触发一个新的 DataBrew 作业 (Job)：&lt;/p>
 &lt;p>&lt;img src="https://miro.medium.com/v2/resize:fit:640/format:webp/1*Rz50Z-SHv_PHcq1UUcKIgg.png"
 loading="lazy"
->&lt;/p>
+>
+&lt;/p>
 &lt;p>一旦成功了，我们会看到下图：&lt;/p>
 &lt;p>&lt;img src="https://miro.medium.com/v2/resize:fit:640/format:webp/1*iKPaL44m6-cWhAfAW1gTJg.png"
 loading="lazy"
->&lt;/p>
+>
+&lt;/p>
 &lt;p>接下来，前往 Athena 再次运行查询，这次它不再包含重复记录了！&lt;/p>
 &lt;p>&lt;img src="https://miro.medium.com/v2/resize:fit:640/format:webp/1*Er8Fx7_rGw4IFALgSGq6ag.png"
 loading="lazy"
->&lt;/p>
+>
+&lt;/p>
 &lt;h2 id="结论">结论
 &lt;/h2>&lt;p>我创建这个项目和文章是为了提高我在 Terraform 方面的技能，并亲自动手实践数据工程领域，同时磨练我的 Python 技能。&lt;/p>
 &lt;p>你可以在 &lt;a class="link" href="https://github.com/chyke007/serverless-data-pipeline" target="_blank" rel="noopener"
@@ -780,7 +803,8 @@ loading="lazy"
 &lt;p>&lt;img src="https://res.cloudinary.com/martinliu/image/upload/dns.png"
 loading="lazy"
 alt="kops On aws"
->&lt;/p>
+>
+&lt;/p>
 &lt;h2 id="安装工具准备">安装工具准备
 &lt;/h2>&lt;p>需要安装的工具包括 kubectl, kops 和 AWS CLI 工具。kops需要调用 AWS CLI来创建所需要的资源。我觉得简单的方法是：在目标的Region里创建一台Amazon AMI的虚拟机，这样AWS CLI就不用装了，而且在云里的话，执行kops的时候，由于有一大堆资源创建更新的api调用，感觉速度比在本机快很多，而且还用担心断网。&lt;/p>
 &lt;p>可以启动一台t2.micro规格的Amazon AMI即可，另外需要给这个实例配置如下IAM用户权限，在启动的时候选择合适的IAM Role。&lt;/p>
@@ -884,7 +908,8 @@ alt="kops On aws"
 &lt;p>&lt;img src="https://res.cloudinary.com/martinliu/image/upload/s3.png"
 loading="lazy"
 alt="kops On aws"
->&lt;/p>
+>
+&lt;/p>
 &lt;h2 id="创建kubernetes-cluster">创建Kubernetes Cluster
 &lt;/h2>&lt;p>命令行参数如下：&lt;/p>
 &lt;ul>
@@ -1092,7 +1117,8 @@ alt="kops On aws"
 &lt;p>&lt;img src="https://res.cloudinary.com/martinliu/image/upload/ec2.png"
 loading="lazy"
 alt="kops On aws"
->&lt;/p>
+>
+&lt;/p>
 &lt;p>也创建了两个ASG：&lt;/p>
 &lt;ul>
 &lt;li>一个是针对master的扩容规则&lt;/li>
@@ -1102,7 +1128,8 @@ alt="kops On aws"
 &lt;p>&lt;img src="https://res.cloudinary.com/martinliu/image/upload/asg.png"
 loading="lazy"
 alt="kops On aws"
->&lt;/p>
+>
+&lt;/p>
 &lt;p>在安装完成之后，用一下命令确认集群状态如下：&lt;/p>
 &lt;div class="highlight">&lt;div class="chroma">
 &lt;table class="lntable">&lt;tr>&lt;td class="lntd">
@@ -1205,7 +1232,8 @@ alt="kops On aws"
 &lt;p>&lt;img src="https://res.cloudinary.com/martinliu/image/upload/nginx.png"
 loading="lazy"
 alt="kops On aws"
->&lt;/p>
+>
+&lt;/p>
 &lt;h2 id="删除集群">删除集群
 &lt;/h2>&lt;p>用一条命令就能删除以上所建立的Kubernetes集群。&lt;/p>
 &lt;div class="highlight">&lt;div class="chroma">
@@ -1222,14 +1250,16 @@ alt="kops On aws"
 >&lt;img src="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2015/02/aws-service-map-1024x710.jpeg"
 loading="lazy"
 alt="aws-service-map"
->&lt;/a>&lt;/p>
+>
+&lt;/a>&lt;/p>
 &lt;p>下载中文版 PDF 全图点击这里：&lt;a class="link" href="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2015/02/aws-%e6%9c%8d%e5%8a%a1-%e8%84%91%e5%9b%be.pdf" target="_blank" rel="noopener"
 >aws-服务-脑图&lt;/a>&lt;/p>
 &lt;p>&lt;a class="link" href="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2015/02/aws-%e6%9c%8d%e5%8a%a1-%e8%84%91%e5%9b%be.jpeg" target="_blank" rel="noopener"
 >&lt;img src="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2015/02/aws-%e6%9c%8d%e5%8a%a1-%e8%84%91%e5%9b%be-1024x446.jpeg"
 loading="lazy"
 alt="aws-服务-脑图"
->&lt;/a>&lt;/p></description></item><item><title>AWS-FAQ post - AWS 一月有什么动态?</title><link>https://martinliu.cn/2015/02/07/aws-faq-post-aws-e4b880e69c88e69c89e4bb80e4b988e58aa8e68081/</link><pubDate>Sat, 07 Feb 2015 15:07:42 +0000</pubDate><guid>https://martinliu.cn/2015/02/07/aws-faq-post-aws-e4b880e69c88e69c89e4bb80e4b988e58aa8e68081/</guid><description>&lt;p>AWS-FAQ post - AWS 一月有什么动态?&lt;/p>
+>
+&lt;/a>&lt;/p></description></item><item><title>AWS-FAQ post - AWS 一月有什么动态?</title><link>https://martinliu.cn/2015/02/07/aws-faq-post-aws-e4b880e69c88e69c89e4bb80e4b988e58aa8e68081/</link><pubDate>Sat, 07 Feb 2015 15:07:42 +0000</pubDate><guid>https://martinliu.cn/2015/02/07/aws-faq-post-aws-e4b880e69c88e69c89e4bb80e4b988e58aa8e68081/</guid><description>&lt;p>AWS-FAQ post - AWS 一月有什么动态?&lt;/p>
 &lt;p>&lt;a class="link" href="http://www.aws-faq.com/blog/aws-blog/aws-%E4%B8%8A%E5%91%A8%E5%8F%91%E7%94%9F%E4%BA%86%E4%BB%80%E4%B9%88-2015-%E5%B9%B41%E6%9C%88.html" target="_blank" rel="noopener"
 >http://www.aws-faq.com/blog/aws-blog/aws-%E4%B8%8A%E5%91%A8%E5%8F%91%E7%94%9F%E4%BA%86%E4%BB%80%E4%B9%88-2015-%E5%B9%B41%E6%9C%88.html&lt;/a>&lt;/p>
 &lt;ul>
@@ -1240,10 +1270,12 @@ alt="aws-服务-脑图"
 &lt;p>[caption id=&amp;ldquo;attachment_52574&amp;rdquo; align=&amp;ldquo;aligncenter&amp;rdquo; width=&amp;ldquo;300&amp;rdquo;]&lt;img src="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2013/09/EC2_Management_Console-300x225.png"
 loading="lazy"
 alt="EC2_Management_Console"
->](&lt;a class="link" href="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2013/09/EC2_Management_Console.png" target="_blank" rel="noopener"
+>
+](&lt;a class="link" href="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2013/09/EC2_Management_Console.png" target="_blank" rel="noopener"
 >http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2013/09/EC2_Management_Console.png&lt;/a>) EC2_Management_Console[/caption]&lt;/p>
 &lt;p>[caption id=&amp;ldquo;attachment_52575&amp;rdquo; align=&amp;ldquo;aligncenter&amp;rdquo; width=&amp;ldquo;300&amp;rdquo;]&lt;img src="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2013/09/Try_Cloud_Computing_Free_with_AWS_Free_Tier-300x106.png"
 loading="lazy"
 alt="Try_Cloud_Computing_Free_with_AWS_Free_Tier"
->](&lt;a class="link" href="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2013/09/Try_Cloud_Computing_Free_with_AWS_Free_Tier.png" target="_blank" rel="noopener"
+>
+](&lt;a class="link" href="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2013/09/Try_Cloud_Computing_Free_with_AWS_Free_Tier.png" target="_blank" rel="noopener"
 >http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2013/09/Try_Cloud_Computing_Free_with_AWS_Free_Tier.png&lt;/a>) Try_Cloud_Computing_Free_with_AWS_Free_Tier[/caption]&lt;/p></description></item></channel></rss>

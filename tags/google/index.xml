@@ -27,7 +27,8 @@ alt="图 1. 事故的简化时间线，突出显示了关键节点"
 class="gallery-image"
 data-flex-grow="235"
 data-flex-basis="564px"
->&lt;/p>
+>
+&lt;/p>
 &lt;p>我将分析事故的持续时间周期，并探讨应用统计数据的有效性。有几个公开的资源库汇集了事故复盘回顾，展示了时间线和关键事件&lt;sup id="fnref:1">&lt;a href="#fn:1" class="footnote-ref" role="doc-noteref">1&lt;/a>&lt;/sup>。在这次分析中，我特别关注事故对用户影响的时间窗口。&lt;/p>
 &lt;p>图 1 的事故时间线模型简化了现实，就像所有模型一样。“浅层事故数据”存在一些问题。例如，在这次分析中，一个问题是：“如果你已经消除了 90% 用户的影响，但还有 10% 仍然受影响，你会认为事故已经缓解了吗？” 如果还有 5% 或 20% 呢？使用这个模型，你需要做出一个二元决策。这种分类方式常常因为主观性和不一致的原则而受到批评。&lt;/p>
 &lt;p>你可能不会太在意事故数据中&lt;sup id="fnref:2">&lt;a href="#fn:2" class="footnote-ref" role="doc-noteref">2&lt;/a>&lt;/sup>的这些不准确之处。对于许多实际应用——包括我将重点关注的总体分析——更高的精确度并不是必须的，而实现这种精确度的成本可能超过提高数据质量的潜在好处。著名统计学家 George Box 说过：“所有模型都是错的，但有些是有用的”，我认为这个模型可以用来理解 MTTR 和类似指标的可行性。&lt;/p>
@@ -46,7 +47,8 @@ alt="图 2. 事故持续时间的分布及事故次数"
 class="gallery-image"
 data-flex-grow="170"
 data-flex-basis="409px"
->&lt;/p>
+>
+&lt;/p>
 &lt;p>行的顺序依次为公司 A (N = 798；2019 年 173 起)，公司 B (N = 350；2019 年 103 起)，和公司 C (N = 2,186；2019 年 609 起)。列显示了每家公司在短期和长期内分布的尾部。&lt;/p>
 &lt;p>我还收集了 Google 的事故数据（见图 3），在我的分析中，Google 的数据集代表了一家专注于互联网服务的巨型公司。这个数据集是在一年的时间内收集的，时间比图 2 中的任何数据集都短，但它还包括内部事故（例如，仅影响开发人员生产力的事故）。虽然我不能分享具体的数字，但可以预见，Google 的事故数据集比三个公共数据集中任何一个都大好几倍。&lt;/p>
 &lt;p>&lt;img src="https://martinliu.cn/blog/incident-metrics-in-sre/2024-07-12_18-44-14.webp"
@@ -58,7 +60,8 @@ alt="图 3. 2019 年 Google 的事故持续时间分布，数据经过模糊处�
 class="gallery-image"
 data-flex-grow="470"
 data-flex-basis="1130px"
->&lt;/p>
+>
+&lt;/p>
 &lt;p>得出的关键观察是：在每种情况下，事故都呈现出正偏分布，大多数事故能迅速解决。图 4 显示，这些分布大致接近对数正态（或伽玛）分布，但我没有对经验数据进行概率分布拟合。所有数据集都显示了事故持续时间的巨大差异。这与我的经验相符：大多数事故能相对较快解决，但一些更复杂且持续时间较长，还会有少数灾难性的“黑天鹅事件”发生。&lt;sup id="fnref:4">&lt;a href="#fn:4" class="footnote-ref" role="doc-noteref">4&lt;/a>&lt;/sup>&lt;/p>
 &lt;p>&lt;img src="https://martinliu.cn/blog/incident-metrics-in-sre/2024-07-12_18-44-30.webp"
 width="1295"
@@ -69,7 +72,8 @@ alt="图 4. 事故持续时间的对数正态 Q-Q 图"
 class="gallery-image"
 data-flex-grow="332"
 data-flex-basis="798px"
->&lt;/p>
+>
+&lt;/p>
 &lt;p>显示它们如何接近对数正态分布&lt;sup id="fnref:5">&lt;a href="#fn:5" class="footnote-ref" role="doc-noteref">5&lt;/a>&lt;/sup>。请注意，这不能用来得出对数正态分布是最佳拟合的结论，仅供参考。&lt;/p>
 &lt;p>我排除了公共数据集中持续时间少于三分钟和超过三天的事故，这些事故占每个数据集的约 1-2%。对数据集中随机选择的事故进行手动检查，确认这些异常值是有效的，并且我也知道，从事故回顾中可以得知确实存在影响重大的多天事故，甚至更长时间的事故&lt;sup id="fnref:6">&lt;a href="#fn:6" class="footnote-ref" role="doc-noteref">6&lt;/a>&lt;/sup>。但是，我认为包括这些异常长的事故，即使它们在实际中发生，可能会对分析带来不必要的质疑。&lt;/p>
 &lt;p>从这些经验数据中，可以看到事故持续时间的分布，但仅根据事故数量或持续时间来判断公司的可靠性实践是错误的。这些数据集来自不同业务模式、可靠性需求和事故沟通方式各有差异的公司。&lt;sup id="fnref:7">&lt;a href="#fn:7" class="footnote-ref" role="doc-noteref">7&lt;/a>&lt;/sup>&lt;/p>
@@ -145,7 +149,8 @@ alt="图 5."
 class="gallery-image"
 data-flex-grow="249"
 data-flex-basis="599px"
->&lt;/p>
+>
+&lt;/p>
 &lt;p>如果改进实际发生，模拟的 MTTR 变化分布，作为相对改进。&lt;/p>
 &lt;p>即使在模拟中改进总是有效，38% 的模拟中公司 A 的 MTTR 差异低于零，40% 的公司 B 和 20% 的公司 C 也是如此。观察 MTTR 的绝对变化，看到至少 15 分钟改进的概率分别只有 49%、50% 和 64%。即使场景中的产品有效并缩短了事故，检测到任何改进的几率也远超出 10% 随机误差的容忍度。&lt;/p>
 &lt;p>&lt;strong>不改变事故情况下统计数据的变化&lt;/strong>&lt;/p>
@@ -162,7 +167,8 @@ alt="图 6."
 class="gallery-image"
 data-flex-grow="252"
 data-flex-basis="606px"
->&lt;/p>
+>
+&lt;/p>
 &lt;p>在事故没有变化的情况下，模拟的 MTTR 变化分布。&lt;/p>
 &lt;p>我们了解到，即使没有对事故持续时间进行任何有意的改变，许多模拟的场景仍然会让你认为 MTTR 大大缩短或延长，而实际上没有任何结构性的变化。如果你无法辨别出事故没有变化的情况，那么当它们真的发生变化时，你也会难以判断。&lt;/p>
 &lt;h3 id="改变思维实验">改变思维实验
@@ -181,7 +187,8 @@ alt="公式"
 class="gallery-image"
 data-flex-grow="535"
 data-flex-basis="1284px"
->&lt;/p>
+>
+&lt;/p>
 &lt;p>这与直觉一致，表明随着样本大小（即事故数量）的增加，观察到的 MTTR 值的方差会减少。这很容易证明。表 2 显示了多个事故数量下 MTTR 的 90% 置信区间。&lt;/p>
 &lt;p>回想一下，你是从事故持续时间分布中抽取两个样本。因此，如果你想知道用 N 个事故总数进行分析的效果，你需要抽取两个样本，样本大小为 N1 和 N2，其中 N1 = N2。&lt;/p>
 &lt;p>表 2. 基于 100,000 次模拟，从两个随机抽样的事故集合（N1 = N2）中计算出的两个 MTTR 差异的 90% 置信区间。&lt;/p>
@@ -239,7 +246,8 @@ alt="图 7."
 class="gallery-image"
 data-flex-grow="258"
 data-flex-basis="620px"
->&lt;/p>
+>
+&lt;/p>
 &lt;p>随着样本数量增加，90% 置信区间的宽度减少。&lt;/p>
 &lt;h3 id="超越平均值">超越平均值
 &lt;/h3>&lt;p>对算术平均值的一个常见且合理的批评是它对异常值过于敏感。尽管已经排除了最严重的异常值事故（如少于三分钟或超过三天的事故），这一点依然成立。我们可能需要考虑其他统计方法，让我们来探讨一下。&lt;/p>
@@ -334,7 +342,8 @@ alt="公式"
 class="gallery-image"
 data-flex-grow="988"
 data-flex-basis="2372px"
->&lt;/p>
+>
+&lt;/p>
 &lt;p>鉴于事故持续时间分布与对数正态分布相差不远，几何平均数在这里特别有吸引力。几何平均数对于对数正态分布而言，就像算术平均数对于正态分布一样。同样，这可以快速模拟（见表 5）。&lt;/p>
 &lt;p>表 5. 基于 100,000 次模拟，从两个随机抽样的事故集合（N1 = N2）中计算出的两个几何平均数差异的 90% 置信区间。&lt;/p>
 &lt;table>
@@ -410,7 +419,8 @@ alt="图 8."
 class="gallery-image"
 data-flex-grow="288"
 data-flex-basis="691px"
->&lt;/p>
+>
+&lt;/p>
 &lt;p>每年每个公司的事故数量，占总事故数量的比例。排除了数据不完整的年份（2020 年和每个数据集的第一年）。&lt;/p>
 &lt;p>但这种趋势可能根本无法反映系统可靠性。可能是由于外部世界事件导致的使用模式变化？还是产品组合的变化？或者是相同生产事件的事故报告方式变化，例如法规要求的变化？我只能猜测，但这些通常无法避免的因素可能会影响甚至使你自己公司的分析无效。&lt;/p>
 &lt;p>过去也提出了其他反对统计事故数量的观点&lt;sup id="fnref:13">&lt;a href="#fn:13" class="footnote-ref" role="doc-noteref">13&lt;/a>&lt;/sup>。我不会再花时间进一步分析这些数据，但我期待未来更多关于这一主题的研究。现在我们快速浏览了事故数量，让我们利用这些知识回到分析事故缩短的主题。&lt;/p>
@@ -430,7 +440,8 @@ alt="图 9."
 class="gallery-image"
 data-flex-grow="229"
 data-flex-basis="549px"
->&lt;/p>
+>
+&lt;/p>
 &lt;p>公司 A 样本均值事故持续时间的正态概率图，由 1,000 次模拟生成，模拟事故数量为 2019 年的全年事故数和大约一个季度的事故数。&lt;/p>
 &lt;p>一旦确定样本均值分布是正态的，你可以使用标准工具，例如 z 检验或 t 检验来建立置信区间&lt;sup id="fnref:15">&lt;a href="#fn:15" class="footnote-ref" role="doc-noteref">15&lt;/a>&lt;/sup>。我们特别关注的是两个分布之间的差异。既然它们来自同一总体，均值差异（以及样本总体差异的正态分布的众数）将趋于零，正如我们在模拟中所见。更有趣的是标准差，它决定了置信区间。&lt;/p>
 &lt;p>样本均值的方差收敛到：&lt;sup id="fnref:16">&lt;a href="#fn:16" class="footnote-ref" role="doc-noteref">16&lt;/a>&lt;/sup>&lt;/p>
@@ -443,7 +454,8 @@ alt="公式"
 class="gallery-image"
 data-flex-grow="535"
 data-flex-basis="1284px"
->&lt;/p>
+>
+&lt;/p>
 &lt;p>两个正态分布差异的方差是：&lt;sup id="fnref:17">&lt;a href="#fn:17" class="footnote-ref" role="doc-noteref">17&lt;/a>&lt;/sup>&lt;/p>
 &lt;p>&lt;img src="https://martinliu.cn/blog/incident-metrics-in-sre/2024-07-13_11-35-54.webp"
 width="1273"
@@ -454,7 +466,8 @@ alt="公式"
 class="gallery-image"
 data-flex-grow="646"
 data-flex-basis="1550px"
->&lt;/p>
+>
+&lt;/p>
 &lt;p>在这种情况下，两个样本均值正态分布的方差和样本量相同，结果是：&lt;/p>
 &lt;p>&lt;img src="https://martinliu.cn/blog/incident-metrics-in-sre/2024-07-13_11-36-09.webp"
 width="1309"
@@ -465,7 +478,8 @@ alt="公式"
 class="gallery-image"
 data-flex-grow="688"
 data-flex-basis="1653px"
->&lt;/p>
+>
+&lt;/p>
 &lt;p>这也解释了为什么 50/50 分割是最佳选择，因为不同的样本比例会导致更大的方差，从而得到更差的结果。&lt;/p>
 &lt;p>然后你可以应用双尾 z 检验。你可以扩展 z 检验公式；知道分布均值是 0，你可以寻找 MTTR 的特定变化，同时扩展方差计算：&lt;/p>
 &lt;p>&lt;img src="https://martinliu.cn/blog/incident-metrics-in-sre/2024-07-13_11-36-22.webp"
@@ -477,7 +491,8 @@ alt="公式"
 class="gallery-image"
 data-flex-grow="523"
 data-flex-basis="1256px"
->&lt;/p>
+>
+&lt;/p>
 &lt;p>你也可以反过来：查找相应的 z 分数（双尾检验在 α = 0.10 时的 z 分数约为 1.644），找到 MTTR 变化的置信区间：&lt;/p>
 &lt;p>&lt;img src="https://martinliu.cn/blog/incident-metrics-in-sre/2024-07-13_11-36-46.webp"
 width="1302"
@@ -488,7 +503,8 @@ alt="公式"
 class="gallery-image"
 data-flex-grow="635"
 data-flex-basis="1524px"
->&lt;/p>
+>
+&lt;/p>
 &lt;p>对于公司 A，事故持续时间的标准差为 5 小时 16 分钟，使用 N1 = N2 = 100/2 = 50 的样本来计算 90% 置信区间：&lt;/p>
 &lt;p>&lt;img src="https://martinliu.cn/blog/incident-metrics-in-sre/2024-07-13_11-37-05.webp"
 width="1303"
@@ -499,7 +515,8 @@ alt="公式"
 class="gallery-image"
 data-flex-grow="623"
 data-flex-basis="1496px"
->&lt;/p>
+>
+&lt;/p>
 &lt;p>这个结果与模拟结果中看到的 90% 置信区间相对应。&lt;/p>
 &lt;p>虽然有时你可以使用公式来进行事故统计分析，但我更喜欢模拟方法。我发现用模拟来讨论这个话题比用公式更容易理解。它还提供了更多的灵活性，可以进行建模和分析。计算 95 百分位恢复时间的解析解决方案可能非常具有挑战性，但在模拟中，这只需要一行代码的改变。&lt;/p>
 &lt;p>你可能也对模拟不同的变化和情况感兴趣。如果提议的事故缩短比简单的 10% 减少更复杂怎么办？也许你期望根据事故类别有不同的减少？如果 SRE 团队由狼人组成，他们只在满月后开始处理事故怎么办？你的场景可能没有那么奇幻，但模拟可以让它们更容易实现。&lt;/p>
@@ -516,7 +533,8 @@ alt="图 10."
 class="gallery-image"
 data-flex-grow="275"
 data-flex-basis="662px"
->&lt;/p>
+>
+&lt;/p>
 &lt;p>2019 年 Google 所有事故的持续时间分布。&lt;/p>
 &lt;p>除了更广泛的事故集中有更多非常短的事故外，图表显示这两个分布大致相似。所有 Google 事故的数据集大约是所选的面向用户的 Google 服务事故数据集的 15 倍，这也是公司范围内的分布图显得更平滑的原因。&lt;/p>
 &lt;p>在三个公共数据集中，排除超过三天的事故去除了约 1% 的事故，但两个 Google 数据集中都有相当多的事故持续时间超过三天。与之前的公共数据集一样，由于事故跟踪方式不同，得出关于可靠性的结论是不正确的。我尝试了两种方法：在三天处截断和排除长度排名前 5% 的事故。结果显示，相对 MTTR 的置信区间仅有略微差异，结论相同。表 7 显示了以三天为截断点的模拟数据，与其他模拟一致。&lt;/p>
@@ -1548,7 +1566,8 @@ MTTR：平均修复时间。事件从发生到解决的平均时间。
 &lt;p>&lt;img src="https://martinliu.cn/img/anatomy-of-an-incident.png"
 loading="lazy"
 alt="cover"
->&lt;/p>
+>
+&lt;/p>
 &lt;p>❤️ Photo by Pixabay: &lt;a class="link" href="https://www.pexels.com/photo/photo-of-a-2-fireman-killing-a-huge-fire-69934/" target="_blank" rel="noopener"
 >https://www.pexels.com/photo/photo-of-a-2-fireman-killing-a-huge-fire-69934/&lt;/a>&lt;/p></description></item><item><title>Google 白皮书 《事故管理剖析》第六章 真实事故案例：玛雅末日事件</title><link>https://martinliu.cn/blog/anatomy-of-an-incident-ch6/</link><pubDate>Fri, 05 Jul 2024 12:46:48 +0800</pubDate><guid>https://martinliu.cn/blog/anatomy-of-an-incident-ch6/</guid><description>&lt;img src="https://martinliu.cn/blog/anatomy-of-an-incident-ch6/pexels-pixabay-69934.webp" alt="Featured image of post Google 白皮书 《事故管理剖析》第六章 真实事故案例：玛雅末日事件" />&lt;ul>
 &lt;li>&lt;a class="link" href="https://martinliu.cn/wp/anatomy-of-an-incident-cn.pdf" >下载中文版 PDF 文件&lt;/a>&lt;/li>
@@ -1584,7 +1603,8 @@ alt="cover"
 &lt;p>&lt;img src="https://martinliu.cn/img/anatomy-of-an-incident.png"
 loading="lazy"
 alt="cover"
->&lt;/p>
+>
+&lt;/p>
 &lt;p>❤️ Photo by Pixabay: &lt;a class="link" href="https://www.pexels.com/photo/photo-of-a-2-fireman-killing-a-huge-fire-69934/" target="_blank" rel="noopener"
 >https://www.pexels.com/photo/photo-of-a-2-fireman-killing-a-huge-fire-69934/&lt;/a>&lt;/p></description></item><item><title>Google 白皮书 《事故管理剖析》第五章 事后复盘分析及其应用</title><link>https://martinliu.cn/blog/anatomy-of-an-incident-ch5/</link><pubDate>Sun, 30 Jun 2024 22:46:48 +0800</pubDate><guid>https://martinliu.cn/blog/anatomy-of-an-incident-ch5/</guid><description>&lt;img src="https://martinliu.cn/blog/anatomy-of-an-incident-ch5/pexels-pixabay-69934.webp" alt="Featured image of post Google 白皮书 《事故管理剖析》第五章 事后复盘分析及其应用" />&lt;ul>
 &lt;li>&lt;a class="link" href="https://martinliu.cn/wp/anatomy-of-an-incident-cn.pdf" >下载中文版 PDF 文件&lt;/a>&lt;/li>
@@ -1603,7 +1623,8 @@ alt="图 5-1. 你应集中精力的地方"
 class="gallery-image"
 data-flex-grow="203"
 data-flex-basis="488px"
->&lt;/p>
+>
+&lt;/p>
 &lt;p>一旦你积累了足够多的事后复盘分析，就可以识别出模式。让事后复盘分析成为你的指南非常重要；在失败分析上的投资可以引导你走向成功。为此，我们建议创建一个共享库，并在内部团队中广泛分享事后复盘分析。&lt;/p>
 &lt;h2 id="心理安全">心理安全
 &lt;/h2>&lt;p>在谈论事后复盘分析时，不可避免地要讨论心理安全(Psychological Safety)。因此，在深入探讨撰写事后复盘分析的细节之前，我们先来谈谈事故管理文化中固有的心理安全，并讨论早期升级的价值。&lt;/p>
@@ -1679,7 +1700,8 @@ alt="图 5-2. Venn 图显示理解与事实之间的差距"
 class="gallery-image"
 data-flex-grow="178"
 data-flex-basis="428px"
->&lt;/p>
+>
+&lt;/p>
 &lt;p>&lt;img src="https://martinliu.cn/blog/anatomy-of-an-incident-ch5/2024-07-01_21-07-45.webp"
 width="1245"
 height="873"
@@ -1689,7 +1711,8 @@ alt="图 5-3. Venn 图显示系统分析的好处"
 class="gallery-image"
 data-flex-grow="142"
 data-flex-basis="342px"
->&lt;/p>
+>
+&lt;/p>
 &lt;p>即使事故已经缓解，系统再次稳定，理解真正的问题仍然重要。这涉及可操作性——即你在事故之后有能力修复或更改的内容。事故后的系统增量改进有助于随着时间的推移建立恢复力。这是第三个重要的圆圈，代表你可以控制并可以实施修复的系统中的事物（图 5-4）。这个圆圈无法移动，因为总有一些你无法控制的事情会影响系统的健康（例如天气、地球的大小、光速）。&lt;/p>
 &lt;p>在中心的那个小交集（在集合理论中表示为 1 ∩ 2 ∩ 3）是你团队在事故之后可以做的最好的工作。“你认为的问题是什么”和“你能修复什么”的重叠部分 [(1 ∩ 3) – 2] 是危险的：这些是你认为在长期内会有帮助但实际上不会解决真正问题的解决方案。你可能正在解决与主要问题相关的某些事物，或者你可能正在处理另一个隐藏问题的表现症状。假设你已经解决了一个实际上没有解决的问题是一个危险的境地——因为缺乏对这一风险的认识，这种情况变得更加严重。如果特定事故再次发生，你将面临客户信任的降低和本可以更有效利用的时间的浪费。&lt;/p>
 &lt;p>&lt;img src="https://martinliu.cn/blog/anatomy-of-an-incident-ch5/2024-07-01_21-08-15.webp"
@@ -1701,7 +1724,8 @@ alt="图 5-4. Venn 图显示工程工作与系统分析的相互作用"
 class="gallery-image"
 data-flex-grow="105"
 data-flex-basis="252px"
->&lt;/p>
+>
+&lt;/p>
 &lt;p>通过更深入的系统分析，中心的那个小片段（1 ∩ 2 ∩ 3）在两个不动的圆圈中被最大化（图 5-5）。换句话说，你正在最大化你优先考虑的修复措施的有效性。如果你想确保你正在针对正确的问题，移动圆圈是值得的。关键是要在系统分析上投入足够多的时间，以便你和你的团队能够以高概率选择最适合的工程项目来提高系统的恢复力。但要注意收益递减——例如，花一个月时间调查每一次中断并不是明智的资源使用。在以下部分中，我们提出了一些关键点，可能有助于思考如何移动圆圈。&lt;/p>
 &lt;p>&lt;img src="https://martinliu.cn/blog/anatomy-of-an-incident-ch5/2024-07-01_21-08-35.webp"
 width="1244"
@@ -1712,7 +1736,8 @@ alt="图 5-5. Venn 图突出工程工作与系统分析之间的相互作用"
 class="gallery-image"
 data-flex-grow="105"
 data-flex-basis="252px"
->&lt;/p>
+>
+&lt;/p>
 &lt;h3 id="根本原因与触发因素">根本原因与触发因素
 &lt;/h3>&lt;p>让我们从两个关键术语开始：根本原因和触发因素。&lt;/p>
 &lt;p>&lt;strong>根本原因 (Root cause)&lt;/strong>&lt;/p>
@@ -1764,7 +1789,8 @@ data-flex-basis="252px"
 &lt;p>&lt;img src="https://martinliu.cn/img/anatomy-of-an-incident.png"
 loading="lazy"
 alt="cover"
->&lt;/p>
+>
+&lt;/p>
 &lt;p>❤️ Photo by Pixabay: &lt;a class="link" href="https://www.pexels.com/photo/photo-of-a-2-fireman-killing-a-huge-fire-69934/" target="_blank" rel="noopener"
 >https://www.pexels.com/photo/photo-of-a-2-fireman-killing-a-huge-fire-69934/&lt;/a>&lt;/p>
 &lt;div class="footnotes" role="doc-endnotes">
@@ -1830,7 +1856,8 @@ alt="图 4-1. 中断生命周期"
 class="gallery-image"
 data-flex-grow="220"
 data-flex-basis="530px"
->&lt;/p>
+>
+&lt;/p>
 &lt;p>关键指标是检测时间、修复时间和故障间隔时间：&lt;/p>
 &lt;ul>
 &lt;li>检测时间（TTD）是从中断发生到某个人被通知或告警的时间。&lt;/li>
@@ -1847,7 +1874,8 @@ alt="不可用性公式"
 class="gallery-image"
 data-flex-grow="444"
 data-flex-basis="1066px"
->&lt;/p>
+>
+&lt;/p>
 &lt;p>需要注意的是，使用的方法也很重要。简单地降低告警阈值可能导致误报和噪音，过度依赖自动化快速修复可能减少修复时间，但会忽略根本问题。在下一节中，我们将分享几种策略，这些策略可以更有效地减少检测时间、修复时间和事故频率。&lt;/p>
 &lt;h3 id="缩短检测时间">缩短检测时间
 &lt;/h3>&lt;p>减小事故影响的一种方法是缩短检测事故的时间(Reducing the Time to Detect)（图 4-2）。在起草 SLO（可靠性目标）时，需要我们进行前置的风险分析，并确定出那些优先的待办事项，识别可能阻止实现 SLO 的因素，这也有助于缩短检测到事故的时间。此外，你可以采取以下措施来最小化检测时间：&lt;/p>
@@ -1866,7 +1894,8 @@ alt="图 4-2. 中断生命周期：检测时间"
 class="gallery-image"
 data-flex-grow="219"
 data-flex-basis="525px"
->&lt;/p>
+>
+&lt;/p>
 &lt;h3 id="缩短修复时间">缩短修复时间
 &lt;/h3>&lt;p>我们已经讨论了：用缩短检测时间作为减小事故影响的一种方法。另一种方法是：缩短修复时间(Reducing the Time to Repair)（图 4-3）。缩短修复时间主要涉及“人”的方面。使用事故管理协议和组织事故管理响应可以减少事故管理的模糊性，缩短对用户影响的时间。除此之外，你还需要培训响应者，制定明确的程序和手册，并降低值守的压力。让我们详细探讨这些策略。&lt;/p>
 &lt;p>&lt;img src="https://martinliu.cn/blog/anatomy-of-an-incident-ch4/2024-06-30_10-37-12.webp"
@@ -1878,7 +1907,8 @@ alt="图 4-3. 中断生命周期：修复时间"
 class="gallery-image"
 data-flex-grow="218"
 data-flex-basis="524px"
->&lt;/p>
+>
+&lt;/p>
 &lt;p>&lt;strong>培训响应者&lt;/strong>&lt;/p>
 &lt;p>未准备好的值守人员会导致更长的修复时间。考虑对值守人员进行灾难恢复测试培训，或者进行我们之前提到的“厄运之轮”演习。另一种方法是通过导师指导进行值守准备。让值守人员成对工作（“配对值守 pair on call”），或者让新人在他们的轮班期间与有经验的值守人员一起工作（“跟班 shadowing”），有助于增强新队员的信心。记住，值守可能是有压力的。制定明确的事故管理流程可以减少这种压力，因为它消除了任何模糊性，并明确了所需的行动。&lt;sup id="fnref:5">&lt;a href="#fn:5" class="footnote-ref" role="doc-noteref">5&lt;/a>&lt;/sup>&lt;/p>
 &lt;p>&lt;strong>建立有组织的事故响应程序&lt;/strong>&lt;/p>
@@ -1893,7 +1923,8 @@ alt="图 4-4. 一个 ICS 层次结构示例"
 class="gallery-image"
 data-flex-grow="214"
 data-flex-basis="515px"
->&lt;/p>
+>
+&lt;/p>
 &lt;p>IMAG 协议为解决事故的人提供了一个框架，使紧急响应团队能够自我组织和高效工作，通过确保响应者和相关利益相关者之间的沟通，控制事故响应，并帮助协调响应工作。它规定事故指挥官（IC）负责协调响应并分配职责，而其他人向 IC 报告。每个人都有一个具体的、明确的角色——例如，操作负责人负责解决问题，沟通负责人负责处理沟通。&lt;/p>
 &lt;p>通过使用这样的协议，你可以减少模糊性，明确团队合作，并减少修复时间。&lt;sup id="fnref:7">&lt;a href="#fn:7" class="footnote-ref" role="doc-noteref">7&lt;/a>&lt;/sup>&lt;/p>
 &lt;p>&lt;strong>建立明确的值守政策和流程&lt;/strong>&lt;/p>
@@ -1918,7 +1949,8 @@ alt="图 4-5. 中断生命周期：故障间隔时间"
 class="gallery-image"
 data-flex-grow="218"
 data-flex-basis="525px"
->&lt;/p>
+>
+&lt;/p>
 &lt;p>&lt;strong>避免反模式&lt;/strong>&lt;/p>
 &lt;p>我们在本报告中提到了几种反模式，包括缺乏可观测性，缺乏正反馈回路，这会导致系统发生过载，并引发级联问题，如崩溃。这些反模式需要避免。&lt;/p>
 &lt;p>&lt;strong>分散风险&lt;/strong>&lt;/p>
@@ -1950,7 +1982,8 @@ data-flex-basis="525px"
 &lt;p>&lt;img src="https://martinliu.cn/img/anatomy-of-an-incident.png"
 loading="lazy"
 alt="cover"
->&lt;/p>
+>
+&lt;/p>
 &lt;p>❤️ Photo by Pixabay: &lt;a class="link" href="https://www.pexels.com/photo/photo-of-a-2-fireman-killing-a-huge-fire-69934/" target="_blank" rel="noopener"
 >https://www.pexels.com/photo/photo-of-a-2-fireman-killing-a-huge-fire-69934/&lt;/a>&lt;/p>
 &lt;div class="footnotes" role="doc-endnotes">
@@ -2024,7 +2057,8 @@ alt="图 3-1. 组件响应者"
 class="gallery-image"
 data-flex-grow="510"
 data-flex-basis="1225px"
->&lt;/p>
+>
+&lt;/p>
 &lt;p>组件响应者是某个单一系统的专家，精通该问题领域，是优秀的故障排除专家，并在危机期间实践缓解策略。他们可以持续访问执行紧急响应所需的工具和系统，能够很好地应对压力，并在危机期间保持清晰的思路。&lt;/p>
 &lt;p>单个组件响应者的责任范围有限，这使他们能够深入了解其领域及相关系统。这些响应者是防止故障从一个组件蔓延到整个堆栈的第一道防线。这些单独的组件比整体的系统体系级 SoS 堆栈要小，正如我们将在下面描述的“系统体系（SoS）响应者”一节中讨论的那样，通常具有明确且独立的系统边界。因此，可以设置合理的监控和告警机制，使组件响应者始终了解其系统的故障模式。&lt;/p>
 &lt;p>当技术堆栈的范围超出一个人可理解和维护的能力时，我们将技术堆栈拆分，以便多个响应者可以分别对整个堆栈的单个组件提供覆盖。随着时间的推移，这些组件变得更加复杂，并进一步分解。通过保持有限的范围，主要响应者可以在任何给定时间解决小范围内的问题。然而，也存在风险，即忽视了跨多个组件的生产故障，或者如果问题超出其专业范围，则无法为组件响应者提供足够的支持。&lt;/p>
@@ -2038,7 +2072,8 @@ alt="图 3-2. 从组件到更大的场景"
 class="gallery-image"
 data-flex-grow="382"
 data-flex-basis="917px"
->&lt;/p>
+>
+&lt;/p>
 &lt;p>在一个足够大且复杂的技术堆栈中，一个主要响应人员几乎不可能同时驱动缓解并维护所有依赖关系和被依赖关系的状态。为了缓解这种风险，除了出色的组件响应人员之外，我们还建立了一个二级响应人员的结构。我们在 Google 称这些二级响应人员为系统响应人员，接下来我们将讨论这一部分。&lt;/p>
 &lt;h2 id="系统响应人员">系统响应人员
 &lt;/h2>&lt;p>系统响应人员（SoS 响应人员）负责处理跨多个组件系统、跨系统边界或复杂情况的事故。这些 SoS 响应人员经过专业培训，具有适当的权限和地位，并有权领导有组织的协调响应。他们是第二道防线，更全面地关注问题，并在应对分布式计算故障时提供关键优势支持（图 3-3）。&lt;/p>
@@ -2051,7 +2086,8 @@ alt="图 3-3. 系统响应人员"
 class="gallery-image"
 data-flex-grow="652"
 data-flex-basis="1564px"
->&lt;/p>
+>
+&lt;/p>
 &lt;p>我们认为 SoS 响应人员是多系统事故管理者，技术全能，关注整体；他们在处理需要更广泛视角的事故方面有专业知识。通常，这些事故需要多个团队的参与；例如，一次重大系统级 SoS 故障会导致许多服务中断。这些事故可能会引发或已经引发下游故障，并可能扩展到服务边界之外。此外，这些事故可能已经持续了 30 分钟或更长的时间，且没有解决迹象，影响客户。&lt;/p>
 &lt;p>SoS 响应人员适合应对这些影响广泛的事故，因为他们知道如何组织他人并掌控复杂局面。他们还擅长诊断系统行为，找出根本原因，专注于扩展响应并广泛沟通事故情况。&lt;/p>
 &lt;p>在 Google，我们有两种类型的 SoS 响应人员。尽管每种类型都有其独特的功能，但它们经常协同工作：&lt;/p>
@@ -2071,7 +2107,8 @@ alt="图 3-4. 事故响应组织架构"
 class="gallery-image"
 data-flex-grow="254"
 data-flex-basis="611px"
->&lt;/p>
+>
+&lt;/p>
 &lt;p>如果一个问题威胁到多个产品，或通过共享基础设施的解决方案可以更快缓解，Tech IRT 将被激活，作为所有下级问题的升级点，负责最广泛范围的操作。&lt;/p>
 &lt;p>那么，是什么使得这个组织架构能够无缝运行呢？答案是共同的协议、信任、尊重和透明度。接下来我们将详细探讨这些。&lt;/p>
 &lt;h2 id="事故响应组织架构">事故响应组织架构
@@ -2085,7 +2122,8 @@ alt="图 3-5. 成功事故响应组织的特征"
 class="gallery-image"
 data-flex-grow="132"
 data-flex-basis="317px"
->&lt;/p>
+>
+&lt;/p>
 &lt;h3 id="统一协议">统一协议
 &lt;/h3>&lt;p>在 Google，我们广泛使用 FEMA 事故指挥系统（ICS）的内部变体，其中事故响应人员有明确的角色，如事故指挥官、记录员和通信员。通过使用共享且明确定义的流程，我们建立了有效的紧急响应习惯，包括保持活跃状态、明确的指挥链和减少整体压力。每个人都了解交接流程，知道应该交接给谁，以确保知识的有效传递。就像象棋不能在麻将桌上玩，在紧急情况下，所有人都必须按照同一个规则行事。&lt;/p>
 &lt;h3 id="信任">信任
@@ -2150,7 +2188,8 @@ data-flex-basis="317px"
 &lt;p>&lt;img src="https://martinliu.cn/img/anatomy-of-an-incident.png"
 loading="lazy"
 alt="cover"
->&lt;/p>
+>
+&lt;/p>
 &lt;p>❤️ Photo by Pixabay: &lt;a class="link" href="https://www.pexels.com/photo/photo-of-a-2-fireman-killing-a-huge-fire-69934/" target="_blank" rel="noopener"
 >https://www.pexels.com/photo/photo-of-a-2-fireman-killing-a-huge-fire-69934/&lt;/a>&lt;/p></description></item><item><title>Google SRE 白皮书： 《事故管理剖析》第二章 实战演习事故响应准备</title><link>https://martinliu.cn/blog/anatomy-of-an-incident-ch2/</link><pubDate>Tue, 25 Jun 2024 22:46:48 +0800</pubDate><guid>https://martinliu.cn/blog/anatomy-of-an-incident-ch2/</guid><description>&lt;img src="https://martinliu.cn/blog/anatomy-of-an-incident-ch2/pexels-pixabay-69934.webp" alt="Featured image of post Google SRE 白皮书： 《事故管理剖析》第二章 实战演习事故响应准备" />&lt;ul>
 &lt;li>&lt;a class="link" href="https://martinliu.cn/wp/anatomy-of-an-incident-cn.pdf" >下载中文版 PDF 文件&lt;/a>&lt;/li>
@@ -2190,7 +2229,8 @@ alt="cover"
 &lt;p>&lt;img src="https://martinliu.cn/img/anatomy-of-an-incident.png"
 loading="lazy"
 alt="cover"
->&lt;/p>
+>
+&lt;/p>
 &lt;p>❤️ Photo by Pixabay: &lt;a class="link" href="https://www.pexels.com/photo/photo-of-a-2-fireman-killing-a-huge-fire-69934/" target="_blank" rel="noopener"
 >https://www.pexels.com/photo/photo-of-a-2-fireman-killing-a-huge-fire-69934/&lt;/a>&lt;/p></description></item><item><title>Google SRE 白皮书： 《事故管理剖析》第一章 概述</title><link>https://martinliu.cn/blog/anatomy-of-an-incident-ch1/</link><pubDate>Tue, 25 Jun 2024 22:46:48 +0800</pubDate><guid>https://martinliu.cn/blog/anatomy-of-an-incident-ch1/</guid><description>&lt;img src="https://martinliu.cn/blog/anatomy-of-an-incident-ch1/pexels-pixabay-69934.webp" alt="Featured image of post Google SRE 白皮书： 《事故管理剖析》第一章 概述" />&lt;ul>
 &lt;li>&lt;a class="link" href="https://martinliu.cn/wp/anatomy-of-an-incident-cn.pdf" >下载中文版 PDF 文件&lt;/a>&lt;/li>
@@ -2267,7 +2307,8 @@ alt="图 1-1. 事故管理生命周期"
 class="gallery-image"
 data-flex-grow="100"
 data-flex-basis="241px"
->&lt;/p>
+>
+&lt;/p>
 &lt;p>一旦恢复阶段结束，你将重新进入准备阶段。根据系统的复杂性，所有这些阶段可能同时进行——但可以确定的是，至少总有一个阶段在进行中。&lt;/p>
 &lt;blockquote>
 &lt;p>来源： &lt;a class="link" href="https://sre.google" target="_blank" rel="noopener"
@@ -2275,7 +2316,8 @@ data-flex-basis="241px"
 &lt;p>&lt;img src="https://martinliu.cn/img/anatomy-of-an-incident.png"
 loading="lazy"
 alt="cover"
->&lt;/p>
+>
+&lt;/p>
 &lt;p>❤️ Photo by Pixabay: &lt;a class="link" href="https://www.pexels.com/photo/photo-of-a-2-fireman-killing-a-huge-fire-69934/" target="_blank" rel="noopener"
 >https://www.pexels.com/photo/photo-of-a-2-fireman-killing-a-huge-fire-69934/&lt;/a>&lt;/p></description></item><item><title>Google 白皮书：SRE 容量管理最佳实践</title><link>https://martinliu.cn/blog/sre-best-practices-for-capacity-management/</link><pubDate>Mon, 17 Jun 2024 13:23:28 +0800</pubDate><guid>https://martinliu.cn/blog/sre-best-practices-for-capacity-management/</guid><description>&lt;img src="https://martinliu.cn/blog/sre-best-practices-for-capacity-management/pexels-fox-58267-9097039.webp" alt="Featured image of post Google 白皮书：SRE 容量管理最佳实践" />&lt;p>作为 SRE，您需要确定服务的初始资源需求，并确保服务在意外需求下仍能稳定运行。容量管理是指确保您的服务拥有足够的资源，从而实现可扩展性、高效性和可靠性。无论是用户端服务还是公司内部服务，都必须应对预期和意外的增长。我们将利用率定义为资源使用的百分比。确定初始资源利用率并预测未来需求并不容易。我们提供了一些估算利用率和识别盲点的方法，并讨论了构建冗余以避免故障的好处。利用这些信息，您可以设计架构，使每个组件的资源分配增加能够有效地线性提升整个服务的容量。&lt;/p>
 &lt;h2 id="容量管理原则">容量管理原则
@@ -2314,7 +2356,8 @@ alt="图 1: 资源制备解决方案中的需求信号和资源分配"
 class="gallery-image"
 data-flex-grow="197"
 data-flex-basis="473px"
->&lt;/p>
+>
+&lt;/p>
 &lt;p>&lt;strong>资源短缺的影响&lt;/strong>&lt;/p>
 &lt;p>资源短缺会导致服务以不同方式失败，这取决于资源类别。&lt;/p>
 &lt;p>当资源成为服务关键路径中的瓶颈时，用户会遇到延迟增加的情况。在最糟糕的情况下，瓶颈会导致请求积压，延迟不断增加，最终导致排队请求超时。如果没有缓解计划，服务将无法处理请求，进而发生故障。故障将持续，直到传入流量减少使服务恢复，或者服务重新启动。&lt;/p>
@@ -2363,7 +2406,8 @@ alt="图 2: 服务制备资源成本的示例比较（以三个副本和五个�
 class="gallery-image"
 data-flex-grow="256"
 data-flex-basis="615px"
->&lt;/p>
+>
+&lt;/p>
 &lt;p>以上算法解释：&lt;/p>
 &lt;p>【需求】预期负载：每秒 100 次请求 (rps)&lt;/p>
 &lt;p>&lt;strong>在 3 个副本上运行 N+2&lt;/strong>&lt;/p>
@@ -2638,7 +2682,8 @@ alt="图 1：产品可靠性引导工作流程"
 class="gallery-image"
 data-flex-grow="232"
 data-flex-basis="556px"
->&lt;/p>
+>
+&lt;/p>
 &lt;h2 id="开始">开始
 &lt;/h2>&lt;p>在本节中，你将学习如何实施以产品为中心的可靠性参与（engage），包括以下关键步骤：&lt;/p>
 &lt;ol>
@@ -2745,7 +2790,8 @@ alt="图 2: 用户目标和步骤的流程图（见表 1）"
 class="gallery-image"
 data-flex-grow="248"
 data-flex-basis="597px"
->&lt;/p>
+>
+&lt;/p>
 &lt;p>&lt;strong>产品重要性和优先级&lt;/strong>&lt;/p>
 &lt;p>在转型到&lt;strong>产品支持模型&lt;/strong>时，请记住，SRE 团队在学习这种新方法时会面临更大的认知负荷。请通过战略性选择支持的方式和位置，来管理 SRE 团队的额外工作量。&lt;/p>
 &lt;p>例如，你可能希望将大量支持集中在核心用户目标及其步骤上，并用高成本但准确的端到端 SLO 对其进行监控。在这种情况下，你还可以通过更便宜和传统的基于服务器的 SLO 支持较不重要的目标。&lt;/p>
@@ -2945,7 +2991,8 @@ alt="图 3: 产品 SLO 如何围绕用户目标和步骤定义的示例"
 class="gallery-image"
 data-flex-grow="250"
 data-flex-basis="601px"
->&lt;/p>
+>
+&lt;/p>
 &lt;blockquote>
 &lt;p>交付物：列出覆盖不同 SLO 类型（可用性、延迟）和监控方法（服务端、客户端、端到端）的产品 SLO 的优先级排序清单。实施最高优先级的 SLO，并将较低优先级的 SLO 创建为待办事项，稍后再进行优先级排序。&lt;/p>&lt;/blockquote>
 &lt;p>&lt;strong>遥测&lt;/strong>&lt;/p>
@@ -3216,7 +3263,8 @@ alt="图 4-1. 能力平台示意图"
 class="gallery-image"
 data-flex-grow="171"
 data-flex-basis="410px"
->&lt;/p>
+>
+&lt;/p>
 &lt;p>当一个 SRE 团队开始来构建这个平台时，他们会面临一个问题：“首先应该构建什么能力？”通过分析前期采用 SRE 的低风险服务，你就可以将需求列表最小化为一个最小可行产品（MVP）。随着时间的推移，你会添加更多的能力。但下一步是什么呢？有两个来源：你的开发人员和你的环境。也就是说，根据他们的需求来构建，例如，“我们需要一个消息总线！”以及根据你所知道他们将需要的来构建，例如，“必须有一个可扩展的服务发现系统，否则这将无法工作。”&lt;/p>
 &lt;p>对于环境所需的能力，这些通常包括：&lt;/p>
 &lt;ul>
@@ -3379,7 +3427,8 @@ alt="图 3-1. 变革的 J 曲线，来自 DORA 2018 年 DevOps 状态报告"
 class="gallery-image"
 data-flex-grow="160"
 data-flex-basis="386px"
->&lt;/p>
+>
+&lt;/p>
 &lt;blockquote>
 &lt;p>反模式：过早放弃。例如，尝试 SRE 六个月，然后在没有立即胜利的情况下停止
 这并不意味着你需要立即完成所有事情，但在几个季度之后，必须有一个明确的方向感，表明在朝着正确的方向前进。&lt;/p>&lt;/blockquote>
@@ -3428,7 +3477,8 @@ alt="图 2-1：增长的三个阶段"
 class="gallery-image"
 data-flex-grow="160"
 data-flex-basis="385px"
->&lt;/p>
+>
+&lt;/p>
 &lt;p>通过考虑对每个阶段的不同投资水平，各个团队就可以拆解可靠性领域中不断涌现的工作内容。&lt;/p>
 &lt;p>首先，让我们从阶段 1 模型的产品开始，我们应该专注于确保：让可靠性工作能够为公司当前的业务模式保驾护航，同时助力短期需求的持续创新。这相关的工作包括：对于传统的运维工作，可以通过 SRE 实践进行自动化。其他工作内容还包括：服务监控（服务质量目标 [SLO]）、事故响应和持续集成/持续交付（CI/CD）等等。&lt;/p>
 &lt;p>阶段 2 模型产品考虑的是：将核心业务扩展到新的市场和面向新客户。将现有的可靠性功能进行扩展，从而支持到更广泛的消费者，并可能在必要的情况下在全球范围内扩展基础设施。这些情况都将带来新的可靠性挑战，例如：分布式团队（7x24覆盖）、针对多个客户群体的容量规划、多区域部署，以及传统的维护窗口应用就不太现实了，这类工作事项本质上仅适用于本地化产品，而不适用于全球化产品（不是“所有用户都在深夜中”）。&lt;/p>
@@ -3447,7 +3497,8 @@ alt="图 2-2：可靠性金字塔 "
 class="gallery-image"
 data-flex-grow="201"
 data-flex-basis="484px"
->&lt;/p>
+>
+&lt;/p>
 &lt;p>在云计算中使用的新模型是概率可靠性或交集模型，由于架构选择是期待故障的，所以只要系统的一部分子集可用，系统就可以正常工作。&lt;/p>
 &lt;p>虽然这个概念并不新颖或难以理解，但对于云服务的使用者来说，特别是当我们提出“迁移上云”的建议时，这并不显而易见，因为他们认为旧模型和新模型之间存在这等同性。虽然在新平台上运行旧模型是完全可能的，但必须考虑许多其他因素，这经常会让那些没有做好准备的人感到困惑。例如，传统的 IT 部门可能会为任何特定的虚拟机（VM）的正常运行时间而感到自豪，而对云 VM 则预期其实生命更为短暂：它们会被任意地创建和销毁，而且这个过程通常会非常快。&lt;/p>
 &lt;p>企业在像 Google，Facebook 和 Apple 这样的现代公司中看到了成功的案例，发现了两个主要的优势：（1）大规模创新，以及（2）大规模可靠系统。这些公司不仅可以构建新系统，而且可以保持它们的可用性，敏捷性和正确性。这个组合对于企业来说非常有吸引力，因为这使企业也能够快速响应市场需求，并向整个市场提供广泛的解决方案。&lt;/p>
@@ -3507,7 +3558,8 @@ alt="Enterprise roadmap to SRE"
 class="gallery-image"
 data-flex-grow="66"
 data-flex-basis="160px"
->&lt;/p>
+>
+&lt;/p>
 &lt;ul>
 &lt;li>&lt;a class="link" href="https://martinliu.cn/wp/enterprise-roadmap-to-sre-cn.pdf" >下载中文版 PDF 文件&lt;/a>&lt;/li>
 &lt;li>&lt;a class="link" href="https://martinliu.cn/wp/enterprise-roadmap-to-sre.pdf" >下载英文版 PDF 文件&lt;/a>&lt;/li>
@@ -3565,7 +3617,8 @@ alt="SRE 知识体系脑图"
 class="gallery-image"
 data-flex-grow="12"
 data-flex-basis="28px"
->&lt;/p>
+>
+&lt;/p>
 &lt;p>后续的未尽事项：&lt;/p>
 &lt;ul>
 &lt;li>细化现有版本，将《SRE Workbook》中的知识点尽量都涵盖尽量。&lt;/li>
@@ -3593,7 +3646,8 @@ alt="sre book 1"
 class="gallery-image"
 data-flex-grow="78"
 data-flex-basis="187px"
->&lt;/p>
+>
+&lt;/p>
 &lt;ul>
 &lt;li>中文版书名：&lt;a class="link" href="https://book.douban.com/subject/26875239//" target="_blank" rel="noopener"
 >SRE：Google运维解密&lt;/a>&lt;/li>
@@ -3610,7 +3664,8 @@ alt="sre book 2"
 class="gallery-image"
 data-flex-grow="77"
 data-flex-basis="187px"
->&lt;/p>
+>
+&lt;/p>
 &lt;ul>
 &lt;li>中文版书名：&lt;a class="link" href="https://book.douban.com/subject/35224058/" target="_blank" rel="noopener"
 >Google SRE 工作手册&lt;/a>&lt;/li>
@@ -3627,7 +3682,8 @@ alt="sre book 3"
 class="gallery-image"
 data-flex-grow="77"
 data-flex-basis="187px"
->&lt;/p>
+>
+&lt;/p>
 &lt;ul>
 &lt;li>中文书名：&lt;a class="link" href="https://book.douban.com/subject/35585206/" target="_blank" rel="noopener"
 >《Google系统架构解密》&lt;/a>&lt;/li>
@@ -3647,7 +3703,8 @@ data-flex-basis="187px"
 >https://devops-research.com/about.html&lt;/a> 如下所示。&lt;/p>
 &lt;p>&lt;img src="https://res.cloudinary.com/martinliu/image/upload/v1567336555/1sajldfkj.png"
 loading="lazy"
->&lt;/p>
+>
+&lt;/p>
 &lt;p>不做其它任何解读和评论，只想请大家关注一下分析报告的主持者的title : Dr Nicole Forsgren, CEO and Chief Scientist ; 翻译一下 Nicole Forsgren 博士，CEO和首席科学家。她是一个长期的IT行业从业人员，最早专注于DevOps的行业调研员。她持有管理信息系统的博士学位和会计硕士学位。从社交媒体上可以看出她和行业大咖Jez Humber和Gene Kim都是好朋友。&lt;/p>
 &lt;p>其次，如果你也回顾了所有往届的DevOps状态调查报告，我们应该能体会到这场历时6年行业调研的基本逻辑和脉络。在第一年就已经提出了四大黄金度量指标，并且以此为主线；每年反复验证状态，以及其他相关影响因素。使用了&lt;strong>穷举&lt;/strong>的逻辑，每年根据行业的发展动态，根据和其它业内大咖的讨论，适当的加入新的调查点。当然每个调查的能力点也是需要每年反复确认和验证，调查点之间的逻辑关系也越来越明显，经过二次研究之后就形成了DevOps能力成长模型。&lt;/p>
 &lt;p>最后，DevOps能力成长模型诞生于《Accelerate:The Science of Lean Software and DevOps: Building and Scaling High Performing Technology Organizations 》这本书。
@@ -3655,15 +3712,18 @@ loading="lazy"
 >https://www.amazon.com/Accelerate-Software-Performing-Technology-Organizations/dp/1942788339&lt;/a>&lt;/p>
 &lt;p>&lt;img src="https://res.cloudinary.com/martinliu/image/upload/v1530036828/Accelerate.jpg"
 loading="lazy"
->&lt;/p>
+>
+&lt;/p>
 &lt;p>在这本书里分模块（局部）的介绍了DevOps能力模型的影响逻辑关系，从转型型领导力一直推导出模型的最右侧：组织效能和非商业效能。这个模型应该就是历届DevOps状态调查研究背后的理论基础，当然它也应该是慢慢发展和完善出来的，起码数字转型这个话题是2018年才出现的热点。模型的数值计算算法，见近两年报告的附录部分。这个模型在本书中是从各个不同的局部关系逐渐介绍的。如下图所示：&lt;/p>
 &lt;p>&lt;img src="https://res.cloudinary.com/martinliu/image/upload/v1567337105/3-jsfjaksjf333.png"
 loading="lazy"
->&lt;/p>
+>
+&lt;/p>
 &lt;p>Accelerate全书的逻辑不仅在于介绍各种DevOp实践、技术、文化、领导力等等相关因素有哪些，更重要的是揭示出这些影响因素（能力点）之间的关联关系。在书的最后展示了DevOps能力成长模型的全图，如下图所示：&lt;/p>
 &lt;p>&lt;img src="https://res.cloudinary.com/martinliu/image/upload/v1567337168/4-ruwiur848.png"
 loading="lazy"
->&lt;/p>
+>
+&lt;/p>
 &lt;p>Accelerate这本书也提供了这幅图的电子版下载链接：&lt;a class="link" href="https://devops-research.com/assets/transformation_practices.pdf" target="_blank" rel="noopener"
 >https://devops-research.com/assets/transformation_practices.pdf&lt;/a>&lt;/p>
 &lt;p>这是一份非常棒的学习资料，如果你还没有买本书的话，也可以下载学习这份精华资料。这份文档的总标题是：”调研总体策划“，除了模型之外该文档还提供了一张全面复杂的表格，表格的名字：”高效能团队，管理、领导力行为和实践调查表，由Steve Bell，Karen Whitley Bell“；如果你想对自己的组织进行全面的调研的话，这也是一份优秀的调研方案。调研的矩阵如下：&lt;/p>
@@ -3675,18 +3735,22 @@ loading="lazy"
 &lt;p>以书中的模型为基础，2018年的DevOps状态报告里以又进一步做了各种扩展，如果你读过去年的报告，你可以看到如下的各种局部的扩展。&lt;/p>
 &lt;p>&lt;img src="https://res.cloudinary.com/martinliu/image/upload/v1567337168/7asdfweruui238.png"
 loading="lazy"
->&lt;/p>
+>
+&lt;/p>
 &lt;p>大家注意看2018年的这个局部模型图的标题”精益和敏捷实践“，这里也包含敏捷开发实践。我在反复琢磨这个模型之后，用Twitter私信问过Nicole博士。我问他为何没有专项调查过敏捷开发实践？模型上为何不给敏捷开发一个位置？她的回复是，我们之前已经调研过了，而且模型上也提到了。可能在全球的软件开发工程水平看，有可能Nicole博士团队认为敏捷开发应该是比较基础的软件开发实践，据我个人了解国外高水平公司要么都已经规范照做了，要么也有像Google这样的高水平公司确实也不显性的宣传自己是敏捷开发，甚至吐槽敏捷的。&lt;/p>
 &lt;p>&lt;img src="https://res.cloudinary.com/martinliu/image/upload/v1567337168/8jfasjflsdf.png"
 loading="lazy"
->&lt;/p>
+>
+&lt;/p>
 &lt;p>&lt;img src="https://res.cloudinary.com/martinliu/image/upload/v1567337168/9ruwueriowur.png"
 loading="lazy"
->&lt;/p>
+>
+&lt;/p>
 &lt;p>2018年对模型的扩展力度还是很大的，提出了很多新的调查项；为了能看到方便的看到一个DevOps能力模型的全景视图，我使用OmniGraffle软件基于《Accelerate》书中的模型，扩充绘制了如下的模型图：&lt;/p>
 &lt;p>&lt;img src="https://res.cloudinary.com/martinliu/image/upload/v1567338260/12-23ru83.png"
 loading="lazy"
->&lt;/p>
+>
+&lt;/p>
 &lt;p>这幅图向我们完整的揭示了到2018年以来的所有DevOps调研点，有些点是经过多年反复验证的，有些是2018年新引入的。这幅图花了我几天时间，在这个过程中也反复的推敲了其中的逻辑关系。这幅图仅代表我个人的观点，不代表DORA和《Accelerate》书籍的任何观点；需要声明的是：我绘制的DevOps能力成长模型并非我的个人著作，引用了DORA和《Accelerate》的著作，但我力求精确无误的表达整个模型。再次声明，这个模型图非官方出品，是我的个人研究。&lt;/p>
 &lt;p>研究模型的研究逻辑是穷举法，是从左到右的推导和影响关系。最新发布的2019年DevOps状态调查报告显示了新的变化，这触发了对以上模型的更新。本文将提供最新版高清大图的下载。&lt;/p>
 &lt;h2 id="为何两个模型">为何两个模型？
@@ -3695,18 +3759,21 @@ loading="lazy"
 &lt;/h3>&lt;p>对效能模型的更新变化如下图所示：&lt;/p>
 &lt;p>&lt;img src="https://res.cloudinary.com/martinliu/image/upload/v1567339754/2019-dora-perf.jpg"
 loading="lazy"
->&lt;/p>
+>
+&lt;/p>
 &lt;h3 id="生产力模型">生产力模型
 &lt;/h3>&lt;p>新增的生产力模型令我感到相当意外，它的结构如下所示：&lt;/p>
 &lt;p>&lt;img src="https://res.cloudinary.com/martinliu/image/upload/v1567339754/2019-dora-prod.jpg"
 loading="lazy"
->&lt;/p>
+>
+&lt;/p>
 &lt;p>总之，还无法预测明年的调研范围会有怎样的更新。可以确认的是行业DevOps的能力模型是在动态变化的，想跟上世界级的水平还必须不断刷新自己的能力组合。否则你的同行的对手可能早就一骑绝尘而去了。DevOps能力发展不是一个有限游戏（例如刷黄金5级），是每年都和整个行业一起发展的无限游戏。&lt;/p>
 &lt;h2 id="如何使用模型">如何使用模型？
 &lt;/h2>&lt;p>2019年的报告中给出了模型的使用和阅读方法的官方解释，见2019年报告英文原版的27页。本文对其的解读如下。&lt;/p>
 &lt;p>&lt;img src="https://res.cloudinary.com/martinliu/image/upload/v1567379589/11-3kgsfdgjds.png"
 loading="lazy"
->&lt;/p>
+>
+&lt;/p>
 &lt;h3 id="使用模型指导转型">使用模型指导转型
 &lt;/h3>&lt;p>识别你将要改善的能力点。模型中的每个被箭头所指向的方块被称之为构造，构造有单级构造，也有二级构造（如精益产品开发、软件开发实践），历年来的报告中已经为你展示和所有DevOps能力点，你现在需要做的是从中选择出你需要改进的候选能力点。&lt;/p>
 &lt;p>开展加速度的组织转型需要一个前提条件，一个扎实的基础作为起点。报告中并没有解释这个条件，你需要自己理解。聚焦在转型所急需的那些候选能力点上，在多个候选能力点里选择出亟需改进的”约束点“「此处参考TOC限制理论，相关书籍《目标》」。想想：那些能力的不足造成了最大的延期？「记住这里说的是最大值，这需要一个量化的跨组织的分析调研」什么最让你头痛？什么是最大的问题？经过以上的引导问题的提示，从清单中选出3~5个候选优化发展的能力项，安排出专项人力和财力资源，先重拳出击改善第一波能力点。不要担心你还有其他的很多问题；现阶段不妨聚焦在那个最大的问题上；这样你才能将瓶颈（约束点）各个击破，发掘这个其他的协同功效，避免不必要的工作。这个部分基本上是经典TOC理论的应用，关于这个理论在DevOps实施中的详细使用方法描述，请参考《DevOps实践指南》的第二章 2.5 持续识别和改善约束点。&lt;/p>
@@ -3717,7 +3784,8 @@ loading="lazy"
 &lt;p>在报告原文中，将第31页和57页的模型称之为全模型，见报告的27页的原文：”See pages 31 and 57 for full models.“；而在我的系列文章中，则将下图称之为全模型。&lt;/p>
 &lt;p>&lt;img src="https://res.cloudinary.com/martinliu/image/upload/v1567339751/2019-dora-DevOps-all.jpg"
 loading="lazy"
->&lt;/p>
+>
+&lt;/p>
 &lt;p>以上阅读方法同样的适用于上图。总之请仔细理解了左下角的图例，正确的阅读和理解模型。不管你是将DevOps实践的实施视为组织转型也好，把它当做项目做也罢；当你识别你的目标的时候，都可以参考这个模型。&lt;/p>
 &lt;h3 id="两个研究模型的重叠">两个研究模型的重叠
 &lt;/h3>&lt;p>由于SDO效能和生产力在很多方面本来就是相关的。它们的产出都是使用各种优秀的方法创造和交付各种技术，从而为组织和个人交付价值。那些优化软件交付的支持工作也将使生产力受益，这也是理所当然的。虽然他们的某些诱因是相同的，它们看起来很相似，但是他们度量的产出确实不同的，报告团队也是组织了独立的分析调研。总之，SDO效能和生产力是两个不同的调研模型。&lt;/p>
@@ -3733,7 +3801,8 @@ loading="lazy"
 &lt;p>请关注DevOps教练的公众号，在后台输入2019，下载本文中各种模型的高清大图。&lt;/p>
 &lt;p>&lt;img src="https://res.cloudinary.com/martinliu/image/upload/v1566516259/DevOps-Coach-qrcode_for_gh_bce38ef330e5_430.jpg"
 loading="lazy"
->&lt;/p>
+>
+&lt;/p>
 &lt;hr></description></item><item><title>如何做横向行业的DevOps表现基准测试？</title><link>https://martinliu.cn/blog/2019-state-devops-report-insight-1/</link><pubDate>Wed, 28 Aug 2019 07:27:16 +0800</pubDate><guid>https://martinliu.cn/blog/2019-state-devops-report-insight-1/</guid><description>&lt;img src="https://res.cloudinary.com/martinliu/image/upload/v1567000726/1-jafadjf.jpg" alt="Featured image of post 如何做横向行业的DevOps表现基准测试？" />&lt;p>长期关注我的blog和微信公众号（DevOps教练）的朋友可以发现，我今年从这个调查问卷开始，陆续发布了一些列文章。如果给这些文章一个文集标题的话，那么应该是：死磕2019年加速度全球DevOps状态调查报告系列。 为了帮助大家充分利用这份优秀的行业报告，我会用一些列文章，分章节的解读这份长达80多页的报告。上一篇文章如果你已经解读了该报告的核心重要发现和看点。本文要覆盖的章节是 How do we compare 这一章。&lt;/p>
 &lt;p>本文的阅读建议：&lt;/p>
 &lt;ul>
@@ -3747,7 +3816,8 @@ loading="lazy"
 &lt;p>是否是为了提高研发效能？是否是为了提高生产力？是否是为了提高效率？这些答案可能都对，也可都不对。对于一个组织而言：如果IT对它的使命和目标至关重要的情况下，组织对IT会产生强依赖关系，DevOps才对该组织才有意义。历年来的DevOps状态调查告诉我们：DevOps对于那些以IT为命脉的组织而言直观重要，对所有从事软件交付的组织广泛有效。&lt;/p>
 &lt;p>&lt;img src="https://res.cloudinary.com/martinliu/image/upload/v1567000726/12-23ru83.png"
 loading="lazy"
->&lt;/p>
+>
+&lt;/p>
 &lt;p>从DevOps能力成长模型中可以看出，图中的诸多能力项都正向贡献/预测到最右侧的两个组织级别目标，他们是：组织效能和非商业效能（商业和非商业目标），它们是：&lt;/p>
 &lt;ul>
 &lt;li>盈利能力 （商业）&lt;/li>
@@ -3765,7 +3835,8 @@ loading="lazy"
 &lt;/h2>&lt;p>6年来的DevOps状态调查报告（我只关注DORA主导和执行的这个）已经在用量化的方式，帮助我们作出了精英表现者的画像，当然还有其它的落后者。可以明确的一点是：强者从四个维度上同时都表现强劲。（去年已经打破了常见的一个误区：过度的保守主义导致在组织四个指标之中做折中选择，常见的是牺牲吞吐量指标，确保稳定性，可是后果往往是相反的。）&lt;/p>
 &lt;p>&lt;img src="https://res.cloudinary.com/martinliu/image/upload/v1567000726/10-2373.png"
 loading="lazy"
->&lt;/p>
+>
+&lt;/p>
 &lt;p>先来回顾和梳理所谓的四大黄金度量指标的分类：&lt;/p>
 &lt;ul>
 &lt;li>&lt;strong>吞吐量&amp;ndash;部署频率&lt;/strong>：对于您工作的主要应用程序或服务，您的组织在生产环境进行代码部署或向最终用户做发布的频率。调查这个指标的问题见2019年加速度DevOps状态调查问卷中的第二部分的第二题。&lt;/li>
@@ -3776,7 +3847,8 @@ loading="lazy"
 &lt;p>上面的四个指标是DevOps状态调查报告使用cluster算法做受众分类的主要依据，这个类聚分析的结果就是那张四大DevOps等级的泡泡图。&lt;/p>
 &lt;p>&lt;img src="https://res.cloudinary.com/martinliu/image/upload/v1567001372/11-w97459438isuuf.png"
 loading="lazy"
->&lt;/p>
+>
+&lt;/p>
 &lt;p>在这个泡泡图中，我们可以看到有多少比例的受访者处于精英、高效、中等和低效的阵营。复述一下今年的一个重大发现：精英表现者已经从去年的高效能表现者集团中脱颖而出，他们在指标的绝对值和总体数量上都增长迅敏，增长率高达将近3倍。&lt;em>【DevOps教练点评：回顾一下这份报告的标题中加入的加速度的关键字，一旦某个组织的实施方法得当，一个持续优化的组织的整体效能就可能做上火箭，加速度的飞离地球。而加速度不足的企业则处于持续跌回地面的窘境。】&lt;/em>&lt;/p>
 &lt;p>这四大黄金度量指标的采集方法就是调查问卷中那些四个问题。对所有实践DevOps的组织而言，我们需要的是持续实施和优化追踪这些度量指标的方法和系统，确保能实时查看这四个指标的状态是最完美的。可是目前几乎还没有什么企业能够做到，手工分别统计上报，定期公布到全体IT部门也是非常可取的做法。总之，没有度量就不存在管理，就无从系统性的改进。&lt;/p>
 &lt;h2 id="我在行业里的表现如何">我在行业里的表现如何？
@@ -3785,39 +3857,48 @@ loading="lazy"
 >https://beta.devops-research.com/performance.html&lt;/a> (这个网址应该不用科学上网，会出现证书错误提示，请忽略继续访问该页面)。在你回答了下面的五个问题后，就可以获得一份自己的行业基准测试报告。&lt;/p>
 &lt;p>&lt;img src="https://res.cloudinary.com/martinliu/image/upload/v1567000726/2-faldjfald.png"
 loading="lazy"
->&lt;/p>
+>
+&lt;/p>
 &lt;p>&lt;img src="https://res.cloudinary.com/martinliu/image/upload/v1567000726/3-adfjafdasldf.png"
 loading="lazy"
->&lt;/p>
+>
+&lt;/p>
 &lt;p>&lt;img src="https://res.cloudinary.com/martinliu/image/upload/v1567000726/4-9578921374.png"
 loading="lazy"
->&lt;/p>
+>
+&lt;/p>
 &lt;p>&lt;img src="https://res.cloudinary.com/martinliu/image/upload/v1567000726/5-faljdfl2e44.png"
 loading="lazy"
->&lt;/p>
+>
+&lt;/p>
 &lt;p>最后一个问题是，从13个行业中选择出一个最合适的所在行业。&lt;/p>
 &lt;p>&lt;img src="https://res.cloudinary.com/martinliu/image/upload/v1567000726/6-ajflasjfd22.png"
 loading="lazy"
->&lt;/p>
+>
+&lt;/p>
 &lt;p>下图是你在整个所有行业里的横向对比。&lt;/p>
 &lt;p>&lt;img src="https://res.cloudinary.com/martinliu/image/upload/v1567000726/7-fjlasf.png"
 loading="lazy"
->&lt;/p>
+>
+&lt;/p>
 &lt;p>下图是你在所在行业里的横向对比。&lt;/p>
 &lt;p>&lt;img src="https://res.cloudinary.com/martinliu/image/upload/v1567000726/8-ajflasjf2.png"
 loading="lazy"
->&lt;/p>
+>
+&lt;/p>
 &lt;p>下图是四个黄金指标在四个表现级别/集团上的度量；表明你每个指标处于哪个等级。&lt;/p>
 &lt;p>&lt;img src="https://res.cloudinary.com/martinliu/image/upload/v1567000726/9-asjfl23uu.png"
 loading="lazy"
->&lt;/p>
+>
+&lt;/p>
 &lt;p>经过以上的最简版DevOps表现状态基准测试以后，你就看到了你在所有行业中和所在行业中的横向比较。当然，我们也能预测一下自己处于那个阵营和等级。然而，这并不是你的DevOps旅程的剧终情节。&lt;/p>
 &lt;p>所有DevOps的实践者一旦上路以后，都是一条不归路的感觉，我们可以定期的关注我们的基准测试结果，并观察自己在动态变化的行业基线中的位置，而更重要的是：找到每个现阶段的改进空间，并且持续突破自己DevOps的能力瓶颈和极限。持续的无限制的加速度发展所有DevOps能力点才是这个DevOps旅程的终极意义。&lt;/p>
 &lt;h2 id="关于服务运维效能">关于服务运维效能
 &lt;/h2>&lt;p>服务效能指标是在去年的效能报告中新引进的，而在去年和今年的调查问卷和结果报告中并没有直接的关于这项指标的采集数据和结果。&lt;/p>
 &lt;p>&lt;img src="https://res.cloudinary.com/martinliu/image/upload/v1567000726/10-2373.png"
 loading="lazy"
->&lt;/p>
+>
+&lt;/p>
 &lt;p>从上图中我们可以直接的理解一下，左侧的四大黄金指标都关乎于软件开发部门，而这个指标关乎于服务运维部门。去年并没有给出关于可用性指标的度量方法，今年也没有在调查问卷中做直接/显性的问题设置。只是在今年2019年的报告中做了进一步的解释，说这个可用性指标的实施方法论是SRE套路。我正在翻译SRE Workbook，这本书比起之前翻译的DevOps Handbook，更具有实操性。我们拭目以待，明年的状态调查问卷是如何对可用性设问和调查分析的。关于SRE的基础概念和实施方法，心急的朋友不妨参加中国DevOps社区今年10月在杭州举办的年度大会，我有一个关于SRE的主题分享，让我们一起讨论SRE的落地套路，让用SRE套路使我们的DevOps故事闭环。&lt;/p>
 &lt;p>总之我们实践DevOps的时候要全局的关注“软件交付和运维效能”，简称SDO效能（software delivery and operational performance）；有O了才完整的闭环了。&lt;/p>
 &lt;h2 id="总结">总结
@@ -3842,7 +3923,8 @@ loading="lazy"
 &lt;p>&lt;img src="https://res.cloudinary.com/martinliu/image/upload/v1566509912/DevOps_insights.0986061310991192.max-2000x2000.png"
 loading="lazy"
 alt="DevOps insights"
->&lt;/p>
+>
+&lt;/p>
 &lt;ul>
 &lt;li>
 &lt;p>精英表现者更有可能使用云计算 ：快速自动扩缩容、成本可见性和可靠性是云计算提供的一些关键优势。更具国家标准与技术研究院（NIST）定义的云计算所具有的五项特征功能，效能最高的DevOps团队比低效能团队在这些方面执行的可能性高24倍，5大特性包括按需的自助服务、广泛的网络访问、资源池，快速弹性和可度量的服务。 &lt;em>【教练解读：你们家使用的云计算是假的。】&lt;/em>&lt;/p>
@@ -3872,7 +3954,8 @@ alt="DevOps insights"
 &lt;p>&lt;img src="https://res.cloudinary.com/martinliu/image/upload/v1566512814/performance_research_model.max-2000x2000.png"
 loading="lazy"
 alt="效能研究模型"
->&lt;/p>
+>
+&lt;/p>
 &lt;p>图片翻译参考：&lt;/p>
 &lt;ul>
 &lt;li>左侧的一列，从上至下：清晰的变更流程、重量级变更流程、灾难恢复测试、代码的可维护性、松耦合的架构、监控、主干开发、自动化部署。&lt;/li>
@@ -3884,7 +3967,8 @@ alt="效能研究模型"
 &lt;p>&lt;img src="https://res.cloudinary.com/martinliu/image/upload/v1566513555/productivity_research_model.max-1600x1600.png"
 loading="lazy"
 alt="生产力研究模型"
->&lt;/p>
+>
+&lt;/p>
 &lt;p>图片翻译参考：&lt;/p>
 &lt;ul>
 &lt;li>左侧的一列，从上至下：实用且易用的工具、内部搜索引擎、外部搜索引擎、代码可维护性。&lt;/li>
@@ -3899,27 +3983,32 @@ alt="生产力研究模型"
 &lt;/h3>&lt;h4 id="报告封面">报告封面
 &lt;/h4>&lt;p>&lt;img src="https://res.cloudinary.com/martinliu/image/upload/v1566518180/state-of-devops-2019.jpg"
 loading="lazy"
->&lt;/p>
+>
+&lt;/p>
 &lt;p>关注点：DORA + Google， 新的赞助商的支持。&lt;/p>
 &lt;h4 id="报告目录">报告目录
 &lt;/h4>&lt;p>&lt;img src="https://res.cloudinary.com/martinliu/image/upload/v1566518068/%E5%B1%8F%E5%B9%95%E5%BF%AB%E7%85%A7_2019-08-23_%E4%B8%8A%E5%8D%887.51.36.png"
 loading="lazy"
->&lt;/p>
+>
+&lt;/p>
 &lt;p>目录结构很类似，内容大不同。&lt;/p>
 &lt;h4 id="devops四大核心度量指标">DevOps四大核心度量指标
 &lt;/h4>&lt;p>&lt;img src="https://res.cloudinary.com/martinliu/image/upload/v1566518068/%E5%B1%8F%E5%B9%95%E5%BF%AB%E7%85%A7_2019-08-23_%E4%B8%8A%E5%8D%887.51.58.png"
 loading="lazy"
->&lt;/p>
+>
+&lt;/p>
 &lt;p>四个级别的表现者在四大度量维度上的比较，以及今年的数据更新。&lt;/p>
 &lt;h4 id="精英表现者">精英表现者
 &lt;/h4>&lt;p>&lt;img src="https://res.cloudinary.com/martinliu/image/upload/v1566518069/%E5%B1%8F%E5%B9%95%E5%BF%AB%E7%85%A7_2019-08-23_%E4%B8%8A%E5%8D%887.52.10.png"
 loading="lazy"
->&lt;/p>
+>
+&lt;/p>
 &lt;p>他们始终遥遥领先。重点是所有的指标同时都好。&lt;/p>
 &lt;h4 id="两大研究模型的分化">两大研究模型的分化
 &lt;/h4>&lt;p>&lt;img src="https://res.cloudinary.com/martinliu/image/upload/v1566518069/%E5%B1%8F%E5%B9%95%E5%BF%AB%E7%85%A7_2019-08-23_%E4%B8%8A%E5%8D%887.52.23.png"
 loading="lazy"
->&lt;/p>
+>
+&lt;/p>
 &lt;ul>
 &lt;li>效能模型&lt;/li>
 &lt;li>生产力模型&lt;/li>
@@ -3927,17 +4016,20 @@ loading="lazy"
 &lt;h4 id="灾难恢复测试">灾难恢复测试
 &lt;/h4>&lt;p>&lt;img src="https://res.cloudinary.com/martinliu/image/upload/v1566518069/%E5%B1%8F%E5%B9%95%E5%BF%AB%E7%85%A7_2019-08-23_%E4%B8%8A%E5%8D%887.52.49.png"
 loading="lazy"
->&lt;/p>
+>
+&lt;/p>
 &lt;p>灾难恢复测试和DevOps强相关。&lt;/p>
 &lt;h4 id="心理安全性">心理安全性
 &lt;/h4>&lt;p>&lt;img src="https://res.cloudinary.com/martinliu/image/upload/v1566518068/%E5%B1%8F%E5%B9%95%E5%BF%AB%E7%85%A7_2019-08-23_%E4%B8%8A%E5%8D%887.53.04.png"
 loading="lazy"
->&lt;/p>
+>
+&lt;/p>
 &lt;p>文化建设的一个关键组成。&lt;/p>
 &lt;h4 id="devops转型的策略一览表">DevOps转型的策略一览表
 &lt;/h4>&lt;p>&lt;img src="https://res.cloudinary.com/martinliu/image/upload/v1566518068/%E5%B1%8F%E5%B9%95%E5%BF%AB%E7%85%A7_2019-08-23_%E4%B8%8A%E5%8D%887.53.41.png"
 loading="lazy"
->&lt;/p>
+>
+&lt;/p>
 &lt;p>你们都用了哪些推广DevOps的策略呢？抱歉并没有刷成熟度这一项。&lt;/p>
 &lt;h3 id="下载报告">下载报告
 &lt;/h3>&lt;p>目前Google的官网上提供了所有DORA的DevOps状态调查报告的下载包括2019年度最新的状态调查报告。为了方便国内DevOp实践者的学习，我将它下载到了百度网盘。请大家需要的按照一下方法下载阅读。&lt;/p>
@@ -3952,7 +4044,8 @@ loading="lazy"
 &lt;p>&lt;img src="https://res.cloudinary.com/martinliu/image/upload/v1566516259/DevOps-Coach-qrcode_for_gh_bce38ef330e5_430.jpg"
 loading="lazy"
 alt="DevOps教练"
->&lt;/p>
+>
+&lt;/p>
 &lt;h3 id="使用2019调查问卷服务">使用2019调查问卷服务
 &lt;/h3>&lt;p>前面的文章发布了2019DevOps问卷调查的中文翻译版本，&lt;a class="link" href="https://martinliu.cn/posts/2019-state-devops-survey-chinese-version/" target="_blank" rel="noopener"
 >https://martinliu.cn/posts/2019-state-devops-survey-chinese-version/&lt;/a> 这是对原版英文调查问卷的翻译，由中国DevOps社区翻译组完成，现在我们已经将它通过问卷星平台转化成了可以使用的调查服务。&lt;/p>
@@ -3975,7 +4068,8 @@ alt="DevOps教练"
 &lt;p>&lt;img src="https://res.cloudinary.com/martinliu/image/upload/v1555778529/reports-download.png.png"
 loading="lazy"
 alt="下载"
->&lt;/p>
+>
+&lt;/p>
 &lt;hr>
 &lt;p>下面是2019年DevOps状态调查问卷的简体中文版译文。&lt;/p>
 &lt;h2 id="第一部分">第一部分
@@ -4728,7 +4822,8 @@ alt="下载"
 &lt;p>&lt;img src="https://res.cloudinary.com/martinliu/image/upload/v1555778529/reports-download.png.png"
 loading="lazy"
 alt="下载"
->&lt;/p>
+>
+&lt;/p>
 &lt;p>在2018年里Nicole Forsgren博士发布了《Accelerate》这本书，书里算是对这场从2014年开始的，持续对年的行业专项调查研究的一个总结。书中对度量DevOps这个主题做了详解科学的解读，它是那些需要度量DevOps成果的组织的一本很好的参考书。中文版本据说在翻译的过程中，期待它的出版。等不及的话可以去国外买英文电子版，这本书我是读了不下三遍，也做了相关的分享演讲，确实有很多收获。&lt;/p>
 &lt;p>分享几个我观察到的小细节：&lt;/p>
 &lt;ul>
@@ -4913,20 +5008,24 @@ alt="下载"
 &lt;p>迈克朱利安：是的，我记得去年就像，“哦，我的上帝，这太酷了，但我无法告诉你。”&lt;/p>
 &lt;hr></description></item><item><title>What's Google Chrome OS</title><link>https://martinliu.cn/2009/11/23/whats-google-chrome-os/</link><pubDate>Mon, 23 Nov 2009 04:38:51 +0000</pubDate><guid>https://martinliu.cn/2009/11/23/whats-google-chrome-os/</guid><description>&lt;p>看完这个视频之后，还是没搞清楚：它到是一个快速的浏览器，还是一个快速启动的 OS 加浏览器，如果它仍然需要 OS 的话，那么它不过是一个 Redesigned 的 OS+操作系统。说白了就是瘦客户端加肥浏览器的组合吧！&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->您用 Google 的浏览器么？我用了一次就删除了，至今没有尝试装 Google 的操作系统。&lt;/p></description></item><item><title>gOS looks green</title><link>https://martinliu.cn/2009/01/24/gos-looks-green/</link><pubDate>Sat, 24 Jan 2009 15:50:18 +0000</pubDate><guid>https://martinliu.cn/2009/01/24/gos-looks-green/</guid><description>&lt;p>&lt;img src="http://thinkgos.com/_images/gos31home.jpg"
 loading="lazy"
->&lt;/p>
+>
+&lt;/p>
 &lt;p>&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->Today I installed gOS on my laptop; openSuSE did great work for me 3 years. I&amp;rsquo;d like to play some new things. So, check my new desktop out.&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->&lt;a class="link" href="http://picasaweb.google.com/liuzh66/GOS" target="_blank" rel="noopener"
 >http://picasaweb.google.com/liuzh66/GOS&lt;/a>&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->If you go its wetsite &lt;a class="link" href="http://thinkgos.com/" target="_blank" rel="noopener"
 >http://thinkgos.com/&lt;/a>, you will see it talks lots of cloud. It&amp;rsquo;s interesting, but it is not the reson i chose it. Ubuntu 8.04 is inside gOS. So, it time to learn a new linux system. I neve use a Derbin based system, I&amp;rsquo;m not sure it could run for me how long.&lt;/p></description></item><item><title>从云计算联想到第一代电脑系统</title><link>https://martinliu.cn/2009/01/19/e4bb8ee4ba91e8aea1e7ae97e88194e683b3e588b0e7acace4b880e4bba3e794b5e88491e7b3bbe7bb9f/</link><pubDate>Mon, 19 Jan 2009 07:32:50 +0000</pubDate><guid>https://martinliu.cn/2009/01/19/e4bb8ee4ba91e8aea1e7ae97e88194e683b3e588b0e7acace4b880e4bba3e794b5e88491e7b3bbe7bb9f/</guid><description>&lt;p>&lt;img src="http://www.cartoonstock.com/newscartoons/cartoonists/ato/lowres/aton964l.jpg"
 loading="lazy"
->记得以前看过一本描写 Bill Gets 的书，他上中学的时候，在河滨中心通过一个远程终端，连接到某大学的计算机系统，输入程序代码，并且得到代码在远程电脑系统中的输出，输出好像是在屏幕上出现的，或从打印机上输出的。我基本上忘了那电脑系统的名称，不过它的特点基本上是这样的：当时电脑系统很少，可能全世界上也没有多少台功能全面的电脑；用户使用的特别像是一种计算服务，由于终端设备根本没有技术能力，当时还没有个人电脑；接入方式根本不是 tcp/ip 更不是 internet，当时还没 internet。在学习了云计算的一些概念之后，我迷惑了，这个时尚的技术，怎么越看越眼熟啊。&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->IBM 的主机系统可谓是当今电脑世界的恐龙化石级产品，他是一个活化石基本的技术，在经历了开放系统时代之后，我们即将进入云计算时代，我总感觉云计算是一种技术路线的复古。主机系统和第一代电脑系统最相似，区别是可以通过 TCP/ip 网络，和开放系统通信了。最为一种新兴起的技术，我试图 follow &lt;a class="link" href="http://www.johnmwillis.com/" target="_blank" rel="noopener"
+>
+记得以前看过一本描写 Bill Gets 的书，他上中学的时候，在河滨中心通过一个远程终端，连接到某大学的计算机系统，输入程序代码，并且得到代码在远程电脑系统中的输出，输出好像是在屏幕上出现的，或从打印机上输出的。我基本上忘了那电脑系统的名称，不过它的特点基本上是这样的：当时电脑系统很少，可能全世界上也没有多少台功能全面的电脑；用户使用的特别像是一种计算服务，由于终端设备根本没有技术能力，当时还没有个人电脑；接入方式根本不是 tcp/ip 更不是 internet，当时还没 internet。在学习了云计算的一些概念之后，我迷惑了，这个时尚的技术，怎么越看越眼熟啊。&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->IBM 的主机系统可谓是当今电脑世界的恐龙化石级产品，他是一个活化石基本的技术，在经历了开放系统时代之后，我们即将进入云计算时代，我总感觉云计算是一种技术路线的复古。主机系统和第一代电脑系统最相似，区别是可以通过 TCP/ip 网络，和开放系统通信了。最为一种新兴起的技术，我试图 follow &lt;a class="link" href="http://www.johnmwillis.com/" target="_blank" rel="noopener"
 >http://www.johnmwillis.com/&lt;/a>来学习云计算，遗憾的是从 08 年初以来并没有仔细听他所有的 colud cafe；这个老兄在把 blog 改名为 IT Management and Cloud Blog，真可谓是一高产的 blogger，这哥们每天能发四五个 post，强啊。最近找时间&lt;a class="link" href="http://media.libsyn.com/media/botchagalupe/cafe27.mp3" target="_blank" rel="noopener"
 >听了一段 cloud cafe&lt;/a>，我发现到目前为止还没有一个能让大多数人都认同的云计算的概念，基本上对云计算的感念方面有两道三种说法。可以看看 &lt;a class="link" href="http://en.wikipedia.org/wiki/Cloud_computing" target="_blank" rel="noopener"
 >http://en.wikipedia.org/wiki/Cloud_computing&lt;/a> 参考这上面的说法也只能有一个模糊的感觉。&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->看看电脑技术打发展历程：最早的电脑系统，主机系统，开放系统，群集，网格，云计算。前一段时间看过一个非常抢眼的标题“以后世界上将只有 5 台电脑”。SaaS 是一个比较火热的和云计算相关的技术，我认为它像是在 web2.0 发展到一定阶段后 Web 应用的一个发展，这方面的强者为 salesforce 之流。Google 和 Salesforce 不同的是，Google 提供网上 office 套件的同时，还开发他的平台，并提供与之配套的 SDK。Amazon 不提供应用也没有 SDK，他只提供平台，平台上包括基本的计算和存储服务。Google 和 Amazon 说起来算是基础架构作为一种服务。抛开云计算本身不谈，用户使用和访问的方式并没有发生变化，在任何一个 web 浏览器存在的地方都能使用或者管理到云计算。客户端的计算和存储能力再次此退化到零，这不能说不是计算机技术发展的返祖现象吧！哈哈～～我也快糊涂了！&lt;/p></description></item><item><title>Do you like Chrome?</title><link>https://martinliu.cn/2008/09/05/do-you-like-chrome/</link><pubDate>Fri, 05 Sep 2008 05:10:15 +0000</pubDate><guid>https://martinliu.cn/2008/09/05/do-you-like-chrome/</guid><description>&lt;p>Peoples always love whatever Google&amp;rsquo;s invention, I am using Gmail and GTalk every day too. But I think I couldn&amp;rsquo;t say I like google anytime. That&amp;rsquo;s just because Chrome. It was installed on my laptop yesterday. I&amp;rsquo;m trying it out when I access any of my google services (Gmail, Reader, Doc, etc&amp;hellip;). There are some App shortcuts are already on my XP deskdtop.  Base on one day experience of Chrome, I&amp;rsquo;d like to talk about reasons I don&amp;rsquo;t like Chrome. I has not tested it too much at present, just few comments below:&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->&lt;img src="http://blogs.zdnet.com/perlow/images/chrome-constrictor.jpg"
 loading="lazy"
->&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->&lt;/p>
+>
+&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->&lt;/p>
 &lt;p>&lt;strong>Chrome&amp;rsquo;s Name:&lt;/strong> I still do not figure out how to pronounce this word, someone says it sounds like a man perfume; I do thinks so. But it&amp;rsquo;s ok for a name of software, I don&amp;rsquo;t care about too much what it called.  FireFox is cool name, everyone know it.&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->&lt;strong>Crash Continually&lt;/strong>: It proved Chrome browser is on early stage. For me, I won&amp;rsquo;t any software on my laptop send out any piece of information which I don&amp;rsquo;t know or couldn&amp;rsquo;t understand. So, I will never  turn on crash report option for any software. It is still crashing frequently, I might will not use it any more; or install it.&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->**Bookmark on top: **My laptop has supper wide screen, so all of bookmarks are listing on the left side of Firefox/IE. I like to access bookmark from left side of screen. It is on the top and just below the address bar, I have to close it.&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->&lt;strong>ADs in Gmail/anywhere it could be:&lt;/strong> In Firefox, I get really few AD showed up. Nobody love ADs, but Google can not do with our AD.&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->&lt;strong>Without Add-ons:&lt;/strong> It is so important for extending the usage of your browser. Add-on makes a browser to do more jobs as you wash for. I can list some add-ons of Firefox, they are very helpful and I must have all of them.&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->I thinks Google really good at marketing. it crashed into browser marketing, its ambition knows no limits. All in all, Chrome is not a good enough to be my default browser; Fixfox will keeping do this job for me. Chrome is a ok software, it is no offence to Googl&amp;rsquo;s fans.&lt;/p></description></item><item><title>What is Google Infrastructure?</title><link>https://martinliu.cn/2008/06/21/google-infrastructure/</link><pubDate>Sat, 21 Jun 2008 07:01:58 +0000</pubDate><guid>https://martinliu.cn/2008/06/21/google-infrastructure/</guid><description>&lt;p>&lt;img src="http://i.i.com.com/cnwk.1d/i/bto/20080529/Google_data_center_c2000_Jeff_Dean_400x318.jpg"
 loading="lazy"
->&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->If you have no idea, you should read this post &amp;ldquo;&lt;a class="link" href="http://news.cnet.com/8301-10784_3-9955184-7.html?tag=blog.1" target="_blank" rel="noopener"
+>
+&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->If you have no idea, you should read this post &amp;ldquo;&lt;a class="link" href="http://news.cnet.com/8301-10784_3-9955184-7.html?tag=blog.1" target="_blank" rel="noopener"
 >Google spotlights data center inner workings&lt;/a>&amp;rdquo;.&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->There are some notes I took as blowing.&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->Google Infrastructure:&lt;!-- raw HTML omitted -->&lt;/p>
 &lt;p>&lt;!-- raw HTML omitted -->&lt;/p>
 &lt;ul>
@@ -4983,12 +5082,14 @@ loading="lazy"
 &lt;/ol></description></item><item><title>Enterprise cloud computing</title><link>https://martinliu.cn/2008/05/12/enterprise-cloud-computing/</link><pubDate>Mon, 12 May 2008 00:57:06 +0000</pubDate><guid>https://martinliu.cn/2008/05/12/enterprise-cloud-computing/</guid><description>&lt;p>&lt;a class="link" href="http://www.datacenterknowledge.com" target="_blank" rel="noopener"
 >&lt;img src="http://www.datacenterknowledge.com/archives/images/DCK_web.jpg"
 loading="lazy"
->http://www.datacenterknowledge.com/&lt;/a>&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->这个网站还是不错，有很多关于数据中心的知识。它应该主要是收集业内在该领域里新咨询，先收录一下，回头慢慢学习。&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->这个 vido 我觉得也可以学习一下。&lt;a class="link" href="http://www.datacenterknowledge.com/archives/2008/May/02/ibm_google_team_on_an_enterprise_cloud.html" target="_blank" rel="noopener"
+>
+http://www.datacenterknowledge.com/&lt;/a>&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->这个网站还是不错，有很多关于数据中心的知识。它应该主要是收集业内在该领域里新咨询，先收录一下，回头慢慢学习。&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->这个 vido 我觉得也可以学习一下。&lt;a class="link" href="http://www.datacenterknowledge.com/archives/2008/May/02/ibm_google_team_on_an_enterprise_cloud.html" target="_blank" rel="noopener"
 >IBM 和 Google 结成联盟开展企业云计算方面的研究&lt;/a>，可能会建立“IBM-Google cloud ” 这个云会运行在 Linux 上，使用 Xen 做系统虚拟和 Apache Hadoop。同时 Google 和 IBM 都有自己巨大的数据中心，还不知道它们将来的研究成果会运行在谁家的设备上，让我们拭目以待。&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->Tips：&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->有些网络视频比较大，在线看如果网速比较慢的话可能不能正常浏览。很多下载视频的工具好像都是要收费注册的，否则只能下载 60％。我发现的一个方法是，把视频网址输入到这里 &lt;a class="link" href="http://www.techcrunch.com/get-youtube-movie/" target="_blank" rel="noopener"
 >http://www.techcrunch.com/get-youtube-movie/&lt;/a> 它会给你生成一个 http 的下载连接，点击后一般的 http 下载工具就能下整个视频了，之后用视频浏览的软件查看，正在缓慢下载上边的视频。不知道你有什么好方法或者是工具可以推荐呢？&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->&lt;a class="link" href="http://youtubedownload.altervista.org/" target="_blank" rel="noopener"
 >http://youtubedownload.altervista.org/&lt;/a> 是我现在所使用的，不过下载的太慢了，不能支持多线程下载。&lt;/p></description></item><item><title>Clouds are coming</title><link>https://martinliu.cn/2008/04/18/clouds-are-coming/</link><pubDate>Fri, 18 Apr 2008 15:05:23 +0000</pubDate><guid>https://martinliu.cn/2008/04/18/clouds-are-coming/</guid><description>&lt;p>&lt;img src="http://www.swish-designs.co.uk/images/cloud_fig3.png"
 loading="lazy"
->&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->最近两周最吸引我的 TAG 是这个词“cloud computing”。在我&lt;a class="link" href="http://www.martinliu.cn/2008/04/10/do-you-have-a-google-app-engine/" target="_blank" rel="noopener"
+>
+&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->最近两周最吸引我的 TAG 是这个词“cloud computing”。在我&lt;a class="link" href="http://www.martinliu.cn/2008/04/10/do-you-have-a-google-app-engine/" target="_blank" rel="noopener"
 >前一个文章&lt;/a>中稍微展望了一下云计算的前景“云计算吧电能转化成计算能力，然后向用电一样的来使用，我们甚至不需要使用 PC 这样的个人信息话设备来管理我们的信息，所有的信息和信息的处理都在云上发生”。在了解了更多的信息之后，这些可能实现，但是这种巨变需要时间，而且可能是很长时间；清醒之后不得不佩服 Google 在这方面的宣传。&lt;!-- raw HTML omitted -->&lt;!-- raw HTML omitted -->理性认识云计算的简单方式，扫扫盲：&lt;!-- raw HTML omitted -->&lt;/p>
 &lt;p>&lt;!-- raw HTML omitted -->&lt;/p>
 &lt;ul>
@@ -5006,7 +5107,8 @@ loading="lazy"
 &lt;/ul></description></item><item><title>DO you have a google App Engine?</title><link>https://martinliu.cn/2008/04/10/do-you-have-a-google-app-engine/</link><pubDate>Thu, 10 Apr 2008 05:23:44 +0000</pubDate><guid>https://martinliu.cn/2008/04/10/do-you-have-a-google-app-engine/</guid><description>&lt;p>There is what I got from &lt;a class="link" href="http://appengine.google.com/" target="_blank" rel="noopener"
 >http://appengine.google.com/&lt;img src="http://code.google.com/appengine/images/appengine_lowres.jpg"
 loading="lazy"
->&lt;/a>&lt;!-- raw HTML omitted -->&lt;/p>
+>
+&lt;/a>&lt;!-- raw HTML omitted -->&lt;/p>
 &lt;!-- raw HTML omitted -->
 &lt;p>&lt;!-- raw HTML omitted -->I read a post last night, &lt;a class="link" href="http://googleblog.blogspot.com/2008/04/developers-start-your-engines.html" target="_blank" rel="noopener"
 >Developers, start your engines &lt;/a>Even I am not a developer, I definitely look forward to sing up &lt;a class="link" href="http://appengine.google.com/" target="_blank" rel="noopener"

@@ -43,7 +43,8 @@ alt="图 1：产品可靠性引导工作流程"
 class="gallery-image"
 data-flex-grow="232"
 data-flex-basis="556px"
->&lt;/p>
+>
+&lt;/p>
 &lt;h2 id="开始">开始
 &lt;/h2>&lt;p>在本节中，你将学习如何实施以产品为中心的可靠性参与（engage），包括以下关键步骤：&lt;/p>
 &lt;ol>
@@ -150,7 +151,8 @@ alt="图 2: 用户目标和步骤的流程图（见表 1）"
 class="gallery-image"
 data-flex-grow="248"
 data-flex-basis="597px"
->&lt;/p>
+>
+&lt;/p>
 &lt;p>&lt;strong>产品重要性和优先级&lt;/strong>&lt;/p>
 &lt;p>在转型到&lt;strong>产品支持模型&lt;/strong>时，请记住，SRE 团队在学习这种新方法时会面临更大的认知负荷。请通过战略性选择支持的方式和位置，来管理 SRE 团队的额外工作量。&lt;/p>
 &lt;p>例如，你可能希望将大量支持集中在核心用户目标及其步骤上，并用高成本但准确的端到端 SLO 对其进行监控。在这种情况下，你还可以通过更便宜和传统的基于服务器的 SLO 支持较不重要的目标。&lt;/p>
@@ -350,7 +352,8 @@ alt="图 3: 产品 SLO 如何围绕用户目标和步骤定义的示例"
 class="gallery-image"
 data-flex-grow="250"
 data-flex-basis="601px"
->&lt;/p>
+>
+&lt;/p>
 &lt;blockquote>
 &lt;p>交付物：列出覆盖不同 SLO 类型（可用性、延迟）和监控方法（服务端、客户端、端到端）的产品 SLO 的优先级排序清单。实施最高优先级的 SLO，并将较低优先级的 SLO 创建为待办事项，稍后再进行优先级排序。&lt;/p>&lt;/blockquote>
 &lt;p>&lt;strong>遥测&lt;/strong>&lt;/p>
@@ -506,7 +509,8 @@ alt="SRE 知识体系脑图"
 class="gallery-image"
 data-flex-grow="12"
 data-flex-basis="28px"
->&lt;/p>
+>
+&lt;/p>
 &lt;p>后续的未尽事项：&lt;/p>
 &lt;ul>
 &lt;li>细化现有版本，将《SRE Workbook》中的知识点尽量都涵盖尽量。&lt;/li>
@@ -534,7 +538,8 @@ alt="sre book 1"
 class="gallery-image"
 data-flex-grow="78"
 data-flex-basis="187px"
->&lt;/p>
+>
+&lt;/p>
 &lt;ul>
 &lt;li>中文版书名：&lt;a class="link" href="https://book.douban.com/subject/26875239//" target="_blank" rel="noopener"
 >SRE：Google运维解密&lt;/a>&lt;/li>
@@ -551,7 +556,8 @@ alt="sre book 2"
 class="gallery-image"
 data-flex-grow="77"
 data-flex-basis="187px"
->&lt;/p>
+>
+&lt;/p>
 &lt;ul>
 &lt;li>中文版书名：&lt;a class="link" href="https://book.douban.com/subject/35224058/" target="_blank" rel="noopener"
 >Google SRE 工作手册&lt;/a>&lt;/li>
@@ -568,7 +574,8 @@ alt="sre book 3"
 class="gallery-image"
 data-flex-grow="77"
 data-flex-basis="187px"
->&lt;/p>
+>
+&lt;/p>
 &lt;ul>
 &lt;li>中文书名：&lt;a class="link" href="https://book.douban.com/subject/35585206/" target="_blank" rel="noopener"
 >《Google系统架构解密》&lt;/a>&lt;/li>
@@ -766,9 +773,10 @@ data-flex-basis="187px"
 &lt;/h2>&lt;p>使用 Elastic Stack 的各种 Beats 模块可以彻底的终结在服务器上手工捞日志查指标的扭曲实践。利用腾讯云提供的 Elasticsearch 服务，可以轻松搞定大规模云环境的运维。本文一次性的帮你梳理清楚了，必备的基础操作，确保你能用 Elastic Stack 安全、稳定和扩展的持续监控你的生产环境。&lt;/p>
 &lt;h2 id="创建-es-集群">创建 ES 集群
 &lt;/h2>&lt;p>登录腾讯云服务控制台，查询并进入 Elasticsearc 服务，点击新建按钮，创建 Elasticsearch 集群。如下图所示。&lt;/p>
-&lt;p>&lt;img src="https://martinliu.cn/images/qcloud-es.jpeg"
+&lt;p>&lt;img src="https://martinliu.cn/images/qcloud-es.webp"
 loading="lazy"
->&lt;/p>
+>
+&lt;/p>
 &lt;p>集群配置说明：&lt;/p>
 &lt;ul>
 &lt;li>北京区&lt;/li>
@@ -793,9 +801,10 @@ loading="lazy"
 &lt;li>创建 beats-writer 用户，该用户只赋予beats-writer角色，自定义一个安全的复杂密码。&lt;/li>
 &lt;/ul>
 &lt;p>Beats-write 角色设置如下图所示：&lt;/p>
-&lt;p>&lt;img src="https://martinliu.cn/images/beats-writer.jpeg"
+&lt;p>&lt;img src="https://martinliu.cn/images/beats-writer.webp"
 loading="lazy"
->&lt;/p>
+>
+&lt;/p>
 &lt;p>这个用户会用到后面的所有 Beats 配置文件中，用最小化权限用户极大的降低了数据泄露的风险。&lt;/p>
 &lt;h2 id="beats-初始化配置">Beats 初始化配置
 &lt;/h2>&lt;p>登录准备好的一个 Linux 服务器，在这台机器上做 Beats 相关的初始化工作；也就是要执行一些列的 setup 命令；这些命令的作用是：&lt;/p>

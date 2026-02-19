@@ -23,7 +23,8 @@
 &lt;/h2>&lt;p>&lt;img src="https://miro.medium.com/v2/resize:fit:640/format:webp/1*eEvDjru5qOJc73wpcie1Hw.png"
 loading="lazy"
 alt="项目结构"
->&lt;/p>
+>
+&lt;/p>
 &lt;h2 id="概述">概述
 &lt;/h2>&lt;p>我即不是数据工程师，也没有在构建数据管道项目中；但是，我最近接触了一些数据服务。结合我对 AWS 的普遍了解，我决定亲手探索一些新服务。&lt;/p>
 &lt;p>本文源于我将构建数据管道作为一个有趣的项目来实践的经验，我发现整个过程非常有趣且富有成效。&lt;/p>
@@ -59,7 +60,8 @@ alt="项目结构"
 &lt;/h2>&lt;p>&lt;img src="https://miro.medium.com/v2/resize:fit:640/format:webp/1*0v_rLNRcapex3MRovi_luA.png"
 loading="lazy"
 alt="数据管道架构"
->&lt;/p>
+>
+&lt;/p>
 &lt;h2 id="架构解释">架构解释
 &lt;/h2>&lt;h3 id="第一流程">第一流程
 &lt;/h3>&lt;ul>
@@ -187,7 +189,8 @@ alt="数据管道架构"
 &lt;p>&lt;img src="https://miro.medium.com/v2/resize:fit:640/format:webp/1*wNoK6qiZ3af-6HkhCDH48A.png"
 loading="lazy"
 alt="Terraform 状态文件所在的 S3 存储桶"
->&lt;/p>
+>
+&lt;/p>
 &lt;p>创建后，将以下内容添加到 &lt;code>backend.tf&lt;/code> 文件中：&lt;/p>
 &lt;div class="highlight">&lt;div class="chroma">
 &lt;table class="lntable">&lt;tr>&lt;td class="lntd">
@@ -213,7 +216,8 @@ alt="Terraform 状态文件所在的 S3 存储桶"
 &lt;p>&lt;img src="https://miro.medium.com/v2/resize:fit:640/format:webp/1*bJ3LTvt6vayJgGsRZsQc5A.png"
 loading="lazy"
 alt="S3 中的 Terraform 状态文件"
->&lt;/p>
+>
+&lt;/p>
 &lt;ul>
 &lt;li>module/main.tf : 每个服务的基础设施和配置都放置在各自的 &lt;code>main.tf&lt;/code> 文件中&lt;/li>
 &lt;li>module/output.tf : 每个服务的输出详情 (output detail) 都放置在各自的 &lt;code>output.tf&lt;/code> 文件中&lt;/li>
@@ -302,61 +306,74 @@ alt="S3 中的 Terraform 状态文件"
 &lt;p>通过 AWS 控制台 (console) 进入 DynamoDB，并添加一条新数据：&lt;/p>
 &lt;p>&lt;img src="https://miro.medium.com/v2/resize:fit:640/format:webp/1*Wq6-HKR3_Itogo9ncr3C-Q.png"
 loading="lazy"
->&lt;/p>
+>
+&lt;/p>
 &lt;p>添加此条目将触发 DynamoDB 流 (stream)，它会使用关联的 Lambda 函数 (lambda function) 将新对象插入 S3。&lt;/p>
 &lt;p>&lt;img src="https://miro.medium.com/v2/resize:fit:640/format:webp/1*HEIxp2piYd2b9y5pxqV2xA.png"
 loading="lazy"
->&lt;/p>
+>
+&lt;/p>
 &lt;p>&lt;img src="https://miro.medium.com/v2/resize:fit:640/format:webp/1*MGNKOjFIP0mJQ4DDgG8Agw.png"
 loading="lazy"
->&lt;/p>
+>
+&lt;/p>
 &lt;p>前往 S3，我们看到新条目 &lt;code>7.json&lt;/code> 已添加：&lt;/p>
 &lt;p>&lt;img src="https://miro.medium.com/v2/resize:fit:640/format:webp/1*dhhBJ1oL-3OSa9JHP832oA.png"
 loading="lazy"
->&lt;/p>
+>
+&lt;/p>
 &lt;p>接下来，前往数据目录 (Data Catalog)，我们看到数据库 (Databases) 和表 (Tables)。&lt;/p>
 &lt;p>&lt;img src="https://miro.medium.com/v2/resize:fit:640/format:webp/1*XFt97o-Egelq4T-PdDUQmA.png"
 loading="lazy"
->&lt;/p>
+>
+&lt;/p>
 &lt;p>数据目录数据库&lt;/p>
 &lt;p>&lt;img src="https://miro.medium.com/v2/resize:fit:640/format:webp/1*V1EV7KY8iSVvMgeGIX4Fsw.png"
 loading="lazy"
->&lt;/p>
+>
+&lt;/p>
 &lt;p>数据目录表&lt;/p>
 &lt;p>前往 DataBrew，我们看到该项目。&lt;/p>
 &lt;p>一旦 Lambda 函数被添加到 &lt;code>/data&lt;/code> 路径的新内容触发，它就会启动 DataBrew 转换作业 (transformation job)：&lt;/p>
 &lt;p>&lt;img src="https://miro.medium.com/v2/resize:fit:640/format:webp/1*YeJ5a_JzUjWoD8vD9-4n-A.png"
 loading="lazy"
->&lt;/p>
+>
+&lt;/p>
 &lt;p>完成后，它看起来像这样：&lt;/p>
 &lt;p>&lt;img src="https://miro.medium.com/v2/resize:fit:640/format:webp/1*GZNvEGrYWP4Wom1VKMAwBQ.png"
 loading="lazy"
->&lt;/p>
+>
+&lt;/p>
 &lt;p>已完成的 DataBrew 作业&lt;/p>
 &lt;p>DataBrew 数据血缘 (Data lineage) 允许我们查看使用 DataBrew 的流程的图形化表示。&lt;/p>
 &lt;p>&lt;strong>空闲作业&lt;/strong>：&lt;/p>
 &lt;p>&lt;img src="https://miro.medium.com/v2/resize:fit:640/format:webp/1*arMXfxrhANbnvXymY8ejBg.png"
 loading="lazy"
 alt="空闲作业的数据血缘"
->&lt;/p>
+>
+&lt;/p>
 &lt;p>&lt;strong>运行中作业&lt;/strong>：&lt;/p>
 &lt;p>&lt;img src="https://miro.medium.com/v2/resize:fit:640/format:webp/1*CgVAhqi82C2tZcIRpCtz6A.png"
 loading="lazy"
 alt="数据血缘的作业运行中"
->&lt;/p>
+>
+&lt;/p>
 &lt;p>最后，前往 Athena，并选择 &lt;code>my-athena-workgroup&lt;/code> 工作组 (workgroup) 来运行查询。&lt;/p>
 &lt;p>在 DataBrew 作业运行之前，如果我们使用 Athena 运行查询，将不会有任何结果，因为 &lt;code>/cleaned&lt;/code> 路径中还没有任何项目：&lt;/p>
 &lt;p>&lt;img src="https://miro.medium.com/v2/resize:fit:640/format:webp/1*8K6f2X_uNLtstmSxZu1q9g.png"
 loading="lazy"
->&lt;/p>
+>
+&lt;/p>
 &lt;p>然而，在 DataBrew 作业成功运行后，我们点击 &lt;em>&lt;strong>Run again&lt;/strong>&lt;/em> 按钮以在 Athena 中重新运行查询：&lt;/p>
 &lt;p>&lt;img src="https://miro.medium.com/v2/resize:fit:640/format:webp/1*NDVMRuZ4Kh5GdTGIIkcHnQ.png"
 loading="lazy"
->&lt;/p>
+>
+&lt;/p>
 &lt;p>结果如下：&lt;/p>
 &lt;p>&lt;img src="https://miro.medium.com/v2/resize:fit:640/format:webp/1*kjeCuYwKZMO-2RJJgpd0Dw.png"
 loading="lazy"
->&lt;/p>
+>
+&lt;/p>
 &lt;p>如果你仔细观察，会发现它移除了在项目创建时上传到 S3 的 &lt;code>sample.json&lt;/code> 文件中发现的邮箱为 &lt;code>john@example.com&lt;/code> 的重复条目。&lt;/p>
 &lt;p>它还添加了邮箱为 &lt;code>mathew@gmail.com&lt;/code> 的新的 DynamoDB 条目。&lt;/p>
 &lt;p>这意味着我们的管道按预期工作！！&lt;/p>
@@ -364,23 +381,28 @@ loading="lazy"
 &lt;/h2>&lt;p>让我们通过向 DynamoDB 添加一个新条目来进一步测试，但这次它的邮箱将与我们现有的记录匹配。&lt;/p>
 &lt;p>&lt;img src="https://miro.medium.com/v2/resize:fit:640/format:webp/1*bWxYzQotL_N0JyVhsCzpTA.png"
 loading="lazy"
->&lt;/p>
+>
+&lt;/p>
 &lt;p>我们添加了一个邮箱为 &lt;code>mathew@gmail.com&lt;/code> 的新冲突条目&lt;/p>
 &lt;p>&lt;img src="https://miro.medium.com/v2/resize:fit:640/format:webp/1*C0iTx5McyVuu5836kCQ2-Q.png"
 loading="lazy"
->&lt;/p>
+>
+&lt;/p>
 &lt;p>这将触发一个新的 DataBrew 作业 (Job)：&lt;/p>
 &lt;p>&lt;img src="https://miro.medium.com/v2/resize:fit:640/format:webp/1*Rz50Z-SHv_PHcq1UUcKIgg.png"
 loading="lazy"
->&lt;/p>
+>
+&lt;/p>
 &lt;p>一旦成功了，我们会看到下图：&lt;/p>
 &lt;p>&lt;img src="https://miro.medium.com/v2/resize:fit:640/format:webp/1*iKPaL44m6-cWhAfAW1gTJg.png"
 loading="lazy"
->&lt;/p>
+>
+&lt;/p>
 &lt;p>接下来，前往 Athena 再次运行查询，这次它不再包含重复记录了！&lt;/p>
 &lt;p>&lt;img src="https://miro.medium.com/v2/resize:fit:640/format:webp/1*Er8Fx7_rGw4IFALgSGq6ag.png"
 loading="lazy"
->&lt;/p>
+>
+&lt;/p>
 &lt;h2 id="结论">结论
 &lt;/h2>&lt;p>我创建这个项目和文章是为了提高我在 Terraform 方面的技能，并亲自动手实践数据工程领域，同时磨练我的 Python 技能。&lt;/p>
 &lt;p>你可以在 &lt;a class="link" href="https://github.com/chyke007/serverless-data-pipeline" target="_blank" rel="noopener"

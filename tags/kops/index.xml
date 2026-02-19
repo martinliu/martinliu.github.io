@@ -12,7 +12,8 @@
 &lt;p>&lt;img src="https://res.cloudinary.com/martinliu/image/upload/dns.png"
 loading="lazy"
 alt="kops On aws"
->&lt;/p>
+>
+&lt;/p>
 &lt;h2 id="安装工具准备">安装工具准备
 &lt;/h2>&lt;p>需要安装的工具包括 kubectl, kops 和 AWS CLI 工具。kops需要调用 AWS CLI来创建所需要的资源。我觉得简单的方法是：在目标的Region里创建一台Amazon AMI的虚拟机，这样AWS CLI就不用装了，而且在云里的话，执行kops的时候，由于有一大堆资源创建更新的api调用，感觉速度比在本机快很多，而且还用担心断网。&lt;/p>
 &lt;p>可以启动一台t2.micro规格的Amazon AMI即可，另外需要给这个实例配置如下IAM用户权限，在启动的时候选择合适的IAM Role。&lt;/p>
@@ -116,7 +117,8 @@ alt="kops On aws"
 &lt;p>&lt;img src="https://res.cloudinary.com/martinliu/image/upload/s3.png"
 loading="lazy"
 alt="kops On aws"
->&lt;/p>
+>
+&lt;/p>
 &lt;h2 id="创建kubernetes-cluster">创建Kubernetes Cluster
 &lt;/h2>&lt;p>命令行参数如下：&lt;/p>
 &lt;ul>
@@ -324,7 +326,8 @@ alt="kops On aws"
 &lt;p>&lt;img src="https://res.cloudinary.com/martinliu/image/upload/ec2.png"
 loading="lazy"
 alt="kops On aws"
->&lt;/p>
+>
+&lt;/p>
 &lt;p>也创建了两个ASG：&lt;/p>
 &lt;ul>
 &lt;li>一个是针对master的扩容规则&lt;/li>
@@ -334,7 +337,8 @@ alt="kops On aws"
 &lt;p>&lt;img src="https://res.cloudinary.com/martinliu/image/upload/asg.png"
 loading="lazy"
 alt="kops On aws"
->&lt;/p>
+>
+&lt;/p>
 &lt;p>在安装完成之后，用一下命令确认集群状态如下：&lt;/p>
 &lt;div class="highlight">&lt;div class="chroma">
 &lt;table class="lntable">&lt;tr>&lt;td class="lntd">
@@ -437,7 +441,8 @@ alt="kops On aws"
 &lt;p>&lt;img src="https://res.cloudinary.com/martinliu/image/upload/nginx.png"
 loading="lazy"
 alt="kops On aws"
->&lt;/p>
+>
+&lt;/p>
 &lt;h2 id="删除集群">删除集群
 &lt;/h2>&lt;p>用一条命令就能删除以上所建立的Kubernetes集群。&lt;/p>
 &lt;div class="highlight">&lt;div class="chroma">

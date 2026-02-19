@@ -9,10 +9,11 @@
 &lt;li>自动化和快速的部署软件项目工件（Artifacts）到腾讯云服务器（和其它相关服务），包括静态网页到 Nginx 服务器的发布，到云存储的发布，目前也可能即将会用到 K8s 服务/Serverless 服务的发布。&lt;/li>
 &lt;/ul>
 &lt;p>基于目前社区的相关工作需求，我们在三个平台之间进行了综合的对比和评测：GitLab（免费版）、Jira Cloud（免费版） 和 CODING - 高级版（腾讯云 DevOps 平台服务）。总的来说我们需要一种能满足以上所有需求的、集成化的 DevOps 工具 SaaS 平台服务。&lt;/p>
-&lt;p>&lt;img src="https://martinliu.cn/images/atlassian-marketplace.png"
+&lt;p>&lt;img src="https://martinliu.cn/images/atlassian-marketplace.webp"
 loading="lazy"
 alt="DevOps持续循环"
->&lt;/p>
+>
+&lt;/p>
 &lt;p>在开始 DevOps 平台选项之前，值得再次研究一下上面这幅图。重申一下，这幅图表达了两个意思：&lt;/p>
 &lt;ol>
 &lt;li>DevOps 是持续不断的循环，并不是单向的多少次重复的流程。理想情况下一次循环对应着敏捷开发的一个迭代，每个迭代 done 的定义并不是编码完成就结束了，还包括后面的测试和运维的所有工作，应该管理到从开发到上线过程中的所有工作。本次迭代的结果可以作为下一个迭代的输入之一。&lt;/li>
@@ -30,12 +31,14 @@ alt="DevOps持续循环"
 &lt;img src="https://martinliu.cn/images/CODING-jira-okr.jpeg"
 loading="lazy"
 alt="OKR for Jira 免费 app "
->&lt;/p>
+>
+&lt;/p>
 &lt;p>下面是 CODING 中管理 OKR 的界面截图。
 &lt;img src="https://martinliu.cn/images/CODING-okr.jpeg"
 loading="lazy"
 alt="CODING ork"
->&lt;/p>
+>
+&lt;/p>
 &lt;p>&lt;strong>项目规划/协同 ：&lt;/strong> &amp;ndash; 社区网站相关工作需要在每一个项目的执行过程中实现需求分析、工作分解、工作分配和进度追踪等功能。并不需要实现高级的企业产品路线图和Eprics的管理，由于并不开发复杂的商业产品，至少目前工作的复杂度没有这个需求。&lt;/p>
 &lt;ul>
 &lt;li>GitLab：项目管理功能齐全，而且包含可定制的看板功能（Scum board / Kanban board），里程碑和 Todos 也是比较特色的功能。具备Issue 状态和代码PR 自动化的关联。&lt;/li>
@@ -46,7 +49,8 @@ alt="CODING ork"
 &lt;p>&lt;img src="https://martinliu.cn/images/CODING-plan.jpeg"
 loading="lazy"
 alt="CODING plan"
->&lt;/p>
+>
+&lt;/p>
 &lt;h2 id="构建---build">构建 - Build
 &lt;/h2>&lt;p>&lt;strong>代码托管 ：&lt;/strong> 社区需要使用 Git 代码仓库管理各种网站和应用的代码开发，包括markdown 格式的网站内容更新，主要是用基于主干的开发，或者部分功能分支的方式。&lt;/p>
 &lt;ul>
@@ -71,7 +75,8 @@ alt="CODING plan"
 &lt;img src="https://martinliu.cn/images/CODING-scan.jpeg"
 loading="lazy"
 alt="CODING plan"
->&lt;/p>
+>
+&lt;/p>
 &lt;p>&lt;strong>私有制品库/镜像仓库 ：&lt;/strong> 随着后期复杂社区项目的开发，以及容器化和微服务化的趋势。需要使用轻量的解决方案予以满足。&lt;/p>
 &lt;ul>
 &lt;li>GitLab：为每个项目提供包管理（支持通用、Conan、Maven，NPM、NuGet、PyPi）和 Docker 镜像仓库。满足在一个内的制品管理。&lt;/li>
@@ -88,7 +93,8 @@ alt="CODING plan"
 &lt;img src="https://martinliu.cn/images/CODING-pipeline.jpeg"
 loading="lazy"
 alt="CODING plan"
->&lt;/p>
+>
+&lt;/p>
 &lt;h2 id="总结">总结
 &lt;/h2>&lt;p>以上是中国 DevOps 社区对 DevOps 工具平台服务的选型测试过程的一部分总结，这里仅仅从社区的实际工作需求出发，通过试用对比的方式探索了几种平台。总的来说腾讯的 CODING 平台使用体验要好于其它两个服务。具体说有以下几个方面：&lt;/p>
 &lt;ul>

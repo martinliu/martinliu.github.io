@@ -5,7 +5,8 @@
 >&lt;img src="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2014/02/pic-003.jpg"
 loading="lazy"
 alt="pic-003"
->&lt;/a>&lt;/p>
+>
+&lt;/a>&lt;/p>
 &lt;p>服务器的操作系统是 Debian，安装的 php 的情况见 &lt;a class="link" href="http://martinliu.cn/info.php" target="_blank" rel="noopener"
 >phpinfo.php&lt;/a> 的输出。&lt;/p>
 &lt;p>WordPresss 所安装的插件如下：akismet syntax-highlighter download-monitor update-twitter-php google-sitemap-generator use-google-libraries wordpress-popular-posts wordpress-seo jiathis wp-easyarchives kimili-flash-embed wpjam-qiniu memcached wp-pagenavi nextgen-gallery wp-postviews optimize-db wp-recentcomments
@@ -17,7 +18,8 @@ regenerate-thumbnails wp-super-cache revslider wp_video-master shortcodes-ultima
 >&lt;img src="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2014/02/pic-002.jpg"
 loading="lazy"
 alt="pic-002"
->&lt;/a>&lt;/p>
+>
+&lt;/a>&lt;/p>
 &lt;p>现在很多页面查看源码的时候，都可以看到是 0.8 秒以内的速度，这个速度起码是本站点有史以来的最快速度。不光服务器速度快了，更重要的是所有静态文件也都是用的大陆的本土 CDN 站点了。&lt;/p>
 &lt;h2 id="wordpress-插件memcached-和-memcached-服务">Wordpress 插件：**memcached 和 MemCached 服务
 &lt;/h2>&lt;p>**&lt;/p>
@@ -26,13 +28,15 @@ alt="pic-002"
 >&lt;img src="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2014/02/pic-3.jpg"
 loading="lazy"
 alt="pic-3"
->&lt;/a>&lt;/p>
+>
+&lt;/a>&lt;/p>
 &lt;p>上图是本站首页的测试结果，亮点在它只有 3 个请求，Web 服务器只是做了三个响应就完事了，这个页面的内容就全都可以发给浏览器了。减少了 20 多次请求的处理，这些请求的结果都被 memcached 给缓存到内存里面了，目前只能够给 memcached 开 80MB 的缓存空间，也就这点内存常驻的网站缓存解决了大问题。加速页面的响应速度。不得不说 memcached 服务还是挺 NB 的。&lt;/p>
 &lt;p>&lt;a class="link" href="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2014/02/pic-001.jpg" target="_blank" rel="noopener"
 >&lt;img src="http://7bv9gn.com1.z0.glb.clouddn.com/wp-content/uploads/2014/02/pic-001.jpg"
 loading="lazy"
 alt="pic-001"
->&lt;/a>&lt;/p>
+>
+&lt;/a>&lt;/p>
 &lt;p>上图是一个常规的文章页面，请数量从以前的 30 左右降到 10 以内，我什么也不说了。当然上面这连个图里面也能看出本网站的一点问题，这里也不说了。&lt;/p>
 &lt;h2 id="wordpress-插件wpjam-七牛镜像存储">Wordpress 插件：&lt;strong>WPJAM 七牛镜像存储&lt;/strong>
 &lt;/h2>&lt;p>本次折腾主要冲着这个来的。CDN 我是第一次玩，不过用一次之后，感觉也挺简单的。先要找一个免费的 CDN 服务商开一个空间，之后一般送 1GB 空间一个月 1GB 流量，对我的网站来说足够了。配置完之后就拿到了一个二级域名，然后还有几个重要的 Key 编码。安装了水煮鱼做的这个插件之后，配置完，什么也不用管，网站的哪些静态文件就在首次访问的时候，被自动传到 CDN 上面了，下次网页再被打开的时候就全都走 CDN 上下载了，从而把 Apache 的基本所有静态文件的请求都 offload 走了，从而降低了服务器的负荷，提升了它对动态内容的反应速度。我的服务器只有 1GB 内存，用了 CDN 之后，我也不是很担心内存不够用的问题了。&lt;/p>

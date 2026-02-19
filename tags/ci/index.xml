@@ -105,11 +105,13 @@
 &lt;p>&lt;strong>虚拟机&lt;/strong> - &lt;strong>Virtual Machine&lt;/strong>：在主机上运行的计算机系统的模拟器（虚拟机管理程序）；vm 通常可以在CPU、内存和磁盘使用方面与其他操作系统隔离。&lt;/p>
 &lt;p>&lt;img src="https://martinliu.cn/img/cos/2021-04-02-0-cuHFPvnmr141Dfcc.png"
 loading="lazy"
->&lt;/p>
+>
+&lt;/p>
 &lt;p>&lt;strong>容器&lt;/strong>&amp;ndash;&lt;strong>Containers&lt;/strong>：打包一个软件及其所有依赖，使其能够在任何基础设施上统一、一致地运行。Docker容器是最流行的。它们允许你打包一堆东西（你的软件、配置和其他软件），以便于部署和传输。你可以把容器看作是虚拟化的下一代进化（继虚拟机之后）。&lt;/p>
 &lt;p>&lt;img src="https://martinliu.cn/img/cos/2021-04-02-0-hWRNCynYRFw2KCxn.png"
 loading="lazy"
->&lt;/p>
+>
+&lt;/p>
 &lt;p>&lt;strong>网络设备&lt;/strong> - &lt;strong>Network Device&lt;/strong>：在设备之间路由网络流量的硬件。例如路由器、负载平衡器和防火墙。&lt;/p>
 &lt;p>&lt;strong>软件&lt;/strong> - &lt;strong>Software&lt;/strong>：编码并在操作系统上运行的代码。&lt;/p>
 &lt;p>&lt;strong>DevOps&lt;/strong> - 传统上有 &amp;ldquo;开发&amp;rdquo;（你来构建它），还有 &amp;ldquo;运维&amp;rdquo;（我们将运行它），他们两者之间的一切都受制于作坊式的工作方式。从2010年左右开始，到2018年左右DevOps 已经发展为几乎无处不在的现象，DevOps的理念是：&amp;ldquo;一套实践，目的是在保证高质量的前提下，缩短从提交系统变更到变更投入正常生产环境之间的时间&amp;rdquo;。&lt;/p>
@@ -157,7 +159,8 @@ loading="lazy"
 &lt;p>当然，和其他任何一套产品一样，类别也不一定完全清晰。许多工具都是跨类别的，并提供两个或多个类别的功能。下面是我试图展示大多数非常流行的工具，并可视化它们在这些类别中的位置。&lt;/p>
 &lt;p>&lt;img src="https://martinliu.cn/img/cos/2021-04-02-1-wTp-r9QJvF-DXGZDZUHmbA.jpeg"
 loading="lazy"
->&lt;/p>
+>
+&lt;/p>
 &lt;p>正如你所看到的，有几个玩家，如Ansible、Terraform和云工具(AWS、GCP和Azure)，正试图通过他们的产品覆盖部署、配置管理和编排类别。老牌工具集Puppet、Chef和Salt Stack专注于配置管理和自动化，但已经扩展到编排和部署的。还有像GitLab和Azure DevOps这样的工具，几乎试图跨越DevOps的所有类别。&lt;/p>
 &lt;p>我希望这个概述能帮助你了解DevOps的基础知识，可用工具的类别，以及目前市场上的各种产品如何在这些类别中的一个或多个类别中提供帮助。在Solution Street，多年来我们已经使用了许多这样的工具，对我们来说，没有一个单一的 &amp;ldquo;一招鲜 &amp;ldquo;的工具能胜任所有情况下使用。使用什么是基于所使用的技术，在哪里托管（以及未来可能在哪里托管），以及团队的人才和构成。&lt;/p>
 &lt;blockquote>
@@ -321,15 +324,17 @@ loading="lazy"
 &lt;li>解决旧文章头图空白的问题&lt;/li>
 &lt;li>增加文章评论功能&lt;/li>
 &lt;li>增加 CDN 功能&lt;/li>
-&lt;/ol></description></item><item><title>Skaffold 让 K8s 开发者更加酸爽</title><link>https://martinliu.cn/blog/skaffold-make-local-k8s-dev-easy/</link><pubDate>Wed, 15 Jul 2020 00:09:53 +0800</pubDate><guid>https://martinliu.cn/blog/skaffold-make-local-k8s-dev-easy/</guid><description>&lt;img src="https://martinliu.cn/images/abstract-1.jpg" alt="Featured image of post Skaffold 让 K8s 开发者更加酸爽" />&lt;p>&lt;img src="https://martinliu.cn/images/skaffold.png"
+&lt;/ol></description></item><item><title>Skaffold 让 K8s 开发者更加酸爽</title><link>https://martinliu.cn/blog/skaffold-make-local-k8s-dev-easy/</link><pubDate>Wed, 15 Jul 2020 00:09:53 +0800</pubDate><guid>https://martinliu.cn/blog/skaffold-make-local-k8s-dev-easy/</guid><description>&lt;img src="https://martinliu.cn/images/abstract-1.jpg" alt="Featured image of post Skaffold 让 K8s 开发者更加酸爽" />&lt;p>&lt;img src="https://martinliu.cn/images/skaffold.webp"
 loading="lazy"
->&lt;/p>
+>
+&lt;/p>
 &lt;p>今天介绍一个本地 Kubernetes 开发的利器 Skaffold。
 这是我偶然间发现的一个工具，询问了一下周围的人，居然还没有人用过。测试之后，确实有一种不吐不快的感觉。&lt;/p>
 &lt;h2 id="简介">简介
 &lt;/h2>&lt;p>&lt;img src="https://martinliu.cn/images/intro.gif"
 loading="lazy"
->&lt;/p>
+>
+&lt;/p>
 &lt;p>Skaffold Google 开发的一个开源项目。是一个非常轻量的命令行工具，就是一个可执行文件。它的主页上是这样的介绍它的。&lt;/p>
 &lt;ul>
 &lt;li>轻量：Skaffold只是一个客户端工具。由于集群上不需要任何的相关组件，您的集群没有任何开销或维护负担。&lt;/li>
@@ -338,19 +343,22 @@ loading="lazy"
 &lt;li>优化你的开发：Skaffold使内部循环紧密，高度优化，让您在开发的同时得到即时反馈。&lt;/li>
 &lt;/ul>
 &lt;h2 id="客户评价">客户评价
-&lt;/h2>&lt;p>&lt;img src="https://martinliu.cn/images/forgerock.png"
+&lt;/h2>&lt;p>&lt;img src="https://martinliu.cn/images/forgerock.webp"
 loading="lazy"
->&lt;/p>
+>
+&lt;/p>
 &lt;p>&amp;ldquo;我们的客户很喜欢[Kubernetes]，但一直给我们反馈说在Kubernetes上开发很麻烦。Skaffold一针见血地解决了这个问题。以前需要几分钟才能部署的docker镜像或配置的更改，现在只需要几秒钟。Skaffold的插件架构使我们能够部署到Helm或Kustomize，并使用各种docker构建插件，如Kaniko。Skaffold用一个精简的工具取代了我们定制的实用程序和脚本集合，并且易于使用。&amp;rdquo;
 Warren Strange，ForgeRock的工程总监。&lt;/p>
-&lt;p>&lt;img src="https://martinliu.cn/images/quora.png"
+&lt;p>&lt;img src="https://martinliu.cn/images/quora.webp"
 loading="lazy"
->&lt;/p>
+>
+&lt;/p>
 &lt;p>&amp;ldquo;当我们评估我们可以使用Kubernetes的工作流程时，Skaffold脱颖而出，成为我们在开发和部署中都想要的工具。它为我们提供了一个跨应用程序的通用入口点，我们也可以为CI/CD重用。现在，我们所有的Kubernetes应用的CI/CD管道在构建和部署时都使用Skaffold。&amp;rdquo;
 Taylor Barrella，Quora的软件工程师&lt;/p>
-&lt;p>&lt;img src="https://martinliu.cn/images/tng.png"
+&lt;p>&lt;img src="https://martinliu.cn/images/tng.webp"
 loading="lazy"
->&lt;/p>
+>
+&lt;/p>
 &lt;p>&amp;ldquo;Skaffold是一个了不起的工具，它为我们简化了开发和交付。Skaffold通过覆盖两个维度，击中了我们的甜蜜点。第一，从本地开发、集成测试到交付的整个开发周期。第二，Skaffold让我们能够在Linux、OSX和Windows上独立开发，不需要特定的平台逻辑。&amp;rdquo;
 Martin Höfling，TNG技术咨询有限公司首席顾问&lt;/p>
 &lt;h2 id="推荐首次测试流程">推荐首次测试流程
@@ -375,9 +383,10 @@ Martin Höfling，TNG技术咨询有限公司首席顾问&lt;/p>
 &lt;/h2>&lt;p>参考以下视频，测试 Skaffold 代码库中的 microservice 项目。&lt;/p>
 &lt;h2 id="skaffold-流水线阶段">Skaffold 流水线阶段
 &lt;/h2>&lt;p>Skaffold 主要会用到五个阶段。&lt;/p>
-&lt;p>&lt;img src="https://martinliu.cn/images/workflow.png"
+&lt;p>&lt;img src="https://martinliu.cn/images/workflow.webp"
 loading="lazy"
->&lt;/p>
+>
+&lt;/p>
 &lt;p>其所有阶段如下：&lt;/p>
 &lt;ul>
 &lt;li>Init ： generate a starting point for Skaffold configuration&lt;/li>
@@ -396,9 +405,10 @@ loading="lazy"
 >https://skaffold.dev/docs/pipeline-stages/&lt;/a>&lt;/p>
 &lt;h2 id="架构设计">架构设计
 &lt;/h2>&lt;p>Skaffold 秉承着插件化的设计思想。&lt;/p>
-&lt;p>&lt;img src="https://martinliu.cn/images/architecture.png"
+&lt;p>&lt;img src="https://martinliu.cn/images/architecture.webp"
 loading="lazy"
->&lt;/p>
+>
+&lt;/p>
 &lt;p>以上架构内置了对下来工具的支持：&lt;/p>
 &lt;ul>
 &lt;li>Build
@@ -473,7 +483,8 @@ loading="lazy"
 &lt;p>&lt;img src="https://res.cloudinary.com/martinliu/image/upload/delivery-Pipeline.png"
 loading="lazy"
 alt="delivery-Pipeline"
->&lt;/p>
+>
+&lt;/p>
 &lt;p>上图是一个典型的持续交付流水线模型，在此我们对它的关注点如下：&lt;/p>
 &lt;ul>
 &lt;li>代码的变更被Jenkins自动化的构建（CI是基础），打包后的安装包被存储在Artifactory里，Artifactory里面还可以存储应用包的其它相关元数据，如测试结果，能否可以用于下一步部署的标签等等。&lt;/li>
@@ -503,11 +514,13 @@ alt="delivery-Pipeline"
 &lt;p>&lt;img src="https://res.cloudinary.com/martinliu/image/upload/chef-logo.png"
 loading="lazy"
 alt="Chef"
->&lt;/p>
+>
+&lt;/p>
 &lt;p>&lt;img src="https://res.cloudinary.com/martinliu/image/upload/LogoTerraform.png"
 loading="lazy"
 alt="Terraform"
->&lt;/p>
+>
+&lt;/p>
 &lt;h3 id="配置管理">配置管理
 &lt;/h3>&lt;p>我可能是最早的一批进行ITIL配置管理实践，CMDB建设的这批人；我以前和甲方客户有着大量的关于配置管理和CMDB的对话，所经历过的项目也非常煎熬。而在DevOps场景下，感觉以前的经历也是很有意思的，只是我现在说到的CI，在没有特指的情况下，是持续集成的概念，还不是配置项了。&lt;/p>
 &lt;blockquote>
@@ -598,7 +611,8 @@ information throughout its life。&lt;/p>&lt;/blockquote>
 &lt;p>&lt;img src="https://res.cloudinary.com/martinliu/image/upload/carbon.png"
 loading="lazy"
 alt="carbon"
->&lt;/p>
+>
+&lt;/p>
 &lt;p>基于类似于以上的自定义资源类型，在必要的情况下，还可以对其开发Action（chef资源的操作），可能的操作定义有：&lt;/p>
 &lt;ul>
 &lt;li>从Artifactory服务器下载Java、Tomcat和WAR包。&lt;/li>
@@ -653,7 +667,8 @@ alt="carbon"
 &lt;p>&lt;img src="https://res.cloudinary.com/martinliu/image/upload/cookbook-build.png"
 loading="lazy"
 alt="cookbook-build"
->&lt;/p>
+>
+&lt;/p>
 &lt;p>开发人员（程序员不是业务应用开发者的专业名词，这里指IaC开发者，可能来自任何团队）在Workstations工作站上开发Chef的Cookbook代码，将代码提交到GitHub上的Chef代码仓库。&lt;/p>
 &lt;p>Jenkins的Master服务器会触发CI Job，调用Ruby Slave对Cookbook代码进行集成和测试，然后触发EC2临时实例的创建，将Cookbook在EC2实例中进行测试，使用Artifactory中存储的应用软件包部署应用。如果测试都通过了，就触发Release Job，它将Cookbook代码上传到Chef服务器，供所各种环境中的被管理节点使用。&lt;/p>
 &lt;p>上图用EC2作为Chef代码的CI环境，可以替代的方案有Vagrant+虚拟化（Virtual Box或者kvm），或者使用其它虚拟机资源池，如Ovirt KVM、Xen、Nutanix。我实际测试过使用Terraform对接Nutanix资源池，虚拟机创建超级快，几乎是秒得的速度。现有的虚拟化资源池就是最方便的对接对象，需要了解一下API和对接工具即可。&lt;/p>
@@ -671,7 +686,8 @@ alt="cookbook-build"
 &lt;p>&lt;img src="https://res.cloudinary.com/martinliu/image/upload/nutanix-logo.png"
 loading="lazy"
 alt="Nutanix"
->&lt;/p>
+>
+&lt;/p>
 &lt;p>应该尽可能的优化这个集成测试，尽量缩短它的执行时间。可以创建专用的EC2-AMI/Nutanix/Kvm/VMWare操作系统镜像，预装所需要的Ruby环境和Chef工具。&lt;/p>
 &lt;p>使用Chef Solo（不依赖chef服务器）执行Chef代码的测试，以免将临时节点也添加到了Chef服务器，同时也消除了Chef的客户端和服务器架构之间相互通讯的消耗，这个场景里其实没有使用Chef服务器的必要。使用一个名为CHEFDEV的伪环境来测试代码，而JSON文件里定义的真实环境则被保留用于正式生产环境。在创建EC2虚拟机的时候，给它们打上特定的标签，从而保持一定的可追踪性和环境的可维护性。&lt;/p>
 &lt;h3 id="cookbook-release-job">Cookbook Release Job
@@ -683,7 +699,8 @@ alt="Nutanix"
 &lt;p>&lt;img src="https://res.cloudinary.com/martinliu/image/upload/app-deploy-process.png"
 loading="lazy"
 alt="app-deploy-process"
->&lt;/p>
+>
+&lt;/p>
 &lt;p>在发布过程中所使用到的制品是从Artifactory中拉取的。下面简单说下这个架构中的关键点。&lt;/p>
 &lt;p>&lt;strong>Jenkins部署服务器&lt;/strong> 这是专门用于各种部署工作的Jenkins Master服务器，它和上一个步骤里Cookbook的Build服务器是不同的。它的Slave应该满足这些需求：安装了所需要Ruby环境和gem包。安装了Chef工具，并且具有能更新Chef服务器的秘钥。具有能访问各种虚拟化环境中节点的SSH秘钥。&lt;/p>
 &lt;p>&lt;strong>部署作业的类型&lt;/strong> 可以对于每一个应用组（一套应用系统）设置两个部署作业：在开发环境中的，用于开发人员使用的DEV部署作业；另外是运维人员所使用的Non-Dev部署作业。在实践过程中也能发展出其他类型。&lt;/p>
@@ -696,7 +713,8 @@ alt="app-deploy-process"
 &lt;p>&lt;img src="https://res.cloudinary.com/martinliu/image/upload/push-button-deploy.png"
 loading="lazy"
 alt="push-button-deploy"
->&lt;/p>
+>
+&lt;/p>
 &lt;p>这样我们将大量各种角色人员都从事的、没有附加值的应用部署工作，彻底的消灭掉了，节省的时间可以用来做更多有意义的工作，Dev人员有更多时间编码、测试人员不需要等待时间、运维人员也降低的工作压力。&lt;/p>
 &lt;h2 id="总结">总结
 &lt;/h2>&lt;p>关于基础架构的持续集成，还有下列值得参考的原则：&lt;/p>
@@ -714,7 +732,8 @@ alt="push-button-deploy"
 &lt;h3 id="参考书籍">参考书籍
 &lt;/h3>&lt;p>&lt;img src="https://res.cloudinary.com/martinliu/image/upload/book-infrastructure-as-code.png"
 loading="lazy"
->&lt;/p>
+>
+&lt;/p>
 &lt;hr></description></item><item><title>BMC Atrium CMDB CI数据迁移</title><link>https://martinliu.cn/2011/01/12/bmc-atrium-cmdb-ci/</link><pubDate>Wed, 12 Jan 2011 05:08:23 +0000</pubDate><guid>https://martinliu.cn/2011/01/12/bmc-atrium-cmdb-ci/</guid><description>&lt;p>在不同的 CMDB 服务器之间做数据迁移之前一定要注意两点：1）保持两边的 CDM 相同；2）先导入 CI 数据在导入 CI 相关的关系数据。另外就是每个类导入完毕之后要做数据完整性和正确性的抽检。以下使用的工具是 cmdbdriver，该命令初始化和一般性的参数介绍请参考相关文档。&lt;/p>
 &lt;p>&lt;em>&lt;strong>CI 数据导出示例&lt;/strong>&lt;/em>&lt;/p>
 &lt;p>Command: xexpdt
@@ -779,7 +798,8 @@ Items for which Import failed     :  0&lt;/p>
 &lt;p>在这一 CMDB 关键的步骤中，会为 CMDB 的初始化 CI 数据填充，做精细的计划。需要考虑到所有 CI 数据，把不同 CI 类型对应到不同的数据集中，安排正确的顺序将这些数据集 CMDB。其中定义对应的规则来调和重复数据是很重要的，不仅在 CMDB 初始化数据填充阶段重要，在以后的日常维护过程中也是非常重要的。做出了本阶段的详细规划后，这样在第 18 步即“选择自动化 CMDB 填充工具”时，就能考虑需要什么样的配置发现和自动化工具了。&lt;/p>
 &lt;p>&lt;img src="http://pursuitmag.com/wp-content/uploads/2010/01/private-investigator-database.jpg"
 loading="lazy"
->&lt;/p>
+>
+&lt;/p>
 &lt;p>实际上，把数据填充到 CMDB 中是非常基础的工作，必须事前做好充分的数据范围和类型的分析。对于一个典型的 CMDB 数据填过程来说，将需要做如下工作：&lt;/p>
 &lt;ul>
 &lt;li>建立里项目程碑和高阶项目计划，以及配套的支撑数据库和操作流程。&lt;/li>
