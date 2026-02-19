@@ -1,17 +1,17 @@
-# 🔧 调试模式的 GitHub Pages 部署工作流
-# 
-# 当前配置：
-# - 所有分支的 push 都会触发完整构建和部署流程
-# - 用于调试和测试部署流程
-# 
-# 调试完成后，请修改 on.push.branches 为 [master] 
-# 以恢复只在 master 分支合并时触发
+# 🔧 GitHub Pages 调试部署工作流
 #
-name: Deploy to Github Pages (Debug Mode)
+# 当前策略：
+# - 任意分支 push 都触发完整构建和部署（便于联调流程）
+# - master 分支上的 pull_request 也会触发
+#
+# 调试结束后，可将 on.push.branches 收敛为 [master]
+# 以恢复仅主分支推送触发部署
+#
+name: Deploy to Github Pages 
 
 on:
     push:
-        # 调试模式：所有分支的 push 都触发构建
+        # 调试模式：匹配所有分支
         branches: ['**']
     pull_request:
         branches: [master]
@@ -76,79 +76,14 @@ jobs:
                   mkdir -p /tmp/hugo_cache
                   hugo --minify --gc --enableGitInfo --cleanDestinationDir --logLevel info
 
-            - name: Build statistics
-              run: |
-                  echo "📊 构建统计..."
-                  file_count=$(find public -type f | wc -l)
-                  echo "总文件数: $file_count"
-                  total_size=$(du -sh public | cut -f1)
-                  echo "总大小: $total_size"
-                  echo "files:$file_count,size:$total_size" > build-stats.txt
-
-            - name: Performance Summary
-              run: |
-                  echo "⚡ 构建性能总结:"
-                  echo "🕐 构建时间: 约 ${{ github.event.head_commit.timestamp }} 开始"
-                  echo "📦 输出文件: $(find public -type f | wc -l) 个文件"
-                  echo "📏 输出体积: $(du -sh public | cut -f1)"
-                  echo ""
-                  echo "🚀 已按本地优先策略执行：CI 不进行图片压缩"
-
-            - name: Create Performance Files
-              run: |
-                  echo "🚀 创建性能优化文件..."
-                  
-                  # 创建 _headers 文件用于 Netlify/GitHub Pages 缓存
-                  cat > public/_headers << 'EOF'
-                  /*
-                    X-Frame-Options: DENY
-                    X-Content-Type-Options: nosniff
-                    Referrer-Policy: strict-origin-when-cross-origin
-                  
-                  /*.css
-                    Cache-Control: public, max-age=31536000, immutable
-                  
-                  /*.js
-                    Cache-Control: public, max-age=31536000, immutable
-                  
-                  /*.woff2
-                    Cache-Control: public, max-age=31536000, immutable
-                  
-                  /*.webp
-                    Cache-Control: public, max-age=31536000
-                  
-                  /*.jpg
-                    Cache-Control: public, max-age=31536000
-                  
-                  /*.png
-                    Cache-Control: public, max-age=31536000
-                  
-                  /*.html
-                    Cache-Control: public, max-age=0, must-revalidate
-                  EOF
-                  
-                  # 创建 robots.txt（如果不存在）
-                  if [ ! -f "public/robots.txt" ]; then
-                      cat > public/robots.txt << 'EOF'
-                  User-agent: *
-                  Allow: /
-                  
-                  Sitemap: https://martinliu.cn/sitemap.xml
-                  EOF
-                      echo "✅ 创建 robots.txt"
-                  fi
-                  
-                  # 添加性能监控脚本（可选）
-                  echo "📊 性能文件创建完成"
-
             - name: Deploy 🚀
               uses: JamesIves/github-pages-deploy-action@v4.6.8
               with:
                   branch: gh-pages
                   folder: public
-                  clean: false  # 禁用清理以加快部署
-                  single-commit: false  # 保留 git 历史以支持增量部署
-                  force: false  # 禁用强制推送
+                  clean: false  # 保留 gh-pages 历史文件，减少全量删除/重建
+                  single-commit: false  # 保留 gh-pages 提交历史，便于回溯
+                  force: false  # 使用非强推，避免覆盖远端并发更新
                   git-config-name: 'github-actions[bot]'
                   git-config-email: 'github-actions[bot]@users.noreply.github.com'
                   commit-message: |
