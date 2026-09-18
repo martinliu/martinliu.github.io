@@ -1,0 +1,31 @@
+{{/* 自定义 sitemap：在 Hugo 内部模板基础上，为带封面图的页面追加 <image:image> 图片标记 */}}
+{{ printf "%s" "<?xml version=\"1.0\" encoding=\"utf-8\" standalone=\"yes\"?>" | safeHTML }}
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+  xmlns:xhtml="http://www.w3.org/1999/xhtml"
+  xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
+  {{ range .Data.Pages }}
+  {{- $page := . -}}
+  <url>
+    <loc>{{ $page.Permalink }}</loc>{{ if not $page.Lastmod.IsZero }}
+    <lastmod>{{ safeHTML ( $page.Lastmod.Format "2006-01-02T15:04:05-07:00" ) }}</lastmod>{{ end }}{{ with $page.Sitemap.ChangeFreq }}
+    <changefreq>{{ . }}</changefreq>{{ end }}{{ if ge $page.Sitemap.Priority 0.0 }}
+    <priority>{{ $page.Sitemap.Priority }}</priority>{{ end }}{{ if $page.IsTranslated }}{{ range $page.Translations }}
+    <xhtml:link
+                rel="alternate"
+                hreflang="{{ .Language.Lang }}"
+                href="{{ .Permalink }}"
+                />{{ end }}
+    <xhtml:link
+                rel="alternate"
+                hreflang="{{ $page.Language.Lang }}"
+                href="{{ $page.Permalink }}"
+                />{{ end }}{{ with $page.Params.image }}
+    {{- $img := $page.Resources.GetMatch (printf "%s" .) -}}
+    {{- if and $img (ne (strings.ToLower (path.Ext $img.Name)) ".svg") }}
+    <image:image>
+        <image:loc>{{ $img.Permalink }}</image:loc>
+    </image:image>
+    {{- end -}}{{ end }}
+  </url>
+  {{ end }}
+</urlset>

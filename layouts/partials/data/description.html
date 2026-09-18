@@ -1,0 +1,23 @@
+{{/* 覆盖主题的 data/description：
+    - 首页: 使用 site.Params.description（丰富的 SEO 描述），否则降级到 sidebar.subtitle
+    - 文章页: front matter description，缺省用摘要
+    - 其他节点(标签/分类/板块): 「标题 | 副标题」，避免全站重复同一段描述
+*/}}
+
+{{- $description := .Site.Params.sidebar.subtitle -}}
+
+{{- if .Description -}}
+    {{- $description = .Description -}}
+{{- else if .IsPage -}}
+    {{- $description = .Summary -}}
+{{- else if .IsHome -}}
+    {{- if .Site.Params.description -}}
+        {{- $description = .Site.Params.description -}}
+    {{- end -}}
+{{- else if .IsNode -}}
+    {{- if .Title -}}
+        {{- $description = printf "%s | %s" .Title .Site.Params.sidebar.subtitle -}}
+    {{- end -}}
+{{- end -}}
+
+{{- return ($description | plainify) -}}
