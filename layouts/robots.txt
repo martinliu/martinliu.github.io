@@ -1,0 +1,10 @@
+{{- /* 自定义 robots.txt：替换 Hugo 内部模板，输出完整爬虫指令 + Sitemap 声明 */ -}}
+User-agent: *
+Allow: /
+
+# 屏蔽低价值页面
+Disallow: /search/
+Disallow: /*.json$
+Disallow: /*/page/
+
+Sitemap: {{ "sitemap.xml" | absURL }}

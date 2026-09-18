@@ -1,0 +1,24 @@
+{{/* 自定义 head 扩展（覆盖主题的空 custom.html）：
+    - hreflang 交替链接
+    - og:locale 默认值
+    - 结构化数据 JSON-LD
+*/}}
+
+{{/* ---- hreflang 交替链接 ---- */}}
+{{- if .IsTranslated -}}
+    {{- range .Translations -}}
+        <link rel="alternate" hreflang="{{ .Language.Lang }}" href="{{ .Permalink }}">
+    {{- end -}}
+    <link rel="alternate" hreflang="{{ .Language.Lang }}" href="{{ .Permalink }}">
+{{- end -}}
+{{- if .IsHome -}}
+    <link rel="alternate" hreflang="x-default" href="{{ site.Home.Permalink }}">
+{{- end -}}
+
+{{/* ---- og:locale 默认值（主题仅在 front matter 配置 locale 时输出） ---- */}}
+{{- if not .Params.locale -}}
+    <meta property="og:locale" content="{{ if eq .Language.Lang "en" }}en_US{{ else }}zh_CN{{ end }}">
+{{- end -}}
+
+{{/* ---- 结构化数据 JSON-LD ---- */}}
+{{- partial "head/seo-jsonld" . -}}
