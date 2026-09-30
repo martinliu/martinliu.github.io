@@ -793,19 +793,41 @@ loading="lazy"
 &lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
 &lt;/div>
 &lt;/div>&lt;!-- raw HTML omitted -->
-&lt;hr></description></item><item><title>Chinaready: Making your product truly reachable in China</title><link>https://martinliu.cn/en/chinaready/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://martinliu.cn/en/chinaready/</guid><description>&lt;p>Over the years this blog has covered a lot of DevOps, SRE, CDN, and observability practices — and the same question keeps arriving from teams outside China:&lt;/p>
+&lt;hr></description></item><item><title>Chinaready: Making your product truly reachable in China</title><link>https://martinliu.cn/en/chinaready/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://martinliu.cn/en/chinaready/</guid><description>&lt;img src="https://martinliu.cn/chinaready/chinaready-cover.png" alt="Featured image of post Chinaready: Making your product truly reachable in China" />&lt;p>Over the years this blog has covered a lot of DevOps, SRE, CDN, and observability practices — and the same question keeps arriving from teams outside China:&lt;/p>
 &lt;blockquote>
 &lt;p>&amp;ldquo;Our site works fine everywhere else, but it&amp;rsquo;s slow and flaky in mainland China. What&amp;rsquo;s actually wrong?&amp;rdquo;&lt;/p>&lt;/blockquote>
 &lt;p>There is rarely a single-answer explanation. It is usually a combination of DNS resolution paths, CDN coverage, origin location, front-end payload weight, and regulatory requirements (ICP filing) amplifying each other. This page gathers the related practices in one place.&lt;/p>
+&lt;p>&lt;img src="https://martinliu.cn/chinaready/chinaready-hero.webp"
+width="640"
+height="427"
+srcset="https://martinliu.cn/chinaready/chinaready-hero_hu_177bacb8ae7e2316.webp 480w, https://martinliu.cn/chinaready/chinaready-hero_hu_956a7a88ca913b11.webp 1024w"
+loading="lazy"
+alt="Network reachability in mainland China"
+class="gallery-image"
+data-flex-grow="149"
+data-flex-basis="359px"
+>
+&lt;/p>
 &lt;h2 id="three-recurring-questions">Three recurring questions
 &lt;/h2>&lt;p>&lt;strong>1. Why is the site fast overseas but slow in mainland China?&lt;/strong>
 Physical distance is only the surface cause. More often it is fluctuating cross-border link quality, a CDN with no mainland presence or warm-up, DNS steering users to distant nodes, and front-end payload that a high-latency link punishes.&lt;/p>
 &lt;p>&lt;strong>2. How do you troubleshoot intermittent, non-reproducible instability?&lt;/strong>
 Separate availability problems (resolution or connection failures for some regions/ISPs) from performance problems (loads, but slowly). They require different diagnostics — which is why &amp;ldquo;checking occasionally&amp;rdquo; never finds the real issue; you need continuous, multi-region measurement.&lt;/p>
 &lt;p>&lt;strong>3. What should be technically ready before entering China?&lt;/strong>
-A practical checklist: domain and ICP strategy, static asset distribution, reachability of third-party dependencies (fonts, analytics, payments) from the mainland, and monitoring that covers real user experience.&lt;/p>
+A practical checklist: domain and ICP strategy, static asset distribution, reachability of third-party dependencies (fonts, analytics, payments) from the mainland, and monitoring that covers real user experience. For apps, add the Android store distribution track.&lt;/p>
+&lt;h2 id="a-staged-path">A staged path
+&lt;/h2>&lt;p>You don&amp;rsquo;t have to do everything at once — but order matters. A practical sequence:&lt;/p>
+&lt;ol>
+&lt;li>&lt;strong>Assess&lt;/strong> — measure before deciding: real mainland reachability and performance data, a compliance gap list, prioritized recommendations.&lt;/li>
+&lt;li>&lt;strong>Accelerate&lt;/strong> — act on network and content delivery: DNS and CDN strategy, payload weight and loading-path optimization.&lt;/li>
+&lt;li>&lt;strong>Host&lt;/strong> — give the parts that need local presence (site, services, or data) a compliant landing.&lt;/li>
+&lt;li>&lt;strong>Distribute&lt;/strong> — take mobile apps into the Android channel ecosystem: listings and updates across major app stores.&lt;/li>
+&lt;li>&lt;strong>Operate&lt;/strong> — launch is the beginning: keep monitoring real user experience and surface problems earlier.&lt;/li>
+&lt;/ol>
+&lt;p>Each stage validates independently, and you can start from whichever one fits.&lt;/p>
 &lt;h2 id="start-with-a-diagnostic-report">Start with a diagnostic report
-&lt;/h2>&lt;p>Measure instead of guessing. Chinaready offers a free, data-driven diagnostic covering your site&amp;rsquo;s reachability and loading performance in the mainland, with prioritized recommendations.&lt;/p>
+&lt;/h2>&lt;p>Measure instead of guessing. &lt;a class="link" href="https://chinaready.co/" target="_blank" rel="noopener"
+>Chinaready&lt;/a> is assessment-led: a free, data-driven diagnostic covering your site&amp;rsquo;s reachability and loading performance in the mainland, with prioritized recommendations.&lt;/p>
 &lt;aside class="china-ready-cta">
 &lt;style>
 .china-ready-cta{margin:2rem 0;padding:1rem 1.25rem;border-left:3px solid var(--card-text-color-main,#333);background:var(--card-background,#f6f6f7);border-radius:4px;font-size:.95rem}
