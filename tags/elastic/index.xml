@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Elastic on Martin Liu's Blog | SRE培训 | SRE认证 | SRE课程</title><link>https://martinliu.cn/tags/elastic/</link><description>Recent content in Elastic on Martin Liu's Blog | SRE培训 | SRE认证 | SRE课程</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><lastBuildDate>Thu, 28 Aug 2025 16:07:06 +0800</lastBuildDate><atom:link href="https://martinliu.cn/tags/elastic/index.xml" rel="self" type="application/rss+xml"/><item><title>为 Hugo 网站添加 Elastic RUM 用户体验监控</title><link>https://martinliu.cn/blog/add-elastic-rum-to-hugo-site/</link><pubDate>Fri, 08 Dec 2023 09:44:13 +0800</pubDate><guid>https://martinliu.cn/blog/add-elastic-rum-to-hugo-site/</guid><description>&lt;img src="https://martinliu.cn/blog/add-elastic-rum-to-hugo-site/pexels-amina-filkins-5424636.webp" alt="Featured image of post 为 Hugo 网站添加 Elastic RUM 用户体验监控" />&lt;p>&amp;ldquo;Elastic RUM&amp;rdquo; 是指 Elastic Observability 中的实时用户体验监控（Real User Monitoring，RUM）功能，是 Elastic Stack 中的一部分。Elastic Stack 是一个开源的数据存储和分析平台，包括 Elasticsearch、Logstash、Kibana 和 Beats 等组件，用于处理和分析各种类型的数据。&lt;/p>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Elastic on Martin Liu's Blog | SRE培训 | SRE认证 | SRE课程</title><link>https://martinliu.cn/tags/elastic/</link><description>Recent content in Elastic on Martin Liu's Blog | SRE培训 | SRE认证 | SRE课程</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><lastBuildDate>Wed, 30 Sep 2026 23:49:58 +0800</lastBuildDate><atom:link href="https://martinliu.cn/tags/elastic/index.xml" rel="self" type="application/rss+xml"/><item><title>为 Hugo 网站添加 Elastic RUM 用户体验监控</title><link>https://martinliu.cn/blog/add-elastic-rum-to-hugo-site/</link><pubDate>Fri, 08 Dec 2023 09:44:13 +0800</pubDate><guid>https://martinliu.cn/blog/add-elastic-rum-to-hugo-site/</guid><description>&lt;img src="https://martinliu.cn/blog/add-elastic-rum-to-hugo-site/pexels-amina-filkins-5424636.webp" alt="Featured image of post 为 Hugo 网站添加 Elastic RUM 用户体验监控" />&lt;p>&amp;ldquo;Elastic RUM&amp;rdquo; 是指 Elastic Observability 中的实时用户体验监控（Real User Monitoring，RUM）功能，是 Elastic Stack 中的一部分。Elastic Stack 是一个开源的数据存储和分析平台，包括 Elasticsearch、Logstash、Kibana 和 Beats 等组件，用于处理和分析各种类型的数据。&lt;/p>
 &lt;p>Real User Monitoring（RUM）是一种用于监控网站或应用程序性能的技术。它通过追踪和分析实际用户与网站或应用程序交互的数据，从而提供有关用户体验的实时信息。RUM 的关键目标是了解用户在访问网站时经历的性能和交互情况，以便开发人员和运维团队可以识别并解决潜在的性能问题，从而提高用户满意度。&lt;/p>
 &lt;p>Elastic RUM 的优势包括：&lt;/p>
 &lt;ol>
@@ -124,10 +124,10 @@ data-flex-basis="191px"
 &lt;h2 id="elastic-rum-的效果">Elastic RUM 的效果
 &lt;/h2>&lt;p>在完成了以上的步骤后，我们可以在 Elastic Cloud 的 RUM 和 APM 页面上看到 Hugo 网站的用户体验监控数据了。&lt;/p>
 &lt;p>点击Kibana界面左侧导航栏里的 &lt;code>User Experience 仪表板&lt;/code> 就可以看到下图。&lt;/p>
-&lt;p>&lt;img src="https://martinliu.cn/blog/add-elastic-rum-to-hugo-site/elastic-cloud-apm-rum-2.webp"
+&lt;p>&lt;img src="https://martinliu.cn/blog/add-elastic-rum-to-hugo-site/elastic-cloud-apm-rum-2.png"
 width="3982"
 height="3736"
-srcset="https://martinliu.cn/blog/add-elastic-rum-to-hugo-site/elastic-cloud-apm-rum-2_hu_ac8b311efee575c9.webp 480w, https://martinliu.cn/blog/add-elastic-rum-to-hugo-site/elastic-cloud-apm-rum-2_hu_800ab14f631afa0a.webp 1024w"
+srcset="https://martinliu.cn/blog/add-elastic-rum-to-hugo-site/elastic-cloud-apm-rum-2_hu_baf094a60e39d22e.png 480w, https://martinliu.cn/blog/add-elastic-rum-to-hugo-site/elastic-cloud-apm-rum-2_hu_d3205b6cd88be253.png 1024w"
 loading="lazy"
 alt="Elastic APM RUM 用户体验分析"
 class="gallery-image"
@@ -151,10 +151,10 @@ data-flex-basis="255px"
 &lt;/ul>
 &lt;p>这些指标讲述了关于用户如何体验你的网站的重要故事。但开发人员不应该成为解释和采取这些信号的专家；他们应该花时间对这些指标提供的机会做出反应。因此（以及许多其他原因），Elastic已经采纳了Google核心Web Vitals。&lt;/p>
 &lt;p>核心Web Vitals是Google最近推出的一项倡议，旨在引入一组新的度量标准，通过量化真实用户体验更好地分类良好和糟糕的网站。这是通过查看三个关键指标来实现的：加载性能、视觉稳定性和互动性：&lt;/p>
-&lt;p>&lt;img src="https://martinliu.cn/blog/add-elastic-rum-to-hugo-site/web-dev-vitals.webp"
+&lt;p>&lt;img src="https://martinliu.cn/blog/add-elastic-rum-to-hugo-site/web-dev-vitals.png"
 width="1920"
 height="570"
-srcset="https://martinliu.cn/blog/add-elastic-rum-to-hugo-site/web-dev-vitals_hu_b1e2b469771a5660.webp 480w, https://martinliu.cn/blog/add-elastic-rum-to-hugo-site/web-dev-vitals_hu_28e028dfe7e20933.webp 1024w"
+srcset="https://martinliu.cn/blog/add-elastic-rum-to-hugo-site/web-dev-vitals_hu_78d0bbd00f9d4cf7.png 480w, https://martinliu.cn/blog/add-elastic-rum-to-hugo-site/web-dev-vitals_hu_8bf2cf3d4876349a.png 1024w"
 loading="lazy"
 alt="Web要点"
 class="gallery-image"
@@ -216,10 +216,10 @@ data-flex-basis="353px"
 &lt;p>Feature picture ❤️ Amina Filkins: &lt;a class="link" href="https://www.pexels.com/photo/crop-man-with-documents-and-laptop-at-table-5424636/" target="_blank" rel="noopener"
 >https://www.pexels.com/photo/crop-man-with-documents-and-laptop-at-table-5424636/&lt;/a>&lt;/p></description></item><item><title>先睹为快 Azure OpenAI 驱动的 Elastic 可观测性 ‘AI 助理’</title><link>https://martinliu.cn/blog/elastic-elastic-obs-ai-assistant-aoai/</link><pubDate>Tue, 05 Dec 2023 13:10:43 +0800</pubDate><guid>https://martinliu.cn/blog/elastic-elastic-obs-ai-assistant-aoai/</guid><description>&lt;img src="https://martinliu.cn/blog/elastic-elastic-obs-ai-assistant-aoai/pexels-cottonbro-studio-6153354.webp" alt="Featured image of post 先睹为快 Azure OpenAI 驱动的 Elastic 可观测性 ‘AI 助理’" />&lt;p>在最近的 ElasticON 大会上，Elastic 可观测性的 AI Assistant 得到了充分曝光。在 Keynote 中，还专门做了一个演示，展示了 AI Assistant 的功能，以及如何使用 AI Assistant 来解决问题。&lt;/p>
 &lt;p>我最近好在学习微软的 Azure OpenAI 服务，在我的 Azure 环境中，已经创建了一个 OpenAI 服务，可以用于AI Assistant 的测试。因此，我就想看看 Elastic 的 AI Assistant 和 Azure 的 OpenAI 服务结合起来的效果如何。&lt;/p>
-&lt;p>&lt;img src="https://martinliu.cn/blog/elastic-elastic-obs-ai-assistant-aoai/AIOps_blog-720x420.webp"
+&lt;p>&lt;img src="https://martinliu.cn/blog/elastic-elastic-obs-ai-assistant-aoai/AIOps_blog-720x420.png"
 width="720"
 height="420"
-srcset="https://martinliu.cn/blog/elastic-elastic-obs-ai-assistant-aoai/AIOps_blog-720x420_hu_180396ed0104d7fe.webp 480w, https://martinliu.cn/blog/elastic-elastic-obs-ai-assistant-aoai/AIOps_blog-720x420_hu_87886cc9cafaa591.webp 1024w"
+srcset="https://martinliu.cn/blog/elastic-elastic-obs-ai-assistant-aoai/AIOps_blog-720x420_hu_b1b25acae32eb911.png 480w, https://martinliu.cn/blog/elastic-elastic-obs-ai-assistant-aoai/AIOps_blog-720x420_hu_cb1362e3d00240ca.png 1024w"
 loading="lazy"
 class="gallery-image"
 data-flex-grow="171"
@@ -571,7 +571,7 @@ alt="2020-11-05_00-13-06"
 &lt;/li>
 &lt;li>Elasitc 用户日 专场活动，接受企业的团队预约，可以在约定的时间里，通过线上或者线下的方式进行，建议参与学习交流的人数在 10~20 人。 预约邮件： &lt;a class="link" href="mailto:zheng.liu@elastic.co" >zheng.liu@elastic.co&lt;/a>&lt;/li>
 &lt;/ul>
-&lt;p>由于 Elastic Stack 产品的更新迭代速度特别快，本工作坊的软件版本和学习课件也会不定期更新。欢迎大家积极参与 Elastic 技术社区的交流和学习活动。&lt;/p></description></item><item><title>Beats 摄入数据的最佳实践</title><link>https://martinliu.cn/blog/build-security-in-elastic-stack/</link><pubDate>Sun, 21 Jun 2020 18:42:56 +0800</pubDate><guid>https://martinliu.cn/blog/build-security-in-elastic-stack/</guid><description>&lt;img src="https://martinliu.cn/images/locked-up.jpg" alt="Featured image of post Beats 摄入数据的最佳实践" />&lt;p>本文概要：配置 ES 3 节点全加密，Kibana 的 SSL 加密配置，Beats 的高可靠性加密传输，用 RBAC 怎样把权限控制到最小，在配置文件中消除明文密码，这些你都做到了么？如何保证安全、能适应和可扩展的配置 Elastic Stack 技术栈，让我们从 Bests 的角度开始讲解。&lt;/p>
+&lt;p>由于 Elastic Stack 产品的更新迭代速度特别快，本工作坊的软件版本和学习课件也会不定期更新。欢迎大家积极参与 Elastic 技术社区的交流和学习活动。&lt;/p></description></item><item><title>Beats 摄入数据的最佳实践</title><link>https://martinliu.cn/blog/build-security-in-elastic-stack/</link><pubDate>Sun, 21 Jun 2020 18:42:56 +0800</pubDate><guid>https://martinliu.cn/blog/build-security-in-elastic-stack/</guid><description>&lt;img src="https://martinliu.cn/images/locked-up.webp" alt="Featured image of post Beats 摄入数据的最佳实践" />&lt;p>本文概要：配置 ES 3 节点全加密，Kibana 的 SSL 加密配置，Beats 的高可靠性加密传输，用 RBAC 怎样把权限控制到最小，在配置文件中消除明文密码，这些你都做到了么？如何保证安全、能适应和可扩展的配置 Elastic Stack 技术栈，让我们从 Bests 的角度开始讲解。&lt;/p>
 &lt;h2 id="前言">前言
 &lt;/h2>&lt;p>本文使用的软版本：&lt;/p>
 &lt;ul>

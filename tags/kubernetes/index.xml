@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Kubernetes on Martin Liu's Blog | SRE培训 | SRE认证 | SRE课程</title><link>https://martinliu.cn/tags/kubernetes/</link><description>Recent content in Kubernetes on Martin Liu's Blog | SRE培训 | SRE认证 | SRE课程</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><lastBuildDate>Thu, 18 Sep 2025 17:26:30 +0800</lastBuildDate><atom:link href="https://martinliu.cn/tags/kubernetes/index.xml" rel="self" type="application/rss+xml"/><item><title>我为什么要从 Kubernetes Ingress 迁移到 Gateway API</title><link>https://martinliu.cn/blog/why-im-moving-from-kubernetes-ingress-to-gateway/</link><pubDate>Thu, 28 Aug 2025 10:00:00 +0800</pubDate><guid>https://martinliu.cn/blog/why-im-moving-from-kubernetes-ingress-to-gateway/</guid><description>&lt;img src="https://martinliu.cn/blog/why-im-moving-from-kubernetes-ingress-to-gateway/1_rhwXmfU4EZHiwcLjTUxOaQ.png" alt="Featured image of post 我为什么要从 Kubernetes Ingress 迁移到 Gateway API" />&lt;p>对于每一位踏入 Kubernetes 世界的 DevOps 工程师来说，Ingress 通常是他们遇到的第一个资源，甚至可能是他们的“初恋”。当需要简单的 HTTP(S) 路由时，Ingress 就会派上用场，为集群内部的服务打开了通往外部世界的大门。多年来，它一直运行良好。但技术世界永不停歇，需求不断演变，现有解决方案也开始触及其局限性。正是在这种背景下，Gateway API 进入了 Kubernetes 生态系统。&lt;/p>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Kubernetes on Martin Liu's Blog | SRE培训 | SRE认证 | SRE课程</title><link>https://martinliu.cn/tags/kubernetes/</link><description>Recent content in Kubernetes on Martin Liu's Blog | SRE培训 | SRE认证 | SRE课程</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><lastBuildDate>Wed, 30 Sep 2026 23:49:58 +0800</lastBuildDate><atom:link href="https://martinliu.cn/tags/kubernetes/index.xml" rel="self" type="application/rss+xml"/><item><title>我为什么要从 Kubernetes Ingress 迁移到 Gateway API</title><link>https://martinliu.cn/blog/why-im-moving-from-kubernetes-ingress-to-gateway/</link><pubDate>Thu, 28 Aug 2025 10:00:00 +0800</pubDate><guid>https://martinliu.cn/blog/why-im-moving-from-kubernetes-ingress-to-gateway/</guid><description>&lt;img src="https://martinliu.cn/blog/why-im-moving-from-kubernetes-ingress-to-gateway/1_rhwXmfU4EZHiwcLjTUxOaQ.png" alt="Featured image of post 我为什么要从 Kubernetes Ingress 迁移到 Gateway API" />&lt;p>对于每一位踏入 Kubernetes 世界的 DevOps 工程师来说，Ingress 通常是他们遇到的第一个资源，甚至可能是他们的“初恋”。当需要简单的 HTTP(S) 路由时，Ingress 就会派上用场，为集群内部的服务打开了通往外部世界的大门。多年来，它一直运行良好。但技术世界永不停歇，需求不断演变，现有解决方案也开始触及其局限性。正是在这种背景下，Gateway API 进入了 Kubernetes 生态系统。&lt;/p>
 &lt;p>那么，既然我们已经有了像 Ingress 这样成熟且广泛采用的解决方案，为什么还需要一个新的 API 呢？Gateway API 解决了哪些问题？它缓解了哪些痛点？在这篇博客文章中，我们将探讨我使用 Ingress 的经验、Gateway API 带来的创新，以及为什么这种转变是完全合理的。我们的目标是以技术性强但友好的语调来解释这些内容。&lt;/p>
 &lt;h2 id="ingress-的局限性">Ingress 的局限性
 &lt;/h2>&lt;p>&lt;strong>注解地狱 (Annotation Hell)：&lt;/strong> Ingress 最大的缺点之一是它对注解 (annotations) 的依赖，以实现高级功能。对于限流 (rate limiting)、URL 重写 (URL rewrites)、请求体大小限制 (body size limits)、CORS 设置 (CORS settings) 等类似功能，我们不得不使用每个 Ingress 控制器 (Ingress Controller) 特定的注解。这导致了不同 Ingress 控制器（Nginx、Traefik、HAProxy 等）之间的不一致性。您在使用 Nginx Ingress 时编写的注解，在切换到 Traefik 后可能会变得毫无意义。当然，如果您像我一样通常只使用 Nginx Ingress，这可能对您来说不是问题，但未来您可能需要替代方案。&lt;/p>
@@ -10,10 +10,10 @@
 &lt;p>&lt;strong>GatewayClass：&lt;/strong> 该资源定义了网关 (Gateway) 的行为和功能。就像 Ingress Controllers 一样，不同的 Gateway Controllers (例如 NGINX Gateway) 提供自己的 GatewayClass。&lt;/p>
 &lt;p>&lt;strong>Gateway：&lt;/strong> 该资源表示集群中的一个网络网关，通常是一个负载均衡器或代理。它定义了监听器 (listeners)，并指定哪些路由 (Route) 对象可以附加到这些监听器。例如，一个 Gateway 对象可能在 80 端口和 443 端口监听 HTTP 和 HTTPS 流量。&lt;/p>
 &lt;p>&lt;strong>Route：&lt;/strong> Route 资源定义了到达 Gateway 的流量应如何路由。HTTPRoute 用于 HTTP/HTTPS 流量，而 TCPRoute 和 UDPRoute 等其他类型则用于不同的协议。路由根据主机 (host)、路径 (path)、请求头 (headers) 等匹配流量，并将其路由到后端服务 (backend services)。这是开发人员可以定义自己的路由规则的地方。&lt;/p>
-&lt;p>&lt;img src="https://martinliu.cn/blog/why-im-moving-from-kubernetes-ingress-to-gateway/1__1TVbXaobEeF2gWCENYxkw.webp"
+&lt;p>&lt;img src="https://martinliu.cn/blog/why-im-moving-from-kubernetes-ingress-to-gateway/1__1TVbXaobEeF2gWCENYxkw.png"
 width="640"
 height="560"
-srcset="https://martinliu.cn/blog/why-im-moving-from-kubernetes-ingress-to-gateway/1__1TVbXaobEeF2gWCENYxkw_hu_c0243f4701007b9e.webp 480w, https://martinliu.cn/blog/why-im-moving-from-kubernetes-ingress-to-gateway/1__1TVbXaobEeF2gWCENYxkw_hu_c0f57492270a5ed0.webp 1024w"
+srcset="https://martinliu.cn/blog/why-im-moving-from-kubernetes-ingress-to-gateway/1__1TVbXaobEeF2gWCENYxkw_hu_9a9ca8f5c7e8bae2.png 480w, https://martinliu.cn/blog/why-im-moving-from-kubernetes-ingress-to-gateway/1__1TVbXaobEeF2gWCENYxkw_hu_51ef272340507958.png 1024w"
 loading="lazy"
 alt="Gateway API 架构图"
 class="gallery-image"
@@ -393,9 +393,9 @@ data-flex-basis="441px"
 >https://www.solutionanalysts.com/blog/top-10-trends-of-devops-in-2023/&lt;/a>&lt;/li>
 &lt;li>&lt;a class="link" href="https://www.analyticsinsight.net/top-10-devops-trends-and-predictions-to-follow-up-in-2023/" target="_blank" rel="noopener"
 >https://www.analyticsinsight.net/top-10-devops-trends-and-predictions-to-follow-up-in-2023/&lt;/a>&lt;/li>
-&lt;/ul></description></item><item><title> DevOps 的未来：2021 年的 15 个趋势</title><link>https://martinliu.cn/blog/future-devops-15-trends-2021/</link><pubDate>Sun, 21 Mar 2021 00:05:58 +0800</pubDate><guid>https://martinliu.cn/blog/future-devops-15-trends-2021/</guid><description>&lt;img src="https://martinliu.cn/img/2021/03/The-Future-Is-Bright.jpg" alt="Featured image of post DevOps 的未来：2021 年的 15 个趋势" />&lt;p>本文的原文地址：[https://thechief.io/c/editorial/future-DevOps -15-trends-2021/](&lt;a class="link" href="https://thechief.io/c/editorial/future-DevOps" target="_blank" rel="noopener"
+&lt;/ul></description></item><item><title> DevOps 的未来：2021 年的 15 个趋势</title><link>https://martinliu.cn/blog/future-devops-15-trends-2021/</link><pubDate>Sun, 21 Mar 2021 00:05:58 +0800</pubDate><guid>https://martinliu.cn/blog/future-devops-15-trends-2021/</guid><description>&lt;img src="https://martinliu.cn/img/2021/03/The-Future-Is-Bright.webp" alt="Featured image of post DevOps 的未来：2021 年的 15 个趋势" />&lt;p>本文的原文地址：[https://thechief.io/c/editorial/future-DevOps -15-trends-2021/](&lt;a class="link" href="https://thechief.io/c/editorial/future-DevOps" target="_blank" rel="noopener"
 >https://thechief.io/c/editorial/future-DevOps&lt;/a> -15-trends-2021/ ) 本文是一篇译文，旨在学习，并分享给社区。&lt;/p>
-&lt;p>&lt;img src="https://martinliu.cn/img/cos/2021-03-20-Screen%20Shot%202021-03-21%20at%201.26.38%20AM.jpg"
+&lt;p>&lt;img src="https://martinliu.cn/img/cos/2021-03-20-Screen%20Shot%202021-03-21%20at%201.26.38%20AM.webp"
 loading="lazy"
 >
 &lt;/p>
@@ -461,7 +461,7 @@ loading="lazy"
 &lt;h1 id="15-gitops将研究院">15-GitOps将研究院
 &lt;/h1>&lt;p>GitOps 是一种集部署、监控、管理于一体的构建云应用的运维模式。GitOps 允许 DevOps 使用开发者工具来驱动运维，在DevOps中建立了一个 &amp;ldquo;你构建，你负责&amp;rdquo; 的流程。&lt;/p>
 &lt;p>如果你想了解更多关于 GitOps的信息，请查看我们的播客集&lt;a class="link" href="https://anchor.fm/thedevopsfauncast/episodes/GitOps-This-is-What-You-Need-to-Know-12-epga8p?ref=thechiefio?ref=thechiefio" target="_blank" rel="noopener"
->GitOps: This is What You Need to Know.&lt;/a>&lt;/p></description></item><item><title>Skaffold 让 K8s 开发者更加酸爽</title><link>https://martinliu.cn/blog/skaffold-make-local-k8s-dev-easy/</link><pubDate>Wed, 15 Jul 2020 00:09:53 +0800</pubDate><guid>https://martinliu.cn/blog/skaffold-make-local-k8s-dev-easy/</guid><description>&lt;img src="https://martinliu.cn/images/abstract-1.jpg" alt="Featured image of post Skaffold 让 K8s 开发者更加酸爽" />&lt;p>&lt;img src="https://martinliu.cn/images/skaffold.webp"
+>GitOps: This is What You Need to Know.&lt;/a>&lt;/p></description></item><item><title>Skaffold 让 K8s 开发者更加酸爽</title><link>https://martinliu.cn/blog/skaffold-make-local-k8s-dev-easy/</link><pubDate>Wed, 15 Jul 2020 00:09:53 +0800</pubDate><guid>https://martinliu.cn/blog/skaffold-make-local-k8s-dev-easy/</guid><description>&lt;img src="https://martinliu.cn/images/abstract-1.webp" alt="Featured image of post Skaffold 让 K8s 开发者更加酸爽" />&lt;p>&lt;img src="https://martinliu.cn/images/skaffold.webp"
 loading="lazy"
 >
 &lt;/p>
@@ -480,19 +480,19 @@ loading="lazy"
 &lt;li>优化你的开发：Skaffold使内部循环紧密，高度优化，让您在开发的同时得到即时反馈。&lt;/li>
 &lt;/ul>
 &lt;h2 id="客户评价">客户评价
-&lt;/h2>&lt;p>&lt;img src="https://martinliu.cn/images/forgerock.webp"
+&lt;/h2>&lt;p>&lt;img src="https://martinliu.cn/images/forgerock.png"
 loading="lazy"
 >
 &lt;/p>
 &lt;p>&amp;ldquo;我们的客户很喜欢[Kubernetes]，但一直给我们反馈说在Kubernetes上开发很麻烦。Skaffold一针见血地解决了这个问题。以前需要几分钟才能部署的docker镜像或配置的更改，现在只需要几秒钟。Skaffold的插件架构使我们能够部署到Helm或Kustomize，并使用各种docker构建插件，如Kaniko。Skaffold用一个精简的工具取代了我们定制的实用程序和脚本集合，并且易于使用。&amp;rdquo;
 Warren Strange，ForgeRock的工程总监。&lt;/p>
-&lt;p>&lt;img src="https://martinliu.cn/images/quora.webp"
+&lt;p>&lt;img src="https://martinliu.cn/images/quora.png"
 loading="lazy"
 >
 &lt;/p>
 &lt;p>&amp;ldquo;当我们评估我们可以使用Kubernetes的工作流程时，Skaffold脱颖而出，成为我们在开发和部署中都想要的工具。它为我们提供了一个跨应用程序的通用入口点，我们也可以为CI/CD重用。现在，我们所有的Kubernetes应用的CI/CD管道在构建和部署时都使用Skaffold。&amp;rdquo;
 Taylor Barrella，Quora的软件工程师&lt;/p>
-&lt;p>&lt;img src="https://martinliu.cn/images/tng.webp"
+&lt;p>&lt;img src="https://martinliu.cn/images/tng.png"
 loading="lazy"
 >
 &lt;/p>

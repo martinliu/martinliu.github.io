@@ -108,7 +108,7 @@ alt="rcp 容器化应用的设计原则"
 >https://leanpub.com/k8spatterns/&lt;/a>&lt;/li>
 &lt;li>• &lt;a class="link" href="https://12factor.net" target="_blank" rel="noopener"
 >https://12factor.net&lt;/a>&lt;/li>
-&lt;/ul></description></item><item><title>为Docker Swarm群集配置Nutanix持久存储</title><link>https://martinliu.cn/blog/nutanix-dvp/</link><pubDate>Thu, 02 Nov 2017 00:00:00 +0000</pubDate><guid>https://martinliu.cn/blog/nutanix-dvp/</guid><description>&lt;img src="https://martinliu.cn/images/abstract-4.jpg" alt="Featured image of post 为Docker Swarm群集配置Nutanix持久存储" />&lt;p>本文介绍如何用Docker卷插件的方式，给Docker Swarm的群集挂载Nutanix存储。&lt;a class="link" href="https://store.docker.com/plugins/nutanix-dvp-docker-volume-plug-in" target="_blank" rel="noopener"
+&lt;/ul></description></item><item><title>为Docker Swarm群集配置Nutanix持久存储</title><link>https://martinliu.cn/blog/nutanix-dvp/</link><pubDate>Thu, 02 Nov 2017 00:00:00 +0000</pubDate><guid>https://martinliu.cn/blog/nutanix-dvp/</guid><description>&lt;img src="https://martinliu.cn/images/abstract-4.webp" alt="Featured image of post 为Docker Swarm群集配置Nutanix持久存储" />&lt;p>本文介绍如何用Docker卷插件的方式，给Docker Swarm的群集挂载Nutanix存储。&lt;a class="link" href="https://store.docker.com/plugins/nutanix-dvp-docker-volume-plug-in" target="_blank" rel="noopener"
 >Nutanix Container Volume Plug-in&lt;/a>简称DVP，可以给容器提供数据持久化的功能。&lt;/p>
 &lt;p>本文使用ownCloud网盘应用做功能测试。测试的过程如下，安装部署Docker Datacenter，配置好群集，在UCP的界面里调用DVP插件建持久的数据卷，建立ownCloud服务，部署和测试该服务。&lt;/p>
 &lt;h2 id="nutanix-dvp-docker-volume-plug-in安装和配置">Nutanix DVP (Docker Volume Plug-in)安装和配置
@@ -510,7 +510,7 @@ alt="rcp 容器化应用的设计原则"
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
 &lt;/div>
 &lt;/div>&lt;p>回到Nutanix的Prisum界面（主要的群集管理图形化界面）中查看Storage &amp;ndash;&amp;gt; table &amp;ndash;&amp;gt; Volume Group，应该能看到这个命令所创建的名为testvol的数据卷。如下图所示：&lt;/p>
-&lt;p>&lt;img src="https://martinliu.cn/images/Screen%20Shot%202017-06-20%20at%209.07.13%20PM.png"
+&lt;p>&lt;img src="https://martinliu.cn/images/Screen%20Shot%202017-06-20%20at%209.07.13%20PM.webp"
 loading="lazy"
 >
 &lt;/p>
@@ -649,7 +649,7 @@ loading="lazy"
 &lt;li>systemctl status iscsid&lt;/li>
 &lt;/ul>
 &lt;p>下面就可以把上一步所记录命令在命令行里面执行以下，完毕之后回到UCP的界面中查看是否它们已经添加成功。如下图所示：
-&lt;img src="https://martinliu.cn/images/Screen%20Shot%202017-06-20%20at%209.49.32%20PM.png"
+&lt;img src="https://martinliu.cn/images/Screen%20Shot%202017-06-20%20at%209.49.32%20PM.webp"
 loading="lazy"
 alt="Screen Shot 2017-06-20 at 9.49.32 P"
 >
@@ -690,7 +690,7 @@ alt="Screen Shot 2017-06-20 at 9.49.32 P"
 &lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">docker push dtr.zenlab.local/admin/owncloud:latest
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
 &lt;/div>
-&lt;/div>&lt;p>&lt;img src="https://martinliu.cn/images/Screen%20Shot%202017-06-20%20at%2010.10.13%20PM.png"
+&lt;/div>&lt;p>&lt;img src="https://martinliu.cn/images/Screen%20Shot%202017-06-20%20at%2010.10.13%20PM.webp"
 loading="lazy"
 alt="Screen Shot 2017-06-20 at 10.10.13 P"
 >
@@ -700,7 +700,7 @@ alt="Screen Shot 2017-06-20 at 10.10.13 P"
 &lt;h2 id="docker-swarm群集中使用dvp">Docker Swarm群集中使用DVP
 &lt;/h2>&lt;p>这里使用UCP的图形化界面，在一个所有节点都配置和部署了VDP的群集上，给群集挂载外部Nutanix的数据卷。&lt;/p>
 &lt;p>登录UCP主页，点击Resource，点击Volumes，点击 【Create Volume】，输入相关参数，如下图所示。图中的sizeMb=500000这个参数是制定VolumeGroup的大小，不设定这个参数的话，默认是10GB。
-&lt;img src="https://martinliu.cn/images/Screen%20Shot%202017-06-21%20at%2012.22.24%20AM.png"
+&lt;img src="https://martinliu.cn/images/Screen%20Shot%202017-06-21%20at%2012.22.24%20AM.webp"
 loading="lazy"
 alt="Screen Shot 2017-06-21 at 12.22.24 A"
 >
@@ -713,41 +713,41 @@ alt="Screen Shot 2017-06-21 at 12.23.32 A"
 &lt;/p>
 &lt;h2 id="部署owncloud网盘服务">部署OwnCloud网盘服务
 &lt;/h2>&lt;p>登录UCP主页，点击 Service ， 点击 【Create a Service】按钮；开始建立这个服务。输入服务名，镜像名；点击 【Next】按钮。&lt;/p>
-&lt;p>&lt;img src="https://martinliu.cn/images/Screen%20Shot%202017-06-20%20at%2010.49.10%20PM.png"
+&lt;p>&lt;img src="https://martinliu.cn/images/Screen%20Shot%202017-06-20%20at%2010.49.10%20PM.webp"
 loading="lazy"
 alt="Screen Shot 2017-06-20 at 10.49.10 P"
 >
 &lt;/p>
 &lt;p>点击 【Next】按钮。进入 Resource页面，这里需要配置端口和数据卷。
-&lt;img src="https://martinliu.cn/images/Screen%20Shot%202017-06-20%20at%2010.49.35%20PM.png"
+&lt;img src="https://martinliu.cn/images/Screen%20Shot%202017-06-20%20at%2010.49.35%20PM.webp"
 loading="lazy"
 alt="Screen Shot 2017-06-20 at 10.49.35 P"
 >
 &lt;/p>
-&lt;p>&lt;img src="https://martinliu.cn/images/Screen%20Shot%202017-06-20%20at%2010.49.58%20PM.png"
+&lt;p>&lt;img src="https://martinliu.cn/images/Screen%20Shot%202017-06-20%20at%2010.49.58%20PM.webp"
 loading="lazy"
 alt="Screen Shot 2017-06-20 at 10.49.58 P"
 >
 &lt;/p>
 &lt;p>最后点击【Deploy Now】按钮。 部署完毕之后，显示这个服务的状态为正常。
-&lt;img src="https://martinliu.cn/images/Screen%20Shot%202017-06-21%20at%2012.25.51%20AM.png"
+&lt;img src="https://martinliu.cn/images/Screen%20Shot%202017-06-21%20at%2012.25.51%20AM.webp"
 loading="lazy"
 alt="Screen Shot 2017-06-21 at 12.25.51 A"
 >
 &lt;/p>
-&lt;p>&lt;img src="https://martinliu.cn/images/Screen%20Shot%202017-06-20%20at%2010.52.28%20PM.png"
+&lt;p>&lt;img src="https://martinliu.cn/images/Screen%20Shot%202017-06-20%20at%2010.52.28%20PM.webp"
 loading="lazy"
 alt="Screen Shot 2017-06-20 at 10.52.28 P"
 >
 &lt;/p>
 &lt;p>点击这个服务，到这个页面的最下方，找到右下角的发布端口的链接，点击后，就可以看到ownCloud的初始化配置页面了。
-&lt;img src="https://martinliu.cn/images/Screen%20Shot%202017-06-20%20at%2010.53.24%20PM.png"
+&lt;img src="https://martinliu.cn/images/Screen%20Shot%202017-06-20%20at%2010.53.24%20PM.webp"
 loading="lazy"
 alt="Screen Shot 2017-06-20 at 10.53.24 P"
 >
 &lt;/p>
 &lt;p>输入管理员的用户名和密码，进入之后，上传一些图片，测试一下功能是否正常。&lt;/p>
-&lt;p>&lt;img src="https://martinliu.cn/images/Screen%20Shot%202017-06-20%20at%2010.54.06%20PM.png"
+&lt;p>&lt;img src="https://martinliu.cn/images/Screen%20Shot%202017-06-20%20at%2010.54.06%20PM.webp"
 loading="lazy"
 alt="Screen Shot 2017-06-20 at 10.54.06 P"
 >
@@ -761,7 +761,7 @@ alt="Screen Shot 2017-06-20 at 10.54.06 P"
 &lt;li>查看和确认刚才上传的文件是否还在&lt;/li>
 &lt;/ol>
 &lt;h2 id="总结">总结
-&lt;/h2>&lt;p>Nutanix是一种融合和了计算、存储和虚拟化（内置KVM）的超融合平台。Nutanix DVP (Docker Volume Plug-in)可以让平台里的容器用上持久化存储服务。DVP不仅可以给单独虚拟机里的容器提供持久卷服务，还能给类似于Docker Swarm的其它容器编排平台提供持久化数据服务功能。我后续的文章还会分享路测试Kubernetes等其它平台。&lt;/p></description></item><item><title>Game of Cloud 对比三大主流公有云厂商</title><link>https://martinliu.cn/blog/game-of-cloud/</link><pubDate>Thu, 07 Sep 2017 00:00:00 +0000</pubDate><guid>https://martinliu.cn/blog/game-of-cloud/</guid><description>&lt;img src="https://martinliu.cn/images/abstract-10.jpg" alt="Featured image of post Game of Cloud 对比三大主流公有云厂商" />&lt;p>在全球范围内，公有云发展的正如火如荼，对IT行业技术的发展产生了很大的影响，从私有云到公有云，到混合云，再到云原生应用和DevOps。这一连串的连锁，也反映出了最近10年来IT行业发展的主流趋势。&lt;/p>
+&lt;/h2>&lt;p>Nutanix是一种融合和了计算、存储和虚拟化（内置KVM）的超融合平台。Nutanix DVP (Docker Volume Plug-in)可以让平台里的容器用上持久化存储服务。DVP不仅可以给单独虚拟机里的容器提供持久卷服务，还能给类似于Docker Swarm的其它容器编排平台提供持久化数据服务功能。我后续的文章还会分享路测试Kubernetes等其它平台。&lt;/p></description></item><item><title>Game of Cloud 对比三大主流公有云厂商</title><link>https://martinliu.cn/blog/game-of-cloud/</link><pubDate>Thu, 07 Sep 2017 00:00:00 +0000</pubDate><guid>https://martinliu.cn/blog/game-of-cloud/</guid><description>&lt;img src="https://martinliu.cn/images/abstract-10.webp" alt="Featured image of post Game of Cloud 对比三大主流公有云厂商" />&lt;p>在全球范围内，公有云发展的正如火如荼，对IT行业技术的发展产生了很大的影响，从私有云到公有云，到混合云，再到云原生应用和DevOps。这一连串的连锁，也反映出了最近10年来IT行业发展的主流趋势。&lt;/p>
 &lt;h2 id="各种味道的云计算">各种味道的云计算
 &lt;/h2>&lt;p>参考来源：&lt;a class="link" href="https://www.networkworld.com/article/3173056/cloud-computing/battle-of-the-clouds-amazon-web-services-vs-microsoft-azure-vs-google-cloud-platform.html?upd=1504859548812" target="_blank" rel="noopener"
 >Battle of the clouds: Amazon Web Services vs. Microsoft Azure vs. Google Cloud Platform&lt;/a> 作者 Brandon Butler, Senior Editor, Network World ，FEB 22, 2017 12:42 PM PT Which flavor of IaaS public cloud has what you need?&lt;/p>
@@ -934,7 +934,7 @@ alt="15048820280796"
 &lt;/h2>&lt;p>AWS 2017 云市场应用排名&lt;/p>
 &lt;p>From: &lt;a class="link" href="https://www.cloudendure.com/blog/aws-cloud-computing-map-game-of-clouds-2017" target="_blank" rel="noopener"
 >https://www.cloudendure.com/blog/aws-cloud-computing-map-game-of-clouds-2017&lt;/a>&lt;/p>
-&lt;p>&lt;img src="https://martinliu.cn/images/Game-of-Clouds-12.07.17.webp"
+&lt;p>&lt;img src="https://martinliu.cn/images/Game-of-Clouds-12.07.17.jpg"
 loading="lazy"
 alt="Game-of-Clouds-12.07.17"
 >
@@ -944,7 +944,7 @@ alt="Game-of-Clouds-12.07.17"
 &lt;p>这是它区别于其它云的功能点，是可以在企业数据中心里部署的私有云IaaS平台。它与Azure公有云遥相呼应，为客户提供了混合云方案。&lt;/p>
 &lt;p>本地运行 Azure 服务 根据你的需求正确组合云和本地部署来满足业务和技术要求。Azure 基础结构即服务 (IaaS) 传输远优于传统虚拟化。借助虚拟机规模集，新式工作负荷的真正自动扩展可实现快速部署。一致的 Azure 平台即服务 (PaaS) 功能将混合部署选择和可移植性引入云应用程序。因此，可在本地运行完全托管的 PaaS、无服务器计算、分布式微服务体系结构和容器管理。&lt;/p>
 &lt;p>生成跨混合云环境的新式应用程序 Azure Stack 是 Azure 的扩展，将云计算的敏捷性和快节奏创新引入到本地环境。只有 Azure Stack 才能让你从组织的数据中心提供 Azure 服务，同时适度平衡灵活性和控制程度，实现真正一致性的混合云部署。&lt;/p>
-&lt;p>利用一致的环境加速开发 无论应用是在 Azure 还是在 Azure Stack 上运行，开发人员都能以相同的方式生成和部署应用程序，从而实现工作效率最大化。一套工具 - 使用相同的应用程序模块、自助服务门户和由 Azure Resource Manager 启用的 API。常规 DevOps — 通过 Jenkins 和 Visual Studio Team Services 体验持续部署和集成，通过 Chef 和 Azure PowerShell DSC 扩展体验自动化。 开源 — 使用 Java、Python、Node.js、PHP、Docker 集成式容器、Mesosphere DC/OS 和 Cloud Foundry 等众多开源技术。&lt;/p></description></item><item><title>互联网规模的超融合平台</title><link>https://martinliu.cn/blog/nu-school-converged-platform/</link><pubDate>Mon, 20 Feb 2017 00:00:00 +0000</pubDate><guid>https://martinliu.cn/blog/nu-school-converged-platform/</guid><description>&lt;img src="https://martinliu.cn/images/abstract-3.jpg" alt="Featured image of post 互联网规模的超融合平台" />&lt;p>nu.shool 牛学院系列以视频加文字的形式，向您展示Nutanix云平台的技术特性和细节。&lt;/p>
+&lt;p>利用一致的环境加速开发 无论应用是在 Azure 还是在 Azure Stack 上运行，开发人员都能以相同的方式生成和部署应用程序，从而实现工作效率最大化。一套工具 - 使用相同的应用程序模块、自助服务门户和由 Azure Resource Manager 启用的 API。常规 DevOps — 通过 Jenkins 和 Visual Studio Team Services 体验持续部署和集成，通过 Chef 和 Azure PowerShell DSC 扩展体验自动化。 开源 — 使用 Java、Python、Node.js、PHP、Docker 集成式容器、Mesosphere DC/OS 和 Cloud Foundry 等众多开源技术。&lt;/p></description></item><item><title>互联网规模的超融合平台</title><link>https://martinliu.cn/blog/nu-school-converged-platform/</link><pubDate>Mon, 20 Feb 2017 00:00:00 +0000</pubDate><guid>https://martinliu.cn/blog/nu-school-converged-platform/</guid><description>&lt;img src="https://martinliu.cn/images/abstract-3.webp" alt="Featured image of post 互联网规模的超融合平台" />&lt;p>nu.shool 牛学院系列以视频加文字的形式，向您展示Nutanix云平台的技术特性和细节。&lt;/p>
 &lt;p>&lt;img src="https://martinliu.cn/images/Tech_TopX-_Converged_Platform_mp4.webp"
 loading="lazy"
 alt="Converged_Platform"
@@ -957,7 +957,7 @@ loading="lazy"
 alt="bible"
 >
 &lt;/p>
-&lt;p>《Nutanix圣经》章节推荐。&lt;/p></description></item><item><title>Nutanix AHV 虚拟机模板制作</title><link>https://martinliu.cn/blog/clone-ahv-vm-template/</link><pubDate>Tue, 10 Jan 2017 00:00:00 +0000</pubDate><guid>https://martinliu.cn/blog/clone-ahv-vm-template/</guid><description>&lt;img src="https://martinliu.cn/images/abstract-10.jpg" alt="Featured image of post Nutanix AHV 虚拟机模板制作" />&lt;p>本文描述了AHV虚拟化的虚拟机模板的制作过程。首先使用ssh登录cvm，进入acropolis命令行。&lt;/p>
+&lt;p>《Nutanix圣经》章节推荐。&lt;/p></description></item><item><title>Nutanix AHV 虚拟机模板制作</title><link>https://martinliu.cn/blog/clone-ahv-vm-template/</link><pubDate>Tue, 10 Jan 2017 00:00:00 +0000</pubDate><guid>https://martinliu.cn/blog/clone-ahv-vm-template/</guid><description>&lt;img src="https://martinliu.cn/images/abstract-10.webp" alt="Featured image of post Nutanix AHV 虚拟机模板制作" />&lt;p>本文描述了AHV虚拟化的虚拟机模板的制作过程。首先使用ssh登录cvm，进入acropolis命令行。&lt;/p>
 &lt;h2 id="找出模板对应的虚拟机">找出模板对应的虚拟机
 &lt;/h2>&lt;p>使用 vm.disk_get 命令，按多次tab，显示虚拟机清单，复制模板机名称&lt;/p>
 &lt;div class="highlight">&lt;div class="chroma">
@@ -1192,7 +1192,7 @@ alt="5.0 brings enhancements to both Prism Starter and Prism Pro."
 >Nutanix Cluster Check 3.0 download&lt;/a>&lt;/li>
 &lt;li>&lt;a class="link" href="https://portal.nutanix.com/#/page/docs/details?targetId=Release-Notes-Prism-Central-v50:rel-Release-Notes-Prism-Central-v50.html" target="_blank" rel="noopener"
 >PRISM Central 5.0 release notes&lt;/a>&lt;/li>
-&lt;/ul></description></item><item><title>Nutanix CE All In One</title><link>https://martinliu.cn/2017/01/02/Nutanix-CE-all-in-one/</link><pubDate>Mon, 02 Jan 2017 00:00:00 +0000</pubDate><guid>https://martinliu.cn/2017/01/02/Nutanix-CE-all-in-one/</guid><description>&lt;img src="https://martinliu.cn/images/HongKongEye_ZH-CN12285832688_1920x1080.jpg" alt="Featured image of post Nutanix CE All In One" />&lt;p>Nutanix CE是Nutanix社区版软件的简称，它是Nutanix企业版产品的功能精简集合，是体验和测试Nutanix技术的很方便的途径。&lt;/p>
+&lt;/ul></description></item><item><title>Nutanix CE All In One</title><link>https://martinliu.cn/2017/01/02/Nutanix-CE-all-in-one/</link><pubDate>Mon, 02 Jan 2017 00:00:00 +0000</pubDate><guid>https://martinliu.cn/2017/01/02/Nutanix-CE-all-in-one/</guid><description>&lt;img src="https://martinliu.cn/images/HongKongEye_ZH-CN12285832688_1920x1080.webp" alt="Featured image of post Nutanix CE All In One" />&lt;p>Nutanix CE是Nutanix社区版软件的简称，它是Nutanix企业版产品的功能精简集合，是体验和测试Nutanix技术的很方便的途径。&lt;/p>
 &lt;h2 id="nutanix-community-edition-社区版简介">Nutanix Community Edition 社区版简介
 &lt;/h2>&lt;p>&lt;img src="https://martinliu.cn/img/Community_Edition_-_Nutanix.png"
 loading="lazy"
@@ -1271,7 +1271,7 @@ alt="14749866044733"
 >
 &lt;/p>
 &lt;p>这本书被我称为 CD 红皮书／红宝书。本书早在 10 年就出版了，也就是说比 Docker 早好多年。他给我最大的印象就是，作者每一页上似乎都在介绍这做事情的原则和规矩是什么？我一点也不夸张，他对 CD 的介绍，就是通过讲解一系列在项目上的经验总结。对作者这种级别的经验，和写书的房子只能用一个词总结“服”。这本书太干，我至今还没有消化完。他让我看到了解决发布和变更风险的终极解决方案，没有一次性解决问题的部署／配置／发布工具，有的是历练和打磨了千万次的持续部署流水线；隐约地觉得没用入手的企业都会慢慢跟上的。&lt;/p>
-&lt;p>以上是我对 DevOps 的阶段性总结，跨度有半年之久。这半年中我逐渐看清了我的主要兴趣点，抛除所有其他主题，目前剩下的就是：云计算和 DevOps。一方面觉得年纪不饶人，不能可能在和年轻人拼精力、体力和创意；我的背景和经验都让我感觉，在这两个话题上，我还是有很多年的经验和技术积累和总结的。云计算是（公有云＋私有云）未来企业 IT 基础架构的走向；DevOps 是目前看比较正确的运作实践。一个便技术，一个便管理，正好完整覆盖了我的经验；在其对应的开源技术这个分支里，我想它们都还有这很多的为探索和研究的项目。&lt;/p></description></item><item><title>下一代应用为中心的平台 OpenShift</title><link>https://martinliu.cn/2016/01/12/e4b88be4b880e4bba3e5ba94e794a8e4b8bae4b8ade5bf83e79a84e5b9b3e58fb0-openshift/</link><pubDate>Tue, 12 Jan 2016 04:05:46 +0000</pubDate><guid>https://martinliu.cn/2016/01/12/e4b88be4b880e4bba3e5ba94e794a8e4b8bae4b8ade5bf83e79a84e5b9b3e58fb0-openshift/</guid><description>&lt;img src="https://martinliu.cn/images/abstract-8.jpg" alt="Featured image of post 下一代应用为中心的平台 OpenShift" />&lt;p>&lt;a class="link" href="https://vimeo.com/151465422" target="_blank" rel="noopener"
+&lt;p>以上是我对 DevOps 的阶段性总结，跨度有半年之久。这半年中我逐渐看清了我的主要兴趣点，抛除所有其他主题，目前剩下的就是：云计算和 DevOps。一方面觉得年纪不饶人，不能可能在和年轻人拼精力、体力和创意；我的背景和经验都让我感觉，在这两个话题上，我还是有很多年的经验和技术积累和总结的。云计算是（公有云＋私有云）未来企业 IT 基础架构的走向；DevOps 是目前看比较正确的运作实践。一个便技术，一个便管理，正好完整覆盖了我的经验；在其对应的开源技术这个分支里，我想它们都还有这很多的为探索和研究的项目。&lt;/p></description></item><item><title>下一代应用为中心的平台 OpenShift</title><link>https://martinliu.cn/2016/01/12/e4b88be4b880e4bba3e5ba94e794a8e4b8bae4b8ade5bf83e79a84e5b9b3e58fb0-openshift/</link><pubDate>Tue, 12 Jan 2016 04:05:46 +0000</pubDate><guid>https://martinliu.cn/2016/01/12/e4b88be4b880e4bba3e5ba94e794a8e4b8bae4b8ade5bf83e79a84e5b9b3e58fb0-openshift/</guid><description>&lt;img src="https://martinliu.cn/images/abstract-8.webp" alt="Featured image of post 下一代应用为中心的平台 OpenShift" />&lt;p>&lt;a class="link" href="https://vimeo.com/151465422" target="_blank" rel="noopener"
 >Amadeus uses next-generation containerized application platform with OpenShift&lt;/a> from &lt;a class="link" href="https://vimeo.com/martinliu" target="_blank" rel="noopener"
 >Martin&lt;/a> on &lt;a class="link" href="https://vimeo.com" target="_blank" rel="noopener"
 >Vimeo&lt;/a>.&lt;/p>
