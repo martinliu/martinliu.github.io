@@ -1,4 +1,4 @@
-# China-Ready 内容排期（C 阶段）
+# Chinaready 内容排期（C 阶段）
 
 2026-09-30 与 Martin 确认的执行方案。上游背景见 `martinliu-cn-mvp-commercial-todo.md`。
 
@@ -10,7 +10,7 @@ https://chinaready.co/diagnose/?utm_source=martinliu.cn&utm_medium=blog&utm_camp
 
 - 域名：chinaready.co（现有 MVP，已验证 `/diagnose/` 返回 200）
 - 全站唯一出口：已封装为 `layouts/shortcodes/china-ready.html`，改文案/URL 只动这一个文件
-- 专题页：`/china-ready/`（中）与 `/en/china-ready/`（英），导航已加 China-Ready 入口
+- 专题页：`/china-ready/`（中）与 `/en/china-ready/`（英），导航已加 Chinaready 入口
 
 ## 三篇文章（并行排期）
 

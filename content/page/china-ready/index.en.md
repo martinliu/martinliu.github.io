@@ -1,5 +1,5 @@
 ---
-title: "China-Ready: Making your product truly reachable in China"
+title: "Chinaready: Making your product truly reachable in China"
 slug: china-ready
 description: "Technical readiness practices for teams entering the China market: network reachability, loading performance, and compliance essentials."
 ---
@@ -25,7 +25,7 @@ A practical checklist: domain and ICP strategy, static asset distribution, reach
 
 Measure instead of guessing. Chinaready offers a free, data-driven diagnostic covering your site's reachability and loading performance in the mainland, with prioritized recommendations.
 
-{{< china-ready label="Get a free China-readiness diagnostic" title="How reachable is your site in mainland China?" desc="If your product targets users in China, get a free China-Ready diagnostic based on real measurements: reachability, loading performance, and compliance essentials." >}}
+{{< china-ready label="Get a free China-readiness diagnostic" title="How reachable is your site in mainland China?" desc="If your product targets users in China, get a free Chinaready diagnostic based on real measurements: reachability, loading performance, and compliance essentials." >}}
 
 ## Further reading
 
