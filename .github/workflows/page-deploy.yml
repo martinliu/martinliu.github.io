@@ -54,6 +54,48 @@ jobs:
             exit 1
           fi
 
+      - name: ⏳ 等待部署完成并清除 CDN 缓存
+        # 边缘 HTML 缓存 TTL 为 1 小时，部署完成后需主动清除，否则用户可能看到旧内容
+        if: ${{ steps.deploy.outputs.deploy_status == 'success' && secrets.CLOUDFLARE_API_TOKEN != '' }}
+        env:
+          CF_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CF_ACCOUNT_ID: e20c2015f3c1240498f6316d173ccd26
+          CF_ZONE_ID: 09043b48254ed2e6e3d46356bba1ec76
+        run: |
+          echo "等待 Pages 生产部署完成（最长 10 分钟）..."
+          ok=0
+          for i in $(seq 1 40); do
+            sleep 15
+            stage=$(curl -s -H "Authorization: Bearer $CF_API_TOKEN" \
+              "https://api.cloudflare.com/client/v4/accounts/$CF_ACCOUNT_ID/pages/projects/martinliu-github-io/deployments?env=production&per_page=1" \
+              | jq -r '[.result[0].stages[] | select(.name=="deploy")][0].status // "pending"')
+            echo "  [$i] deploy stage: $stage"
+            if [ "$stage" = "success" ]; then ok=1; break; fi
+            if [ "$stage" = "failure" ]; then echo "❌ Pages 部署失败，跳过清缓存"; exit 1; fi
+          done
+          if [ "$ok" != "1" ]; then echo "⚠️ 等待超时，仍继续清缓存"; fi
+          echo "清除 Cloudflare 边缘缓存..."
+          http_code=$(curl -s -o /tmp/purge.json -w "%{http_code}" -X POST \
+            -H "Authorization: Bearer $CF_API_TOKEN" \
+            -H "Content-Type: application/json" \
+            "https://api.cloudflare.com/client/v4/zones/$CF_ZONE_ID/purge_cache" \
+            --data '{"purge_everything":true}')
+          cat /tmp/purge.json; echo
+          if [[ $http_code -ge 200 && $http_code -lt 300 ]]; then
+            echo "✅ CDN 缓存已清除，新内容即刻可见"
+          else
+            echo "❌ 清缓存失败 (HTTP $http_code)"; exit 1
+          fi
+
+      - name: 💡 清缓存跳过提示
+        if: ${{ steps.deploy.outputs.deploy_status == 'success' && secrets.CLOUDFLARE_API_TOKEN == '' }}
+        run: |
+          echo "⚠️ 未配置 CLOUDFLARE_API_TOKEN secret，已跳过自动清缓存。"
+          echo "边缘 HTML 缓存 1 小时，期间访问者可能看到旧内容。"
+          echo "一次性配置方法："
+          echo "  1. Cloudflare 仪表盘创建 API Token，权限仅勾选 Zone.Cache Purge（区域 martinliu.cn）+ Account.Cloudflare Pages Read"
+          echo "  2. gh secret set CLOUDFLARE_API_TOKEN -R martinliu/martinliu.github.io"
+
       - name: 📊 部署摘要
         if: always()
         run: |
