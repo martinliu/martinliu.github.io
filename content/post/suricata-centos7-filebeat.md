@@ -21,7 +21,7 @@ Suricata 是一款高性能的网络IDS、IPS和网络安全监控引擎。它�
 
 Suricata 可以作为入侵检测(IDS)引擎、在线入侵防御系统(IPS)、网络安全监控(NSM)以及离线pcap处理工具。它的工作原理是利用规则和签名检查网络流量，并支持Lua脚本来检测复杂的威胁。
 
-![Suricata workflow](/img/2021/20190809183352238.png)
+![Suricata workflow](/img/2021/20190809183352238.webp)
 
 由于 Suricata 能够以 YAML 和 JSON 格式编写日志，因此它可以与其他工具集成，如SIEM、Splunk、Logstash/Elasticsearch、Kibana等，以实现进一步的日志处理和可视化。
 

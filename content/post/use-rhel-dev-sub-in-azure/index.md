@@ -57,7 +57,7 @@ toc: true
 
 Azure 提供的 AHB（Azure Hybrid Benefit）使用中携带你自己的订阅到公有云里使用的方式。如下图所示。
 
-![即用即付”(PAYG) 和“自带订阅”(BYOS)](azure-hybrid-benefit-compare.webp)
+![即用即付”(PAYG) 和“自带订阅”(BYOS)](azure-hybrid-benefit-compare.png)
 
 右侧的这个框的说明了 Azure 虚拟机的成本结构。除了计算资源这部分需要计费意外。如果你在 Azure 中开启了 RHEL 虚拟机实例，默认情况下 RHEL 的许可证费用是有 Azure 代收的，Azure 的账单里包含了这部分。
 

@@ -3,7 +3,7 @@ title: 为Docker Swarm群集配置Nutanix持久存储
 subtitle: 在Nutanix平台上为Docker配置存储
 date: 2017-11-02
 tags: ["Nutanix","docker"]
-image : "/images/abstract-4.jpg"
+image : "/images/abstract-4.webp"
 categories: ["Cloud"]
 slug: nutanix-dvp
 ---
@@ -239,7 +239,7 @@ nutanix:latest      testvol
 
 回到Nutanix的Prisum界面（主要的群集管理图形化界面）中查看Storage --> table  --> Volume Group，应该能看到这个命令所创建的名为testvol的数据卷。如下图所示：
 
-![](/images/Screen%20Shot%202017-06-20%20at%209.07.13%20PM.png)
+![](/images/Screen%20Shot%202017-06-20%20at%209.07.13%20PM.webp)
 
 在命令行删除这个测试的卷。
 
@@ -254,7 +254,7 @@ DRIVER              VOLUME NAME
 在回到Prisum界面中查看刚才看到的那个卷应该就消失了。到此为止所有节点的DVP部署配置工作就完毕了，并且确认docker服务和DVP功能都很正常。用 sys-unconfig 命令关机，把这个虚拟机在Prisum里面做一个快照备用，也可以在Nutanix的acli命令行里面把它做成一个基础镜像。
 
 我们已经理解和熟悉了DVP的基本操作，配置和部署，下面开始安装Docker Datacenter；Docker Datacenter的架构图如下所示：
-![](/images/14979754711332.jpg)
+![](/images/14979754711332.webp)
 
 本文安装的架构是：
 
@@ -340,7 +340,7 @@ docker swarm join \
 * systemctl status iscsid
 
 下面就可以把上一步所记录命令在命令行里面执行以下，完毕之后回到UCP的界面中查看是否它们已经添加成功。如下图所示：
-![Screen Shot 2017-06-20 at 9.49.32 P](/images//Screen%20Shot%202017-06-20%20at%209.49.32%20PM.png)
+![Screen Shot 2017-06-20 at 9.49.32 P](/images//Screen%20Shot%202017-06-20%20at%209.49.32%20PM.webp)
 
 ## 安装DTR-Docker镜像仓库
 
@@ -368,7 +368,7 @@ docker tag owncloud:latest dtr.zenlab.local/admin/owncloud:latest
 docker push dtr.zenlab.local/admin/owncloud:latest
 ```
 
-![Screen Shot 2017-06-20 at 10.10.13 P](/images/Screen%20Shot%202017-06-20%20at%2010.10.13%20PM.png)
+![Screen Shot 2017-06-20 at 10.10.13 P](/images/Screen%20Shot%202017-06-20%20at%2010.10.13%20PM.webp)
 
 注意：如果你的环境中没有DNS，就把dtr.zenlab.local换成DTR的IP地址。
 
@@ -379,7 +379,7 @@ docker push dtr.zenlab.local/admin/owncloud:latest
 这里使用UCP的图形化界面，在一个所有节点都配置和部署了VDP的群集上，给群集挂载外部Nutanix的数据卷。
 
 登录UCP主页，点击Resource，点击Volumes，点击 【Create Volume】，输入相关参数，如下图所示。图中的sizeMb=500000这个参数是制定VolumeGroup的大小，不设定这个参数的话，默认是10GB。
-![Screen Shot 2017-06-21 at 12.22.24 A](/images/Screen%20Shot%202017-06-21%20at%2012.22.24%20AM.png)
+![Screen Shot 2017-06-21 at 12.22.24 A](/images/Screen%20Shot%202017-06-21%20at%2012.22.24%20AM.webp)
 
 在到Nutanix的Prism里面查看这个Volume Group是否存在。应该如下图所示：
 
@@ -389,24 +389,24 @@ docker push dtr.zenlab.local/admin/owncloud:latest
 
 登录UCP主页，点击 Service ， 点击 【Create a Service】按钮；开始建立这个服务。输入服务名，镜像名；点击 【Next】按钮。
 
-![Screen Shot 2017-06-20 at 10.49.10 P](/images/Screen%20Shot%202017-06-20%20at%2010.49.10%20PM.png)
+![Screen Shot 2017-06-20 at 10.49.10 P](/images/Screen%20Shot%202017-06-20%20at%2010.49.10%20PM.webp)
 
 点击 【Next】按钮。进入 Resource页面，这里需要配置端口和数据卷。
-![Screen Shot 2017-06-20 at 10.49.35 P](/images/Screen%20Shot%202017-06-20%20at%2010.49.35%20PM.png)
+![Screen Shot 2017-06-20 at 10.49.35 P](/images/Screen%20Shot%202017-06-20%20at%2010.49.35%20PM.webp)
 
-![Screen Shot 2017-06-20 at 10.49.58 P](/images/Screen%20Shot%202017-06-20%20at%2010.49.58%20PM.png)
+![Screen Shot 2017-06-20 at 10.49.58 P](/images/Screen%20Shot%202017-06-20%20at%2010.49.58%20PM.webp)
 
 最后点击【Deploy Now】按钮。 部署完毕之后，显示这个服务的状态为正常。
-![Screen Shot 2017-06-21 at 12.25.51 A](/images/Screen%20Shot%202017-06-21%20at%2012.25.51%20AM.png)
+![Screen Shot 2017-06-21 at 12.25.51 A](/images/Screen%20Shot%202017-06-21%20at%2012.25.51%20AM.webp)
 
-![Screen Shot 2017-06-20 at 10.52.28 P](/images/Screen%20Shot%202017-06-20%20at%2010.52.28%20PM.png)
+![Screen Shot 2017-06-20 at 10.52.28 P](/images/Screen%20Shot%202017-06-20%20at%2010.52.28%20PM.webp)
 
 点击这个服务，到这个页面的最下方，找到右下角的发布端口的链接，点击后，就可以看到ownCloud的初始化配置页面了。
-![Screen Shot 2017-06-20 at 10.53.24 P](/images/Screen%20Shot%202017-06-20%20at%2010.53.24%20PM.png)
+![Screen Shot 2017-06-20 at 10.53.24 P](/images/Screen%20Shot%202017-06-20%20at%2010.53.24%20PM.webp)
 
 输入管理员的用户名和密码，进入之后，上传一些图片，测试一下功能是否正常。
 
-![Screen Shot 2017-06-20 at 10.54.06 P](/images/Screen%20Shot%202017-06-20%20at%2010.54.06%20PM.png)
+![Screen Shot 2017-06-20 at 10.54.06 P](/images/Screen%20Shot%202017-06-20%20at%2010.54.06%20PM.webp)
 
 尝试一些Docker Datacenter的高级功能，如服务的高可用性；同时Nutanix的DVP在底层保障了数据的持久性和完全性。测试步骤如下：
 

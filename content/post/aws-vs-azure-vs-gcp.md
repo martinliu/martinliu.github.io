@@ -3,7 +3,7 @@ title: Game of Cloud 对比三大主流公有云厂商
 subtitle: 云之战
 date: 2017-09-07
 tags: ["cloud"]
-image:  "/images/abstract-10.jpg"
+image:  "/images/abstract-10.webp"
 categories: ["Cloud"]
 slug: "game-of-cloud"
 ---
@@ -14,14 +14,14 @@ slug: "game-of-cloud"
 
 参考来源：[Battle of the clouds: Amazon Web Services vs. Microsoft Azure vs. Google Cloud Platform](https://www.networkworld.com/article/3173056/cloud-computing/battle-of-the-clouds-amazon-web-services-vs-microsoft-azure-vs-google-cloud-platform.html?upd=1504859548812) 作者 Brandon Butler, Senior Editor, Network World ，FEB 22, 2017 12:42 PM PT Which flavor of IaaS public cloud has what you need?
 
-![15048603211912](/images/15048603211912.jpg)
+![15048603211912](/images/15048603211912.webp)
 
 对于行业观察者而言Amazon AWS是IaaS公有云市场里，不容争辩的领导者。而Azure正在逐渐缩小与AWS之间的差距，后来者GCP正大踏步的走来。
 
 根据Gartner对云厂商的深度评估，它分析了云厂商对企业工作负载的满足情况，AWS在最近的三年里，在234项功能对比中，保持着92%的满足度，Azure从75%上升到了88%。GCP也进入到了70%的程度。如下图所示：
 
 Gartner对IaaS厂商的评估
-![15048608641706](/images/15048608641706.jpg)
+![15048608641706](/images/15048608641706.webp)
 
 重点看Required这一列的百分比。这些企业级功能被分类为三个级别：
 
@@ -33,7 +33,7 @@ Gartner对IaaS厂商的评估
 
 AWS是IaaS公有云市场的缔造者，它在2006年发布了第一项云服务Simple Storage Service - S3；Gartner认为它是最成熟的公有云服务提供商，它的功能从广度和深度上，都能最广泛的，能覆盖各种使用场景。它的优缺点如下图所示：
 
-![15048620083336](/images/15048620083336.jpg)
+![15048620083336](/images/15048620083336.webp)
 
 AWS的优缺点
 优点  缺点
@@ -49,7 +49,7 @@ AWS的云市场具有最广泛的第三方工具的选择。而且它的顾问�
 
 Azure从功能角度看不管是计算、存储，还是数据库和IoT等方面，都与AWS非常的接近和匹配。微软试图通过混合云的策略区别于AWS。因此它提供了Azure Stack私有云方案。
 
-![15048652573559](/images/15048652573559.jpg)
+![15048652573559](/images/15048652573559.webp)
 
 Microsoft Azure的优势和劣势
 优点  缺点
@@ -69,7 +69,7 @@ Google也有类似于Office 365 的办公套件SaaS服务，是G Suite，它的�
 
 GCP还是在发展中的云计算，从功能上讲，根据Gartner的年度评估，GCP仅满足70%的必选功能。技术上的优势在于：Google是开源的大数据（Hadoop、 Spark 等）技术、机器学习技术（Tensorflow）和容器编排技术（Kubernetes），它在开发者社区里从来没有缺少过粉丝，它对技术发展的影响不可小觑，这些影响最终都可以通过吸引用户使用GCP来使Google收益，并把这些技术变现。
 
-![15048666386599](/images/15048666386599.jpg)
+![15048666386599](/images/15048666386599.webp)
 
 Google Cloud Platform
 
@@ -82,7 +82,7 @@ Game of Cloud 公有云的游戏
 
 ### 计算
 
-![15048779648996](/images/15048779648996.png)
+![15048779648996](/images/15048779648996.webp)
 
 AWS  Azure  GCP
 EC2 云中的虚拟服务器  Virtual Machines 在几秒钟内预配好 Windows 和 Linux 虚拟机  Compute Engine: Run VMs on Google's infrastructure
@@ -107,7 +107,7 @@ GCP的明显优势是GEK，K8S如日中天的热度刺激人么对其GKE和GCE�
 
 AWS Regions and Availability Zones
 
-![15048815252579](/images/15048815252579.png)
+![15048815252579](/images/15048815252579.webp)
 
 <https://aws.amazon.com/about-aws/global-infrastructure/>
 
@@ -151,19 +151,19 @@ AWS GovCloud (US-East)
 
 <https://azure.microsoft.com/en-us/regions/>
 
-![15048814480576](/images/15048814480576.png)
+![15048814480576](/images/15048814480576.webp)
 
 蓝色三角的是要开放的区。
 
 #### GCP 的 Cloud Locations
 
 <https://cloud.google.com/about/locations/>
-![15048816324535](/images/15048816324535.png)
+![15048816324535](/images/15048816324535.webp)
 
 蓝色的是要开放的区。
 
 GCP的另外一个卖点是它的全球高速光缆链接的网络。
-![15048819181658](/images/15048819181658.png)
+![15048819181658](/images/15048819181658.webp)
 
 ### 存储服务
 
@@ -171,15 +171,15 @@ GCP的另外一个卖点是它的全球高速光缆链接的网络。
 
 #### 块存储对比
 
-![15048819776777](/images/15048819776777.jpg)
+![15048819776777](/images/15048819776777.webp)
 
 #### 对象存储
 
-![15048820049019](/images/15048820049019.jpg)
+![15048820049019](/images/15048820049019.webp)
 
 #### 文件存储
 
-![15048820280796](/images/15048820280796.jpg)
+![15048820280796](/images/15048820280796.webp)
 
 ## Game of Clouds
 

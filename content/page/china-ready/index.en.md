@@ -2,7 +2,7 @@
 title: "Chinaready: Making your product truly reachable in China"
 slug: chinaready
 description: "Technical readiness practices for teams entering the China market: assessment-led entry, engineering delivery, and compliance — covering reachability, performance, and app distribution."
-image: chinaready-cover.png
+image: chinaready-cover.webp
 ---
 
 Over the years this blog has covered a lot of DevOps, SRE, CDN, and observability practices — and the same question keeps arriving from teams outside China:

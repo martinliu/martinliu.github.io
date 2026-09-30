@@ -1,7 +1,7 @@
 ---
 title: Homelab
 description: My Homelab
-image: img/homelab.jpg
+image: img/homelab.webp
 
 # Badge style
 style:

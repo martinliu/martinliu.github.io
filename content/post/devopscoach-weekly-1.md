@@ -6,7 +6,7 @@ description= "DevOps 教练需要学习的全球新闻，文章，宕机事件�
 categories= ["DevOps"]
 tags= ["周刊"]
 keywords= ["DevOps","DevOps教练","周刊"]
-image = "images/weeklyupdate.jpg"
+image = "images/weeklyupdate.webp"
 slug = "devopscoach-weekly-1"
 +++
 

@@ -5,7 +5,7 @@ description = "进阶学习vSphere虚拟化与Nutanix社区版超融合平台的
 author = "Martin Liu"
 categories = ["DevOps"]
 tags = ["超融合", "HCI", "nutanix", "vsphere"]
-image = "img/cos/2022-02-21-hci-nutanix.jpeg"
+image = "img/cos/2022-02-21-hci-nutanix.webp"
 slug = "hci-nutanix-ce-training-camp"
 +++
 
@@ -218,7 +218,7 @@ slug = "hci-nutanix-ce-training-camp"
 
 - 【Hypervisor】安装过程中 screen is terminating
 
-![terminal screen](img/cos/2022-02-21-WechatIMG1777.jpeg)
+![terminal screen](img/cos/2022-02-21-WechatIMG1777.webp)
 
 - 【vSphere虚拟化】虚拟化安装成功，但是重启后 cvm 创建失败
 
@@ -228,8 +228,8 @@ slug = "hci-nutanix-ce-training-camp"
 
 - 【vSphere虚拟化】cvm 创建成功且运行正常，但是不能正常挂载 HDD
 
-![CVM lost one hdd](img/cos/2022-02-21-2022-02-21_19-17-50.png)
-![CVM lost one HDD](img/cos/2022-02-21-2022-02-21_19-16-35.png)
+![CVM lost one hdd](img/cos/2022-02-21-2022-02-21_19-17-50.webp)
+![CVM lost one HDD](img/cos/2022-02-21-2022-02-21_19-16-35.webp)
 
 ### ESXi 安装后 CVM 创建失败/HDD挂载问题
 
@@ -293,7 +293,7 @@ HCI超融合技术对于了解它的人来说很火热，但是还有很多不�
 
 我们为希望学习HCI技术的朋友们创建了一个qq群，希望可以给大家带来一定帮助。扫码加入我们的QQ群。
 
-![CVM HDD](img/cos/2022-01-04-qq.png)
+![CVM HDD](img/cos/2022-01-04-qq.webp)
 
 ## 下期预告
 

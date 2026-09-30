@@ -6,7 +6,7 @@ draft= false
 description= "在就旧金山顺利举办，规模一次比一次大"
 tags= ["DOES, DevOps"]
 categories= ["DevOps"]
-image = "/images/abstract-7.jpg"
+image = "/images/abstract-7.webp"
 slug = "2017-does-sfo"
 +++
 
@@ -24,7 +24,7 @@ DevOps Enterprise Summit由美国的Gene Kim发起并举办的，他是两本流
 
 From:[https://events.itrevolution.com/us/](https://events.itrevolution.com/us/)
 
-![15048603211912](/images/DOES-2017-header-web.jpg)
+![15048603211912](/images/DOES-2017-header-web.webp)
 
 ## 推荐视频
 

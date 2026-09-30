@@ -1,7 +1,7 @@
 ---
 date: 2017-01-07T00:00:00Z
 subtitle: 关键术语快速查询
-image: images/pexels-photo.jpg
+image: images/pexels-photo.webp
 tags:
 - DevOps
 title: DevOps术语表

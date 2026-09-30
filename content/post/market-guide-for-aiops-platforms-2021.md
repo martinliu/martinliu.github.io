@@ -5,7 +5,7 @@ description = "AIOps平台通过对大量的运维数据进行上下文分析，
 author = "Martin Liu"
 categories = ["DevOps"]
 tags = ["AIops", "ITSM"]
-image  = "img/2021/4/AIOps-an-Industrial-Benchmark-2048x719.jpg"
+image  = "img/2021/4/AIOps-an-Industrial-Benchmark-2048x719.webp"
 slug = "gartner-aiops-platform-market-guide-2021"
 +++
 

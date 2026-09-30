@@ -8,13 +8,13 @@ title: 2017年DevOps采用和趋势现状-信息图
 slug: state-devops-adoption-trends-2017
 ---
 
-![](/images/14868257964355.jpg)
+![](/images/14868257964355.webp)
 
 在过去的一两年里DevOps持续升温，逐渐成为一场IT行业内的谁不可回避的运动。
 
 ## DevOps 定义
 
-![1-X](/images/1-X.jpg)
+![1-X](/images/1-X.webp)
 
 我个人是一直以来反对给DevOps做一个名词解释样式的定义的。不过这种需求实在强大，摘抄几条供大家参考，上图是一种定义。
 
@@ -28,34 +28,34 @@ slug: state-devops-adoption-trends-2017
 
 ## 兴趣和搜索量
 
-![2](/images/2.jpg)
+![2](/images/2.webp)
 
 以上结果来自Google趋势，上图是从2004年到现在，一共13年的趋势图。下面再看一下最近五年的趋势详情。
 
 ### 最近5年的搜索趋势
 
-![2-2](/images/2-2.png)
+![2-2](/images/2-2.webp)
 
 ### 国际关注度
 
-![2-1](/images/2-1.png)
+![2-1](/images/2-1.webp)
 
 ### 相关话题和查询
 
-![2-3](/images/2-3.png)
+![2-3](/images/2-3.webp)
 
 ## 关注者年龄和性别
 
-![3](/images/3.jpg)
+![3](/images/3.webp)
 
 上图年龄分布情况。
 
-![4](/images/4.jpg)
+![4](/images/4.webp)
 上图是性别分布情况。
 
 ## DevOps应用状态
 
-![5](/images/5.jpg)
+![5](/images/5.webp)
 
 * 正在应用的:从66%上升到74%
 * 没有应用的:从19%下降到16%
@@ -64,7 +64,7 @@ slug: state-devops-adoption-trends-2017
 ## DevOps Checklist
 
 不管你做不做DevOps？不管你知不知道你是不是DevOps？不管你从哪个角度入手DevOps？看看这个清单中有几项和您相关，就知道你和DevOps的关系是否密切。
-![6](/images/6.jpg)
+![6](/images/6.webp)
 
 检查清单如下：
 
@@ -77,7 +77,7 @@ slug: state-devops-adoption-trends-2017
 ## DevOps流程
 
 下面看看两种相关流程图。
-![7](/images/7.jpg)
+![7](/images/7.webp)
 
 * 持续业务计划
 * 协作型软件开发
@@ -86,7 +86,7 @@ slug: state-devops-adoption-trends-2017
 * 持续监控
 * 协作式客户反馈和优化
 
-![C_Success_with_enterprise_DevOps_CN_pdf](/images/C_Success_with_enterprise_DevOps_CN_pdf.jpg)
+![C_Success_with_enterprise_DevOps_CN_pdf](/images/C_Success_with_enterprise_DevOps_CN_pdf.webp)
 
 上图来源于《Exin DevOps Master 白皮书 - 企业DevOps的成功之路》 作者：Koichiro(Luke) Toda、Nobuyuki Mitsui、译者：刘颋，史鹏程；审校：EXIN，刘征
 

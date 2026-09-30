@@ -2,7 +2,7 @@
 title: 关于DevOps 的那些事
 subtitle: 我对DevOps的一个比较宏观的总结
 date: 2017-09-23
-image:  "/images/tf_5.jpg"
+image:  "/images/tf_5.webp"
 tags:
 - DevOps
 categories:
@@ -27,17 +27,17 @@ DevOps是孕育于敏捷社区，又反哺给整个IT技术行业的，是一次
 
 从DevOps概念的产生，到如今它在全球范围内的蔓延和认同，已经经历了9个年头的时间。它的火爆推广也伴随着IT行业的迅速变迁和发展，现在已经到了移动互联网时代的后半场，国内的信息化建设已经完成了很多年；如今各行各业的企业也都亟待完成全方位的数字化转型。IT信息技术的先进程度标志着一个企业的核心能力，任何一个成功的企业，敏捷高效的软件开发创新实力和IT管理综合能力不只是门面而已，而是实实在在的市场竞争能力。DevOps倡导打敏捷、持续交付和ITIL三种实践的组合拳，同时应用精益生产理念为基础的管理思想，这正在逐渐地被广泛的接受和认可。
 
-![devopsdays-map](/images/devopsdays-map.png)
+![devopsdays-map](/images/devopsdays-map.webp)
 
 在过去的几年中，国内的各种IT大会也蓬勃发展，其中DevOps相关的专题和分会场也颇受人们的关注。各种云计算、运维等IT技术的社交媒体也都非常重视DevOps这个话题的分享。一个专属于DevOps社群的、国际性的、有影响力的DevOps大会正呼之欲出。在这样的时代背景下DevOpsDays大会北京站在2017年的3月18日来到中国，在同年的8月18日上海，还要举办DevOpsDays Shanghai站的大会。
 
 下面列举一些DevOpsDays大会的相关数据，<a href="http://xn--DevOpsDays-cp3p571r5pfpshp63a.org">数据来源于DevOpsDays.org</a> 网站。从2009年到2016年，已经在全球的61个城市/国家成功地举办了117场。
 
-![year-map](/images/year.png)
+![year-map](/images/year.webp)
 
 <p>下图是在过去九年中DevOpsDays大会在各个城市/国家的分布和举办次数。</p>
 
-![year-map](/images/devops-citys.png)
+![year-map](/images/devops-citys.webp)
 
 <p>今年也就是2017年预计举办30场，其中已经有18场确定了举办城市和日期；还有12个城市的召开日期待定；这不包括年内还可能会提出申办的城市。以上数据的统计时间在2017年三月。</p>
 <h2 id="devops">DevOps在国内的现状</h2>
@@ -57,7 +57,7 @@ DevOps是孕育于敏捷社区，又反哺给整个IT技术行业的，是一次
 
 在谈这个话题前先看一下DevOps相关工具集的全貌，如下图所示：<br>
 
-![year-map](/images/devops-tools.png)
+![year-map](/images/devops-tools.webp)
 
 <br>
 最上面的箭头流程图表示了一个业务服务的全生命周期：开发协作、软件构建、质量测试、交付部署和投产运维。前三个阶段偏传统开发组织的工作内容，后两个阶段基本可以和运维组织的工作对应上。在每个阶段下可以看成是一个大分类，这些分类中还包含若干个小分类。这些工具可以粗放的划分为商业软件和开源软件两类；也可以分为SaaS服务类和企业内部部署型。大部分开源工具都有活跃的用户社区和群众基础，这给企业入手这些工具带来了很大的便利。在需要商业支持的场景里还可以选择使用这些开源软件的企业版。</p>
@@ -77,7 +77,7 @@ DevOps是孕育于敏捷社区，又反哺给整个IT技术行业的，是一次
 
 <p>我比较认可和接受的企业实践DevOps参考框架如下，其中包含了所需的最佳实践，如下图所示。</p>
 
-![year-map](/images/devops-house.png)
+![year-map](/images/devops-house.webp)
 
 （上图来源于：Exin DevOps白皮书）</p>
 <p>下面简要描述一下这四大支柱型最佳实践</p>

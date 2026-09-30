@@ -5,7 +5,7 @@ description = "Hashicorp 公司十年磨一剑的经典产品的下载达到 10 
 author = "Martin Liu"
 categories = ["DevOps"]
 tags = ["hashicorp", "terraform", "ica"]
-image = "img/2021/06/0gLZ2oH.png"
+image = "img/2021/06/0gLZ2oH.webp"
 slug = "hashicorp-terraform-1-0-general-availability-cn"
 +++
 

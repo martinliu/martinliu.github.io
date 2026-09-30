@@ -1,7 +1,7 @@
 ---
 date: 2016-12-31T00:00:00Z
 subtitle: 硅谷和旧金山周边游
-image: images/sfan-gate-park.jpg
+image: images/sfan-gate-park.webp
 tags:
 - 旅行
 - SFO

@@ -5,7 +5,7 @@ draft: false
 subtitle: "把笔记本上的Hugo站点分享给局域网里的其它人"
 categories: ["blog"]
 tags: ["hugo"]
-image: "/images/abstract-12.jpg"
+image: "/images/abstract-12.webp"
 slug: "share-hugo-site-to-lan"
 ---
 
@@ -45,7 +45,7 @@ Press Ctrl+C to stop
 
 以 macOS 为例，当你启动了这个 Hugo 服务器的时候，你访问 Security & Privacy 配置的时候，选择 Firewall 标签的时候，会自动弹出一个对话框，询问是否允许 incoming 的网络连接到 hugo 的应用服务。点击允许即可，这样防火墙配置里就多了一条配置，如下图所示：
 
-![firewall](images/hugo-firewall-rule.jpeg)
+![firewall](images/hugo-firewall-rule.webp)
 
 ## 总结
 

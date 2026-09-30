@@ -41,7 +41,7 @@ categories:
 
 转自：[Rubbyblog.wordpress.com](https://ruddyblog.wordpress.com/2014/09/30/%E7%9C%8B%E6%9D%BF%E6%96%B9%E6%B3%95-%E7%A7%91%E6%8A%80%E4%BC%81%E6%A5%AD%E6%BC%B8%E9%80%B2%E8%AE%8A%E9%9D%A9%E6%88%90%E5%8A%9F%E4%B9%8B%E9%81%93/)/images/
 
-![kanban-book](/images/kanban-book.png)
+![kanban-book](/images/kanban-book.webp)
 
 今天要介紹看板方法的由來， 上面這本書是由看板方法之父 David J. Anderson 於: 2010年 4月所著。簡字版是 2014 年2月出版。這篇文章在我上 TechDays 課程時就想登出來了，想把好書介紹給大家。但由於台灣的書商都沒有進口，所以一直等到我拿到第一批書後，肯定大家可以在坊間買到書時才把他登出來。原文書名: Kanban: Successful Evolutionary Change for Your Technology Business.
 
@@ -74,7 +74,7 @@ categories:
 ## 精益思想(白金版)
 
 这本书在亚马逊中国有售：[https://www.amazon.cn/精益思想-詹姆斯P-沃麦克](https://www.amazon.cn/精益思想-詹姆斯P-沃麦克)
-![](/images/14836204523398.jpg)
+![](/images/14836204523398.webp)
 
 **简介**
 
@@ -101,7 +101,7 @@ ASIN: B0142EC7AA
 
 ## Implementing Lean Software Development: From Concept to Cash
 
-![](/images/14837758468347.jpg)
+![](/images/14837758468347.webp)
 
 ### 基本信息
 
@@ -130,9 +130,9 @@ Tom Poppendieck, an enterprise analyst, architect, and agile process mentor, cur
 
 ## The Fifth Discipline: The Art & Practice of The Learning Organization
 
-![](/images/14840700653952.jpg)
+![](/images/14840700653952.webp)
 
-![](/images/14840700772382.jpg)
+![](/images/14840700772382.webp)
 
 ### 基本信息  第五项修炼：学习型组织的艺术与实践
 
@@ -182,7 +182,7 @@ ASIN: B002QMKJ4C
 
 ## Explore It!: Reduce Risk and Increase Confidence with Exploratory Testing
 
-![](/images/14841498198916.jpg)
+![](/images/14841498198916.webp)
 
 ![](/images/14841498461381.jpg)
 
@@ -288,7 +288,7 @@ Amazon Best Sellers Rank: #129,956 in Books (See Top 100 in Books)
 
 ## True North: Discover Your Authentic Leadership
 
-![](/images/14844095698595.jpg)
+![](/images/14844095698595.webp)
 
 ### Review
 
@@ -329,7 +329,7 @@ Amazon Best Sellers Rank: #17,250 in Books (See Top 100 in Books)
 
 ## Gemba Walks
 
-![](/images/14844099928904.jpg)
+![](/images/14844099928904.webp)
 
 ### Editorial Reviews
 

@@ -6,7 +6,7 @@ description: "在墙内如何正常下载所需要的 Vagrant 的虚拟机模板
 categories: ["DevOps"]
 tags: ["DevOps"]
 keywords: ["DevOps"]
-image: "/images/vagrant-download-box.jpg"
+image: "/images/vagrant-download-box.webp"
 slug: "download-import-vagrant-box"
 draft: false
 ---
@@ -15,7 +15,7 @@ draft: false
 
 其实你只需要找到国内的 box 文件镜像服务器，或者下载地址，然后手工下载对应的 Box 文件（操作系统镜像文件），并导入即可，本文将帮你铲除这只官方镜像文件下载失败的拦路虎。
 
-![](/images/vagrant-home-page.png)
+![](/images/vagrant-home-page.webp)
 
 Vagrant 的优势：
 

@@ -2,7 +2,7 @@
 title: 用Minikube体验单节点K8S
 subtitle: minikube上手指南
 date: 2017-09-21
-image: "/images/abstract-1.jpg"
+image: "/images/abstract-1.webp"
 tags:
 - DevOps
 - Docker
@@ -275,7 +275,7 @@ $  curl $APISERVER --header "Authorization: Bearer $TOKEN" --insecure
 <h3 id="webuidashboard">访问Web UI (Dashboard)</h3>
 <p>Dashboad是k8s的一个图形界面，可以用它部署容器化的应用，排错和管理k8s群集。在minikube上启动这个界面的命令是 <code>minikube dashboard</code> ，你系统的默认浏览器会自动弹出如下界面。</p>
 
-![year-map](/images/Overview---Kubernetes-Dashboard.jpg)
+![year-map](/images/Overview---Kubernetes-Dashboard.webp)
 <p>关于Dashbaord的文档在： <a href="https://kubernetes.io/docs/tasks/access-application-cluster/web-ui-dashboard/">https://kubernetes.io/docs/tasks/access-application-cluster/web-ui-dashboard/</a></p>
 
 <h2 id="minikube">用minikube运行应用</h2>

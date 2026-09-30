@@ -6,7 +6,7 @@ description: "如何安全、有弹性和可扩展的使用 Beat 摄入数据"
 categories: ["DevOps"]
 tags: ["运维","DevOps","elasticsearch","elasticstack","filebeat","metricbeat"]
 keywords: ["运维","DevOps","elasticsearch","elasticstack","filebeat","metricbeat"]
-image :  "/images/abstract-6.jpg"
+image :  "/images/abstract-6.webp"
 slug: "beats-implement-on-qcloud"
 ---
 
@@ -20,7 +20,7 @@ slug: "beats-implement-on-qcloud"
 
 登录腾讯云服务控制台，查询并进入 Elasticsearc 服务，点击新建按钮，创建 Elasticsearch 集群。如下图所示。
 
-![](/images/qcloud-es.jpeg)
+![](/images/qcloud-es.webp)
 
 集群配置说明：
 
@@ -49,7 +49,7 @@ slug: "beats-implement-on-qcloud"
 
 Beats-write 角色设置如下图所示：
 
-![](/images/beats-writer.jpeg)
+![](/images/beats-writer.webp)
 
 这个用户会用到后面的所有 Beats 配置文件中，用最小化权限用户极大的降低了数据泄露的风险。
 

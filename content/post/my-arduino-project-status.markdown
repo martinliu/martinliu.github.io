@@ -11,7 +11,7 @@ tags:
 title: My Arduino Project status
 url: /2016/01/04/my-arduino-project-status/
 wordpress_id: 54112
-image : "images/abstract-10.jpg"
+image : "images/abstract-10.webp"
 ---
 
 ## Source code on github

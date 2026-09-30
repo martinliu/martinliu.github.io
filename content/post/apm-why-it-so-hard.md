@@ -6,7 +6,7 @@ description: "分布式追踪系统实施三部曲追踪数据生成、收集和
 categories: ["DevOps"]
 tags: ["DevOps","APM","TOOL"]
 keywords: ["DevOps","APM","TOOL"]
-image:  "/images/abstract-3.jpg"
+image:  "/images/abstract-3.webp"
 slug: "apm-why-it-so-hard"
 ---
 
@@ -20,11 +20,11 @@ slug: "apm-why-it-so-hard"
 
 分布式追踪系统的实施结果是落地一条能深度洞察目标系统的工具。让人们能轻松的理解局部和整体的状态，特别是在请求堆栈中的任何局部服务出现故障时，可以最快速的定位故障根源。
 
-![](/images/screenshot-apm-service-map.png)
+![](/images/screenshot-apm-service-map.webp)
 
 上图是用追踪数据生成的服务地图。
 
-![](/images/blog-k8s-o11y-apm-trace-correlation.jpg)
+![](/images/blog-k8s-o11y-apm-trace-correlation.webp)
 
 上图是一次用户请求的全部细节，还可以一键式的跳转到相应的日志或者指标。
 

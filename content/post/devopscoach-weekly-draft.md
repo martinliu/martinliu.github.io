@@ -7,7 +7,7 @@ author = "Martin Liu - 刘征"
 categories = ["DevOps"]
 tags = ["DevOps", "DevOps教练", "SRE", "周刊"]
 [[images]]
-  src = "images/weeklyupdate.jpg"
+  src = "images/weeklyupdate.webp"
   alt = "DevOps + SRE 教练周刊"
   stretch = "vertical"
 +++

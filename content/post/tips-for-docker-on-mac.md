@@ -2,7 +2,7 @@
 title: Tips for Docker on Mac
 subtitle: macOS上的一些docker使用tips
 date: 2017-09-26
-image:  "/images/sandrali-3.JPG"
+image:  "/images/sandrali-3.webp"
 tags:
 - DevOps
 - Docker

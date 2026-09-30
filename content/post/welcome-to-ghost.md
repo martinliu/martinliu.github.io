@@ -3,7 +3,7 @@ title: 切换到Ghost+七牛
 subtitle: 折腾
 date: 2017-09-21
 tags: ["blog"]
-image:  "/images/abstract-12.jpg"
+image:  "/images/abstract-12.webp"
 categories: ["blog"]
 slug: welcome-to-ghost
 ---
@@ -123,7 +123,7 @@ See upload log at path ./upload.log
 ```
 
 七牛的域名配置如下图所示：
-![Google-Chrome-5](/images/Google-Chrome-5.jpg)
+![Google-Chrome-5](/images/Google-Chrome-5.webp)
 
 ### Blog工作流
 
@@ -138,7 +138,7 @@ See upload log at path ./upload.log
 
 目前使用的是七牛的免费流量和空间套餐，套餐内的各种数量限制如下。
 
-![Screen-Shot-2017-09-23-at-11.21.57-A](/images/Screen-Shot-2017-09-23-at-11.21.57-AM.png)
+![Screen-Shot-2017-09-23-at-11.21.57-A](/images/Screen-Shot-2017-09-23-at-11.21.57-AM.webp)
 
 目前的疑问是这个免费套餐是否够用，不知道这个羊毛多久会被我薅完。我会定期在本文跟新以上解决方案，在使用期间的各种配置细节变更，或者遇到的问题和解决方法。
 

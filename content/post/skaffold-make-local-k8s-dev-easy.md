@@ -6,12 +6,12 @@ description: "Skaffold是本地 Kubernetes 开发者的又一个利器"
 categories: ["DevOps"]
 tags: ["DevOps","Kubernetes","CI"]
 keywords: ["DevOps","Kubernetes","CI","CD","Skaffold"]
-image:  "images/abstract-1.jpg"
+image:  "images/abstract-1.webp"
 slug: "skaffold-make-local-k8s-dev-easy"
 ---
 
 
-![](/images/skaffold.png)
+![](/images/skaffold.webp)
 
 今天介绍一个本地 Kubernetes 开发的利器 Skaffold。
 这是我偶然间发现的一个工具，询问了一下周围的人，居然还没有人用过。测试之后，确实有一种不吐不快的感觉。
@@ -78,7 +78,7 @@ Martin Höfling，TNG技术咨询有限公司首席顾问
 
 Skaffold 主要会用到五个阶段。
 
-![](/images/workflow.png)
+![](/images/workflow.webp)
 
 其所有阶段如下：
 
@@ -102,7 +102,7 @@ Skaffold允许你跳过各个阶段。例如，如果你在本地使用Minikube�
 
 Skaffold 秉承着插件化的设计思想。
 
-![](/images/architecture.png)
+![](/images/architecture.webp)
 
 以上架构内置了对下来工具的支持：
 

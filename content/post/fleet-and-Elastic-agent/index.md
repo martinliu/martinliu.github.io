@@ -3,7 +3,7 @@ title: "面向未来的 Elastic Stack 数据摄入架构"
 date: 2022-10-17T21:09:52+08:00
 description:  从 7.14 版本开始，可观测性和安全管理的数据摄入方式顺利的完成了重大的架构转型。传统的 ELK 架构已经彻底走到了尽头。
 slug: fleet-and-Elastic-agent
-image: pexels-analogicus-5516029.webp
+image: pexels-analogicus-5516029.jpg
 categories:
     - DevOps
 tags:

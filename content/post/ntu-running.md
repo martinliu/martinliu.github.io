@@ -2,7 +2,7 @@
 title: 台大校园游览跑
 subtitle: 首次台湾跑步
 date: 2017-09-09
-image: "/images/abstract-2.jpg"
+image: "/images/abstract-2.webp"
 tags:
 - 跑步
 categories:
@@ -16,25 +16,25 @@ slug: ntu-running
 
 下图算是台大的东门，校门并不是很大，可是进去之后，看到了纵贯南北的校内大路的时候，才会有豁然开朗的感觉。
 
-![year-map](/images/IMG_5657.jpg)
+![year-map](/images/IMG_5657.webp)
 
 下图就是中午的校园大道，两边高大的棕榈树凸显了亚热带海洋性气候的感觉。
-![year-map](/images/IMG_5660.jpg)
+![year-map](/images/IMG_5660.webp)
 
 下图是清晨的校园大道，时间大概是7点半左右，可以看到太阳已经很高了。
-![year-map](/images/IMG_5677.jpg)
+![year-map](/images/IMG_5677.webp)
 
 下图是这条大道的尽头，也就是台北国立大学的主教学楼。
-![year-map](/images/IMG_5681.jpg)
+![year-map](/images/IMG_5681.webp)
 
 下图是一栋比较新的教学楼，路两边依然是这种热带的树种
-![year-map](/images/IMG_5682.jpg)
+![year-map](/images/IMG_5682.webp)
 
 下图是这次的跑步地图，从Garmin网站上导出的数据文件，用过Google Earth查看截屏得到的图。
-![year-map](/images/Screen-Shot-2017-09-06-at-10.09.48-AM.jpg)
+![year-map](/images/Screen-Shot-2017-09-06-at-10.09.48-AM.webp)
 
 从上图中可以看出我几乎走遍了这个学校的所有主干道，有些地方是教职工宿舍区，有些地方是施工封闭的路段，还由于太阳太晒了，所以并没有凑够10公里整数。
-![year-map](/images/ntu-running.jpg)
+![year-map](/images/ntu-running.webp)
 
 ### 总结
 

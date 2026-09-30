@@ -1,7 +1,7 @@
 ---
 date: 2017-01-05T00:00:00Z
 subtitle: 什么还没有开始就已经结束了
-image:  images/MacawFlight_ROW10435257143_1920x1080.jpg
+image:  images/MacawFlight_ROW10435257143_1920x1080.webp
 tags:
 - Nutanix
 - cloud

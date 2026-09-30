@@ -5,7 +5,7 @@ author: "Martin Liu"
 date: "2019-02-28"
 layout: "page"
 slug: "about"
-image: "img/about.JPG"
+image: "img/about.webp"
 menu:
   main:
     weight: 3
@@ -140,7 +140,7 @@ Elastic 资深开发者布道师，中国 DevOps 社区创始人，《DevOps Han
 
 ### 《DevOps Paradox》 - 《DevOps 悖论》
 
-![DevOps Pradox](img/cos/2021-04-01-Screen%20Shot%202021-04-01%20at%208.53.23%20PM.jpg)
+![DevOps Pradox](img/cos/2021-04-01-Screen%20Shot%202021-04-01%20at%208.53.23%20PM.webp)
 
 已经出版，网上有售。
 

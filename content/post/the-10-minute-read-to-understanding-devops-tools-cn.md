@@ -81,7 +81,7 @@ slug = "10-minute-read-to-understanding-devops-tools"
 
 当然，和其他任何一套产品一样，类别也不一定完全清晰。许多工具都是跨类别的，并提供两个或多个类别的功能。下面是我试图展示大多数非常流行的工具，并可视化它们在这些类别中的位置。
 
-![](img/cos/2021-04-02-1-wTp-r9QJvF-DXGZDZUHmbA.jpeg)
+![](img/cos/2021-04-02-1-wTp-r9QJvF-DXGZDZUHmbA.webp)
 
 正如你所看到的，有几个玩家，如Ansible、Terraform和云工具(AWS、GCP和Azure)，正试图通过他们的产品覆盖部署、配置管理和编排类别。老牌工具集Puppet、Chef和Salt Stack专注于配置管理和自动化，但已经扩展到编排和部署的。还有像GitLab和Azure DevOps这样的工具，几乎试图跨越DevOps的所有类别。
 

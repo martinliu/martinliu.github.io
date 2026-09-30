@@ -119,6 +119,6 @@ Tech IRT 成员每年两次接受为期两周的生产培训，深入了解系�
 
 > 来源： <https://sre.google> ；本白皮书一共有 7 章，后续章节将陆续发布。完整中文版白皮书即将发布，敬请期待。
 
-![cover](/img/anatomy-of-an-incident.png)
+![cover](/img/anatomy-of-an-incident.webp)
 
 ❤️ Photo by Pixabay: <https://www.pexels.com/photo/photo-of-a-2-fireman-killing-a-huge-fire-69934/>

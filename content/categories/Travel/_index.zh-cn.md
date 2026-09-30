@@ -1,7 +1,7 @@
 ---
 title: 旅行
 description: 我已经路过了整个世界，整个地球村。
-image: img/travel.jpg
+image: img/travel.webp
 
 # Badge style
 style:

@@ -6,7 +6,7 @@ description: "无废话数据库开发技巧集合"
 categories: ["DevOps"]
 tags: ["DevOps","DBA","SQL","database"]
 keywords: ["DevOps","DBA","SQL","database"]
-image:  "/images/abstract-1.jpg"
+image:  "/images/abstract-1.webp"
 slug: "sql-tricks-application-dba"
 ---
 
@@ -30,7 +30,7 @@ DBA 可能是经常被其它团队依赖的一种角色、团队，因此他们�
 
 在本文中，我将分享我一路走来收集到的一些关于数据库开发的非浅显技巧。
 
-![](/images/00-sql-tricks-dba.jpg)
+![](/images/00-sql-tricks-dba.webp)
 
 Be that guy...<br>Image by <a href="https://www.commitstrip.com/en/2014/08/01/when-i-help-a-rookie-coder-fix-his-queries">CommitStrip</a>
 
@@ -57,7 +57,7 @@ Time: 299.470 ms
 
 只需要更新10000行。通过减少受影响的行数，执行时间从1.5秒降到了不到300ms。更新的行数少了，也节省了后期的数据库维护工作。
 
-![](/images/WechatIMG1264.jpeg)
+![](/images/WechatIMG1264.webp)
 
 这种类型的大更新在数据迁移脚本中非常常见。所以下次写迁移脚本时，一定要只更新需要更新的内容。
 
@@ -168,7 +168,7 @@ Time: 484.244 ms
 
 中间表是一次性的表，它存储了用于实现某些过程的临时数据。例如，ETL过程中一个非常常见的模式是将数据从CSV文件加载到中间表，清理数据，然后加载到目标表。在这种用例中，中间表是一次性的，在备份或复制中没有用处。
 
-![](/images/WechatIMG1265.jpeg)
+![](/images/WechatIMG1265.webp)
 
 在灾难发生时不需要恢复的中间表，以及在副本中不需要的中间表，可以设置为 UNLOGGED。
 
@@ -512,7 +512,7 @@ most_common_freqs | {0.89743334,0.10256667}
 
 通过这些统计，PostgreSQL决定，如果希望90%的行满足条件，最好扫描整个表。过了这个阈值，数据库可能会决定使用或不使用索引，这取决于很多因素，没有一个经验法则可以使用。
 
-![](/images/WechatIMG1266.jpeg)
+![](/images/WechatIMG1266.webp)
 
 ## 使用部分索引
 
@@ -681,13 +681,13 @@ db-# WHERE sold_at BETWEEN '2020-07-01' AND '2020-07-31';
 
 正如官方文档所解释的那样，相关性衡量了特定列值在磁盘上的 "排序 "程度。
 
-![](/images/WechatIMG1267.jpeg)
+![](/images/WechatIMG1267.webp)
 
 当相关性为1，或接近1时，意味着表中的页在磁盘上的存储顺序与表中的行大致相同。这其实是很常见的。例如，自动递增的ID通常会有接近1的相关性。跟踪行创建时间的日期和时间戳列通常也会有接近于1的相关性。
 
 当相关性为-1时，表的页面相对于列的排序顺序是相反的。
 
-![](/images/WechatIMG1268.jpeg)
+![](/images/WechatIMG1268.webp)
 
 当相关性接近0时，意味着列中的值与表的页面存储方式没有相关性或相关性很小。
 
@@ -786,7 +786,7 @@ db-# WHERE tablename = 'sale_fact';
 
 表格聚类后，我们可以看到sold_at的相关性为1。
 
-![](/images/WechatIMG1269.jpeg)
+![](/images/WechatIMG1269.webp)
 
 关于CLUSTER命令需要注意的一些事情。
 
@@ -805,7 +805,7 @@ BRIN是Block Range Index的缩写。根据文档，BRIN索引对于相关性高�
 
 在某些情况下，与类似的B-Tree索引相比，BRIN索引在大小和性能上可以提供更好的 "性价比"。
 
-![](/images/WechatIMG1270.jpeg)
+![](/images/WechatIMG1270.webp)
 
 BRIN索引的工作原理是将值的范围保持在表内相邻的若干页内。假设我们在一列中有这些值，每个值都是单表页。
 
@@ -851,7 +851,7 @@ BRIN索引在表中相邻页的范围内工作。如果相邻页数设置为3，
 小的pages_per_range会产生更大更准确的索引。
 默认的页面_per_range为128页。
 
-![](/images/WechatIMG1271.jpeg)
+![](/images/WechatIMG1271.webp)
 
 为了演示，让我们在2个相邻页面的范围上创建一个BRIN索引，并搜索值5。
 
@@ -1018,7 +1018,7 @@ db=# \di+ sale_fact_sold_at_ix
 
 开发商在这个意义上与投资者并没有什么不同。当他们需要安排一个长期运行的过程时，他们通常会把时间安排在一个整点。
 
-![](/images/WechatIMG1272.jpeg)
+![](/images/WechatIMG1272.webp)
 
 这种在圆周时间安排任务的倾向，会在这些时间内造成一些异常的负载。所以，如果你需要安排一些长期运行的进程，如果你在其他时间安排，你有更好的机会找到一个系统在休息。
 

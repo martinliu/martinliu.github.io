@@ -7,13 +7,13 @@ categories: ["SRE"]
 slug: sre-sla-slo-sli
 tags: ["DevOps","SRE"]
 keywords: ["DevOps","sli","sla","slo","google"]
-image: "images/abstract-6.jpg"
+image: "images/abstract-6.webp"
 ---
 SLA、SLI 和 SLO 是 SRE 工程实践里非常核心的概念，但是大家在同时提到这些概念的时候，经常容易混淆。
 
 长篇大论的文章反而容易使人更加疑惑，还不如画一张示意图说明一下，帮助大家一次性彻底梳理清楚这些不可以含糊不清的核心概念。说明一下，下图假设所讨论的 SLA 个数为 1，使用了软件工程中 ER 图的表达方式，但也有所变化。
 
-![SLA、SLO、SLI](/images/sla-sli-slo.jpeg)
+![SLA、SLO、SLI](/images/sla-sli-slo.webp)
 
 一图讲清 SLA、SLO、SLI
 

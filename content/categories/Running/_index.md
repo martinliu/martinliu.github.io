@@ -1,7 +1,7 @@
 ---
 title: Running
 description: My blogs
-image: img/running.jpg
+image: img/running.webp
 
 # Badge style
 style:

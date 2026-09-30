@@ -121,7 +121,7 @@ Elastic APM实时用户体验监控（RUM）JavaScript代理提供了对你的We
 
 点击Kibana界面左侧导航栏里的 `User Experience 仪表板` 就可以看到下图。
 
-![Elastic APM RUM 用户体验分析](elastic-cloud-apm-rum-2.webp)
+![Elastic APM RUM 用户体验分析](elastic-cloud-apm-rum-2.png)
 
 ### 页面加载持续时间
 
@@ -146,7 +146,7 @@ Elastic APM实时用户体验监控（RUM）JavaScript代理提供了对你的We
 
 核心Web Vitals是Google最近推出的一项倡议，旨在引入一组新的度量标准，通过量化真实用户体验更好地分类良好和糟糕的网站。这是通过查看三个关键指标来实现的：加载性能、视觉稳定性和互动性：
 
-![Web要点](web-dev-vitals.webp)
+![Web要点](web-dev-vitals.png)
 （图片来源：<https://web.dev/vitals）>
 
 * 最大内容绘制（LCP）: 加载性能。LCP是页面的主要内容可能已加载的时间戳。对于用户来说，这是您网站的感知加载速度。为了提供良好的用户体验，Google建议将LCP控制在2.5秒以下。

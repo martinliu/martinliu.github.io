@@ -2,7 +2,7 @@
 title: "Chinaready：让产品真正走进中国"
 slug: chinaready
 description: "面向出海团队的中国市场技术就绪实践：评估先行、工程交付与合规落地，覆盖网络可达性、加载性能与应用分发。"
-image: chinaready-cover.png
+image: chinaready-cover.webp
 ---
 
 这些年在这个博客上写了很多 DevOps、SRE、CDN 和可观测性的实践文章，也不断收到海外团队的同一种提问：

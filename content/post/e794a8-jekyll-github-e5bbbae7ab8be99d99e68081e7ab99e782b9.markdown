@@ -12,7 +12,7 @@ tags:
 title: 用 Jekyll + Github 建立静态站点
 url: /2016/01/10/e794a8-jekyll-github-e5bbbae7ab8be99d99e68081e7ab99e782b9/
 wordpress_id: 54118
-image : "images/abstract-6.jpg"
+image : "images/abstract-6.webp"
 ---
 
 ## 新建库

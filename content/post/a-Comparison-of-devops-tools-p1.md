@@ -6,7 +6,7 @@ description: "GitLab, Jira Cloud 和 CODING 的使用对比（上部）"
 categories: ["DevOps"]
 tags: ["GitLab","Jira","CODING"]
 keywords: ["GitLab","Jira","CODING"]
-images: [{src= "/images/evolution.JPEG", desc= "DevOps"}]
+images: [{src= "/images/evolution.webp", desc= "DevOps"}]
 slug: "a-Comparison-of-devops-tools-p1"
 ---
 
@@ -24,7 +24,7 @@ slug: "a-Comparison-of-devops-tools-p1"
 
 基于目前社区的相关工作需求，我们在三个平台之间进行了综合的对比和评测：GitLab（免费版）、Jira Cloud（免费版） 和 CODING - 高级版（腾讯云 DevOps 平台服务）。总的来说我们需要一种能满足以上所有需求的、集成化的 DevOps 工具 SaaS 平台服务。
 
-![DevOps持续循环](/images/atlassian-marketplace.png)
+![DevOps持续循环](/images/atlassian-marketplace.webp)
 
 在开始 DevOps 平台选项之前，值得再次研究一下上面这幅图。重申一下，这幅图表达了两个意思：
 

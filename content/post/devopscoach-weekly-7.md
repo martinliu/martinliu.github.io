@@ -5,7 +5,7 @@ description = "为 DevOps 教练 之成长，提供必备的滋养，定期为�
 author = "Martin Liu - 刘征"
 categories = ["DevOps"]
 tags = ["周刊"]
-image = "images/weeklyupdate.jpg"
+image = "images/weeklyupdate.webp"
 slug = "devopscoach-weekly-7"
 +++
 
@@ -42,7 +42,7 @@ Fastly是一家 CDN 服务提供商，每个月的事故披露条数大约是 20
 
 3 月 10 日这次发生火灾的是位于法国Strasbourg的一个数据中心，该数据中心园区里有 4 栋大楼。从新闻图片上看到有一栋大楼几乎彻底烧毁。
 
-![2021-03-21_23-05-14](img/cos/2021-03-21-151636.png)
+![2021-03-21_23-05-14](img/cos/2021-03-21-151636.webp)
 
 该公司的创始人/CEO 第一时间在 Twitter 上发布和更新着火灾的状态。
 
@@ -73,7 +73,7 @@ Fastly是一家 CDN 服务提供商，每个月的事故披露条数大约是 20
 
 参考Twitter 上的信息如下：
 
-![2021-03-21_23-38-50](img/cos/2021-03-21-153938.png)
+![2021-03-21_23-38-50](img/cos/2021-03-21-153938.webp)
 
 >教练观点：感觉这个错误犯的有点低级了。
 
