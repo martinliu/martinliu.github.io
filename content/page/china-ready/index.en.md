@@ -1,6 +1,6 @@
 ---
 title: "Chinaready: Making your product truly reachable in China"
-slug: china-ready
+slug: chinaready
 description: "Technical readiness practices for teams entering the China market: network reachability, loading performance, and compliance essentials."
 ---
 

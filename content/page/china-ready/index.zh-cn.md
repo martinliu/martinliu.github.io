@@ -1,6 +1,6 @@
 ---
 title: "Chinaready：让产品真正走进中国"
-slug: china-ready
+slug: chinaready
 description: "面向出海团队的中国市场技术就绪实践：网络可达性、加载性能与合规要点的诊断与改进。"
 ---
 
