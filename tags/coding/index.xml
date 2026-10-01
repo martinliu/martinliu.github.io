@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>CODING on Martin Liu's Blog | SRE培训 | SRE认证 | SRE课程</title><link>https://martinliu.cn/tags/coding/</link><description>Recent content in CODING on Martin Liu's Blog | SRE培训 | SRE认证 | SRE课程</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><lastBuildDate>Wed, 30 Sep 2026 23:49:58 +0800</lastBuildDate><atom:link href="https://martinliu.cn/tags/coding/index.xml" rel="self" type="application/rss+xml"/><item><title>徘徊在 3 种 DevOps 平台服务之间难以抉择（上）</title><link>https://martinliu.cn/blog/a-comparison-of-devops-tools-p1/</link><pubDate>Sun, 21 Jun 2020 18:42:56 +0800</pubDate><guid>https://martinliu.cn/blog/a-comparison-of-devops-tools-p1/</guid><description>&lt;p&gt;中国 DevOps 社区在最近两年期间得到了长足的发展，从最初的单一官网站点，发展到现在的社区官网、社区峰会官网、社区论坛、社区微信公众号和社区服务号等多种对外公众界面。在这些网站平台之后的是 20 多位社区志愿者们的辛勤工作和贡献。&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>CODING on Martin Liu's Blog | SRE培训 | SRE认证 | SRE课程</title><link>https://martinliu.cn/tags/coding/</link><description>Recent content in CODING on Martin Liu's Blog | SRE培训 | SRE认证 | SRE课程</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><lastBuildDate>Thu, 01 Oct 2026 10:19:21 +0800</lastBuildDate><atom:link href="https://martinliu.cn/tags/coding/index.xml" rel="self" type="application/rss+xml"/><item><title>徘徊在 3 种 DevOps 平台服务之间难以抉择（上）</title><link>https://martinliu.cn/blog/a-comparison-of-devops-tools-p1/</link><pubDate>Sun, 21 Jun 2020 18:42:56 +0800</pubDate><guid>https://martinliu.cn/blog/a-comparison-of-devops-tools-p1/</guid><description>&lt;p&gt;中国 DevOps 社区在最近两年期间得到了长足的发展，从最初的单一官网站点，发展到现在的社区官网、社区峰会官网、社区论坛、社区微信公众号和社区服务号等多种对外公众界面。在这些网站平台之后的是 20 多位社区志愿者们的辛勤工作和贡献。&lt;/p&gt;
 &lt;p&gt;社区官网最初是在 GitHub 上通过 Github-page 的免费空间发布的，在购买了收费的 Hugo 模板之后；网站的代码有了转为私有仓库的需求，因此CODING就从 GitHub 迁移到了 GitLab；当时 Github 还没有免费不限数量的私有仓库，而且 Github 也不能免费实现 20+ 社区代码贡献者的组队维护多个项目。GitLab 总的来说能满足目前的所有社区开发和协作需求：这些需求包括无限私有仓库，足够数量的代码协作人员，免费的 CI 构建和发布功能。GitLab 平台也可以实现 GitLab-page 的静态网站托管服务，但是，如果代码仓库设置为通过 page 实现静态网站发布的情况，需要整个代码库设置为对外公开访问，而这与代码库本身依然需要保持私密矛盾。因此社区的小伙伴也无奈的在 GitLab 上维护代码，然后将 hugo 构建后的结果再发布到 Github-page 的项目去。&lt;/p&gt;
 &lt;p&gt;根据以上社区网站代码库迁移的经历，下面总结一下中国 DevOps 社区在网站开发维护和配套 CI/CD 方面的总体需求：&lt;/p&gt;
 &lt;ul&gt;
@@ -27,18 +27,8 @@ alt="DevOps持续循环"
 &lt;li&gt;Jira Cloud：默认云服务没有 OKR 的功能，不过可以通过两种方式实现：安装第三方 App，使用 Structure 功能扩展实现。实际测试了一个名为 OKR for Jira （by Digital Toucan）的 App；能满足需求。在 OKR 关联界面中可以关联项目 issue，在 issue 的界面里也可以关联 KR；实现双向关联和跟踪。&lt;/li&gt;
 &lt;li&gt;CODING：在团队管理页面的‘团队目标’功能里有内置的 OKR 管理功能。功能性完全满足社区需求。可以在一个平面的可折叠页面中管理大量的 OKR 条目。O 的完成进度可以根据 KR 的进展自动计算，KR 的完成度可以手工拖到，也可以根据所连接的项目状态自动计算，所有条目的排序可以自由拖动。操作简洁方便。在项目工作的界面里不能关联到 OKR。&lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;下图是 OKR for Jira 免费 app 的截图：
-&lt;img src="https://martinliu.cn/images/CODING-jira-okr.jpeg"
-loading="lazy"
-alt="OKR for Jira 免费 app "
-&gt;
-&lt;/p&gt;
-&lt;p&gt;下面是 CODING 中管理 OKR 的界面截图。
-&lt;img src="https://martinliu.cn/images/CODING-okr.jpeg"
-loading="lazy"
-alt="CODING ork"
-&gt;
-&lt;/p&gt;
+&lt;p&gt;下图是 OKR for Jira 免费 app 的截图：&lt;/p&gt;
+&lt;p&gt;下面是 CODING 中管理 OKR 的界面截图。&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;项目规划/协同 ：&lt;/strong&gt; &amp;ndash; 社区网站相关工作需要在每一个项目的执行过程中实现需求分析、工作分解、工作分配和进度追踪等功能。并不需要实现高级的企业产品路线图和Eprics的管理，由于并不开发复杂的商业产品，至少目前工作的复杂度没有这个需求。&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;GitLab：项目管理功能齐全，而且包含可定制的看板功能（Scum board / Kanban board），里程碑和 Todos 也是比较特色的功能。具备Issue 状态和代码PR 自动化的关联。&lt;/li&gt;
@@ -46,11 +36,6 @@ alt="CODING ork"
 &lt;li&gt;CODING：支持项目中的 Backlog 规划，管理迭代、Epric、需求、任务和缺陷。它可以很方便的定制每一种工作的状态和工作流，特别符合国人默认流程定制的需求。支持项目中的模块管理。操作比较简洁直观可用。一个项目中可以容纳和管理多个代码库。&lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;下面是 CODING 中管理项目协同中的任务管理，虽然没有看板展示的模式，不过用拖拽的方式可以方便的对 Backlog 中的工作条目做迭代规划，点击每个工作条目都可以对其进行编辑修改。&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://martinliu.cn/images/CODING-plan.jpeg"
-loading="lazy"
-alt="CODING plan"
-&gt;
-&lt;/p&gt;
 &lt;h2 id="构建---build"&gt;构建 - Build
 &lt;/h2&gt;&lt;p&gt;&lt;strong&gt;代码托管 ：&lt;/strong&gt; 社区需要使用 Git 代码仓库管理各种网站和应用的代码开发，包括markdown 格式的网站内容更新，主要是用基于主干的开发，或者部分功能分支的方式。&lt;/p&gt;
 &lt;ul&gt;
@@ -71,12 +56,7 @@ alt="CODING plan"
 &lt;li&gt;Jira Cloud：同上。&lt;/li&gt;
 &lt;li&gt;CODING：内置了一套简洁的代码扫描功能，可以针对不同的开发语言定制各种代码扫描方案，实现代码检查、质量评估、路径过滤等功能。扫描结果可以生成在总体概览视图报表和任务管理清单。&lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;下图是一个代码扫描方案编辑示例。
-&lt;img src="https://martinliu.cn/images/CODING-scan.jpeg"
-loading="lazy"
-alt="CODING plan"
-&gt;
-&lt;/p&gt;
+&lt;p&gt;下图是一个代码扫描方案编辑示例。&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;私有制品库/镜像仓库 ：&lt;/strong&gt; 随着后期复杂社区项目的开发，以及容器化和微服务化的趋势。需要使用轻量的解决方案予以满足。&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;GitLab：为每个项目提供包管理（支持通用、Conan、Maven，NPM、NuGet、PyPi）和 Docker 镜像仓库。满足在一个内的制品管理。&lt;/li&gt;
@@ -89,12 +69,7 @@ alt="CODING plan"
 &lt;li&gt;Jira Cloud：在 Bitbucket 中提供基于 bitbucket-pipelines.yml 文件的 Pipeline as Code 的流水线管理模式。无流水线的图形编辑界面。这个流水线的后台应该是一个共享的基于 Bamboo 的SaaS 服务，还没有发现扩展这个部署环境的方法。&lt;/li&gt;
 &lt;li&gt;CODING：提供基于 Jenkins 的 CI 服务。也就是说 CODING 服务用套娃的方式包装了 Jenkins 服务，通过共享的构建服务提供基础的构建算力，如果需要的话也可以和 GitLab 一样扩展到外部的构建服务器或者 K8s 服务集群。这里 CODING 还提供了 构建服务到腾讯云的相关服务的集成。因此它能提供 Jenkins+ 的服务能力，对于 Jenkins 服务的构建能力这里就不在赘述。由于 Jenkins 流水线技术比较普及。社区的同学用了半天的时间实现了社区官网构建发布流水线的调试。将基于 Hugo 的网站构建结果用 ssh 命令的方式发布到腾讯云里的 Nginx 服务器的目录中。&lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;下图是在图形流水线编辑器中对标准模板的调试，这里简单的实现了构建和打包的过程，在部署的步骤里，通过远程 ssh 的命令实现了对网站发布包到腾讯云虚拟机的部署。
-&lt;img src="https://martinliu.cn/images/CODING-pipeline.jpeg"
-loading="lazy"
-alt="CODING plan"
-&gt;
-&lt;/p&gt;
+&lt;p&gt;下图是在图形流水线编辑器中对标准模板的调试，这里简单的实现了构建和打包的过程，在部署的步骤里，通过远程 ssh 的命令实现了对网站发布包到腾讯云虚拟机的部署。&lt;/p&gt;
 &lt;h2 id="总结"&gt;总结
 &lt;/h2&gt;&lt;p&gt;以上是中国 DevOps 社区对 DevOps 工具平台服务的选型测试过程的一部分总结，这里仅仅从社区的实际工作需求出发，通过试用对比的方式探索了几种平台。总的来说腾讯的 CODING 平台使用体验要好于其它两个服务。具体说有以下几个方面：&lt;/p&gt;
 &lt;ul&gt;
