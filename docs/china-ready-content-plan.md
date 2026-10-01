@@ -56,6 +56,7 @@ https://chinaready.co/diagnose/?utm_source=martinliu.cn&utm_medium=blog&utm_camp
   7. 结尾 CTA
 
 > 写作顺序与发布节奏由 Martin 定；已核实的封面素材缓存在 chinaready.co 图库，无需另行设计。
+> 2026-10-01：三篇中文版已发布，英文版（/en/blog/）已同步上线，含 CTA 与封面。C10 十篇旧文 CTA 已上线。C 阶段内容工作全部完成，待一周后漏斗数据回顾。
 
 ## 10 篇旧文加 CTA（文末统一模块）
 
