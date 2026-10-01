@@ -204,6 +204,8 @@ toc: true
 
 我们已经探讨了系统分析在组织改进中的应用及其对你和你的团队的好处。现在让我们来看一个实际的例子。
 
+
+{{< china-ready >}}
 [^1]: 参见《DevOps 文化：Westrum 组织文化》。<https://cloud.google.com/architecture/devops?hl=zh-cn>
 [^2]: 谷歌的 Project Aristotle 项目。<https://rework.withgoogle.com/>
 [^3]: 参见 Coursera 的“Developing a Google SRE Culture”课程。 <https://www.coursera.org/learn/developing-a-google-sre-culture>
@@ -216,5 +218,3 @@ toc: true
 ![cover](/img/anatomy-of-an-incident.webp)
 
 ❤️ Photo by Pixabay: <https://www.pexels.com/photo/photo-of-a-2-fireman-killing-a-huge-fire-69934/>
-
-{{< china-ready >}}
