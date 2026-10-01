@@ -3,7 +3,7 @@ title: 更新到 Jimmy Cai 的 Stack Hugo Theme
 description:  上一个皮肤用了一段时间以后，发现作者已经停止更新很久了，而 Hugo 的版本和新功能还更新的挺快的，是时候给 blog 穿一件新衣服了。
 slug: change-to-jimmy-stack-theme
 date: 2022-10-09 00:00:00+0000
-image: 2022-10-1-beijing-guomao.webp
+image: 2022-10-1-beijing-guomao.jpg
 categories:
     - blog
 tags:

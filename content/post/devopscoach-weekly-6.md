@@ -5,7 +5,7 @@ description: "为 DevOps 教练 之成长，提供必备的滋养，定期为你
 categories: ["DevOps"]
 tags: ["周刊"]
 keywords: ["DevOps", "DevOps教练", "SRE", "周刊"]
-image : "images/weeklyupdate.jpg"
+image : "images/weeklyupdate.webp"
 slug: "devopscoach-weekly-6"
 ---
 
@@ -34,7 +34,7 @@ slug: "devopscoach-weekly-6"
 
 来源：<https://statusgator.com/blog/2020/08/21/5-biggest-outages-of-q2-2020/>
 
-![](/images/crocodile-cup-3-1.jpg)
+![](/images/crocodile-cup-3-1.webp)
 
 任何可能发生的坏事都会发生。这句古老的谚语100%适用于技术行业，在这个行业中，崩溃和中断远比销售和营销团队希望我们想象的要常见得多。然而，与基础设施打交道的DevOps工程师知道，要确保所有东西都能一直按预期工作是多么困难--并配置监控，实际跟踪系统的健康状况，帮助防止崩溃和停机。
 
@@ -96,7 +96,7 @@ Zoom发言人回应称，承认意识到了这一情况，并提到这只影响�
 
 让我们根据这些宕机事件的发现、相关公司的沟通以及每个事件的结果来评定。
 
-![](/images/gator-q2.png)
+![](/images/gator-q2.webp)
 
 ![](/images/Group-20-2048x1474.png)
 

@@ -230,7 +230,7 @@ JetBrains 的业务遍及全球，但未公布其客户的具体规模或细节�
 
 ### JFrog
 
-![JFrog](jfrog-2024-03-28.webp)
+![JFrog](jfrog-2024-03-28.png)
 
 JFrog 是本次魔力象限中的一位挑战者，其 DevOps 平台包括 JFrog Artifactory、JFrog Pipelines、JFrog Distribution、JFrog Security Essentials（Xray）、JFrog Advanced Security、JFrog Curation、JFrog Connect 和 JFrog Catalog。
 

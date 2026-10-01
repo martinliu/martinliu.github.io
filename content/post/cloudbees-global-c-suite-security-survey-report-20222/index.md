@@ -24,59 +24,59 @@ toc: false
 
 感谢和我一起晚上直播的三位朋友：[大鲲、南方、悟空]
 
-![](img/cos/sec-survey-2022/CloudBees_2022_Global_C_Suite_Security_Survey_Report-02.jpg)
+![](img/cos/sec-survey-2022/CloudBees_2022_Global_C_Suite_Security_Survey_Report-02.webp)
 
 >Q1 你对软件供应链的攻击有多担心（如果有的话）？
 
 十分之九的企业高管表示，他们对软件供应链攻击感到担忧，其中一半表示非常担忧。
-![](img/cos/sec-survey-2022/CloudBees_2022_Global_C_Suite_Security_Survey_Report-03.jpg)
+![](img/cos/sec-survey-2022/CloudBees_2022_Global_C_Suite_Security_Survey_Report-03.webp)
 
 来自澳大利亚、法国、西班牙、英国和美国的C-suite高管比德国的C-suite高管更有可能说他们担心软件供应链的攻击。
-![](img/cos/sec-survey-2022/CloudBees_2022_Global_C_Suite_Security_Survey_Report-04.jpg)
+![](img/cos/sec-survey-2022/CloudBees_2022_Global_C_Suite_Security_Survey_Report-04.webp)
 
 >Q2 与两年前相比，您认为您对软件供应链攻击的担忧是多还是少？
 
 超过五分之四的C-suite高管表示，与两年前相比，他们对软件供应链攻击更加担忧。
-![](img/cos/sec-survey-2022/CloudBees_2022_Global_C_Suite_Security_Survey_Report-05.jpg)
+![](img/cos/sec-survey-2022/CloudBees_2022_Global_C_Suite_Security_Survey_Report-05.webp)
 
 在所有六个国家中，至少有四分之三的C-Suite高管表示，与两年前相比，他们更担心软件供应链的攻击。
-![](img/cos/sec-survey-2022/CloudBees_2022_Global_C_Suite_Security_Survey_Report-06.jpg)
+![](img/cos/sec-survey-2022/CloudBees_2022_Global_C_Suite_Security_Survey_Report-06.webp)
 
 >Q3 你认为你的软件供应链的安全性如何？
 
 去年，超过九成（95%）的C-suite高管表示他们的软件供应链是安全的，超过一半表示非常安全。在2022年，这一比例下降到88%，认为它是安全的，只有三分之一（32%）的人认为它是非
 常安全的。
-![](img/cos/sec-survey-2022/CloudBees_2022_Global_C_Suite_Security_Survey_Report-07.jpg)
+![](img/cos/sec-survey-2022/CloudBees_2022_Global_C_Suite_Security_Survey_Report-07.webp)
 
 德国的首席执行官比其他国家的执行官更有可能说他们的软件供应链不安全。
-![](img/cos/sec-survey-2022/CloudBees_2022_Global_C_Suite_Security_Survey_Report-08.jpg)
+![](img/cos/sec-survey-2022/CloudBees_2022_Global_C_Suite_Security_Survey_Report-08.webp)
 
 >Q4 您认为您的软件供应链的合规性如何？
 
 超过四分之三的C-Suite高管（78%）表示他们的软件供应链完全或几乎完全合规，低于去年十分之九（90%）的说法。
-![](img/cos/sec-survey-2022/CloudBees_2022_Global_C_Suite_Security_Survey_Report-09.jpg)
+![](img/cos/sec-survey-2022/CloudBees_2022_Global_C_Suite_Security_Survey_Report-09.webp)
 
 澳大利亚、法国、英国和美国的首席执行官比德国和西班牙的首席执行官更有可能说他们的软件供应链完全或几乎完全合规。
-![](img/cos/sec-survey-2022/CloudBees_2022_Global_C_Suite_Security_Survey_Report-10.jpg)
+![](img/cos/sec-survey-2022/CloudBees_2022_Global_C_Suite_Security_Survey_Report-10.webp)
 
 >Q5 虽然两者都很重要，但哪个对你的组织最重要？
 
 四分之三的C-suite高管表示，安全和合规是最重要的，而四分之一的人表示快速和合规是最重要的。
-![](img/cos/sec-survey-2022/CloudBees_2022_Global_C_Suite_Security_Survey_Report-11.jpg)
+![](img/cos/sec-survey-2022/CloudBees_2022_Global_C_Suite_Security_Survey_Report-11.webp)
 每个国家至少有三分之二的C-Suite高管表示安全和合规比快速和合规更重要。
-![](img/cos/sec-survey-2022/CloudBees_2022_Global_C_Suite_Security_Survey_Report-12.jpg)
+![](img/cos/sec-survey-2022/CloudBees_2022_Global_C_Suite_Security_Survey_Report-12.webp)
 
 >Q6 您认为，贵公司的团队每年平均花多少时间在合规性审核上？如果您不确定，请使用您最好的估计。如果您真的不知道，请选择不确定。
 
 虽然超过五分之一的C-suite高管表示他们完全不确定，但平均而言，C-suite高管表示他们的团队每年花在合规性审计上的时间超过37天。
-![](img/cos/sec-survey-2022/CloudBees_2022_Global_C_Suite_Security_Survey_Report-13.jpg)
+![](img/cos/sec-survey-2022/CloudBees_2022_Global_C_Suite_Security_Survey_Report-13.webp)
 来自西班牙、英国和美国的C-Suite比其他三个国家的C-Suite更有可能说他们的团队每年平均花更多时间在合规性审计上，而德国的C-Suite更有可能说他们完全不确定。
-![](img/cos/sec-survey-2022/CloudBees_2022_Global_C_Suite_Security_Survey_Report-14.jpg)
+![](img/cos/sec-survey-2022/CloudBees_2022_Global_C_Suite_Security_Survey_Report-14.webp)
 
 >Q7 在平均一周内，您认为您的团队在以下各项上花费的时间是多少？如果您不确定，请使用您最好的估计。
 
 尽管首席执行官们说他们的团队在创新上花费了更多的时间，但他们在风险和缺陷上花费的时间也相差不远。
-![](img/cos/sec-survey-2022/CloudBees_2022_Global_C_Suite_Security_Survey_Report-15.jpg)
+![](img/cos/sec-survey-2022/CloudBees_2022_Global_C_Suite_Security_Survey_Report-15.webp)
 
 * innovation 创新
 * risks 风险管理
@@ -84,20 +84,20 @@ toc: false
 * Technical Debt 技术债务
 
 虽然所有国家的比例都差不多，但在澳大利亚和西班牙，花在风险上的时间比花在创新上的时间多。
-![](img/cos/sec-survey-2022/CloudBees_2022_Global_C_Suite_Security_Survey_Report-16.jpg)
+![](img/cos/sec-survey-2022/CloudBees_2022_Global_C_Suite_Security_Survey_Report-16.webp)
 
 >Q8 在平均一周内，您认为您的团队应该在以下各项上花费多少时间？如果您不确定，请使用您的最佳估计。
 
 毫不奇怪，C-suites说他们的团队应该把最大的时间花在创新上。
-![](img/cos/sec-survey-2022/CloudBees_2022_Global_C_Suite_Security_Survey_Report-17.jpg)
+![](img/cos/sec-survey-2022/CloudBees_2022_Global_C_Suite_Security_Survey_Report-17.webp)
 
 德国和英国的C-suites高管比其他国家的高管更有可能说更多的时间应该花在创新上，而美国和西班牙的C-suites更有可能说更多的时间应该花在风险上。
-![](img/cos/sec-survey-2022/CloudBees_2022_Global_C_Suite_Security_Survey_Report-18.jpg)
+![](img/cos/sec-survey-2022/CloudBees_2022_Global_C_Suite_Security_Survey_Report-18.webp)
 
 >Q8-A 是什么阻碍了你的开发团队将更多的时间花在你认为他们应该花时间的活动上？请选择所有适用的。
 
 超过一半的C-suite高管表示，合规性和/或流程占用时间是阻止他们的开发团队花更多时间在他们认为应该花时间的活动上的原因。
-![](img/cos/sec-survey-2022/CloudBees_2022_Global_C_Suite_Security_Survey_Report-19.jpg)
+![](img/cos/sec-survey-2022/CloudBees_2022_Global_C_Suite_Security_Survey_Report-19.webp)
 
 * 合规和/或流程所需要的时间
 * 合规和/或安全方面的知识
@@ -107,12 +107,12 @@ toc: false
 * 没有什么能阻止他们
 
 澳大利亚和美国的C-suite高管比其他国家的C-suite高管更有可能说合规和/或安全知识是阻止他们的开发团队花更多时间在他们希望他们花时间的活动上。
-![](img/cos/sec-survey-2022/CloudBees_2022_Global_C_Suite_Security_Survey_Report-20.jpg)
+![](img/cos/sec-survey-2022/CloudBees_2022_Global_C_Suite_Security_Survey_Report-20.webp)
 
 >Q9 你有多大程度上同意或不同意以下说法？
 
 几乎十分之九的C-suite高管表示，与两年前相比，他们现在更多地考虑保障软件供应链的安全和合规问题。
-![](img/cos/sec-survey-2022/CloudBees_2022_Global_C_Suite_Security_Survey_Report-21.jpg)
+![](img/cos/sec-survey-2022/CloudBees_2022_Global_C_Suite_Security_Survey_Report-21.webp)
 
 * 我现在比两年前更多地考虑保障供应链的安全。
 * 我现在比两年前更多地考虑合规问题
@@ -123,7 +123,7 @@ toc: false
 * 如果我们的软件供应链受到攻击，我不确定我们会首先向谁求助
 
 几乎三分之二的C-suite高管表示，在他们的公司中，安全可能是最慢的部门。
-![](img/cos/sec-survey-2022/CloudBees_2022_Global_C_Suite_Security_Survey_Report-20.jpg)
+![](img/cos/sec-survey-2022/CloudBees_2022_Global_C_Suite_Security_Survey_Report-20.webp)
 
 人口统计学上的差异。按C-suite高管的类型 :CEO比CTO/CIO/CISO和其他C-suites更有可能说。
 * 他们现在比两年前更多地考虑合规问题（93% vs. 85%和79%）。
@@ -147,53 +147,53 @@ toc: false
 * 在他们的公司里，安全可以成为缓慢的部门（67%对52%）。
 
 澳大利亚的C-Suite高管比其他国家的高管更有可能说，如果他们的软件供应链受到攻击，他们不确定会首先求助于谁。
-![](img/cos/sec-survey-2022/CloudBees_2022_Global_C_Suite_Security_Survey_Report-27.jpg)
+![](img/cos/sec-survey-2022/CloudBees_2022_Global_C_Suite_Security_Survey_Report-27.webp)
 
 所有这些与去年相比都有所下降，但这可能与西班牙和澳大利亚的加入有更大关系，而不是条件的变化。
-![](img/cos/sec-survey-2022/CloudBees_2022_Global_C_Suite_Security_Survey_Report-28.jpg)
+![](img/cos/sec-survey-2022/CloudBees_2022_Global_C_Suite_Security_Survey_Report-28.webp)
 
 >Q10 每项的自动化程度如何？
 
 五分之三的C-suites（59%）说他们的软件供应链几乎或完全自动化；比去年的四分之三（75%）有所下降。
-![](img/cos/sec-survey-2022/CloudBees_2022_Global_C_Suite_Security_Survey_Report-29.jpg)
+![](img/cos/sec-survey-2022/CloudBees_2022_Global_C_Suite_Security_Survey_Report-29.webp)
 
 澳大利亚、英国和美国的首席执行官比法国、德国和西班牙的首席执行官更可能说他们的软件供应链是自动化的。
-![](img/cos/sec-survey-2022/CloudBees_2022_Global_C_Suite_Security_Survey_Report-30.jpg)
+![](img/cos/sec-survey-2022/CloudBees_2022_Global_C_Suite_Security_Survey_Report-30.webp)
 
 近五分之三的企业高管表示他们的合规流程完全或几乎全部自动化，而四分之一的企业高管表示他们的合规流程大约有一半自动化。
-![](img/cos/sec-survey-2022/CloudBees_2022_Global_C_Suite_Security_Survey_Report-31.jpg)
+![](img/cos/sec-survey-2022/CloudBees_2022_Global_C_Suite_Security_Survey_Report-31.webp)
 
 澳大利亚和美国的C-suites比其他国家的C-suites更可能说他们的合规流程是自动化的。
-![](img/cos/sec-survey-2022/CloudBees_2022_Global_C_Suite_Security_Survey_Report-32.jpg)
+![](img/cos/sec-survey-2022/CloudBees_2022_Global_C_Suite_Security_Survey_Report-32.webp)
 
 >Q11 当谈到你拥有的安全和/或合规性问题的工具时，哪种工具与你正在使用的工具最接近？
 
 五分之三的C-suite高管（59%）表示，他们拥有的安全和/或合规性工具全部或大部分都来自外部，而十分之三的人拥有混合的工具，十分之一的人（11%）拥有大部分或全部自己创建的工具。
-![](img/cos/sec-survey-2022/CloudBees_2022_Global_C_Suite_Security_Survey_Report-33.jpg)
+![](img/cos/sec-survey-2022/CloudBees_2022_Global_C_Suite_Security_Survey_Report-33.webp)
 
 与法国、德国和西班牙相比，澳大利亚、英国和美国的首席执行官们表示，他们在安全和/或合规问题上使用了所有或大部分的外部工具。
-![](img/cos/sec-survey-2022/CloudBees_2022_Global_C_Suite_Security_Survey_Report-34.jpg)
+![](img/cos/sec-survey-2022/CloudBees_2022_Global_C_Suite_Security_Survey_Report-34.webp)
 
 >Q12 你目前是否在你的组织中实施了向左转的安全和合规方法？
 
 超过四分之三的C-suite高管表示，他们正在其组织中实施 "左移 "的安全和合规方法，其中三分之一表示他们肯定在实施。
-![](img/cos/sec-survey-2022/CloudBees_2022_Global_C_Suite_Security_Survey_Report-35.jpg)
+![](img/cos/sec-survey-2022/CloudBees_2022_Global_C_Suite_Security_Survey_Report-35.webp)
 
 澳大利亚、西班牙、英国和美国的首席执行官比法国和德国的首席执行官更有可能说他们正在其组织中实施 "左移 "的安全和合规方法，而德国人更有可能说他们没有实施这种方法。
-![](img/cos/sec-survey-2022/CloudBees_2022_Global_C_Suite_Security_Survey_Report-36.jpg)
+![](img/cos/sec-survey-2022/CloudBees_2022_Global_C_Suite_Security_Survey_Report-36.webp)
 
 >Q13 哪一个最接近左移方法对你的开发者的影响？
 
 近五分之三的C-suite高管说 "左移 "方法对他们的开发人员是一种负担，而超过三分之一的人说它是一种帮助。
-![](img/cos/sec-survey-2022/CloudBees_2022_Global_C_Suite_Security_Survey_Report-37.jpg)
+![](img/cos/sec-survey-2022/CloudBees_2022_Global_C_Suite_Security_Survey_Report-37.webp)
 
 澳大利亚的C-suites比其他国家的C-suites更有可能说 "左移 "方法对他们的开发人员是一种负担，而德国和西班牙的C-suites更有可能说这是对他们的帮助。
-![](img/cos/sec-survey-2022/CloudBees_2022_Global_C_Suite_Security_Survey_Report-38.jpg)
+![](img/cos/sec-survey-2022/CloudBees_2022_Global_C_Suite_Security_Survey_Report-38.webp)
 
 >Q14 你有多同意或不同意以下说法？
 
 十分之九的C-suite高管表示他们的风险管理团队拥有建立和/或确保安全的软件供应链的知识和专长，而几乎十分之九的人表示他们的架构师和/或开发人员拥有。
-![](img/cos/sec-survey-2022/CloudBees_2022_Global_C_Suite_Security_Survey_Report-39.jpg)
+![](img/cos/sec-survey-2022/CloudBees_2022_Global_C_Suite_Security_Survey_Report-39.webp)
 
 * 我们的风险管理团队拥有建立和/或确保安全的软件供应链的知识和专长。
 * 我对我们的软件在生产中的安全性非常有信心
@@ -203,22 +203,22 @@ toc: false
 * 左移对我们的组织来说是很重要的
 
 超过五分之四的C-suite高管表示 "左移 "对他们的组织很重要。
-![](img/cos/sec-survey-2022/CloudBees_2022_Global_C_Suite_Security_Survey_Report-40.jpg)
+![](img/cos/sec-survey-2022/CloudBees_2022_Global_C_Suite_Security_Survey_Report-40.webp)
 
 西班牙、英国和美国的C-suite高管比澳大利亚、法国和德国的C-suite高管更有可能说他们对自己的软件在生产中的安全性非常有信心。
-![](img/cos/sec-survey-2022/CloudBees_2022_Global_C_Suite_Security_Survey_Report-41.jpg)
+![](img/cos/sec-survey-2022/CloudBees_2022_Global_C_Suite_Security_Survey_Report-41.webp)
 
 >S4 目前有多少开发人员在贵公司工作？如果您不确定，请使用您最好的估计。
 
 五分之二的C-suite高管（41%）说他们公司目前有100个或更少的开发人员，而超过三分之一（35%）的人超过200个。
-![](img/cos/sec-survey-2022/CloudBees_2022_Global_C_Suite_Security_Survey_Report-42.jpg)
+![](img/cos/sec-survey-2022/CloudBees_2022_Global_C_Suite_Security_Survey_Report-42.webp)
 
 >Q2 与两年前相比，您认为您对软件供应链攻击的担忧是多还是少？
 
 法国、德国、西班牙和英国的C-suite高管比澳大利亚和美国的C-suite高管更有可能说他们的公司目前有1-50名开发人员，而澳大利亚的高管则更有可能说他们有201-300名。
-![](img/cos/sec-survey-2022/CloudBees_2022_Global_C_Suite_Security_Survey_Report-43.jpg)
+![](img/cos/sec-survey-2022/CloudBees_2022_Global_C_Suite_Security_Survey_Report-43.webp)
 
-![](img/cos/sec-survey-2022/CloudBees_2022_Global_C_Suite_Security_Survey_Report-44.jpg)
+![](img/cos/sec-survey-2022/CloudBees_2022_Global_C_Suite_Security_Survey_Report-44.webp)
 
 > 方法论
 
@@ -236,6 +236,6 @@ toc: false
 * C-suite高管的类型。CEO=34%；CIO=21%；CTO=19%；首席审计官=6%；CISO=6%；首席风险官=2%；以及其他C-suite=12%。
 * 担任C-suite高管的时间：5年或以下=29%；6-10年=48%；11-20年=16%，20年以上=7%。
 
-![](img/cos/sec-survey-2022/CloudBees_2022_Global_C_Suite_Security_Survey_Report-47.jpg)
+![](img/cos/sec-survey-2022/CloudBees_2022_Global_C_Suite_Security_Survey_Report-47.webp)
 
 [点此处，下载本报告的 PDF 文件 📃](CloudBees_2022_Global_C_Suite_Security_Survey_Report.pdf)

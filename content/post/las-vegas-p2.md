@@ -3,7 +3,7 @@ title: Las Vegas流水账-大峡谷篇
 subtitle: 大峡谷
 date: 2017-08-13
 tags: ["旅行"]
-image: "/images/abstract-11.jpg"
+image: "/images/abstract-11.webp"
 categories: ["Travel"]
 slug: las-vegas-p2
 ---
@@ -13,7 +13,7 @@ Las Vegas到大峡谷（Grand Canyon National Park）的距离并不遥远，但
 
 我们走的路线和预先计划的稍微有些差异，主要是受了同时Danny的影响，他曾经自驾车在大峡谷玩过。根据他的建议，我们设计了大峡谷南峡的两日游。路线如下：
 
-![szs](/images/las-grand-canyon-np.jpg)
+![szs](/images/las-grand-canyon-np.webp)
 
 从拉斯维加斯出发–93号公路–40号公里–住在威廉斯小镇–64号公路–大峡谷国家公园（南峡）。本来计划先去游玩胡夫大坝、西峡（Eagle Point和Guano Point），之后晚上住在威廉斯小镇，第二天再去南峡一日游。西峡被Danny果断的否定了，他建议我们要在南峡的主景点多花时间；现在看来这个决定是对的。
 
@@ -26,14 +26,14 @@ Las Vegas到大峡谷（Grand Canyon National Park）的距离并不遥远，但
 最后发现用国内手机，在来之前，在家下载好的三个州的Google Map离线地图是唯一好使的方案，在使用过程中可以完全不需要开数据网络，可以用飞行模式。
 从拉斯维加斯市区到威廉斯小镇的酒店的路程大约是350公里，整个行程差不多花了5个小时左右（第一个小时忽略不计呵呵）。
 
-![szs](/images/Quality-inn.jpg)
+![szs](/images/Quality-inn.webp)
 
 在酒店放下行李，checkin了以后，我们就奔向了大峡谷南峡的南门（东门才是正门），大约从酒店出发，又走了一个小时多才进入公园，车停在了Bright Angle附近的停车场。接着开始了一天的大峡谷之旅。
 大峡谷-Day1
 
 我们按照Danny的建议先乘坐西线（橙色）的Bus，到达了西峡的最远端（Herimt Point），在哪里稍微观赏了一下后，正好是午餐实践，在哪里的零食店一人买了一个三明治吃。然后回程的Bus在第一个停靠点下车，开始了徒步5.9公里的观赏，也就是从第一个停车点走到第二个停车点，回程总共三个停车点。
 
-![szs](/images/grand-canyon-d1.jpg)
+![szs](/images/grand-canyon-d1.webp)
 
 这一段路在大峡谷当中，景色算不上是最好的，可是这段路包括了Green Road这一段路。这一段路里包括了大峡谷里的所有主要种类的树木和植物。大量的信息展示牌上介绍着各种动植物的信息，在途中前后碰到了三只鹿，可以算是给徒步者的一个奖励，这几只鹿貌似并不把人类放在眼里，它们各自闲散地吃着树叶，只有在人特别靠近的时候，才不耐烦的走开。
 
@@ -50,11 +50,11 @@ Las Vegas到大峡谷（Grand Canyon National Park）的距离并不遥远，但
 
 回到了酒店之后，我们进了房间，我赶紧脱下深山湿漉漉的衣服和鞋子，洗了个热水澡，换上干净温暖的衣服，直接钻进了被窝，昏昏沉沉的休息了大约一个多小时，也正好到了饭点了，外面的雨星星点点的没有停。我们就开车去往镇上吃饭了。
 
-![szs](/images/cafe66.jpg)
+![szs](/images/cafe66.webp)
 
 我们先走进了一家美式当地的餐厅，发现菜单基本看不懂，就走人了。然后打算去吃一家意大利餐厅，发现等座位的人还是很多。后来我建议来这家 Cafe 66 Bar and Grill。这家是一家很地道的美式烧烤餐厅。
 
-![szs](/images/dinner.jpg)
+![szs](/images/dinner.webp)
 
 我点的是上图的烤牛肉，其它人主要点的是下图的烤猪排。肉都烤的很嫩很香，几乎都吃不完就吃到顶了，大家饱餐一顿之后，回去妥妥的休息了。
 
@@ -81,6 +81,6 @@ Las Vegas到大峡谷（Grand Canyon National Park）的距离并不遥远，但
 
 Hoover Dam错过了，我还是觉得有些小小的遗憾的。因为这个地方就在路上，时间安排的合理的话，能够参加上他们的水坝游览，里里外外都看一遍，应该还是很不错的。毕竟很多影视剧都到此取过景。
 
-![szs](/images/np-passport.jpg)
+![szs](/images/np-passport.webp)
 
 总之这次拉斯维加斯之旅还是很棒的，除了去打枪射击的这一项没有Checked之外，其它的都算是完美收官了。这次入手了美国国家公园的Passport，用它来记录和收集所到过的国家公园的印章，以后可以统计一下，一共可以去几个了。

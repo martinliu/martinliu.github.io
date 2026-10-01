@@ -5,7 +5,7 @@ author: "Martin Liu"
 date: "2019-02-28"
 layout: "page"
 slug: "about"
-image: "img/about.JPG"
+image: "img/about.webp"
 menu:
   main:
     weight: 3
@@ -135,7 +135,7 @@ The Site Reliability Workbook from  O'Reilly Media
 
 ### DevOps Paradox
 
-![DevOps Pradox](img/cos/2021-04-01-Screen%20Shot%202021-04-01%20at%208.53.23%20PM.jpg)
+![DevOps Pradox](img/cos/2021-04-01-Screen%20Shot%202021-04-01%20at%208.53.23%20PM.webp)
 
 - 京东：[https://item.jd.com/13047191.html](https://item.jd.com/13047191.html)
 - *Selling on Amazon* [https://www.amazon.com/DevOps-Paradox-truth-about-people-ebook/](https://www.amazon.com/DevOps-Paradox-truth-about-people-ebook/)

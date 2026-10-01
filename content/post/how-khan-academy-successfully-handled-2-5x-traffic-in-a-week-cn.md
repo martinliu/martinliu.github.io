@@ -5,7 +5,7 @@ description = "疫情导致的居家学习办公，造成了可汗学院在一�
 author = "Martin Liu"
 categories = ["SRE"]
 tags = ["Serverless", "SRE"]
-image = "img/cos/2021-03-24-sunrise-5863751_1920.png"
+image = "img/cos/2021-03-24-sunrise-5863751_1920.webp"
 slug = "how-khan-academy-successfully-handled-2-5x-traffic-in-a-week-cn"
 +++
 

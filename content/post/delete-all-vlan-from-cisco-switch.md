@@ -5,7 +5,7 @@ description = "收了一堆用于召回我的CCNA记忆的破烂，开始折腾�
 author = "Martin Liu"
 categories = ["DevOps"]
 tags = ["network", "运维"]
-image = "img/cos/2021-11-09-bigstock-network-hub-and-patch-cables-12234593-1.jpeg"
+image = "img/cos/2021-11-09-bigstock-network-hub-and-patch-cables-12234593-1.webp"
 slug = "delete-all-vlan-from-cisco-switch"
 +++
 最近在闲鱼上收了几台网络设备，其中有一台Cisco 3560X作为lab的核心交换机，其它一些都是用于练习网络运维。本文从清除老旧设备上的vlan开始，将会记录我在这些网络设备上的所有重要配置操作。

@@ -64,7 +64,7 @@ Nutanix 官方Blog的新版本发布帖  [The 5.0 Release is Here](https://www.n
 
 Nutanix AOS 5.0 is available now for you to download and will carry a huge payload of innovation across Acropolis – the data plane, Prism – the management plane and AHV – built-in hypervisor. Over the last couple of months we have spoken about different capabilities that will be part of this release. Before we get into details of the release, it is important to take a step back and understand how the core platform is evolving.
 
-![](/images/14835396530706.png)
+![](/images/14835396530706.webp)
 
 * These services are announced but will be generally available in a subsequent product release
 
@@ -72,7 +72,7 @@ To deliver on the vision of Enterprise Cloud and offer public cloud-like service
 
 Here is a comparison of some of these infrastructure services offered by AWS and Nutanix. The core tenets of the public cloud and the pay-as-you-grow economics are as applicable to Nutanix as it is to the public cloud.
 
-![](/images/14835397395341.png)
+![](/images/14835397395341.webp)
 
 The 5.0 release adds new infrastructure services to the platform and enhances the ones that already exist; delivering greater flexibility and potential cost savings for IT organizations of all sizes. With over 45 new capabilities in the software and hundreds of feature enhancements, this release is definitely a huge milestone for us.
 
@@ -84,7 +84,7 @@ While it is impossible for us to cover all the capabilities in detail in one sin
 
 **Acropolis Block Services (ABS) Enhancements:** ABS, like AFS, is natively built to expose storage to non-virtualized workloads. This capability was introduced in the 4.7 release. We have significantly enhanced ABS in 5.0 with support for dynamic load balancing and flash pinning for better performance, improved security through CHAP for safer client-server conversations and online resizing for higher availability. Additionally, Oracle joins the list of certified workloads on ABS. Here is a quick summary [blog on ABS.](http://next.nutanix.com/t5/Nutanix-Connect-Blog/Ten-Things-you-need-to-know-about-Nutanix-Acropolis-Block/ba-p/14969)
 
-![](/images/14835399454618.png)
+![](/images/14835399454618.webp)
 
 **Metro Availability Witness:** Metro Availability is Nutanix’s synchronous replication solution for DR. Metro Availability Witness is a light-weight service that will be able to run anywhere to enable automatic failover from one site to another without service disruption by monitoring the status of both sites.
 
@@ -96,9 +96,9 @@ While it is impossible for us to cover all the capabilities in detail in one sin
 
 AHV, the native hypervisor solution from Nutanix, continues to grow leaps and bounds with several customers standardizing on AHV for all workloads. We have continued to add newer capabilities with every release of the product. 5.0 is no different and adds a couple of very important capabilities.
 
-![New AHV capabilities over the last few releases](/images/14835400613035.png)
+![New AHV capabilities over the last few releases](/images/14835400613035.webp)
 
-![AHV Adoption over the last several quarters](/images/14835400780807.png)
+![AHV Adoption over the last several quarters](/images/14835400780807.webp)
 
 **AHV Affinity Rules:** Workloads such as Microsoft SQL or Oracle are often attached to a specific node for licensing, security or HW configuration related reasons. With affinity rules, virtual machines can now be “pinned” to a specific host or a set of hosts. Additionally AHV will also support VM VM anti-affinity rules to try ensure that specific VMs are never on the same host together.
 

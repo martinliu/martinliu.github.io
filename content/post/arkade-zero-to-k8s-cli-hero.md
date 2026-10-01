@@ -6,7 +6,7 @@ description: ""
 categories: ["DevOps"]
 tags: ["DevOps"]
 keywords: ["DevOps"]
-images: [{src= "/images/abstract-1.jpg", desc= "DevOps"}]
+images: [{src= "/images/abstract-1.webp", desc= "DevOps"}]
 draft: true
 ---
 

@@ -1,7 +1,7 @@
 ---
 title: Travel
 description: I have traveled all around world.
-image: img/travel.jpg
+image: img/travel.webp
 
 # Badge style
 style:

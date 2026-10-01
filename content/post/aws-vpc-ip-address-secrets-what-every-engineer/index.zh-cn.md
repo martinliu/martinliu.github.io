@@ -17,7 +17,7 @@ keywords:
   - "CIDR规划"
   - "云网络"
   - "DevOps"
-image: "1_S9_CChjGu1uWc_wnNUGxzw.webp"
+image: "1_S9_CChjGu1uWc_wnNUGxzw.png"
 slug: "aws-vpc-ip-address-secrets-what-every-engineer"
 original_lang: "en"
 source: "https://medium.com/@ismailkovvuru/aws-vpc-ip-address-secrets-what-every-engineer-must-know-in-2025-8166818d3589"

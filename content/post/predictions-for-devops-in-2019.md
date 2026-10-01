@@ -70,7 +70,7 @@ DevOps同时关乎于人、流程和工具。对于任何DevOps实施计划而�
 
 ## 来自Veritis的10个预测
 
-![10个预测](/images/DevOps-top-10-Predictions-2019-768x1152.jpg)
+![10个预测](/images/DevOps-top-10-Predictions-2019-768x1152.webp)
 
 
 原文： https://www.veritis.com/blog/devops-trends-top-10-predictions-for-devops-in-2019/

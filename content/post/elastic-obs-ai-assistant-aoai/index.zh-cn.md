@@ -21,7 +21,7 @@ toc: true
 
 我最近好在学习微软的 Azure OpenAI 服务，在我的 Azure 环境中，已经创建了一个 OpenAI 服务，可以用于AI Assistant 的测试。因此，我就想看看 Elastic 的 AI Assistant 和 Azure 的 OpenAI 服务结合起来的效果如何。
 
-![](AIOps_blog-720x420.webp)
+![](AIOps_blog-720x420.png)
 
 ## Elastic 可观测性的 AI Assistant
 

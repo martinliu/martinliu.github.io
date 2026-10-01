@@ -45,21 +45,21 @@ tags:
 
 ## Site Reliability Engineering
 
-![sre book 1](sre1.webp)
+![sre book 1](sre1.jpg)
 
 * 中文版书名：[SRE：Google运维解密](https://book.douban.com/subject/26875239//)
 * [英文版线上阅读](https://sre.google/sre-book/table-of-contents/)
 
 ## The Site Reliability Workbook
 
-![sre book 2](sre2.webp)
+![sre book 2](sre2.jpg)
 
 * 中文版书名：[Google SRE 工作手册](https://book.douban.com/subject/35224058/)
 * [英文版线上阅读](https://sre.google/sre-book/table-of-contents/)
 
 ## Building Secure & Reliable Systems
 
-![sre book 3](sre3.webp)
+![sre book 3](sre3.jpg)
 
 * 中文书名：[《Google系统架构解密》](https://book.douban.com/subject/35585206/)
 * [英文版 PDF 版 官方免费下载](https://sre.google/static/pdf/building_secure_and_reliable_systems.pdf)

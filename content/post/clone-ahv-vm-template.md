@@ -4,7 +4,7 @@ subtitle: 本文描述了AHV虚拟化的虚拟机模板的制作过程。
 tags:
 - Nutanix
 title: Nutanix AHV 虚拟机模板制作
-image : "images/abstract-10.jpg"
+image : "images/abstract-10.webp"
 slug: clone-ahv-vm-template
 categories:
 - Cloud

@@ -6,7 +6,7 @@ description: "高可靠性 3 节点的 ES 集群适用于各种应用场景"
 categories: ["DevOps"]
 tags: ["DevOps","Elastic Stack","Elasticsearch"]
 keywords: ["DevOps","Elastic Stack","Elasticsearch"]
-image : "/images/abstract-6.jpg"
+image : "/images/abstract-6.webp"
 slug: "elasticsearch-3-nodes-cluster-setup"
 ---
 

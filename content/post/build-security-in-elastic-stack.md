@@ -6,7 +6,7 @@ description: "使 Elastic Stack 安全、能适应和可扩展的实战配置"
 categories: ["DevOps"]
 tags: ["Elastic","Beats"]
 keywords: ["Metricbeat","Elastic Stack","Filebeat"]
-image: "/images/locked-up.jpg"
+image: "/images/locked-up.webp"
 slug: "build-security-in-elastic-stack"
 ---
 
@@ -426,13 +426,13 @@ sudo tail -f /var/log/messages
 
 在 Kibana 的用户管理中创建名为 `beats-writer` 的角色，如下图所示。
 
-![](/images/writer-role.jpeg)
+![](/images/writer-role.webp)
 
 以上这个角色拥有 filebeat 和 Metricbeat 两个索引的访问权限，这里是为了评估用户角色管理的工作量，否则可以每个索引单独设置一套必要权限的角色和用户，从而实现更安全的防护。
 
 然后创建名为 `beats-writer` 的用户，设置一个密码，将它赋予 `beats-writer` 的角色（上面创建的）。
 
-![](/images/beats-writer-user.jpeg)
+![](/images/beats-writer-user.webp)
 
 这样它就可以用于所有 Beats 节点的配置了。
 
@@ -564,7 +564,7 @@ metricbeat -e
 
 如果报错的话，将 level 在配置文件中设置为 debug，方便调试。调试成功之后，应该在 Kibana 的界面中，可以看到 node1 节点，点击后能看到实时更新过来的日志和监控指标。
 
-![](/images/metric-node1.jpeg)
+![](/images/metric-node1.webp)
 
 ## 在新的节点上部署 Beats
 

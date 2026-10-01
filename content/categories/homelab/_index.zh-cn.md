@@ -1,7 +1,7 @@
 ---
 title: Homelab
 description: 用 Homelab 可以运行和验证很多东西。
-image: img/homelab.jpg
+image: img/homelab.webp
 
 # Badge style
 style:

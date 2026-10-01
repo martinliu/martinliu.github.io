@@ -5,7 +5,7 @@ description = "在本地构建可以重复创建、版本控制、持续更新�
 author = "Martin Liu"
 categories = ["DevOps"]
 tags = ["php", "drupal", "github", "docker"]
-image = "img/989197bbd274de342caf84c3642d8c6bc7b980ea-1920x700.png"
+image = "img/989197bbd274de342caf84c3642d8c6bc7b980ea-1920x700.webp"
 slug = "setup-drupal-dev-env-macos"
 +++
 
@@ -21,7 +21,7 @@ slug = "setup-drupal-dev-env-macos"
 
 在 macOS 上搭建 PHP + MySQL 的开发环境的工具有很多。我选择使用的是已经绝版的 Acquia Dev Desktop 2 ，它包括了：php 7.3.15 的 php 语言运行环境， MySQL 5.7.29 数据库， Apache/2.4.29 的网页运行服务器， phpMyAdmin 4.9.0.1 数据库管理工具。
 
-![Acquia Dev Desktop 2](img/cos/2022-02-05-2022-02-05_11-08-30.png)
+![Acquia Dev Desktop 2](img/cos/2022-02-05-2022-02-05_11-08-30.webp)
 
 这种集成的 PHP 运行/开发/管理环境，还有很多其它选择，这里不展开。我的目标是：保持最简化和易用，与其它社区伙伴的协作，紧跟 Drupal 版本发布和补丁更新，用容器化实现云上的按需扩展。
 

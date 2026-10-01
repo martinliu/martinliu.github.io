@@ -4,7 +4,7 @@ subtitle: 首次到日本玩，第一站到了京都，休闲待了几天。
 tags:
 - 旅游
 title: 日本旅行-第一部分京都休闲游
-image: "/images/p014h7g3.jpg"
+image: "/images/p014h7g3.webp"
 categories: ["Travel"]
 slug: kyoto
 ---

@@ -1,7 +1,7 @@
 ---
 date: 2017-01-02T00:00:00Z
 subtitle: 关于路坦力社区版软件一贴搞定
-image: images/HongKongEye_ZH-CN12285832688_1920x1080.jpg
+image: images/HongKongEye_ZH-CN12285832688_1920x1080.webp
 tags:
 - Nutanix
 title: Nutanix CE All In One

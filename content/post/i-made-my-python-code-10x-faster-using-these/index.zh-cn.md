@@ -25,7 +25,7 @@ draft: false
 
 如果你是一名在云计算基础架构 (cloud infrastructure)、SRE (Site Reliability Engineering) 和应用数据科学领域工作的从业者，你一定很欣赏 Python 提供的清晰性和简洁性。无论你是在原型化机器学习模型、编排后端工作流，还是在生产级系统 (production-grade system) 中构建自动化管道，Python 始终是你工具库中的首选。但说实话—— **Python 有时会很慢**。慢得令人痛苦。
 
-![Python](0_VXY46SwRfsnWJKIC.webp)
+![Python](0_VXY46SwRfsnWJKIC.png)
 
 然而，你需要了解并牢记的是，**Python 的大多数性能问题都是开发者自己造成的**。问题不在于语言本身，而在于你使用它的方式。事实上，Python 的瓶颈往往是由被忽视的细节引起的：低效的数据结构 (data structures)、不必要的内存分配 (allocations)、重复的计算 (redundant computations)，或者仅仅是你从其他语言带来的、不完全适用的习惯。
 

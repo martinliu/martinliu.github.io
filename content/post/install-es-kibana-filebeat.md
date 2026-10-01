@@ -6,10 +6,10 @@ description: "这可能是最简洁的 Elastic Stack搭建说明，立刻开启�
 categories: ["DevOps"]
 tags: ["ELK","kibana","filebeat","Elasticsearch"]
 keywords:  ["ELK","kibana","filebeat","Elasticsearch"]
-image: "images/abstract-1.jpg"
+image: "images/abstract-1.webp"
 slug: "elk-stack-install"
 ---
-![elk](/images/980-elastic-stack.jpg)
+![elk](/images/980-elastic-stack.webp)
 
 本文描述如何搭建一套具备用户名和密码安全认证的 Elastic Stack 系统，并开始使用 Filebeat 的基础模块实现分布式的日志收集。
 

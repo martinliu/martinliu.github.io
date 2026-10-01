@@ -143,7 +143,7 @@ kubectl get nodes
 下面参考 <https://learn.microsoft.com/zh-cn/azure/aks/learn/quick-kubernetes-deploy-cli> 文档中的操作步骤，部署
  [AKS 应用商店应用程序](https://github.com/Azure-Samples/aks-store-demo) 。该应用系统的示意图如下：
 
-![](aks-store-architecture.webp)
+![](aks-store-architecture.png)
 
 创建名为 [aks-store-quickstart.yaml ，清单文件点此下载](aks-store-quickstart.yaml) ，并将以下清单复制到其中：
 

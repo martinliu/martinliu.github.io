@@ -3,7 +3,7 @@ title: "在 MacOS 上使用 Cluada Code 集成 本地运行的 Qwen 模型"
 date: 2026-02-18T05:35:42+08:00
 description:  Ollama 可以很方便的将 Qwen 模型和 Clauda Code 集成起来，但速度很不理想，其实不可用。
 slug: claude-code-qwen3-coder-30b
-image: cover-claude-qwen-macos.png
+image: cover-claude-qwen-macos.webp
 categories:
     - DevOps
 tags:
@@ -73,7 +73,7 @@ claude --model qwen3-coder
 
 经过10多分钟的等待，Claude Code 读取文件的总和没有超过 10个，显示消耗了 300多个 tokens。
 
-![Ollama 日志窗口显示的调用情况](2026-02-18_06-08-55.png)
+![Ollama 日志窗口显示的调用情况](2026-02-18_06-08-55.webp)
 
 然后就是进入漫长的等待，等了大概20分钟，观察 ‘init’ 命令的输出，可以确定，这个进度是无法正常使用这个组合的。在后台看下模型对 GPU 的使用率：
 
@@ -108,7 +108,7 @@ qwen3-coder:latest    06c1097efce0    25 GB    100% GPU     64000      2 minutes
 
 参考文章：[Run Claude Code Locally on Apple Silicon Using LM Studio and LiteLLM (Zero Cost)](https://medium.com/data-science-collective/run-claude-code-locally-on-apple-silicon-using-lm-studio-and-litellm-zero-cost-1416a6b984af)
 
-![LM Studio 运行 Qwen 模型](2026-02-19_14-57-32.png)
+![LM Studio 运行 Qwen 模型](2026-02-19_14-57-32.webp)
 
 LiteLLM 使用下面的配置文件来启动：
 
