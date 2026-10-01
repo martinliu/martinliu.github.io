@@ -19,7 +19,7 @@ keywords:
   - "CI/CD"
   - "自动化"
 slug: "7-hidden-pains-every-devops-engineer-faces"
-image: 1_jBaUuJtCdz0DTwlD0JF9dw.jpeg
+image: 1_jBaUuJtCdz0DTwlD0JF9dw.webp
 draft: false
 comments: true
 toc: false

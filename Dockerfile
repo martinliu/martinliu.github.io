@@ -1,6 +1,6 @@
 FROM golang:1.22-bookworm
 
-ARG HUGO_VERSION=0.148.2
+ARG HUGO_VERSION=0.167.0
 
 ENV DEBIAN_FRONTEND=noninteractive
 ENV HUGO_CACHEDIR=/workspace/.hugo_cache

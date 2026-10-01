@@ -2,7 +2,12 @@
 [imaging]
   # 启用图片优化
   resampleFilter = "Lanczos"
-  quality = 85
+  [imaging.jpeg]
+    quality = 85
+  [imaging.webp]
+    quality = 85
+  [imaging.avif]
+    quality = 85
   anchor = "Smart"
 
 [minify]
@@ -16,7 +21,7 @@
 
   [minify.tdewolff]
     [minify.tdewolff.css]
-      keepCSS2 = false
+      version = 3
       precision = 1
     [minify.tdewolff.html]
       keepComments = false
@@ -25,12 +30,6 @@
       precision = 1
 
 [caches]
-  [caches.getjson]
-    dir = ":cacheDir/:project"
-    maxAge = "10m"
-  [caches.getcsv]
-    dir = ":cacheDir/:project"
-    maxAge = "10m"
   [caches.images]
     dir = ":cacheDir/:project"
     maxAge = "720h"

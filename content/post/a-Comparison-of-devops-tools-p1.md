@@ -42,10 +42,8 @@ slug: "a-Comparison-of-devops-tools-p1"
 * CODING：在团队管理页面的‘团队目标’功能里有内置的 OKR 管理功能。功能性完全满足社区需求。可以在一个平面的可折叠页面中管理大量的 OKR 条目。O 的完成进度可以根据 KR 的进展自动计算，KR 的完成度可以手工拖到，也可以根据所连接的项目状态自动计算，所有条目的排序可以自由拖动。操作简洁方便。在项目工作的界面里不能关联到 OKR。
 
 下图是 OKR for Jira 免费 app 的截图：
-![OKR for Jira 免费 app ](/images/CODING-jira-okr.jpeg)
 
 下面是 CODING 中管理 OKR 的界面截图。
-![CODING ork](/images/CODING-okr.jpeg)
 
 **项目规划/协同 ：** -- 社区网站相关工作需要在每一个项目的执行过程中实现需求分析、工作分解、工作分配和进度追踪等功能。并不需要实现高级的企业产品路线图和Eprics的管理，由于并不开发复杂的商业产品，至少目前工作的复杂度没有这个需求。
 
@@ -55,7 +53,6 @@ slug: "a-Comparison-of-devops-tools-p1"
 
 下面是 CODING 中管理项目协同中的任务管理，虽然没有看板展示的模式，不过用拖拽的方式可以方便的对 Backlog 中的工作条目做迭代规划，点击每个工作条目都可以对其进行编辑修改。
 
-![CODING plan](/images/CODING-plan.jpeg)
 
 ## 构建 - Build
 
@@ -78,7 +75,6 @@ slug: "a-Comparison-of-devops-tools-p1"
 * CODING：内置了一套简洁的代码扫描功能，可以针对不同的开发语言定制各种代码扫描方案，实现代码检查、质量评估、路径过滤等功能。扫描结果可以生成在总体概览视图报表和任务管理清单。
 
 下图是一个代码扫描方案编辑示例。
-![CODING plan](/images/CODING-scan.jpeg)
 
 **私有制品库/镜像仓库 ：** 随着后期复杂社区项目的开发，以及容器化和微服务化的趋势。需要使用轻量的解决方案予以满足。
 
@@ -93,7 +89,6 @@ slug: "a-Comparison-of-devops-tools-p1"
 * CODING：提供基于 Jenkins 的 CI 服务。也就是说 CODING 服务用套娃的方式包装了 Jenkins 服务，通过共享的构建服务提供基础的构建算力，如果需要的话也可以和 GitLab 一样扩展到外部的构建服务器或者 K8s 服务集群。这里 CODING 还提供了 构建服务到腾讯云的相关服务的集成。因此它能提供 Jenkins+ 的服务能力，对于 Jenkins 服务的构建能力这里就不在赘述。由于 Jenkins 流水线技术比较普及。社区的同学用了半天的时间实现了社区官网构建发布流水线的调试。将基于 Hugo 的网站构建结果用 ssh 命令的方式发布到腾讯云里的 Nginx 服务器的目录中。
 
 下图是在图形流水线编辑器中对标准模板的调试，这里简单的实现了构建和打包的过程，在部署的步骤里，通过远程 ssh 的命令实现了对网站发布包到腾讯云虚拟机的部署。
-![CODING plan](/images/CODING-pipeline.jpeg)
 
 ## 总结
 
