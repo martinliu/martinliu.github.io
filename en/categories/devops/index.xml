@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>DevOps on Martin Liu's Blog</title><link>https://martinliu.cn/en/categories/devops/</link><description>Recent content in DevOps on Martin Liu's Blog</description><generator>Hugo -- gohugo.io</generator><language>en</language><lastBuildDate>Thu, 01 Oct 2026 12:47:12 +0800</lastBuildDate><atom:link href="https://martinliu.cn/en/categories/devops/index.xml" rel="self" type="application/rss+xml"/><item><title>China Market Technical Readiness Checklist (for SaaS/B2B)</title><link>https://martinliu.cn/en/blog/china-market-technical-readiness-checklist/</link><pubDate>Thu, 01 Oct 2026 00:10:00 +0800</pubDate><guid>https://martinliu.cn/en/blog/china-market-technical-readiness-checklist/</guid><description>&lt;img src="https://martinliu.cn/blog/china-market-technical-readiness-checklist/insight-android-stores.webp" alt="Featured image of post China Market Technical Readiness Checklist (for SaaS/B2B)" /&gt;&lt;p&gt;After deciding to enter the China market, the technical to-do list gets long fast. But the value of a checklist is not in being long — it is that &lt;strong&gt;every item can be verified&lt;/strong&gt;. The checklist below is organized into five stages. You can start from any stage, but do run &amp;ldquo;Assess&amp;rdquo; end to end at least once — measure first, then act.&lt;/p&gt;
+&lt;h2 id="stage-1-assess"&gt;Stage 1: Assess
+&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;&lt;input disabled="" type="checkbox"&gt; Get real mainland reachability data: a multi-region (Beijing / Shanghai / Guangzhou directions), multi-ISP probing baseline&lt;/li&gt;
+&lt;li&gt;&lt;input disabled="" type="checkbox"&gt; Get real mainland performance data: TTFB / Core Web Vitals by region, not monitoring from an overseas datacenter&lt;/li&gt;
+&lt;li&gt;&lt;input disabled="" type="checkbox"&gt; Inventory third-party dependencies for mainland reachability: fonts, analytics, payments, maps, video — each one is a potential single point of failure&lt;/li&gt;
+&lt;li&gt;&lt;input disabled="" type="checkbox"&gt; A compliance gap list: ICP filing requirements, data and privacy essentials, industry-specific rules&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;How to verify&lt;/strong&gt;: probing report + RUM data + a dependency reachability matrix. Three artifacts, or it is not done.&lt;/p&gt;
+&lt;h2 id="stage-2-accelerate"&gt;Stage 2: Accelerate
+&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;&lt;input disabled="" type="checkbox"&gt; DNS strategy: mainland resolution lands on nearby nodes; TTL allows fast switching&lt;/li&gt;
+&lt;li&gt;&lt;input disabled="" type="checkbox"&gt; CDN strategy: mainland presence or a warm-up path; &lt;strong&gt;consider edge caching for HTML too&lt;/strong&gt; (the most commonly missed item)&lt;/li&gt;
+&lt;li&gt;&lt;input disabled="" type="checkbox"&gt; Static assets: fingerprinted filenames + long cache lifetimes; first-screen payload on a diet (a high-latency link is an amplifier)&lt;/li&gt;
+&lt;li&gt;&lt;input disabled="" type="checkbox"&gt; Origin fetch path: know which requests must go to origin, and which transit they use&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;How to verify&lt;/strong&gt;: quantified TTFB improvement in mainland directions (say, from seconds to within a few hundred milliseconds), with an observable cache hit ratio.&lt;/p&gt;
+&lt;h2 id="stage-3-host"&gt;Stage 3: Host
+&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;&lt;input disabled="" type="checkbox"&gt; Decide which parts need local presence: site, API, data — evaluate each separately&lt;/li&gt;
+&lt;li&gt;&lt;input disabled="" type="checkbox"&gt; Domain strategy: the path choice between a .cn domain and an overseas domain plus a filing entity&lt;/li&gt;
+&lt;li&gt;&lt;input disabled="" type="checkbox"&gt; ICP filing: entity, process timeline, and a fallback for the unfiled state (e.g. HK/SG nodes + edge acceleration) — have plans for all of it&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;How to verify&lt;/strong&gt;: filing status is checkable; the hosting plan&amp;rsquo;s actual mainland latency meets the bar.&lt;/p&gt;
+&lt;h2 id="stage-4-distribute"&gt;Stage 4: Distribute
+&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;&lt;input disabled="" type="checkbox"&gt; Android channel ecosystem: a list of major app stores and their listing requirements (mainland Android distribution is highly fragmented; Google Play is unavailable)&lt;/li&gt;
+&lt;li&gt;&lt;input disabled="" type="checkbox"&gt; App update channels: the path for version distribution, hotfixes, and staged rollouts&lt;/li&gt;
+&lt;li&gt;&lt;input disabled="" type="checkbox"&gt; iOS side: confirm the App Store China account and compliance requirements&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;How to verify&lt;/strong&gt;: complete at least one real listing drill in the target channels.&lt;/p&gt;
+&lt;h2 id="stage-5-operate"&gt;Stage 5: Operate
+&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;&lt;input disabled="" type="checkbox"&gt; Continuous monitoring: coverage of real mainland user experience, with signals for both &amp;ldquo;slow&amp;rdquo; and &amp;ldquo;down&amp;rdquo;&lt;/li&gt;
+&lt;li&gt;&lt;input disabled="" type="checkbox"&gt; Change process: how to confirm mainland-side rollouts after a deploy (edge cache refresh strategy)&lt;/li&gt;
+&lt;li&gt;&lt;input disabled="" type="checkbox"&gt; Incident fallback: a degradation plan for link-quality fluctuations&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;How to verify&lt;/strong&gt;: a real incident or fluctuation shows up in alerts and can be located.&lt;/p&gt;
+&lt;hr&gt;
+&lt;p&gt;The five-stage structure of this checklist matches the approach on the &lt;a class="link" href="https://martinliu.cn/en/chinaready/" &gt;Chinaready&lt;/a&gt; page: every step validates independently. If you want a diagnostic report based on your own site&amp;rsquo;s real measurements as the starting point for &amp;ldquo;Stage 1&amp;rdquo;, begin here:&lt;/p&gt;
+&lt;aside class="china-ready-cta"&gt;
+&lt;style&gt;
+.china-ready-cta{margin:2rem 0;padding:1rem 1.25rem;border-left:3px solid var(--card-text-color-main,#333);background:var(--card-background,#f6f6f7);border-radius:4px;font-size:.95rem}
+.china-ready-cta .cta-title{font-weight:600;margin:0 0 .35rem}
+.china-ready-cta .cta-desc{margin:0 0 .6rem;opacity:.8}
+.china-ready-cta .cta-link{font-weight:600}
+&lt;/style&gt;
+&lt;p class="cta-title"&gt;你的站点在中国大陆的可达性如何？&lt;/p&gt;
+&lt;p class="cta-desc"&gt;如果产品或服务面向中国用户，可以获取一份免费的 Chinaready 诊断报告：基于真实测量数据，覆盖可达性、加载性能与合规要点。&lt;/p&gt;
+&lt;a class="cta-link" href="https://chinaready.co/diagnose/?utm_source=martinliu.cn&amp;amp;utm_medium=blog&amp;amp;utm_campaign=china-ready" target="_blank" rel="noopener"&gt;获取免费中国就绪诊断 →&lt;/a&gt;
+&lt;/aside&gt;</description></item><item><title>Why Is Your Overseas Site Slow and Unstable in Mainland China?</title><link>https://martinliu.cn/en/blog/why-overseas-sites-slow-in-china/</link><pubDate>Thu, 01 Oct 2026 00:10:00 +0800</pubDate><guid>https://martinliu.cn/en/blog/why-overseas-sites-slow-in-china/</guid><description>&lt;img src="https://martinliu.cn/blog/why-overseas-sites-slow-in-china/insight-aws-china.webp" alt="Featured image of post Why Is Your Overseas Site Slow and Unstable in Mainland China?" /&gt;&lt;p&gt;Same site, same code — yet two very different health reports: opening it from an overseas office takes a few hundred milliseconds, while customers in mainland China report that it is &amp;ldquo;slow&amp;rdquo; or &amp;ldquo;sometimes just doesn&amp;rsquo;t load.&amp;rdquo; This is probably the most common question asked by teams going global, and it is almost never the fault of a single component.&lt;/p&gt;
+&lt;h2 id="first-separate-two-different-problems-unavailable--slow"&gt;First, separate two different problems: unavailable ≠ slow
+&lt;/h2&gt;&lt;p&gt;Before troubleshooting, do one thing: sort the feedback into two buckets.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Unavailable&lt;/strong&gt;: users in some regions or on some ISPs get resolution or connection failures — an availability problem;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Slow&lt;/strong&gt;: everyone can open it, it is just slow — a performance problem.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;The diagnostic paths are completely different. Treating &amp;ldquo;slow&amp;rdquo; as &amp;ldquo;down&amp;rdquo; (or the reverse) is the most common reason this class of issue stays unresolved.&lt;/p&gt;
+&lt;h2 id="slow-is-layered--peel-it-from-outside-in"&gt;&amp;ldquo;Slow&amp;rdquo; is layered — peel it from outside in
+&lt;/h2&gt;&lt;p&gt;When a page load becomes slow in mainland China, the cause is usually a stack of five layers:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;DNS steering&lt;/strong&gt;: resolution sends mainland users to distant nodes. Global Anycast is fine in itself, but if your DNS provider has no resolution points in the mainland, or the GeoDNS zoning policy is coarse, users are sent far away at the very first step.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Cross-border links&lt;/strong&gt;: the quality of public transit between the mainland and overseas fluctuates on its own, especially at evening peak. You cannot change this layer, but you must know it exists — it sets the latency floor: the same architecture simply has a higher latency floor in the mainland.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;CDN coverage and warm-up&lt;/strong&gt;: turning on a CDN does not equal fast in the mainland. No mainland nodes, static assets never warmed, dynamic content (even HTML) never cached — every request goes back to origin, and the first two layers get amplified.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Origin location&lt;/strong&gt;: an overseas origin means every origin fetch crosses the border; an origin in the mainland, or hosting that is mainland-friendly, changes the fetch path entirely.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Front-end payload weight&lt;/strong&gt;: a high-latency link is an amplifier. A 3MB page that nobody notices at 200ms round trips is a disaster on a 300ms+ link.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2 id="the-mechanics-of-sometimes-fine-sometimes-not-a-real-case"&gt;The mechanics of &amp;ldquo;sometimes fine, sometimes not&amp;rdquo;: a real case
+&lt;/h2&gt;&lt;p&gt;My own blog (hosted on an overseas edge network, with real mainland traffic) had this data in September 2026: about 1.21 million requests for the month, &lt;strong&gt;with 5.79% ending in 5xx — almost all of them 504 gateway timeouts&lt;/strong&gt;. What makes it interesting is the distribution:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Every single one was a GET, with a &lt;strong&gt;sustained baseline of 60–240 per hour&lt;/strong&gt; — not an incident, a constant;&lt;/li&gt;
+&lt;li&gt;The homepage alone accounted for nearly 30,000 504s;&lt;/li&gt;
+&lt;li&gt;By geography, mainland China, the US, and France topped the list (the latter two clearly scanner traffic).&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Root cause: HTML was never cached at the edge (&lt;code&gt;cf-cache-status: DYNAMIC&lt;/code&gt;), so &lt;strong&gt;every page view ran back to origin naked&lt;/strong&gt;. When the origin occasionally timed out under scanner pressure, every uncached request failed together — which looks exactly like &amp;ldquo;sometimes fine, sometimes not.&amp;rdquo;&lt;/p&gt;
+&lt;p&gt;The fix was not complicated either: after adding an edge cache rule for HTML, warm-connection TTFB dropped from 0.7–0.9s to &lt;strong&gt;0.26s&lt;/strong&gt;, origin fetches fell off a cliff, and the 504s lost their habitat. I will walk through the full story of this case in the pitfalls article.&lt;/p&gt;
+&lt;h2 id="a-self-service-checklist-you-can-run-today"&gt;A self-service checklist you can run today
+&lt;/h2&gt;&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;Check where resolution lands&lt;/strong&gt;: &lt;code&gt;dig&lt;/code&gt; your domain from a mainland machine or probe node; compare the returned IP/CNAME with overseas — are users being steered far away?&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Multi-region probing&lt;/strong&gt;: cover at least Beijing / Shanghai / Guangzhou directions across ISPs, and measure availability (can you connect at all), not just latency.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;TTFB by region&lt;/strong&gt;: use real-user Core Web Vitals data (or a RUM tool) for the TTFB distribution of mainland visitors — not just server-side monitoring.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Resource waterfall&lt;/strong&gt;: open the page once in a mainland network and look at the waterfall — which segment is longest: DNS, connect, waiting for first byte, or asset download?&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Confirm caching behavior&lt;/strong&gt;: check the cache status in response headers (e.g. &lt;code&gt;cf-cache-status&lt;/code&gt;) and verify whether HTML and static assets are actually being served from the edge.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;If after these five steps you want a more systematic answer — based on real measurements, with prioritized improvements — take a look at the free diagnostic below.&lt;/p&gt;
+&lt;aside class="china-ready-cta"&gt;
+&lt;style&gt;
+.china-ready-cta{margin:2rem 0;padding:1rem 1.25rem;border-left:3px solid var(--card-text-color-main,#333);background:var(--card-background,#f6f6f7);border-radius:4px;font-size:.95rem}
+.china-ready-cta .cta-title{font-weight:600;margin:0 0 .35rem}
+.china-ready-cta .cta-desc{margin:0 0 .6rem;opacity:.8}
+.china-ready-cta .cta-link{font-weight:600}
+&lt;/style&gt;
+&lt;p class="cta-title"&gt;你的站点在中国大陆的可达性如何？&lt;/p&gt;
+&lt;p class="cta-desc"&gt;如果产品或服务面向中国用户，可以获取一份免费的 Chinaready 诊断报告：基于真实测量数据，覆盖可达性、加载性能与合规要点。&lt;/p&gt;
+&lt;a class="cta-link" href="https://chinaready.co/diagnose/?utm_source=martinliu.cn&amp;amp;utm_medium=blog&amp;amp;utm_campaign=china-ready" target="_blank" rel="noopener"&gt;获取免费中国就绪诊断 →&lt;/a&gt;
+&lt;/aside&gt;</description></item></channel></rss>
