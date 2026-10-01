@@ -70,7 +70,22 @@ https://chinaready.co/diagnose/?utm_source=martinliu.cn&utm_medium=blog&utm_camp
 - /blog/devopscoach-weekly-2/（54）
 - /blog/macmini-m4-homelab-redesign/（58）
 
-> 以上仅为热点参考，最终 10 篇按"主题相关性优先"复核；每篇文末只加 `{{< china-ready >}}` 一个 CTA。
+**最终 10 篇（2026-10-01 已上线，主题相关性优先 × 9 月流量）**：
+
+| 文章 | 9 月请求 | 主题 |
+|---|---|---|
+| Magic-Quadrant-for-Observability-Platforms-2025 | 298 | 可观测平台选型 |
+| anatomy-of-an-incident-ch5 | 254 | 事故分析系列 |
+| stop-using-jenkins-in-2025 | 233 | CI/CD 现代化 |
+| incident-metrics-in-sre | 214 | SRE 指标 |
+| 90-of-people-fail-at-devops-heres-the-roadmap-that | 213 | DevOps 路线图 |
+| ai-reliability-engineering-welcome-to-the-third-age-of-sre | 210 | SRE 演进 |
+| sre-best-practices-for-capacity-management | 195 | 容量管理 |
+| state-of-devops-2024-summary | 178 | DORA 报告 |
+| aws-vpc-ip-address-secrets-what-every-engineer | 157 | 云网络 |
+| why-im-moving-from-kubernetes-ingress-to-gateway | 148 | K8s 流量入口 |
+
+> 落选的高流量文章（主题不贴）：build-your-best-rack(385)、claude-code-qwen3(285)、developer-relation-devrel(235)、macmini-homelab(192)。每篇文末只加 `{{< china-ready >}}` 一个 CTA。
 
 ## 转化漏斗（以 Cloudflare Web Analytics 为基线）
 
