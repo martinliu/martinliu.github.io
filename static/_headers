@@ -1,0 +1,64 @@
+# CloudFlare Pages Headers - 性能优化
+/*
+  X-Frame-Options: DENY
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+  X-XSS-Protection: 1; mode=block
+
+# 静态资源 - 长期缓存
+/assets/*
+  Cache-Control: public, max-age=31536000, immutable
+  
+/css/*
+  Cache-Control: public, max-age=31536000, immutable
+  
+/js/*
+  Cache-Control: public, max-age=31536000, immutable
+
+# 图片资源 - 长期缓存
+/images/*
+  Cache-Control: public, max-age=31536000, immutable
+  
+/img/*
+  Cache-Control: public, max-age=31536000, immutable
+
+*.webp
+  Cache-Control: public, max-age=31536000, immutable
+  
+*.avif
+  Cache-Control: public, max-age=31536000, immutable
+  
+*.jpg
+  Cache-Control: public, max-age=31536000
+  
+*.jpeg
+  Cache-Control: public, max-age=31536000
+  
+*.png
+  Cache-Control: public, max-age=31536000
+
+# 字体文件 - 长期缓存
+*.woff2
+  Cache-Control: public, max-age=31536000, immutable
+  Access-Control-Allow-Origin: *
+  
+*.woff
+  Cache-Control: public, max-age=31536000, immutable
+  Access-Control-Allow-Origin: *
+
+# HTML 文件 - 短期缓存但允许 stale-while-revalidate
+*.html
+  Cache-Control: public, max-age=300, stale-while-revalidate=86400
+  
+/
+  Cache-Control: public, max-age=300, stale-while-revalidate=86400
+
+# RSS 和 Sitemap
+/index.xml
+  Cache-Control: public, max-age=3600
+  
+/sitemap.xml
+  Cache-Control: public, max-age=3600
+  
+/robots.txt
+  Cache-Control: public, max-age=86400
