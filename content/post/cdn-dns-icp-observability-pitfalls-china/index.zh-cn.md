@@ -1,7 +1,6 @@
 ---
 title: "进中国前，CDN/DNS/ICP 与可观测性的常见踩坑"
-date: 2026-09-30T22:00:00+08:00
-draft: true
+date: 2026-10-01T00:10:00+08:00
 slug: cdn-dns-icp-observability-pitfalls-china
 description: "每一个坑都来自真实案例：现象、根因、修复三段式。主线是我自己博客在 2026 年 9 月做的一次完整可用性与性能治理——5xx 5.8% 治理到接近归零的全过程。"
 image: insight-icp.webp

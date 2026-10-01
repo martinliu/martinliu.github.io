@@ -1,7 +1,6 @@
 ---
 title: "进中国市场技术就绪清单（SaaS/B2B 版）"
-date: 2026-09-30T22:00:00+08:00
-draft: true
+date: 2026-10-01T00:10:00+08:00
 slug: china-market-technical-readiness-checklist
 description: "一份按阶段组织的技术就绪自查清单：从评估、加速、托管、分发到运营，每一项都附上'怎么验证已就绪'，照着逐项打勾即可。"
 image: insight-android-stores.webp
