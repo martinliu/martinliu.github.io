@@ -1,4 +1,40 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>SRE on Martin Liu's Blog | SRE培训 | SRE认证 | SRE课程</title><link>https://martinliu.cn/categories/sre/</link><description>Recent content in SRE on Martin Liu's Blog | SRE培训 | SRE认证 | SRE课程</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><atom:link href="https://martinliu.cn/categories/sre/index.xml" rel="self" type="application/rss+xml"/><item><title>AWS VPC 和 IP Address 的秘密：2025 年DevOps工程师必知</title><link>https://martinliu.cn/blog/aws-vpc-ip-address-secrets-what-every-engineer/</link><pubDate>Thu, 28 Aug 2025 10:00:00 +0800</pubDate><guid>https://martinliu.cn/blog/aws-vpc-ip-address-secrets-what-every-engineer/</guid><description>&lt;img src="https://martinliu.cn/blog/aws-vpc-ip-address-secrets-what-every-engineer/1_S9_CChjGu1uWc_wnNUGxzw.png" alt="Featured image of post AWS VPC 和 IP Address 的秘密：2025 年DevOps工程师必知" />&lt;p>像专家一样学习 AWS VPC IP 地址分配。探索隐藏规则、专家技巧和 2025 年最佳实践，以设计安全、可扩展的 AWS 网络。DevOps 和云工程师的完美指南。&lt;/p>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>SRE on Martin Liu's Blog | SRE培训 | SRE认证 | SRE课程</title><link>https://martinliu.cn/categories/sre/</link><description>Recent content in SRE on Martin Liu's Blog | SRE培训 | SRE认证 | SRE课程</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><atom:link href="https://martinliu.cn/categories/sre/index.xml" rel="self" type="application/rss+xml"/><item><title>进中国前，CDN/DNS/ICP 与可观测性的常见踩坑</title><link>https://martinliu.cn/blog/cdn-dns-icp-observability-pitfalls-china/</link><pubDate>Thu, 01 Oct 2026 00:10:00 +0800</pubDate><guid>https://martinliu.cn/blog/cdn-dns-icp-observability-pitfalls-china/</guid><description>&lt;img src="https://martinliu.cn/blog/cdn-dns-icp-observability-pitfalls-china/insight-icp.webp" alt="Featured image of post 进中国前，CDN/DNS/ICP 与可观测性的常见踩坑" />&lt;p>这篇文章收集的是&amp;quot;进中国&amp;quot;路上最常见的几个坑。每个坑都按三段式写：&lt;strong>现象 → 根因 → 修复&lt;/strong>。主线是一个真实案例：我自己的博客（Hugo 静态站 + 边缘 CDN，托管在海外，大陆有真实流量）在 2026 年 9 月的一次完整治理——从 5xx 占 5.79% 治理到接近归零。&lt;/p>
+&lt;h2 id="坑一以为开了-cdn-就快">坑一：以为开了 CDN 就快
+&lt;/h2>&lt;p>&lt;strong>现象&lt;/strong>：CDN 全量开启，海外测速优秀，大陆依旧慢。&lt;/p>
+&lt;p>&lt;strong>根因&lt;/strong>：CDN &amp;ldquo;开了&amp;quot;和&amp;quot;在大陆快&amp;quot;是两回事。常见三个子问题：大陆没有节点或节点未预热；默认只缓存静态扩展名，&lt;strong>HTML 从不缓存&lt;/strong>；动态内容占比高，大量请求穿透回源。&lt;/p>
+&lt;p>&lt;strong>案例数据&lt;/strong>：我的站 9 月约 121 万请求，缓存命中率里直接 HIT 只有 3%。HTML 的 &lt;code>cf-cache-status&lt;/code> 全部是 &lt;code>DYNAMIC&lt;/code>——每个页面浏览都要跨境回源一次。&lt;/p>
+&lt;p>&lt;strong>修复&lt;/strong>：给 HTML 和无后缀路径加边缘缓存规则（Cache Rule），边缘 TTL 一小时、浏览器遵循源站。暖连接 TTFB 从 0.7–0.9 秒降到 &lt;strong>0.26 秒&lt;/strong>，回源量断崖式下降。&lt;/p>
+&lt;h2 id="坑二404-也被缓存新页面上不了线">坑二：404 也被缓存，新页面上不了线
+&lt;/h2>&lt;p>&lt;strong>现象&lt;/strong>：新页面部署后，最长达一小时都打不开（404），而源站上文件明明已经存在。&lt;/p>
+&lt;p>&lt;strong>根因&lt;/strong>：边缘缓存规则让&amp;quot;无后缀路径&amp;quot;可缓存之后，&lt;strong>旧的 404 响应也被缓存了&lt;/strong>。新页面 URL 在部署前被访问过一次，那个 404 就以 TTL 全价驻留在边缘。&lt;/p>
+&lt;p>&lt;strong>案例数据&lt;/strong>：修复 &lt;code>/blog/&lt;/code> 列表页 404 时正好踩中——部署完成后 404 持续了六分钟，手动清缓存才恢复。&lt;/p>
+&lt;p>&lt;strong>修复&lt;/strong>：在缓存规则里加状态码 TTL——&lt;strong>404 只缓存 60 秒、5xx 完全不缓存&lt;/strong>。此后新页面最长一分钟可见。另外把&amp;quot;部署后自动清缓存&amp;quot;加进了部署流水线，彻底消除这个窗口。&lt;/p>
+&lt;h2 id="坑三扫描流量把回源打挂所有请求一起-504">坑三：扫描流量把回源打挂，所有请求一起 504
+&lt;/h2>&lt;p>&lt;strong>现象&lt;/strong>：无规律的出现整站 504，每个小时都有几十上百次，持续存在而非单次故障。&lt;/p>
+&lt;p>&lt;strong>根因&lt;/strong>：大量 &lt;code>.php&lt;/code>/&lt;code>.env&lt;/code>/&lt;code>wp-*&lt;/code> 之类的漏洞探测请求，在&amp;quot;HTML 不缓存&amp;quot;的前提下每次都回源。源站（或中间层）被探测流量压到超时，&lt;strong>所有未缓存请求一起失败&lt;/strong>。表现就是&amp;quot;时好时坏&amp;rdquo;。&lt;/p>
+&lt;p>&lt;strong>案例数据&lt;/strong>：9 月 504 共 6.9 万次，全部是 GET；按地区分布大陆 1.9 万、美国 1.3 万、法国 1 万——后两者是典型的扫描网络。&lt;/p>
+&lt;p>&lt;strong>修复&lt;/strong>：两层——WAF 规则在边缘直接拦截漏洞探测路径（&lt;code>.php&lt;/code> 结尾、&lt;code>/wp-&lt;/code>、&lt;code>.env&lt;/code>、&lt;code>/.git&lt;/code>），零回源；配合坑一的 HTML 缓存，504 失去了存在的土壤。注意拦截规则要核对自己站内真实 URL，避免误伤（比如历史文章里真有 wordpress 主题相关内容）。&lt;/p>
+&lt;h2 id="坑四dns-只测权威不测递归">坑四：DNS 只测权威，不测递归
+&lt;/h2>&lt;p>&lt;strong>现象&lt;/strong>：权威 DNS 一切正常，大陆用户还是被调度到远端节点。&lt;/p>
+&lt;p>&lt;strong>根因&lt;/strong>：大陆运营商递归解析的行为（缓存、ECS 支持、分区策略）和你在权威侧看到的不一样。只测权威侧等于只测了一半。&lt;/p>
+&lt;p>&lt;strong>修复&lt;/strong>：在大陆方向的多个网络里直接 &lt;code>dig&lt;/code> 验证解析落地；TTL 不要设得过长，保证故障时能快速切换调度。&lt;/p>
+&lt;h2 id="坑五只有挂的告警没有慢的数据">坑五：只有&amp;quot;挂&amp;quot;的告警，没有&amp;quot;慢&amp;quot;的数据
+&lt;/h2>&lt;p>&lt;strong>现象&lt;/strong>：监控绿灯，用户持续抱怨慢。&lt;/p>
+&lt;p>&lt;strong>根因&lt;/strong>：传统拨测只看可用性（HTTP 状态码），不覆盖性能；而大陆的&amp;quot;慢&amp;quot;恰恰是最主要的问题形态。&lt;/p>
+&lt;p>&lt;strong>修复&lt;/strong>：补上真实用户监控（RUM）——至少有分地区的 TTFB / Core Web Vitals 数据。我的站用的是 Cloudflare Web Analytics（免费、无 Cookie、边缘自动注入 beacon），足够回答&amp;quot;大陆访客到底多慢&amp;quot;这个问题。&lt;/p>
+&lt;hr>
+&lt;p>回头看，这五个坑其实是一条因果链：&lt;strong>没缓存 → 回源多 → 被扫描打挂 → 表现为不稳定；而观测只看可用性 → 看不见慢 → 定位不了&lt;/strong>。治理也顺着这条链：先缓存、再拦截、再补可观测。如果你想在自己的站点上把这条链走一遍，可以从一次系统性的诊断开始：&lt;/p>
+&lt;aside class="china-ready-cta">
+&lt;style>
+.china-ready-cta{margin:2rem 0;padding:1rem 1.25rem;border-left:3px solid var(--card-text-color-main,#333);background:var(--card-background,#f6f6f7);border-radius:4px;font-size:.95rem}
+.china-ready-cta .cta-title{font-weight:600;margin:0 0 .35rem}
+.china-ready-cta .cta-desc{margin:0 0 .6rem;opacity:.8}
+.china-ready-cta .cta-link{font-weight:600}
+&lt;/style>
+&lt;p class="cta-title">你的站点在中国大陆的可达性如何？&lt;/p>
+&lt;p class="cta-desc">如果产品或服务面向中国用户，可以获取一份免费的 Chinaready 诊断报告：基于真实测量数据，覆盖可达性、加载性能与合规要点。&lt;/p>
+&lt;a class="cta-link" href="https://chinaready.co/diagnose/?utm_source=martinliu.cn&amp;amp;utm_medium=blog&amp;amp;utm_campaign=china-ready" target="_blank" rel="noopener">获取免费中国就绪诊断 →&lt;/a>
+&lt;/aside></description></item><item><title>AWS VPC 和 IP Address 的秘密：2025 年DevOps工程师必知</title><link>https://martinliu.cn/blog/aws-vpc-ip-address-secrets-what-every-engineer/</link><pubDate>Thu, 28 Aug 2025 10:00:00 +0800</pubDate><guid>https://martinliu.cn/blog/aws-vpc-ip-address-secrets-what-every-engineer/</guid><description>&lt;img src="https://martinliu.cn/blog/aws-vpc-ip-address-secrets-what-every-engineer/1_S9_CChjGu1uWc_wnNUGxzw.png" alt="Featured image of post AWS VPC 和 IP Address 的秘密：2025 年DevOps工程师必知" />&lt;p>像专家一样学习 AWS VPC IP 地址分配。探索隐藏规则、专家技巧和 2025 年最佳实践，以设计安全、可扩展的 AWS 网络。DevOps 和云工程师的完美指南。&lt;/p>
 &lt;p>当大多数工程师启动一个新的 &lt;strong>AWS 虚拟私有云 (Virtual Private Cloud - VPC)&lt;/strong> 时，他们会直接选择经典的 &lt;code>/16&lt;/code> CIDR 块。
 为什么？因为它“感觉很安全”——&lt;strong>65,536 个 IP 地址&lt;/strong>都在一个整齐的范围内。
 不缺地址，没有规划烦恼……至少看起来是这样。&lt;/p>

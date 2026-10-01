@@ -1,4 +1,99 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>DevOps on Martin Liu's Blog | SRE培训 | SRE认证 | SRE课程</title><link>https://martinliu.cn/categories/devops/</link><description>Recent content in DevOps on Martin Liu's Blog | SRE培训 | SRE认证 | SRE课程</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><atom:link href="https://martinliu.cn/categories/devops/index.xml" rel="self" type="application/rss+xml"/><item><title>在 MacOS 上使用 Cluada Code 集成 本地运行的 Qwen 模型</title><link>https://martinliu.cn/blog/claude-code-qwen3-coder-30b/</link><pubDate>Wed, 18 Feb 2026 05:35:42 +0800</pubDate><guid>https://martinliu.cn/blog/claude-code-qwen3-coder-30b/</guid><description>&lt;img src="https://martinliu.cn/blog/claude-code-qwen3-coder-30b/cover-claude-qwen-macos.webp" alt="Featured image of post 在 MacOS 上使用 Cluada Code 集成 本地运行的 Qwen 模型" />&lt;p>最近 Qwen3 Coder 30B 模型在春节期间很火，之前 Claude Code 体验不错，但是总想避免多开一个 AI 订阅；所以一直想用在本地运行编程大模型来搭配 Claude Code。&lt;/p>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>DevOps on Martin Liu's Blog | SRE培训 | SRE认证 | SRE课程</title><link>https://martinliu.cn/categories/devops/</link><description>Recent content in DevOps on Martin Liu's Blog | SRE培训 | SRE认证 | SRE课程</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><atom:link href="https://martinliu.cn/categories/devops/index.xml" rel="self" type="application/rss+xml"/><item><title>进中国市场技术就绪清单（SaaS/B2B 版）</title><link>https://martinliu.cn/blog/china-market-technical-readiness-checklist/</link><pubDate>Thu, 01 Oct 2026 00:10:00 +0800</pubDate><guid>https://martinliu.cn/blog/china-market-technical-readiness-checklist/</guid><description>&lt;img src="https://martinliu.cn/blog/china-market-technical-readiness-checklist/insight-android-stores.webp" alt="Featured image of post 进中国市场技术就绪清单（SaaS/B2B 版）" />&lt;p>决定进入中国市场之后，技术侧要做的事情可以列很长。但清单的价值不在&amp;quot;长&amp;quot;，而在&lt;strong>每项都能验证&lt;/strong>。下面这份清单按五个阶段组织，你可以从任意阶段切入，但建议至少把&amp;quot;评估&amp;quot;完整做一遍——先测量，再动手。&lt;/p>
+&lt;h2 id="阶段一评估assess">阶段一：评估（Assess）
+&lt;/h2>&lt;ul>
+&lt;li>&lt;input disabled="" type="checkbox"> 拿到大陆真实可达性数据：多地（北京/上海/广州方向）、多运营商的拨测基线&lt;/li>
+&lt;li>&lt;input disabled="" type="checkbox"> 拿到大陆真实性能数据：分地区 TTFB / Core Web Vitals，而不是海外机房的监控&lt;/li>
+&lt;li>&lt;input disabled="" type="checkbox"> 盘点第三方依赖在大陆的可达性：字体、统计、支付、地图、视频——每一个都是潜在的单点&lt;/li>
+&lt;li>&lt;input disabled="" type="checkbox"> 合规差距清单：ICP 备案要求、数据与隐私要点、行业特殊要求&lt;/li>
+&lt;/ul>
+&lt;p>&lt;strong>怎么验证&lt;/strong>：拨测报告 + RUM 数据 + 依赖可达性矩阵，三份材料齐了才算过。&lt;/p>
+&lt;h2 id="阶段二加速accelerate">阶段二：加速（Accelerate）
+&lt;/h2>&lt;ul>
+&lt;li>&lt;input disabled="" type="checkbox"> DNS 策略：大陆解析落地到就近节点，TTL 允许快速切换&lt;/li>
+&lt;li>&lt;input disabled="" type="checkbox"> CDN 策略：大陆有节点或预热路径；&lt;strong>HTML 也考虑边缘缓存&lt;/strong>（这是最容易被漏掉的一项）&lt;/li>
+&lt;li>&lt;input disabled="" type="checkbox"> 静态资源：指纹化文件名 + 长缓存；首屏资源瘦身（高延迟链路是放大器）&lt;/li>
+&lt;li>&lt;input disabled="" type="checkbox"> 回源路径：确认哪些请求必须回源、回源走什么线路&lt;/li>
+&lt;/ul>
+&lt;p>&lt;strong>怎么验证&lt;/strong>：大陆方向 TTFB 有量化改善（比如从秒级到几百毫秒以内），且缓存命中率可观测。&lt;/p>
+&lt;h2 id="阶段三托管host">阶段三：托管（Host）
+&lt;/h2>&lt;ul>
+&lt;li>&lt;input disabled="" type="checkbox"> 决定哪些部分需要本地存在：站点、API、数据，分别评估&lt;/li>
+&lt;li>&lt;input disabled="" type="checkbox"> 域名策略：.cn 域名 vs 海外域名 + 备案主体的路径选择&lt;/li>
+&lt;li>&lt;input disabled="" type="checkbox"> ICP 备案：主体、流程周期、未备案的替代方案（如港/新节点 + 边缘加速）都要有预案&lt;/li>
+&lt;/ul>
+&lt;p>&lt;strong>怎么验证&lt;/strong>：备案状态可查、托管方案在大陆的实际延迟达标。&lt;/p>
+&lt;h2 id="阶段四分发distribute">阶段四：分发（Distribute）
+&lt;/h2>&lt;ul>
+&lt;li>&lt;input disabled="" type="checkbox"> 安卓渠道生态：主流应用商店清单与上架要求（大陆安卓分发高度碎片化，Google Play 不可用）&lt;/li>
+&lt;li>&lt;input disabled="" type="checkbox"> 应用更新通道：版本分发、热更新、灰度的路径&lt;/li>
+&lt;li>&lt;input disabled="" type="checkbox"> iOS 侧确认 App Store 中国区账号与合规要求&lt;/li>
+&lt;/ul>
+&lt;p>&lt;strong>怎么验证&lt;/strong>：至少在目标渠道完成一次真实上架演练。&lt;/p>
+&lt;h2 id="阶段五运营operate">阶段五：运营（Operate）
+&lt;/h2>&lt;ul>
+&lt;li>&lt;input disabled="" type="checkbox"> 持续监控：覆盖大陆真实用户体验的监控与告警，&amp;ldquo;慢&amp;quot;和&amp;quot;挂&amp;quot;都要有信号&lt;/li>
+&lt;li>&lt;input disabled="" type="checkbox"> 变更流程：上线后如何确认大陆侧生效（边缘缓存的刷新策略）&lt;/li>
+&lt;li>&lt;input disabled="" type="checkbox"> 应急预案：线路波动时的降级方案&lt;/li>
+&lt;/ul>
+&lt;p>&lt;strong>怎么验证&lt;/strong>：一次真实故障或波动能在告警里被看到、被定位。&lt;/p>
+&lt;hr>
+&lt;p>这份清单的五阶段结构与 &lt;a class="link" href="https://martinliu.cn/chinaready/" >Chinaready&lt;/a> 的方法一致：每一步独立验证效果。如果你想要一份基于你自己站点真实测量数据的诊断报告作为&amp;quot;阶段一&amp;quot;的起点，可以从这里开始：&lt;/p>
+&lt;aside class="china-ready-cta">
+&lt;style>
+.china-ready-cta{margin:2rem 0;padding:1rem 1.25rem;border-left:3px solid var(--card-text-color-main,#333);background:var(--card-background,#f6f6f7);border-radius:4px;font-size:.95rem}
+.china-ready-cta .cta-title{font-weight:600;margin:0 0 .35rem}
+.china-ready-cta .cta-desc{margin:0 0 .6rem;opacity:.8}
+.china-ready-cta .cta-link{font-weight:600}
+&lt;/style>
+&lt;p class="cta-title">你的站点在中国大陆的可达性如何？&lt;/p>
+&lt;p class="cta-desc">如果产品或服务面向中国用户，可以获取一份免费的 Chinaready 诊断报告：基于真实测量数据，覆盖可达性、加载性能与合规要点。&lt;/p>
+&lt;a class="cta-link" href="https://chinaready.co/diagnose/?utm_source=martinliu.cn&amp;amp;utm_medium=blog&amp;amp;utm_campaign=china-ready" target="_blank" rel="noopener">获取免费中国就绪诊断 →&lt;/a>
+&lt;/aside></description></item><item><title>为什么你的海外站在中国大陆很慢、还不稳定？</title><link>https://martinliu.cn/blog/why-overseas-sites-slow-in-china/</link><pubDate>Thu, 01 Oct 2026 00:10:00 +0800</pubDate><guid>https://martinliu.cn/blog/why-overseas-sites-slow-in-china/</guid><description>&lt;img src="https://martinliu.cn/blog/why-overseas-sites-slow-in-china/insight-aws-china.webp" alt="Featured image of post 为什么你的海外站在中国大陆很慢、还不稳定？" />&lt;p>同一个站点，同一份代码，两份体检报告却截然不同：海外办公室打开只要几百毫秒，大陆的客户却反馈&amp;quot;时快时慢&amp;quot;&amp;ldquo;有时候干脆打不开&amp;rdquo;。这大概是出海团队问得最多的一个问题，而它几乎从来不是某一个单点的错。&lt;/p>
+&lt;h2 id="先分清两类问题不可用--性能差">先分清两类问题：不可用 ≠ 性能差
+&lt;/h2>&lt;p>排查之前先做一件事：把反馈分成两类。&lt;/p>
+&lt;ul>
+&lt;li>&lt;strong>不可用&lt;/strong>：部分地区、部分运营商的用户解析失败或连接失败——这是可用性问题；&lt;/li>
+&lt;li>&lt;strong>性能差&lt;/strong>：都能打开，就是慢——这是性能问题。&lt;/li>
+&lt;/ul>
+&lt;p>两者的排查路径完全不同。把&amp;quot;慢&amp;quot;当&amp;quot;挂&amp;quot;去查（或者反过来），是这类问题迟迟定位不了的最常见原因。&lt;/p>
+&lt;h2 id="慢是分层的从外到内五层拆">&amp;ldquo;慢&amp;quot;是分层的，从外到内五层拆
+&lt;/h2>&lt;p>一次页面加载在大陆变慢，来源通常是这五层的叠加：&lt;/p>
+&lt;ol>
+&lt;li>&lt;strong>DNS 调度&lt;/strong>：解析把大陆用户调到了境外节点。域名用的是全球 Anycast 没问题，但如果你的 DNS 服务商在大陆没有解析节点、或 GeoDNS 的分区策略粗糙，用户第一步就被送远了。&lt;/li>
+&lt;li>&lt;strong>跨境链路&lt;/strong>：大陆到境外的公网链路质量本身有波动，晚高峰尤其明显。这一层你改不了，但要知道它的存在——它决定了&amp;quot;同样的架构，大陆的延迟下限就是更高&amp;rdquo;。&lt;/li>
+&lt;li>&lt;strong>CDN 覆盖与预热&lt;/strong>：CDN 开了不等于大陆快。大陆没有节点、静态资源没有预热、动态内容（甚至 HTML）从不缓存，每个请求都要回源，前面两层的问题就会被放大。&lt;/li>
+&lt;li>&lt;strong>源站位置&lt;/strong>：源站在海外，意味着每次回源都走一遍跨境链路；源站在大陆或使用大陆友好的托管，回源路径完全不同。&lt;/li>
+&lt;li>&lt;strong>前端资源体积&lt;/strong>：高延迟链路是放大器。海外 200ms 往返感觉不到的 3MB 页面，在 300ms+ 的链路上就是灾难。&lt;/li>
+&lt;/ol>
+&lt;h2 id="时好时坏的机理一个真实案例">&amp;ldquo;时好时坏&amp;quot;的机理：一个真实案例
+&lt;/h2>&lt;p>我自己的博客（托管在海外边缘网络，大陆有真实流量）2026 年 9 月的数据：全月约 121 万请求，&lt;strong>5xx 占 5.79%，几乎全是 504 网关超时&lt;/strong>。有意思的是它的分布：&lt;/p>
+&lt;ul>
+&lt;li>全部是 GET 请求，&lt;strong>每个小时都有 60–240 次的持续基线&lt;/strong>——不是某次故障，而是常态；&lt;/li>
+&lt;li>首页一个 URL 就占了近 3 万次 504；&lt;/li>
+&lt;li>按地区看，大陆、美国、法国最多（后两者明显是扫描流量）。&lt;/li>
+&lt;/ul>
+&lt;p>根因：HTML 从不被边缘缓存（&lt;code>cf-cache-status: DYNAMIC&lt;/code>），&lt;strong>每一个页面请求都裸奔回源&lt;/strong>。源站在扫描流量压力下偶发超时，所有未缓存的请求就一起变成 504——表现就是&amp;quot;时好时坏&amp;rdquo;。&lt;/p>
+&lt;p>修复也不复杂：给 HTML 加边缘缓存规则后，暖连接 TTFB 从 0.7–0.9 秒降到 &lt;strong>0.26 秒&lt;/strong>，回源量断崖式下降，504 失去了土壤。这个案例的完整过程，我会在下一篇踩坑文里展开。&lt;/p>
+&lt;h2 id="一套可以自己动手的自检清单">一套可以自己动手的自检清单
+&lt;/h2>&lt;ol>
+&lt;li>&lt;strong>看解析落地&lt;/strong>：在大陆的机器或拨测节点上 &lt;code>dig&lt;/code> 你的域名，对比返回的 IP/CNAME 与海外是否一致、是否被调度到远端。&lt;/li>
+&lt;li>&lt;strong>多地拨测&lt;/strong>：至少覆盖北京/上海/广州三个方向的运营商网络，测可用性（能不能连上）而不是只测延迟。&lt;/li>
+&lt;li>&lt;strong>分地区 TTFB&lt;/strong>：用 Core Web Vitals 的真实用户数据（或 RUM 工具）看大陆访客的 TTFB 分布，而不是只看服务器侧监控。&lt;/li>
+&lt;li>&lt;strong>资源瀑布图&lt;/strong>：在大陆网络环境打开一次页面，看瀑布图里哪一段最长——DNS、连接、等待首字节、还是资源下载。&lt;/li>
+&lt;li>&lt;strong>确认缓存行为&lt;/strong>：检查响应头里的缓存状态（如 &lt;code>cf-cache-status&lt;/code>），确认 HTML 和静态资源到底有没有被边缘缓存命中。&lt;/li>
+&lt;/ol>
+&lt;p>如果这五步做完你想要一份更系统的答案——基于真实测量数据、按优先级排序的改进项——可以看看下面这个免费诊断。&lt;/p>
+&lt;aside class="china-ready-cta">
+&lt;style>
+.china-ready-cta{margin:2rem 0;padding:1rem 1.25rem;border-left:3px solid var(--card-text-color-main,#333);background:var(--card-background,#f6f6f7);border-radius:4px;font-size:.95rem}
+.china-ready-cta .cta-title{font-weight:600;margin:0 0 .35rem}
+.china-ready-cta .cta-desc{margin:0 0 .6rem;opacity:.8}
+.china-ready-cta .cta-link{font-weight:600}
+&lt;/style>
+&lt;p class="cta-title">你的站点在中国大陆的可达性如何？&lt;/p>
+&lt;p class="cta-desc">如果产品或服务面向中国用户，可以获取一份免费的 Chinaready 诊断报告：基于真实测量数据，覆盖可达性、加载性能与合规要点。&lt;/p>
+&lt;a class="cta-link" href="https://chinaready.co/diagnose/?utm_source=martinliu.cn&amp;amp;utm_medium=blog&amp;amp;utm_campaign=china-ready" target="_blank" rel="noopener">获取免费中国就绪诊断 →&lt;/a>
+&lt;/aside></description></item><item><title>在 MacOS 上使用 Cluada Code 集成 本地运行的 Qwen 模型</title><link>https://martinliu.cn/blog/claude-code-qwen3-coder-30b/</link><pubDate>Wed, 18 Feb 2026 05:35:42 +0800</pubDate><guid>https://martinliu.cn/blog/claude-code-qwen3-coder-30b/</guid><description>&lt;img src="https://martinliu.cn/blog/claude-code-qwen3-coder-30b/cover-claude-qwen-macos.webp" alt="Featured image of post 在 MacOS 上使用 Cluada Code 集成 本地运行的 Qwen 模型" />&lt;p>最近 Qwen3 Coder 30B 模型在春节期间很火，之前 Claude Code 体验不错，但是总想避免多开一个 AI 订阅；所以一直想用在本地运行编程大模型来搭配 Claude Code。&lt;/p>
 &lt;p>选取我内存最大的 MacOS 机器，来安装测试这个组合。安装前，觉得 MacBook Pro M1 Max 64GB 内存的配置应该差不多，结果速度其实差很多。不知道是不是我的配置不对，还是哪里有性能问题，或者是什么原因导致的。&lt;/p>
 &lt;p>作为一次踩坑记录，也有必要记录以下；或许通过这个梳理可以找出问题所在。&lt;/p>
 &lt;h2 id="用-ollama-在本地运行-qwen-模型">用 Ollama 在本地运行 Qwen 模型
