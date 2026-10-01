@@ -1,6 +1,8 @@
 ---
 title: "Chinaready: Making your product truly reachable in China"
 slug: chinaready
+aliases:
+    - /en/china-ready/
 description: "Technical readiness practices for teams entering the China market: assessment-led entry, engineering delivery, and compliance — covering reachability, performance, and app distribution."
 image: chinaready-cover.webp
 ---

@@ -1,6 +1,8 @@
 ---
 title: "Chinaready：让产品真正走进中国"
 slug: chinaready
+aliases:
+    - /china-ready/
 description: "面向出海团队的中国市场技术就绪实践：评估先行、工程交付与合规落地，覆盖网络可达性、加载性能与应用分发。"
 image: chinaready-cover.webp
 ---
