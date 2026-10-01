@@ -466,3 +466,5 @@ MTTx 的挑战在于它是一个错误的观察指标。这个指标的行为特
 [^25]: Steve Krug，《Rocket Surgery Made Easy》（加利福尼亚州伯克利：New Riders，2010）。
 
 ❤️ Photo by Kevin Bidwell: <https://www.pexels.com/photo/firefighter-holding-hose-with-water-flowing-3013676/>
+
+{{< china-ready >}}

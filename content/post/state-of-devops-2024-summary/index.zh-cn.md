@@ -93,3 +93,5 @@ AI 采用率提升 25% 带来了几个关键领域的改进：
 - [下载完整报告](/blog/state-of-devops-2024-zh-cn/)
 - 分享你的经验，[加入 DORA 社区](https://dora.community/)，学习他人的做法并获取灵感
 - 使用 [DORA 快速检查](https://dora.dev/quickcheck/)，在不到一分钟内评估你的团队的软件交付绩效
+
+{{< china-ready >}}

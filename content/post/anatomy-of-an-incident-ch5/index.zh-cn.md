@@ -216,3 +216,5 @@ toc: true
 ![cover](/img/anatomy-of-an-incident.webp)
 
 ❤️ Photo by Pixabay: <https://www.pexels.com/photo/photo-of-a-2-fireman-killing-a-huge-fire-69934/>
+
+{{< china-ready >}}

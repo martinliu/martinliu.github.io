@@ -349,3 +349,5 @@ toc: true
 >原文地址: <https://static.googleusercontent.com/media/sre.google/en//static/pdf/login_winter20_10_torres.pdf>
 
 ❤️ Photo by FOX: <https://www.pexels.com/photo/clear-drinking-glass-with-brown-liquid-9097039/>
+
+{{< china-ready >}}
