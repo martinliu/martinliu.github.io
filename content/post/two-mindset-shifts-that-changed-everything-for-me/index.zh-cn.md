@@ -3,7 +3,7 @@ title: "在 DevOps 实践中的两次思维转变，彻底改变了我"
 date: 2025-08-25T10:00:00+08:00
 description: "从以工具为导向到以解决方案为导向，从技术思维到业务思维 - 分享两个改变我 DevOps 职业生涯的关键思维转变。"
 slug: two-mindset-shifts-that-changed-everything-for-me
-image: 1_7OnOS2Hlt5vIKFVozBhN-g.jpeg
+image: 1_7OnOS2Hlt5vIKFVozBhN-g.webp
 categories:
     - DevOps
 tags:

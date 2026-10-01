@@ -19,7 +19,7 @@ keywords:
   - "微服务架构"
   - "流量管理"
 slug: "why-im-moving-from-kubernetes-ingress-to-gateway"
-image: 1_rhwXmfU4EZHiwcLjTUxOaQ.png
+image: 1_rhwXmfU4EZHiwcLjTUxOaQ.webp
 ---
 
 对于每一位踏入 Kubernetes 世界的 DevOps 工程师来说，Ingress 通常是他们遇到的第一个资源，甚至可能是他们的“初恋”。当需要简单的 HTTP(S) 路由时，Ingress 就会派上用场，为集群内部的服务打开了通往外部世界的大门。多年来，它一直运行良好。但技术世界永不停歇，需求不断演变，现有解决方案也开始触及其局限性。正是在这种背景下，Gateway API 进入了 Kubernetes 生态系统。
@@ -46,7 +46,7 @@ Gateway API 围绕三个主要的自定义资源定义 (Custom Resource Definiti
 
 **Route：** Route 资源定义了到达 Gateway 的流量应如何路由。HTTPRoute 用于 HTTP/HTTPS 流量，而 TCPRoute 和 UDPRoute 等其他类型则用于不同的协议。路由根据主机 (host)、路径 (path)、请求头 (headers) 等匹配流量，并将其路由到后端服务 (backend services)。这是开发人员可以定义自己的路由规则的地方。
 
-![Gateway API 架构图](1__1TVbXaobEeF2gWCENYxkw.png)
+![Gateway API 架构图](1__1TVbXaobEeF2gWCENYxkw.webp)
 
 这种三层结构完美地实现了 Gateway API 最重要的创新之一：关注点分离 (separation of concerns)。
 

@@ -20,7 +20,7 @@ keywords:
   - "自动化部署"
 slug: "stop-using-jenkins-in-2025"
 draft: false
-image: 1_9wQ57gpbdI9JwUHpJmtFdA.jpeg
+image: 1_9wQ57gpbdI9JwUHpJmtFdA.webp
 ---
 
 ## 阻碍你前进的遗留巨头

@@ -18,7 +18,7 @@ keywords:
   - "云计算"
   - "Kubernetes"
   - "Docker"
-image: "image_0_94126cb8.png"
+image: "image_0_94126cb8.webp"
 slug: "90-of-people-fail-at-devops-heres-the-roadmap-that"
 draft: false
 ---
@@ -55,7 +55,7 @@ DevOps 拥有大量的工具和令人困惑的术语。你有时会感到迷茫�
 
 本路线图旨在让你从完全的初学者成长为能够胜任工作的 DevOps 工程师。每个月的内容都在前一个月的基础上进行，在增加复杂性之前打下坚实的基础。
 
-![DevOps 6个月学习路线图](image_1_2eeeb884.png)
+![DevOps 6个月学习路线图](image_1_2eeeb884.webp)
 
 ## 第一月：基础技能 — Linux、网络、Shell 脚本和 Git
 

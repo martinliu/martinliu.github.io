@@ -18,7 +18,7 @@ keywords:
   - "持续交付"
   - "看板"
   - "Shape Up"
-image: "0_RoRZP60AWsV890oG.jpg"
+image: "0_RoRZP60AWsV890oG.webp"
 slug: "scrum-is-evolving-and-many-teams-are-experimenting"
 draft: false
 ---
