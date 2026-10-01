@@ -1,1058 +1,1081 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Jenkins on Martin Liu's Blog | SRE培训 | SRE认证 | SRE课程</title><link>https://martinliu.cn/tags/jenkins/</link><description>Recent content in Jenkins on Martin Liu's Blog | SRE培训 | SRE认证 | SRE课程</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><lastBuildDate>Wed, 30 Sep 2026 23:49:58 +0800</lastBuildDate><atom:link href="https://martinliu.cn/tags/jenkins/index.xml" rel="self" type="application/rss+xml"/><item><title>2025 年别再使用 Jenkins！</title><link>https://martinliu.cn/blog/stop-using-jenkins-in-2025/</link><pubDate>Thu, 28 Aug 2025 10:00:00 +0800</pubDate><guid>https://martinliu.cn/blog/stop-using-jenkins-in-2025/</guid><description>&lt;img src="https://martinliu.cn/blog/stop-using-jenkins-in-2025/1_9wQ57gpbdI9JwUHpJmtFdA.jpeg" alt="Featured image of post 2025 年别再使用 Jenkins！" />&lt;h2 id="阻碍你前进的遗留巨头">阻碍你前进的遗留巨头
-&lt;/h2>&lt;p>认识一下 Janet。她是一家中型科技公司的 DevOps 工程师，工作了五年。每个周一早上，她都会像闹钟一样，为不可避免的事情做好准备：“Jenkins 服务器又宕机了。”或者“构建失败了，没人知道为什么。”又或者她最喜欢的那句，“我们需要更新所有的 Jenkins 插件，但我们担心一切都会崩溃。”&lt;/p>
-&lt;p>听起来很熟悉？你并不孤单。&lt;/p>
-&lt;p>Jenkins 在过去的 15 年里一直是首选的 CI/CD 工具。它就像那辆老旧的家庭汽车，虽然总是进修理店，但你仍然保留着，因为，嗯，你习惯了它。但正如你在 2025 年不会再使用翻盖手机一样，现在或许是时候重新审视你与 Jenkins 的关系了 😒。&lt;/p>
-&lt;h2 id="为什么-jenkins-正在显露老态">为什么 Jenkins 正在显露老态
-&lt;/h2>&lt;p>Jenkins 在 2005 年推出时是革命性的。但 iPod 也是。技术发展迅速，曾经的尖端产品很快就会过时。以下是 Jenkins 正在落后的原因：&lt;/p>
-&lt;ol>
-&lt;li>
-&lt;p>让安全团队彻夜难眠的安全漏洞: Jenkins 有着令人不安的安全问题历史。仅在 2021 年，Jenkins 安全团队就披露了 30 多个漏洞，并且新的漏洞还在不断出现。许多组织以提升的权限运行 Jenkins，这使得这些漏洞尤为危险。以 Acme Corp（化名）为例。他们的 Jenkins 实例通过 CVE-2023–27898 被攻破，这是一个在脚本安全插件 (Script Security Plugin) 中的关键漏洞。攻击者获得了他们生产凭证的访问权限，并在其基础设施中部署了加密货币挖矿程序 (crypto miners)。清理工作让他们花费了三天的工程时间，并损害了客户信任。&lt;/p>
-&lt;/li>
-&lt;li>
-&lt;p>拖慢整个团队效率的性能问题: “我趁构建运行的时候去喝杯咖啡”这不仅仅是开发人员的玩笑，更是一个生产力问题。Jenkins 实例通常会随着时间的推移变得越来越慢，特别是当你添加更多作业和插件时。Michael，一个游戏初创公司的开发人员，描述了他的经历：“我们的 Jenkins 构建以前需要 10 分钟。在增加了两年功能和测试之后，它们需要 45 分钟。我们花在等待 Jenkins 上的时间比实际编码的时间还要多。”&lt;/p>
-&lt;/li>
-&lt;li>
-&lt;p>滋生“Jenkins 专家”的配置复杂性: Jenkins 的灵活性是有代价的：复杂性。组织往往最终只有一两个“Jenkins 大师”，他们是唯一了解一切如何运作的人。当他们去度假或离开公司时，恐慌就会随之而来。一位工程经理曾这样说：“我们有超过 200 个 Jenkins 流水线，每个的配置都略有不同。没人敢碰它们，因为我们担心它们会中断。这简直是最纯粹的技术债。”&lt;/p>
-&lt;/li>
-&lt;li>
-&lt;p>消耗资源的维护开销: 自行托管的 Jenkins 需要持续维护。&lt;/p>
-&lt;/li>
-&lt;/ol>
-&lt;p>你需要：&lt;/p>
-&lt;ul>
-&lt;li>管理 Jenkins 服务器本身&lt;/li>
-&lt;li>定期更新 Jenkins 核心&lt;/li>
-&lt;li>更新几十甚至上百个插件&lt;/li>
-&lt;li>处理备份和灾难恢复&lt;/li>
-&lt;li>配置和维护构建代理 (build agents)&lt;/li>
-&lt;/ul>
-&lt;p>这些维护工作不会增加业务价值；它只是为了维持系统运行。&lt;/p>
-&lt;h2 id="github-actions现代替代方案">GitHub Actions：现代替代方案
-&lt;/h2>&lt;p>Janet 的故事有一个圆满的结局。她的团队从 Jenkins 迁移到了 GitHub Actions，周一早上的“救火”式应对也成为了历史。&lt;/p>
-&lt;p>GitHub Actions 代表了一种截然不同的持续集成/持续部署 (CI/CD) 方法：&lt;/p>
-&lt;ol>
-&lt;li>
-&lt;p>内置安全性，无需维护服务器 : GitHub Actions 在 GitHub 的云中运行。你无需担心 Jenkins 服务器的安全或应用安全补丁。GitHub 的安全团队会为你处理这些。最好的安全服务器是你根本无需管理的服务器。&lt;/p>
-&lt;/li>
-&lt;li>
-&lt;p>自动扩展的性能 ： 需要更多构建能力？GitHub Actions 会自动扩展以满足需求。你可以并行运行构建，而无需管理额外的构建代理。Janet 的团队在迁移到 GitHub Actions 后，构建时间缩短了 60%，仅仅是因为他们可以并行执行测试，而无需担心基础设施 (infrastructure) 限制。&lt;/p>
-&lt;/li>
-&lt;li>
-&lt;p>人人都能理解的代码化配置：GitHub Actions 使用直接存储在你的代码仓库 (repository) 中的 YAML 文件。这种方法有几个优点：&lt;/p>
-&lt;/li>
-&lt;/ol>
-&lt;ul>
-&lt;li>配置与它所构建的代码共存&lt;/li>
-&lt;li>变更通过常规代码审查 (code reviews) 进行追踪&lt;/li>
-&lt;li>新团队成员可以快速理解设置&lt;/li>
-&lt;li>无需专业知识&lt;/li>
-&lt;/ul>
-&lt;p>一位开发人员报告说：“GitHub Actions 的学习曲线比 Jenkins 平缓得多。我可以在一个下午，而不是几周内，理解我们整个 CI/CD 流水线。”&lt;/p>
-&lt;ol start="4">
-&lt;li>零维护开销 ：使用 GitHub Actions，你将拥有：&lt;/li>
-&lt;/ol>
-&lt;ul>
-&lt;li>无需维护服务器&lt;/li>
-&lt;li>无需更新插件&lt;/li>
-&lt;li>无需配置构建代理&lt;/li>
-&lt;li>无需管理备份&lt;/li>
-&lt;/ul>
-&lt;p>这让工程师可以将时间投入到实际的产品开发中，而不是基础设施的维护。&lt;/p>
-&lt;p>&lt;strong>实际影响&lt;/strong>&lt;/p>
-&lt;p>让我告诉你 Realtime Analytics, Inc. 从 Jenkins 切换到 GitHub Actions 后发生了什么。&lt;/p>
-&lt;p>在切换之前，他们有：&lt;/p>
-&lt;ul>
-&lt;li>两名全职工程师专门负责 Jenkins 维护&lt;/li>
-&lt;li>每周发生的故障影响开发者生产力&lt;/li>
-&lt;li>平均构建时间 35 分钟&lt;/li>
-&lt;li>定期出现安全隐患，需要紧急修补&lt;/li>
-&lt;/ul>
-&lt;p>切换到 GitHub Actions 六个月后：&lt;/p>
-&lt;ul>
-&lt;li>两名工程师都被重新分配到产品开发工作&lt;/li>
-&lt;li>零 CI/CD 故障&lt;/li>
-&lt;li>构建时间缩短到 12 分钟&lt;/li>
-&lt;li>安全问题由 GitHub 自动处理&lt;/li>
-&lt;/ul>
-&lt;p>他们的 CTO 估算，仅工程时间一项，这项改变每年就为他们节省了大约 30 万美元，这还不包括改善的开发者体验和更快的上市时间。&lt;/p>
-&lt;h2 id="切换比你想象的更容易">切换：比你想象的更容易
-&lt;/h2>&lt;p>从 Jenkins 迁移到 GitHub Actions 的想法可能看起来令人生畏，但实际上它比你想象的要简单直接得多。&lt;/p>
-&lt;p>这里有一个简化的方法：&lt;/p>
-&lt;ol>
-&lt;li>从一个小型、非关键项目开始&lt;/li>
-&lt;li>将其 Jenkins 流水线 (pipeline) 转换为 GitHub Actions 工作流 (workflow)&lt;/li>
-&lt;li>并行运行这两个系统以建立信心&lt;/li>
-&lt;li>随着团队适应，逐步迁移更多项目&lt;/li>
-&lt;/ol>
-&lt;p>GitHub 甚至专门为 Jenkins 用户提供了迁移指南和示例。&lt;/p>
-&lt;h2 id="github-actions-完美吗不但它是一个重大改进">GitHub Actions 完美吗？不，但它是一个重大改进
-&lt;/h2>&lt;p>公平地说，GitHub Actions 并非没有局限性：&lt;/p>
-&lt;ul>
-&lt;li>对于非常专业的构建要求，你可能需要定制解决方案&lt;/li>
-&lt;li>如果你没有使用 GitHub 进行源代码管理 (source control)，集成就不会那么无缝&lt;/li>
-&lt;li>一些复杂的 Jenkins 设置可能需要你重新思考方法&lt;/li>
-&lt;/ul>
-&lt;p>然而，对于绝大多数开发团队来说，GitHub Actions 几乎在所有方面都代表着对 Jenkins 的巨大改进。&lt;/p>
-&lt;h2 id="总结">总结
-&lt;/h2>&lt;p>&lt;strong>Jenkins 多年来一直为我们服务得很好&lt;/strong>，但软件开发已经演进。现代的 CI/CD (持续集成/持续交付) 解决方案，例如 GitHub Actions，专为当今的开发实践而设计：云原生 (cloud-native)、注重安全，并优化了开发者生产力 (developer productivity)。&lt;/p>
-&lt;p>正如 Janet 所发现的，最初的迁移努力会迅速带来回报。她的团队现在部署更频繁，问题更少，并且几乎不花时间维护他们的 CI/CD 基础设施。&lt;/p>
-&lt;p>&lt;strong>问问自己：&lt;/strong> 上个月你的团队花了多少时间与 Jenkins 搏斗？如果把这些时间用于其他工作，你本可以构建出什么？&lt;/p>
-&lt;p>CI/CD 的未来已经到来。&lt;strong>也许&lt;/strong>是时候让 Jenkins 成为过去式了。&lt;/p></description></item><item><title>Grafana Cloud 推出多项更新：AI 驱动工具、秘钥管理强化安全性，以及更多功能</title><link>https://martinliu.cn/blog/grafana-cloud-updates-onboard-teams-with-new-ai-powered-tooling-secrets-management-for-enhanced-security/</link><pubDate>Thu, 21 Aug 2025 16:55:49 +0800</pubDate><guid>https://martinliu.cn/blog/grafana-cloud-updates-onboard-teams-with-new-ai-powered-tooling-secrets-management-for-enhanced-security/</guid><description>&lt;img src="https://martinliu.cn/blog/grafana-cloud-updates-onboard-teams-with-new-ai-powered-tooling-secrets-management-for-enhanced-security/cloud-updates-aug-2025.webp" alt="Featured image of post Grafana Cloud 推出多项更新：AI 驱动工具、秘钥管理强化安全性，以及更多功能" />&lt;blockquote>
-&lt;p>From: &lt;a class="link" href="https://grafana.com/blog/2025/08/20/grafana-cloud-updates-onboard-teams-with-new-ai-powered-tooling-secrets-management-for-enhanced-security-and-more/" target="_blank" rel="noopener"
->Grafana Labs Blog&lt;/a>&lt;/p>&lt;/blockquote>
-&lt;p>我们持续为 Grafana Cloud 推出实用更新和新特性。Grafana Cloud 是一款由开源的 Grafana LGTM Stack 提供支持的全托管可观测性平台，其中包括 &lt;a class="link" href="https://grafana.com/oss/loki/?pg=blog&amp;amp;plcmt=body-txt" target="_blank" rel="noopener"
->Loki&lt;/a>（日志）、&lt;a class="link" href="https://grafana.com/oss/grafana/?pg=blog&amp;amp;plcmt=body-txt" target="_blank" rel="noopener"
->Grafana&lt;/a>（可视化）、&lt;a class="link" href="https://grafana.com/oss/tempo/?pg=blog&amp;amp;plcmt=body-txt" target="_blank" rel="noopener"
->Tempo&lt;/a>（链路追踪）和 &lt;a class="link" href="https://grafana.com/oss/mimir/?pg=blog&amp;amp;plcmt=body-txt" target="_blank" rel="noopener"
->Mimir&lt;/a>（指标监控）。&lt;/p>
-&lt;p>还不是 Grafana Cloud 用户？&lt;a class="link" href="https://grafana.com/auth/sign-up/create-user/?pg=blog&amp;amp;plcmt=body-txt" target="_blank" rel="noopener"
->立即注册&lt;/a> 账户，使用我们的 Cloud Free 免费计划即可试用所有功能。&lt;/p>
-&lt;h2 id="更轻松上手-grafana-cloudgrafana-assistant-现已开放公开预览">更轻松上手 Grafana Cloud：Grafana Assistant 现已开放公开预览
-&lt;/h2>&lt;p>在 Grafana Labs，我们始终&lt;a class="link" href="https://grafana.com/blog/2025/08/14/ai-in-observability-at-grafana-labs-making-observability-easy-and-accessible-for-everyone/" target="_blank" rel="noopener"
->坚信&lt;/a>，AI 不只是可观测性领域的一时潮流，它将在未来成为保障系统稳定运行的重要基石。&lt;/p>
-&lt;p>这一理念也持续推动我们构建新的工具。例如，本月我们很高兴宣布：Grafana Assistant——一款嵌入于 Grafana Cloud 的 AI 助手，现已进入公开预览阶段。它支持自然语言操作，帮助你更高效地进行查询、构建和故障排查。&lt;/p>
-&lt;p>&lt;img src="https://martinliu.cn/blog/grafana-cloud-updates-onboard-teams-with-new-ai-powered-tooling-secrets-management-for-enhanced-security/maxresdefault-2.webp"
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Jenkins on Martin Liu's Blog | SRE培训 | SRE认证 | SRE课程</title><link>https://martinliu.cn/tags/jenkins/</link><description>Recent content in Jenkins on Martin Liu's Blog | SRE培训 | SRE认证 | SRE课程</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><lastBuildDate>Thu, 01 Oct 2026 10:13:15 +0800</lastBuildDate><atom:link href="https://martinliu.cn/tags/jenkins/index.xml" rel="self" type="application/rss+xml"/><item><title>2025 年别再使用 Jenkins！</title><link>https://martinliu.cn/blog/stop-using-jenkins-in-2025/</link><pubDate>Thu, 28 Aug 2025 10:00:00 +0800</pubDate><guid>https://martinliu.cn/blog/stop-using-jenkins-in-2025/</guid><description>&lt;img src="https://martinliu.cn/blog/stop-using-jenkins-in-2025/1_9wQ57gpbdI9JwUHpJmtFdA.webp" alt="Featured image of post 2025 年别再使用 Jenkins！" /&gt;&lt;h2 id="阻碍你前进的遗留巨头"&gt;阻碍你前进的遗留巨头
+&lt;/h2&gt;&lt;p&gt;认识一下 Janet。她是一家中型科技公司的 DevOps 工程师，工作了五年。每个周一早上，她都会像闹钟一样，为不可避免的事情做好准备：“Jenkins 服务器又宕机了。”或者“构建失败了，没人知道为什么。”又或者她最喜欢的那句，“我们需要更新所有的 Jenkins 插件，但我们担心一切都会崩溃。”&lt;/p&gt;
+&lt;p&gt;听起来很熟悉？你并不孤单。&lt;/p&gt;
+&lt;p&gt;Jenkins 在过去的 15 年里一直是首选的 CI/CD 工具。它就像那辆老旧的家庭汽车，虽然总是进修理店，但你仍然保留着，因为，嗯，你习惯了它。但正如你在 2025 年不会再使用翻盖手机一样，现在或许是时候重新审视你与 Jenkins 的关系了 😒。&lt;/p&gt;
+&lt;h2 id="为什么-jenkins-正在显露老态"&gt;为什么 Jenkins 正在显露老态
+&lt;/h2&gt;&lt;p&gt;Jenkins 在 2005 年推出时是革命性的。但 iPod 也是。技术发展迅速，曾经的尖端产品很快就会过时。以下是 Jenkins 正在落后的原因：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;让安全团队彻夜难眠的安全漏洞: Jenkins 有着令人不安的安全问题历史。仅在 2021 年，Jenkins 安全团队就披露了 30 多个漏洞，并且新的漏洞还在不断出现。许多组织以提升的权限运行 Jenkins，这使得这些漏洞尤为危险。以 Acme Corp（化名）为例。他们的 Jenkins 实例通过 CVE-2023–27898 被攻破，这是一个在脚本安全插件 (Script Security Plugin) 中的关键漏洞。攻击者获得了他们生产凭证的访问权限，并在其基础设施中部署了加密货币挖矿程序 (crypto miners)。清理工作让他们花费了三天的工程时间，并损害了客户信任。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;拖慢整个团队效率的性能问题: “我趁构建运行的时候去喝杯咖啡”这不仅仅是开发人员的玩笑，更是一个生产力问题。Jenkins 实例通常会随着时间的推移变得越来越慢，特别是当你添加更多作业和插件时。Michael，一个游戏初创公司的开发人员，描述了他的经历：“我们的 Jenkins 构建以前需要 10 分钟。在增加了两年功能和测试之后，它们需要 45 分钟。我们花在等待 Jenkins 上的时间比实际编码的时间还要多。”&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;滋生“Jenkins 专家”的配置复杂性: Jenkins 的灵活性是有代价的：复杂性。组织往往最终只有一两个“Jenkins 大师”，他们是唯一了解一切如何运作的人。当他们去度假或离开公司时，恐慌就会随之而来。一位工程经理曾这样说：“我们有超过 200 个 Jenkins 流水线，每个的配置都略有不同。没人敢碰它们，因为我们担心它们会中断。这简直是最纯粹的技术债。”&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;消耗资源的维护开销: 自行托管的 Jenkins 需要持续维护。&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;你需要：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;管理 Jenkins 服务器本身&lt;/li&gt;
+&lt;li&gt;定期更新 Jenkins 核心&lt;/li&gt;
+&lt;li&gt;更新几十甚至上百个插件&lt;/li&gt;
+&lt;li&gt;处理备份和灾难恢复&lt;/li&gt;
+&lt;li&gt;配置和维护构建代理 (build agents)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;这些维护工作不会增加业务价值；它只是为了维持系统运行。&lt;/p&gt;
+&lt;h2 id="github-actions现代替代方案"&gt;GitHub Actions：现代替代方案
+&lt;/h2&gt;&lt;p&gt;Janet 的故事有一个圆满的结局。她的团队从 Jenkins 迁移到了 GitHub Actions，周一早上的“救火”式应对也成为了历史。&lt;/p&gt;
+&lt;p&gt;GitHub Actions 代表了一种截然不同的持续集成/持续部署 (CI/CD) 方法：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;内置安全性，无需维护服务器 : GitHub Actions 在 GitHub 的云中运行。你无需担心 Jenkins 服务器的安全或应用安全补丁。GitHub 的安全团队会为你处理这些。最好的安全服务器是你根本无需管理的服务器。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;自动扩展的性能 ： 需要更多构建能力？GitHub Actions 会自动扩展以满足需求。你可以并行运行构建，而无需管理额外的构建代理。Janet 的团队在迁移到 GitHub Actions 后，构建时间缩短了 60%，仅仅是因为他们可以并行执行测试，而无需担心基础设施 (infrastructure) 限制。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;人人都能理解的代码化配置：GitHub Actions 使用直接存储在你的代码仓库 (repository) 中的 YAML 文件。这种方法有几个优点：&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;ul&gt;
+&lt;li&gt;配置与它所构建的代码共存&lt;/li&gt;
+&lt;li&gt;变更通过常规代码审查 (code reviews) 进行追踪&lt;/li&gt;
+&lt;li&gt;新团队成员可以快速理解设置&lt;/li&gt;
+&lt;li&gt;无需专业知识&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;一位开发人员报告说：“GitHub Actions 的学习曲线比 Jenkins 平缓得多。我可以在一个下午，而不是几周内，理解我们整个 CI/CD 流水线。”&lt;/p&gt;
+&lt;ol start="4"&gt;
+&lt;li&gt;零维护开销 ：使用 GitHub Actions，你将拥有：&lt;/li&gt;
+&lt;/ol&gt;
+&lt;ul&gt;
+&lt;li&gt;无需维护服务器&lt;/li&gt;
+&lt;li&gt;无需更新插件&lt;/li&gt;
+&lt;li&gt;无需配置构建代理&lt;/li&gt;
+&lt;li&gt;无需管理备份&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;这让工程师可以将时间投入到实际的产品开发中，而不是基础设施的维护。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;实际影响&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;让我告诉你 Realtime Analytics, Inc. 从 Jenkins 切换到 GitHub Actions 后发生了什么。&lt;/p&gt;
+&lt;p&gt;在切换之前，他们有：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;两名全职工程师专门负责 Jenkins 维护&lt;/li&gt;
+&lt;li&gt;每周发生的故障影响开发者生产力&lt;/li&gt;
+&lt;li&gt;平均构建时间 35 分钟&lt;/li&gt;
+&lt;li&gt;定期出现安全隐患，需要紧急修补&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;切换到 GitHub Actions 六个月后：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;两名工程师都被重新分配到产品开发工作&lt;/li&gt;
+&lt;li&gt;零 CI/CD 故障&lt;/li&gt;
+&lt;li&gt;构建时间缩短到 12 分钟&lt;/li&gt;
+&lt;li&gt;安全问题由 GitHub 自动处理&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;他们的 CTO 估算，仅工程时间一项，这项改变每年就为他们节省了大约 30 万美元，这还不包括改善的开发者体验和更快的上市时间。&lt;/p&gt;
+&lt;h2 id="切换比你想象的更容易"&gt;切换：比你想象的更容易
+&lt;/h2&gt;&lt;p&gt;从 Jenkins 迁移到 GitHub Actions 的想法可能看起来令人生畏，但实际上它比你想象的要简单直接得多。&lt;/p&gt;
+&lt;p&gt;这里有一个简化的方法：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;从一个小型、非关键项目开始&lt;/li&gt;
+&lt;li&gt;将其 Jenkins 流水线 (pipeline) 转换为 GitHub Actions 工作流 (workflow)&lt;/li&gt;
+&lt;li&gt;并行运行这两个系统以建立信心&lt;/li&gt;
+&lt;li&gt;随着团队适应，逐步迁移更多项目&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;GitHub 甚至专门为 Jenkins 用户提供了迁移指南和示例。&lt;/p&gt;
+&lt;h2 id="github-actions-完美吗不但它是一个重大改进"&gt;GitHub Actions 完美吗？不，但它是一个重大改进
+&lt;/h2&gt;&lt;p&gt;公平地说，GitHub Actions 并非没有局限性：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;对于非常专业的构建要求，你可能需要定制解决方案&lt;/li&gt;
+&lt;li&gt;如果你没有使用 GitHub 进行源代码管理 (source control)，集成就不会那么无缝&lt;/li&gt;
+&lt;li&gt;一些复杂的 Jenkins 设置可能需要你重新思考方法&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;然而，对于绝大多数开发团队来说，GitHub Actions 几乎在所有方面都代表着对 Jenkins 的巨大改进。&lt;/p&gt;
+&lt;h2 id="总结"&gt;总结
+&lt;/h2&gt;&lt;p&gt;&lt;strong&gt;Jenkins 多年来一直为我们服务得很好&lt;/strong&gt;，但软件开发已经演进。现代的 CI/CD (持续集成/持续交付) 解决方案，例如 GitHub Actions，专为当今的开发实践而设计：云原生 (cloud-native)、注重安全，并优化了开发者生产力 (developer productivity)。&lt;/p&gt;
+&lt;p&gt;正如 Janet 所发现的，最初的迁移努力会迅速带来回报。她的团队现在部署更频繁，问题更少，并且几乎不花时间维护他们的 CI/CD 基础设施。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;问问自己：&lt;/strong&gt; 上个月你的团队花了多少时间与 Jenkins 搏斗？如果把这些时间用于其他工作，你本可以构建出什么？&lt;/p&gt;
+&lt;p&gt;CI/CD 的未来已经到来。&lt;strong&gt;也许&lt;/strong&gt;是时候让 Jenkins 成为过去式了。&lt;/p&gt;</description></item><item><title>Grafana Cloud 推出多项更新：AI 驱动工具、秘钥管理强化安全性，以及更多功能</title><link>https://martinliu.cn/blog/grafana-cloud-updates-onboard-teams-with-new-ai-powered-tooling-secrets-management-for-enhanced-security/</link><pubDate>Thu, 21 Aug 2025 16:55:49 +0800</pubDate><guid>https://martinliu.cn/blog/grafana-cloud-updates-onboard-teams-with-new-ai-powered-tooling-secrets-management-for-enhanced-security/</guid><description>&lt;img src="https://martinliu.cn/blog/grafana-cloud-updates-onboard-teams-with-new-ai-powered-tooling-secrets-management-for-enhanced-security/cloud-updates-aug-2025.webp" alt="Featured image of post Grafana Cloud 推出多项更新：AI 驱动工具、秘钥管理强化安全性，以及更多功能" /&gt;&lt;blockquote&gt;
+&lt;p&gt;From: &lt;a class="link" href="https://grafana.com/blog/2025/08/20/grafana-cloud-updates-onboard-teams-with-new-ai-powered-tooling-secrets-management-for-enhanced-security-and-more/" target="_blank" rel="noopener"
+&gt;Grafana Labs Blog&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;我们持续为 Grafana Cloud 推出实用更新和新特性。Grafana Cloud 是一款由开源的 Grafana LGTM Stack 提供支持的全托管可观测性平台，其中包括 &lt;a class="link" href="https://grafana.com/oss/loki/?pg=blog&amp;amp;plcmt=body-txt" target="_blank" rel="noopener"
+&gt;Loki&lt;/a&gt;（日志）、&lt;a class="link" href="https://grafana.com/oss/grafana/?pg=blog&amp;amp;plcmt=body-txt" target="_blank" rel="noopener"
+&gt;Grafana&lt;/a&gt;（可视化）、&lt;a class="link" href="https://grafana.com/oss/tempo/?pg=blog&amp;amp;plcmt=body-txt" target="_blank" rel="noopener"
+&gt;Tempo&lt;/a&gt;（链路追踪）和 &lt;a class="link" href="https://grafana.com/oss/mimir/?pg=blog&amp;amp;plcmt=body-txt" target="_blank" rel="noopener"
+&gt;Mimir&lt;/a&gt;（指标监控）。&lt;/p&gt;
+&lt;p&gt;还不是 Grafana Cloud 用户？&lt;a class="link" href="https://grafana.com/auth/sign-up/create-user/?pg=blog&amp;amp;plcmt=body-txt" target="_blank" rel="noopener"
+&gt;立即注册&lt;/a&gt; 账户，使用我们的 Cloud Free 免费计划即可试用所有功能。&lt;/p&gt;
+&lt;h2 id="更轻松上手-grafana-cloudgrafana-assistant-现已开放公开预览"&gt;更轻松上手 Grafana Cloud：Grafana Assistant 现已开放公开预览
+&lt;/h2&gt;&lt;p&gt;在 Grafana Labs，我们始终&lt;a class="link" href="https://grafana.com/blog/2025/08/14/ai-in-observability-at-grafana-labs-making-observability-easy-and-accessible-for-everyone/" target="_blank" rel="noopener"
+&gt;坚信&lt;/a&gt;，AI 不只是可观测性领域的一时潮流，它将在未来成为保障系统稳定运行的重要基石。&lt;/p&gt;
+&lt;p&gt;这一理念也持续推动我们构建新的工具。例如，本月我们很高兴宣布：Grafana Assistant——一款嵌入于 Grafana Cloud 的 AI 助手，现已进入公开预览阶段。它支持自然语言操作，帮助你更高效地进行查询、构建和故障排查。&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://martinliu.cn/blog/grafana-cloud-updates-onboard-teams-with-new-ai-powered-tooling-secrets-management-for-enhanced-security/maxresdefault-2.webp"
 width="1280"
 height="720"
-srcset="https://martinliu.cn/blog/grafana-cloud-updates-onboard-teams-with-new-ai-powered-tooling-secrets-management-for-enhanced-security/maxresdefault-2_hu_47179ad60e43c357.webp 480w, https://martinliu.cn/blog/grafana-cloud-updates-onboard-teams-with-new-ai-powered-tooling-secrets-management-for-enhanced-security/maxresdefault-2_hu_3b3c2bd1d28d0f6c.webp 1024w"
+srcset="https://martinliu.cn/blog/grafana-cloud-updates-onboard-teams-with-new-ai-powered-tooling-secrets-management-for-enhanced-security/maxresdefault-2_hu_d54f2133e72b5a0.webp 480w, https://martinliu.cn/blog/grafana-cloud-updates-onboard-teams-with-new-ai-powered-tooling-secrets-management-for-enhanced-security/maxresdefault-2_hu_81b64e52932102ce.webp 1024w"
 loading="lazy"
 alt="alt text"
 class="gallery-image"
 data-flex-grow="177"
 data-flex-basis="426px"
->
-&lt;/p>
-&lt;p>Grafana Assistant 可简化常见的工作流程，比如编写 PromQL、LogQL 或 TraceQL 查询，以及创建仪表盘等，同时始终让你掌控操作过程。它能帮助你减少重复性工作，提升整体效率，包括：&lt;/p>
-&lt;ul>
-&lt;li>更快速地编写和调试查询语句&lt;/li>
-&lt;li>构建并优化可视化仪表盘&lt;/li>
-&lt;li>排查系统问题与异常&lt;/li>
-&lt;li>分析观测数据中的趋势与模式&lt;/li>
-&lt;li>更直观地使用 Grafana 界面&lt;/li>
-&lt;li>降低团队上手门槛，加速使用流程&lt;/li>
-&lt;/ul>
-&lt;p>想深入了解 Grafana Assistant 的功能和应用场景，欢迎访问&lt;a class="link" href="https://grafana.com/docs/grafana-cloud/machine-learning/assistant/?pg=blog&amp;amp;plcmt=body-txt" target="_blank" rel="noopener"
->官方文档&lt;/a>。&lt;/p>
-&lt;h2 id="安全凭证管理grafana-cloud-synthetic-monitoring-引入密钥管理功能">安全凭证管理：Grafana Cloud Synthetic Monitoring 引入密钥管理功能
-&lt;/h2>&lt;p>随着基础设施的不断扩展，安全管理可观测性系统中的 API 密钥、密码、Token 等敏感信息也变得愈发复杂和重要。&lt;/p>
-&lt;p>为了解决这一问题，我们本月在 Grafana Cloud 中&lt;a class="link" href="https://grafana.com/whats-new/2025-08-12-secrets-management-for-synthetic-monitoring/?pg=blog&amp;amp;plcmt=body-txt" target="_blank" rel="noopener"
->推出了机密管理功能&lt;/a>，目前已开放公开预览。该功能为 API 密钥、密码、Token 和凭证等数据提供了集中化、安全存储与统一管理的能力。首个集成此功能的产品是 Synthetic Monitoring。&lt;/p>
-&lt;p>借助 Grafana Cloud Synthetic Monitoring 中的机密管理，你可以：&lt;/p>
-&lt;ul>
-&lt;li>创建密钥，并附加描述、标签等元数据信息&lt;/li>
-&lt;li>在 &lt;a class="link" href="https://grafana.com/docs/grafana-cloud/testing/synthetic-monitoring/create-checks/checks/k6/?pg=blog&amp;amp;plcmt=body-txt" target="_blank" rel="noopener"
->k6 脚本型&lt;/a> 和 &lt;a class="link" href="https://grafana.com/docs/grafana-cloud/testing/synthetic-monitoring/create-checks/checks/k6-browser/?pg=blog&amp;amp;plcmt=body-txt" target="_blank" rel="noopener"
->k6 浏览器型&lt;/a> 检查中通过名称引用密钥&lt;/li>
-&lt;li>重置或吊销已有的密钥&lt;/li>
-&lt;/ul>
-&lt;p>当前，密钥的创建、修改和删除权限仅限于管理员用户。不过，只要用户具备检查项的编辑权限，且知晓密钥名称，即可在相应脚本中调用密钥。&lt;/p>
-&lt;p>&lt;img src="https://martinliu.cn/blog/grafana-cloud-updates-onboard-teams-with-new-ai-powered-tooling-secrets-management-for-enhanced-security/secrets-management-config.webp"
+&gt;
+&lt;/p&gt;
+&lt;p&gt;Grafana Assistant 可简化常见的工作流程，比如编写 PromQL、LogQL 或 TraceQL 查询，以及创建仪表盘等，同时始终让你掌控操作过程。它能帮助你减少重复性工作，提升整体效率，包括：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;更快速地编写和调试查询语句&lt;/li&gt;
+&lt;li&gt;构建并优化可视化仪表盘&lt;/li&gt;
+&lt;li&gt;排查系统问题与异常&lt;/li&gt;
+&lt;li&gt;分析观测数据中的趋势与模式&lt;/li&gt;
+&lt;li&gt;更直观地使用 Grafana 界面&lt;/li&gt;
+&lt;li&gt;降低团队上手门槛，加速使用流程&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;想深入了解 Grafana Assistant 的功能和应用场景，欢迎访问&lt;a class="link" href="https://grafana.com/docs/grafana-cloud/machine-learning/assistant/?pg=blog&amp;amp;plcmt=body-txt" target="_blank" rel="noopener"
+&gt;官方文档&lt;/a&gt;。&lt;/p&gt;
+&lt;h2 id="安全凭证管理grafana-cloud-synthetic-monitoring-引入密钥管理功能"&gt;安全凭证管理：Grafana Cloud Synthetic Monitoring 引入密钥管理功能
+&lt;/h2&gt;&lt;p&gt;随着基础设施的不断扩展，安全管理可观测性系统中的 API 密钥、密码、Token 等敏感信息也变得愈发复杂和重要。&lt;/p&gt;
+&lt;p&gt;为了解决这一问题，我们本月在 Grafana Cloud 中&lt;a class="link" href="https://grafana.com/whats-new/2025-08-12-secrets-management-for-synthetic-monitoring/?pg=blog&amp;amp;plcmt=body-txt" target="_blank" rel="noopener"
+&gt;推出了机密管理功能&lt;/a&gt;，目前已开放公开预览。该功能为 API 密钥、密码、Token 和凭证等数据提供了集中化、安全存储与统一管理的能力。首个集成此功能的产品是 Synthetic Monitoring。&lt;/p&gt;
+&lt;p&gt;借助 Grafana Cloud Synthetic Monitoring 中的机密管理，你可以：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;创建密钥，并附加描述、标签等元数据信息&lt;/li&gt;
+&lt;li&gt;在 &lt;a class="link" href="https://grafana.com/docs/grafana-cloud/testing/synthetic-monitoring/create-checks/checks/k6/?pg=blog&amp;amp;plcmt=body-txt" target="_blank" rel="noopener"
+&gt;k6 脚本型&lt;/a&gt; 和 &lt;a class="link" href="https://grafana.com/docs/grafana-cloud/testing/synthetic-monitoring/create-checks/checks/k6-browser/?pg=blog&amp;amp;plcmt=body-txt" target="_blank" rel="noopener"
+&gt;k6 浏览器型&lt;/a&gt; 检查中通过名称引用密钥&lt;/li&gt;
+&lt;li&gt;重置或吊销已有的密钥&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;当前，密钥的创建、修改和删除权限仅限于管理员用户。不过，只要用户具备检查项的编辑权限，且知晓密钥名称，即可在相应脚本中调用密钥。&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://martinliu.cn/blog/grafana-cloud-updates-onboard-teams-with-new-ai-powered-tooling-secrets-management-for-enhanced-security/secrets-management-config.webp"
 width="1999"
 height="869"
-srcset="https://martinliu.cn/blog/grafana-cloud-updates-onboard-teams-with-new-ai-powered-tooling-secrets-management-for-enhanced-security/secrets-management-config_hu_e861c53427d2000f.webp 480w, https://martinliu.cn/blog/grafana-cloud-updates-onboard-teams-with-new-ai-powered-tooling-secrets-management-for-enhanced-security/secrets-management-config_hu_17c70bfda228c7ef.webp 1024w"
+srcset="https://martinliu.cn/blog/grafana-cloud-updates-onboard-teams-with-new-ai-powered-tooling-secrets-management-for-enhanced-security/secrets-management-config_hu_a5c9c4d4556253b7.webp 480w, https://martinliu.cn/blog/grafana-cloud-updates-onboard-teams-with-new-ai-powered-tooling-secrets-management-for-enhanced-security/secrets-management-config_hu_b845cd9837ceb853.webp 1024w"
 loading="lazy"
 alt="Synthetic Monitoring 用户界面截图，左侧显示“创建密钥”对话框，右侧是“密钥管理”部分。"
 class="gallery-image"
 data-flex-grow="230"
 data-flex-basis="552px"
->
-&lt;/p>
-&lt;p>Synthetic Monitoring 用户界面截图，左侧显示“创建密钥”对话框，右侧是“密钥管理”部分。&lt;/p>
-&lt;p>目前，密钥仅支持在脚本型和浏览器型检查中使用，但未来将扩展支持更多类型的监控检查。&lt;/p>
-&lt;p>如需详细了解，请查阅我们的&lt;a class="link" href="https://grafana.com/blog/2025/08/20/secure-credential-storage-for-your-observability-stack-introducing-secrets-management-in-grafana-cloud/" target="_blank" rel="noopener"
->博客文章&lt;/a>与&lt;a class="link" href="https://grafana.com/docs/grafana-cloud/testing/synthetic-monitoring/create-checks/manage-secrets/?pg=blog&amp;amp;plcmt=body-txt" target="_blank" rel="noopener"
->密钥管理官方文档&lt;/a>。&lt;/p>
-&lt;h2 id="llm-驱动的追踪数据洞察grafana-cloud-traces-现已支持-mcp-协议">LLM 驱动的追踪数据洞察：Grafana Cloud Traces 现已支持 MCP 协议
-&lt;/h2>&lt;p>分布式追踪数据是一种独特而强大的可观测性信号，能够帮助你深入了解系统中服务之间的交互关系。然而，将这些原始数据转化为可操作的洞察往往充满挑战。&lt;/p>
-&lt;p>为此，我们在由 &lt;a class="link" href="https://grafana.com/oss/tempo/" target="_blank" rel="noopener"
->Grafana Tempo&lt;/a> 驱动的全托管分布式追踪系统 &lt;a class="link" href="https://grafana.com/products/cloud/traces/?pg=blog&amp;amp;plcmt=body-txt" target="_blank" rel="noopener"
->Grafana Cloud Traces&lt;/a> 中，现已&lt;a class="link" href="https://grafana.com/whats-new/2025-08-08-access-tracing-data-using-mcp-server-in-grafana-cloud-traces/?pg=blog&amp;amp;plcmt=body-txt" target="_blank" rel="noopener"
->新增对 Model Context Protocol（MCP）&lt;/a> 的原生支持。&lt;/p>
-&lt;p>&lt;a class="link" href="https://modelcontextprotocol.io/overview" target="_blank" rel="noopener"
->MCP 协议&lt;/a> 是由 Anthropic 推出的标准协议，广泛用于定义应用程序如何向大语言模型（Large Language Model，LLM）提供上下文信息。通过将 MCP 集成进 Grafana Cloud Traces，你现在可以使用如 &lt;a class="link" href="https://www.anthropic.com/claude-code" target="_blank" rel="noopener"
->Claude Code&lt;/a> 和 &lt;a class="link" href="https://cursor.com/en" target="_blank" rel="noopener"
->Cursor&lt;/a> 等基于 LLM 的工具，更高效地分析追踪数据并获取深度洞察。&lt;/p>
-&lt;p>具体来说，这项集成可以帮助你：&lt;/p>
-&lt;ul>
-&lt;li>&lt;strong>探索服务结构与交互&lt;/strong>：通过 LLM 分析追踪数据，新入职的开发者可以快速了解系统中服务之间的调用关系。&lt;/li>
-&lt;li>&lt;strong>快速定位与诊断问题&lt;/strong>：LLM 可辅助识别调用链中的异常或错误，加快问题定位流程。&lt;/li>
-&lt;li>&lt;strong>优化性能，降低延迟&lt;/strong>：通过分析链路数据，LLM 可帮助识别延迟瓶颈，指导优化策略。&lt;/li>
-&lt;/ul>
-&lt;p>要在 Grafana Cloud Traces 中配置 LLM 智能体，需要提供 Grafana Cloud API Token 并完成相应的&lt;a class="link" href="https://grafana.com/docs/grafana-cloud/send-data/traces/mcp-server/?pg=blog&amp;amp;plcmt=body-txt" target="_blank" rel="noopener"
->配置流程&lt;/a>。该功能目前处于公开预览阶段。&lt;/p>
-&lt;p>如需进一步了解 MCP 支持及其使用方式，请参阅我们的&lt;a class="link" href="https://grafana.com/blog/2025/08/13/llm-powered-insights-into-your-tracing-data-introducing-mcp-support-in-grafana-cloud-traces/" target="_blank" rel="noopener"
->博客文章&lt;/a>和&lt;a class="link" href="https://grafana.com/docs/grafana-cloud/send-data/traces/mcp-server/?pg=blog&amp;amp;plcmt=body-txt" target="_blank" rel="noopener"
->技术文档&lt;/a>。&lt;/p>
-&lt;h2 id="安全访问私有数据源tailscale-与-grafana-cloud-全新集成上线">安全访问私有数据源：Tailscale 与 Grafana Cloud 全新集成上线
-&lt;/h2>&lt;p>我们深知，用户在希望通过 Grafana Cloud 实现数据可视化和洞察分析的同时，也极为关注数据源的私密性与安全性。&lt;/p>
-&lt;p>为此，我们推出了全新的 &lt;a class="link" href="https://tailscale.com/" target="_blank" rel="noopener"
->Tailscale&lt;/a> 与 Grafana Cloud 集成方案。该集成现已开启私密预览，允许你通过 &lt;a class="link" href="https://grafana.com/docs/grafana-cloud/connect-externally-hosted/private-data-source-connect/?pg=blog&amp;amp;plcmt=body-txt" target="_blank" rel="noopener"
->Private Data Source Connect&lt;/a>，从 Grafana Cloud 直接安全访问位于 Tailscale 网络（称为 &lt;a class="link" href="https://tailscale.com/kb/1136/tailnet" target="_blank" rel="noopener"
->tailnet&lt;/a>）中的数据源。&lt;/p>
-&lt;p>&lt;img src="https://martinliu.cn/blog/grafana-cloud-updates-onboard-teams-with-new-ai-powered-tooling-secrets-management-for-enhanced-security/maxresdefault-1.webp"
+&gt;
+&lt;/p&gt;
+&lt;p&gt;Synthetic Monitoring 用户界面截图，左侧显示“创建密钥”对话框，右侧是“密钥管理”部分。&lt;/p&gt;
+&lt;p&gt;目前，密钥仅支持在脚本型和浏览器型检查中使用，但未来将扩展支持更多类型的监控检查。&lt;/p&gt;
+&lt;p&gt;如需详细了解，请查阅我们的&lt;a class="link" href="https://grafana.com/blog/2025/08/20/secure-credential-storage-for-your-observability-stack-introducing-secrets-management-in-grafana-cloud/" target="_blank" rel="noopener"
+&gt;博客文章&lt;/a&gt;与&lt;a class="link" href="https://grafana.com/docs/grafana-cloud/testing/synthetic-monitoring/create-checks/manage-secrets/?pg=blog&amp;amp;plcmt=body-txt" target="_blank" rel="noopener"
+&gt;密钥管理官方文档&lt;/a&gt;。&lt;/p&gt;
+&lt;h2 id="llm-驱动的追踪数据洞察grafana-cloud-traces-现已支持-mcp-协议"&gt;LLM 驱动的追踪数据洞察：Grafana Cloud Traces 现已支持 MCP 协议
+&lt;/h2&gt;&lt;p&gt;分布式追踪数据是一种独特而强大的可观测性信号，能够帮助你深入了解系统中服务之间的交互关系。然而，将这些原始数据转化为可操作的洞察往往充满挑战。&lt;/p&gt;
+&lt;p&gt;为此，我们在由 &lt;a class="link" href="https://grafana.com/oss/tempo/" target="_blank" rel="noopener"
+&gt;Grafana Tempo&lt;/a&gt; 驱动的全托管分布式追踪系统 &lt;a class="link" href="https://grafana.com/products/cloud/traces/?pg=blog&amp;amp;plcmt=body-txt" target="_blank" rel="noopener"
+&gt;Grafana Cloud Traces&lt;/a&gt; 中，现已&lt;a class="link" href="https://grafana.com/whats-new/2025-08-08-access-tracing-data-using-mcp-server-in-grafana-cloud-traces/?pg=blog&amp;amp;plcmt=body-txt" target="_blank" rel="noopener"
+&gt;新增对 Model Context Protocol（MCP）&lt;/a&gt; 的原生支持。&lt;/p&gt;
+&lt;p&gt;&lt;a class="link" href="https://modelcontextprotocol.io/overview" target="_blank" rel="noopener"
+&gt;MCP 协议&lt;/a&gt; 是由 Anthropic 推出的标准协议，广泛用于定义应用程序如何向大语言模型（Large Language Model，LLM）提供上下文信息。通过将 MCP 集成进 Grafana Cloud Traces，你现在可以使用如 &lt;a class="link" href="https://www.anthropic.com/claude-code" target="_blank" rel="noopener"
+&gt;Claude Code&lt;/a&gt; 和 &lt;a class="link" href="https://cursor.com/en" target="_blank" rel="noopener"
+&gt;Cursor&lt;/a&gt; 等基于 LLM 的工具，更高效地分析追踪数据并获取深度洞察。&lt;/p&gt;
+&lt;p&gt;具体来说，这项集成可以帮助你：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;探索服务结构与交互&lt;/strong&gt;：通过 LLM 分析追踪数据，新入职的开发者可以快速了解系统中服务之间的调用关系。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;快速定位与诊断问题&lt;/strong&gt;：LLM 可辅助识别调用链中的异常或错误，加快问题定位流程。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;优化性能，降低延迟&lt;/strong&gt;：通过分析链路数据，LLM 可帮助识别延迟瓶颈，指导优化策略。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;要在 Grafana Cloud Traces 中配置 LLM 智能体，需要提供 Grafana Cloud API Token 并完成相应的&lt;a class="link" href="https://grafana.com/docs/grafana-cloud/send-data/traces/mcp-server/?pg=blog&amp;amp;plcmt=body-txt" target="_blank" rel="noopener"
+&gt;配置流程&lt;/a&gt;。该功能目前处于公开预览阶段。&lt;/p&gt;
+&lt;p&gt;如需进一步了解 MCP 支持及其使用方式，请参阅我们的&lt;a class="link" href="https://grafana.com/blog/2025/08/13/llm-powered-insights-into-your-tracing-data-introducing-mcp-support-in-grafana-cloud-traces/" target="_blank" rel="noopener"
+&gt;博客文章&lt;/a&gt;和&lt;a class="link" href="https://grafana.com/docs/grafana-cloud/send-data/traces/mcp-server/?pg=blog&amp;amp;plcmt=body-txt" target="_blank" rel="noopener"
+&gt;技术文档&lt;/a&gt;。&lt;/p&gt;
+&lt;h2 id="安全访问私有数据源tailscale-与-grafana-cloud-全新集成上线"&gt;安全访问私有数据源：Tailscale 与 Grafana Cloud 全新集成上线
+&lt;/h2&gt;&lt;p&gt;我们深知，用户在希望通过 Grafana Cloud 实现数据可视化和洞察分析的同时，也极为关注数据源的私密性与安全性。&lt;/p&gt;
+&lt;p&gt;为此，我们推出了全新的 &lt;a class="link" href="https://tailscale.com/" target="_blank" rel="noopener"
+&gt;Tailscale&lt;/a&gt; 与 Grafana Cloud 集成方案。该集成现已开启私密预览，允许你通过 &lt;a class="link" href="https://grafana.com/docs/grafana-cloud/connect-externally-hosted/private-data-source-connect/?pg=blog&amp;amp;plcmt=body-txt" target="_blank" rel="noopener"
+&gt;Private Data Source Connect&lt;/a&gt;，从 Grafana Cloud 直接安全访问位于 Tailscale 网络（称为 &lt;a class="link" href="https://tailscale.com/kb/1136/tailnet" target="_blank" rel="noopener"
+&gt;tailnet&lt;/a&gt;）中的数据源。&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://martinliu.cn/blog/grafana-cloud-updates-onboard-teams-with-new-ai-powered-tooling-secrets-management-for-enhanced-security/maxresdefault-1.webp"
 width="1280"
 height="720"
-srcset="https://martinliu.cn/blog/grafana-cloud-updates-onboard-teams-with-new-ai-powered-tooling-secrets-management-for-enhanced-security/maxresdefault-1_hu_51c8c53c3833b26e.webp 480w, https://martinliu.cn/blog/grafana-cloud-updates-onboard-teams-with-new-ai-powered-tooling-secrets-management-for-enhanced-security/maxresdefault-1_hu_d0d79f084aabb44d.webp 1024w"
+srcset="https://martinliu.cn/blog/grafana-cloud-updates-onboard-teams-with-new-ai-powered-tooling-secrets-management-for-enhanced-security/maxresdefault-1_hu_de6c76f57b86b7dd.webp 480w, https://martinliu.cn/blog/grafana-cloud-updates-onboard-teams-with-new-ai-powered-tooling-secrets-management-for-enhanced-security/maxresdefault-1_hu_d71ed6ac8c9786c6.webp 1024w"
 loading="lazy"
 alt="YouTube 视频"
 class="gallery-image"
 data-flex-grow="177"
 data-flex-basis="426px"
->
-&lt;/p>
-&lt;p>该集成带来的关键优势包括：&lt;/p>
-&lt;ul>
-&lt;li>&lt;strong>安全私密的数据访问&lt;/strong>：借助 Tailscale，无需将数据源暴露在公网环境中，即可安全地进行查询操作。&lt;/li>
-&lt;li>&lt;strong>配置简便，减少运维负担&lt;/strong>：使用 Tailscale 搭配 Private Data Source Connect，无需部署 PDC agent。你只需通过 MagicDNS 填写数据源的 tailnet 地址或机器名，并提供 Tailscale 授权密钥，即可完成连接。&lt;/li>
-&lt;li>&lt;strong>扩展 Grafana Cloud 的可观测性覆盖&lt;/strong>：相比自托管方案，Grafana Cloud 提供更强大的可观测能力和使用便捷性。你可以在任何地点访问私有网络中的数据源，特别适合远程办公和分布式团队。&lt;/li>
-&lt;/ul>
-&lt;p>想了解该集成的更多细节及使用方式，欢迎阅读&lt;a class="link" href="https://grafana.com/blog/2025/07/24/securely-query-data-sources-on-your-tailscale-network-using-private-data-source-connect-in-grafana-cloud/" target="_blank" rel="noopener"
->官方博客&lt;/a>，以及查阅我们的 &lt;a class="link" href="https://grafana.com/docs/grafana-cloud/connect-externally-hosted/private-data-source-connect/?pg=blog&amp;amp;plcmt=body-txt" target="_blank" rel="noopener"
->Private Data Source Connect 文档&lt;/a>。&lt;/p>
-&lt;h2 id="前端可观测性新增开箱即用告警功能">前端可观测性新增开箱即用告警功能
-&lt;/h2>&lt;p>&lt;a class="link" href="https://grafana.com/products/cloud/frontend-observability-for-real-user-monitoring/?pg=blog&amp;amp;plcmt=body-txt" target="_blank" rel="noopener"
->Grafana Cloud Frontend Observability&lt;/a> 是我们为 Web 应用推出的真实用户监测（Real User Monitoring，RUM）托管服务，能够即时提供清晰且可操作的终端用户体验洞察。&lt;/p>
-&lt;p>本月，配置前端可观测性告警的流程变得更加轻松便捷。&lt;/p>
-&lt;p>随着开箱即用的告警功能&lt;a class="link" href="https://grafana.com/whats-new/2025-07-22-frontend-observability-out-of-the-box-alerting/?pg=blog&amp;amp;plcmt=body-txt" target="_blank" rel="noopener"
->正式发布&lt;/a>，Grafana Cloud Frontend Observability 向前迈出了重要一步，即使是首次使用 Grafana 告警功能的用户，也可以通过 &lt;a class="link" href="https://grafana.com/docs/grafana/latest/alerting/alerting-rules/create-grafana-managed-rule/?pg=blog&amp;amp;plcmt=body-txt" target="_blank" rel="noopener"
->Grafana 托管告警&lt;/a> 快速上手，无需预先了解复杂的配置流程。&lt;/p>
-&lt;p>&lt;img src="https://martinliu.cn/blog/grafana-cloud-updates-onboard-teams-with-new-ai-powered-tooling-secrets-management-for-enhanced-security/maxresdefault.webp"
+&gt;
+&lt;/p&gt;
+&lt;p&gt;该集成带来的关键优势包括：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;安全私密的数据访问&lt;/strong&gt;：借助 Tailscale，无需将数据源暴露在公网环境中，即可安全地进行查询操作。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;配置简便，减少运维负担&lt;/strong&gt;：使用 Tailscale 搭配 Private Data Source Connect，无需部署 PDC agent。你只需通过 MagicDNS 填写数据源的 tailnet 地址或机器名，并提供 Tailscale 授权密钥，即可完成连接。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;扩展 Grafana Cloud 的可观测性覆盖&lt;/strong&gt;：相比自托管方案，Grafana Cloud 提供更强大的可观测能力和使用便捷性。你可以在任何地点访问私有网络中的数据源，特别适合远程办公和分布式团队。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;想了解该集成的更多细节及使用方式，欢迎阅读&lt;a class="link" href="https://grafana.com/blog/2025/07/24/securely-query-data-sources-on-your-tailscale-network-using-private-data-source-connect-in-grafana-cloud/" target="_blank" rel="noopener"
+&gt;官方博客&lt;/a&gt;，以及查阅我们的 &lt;a class="link" href="https://grafana.com/docs/grafana-cloud/connect-externally-hosted/private-data-source-connect/?pg=blog&amp;amp;plcmt=body-txt" target="_blank" rel="noopener"
+&gt;Private Data Source Connect 文档&lt;/a&gt;。&lt;/p&gt;
+&lt;h2 id="前端可观测性新增开箱即用告警功能"&gt;前端可观测性新增开箱即用告警功能
+&lt;/h2&gt;&lt;p&gt;&lt;a class="link" href="https://grafana.com/products/cloud/frontend-observability-for-real-user-monitoring/?pg=blog&amp;amp;plcmt=body-txt" target="_blank" rel="noopener"
+&gt;Grafana Cloud Frontend Observability&lt;/a&gt; 是我们为 Web 应用推出的真实用户监测（Real User Monitoring，RUM）托管服务，能够即时提供清晰且可操作的终端用户体验洞察。&lt;/p&gt;
+&lt;p&gt;本月，配置前端可观测性告警的流程变得更加轻松便捷。&lt;/p&gt;
+&lt;p&gt;随着开箱即用的告警功能&lt;a class="link" href="https://grafana.com/whats-new/2025-07-22-frontend-observability-out-of-the-box-alerting/?pg=blog&amp;amp;plcmt=body-txt" target="_blank" rel="noopener"
+&gt;正式发布&lt;/a&gt;，Grafana Cloud Frontend Observability 向前迈出了重要一步，即使是首次使用 Grafana 告警功能的用户，也可以通过 &lt;a class="link" href="https://grafana.com/docs/grafana/latest/alerting/alerting-rules/create-grafana-managed-rule/?pg=blog&amp;amp;plcmt=body-txt" target="_blank" rel="noopener"
+&gt;Grafana 托管告警&lt;/a&gt; 快速上手，无需预先了解复杂的配置流程。&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://martinliu.cn/blog/grafana-cloud-updates-onboard-teams-with-new-ai-powered-tooling-secrets-management-for-enhanced-security/maxresdefault.webp"
 width="1280"
 height="720"
-srcset="https://martinliu.cn/blog/grafana-cloud-updates-onboard-teams-with-new-ai-powered-tooling-secrets-management-for-enhanced-security/maxresdefault_hu_e50605c21ac7351b.webp 480w, https://martinliu.cn/blog/grafana-cloud-updates-onboard-teams-with-new-ai-powered-tooling-secrets-management-for-enhanced-security/maxresdefault_hu_e7ac48b3c158294d.webp 1024w"
+srcset="https://martinliu.cn/blog/grafana-cloud-updates-onboard-teams-with-new-ai-powered-tooling-secrets-management-for-enhanced-security/maxresdefault_hu_504438b95251ff39.webp 480w, https://martinliu.cn/blog/grafana-cloud-updates-onboard-teams-with-new-ai-powered-tooling-secrets-management-for-enhanced-security/maxresdefault_hu_7417929ac8436a84.webp 1024w"
 loading="lazy"
 alt="YouTube 视频"
 class="gallery-image"
 data-flex-grow="177"
 data-flex-basis="426px"
->
-&lt;/p>
-&lt;p>借助简化的工作流，你可以：&lt;/p>
-&lt;ul>
-&lt;li>基于 Web 应用中的错误或 Web Vitals 指标启用并配置告警&lt;/li>
-&lt;li>快速定位并排查前端问题，因告警规则由系统自动配置与管理&lt;/li>
-&lt;li>编写可复用模板，拓展前端告警策略的覆盖范围&lt;/li>
-&lt;/ul>
-&lt;p>想了解更多详细内容，请访问我们的 &lt;a class="link" href="https://grafana.com/docs/grafana-cloud/monitor-applications/frontend-observability/alerting/?pg=blog&amp;amp;plcmt=body-txt" target="_blank" rel="noopener"
->Frontend Observability 文档&lt;/a>。&lt;/p>
-&lt;h2 id="grafana-cloud-irm-事件管理功能全面升级">Grafana Cloud IRM 事件管理功能全面升级
-&lt;/h2>&lt;h3 id="快速通报事件状态更新">快速通报事件状态更新
-&lt;/h3>&lt;p>在 &lt;a class="link" href="https://grafana.com/blog/2025/03/11/oncall-management-incident-response-grafana-cloud-irm/" target="_blank" rel="noopener"
->Grafana Cloud IRM&lt;/a> 中，你现在可以为事件添加结构化的&lt;a class="link" href="https://grafana.com/whats-new/2025-07-23-communicate-incident-status-updates-with-grafana-irm/?pg=blog&amp;amp;plcmt=body-txt" target="_blank" rel="noopener"
->状态更新&lt;/a>，帮助团队与干系人实时掌握处理进展。&lt;/p>
-&lt;p>状态更新贯穿整个事件生命周期，无论是确认影响、交由其他团队处理，还是完成事件解决，都能以统一格式高效传递关键信息，提升沟通透明度。&lt;/p>
-&lt;p>你可以直接在 Web 界面中添加状态更新，或在关联的 Slack 事件频道中使用以下指令：&lt;/p>
-&lt;ul>
-&lt;li>&lt;code>/grafana incident update add &amp;lt;内容&amp;gt;&lt;/code>：发布新的状态更新&lt;/li>
-&lt;li>&lt;code>/grafana incident update&lt;/code>：查看最新状态更新&lt;/li>
-&lt;/ul>
-&lt;p>该功能现已全面上线。只需打开任一事件页面，在 &lt;strong>活动时间轴（activity timeline）&lt;/strong> 中找到 &lt;strong>状态更新（Status updates）&lt;/strong> 区域即可使用。如需了解详情，请查阅&lt;a class="link" href="https://grafana.com/docs/grafana-cloud/alerting-and-irm/irm/use/incident-management/status-updates/?pg=blog&amp;amp;plcmt=body-txt" target="_blank" rel="noopener"
->使用指南&lt;/a>。&lt;/p>
-&lt;h3 id="全新-webhook-集成体验">全新 Webhook 集成体验
-&lt;/h3>&lt;p>Grafana Cloud IRM 的外发 Webhook 现已支持事件相关触发器，为自动化告警分组和事件处理提供更强大的统一工作流管理能力。你可在 &lt;strong>Outgoing Webhooks&lt;/strong> 配置页中设置，在事件声明、更新或解决时自动触发请求。&lt;/p>
-&lt;p>新版本 Webhook 支持以下能力：&lt;/p>
-&lt;ul>
-&lt;li>支持任意 HTTP 方法，灵活配置请求&lt;/li>
-&lt;li>URL、Header、请求体均可模板化定义&lt;/li>
-&lt;li>可动态引用事件数据和先前 Webhook 响应结果&lt;/li>
-&lt;li>可在事件或告警分组时间轴中直接查看执行记录&lt;/li>
-&lt;li>支持使用 Terraform 进行配置管理&lt;/li>
-&lt;/ul>
-&lt;p>现有旧版 Incident Outgoing Webhooks 及其配置仍可继续使用。但为获得更好的功能体验和长期支持，我们建议迁移至新版统一 Webhook 集成。&lt;/p>
-&lt;p>更多信息请参阅&lt;a class="link" href="https://grafana.com/docs/grafana-cloud/alerting-and-irm/irm/configure/integrations/webhooks/outgoing-webhooks/?pg=blog&amp;amp;plcmt=body-txt" target="_blank" rel="noopener"
->官方文档&lt;/a>。&lt;/p>
-&lt;h2 id="grafana-cloud-k6-正式支持扩展机制现已全面上线">Grafana Cloud k6 正式支持扩展机制，现已全面上线
-&lt;/h2>&lt;p>我们正式推出 &lt;a class="link" href="https://grafana.com/products/cloud/k6/" target="_blank" rel="noopener"
->Grafana Cloud k6&lt;/a> 的扩展功能支持！Grafana Cloud k6 是一款基于 &lt;a class="link" href="https://grafana.com/docs/k6/latest/" target="_blank" rel="noopener"
->Grafana k6&lt;/a> 构建的托管性能测试平台，适用于多种测试场景。&lt;/p>
-&lt;p>通过 &lt;a class="link" href="https://grafana.com/docs/k6/latest/extensions/" target="_blank" rel="noopener"
->k6 扩展机制&lt;/a>，你可以扩展 k6 的核心功能。开源版本用户需自行编写扩展并重新编译 k6，而在 Grafana Cloud k6 中，你可直接使用平台支持的一部分扩展模块，无需构建自定义二进制文件。&lt;/p>
-&lt;p>你可以通过以下方式灵活执行测试脚本：&lt;/p>
-&lt;ul>
-&lt;li>本地运行测试：&lt;code>k6 run test.js&lt;/code>&lt;/li>
-&lt;li>在云端运行测试：&lt;code>k6 cloud run test.js&lt;/code>&lt;/li>
-&lt;li>本地运行并将测试结果实时传输到云端：&lt;code>k6 cloud run test.js --local-execution&lt;/code>&lt;/li>
-&lt;/ul>
-&lt;p>如需进一步了解扩展功能和使用方式，请访问&lt;a class="link" href="https://grafana.com/whats-new/2025-08-18-extensions-and-version-support-in-grafana-cloud-k6/" target="_blank" rel="noopener"
->官方公告&lt;/a>。&lt;/p>
-&lt;h2 id="grafana-cloud-全新-enterprise-数据源与集成支持上线">Grafana Cloud 全新 Enterprise 数据源与集成支持上线
-&lt;/h2>&lt;p>我们还新增了多项集成与 Enterprise 数据源，帮助你进一步扩展 Grafana Cloud 的可观测能力。&lt;/p>
-&lt;h3 id="使用-anthropic-集成监控-claude-模型的使用与成本">使用 Anthropic 集成监控 Claude 模型的使用与成本
-&lt;/h3>&lt;p>全新发布的 &lt;a class="link" href="https://grafana.com/blog/2025/08/19/how-to-monitor-claude-usage-and-costs-introducing-the-anthropic-integration-for-grafana-cloud/" target="_blank" rel="noopener"
->Anthropic 集成&lt;/a> 允许你直接在 Grafana Cloud 中连接 &lt;a class="link" href="https://docs.anthropic.com/en/api/admin-api/usage-cost" target="_blank" rel="noopener"
->Anthropic Usage and Cost API&lt;/a>，实时监控 Claude 系列大语言模型（Large Language Models, LLM）的使用情况与开销。&lt;/p>
-&lt;p>通过这一集成，你可以在统一平台中查看 Claude 模型的调用频率、响应时间和累计费用，配套的预设仪表盘与告警机制可帮助你迅速启动监控并及时采取优化措施。&lt;/p>
-&lt;p>&lt;img src="https://martinliu.cn/blog/grafana-cloud-updates-onboard-teams-with-new-ai-powered-tooling-secrets-management-for-enhanced-security/anthropic-usage-dashboard_1.webp"
+&gt;
+&lt;/p&gt;
+&lt;p&gt;借助简化的工作流，你可以：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;基于 Web 应用中的错误或 Web Vitals 指标启用并配置告警&lt;/li&gt;
+&lt;li&gt;快速定位并排查前端问题，因告警规则由系统自动配置与管理&lt;/li&gt;
+&lt;li&gt;编写可复用模板，拓展前端告警策略的覆盖范围&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;想了解更多详细内容，请访问我们的 &lt;a class="link" href="https://grafana.com/docs/grafana-cloud/monitor-applications/frontend-observability/alerting/?pg=blog&amp;amp;plcmt=body-txt" target="_blank" rel="noopener"
+&gt;Frontend Observability 文档&lt;/a&gt;。&lt;/p&gt;
+&lt;h2 id="grafana-cloud-irm-事件管理功能全面升级"&gt;Grafana Cloud IRM 事件管理功能全面升级
+&lt;/h2&gt;&lt;h3 id="快速通报事件状态更新"&gt;快速通报事件状态更新
+&lt;/h3&gt;&lt;p&gt;在 &lt;a class="link" href="https://grafana.com/blog/2025/03/11/oncall-management-incident-response-grafana-cloud-irm/" target="_blank" rel="noopener"
+&gt;Grafana Cloud IRM&lt;/a&gt; 中，你现在可以为事件添加结构化的&lt;a class="link" href="https://grafana.com/whats-new/2025-07-23-communicate-incident-status-updates-with-grafana-irm/?pg=blog&amp;amp;plcmt=body-txt" target="_blank" rel="noopener"
+&gt;状态更新&lt;/a&gt;，帮助团队与干系人实时掌握处理进展。&lt;/p&gt;
+&lt;p&gt;状态更新贯穿整个事件生命周期，无论是确认影响、交由其他团队处理，还是完成事件解决，都能以统一格式高效传递关键信息，提升沟通透明度。&lt;/p&gt;
+&lt;p&gt;你可以直接在 Web 界面中添加状态更新，或在关联的 Slack 事件频道中使用以下指令：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;/grafana incident update add &amp;lt;内容&amp;gt;&lt;/code&gt;：发布新的状态更新&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;/grafana incident update&lt;/code&gt;：查看最新状态更新&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;该功能现已全面上线。只需打开任一事件页面，在 &lt;strong&gt;活动时间轴（activity timeline）&lt;/strong&gt; 中找到 &lt;strong&gt;状态更新（Status updates）&lt;/strong&gt; 区域即可使用。如需了解详情，请查阅&lt;a class="link" href="https://grafana.com/docs/grafana-cloud/alerting-and-irm/irm/use/incident-management/status-updates/?pg=blog&amp;amp;plcmt=body-txt" target="_blank" rel="noopener"
+&gt;使用指南&lt;/a&gt;。&lt;/p&gt;
+&lt;h3 id="全新-webhook-集成体验"&gt;全新 Webhook 集成体验
+&lt;/h3&gt;&lt;p&gt;Grafana Cloud IRM 的外发 Webhook 现已支持事件相关触发器，为自动化告警分组和事件处理提供更强大的统一工作流管理能力。你可在 &lt;strong&gt;Outgoing Webhooks&lt;/strong&gt; 配置页中设置，在事件声明、更新或解决时自动触发请求。&lt;/p&gt;
+&lt;p&gt;新版本 Webhook 支持以下能力：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;支持任意 HTTP 方法，灵活配置请求&lt;/li&gt;
+&lt;li&gt;URL、Header、请求体均可模板化定义&lt;/li&gt;
+&lt;li&gt;可动态引用事件数据和先前 Webhook 响应结果&lt;/li&gt;
+&lt;li&gt;可在事件或告警分组时间轴中直接查看执行记录&lt;/li&gt;
+&lt;li&gt;支持使用 Terraform 进行配置管理&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;现有旧版 Incident Outgoing Webhooks 及其配置仍可继续使用。但为获得更好的功能体验和长期支持，我们建议迁移至新版统一 Webhook 集成。&lt;/p&gt;
+&lt;p&gt;更多信息请参阅&lt;a class="link" href="https://grafana.com/docs/grafana-cloud/alerting-and-irm/irm/configure/integrations/webhooks/outgoing-webhooks/?pg=blog&amp;amp;plcmt=body-txt" target="_blank" rel="noopener"
+&gt;官方文档&lt;/a&gt;。&lt;/p&gt;
+&lt;h2 id="grafana-cloud-k6-正式支持扩展机制现已全面上线"&gt;Grafana Cloud k6 正式支持扩展机制，现已全面上线
+&lt;/h2&gt;&lt;p&gt;我们正式推出 &lt;a class="link" href="https://grafana.com/products/cloud/k6/" target="_blank" rel="noopener"
+&gt;Grafana Cloud k6&lt;/a&gt; 的扩展功能支持！Grafana Cloud k6 是一款基于 &lt;a class="link" href="https://grafana.com/docs/k6/latest/" target="_blank" rel="noopener"
+&gt;Grafana k6&lt;/a&gt; 构建的托管性能测试平台，适用于多种测试场景。&lt;/p&gt;
+&lt;p&gt;通过 &lt;a class="link" href="https://grafana.com/docs/k6/latest/extensions/" target="_blank" rel="noopener"
+&gt;k6 扩展机制&lt;/a&gt;，你可以扩展 k6 的核心功能。开源版本用户需自行编写扩展并重新编译 k6，而在 Grafana Cloud k6 中，你可直接使用平台支持的一部分扩展模块，无需构建自定义二进制文件。&lt;/p&gt;
+&lt;p&gt;你可以通过以下方式灵活执行测试脚本：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;本地运行测试：&lt;code&gt;k6 run test.js&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;在云端运行测试：&lt;code&gt;k6 cloud run test.js&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;本地运行并将测试结果实时传输到云端：&lt;code&gt;k6 cloud run test.js --local-execution&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;如需进一步了解扩展功能和使用方式，请访问&lt;a class="link" href="https://grafana.com/whats-new/2025-08-18-extensions-and-version-support-in-grafana-cloud-k6/" target="_blank" rel="noopener"
+&gt;官方公告&lt;/a&gt;。&lt;/p&gt;
+&lt;h2 id="grafana-cloud-全新-enterprise-数据源与集成支持上线"&gt;Grafana Cloud 全新 Enterprise 数据源与集成支持上线
+&lt;/h2&gt;&lt;p&gt;我们还新增了多项集成与 Enterprise 数据源，帮助你进一步扩展 Grafana Cloud 的可观测能力。&lt;/p&gt;
+&lt;h3 id="使用-anthropic-集成监控-claude-模型的使用与成本"&gt;使用 Anthropic 集成监控 Claude 模型的使用与成本
+&lt;/h3&gt;&lt;p&gt;全新发布的 &lt;a class="link" href="https://grafana.com/blog/2025/08/19/how-to-monitor-claude-usage-and-costs-introducing-the-anthropic-integration-for-grafana-cloud/" target="_blank" rel="noopener"
+&gt;Anthropic 集成&lt;/a&gt; 允许你直接在 Grafana Cloud 中连接 &lt;a class="link" href="https://docs.anthropic.com/en/api/admin-api/usage-cost" target="_blank" rel="noopener"
+&gt;Anthropic Usage and Cost API&lt;/a&gt;，实时监控 Claude 系列大语言模型（Large Language Models, LLM）的使用情况与开销。&lt;/p&gt;
+&lt;p&gt;通过这一集成，你可以在统一平台中查看 Claude 模型的调用频率、响应时间和累计费用，配套的预设仪表盘与告警机制可帮助你迅速启动监控并及时采取优化措施。&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://martinliu.cn/blog/grafana-cloud-updates-onboard-teams-with-new-ai-powered-tooling-secrets-management-for-enhanced-security/anthropic-usage-dashboard_1.webp"
 width="3024"
 height="1726"
-srcset="https://martinliu.cn/blog/grafana-cloud-updates-onboard-teams-with-new-ai-powered-tooling-secrets-management-for-enhanced-security/anthropic-usage-dashboard_1_hu_48ffdbebb88331c9.webp 480w, https://martinliu.cn/blog/grafana-cloud-updates-onboard-teams-with-new-ai-powered-tooling-secrets-management-for-enhanced-security/anthropic-usage-dashboard_1_hu_1c10558f357e00fc.webp 1024w"
+srcset="https://martinliu.cn/blog/grafana-cloud-updates-onboard-teams-with-new-ai-powered-tooling-secrets-management-for-enhanced-security/anthropic-usage-dashboard_1_hu_839ae827316f0c39.webp 480w, https://martinliu.cn/blog/grafana-cloud-updates-onboard-teams-with-new-ai-powered-tooling-secrets-management-for-enhanced-security/anthropic-usage-dashboard_1_hu_4103feda8b59abfd.webp 1024w"
 loading="lazy"
 alt="Claude"
 class="gallery-image"
 data-flex-grow="175"
 data-flex-basis="420px"
->
-&lt;/p>
-&lt;p>详细信息请参阅&lt;a class="link" href="https://grafana.com/docs/grafana-cloud/monitor-infrastructure/integrations/integration-reference/integration-anthropic/?pg=blog&amp;amp;plcmt=body-txt" target="_blank" rel="noopener"
->官方文档&lt;/a>。&lt;/p>
-&lt;h3 id="可视化-jenkins-数据指标">可视化 Jenkins 数据指标
-&lt;/h3>&lt;p>全新上线的 &lt;a class="link" href="https://grafana.com/grafana/plugins/grafana-jenkins-datasource/?pg=blog&amp;amp;plcmt=body-txt" target="_blank" rel="noopener"
->Jenkins Enterprise 数据源&lt;/a> 现已支持在 Grafana Cloud 和 Grafana Enterprise 中，查询并展示 &lt;a class="link" href="https://www.jenkins.io/" target="_blank" rel="noopener"
->Jenkins&lt;/a> 自动化服务器中的性能指标。Jenkins 是开源的持续集成（CI）/持续部署（CD）平台，用于项目的构建与发布管理。&lt;/p>
-&lt;p>该数据源内置两个预设仪表盘，助你快速上手 Jenkins 数据可视化：&lt;/p>
-&lt;ul>
-&lt;li>&lt;strong>Jenkins 概览仪表盘&lt;/strong>：展示整个 Jenkins 实例的运行状况，包括所有项目、节点、执行器状态和构建队列等信息。&lt;/li>
-&lt;li>&lt;strong>Jenkins DORA 指标仪表盘&lt;/strong>：聚焦衡量研发效能的四项核心指标：部署频率、变更交付时长、变更失败率与服务恢复时间。&lt;/li>
-&lt;/ul>
-&lt;p>&lt;img src="https://martinliu.cn/blog/grafana-cloud-updates-onboard-teams-with-new-ai-powered-tooling-secrets-management-for-enhanced-security/jenkins-enterprise-data-source-dashboard.webp"
+&gt;
+&lt;/p&gt;
+&lt;p&gt;详细信息请参阅&lt;a class="link" href="https://grafana.com/docs/grafana-cloud/monitor-infrastructure/integrations/integration-reference/integration-anthropic/?pg=blog&amp;amp;plcmt=body-txt" target="_blank" rel="noopener"
+&gt;官方文档&lt;/a&gt;。&lt;/p&gt;
+&lt;h3 id="可视化-jenkins-数据指标"&gt;可视化 Jenkins 数据指标
+&lt;/h3&gt;&lt;p&gt;全新上线的 &lt;a class="link" href="https://grafana.com/grafana/plugins/grafana-jenkins-datasource/?pg=blog&amp;amp;plcmt=body-txt" target="_blank" rel="noopener"
+&gt;Jenkins Enterprise 数据源&lt;/a&gt; 现已支持在 Grafana Cloud 和 Grafana Enterprise 中，查询并展示 &lt;a class="link" href="https://www.jenkins.io/" target="_blank" rel="noopener"
+&gt;Jenkins&lt;/a&gt; 自动化服务器中的性能指标。Jenkins 是开源的持续集成（CI）/持续部署（CD）平台，用于项目的构建与发布管理。&lt;/p&gt;
+&lt;p&gt;该数据源内置两个预设仪表盘，助你快速上手 Jenkins 数据可视化：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Jenkins 概览仪表盘&lt;/strong&gt;：展示整个 Jenkins 实例的运行状况，包括所有项目、节点、执行器状态和构建队列等信息。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Jenkins DORA 指标仪表盘&lt;/strong&gt;：聚焦衡量研发效能的四项核心指标：部署频率、变更交付时长、变更失败率与服务恢复时间。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src="https://martinliu.cn/blog/grafana-cloud-updates-onboard-teams-with-new-ai-powered-tooling-secrets-management-for-enhanced-security/jenkins-enterprise-data-source-dashboard.webp"
 width="1999"
 height="901"
-srcset="https://martinliu.cn/blog/grafana-cloud-updates-onboard-teams-with-new-ai-powered-tooling-secrets-management-for-enhanced-security/jenkins-enterprise-data-source-dashboard_hu_a0e440a3f662fa82.webp 480w, https://martinliu.cn/blog/grafana-cloud-updates-onboard-teams-with-new-ai-powered-tooling-secrets-management-for-enhanced-security/jenkins-enterprise-data-source-dashboard_hu_c6cf48979513874e.webp 1024w"
+srcset="https://martinliu.cn/blog/grafana-cloud-updates-onboard-teams-with-new-ai-powered-tooling-secrets-management-for-enhanced-security/jenkins-enterprise-data-source-dashboard_hu_11ce074901c52ab1.webp 480w, https://martinliu.cn/blog/grafana-cloud-updates-onboard-teams-with-new-ai-powered-tooling-secrets-management-for-enhanced-security/jenkins-enterprise-data-source-dashboard_hu_a10d1b6e0b453eb4.webp 1024w"
 loading="lazy"
 alt="Grafana 仪表盘截图，展示四个图表：部署频率、变更交付时间、变更失败率和 30 天内服务恢复时间。"
 class="gallery-image"
 data-flex-grow="221"
 data-flex-basis="532px"
->
-&lt;/p></description></item><item><title>Docker、Jenkins、Prometheus，本地能跑？！这套技术栈你需要搞定</title><link>https://martinliu.cn/blog/docker-jenkins-prometheus-locally-heres-the-stack/</link><pubDate>Mon, 28 Jul 2025 17:58:33 +0800</pubDate><guid>https://martinliu.cn/blog/docker-jenkins-prometheus-locally-heres-the-stack/</guid><description>&lt;img src="https://martinliu.cn/blog/docker-jenkins-prometheus-locally-heres-the-stack/1_izxF5LhLRecc_epDuvJmhg.webp" alt="Featured image of post Docker、Jenkins、Prometheus，本地能跑？！这套技术栈你需要搞定" />&lt;h2 id="-tldr--一套真正可用的本地-devops-技术栈">✨ TL;DR — 一套真正可用的本地 DevOps 技术栈
-&lt;/h2>&lt;p>&lt;strong>问题&lt;/strong>：云端 DevOps 费用高、迭代慢，还难调试。&lt;br>
-&lt;strong>解决方案&lt;/strong>：用 Docker Compose 跑起来的一套完整 DevOps 技术栈，全部本地化。&lt;/p>
-&lt;h2 id="核心组件包括">核心组件包括：
-&lt;/h2>&lt;ul>
-&lt;li>Jenkins（CI/CD）&lt;/li>
-&lt;li>Prometheus + Grafana（监控）&lt;/li>
-&lt;li>Loki + Promtail（日志聚合）&lt;/li>
-&lt;li>NGINX / Traefik（反向代理）&lt;/li>
-&lt;li>Mailhog（邮件测试）&lt;/li>
-&lt;li>Postgres + Redis（辅助服务）&lt;/li>
-&lt;/ul>
-&lt;h2 id="我的经验总结">我的经验总结：
-&lt;/h2>&lt;ul>
-&lt;li>从小起步，逐步扩展。&lt;/li>
-&lt;li>固定版本，避免意外变更。&lt;/li>
-&lt;li>健康检查能救命。&lt;/li>
-&lt;li>Docker Compose 胜过过早引入 Kubernetes。&lt;/li>
-&lt;li>养成写“技术栈日志”的习惯。&lt;/li>
-&lt;/ul>
-&lt;p>我的需求其实很简单。&lt;/p>
-&lt;p>我只想要一个稳的 CI 流水线、一套能看懂的监控指标，以及在部署前能本地测试全部功能的方式，不必再为云服务花冤枉钱。&lt;/p>
-&lt;p>结果呢？Jenkins 启动就挂，Prometheus 抓不到数据，Docker Compose 日志铺天盖地像在写小说。&lt;/p>
-&lt;p>我差点放弃。但在无数次试错、两次烧坏电脑，还有通宵翻遍 DevOps 博客之后，我终于搞出了一套真的能用的本地环境。&lt;/p>
-&lt;p>&lt;strong>不用 Kubernetes。不付 AWS 账单。没有凌晨四点的 Slack 报警。&lt;/strong>&lt;/p>
-&lt;p>这不是教程，而是我自己打磨出来的生存指南，你完全可以照着用。🤝&lt;/p>
-&lt;h2 id="什么才是-devops-技术栈本地而非理论">什么才是 DevOps 技术栈（本地，而非理论）
-&lt;/h2>&lt;p>提到 DevOps，大多数人想到的是云原生架构、Kubernetes 自动扩容集群，还有那种比房租还贵的精美仪表盘。但如果你是独立开发者、在搞实验，或只是想学习而不影响线上环境，&lt;strong>你需要的，是能直接在自己电脑上跑的东西。&lt;/strong>&lt;/p>
-&lt;p>对我来说，一个“本地优先”的 DevOps 技术栈应该包含：&lt;/p>
-&lt;ul>
-&lt;li>&lt;strong>Docker：&lt;/strong> 容器的基础设施。所有服务都运行在容器里，包括 Jenkins 和 Prometheus。&lt;/li>
-&lt;li>&lt;strong>Jenkins：&lt;/strong> 仍然是最灵活的 CI/CD 引擎。虽说有点老派，但用得好依然顶用。&lt;/li>
-&lt;li>&lt;strong>Prometheus + Grafana：&lt;/strong> 用于采集与可视化监控指标。Prometheus 负责抓，Grafana 负责看。&lt;/li>
-&lt;li>&lt;strong>Loki：&lt;/strong> 日志聚合利器。因为容器一多，&lt;code>docker logs&lt;/code> 根本不够用。&lt;/li>
-&lt;li>&lt;strong>NGINX 或 Traefik：&lt;/strong> 做反向代理，把多个服务统一映射到本地域名下。&lt;/li>
-&lt;li>&lt;strong>Mailhog / Redis / Postgres：&lt;/strong> 可选组件，用于测试邮件、缓存或数据库相关功能。&lt;/li>
-&lt;/ul>
-&lt;p>这就是基础配置。没有 AWS，没有 GCP，也不用托管的 EKS。只有 &lt;strong>容器、端口，以及偶尔崩溃的终端窗口&lt;/strong>。&lt;/p>
-&lt;p>&lt;img src="https://martinliu.cn/blog/docker-jenkins-prometheus-locally-heres-the-stack/1_izxF5LhLRecc_epDuvJmhg.webp"
+&gt;
+&lt;/p&gt;</description></item><item><title>Docker、Jenkins、Prometheus，本地能跑？！这套技术栈你需要搞定</title><link>https://martinliu.cn/blog/docker-jenkins-prometheus-locally-heres-the-stack/</link><pubDate>Mon, 28 Jul 2025 17:58:33 +0800</pubDate><guid>https://martinliu.cn/blog/docker-jenkins-prometheus-locally-heres-the-stack/</guid><description>&lt;img src="https://martinliu.cn/blog/docker-jenkins-prometheus-locally-heres-the-stack/1_izxF5LhLRecc_epDuvJmhg.webp" alt="Featured image of post Docker、Jenkins、Prometheus，本地能跑？！这套技术栈你需要搞定" /&gt;&lt;h2 id="-tldr--一套真正可用的本地-devops-技术栈"&gt;✨ TL;DR — 一套真正可用的本地 DevOps 技术栈
+&lt;/h2&gt;&lt;p&gt;&lt;strong&gt;问题&lt;/strong&gt;：云端 DevOps 费用高、迭代慢，还难调试。&lt;br&gt;
+&lt;strong&gt;解决方案&lt;/strong&gt;：用 Docker Compose 跑起来的一套完整 DevOps 技术栈，全部本地化。&lt;/p&gt;
+&lt;h2 id="核心组件包括"&gt;核心组件包括：
+&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;Jenkins（CI/CD）&lt;/li&gt;
+&lt;li&gt;Prometheus + Grafana（监控）&lt;/li&gt;
+&lt;li&gt;Loki + Promtail（日志聚合）&lt;/li&gt;
+&lt;li&gt;NGINX / Traefik（反向代理）&lt;/li&gt;
+&lt;li&gt;Mailhog（邮件测试）&lt;/li&gt;
+&lt;li&gt;Postgres + Redis（辅助服务）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id="我的经验总结"&gt;我的经验总结：
+&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;从小起步，逐步扩展。&lt;/li&gt;
+&lt;li&gt;固定版本，避免意外变更。&lt;/li&gt;
+&lt;li&gt;健康检查能救命。&lt;/li&gt;
+&lt;li&gt;Docker Compose 胜过过早引入 Kubernetes。&lt;/li&gt;
+&lt;li&gt;养成写“技术栈日志”的习惯。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;我的需求其实很简单。&lt;/p&gt;
+&lt;p&gt;我只想要一个稳的 CI 流水线、一套能看懂的监控指标，以及在部署前能本地测试全部功能的方式，不必再为云服务花冤枉钱。&lt;/p&gt;
+&lt;p&gt;结果呢？Jenkins 启动就挂，Prometheus 抓不到数据，Docker Compose 日志铺天盖地像在写小说。&lt;/p&gt;
+&lt;p&gt;我差点放弃。但在无数次试错、两次烧坏电脑，还有通宵翻遍 DevOps 博客之后，我终于搞出了一套真的能用的本地环境。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;不用 Kubernetes。不付 AWS 账单。没有凌晨四点的 Slack 报警。&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;这不是教程，而是我自己打磨出来的生存指南，你完全可以照着用。🤝&lt;/p&gt;
+&lt;h2 id="什么才是-devops-技术栈本地而非理论"&gt;什么才是 DevOps 技术栈（本地，而非理论）
+&lt;/h2&gt;&lt;p&gt;提到 DevOps，大多数人想到的是云原生架构、Kubernetes 自动扩容集群，还有那种比房租还贵的精美仪表盘。但如果你是独立开发者、在搞实验，或只是想学习而不影响线上环境，&lt;strong&gt;你需要的，是能直接在自己电脑上跑的东西。&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;对我来说，一个“本地优先”的 DevOps 技术栈应该包含：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Docker：&lt;/strong&gt; 容器的基础设施。所有服务都运行在容器里，包括 Jenkins 和 Prometheus。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Jenkins：&lt;/strong&gt; 仍然是最灵活的 CI/CD 引擎。虽说有点老派，但用得好依然顶用。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Prometheus + Grafana：&lt;/strong&gt; 用于采集与可视化监控指标。Prometheus 负责抓，Grafana 负责看。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Loki：&lt;/strong&gt; 日志聚合利器。因为容器一多，&lt;code&gt;docker logs&lt;/code&gt; 根本不够用。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;NGINX 或 Traefik：&lt;/strong&gt; 做反向代理，把多个服务统一映射到本地域名下。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Mailhog / Redis / Postgres：&lt;/strong&gt; 可选组件，用于测试邮件、缓存或数据库相关功能。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;这就是基础配置。没有 AWS，没有 GCP，也不用托管的 EKS。只有 &lt;strong&gt;容器、端口，以及偶尔崩溃的终端窗口&lt;/strong&gt;。&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://martinliu.cn/blog/docker-jenkins-prometheus-locally-heres-the-stack/1_izxF5LhLRecc_epDuvJmhg.webp"
 width="1536"
 height="1024"
-srcset="https://martinliu.cn/blog/docker-jenkins-prometheus-locally-heres-the-stack/1_izxF5LhLRecc_epDuvJmhg_hu_a1da576b3cf30d7e.webp 480w, https://martinliu.cn/blog/docker-jenkins-prometheus-locally-heres-the-stack/1_izxF5LhLRecc_epDuvJmhg_hu_601f3c02d55a9d91.webp 1024w"
+srcset="https://martinliu.cn/blog/docker-jenkins-prometheus-locally-heres-the-stack/1_izxF5LhLRecc_epDuvJmhg_hu_7a4ff53805234a57.webp 480w, https://martinliu.cn/blog/docker-jenkins-prometheus-locally-heres-the-stack/1_izxF5LhLRecc_epDuvJmhg_hu_c0d773ced9df235e.webp 1024w"
 loading="lazy"
 alt="devops stack"
 class="gallery-image"
 data-flex-grow="150"
 data-flex-basis="360px"
->
-&lt;/p>
-&lt;h2 id="让我豁然开朗的-docker-composeyml-配置">让我豁然开朗的 docker-compose.yml 配置
-&lt;/h2>&lt;p>谈本地 DevOps，绕不开 &lt;code>docker-compose.yml&lt;/code>。它是整个系统的指挥中枢，决定了你是轻松一键部署，还是陷入无尽的手动操作噩梦。&lt;/p>
-&lt;p>下面是我用的一个简化版本配置：&lt;/p>
-&lt;div class="highlight">&lt;div class="chroma">
-&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
-&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
-&lt;/span>&lt;span class="lnt"> 2
-&lt;/span>&lt;span class="lnt"> 3
-&lt;/span>&lt;span class="lnt"> 4
-&lt;/span>&lt;span class="lnt"> 5
-&lt;/span>&lt;span class="lnt"> 6
-&lt;/span>&lt;span class="lnt"> 7
-&lt;/span>&lt;span class="lnt"> 8
-&lt;/span>&lt;span class="lnt"> 9
-&lt;/span>&lt;span class="lnt">10
-&lt;/span>&lt;span class="lnt">11
-&lt;/span>&lt;span class="lnt">12
-&lt;/span>&lt;span class="lnt">13
-&lt;/span>&lt;span class="lnt">14
-&lt;/span>&lt;span class="lnt">15
-&lt;/span>&lt;span class="lnt">16
-&lt;/span>&lt;span class="lnt">17
-&lt;/span>&lt;span class="lnt">18
-&lt;/span>&lt;span class="lnt">19
-&lt;/span>&lt;span class="lnt">20
-&lt;/span>&lt;span class="lnt">21
-&lt;/span>&lt;span class="lnt">22
-&lt;/span>&lt;span class="lnt">23
-&lt;/span>&lt;span class="lnt">24
-&lt;/span>&lt;span class="lnt">25
-&lt;/span>&lt;span class="lnt">26
-&lt;/span>&lt;span class="lnt">27
-&lt;/span>&lt;span class="lnt">28
-&lt;/span>&lt;span class="lnt">29
-&lt;/span>&lt;span class="lnt">30
-&lt;/span>&lt;span class="lnt">31
-&lt;/span>&lt;span class="lnt">32
-&lt;/span>&lt;span class="lnt">33
-&lt;/span>&lt;span class="lnt">34
-&lt;/span>&lt;span class="lnt">35
-&lt;/span>&lt;span class="lnt">36
-&lt;/span>&lt;span class="lnt">37
-&lt;/span>&lt;span class="lnt">38
-&lt;/span>&lt;span class="lnt">39
-&lt;/span>&lt;span class="lnt">40
-&lt;/span>&lt;span class="lnt">41
-&lt;/span>&lt;span class="lnt">42
-&lt;/span>&lt;span class="lnt">43
-&lt;/span>&lt;span class="lnt">44
-&lt;/span>&lt;span class="lnt">45
-&lt;/span>&lt;span class="lnt">46
-&lt;/span>&lt;span class="lnt">47
-&lt;/span>&lt;span class="lnt">48
-&lt;/span>&lt;span class="lnt">49
-&lt;/span>&lt;span class="lnt">50
-&lt;/span>&lt;span class="lnt">51
-&lt;/span>&lt;span class="lnt">52
-&lt;/span>&lt;span class="lnt">53
-&lt;/span>&lt;span class="lnt">54
-&lt;/span>&lt;span class="lnt">55
-&lt;/span>&lt;span class="lnt">56
-&lt;/span>&lt;span class="lnt">57
-&lt;/span>&lt;span class="lnt">58
-&lt;/span>&lt;span class="lnt">59
-&lt;/span>&lt;span class="lnt">60
-&lt;/span>&lt;span class="lnt">61
-&lt;/span>&lt;span class="lnt">62
-&lt;/span>&lt;span class="lnt">63
-&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
-&lt;td class="lntd">
-&lt;pre tabindex="0" class="chroma">&lt;code class="language-yaml" data-lang="yaml">&lt;span class="line">&lt;span class="cl">&lt;span class="nt">version&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="s2">&amp;#34;3.8&amp;#34;&lt;/span>&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="nt">services&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">jenkins&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">image&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">jenkins/jenkins:lts-jdk17&lt;/span>&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">ports&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>- &lt;span class="s2">&amp;#34;8080:8080&amp;#34;&lt;/span>&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">volumes&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>- &lt;span class="l">jenkins_home:/var/jenkins_home&lt;/span>&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">prometheus&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">image&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">prom/prometheus&lt;/span>&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">ports&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>- &lt;span class="s2">&amp;#34;9090:9090&amp;#34;&lt;/span>&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">volumes&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>- &lt;span class="l">./prometheus.yml:/etc/prometheus/prometheus.yml&lt;/span>&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">grafana&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">image&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">grafana/grafana&lt;/span>&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">ports&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>- &lt;span class="s2">&amp;#34;3000:3000&amp;#34;&lt;/span>&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">volumes&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>- &lt;span class="l">grafana_data:/var/lib/grafana&lt;/span>&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">loki&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">image&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">grafana/loki:2.9.0&lt;/span>&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">ports&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>- &lt;span class="s2">&amp;#34;3100:3100&amp;#34;&lt;/span>&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">command&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>-&lt;span class="l">config.file=/etc/loki/local-config.yaml&lt;/span>&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">nginx&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">image&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">nginx:stable&lt;/span>&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">ports&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>- &lt;span class="s2">&amp;#34;80:80&amp;#34;&lt;/span>&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">volumes&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>- &lt;span class="l">./nginx.conf:/etc/nginx/nginx.conf&lt;/span>&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">mailhog&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">image&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">mailhog/mailhog&lt;/span>&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">ports&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>- &lt;span class="s2">&amp;#34;8025:8025&amp;#34;&lt;/span>&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>- &lt;span class="s2">&amp;#34;1025:1025&amp;#34;&lt;/span>&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">redis&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">image&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">redis&lt;/span>&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">ports&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>- &lt;span class="s2">&amp;#34;6379:6379&amp;#34;&lt;/span>&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">postgres&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">image&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">postgres:14&lt;/span>&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">ports&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>- &lt;span class="s2">&amp;#34;5432:5432&amp;#34;&lt;/span>&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">environment&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">POSTGRES_USER&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">dev&lt;/span>&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">POSTGRES_PASSWORD&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">dev&lt;/span>&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">POSTGRES_DB&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">app_db&lt;/span>&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">volumes&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>- &lt;span class="l">pgdata:/var/lib/postgresql/data&lt;/span>&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="nt">volumes&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">jenkins_home&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">grafana_data&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">pgdata&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
-&lt;/div>
-&lt;/div>&lt;h2 id="让我少走弯路的配置笔记">让我少走弯路的配置笔记
-&lt;/h2>&lt;ul>
-&lt;li>&lt;strong>分离 &lt;code>.env&lt;/code> 文件&lt;/strong>：不要在配置中硬编码密钥或端口。&lt;/li>
-&lt;li>&lt;strong>挂载配置文件&lt;/strong>：Prometheus 和 NGINX 的配置最好通过挂载方式管理，方便随时调整。&lt;/li>
-&lt;li>&lt;strong>状态服务使用数据卷&lt;/strong>：Jenkins、Grafana、Postgres 等需要持久化的服务应该使用数据卷。&lt;/li>
-&lt;li>&lt;strong>尽量避免使用 &lt;code>depends_on&lt;/code>&lt;/strong>：它不会真正等待服务就绪。建议用 &lt;code>restart: unless-stopped&lt;/code> 配合健康检查来提升稳定性。&lt;/li>
-&lt;/ul>
-&lt;p>这套配置让我可以放心地搭建和试验。每个服务都在容器里运行，出问题直接重建，简单又高效。&lt;/p>
-&lt;h2 id="我的本地-devops-文件结构也就是理智的来源">我的本地 DevOps 文件结构（也就是理智的来源）
-&lt;/h2>&lt;p>尝试了多个混乱结构之后，我最终找到了这样一套清晰、模块化的目录布局，让调试更高效。&lt;/p>
-&lt;div class="highlight">&lt;div class="chroma">
-&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
-&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
-&lt;/span>&lt;span class="lnt"> 2
-&lt;/span>&lt;span class="lnt"> 3
-&lt;/span>&lt;span class="lnt"> 4
-&lt;/span>&lt;span class="lnt"> 5
-&lt;/span>&lt;span class="lnt"> 6
-&lt;/span>&lt;span class="lnt"> 7
-&lt;/span>&lt;span class="lnt"> 8
-&lt;/span>&lt;span class="lnt"> 9
-&lt;/span>&lt;span class="lnt">10
-&lt;/span>&lt;span class="lnt">11
-&lt;/span>&lt;span class="lnt">12
-&lt;/span>&lt;span class="lnt">13
-&lt;/span>&lt;span class="lnt">14
-&lt;/span>&lt;span class="lnt">15
-&lt;/span>&lt;span class="lnt">16
-&lt;/span>&lt;span class="lnt">17
-&lt;/span>&lt;span class="lnt">18
-&lt;/span>&lt;span class="lnt">19
-&lt;/span>&lt;span class="lnt">20
-&lt;/span>&lt;span class="lnt">21
-&lt;/span>&lt;span class="lnt">22
-&lt;/span>&lt;span class="lnt">23
-&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
-&lt;td class="lntd">
-&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">/devops-stack
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">├── docker-compose.yml
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">├── .env
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">├── README.md
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">├── prometheus/
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">│ └── prometheus.yml
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">├── grafana/
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">│ └── provisioning/
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">│ ├── datasources/
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">│ └── dashboards/
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">├── loki/
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">│ └── local-config.yaml
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">├── nginx/
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">│ └── nginx.conf
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">├── jenkins/
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">│ └── jobs/
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">│ └── sample-job.groovy
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">├── volumes/
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">│ ├── grafana/
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">│ ├── jenkins/
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">│ └── postgres/
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">└── logs/
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> └── stack.log
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
-&lt;/div>
-&lt;/div>&lt;h2 id="为什么这套结构有效">为什么这套结构有效？
-&lt;/h2>&lt;ul>
-&lt;li>🔹 prometheus/ 自定义抓取配置都放在这里。我用 Git 做版本管理，便于追踪每次修改。&lt;/li>
-&lt;li>🔹 grafana/provisioning/ 通过这个目录预配置仪表盘和数据源，重建容器时无需手动重复设置。&lt;/li>
-&lt;li>🔹 loki/ Loki 的 &lt;code>local-config.yaml&lt;/code> 存放位置。如果你聚合多个容器日志，这个配置经常需要调整。&lt;/li>
-&lt;li>🔹 nginx/ 将代理配置从项目根目录独立出来，便于快速热更新和测试路由变更。&lt;/li>
-&lt;li>🔹 jenkins/jobs/ 用于保存流水线定义、Groovy 脚本或种子任务，比每次在 Jenkins UI 操作方便得多。&lt;/li>
-&lt;li>🔹 volumes/ 可选目录，用于挂载持久化数据。无需深入 Docker 内部也能查看状态数据。&lt;/li>
-&lt;li>🔹 logs/ 集中存放容器日志或自定义输出，调试更高效。特别是在 Promtail 表现不稳定时很有用。&lt;/li>
-&lt;/ul>
-&lt;h2 id="如果重来一次我会这样做">如果重来一次，我会这样做：
-&lt;/h2>&lt;h3 id="1-不要从-jenkins-起步">1. 不要从 Jenkins 起步
-&lt;/h3>&lt;p>Jenkins 虽然强大，但太笨重。如果你只是想学习 CI/CD，建议先从 GitHub Actions（可通过 &lt;a class="link" href="https://github.com/nektos/act" target="_blank" rel="noopener"
->act&lt;/a> 本地运行）或 Drone CI 开始。Jenkins 附带插件多、配置烦人，还有那些让人头大的 XML 配置文件（Extensible Markup Language）。&lt;/p>
-&lt;h3 id="2-不要过度设计监控">2. 不要过度设计监控
-&lt;/h3>&lt;p>就算你是为了跑个博客，也没必要一开始就上 Prometheus + Grafana + Loki + Tempo。先用简单的日志输出（&lt;code>docker logs&lt;/code>，或者加个 Mailhog）起步，有需要时再慢慢加监控。&lt;/p>
-&lt;h3 id="3-坚持用-docker-compose">3. 坚持用 Docker Compose
-&lt;/h3>&lt;p>我曾花了好几天尝试 Minikube、Kind 和 Kubernetes，结果发现其实一个靠谱的 &lt;code>docker-compose.yml&lt;/code> 足以应付本地需求。除非你要部署到云上或准备考 Kubernetes 认证，不然 &lt;strong>K8s 只会拖慢你的前期学习节奏&lt;/strong>。&lt;/p>
-&lt;h3 id="4-保持技术栈日志">4. 保持“技术栈日志”
-&lt;/h3>&lt;p>每次出错或修好 bug，我都会记一笔。这份日志成了我的生存手册，也成了这篇文章的基础。强烈推荐你也开始记录，真的有用。&lt;/p>
-&lt;h2 id="复制即用最简本地-devops-技术栈">复制即用：最简本地 DevOps 技术栈
-&lt;/h2>&lt;p>如果你读到这里心想“我就想马上试一把”，下面就是你需要的——一套&lt;strong>最小可行的 DevOps 技术栈&lt;/strong>：&lt;/p>
-&lt;div class="highlight">&lt;div class="chroma">
-&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
-&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
-&lt;/span>&lt;span class="lnt">2
-&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
-&lt;td class="lntd">
-&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">mkdir devops-mini &lt;span class="o">&amp;amp;&amp;amp;&lt;/span> &lt;span class="nb">cd&lt;/span> devops-mini
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">touch docker-compose.yml
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
-&lt;/div>
-&lt;/div>&lt;p>编辑 &lt;em>docker-compose.yml&lt;/em> 文件&lt;/p>
-&lt;div class="highlight">&lt;div class="chroma">
-&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
-&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
-&lt;/span>&lt;span class="lnt"> 2
-&lt;/span>&lt;span class="lnt"> 3
-&lt;/span>&lt;span class="lnt"> 4
-&lt;/span>&lt;span class="lnt"> 5
-&lt;/span>&lt;span class="lnt"> 6
-&lt;/span>&lt;span class="lnt"> 7
-&lt;/span>&lt;span class="lnt"> 8
-&lt;/span>&lt;span class="lnt"> 9
-&lt;/span>&lt;span class="lnt">10
-&lt;/span>&lt;span class="lnt">11
-&lt;/span>&lt;span class="lnt">12
-&lt;/span>&lt;span class="lnt">13
-&lt;/span>&lt;span class="lnt">14
-&lt;/span>&lt;span class="lnt">15
-&lt;/span>&lt;span class="lnt">16
-&lt;/span>&lt;span class="lnt">17
-&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
-&lt;td class="lntd">
-&lt;pre tabindex="0" class="chroma">&lt;code class="language-yaml" data-lang="yaml">&lt;span class="line">&lt;span class="cl">&lt;span class="nt">version&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="s1">&amp;#39;3.8&amp;#39;&lt;/span>&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="nt">services&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">jenkins&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">image&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">jenkins/jenkins:lts-jdk17&lt;/span>&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">ports&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>- &lt;span class="s2">&amp;#34;8080:8080&amp;#34;&lt;/span>&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">volumes&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>- &lt;span class="l">jenkins_home:/var/jenkins_home&lt;/span>&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">grafana&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">image&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">grafana/grafana&lt;/span>&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">ports&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>- &lt;span class="s2">&amp;#34;3000:3000&amp;#34;&lt;/span>&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="nt">volumes&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">jenkins_home&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
-&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
-&lt;/div>
-&lt;/div>&lt;p>启动本地技术栈。&lt;/p>
-&lt;div class="highlight">&lt;div class="chroma">
-&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
-&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
-&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
-&lt;td class="lntd">
-&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">docker compose up -d
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
-&lt;/div>
-&lt;/div>&lt;p>搞定了。CI + 监控，完全本地，不靠云。&lt;/p>
-&lt;p>等你准备好折腾时，再加上 Postgres、Redis、Loki、Prometheus 或 NGINX。&lt;br>
-放心，总会出点问题。&lt;/p>
-&lt;h2 id="收尾搭建它搞崩它掌握它">收尾：搭建它，搞崩它，掌握它
-&lt;/h2>&lt;p>搭一套本地 DevOps 技术栈并不轻松、不优雅，更不会很快。&lt;/p>
-&lt;p>但这个过程教会我的，比任何云服务仪表盘或 YouTube 教程都更接近真实世界。&lt;/p>
-&lt;p>当你亲手跑 Jenkins、从头配置 Grafana 仪表盘、或者搞清楚容器间为什么无法通信时，&lt;br>
-&lt;strong>你就不再只是执行脚本的人，而是真的开始具备系统工程师的思维了。&lt;/strong>&lt;/p>
-&lt;p>所以，如果你还在等 CI 部署完成，或厌倦了在黑盒云服务里调 bug……&lt;/p>
-&lt;p>🔥 &lt;strong>自己动手搭一套。搞崩它。修复它。大胆去学。&lt;/strong>&lt;/p>
-&lt;p>如果这篇文章哪怕帮到你一点点， &lt;strong>点个赞、写评论、转发一下。&lt;/strong> 让更多开发者不再害怕从零搭建基础架构。&lt;/p>
-&lt;blockquote>
-&lt;p>source: Medium - Level Up Coding&lt;/p>&lt;/blockquote></description></item><item><title>CloudBees 全球企业高管安全管理调查报告-2022年</title><link>https://martinliu.cn/blog/cloudbees-global-c-suite-security-survey-report-2022/</link><pubDate>Sun, 18 Dec 2022 12:17:39 +0800</pubDate><guid>https://martinliu.cn/blog/cloudbees-global-c-suite-security-survey-report-2022/</guid><description>&lt;img src="https://martinliu.cn/blog/cloudbees-global-c-suite-security-survey-report-2022/cover.webp" alt="Featured image of post CloudBees 全球企业高管安全管理调查报告-2022年" />&lt;p>《CloudBees全球CxO安全调查》对美国、英国、法国、德国、西班牙和澳大利亚的600名CxO高管进行了调查，发现安全和合规性挑战是大多数组织的创新战略的一个重要障碍。四分之三的企业高管表示，合规性挑战（76%）和安全挑战（75%）限制了他们公司的创新能力。这部分是由于在合规性审计、风险和缺陷上花费了大量时间。调查还显示，高管们绝大多数赞成左移的方法，即把软件测试和评估转移到开发生命周期的早期，把安全和合规的负担放在开发团队身上。尽管如此，58%的人也同意左移的安全策略对开发团队来说是一种负担。总的来说，调查结果显示，全球的公司将从改善和精简安全和合规性流程中大大受益，以确保他们的软件供应链，改善开发人员的经验，并增加创新的时间。&lt;/p>
-&lt;blockquote>
-&lt;p>本报告解读的视频如下：&lt;/p>&lt;/blockquote>
-&lt;div class="video-wrapper">
+&gt;
+&lt;/p&gt;
+&lt;h2 id="让我豁然开朗的-docker-composeyml-配置"&gt;让我豁然开朗的 docker-compose.yml 配置
+&lt;/h2&gt;&lt;p&gt;谈本地 DevOps，绕不开 &lt;code&gt;docker-compose.yml&lt;/code&gt;。它是整个系统的指挥中枢，决定了你是轻松一键部署，还是陷入无尽的手动操作噩梦。&lt;/p&gt;
+&lt;p&gt;下面是我用的一个简化版本配置：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
+&lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code&gt;&lt;span class="lnt"&gt; 1
+&lt;/span&gt;&lt;span class="lnt"&gt; 2
+&lt;/span&gt;&lt;span class="lnt"&gt; 3
+&lt;/span&gt;&lt;span class="lnt"&gt; 4
+&lt;/span&gt;&lt;span class="lnt"&gt; 5
+&lt;/span&gt;&lt;span class="lnt"&gt; 6
+&lt;/span&gt;&lt;span class="lnt"&gt; 7
+&lt;/span&gt;&lt;span class="lnt"&gt; 8
+&lt;/span&gt;&lt;span class="lnt"&gt; 9
+&lt;/span&gt;&lt;span class="lnt"&gt;10
+&lt;/span&gt;&lt;span class="lnt"&gt;11
+&lt;/span&gt;&lt;span class="lnt"&gt;12
+&lt;/span&gt;&lt;span class="lnt"&gt;13
+&lt;/span&gt;&lt;span class="lnt"&gt;14
+&lt;/span&gt;&lt;span class="lnt"&gt;15
+&lt;/span&gt;&lt;span class="lnt"&gt;16
+&lt;/span&gt;&lt;span class="lnt"&gt;17
+&lt;/span&gt;&lt;span class="lnt"&gt;18
+&lt;/span&gt;&lt;span class="lnt"&gt;19
+&lt;/span&gt;&lt;span class="lnt"&gt;20
+&lt;/span&gt;&lt;span class="lnt"&gt;21
+&lt;/span&gt;&lt;span class="lnt"&gt;22
+&lt;/span&gt;&lt;span class="lnt"&gt;23
+&lt;/span&gt;&lt;span class="lnt"&gt;24
+&lt;/span&gt;&lt;span class="lnt"&gt;25
+&lt;/span&gt;&lt;span class="lnt"&gt;26
+&lt;/span&gt;&lt;span class="lnt"&gt;27
+&lt;/span&gt;&lt;span class="lnt"&gt;28
+&lt;/span&gt;&lt;span class="lnt"&gt;29
+&lt;/span&gt;&lt;span class="lnt"&gt;30
+&lt;/span&gt;&lt;span class="lnt"&gt;31
+&lt;/span&gt;&lt;span class="lnt"&gt;32
+&lt;/span&gt;&lt;span class="lnt"&gt;33
+&lt;/span&gt;&lt;span class="lnt"&gt;34
+&lt;/span&gt;&lt;span class="lnt"&gt;35
+&lt;/span&gt;&lt;span class="lnt"&gt;36
+&lt;/span&gt;&lt;span class="lnt"&gt;37
+&lt;/span&gt;&lt;span class="lnt"&gt;38
+&lt;/span&gt;&lt;span class="lnt"&gt;39
+&lt;/span&gt;&lt;span class="lnt"&gt;40
+&lt;/span&gt;&lt;span class="lnt"&gt;41
+&lt;/span&gt;&lt;span class="lnt"&gt;42
+&lt;/span&gt;&lt;span class="lnt"&gt;43
+&lt;/span&gt;&lt;span class="lnt"&gt;44
+&lt;/span&gt;&lt;span class="lnt"&gt;45
+&lt;/span&gt;&lt;span class="lnt"&gt;46
+&lt;/span&gt;&lt;span class="lnt"&gt;47
+&lt;/span&gt;&lt;span class="lnt"&gt;48
+&lt;/span&gt;&lt;span class="lnt"&gt;49
+&lt;/span&gt;&lt;span class="lnt"&gt;50
+&lt;/span&gt;&lt;span class="lnt"&gt;51
+&lt;/span&gt;&lt;span class="lnt"&gt;52
+&lt;/span&gt;&lt;span class="lnt"&gt;53
+&lt;/span&gt;&lt;span class="lnt"&gt;54
+&lt;/span&gt;&lt;span class="lnt"&gt;55
+&lt;/span&gt;&lt;span class="lnt"&gt;56
+&lt;/span&gt;&lt;span class="lnt"&gt;57
+&lt;/span&gt;&lt;span class="lnt"&gt;58
+&lt;/span&gt;&lt;span class="lnt"&gt;59
+&lt;/span&gt;&lt;span class="lnt"&gt;60
+&lt;/span&gt;&lt;span class="lnt"&gt;61
+&lt;/span&gt;&lt;span class="lnt"&gt;62
+&lt;/span&gt;&lt;span class="lnt"&gt;63
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-yaml" data-lang="yaml"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="nt"&gt;version&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s2"&gt;&amp;#34;3.8&amp;#34;&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="nt"&gt;services&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;jenkins&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;image&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l"&gt;jenkins/jenkins:lts-jdk17&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;ports&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;- &lt;span class="s2"&gt;&amp;#34;8080:8080&amp;#34;&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;volumes&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;- &lt;span class="l"&gt;jenkins_home:/var/jenkins_home&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;prometheus&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;image&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l"&gt;prom/prometheus&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;ports&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;- &lt;span class="s2"&gt;&amp;#34;9090:9090&amp;#34;&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;volumes&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;- &lt;span class="l"&gt;./prometheus.yml:/etc/prometheus/prometheus.yml&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;grafana&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;image&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l"&gt;grafana/grafana&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;ports&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;- &lt;span class="s2"&gt;&amp;#34;3000:3000&amp;#34;&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;volumes&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;- &lt;span class="l"&gt;grafana_data:/var/lib/grafana&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;loki&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;image&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l"&gt;grafana/loki:2.9.0&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;ports&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;- &lt;span class="s2"&gt;&amp;#34;3100:3100&amp;#34;&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;command&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;-&lt;span class="l"&gt;config.file=/etc/loki/local-config.yaml&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;nginx&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;image&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l"&gt;nginx:stable&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;ports&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;- &lt;span class="s2"&gt;&amp;#34;80:80&amp;#34;&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;volumes&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;- &lt;span class="l"&gt;./nginx.conf:/etc/nginx/nginx.conf&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;mailhog&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;image&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l"&gt;mailhog/mailhog&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;ports&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;- &lt;span class="s2"&gt;&amp;#34;8025:8025&amp;#34;&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;- &lt;span class="s2"&gt;&amp;#34;1025:1025&amp;#34;&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;redis&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;image&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l"&gt;redis&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;ports&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;- &lt;span class="s2"&gt;&amp;#34;6379:6379&amp;#34;&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;postgres&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;image&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l"&gt;postgres:14&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;ports&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;- &lt;span class="s2"&gt;&amp;#34;5432:5432&amp;#34;&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;environment&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;POSTGRES_USER&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l"&gt;dev&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;POSTGRES_PASSWORD&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l"&gt;dev&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;POSTGRES_DB&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l"&gt;app_db&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;volumes&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;- &lt;span class="l"&gt;pgdata:/var/lib/postgresql/data&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="nt"&gt;volumes&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;jenkins_home&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;grafana_data&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;pgdata&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;h2 id="让我少走弯路的配置笔记"&gt;让我少走弯路的配置笔记
+&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;分离 &lt;code&gt;.env&lt;/code&gt; 文件&lt;/strong&gt;：不要在配置中硬编码密钥或端口。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;挂载配置文件&lt;/strong&gt;：Prometheus 和 NGINX 的配置最好通过挂载方式管理，方便随时调整。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;状态服务使用数据卷&lt;/strong&gt;：Jenkins、Grafana、Postgres 等需要持久化的服务应该使用数据卷。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;尽量避免使用 &lt;code&gt;depends_on&lt;/code&gt;&lt;/strong&gt;：它不会真正等待服务就绪。建议用 &lt;code&gt;restart: unless-stopped&lt;/code&gt; 配合健康检查来提升稳定性。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;这套配置让我可以放心地搭建和试验。每个服务都在容器里运行，出问题直接重建，简单又高效。&lt;/p&gt;
+&lt;h2 id="我的本地-devops-文件结构也就是理智的来源"&gt;我的本地 DevOps 文件结构（也就是理智的来源）
+&lt;/h2&gt;&lt;p&gt;尝试了多个混乱结构之后，我最终找到了这样一套清晰、模块化的目录布局，让调试更高效。&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
+&lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code&gt;&lt;span class="lnt"&gt; 1
+&lt;/span&gt;&lt;span class="lnt"&gt; 2
+&lt;/span&gt;&lt;span class="lnt"&gt; 3
+&lt;/span&gt;&lt;span class="lnt"&gt; 4
+&lt;/span&gt;&lt;span class="lnt"&gt; 5
+&lt;/span&gt;&lt;span class="lnt"&gt; 6
+&lt;/span&gt;&lt;span class="lnt"&gt; 7
+&lt;/span&gt;&lt;span class="lnt"&gt; 8
+&lt;/span&gt;&lt;span class="lnt"&gt; 9
+&lt;/span&gt;&lt;span class="lnt"&gt;10
+&lt;/span&gt;&lt;span class="lnt"&gt;11
+&lt;/span&gt;&lt;span class="lnt"&gt;12
+&lt;/span&gt;&lt;span class="lnt"&gt;13
+&lt;/span&gt;&lt;span class="lnt"&gt;14
+&lt;/span&gt;&lt;span class="lnt"&gt;15
+&lt;/span&gt;&lt;span class="lnt"&gt;16
+&lt;/span&gt;&lt;span class="lnt"&gt;17
+&lt;/span&gt;&lt;span class="lnt"&gt;18
+&lt;/span&gt;&lt;span class="lnt"&gt;19
+&lt;/span&gt;&lt;span class="lnt"&gt;20
+&lt;/span&gt;&lt;span class="lnt"&gt;21
+&lt;/span&gt;&lt;span class="lnt"&gt;22
+&lt;/span&gt;&lt;span class="lnt"&gt;23
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;/devops-stack
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;├── docker-compose.yml
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;├── .env
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;├── README.md
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;├── prometheus/
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;│ └── prometheus.yml
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;├── grafana/
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;│ └── provisioning/
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;│ ├── datasources/
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;│ └── dashboards/
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;├── loki/
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;│ └── local-config.yaml
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;├── nginx/
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;│ └── nginx.conf
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;├── jenkins/
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;│ └── jobs/
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;│ └── sample-job.groovy
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;├── volumes/
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;│ ├── grafana/
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;│ ├── jenkins/
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;│ └── postgres/
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;└── logs/
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; └── stack.log
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;h2 id="为什么这套结构有效"&gt;为什么这套结构有效？
+&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;🔹 prometheus/ 自定义抓取配置都放在这里。我用 Git 做版本管理，便于追踪每次修改。&lt;/li&gt;
+&lt;li&gt;🔹 grafana/provisioning/ 通过这个目录预配置仪表盘和数据源，重建容器时无需手动重复设置。&lt;/li&gt;
+&lt;li&gt;🔹 loki/ Loki 的 &lt;code&gt;local-config.yaml&lt;/code&gt; 存放位置。如果你聚合多个容器日志，这个配置经常需要调整。&lt;/li&gt;
+&lt;li&gt;🔹 nginx/ 将代理配置从项目根目录独立出来，便于快速热更新和测试路由变更。&lt;/li&gt;
+&lt;li&gt;🔹 jenkins/jobs/ 用于保存流水线定义、Groovy 脚本或种子任务，比每次在 Jenkins UI 操作方便得多。&lt;/li&gt;
+&lt;li&gt;🔹 volumes/ 可选目录，用于挂载持久化数据。无需深入 Docker 内部也能查看状态数据。&lt;/li&gt;
+&lt;li&gt;🔹 logs/ 集中存放容器日志或自定义输出，调试更高效。特别是在 Promtail 表现不稳定时很有用。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id="如果重来一次我会这样做"&gt;如果重来一次，我会这样做：
+&lt;/h2&gt;&lt;h3 id="1-不要从-jenkins-起步"&gt;1. 不要从 Jenkins 起步
+&lt;/h3&gt;&lt;p&gt;Jenkins 虽然强大，但太笨重。如果你只是想学习 CI/CD，建议先从 GitHub Actions（可通过 &lt;a class="link" href="https://github.com/nektos/act" target="_blank" rel="noopener"
+&gt;act&lt;/a&gt; 本地运行）或 Drone CI 开始。Jenkins 附带插件多、配置烦人，还有那些让人头大的 XML 配置文件（Extensible Markup Language）。&lt;/p&gt;
+&lt;h3 id="2-不要过度设计监控"&gt;2. 不要过度设计监控
+&lt;/h3&gt;&lt;p&gt;就算你是为了跑个博客，也没必要一开始就上 Prometheus + Grafana + Loki + Tempo。先用简单的日志输出（&lt;code&gt;docker logs&lt;/code&gt;，或者加个 Mailhog）起步，有需要时再慢慢加监控。&lt;/p&gt;
+&lt;h3 id="3-坚持用-docker-compose"&gt;3. 坚持用 Docker Compose
+&lt;/h3&gt;&lt;p&gt;我曾花了好几天尝试 Minikube、Kind 和 Kubernetes，结果发现其实一个靠谱的 &lt;code&gt;docker-compose.yml&lt;/code&gt; 足以应付本地需求。除非你要部署到云上或准备考 Kubernetes 认证，不然 &lt;strong&gt;K8s 只会拖慢你的前期学习节奏&lt;/strong&gt;。&lt;/p&gt;
+&lt;h3 id="4-保持技术栈日志"&gt;4. 保持“技术栈日志”
+&lt;/h3&gt;&lt;p&gt;每次出错或修好 bug，我都会记一笔。这份日志成了我的生存手册，也成了这篇文章的基础。强烈推荐你也开始记录，真的有用。&lt;/p&gt;
+&lt;h2 id="复制即用最简本地-devops-技术栈"&gt;复制即用：最简本地 DevOps 技术栈
+&lt;/h2&gt;&lt;p&gt;如果你读到这里心想“我就想马上试一把”，下面就是你需要的——一套&lt;strong&gt;最小可行的 DevOps 技术栈&lt;/strong&gt;：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
+&lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code&gt;&lt;span class="lnt"&gt;1
+&lt;/span&gt;&lt;span class="lnt"&gt;2
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;mkdir devops-mini &lt;span class="o"&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class="nb"&gt;cd&lt;/span&gt; devops-mini
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;touch docker-compose.yml
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;编辑 &lt;em&gt;docker-compose.yml&lt;/em&gt; 文件&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
+&lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code&gt;&lt;span class="lnt"&gt; 1
+&lt;/span&gt;&lt;span class="lnt"&gt; 2
+&lt;/span&gt;&lt;span class="lnt"&gt; 3
+&lt;/span&gt;&lt;span class="lnt"&gt; 4
+&lt;/span&gt;&lt;span class="lnt"&gt; 5
+&lt;/span&gt;&lt;span class="lnt"&gt; 6
+&lt;/span&gt;&lt;span class="lnt"&gt; 7
+&lt;/span&gt;&lt;span class="lnt"&gt; 8
+&lt;/span&gt;&lt;span class="lnt"&gt; 9
+&lt;/span&gt;&lt;span class="lnt"&gt;10
+&lt;/span&gt;&lt;span class="lnt"&gt;11
+&lt;/span&gt;&lt;span class="lnt"&gt;12
+&lt;/span&gt;&lt;span class="lnt"&gt;13
+&lt;/span&gt;&lt;span class="lnt"&gt;14
+&lt;/span&gt;&lt;span class="lnt"&gt;15
+&lt;/span&gt;&lt;span class="lnt"&gt;16
+&lt;/span&gt;&lt;span class="lnt"&gt;17
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-yaml" data-lang="yaml"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="nt"&gt;version&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;3.8&amp;#39;&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="nt"&gt;services&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;jenkins&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;image&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l"&gt;jenkins/jenkins:lts-jdk17&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;ports&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;- &lt;span class="s2"&gt;&amp;#34;8080:8080&amp;#34;&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;volumes&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;- &lt;span class="l"&gt;jenkins_home:/var/jenkins_home&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;grafana&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;image&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l"&gt;grafana/grafana&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;ports&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;- &lt;span class="s2"&gt;&amp;#34;3000:3000&amp;#34;&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="nt"&gt;volumes&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;jenkins_home&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;启动本地技术栈。&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
+&lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code&gt;&lt;span class="lnt"&gt;1
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;docker compose up -d
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;搞定了。CI + 监控，完全本地，不靠云。&lt;/p&gt;
+&lt;p&gt;等你准备好折腾时，再加上 Postgres、Redis、Loki、Prometheus 或 NGINX。&lt;br&gt;
+放心，总会出点问题。&lt;/p&gt;
+&lt;h2 id="收尾搭建它搞崩它掌握它"&gt;收尾：搭建它，搞崩它，掌握它
+&lt;/h2&gt;&lt;p&gt;搭一套本地 DevOps 技术栈并不轻松、不优雅，更不会很快。&lt;/p&gt;
+&lt;p&gt;但这个过程教会我的，比任何云服务仪表盘或 YouTube 教程都更接近真实世界。&lt;/p&gt;
+&lt;p&gt;当你亲手跑 Jenkins、从头配置 Grafana 仪表盘、或者搞清楚容器间为什么无法通信时，&lt;br&gt;
+&lt;strong&gt;你就不再只是执行脚本的人，而是真的开始具备系统工程师的思维了。&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;所以，如果你还在等 CI 部署完成，或厌倦了在黑盒云服务里调 bug……&lt;/p&gt;
+&lt;p&gt;🔥 &lt;strong&gt;自己动手搭一套。搞崩它。修复它。大胆去学。&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;如果这篇文章哪怕帮到你一点点， &lt;strong&gt;点个赞、写评论、转发一下。&lt;/strong&gt; 让更多开发者不再害怕从零搭建基础架构。&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;source: Medium - Level Up Coding&lt;/p&gt;
+&lt;/blockquote&gt;</description></item><item><title>CloudBees 全球企业高管安全管理调查报告-2022年</title><link>https://martinliu.cn/blog/cloudbees-global-c-suite-security-survey-report-2022/</link><pubDate>Sun, 18 Dec 2022 12:17:39 +0800</pubDate><guid>https://martinliu.cn/blog/cloudbees-global-c-suite-security-survey-report-2022/</guid><description>&lt;img src="https://martinliu.cn/blog/cloudbees-global-c-suite-security-survey-report-2022/cover.webp" alt="Featured image of post CloudBees 全球企业高管安全管理调查报告-2022年" /&gt;&lt;p&gt;《CloudBees全球CxO安全调查》对美国、英国、法国、德国、西班牙和澳大利亚的600名CxO高管进行了调查，发现安全和合规性挑战是大多数组织的创新战略的一个重要障碍。四分之三的企业高管表示，合规性挑战（76%）和安全挑战（75%）限制了他们公司的创新能力。这部分是由于在合规性审计、风险和缺陷上花费了大量时间。调查还显示，高管们绝大多数赞成左移的方法，即把软件测试和评估转移到开发生命周期的早期，把安全和合规的负担放在开发团队身上。尽管如此，58%的人也同意左移的安全策略对开发团队来说是一种负担。总的来说，调查结果显示，全球的公司将从改善和精简安全和合规性流程中大大受益，以确保他们的软件供应链，改善开发人员的经验，并增加创新的时间。&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;本报告解读的视频如下：&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;div class="video-wrapper"&gt;
 &lt;iframe src="https://player.bilibili.com/player.html?as_wide=1&amp;amp;high_quality=1&amp;amp;page=1&amp;bvid=BV1Lv4y1X7dY"
 scrolling="no"
 frameborder="no"
 framespacing="0"
 allowfullscreen="true"
->
-&lt;/iframe>
-&lt;/div>
-&lt;p>感谢和我一起晚上直播的三位朋友：[大鲲、南方、悟空]&lt;/p>
-&lt;p>&lt;img src="https://martinliu.cn/img/cos/sec-survey-2022/CloudBees_2022_Global_C_Suite_Security_Survey_Report-02.webp"
+&gt;
+&lt;/iframe&gt;
+&lt;/div&gt;
+&lt;p&gt;感谢和我一起晚上直播的三位朋友：[大鲲、南方、悟空]&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://martinliu.cn/img/cos/sec-survey-2022/CloudBees_2022_Global_C_Suite_Security_Survey_Report-02.webp"
 loading="lazy"
->
-&lt;/p>
-&lt;blockquote>
-&lt;p>Q1 你对软件供应链的攻击有多担心（如果有的话）？&lt;/p>&lt;/blockquote>
-&lt;p>十分之九的企业高管表示，他们对软件供应链攻击感到担忧，其中一半表示非常担忧。
+&gt;
+&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Q1 你对软件供应链的攻击有多担心（如果有的话）？&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;十分之九的企业高管表示，他们对软件供应链攻击感到担忧，其中一半表示非常担忧。
 &lt;img src="https://martinliu.cn/img/cos/sec-survey-2022/CloudBees_2022_Global_C_Suite_Security_Survey_Report-03.webp"
 loading="lazy"
->
-&lt;/p>
-&lt;p>来自澳大利亚、法国、西班牙、英国和美国的C-suite高管比德国的C-suite高管更有可能说他们担心软件供应链的攻击。
+&gt;
+&lt;/p&gt;
+&lt;p&gt;来自澳大利亚、法国、西班牙、英国和美国的C-suite高管比德国的C-suite高管更有可能说他们担心软件供应链的攻击。
 &lt;img src="https://martinliu.cn/img/cos/sec-survey-2022/CloudBees_2022_Global_C_Suite_Security_Survey_Report-04.webp"
 loading="lazy"
->
-&lt;/p>
-&lt;blockquote>
-&lt;p>Q2 与两年前相比，您认为您对软件供应链攻击的担忧是多还是少？&lt;/p>&lt;/blockquote>
-&lt;p>超过五分之四的C-suite高管表示，与两年前相比，他们对软件供应链攻击更加担忧。
+&gt;
+&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Q2 与两年前相比，您认为您对软件供应链攻击的担忧是多还是少？&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;超过五分之四的C-suite高管表示，与两年前相比，他们对软件供应链攻击更加担忧。
 &lt;img src="https://martinliu.cn/img/cos/sec-survey-2022/CloudBees_2022_Global_C_Suite_Security_Survey_Report-05.webp"
 loading="lazy"
->
-&lt;/p>
-&lt;p>在所有六个国家中，至少有四分之三的C-Suite高管表示，与两年前相比，他们更担心软件供应链的攻击。
+&gt;
+&lt;/p&gt;
+&lt;p&gt;在所有六个国家中，至少有四分之三的C-Suite高管表示，与两年前相比，他们更担心软件供应链的攻击。
 &lt;img src="https://martinliu.cn/img/cos/sec-survey-2022/CloudBees_2022_Global_C_Suite_Security_Survey_Report-06.webp"
 loading="lazy"
->
-&lt;/p>
-&lt;blockquote>
-&lt;p>Q3 你认为你的软件供应链的安全性如何？&lt;/p>&lt;/blockquote>
-&lt;p>去年，超过九成（95%）的C-suite高管表示他们的软件供应链是安全的，超过一半表示非常安全。在2022年，这一比例下降到88%，认为它是安全的，只有三分之一（32%）的人认为它是非
+&gt;
+&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Q3 你认为你的软件供应链的安全性如何？&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;去年，超过九成（95%）的C-suite高管表示他们的软件供应链是安全的，超过一半表示非常安全。在2022年，这一比例下降到88%，认为它是安全的，只有三分之一（32%）的人认为它是非
 常安全的。
 &lt;img src="https://martinliu.cn/img/cos/sec-survey-2022/CloudBees_2022_Global_C_Suite_Security_Survey_Report-07.webp"
 loading="lazy"
->
-&lt;/p>
-&lt;p>德国的首席执行官比其他国家的执行官更有可能说他们的软件供应链不安全。
+&gt;
+&lt;/p&gt;
+&lt;p&gt;德国的首席执行官比其他国家的执行官更有可能说他们的软件供应链不安全。
 &lt;img src="https://martinliu.cn/img/cos/sec-survey-2022/CloudBees_2022_Global_C_Suite_Security_Survey_Report-08.webp"
 loading="lazy"
->
-&lt;/p>
-&lt;blockquote>
-&lt;p>Q4 您认为您的软件供应链的合规性如何？&lt;/p>&lt;/blockquote>
-&lt;p>超过四分之三的C-Suite高管（78%）表示他们的软件供应链完全或几乎完全合规，低于去年十分之九（90%）的说法。
+&gt;
+&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Q4 您认为您的软件供应链的合规性如何？&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;超过四分之三的C-Suite高管（78%）表示他们的软件供应链完全或几乎完全合规，低于去年十分之九（90%）的说法。
 &lt;img src="https://martinliu.cn/img/cos/sec-survey-2022/CloudBees_2022_Global_C_Suite_Security_Survey_Report-09.webp"
 loading="lazy"
->
-&lt;/p>
-&lt;p>澳大利亚、法国、英国和美国的首席执行官比德国和西班牙的首席执行官更有可能说他们的软件供应链完全或几乎完全合规。
+&gt;
+&lt;/p&gt;
+&lt;p&gt;澳大利亚、法国、英国和美国的首席执行官比德国和西班牙的首席执行官更有可能说他们的软件供应链完全或几乎完全合规。
 &lt;img src="https://martinliu.cn/img/cos/sec-survey-2022/CloudBees_2022_Global_C_Suite_Security_Survey_Report-10.webp"
 loading="lazy"
->
-&lt;/p>
-&lt;blockquote>
-&lt;p>Q5 虽然两者都很重要，但哪个对你的组织最重要？&lt;/p>&lt;/blockquote>
-&lt;p>四分之三的C-suite高管表示，安全和合规是最重要的，而四分之一的人表示快速和合规是最重要的。
+&gt;
+&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Q5 虽然两者都很重要，但哪个对你的组织最重要？&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;四分之三的C-suite高管表示，安全和合规是最重要的，而四分之一的人表示快速和合规是最重要的。
 &lt;img src="https://martinliu.cn/img/cos/sec-survey-2022/CloudBees_2022_Global_C_Suite_Security_Survey_Report-11.webp"
 loading="lazy"
->
+&gt;
 每个国家至少有三分之二的C-Suite高管表示安全和合规比快速和合规更重要。
 &lt;img src="https://martinliu.cn/img/cos/sec-survey-2022/CloudBees_2022_Global_C_Suite_Security_Survey_Report-12.webp"
 loading="lazy"
->
-&lt;/p>
-&lt;blockquote>
-&lt;p>Q6 您认为，贵公司的团队每年平均花多少时间在合规性审核上？如果您不确定，请使用您最好的估计。如果您真的不知道，请选择不确定。&lt;/p>&lt;/blockquote>
-&lt;p>虽然超过五分之一的C-suite高管表示他们完全不确定，但平均而言，C-suite高管表示他们的团队每年花在合规性审计上的时间超过37天。
+&gt;
+&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Q6 您认为，贵公司的团队每年平均花多少时间在合规性审核上？如果您不确定，请使用您最好的估计。如果您真的不知道，请选择不确定。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;虽然超过五分之一的C-suite高管表示他们完全不确定，但平均而言，C-suite高管表示他们的团队每年花在合规性审计上的时间超过37天。
 &lt;img src="https://martinliu.cn/img/cos/sec-survey-2022/CloudBees_2022_Global_C_Suite_Security_Survey_Report-13.webp"
 loading="lazy"
->
+&gt;
 来自西班牙、英国和美国的C-Suite比其他三个国家的C-Suite更有可能说他们的团队每年平均花更多时间在合规性审计上，而德国的C-Suite更有可能说他们完全不确定。
 &lt;img src="https://martinliu.cn/img/cos/sec-survey-2022/CloudBees_2022_Global_C_Suite_Security_Survey_Report-14.webp"
 loading="lazy"
->
-&lt;/p>
-&lt;blockquote>
-&lt;p>Q7 在平均一周内，您认为您的团队在以下各项上花费的时间是多少？如果您不确定，请使用您最好的估计。&lt;/p>&lt;/blockquote>
-&lt;p>尽管首席执行官们说他们的团队在创新上花费了更多的时间，但他们在风险和缺陷上花费的时间也相差不远。
+&gt;
+&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Q7 在平均一周内，您认为您的团队在以下各项上花费的时间是多少？如果您不确定，请使用您最好的估计。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;尽管首席执行官们说他们的团队在创新上花费了更多的时间，但他们在风险和缺陷上花费的时间也相差不远。
 &lt;img src="https://martinliu.cn/img/cos/sec-survey-2022/CloudBees_2022_Global_C_Suite_Security_Survey_Report-15.webp"
 loading="lazy"
->
-&lt;/p>
-&lt;ul>
-&lt;li>innovation 创新&lt;/li>
-&lt;li>risks 风险管理&lt;/li>
-&lt;li>Defacts 缺陷管理&lt;/li>
-&lt;li>Technical Debt 技术债务&lt;/li>
-&lt;/ul>
-&lt;p>虽然所有国家的比例都差不多，但在澳大利亚和西班牙，花在风险上的时间比花在创新上的时间多。
+&gt;
+&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;innovation 创新&lt;/li&gt;
+&lt;li&gt;risks 风险管理&lt;/li&gt;
+&lt;li&gt;Defacts 缺陷管理&lt;/li&gt;
+&lt;li&gt;Technical Debt 技术债务&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;虽然所有国家的比例都差不多，但在澳大利亚和西班牙，花在风险上的时间比花在创新上的时间多。
 &lt;img src="https://martinliu.cn/img/cos/sec-survey-2022/CloudBees_2022_Global_C_Suite_Security_Survey_Report-16.webp"
 loading="lazy"
->
-&lt;/p>
-&lt;blockquote>
-&lt;p>Q8 在平均一周内，您认为您的团队应该在以下各项上花费多少时间？如果您不确定，请使用您的最佳估计。&lt;/p>&lt;/blockquote>
-&lt;p>毫不奇怪，C-suites说他们的团队应该把最大的时间花在创新上。
+&gt;
+&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Q8 在平均一周内，您认为您的团队应该在以下各项上花费多少时间？如果您不确定，请使用您的最佳估计。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;毫不奇怪，C-suites说他们的团队应该把最大的时间花在创新上。
 &lt;img src="https://martinliu.cn/img/cos/sec-survey-2022/CloudBees_2022_Global_C_Suite_Security_Survey_Report-17.webp"
 loading="lazy"
->
-&lt;/p>
-&lt;p>德国和英国的C-suites高管比其他国家的高管更有可能说更多的时间应该花在创新上，而美国和西班牙的C-suites更有可能说更多的时间应该花在风险上。
+&gt;
+&lt;/p&gt;
+&lt;p&gt;德国和英国的C-suites高管比其他国家的高管更有可能说更多的时间应该花在创新上，而美国和西班牙的C-suites更有可能说更多的时间应该花在风险上。
 &lt;img src="https://martinliu.cn/img/cos/sec-survey-2022/CloudBees_2022_Global_C_Suite_Security_Survey_Report-18.webp"
 loading="lazy"
->
-&lt;/p>
-&lt;blockquote>
-&lt;p>Q8-A 是什么阻碍了你的开发团队将更多的时间花在你认为他们应该花时间的活动上？请选择所有适用的。&lt;/p>&lt;/blockquote>
-&lt;p>超过一半的C-suite高管表示，合规性和/或流程占用时间是阻止他们的开发团队花更多时间在他们认为应该花时间的活动上的原因。
+&gt;
+&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Q8-A 是什么阻碍了你的开发团队将更多的时间花在你认为他们应该花时间的活动上？请选择所有适用的。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;超过一半的C-suite高管表示，合规性和/或流程占用时间是阻止他们的开发团队花更多时间在他们认为应该花时间的活动上的原因。
 &lt;img src="https://martinliu.cn/img/cos/sec-survey-2022/CloudBees_2022_Global_C_Suite_Security_Survey_Report-19.webp"
 loading="lazy"
->
-&lt;/p>
-&lt;ul>
-&lt;li>合规和/或流程所需要的时间&lt;/li>
-&lt;li>合规和/或安全方面的知识&lt;/li>
-&lt;li>过多的技术债务&lt;/li>
-&lt;li>糟糕的产品测试&lt;/li>
-&lt;li>其他的东西&lt;/li>
-&lt;li>没有什么能阻止他们&lt;/li>
-&lt;/ul>
-&lt;p>澳大利亚和美国的C-suite高管比其他国家的C-suite高管更有可能说合规和/或安全知识是阻止他们的开发团队花更多时间在他们希望他们花时间的活动上。
+&gt;
+&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;合规和/或流程所需要的时间&lt;/li&gt;
+&lt;li&gt;合规和/或安全方面的知识&lt;/li&gt;
+&lt;li&gt;过多的技术债务&lt;/li&gt;
+&lt;li&gt;糟糕的产品测试&lt;/li&gt;
+&lt;li&gt;其他的东西&lt;/li&gt;
+&lt;li&gt;没有什么能阻止他们&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;澳大利亚和美国的C-suite高管比其他国家的C-suite高管更有可能说合规和/或安全知识是阻止他们的开发团队花更多时间在他们希望他们花时间的活动上。
 &lt;img src="https://martinliu.cn/img/cos/sec-survey-2022/CloudBees_2022_Global_C_Suite_Security_Survey_Report-20.webp"
 loading="lazy"
->
-&lt;/p>
-&lt;blockquote>
-&lt;p>Q9 你有多大程度上同意或不同意以下说法？&lt;/p>&lt;/blockquote>
-&lt;p>几乎十分之九的C-suite高管表示，与两年前相比，他们现在更多地考虑保障软件供应链的安全和合规问题。
+&gt;
+&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Q9 你有多大程度上同意或不同意以下说法？&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;几乎十分之九的C-suite高管表示，与两年前相比，他们现在更多地考虑保障软件供应链的安全和合规问题。
 &lt;img src="https://martinliu.cn/img/cos/sec-survey-2022/CloudBees_2022_Global_C_Suite_Security_Survey_Report-21.webp"
 loading="lazy"
->
-&lt;/p>
-&lt;ul>
-&lt;li>我现在比两年前更多地考虑保障供应链的安全。&lt;/li>
-&lt;li>我现在比两年前更多地考虑合规问题&lt;/li>
-&lt;li>合规挑战限制了我们的创新能力&lt;/li>
-&lt;li>安全挑战限制了我们的创新能力&lt;/li>
-&lt;li>我宁愿处理自然灾害，也不愿处理我们软件供应链中的安全问题&lt;/li>
-&lt;li>在我们公司，安全问题可能是一个缓慢的部门。&lt;/li>
-&lt;li>如果我们的软件供应链受到攻击，我不确定我们会首先向谁求助&lt;/li>
-&lt;/ul>
-&lt;p>几乎三分之二的C-suite高管表示，在他们的公司中，安全可能是最慢的部门。
+&gt;
+&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;我现在比两年前更多地考虑保障供应链的安全。&lt;/li&gt;
+&lt;li&gt;我现在比两年前更多地考虑合规问题&lt;/li&gt;
+&lt;li&gt;合规挑战限制了我们的创新能力&lt;/li&gt;
+&lt;li&gt;安全挑战限制了我们的创新能力&lt;/li&gt;
+&lt;li&gt;我宁愿处理自然灾害，也不愿处理我们软件供应链中的安全问题&lt;/li&gt;
+&lt;li&gt;在我们公司，安全问题可能是一个缓慢的部门。&lt;/li&gt;
+&lt;li&gt;如果我们的软件供应链受到攻击，我不确定我们会首先向谁求助&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;几乎三分之二的C-suite高管表示，在他们的公司中，安全可能是最慢的部门。
 &lt;img src="https://martinliu.cn/img/cos/sec-survey-2022/CloudBees_2022_Global_C_Suite_Security_Survey_Report-20.webp"
 loading="lazy"
->
-&lt;/p>
-&lt;p>人口统计学上的差异。按C-suite高管的类型 :CEO比CTO/CIO/CISO和其他C-suites更有可能说。&lt;/p>
-&lt;ul>
-&lt;li>他们现在比两年前更多地考虑合规问题（93% vs. 85%和79%）。&lt;/li>
-&lt;li>合规挑战限制了他们的创新能力（82%对73%和73%）。&lt;/li>
-&lt;li>安全挑战限制了他们的创新能力（84% vs. 72% &amp;amp; 64%）。&lt;/li>
-&lt;li>他们宁愿处理自然灾害，也不愿处理软件供应链中的安全问题（80% vs. 62% &amp;amp; 52%）。&lt;/li>
-&lt;li>在他们的公司里，安全可能是最慢的部门（79% vs. 58% &amp;amp; 50%）。&lt;/li>
-&lt;li>如果我们的软件供应链受到攻击，我不确定我们会首先向谁求助（70%对45%和51%）。&lt;/li>
-&lt;/ul>
-&lt;p>人口统计学上的差异。按年龄划分 :40岁以下和40至54岁之间的人比55岁以上的人更有可能说。&lt;/p>
-&lt;ul>
-&lt;li>安全挑战限制了他们的创新能力（82% &amp;amp; 74% vs. 55%）。&lt;/li>
-&lt;li>他们宁愿处理自然灾害也不愿处理软件供应链中的安全问题。
-供应链的安全问题（69% &amp;amp; 69% 对 48%）。&lt;/li>
-&lt;li>在他们的公司里，安全可能是最慢的部门（71% &amp;amp; 65% vs. 39%）。&lt;/li>
-&lt;li>他们不确定如果他们的软件供应链受到攻击，他们会首先求助于谁（62% &amp;amp; 55% vs. 34%）。&lt;/li>
-&lt;/ul>
-&lt;p>人口统计学上的差异。按公司规模划分：员工人数少于1000人的公司比员工人数在1000人以上的公司更可能说。&lt;/p>
-&lt;ul>
-&lt;li>他们更愿意处理自然灾害而不是软件供应链中的安全问题（70%对62%）。&lt;/li>
-&lt;/ul>
-&lt;p>人口统计学上的差异。按在C-suite的时间划分 ：在C-Suite工作10年以下的人比10年以上的人更有可能说。&lt;/p>
-&lt;ul>
-&lt;li>在他们的公司里，安全可以成为缓慢的部门（67%对52%）。&lt;/li>
-&lt;/ul>
-&lt;p>澳大利亚的C-Suite高管比其他国家的高管更有可能说，如果他们的软件供应链受到攻击，他们不确定会首先求助于谁。
+&gt;
+&lt;/p&gt;
+&lt;p&gt;人口统计学上的差异。按C-suite高管的类型 :CEO比CTO/CIO/CISO和其他C-suites更有可能说。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;他们现在比两年前更多地考虑合规问题（93% vs. 85%和79%）。&lt;/li&gt;
+&lt;li&gt;合规挑战限制了他们的创新能力（82%对73%和73%）。&lt;/li&gt;
+&lt;li&gt;安全挑战限制了他们的创新能力（84% vs. 72% &amp;amp; 64%）。&lt;/li&gt;
+&lt;li&gt;他们宁愿处理自然灾害，也不愿处理软件供应链中的安全问题（80% vs. 62% &amp;amp; 52%）。&lt;/li&gt;
+&lt;li&gt;在他们的公司里，安全可能是最慢的部门（79% vs. 58% &amp;amp; 50%）。&lt;/li&gt;
+&lt;li&gt;如果我们的软件供应链受到攻击，我不确定我们会首先向谁求助（70%对45%和51%）。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;人口统计学上的差异。按年龄划分 :40岁以下和40至54岁之间的人比55岁以上的人更有可能说。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;安全挑战限制了他们的创新能力（82% &amp;amp; 74% vs. 55%）。&lt;/li&gt;
+&lt;li&gt;他们宁愿处理自然灾害也不愿处理软件供应链中的安全问题。
+供应链的安全问题（69% &amp;amp; 69% 对 48%）。&lt;/li&gt;
+&lt;li&gt;在他们的公司里，安全可能是最慢的部门（71% &amp;amp; 65% vs. 39%）。&lt;/li&gt;
+&lt;li&gt;他们不确定如果他们的软件供应链受到攻击，他们会首先求助于谁（62% &amp;amp; 55% vs. 34%）。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;人口统计学上的差异。按公司规模划分：员工人数少于1000人的公司比员工人数在1000人以上的公司更可能说。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;他们更愿意处理自然灾害而不是软件供应链中的安全问题（70%对62%）。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;人口统计学上的差异。按在C-suite的时间划分 ：在C-Suite工作10年以下的人比10年以上的人更有可能说。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;在他们的公司里，安全可以成为缓慢的部门（67%对52%）。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;澳大利亚的C-Suite高管比其他国家的高管更有可能说，如果他们的软件供应链受到攻击，他们不确定会首先求助于谁。
 &lt;img src="https://martinliu.cn/img/cos/sec-survey-2022/CloudBees_2022_Global_C_Suite_Security_Survey_Report-27.webp"
 loading="lazy"
->
-&lt;/p>
-&lt;p>所有这些与去年相比都有所下降，但这可能与西班牙和澳大利亚的加入有更大关系，而不是条件的变化。
+&gt;
+&lt;/p&gt;
+&lt;p&gt;所有这些与去年相比都有所下降，但这可能与西班牙和澳大利亚的加入有更大关系，而不是条件的变化。
 &lt;img src="https://martinliu.cn/img/cos/sec-survey-2022/CloudBees_2022_Global_C_Suite_Security_Survey_Report-28.webp"
 loading="lazy"
->
-&lt;/p>
-&lt;blockquote>
-&lt;p>Q10 每项的自动化程度如何？&lt;/p>&lt;/blockquote>
-&lt;p>五分之三的C-suites（59%）说他们的软件供应链几乎或完全自动化；比去年的四分之三（75%）有所下降。
+&gt;
+&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Q10 每项的自动化程度如何？&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;五分之三的C-suites（59%）说他们的软件供应链几乎或完全自动化；比去年的四分之三（75%）有所下降。
 &lt;img src="https://martinliu.cn/img/cos/sec-survey-2022/CloudBees_2022_Global_C_Suite_Security_Survey_Report-29.webp"
 loading="lazy"
->
-&lt;/p>
-&lt;p>澳大利亚、英国和美国的首席执行官比法国、德国和西班牙的首席执行官更可能说他们的软件供应链是自动化的。
+&gt;
+&lt;/p&gt;
+&lt;p&gt;澳大利亚、英国和美国的首席执行官比法国、德国和西班牙的首席执行官更可能说他们的软件供应链是自动化的。
 &lt;img src="https://martinliu.cn/img/cos/sec-survey-2022/CloudBees_2022_Global_C_Suite_Security_Survey_Report-30.webp"
 loading="lazy"
->
-&lt;/p>
-&lt;p>近五分之三的企业高管表示他们的合规流程完全或几乎全部自动化，而四分之一的企业高管表示他们的合规流程大约有一半自动化。
+&gt;
+&lt;/p&gt;
+&lt;p&gt;近五分之三的企业高管表示他们的合规流程完全或几乎全部自动化，而四分之一的企业高管表示他们的合规流程大约有一半自动化。
 &lt;img src="https://martinliu.cn/img/cos/sec-survey-2022/CloudBees_2022_Global_C_Suite_Security_Survey_Report-31.webp"
 loading="lazy"
->
-&lt;/p>
-&lt;p>澳大利亚和美国的C-suites比其他国家的C-suites更可能说他们的合规流程是自动化的。
+&gt;
+&lt;/p&gt;
+&lt;p&gt;澳大利亚和美国的C-suites比其他国家的C-suites更可能说他们的合规流程是自动化的。
 &lt;img src="https://martinliu.cn/img/cos/sec-survey-2022/CloudBees_2022_Global_C_Suite_Security_Survey_Report-32.webp"
 loading="lazy"
->
-&lt;/p>
-&lt;blockquote>
-&lt;p>Q11 当谈到你拥有的安全和/或合规性问题的工具时，哪种工具与你正在使用的工具最接近？&lt;/p>&lt;/blockquote>
-&lt;p>五分之三的C-suite高管（59%）表示，他们拥有的安全和/或合规性工具全部或大部分都来自外部，而十分之三的人拥有混合的工具，十分之一的人（11%）拥有大部分或全部自己创建的工具。
+&gt;
+&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Q11 当谈到你拥有的安全和/或合规性问题的工具时，哪种工具与你正在使用的工具最接近？&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;五分之三的C-suite高管（59%）表示，他们拥有的安全和/或合规性工具全部或大部分都来自外部，而十分之三的人拥有混合的工具，十分之一的人（11%）拥有大部分或全部自己创建的工具。
 &lt;img src="https://martinliu.cn/img/cos/sec-survey-2022/CloudBees_2022_Global_C_Suite_Security_Survey_Report-33.webp"
 loading="lazy"
->
-&lt;/p>
-&lt;p>与法国、德国和西班牙相比，澳大利亚、英国和美国的首席执行官们表示，他们在安全和/或合规问题上使用了所有或大部分的外部工具。
+&gt;
+&lt;/p&gt;
+&lt;p&gt;与法国、德国和西班牙相比，澳大利亚、英国和美国的首席执行官们表示，他们在安全和/或合规问题上使用了所有或大部分的外部工具。
 &lt;img src="https://martinliu.cn/img/cos/sec-survey-2022/CloudBees_2022_Global_C_Suite_Security_Survey_Report-34.webp"
 loading="lazy"
->
-&lt;/p>
-&lt;blockquote>
-&lt;p>Q12 你目前是否在你的组织中实施了向左转的安全和合规方法？&lt;/p>&lt;/blockquote>
-&lt;p>超过四分之三的C-suite高管表示，他们正在其组织中实施 &amp;ldquo;左移 &amp;ldquo;的安全和合规方法，其中三分之一表示他们肯定在实施。
+&gt;
+&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Q12 你目前是否在你的组织中实施了向左转的安全和合规方法？&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;超过四分之三的C-suite高管表示，他们正在其组织中实施 &amp;ldquo;左移 &amp;ldquo;的安全和合规方法，其中三分之一表示他们肯定在实施。
 &lt;img src="https://martinliu.cn/img/cos/sec-survey-2022/CloudBees_2022_Global_C_Suite_Security_Survey_Report-35.webp"
 loading="lazy"
->
-&lt;/p>
-&lt;p>澳大利亚、西班牙、英国和美国的首席执行官比法国和德国的首席执行官更有可能说他们正在其组织中实施 &amp;ldquo;左移 &amp;ldquo;的安全和合规方法，而德国人更有可能说他们没有实施这种方法。
+&gt;
+&lt;/p&gt;
+&lt;p&gt;澳大利亚、西班牙、英国和美国的首席执行官比法国和德国的首席执行官更有可能说他们正在其组织中实施 &amp;ldquo;左移 &amp;ldquo;的安全和合规方法，而德国人更有可能说他们没有实施这种方法。
 &lt;img src="https://martinliu.cn/img/cos/sec-survey-2022/CloudBees_2022_Global_C_Suite_Security_Survey_Report-36.webp"
 loading="lazy"
->
-&lt;/p>
-&lt;blockquote>
-&lt;p>Q13 哪一个最接近左移方法对你的开发者的影响？&lt;/p>&lt;/blockquote>
-&lt;p>近五分之三的C-suite高管说 &amp;ldquo;左移 &amp;ldquo;方法对他们的开发人员是一种负担，而超过三分之一的人说它是一种帮助。
+&gt;
+&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Q13 哪一个最接近左移方法对你的开发者的影响？&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;近五分之三的C-suite高管说 &amp;ldquo;左移 &amp;ldquo;方法对他们的开发人员是一种负担，而超过三分之一的人说它是一种帮助。
 &lt;img src="https://martinliu.cn/img/cos/sec-survey-2022/CloudBees_2022_Global_C_Suite_Security_Survey_Report-37.webp"
 loading="lazy"
->
-&lt;/p>
-&lt;p>澳大利亚的C-suites比其他国家的C-suites更有可能说 &amp;ldquo;左移 &amp;ldquo;方法对他们的开发人员是一种负担，而德国和西班牙的C-suites更有可能说这是对他们的帮助。
+&gt;
+&lt;/p&gt;
+&lt;p&gt;澳大利亚的C-suites比其他国家的C-suites更有可能说 &amp;ldquo;左移 &amp;ldquo;方法对他们的开发人员是一种负担，而德国和西班牙的C-suites更有可能说这是对他们的帮助。
 &lt;img src="https://martinliu.cn/img/cos/sec-survey-2022/CloudBees_2022_Global_C_Suite_Security_Survey_Report-38.webp"
 loading="lazy"
->
-&lt;/p>
-&lt;blockquote>
-&lt;p>Q14 你有多同意或不同意以下说法？&lt;/p>&lt;/blockquote>
-&lt;p>十分之九的C-suite高管表示他们的风险管理团队拥有建立和/或确保安全的软件供应链的知识和专长，而几乎十分之九的人表示他们的架构师和/或开发人员拥有。
+&gt;
+&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Q14 你有多同意或不同意以下说法？&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;十分之九的C-suite高管表示他们的风险管理团队拥有建立和/或确保安全的软件供应链的知识和专长，而几乎十分之九的人表示他们的架构师和/或开发人员拥有。
 &lt;img src="https://martinliu.cn/img/cos/sec-survey-2022/CloudBees_2022_Global_C_Suite_Security_Survey_Report-39.webp"
 loading="lazy"
->
-&lt;/p>
-&lt;ul>
-&lt;li>我们的风险管理团队拥有建立和/或确保安全的软件供应链的知识和专长。&lt;/li>
-&lt;li>我对我们的软件在生产中的安全性非常有信心&lt;/li>
-&lt;li>我们的架构师和/或开发人员拥有构建和/或确保软件供应链安全的知识和专业技能&lt;/li>
-&lt;li>我们的风险管理团队拥有他们需要的所有工具&lt;/li>
-&lt;li>我们的开发人员拥有他们需要的所有工具&lt;/li>
-&lt;li>左移对我们的组织来说是很重要的&lt;/li>
-&lt;/ul>
-&lt;p>超过五分之四的C-suite高管表示 &amp;ldquo;左移 &amp;ldquo;对他们的组织很重要。
+&gt;
+&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;我们的风险管理团队拥有建立和/或确保安全的软件供应链的知识和专长。&lt;/li&gt;
+&lt;li&gt;我对我们的软件在生产中的安全性非常有信心&lt;/li&gt;
+&lt;li&gt;我们的架构师和/或开发人员拥有构建和/或确保软件供应链安全的知识和专业技能&lt;/li&gt;
+&lt;li&gt;我们的风险管理团队拥有他们需要的所有工具&lt;/li&gt;
+&lt;li&gt;我们的开发人员拥有他们需要的所有工具&lt;/li&gt;
+&lt;li&gt;左移对我们的组织来说是很重要的&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;超过五分之四的C-suite高管表示 &amp;ldquo;左移 &amp;ldquo;对他们的组织很重要。
 &lt;img src="https://martinliu.cn/img/cos/sec-survey-2022/CloudBees_2022_Global_C_Suite_Security_Survey_Report-40.webp"
 loading="lazy"
->
-&lt;/p>
-&lt;p>西班牙、英国和美国的C-suite高管比澳大利亚、法国和德国的C-suite高管更有可能说他们对自己的软件在生产中的安全性非常有信心。
+&gt;
+&lt;/p&gt;
+&lt;p&gt;西班牙、英国和美国的C-suite高管比澳大利亚、法国和德国的C-suite高管更有可能说他们对自己的软件在生产中的安全性非常有信心。
 &lt;img src="https://martinliu.cn/img/cos/sec-survey-2022/CloudBees_2022_Global_C_Suite_Security_Survey_Report-41.webp"
 loading="lazy"
->
-&lt;/p>
-&lt;blockquote>
-&lt;p>S4 目前有多少开发人员在贵公司工作？如果您不确定，请使用您最好的估计。&lt;/p>&lt;/blockquote>
-&lt;p>五分之二的C-suite高管（41%）说他们公司目前有100个或更少的开发人员，而超过三分之一（35%）的人超过200个。
+&gt;
+&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;S4 目前有多少开发人员在贵公司工作？如果您不确定，请使用您最好的估计。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;五分之二的C-suite高管（41%）说他们公司目前有100个或更少的开发人员，而超过三分之一（35%）的人超过200个。
 &lt;img src="https://martinliu.cn/img/cos/sec-survey-2022/CloudBees_2022_Global_C_Suite_Security_Survey_Report-42.webp"
 loading="lazy"
->
-&lt;/p>
-&lt;blockquote>
-&lt;p>Q2 与两年前相比，您认为您对软件供应链攻击的担忧是多还是少？&lt;/p>&lt;/blockquote>
-&lt;p>法国、德国、西班牙和英国的C-suite高管比澳大利亚和美国的C-suite高管更有可能说他们的公司目前有1-50名开发人员，而澳大利亚的高管则更有可能说他们有201-300名。
+&gt;
+&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Q2 与两年前相比，您认为您对软件供应链攻击的担忧是多还是少？&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;法国、德国、西班牙和英国的C-suite高管比澳大利亚和美国的C-suite高管更有可能说他们的公司目前有1-50名开发人员，而澳大利亚的高管则更有可能说他们有201-300名。
 &lt;img src="https://martinliu.cn/img/cos/sec-survey-2022/CloudBees_2022_Global_C_Suite_Security_Survey_Report-43.webp"
 loading="lazy"
->
-&lt;/p>
-&lt;p>&lt;img src="https://martinliu.cn/img/cos/sec-survey-2022/CloudBees_2022_Global_C_Suite_Security_Survey_Report-44.webp"
+&gt;
+&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://martinliu.cn/img/cos/sec-survey-2022/CloudBees_2022_Global_C_Suite_Security_Survey_Report-44.webp"
 loading="lazy"
->
-&lt;/p>
-&lt;blockquote>
-&lt;p>方法论&lt;/p>&lt;/blockquote>
-&lt;ul>
-&lt;li>CloudBees与Regina Corso Consulting合作，对澳大利亚、法国、德国、西班牙、英国和美国的C-suite高管进行了调查，以收集关于软件供应链和围绕它的安全问题的见解。&lt;/li>
-&lt;li>本次调查的对象是来自至少有250名员工的公司的600名C-suite高管，澳大利亚、法国、德国、西班牙、英国和美国各有100名受访者。&lt;/li>
-&lt;li>本次调查于2022年6月27日至7月8日在网上进行。&lt;/li>
-&lt;li>阅读图表时注意。由于四舍五入，或由于问题允许多次回答，百分比的总和可能不是100%。此外，&amp;rdquo;*&amp;ldquo;表示回答少于0.5%。除非另有说明，所有幻灯片的基数代表600名C-suite管理人员的总数。如果问题与前一年的调查重复，则显示趋势数据。&lt;/li>
-&lt;li>关于逐年数据的说明。2021年只有四个国家（法国、德国、美国和英国），而2022年增加了两个国家。&lt;/li>
-&lt;/ul>
-&lt;blockquote>
-&lt;p>人口统计学&lt;/p>&lt;/blockquote>
-&lt;ul>
-&lt;li>年龄：18-39岁=45%，40-54岁=40%；和55岁以上=16%。&lt;/li>
-&lt;li>性别特征。男性=70%；女性=29%；非二进制=*。&lt;/li>
-&lt;li>公司规模。250-999名员工=53%，1000名或以上员工=48%。&lt;/li>
-&lt;li>C-suite高管的类型。CEO=34%；CIO=21%；CTO=19%；首席审计官=6%；CISO=6%；首席风险官=2%；以及其他C-suite=12%。&lt;/li>
-&lt;li>担任C-suite高管的时间：5年或以下=29%；6-10年=48%；11-20年=16%，20年以上=7%。&lt;/li>
-&lt;/ul>
-&lt;p>&lt;img src="https://martinliu.cn/img/cos/sec-survey-2022/CloudBees_2022_Global_C_Suite_Security_Survey_Report-47.webp"
+&gt;
+&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;方法论&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;ul&gt;
+&lt;li&gt;CloudBees与Regina Corso Consulting合作，对澳大利亚、法国、德国、西班牙、英国和美国的C-suite高管进行了调查，以收集关于软件供应链和围绕它的安全问题的见解。&lt;/li&gt;
+&lt;li&gt;本次调查的对象是来自至少有250名员工的公司的600名C-suite高管，澳大利亚、法国、德国、西班牙、英国和美国各有100名受访者。&lt;/li&gt;
+&lt;li&gt;本次调查于2022年6月27日至7月8日在网上进行。&lt;/li&gt;
+&lt;li&gt;阅读图表时注意。由于四舍五入，或由于问题允许多次回答，百分比的总和可能不是100%。此外，&amp;rdquo;*&amp;ldquo;表示回答少于0.5%。除非另有说明，所有幻灯片的基数代表600名C-suite管理人员的总数。如果问题与前一年的调查重复，则显示趋势数据。&lt;/li&gt;
+&lt;li&gt;关于逐年数据的说明。2021年只有四个国家（法国、德国、美国和英国），而2022年增加了两个国家。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;blockquote&gt;
+&lt;p&gt;人口统计学&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;ul&gt;
+&lt;li&gt;年龄：18-39岁=45%，40-54岁=40%；和55岁以上=16%。&lt;/li&gt;
+&lt;li&gt;性别特征。男性=70%；女性=29%；非二进制=*。&lt;/li&gt;
+&lt;li&gt;公司规模。250-999名员工=53%，1000名或以上员工=48%。&lt;/li&gt;
+&lt;li&gt;C-suite高管的类型。CEO=34%；CIO=21%；CTO=19%；首席审计官=6%；CISO=6%；首席风险官=2%；以及其他C-suite=12%。&lt;/li&gt;
+&lt;li&gt;担任C-suite高管的时间：5年或以下=29%；6-10年=48%；11-20年=16%，20年以上=7%。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src="https://martinliu.cn/img/cos/sec-survey-2022/CloudBees_2022_Global_C_Suite_Security_Survey_Report-47.webp"
 loading="lazy"
->
-&lt;/p>
-&lt;p>&lt;a class="link" href="CloudBees_2022_Global_C_Suite_Security_Survey_Report.pdf" >点此处，下载本报告的 PDF 文件 📃&lt;/a>&lt;/p></description></item><item><title>Kubecon 2017演讲稿和视频下载</title><link>https://martinliu.cn/blog/kubecon17/</link><pubDate>Wed, 03 Jan 2018 00:00:00 +0000</pubDate><guid>https://martinliu.cn/blog/kubecon17/</guid><description>&lt;img src="https://martinliu.cn/images/abstract-10.webp" alt="Featured image of post Kubecon 2017演讲稿和视频下载" />&lt;p>Kubernetes 无疑当下最火热的技术之一，Google 公司围绕着它下了更大的一盘棋 CNCF。这是在国际寡头 IT 软件公司的统治局面渐渐退去之后，各种新鲜技术百花齐放了一段时间以后，再通过 CNCF 的形式又逐渐集中化起来的趋势。KubeCon 的人气很旺，演讲分享的人很多。&lt;/p>
-&lt;p>最近一次的 KubeCon，2017 年在奥斯汀站的演讲稿和视频下载的清单已经发布出来了：&lt;/p>
-&lt;p>&lt;a class="link" href="https://github.com/cloudyuga/kubecon17" target="_blank" rel="noopener"
->https://github.com/cloudyuga/kubecon17&lt;/a>&lt;/p>
-&lt;p>我在 YouTube 里听了一部分视频，感觉确实有很多新鲜的工程实践经验的分享。下面分享一个觉得不错的实战案例分享。&lt;/p>
-&lt;p>&lt;img src="https://martinliu.cn/images/15149407077880.webp"
+&gt;
+&lt;/p&gt;
+&lt;p&gt;&lt;a class="link" href="CloudBees_2022_Global_C_Suite_Security_Survey_Report.pdf" &gt;点此处，下载本报告的 PDF 文件 📃&lt;/a&gt;&lt;/p&gt;</description></item><item><title>Kubecon 2017演讲稿和视频下载</title><link>https://martinliu.cn/blog/kubecon17/</link><pubDate>Wed, 03 Jan 2018 00:00:00 +0000</pubDate><guid>https://martinliu.cn/blog/kubecon17/</guid><description>&lt;img src="https://martinliu.cn/images/abstract-10.webp" alt="Featured image of post Kubecon 2017演讲稿和视频下载" /&gt;&lt;p&gt;Kubernetes 无疑当下最火热的技术之一，Google 公司围绕着它下了更大的一盘棋 CNCF。这是在国际寡头 IT 软件公司的统治局面渐渐退去之后，各种新鲜技术百花齐放了一段时间以后，再通过 CNCF 的形式又逐渐集中化起来的趋势。KubeCon 的人气很旺，演讲分享的人很多。&lt;/p&gt;
+&lt;p&gt;最近一次的 KubeCon，2017 年在奥斯汀站的演讲稿和视频下载的清单已经发布出来了：&lt;/p&gt;
+&lt;p&gt;&lt;a class="link" href="https://github.com/cloudyuga/kubecon17" target="_blank" rel="noopener"
+&gt;https://github.com/cloudyuga/kubecon17&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;我在 YouTube 里听了一部分视频，感觉确实有很多新鲜的工程实践经验的分享。下面分享一个觉得不错的实战案例分享。&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://martinliu.cn/images/15149407077880.webp"
 loading="lazy"
->
-&lt;/p>
-&lt;h2 id="box-公司分享持续交付实战经验">Box 公司分享持续交付实战经验
-&lt;/h2>&lt;p>&lt;img src="https://martinliu.cn/images/2341514940915_.pic_hd.webp"
+&gt;
+&lt;/p&gt;
+&lt;h2 id="box-公司分享持续交付实战经验"&gt;Box 公司分享持续交付实战经验
+&lt;/h2&gt;&lt;p&gt;&lt;img src="https://martinliu.cn/images/2341514940915_.pic_hd.webp"
 loading="lazy"
 alt="2341514940915_.pic_hd"
->
-&lt;/p>
-&lt;p>关于这个分享的看点：&lt;/p>
-&lt;ul>
-&lt;li>Box 公司全面实施 Kubernetes 的案例，涵盖了所有的环境：Dev、Staging 和 Prod&lt;/li>
-&lt;li>遇到的挑战和问题共性强&lt;/li>
-&lt;li>Jenkins 流水线+金丝雀部署+持续交付的组合&lt;/li>
-&lt;li>解决问题的模式值得借鉴&lt;/li>
-&lt;li>工具集里开发出来的核心组件已经开业分享在 Github 上&lt;/li>
-&lt;/ul>
-&lt;p>分享者经典语录：&lt;/p>
-&lt;blockquote>
-&lt;p>我们是软件工程师，我们不是坐在那按按钮的猴子！&lt;/p>&lt;/blockquote>
-&lt;p>&lt;img src="https://martinliu.cn/images/2251514938283_.pic.webp"
+&gt;
+&lt;/p&gt;
+&lt;p&gt;关于这个分享的看点：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Box 公司全面实施 Kubernetes 的案例，涵盖了所有的环境：Dev、Staging 和 Prod&lt;/li&gt;
+&lt;li&gt;遇到的挑战和问题共性强&lt;/li&gt;
+&lt;li&gt;Jenkins 流水线+金丝雀部署+持续交付的组合&lt;/li&gt;
+&lt;li&gt;解决问题的模式值得借鉴&lt;/li&gt;
+&lt;li&gt;工具集里开发出来的核心组件已经开业分享在 Github 上&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;分享者经典语录：&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;我们是软件工程师，我们不是坐在那按按钮的猴子！&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;&lt;img src="https://martinliu.cn/images/2251514938283_.pic.webp"
 loading="lazy"
 alt="2251514938283_.pi"
->
-&lt;/p>
-&lt;p>&lt;img src="https://martinliu.cn/images/2261514938305_.pic.webp"
+&gt;
+&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://martinliu.cn/images/2261514938305_.pic.webp"
 loading="lazy"
 alt="2261514938305_.pi"
->
-&lt;/p>
-&lt;p>&lt;img src="https://martinliu.cn/images/2271514938328_.pic.webp"
+&gt;
+&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://martinliu.cn/images/2271514938328_.pic.webp"
 loading="lazy"
 alt="2271514938328_.pi"
->
-&lt;/p>
-&lt;p>&lt;img src="https://martinliu.cn/images/2281514938357_.pic.webp"
+&gt;
+&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://martinliu.cn/images/2281514938357_.pic.webp"
 loading="lazy"
 alt="2281514938357_.pi"
->
-&lt;/p>
-&lt;p>&lt;img src="https://martinliu.cn/images/2291514938389_.pic.webp"
+&gt;
+&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://martinliu.cn/images/2291514938389_.pic.webp"
 loading="lazy"
 alt="2291514938389_.pi"
->
-&lt;/p>
-&lt;p>&lt;img src="https://martinliu.cn/images/2301514938410_.pic.webp"
+&gt;
+&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://martinliu.cn/images/2301514938410_.pic.webp"
 loading="lazy"
 alt="2301514938410_.pi"
->
-&lt;/p>
-&lt;p>&lt;img src="https://martinliu.cn/images/2311514938432_.pic.webp"
+&gt;
+&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://martinliu.cn/images/2311514938432_.pic.webp"
 loading="lazy"
 alt="2311514938432_.pi"
->
-&lt;/p>
-&lt;p>&lt;img src="https://martinliu.cn/images/2321514938453_.pic.webp"
+&gt;
+&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://martinliu.cn/images/2321514938453_.pic.webp"
 loading="lazy"
 alt="2321514938453_.pi"
->
-&lt;/p>
-&lt;p>&lt;img src="https://martinliu.cn/images/2331514938477_.pic.webp"
+&gt;
+&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://martinliu.cn/images/2331514938477_.pic.webp"
 loading="lazy"
 alt="2331514938477_.pi"
->
-&lt;/p>
-&lt;p>以上分享的持续交付方案里 kube-applier 的源代码分享：&lt;/p>
-&lt;p>&lt;a class="link" href="https://github.com/box/kube-applier" target="_blank" rel="noopener"
->https://github.com/box/kube-applier&lt;/a>&lt;/p>
-&lt;p>PS：非常敬佩这种开放和分享的工程式文化。很符合开源的精神，爱分享的人，不把东西分享出来的话可能会不爽。&lt;/p>
-&lt;p>延伸阅读：&lt;/p>
-&lt;ul>
-&lt;li>&lt;a class="link" href="https://blog.box.com/blog/introducing-kube-applier-declarative-configuration-for-kubernetes/" target="_blank" rel="noopener"
->https://blog.box.com/blog/introducing-kube-applier-declarative-configuration-for-kubernetes/&lt;/a>&lt;/li>
-&lt;li>&lt;a class="link" href="https://blog.box.com/blog/kubernetes-box-microservices-maximum-velocity/" target="_blank" rel="noopener"
->https://blog.box.com/blog/kubernetes-box-microservices-maximum-velocity/
-&lt;/a>&lt;/li>
-&lt;/ul>
-&lt;h2 id="观看以上演讲视频">观看以上演讲视频
-&lt;/h2>&lt;!-- raw HTML omitted --></description></item></channel></rss>
+&gt;
+&lt;/p&gt;
+&lt;p&gt;以上分享的持续交付方案里 kube-applier 的源代码分享：&lt;/p&gt;
+&lt;p&gt;&lt;a class="link" href="https://github.com/box/kube-applier" target="_blank" rel="noopener"
+&gt;https://github.com/box/kube-applier&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;PS：非常敬佩这种开放和分享的工程式文化。很符合开源的精神，爱分享的人，不把东西分享出来的话可能会不爽。&lt;/p&gt;
+&lt;p&gt;延伸阅读：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a class="link" href="https://blog.box.com/blog/introducing-kube-applier-declarative-configuration-for-kubernetes/" target="_blank" rel="noopener"
+&gt;https://blog.box.com/blog/introducing-kube-applier-declarative-configuration-for-kubernetes/&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class="link" href="https://blog.box.com/blog/kubernetes-box-microservices-maximum-velocity/" target="_blank" rel="noopener"
+&gt;https://blog.box.com/blog/kubernetes-box-microservices-maximum-velocity/
+&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id="观看以上演讲视频"&gt;观看以上演讲视频
+&lt;/h2&gt;&lt;!-- raw HTML omitted --&gt;</description></item></channel></rss>

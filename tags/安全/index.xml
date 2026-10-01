@@ -1,365 +1,368 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>安全 on Martin Liu's Blog | SRE培训 | SRE认证 | SRE课程</title><link>https://martinliu.cn/tags/%E5%AE%89%E5%85%A8/</link><description>Recent content in 安全 on Martin Liu's Blog | SRE培训 | SRE认证 | SRE课程</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><lastBuildDate>Wed, 30 Sep 2026 23:49:58 +0800</lastBuildDate><atom:link href="https://martinliu.cn/tags/%E5%AE%89%E5%85%A8/index.xml" rel="self" type="application/rss+xml"/><item><title>我为什么使用多个 SSH 密钥，而不是只用一个？</title><link>https://martinliu.cn/blog/why-i-run-multiple-ssh-keys-instead-of-just-one/</link><pubDate>Mon, 25 Aug 2025 10:00:00 +0800</pubDate><guid>https://martinliu.cn/blog/why-i-run-multiple-ssh-keys-instead-of-just-one/</guid><description>&lt;img src="https://martinliu.cn/blog/why-i-run-multiple-ssh-keys-instead-of-just-one/ssh-key-management-best-practices-feature.webp" alt="Featured image of post 我为什么使用多个 SSH 密钥，而不是只用一个？" />&lt;blockquote>
-&lt;p>作者：Faruk Ahmed&lt;/p>&lt;/blockquote>
-&lt;p>对于许多 Linux 管理员来说，使用单个 SSH 密钥对登录他们所有的服务器、测试环境或云实例是默认做法。
-这种方式简单、方便——但它也是一个单点故障。&lt;/p>
-&lt;p>随着时间的推移，我了解到&lt;strong>按用途和环境分离 SSH 密钥&lt;/strong>不仅是良好的安全习惯，更是重大的安全提升。&lt;/p>
-&lt;h2 id="-一钥通吃的风险">🛑 “一钥通吃”的风险
-&lt;/h2>&lt;p>如果你对所有事务都使用同一个 SSH 私钥，那么一旦泄露，后果可能是灾难性的：&lt;/p>
-&lt;ul>
-&lt;li>笔记本电脑丢失？所有使用该密钥的服务器都将面临风险。&lt;/li>
-&lt;li>密钥从安全性较低的环境中被窃取？攻击者可以利用它渗透到关键系统。&lt;/li>
-&lt;li>需要轮换密钥？你将不得不手忙脚乱地在&lt;em>所有地方&lt;/em>替换它。&lt;/li>
-&lt;/ul>
-&lt;p>这就是&lt;strong>爆炸半径问题 (blast radius problem)&lt;/strong> 的定义。&lt;/p>
-&lt;h2 id="-我如何划分密钥">🧩 我如何划分密钥
-&lt;/h2>&lt;p>我为以下用途维护&lt;strong>单独的 SSH 密钥&lt;/strong>：&lt;/p>
-&lt;ol>
-&lt;li>
-&lt;p>&lt;strong>生产环境 (Production)&lt;/strong>&lt;/p>
-&lt;ul>
-&lt;li>存储在硬件令牌 (hardware token) 或安全密钥保管库 (secure key vault) 中&lt;/li>
-&lt;li>仅用于关键服务器&lt;/li>
-&lt;li>绝不离开安全设备&lt;/li>
-&lt;/ul>
-&lt;/li>
-&lt;li>
-&lt;p>预演/测试环境 (Staging/Test)&lt;/p>
-&lt;ul>
-&lt;li>与生产环境分离&lt;/li>
-&lt;li>存在于工作笔记本电脑上&lt;/li>
-&lt;li>易于替换&lt;/li>
-&lt;/ul>
-&lt;/li>
-&lt;li>
-&lt;p>个人项目 (Personal Projects)&lt;/p>
-&lt;ul>
-&lt;li>用于家庭实验室 (home labs)、个人 VPS、树莓派 (Raspberry Pis)&lt;/li>
-&lt;li>绝不与工作系统混用&lt;/li>
-&lt;/ul>
-&lt;/li>
-&lt;li>
-&lt;p>一次性/临时用途 (Disposable/Temporary)&lt;/p>
-&lt;ul>
-&lt;li>为短期项目或供应商访问创建&lt;/li>
-&lt;li>使用后删除&lt;/li>
-&lt;/ul>
-&lt;/li>
-&lt;/ol>
-&lt;h2 id="-我的工作流程">🛠 我的工作流程
-&lt;/h2>&lt;p>&lt;strong>密钥生成 (Key Generation)&lt;/strong>：&lt;/p>
-&lt;div class="highlight">&lt;div class="chroma">
-&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
-&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
-&lt;/span>&lt;span class="lnt">2
-&lt;/span>&lt;span class="lnt">3
-&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
-&lt;td class="lntd">
-&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">ssh-keygen -t ed25519 -f ~/.ssh/prod_id_ed25519 -C &lt;span class="s2">&amp;#34;Production Key&amp;#34;&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">ssh-keygen -t ed25519 -f ~/.ssh/staging_id_ed25519 -C &lt;span class="s2">&amp;#34;Staging Key&amp;#34;&lt;/span>
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">ssh-keygen -t ed25519 -f ~/.ssh/personal_id_ed25519 -C &lt;span class="s2">&amp;#34;Personal Key&amp;#34;&lt;/span>
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
-&lt;/div>
-&lt;/div>&lt;p>&lt;strong>SSH 配置示例&lt;/strong> (&lt;code>~/.ssh/config&lt;/code>)：&lt;/p>
-&lt;div class="highlight">&lt;div class="chroma">
-&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
-&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
-&lt;/span>&lt;span class="lnt"> 2
-&lt;/span>&lt;span class="lnt"> 3
-&lt;/span>&lt;span class="lnt"> 4
-&lt;/span>&lt;span class="lnt"> 5
-&lt;/span>&lt;span class="lnt"> 6
-&lt;/span>&lt;span class="lnt"> 7
-&lt;/span>&lt;span class="lnt"> 8
-&lt;/span>&lt;span class="lnt"> 9
-&lt;/span>&lt;span class="lnt">10
-&lt;/span>&lt;span class="lnt">11
-&lt;/span>&lt;span class="lnt">12
-&lt;/span>&lt;span class="lnt">13
-&lt;/span>&lt;span class="lnt">14
-&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
-&lt;td class="lntd">
-&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">Host prod-server-1
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> HostName 192.168.1.100
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> User admin
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> IdentityFile ~/.ssh/prod_id_ed25519
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Host staging-box-alpha
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> HostName staging.example.com
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> User deploy
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> IdentityFile ~/.ssh/staging_id_ed25519
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Host personal-pi
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> HostName raspberrypi.local
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> User pi
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> IdentityFile ~/.ssh/personal_id_ed25519
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
-&lt;/div>
-&lt;/div>&lt;p>这样，我就不必记住要使用哪个密钥——SSH 会自动选择正确的密钥。&lt;/p>
-&lt;h2 id="-这种方法为何有效">🧠 这种方法为何有效
-&lt;/h2>&lt;ul>
-&lt;li>&lt;strong>限制损害 (Limits Damage)&lt;/strong> — 如果一个密钥泄露，只有该环境面临风险。&lt;/li>
-&lt;li>&lt;strong>更易轮换 (Easier Rotation)&lt;/strong> — 我可以轮换单个密钥而无需触及其他密钥。&lt;/li>
-&lt;li>&lt;strong>利于审计 (Audit-Friendly)&lt;/strong> — 密钥直接映射到其用途，使合规性 (compliance) 更容易。&lt;/li>
-&lt;li>&lt;strong>鼓励最小权限原则 (Encourages Principle of Least Privilege)&lt;/strong> — 没有单个密钥可以访问&lt;em>所有&lt;/em>内容。&lt;/li>
-&lt;/ul>
-&lt;h2 id="-总结">📌 总结
-&lt;/h2>&lt;p>一开始，管理多个 SSH 密钥可能感觉有些多余，但这却是最简单、最不影响效率的风险降低方法之一。&lt;/p>
-&lt;p>一个密钥通吃所有事务可能很方便……直到它不再方便为止。&lt;/p>
-&lt;h2 id="扩展附录ssh-config-常用技巧">扩展附录：SSH Config 常用技巧
-&lt;/h2>&lt;h3 id="1-通配符与模式匹配">1. 通配符与模式匹配
-&lt;/h3>&lt;ul>
-&lt;li>&lt;code>Host *&lt;/code>&lt;br>
-匹配所有主机，可以用来定义全局默认配置。&lt;/li>
-&lt;li>&lt;code>Host *.example.com&lt;/code>&lt;br>
-匹配所有 &lt;code>example.com&lt;/code> 域下的主机。&lt;/li>
-&lt;li>&lt;code>Host staging-*&lt;/code>&lt;br>
-匹配前缀为 &lt;code>staging-&lt;/code> 的所有主机别名。&lt;/li>
-&lt;/ul>
-&lt;blockquote>
-&lt;p>&lt;strong>优先级&lt;/strong>：具体匹配 &amp;gt; 通配符匹配 &amp;gt; &lt;code>Host *&lt;/code>。&lt;/p>&lt;/blockquote>
-&lt;h3 id="2-include-指令">2. Include 指令
-&lt;/h3>&lt;p>可以拆分配置文件，保持清晰：&lt;/p>
-&lt;div class="highlight">&lt;div class="chroma">
-&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
-&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
-&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
-&lt;td class="lntd">
-&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">Include ~/.ssh/config.d/*.conf
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
-&lt;/div>
-&lt;/div>&lt;h3 id="3-jumphost--proxyjump">3. JumpHost / ProxyJump
-&lt;/h3>&lt;ul>
-&lt;li>
-&lt;p>通过中间跳板机连接：&lt;/p>
-&lt;div class="highlight">&lt;div class="chroma">
-&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
-&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
-&lt;/span>&lt;span class="lnt">2
-&lt;/span>&lt;span class="lnt">3
-&lt;/span>&lt;span class="lnt">4
-&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
-&lt;td class="lntd">
-&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">Host prod-app
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> HostName app.internal
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> User deploy
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> ProxyJump bastion.example.com
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
-&lt;/div>
-&lt;/div>&lt;/li>
-&lt;/ul>
-&lt;h3 id="4-端口转发">4. 端口转发
-&lt;/h3>&lt;ul>
-&lt;li>
-&lt;p>本地转发：&lt;/p>
-&lt;div class="highlight">&lt;div class="chroma">
-&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
-&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
-&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
-&lt;td class="lntd">
-&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">LocalForward 8080 localhost:80
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
-&lt;/div>
-&lt;/div>&lt;/li>
-&lt;li>
-&lt;p>远程转发：&lt;/p>
-&lt;div class="highlight">&lt;div class="chroma">
-&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
-&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
-&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
-&lt;td class="lntd">
-&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">RemoteForward 9000 localhost:9000
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
-&lt;/div>
-&lt;/div>&lt;/li>
-&lt;/ul>
-&lt;h3 id="5-指定端口与超时">5. 指定端口与超时
-&lt;/h3>&lt;ul>
-&lt;li>
-&lt;p>非标准端口：&lt;/p>
-&lt;div class="highlight">&lt;div class="chroma">
-&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
-&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
-&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
-&lt;td class="lntd">
-&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">Port 2222
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
-&lt;/div>
-&lt;/div>&lt;/li>
-&lt;li>
-&lt;p>连接保持活跃：&lt;/p>
-&lt;div class="highlight">&lt;div class="chroma">
-&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
-&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
-&lt;/span>&lt;span class="lnt">2
-&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
-&lt;td class="lntd">
-&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">ServerAliveInterval 60
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">ServerAliveCountMax 5
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
-&lt;/div>
-&lt;/div>&lt;/li>
-&lt;/ul>
-&lt;h3 id="6-多身份密钥管理">6. 多身份密钥管理
-&lt;/h3>&lt;ul>
-&lt;li>
-&lt;p>全局默认密钥：&lt;/p>
-&lt;div class="highlight">&lt;div class="chroma">
-&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
-&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
-&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
-&lt;td class="lntd">
-&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">IdentityFile ~/.ssh/id_ed25519
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
-&lt;/div>
-&lt;/div>&lt;/li>
-&lt;li>
-&lt;p>针对特定主机指定：&lt;/p>
-&lt;div class="highlight">&lt;div class="chroma">
-&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
-&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
-&lt;/span>&lt;span class="lnt">2
-&lt;/span>&lt;span class="lnt">3
-&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
-&lt;td class="lntd">
-&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">Host gitlab.com
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> User git
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> IdentityFile ~/.ssh/gitlab_id_ed25519
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
-&lt;/div>
-&lt;/div>&lt;/li>
-&lt;/ul>
-&lt;h3 id="7-控制连接复用-提升速度">7. 控制连接复用 (提升速度)
-&lt;/h3>&lt;ul>
-&lt;li>
-&lt;p>避免重复握手，复用连接：&lt;/p>
-&lt;div class="highlight">&lt;div class="chroma">
-&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
-&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
-&lt;/span>&lt;span class="lnt">2
-&lt;/span>&lt;span class="lnt">3
-&lt;/span>&lt;span class="lnt">4
-&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
-&lt;td class="lntd">
-&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">Host *
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> ControlMaster auto
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> ControlPath ~/.ssh/control-%r@%h:%p
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> ControlPersist 10m
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
-&lt;/div>
-&lt;/div>&lt;/li>
-&lt;/ul>
-&lt;h3 id="8-别名与简化命令">8. 别名与简化命令
-&lt;/h3>&lt;ul>
-&lt;li>
-&lt;p>配置好 &lt;code>Host&lt;/code> 别名后，可以直接：&lt;/p>
-&lt;div class="highlight">&lt;div class="chroma">
-&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
-&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
-&lt;/span>&lt;span class="lnt">2
-&lt;/span>&lt;span class="lnt">3
-&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
-&lt;td class="lntd">
-&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">ssh prod-server-1
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">ssh staging-box-alpha
-&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">ssh personal-pi
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
-&lt;/div>
-&lt;/div>&lt;/li>
-&lt;/ul>
-&lt;p>⚡ 这些技巧组合使用，可以大幅简化 SSH 日常管理，尤其是 &lt;strong>多环境运维&lt;/strong> 或 &lt;strong>开发调试&lt;/strong> 场景。&lt;/p></description></item><item><title>SRE 实践的知识体系梳理</title><link>https://martinliu.cn/blog/sre-knowedge-body-mind-map-live-show/</link><pubDate>Mon, 10 Oct 2022 23:13:43 +0800</pubDate><guid>https://martinliu.cn/blog/sre-knowedge-body-mind-map-live-show/</guid><description>&lt;img src="https://martinliu.cn/blog/sre-knowedge-body-mind-map-live-show/1_er5uoPoOmLkfuxjTAy2zwQ.webp" alt="Featured image of post SRE 实践的知识体系梳理" />&lt;blockquote>
-&lt;p>直播预告。在 10 月 19 日晚上，我会在社区里再次为大家梳理一下 SRE 的知识体系模型，还是用脑图的方式，向大家讲解 SRE 都有相关部分组成。&lt;/p>&lt;/blockquote>
-&lt;p>本次直播活动的录播视频。&lt;/p>
-&lt;div class="video-wrapper">
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>安全 on Martin Liu's Blog | SRE培训 | SRE认证 | SRE课程</title><link>https://martinliu.cn/tags/%E5%AE%89%E5%85%A8/</link><description>Recent content in 安全 on Martin Liu's Blog | SRE培训 | SRE认证 | SRE课程</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><lastBuildDate>Wed, 30 Sep 2026 23:49:58 +0800</lastBuildDate><atom:link href="https://martinliu.cn/tags/%E5%AE%89%E5%85%A8/index.xml" rel="self" type="application/rss+xml"/><item><title>我为什么使用多个 SSH 密钥，而不是只用一个？</title><link>https://martinliu.cn/blog/why-i-run-multiple-ssh-keys-instead-of-just-one/</link><pubDate>Mon, 25 Aug 2025 10:00:00 +0800</pubDate><guid>https://martinliu.cn/blog/why-i-run-multiple-ssh-keys-instead-of-just-one/</guid><description>&lt;img src="https://martinliu.cn/blog/why-i-run-multiple-ssh-keys-instead-of-just-one/ssh-key-management-best-practices-feature.webp" alt="Featured image of post 我为什么使用多个 SSH 密钥，而不是只用一个？" /&gt;&lt;blockquote&gt;
+&lt;p&gt;作者：Faruk Ahmed&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;对于许多 Linux 管理员来说，使用单个 SSH 密钥对登录他们所有的服务器、测试环境或云实例是默认做法。
+这种方式简单、方便——但它也是一个单点故障。&lt;/p&gt;
+&lt;p&gt;随着时间的推移，我了解到&lt;strong&gt;按用途和环境分离 SSH 密钥&lt;/strong&gt;不仅是良好的安全习惯，更是重大的安全提升。&lt;/p&gt;
+&lt;h2 id="-一钥通吃的风险"&gt;🛑 “一钥通吃”的风险
+&lt;/h2&gt;&lt;p&gt;如果你对所有事务都使用同一个 SSH 私钥，那么一旦泄露，后果可能是灾难性的：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;笔记本电脑丢失？所有使用该密钥的服务器都将面临风险。&lt;/li&gt;
+&lt;li&gt;密钥从安全性较低的环境中被窃取？攻击者可以利用它渗透到关键系统。&lt;/li&gt;
+&lt;li&gt;需要轮换密钥？你将不得不手忙脚乱地在&lt;em&gt;所有地方&lt;/em&gt;替换它。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;这就是&lt;strong&gt;爆炸半径问题 (blast radius problem)&lt;/strong&gt; 的定义。&lt;/p&gt;
+&lt;h2 id="-我如何划分密钥"&gt;🧩 我如何划分密钥
+&lt;/h2&gt;&lt;p&gt;我为以下用途维护&lt;strong&gt;单独的 SSH 密钥&lt;/strong&gt;：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;生产环境 (Production)&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;存储在硬件令牌 (hardware token) 或安全密钥保管库 (secure key vault) 中&lt;/li&gt;
+&lt;li&gt;仅用于关键服务器&lt;/li&gt;
+&lt;li&gt;绝不离开安全设备&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;预演/测试环境 (Staging/Test)&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;与生产环境分离&lt;/li&gt;
+&lt;li&gt;存在于工作笔记本电脑上&lt;/li&gt;
+&lt;li&gt;易于替换&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;个人项目 (Personal Projects)&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;用于家庭实验室 (home labs)、个人 VPS、树莓派 (Raspberry Pis)&lt;/li&gt;
+&lt;li&gt;绝不与工作系统混用&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;一次性/临时用途 (Disposable/Temporary)&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;为短期项目或供应商访问创建&lt;/li&gt;
+&lt;li&gt;使用后删除&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2 id="-我的工作流程"&gt;🛠 我的工作流程
+&lt;/h2&gt;&lt;p&gt;&lt;strong&gt;密钥生成 (Key Generation)&lt;/strong&gt;：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
+&lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code&gt;&lt;span class="lnt"&gt;1
+&lt;/span&gt;&lt;span class="lnt"&gt;2
+&lt;/span&gt;&lt;span class="lnt"&gt;3
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;ssh-keygen -t ed25519 -f ~/.ssh/prod_id_ed25519 -C &lt;span class="s2"&gt;&amp;#34;Production Key&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;ssh-keygen -t ed25519 -f ~/.ssh/staging_id_ed25519 -C &lt;span class="s2"&gt;&amp;#34;Staging Key&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;ssh-keygen -t ed25519 -f ~/.ssh/personal_id_ed25519 -C &lt;span class="s2"&gt;&amp;#34;Personal Key&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;&lt;strong&gt;SSH 配置示例&lt;/strong&gt; (&lt;code&gt;~/.ssh/config&lt;/code&gt;)：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
+&lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code&gt;&lt;span class="lnt"&gt; 1
+&lt;/span&gt;&lt;span class="lnt"&gt; 2
+&lt;/span&gt;&lt;span class="lnt"&gt; 3
+&lt;/span&gt;&lt;span class="lnt"&gt; 4
+&lt;/span&gt;&lt;span class="lnt"&gt; 5
+&lt;/span&gt;&lt;span class="lnt"&gt; 6
+&lt;/span&gt;&lt;span class="lnt"&gt; 7
+&lt;/span&gt;&lt;span class="lnt"&gt; 8
+&lt;/span&gt;&lt;span class="lnt"&gt; 9
+&lt;/span&gt;&lt;span class="lnt"&gt;10
+&lt;/span&gt;&lt;span class="lnt"&gt;11
+&lt;/span&gt;&lt;span class="lnt"&gt;12
+&lt;/span&gt;&lt;span class="lnt"&gt;13
+&lt;/span&gt;&lt;span class="lnt"&gt;14
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-fallback" data-lang="fallback"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;Host prod-server-1
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; HostName 192.168.1.100
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; User admin
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; IdentityFile ~/.ssh/prod_id_ed25519
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;Host staging-box-alpha
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; HostName staging.example.com
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; User deploy
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; IdentityFile ~/.ssh/staging_id_ed25519
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;Host personal-pi
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; HostName raspberrypi.local
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; User pi
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; IdentityFile ~/.ssh/personal_id_ed25519
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;这样，我就不必记住要使用哪个密钥——SSH 会自动选择正确的密钥。&lt;/p&gt;
+&lt;h2 id="-这种方法为何有效"&gt;🧠 这种方法为何有效
+&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;限制损害 (Limits Damage)&lt;/strong&gt; — 如果一个密钥泄露，只有该环境面临风险。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;更易轮换 (Easier Rotation)&lt;/strong&gt; — 我可以轮换单个密钥而无需触及其他密钥。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;利于审计 (Audit-Friendly)&lt;/strong&gt; — 密钥直接映射到其用途，使合规性 (compliance) 更容易。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;鼓励最小权限原则 (Encourages Principle of Least Privilege)&lt;/strong&gt; — 没有单个密钥可以访问&lt;em&gt;所有&lt;/em&gt;内容。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id="-总结"&gt;📌 总结
+&lt;/h2&gt;&lt;p&gt;一开始，管理多个 SSH 密钥可能感觉有些多余，但这却是最简单、最不影响效率的风险降低方法之一。&lt;/p&gt;
+&lt;p&gt;一个密钥通吃所有事务可能很方便……直到它不再方便为止。&lt;/p&gt;
+&lt;h2 id="扩展附录ssh-config-常用技巧"&gt;扩展附录：SSH Config 常用技巧
+&lt;/h2&gt;&lt;h3 id="1-通配符与模式匹配"&gt;1. 通配符与模式匹配
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;Host *&lt;/code&gt;&lt;br&gt;
+匹配所有主机，可以用来定义全局默认配置。&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;Host *.example.com&lt;/code&gt;&lt;br&gt;
+匹配所有 &lt;code&gt;example.com&lt;/code&gt; 域下的主机。&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;Host staging-*&lt;/code&gt;&lt;br&gt;
+匹配前缀为 &lt;code&gt;staging-&lt;/code&gt; 的所有主机别名。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;strong&gt;优先级&lt;/strong&gt;：具体匹配 &amp;gt; 通配符匹配 &amp;gt; &lt;code&gt;Host *&lt;/code&gt;。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h3 id="2-include-指令"&gt;2. Include 指令
+&lt;/h3&gt;&lt;p&gt;可以拆分配置文件，保持清晰：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
+&lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code&gt;&lt;span class="lnt"&gt;1
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-fallback" data-lang="fallback"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;Include ~/.ssh/config.d/*.conf
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;h3 id="3-jumphost--proxyjump"&gt;3. JumpHost / ProxyJump
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;通过中间跳板机连接：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
+&lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code&gt;&lt;span class="lnt"&gt;1
+&lt;/span&gt;&lt;span class="lnt"&gt;2
+&lt;/span&gt;&lt;span class="lnt"&gt;3
+&lt;/span&gt;&lt;span class="lnt"&gt;4
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-fallback" data-lang="fallback"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;Host prod-app
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; HostName app.internal
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; User deploy
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; ProxyJump bastion.example.com
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id="4-端口转发"&gt;4. 端口转发
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;本地转发：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
+&lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code&gt;&lt;span class="lnt"&gt;1
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-fallback" data-lang="fallback"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;LocalForward 8080 localhost:80
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;远程转发：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
+&lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code&gt;&lt;span class="lnt"&gt;1
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-fallback" data-lang="fallback"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;RemoteForward 9000 localhost:9000
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id="5-指定端口与超时"&gt;5. 指定端口与超时
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;非标准端口：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
+&lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code&gt;&lt;span class="lnt"&gt;1
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-fallback" data-lang="fallback"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;Port 2222
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;连接保持活跃：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
+&lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code&gt;&lt;span class="lnt"&gt;1
+&lt;/span&gt;&lt;span class="lnt"&gt;2
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-fallback" data-lang="fallback"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;ServerAliveInterval 60
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;ServerAliveCountMax 5
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id="6-多身份密钥管理"&gt;6. 多身份密钥管理
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;全局默认密钥：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
+&lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code&gt;&lt;span class="lnt"&gt;1
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-fallback" data-lang="fallback"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;IdentityFile ~/.ssh/id_ed25519
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;针对特定主机指定：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
+&lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code&gt;&lt;span class="lnt"&gt;1
+&lt;/span&gt;&lt;span class="lnt"&gt;2
+&lt;/span&gt;&lt;span class="lnt"&gt;3
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-fallback" data-lang="fallback"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;Host gitlab.com
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; User git
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; IdentityFile ~/.ssh/gitlab_id_ed25519
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id="7-控制连接复用-提升速度"&gt;7. 控制连接复用 (提升速度)
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;避免重复握手，复用连接：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
+&lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code&gt;&lt;span class="lnt"&gt;1
+&lt;/span&gt;&lt;span class="lnt"&gt;2
+&lt;/span&gt;&lt;span class="lnt"&gt;3
+&lt;/span&gt;&lt;span class="lnt"&gt;4
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-fallback" data-lang="fallback"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;Host *
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; ControlMaster auto
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; ControlPath ~/.ssh/control-%r@%h:%p
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; ControlPersist 10m
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id="8-别名与简化命令"&gt;8. 别名与简化命令
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;配置好 &lt;code&gt;Host&lt;/code&gt; 别名后，可以直接：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
+&lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code&gt;&lt;span class="lnt"&gt;1
+&lt;/span&gt;&lt;span class="lnt"&gt;2
+&lt;/span&gt;&lt;span class="lnt"&gt;3
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;ssh prod-server-1
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;ssh staging-box-alpha
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;ssh personal-pi
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;⚡ 这些技巧组合使用，可以大幅简化 SSH 日常管理，尤其是 &lt;strong&gt;多环境运维&lt;/strong&gt; 或 &lt;strong&gt;开发调试&lt;/strong&gt; 场景。&lt;/p&gt;</description></item><item><title>SRE 实践的知识体系梳理</title><link>https://martinliu.cn/blog/sre-knowedge-body-mind-map-live-show/</link><pubDate>Mon, 10 Oct 2022 23:13:43 +0800</pubDate><guid>https://martinliu.cn/blog/sre-knowedge-body-mind-map-live-show/</guid><description>&lt;img src="https://martinliu.cn/blog/sre-knowedge-body-mind-map-live-show/1_er5uoPoOmLkfuxjTAy2zwQ.webp" alt="Featured image of post SRE 实践的知识体系梳理" /&gt;&lt;blockquote&gt;
+&lt;p&gt;直播预告。在 10 月 19 日晚上，我会在社区里再次为大家梳理一下 SRE 的知识体系模型，还是用脑图的方式，向大家讲解 SRE 都有相关部分组成。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;本次直播活动的录播视频。&lt;/p&gt;
+&lt;div class="video-wrapper"&gt;
 &lt;iframe src="https://player.bilibili.com/player.html?as_wide=1&amp;amp;high_quality=1&amp;amp;page=1&amp;bvid=BV1XD4y1r7dS"
 scrolling="no"
 frameborder="no"
 framespacing="0"
 allowfullscreen="true"
->
-&lt;/iframe>
-&lt;/div>
-&lt;p>下面这幅脑图是在我翻译完了《SRE Workbook》之后编写的，用了我好几天的时间，并且前后改了好几版。&lt;/p>
-&lt;p>编制这个脑图的出发点在于：SRE 从来源到 5 大基础模块，到推广实施的方法论都看似比较完整，比较成体系。这种脉络明晰的知识体系（knowledge body）本来就有画出脑图的可能性；而且脑图应该是一种比较便于吸收和学习的形式。&lt;/p>
-&lt;p>脑图的第一个版本是从 《SRE Workbook》的目录开始的，我尝试用最精简的方式，梳理每一章节中的知识点。可是在编制了前两章以后，就发现这个工作量其实非常的大。然后，我果断的放弃了“完美”的目标，然后将目标定位为：先完成一版。下图就是这样一个版本。后续我们讨论还有那些改进和与社区协作的想法。&lt;/p>
-&lt;p>&lt;img src="https://martinliu.cn/blog/sre-knowedge-body-mind-map-live-show/SRE-Workbookv1.5.webp"
+&gt;
+&lt;/iframe&gt;
+&lt;/div&gt;
+&lt;p&gt;下面这幅脑图是在我翻译完了《SRE Workbook》之后编写的，用了我好几天的时间，并且前后改了好几版。&lt;/p&gt;
+&lt;p&gt;编制这个脑图的出发点在于：SRE 从来源到 5 大基础模块，到推广实施的方法论都看似比较完整，比较成体系。这种脉络明晰的知识体系（knowledge body）本来就有画出脑图的可能性；而且脑图应该是一种比较便于吸收和学习的形式。&lt;/p&gt;
+&lt;p&gt;脑图的第一个版本是从 《SRE Workbook》的目录开始的，我尝试用最精简的方式，梳理每一章节中的知识点。可是在编制了前两章以后，就发现这个工作量其实非常的大。然后，我果断的放弃了“完美”的目标，然后将目标定位为：先完成一版。下图就是这样一个版本。后续我们讨论还有那些改进和与社区协作的想法。&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://martinliu.cn/blog/sre-knowedge-body-mind-map-live-show/SRE-Workbookv1.5.webp"
 width="1921"
 height="15987"
-srcset="https://martinliu.cn/blog/sre-knowedge-body-mind-map-live-show/SRE-Workbookv1.5_hu_61f82fdac5c220dc.webp 480w, https://martinliu.cn/blog/sre-knowedge-body-mind-map-live-show/SRE-Workbookv1.5_hu_a661ec00a8092114.webp 1024w"
+srcset="https://martinliu.cn/blog/sre-knowedge-body-mind-map-live-show/SRE-Workbookv1.5_hu_107cc9ea724e3757.webp 480w, https://martinliu.cn/blog/sre-knowedge-body-mind-map-live-show/SRE-Workbookv1.5_hu_a3824f21cc4b2e29.webp 1024w"
 loading="lazy"
 alt="SRE 知识体系脑图"
 class="gallery-image"
 data-flex-grow="12"
 data-flex-basis="28px"
->
-&lt;/p>
-&lt;p>后续的未尽事项：&lt;/p>
-&lt;ul>
-&lt;li>细化现有版本，将《SRE Workbook》中的知识点尽量都涵盖尽量。&lt;/li>
-&lt;li>将 SRE 的第一本出版物《Google SRE 运维解密》也梳理进来，由于它已经被 Workbook 彻底包含，并且多次引用。&lt;/li>
-&lt;li>将 SRE 安全那本书也梳理进来，由于安全的特殊性，独立做一个节点梳理比较现实；如果能融入的更好，则更加。&lt;/li>
-&lt;li>需要找到一种方便人们协作的线上脑图协作软件，应该至少具备一下功能：
-&lt;ul>
-&lt;li>多人协作&lt;/li>
-&lt;li>评论知识点&lt;/li>
-&lt;li>支持导入导出标准格式的脑图文件&lt;/li>
-&lt;li>支持导入导出 pdf，png，jpg ，html 等方便人们引用的文档&lt;/li>
-&lt;/ul>
-&lt;/li>
-&lt;/ul>
-&lt;p>欢迎范围和参考 Google 官方 SRE 独立站点。&lt;a class="link" href="https://sre.google/" target="_blank" rel="noopener"
->https://sre.google/&lt;/a>&lt;/p>
-&lt;p>网站中的相关出版书籍如下。&lt;/p>
-&lt;h2 id="site-reliability-engineering">Site Reliability Engineering
-&lt;/h2>&lt;p>&lt;img src="https://martinliu.cn/blog/sre-knowedge-body-mind-map-live-show/sre1.jpg"
+&gt;
+&lt;/p&gt;
+&lt;p&gt;后续的未尽事项：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;细化现有版本，将《SRE Workbook》中的知识点尽量都涵盖尽量。&lt;/li&gt;
+&lt;li&gt;将 SRE 的第一本出版物《Google SRE 运维解密》也梳理进来，由于它已经被 Workbook 彻底包含，并且多次引用。&lt;/li&gt;
+&lt;li&gt;将 SRE 安全那本书也梳理进来，由于安全的特殊性，独立做一个节点梳理比较现实；如果能融入的更好，则更加。&lt;/li&gt;
+&lt;li&gt;需要找到一种方便人们协作的线上脑图协作软件，应该至少具备一下功能：
+&lt;ul&gt;
+&lt;li&gt;多人协作&lt;/li&gt;
+&lt;li&gt;评论知识点&lt;/li&gt;
+&lt;li&gt;支持导入导出标准格式的脑图文件&lt;/li&gt;
+&lt;li&gt;支持导入导出 pdf，png，jpg ，html 等方便人们引用的文档&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;欢迎范围和参考 Google 官方 SRE 独立站点。&lt;a class="link" href="https://sre.google/" target="_blank" rel="noopener"
+&gt;https://sre.google/&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;网站中的相关出版书籍如下。&lt;/p&gt;
+&lt;h2 id="site-reliability-engineering"&gt;Site Reliability Engineering
+&lt;/h2&gt;&lt;p&gt;&lt;img src="https://martinliu.cn/blog/sre-knowedge-body-mind-map-live-show/sre1.jpg"
 width="400"
 height="512"
-srcset="https://martinliu.cn/blog/sre-knowedge-body-mind-map-live-show/sre1_hu_190769daa7231292.jpg 480w, https://martinliu.cn/blog/sre-knowedge-body-mind-map-live-show/sre1_hu_467066ca3bfaa83a.jpg 1024w"
+srcset="https://martinliu.cn/blog/sre-knowedge-body-mind-map-live-show/sre1_hu_14f119f89c10a5d2.jpg 480w, https://martinliu.cn/blog/sre-knowedge-body-mind-map-live-show/sre1_hu_ff53bbf41ce449b2.jpg 1024w"
 loading="lazy"
 alt="sre book 1"
 class="gallery-image"
 data-flex-grow="78"
 data-flex-basis="187px"
->
-&lt;/p>
-&lt;ul>
-&lt;li>中文版书名：&lt;a class="link" href="https://book.douban.com/subject/26875239//" target="_blank" rel="noopener"
->SRE：Google运维解密&lt;/a>&lt;/li>
-&lt;li>&lt;a class="link" href="https://sre.google/sre-book/table-of-contents/" target="_blank" rel="noopener"
->英文版线上阅读&lt;/a>&lt;/li>
-&lt;/ul>
-&lt;h2 id="the-site-reliability-workbook">The Site Reliability Workbook
-&lt;/h2>&lt;p>&lt;img src="https://martinliu.cn/blog/sre-knowedge-body-mind-map-live-show/sre2.jpg"
+&gt;
+&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;中文版书名：&lt;a class="link" href="https://book.douban.com/subject/26875239//" target="_blank" rel="noopener"
+&gt;SRE：Google运维解密&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class="link" href="https://sre.google/sre-book/table-of-contents/" target="_blank" rel="noopener"
+&gt;英文版线上阅读&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id="the-site-reliability-workbook"&gt;The Site Reliability Workbook
+&lt;/h2&gt;&lt;p&gt;&lt;img src="https://martinliu.cn/blog/sre-knowedge-body-mind-map-live-show/sre2.jpg"
 width="399"
 height="512"
-srcset="https://martinliu.cn/blog/sre-knowedge-body-mind-map-live-show/sre2_hu_23065d14135424d1.jpg 480w, https://martinliu.cn/blog/sre-knowedge-body-mind-map-live-show/sre2_hu_ee01e48824192e6.jpg 1024w"
+srcset="https://martinliu.cn/blog/sre-knowedge-body-mind-map-live-show/sre2_hu_33bb494d8bbbacf0.jpg 480w, https://martinliu.cn/blog/sre-knowedge-body-mind-map-live-show/sre2_hu_2168634864368238.jpg 1024w"
 loading="lazy"
 alt="sre book 2"
 class="gallery-image"
 data-flex-grow="77"
 data-flex-basis="187px"
->
-&lt;/p>
-&lt;ul>
-&lt;li>中文版书名：&lt;a class="link" href="https://book.douban.com/subject/35224058/" target="_blank" rel="noopener"
->Google SRE 工作手册&lt;/a>&lt;/li>
-&lt;li>&lt;a class="link" href="https://sre.google/sre-book/table-of-contents/" target="_blank" rel="noopener"
->英文版线上阅读&lt;/a>&lt;/li>
-&lt;/ul>
-&lt;h2 id="building-secure--reliable-systems">Building Secure &amp;amp; Reliable Systems
-&lt;/h2>&lt;p>&lt;img src="https://martinliu.cn/blog/sre-knowedge-body-mind-map-live-show/sre3.jpg"
+&gt;
+&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;中文版书名：&lt;a class="link" href="https://book.douban.com/subject/35224058/" target="_blank" rel="noopener"
+&gt;Google SRE 工作手册&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class="link" href="https://sre.google/sre-book/table-of-contents/" target="_blank" rel="noopener"
+&gt;英文版线上阅读&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id="building-secure--reliable-systems"&gt;Building Secure &amp;amp; Reliable Systems
+&lt;/h2&gt;&lt;p&gt;&lt;img src="https://martinliu.cn/blog/sre-knowedge-body-mind-map-live-show/sre3.jpg"
 width="399"
 height="512"
-srcset="https://martinliu.cn/blog/sre-knowedge-body-mind-map-live-show/sre3_hu_79e5128da752cfa5.jpg 480w, https://martinliu.cn/blog/sre-knowedge-body-mind-map-live-show/sre3_hu_df825f2e93530316.jpg 1024w"
+srcset="https://martinliu.cn/blog/sre-knowedge-body-mind-map-live-show/sre3_hu_32d5e272a938d10a.jpg 480w, https://martinliu.cn/blog/sre-knowedge-body-mind-map-live-show/sre3_hu_e95291229848e9dc.jpg 1024w"
 loading="lazy"
 alt="sre book 3"
 class="gallery-image"
 data-flex-grow="77"
 data-flex-basis="187px"
->
-&lt;/p>
-&lt;ul>
-&lt;li>中文书名：&lt;a class="link" href="https://book.douban.com/subject/35585206/" target="_blank" rel="noopener"
->《Google系统架构解密》&lt;/a>&lt;/li>
-&lt;li>&lt;a class="link" href="https://sre.google/static/pdf/building_secure_and_reliable_systems.pdf" target="_blank" rel="noopener"
->英文版 PDF 版 官方免费下载&lt;/a>&lt;/li>
-&lt;/ul></description></item></channel></rss>
+&gt;
+&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;中文书名：&lt;a class="link" href="https://book.douban.com/subject/35585206/" target="_blank" rel="noopener"
+&gt;《Google系统架构解密》&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class="link" href="https://sre.google/static/pdf/building_secure_and_reliable_systems.pdf" target="_blank" rel="noopener"
+&gt;英文版 PDF 版 官方免费下载&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;</description></item></channel></rss>
