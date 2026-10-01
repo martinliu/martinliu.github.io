@@ -439,6 +439,8 @@ MTTx 的挑战在于它是一个错误的观察指标。这个指标的行为特
 
 Štěpán Davidovič 是 Google 的一名站点稳定性工程师，目前致力于内部自动监控基础设施的开发。在之前的 Google SRE 职位中，他开发了金丝雀分析服务，并参与了许多共享基础设施项目和 AdSense 可靠性工作。他于 2010 年毕业于布拉格捷克技术大学，获得学士学位。
 
+
+{{< china-ready >}}
 [^1]: 请参阅，例如，《A List of Post-mortems!》<https://github.com/danluu/post-mortems> 和《Postmortem Index》<https://postmortems.app/>。
 [^2]: John Allspaw，《Moving Past Shallow Incident Data》，Adaptive Capacity Labs，2018 年 3 月 23 日。
 [^3]: 《Mean time to recovery》，Wikipedia。<https://en.wikipedia.org/wiki/Mean_time_to_recovery>
@@ -466,5 +468,3 @@ MTTx 的挑战在于它是一个错误的观察指标。这个指标的行为特
 [^25]: Steve Krug，《Rocket Surgery Made Easy》（加利福尼亚州伯克利：New Riders，2010）。
 
 ❤️ Photo by Kevin Bidwell: <https://www.pexels.com/photo/firefighter-holding-hose-with-water-flowing-3013676/>
-
-{{< china-ready >}}
