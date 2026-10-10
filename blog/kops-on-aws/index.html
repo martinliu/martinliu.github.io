@@ -329,7 +329,7 @@
 </span></span><span class=line><span class=cl>sample-nginx   LoadBalancer   100.64.127.19   ae3a1ca9235d111e890d706038dd676b-392190656.ap-northeast-1.elb.amazonaws.com   80:30363/TCP   25s      run=sample-nginx
 </span></span></code></pre></td></tr></table></div></div><p>这条命令 <code>ubectl expose deployment sample-nginx --port=80 --type=LoadBalancer </code>会创建一个ELB并将，集群里容正在运行的 sample—nginx 服务注册到这个ELB，然后就可以访问浏览到Nginx的默认页面了。</p><p><img src=https://res.cloudinary.com/martinliu/image/upload/nginx.png loading=lazy alt="kops On aws"></p><h2 id=删除集群>删除集群</h2><p>用一条命令就能删除以上所建立的Kubernetes集群。</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
 </span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl>kops delete cluster --name=dev.k8s.devopscoach.org --yes
-</span></span></code></pre></td></tr></table></div></div></section><footer class=article-footer><section class=article-tags><a href=/tags/devops/>DevOps</a>
+</span></span></code></pre></td></tr></table></div></div></section><footer class=article-footer><section class=article-tags><a href=/tags/devops/>Devops</a>
 <a href=/tags/kuberneters/>Kuberneters</a>
 <a href=/tags/kops/>Kops</a>
 <a href=/tags/aws/>AWS</a></section><section class=article-copyright><svg class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="12" cy="12" r="9"/><path d="M14.5 9a3.5 4 0 100 6"/></svg>
