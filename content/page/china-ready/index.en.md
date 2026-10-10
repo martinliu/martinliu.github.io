@@ -47,3 +47,5 @@ Measure instead of guessing. [Chinaready](https://chinaready.co/) is assessment-
 ## Further reading
 
 Articles in this series will be published on the [blog](/en/blog/), covering: root causes of overseas sites being slow in China, a technical readiness checklist for entering the market, and common CDN/DNS/ICP/observability pitfalls.
+
+If your hosting choice comes down to AWS, there is a dedicated, continuously updated data page: **[AWS China Region Parity Tracker](/en/aws-china-parity/)**. It measures Beijing, Ningxia and us-east-1 item by item across five dimensions — version parity, feature surface, quotas, pricing and developer experience — including services that appear in the catalog but do not actually work. Worth reading before any selection review.

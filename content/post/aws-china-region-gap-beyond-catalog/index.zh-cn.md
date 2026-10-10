@@ -203,4 +203,4 @@ AWS CLI 没有任何问题。一台机器配两个 profile，一个指向中国�
 
 所以迁移决策的真正分水岭不在「AWS 中国区行不行」，而在你的架构压在哪条线上：核心计算、数据库、容器、可观测性这些线上，中国区是一个体面且定价友好的目标平台；AI 这条线上，目前只有 SageMaker 自建一条路，而且天花板由芯片决定。
 
-这篇文章会随实测持续更新。如果你的团队正在做中国区架构评审，[Chinaready 的评估服务](/chinaready/)可以帮你把这套五维核对跑成正式流程；想要目录级的对等性清单，见[《进中国市场技术就绪清单》](/blog/china-market-technical-readiness-checklist/)；如果你的问题其实是「海外站在中国访问慢」，先读[这篇排查指南](/blog/why-overseas-sites-slow-in-china/)。
+这篇文章会随实测持续更新。本文的完整实测数据（含后续追加）都沉淀在 [AWS 中国区服务对等性追踪](/aws-china-parity/) 这一页，想看某个服务的逐项对照可以直接翻它。如果你的团队正在做中国区架构评审，[Chinaready 的评估服务](/chinaready/)可以帮你把这套五维核对跑成正式流程；想要目录级的对等性清单，见[《进中国市场技术就绪清单》](/blog/china-market-technical-readiness-checklist/)；如果你的问题其实是「海外站在中国访问慢」，先读[这篇排查指南](/blog/why-overseas-sites-slow-in-china/)。
