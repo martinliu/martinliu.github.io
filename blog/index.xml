@@ -499,7 +499,7 @@ data-flex-basis="344px"
 &lt;p&gt;版本同步了，18 项里 14 项完全对齐，连 EKS Auto Mode 这样的新形态都没缺席。默认配额一致，配额维度的分区差异只剩 EKS 一处管理面缺口。宁夏定价甚至比美东还低，成本策略清晰可算。数据层几乎可以无脑迁移，治理体系可以完整重建。&lt;/p&gt;
 &lt;p&gt;但 AI 算力停在 2021，托管 AI API 整体缺席，CloudFront 已经公告退出时间表。这些都不会出现在目录清单里。&lt;/p&gt;
 &lt;p&gt;所以迁移决策的真正分水岭不在「AWS 中国区行不行」，而在你的架构压在哪条线上：核心计算、数据库、容器、可观测性这些线上，中国区是一个体面且定价友好的目标平台；AI 这条线上，目前只有 SageMaker 自建一条路，而且天花板由芯片决定。&lt;/p&gt;
-&lt;p&gt;这篇文章会随实测持续更新。如果你的团队正在做中国区架构评审，&lt;a class="link" href="https://martinliu.cn/chinaready/" &gt;Chinaready 的评估服务&lt;/a&gt;可以帮你把这套五维核对跑成正式流程；想要目录级的对等性清单，见&lt;a class="link" href="https://martinliu.cn/blog/china-market-technical-readiness-checklist/" &gt;《进中国市场技术就绪清单》&lt;/a&gt;；如果你的问题其实是「海外站在中国访问慢」，先读&lt;a class="link" href="https://martinliu.cn/blog/why-overseas-sites-slow-in-china/" &gt;这篇排查指南&lt;/a&gt;。&lt;/p&gt;</description></item><item><title>进中国前，CDN/DNS/ICP 与可观测性的常见踩坑</title><link>https://martinliu.cn/blog/cdn-dns-icp-observability-pitfalls-china/</link><pubDate>Thu, 01 Oct 2026 00:10:00 +0800</pubDate><guid>https://martinliu.cn/blog/cdn-dns-icp-observability-pitfalls-china/</guid><description>&lt;img src="https://martinliu.cn/blog/cdn-dns-icp-observability-pitfalls-china/insight-icp.webp" alt="Featured image of post 进中国前，CDN/DNS/ICP 与可观测性的常见踩坑" /&gt;&lt;p&gt;这篇文章收集的是&amp;quot;进中国&amp;quot;路上最常见的几个坑。每个坑都按三段式写：&lt;strong&gt;现象 → 根因 → 修复&lt;/strong&gt;。主线是一个真实案例：我自己的博客（Hugo 静态站 + 边缘 CDN，托管在海外，大陆有真实流量）在 2026 年 9 月的一次完整治理——从 5xx 占 5.79% 治理到接近归零。&lt;/p&gt;
+&lt;p&gt;这篇文章会随实测持续更新。本文的完整实测数据（含后续追加）都沉淀在 &lt;a class="link" href="https://martinliu.cn/aws-china-parity/" &gt;AWS 中国区服务对等性追踪&lt;/a&gt; 这一页，想看某个服务的逐项对照可以直接翻它。如果你的团队正在做中国区架构评审，&lt;a class="link" href="https://martinliu.cn/chinaready/" &gt;Chinaready 的评估服务&lt;/a&gt;可以帮你把这套五维核对跑成正式流程；想要目录级的对等性清单，见&lt;a class="link" href="https://martinliu.cn/blog/china-market-technical-readiness-checklist/" &gt;《进中国市场技术就绪清单》&lt;/a&gt;；如果你的问题其实是「海外站在中国访问慢」，先读&lt;a class="link" href="https://martinliu.cn/blog/why-overseas-sites-slow-in-china/" &gt;这篇排查指南&lt;/a&gt;。&lt;/p&gt;</description></item><item><title>进中国前，CDN/DNS/ICP 与可观测性的常见踩坑</title><link>https://martinliu.cn/blog/cdn-dns-icp-observability-pitfalls-china/</link><pubDate>Thu, 01 Oct 2026 00:10:00 +0800</pubDate><guid>https://martinliu.cn/blog/cdn-dns-icp-observability-pitfalls-china/</guid><description>&lt;img src="https://martinliu.cn/blog/cdn-dns-icp-observability-pitfalls-china/insight-icp.webp" alt="Featured image of post 进中国前，CDN/DNS/ICP 与可观测性的常见踩坑" /&gt;&lt;p&gt;这篇文章收集的是&amp;quot;进中国&amp;quot;路上最常见的几个坑。每个坑都按三段式写：&lt;strong&gt;现象 → 根因 → 修复&lt;/strong&gt;。主线是一个真实案例：我自己的博客（Hugo 静态站 + 边缘 CDN，托管在海外，大陆有真实流量）在 2026 年 9 月的一次完整治理——从 5xx 占 5.79% 治理到接近归零。&lt;/p&gt;
 &lt;h2 id="坑一以为开了-cdn-就快"&gt;坑一：以为开了 CDN 就快
 &lt;/h2&gt;&lt;p&gt;&lt;strong&gt;现象&lt;/strong&gt;：CDN 全量开启，海外测速优秀，大陆依旧慢。&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;根因&lt;/strong&gt;：CDN &amp;ldquo;开了&amp;quot;和&amp;quot;在大陆快&amp;quot;是两回事。常见三个子问题：大陆没有节点或节点未预热；默认只缓存静态扩展名，&lt;strong&gt;HTML 从不缓存&lt;/strong&gt;；动态内容占比高，大量请求穿透回源。&lt;/p&gt;
@@ -525,6 +525,7 @@ data-flex-basis="344px"
 &lt;p&gt;&lt;strong&gt;修复&lt;/strong&gt;：补上真实用户监控（RUM）——至少有分地区的 TTFB / Core Web Vitals 数据。我的站用的是 Cloudflare Web Analytics（免费、无 Cookie、边缘自动注入 beacon），足够回答&amp;quot;大陆访客到底多慢&amp;quot;这个问题。&lt;/p&gt;
 &lt;hr&gt;
 &lt;p&gt;回头看，这五个坑其实是一条因果链：&lt;strong&gt;没缓存 → 回源多 → 被扫描打挂 → 表现为不稳定；而观测只看可用性 → 看不见慢 → 定位不了&lt;/strong&gt;。治理也顺着这条链：先缓存、再拦截、再补可观测。如果你想在自己的站点上把这条链走一遍，可以从一次系统性的诊断开始：&lt;/p&gt;
+&lt;p&gt;这套治理解决的是「站点在大陆能不能打开、快不快」。还有一个更常被问到的问题是&lt;strong&gt;架构本身能不能落到 AWS 中国区&lt;/strong&gt;。版本、功能、配额、开发者体验、成本这五个维度，我拿北京和宁夏两个区逐个跑了只读 API 实测，结论和官方服务目录给人的印象并不一致，详见&lt;a class="link" href="https://martinliu.cn/blog/aws-china-region-gap-beyond-catalog/" &gt;《AWS 中国区实战：与国际区服务目录之外的真实差距》&lt;/a&gt;。&lt;/p&gt;
 &lt;aside class="china-ready-cta"&gt;
 &lt;style&gt;
 .china-ready-cta{margin:2rem 0;padding:1rem 1.25rem;border-left:3px solid var(--card-text-color-main,#333);background:var(--card-background,#f6f6f7);border-radius:4px;font-size:var(--article-font-size,1rem)}
@@ -575,6 +576,7 @@ data-flex-basis="344px"
 &lt;p&gt;&lt;strong&gt;怎么验证&lt;/strong&gt;：一次真实故障或波动能在告警里被看到、被定位。&lt;/p&gt;
 &lt;hr&gt;
 &lt;p&gt;这份清单的五阶段结构与 &lt;a class="link" href="https://martinliu.cn/chinaready/" &gt;Chinaready&lt;/a&gt; 的方法一致：每一步独立验证效果。如果你想要一份基于你自己站点真实测量数据的诊断报告作为&amp;quot;阶段一&amp;quot;的起点，可以从这里开始：&lt;/p&gt;
+&lt;p&gt;如果你的托管选择是 AWS，上面「阶段三：托管」可以接一篇实测：&lt;a class="link" href="https://martinliu.cn/blog/aws-china-region-gap-beyond-catalog/" &gt;《AWS 中国区实战：与国际区服务目录之外的真实差距》&lt;/a&gt; 把版本、功能、配额、开发者体验、成本五个维度逐个测了一遍，其中也包括 CloudFront 2027-05-31 退出中国（宁夏）这类会直接影响架构决策的信息。&lt;/p&gt;
 &lt;aside class="china-ready-cta"&gt;
 &lt;style&gt;
 .china-ready-cta{margin:2rem 0;padding:1rem 1.25rem;border-left:3px solid var(--card-text-color-main,#333);background:var(--card-background,#f6f6f7);border-radius:4px;font-size:var(--article-font-size,1rem)}
@@ -620,6 +622,7 @@ data-flex-basis="344px"
 &lt;li&gt;&lt;strong&gt;确认缓存行为&lt;/strong&gt;：检查响应头里的缓存状态（如 &lt;code&gt;cf-cache-status&lt;/code&gt;），确认 HTML 和静态资源到底有没有被边缘缓存命中。&lt;/li&gt;
 &lt;/ol&gt;
 &lt;p&gt;如果这五步做完你想要一份更系统的答案——基于真实测量数据、按优先级排序的改进项——可以看看下面这个免费诊断。&lt;/p&gt;
+&lt;p&gt;另外，如果你的站点最终要落在 AWS 中国区，那么「慢不慢」之外还有一层问题：&lt;strong&gt;这个架构在中国区到底能不能成立&lt;/strong&gt;。版本、功能、配额、开发者体验、成本，我按五个维度做了实测，见&lt;a class="link" href="https://martinliu.cn/blog/aws-china-region-gap-beyond-catalog/" &gt;《AWS 中国区实战：与国际区服务目录之外的真实差距》&lt;/a&gt;。&lt;/p&gt;
 &lt;aside class="china-ready-cta"&gt;
 &lt;style&gt;
 .china-ready-cta{margin:2rem 0;padding:1rem 1.25rem;border-left:3px solid var(--card-text-color-main,#333);background:var(--card-background,#f6f6f7);border-radius:4px;font-size:var(--article-font-size,1rem)}

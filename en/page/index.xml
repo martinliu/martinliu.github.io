@@ -1,4 +1,653 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Pages on Martin Liu's Blog</title><link>https://martinliu.cn/en/page/</link><description>Recent content in Pages on Martin Liu's Blog</description><generator>Hugo -- gohugo.io</generator><language>en</language><lastBuildDate>Thu, 01 Oct 2026 10:49:01 +0800</lastBuildDate><atom:link href="https://martinliu.cn/en/page/index.xml" rel="self" type="application/rss+xml"/><item><title>Archives</title><link>https://martinliu.cn/en/archives/</link><pubDate>Sun, 06 Mar 2022 00:00:00 +0000</pubDate><guid>https://martinliu.cn/en/archives/</guid><description/></item><item><title>Course</title><link>https://martinliu.cn/en/course/</link><pubDate>Sat, 06 Feb 2021 00:00:00 +0000</pubDate><guid>https://martinliu.cn/en/course/</guid><description>&lt;img src="https://martinliu.cn/img/student-g0c2d46b41_640.jpg" alt="Featured image of post Course" /&gt;&lt;h3 id="elastic-stack"&gt;Elastic Stack
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Pages on Martin Liu's Blog</title><link>https://martinliu.cn/en/page/</link><description>Recent content in Pages on Martin Liu's Blog</description><generator>Hugo -- gohugo.io</generator><language>en</language><lastBuildDate>Sat, 10 Oct 2026 11:38:48 +0800</lastBuildDate><atom:link href="https://martinliu.cn/en/page/index.xml" rel="self" type="application/rss+xml"/><item><title>AWS China Region Parity Tracker</title><link>https://martinliu.cn/en/aws-china-parity/</link><pubDate>Sat, 10 Oct 2026 09:00:00 +0800</pubDate><guid>https://martinliu.cn/en/aws-china-parity/</guid><description>&lt;blockquote&gt;
+&lt;p&gt;&lt;strong&gt;The question this page answers&lt;/strong&gt;: if you put your architecture in the AWS China Regions
+(Beijing &lt;code&gt;cn-north-1&lt;/code&gt; / Ningxia &lt;code&gt;cn-northwest-1&lt;/code&gt;), what actually changes?&lt;/p&gt;
+&lt;p&gt;The official service catalog tells you &lt;em&gt;whether&lt;/em&gt; a service exists. It does not tell you
+&amp;ldquo;it exists, but only half of it works.&amp;rdquo; This page covers that second half.
+&lt;strong&gt;Continuously updated&lt;/strong&gt; — new measurements are appended, old conclusions are kept and annotated.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;&lt;strong&gt;Source&lt;/strong&gt;: hands-on read-only API calls (&lt;code&gt;describe&lt;/code&gt; / &lt;code&gt;list&lt;/code&gt; / &lt;code&gt;get&lt;/code&gt; / &lt;code&gt;query&lt;/code&gt;) plus dual-source
+DoH endpoint verification (both &lt;code&gt;dns.google&lt;/code&gt; and &lt;code&gt;223.5.5.5&lt;/code&gt; must agree before a conclusion is drawn).
+&lt;strong&gt;Tested&lt;/strong&gt;: 2026-10-07 to 2026-10-08 ｜ &lt;strong&gt;Accounts&lt;/strong&gt;: China &lt;code&gt;097279986018&lt;/code&gt;, Global &lt;code&gt;207916078113&lt;/code&gt;
+&lt;strong&gt;Method&lt;/strong&gt;: read-only throughout, no resources created, zero cost. Commands in &amp;ldquo;How to reproduce&amp;rdquo;.&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id="1-summary"&gt;1. Summary
+&lt;/h2&gt;&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;Dimension&lt;/th&gt;
+&lt;th&gt;Parity&lt;/th&gt;
+&lt;th&gt;In one line&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;Engine &amp;amp; component versions&lt;/td&gt;
+&lt;td&gt;🟢 High&lt;/td&gt;
+&lt;td&gt;14 of 18 sampled items are identical across all three regions&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Compute &amp;amp; database capability&lt;/td&gt;
+&lt;td&gt;🟢 High&lt;/td&gt;
+&lt;td&gt;DynamoDB is fully at parity; EKS / RDS / DocumentDB / ElastiCache core surfaces are complete&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Accelerated compute &amp;amp; AI&lt;/td&gt;
+&lt;td&gt;🔴 Low&lt;/td&gt;
+&lt;td&gt;Only 3 GPU chips vs 9 globally; the entire Bedrock family is &lt;strong&gt;not deployed&lt;/strong&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Quotas &amp;amp; governance&lt;/td&gt;
+&lt;td&gt;🟡 Medium&lt;/td&gt;
+&lt;td&gt;Multi-account governance (Organizations + Identity Center + SCP) &lt;strong&gt;works fully&lt;/strong&gt; — but it is a separate instance from Global&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Cost&lt;/td&gt;
+&lt;td&gt;🟡 Medium&lt;/td&gt;
+&lt;td&gt;Ningxia is near us-east-1 (sometimes cheaper); Beijing runs 20%–50% higher&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Developer experience&lt;/td&gt;
+&lt;td&gt;🟡 Medium&lt;/td&gt;
+&lt;td&gt;CLI is transparent; no CloudShell; container registry access needs its own path&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;&lt;strong&gt;Bottom line&lt;/strong&gt;: the China Regions are not a &amp;ldquo;shrunken version&amp;rdquo; — the &lt;strong&gt;boundaries sit in different places&lt;/strong&gt;.
+Core compute, database, container and observability work well and are priced favourably.
+AI is capped by silicon, not by quota.&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id="2-version-parity-14-of-18-items-identical"&gt;2. Version parity: 14 of 18 items identical
+&lt;/h2&gt;&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;Component&lt;/th&gt;
+&lt;th&gt;us-east-1&lt;/th&gt;
+&lt;th&gt;Beijing&lt;/th&gt;
+&lt;th&gt;Ningxia&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;EKS cluster versions&lt;/td&gt;
+&lt;td&gt;1.32 – 1.37&lt;/td&gt;
+&lt;td&gt;identical&lt;/td&gt;
+&lt;td&gt;identical&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;EKS vpc-cni addon&lt;/td&gt;
+&lt;td&gt;117 versions&lt;/td&gt;
+&lt;td&gt;117&lt;/td&gt;
+&lt;td&gt;117&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;RDS MySQL / MariaDB&lt;/td&gt;
+&lt;td&gt;parity&lt;/td&gt;
+&lt;td&gt;identical&lt;/td&gt;
+&lt;td&gt;identical&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Aurora MySQL&lt;/td&gt;
+&lt;td&gt;35 versions, latest 3.13.0&lt;/td&gt;
+&lt;td&gt;32, latest &lt;strong&gt;3.13.0 (in sync)&lt;/strong&gt;&lt;/td&gt;
+&lt;td&gt;same as Beijing&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Aurora PostgreSQL&lt;/td&gt;
+&lt;td&gt;46 versions, latest 18.6&lt;/td&gt;
+&lt;td&gt;40, latest &lt;strong&gt;18.4 (2 minor versions behind)&lt;/strong&gt;&lt;/td&gt;
+&lt;td&gt;same as Beijing&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;DocumentDB&lt;/td&gt;
+&lt;td&gt;356 engine versions&lt;/td&gt;
+&lt;td&gt;318&lt;/td&gt;
+&lt;td&gt;319&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;OpenSearch&lt;/td&gt;
+&lt;td&gt;parity&lt;/td&gt;
+&lt;td&gt;identical&lt;/td&gt;
+&lt;td&gt;identical&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;ElastiCache Redis / Valkey / Memcached&lt;/td&gt;
+&lt;td&gt;latest 7.1 / 9.1 / 1.6.6&lt;/td&gt;
+&lt;td&gt;all in sync&lt;/td&gt;
+&lt;td&gt;all in sync&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;Measured with &lt;code&gt;eks describe-cluster-versions&lt;/code&gt; and &lt;code&gt;rds describe-db-engine-versions&lt;/code&gt; per region.&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;strong&gt;Conclusion&lt;/strong&gt;: &amp;ldquo;China lags on versions&amp;rdquo; largely does not hold for containers and databases.
+Valkey — a 2024 engine — is already there. The one real difference is
+&lt;strong&gt;Aurora PostgreSQL (2 minor versions behind)&lt;/strong&gt;. If your migration hinges on a specific
+PG minor version, that is the only place worth a dedicated check.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;hr&gt;
+&lt;h2 id="3-feature-surface-a-checkmark-does-not-mean-it-works"&gt;3. Feature surface: a checkmark does not mean it works
+&lt;/h2&gt;&lt;h3 id="31-accelerated-instances--the-widest-gap"&gt;3.1 Accelerated instances — the widest gap
+&lt;/h3&gt;&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;Metric&lt;/th&gt;
+&lt;th&gt;us-east-1&lt;/th&gt;
+&lt;th&gt;Beijing&lt;/th&gt;
+&lt;th&gt;Ningxia&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;EC2 instance types&lt;/td&gt;
+&lt;td&gt;1,375&lt;/td&gt;
+&lt;td&gt;432&lt;/td&gt;
+&lt;td&gt;461&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Accelerated (GPU) instance types&lt;/td&gt;
+&lt;td&gt;57&lt;/td&gt;
+&lt;td&gt;19&lt;/td&gt;
+&lt;td&gt;19&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;&lt;strong&gt;China has 3 chips&lt;/strong&gt;: NVIDIA T4 (&lt;code&gt;g4dn&lt;/code&gt;, 2018), NVIDIA A10G (&lt;code&gt;g5&lt;/code&gt;, 2021), AWS Inferentia (&lt;code&gt;inf1&lt;/code&gt;, 2020).
+&lt;strong&gt;Global has 9&lt;/strong&gt;: adds T4g, L4, L40S, A100, H100, H200, Trainium.
+&lt;strong&gt;11 whole families are absent&lt;/strong&gt;: &lt;code&gt;g5g&lt;/code&gt; &lt;code&gt;g6&lt;/code&gt; &lt;code&gt;g6e&lt;/code&gt; &lt;code&gt;g6f&lt;/code&gt; &lt;code&gt;inf2&lt;/code&gt; &lt;code&gt;p4d&lt;/code&gt; &lt;code&gt;p4de&lt;/code&gt; &lt;code&gt;p5&lt;/code&gt; &lt;code&gt;p5en&lt;/code&gt; &lt;code&gt;trn1&lt;/code&gt; &lt;code&gt;trn1n&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;Two details that matter:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;Within a family, sizes are complete&lt;/strong&gt; — g4dn 7/7, g5 8/8, inf1 4/4.
+The reduction is &amp;ldquo;whole families missing&amp;rdquo;, not &amp;ldquo;sizes trimmed&amp;rdquo;. So selection is simple:
+if the family is there, it is complete.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;The largest single instance in China is &lt;code&gt;g5.48xlarge&lt;/code&gt;&lt;/strong&gt; (8×A10G, 192 vCPU, 768 GB RAM),
+versus &lt;code&gt;p5&lt;/code&gt; (8×H100 80GB) globally. &lt;strong&gt;Your AI ceiling is set by silicon, not by quota.&lt;/strong&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h3 id="32-ai-services-not-deployed-not-not-yet-enabled"&gt;3.2 AI services: &amp;ldquo;not deployed&amp;rdquo;, not &amp;ldquo;not yet enabled&amp;rdquo;
+&lt;/h3&gt;&lt;p&gt;Dual-source DoH verification:&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;Service&lt;/th&gt;
+&lt;th&gt;Beijing&lt;/th&gt;
+&lt;th&gt;Note&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;Bedrock (control plane / Runtime)&lt;/td&gt;
+&lt;td&gt;❌ not deployed (NXDOMAIN)&lt;/td&gt;
+&lt;td&gt;no endpoint in either region&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Amazon Q Business&lt;/td&gt;
+&lt;td&gt;❌ not deployed&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Q Developer / CodeWhisperer&lt;/td&gt;
+&lt;td&gt;❌ not deployed&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;OpenSearch Serverless (&lt;code&gt;aoss&lt;/code&gt;)&lt;/td&gt;
+&lt;td&gt;❌ not deployed&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Rekognition / Polly / Textract / Translate&lt;/td&gt;
+&lt;td&gt;❌ not deployed&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;strong&gt;SageMaker (API / Runtime)&lt;/strong&gt;&lt;/td&gt;
+&lt;td&gt;✅ &lt;strong&gt;endpoint exists&lt;/strong&gt;&lt;/td&gt;
+&lt;td&gt;self-managed route works&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Control: CodeBuild&lt;/td&gt;
+&lt;td&gt;✅ endpoint exists&lt;/td&gt;
+&lt;td&gt;DevOps tooling is fine&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&amp;ldquo;Not deployed&amp;rdquo; and &amp;ldquo;not yet enabled&amp;rdquo; are different things: the former does not even resolve in DNS,
+the latter is visible in the console but greyed out. For architecture decisions the difference is
+decisive: &lt;strong&gt;don&amp;rsquo;t wait, change the plan.&lt;/strong&gt; On AWS China, running AI means &lt;strong&gt;SageMaker, self-managed&lt;/strong&gt;.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h3 id="33-cloudfront-ningxia"&gt;3.3 CloudFront (Ningxia)
+&lt;/h3&gt;&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;Capability&lt;/th&gt;
+&lt;th&gt;Result&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;list-distributions&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;✅ available&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;CloudFront Functions&lt;/td&gt;
+&lt;td&gt;❌ &lt;code&gt;not supported in this region&lt;/code&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Key Value Store&lt;/td&gt;
+&lt;td&gt;❌ not supported&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Real-time logs&lt;/td&gt;
+&lt;td&gt;❌ not supported&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;Edge compute is entirely absent, so Lambda@Edge is unavailable by extension.&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;⚠️ Also essential: &lt;strong&gt;CloudFront support in China (Ningxia) ended on 2027-05-31.&lt;/strong&gt;
+This is not a feature gap, it is a service exit. Architectures still using CloudFront Ningxia
+need a migration plan.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h3 id="34-route-53-and-domains"&gt;3.4 Route 53 and domains
+&lt;/h3&gt;&lt;p&gt;Hosted zones ✅, health checks ✅, traffic policies ❌ (&lt;code&gt;InvalidAction&lt;/code&gt;),
+domain registration ❌ (use a third-party registrar + ICP filing).&lt;/p&gt;
+&lt;h3 id="35-observability-cloudwatch-family"&gt;3.5 Observability (CloudWatch family)
+&lt;/h3&gt;&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;Sub-feature&lt;/th&gt;
+&lt;th&gt;us-east-1&lt;/th&gt;
+&lt;th&gt;Beijing / Ningxia&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;Metrics&lt;/td&gt;
+&lt;td&gt;✅&lt;/td&gt;
+&lt;td&gt;✅ parity&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Synthetics (canaries)&lt;/td&gt;
+&lt;td&gt;✅&lt;/td&gt;
+&lt;td&gt;✅ parity&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Application Signals (SLO)&lt;/td&gt;
+&lt;td&gt;✅&lt;/td&gt;
+&lt;td&gt;✅ parity&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;strong&gt;RUM&lt;/strong&gt;&lt;/td&gt;
+&lt;td&gt;✅&lt;/td&gt;
+&lt;td&gt;❌ &lt;code&gt;Account is not authorized&lt;/code&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Evidently (A/B)&lt;/td&gt;
+&lt;td&gt;✅&lt;/td&gt;
+&lt;td&gt;⚠️ under review (likely unavailable)&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;blockquote&gt;
+&lt;p&gt;The core three (metrics / canaries / SLO) are at full parity — SLO engineering works in China.
+&lt;strong&gt;RUM being unavailable&lt;/strong&gt; is the most practical observability gap: if you want to know how slow
+your site really is for mainland users, you have to build the RUM path yourself.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h3 id="36-dynamodb-fully-at-parity"&gt;3.6 DynamoDB: fully at parity
+&lt;/h3&gt;&lt;p&gt;&lt;code&gt;list-tables&lt;/code&gt; / &lt;code&gt;list-backups&lt;/code&gt; / &lt;code&gt;list-global-tables&lt;/code&gt; all work; account throughput caps
+(80,000 read / 80,000 write) and table caps (40,000 / 40,000) are &lt;strong&gt;identical across all three regions&lt;/strong&gt;.&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;The data layer is the easiest thing to move. One caveat: the &lt;code&gt;global-tables&lt;/code&gt; API responding
+&lt;strong&gt;does not mean you can build a cross-partition global table&lt;/strong&gt; — partitions are isolated,
+so cross-partition replication is yours to build.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h3 id="37-multi-account-governance-available-but-separate"&gt;3.7 Multi-account governance: available, but separate
+&lt;/h3&gt;&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;Item&lt;/th&gt;
+&lt;th&gt;Global&lt;/th&gt;
+&lt;th&gt;China&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;Organizations&lt;/td&gt;
+&lt;td&gt;available&lt;/td&gt;
+&lt;td&gt;✅ &lt;strong&gt;available and enabled&lt;/strong&gt; (&lt;code&gt;o-luixbqu4eu&lt;/code&gt;, 2 SCPs)&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;IAM Identity Center&lt;/td&gt;
+&lt;td&gt;available (0 instances)&lt;/td&gt;
+&lt;td&gt;✅ &lt;strong&gt;available and enabled&lt;/strong&gt; (Permission Sets API works)&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Identity Center endpoints (portal / OIDC / directory)&lt;/td&gt;
+&lt;td&gt;—&lt;/td&gt;
+&lt;td&gt;✅ all present&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Cross-partition link&lt;/td&gt;
+&lt;td&gt;❌ fully independent&lt;/td&gt;
+&lt;td&gt;❌ same&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;blockquote&gt;
+&lt;p&gt;This is &lt;strong&gt;more optimistic than expected&lt;/strong&gt;: Organizations + Identity Center + SCP are
+&lt;strong&gt;fully functional&lt;/strong&gt; inside the China partition, not a stripped-down version. You can run a
+parallel multi-account governance stack there.&lt;/p&gt;
+&lt;p&gt;But the two stacks &lt;strong&gt;cannot be joined&lt;/strong&gt;. Cross-partition accounts need two IAM systems.
+That is not a configuration problem.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;hr&gt;
+&lt;h2 id="4-quotas-the-traps-worth-knowing-up-front"&gt;4. Quotas: the traps worth knowing up front
+&lt;/h2&gt;&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;Quota&lt;/th&gt;
+&lt;th&gt;us-east-1&lt;/th&gt;
+&lt;th&gt;Beijing&lt;/th&gt;
+&lt;th&gt;Ningxia&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;EC2 On-Demand Standard vCPU&lt;/td&gt;
+&lt;td&gt;32&lt;/td&gt;
+&lt;td&gt;&lt;strong&gt;8&lt;/strong&gt;&lt;/td&gt;
+&lt;td&gt;&lt;strong&gt;8&lt;/strong&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;EC2 Spot Standard vCPU&lt;/td&gt;
+&lt;td&gt;32&lt;/td&gt;
+&lt;td&gt;&lt;strong&gt;8&lt;/strong&gt;&lt;/td&gt;
+&lt;td&gt;&lt;strong&gt;8&lt;/strong&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;RDS DB instances&lt;/td&gt;
+&lt;td&gt;—&lt;/td&gt;
+&lt;td&gt;&lt;strong&gt;20&lt;/strong&gt;&lt;/td&gt;
+&lt;td&gt;20&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Athena Active DML queries&lt;/td&gt;
+&lt;td&gt;—&lt;/td&gt;
+&lt;td&gt;&lt;strong&gt;20&lt;/strong&gt;&lt;/td&gt;
+&lt;td&gt;20&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Lambda control-plane API rate&lt;/td&gt;
+&lt;td&gt;—&lt;/td&gt;
+&lt;td&gt;&lt;strong&gt;15/sec&lt;/strong&gt;&lt;/td&gt;
+&lt;td&gt;15/sec&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;SSL certs per CloudFront distribution&lt;/td&gt;
+&lt;td&gt;—&lt;/td&gt;
+&lt;td&gt;&lt;strong&gt;1&lt;/strong&gt;&lt;/td&gt;
+&lt;td&gt;1&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;strong&gt;EC2 on-demand vCPU defaults to 8.&lt;/strong&gt; This is the first thing that trips up a new account:
+to run even a &lt;code&gt;g5.12xlarge&lt;/code&gt; (48 vCPU) proof of concept, you must file a quota increase first.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Small numbers like &lt;strong&gt;Lambda control plane at 15/sec, Athena at 20 concurrent queries, or one
+SSL cert per CloudFront distribution&lt;/strong&gt; hurt automation pipelines far more than resource quotas do.
+Most of them are &lt;strong&gt;not adjustable&lt;/strong&gt; — there is no ticket to raise, only the architecture to change.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h3 id="41-disproving-our-own-quotas-are-unavailable-in-china-conclusion"&gt;4.1 Disproving our own &amp;ldquo;quotas are unavailable in China&amp;rdquo; conclusion
+&lt;/h3&gt;&lt;p&gt;Our first pass saw &lt;code&gt;ListServiceQuotas&lt;/code&gt; return 29 items and &lt;code&gt;GetServiceQuota(L-B99A9384)&lt;/code&gt; throw
+&lt;code&gt;NoSuchResource&lt;/code&gt;, which looked like &amp;ldquo;Lambda concurrency quota is invisible in China&amp;rdquo;. The real cause:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;the China &lt;code&gt;service-quotas&lt;/code&gt; API is &lt;strong&gt;perfectly healthy&lt;/strong&gt;;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;GetServiceQuota&lt;/code&gt; (the &lt;em&gt;applied&lt;/em&gt; layer) cannot find an item that has &lt;strong&gt;never been initialised&lt;/strong&gt;;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;GetAWSDefaultServiceQuota&lt;/code&gt; (the &lt;em&gt;default&lt;/em&gt; layer) immediately returned &lt;strong&gt;1,000&lt;/strong&gt;.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;Lesson&lt;/strong&gt;: query &lt;strong&gt;both layers&lt;/strong&gt; (default as the floor, applied as validation). Checking only one
+produces wrong conclusions — and if you write IaC quota guards, write them against both.&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Environment trap worth recording: with a fake-IP proxy, &lt;code&gt;dig&lt;/code&gt; returns &lt;code&gt;198.18.x.x&lt;/code&gt; even for
+&lt;strong&gt;fabricated domains&lt;/strong&gt;. Never trust system DNS for endpoint checks; use dual-source DoH.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;hr&gt;
+&lt;h2 id="5-cost-ningxia-beats-beijing-and-can-beat-us-east-1"&gt;5. Cost: Ningxia beats Beijing, and can beat us-east-1
+&lt;/h2&gt;&lt;p&gt;On-demand, Linux, Shared (&lt;code&gt;pricing get-products&lt;/code&gt;):&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;Instance&lt;/th&gt;
+&lt;th&gt;us-east-1 (USD)&lt;/th&gt;
+&lt;th&gt;Beijing (CNY)&lt;/th&gt;
+&lt;th&gt;Beijing → USD&lt;/th&gt;
+&lt;th&gt;Ningxia (CNY)&lt;/th&gt;
+&lt;th&gt;Ningxia → USD&lt;/th&gt;
+&lt;th&gt;Ningxia vs us-east-1&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;m5.xlarge&lt;/td&gt;
+&lt;td&gt;0.192&lt;/td&gt;
+&lt;td&gt;2.026&lt;/td&gt;
+&lt;td&gt;0.285 &lt;strong&gt;(+48%)&lt;/strong&gt;&lt;/td&gt;
+&lt;td&gt;1.356&lt;/td&gt;
+&lt;td&gt;0.191&lt;/td&gt;
+&lt;td&gt;&lt;strong&gt;-1%&lt;/strong&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;c6i.2xlarge&lt;/td&gt;
+&lt;td&gt;0.340&lt;/td&gt;
+&lt;td&gt;2.958&lt;/td&gt;
+&lt;td&gt;0.417 &lt;strong&gt;(+23%)&lt;/strong&gt;&lt;/td&gt;
+&lt;td&gt;1.972&lt;/td&gt;
+&lt;td&gt;0.278&lt;/td&gt;
+&lt;td&gt;&lt;strong&gt;-18%&lt;/strong&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;g4dn.xlarge&lt;/td&gt;
+&lt;td&gt;0.526&lt;/td&gt;
+&lt;td&gt;5.223&lt;/td&gt;
+&lt;td&gt;0.736 &lt;strong&gt;(+40%)&lt;/strong&gt;&lt;/td&gt;
+&lt;td&gt;3.711&lt;/td&gt;
+&lt;td&gt;0.523&lt;/td&gt;
+&lt;td&gt;&lt;strong&gt;-1%&lt;/strong&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;g5.12xlarge&lt;/td&gt;
+&lt;td&gt;5.672&lt;/td&gt;
+&lt;td&gt;53.641&lt;/td&gt;
+&lt;td&gt;7.556 &lt;strong&gt;(+33%)&lt;/strong&gt;&lt;/td&gt;
+&lt;td&gt;37.781&lt;/td&gt;
+&lt;td&gt;5.321&lt;/td&gt;
+&lt;td&gt;&lt;strong&gt;-6%&lt;/strong&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;strong&gt;Two counter-intuitive results&lt;/strong&gt;:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;Within China, Beijing and Ningxia can differ by 30%–45%.&lt;/strong&gt; It is not &amp;ldquo;China is expensive&amp;rdquo;,
+it is &amp;ldquo;Beijing is expensive&amp;rdquo;.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Ningxia is sometimes cheaper than us-east-1&lt;/strong&gt; (c6i.2xlarge is 18% lower).
+Changing your default region from Beijing to Ningxia is free cost optimisation.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;&lt;strong&gt;GPU ladder (on-demand CNY/hour, Beijing)&lt;/strong&gt;&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;Instance&lt;/th&gt;
+&lt;th&gt;GPU&lt;/th&gt;
+&lt;th&gt;Beijing&lt;/th&gt;
+&lt;th&gt;Ningxia&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;g4dn.xlarge&lt;/td&gt;
+&lt;td&gt;1×T4&lt;/td&gt;
+&lt;td&gt;5.223&lt;/td&gt;
+&lt;td&gt;3.711&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;g5.xlarge&lt;/td&gt;
+&lt;td&gt;1×A10G&lt;/td&gt;
+&lt;td&gt;9.514&lt;/td&gt;
+&lt;td&gt;6.701&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;g5.2xlarge&lt;/td&gt;
+&lt;td&gt;1×A10G&lt;/td&gt;
+&lt;td&gt;11.462&lt;/td&gt;
+&lt;td&gt;8.073&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;g5.12xlarge&lt;/td&gt;
+&lt;td&gt;4×A10G&lt;/td&gt;
+&lt;td&gt;53.641&lt;/td&gt;
+&lt;td&gt;37.781&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;blockquote&gt;
+&lt;p&gt;⚠️ &lt;strong&gt;An open question&lt;/strong&gt; (not resolved — verify before quoting): the Beijing g5 hourly price is not
+proportional to GPU count. &lt;code&gt;g5.12xlarge&lt;/code&gt; (4 GPUs, CNY 53.64) costs &lt;em&gt;more&lt;/em&gt; than &lt;code&gt;g5.16xlarge&lt;/code&gt;
+(1 GPU, CNY 38.74). It survived a double-filtered pricing API check and may be a large-instance
+surcharge or a data-source lag. Confirm with the console pricing calculator before any large purchase.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;hr&gt;
+&lt;h2 id="6-developer-experience"&gt;6. Developer experience
+&lt;/h2&gt;&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;Item&lt;/th&gt;
+&lt;th&gt;Situation&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;docs.amazonaws.cn&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;China-specific documentation, independent of global docs&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;AWS CLI dual profile&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;default&lt;/code&gt; (China) and &lt;code&gt;global&lt;/code&gt; (us-east-1) coexist on one machine; endpoint differences are transparent&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Direct connectivity from mainland&lt;/td&gt;
+&lt;td&gt;works&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;strong&gt;CloudShell&lt;/strong&gt;&lt;/td&gt;
+&lt;td&gt;❌ no endpoint in China (NXDOMAIN across candidate domains)&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Domain registration&lt;/td&gt;
+&lt;td&gt;❌ not supported; third-party registrar + ICP filing required&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Container registry pulls&lt;/td&gt;
+&lt;td&gt;Docker Hub / GitHub / upstream K8s registries are largely unreachable from mainland nodes; build a mirror or proxy&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;GitHub&lt;/td&gt;
+&lt;td&gt;broadly usable; clones of small/medium repos are acceptable, so you can build in-country&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;blockquote&gt;
+&lt;p&gt;The most practical item for DevOps teams: &lt;strong&gt;design your image channel early&lt;/strong&gt;.
+It is not an AWS China limitation, it is mainland network reality — and it decides
+whether your CI/CD pipeline runs at all.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;hr&gt;
+&lt;h2 id="7-open-items-uncertainty-is-not-hidden-here"&gt;7. Open items (uncertainty is not hidden here)
+&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;&lt;input disabled="" type="checkbox"&gt; Comprehend / Transcribe endpoint status (empty DoH answers, needs console confirmation)&lt;/li&gt;
+&lt;li&gt;&lt;input disabled="" type="checkbox"&gt; Beijing g5 price ladder anomaly (&lt;code&gt;g5.12xlarge&lt;/code&gt; &amp;gt; &lt;code&gt;g5.16xlarge&lt;/code&gt;)&lt;/li&gt;
+&lt;li&gt;&lt;input disabled="" type="checkbox"&gt; S3 Tables completeness in China (API reachable, feature surface unverified)&lt;/li&gt;
+&lt;li&gt;&lt;input disabled="" type="checkbox"&gt; Lambda actual concurrency default (default layer 1,000, applied layer uninitialised)&lt;/li&gt;
+&lt;li&gt;&lt;input disabled="" type="checkbox"&gt; &lt;code&gt;route53domains&lt;/code&gt; registration in China (endpoint reachable, officially unsupported)&lt;/li&gt;
+&lt;li&gt;&lt;input disabled="" type="checkbox"&gt; SageMaker Notebook endpoint (no DoH record, contradicts the main SageMaker endpoint)&lt;/li&gt;
+&lt;li&gt;&lt;input disabled="" type="checkbox"&gt; Evidently availability in China (leaning unavailable)&lt;/li&gt;
+&lt;li&gt;&lt;input disabled="" type="checkbox"&gt; Which ElastiCache node SKUs are missing vs the 236 available globally&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;h2 id="8-how-to-reproduce"&gt;8. How to reproduce
+&lt;/h2&gt;&lt;p&gt;Everything is read-only and free. Any China account can run this:&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;Test&lt;/th&gt;
+&lt;th&gt;Command / API&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;EKS versions&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;aws eks describe-cluster-versions --region &amp;lt;r&amp;gt;&lt;/code&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;RDS engines&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;aws rds describe-db-engine-versions --engine aurora-mysql --region &amp;lt;r&amp;gt;&lt;/code&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Instance breadth&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;aws ec2 describe-instance-type-offerings --region &amp;lt;r&amp;gt;&lt;/code&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;GPU detail&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;aws ec2 describe-instance-types --instance-types &amp;lt;list&amp;gt;&lt;/code&gt; (read &lt;code&gt;GpuInfo&lt;/code&gt;)&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Quotas&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;aws service-quotas list-service-quotas --service-code &amp;lt;svc&amp;gt; --region &amp;lt;r&amp;gt;&lt;/code&gt;&lt;!-- raw HTML omitted --&gt;&lt;code&gt;aws service-quotas get-aws-default-service-quota --service-code &amp;lt;svc&amp;gt; --quota-code &amp;lt;code&amp;gt; --region &amp;lt;r&amp;gt;&lt;/code&gt; ← &lt;strong&gt;do not skip this layer&lt;/strong&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Pricing&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;aws pricing get-products --service-code AmazonEC2 --filters Type=TERM_MATCH,Field=regionCode,Value=&amp;lt;r&amp;gt; ...&lt;/code&gt; (query via the us-east-1 endpoint)&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Endpoint existence&lt;/td&gt;
+&lt;td&gt;Dual DoH: &lt;code&gt;https://dns.google/resolve?name=&amp;lt;host&amp;gt;&amp;amp;type=A&lt;/code&gt; + &lt;code&gt;https://223.5.5.5/resolve&lt;/code&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;hr&gt;
+&lt;h2 id="9-changelog"&gt;9. Changelog
+&lt;/h2&gt;&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;Date&lt;/th&gt;
+&lt;th&gt;Change&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;2026-10-10&lt;/td&gt;
+&lt;td&gt;First release. Based on two rounds of read-only measurement (2026-10-07 / 10-08), covering 30+ service surfaces across 5 dimensions.&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;hr&gt;
+&lt;p&gt;The measurements are only the starting point. What decides a project is usually the next question:
+&lt;strong&gt;where exactly does your architecture sit on these lines?&lt;/strong&gt; If your team is evaluating or migrating
+to AWS China, send over the architecture and we will walk it against all five dimensions:&lt;/p&gt;
+&lt;aside class="china-ready-cta"&gt;
+&lt;style&gt;
+.china-ready-cta{margin:2rem 0;padding:1rem 1.25rem;border-left:3px solid var(--card-text-color-main,#333);background:var(--card-background,#f6f6f7);border-radius:4px;font-size:var(--article-font-size,1rem)}
+.china-ready-cta .cta-title{font-weight:600;margin:0 0 .35rem}
+.china-ready-cta .cta-desc{margin:0 0 .6rem;opacity:.8}
+.china-ready-cta .cta-link{font-weight:600}
+&lt;/style&gt;
+&lt;p class="cta-title"&gt;你的站点在中国大陆的可达性如何？&lt;/p&gt;
+&lt;p class="cta-desc"&gt;如果产品或服务面向中国用户，可以获取一份免费的 Chinaready 诊断报告：基于真实测量数据，覆盖可达性、加载性能与合规要点。&lt;/p&gt;
+&lt;a class="cta-link" href="https://chinaready.co/diagnose/?utm_source=martinliu.cn&amp;amp;utm_medium=blog&amp;amp;utm_campaign=china-ready" target="_blank" rel="noopener"&gt;获取免费中国就绪诊断 →&lt;/a&gt;
+&lt;/aside&gt;</description></item><item><title>Archives</title><link>https://martinliu.cn/en/archives/</link><pubDate>Sun, 06 Mar 2022 00:00:00 +0000</pubDate><guid>https://martinliu.cn/en/archives/</guid><description/></item><item><title>Course</title><link>https://martinliu.cn/en/course/</link><pubDate>Sat, 06 Feb 2021 00:00:00 +0000</pubDate><guid>https://martinliu.cn/en/course/</guid><description>&lt;img src="https://martinliu.cn/img/student-g0c2d46b41_640.jpg" alt="Featured image of post Course" /&gt;&lt;h3 id="elastic-stack"&gt;Elastic Stack
 &lt;/h3&gt;&lt;ul&gt;
 &lt;li&gt;tutorials - &lt;a class="link" href="https://elastic.martinliu.cn" target="_blank" rel="noopener"
 &gt;https://elastic.martinliu.cn&lt;/a&gt;&lt;/li&gt;
@@ -280,4 +929,5 @@ A practical checklist: domain and ICP strategy, static asset distribution, reach
 &lt;a class="cta-link" href="https://chinaready.co/diagnose/?utm_source=martinliu.cn&amp;amp;utm_medium=blog&amp;amp;utm_campaign=china-ready" target="_blank" rel="noopener"&gt;Get a free China-readiness diagnostic →&lt;/a&gt;
 &lt;/aside&gt;
 &lt;h2 id="further-reading"&gt;Further reading
-&lt;/h2&gt;&lt;p&gt;Articles in this series will be published on the &lt;a class="link" href="https://martinliu.cn/en/blog/" &gt;blog&lt;/a&gt;, covering: root causes of overseas sites being slow in China, a technical readiness checklist for entering the market, and common CDN/DNS/ICP/observability pitfalls.&lt;/p&gt;</description></item><item><title>Links</title><link>https://martinliu.cn/en/links/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://martinliu.cn/en/links/</guid><description>&lt;img src="https://martinliu.cn/img/cyberspace-gc5b941535_640.jpg" alt="Featured image of post Links" /&gt;</description></item><item><title>Search</title><link>https://martinliu.cn/en/search/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://martinliu.cn/en/search/</guid><description/></item></channel></rss>
+&lt;/h2&gt;&lt;p&gt;Articles in this series will be published on the &lt;a class="link" href="https://martinliu.cn/en/blog/" &gt;blog&lt;/a&gt;, covering: root causes of overseas sites being slow in China, a technical readiness checklist for entering the market, and common CDN/DNS/ICP/observability pitfalls.&lt;/p&gt;
+&lt;p&gt;If your hosting choice comes down to AWS, there is a dedicated, continuously updated data page: &lt;strong&gt;&lt;a class="link" href="https://martinliu.cn/en/aws-china-parity/" &gt;AWS China Region Parity Tracker&lt;/a&gt;&lt;/strong&gt;. It measures Beijing, Ningxia and us-east-1 item by item across five dimensions — version parity, feature surface, quotas, pricing and developer experience — including services that appear in the catalog but do not actually work. Worth reading before any selection review.&lt;/p&gt;</description></item><item><title>Links</title><link>https://martinliu.cn/en/links/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://martinliu.cn/en/links/</guid><description>&lt;img src="https://martinliu.cn/img/cyberspace-gc5b941535_640.jpg" alt="Featured image of post Links" /&gt;</description></item><item><title>Search</title><link>https://martinliu.cn/en/search/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://martinliu.cn/en/search/</guid><description/></item></channel></rss>
