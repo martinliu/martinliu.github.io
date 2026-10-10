@@ -12,6 +12,25 @@ menu:
       icon: archives
 ---
 
+## Cite this page
+
+- **Data version**: 2026-10-10 (measured 2026-10-07 / 10-08). This tracker is continuously updated — when citing, always include the data version so readers don't mix old and new numbers.
+- **Reproduce it**: every number on this page comes from hands-on, read-only API calls at zero cost. The exact commands are in "How to reproduce" (Section 8) near the end of this page — any China-region account can rerun them.
+- **Markdown citation** (copy as-is):
+
+  ```markdown
+  AWS China Region Parity Tracker (data version 2026-10-10), Martin Liu's Blog,
+  https://martinliu.cn/en/aws-china-parity/
+  ```
+
+- **HTML citation** (copy as-is):
+
+  ```html
+  <a href="https://martinliu.cn/en/aws-china-parity/">AWS China Region Parity Tracker</a> (item-by-item measurements of AWS Beijing/Ningxia vs us-east-1, data collected 2026-10-07/08, Martin Liu's Blog)
+  ```
+
+---
+
 > **The question this page answers**: if you put your architecture in the AWS China Regions
 > (Beijing `cn-north-1` / Ningxia `cn-northwest-1`), what actually changes?
 >

@@ -12,6 +12,25 @@ menu:
       icon: archives
 ---
 
+## 引用本页数据
+
+- **数据版本**：2026-10-10（实测日期 2026-10-07 / 10-08）。本页持续更新，引用时请注明数据版本，避免新旧数据混用。
+- **复现方法**：本页全部数据来自只读 API 实测、零费用，复现命令见文末「八、复现方法」一节，有中国区账号即可自行验证。
+- **Markdown 引用片段**（可直接复制）：
+
+  ```markdown
+  AWS 中国区服务对等性追踪（数据版本 2026-10-10），Martin Liu's Blog，
+  https://martinliu.cn/aws-china-parity/
+  ```
+
+- **HTML 引用片段**（可直接复制）：
+
+  ```html
+  <a href="https://martinliu.cn/aws-china-parity/">AWS 中国区服务对等性追踪</a>（AWS 北京/宁夏与 us-east-1 逐项实测，数据日期 2026-10-07/08，Martin Liu's Blog）
+  ```
+
+---
+
 > **这一页在回答一个问题**：把架构放到 AWS 中国区（北京 cn-north-1 / 宁夏 cn-northwest-1），
 > 到底哪些东西会不一样？
 >
