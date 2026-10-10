@@ -2,7 +2,20 @@
     - hreflang 交替链接
     - og:locale 默认值
     - 结构化数据 JSON-LD
+    - noindex 开关
 */}}
+
+{{/* ---- noindex 开关（front matter: noindex: true）----
+     用途：把「留在站内给读者看、但不希望出现在搜索结果里」的页面摘出索引。
+     典型场景：与站点主题无关的旧文，占着大量展示但点击为零。
+
+     配合两处一起生效：本文件输出 meta 标签；layouts/sitemap.xml 跳过同名页面。
+     ⚠️ 不要同时在 robots.txt 里 Disallow 这类 URL：那样 Google 抓不到页面，
+        也就读不到这个 noindex 标签，反而永远摘不掉。正确做法是「允许抓取 + 输出 noindex」。
+*/}}
+{{- if .Params.noindex -}}
+    <meta name="robots" content="noindex, follow">
+{{- end -}}
 
 {{/* ---- hreflang 交替链接 ---- */}}
 {{- if .IsTranslated -}}

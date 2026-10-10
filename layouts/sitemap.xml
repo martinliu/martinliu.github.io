@@ -1,10 +1,13 @@
-{{/* 自定义 sitemap：在 Hugo 内部模板基础上，为带封面图的页面追加 <image:image> 图片标记 */}}
+{{/* 自定义 sitemap：在 Hugo 内部模板基础上，
+   ① 为带封面图的页面追加 <image:image> 图片标记；
+   ② 跳过 front matter 标了 noindex: true 的页面（noindex 的 URL 不应出现在 sitemap 里）。*/}}
 {{ printf "%s" "<?xml version=\"1.0\" encoding=\"utf-8\" standalone=\"yes\"?>" | safeHTML }}
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml"
   xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
   {{ range .Data.Pages }}
   {{- $page := . -}}
+  {{- if not $page.Params.noindex }}
   <url>
     <loc>{{ $page.Permalink }}</loc>{{ if not $page.Lastmod.IsZero }}
     <lastmod>{{ safeHTML ( $page.Lastmod.Format "2006-01-02T15:04:05-07:00" ) }}</lastmod>{{ end }}{{ with $page.Sitemap.ChangeFreq }}
@@ -27,5 +30,6 @@
     </image:image>
     {{- end -}}{{ end }}
   </url>
+  {{- end }}
   {{ end }}
 </urlset>
