@@ -14,7 +14,7 @@ menu:
 ---
 ## 个人简介
 
-Elastic 资深开发者布道师，中国 DevOps 社区创始人，《DevOps Handbook》和《The Site Reliability Workbook》译者；精通 DevOps/SRE/ITSM 等理论体系和相关实践等落地实现。致力于在全国范围内通过社区来推广 DevOps&SRE 的理念、技术和实践。
+前 Elastic 资深开发者布道师，中国 DevOps 社区创始人，《DevOps Handbook》和《The Site Reliability Workbook》译者；精通 DevOps/SRE/ITSM 等理论体系和相关实践等落地实现。致力于在全国范围内通过社区来推广 DevOps&SRE 的理念、技术和实践。
 
 ## 关注我
 
