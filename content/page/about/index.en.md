@@ -128,8 +128,6 @@ The Site Reliability Workbook from  O'Reilly Media
 
 ![SRE Workbook](https://learning.oreilly.com/library/cover/9781492029496/250w/) 
 
-
-
 - 京东：[https://item.jd.com/12983982.html](https://item.jd.com/12983982.html)
 - *Selling on Amazon* [https://www.amazon.com/Site-Reliability-Workbook-Practical-Implement/dp/1492029505/](https://www.amazon.com/Site-Reliability-Workbook-Practical-Implement/dp/1492029505/)
 
@@ -139,7 +137,6 @@ The Site Reliability Workbook from  O'Reilly Media
 
 - 京东：[https://item.jd.com/13047191.html](https://item.jd.com/13047191.html)
 - *Selling on Amazon* [https://www.amazon.com/DevOps-Paradox-truth-about-people-ebook/](https://www.amazon.com/DevOps-Paradox-truth-about-people-ebook/)
-
 
 Coming soon:
 
