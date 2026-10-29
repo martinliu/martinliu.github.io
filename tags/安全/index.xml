@@ -1,4 +1,362 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>安全 on Martin Liu's Blog</title><link>https://martinliu.cn/tags/%E5%AE%89%E5%85%A8/</link><description>Recent content in 安全 on Martin Liu's Blog</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><lastBuildDate>Wed, 30 Sep 2026 23:49:58 +0800</lastBuildDate><atom:link href="https://martinliu.cn/tags/%E5%AE%89%E5%85%A8/index.xml" rel="self" type="application/rss+xml"/><item><title>我为什么使用多个 SSH 密钥，而不是只用一个？</title><link>https://martinliu.cn/blog/why-i-run-multiple-ssh-keys-instead-of-just-one/</link><pubDate>Mon, 25 Aug 2025 10:00:00 +0800</pubDate><guid>https://martinliu.cn/blog/why-i-run-multiple-ssh-keys-instead-of-just-one/</guid><description>&lt;img src="https://martinliu.cn/blog/why-i-run-multiple-ssh-keys-instead-of-just-one/ssh-key-management-best-practices-feature.webp" alt="Featured image of post 我为什么使用多个 SSH 密钥，而不是只用一个？" /&gt;&lt;blockquote&gt;
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>安全 on Martin Liu's Blog</title><link>https://martinliu.cn/tags/%E5%AE%89%E5%85%A8/</link><description>Recent content in 安全 on Martin Liu's Blog</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><lastBuildDate>Thu, 29 Oct 2026 16:46:38 +0800</lastBuildDate><atom:link href="https://martinliu.cn/tags/%E5%AE%89%E5%85%A8/index.xml" rel="self" type="application/rss+xml"/><item><title>AWS 中国区 Landing Zone 实战：高仿 Control Tower，多账号合规基线搭建</title><link>https://martinliu.cn/blog/aws-china-landing-zone-without-control-tower/</link><pubDate>Thu, 29 Oct 2026 15:30:00 +0800</pubDate><guid>https://martinliu.cn/blog/aws-china-landing-zone-without-control-tower/</guid><description>&lt;img src="https://martinliu.cn/blog/aws-china-landing-zone-without-control-tower/insight-aws-cn-landing-zone.webp" alt="Featured image of post AWS 中国区 Landing Zone 实战：高仿 Control Tower，多账号合规基线搭建" /&gt;&lt;p&gt;要做多账号基线，国际区的团队伸手就用 Control Tower：护栏、账号工厂、合规看板，全是托管的。到了 AWS 中国区（北京 cn-north-1、宁夏 cn-northwest-1），这条路不存在。Control Tower 不在支持区域列表里，AWS 官方中国区博客 2025 年 5 月白纸黑字写着「尚未在中国区发布」。没有护栏目录，没有账号工厂，没有合规看板——托管 landing zone 这个产品，在中国区就是没有。&lt;/p&gt;
+&lt;p&gt;所以只能自己搭。更麻烦的是，网上能搜到的中文攻略大多已经过时：好几个关键能力是 2023 年才落地的，老文章还在教你绕开「中国区没有 SCP」这种早就不存在的问题。&lt;/p&gt;
+&lt;p&gt;这篇文章是我自己一次从零搭建的完整记录：一个组织、一个中央日志归档账号、一条流水线开出来的双账号产品团队、IAM Identity Center 统一身份、SCP 护栏、StackSets 推基线，最后用一条「违规 → 检测 → 最小权限修复 → 验证恢复」的合规闭环验收全部。文中每个数字都出自我自己的账号，包括那些第一次就失败的部分。&lt;/p&gt;
+&lt;p&gt;如果你读过上一篇 &lt;a class="link" href="https://martinliu.cn/blog/aws-china-region-gap-beyond-catalog/" &gt;《AWS 中国区实战：与国际区服务目录之外的真实差距》&lt;/a&gt;，这篇是它的落地续篇：上篇讲差距在哪，这篇讲差距之下基线怎么搭。&lt;/p&gt;
+&lt;h2 id="可用地基"&gt;可用地基
+&lt;/h2&gt;&lt;p&gt;先盘点中国区手里有什么牌。结果和大多数人的预期相反：原始能力都在，只是很多新得出人意料。&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;能力&lt;/th&gt;
+&lt;th&gt;中国区可用时间&lt;/th&gt;
+&lt;th&gt;本次实测备注&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;AWS Organizations（OU、合并账单、CreateAccount）&lt;/td&gt;
+&lt;td&gt;2020 年 6 月&lt;/td&gt;
+&lt;td&gt;与文档一致；默认账号配额是个惊喜（见下文）&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;CloudFormation StackSets（服务托管 + OU 自动部署）&lt;/td&gt;
+&lt;td&gt;2023 年 4 月&lt;/td&gt;
+&lt;td&gt;自动部署承诺成立——账号进 OU 即得基线，零手工&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;IAM Identity Center&lt;/td&gt;
+&lt;td&gt;2023 年 9 月&lt;/td&gt;
+&lt;td&gt;Terraform 全量面可用；门户在 &lt;code&gt;awsapps.cn&lt;/code&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;服务控制策略（SCP）&lt;/td&gt;
+&lt;td&gt;2023 年 10 月&lt;/td&gt;
+&lt;td&gt;2023 年前教你绕开 SCP 的攻略可以扔了&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;真正定义这个项目的是两个缺席。第一个是 Control Tower 本体。第二个是国际区的替代品们：老 AWS Landing Zone solution 已死，AWS Secure Environment Accelerator 绑死 Control Tower。AWS 官方给中国区点名的唯一替代是 &lt;strong&gt;Cloud Foundations&lt;/strong&gt;——一个开源自部署方案，AWS 中国区博客明确说它在中国区可用于不依赖 Control Tower 的模式。但注意，它是加速器不是替身：部署、升级、漂移全归你自己管。我最后选择手工搭一个薄版本，原因很简单：只有这样，每一层才能被测量。&lt;/p&gt;
+&lt;h2 id="目标形态"&gt;目标形态
+&lt;/h2&gt;&lt;p&gt;我把这次搭建收在四个账号、三个 OU、一个身份源：&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://martinliu.cn/blog/aws-china-landing-zone-without-control-tower/figure-org-hierarchy.png"
+width="1286"
+height="997"
+srcset="https://martinliu.cn/blog/aws-china-landing-zone-without-control-tower/figure-org-hierarchy_hu_dd4d528a729ec4c0.png 480w, https://martinliu.cn/blog/aws-china-landing-zone-without-control-tower/figure-org-hierarchy_hu_6ef40cbb05a1e1cc.png 1024w"
+loading="lazy"
+alt="本次在中国区 AWS Organizations 里搭出的组织结构：根下是管理账号 Launchready-Root，Security OU 里是日志归档账号，Workloads OU 里是 demo-dev 和 demo-prod。"
+class="gallery-image"
+data-flex-grow="128"
+data-flex-basis="309px"
+&gt;
+&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;管理账号&lt;/strong&gt;——只放 Organizations、SCP、账单。业务负载永远不进这个账号。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Security OU / &lt;code&gt;log-archive&lt;/code&gt;&lt;/strong&gt;——审计与聚合席：Security Hub 委托管理员、未来的 Config 聚合器、中央证据都落在这。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Workloads OU / &lt;code&gt;demo-dev&lt;/code&gt;、&lt;code&gt;demo-prod&lt;/code&gt;&lt;/strong&gt;——一个产品团队，流水线开箱；未来每个产品都作为一对新账号落在这里。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;身份层复用既有 IAM Identity Center 实例（用它的身份源，不接外部 IdP）。按产品建组——&lt;code&gt;poc-demo-devops&lt;/code&gt;、&lt;code&gt;poc-demo-readers&lt;/code&gt;，另有 &lt;code&gt;poc-auditors&lt;/code&gt; 和 &lt;code&gt;poc-platform-admins&lt;/code&gt;。日常治理真正落地的地方是权限集矩阵：&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;权限集&lt;/th&gt;
+&lt;th&gt;权限&lt;/th&gt;
+&lt;th&gt;会话时长&lt;/th&gt;
+&lt;th&gt;绑定&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;ProductDevOps&lt;/td&gt;
+&lt;td&gt;PowerUserAccess + IAM 自服务&lt;/td&gt;
+&lt;td&gt;8 小时&lt;/td&gt;
+&lt;td&gt;产品 devops 组，dev + prod&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;ProductReadOnly&lt;/td&gt;
+&lt;td&gt;只读&lt;/td&gt;
+&lt;td&gt;8 小时&lt;/td&gt;
+&lt;td&gt;同组，入职第一天用&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;SecurityAuditor&lt;/td&gt;
+&lt;td&gt;SecurityAudit 托管策略（只读）&lt;/td&gt;
+&lt;td&gt;4 小时&lt;/td&gt;
+&lt;td&gt;审计组，全部账号&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;SecurityRemediator&lt;/td&gt;
+&lt;td&gt;内联策略：仅 S3 公开访问修复&lt;/td&gt;
+&lt;td&gt;1 小时&lt;/td&gt;
+&lt;td&gt;审计组，全部账号&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;BreakGlassAdmin&lt;/td&gt;
+&lt;td&gt;AdministratorAccess，受 SCP 约束&lt;/td&gt;
+&lt;td&gt;1 小时&lt;/td&gt;
+&lt;td&gt;平台管理员，单账号&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;身份层有两个中国区特有的点。好的一面：门户和 CLI 体验与国际区几乎一致——&lt;code&gt;awsapps.cn/start&lt;/code&gt;、&lt;code&gt;aws sso login&lt;/code&gt; 对着 &lt;code&gt;oidc.cn-north-1.amazonaws.com.cn&lt;/code&gt;，权限集会话同样 1 小时默认、12 小时上限。坏的一面：中国区的 Identity Center &lt;strong&gt;没有多区域复制&lt;/strong&gt;（2026 年那个全球新特性覆盖 17 个商业区域，不含中国）。所以「不依赖门户的破窗路径」不是锦上添花——它是有事故和有事变的区别。&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://martinliu.cn/blog/aws-china-landing-zone-without-control-tower/figure-access-portal.png"
+width="1345"
+height="935"
+srcset="https://martinliu.cn/blog/aws-china-landing-zone-without-control-tower/figure-access-portal_hu_62eb54e760d7131f.png 480w, https://martinliu.cn/blog/aws-china-landing-zone-without-control-tower/figure-access-portal_hu_38c095e1670bed48.png 1024w"
+loading="lazy"
+alt="开出一个产品团队后的访问门户：demo-dev、demo-prod、log-archive 三张账号卡片，工程师可见产品账号上的四个角色和审计账号上的两个角色。"
+class="gallery-image"
+data-flex-grow="143"
+data-flex-basis="345px"
+&gt;
+&lt;/p&gt;
+&lt;h2 id="产品团队开箱"&gt;产品团队开箱
+&lt;/h2&gt;&lt;p&gt;新团队怎么进来？一个 YAML 文件，一次 &lt;code&gt;terraform apply&lt;/code&gt;：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
+&lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code&gt;&lt;span class="lnt"&gt;1
+&lt;/span&gt;&lt;span class="lnt"&gt;2
+&lt;/span&gt;&lt;span class="lnt"&gt;3
+&lt;/span&gt;&lt;span class="lnt"&gt;4
+&lt;/span&gt;&lt;span class="lnt"&gt;5
+&lt;/span&gt;&lt;span class="lnt"&gt;6
+&lt;/span&gt;&lt;span class="lnt"&gt;7
+&lt;/span&gt;&lt;span class="lnt"&gt;8
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-yaml" data-lang="yaml"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c"&gt;# products/demo.yaml&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="nt"&gt;name&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l"&gt;demo&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="nt"&gt;email_prefix&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l"&gt;aws &lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="c"&gt;# aws-demo-dev@&amp;lt;domain&amp;gt;, aws-demo-prod@&amp;lt;domain&amp;gt;&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="nt"&gt;environments&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="l"&gt;dev, prod]&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="nt"&gt;cidr&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="m"&gt;10.60.0.0&lt;/span&gt;&lt;span class="l"&gt;/16 &lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="c"&gt;# 只登记给流水线；此阶段不建 VPC&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="nt"&gt;groups&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;devops&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l"&gt;poc-demo-devops&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="nt"&gt;cost_center&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l"&gt;POC-DEMO-001&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;一个 &lt;code&gt;for_each&lt;/code&gt; 遍历 &lt;code&gt;products/*.yaml&lt;/code&gt;，把文件展开为 Workloads OU 里的账号、Identity Center 里的产品组和用户、以及权限集到组的账号分配。实测耗时：&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;步骤&lt;/th&gt;
+&lt;th&gt;实测墙钟时间&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;单个成员账号创建（观测 3 个账号）&lt;/td&gt;
+&lt;td&gt;&lt;strong&gt;12 秒&lt;/strong&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;单条权限集账号分配&lt;/td&gt;
+&lt;td&gt;26 秒，可并行&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;一次完整开号（vend：2 账号 + 6 分配）&lt;/td&gt;
+&lt;td&gt;&lt;strong&gt;合计 45 秒&lt;/strong&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;基线 StackSet 自动部署进新账号&lt;/td&gt;
+&lt;td&gt;约 2 分钟全量部署，零手工步骤&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;45 秒开一个团队，这是整个实测里我最满意的数字。&lt;/p&gt;
+&lt;p&gt;同一轮实测里还撞了两个坑。第一个：对创建仅数秒的账号做分配，报 &lt;code&gt;InvalidClientTokenId&lt;/code&gt;。原因不是配置错——Identity Center 要在新账号里预置一个角色，跑赢了账号自身的凭证传播。等 30 秒重试，11 秒成功。教训就一条：你的流水线必须内置这个重试。第二个就是账号配额，也是全项目第一个「压测日才发现的地雷」：全新的中国区组织默认只能建 2 个账号（管理账号 + 1 个成员），第三个直接报 &lt;code&gt;You have exceeded the allowed number of AWS accounts&lt;/code&gt;。提额没有自助通道——Organizations 在这个分区连 Service Quotas 条目都没有，只能提 AWS 中国区工单。我的工单一天批了，但任何真实的多账号项目，第一天就该把这张票排进计划。&lt;/p&gt;
+&lt;p&gt;新账号拿到的基线是一个服务托管 StackSet，目标 OU、自动部署开启——这是该分区最接近 Account Factory 基线步骤的东西：&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://martinliu.cn/blog/aws-china-landing-zone-without-control-tower/figure-stackset-instances.png"
+width="1681"
+height="997"
+srcset="https://martinliu.cn/blog/aws-china-landing-zone-without-control-tower/figure-stackset-instances_hu_5c7f5a6a996f3d89.png 480w, https://martinliu.cn/blog/aws-china-landing-zone-without-control-tower/figure-stackset-instances_hu_7faaeb40d5dbae68.png 1024w"
+loading="lazy"
+alt="CloudFormation StackSets 的 baseline-config 及其三个栈实例——log-archive、demo-dev、demo-prod——同一操作全部 SUCCEEDED，证明自动部署触达了创建后才进 OU 的账号。"
+class="gallery-image"
+data-flex-grow="168"
+data-flex-basis="404px"
+&gt;
+&lt;/p&gt;
+&lt;h2 id="护栏与组织日志"&gt;护栏与组织日志
+&lt;/h2&gt;&lt;p&gt;三个 SCP 覆盖住基本盘：根级&lt;strong&gt;拒绝 &lt;code&gt;organizations:LeaveOrganization&lt;/code&gt;&lt;/strong&gt;——账号一旦加入，谁也休想从里面退群，这条我从成员账号做过反向验证；根级&lt;strong&gt;区域拒绝&lt;/strong&gt;，只放 cn-north-1 / cn-northwest-1 外加常规全局服务豁免；Workloads OU 级&lt;strong&gt;审计轨迹保护&lt;/strong&gt;（&lt;code&gt;cloudtrail:StopLogging&lt;/code&gt;、&lt;code&gt;config:DeleteConfigurationRecorder&lt;/code&gt; 一族）。&lt;/p&gt;
+&lt;p&gt;组织级 CloudTrail 这里暴露了一个货真价实的中国分区差异，也是全项目最隐蔽的一个坑。国际区文档给组织追踪桶策略写的资源是 &lt;code&gt;AWSLogs/&amp;lt;org-id&amp;gt;/*&lt;/code&gt;——照抄，CreateTrail 校验器直接拒绝。校验器接受的版本必须&lt;strong&gt;同时包含&lt;/strong&gt; &lt;code&gt;AWSLogs/&amp;lt;management-account-id&amp;gt;/*&lt;/code&gt;。两个前缀都挂上，创建成功；对象列表随即说明原因：管理账号的日志路径两种形式下都存在。一句话：文档没骗你，但也没把话说全。开多多区域校验后，这条追踪把四个账号的日志全部写进一个桶（首日每账号数百对象），组织内可读，每个成员账号的 CloudTrail 控制台里也有只读入口。&lt;/p&gt;
+&lt;h2 id="config-引导链"&gt;Config 引导链
+&lt;/h2&gt;&lt;p&gt;整个搭建里最有教学价值的失败。第一版基线模板做了最显然的事——一个 IAM 角色、一个 Config 记录器、一个投递通道、两条托管规则——失败；改，再失败；再改，还失败。三次的根因，逐条验证过：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;没有投递通道的记录器起不来。&lt;/strong&gt; &lt;code&gt;start-configuration-recorder&lt;/code&gt; 直接 &lt;code&gt;NoAvailableDeliveryChannelException&lt;/code&gt;。在这个分区，通道不是可选配件，是前置条件。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;中央桶策略必须按账号 ID 列表授权 Config 写入。&lt;/strong&gt; 用 &lt;code&gt;aws:PrincipalOrgID&lt;/code&gt; 条件——CloudTrail 皆大欢喜的模式——Config 就是写不进去（&lt;code&gt;InsufficientDeliveryPolicyException&lt;/code&gt;）。换成 &lt;code&gt;aws:SourceAccount&lt;/code&gt; 加成员账号 ID 列表就通了。这份策略现在从活跃账号列表自动生成，新账号自动被覆盖。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;提前几毫秒创建的角色，会在通道检查时栽在 IAM 传播上&lt;/strong&gt;（&lt;code&gt;unable to assume role&lt;/code&gt;）——等 20 秒重试即清。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;可用的配方：扮演成员角色 → 建记录器角色 → &lt;code&gt;put-configuration-recorder&lt;/code&gt; → &lt;code&gt;put-delivery-channel&lt;/code&gt; 指向中央桶 → &lt;code&gt;start&lt;/code&gt;，中间步骤带重试。一个脚本装得下，三分钟内三个账号全部开录。&lt;/p&gt;
+&lt;p&gt;这个教训值得泛化：中国区的每一个检测型控制背后，都藏着一条 Control Tower 的 ConfigBaseline 本该替你扛掉的引导链。你的基线仓库不是样板文件，是承重结构，有自己的失效模式。&lt;/p&gt;
+&lt;h2 id="组织级检测控制"&gt;组织级检测控制
+&lt;/h2&gt;&lt;p&gt;Security Hub 在中国区支持组织模式 + 委托管理员。两个硬规则：委托管理员&lt;strong&gt;必须是成员账号&lt;/strong&gt;（我的是 &lt;code&gt;log-archive&lt;/code&gt;），不能是管理账号；&lt;strong&gt;auto-enable 只影响之后加入组织的账号&lt;/strong&gt;——已经存在的账号必须显式 CreateMembers 才能被委托管理员看见。和 Control Tower 全球区的自动注册比，差的就是这一步，所以要写进 Runbook。&lt;/p&gt;
+&lt;p&gt;标准订阅按账号走。中国区目录里十来个标准，含 AWS Foundational Security Best Practices 和 CIS 基准，成员账号关联后即获得默认集。&lt;/p&gt;
+&lt;p&gt;还有一条依赖顺序，控制台里看不见，直到出事：&lt;strong&gt;多数 FSBP 控制在账号内没有 Config 记录器时不会评估&lt;/strong&gt;——订阅了但没有记录器，状态停在 &lt;code&gt;INCOMPLETE&lt;/code&gt;，原因码 &lt;code&gt;NO_AVAILABLE_CONFIGURATION_RECORDER&lt;/code&gt;。先 Config，后 Security Hub。顺序反了，你会在仪表盘上看到一片没有解释的黄色。&lt;/p&gt;
+&lt;h2 id="合规闭环实测"&gt;合规闭环实测
+&lt;/h2&gt;&lt;p&gt;整套栈的验收标准我先定好：一个工程师犯错，审计职能从另一个账号看见它，用受限权限修掉它，工程师看着合规状态恢复。四步，全截图为证。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;第一步——制造违规。&lt;/strong&gt; 以 &lt;code&gt;ProductDevOps&lt;/code&gt; 登录 &lt;code&gt;demo-dev&lt;/code&gt;，建一个桶，留成公开可读：&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://martinliu.cn/blog/aws-china-landing-zone-without-control-tower/figure-public-bucket.png"
+width="1345"
+height="935"
+srcset="https://martinliu.cn/blog/aws-china-landing-zone-without-control-tower/figure-public-bucket_hu_8dccf023edd519cd.png 480w, https://martinliu.cn/blog/aws-china-landing-zone-without-control-tower/figure-public-bucket_hu_4fc3efe1c47817d5.png 1024w"
+loading="lazy"
+alt="demo-dev 账号 S3 控制台里的桶 demo-dev-public-20261029，Permissions 标签页——阻止公开访问全部关闭，无桶策略。违规原样呈现。"
+class="gallery-image"
+data-flex-grow="143"
+data-flex-basis="345px"
+&gt;
+&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;第二步——检测。&lt;/strong&gt; 几分钟后（发现页首刷显示「1 分钟前更新」），FSBP 控制 S3.2 翻红：&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://martinliu.cn/blog/aws-china-landing-zone-without-control-tower/figure-finding-control.png"
+width="1681"
+height="997"
+srcset="https://martinliu.cn/blog/aws-china-landing-zone-without-control-tower/figure-finding-control_hu_b77d9a8de6b2120e.png 480w, https://martinliu.cn/blog/aws-china-landing-zone-without-control-tower/figure-finding-control_hu_e2cee7d571bf03b9.png 1024w"
+loading="lazy"
+alt="demo-dev 账号下的 Security Hub——控制 S3.2（桶应阻止公开读访问）一条 WARNING 发现，工作流状态 NEW，对象 demo-dev-public-20261029，一分钟前更新。"
+class="gallery-image"
+data-flex-grow="168"
+data-flex-basis="404px"
+&gt;
+&lt;/p&gt;
+&lt;p&gt;同一条发现，从审计员真正干活的位置——委托管理员账号——看：&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://martinliu.cn/blog/aws-china-landing-zone-without-control-tower/figure-cross-account-finding.png"
+width="1681"
+height="997"
+srcset="https://martinliu.cn/blog/aws-china-landing-zone-without-control-tower/figure-cross-account-finding_hu_754483d5bdb07d10.png 480w, https://martinliu.cn/blog/aws-china-landing-zone-without-control-tower/figure-cross-account-finding_hu_9e9fc8099ebd1c54.png 1024w"
+loading="lazy"
+alt="以 SecurityAuditor 登录 log-archive 账号看到的 Security Hub Findings——S3 公开访问发现，HIGH 严重级、合规 FAILED、归属成员账号 demo-dev、资源 demo-dev-public-20261029。跨账号检测，不出审计席。"
+class="gallery-image"
+data-flex-grow="168"
+data-flex-basis="404px"
+&gt;
+&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;第三步——最小权限修复。&lt;/strong&gt; 审计员切到 &lt;code&gt;SecurityRemediator&lt;/code&gt;——那个 1 小时时长、内联策略只允许 S3 公开访问封锁动作的权限集——给桶开启阻止公开访问。同一会话里我故意试了删桶，被拒。这正是设计意图：审计职能能修这一类发现，别的什么都做不了。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;第四步——验证恢复。&lt;/strong&gt; Config 记录变更，控制重新评估，S3.2 回绿，发现的工作流转为 &lt;code&gt;RESOLVED&lt;/code&gt;——由工程师从 ProductDevOps 会话确认，同一个门户，另一个角色。从检测到解决，分钟级而非天级，全链路对三个不同权限集可见，无共享凭证。&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://martinliu.cn/blog/aws-china-landing-zone-without-control-tower/figure-finding-member.png"
+width="1681"
+height="997"
+srcset="https://martinliu.cn/blog/aws-china-landing-zone-without-control-tower/figure-finding-member_hu_6e3c9adc4c954250.png 480w, https://martinliu.cn/blog/aws-china-landing-zone-without-control-tower/figure-finding-member_hu_b43863e0605bba08.png 1024w"
+loading="lazy"
+alt="demo-dev 成员账号视角的发现列表——S3.2 发现选中展示详情，修复前工作流 NEW，同账号其他发现并列。"
+class="gallery-image"
+data-flex-grow="168"
+data-flex-basis="404px"
+&gt;
+&lt;/p&gt;
+&lt;h2 id="ai-agent-及自动化场景"&gt;AI Agent 及自动化场景
+&lt;/h2&gt;&lt;p&gt;这套栈最初为人类工程师设计，但它最大的受益者其实是「非人类工程师」：AI Agent、CI/CD 流水线、IaC 自动化、ChatOps 机器人。它们的共同点：一段以机器速度自主调用 API 的代码，没有人在每次调用前把关，权限边界就是唯一的安全边界。提示词注入时代的攻击者甚至不需要偷凭证——只要诱导 Agent 用已有凭证替它调一次 API。把每个 Agent、每条工具链关进专属账号，是锁死爆炸半径最硬的手段，而这正是开号（vending）流程的本职：&lt;code&gt;products/*.yaml&lt;/code&gt; 里多一个 &lt;code&gt;ai-agent.yaml&lt;/code&gt; 或 &lt;code&gt;cicd.yaml&lt;/code&gt;，45 秒后一个带全套基线、SCP 护栏和审计聚合的机器账号就位，合规起点与人类团队完全一致。&lt;/p&gt;
+&lt;p&gt;先说底座的存在性：中国区跑机器负载的底座是有的——SageMaker 可用，Bedrock AgentCore 也已上线中国区，其 Identity 组件用工作负载身份加令牌保险库给 Agent 发短时凭证，与本套治理同构（Bedrock 本体缺席，影响的是模型托管层，不是身份治理层）。更关键的一点是这套账号体系与运行时解耦：无论 Agent 跑在 AgentCore、SageMaker 还是自管容器里，无论流水线来自 GitHub Actions、Jenkins 还是内部调度器，它们对 AWS 资源的每一次调用都踩在 IAM 凭证上、都要过 SCP 这道闸。接入方式按工作负载分三种：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;AI Agent&lt;/strong&gt;：一个 Agent（或一类 Agent）一个账号，能力面用 IdC 权限集或 IAM 角色定义，运行时经角色链换取 STS 短时会话（最短 15 分钟），会话标签打上 &lt;code&gt;agent-id&lt;/code&gt; / &lt;code&gt;task-id&lt;/code&gt;——CloudTrail 里每条 API 调用都能归因到哪个 Agent 的哪次任务，而不是一个面目模糊的共享身份。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;CI/CD 流水线&lt;/strong&gt;：部署 Job 走 OIDC 联合身份或自建 runner 的实例角色扮演目标账号的角色，凭证零落盘；每条流水线独立角色，谁在什么时候向哪个账号部署了什么，CloudTrail 里逐条可查。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;IaC 自动化&lt;/strong&gt;：Terraform 的状态与执行收进 automation 专属账号，&lt;code&gt;apply&lt;/code&gt; 用短会话角色执行，计划外漂移由 Config 捕获——本文配套的 drift-check 巡检就是这么跑在体系内的。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;机器账号接入后，行为轨迹这样监控：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;轨迹留存&lt;/strong&gt;：本文的组织级 CloudTrail 已把全部账号事件集中进 log-archive；给 Agent 的模型调用和工具链的凭证读取补开数据事件（默认关闭），这些关键动作才进得了审计轨迹。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;异常检测&lt;/strong&gt;：GuardDuty 中国区 2021 年起可用，但有两个必须知道的现实：组织化管理策略目前在中国区不可用，启用要靠脚本逐账号做；AI 工作负载防护部分可用——&lt;code&gt;AnomalousModelInvocation&lt;/code&gt;（异常模型调用）和 &lt;code&gt;CostHarvesting&lt;/code&gt;（算力盗用）两类发现依赖 SageMaker 调用特征可生效，&lt;code&gt;PromptInjection.Direct&lt;/code&gt; 则因 Bedrock 缺席而不可用。中国区的机器负载检测，要靠这些可用信号加自建规则补位。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;发现汇聚与响应&lt;/strong&gt;：Security Hub 委托管理员（本文已配）聚合全部机器账号的发现；上面那条 S3 合规闭环原样适用于 Agent 或流水线犯错——检测、最小权限修复、验证恢复，分钟级闭环。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;为什么 IAM User 的 AK/SK 路线在机器场景下应该被禁绝，一张表说清：&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;维度&lt;/th&gt;
+&lt;th&gt;IAM User AK/SK&lt;/th&gt;
+&lt;th&gt;IdC 权限集 + STS 临时凭证&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;凭证生命周期&lt;/td&gt;
+&lt;td&gt;永久有效，直到人工轮换&lt;/td&gt;
+&lt;td&gt;15 分钟–12 小时，自动过期&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;泄露后果&lt;/td&gt;
+&lt;td&gt;无限暴露窗口，等人工发现并禁用&lt;/td&gt;
+&lt;td&gt;窗口=会话时长，过期自毁&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;行为归因&lt;/td&gt;
+&lt;td&gt;所有调用共享同一用户名，分不清哪个 Agent 哪次任务&lt;/td&gt;
+&lt;td&gt;会话携带 agent-id/task-id，逐调用归因&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;权限治理&lt;/td&gt;
+&lt;td&gt;Inline policy 散落各账号，漂移无感知&lt;/td&gt;
+&lt;td&gt;权限集集中定义，一处修改全组织生效&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;护栏叠加&lt;/td&gt;
+&lt;td&gt;无额外约束层&lt;/td&gt;
+&lt;td&gt;SCP + 权限边界 + 会话策略三层收窄&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;轮换成本&lt;/td&gt;
+&lt;td&gt;人工流程，现实中常年不换&lt;/td&gt;
+&lt;td&gt;无需轮换——凭证天然短命&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;这张表的每一行在机器场景下都被放大：机器凭证嵌在代码和配置里，暴露面远大于人类用户；机器调用频率高，异常更难凭肉眼发现；机器出错的责任链要精确到 Agent 或流水线级别。AK/SK 把这三个问题全部留给人工兜底，IdC + STS 把它们变成架构属性。一句话：这套体系对 AI Agent 和 DevOps 自动化工具链的价值，就在这一行行对比里。&lt;/p&gt;
+&lt;h2 id="这套栈不是什么"&gt;这套栈不是什么
+&lt;/h2&gt;&lt;p&gt;先把天花板说清楚：差距是结构性的，不是装修级的。国际区 Control Tower 带着目录化的 750+ 条 AWS 维护控制（预防性 SCP 集、检测性 Config 与 Security Hub 规则、前瞻性 CloudFormation Hooks 控制），版本化和弃用都归 AWS 管；带漂移检测、去重通知、一键重置的合规看板；开箱时身份分配就接好的 Account Factory；还有 landing zone 语义的 IaC 面。&lt;/p&gt;
+&lt;p&gt;我们复刻了能复刻的部分，而且复刻得不错：开箱流程真的很接近，区域拒绝是一小时的 SCP，终端用户门户体验几乎一致，上面的合规闭环是真的。&lt;strong&gt;没有对等物的是「内容」和「治理体验」&lt;/strong&gt;——每一条规则、每一份 Runbook、每一次升级，永远是你团队的 backlog。前瞻性控制（CloudFormation Hooks）和资源控制策略（RCP）没有任何中国区可用性文档，在证实之前当作不存在。&lt;/p&gt;
+&lt;p&gt;一句话：架构可以复刻，治理内容和治理体验归你。现实的姿态是，一个你亲自维护的 20–50 条控制精选集，剩余风险写进文档。&lt;/p&gt;
+&lt;h2 id="完整踩坑清单"&gt;完整踩坑清单
+&lt;/h2&gt;&lt;p&gt;给所有要做这个搭建的人，按出场顺序排好：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;账号配额默认 = 2。&lt;/strong&gt; 支持工单，不是 Service Quotas。预留一天。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;SCP 策略类型可能要先启用&lt;/strong&gt;才能挂第一条策略——一条 CLI 的事，但漏了报错很迷惑。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;一个 Statement 不能同时带 &lt;code&gt;Action&lt;/code&gt; 和 &lt;code&gt;NotAction&lt;/code&gt;&lt;/strong&gt;——这里的 SCP 校验对此很严格。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;服务托管 StackSets 的信任访问只有控制台开关给得了。&lt;/strong&gt; 文档里的 CLI 主体（&lt;code&gt;cloudformation.amazonaws.com&lt;/code&gt;）在这个分区返回 &lt;code&gt;UNRECOGNIZED_SERVICE_PRINCIPAL&lt;/code&gt;；API 接受的那个又拨不动 CloudFormation 的开关。一次手工点击，一次就好——外加 Runbook 里的一段话。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;组织追踪桶策略要两个前缀&lt;/strong&gt;（&lt;code&gt;AWSLogs/&amp;lt;org-id&amp;gt;/*&lt;/code&gt; 和 &lt;code&gt;AWSLogs/&amp;lt;management-account-id&amp;gt;/*&lt;/code&gt;），否则 CreateTrail 拒绝。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Config 要角色 + 记录器 + 投递通道 + 启动，带重试&lt;/strong&gt;——三个根因见上文。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Security Hub 组织模式&lt;/strong&gt;：委托管理员必须是成员账号；auto-enable 只管未来的账号；&lt;code&gt;NO_AVAILABLE_CONFIGURATION_RECORDER&lt;/code&gt; 意味着你的 Config 步骤回退了。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Identity Center 中国区没有多区域复制。&lt;/strong&gt; 破窗路径不要依赖门户。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;组织账单不理会你的 OU 结构。&lt;/strong&gt; 成本分摊靠标签和 CUR，和国际区一样——但人民币结算、按运营商（北京 Sinnet / 宁夏 NWCD）分开签约的现实，让产品线计费要更早摆上桌。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2 id="成本与可重复性"&gt;成本与可重复性
+&lt;/h2&gt;&lt;p&gt;这个足迹——四个账号、全量 Config、Security Hub 默认标准、一条组织追踪——月成本是个位数美元；Security Hub 的按发现计费在这个量级可忽略，CloudTrail 管理事件免费。环境刻意保持为可重复的演示：开出 demo 团队的同一条 &lt;code&gt;products/*.yaml&lt;/code&gt; 流程开下一个，重置脚本走完整拆除路径。贵的不是 AWS 账单，是第一次搭建在上述 1–8 条上烧掉的工程时间——把那个数字变小，正是这篇文章存在的意义。&lt;/p&gt;
+&lt;h2 id="常见问题"&gt;常见问题
+&lt;/h2&gt;&lt;p&gt;&lt;strong&gt;中国区到底能不能用 Control Tower？&lt;/strong&gt;
+不能。支持区域列表里没有中国区，中国区文档站没有 Control Tower 章节，AWS 2025 年 5 月官方博客明说「尚未在中国区发布」。要 landing zone 就自己用 Organizations、IAM Identity Center、StackSets 和 Terraform 搭——本文就是全程实测的走法。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;中国区新组织能建几个账号？&lt;/strong&gt;
+我实测默认上限 2 个（管理账号 + 1 成员）。提额走 AWS 中国区支持工单，Organizations 在中国分区没有 Service Quotas 条目。我的 10 账号额度一天批下来，但计划时要把工单算进第一天。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Terraform 对 AWS 中国分区好使吗？&lt;/strong&gt;
+好使，端到端。hashicorp/aws provider（实测 v6.70.0）管 Organizations、SCP、Identity Center、权限集、账号分配、服务托管 StackSets 都不需要分区特调。要修的是 provider 版本 schema 细节和服务端引导顺序——从来不是分区本身。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;有官方的替代方案吗？&lt;/strong&gt;
+有一个——AWS Cloud Foundations，开源自部署方案。AWS 中国区博客把它定位为中国区可用、不依赖 Control Tower 模式下的选择。能省搭建时间，但部署、升级、漂移仍是你的事；Control Tower 本该填上的治理内容和治理体验缺口，依然归你。&lt;/p&gt;
+&lt;h2 id="参考来源"&gt;参考来源
+&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;&lt;a class="link" href="https://docs.aws.amazon.com/controltower/latest/userguide/region-how.html" target="_blank" rel="noopener"
+&gt;AWS Control Tower 支持区域&lt;/a&gt;——列表无中国区&lt;/li&gt;
+&lt;li&gt;&lt;a class="link" href="https://aws.amazon.com/cn/blogs/china/manage-control-tower-with-cloud-foundations-govern-regions-manage-organizations-create-or-enroll-accounts-enable-controls-en/" target="_blank" rel="noopener"
+&gt;AWS 中国区博客——用 Cloud Foundations 管理 Control Tower（2025 年 5 月）&lt;/a&gt;——「尚未在中国区发布」的出处与 Cloud Foundations 定位&lt;/li&gt;
+&lt;li&gt;&lt;a class="link" href="https://www.amazonaws.cn/new/2023/amazon-iam-identity-center-is-available-in-amazon-web-services-china-regions" target="_blank" rel="noopener"
+&gt;IAM Identity Center 中国区上线（2023 年 9 月）&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class="link" href="https://www.amazonaws.cn/new/2023/amazon-organizations-supports-service-control-policies-in-amazon-web-services-china-regions" target="_blank" rel="noopener"
+&gt;服务控制策略中国区上线（2023 年 10 月）&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class="link" href="https://www.amazonaws.cn/new/2023/amazon-cloudformation-stacksets-in-china-regions" target="_blank" rel="noopener"
+&gt;CloudFormation StackSets 中国区 GA、服务托管（2023 年 4 月）&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class="link" href="https://aws.amazon.com/cn/blogs/china/practice-of-automated-account-creation-on-the-cloud/" target="_blank" rel="noopener"
+&gt;AWS 中国区博客——云上自动化开号实践（2024）&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class="link" href="https://docs.amazonaws.cn/aws/latest/userguide/aws-ug.pdf" target="_blank" rel="noopener"
+&gt;中国区 AWS 服务入门——官方用户指南 PDF&lt;/a&gt;——权威的逐服务中国区差异文档&lt;/li&gt;
+&lt;li&gt;&lt;a class="link" href="https://www.amazonaws.cn/about-aws/china/faqs/" target="_blank" rel="noopener"
+&gt;AWS 中国区 FAQ——账号、实名、运营商、人民币结算&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;更多中国区与国际区的实测差距（版本、功能、配额、体验、成本五维），见 &lt;a class="link" href="https://martinliu.cn/chinaready/" &gt;Chinaready 服务对等性追踪页&lt;/a&gt;。&lt;/p&gt;
+&lt;aside class="china-ready-cta"&gt;
+&lt;style&gt;
+.china-ready-cta{margin:2rem 0;padding:1rem 1.25rem;border-left:3px solid var(--card-text-color-main,#333);background:var(--card-background,#f6f6f7);border-radius:4px;font-size:var(--article-font-size,1rem)}
+.china-ready-cta .cta-title{font-weight:600;margin:0 0 .35rem}
+.china-ready-cta .cta-desc{margin:0 0 .6rem;opacity:.8}
+.china-ready-cta .cta-link{font-weight:600}
+&lt;/style&gt;
+&lt;p class="cta-title"&gt;你的站点在中国大陆的可达性如何？&lt;/p&gt;
+&lt;p class="cta-desc"&gt;如果产品或服务面向中国用户，可以获取一份免费的 Chinaready 诊断报告：基于真实测量数据，覆盖可达性、加载性能与合规要点。&lt;/p&gt;
+&lt;a class="cta-link" href="https://chinaready.co/diagnose/?utm_source=martinliu.cn&amp;amp;utm_medium=blog&amp;amp;utm_campaign=china-ready" target="_blank" rel="noopener"&gt;获取免费中国就绪诊断 →&lt;/a&gt;
+&lt;/aside&gt;</description></item><item><title>我为什么使用多个 SSH 密钥，而不是只用一个？</title><link>https://martinliu.cn/blog/why-i-run-multiple-ssh-keys-instead-of-just-one/</link><pubDate>Mon, 25 Aug 2025 10:00:00 +0800</pubDate><guid>https://martinliu.cn/blog/why-i-run-multiple-ssh-keys-instead-of-just-one/</guid><description>&lt;img src="https://martinliu.cn/blog/why-i-run-multiple-ssh-keys-instead-of-just-one/ssh-key-management-best-practices-feature.webp" alt="Featured image of post 我为什么使用多个 SSH 密钥，而不是只用一个？" /&gt;&lt;blockquote&gt;
 &lt;p&gt;作者：Faruk Ahmed&lt;/p&gt;
 &lt;/blockquote&gt;
 &lt;p&gt;对于许多 Linux 管理员来说，使用单个 SSH 密钥对登录他们所有的服务器、测试环境或云实例是默认做法。

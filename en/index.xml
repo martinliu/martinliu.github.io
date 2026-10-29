@@ -1,4 +1,362 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Martin Liu's Blog</title><link>https://martinliu.cn/en/</link><description>Recent content on Martin Liu's Blog</description><generator>Hugo -- gohugo.io</generator><language>en</language><atom:link href="https://martinliu.cn/en/index.xml" rel="self" type="application/rss+xml"/><item><title>AWS China in Practice: The Real Gaps Beyond the Service Catalog</title><link>https://martinliu.cn/en/blog/aws-china-region-gap-beyond-catalog/</link><pubDate>Wed, 07 Oct 2026 15:00:00 +0800</pubDate><guid>https://martinliu.cn/en/blog/aws-china-region-gap-beyond-catalog/</guid><description>&lt;img src="https://martinliu.cn/blog/aws-china-region-gap-beyond-catalog/insight-aws-china-gap.webp" alt="Featured image of post AWS China in Practice: The Real Gaps Beyond the Service Catalog" /&gt;&lt;p&gt;Which services are available in AWS China? I answered that question in the &lt;a class="link" href="https://martinliu.cn/chinaready/" &gt;Chinaready parity checklist&lt;/a&gt;: 120 service rows, how Beijing and Ningxia split the coverage, and the absence of Bedrock, Q, Connect, and friends. Teams who have actually built on AWS China know the catalog is only the first gate. Even when a service has a checkmark, the real gap with AWS Global begins the moment you open the console.&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Martin Liu's Blog</title><link>https://martinliu.cn/en/</link><description>Recent content on Martin Liu's Blog</description><generator>Hugo -- gohugo.io</generator><language>en</language><atom:link href="https://martinliu.cn/en/index.xml" rel="self" type="application/rss+xml"/><item><title>AWS China Landing Zone in Practice: A Control Tower Clone and a Multi-Account Compliance Baseline</title><link>https://martinliu.cn/en/blog/aws-china-landing-zone-without-control-tower/</link><pubDate>Thu, 29 Oct 2026 15:30:00 +0800</pubDate><guid>https://martinliu.cn/en/blog/aws-china-landing-zone-without-control-tower/</guid><description>&lt;img src="https://martinliu.cn/blog/aws-china-landing-zone-without-control-tower/insight-aws-cn-landing-zone.webp" alt="Featured image of post AWS China Landing Zone in Practice: A Control Tower Clone and a Multi-Account Compliance Baseline" /&gt;&lt;p&gt;Need a multi-account baseline? On AWS Global, teams reach for Control Tower: guardrails, an account factory, a compliance dashboard, all managed. In the AWS China regions (Beijing cn-north-1, Ningxia cn-northwest-1), that road does not exist. Control Tower is absent from the supported-regions list, and AWS&amp;rsquo;s own China blog stated in black and white in May 2025 that it &amp;ldquo;has not yet been launched in China Regions.&amp;rdquo; No control catalog, no account factory, no compliance dashboard — the managed landing zone, as a product, simply does not exist on this partition.&lt;/p&gt;
+&lt;p&gt;So you build it yourself. The bigger nuisance is that most Chinese-language guides you can find online are obsolete: several key capabilities only landed in 2023, and older articles still teach you to work around &amp;ldquo;China has no SCPs&amp;rdquo; — a problem that no longer exists.&lt;/p&gt;
+&lt;p&gt;This article is the complete record of my own build from scratch: one organization, one central log-archive account, a two-account product team vended by pipeline, identity unified through IAM Identity Center, guardrails as SCPs, baselines pushed by StackSets, and the whole thing accepted with a closed compliance loop — violation → detection → least-privilege remediation → verified recovery. Every number in this article came out of my own accounts, including the parts that failed on the first try.&lt;/p&gt;
+&lt;p&gt;If you have read the previous article, &lt;a class="link" href="https://martinliu.cn/blog/aws-china-region-gap-beyond-catalog/" &gt;AWS China in Practice: The Real Gaps Beyond the Service Catalog&lt;/a&gt;, this is its hands-on sequel: that one measured where the gaps are, this one builds the baseline underneath them.&lt;/p&gt;
+&lt;h2 id="the-foundation-you-actually-have"&gt;The Foundation You Actually Have
+&lt;/h2&gt;&lt;p&gt;Start by counting the cards in your hand. The result runs against most expectations: the primitives are all there, just surprisingly recent.&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;Capability&lt;/th&gt;
+&lt;th&gt;Available in China since&lt;/th&gt;
+&lt;th&gt;Notes from this build&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;AWS Organizations (OUs, consolidated billing, CreateAccount)&lt;/td&gt;
+&lt;td&gt;Jun 2020&lt;/td&gt;
+&lt;td&gt;Worked as documented; the default account quota is the surprise (below)&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;CloudFormation StackSets, service-managed with OU auto-deploy&lt;/td&gt;
+&lt;td&gt;Apr 2023&lt;/td&gt;
+&lt;td&gt;The auto-deploy promise held — accounts entering an OU get the baseline, zero manual steps&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;IAM Identity Center&lt;/td&gt;
+&lt;td&gt;Sep 2023&lt;/td&gt;
+&lt;td&gt;The full Terraform surface works; portal on &lt;code&gt;awsapps.cn&lt;/code&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Service Control Policies&lt;/td&gt;
+&lt;td&gt;Oct 2023&lt;/td&gt;
+&lt;td&gt;Pre-2023 guides telling you to work around missing SCPs can go in the bin&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;Two absences define the project. The first is Control Tower itself. The second is the set of replacements you might use globally: the legacy AWS Landing Zone solution is dead, and the AWS Secure Environment Accelerator is bound to Control Tower. The one official alternative AWS names for China is &lt;strong&gt;Cloud Foundations&lt;/strong&gt; — an open-source solution you deploy and operate yourself; AWS&amp;rsquo;s China blog explicitly positions it as usable in the regions in the modes that do not depend on Control Tower. Note what it is, though: an accelerator, not a substitute. Deployment, upgrades, and drift are all yours. I chose to build a thin version by hand, for one simple reason: only then can every layer be measured.&lt;/p&gt;
+&lt;h2 id="target-shape"&gt;Target Shape
+&lt;/h2&gt;&lt;p&gt;I kept the build down to four accounts, three organizational units, one identity source:&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://martinliu.cn/blog/aws-china-landing-zone-without-control-tower/figure-org-hierarchy.png"
+width="1286"
+height="997"
+srcset="https://martinliu.cn/blog/aws-china-landing-zone-without-control-tower/figure-org-hierarchy_hu_dd4d528a729ec4c0.png 480w, https://martinliu.cn/blog/aws-china-landing-zone-without-control-tower/figure-org-hierarchy_hu_6ef40cbb05a1e1cc.png 1024w"
+loading="lazy"
+alt="The organization as built in AWS Organizations on the China partition. Under the root sit the management account Launchready-Root, a Security OU holding the log-archive account, and a Workloads OU holding demo-dev and demo-prod."
+class="gallery-image"
+data-flex-grow="128"
+data-flex-basis="309px"
+&gt;
+&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Management account&lt;/strong&gt; — organizations, SCPs, billing only. Business workloads never enter this account.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Security OU / &lt;code&gt;log-archive&lt;/code&gt;&lt;/strong&gt; — the audit and aggregation seat: delegated Security Hub administrator, future Config aggregator, home of the central evidence.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Workloads OU / &lt;code&gt;demo-dev&lt;/code&gt;, &lt;code&gt;demo-prod&lt;/code&gt;&lt;/strong&gt; — one product team, vended by pipeline; every future product lands here as another pair.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;The identity layer rides an existing IAM Identity Center instance (its identity store, not an external IdP). Groups are provisioned per product — &lt;code&gt;poc-demo-devops&lt;/code&gt;, &lt;code&gt;poc-demo-readers&lt;/code&gt; — plus &lt;code&gt;poc-auditors&lt;/code&gt; and &lt;code&gt;poc-platform-admins&lt;/code&gt;. Where day-to-day governance actually lives is the permission-set matrix:&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;Permission set&lt;/th&gt;
+&lt;th&gt;Power&lt;/th&gt;
+&lt;th&gt;Session&lt;/th&gt;
+&lt;th&gt;Bound to&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;ProductDevOps&lt;/td&gt;
+&lt;td&gt;PowerUserAccess plus IAM self-service&lt;/td&gt;
+&lt;td&gt;8 h&lt;/td&gt;
+&lt;td&gt;the product&amp;rsquo;s devops group, dev + prod&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;ProductReadOnly&lt;/td&gt;
+&lt;td&gt;View-only&lt;/td&gt;
+&lt;td&gt;8 h&lt;/td&gt;
+&lt;td&gt;same group, for day-0 onboarding&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;SecurityAuditor&lt;/td&gt;
+&lt;td&gt;SecurityAudit managed policy (read-only)&lt;/td&gt;
+&lt;td&gt;4 h&lt;/td&gt;
+&lt;td&gt;auditors group, every account&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;SecurityRemediator&lt;/td&gt;
+&lt;td&gt;Inline policy: S3 public-access remediation only&lt;/td&gt;
+&lt;td&gt;1 h&lt;/td&gt;
+&lt;td&gt;auditors group, every account&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;BreakGlassAdmin&lt;/td&gt;
+&lt;td&gt;AdministratorAccess, constrained by SCPs&lt;/td&gt;
+&lt;td&gt;1 h&lt;/td&gt;
+&lt;td&gt;platform admins, one account&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;Two China-specific notes on identity. The good side: the portal and CLI experience is nearly identical to Global — &lt;code&gt;awsapps.cn/start&lt;/code&gt;, &lt;code&gt;aws sso login&lt;/code&gt; against &lt;code&gt;oidc.cn-north-1.amazonaws.com.cn&lt;/code&gt;, the same 1 h default / 12 h maximum permission-set sessions. The bad side: Identity Center in China has &lt;strong&gt;no multi-region replication&lt;/strong&gt; (the 2026 global feature covers 17 commercial regions, none of them here). So a break-glass path that does not depend on the portal is not nice-to-have hardening — it is the difference between an outage and an incident.&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://martinliu.cn/blog/aws-china-landing-zone-without-control-tower/figure-access-portal.png"
+width="1345"
+height="935"
+srcset="https://martinliu.cn/blog/aws-china-landing-zone-without-control-tower/figure-access-portal_hu_62eb54e760d7131f.png 480w, https://martinliu.cn/blog/aws-china-landing-zone-without-control-tower/figure-access-portal_hu_38c095e1670bed48.png 1024w"
+loading="lazy"
+alt="The AWS access portal after vending one product team. Three account cards — demo-dev, demo-prod, log-archive — each showing the roles this engineer may assume, four roles on the product accounts and two on the audit account."
+class="gallery-image"
+data-flex-grow="143"
+data-flex-basis="345px"
+&gt;
+&lt;/p&gt;
+&lt;h2 id="vending-a-product-team"&gt;Vending a Product Team
+&lt;/h2&gt;&lt;p&gt;How does a new team arrive? One YAML file, one &lt;code&gt;terraform apply&lt;/code&gt;:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
+&lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code&gt;&lt;span class="lnt"&gt;1
+&lt;/span&gt;&lt;span class="lnt"&gt;2
+&lt;/span&gt;&lt;span class="lnt"&gt;3
+&lt;/span&gt;&lt;span class="lnt"&gt;4
+&lt;/span&gt;&lt;span class="lnt"&gt;5
+&lt;/span&gt;&lt;span class="lnt"&gt;6
+&lt;/span&gt;&lt;span class="lnt"&gt;7
+&lt;/span&gt;&lt;span class="lnt"&gt;8
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-yaml" data-lang="yaml"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c"&gt;# products/demo.yaml&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="nt"&gt;name&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l"&gt;demo&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="nt"&gt;email_prefix&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l"&gt;aws &lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="c"&gt;# aws-demo-dev@&amp;lt;domain&amp;gt;, aws-demo-prod@&amp;lt;domain&amp;gt;&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="nt"&gt;environments&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="l"&gt;dev, prod]&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="nt"&gt;cidr&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="m"&gt;10.60.0.0&lt;/span&gt;&lt;span class="l"&gt;/16 &lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="c"&gt;# recorded for the pipeline; no VPC at this stage&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="nt"&gt;groups&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;devops&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l"&gt;poc-demo-devops&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="nt"&gt;cost_center&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l"&gt;POC-DEMO-001&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;A &lt;code&gt;for_each&lt;/code&gt; over &lt;code&gt;products/*.yaml&lt;/code&gt; expands the file into accounts in the Workloads OU, per-product groups and users in Identity Center, and the account assignments that bind permission sets to groups. Measured wall clock:&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;Step&lt;/th&gt;
+&lt;th&gt;Measured&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;Each member account creation (3 accounts observed)&lt;/td&gt;
+&lt;td&gt;&lt;strong&gt;12 seconds&lt;/strong&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Each permission-set account assignment&lt;/td&gt;
+&lt;td&gt;26 s, parallelizable&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;One full vend (2 accounts + 6 assignments)&lt;/td&gt;
+&lt;td&gt;&lt;strong&gt;45 s total&lt;/strong&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Baseline StackSet auto-deploy into the new accounts&lt;/td&gt;
+&lt;td&gt;~2 min to fully deployed, zero manual steps&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;Twelve seconds to create an account, forty-five to vend a whole team — the number I am most satisfied with in this entire build.&lt;/p&gt;
+&lt;p&gt;The same run hit two gotchas. First: assigning against an account that is seconds old fails with &lt;code&gt;InvalidClientTokenId&lt;/code&gt;. The cause is not a configuration error — Identity Center provisions a role inside the new account and can beat the account&amp;rsquo;s own credential propagation. Wait 30 seconds, retry, success in 11 s. The lesson fits in one line: your pipeline must build that retry in. Second is the account quota — and the project&amp;rsquo;s first &amp;ldquo;mine you discover on load-test day&amp;rdquo;: a fresh China organization can create exactly &lt;strong&gt;two accounts&lt;/strong&gt; (management plus one member); the third fails outright with &lt;code&gt;You have exceeded the allowed number of AWS accounts&lt;/code&gt;. There is no self-service path — Organizations has no Service Quotas entries in this partition at all, so the only route is an AWS China support case. Mine was approved within a day, but any real multi-account program should put that ticket on day one of the plan.&lt;/p&gt;
+&lt;p&gt;The baseline new accounts receive is a service-managed StackSet targeting the OUs with auto-deployment on — the closest thing this partition has to Account Factory&amp;rsquo;s baseline step:&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://martinliu.cn/blog/aws-china-landing-zone-without-control-tower/figure-stackset-instances.png"
+width="1681"
+height="997"
+srcset="https://martinliu.cn/blog/aws-china-landing-zone-without-control-tower/figure-stackset-instances_hu_5c7f5a6a996f3d89.png 480w, https://martinliu.cn/blog/aws-china-landing-zone-without-control-tower/figure-stackset-instances_hu_7faaeb40d5dbae68.png 1024w"
+loading="lazy"
+alt="CloudFormation StackSets showing stack set baseline-config and its three stack instances — log-archive, demo-dev and demo-prod — all SUCCEEDED from the same operation, evidence that auto-deployment reached accounts that entered the OU after creation."
+class="gallery-image"
+data-flex-grow="168"
+data-flex-basis="404px"
+&gt;
+&lt;/p&gt;
+&lt;h2 id="guardrails-and-the-organization-trail"&gt;Guardrails and the Organization Trail
+&lt;/h2&gt;&lt;p&gt;Three SCPs cover the shape: a root-level &lt;strong&gt;deny on &lt;code&gt;organizations:LeaveOrganization&lt;/code&gt;&lt;/strong&gt; — once an account joins, nobody inside it can walk out; I negative-tested this from a member account; a root-level &lt;strong&gt;region deny&lt;/strong&gt; to cn-north-1/cn-northwest-1 with the usual global-service exemptions; and a Workloads-OU guardrail protecting the audit trail (&lt;code&gt;cloudtrail:StopLogging&lt;/code&gt;, &lt;code&gt;config:DeleteConfigurationRecorder&lt;/code&gt; and friends).&lt;/p&gt;
+&lt;p&gt;Organization-wide CloudTrail exposed a genuine China-partition difference, and the most隐蔽 one in the project. The global documentation writes the organization-trail bucket policy resource as &lt;code&gt;AWSLogs/&amp;lt;org-id&amp;gt;/*&lt;/code&gt; — copy that, and the CreateTrail validator here rejects it outright. The version the validator accepts must &lt;strong&gt;also include&lt;/strong&gt; &lt;code&gt;AWSLogs/&amp;lt;management-account-id&amp;gt;/*&lt;/code&gt;. Hang both prefixes on the central bucket and creation succeeds; the object listing then explains why: the management account&amp;rsquo;s log paths exist under both forms. In one sentence: the documentation does not lie to you, but it does not tell you the whole story either. With multi-region validation on, the trail writes all four accounts&amp;rsquo; logs into one bucket (hundreds of objects per account within the first day), readable organization-wide, including as a read-only entry in each member account&amp;rsquo;s CloudTrail console.&lt;/p&gt;
+&lt;h2 id="the-config-bootstrap-chain"&gt;The Config Bootstrap Chain
+&lt;/h2&gt;&lt;p&gt;The most instructive failure of the build. The first baseline template did the obvious thing — an IAM role, a Config recorder, a delivery channel, two managed rules — and failed; revise, fail again; revise again, still fail. The root causes of all three, each verified:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;A recorder without a delivery channel will not start.&lt;/strong&gt; &lt;code&gt;start-configuration-recorder&lt;/code&gt; returns &lt;code&gt;NoAvailableDeliveryChannelException&lt;/code&gt;. In this partition the channel is not optional furniture; it is a precondition.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;The central bucket policy must grant Config write by account-ID list.&lt;/strong&gt; An &lt;code&gt;aws:PrincipalOrgID&lt;/code&gt; condition — the pattern CloudTrail is perfectly happy with — leaves Config unable to write (&lt;code&gt;InsufficientDeliveryPolicyException&lt;/code&gt;). &lt;code&gt;aws:SourceAccount&lt;/code&gt; with the member account IDs works. That policy is now generated from the live account list, so new accounts are covered automatically.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;A role created milliseconds earlier falls over on IAM propagation at the channel check&lt;/strong&gt; (&lt;code&gt;unable to assume role&lt;/code&gt;) — a 20-second retry clears it.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;The working recipe: assume the member role → create the recorder role → &lt;code&gt;put-configuration-recorder&lt;/code&gt; → &lt;code&gt;put-delivery-channel&lt;/code&gt; pointing at the central bucket → &lt;code&gt;start&lt;/code&gt;, with retries on the middle steps. One script holds it; all three accounts were recording within three minutes.&lt;/p&gt;
+&lt;p&gt;The lesson generalizes. Behind every detective control in China hides a bootstrap chain that Control Tower&amp;rsquo;s ConfigBaseline would have owned for you. Your baseline repository is not boilerplate; it is load-bearing infrastructure, with failure modes of its own.&lt;/p&gt;
+&lt;h2 id="detective-controls-at-organization-scale"&gt;Detective Controls at Organization Scale
+&lt;/h2&gt;&lt;p&gt;Security Hub in China supports organization mode with a delegated administrator. Two hard rules: the delegated administrator &lt;strong&gt;must be a member account&lt;/strong&gt; (mine is &lt;code&gt;log-archive&lt;/code&gt;), never the management account; and &lt;strong&gt;auto-enable only affects accounts that join the organization later&lt;/strong&gt; — accounts that already existed must be added explicitly via CreateMembers before the delegated administrator can see them. Compared with Control Tower&amp;rsquo;s global auto-enrollment, that is exactly the missing step, so write it into the runbook.&lt;/p&gt;
+&lt;p&gt;Standards subscribe per account. The China catalog lists a dozen or so, including AWS Foundational Security Best Practices and the CIS benchmarks; member accounts pick up the defaults as they are associated.&lt;/p&gt;
+&lt;p&gt;And one sequencing dependency the console will not show you — until it bites: &lt;strong&gt;most FSBP controls will not evaluate without a Config recorder in the account&lt;/strong&gt;. Subscribe without a recorder and the status sits at &lt;code&gt;INCOMPLETE&lt;/code&gt; with reason &lt;code&gt;NO_AVAILABLE_CONFIGURATION_RECORDER&lt;/code&gt;. Config first, Security Hub second. Get the order backwards and you will stare at a wall of unexplained yellow on the dashboard.&lt;/p&gt;
+&lt;h2 id="the-compliance-loop-measured"&gt;The Compliance Loop, Measured
+&lt;/h2&gt;&lt;p&gt;I set the acceptance criteria before building: an engineer makes a mistake, the audit function sees it from another account, fixes it with scoped permissions, and the engineer watches compliance recover. Four steps, all screenshotted.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Step 1 — the violation.&lt;/strong&gt; Signed in as &lt;code&gt;ProductDevOps&lt;/code&gt; on &lt;code&gt;demo-dev&lt;/code&gt;, the engineer creates a bucket and leaves it public-read:&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://martinliu.cn/blog/aws-china-landing-zone-without-control-tower/figure-public-bucket.png"
+width="1345"
+height="935"
+srcset="https://martinliu.cn/blog/aws-china-landing-zone-without-control-tower/figure-public-bucket_hu_8dccf023edd519cd.png 480w, https://martinliu.cn/blog/aws-china-landing-zone-without-control-tower/figure-public-bucket_hu_4fc3efe1c47817d5.png 1024w"
+loading="lazy"
+alt="The bucket demo-dev-public-20261029 in the S3 console under the demo-dev account, Permissions tab — Block Public Access fully Off, no bucket policy. The violation, as created."
+class="gallery-image"
+data-flex-grow="143"
+data-flex-basis="345px"
+&gt;
+&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Step 2 — detection.&lt;/strong&gt; Minutes later (the finding page showed &amp;ldquo;updated 1 minute ago&amp;rdquo; on first view), FSBP control S3.2 flips:&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://martinliu.cn/blog/aws-china-landing-zone-without-control-tower/figure-finding-control.png"
+width="1681"
+height="997"
+srcset="https://martinliu.cn/blog/aws-china-landing-zone-without-control-tower/figure-finding-control_hu_b77d9a8de6b2120e.png 480w, https://martinliu.cn/blog/aws-china-landing-zone-without-control-tower/figure-finding-control_hu_e2cee7d571bf03b9.png 1024w"
+loading="lazy"
+alt="Security Hub under the demo-dev account — control S3.2, buckets should block public read access, showing one WARNING finding, workflow status NEW, against bucket demo-dev-public-20261029, updated one minute ago."
+class="gallery-image"
+data-flex-grow="168"
+data-flex-basis="404px"
+&gt;
+&lt;/p&gt;
+&lt;p&gt;The same finding, seen from where an auditor actually works — the delegated-administrator account:&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://martinliu.cn/blog/aws-china-landing-zone-without-control-tower/figure-cross-account-finding.png"
+width="1681"
+height="997"
+srcset="https://martinliu.cn/blog/aws-china-landing-zone-without-control-tower/figure-cross-account-finding_hu_754483d5bdb07d10.png 480w, https://martinliu.cn/blog/aws-china-landing-zone-without-control-tower/figure-cross-account-finding_hu_9e9fc8099ebd1c54.png 1024w"
+loading="lazy"
+alt="Security Hub Findings under the log-archive account signed in as SecurityAuditor — the S3 public-access finding at HIGH severity, compliance FAILED, owned by member account demo-dev, resource demo-dev-public-20261029. Cross-account detection without leaving the audit seat."
+class="gallery-image"
+data-flex-grow="168"
+data-flex-basis="404px"
+&gt;
+&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Step 3 — remediation, least privilege.&lt;/strong&gt; The auditor switches to &lt;code&gt;SecurityRemediator&lt;/code&gt; — the 1-hour permission set whose inline policy allows exactly the S3 public-access-block actions and nothing else — and enables Block Public Access on the bucket. From the same session I deliberately tried to delete the bucket. Denied — which is the design intent: the audit function can fix this one class of finding and nothing else.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Step 4 — verified recovery.&lt;/strong&gt; Config records the change, the control re-evaluates, S3.2 returns to green, and the finding&amp;rsquo;s workflow moves to &lt;code&gt;RESOLVED&lt;/code&gt; — confirmed by the engineer from the ProductDevOps session, same portal, different role. Detection to resolution in minutes, not days, the whole chain visible to three different permission sets, no shared credentials.&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://martinliu.cn/blog/aws-china-landing-zone-without-control-tower/figure-finding-member.png"
+width="1681"
+height="997"
+srcset="https://martinliu.cn/blog/aws-china-landing-zone-without-control-tower/figure-finding-member_hu_6e3c9adc4c954250.png 480w, https://martinliu.cn/blog/aws-china-landing-zone-without-control-tower/figure-finding-member_hu_b43863e0605bba08.png 1024w"
+loading="lazy"
+alt="The member-account view of the findings list under demo-dev — the S3.2 finding selected in the detail pane, workflow NEW before remediation, alongside the account’s other findings."
+class="gallery-image"
+data-flex-grow="168"
+data-flex-basis="404px"
+&gt;
+&lt;/p&gt;
+&lt;h2 id="ai-agents-and-automation-workloads"&gt;AI Agents and Automation Workloads
+&lt;/h2&gt;&lt;p&gt;This stack was designed for human engineers, but its biggest beneficiaries are the &amp;ldquo;non-human engineers&amp;rdquo;: AI agents, CI/CD pipelines, IaC automation, ChatOps bots. What they share: code that calls APIs autonomously at machine speed, with nobody vetting each call — the permission boundary is the only security boundary there is. An attacker in the prompt-injection era does not even need to steal credentials; they just have to trick an agent into making one API call with the credentials it already holds. Locking each agent and each toolchain into its own account is the hardest blast-radius control available — and that is precisely the vending pipeline&amp;rsquo;s day job: add an &lt;code&gt;ai-agent.yaml&lt;/code&gt; or &lt;code&gt;cicd.yaml&lt;/code&gt; to &lt;code&gt;products/*.yaml&lt;/code&gt;, and 45 seconds later a machine account with the full baseline, SCP guardrails, and audit aggregation is in place, at the same compliance starting point as a human team.&lt;/p&gt;
+&lt;p&gt;First, existence: the foundation for machine workloads in China exists — SageMaker is available, and Bedrock AgentCore has launched in the China regions; its Identity component issues short-lived credentials to agents via workload identity and a token vault, isomorphic to the governance here (Bedrock itself being absent affects the model-hosting layer, not the identity-governance layer). The more important point is that &lt;strong&gt;this account system is decoupled from the runtime&lt;/strong&gt;: whether the agent runs on AgentCore, SageMaker, or self-managed containers, whether the pipeline comes from GitHub Actions, Jenkins, or an internal scheduler, every call they make against AWS resources lands on IAM credentials and passes through the SCP gate. Three onboarding patterns by workload:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;AI agents&lt;/strong&gt;: one account per agent (or per class of agents), the capability surface defined by IdC permission sets or IAM roles, the runtime exchanging short STS sessions through a role chain (15 minutes minimum) with session tags &lt;code&gt;agent-id&lt;/code&gt; / &lt;code&gt;task-id&lt;/code&gt; — every API call in CloudTrail is attributable to a specific agent on a specific task, not to one faceless shared identity.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;CI/CD pipelines&lt;/strong&gt;: deploy jobs use OIDC federation or a self-hosted runner&amp;rsquo;s instance profile to assume a role in the target account, credentials never touching disk; each pipeline gets its own role, so who deployed what to which account and when is queryable call by call in CloudTrail.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;IaC automation&lt;/strong&gt;: Terraform state and execution live in a dedicated automation account, &lt;code&gt;apply&lt;/code&gt; runs under a short-session role, and unplanned drift is caught by Config — the drift-check inspection that accompanies this article runs exactly this way, inside the system.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Once machine accounts are onboarded, monitor their behavior like this:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;Trail retention&lt;/strong&gt;: the organization-wide CloudTrail from this article already centralizes every account&amp;rsquo;s events into log-archive; turn on data events (off by default) for agent model invocations and toolchain credential reads — those are the actions that otherwise never make it into the audit trail.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Anomaly detection&lt;/strong&gt;: GuardDuty has been available in China since 2021, with two realities you must know: organization-management policies are currently unavailable in the China regions, so enablement is a per-account script; and AI workload protection is partial — &lt;code&gt;AnomalousModelInvocation&lt;/code&gt; and &lt;code&gt;CostHarvesting&lt;/code&gt; findings work because they rely on SageMaker invocation patterns, while &lt;code&gt;PromptInjection.Direct&lt;/code&gt; is unavailable because Bedrock is absent. Machine-workload detection in China means these available signals plus your own rules filling the gaps.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Aggregation and response&lt;/strong&gt;: the Security Hub delegated administrator (already configured in this article) aggregates findings from every machine account; the S3 compliance loop above applies verbatim when an agent or a pipeline makes the mistake — detection, least-privilege remediation, verified recovery, closed in minutes.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;Why the IAM-user AK/SK route should be banned outright for machine workloads — one table says it:&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;Dimension&lt;/th&gt;
+&lt;th&gt;IAM User AK/SK&lt;/th&gt;
+&lt;th&gt;IdC permission sets + STS temporary credentials&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;Credential lifetime&lt;/td&gt;
+&lt;td&gt;Valid forever, until manually rotated&lt;/td&gt;
+&lt;td&gt;15 min – 12 h, auto-expires&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Breach impact&lt;/td&gt;
+&lt;td&gt;Unlimited exposure window, until a human notices and disables&lt;/td&gt;
+&lt;td&gt;Window = session length, self-destructs on expiry&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Attribution&lt;/td&gt;
+&lt;td&gt;All calls share one username; which agent, which task — indistinguishable&lt;/td&gt;
+&lt;td&gt;Sessions carry agent-id/task-id; per-call attribution&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Permission governance&lt;/td&gt;
+&lt;td&gt;Inline policies scattered across accounts, drift invisible&lt;/td&gt;
+&lt;td&gt;Permission sets defined centrally; one change, org-wide effect&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Guardrail layering&lt;/td&gt;
+&lt;td&gt;No additional constraint layer&lt;/td&gt;
+&lt;td&gt;SCP + permission boundary + session policy, three-layer narrowing&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Rotation cost&lt;/td&gt;
+&lt;td&gt;Manual process; in practice, never&lt;/td&gt;
+&lt;td&gt;No rotation needed — credentials are born short-lived&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;Every row of that table is amplified for machine workloads: machine credentials are embedded in code and config, with an exposure surface far larger than a human user&amp;rsquo;s; machine call volume is high, making anomalies harder to catch by eye; machine incidents need responsibility traced to the agent or pipeline level. AK/SK leaves all three problems for humans to catch; IdC + STS turns them into architecture properties. In one sentence: the value of this system for AI agents and DevOps automation toolchains is right there in those rows.&lt;/p&gt;
+&lt;h2 id="what-this-stack-still-is-not"&gt;What This Stack Still Is Not
+&lt;/h2&gt;&lt;p&gt;Let me state the ceiling plainly, because the gap is structural, not cosmetic. Control Tower on Global ships a catalog of 750+ AWS-maintained controls (preventive SCP sets, detective Config and Security Hub rules, proactive CloudFormation-hooks controls) with versioning and deprecation handled by AWS; a compliance dashboard with drift detection, de-duplicated notifications, and one-click reset; an Account Factory with identity assignment wired at vend time; and an IaC surface with landing-zone semantics.&lt;/p&gt;
+&lt;p&gt;We reproduced what can be reproduced, and reproduced it well: the vending flow is genuinely close, the region deny is a one-hour SCP, the end-user portal experience is nearly identical, and the compliance loop above is real. &lt;strong&gt;What has no equivalent is the content and the governance UX&lt;/strong&gt; — every rule, every runbook, every upgrade is your team&amp;rsquo;s backlog forever. Proactive controls (CloudFormation Hooks) and resource control policies have no documented China availability at all; treat them as absent until proven otherwise.&lt;/p&gt;
+&lt;p&gt;In one sentence: the architecture can be cloned; the governance content and the governance UX are yours. The realistic posture: a curated set of 20–50 controls you own personally, with the residual risk written down.&lt;/p&gt;
+&lt;h2 id="the-gotchas-list"&gt;The Gotchas List
+&lt;/h2&gt;&lt;p&gt;For anyone doing this build, the full toll in the order you will meet it:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;Account quota = 2 by default.&lt;/strong&gt; Support case, not Service Quotas. Budget a day.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;The SCP policy type may need enabling&lt;/strong&gt; before your first policy attaches — one CLI call, but it fails confusingly if skipped.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;One statement cannot carry both &lt;code&gt;Action&lt;/code&gt; and &lt;code&gt;NotAction&lt;/code&gt;&lt;/strong&gt; — SCP validation here is strict about it.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Service-managed StackSets trust access can only be granted by the console toggle.&lt;/strong&gt; The documented CLI principal (&lt;code&gt;cloudformation.amazonaws.com&lt;/code&gt;) returns &lt;code&gt;UNRECOGNIZED_SERVICE_PRINCIPAL&lt;/code&gt; on this partition; the one the API accepts does not flip CloudFormation&amp;rsquo;s switch. One manual click, once — plus one paragraph in your runbook.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Organization-trail bucket policies need both prefixes&lt;/strong&gt; (&lt;code&gt;AWSLogs/&amp;lt;org-id&amp;gt;/*&lt;/code&gt; and &lt;code&gt;AWSLogs/&amp;lt;management-account-id&amp;gt;/*&lt;/code&gt;) or CreateTrail rejects them.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Config needs role + recorder + delivery channel + start, with retries&lt;/strong&gt; — the three root causes above.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Security Hub org mode&lt;/strong&gt;: delegated admin must be a member account; auto-enable covers only future accounts; &lt;code&gt;NO_AVAILABLE_CONFIGURATION_RECORDER&lt;/code&gt; means your Config step regressed.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Identity Center has no multi-region replication in China.&lt;/strong&gt; Design break-glass that does not depend on the portal.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;The org bill ignores your OU structure.&lt;/strong&gt; Chargeback rides tags and CUR, as globally — but with RMB-only settlement and per-operator (Sinnet Beijing / NWCD Ningxia) contracts, product-line invoicing needs to be on the table earlier.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2 id="cost-and-repeatability"&gt;Cost and Repeatability
+&lt;/h2&gt;&lt;p&gt;At this footprint — four accounts, Config everywhere, Security Hub with default standards, one organization trail — the monthly cost is single-digit US dollars; Security Hub&amp;rsquo;s per-finding ingestion is negligible at this volume, and CloudTrail management events are free. The environment is deliberately kept as a repeatable demo: the same &lt;code&gt;products/*.yaml&lt;/code&gt; flow that vended the demo team vends the next one, and a reset script walks the full teardown path. The expensive input is not the AWS bill — it is the engineering time the first build burns on items 1–8 above. Shrinking that number is what this article exists for.&lt;/p&gt;
+&lt;h2 id="faq"&gt;FAQ
+&lt;/h2&gt;&lt;p&gt;&lt;strong&gt;Is Control Tower available in the AWS China regions?&lt;/strong&gt;
+No. It is absent from the supported-regions list, the China documentation site has no Control Tower section, and AWS&amp;rsquo;s own May 2025 China blog says it &amp;ldquo;has not yet been launched in China Regions.&amp;rdquo; For a landing zone, build it yourself with Organizations, IAM Identity Center, StackSets, and Terraform — this article is the measured walk-through of that build.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;How many accounts can a new China organization create?&lt;/strong&gt;
+In my build, the default ceiling was two (management + one member). Raising it takes an AWS China support case; Organizations has no Service Quotas entries in the China partition. My increase to ten accounts was approved within a day — but plan the ticket for day one.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Does Terraform work against the AWS China partition?&lt;/strong&gt;
+Yes, end to end. The hashicorp/aws provider (v6.70.0 in this build) managed Organizations, SCPs, Identity Center, permission sets, account assignments, and service-managed StackSets without partition-specific workarounds. What needed fixing were provider-version schema details and service-side bootstrap order — never the partition itself.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Is there an official alternative?&lt;/strong&gt;
+One — AWS Cloud Foundations, an open-source self-deployed solution. AWS&amp;rsquo;s China blog positions it as usable in the China regions in the modes that do not depend on Control Tower. It saves build time, but deployment, upgrades, and drift remain yours; the governance content and governance-UX gaps Control Tower would have filled remain yours too.&lt;/p&gt;
+&lt;h2 id="sources"&gt;Sources
+&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;&lt;a class="link" href="https://docs.aws.amazon.com/controltower/latest/userguide/region-how.html" target="_blank" rel="noopener"
+&gt;AWS Control Tower supported regions&lt;/a&gt; — no China regions listed&lt;/li&gt;
+&lt;li&gt;&lt;a class="link" href="https://aws.amazon.com/cn/blogs/china/manage-control-tower-with-cloud-foundations-govern-regions-manage-organizations-create-or-enroll-accounts-enable-controls-en/" target="_blank" rel="noopener"
+&gt;AWS China blog — manage Control Tower with Cloud Foundations (May 2025)&lt;/a&gt; — the &amp;ldquo;not yet launched in China Regions&amp;rdquo; statement and the Cloud Foundations positioning&lt;/li&gt;
+&lt;li&gt;&lt;a class="link" href="https://www.amazonaws.cn/new/2023/amazon-iam-identity-center-is-available-in-amazon-web-services-china-regions" target="_blank" rel="noopener"
+&gt;IAM Identity Center available in China regions (Sep 2023)&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class="link" href="https://www.amazonaws.cn/new/2023/amazon-organizations-supports-service-control-policies-in-amazon-web-services-china-regions" target="_blank" rel="noopener"
+&gt;Service control policies in China regions (Oct 2023)&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class="link" href="https://www.amazonaws.cn/new/2023/amazon-cloudformation-stacksets-in-china-regions" target="_blank" rel="noopener"
+&gt;CloudFormation StackSets GA in China regions, service-managed (Apr 2023)&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class="link" href="https://aws.amazon.com/cn/blogs/china/practice-of-automated-account-creation-on-the-cloud/" target="_blank" rel="noopener"
+&gt;AWS China blog — automated account creation practice (2024)&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class="link" href="https://docs.amazonaws.cn/aws/latest/userguide/aws-ug.pdf" target="_blank" rel="noopener"
+&gt;Getting started with AWS services in China — official user guide PDF&lt;/a&gt; — the authoritative per-service China differences document&lt;/li&gt;
+&lt;li&gt;&lt;a class="link" href="https://www.amazonaws.cn/about-aws/china/faqs/" target="_blank" rel="noopener"
+&gt;AWS China FAQ — accounts, real-name verification, operators, RMB settlement&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;For more measured gaps between China and Global (version, features, quotas, experience, cost — five dimensions), see the &lt;a class="link" href="https://martinliu.cn/chinaready/" &gt;Chinaready parity tracking page&lt;/a&gt;.&lt;/p&gt;
+&lt;aside class="china-ready-cta"&gt;
+&lt;style&gt;
+.china-ready-cta{margin:2rem 0;padding:1rem 1.25rem;border-left:3px solid var(--card-text-color-main,#333);background:var(--card-background,#f6f6f7);border-radius:4px;font-size:var(--article-font-size,1rem)}
+.china-ready-cta .cta-title{font-weight:600;margin:0 0 .35rem}
+.china-ready-cta .cta-desc{margin:0 0 .6rem;opacity:.8}
+.china-ready-cta .cta-link{font-weight:600}
+&lt;/style&gt;
+&lt;p class="cta-title"&gt;你的站点在中国大陆的可达性如何？&lt;/p&gt;
+&lt;p class="cta-desc"&gt;如果产品或服务面向中国用户，可以获取一份免费的 Chinaready 诊断报告：基于真实测量数据，覆盖可达性、加载性能与合规要点。&lt;/p&gt;
+&lt;a class="cta-link" href="https://chinaready.co/diagnose/?utm_source=martinliu.cn&amp;amp;utm_medium=blog&amp;amp;utm_campaign=china-ready" target="_blank" rel="noopener"&gt;获取免费中国就绪诊断 →&lt;/a&gt;
+&lt;/aside&gt;</description></item><item><title>AWS China in Practice: The Real Gaps Beyond the Service Catalog</title><link>https://martinliu.cn/en/blog/aws-china-region-gap-beyond-catalog/</link><pubDate>Wed, 07 Oct 2026 15:00:00 +0800</pubDate><guid>https://martinliu.cn/en/blog/aws-china-region-gap-beyond-catalog/</guid><description>&lt;img src="https://martinliu.cn/blog/aws-china-region-gap-beyond-catalog/insight-aws-china-gap.webp" alt="Featured image of post AWS China in Practice: The Real Gaps Beyond the Service Catalog" /&gt;&lt;p&gt;Which services are available in AWS China? I answered that question in the &lt;a class="link" href="https://martinliu.cn/chinaready/" &gt;Chinaready parity checklist&lt;/a&gt;: 120 service rows, how Beijing and Ningxia split the coverage, and the absence of Bedrock, Q, Connect, and friends. Teams who have actually built on AWS China know the catalog is only the first gate. Even when a service has a checkmark, the real gap with AWS Global begins the moment you open the console.&lt;/p&gt;
 &lt;p&gt;This article is not another catalog comparison. Over several days I ran read-only API calls against the Beijing and Ningxia regions with a pair of accounts, and measured the gaps behind the checkmarks across five dimensions: version, features, quotas, experience, and cost. Before your next China architecture review or PoC planning session, these are the numbers you want in your back pocket. The article will be updated as testing continues (data collected 2026-10-07/09).&lt;/p&gt;
 &lt;h2 id="five-dimensions-from-is-it-listed-to-does-it-work"&gt;Five Dimensions: From &amp;ldquo;Is It Listed&amp;rdquo; to &amp;ldquo;Does It Work&amp;rdquo;
 &lt;/h2&gt;&lt;p&gt;The catalog answers a binary question: listed or not. Whether a service actually works in China takes at least five layers.&lt;/p&gt;
