@@ -75,3 +75,13 @@ The site includes several performance optimizations:
 - `scripts/run-optimization.sh` - Main image optimization script
 - `.github/workflows/deploy-2-page.yml` - GitHub Actions workflow for deployment
 - `Dockerfile` - Development container configuration
+
+## Agent skills
+
+### Issue tracker
+
+Issues are tracked as local markdown files in the Obsidian vault at `/Users/martinliu/Documents/my-kb/kb/martin-blog/` — outside this repo, never committed. See `docs/agents/issue-tracker.md`.
+
+### Domain docs
+
+Single-context: one `CONTEXT.md` + `docs/adr/` at the repo root. Both are gitignored and stay local-only — this is a public repo; strategy and planning docs must not be pushed. See `docs/agents/domain.md`.

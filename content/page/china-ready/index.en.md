@@ -47,3 +47,4 @@ Measure instead of guessing. [Chinaready](https://chinaready.co/) is assessment-
 ## Further reading
 
 Articles in this series will be published on the [blog](/en/blog/), covering: root causes of overseas sites being slow in China, a technical readiness checklist for entering the market, and common CDN/DNS/ICP/observability pitfalls.
+
